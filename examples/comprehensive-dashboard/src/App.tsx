@@ -12,6 +12,8 @@ import {
   I18nProvider,
   ThemeProvider,
   NotificationsProvider,
+  type Theme,
+  type Locale,
 } from "@reynard/core";
 import { AuthProvider } from "@reynard/auth";
 import { AppLayout } from "@reynard/ui";
@@ -58,17 +60,25 @@ const App: Component = () => {
 
   // Apply theme from settings
   createEffect(() => {
-    const themePreference = settings.getSetting("appearance.theme");
-    if (themePreference && themePreference !== theme.theme()) {
-      theme.setTheme(themePreference);
+    const themePreference = settings.getSetting<string>("appearance.theme");
+    if (themePreference && typeof themePreference === 'string' && themePreference !== theme.theme()) {
+      // Validate that the theme preference is a valid theme
+      const validThemes: Theme[] = ["light", "gray", "dark", "banana", "strawberry", "peanut", "high-contrast-black", "high-contrast-inverse"];
+      if (validThemes.includes(themePreference as Theme)) {
+        theme.setTheme(themePreference as Theme);
+      }
     }
   });
 
   // Apply language from settings
   createEffect(() => {
-    const languagePreference = settings.getSetting("general.language");
-    if (languagePreference && languagePreference !== i18n.locale()) {
-      i18n.setLocale(languagePreference);
+    const languagePreference = settings.getSetting<string>("general.language");
+    if (languagePreference && typeof languagePreference === 'string' && languagePreference !== i18n.locale()) {
+      // Validate that the language preference is a valid locale
+      const validLocales: Locale[] = ["en", "ja", "fr", "ru", "zh", "sv", "pl", "uk", "fi", "de", "es", "it", "pt", "pt-BR", "ko", "nl", "tr", "vi", "th", "ar", "he", "hi", "id", "cs", "el", "hu", "ro", "bg", "da", "nb", "sk", "sl", "hr", "et", "lv", "lt", "mt"];
+      if (validLocales.includes(languagePreference as Locale)) {
+        i18n.setLocale(languagePreference as Locale);
+      }
     }
   });
 

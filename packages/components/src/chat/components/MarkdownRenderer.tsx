@@ -9,6 +9,41 @@ import { Component, createMemo, createEffect } from "solid-js";
 import { createStreamingMarkdownParser } from "../utils/StreamingMarkdownParser";
 import type { MarkdownRendererProps } from "../types";
 
+// Type definitions for external libraries
+interface HighlightJS {
+  highlightElement: (element: Element) => void;
+}
+
+interface MathJax {
+  typesetPromise: (elements: Element[]) => Promise<void>;
+}
+
+interface Mermaid {
+  init: (config: Record<string, unknown> | undefined, selector: string) => void;
+}
+
+// Extend Window interface
+declare global {
+  interface Window {
+    hljs?: HighlightJS;
+    MathJax?: MathJax;
+    mermaid?: Mermaid;
+  }
+}
+
+// Simple HTML sanitization function
+const sanitizeHTML = (html: string): string => {
+  // Remove potentially dangerous tags and attributes
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
+    .replace(/<a[^>]*href\s*=\s*["']?javascript:/gi, '<a href="#"');
+};
+
 export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
   let containerRef: HTMLDivElement | undefined;
 
@@ -83,19 +118,20 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
       );
     }
 
-    return html;
+    // Sanitize the HTML to prevent XSS attacks
+    return sanitizeHTML(html);
   });
 
   // Setup effect for syntax highlighting
   createEffect(() => {
     if (containerRef && processHTML()) {
       // Apply syntax highlighting if available
-      if (typeof window !== "undefined" && (window as any).hljs) {
+      if (typeof window !== "undefined" && window.hljs) {
         const codeBlocks = containerRef.querySelectorAll(
           'pre code[class*="language-"]',
         );
         codeBlocks.forEach((block) => {
-          (window as any).hljs.highlightElement(block);
+          window.hljs!.highlightElement(block);
         });
       }
 
@@ -103,22 +139,22 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
       if (
         props.enableMath &&
         typeof window !== "undefined" &&
-        (window as any).MathJax
+        window.MathJax
       ) {
-        (window as any).MathJax.typesetPromise([containerRef]);
+        window.MathJax!.typesetPromise([containerRef]);
       }
 
       // Apply mermaid diagrams if available
       if (
         props.enableDiagrams &&
         typeof window !== "undefined" &&
-        (window as any).mermaid
+        window.mermaid
       ) {
         const diagrams = containerRef.querySelectorAll(".language-mermaid");
         diagrams.forEach((diagram, index) => {
           const id = `mermaid-${Date.now()}-${index}`;
           diagram.id = id;
-          (window as any).mermaid.init(undefined, `#${id}`);
+          window.mermaid!.init(undefined, `#${id}`);
         });
       }
     }
@@ -128,8 +164,10 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
     <div
       ref={containerRef}
       class={`reynard-markdown-renderer ${props.streaming ? "reynard-markdown-renderer--streaming" : ""}`}
-      innerHTML={processHTML()}
       onClick={handleLinkClick}
-    />
+    >
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, solid/no-innerhtml */}
+      <div innerHTML={processHTML()} />
+    </div>
   );
 };

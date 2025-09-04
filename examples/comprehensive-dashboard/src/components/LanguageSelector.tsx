@@ -3,21 +3,22 @@ import { useI18n } from "@reynard/core";
 import { Select } from "@reynard/components";
 
 const LanguageSelector: Component = () => {
-  const { locale, setLocale, availableLocales } = useI18n();
 
-  const languageOptions = availableLocales().map((l) => ({
+  const { locale, setLocale, languages } = useI18n();
+
+  const languageOptions = languages.map((l) => ({
     value: l.code,
-    label: `${l.flag || "🏳️"} ${l.name}`,
+    label: l.name,
   }));
 
-  const handleLanguageChange = (localeCode: string) => {
-    setLocale(localeCode);
+  const handleLanguageChange = (e: Event & { target: HTMLSelectElement }) => {
+    setLocale(e.target.value as any);
   };
 
   return (
     <div class="language-selector">
       <Select
-        value={locale().code}
+        value={locale()}
         onChange={handleLanguageChange}
         options={languageOptions}
         variant="outlined"

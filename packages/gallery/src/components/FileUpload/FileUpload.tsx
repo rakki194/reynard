@@ -10,6 +10,8 @@ import {
   splitProps,
   For,
   Show,
+  batch,
+  createRoot,
 } from "solid-js";
 import { Button } from "@reynard/components";
 import "./FileUpload.css";
@@ -139,7 +141,9 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
   const handleDragEnter = (event: DragEvent) => {
     if (!local.enableDragDrop) return;
     event.preventDefault();
-    setState((prev) => ({ ...prev, isDragOver: true }));
+    batch(() => {
+      setState((prev) => ({ ...prev, isDragOver: true }));
+    });
   };
 
   const handleDragLeave = (event: DragEvent) => {
@@ -148,7 +152,9 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
 
     // Only set drag over to false if leaving the drop zone entirely
     if (dropZoneRef && !dropZoneRef.contains(event.relatedTarget as Node)) {
-      setState((prev) => ({ ...prev, isDragOver: false }));
+      batch(() => {
+        setState((prev) => ({ ...prev, isDragOver: false }));
+      });
     }
   };
 
@@ -162,7 +168,9 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
     if (!local.enableDragDrop) return;
     event.preventDefault();
 
-    setState((prev) => ({ ...prev, isDragOver: false }));
+    batch(() => {
+      setState((prev) => ({ ...prev, isDragOver: false }));
+    });
 
     const files = Array.from(event.dataTransfer!.files);
     handleFilesAdded(files);
@@ -195,11 +203,13 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       status: "pending",
     }));
 
-    setState((prev) => ({
-      ...prev,
-      selectedFiles: [...prev.selectedFiles, ...validFiles],
-      uploadItems: [...prev.uploadItems, ...newItems],
-    }));
+    batch(() => {
+      setState((prev) => ({
+        ...prev,
+        selectedFiles: [...prev.selectedFiles, ...validFiles],
+        uploadItems: [...prev.uploadItems, ...newItems],
+      }));
+    });
 
     local.onFilesSelected?.(validFiles);
   };
@@ -207,108 +217,131 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
   const handleUpload = async () => {
     if (!local.uploadUrl || state().isUploading) return;
 
-    setState((prev) => ({ ...prev, isUploading: true }));
+    batch(() => {
+      setState((prev) => ({ ...prev, isUploading: true }));
+    });
     local.onUploadStart?.(state().selectedFiles);
 
     const items = state().uploadItems.filter(
       (item) => item.status === "pending",
     );
 
-    for (const item of items) {
-      try {
-        await uploadFile(item);
-      } catch (error) {
-        console.error("Upload failed:", error);
-        const errorMessage =
-          error instanceof Error ? error.message : "Upload failed";
-        handleUploadError(item, errorMessage);
-      }
-    }
+    // Use createRoot to create a proper reactive context for async operations
+    createRoot((dispose) => {
+      const uploadPromises = items.map(async (item) => {
+        try {
+          await uploadFile(item);
+        } catch (error) {
+          console.error("Upload failed:", error);
+          const errorMessage =
+            error instanceof Error ? error.message : "Upload failed";
+          handleUploadError(item, errorMessage);
+        }
+      });
 
-    setState((prev) => ({ ...prev, isUploading: false }));
+      // Wait for all uploads to complete
+      Promise.all(uploadPromises).finally(() => {
+        batch(() => {
+          setState((prev) => ({ ...prev, isUploading: false }));
+        });
+        dispose(); // Clean up the reactive context
+      });
+    });
   };
 
   const uploadFile = async (item: FileUploadItem): Promise<void> => {
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      const formData = new FormData();
-      formData.append("file", item.file);
+      // Create a reactive context for the XMLHttpRequest callbacks
+      createRoot((dispose) => {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append("file", item.file);
 
-      // Update status to uploading
-      setState((prev) => ({
-        ...prev,
-        uploadItems: prev.uploadItems.map((i) =>
-          i.id === item.id ? { ...i, status: "uploading" } : i,
-        ),
-      }));
-
-      // Progress tracking
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          const progress = Math.round((event.loaded / event.total) * 100);
-          const speed = event.loaded / (Date.now() / 1000);
-          const timeRemaining =
-            event.total > event.loaded
-              ? (event.total - event.loaded) / speed
-              : 0;
-
-          const updatedItem: FileUploadItem = {
-            ...item,
-            progress,
-            speed,
-            timeRemaining,
-          };
-
+        // Update status to uploading
+        batch(() => {
           setState((prev) => ({
             ...prev,
             uploadItems: prev.uploadItems.map((i) =>
-              i.id === item.id ? updatedItem : i,
+              i.id === item.id ? { ...i, status: "uploading" } : i,
             ),
           }));
-
-          local.onUploadProgress?.(updatedItem);
-        }
-      });
-
-      // Success
-      xhr.addEventListener("load", () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          const completedItem: FileUploadItem = {
-            ...item,
-            progress: 100,
-            status: "completed",
-          };
-
-          setState((prev) => ({
-            ...prev,
-            uploadItems: prev.uploadItems.map((i) =>
-              i.id === item.id ? completedItem : i,
-            ),
-          }));
-
-          local.onUploadComplete?.(completedItem);
-          resolve();
-        } else {
-          reject(new Error(`Upload failed with status ${xhr.status}`));
-        }
-      });
-
-      // Error
-      xhr.addEventListener("error", () => {
-        reject(new Error("Network error during upload"));
-      });
-
-      // Send request
-      xhr.open("POST", local.uploadUrl!);
-
-      // Add headers
-      if (local.headers) {
-        Object.entries(local.headers).forEach(([key, value]) => {
-          xhr.setRequestHeader(key, value);
         });
-      }
 
-      xhr.send(formData);
+        // Progress tracking
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            const speed = event.loaded / (Date.now() / 1000);
+            const timeRemaining =
+              event.total > event.loaded
+                ? (event.total - event.loaded) / speed
+                : 0;
+
+            const updatedItem: FileUploadItem = {
+              ...item,
+              progress,
+              speed,
+              timeRemaining,
+            };
+
+            batch(() => {
+              setState((prev) => ({
+                ...prev,
+                uploadItems: prev.uploadItems.map((i) =>
+                  i.id === item.id ? updatedItem : i,
+                ),
+              }));
+            });
+
+            local.onUploadProgress?.(updatedItem);
+          }
+        });
+
+        // Success
+        xhr.addEventListener("load", () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const completedItem: FileUploadItem = {
+              ...item,
+              progress: 100,
+              status: "completed",
+            };
+
+            batch(() => {
+              setState((prev) => ({
+                ...prev,
+                uploadItems: prev.uploadItems.map((i) =>
+                  i.id === item.id ? completedItem : i,
+                ),
+              }));
+            });
+
+            local.onUploadComplete?.(completedItem);
+            resolve();
+            dispose(); // Clean up the reactive context
+          } else {
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+            dispose(); // Clean up the reactive context
+          }
+        });
+
+        // Error
+        xhr.addEventListener("error", () => {
+          reject(new Error("Network error during upload"));
+          dispose(); // Clean up the reactive context
+        });
+
+        // Send request
+        xhr.open("POST", local.uploadUrl!);
+
+        // Add headers
+        if (local.headers) {
+          Object.entries(local.headers).forEach(([key, value]) => {
+            xhr.setRequestHeader(key, value);
+          });
+        }
+
+        xhr.send(formData);
+      });
     });
   };
 
@@ -319,33 +352,39 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
       error,
     };
 
-    setState((prev) => ({
-      ...prev,
-      uploadItems: prev.uploadItems.map((i) =>
-        i.id === item.id ? errorItem : i,
-      ),
-    }));
+    batch(() => {
+      setState((prev) => ({
+        ...prev,
+        uploadItems: prev.uploadItems.map((i) =>
+          i.id === item.id ? errorItem : i,
+        ),
+      }));
+    });
 
     local.onUploadError?.(item, error);
   };
 
   const handleRemoveFile = (itemId: string) => {
-    setState((prev) => ({
-      ...prev,
-      selectedFiles: prev.selectedFiles.filter(
-        (_, index) =>
-          prev.uploadItems.findIndex((item) => item.id === itemId) !== index,
-      ),
-      uploadItems: prev.uploadItems.filter((item) => item.id !== itemId),
-    }));
+    batch(() => {
+      setState((prev) => ({
+        ...prev,
+        selectedFiles: prev.selectedFiles.filter(
+          (_, index) =>
+            prev.uploadItems.findIndex((item) => item.id === itemId) !== index,
+        ),
+        uploadItems: prev.uploadItems.filter((item) => item.id !== itemId),
+      }));
+    });
   };
 
   const handleClearAll = () => {
-    setState((prev) => ({
-      ...prev,
-      selectedFiles: [],
-      uploadItems: [],
-    }));
+    batch(() => {
+      setState((prev) => ({
+        ...prev,
+        selectedFiles: [],
+        uploadItems: [],
+      }));
+    });
   };
 
   const handleBrowseClick = () => {
@@ -380,6 +419,18 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
     if (seconds < 60) return `${Math.round(seconds)}s`;
     if (seconds < 3600) return `${Math.round(seconds / 60)}m`;
     return `${Math.round(seconds / 3600)}h`;
+  };
+
+  // Helper function to get progress CSS class
+  const getProgressClass = (progress: number): string => {
+    const roundedProgress = Math.round(progress / 10) * 10;
+    return `reynard-file-upload__progress-fill--${roundedProgress}`;
+  };
+
+  // Helper function to get overall progress CSS class
+  const getOverallProgressClass = (progress: number): string => {
+    const roundedProgress = Math.round(progress / 10) * 10;
+    return `reynard-file-upload__overall-progress-fill--${roundedProgress}`;
   };
 
   return (
@@ -486,8 +537,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
                     <div class="reynard-file-upload__progress-container">
                       <div class="reynard-file-upload__progress-bar">
                         <div
-                          class="reynard-file-upload__progress-fill"
-                          style={{ width: `${item.progress}%` }}
+                          class={`reynard-file-upload__progress-fill ${getProgressClass(item.progress)}`}
                         />
                       </div>
                       <span class="reynard-file-upload__progress-text">
@@ -527,8 +577,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
             <div class="reynard-file-upload__overall-progress">
               <div class="reynard-file-upload__overall-progress-bar">
                 <div
-                  class="reynard-file-upload__overall-progress-fill"
-                  style={{ width: `${totalProgress()}%` }}
+                  class={`reynard-file-upload__overall-progress-fill ${getOverallProgressClass(totalProgress())}`}
                 />
               </div>
               <span class="reynard-file-upload__overall-progress-text">

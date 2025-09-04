@@ -3,7 +3,7 @@
  * Shows the current path and allows navigation to parent folders
  */
 
-import { Component, For, Show } from "solid-js";
+import { Component, For, Show, createMemo } from "solid-js";
 import { Button } from "@reynard/components";
 import type { BreadcrumbItem } from "../types";
 
@@ -60,7 +60,7 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
         <ol class="breadcrumb-navigation__list" role="list">
           <For each={props.breadcrumbs}>
             {(breadcrumb, index) => {
-              const isLast = index() === props.breadcrumbs.length - 1;
+              const isLast = createMemo(() => index() === props.breadcrumbs.length - 1);
 
               return (
                 <li class="breadcrumb-navigation__item" role="listitem">
@@ -84,10 +84,10 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
                     </button>
                   </Show>
 
-                  <Show when={!breadcrumb.clickable || isLast}>
+                  <Show when={!breadcrumb.clickable || isLast()}>
                     <span
                       class="breadcrumb-navigation__current"
-                      aria-current={isLast ? "page" : undefined}
+                      aria-current={isLast() ? "page" : undefined}
                     >
                       {breadcrumb.label}
                     </span>

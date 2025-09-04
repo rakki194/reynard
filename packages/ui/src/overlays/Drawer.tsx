@@ -10,10 +10,10 @@ import {
   mergeProps,
   createEffect,
   Show,
-  onMount,
   onCleanup,
 } from "solid-js";
 import { Portal } from "solid-js/web";
+import "./Drawer.css";
 
 export interface DrawerProps {
   /** Whether the drawer is open */
@@ -53,13 +53,7 @@ const defaultProps: Partial<DrawerProps> = {
   zIndex: 1000,
 };
 
-const SIZES = {
-  sm: "320px",
-  md: "480px",
-  lg: "640px",
-  xl: "896px",
-  full: "100%",
-};
+
 
 export const Drawer: Component<DrawerProps> = (props) => {
   const merged = mergeProps(defaultProps, props);
@@ -92,7 +86,10 @@ export const Drawer: Component<DrawerProps> = (props) => {
     };
 
     document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    
+    onCleanup(() => {
+      document.removeEventListener("keydown", handleEscape);
+    });
   });
 
   // Prevent body scroll when drawer is open
@@ -125,10 +122,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
     }
   };
 
-  const getDrawerSize = () => {
-    if (local.customSize) return local.customSize;
-    return SIZES[local.size!];
-  };
+
 
   const getDrawerClasses = () => {
     const classes = [
@@ -137,62 +131,60 @@ export const Drawer: Component<DrawerProps> = (props) => {
       `reynard-drawer__content--${local.size}`,
     ];
 
+      // Add custom size class if customSize is provided
+    if (local.customSize) {
+      classes.push("reynard-drawer__content--custom");
+    }
+
+    // Add transform class based on open state and position
+    if (!local.open) {
+      classes.push(`reynard-drawer__content--closed-${local.position}`);
+    } else {
+      classes.push("reynard-drawer__content--open");
+    }
+
     if (local.class) classes.push(local.class);
 
     return classes.join(" ");
   };
 
-  const getDrawerStyles = (): JSX.CSSProperties => {
-    const size = getDrawerSize();
-    const styles: JSX.CSSProperties = {};
-
-    switch (local.position) {
-      case "left":
-      case "right":
-        styles.width = size;
-        styles.height = "100%";
-        break;
-      case "top":
-      case "bottom":
-        styles.width = "100%";
-        styles.height = size;
-        break;
+  const getDrawerContainerClasses = () => {
+    const classes = ["reynard-drawer"];
+    
+    // Add z-index class based on the zIndex prop
+    if (local.zIndex) {
+      if (local.zIndex <= 1000) classes.push("reynard-drawer--z-1000");
+      else if (local.zIndex <= 2000) classes.push("reynard-drawer--z-2000");
+      else if (local.zIndex <= 3000) classes.push("reynard-drawer--z-3000");
+      else if (local.zIndex <= 4000) classes.push("reynard-drawer--z-4000");
+      else classes.push("reynard-drawer--z-5000");
     }
 
-    return styles;
+    return classes.join(" ");
   };
 
-  const getTransform = () => {
-    if (!local.open) {
-      switch (local.position) {
-        case "left":
-          return "translateX(-100%)";
-        case "right":
-          return "translateX(100%)";
-        case "top":
-          return "translateY(-100%)";
-        case "bottom":
-          return "translateY(100%)";
-        default:
-          return "translateX(100%)";
+  // Set custom size CSS properties if needed
+  createEffect(() => {
+    if (local.open && local.customSize && drawerRef) {
+      if (local.position === "left" || local.position === "right") {
+        drawerRef.style.setProperty("--drawer-custom-width", local.customSize);
+        drawerRef.style.setProperty("--drawer-custom-height", "100%");
+      } else {
+        drawerRef.style.setProperty("--drawer-custom-width", "100%");
+        drawerRef.style.setProperty("--drawer-custom-height", local.customSize);
       }
     }
-    return "translate(0, 0)";
-  };
+  });
 
   return (
     <Show when={local.open}>
       <Portal>
-        <div class="reynard-drawer" style={{ "z-index": local.zIndex }}>
+        <div class={getDrawerContainerClasses()}>
           <div class="reynard-drawer__backdrop" onClick={handleBackdropClick} />
 
           <div
             ref={drawerRef}
             class={getDrawerClasses()}
-            style={{
-              ...getDrawerStyles(),
-              transform: getTransform(),
-            }}
             role="dialog"
             aria-modal="true"
             aria-labelledby={local.title ? "drawer-title" : undefined}

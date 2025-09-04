@@ -10,6 +10,7 @@ import {
   createEffect,
   Show,
   splitProps,
+  createMemo,
 } from "solid-js";
 import {
   Chart,
@@ -23,6 +24,7 @@ import {
 import { Pie, Doughnut } from "solid-chartjs";
 import { Dataset, ChartConfig, ReynardTheme } from "../types";
 import { getDefaultConfig, generateColors } from "../utils";
+import "./PieChart.css";
 
 export interface PieChartProps extends ChartConfig {
   /** Chart labels */
@@ -208,7 +210,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: any) => {
+            label: (context: { label?: string; parsed: number; dataset: { data: number[] } }) => {
               const label = context.label || "";
               const value = context.parsed;
               const total = context.dataset.data.reduce(
@@ -229,20 +231,39 @@ export const PieChart: Component<PieChartProps> = (props) => {
       "reynard-pie-chart",
       `reynard-pie-chart--${local.variant}`,
     ];
+    
+    if (local.responsive) {
+      classes.push("reynard-pie-chart--responsive");
+    } else {
+      classes.push("reynard-pie-chart--fixed");
+      // Add specific size classes for common dimensions
+      if (local.width === 400 && local.height === 300) {
+        classes.push("reynard-pie-chart--fixed-400x300");
+      } else if (local.width === 600 && local.height === 400) {
+        classes.push("reynard-pie-chart--fixed-600x400");
+      } else if (local.width === 800 && local.height === 600) {
+        classes.push("reynard-pie-chart--fixed-800x600");
+      } else if (local.width === 1000 && local.height === 800) {
+        classes.push("reynard-pie-chart--fixed-1000x800");
+      } else {
+        // For custom dimensions, use CSS custom properties
+        classes.push("reynard-pie-chart--fixed-custom");
+      }
+    }
+    
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
-  const ChartComponent = local.variant === "doughnut" ? Doughnut : Pie;
+  const ChartComponent = createMemo(() => 
+    local.variant === "doughnut" ? Doughnut : Pie
+  );
 
   return (
     <div
       class={getContainerClasses()}
-      style={{
-        width: local.responsive ? "100%" : `${local.width}px`,
-        height: local.responsive ? "100%" : `${local.height}px`,
-        position: "relative",
-      }}
+      data-width={!local.responsive ? local.width : undefined}
+      data-height={!local.responsive ? local.height : undefined}
       role="img"
       aria-label={local.title || `${local.variant} chart`}
       {...others}
@@ -261,12 +282,12 @@ export const PieChart: Component<PieChartProps> = (props) => {
       </Show>
 
       <Show when={!local.loading && chartData() && isRegistered()}>
-        <ChartComponent
-          data={chartData()!}
-          options={getChartOptions()}
-          width={local.width}
-          height={local.height}
-        />
+        {ChartComponent()({
+          data: chartData()!,
+          options: getChartOptions(),
+          width: local.width,
+          height: local.height,
+        })}
       </Show>
     </div>
   );

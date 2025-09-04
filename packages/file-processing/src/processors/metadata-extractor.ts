@@ -57,7 +57,12 @@ export class MetadataExtractor {
       // Get file information
       const fileInfo = await this.getFileInfo(file);
       if (!fileInfo.success) {
-        return fileInfo;
+        return {
+          success: false,
+          error: fileInfo.error,
+          duration: Date.now() - startTime,
+          timestamp: new Date(),
+        };
       }
 
       const { name, size, type } = fileInfo.data!;

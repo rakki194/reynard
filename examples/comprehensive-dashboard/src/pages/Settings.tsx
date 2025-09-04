@@ -1,17 +1,11 @@
 import { Component } from "solid-js";
 import { useI18n } from "@reynard/core";
-import { useSettings, SettingsPanel } from "@reynard/settings";
+import { SettingsPanel } from "@reynard/settings";
 import { Card } from "@reynard/components";
 import { appSettingsSchema } from "../settings/schema";
 
 const Settings: Component = () => {
   const { t } = useI18n();
-
-  const settings = useSettings({
-    schema: appSettingsSchema,
-    storageKey: "reynard-dashboard-settings",
-    autoSave: true,
-  });
 
   return (
     <div class="settings-page">
@@ -24,7 +18,13 @@ const Settings: Component = () => {
 
       <Card class="settings-page__card">
         <SettingsPanel
-          settings={settings}
+          config={{
+            schema: appSettingsSchema,
+            storage: {
+              default: "localStorage",
+              prefix: "reynard-dashboard-settings_",
+            },
+          }}
           showSearch={true}
           showCategories={true}
           showImportExport={true}

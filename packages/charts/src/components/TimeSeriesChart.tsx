@@ -11,6 +11,7 @@ import {
   Show,
   splitProps,
   onCleanup,
+  untrack,
 } from "solid-js";
 import {
   Chart,
@@ -28,6 +29,7 @@ import "chartjs-adapter-date-fns";
 import { Line } from "solid-chartjs";
 import { ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
 import { getDefaultConfig, formatTimestamp, debounce } from "../utils";
+import "./TimeSeriesChart.css";
 
 export interface TimeSeriesChartProps extends ChartConfig {
   /** Time series data */
@@ -113,7 +115,20 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   const [isRegistered, setIsRegistered] = createSignal(false);
   const [processedData, setProcessedData] = createSignal<{
     labels: string[];
-    datasets: any[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      backgroundColor: string;
+      pointBackgroundColor: string | string[];
+      pointBorderColor: string | string[];
+      pointRadius: number;
+      pointHoverRadius: number;
+      borderWidth: number;
+      fill: boolean;
+      tension: number;
+      stepped: boolean;
+    }[];
   } | null>(null);
 
   let updateTimer: number | null = null;
@@ -262,7 +277,10 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   createEffect(() => {
     if (local.updateInterval && local.data.length > 0) {
       updateTimer = window.setInterval(() => {
-        processTimeSeriesData();
+        // Wrap in untrack to avoid reactivity issues in timer callback
+        untrack(() => {
+          processTimeSeriesData();
+        });
       }, local.updateInterval);
     }
 
@@ -312,7 +330,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: any) => {
+            label: (context: { parsed: { y: number }; dataset: { label: string } }) => {
               const value = context.parsed.y;
               const formattedValue = local.valueFormatter
                 ? local.valueFormatter(value)
@@ -366,7 +384,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           },
           ticks: {
             color: "var(--text-secondary)",
-            callback: (value: any) => {
+            callback: (value: number) => {
               return local.valueFormatter
                 ? local.valueFormatter(value)
                 : value.toLocaleString();
@@ -382,6 +400,8 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
 
   const getContainerClasses = () => {
     const classes = ["reynard-timeseries-chart"];
+    if (local.responsive) classes.push("responsive");
+    if (!local.responsive) classes.push("fixed-size");
     if (local.stepped) classes.push("reynard-timeseries-chart--stepped");
     if (local.class) classes.push(local.class);
     return classes.join(" ");
@@ -390,11 +410,6 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   return (
     <div
       class={getContainerClasses()}
-      style={{
-        width: local.responsive ? "100%" : `${local.width}px`,
-        height: local.responsive ? "100%" : `${local.height}px`,
-        position: "relative",
-      }}
       role="img"
       aria-label={local.title || "time series chart"}
       {...others}

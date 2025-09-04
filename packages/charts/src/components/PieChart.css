@@ -1,0 +1,75 @@
+/**
+ * PieChart Component Styles
+ */
+
+.reynard-pie-chart {
+  position: relative;
+}
+
+.reynard-pie-chart--responsive {
+  width: 100%;
+  height: 100%;
+}
+
+.reynard-pie-chart--fixed {
+  width: var(--chart-width, 400px);
+  height: var(--chart-height, 300px);
+}
+
+.reynard-pie-chart--fixed-400x300 {
+  width: 400px;
+  height: 300px;
+}
+
+.reynard-pie-chart--fixed-600x400 {
+  width: 600px;
+  height: 400px;
+}
+
+.reynard-pie-chart--fixed-800x600 {
+  width: 800px;
+  height: 600px;
+}
+
+.reynard-pie-chart--fixed-1000x800 {
+  width: 1000px;
+  height: 800px;
+}
+
+.reynard-pie-chart--fixed-custom {
+  width: attr(data-width px);
+  height: attr(data-height px);
+}
+
+.reynard-chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+}
+
+.reynard-chart-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color, #ddd);
+  border-top: 2px solid var(--primary-color, #007bff);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+.reynard-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+  font-style: italic;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -25,8 +25,8 @@ import {
   formatFileSize,
   formatDate,
   getFileIcon,
-  isImage,
 } from "../utils";
+
 
 export interface GalleryGridProps {
   /** Items to display */
@@ -139,10 +139,9 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
   const handleKeyDown = (event: KeyboardEvent): void => {
     if (!containerRef?.contains(document.activeElement)) return;
 
-    const { items } = props;
-    if (items.length === 0) return;
+    if (props.items.length === 0) return;
 
-    const currentIndex = items.findIndex(
+    const currentIndex = props.items.findIndex(
       (item) => item.id === props.selectionState.lastSelectedId,
     );
 
@@ -150,14 +149,14 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
 
     switch (event.key) {
       case "ArrowRight":
-        newIndex = Math.min(currentIndex + 1, items.length - 1);
+        newIndex = Math.min(currentIndex + 1, props.items.length - 1);
         break;
       case "ArrowLeft":
         newIndex = Math.max(currentIndex - 1, 0);
         break;
       case "ArrowDown": {
         const { columns } = gridDimensions();
-        newIndex = Math.min(currentIndex + columns, items.length - 1);
+        newIndex = Math.min(currentIndex + columns, props.items.length - 1);
         break;
       }
       case "ArrowUp": {
@@ -168,11 +167,11 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
       case "Enter":
       case " ":
         if (currentIndex >= 0) {
-          props.onItemClick?.(items[currentIndex]);
+          props.onItemClick?.(props.items[currentIndex]);
         }
         return;
       case "Escape":
-        props.onSelectionChange?.(items[0], "single");
+        props.onSelectionChange?.(props.items[0], "single");
         return;
       default:
         return;
@@ -181,7 +180,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
     if (newIndex !== currentIndex && newIndex >= 0) {
       event.preventDefault();
       const mode = event.shiftKey ? "range" : "single";
-      props.onSelectionChange?.(items[newIndex], mode);
+      props.onSelectionChange?.(props.items[newIndex], mode);
     }
   };
 
@@ -211,62 +210,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
     return classes.join(" ");
   };
 
-  // Get grid style
-  const getGridStyle = (): any => {
-    const { columns } = gridDimensions();
 
-    if (props.viewConfig.layout === "list") {
-      return {
-        display: "flex",
-        "flex-direction": "column",
-        gap: "8px",
-      };
-    }
-
-    if (props.viewConfig.layout === "masonry") {
-      return {
-        columns: columns.toString(),
-        "column-gap": "16px",
-        "column-fill": "balance",
-      };
-    }
-
-    return {
-      display: "grid",
-      "grid-template-columns": `repeat(${columns}, 1fr)`,
-      gap: "16px",
-    };
-  };
-
-  // Get item style
-  const getItemStyle = (item: FileItem | FolderItem): any => {
-    const { itemWidth, itemHeight } = gridDimensions();
-
-    if (props.viewConfig.layout === "list") {
-      return {
-        display: "flex",
-        "align-items": "center",
-        padding: "8px",
-        "min-height": "48px",
-      };
-    }
-
-    if (props.viewConfig.layout === "masonry" && isImage(item)) {
-      const aspectRatio = item.metadata?.aspectRatio || 1;
-      const height = itemWidth / aspectRatio;
-      return {
-        width: "100%",
-        height: `${height}px`,
-        "margin-bottom": "16px",
-        "break-inside": "avoid",
-      };
-    }
-
-    return {
-      width: `${itemWidth}px`,
-      height: `${itemHeight}px`,
-    };
-  };
 
   // Render thumbnail
   const renderThumbnail = (item: FileItem | FolderItem) => {
@@ -304,8 +248,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
             }}
           />
           <div
-            class="gallery-item__icon gallery-item__icon--fallback"
-            style={{ display: "none" }}
+            class="gallery-item__icon gallery-item__icon--fallback gallery-item__icon--hidden"
           >
             <span class="icon">{getFileIcon(item)}</span>
           </div>
@@ -372,18 +315,20 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
 
       <Show when={!props.loading && props.items.length > 0}>
         <div
-          class="gallery-grid__container"
-          style={getGridStyle()}
+          class={`gallery-grid__container gallery-grid__container--${props.viewConfig.layout}`}
+          data-columns={gridDimensions().columns}
           role="list"
           aria-label="File gallery items"
         >
           <For each={props.items}>
             {(item) => (
               <div
-                class={getItemClasses(item)}
-                style={getItemStyle(item)}
+                class={`${getItemClasses(item)} gallery-item--${props.viewConfig.layout}`}
                 role="listitem"
                 tabIndex={-1}
+                data-item-width={gridDimensions().itemWidth}
+                data-item-height={gridDimensions().itemHeight}
+                data-item-type={item.type}
                 data-item-id={item.id}
                 onClick={(e) => handleItemClick(e, item)}
                 onDblClick={(e) => handleItemDoubleClick(e, item)}

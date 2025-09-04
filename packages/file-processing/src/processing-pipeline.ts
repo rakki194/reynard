@@ -191,7 +191,7 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   /**
    * Extract metadata from a file
    */
-  async extractMetadata(file: File | string): Promise<ProcessingResult> {
+  async extractMetadata(_file: File | string): Promise<ProcessingResult> {
     // This would call the metadata extractor
     // For now, return a placeholder result
     return {
@@ -207,7 +207,7 @@ export class FileProcessingPipeline implements ProcessingPipeline {
    */
   async scanDirectory(
     path: string,
-    options?: ProcessingOptions,
+    _options?: ProcessingOptions,
   ): Promise<ProcessingResult<DirectoryListing>> {
     try {
       // This would implement actual directory scanning

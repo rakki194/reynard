@@ -1,8 +1,8 @@
-import { Component, For } from "solid-js";
-import { A } from "@solidjs/router";
+import { Component } from "solid-js";
+// import { A } from "@solidjs/router"; // Remove unused import
 import { useI18n } from "@reynard/core";
 import { NavMenu } from "@reynard/ui";
-import type { MenuItem } from "@reynard/ui";
+// import type { MenuItem } from "@reynard/ui"; // Remove unused import
 
 interface SidebarProps {
   collapsed: boolean;
@@ -12,40 +12,40 @@ interface SidebarProps {
 const Sidebar: Component<SidebarProps> = (props) => {
   const { t } = useI18n();
 
-  const menuItems: MenuItem[] = [
+  const menuItems = [
     {
       id: "dashboard",
-      label: () => t("nav.dashboard"),
+  label: t("nav.dashboard"),
       href: "/",
       icon: "📊",
     },
     {
       id: "charts",
-      label: () => t("nav.charts"),
+  label: t("nav.charts"),
       href: "/charts",
       icon: "📈",
     },
     {
       id: "components",
-      label: () => t("nav.components"),
+  label: t("nav.components"),
       href: "/components",
       icon: "🧩",
     },
     {
       id: "gallery",
-      label: () => t("nav.gallery"),
+  label: t("nav.gallery"),
       href: "/gallery",
       icon: "🖼️",
     },
     {
       id: "auth",
-      label: () => t("nav.auth"),
+  label: t("nav.auth"),
       href: "/auth",
       icon: "🔐",
     },
     {
       id: "settings",
-      label: () => t("nav.settings"),
+  label: t("nav.settings"),
       href: "/settings",
       icon: "⚙️",
     },
@@ -71,8 +71,6 @@ const Sidebar: Component<SidebarProps> = (props) => {
       <nav class="sidebar__nav">
         <NavMenu
           items={menuItems}
-          variant="vertical"
-          collapsed={props.collapsed}
         />
       </nav>
     </div>

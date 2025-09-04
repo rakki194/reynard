@@ -29,13 +29,13 @@ export const Counter: Component<CounterProps> = (props) => {
         Count: <strong>{props.count}</strong>
       </div>
       <div class="button-group">
-        <button class="button button--small" onClick={decrement}>
+        <button type="button" class="button button--small" onClick={decrement}>
           -
         </button>
-        <button class="button button--small" onClick={reset}>
+        <button type="button" class="button button--small" onClick={reset}>
           Reset
         </button>
-        <button class="button button--small" onClick={increment}>
+        <button type="button" class="button button--small" onClick={increment}>
           +
         </button>
       </div>

@@ -29,6 +29,7 @@ import {
   ChartConfig,
   TimeSeriesDataPoint,
   ReynardTheme,
+  ChartOptions,
 } from "../types";
 import {
   getDefaultConfig,
@@ -36,6 +37,7 @@ import {
   processTimeSeriesData,
   validateChartData,
 } from "../utils";
+import "./LineChart.css";
 
 export interface LineChartProps extends ChartConfig {
   /** Chart labels */
@@ -163,7 +165,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
       ...baseConfig,
       responsive: local.responsive,
       maintainAspectRatio: local.maintainAspectRatio,
-      animation: local.animation || (baseConfig as any).animation,
+      animation: local.animation || (baseConfig as ChartOptions).animation,
       plugins: {
         ...baseConfig.plugins,
         title: {
@@ -237,43 +239,53 @@ export const LineChart: Component<LineChartProps> = (props) => {
 
   const getContainerClasses = () => {
     const classes = ["reynard-line-chart"];
+    if (local.responsive) classes.push("responsive");
+    if (!local.responsive) classes.push("fixed-size");
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
+  const getSizeClass = () => {
+    if (local.responsive) return "";
+    
+    const area = local.width * local.height;
+    
+    if (area <= 60000) return "size-small";      // 300x200
+    if (area <= 120000) return "size-medium";    // 400x300
+    if (area <= 240000) return "size-large";     // 600x400
+    return "size-xl";                             // 800x500+
+  };
+
   return (
     <div
-      class={getContainerClasses()}
-      style={{
-        width: local.responsive ? "100%" : `${local.width}px`,
-        height: local.responsive ? "100%" : `${local.height}px`,
-        position: "relative",
-      }}
+      class={`${getContainerClasses()} ${getSizeClass()}`}
       role="img"
       aria-label={local.title || "line chart"}
       {...others}
     >
-      <Show when={local.loading}>
-        <div class="reynard-chart-loading">
-          <div class="reynard-chart-spinner" />
-          <span>Loading chart...</span>
-        </div>
-      </Show>
+      <div class="reynard-chart-wrapper">
+        <Show when={local.loading}>
+          <div class="reynard-chart-loading">
+            <div class="reynard-chart-spinner" />
+            <span>Loading chart...</span>
+          </div>
+        </Show>
 
-      <Show when={!local.loading && !chartData()}>
-        <div class="reynard-chart-empty">
-          <span>{local.emptyMessage}</span>
-        </div>
-      </Show>
+        <Show when={!local.loading && !chartData()}>
+          <div class="reynard-chart-empty">
+            <span>{local.emptyMessage}</span>
+          </div>
+        </Show>
 
-      <Show when={!local.loading && chartData() && isRegistered()}>
-        <Line
-          data={chartData()!}
-          options={getChartOptions()}
-          width={local.width}
-          height={local.height}
-        />
-      </Show>
+        <Show when={!local.loading && chartData() && isRegistered()}>
+          <Line
+            data={chartData()!}
+            options={getChartOptions()}
+            width={local.width}
+            height={local.height}
+          />
+        </Show>
+      </div>
     </div>
   );
 };

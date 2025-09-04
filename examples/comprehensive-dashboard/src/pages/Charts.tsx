@@ -5,7 +5,7 @@ import {
   PieChart,
   TimeSeriesChart,
 } from "@reynard/charts";
-import { Card, Button, Select } from "@reynard/components";
+import { Card, Select } from "@reynard/components";
 import { useI18n } from "@reynard/core";
 
 export function Charts() {
@@ -80,18 +80,47 @@ export function Charts() {
 
   const renderChart = () => {
     const data = getCurrentData();
-
     switch (chartType()) {
       case "line":
-        return <LineChart data={data} options={{ responsive: true }} />;
+        return (
+          <LineChart
+            labels={data.labels}
+            datasets={data.datasets}
+          />
+        );
       case "bar":
-        return <BarChart data={data} options={{ responsive: true }} />;
+        return (
+          <BarChart
+            labels={data.labels}
+            datasets={data.datasets}
+          />
+        );
       case "pie":
-        return <PieChart data={data} options={{ responsive: true }} />;
+        return (
+          <PieChart
+            labels={data.labels}
+            data={data.datasets[0].data}
+          />
+        );
       case "timeseries":
-        return <TimeSeriesChart data={data} options={{ responsive: true }} />;
+        // Convert to array of TimeSeriesDataPoint objects
+        const timeSeriesPoints = data.labels.map((label, idx) => ({
+          timestamp: Date.parse(label),
+          value: data.datasets[0].data[idx],
+          label,
+        }));
+        return (
+          <TimeSeriesChart
+            data={timeSeriesPoints}
+          />
+        );
       default:
-        return <LineChart data={data} options={{ responsive: true }} />;
+        return (
+          <LineChart
+            labels={data.labels}
+            datasets={data.datasets}
+          />
+        );
     }
   };
 
@@ -139,22 +168,8 @@ export function Charts() {
             </h2>
             <div class="h-64">
               <BarChart
-                data={{
-                  labels: ["Q1", "Q2", "Q3", "Q4"],
-                  datasets: [
-                    {
-                      label: "2022",
-                      data: [10, 20, 30, 40],
-                      backgroundColor: "rgba(255, 99, 132, 0.5)",
-                    },
-                    {
-                      label: "2023",
-                      data: [15, 25, 35, 45],
-                      backgroundColor: "rgba(54, 162, 235, 0.5)",
-                    },
-                  ],
-                }}
-                options={{ responsive: true }}
+                labels={["Q1", "Q2", "Q3", "Q4"]}
+                datasets={[{ label: "2022", data: [10, 20, 30, 40], backgroundColor: "rgba(255, 99, 132, 0.5)" }]}
               />
             </div>
           </div>
@@ -169,22 +184,8 @@ export function Charts() {
             </h3>
             <div class="h-32">
               <LineChart
-                data={{
-                  labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-                  datasets: [
-                    {
-                      label: "Revenue",
-                      data: [1000, 1500, 1200, 1800],
-                      borderColor: "rgba(75, 192, 192, 1)",
-                      backgroundColor: "rgba(75, 192, 192, 0.2)",
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { display: false } },
-                  scales: { x: { display: false }, y: { display: false } },
-                }}
+                labels={["Week 1", "Week 2", "Week 3", "Week 4"]}
+                datasets={[{ label: "Revenue", data: [1000, 1500, 1200, 1800], borderColor: "rgba(75, 192, 192, 1)", backgroundColor: "rgba(75, 192, 192, 0.2)" }]}
               />
             </div>
           </div>
@@ -197,23 +198,8 @@ export function Charts() {
             </h3>
             <div class="h-32">
               <PieChart
-                data={{
-                  labels: ["Desktop", "Mobile", "Tablet"],
-                  datasets: [
-                    {
-                      data: [60, 30, 10],
-                      backgroundColor: [
-                        "rgba(255, 99, 132, 0.8)",
-                        "rgba(54, 162, 235, 0.8)",
-                        "rgba(255, 205, 86, 0.8)",
-                      ],
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { display: false } },
-                }}
+                labels={["Desktop", "Mobile", "Tablet"]}
+                data={[60, 30, 10]}
               />
             </div>
           </div>
@@ -226,25 +212,8 @@ export function Charts() {
             </h3>
             <div class="h-32">
               <BarChart
-                data={{
-                  labels: ["CPU", "Memory", "Disk", "Network"],
-                  datasets: [
-                    {
-                      data: [65, 45, 30, 85],
-                      backgroundColor: [
-                        "rgba(153, 102, 255, 0.8)",
-                        "rgba(255, 159, 64, 0.8)",
-                        "rgba(75, 192, 192, 0.8)",
-                        "rgba(255, 99, 132, 0.8)",
-                      ],
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { display: false } },
-                  scales: { x: { display: false } },
-                }}
+                labels={["CPU", "Memory", "Disk", "Network"]}
+                datasets={[{ label: "Performance", data: [65, 45, 30, 85], backgroundColor: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)", "rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"] }]}
               />
             </div>
           </div>

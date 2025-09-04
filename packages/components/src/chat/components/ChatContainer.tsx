@@ -18,7 +18,7 @@ import {
 import { useChat } from "../composables/useChat";
 import { ChatMessage } from "./ChatMessage";
 import { MessageInput } from "./MessageInput";
-import type { ChatContainerProps } from "../types";
+import type { ChatContainerProps, ToolCall } from "../types";
 
 export const ChatContainer: Component<ChatContainerProps> = (props) => {
   const [local] = splitProps(props, [
@@ -45,14 +45,14 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   let scrollTimeout: number | undefined;
 
   // Initialize chat composable
-  const chat = useChat({
+  const chat = createMemo(() => useChat({
     endpoint: props.endpoint,
     authHeaders: props.authHeaders,
     config: props.config,
     tools: props.tools,
     initialMessages: props.initialMessages,
     autoConnect: true,
-  });
+  }));
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = (smooth = true) => {
@@ -107,8 +107,8 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   // Handle message submission
   const handleMessageSubmit = async (content: string) => {
     try {
-      await chat.actions.sendMessage(content);
-      local.onMessageSent?.(chat.messages()[chat.messages().length - 1]);
+      await chat().actions.sendMessage(content);
+      local.onMessageSent?.(chat().messages()[chat().messages().length - 1]);
     } catch (error) {
       console.error("Failed to send message:", error);
       local.onError?.(error);
@@ -144,11 +144,45 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   const getContainerClasses = () => {
     const base = "reynard-chat-container";
     const variant = `${base}--${local.variant || "default"}`;
-    const streaming = chat.isStreaming() ? `${base}--streaming` : "";
+    const streaming = chat().isStreaming() ? `${base}--streaming` : "";
     const connected =
-      chat.connectionState() === "connected" ? `${base}--connected` : "";
+      chat().connectionState() === "connected" ? `${base}--connected` : "";
 
-    return [base, variant, streaming, connected].filter(Boolean).join(" ");
+    // Height classes
+    let heightClass = "";
+    if (local.height) {
+      if (typeof local.height === "string") {
+        if (local.height === "100%" || local.height === "100vh") {
+          heightClass = local.height === "100vh" ? `${base}--height-screen` : `${base}--height-full`;
+        } else if (local.height.endsWith("px")) {
+          const heightValue = parseInt(local.height);
+          if (heightValue <= 400) heightClass = `${base}--height-400`;
+          else if (heightValue <= 500) heightClass = `${base}--height-500`;
+          else if (heightValue <= 600) heightClass = `${base}--height-600`;
+          else if (heightValue <= 700) heightClass = `${base}--height-700`;
+          else heightClass = `${base}--height-800`;
+        }
+      }
+    }
+
+    // Max-height classes
+    let maxHeightClass = "";
+    if (local.maxHeight) {
+      if (typeof local.maxHeight === "string") {
+        if (local.maxHeight === "none") {
+          maxHeightClass = `${base}--max-height-none`;
+        } else if (local.maxHeight.endsWith("px")) {
+          const maxHeightValue = parseInt(local.maxHeight);
+          if (maxHeightValue <= 400) maxHeightClass = `${base}--max-height-400`;
+          else if (maxHeightValue <= 500) maxHeightClass = `${base}--max-height-500`;
+          else if (maxHeightValue <= 600) maxHeightClass = `${base}--max-height-600`;
+          else if (maxHeightValue <= 700) maxHeightClass = `${base}--max-height-700`;
+          else maxHeightClass = `${base}--max-height-800`;
+        }
+      }
+    }
+
+    return [base, variant, streaming, connected, heightClass, maxHeightClass].filter(Boolean).join(" ");
   };
 
   // Cleanup on unmount
@@ -161,26 +195,22 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   return (
     <div
       class={`${getContainerClasses()} ${local.className || ""}`}
-      style={{
-        height: local.height,
-        "max-height": local.maxHeight,
-      }}
     >
       {/* Connection Status */}
-      <Show when={chat.connectionState() !== "connected"}>
+      <Show when={chat().connectionState() !== "connected"}>
         <div class="reynard-chat-container__status">
           <div class="reynard-chat-container__status-indicator">
-            {chat.connectionState() === "connecting" ? "🔄" : "⚠️"}
+            {chat().connectionState() === "connecting" ? "🔄" : "⚠️"}
           </div>
           <span class="reynard-chat-container__status-text">
-            {chat.connectionState() === "connecting"
+            {chat().connectionState() === "connecting"
               ? "Connecting..."
               : "Connection Error"}
           </span>
-          <Show when={chat.connectionState() === "error"}>
+          <Show when={chat().connectionState() === "error"}>
             <button
               class="reynard-chat-container__retry-button"
-              onClick={() => chat.actions.connect()}
+              onClick={() => chat().actions.connect()}
             >
               Retry
             </button>
@@ -195,7 +225,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
         onScroll={handleScroll}
       >
         <Show
-          when={chat.messages().length > 0}
+          when={chat().messages().length > 0}
           fallback={
             <div class="reynard-chat-container__empty">
               <div class="reynard-chat-container__empty-icon">💬</div>
@@ -205,7 +235,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
             </div>
           }
         >
-          <For each={chat.messages()}>
+          <For each={chat().messages()}>
             {(message, index) => {
               const MessageComponent =
                 local.messageComponents?.[message.role] || ChatMessage;
@@ -213,10 +243,10 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
               return (
                 <MessageComponent
                   message={message}
-                  isLatest={index() === chat.messages().length - 1}
+                  isLatest={index() === chat().messages().length - 1}
                   showTimestamp={local.config?.showTimestamps}
                   showTokenCount={local.config?.showTokenCounts}
-                  onToolAction={(action: any, toolCall: any) => {
+                  onToolAction={(action: string, toolCall: ToolCall) => {
                     console.log("Tool action:", action, toolCall);
                     // Handle tool actions here
                   }}
@@ -227,13 +257,13 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
         </Show>
 
         {/* Streaming Indicator */}
-        <Show when={chat.isStreaming() && !chat.currentMessage()}>
+        <Show when={chat().isStreaming() && !chat().currentMessage()}>
           <div class="reynard-chat-container__streaming-placeholder">
             <div class="reynard-chat-container__typing-indicator">
               <div class="reynard-chat-container__typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span />
+                <span />
+                <span />
               </div>
               <span class="reynard-chat-container__typing-text">
                 Assistant is typing...
@@ -264,8 +294,8 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       <div class="reynard-chat-container__input">
         <MessageInput
           placeholder="Type your message..."
-          disabled={chat.connectionState() !== "connected"}
-          isStreaming={chat.isStreaming()}
+          disabled={chat().connectionState() !== "connected"}
+          isStreaming={chat().isStreaming()}
           multiline={true}
           autoResize={true}
           showCounter={false}
@@ -278,22 +308,22 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       {/* Footer */}
       <div class="reynard-chat-container__footer">
         <div class="reynard-chat-container__footer-info">
-          <Show when={chat.messages().length > 0}>
+          <Show when={chat().messages().length > 0}>
             <span class="reynard-chat-container__message-count">
-              {chat.messages().length} messages
+              {chat().messages().length} messages
             </span>
           </Show>
 
-          <Show when={chat.error()}>
+          <Show when={chat().error()}>
             <div class="reynard-chat-container__error">
               <span class="reynard-chat-container__error-icon">⚠️</span>
               <span class="reynard-chat-container__error-text">
-                {chat.error()!.message}
+                {chat().error()!.message}
               </span>
-              <Show when={chat.error()!.recoverable}>
+              <Show when={chat().error()!.recoverable}>
                 <button
                   class="reynard-chat-container__error-retry"
-                  onClick={() => chat.actions.retryLastMessage()}
+                  onClick={() => chat().actions.retryLastMessage()}
                 >
                   Retry
                 </button>
@@ -307,7 +337,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
             class="reynard-chat-container__clear-button"
             onClick={() => {
               if (confirm("Clear conversation?")) {
-                chat.actions.clearConversation();
+                chat().actions.clearConversation();
               }
             }}
             title="Clear conversation"
@@ -318,7 +348,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
           <button
             class="reynard-chat-container__export-button"
             onClick={() => {
-              const data = chat.actions.exportConversation("json");
+              const data = chat().actions.exportConversation("json");
               const blob = new Blob([data], { type: "application/json" });
               const url = URL.createObjectURL(blob);
               const a = document.createElement("a");

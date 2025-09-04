@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { useI18n, useTheme, useNotifications } from "@reynard/core";
+import { useI18n, useNotifications } from "@reynard/core";
 import { useAuth } from "@reynard/auth";
 import { Button } from "@reynard/components";
 import ThemeSelector from "./ThemeSelector";
@@ -13,24 +13,24 @@ interface HeaderProps {
 
 const Header: Component<HeaderProps> = (props) => {
   const { t } = useI18n();
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
   const { user, logout } = useAuth();
   const notifications = useNotifications();
 
   const handleLogout = async () => {
     try {
       await logout();
-      notifications.add({
-        type: "success",
-        message: "Logged out successfully",
-        duration: 3000,
-      });
+      notifications.notify(
+        "Logged out successfully",
+        "success",
+        { duration: 3000 }
+      );
     } catch (error) {
-      notifications.add({
-        type: "error",
-        message: "Failed to logout",
-        duration: 5000,
-      });
+      notifications.notify(
+        "Failed to logout",
+        "error",
+        { duration: 5000 }
+      );
     }
   };
 

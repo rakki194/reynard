@@ -541,7 +541,6 @@ export function getMimeType(extension: string): string {
     ".m4v": "video/x-m4v",
     ".mpg": "video/mpeg",
     ".mpeg": "video/mpeg",
-    ".ts": "video/mp2t",
 
     // Audio
     ".mp3": "audio/mpeg",

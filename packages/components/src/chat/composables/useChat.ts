@@ -8,14 +8,12 @@
 
 import {
   createSignal,
-  createEffect,
   createResource,
   batch,
   onCleanup,
   createMemo,
   onMount,
 } from "solid-js";
-import type { Accessor, Resource } from "solid-js";
 import {
   StreamingMarkdownParser,
   createStreamingMarkdownParser,
@@ -29,7 +27,6 @@ import type {
   UseChatReturn,
   Tool,
   ToolCall,
-  ParseResult,
 } from "../types";
 
 export interface UseChatOptions {
@@ -91,9 +88,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   >();
   const [isStreaming, setIsStreaming] = createSignal(false);
   const [isThinking, setIsThinking] = createSignal(false);
-  const [availableModels, setAvailableModels] = createSignal<string[]>([]);
-  const [selectedModel, setSelectedModel] = createSignal<string>();
-  const [availableTools, setAvailableTools] = createSignal<Tool[]>(tools);
+  const [availableModels] = createSignal<string[]>([]);
+  const [selectedModel] = createSignal<string>();
+  const [availableTools] = createSignal<Tool[]>(tools);
   const [connectionState, setConnectionState] =
     createSignal<ChatState["connectionState"]>("disconnected");
   const [error, setError] = createSignal<ChatState["error"]>();

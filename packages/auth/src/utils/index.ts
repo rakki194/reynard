@@ -4,11 +4,11 @@
  */
 
 import { jwtDecode } from "jwt-decode";
-import type {
-  DecodedToken,
-  PasswordStrength,
-  ValidationRules,
-  UserRole,
+import type { 
+  DecodedToken, 
+  PasswordStrength, 
+  ValidationRules, 
+  UserRole
 } from "../types";
 import { DEFAULT_VALIDATION_RULES } from "../types";
 
@@ -26,10 +26,7 @@ export class TokenManager {
     this.refreshTokenKey = refreshTokenKey;
   }
 
-  static getInstance(
-    tokenKey?: string,
-    refreshTokenKey?: string,
-  ): TokenManager {
+  static getInstance(tokenKey?: string, refreshTokenKey?: string): TokenManager {
     if (!TokenManager.instance) {
       TokenManager.instance = new TokenManager(tokenKey, refreshTokenKey);
     }
@@ -41,7 +38,7 @@ export class TokenManager {
    */
   setTokens(accessToken: string, refreshToken?: string): void {
     if (typeof localStorage === "undefined") return;
-
+    
     localStorage.setItem(this.tokenKey, accessToken);
     if (refreshToken) {
       localStorage.setItem(this.refreshTokenKey, refreshToken);
@@ -69,7 +66,7 @@ export class TokenManager {
    */
   clearTokens(): void {
     if (typeof localStorage === "undefined") return;
-
+    
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.refreshTokenKey);
   }
@@ -108,22 +105,22 @@ export class TokenManager {
   validateToken(token: string): { isValid: boolean; error?: string } {
     try {
       const decoded = jwtDecode<DecodedToken>(token);
-
+      
       // Check if token is blacklisted
       if (this.isTokenBlacklisted(token)) {
         return { isValid: false, error: "Token has been revoked" };
       }
-
+      
       // Check expiration
       if (decoded.exp && decoded.exp * 1000 < Date.now()) {
         return { isValid: false, error: "Token has expired" };
       }
-
+      
       // Check required fields
       if (!decoded.sub || !decoded.role) {
         return { isValid: false, error: "Token missing required fields" };
       }
-
+      
       return { isValid: true };
     } catch {
       return { isValid: false, error: "Invalid token format" };
@@ -151,11 +148,11 @@ export class TokenManager {
   isTokenExpiringSoon(token: string, minutes: number = 5): boolean {
     const expiration = this.getTokenExpiration(token);
     if (!expiration) return true;
-
+    
     const now = new Date();
     const timeUntilExpiry = expiration.getTime() - now.getTime();
     const minutesUntilExpiry = timeUntilExpiry / (1000 * 60);
-
+    
     return minutesUntilExpiry <= minutes;
   }
 
@@ -226,14 +223,12 @@ export function isTokenExpired(token: string): boolean {
 /**
  * Get user information from token
  */
-export function getUserFromToken(
-  token: string,
-): { username?: string; role?: string } | null {
+export function getUserFromToken(token: string): { username?: string; role?: string } | null {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return {
       username: decoded.sub,
-      role: decoded.role,
+      role: decoded.role
     };
   } catch {
     return null;
@@ -243,10 +238,7 @@ export function getUserFromToken(
 /**
  * Check if token has required role
  */
-export function hasRequiredRole(
-  token: string,
-  requiredRole: UserRole,
-): boolean {
+export function hasRequiredRole(token: string, requiredRole: UserRole): boolean {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return decoded.role === requiredRole;
@@ -258,10 +250,7 @@ export function hasRequiredRole(
 /**
  * Check if token has any of the required roles
  */
-export function hasAnyRequiredRole(
-  token: string,
-  requiredRoles: UserRole[],
-): boolean {
+export function hasAnyRequiredRole(token: string, requiredRoles: UserRole[]): boolean {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return requiredRoles.includes(decoded.role as UserRole);
@@ -273,10 +262,7 @@ export function hasAnyRequiredRole(
 /**
  * Validate password strength
  */
-export function validatePassword(
-  password: string,
-  rules: ValidationRules = DEFAULT_VALIDATION_RULES,
-): PasswordStrength {
+export function validatePassword(password: string, rules: ValidationRules = DEFAULT_VALIDATION_RULES): PasswordStrength {
   const errors: string[] = [];
   let score = 0;
 
@@ -290,35 +276,28 @@ export function validatePassword(
   // Uppercase check
   if (rules.requireUppercase && !/[A-Z]/.test(password)) {
     errors.push("Password must contain at least one uppercase letter");
-  }
-  if (/[A-Z]/.test(password)) {
+  } else if (/[A-Z]/.test(password)) {
     score += 1;
   }
 
   // Lowercase check
   if (rules.requireLowercase && !/[a-z]/.test(password)) {
     errors.push("Password must contain at least one lowercase letter");
-  }
-  if (/[a-z]/.test(password)) {
+  } else if (/[a-z]/.test(password)) {
     score += 1;
   }
 
   // Number check
   if (rules.requireNumber && !/\d/.test(password)) {
     errors.push("Password must contain at least one number");
-  }
-  if (/\d/.test(password)) {
+  } else if (/\d/.test(password)) {
     score += 1;
   }
 
   // Special character check
-  if (
-    rules.requireSpecialChar &&
-    !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
-  ) {
+  if (rules.requireSpecialChar && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
-  }
-  if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+  } else if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     score += 1;
   }
 
@@ -333,7 +312,7 @@ export function validatePassword(
     isValid: errors.length === 0,
     score,
     feedback: strength,
-    suggestions: errors,
+    suggestions: errors
   };
 }
 
@@ -343,26 +322,26 @@ export function validatePassword(
 export async function retryWithBackoff<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  baseDelay: number = 1000,
+  baseDelay: number = 1000
 ): Promise<T> {
   let lastError: Error;
-
+  
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
       lastError = error as Error;
-
+      
       if (attempt === maxRetries) {
         throw lastError;
       }
-
+      
       // Exponential backoff with jitter
       const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 1000;
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
-
+  
   throw lastError!;
 }
 
@@ -372,22 +351,94 @@ export async function retryWithBackoff<T>(
 export function sanitizeInput(input: string): string {
   return input
     .trim()
-    .replace(/[<>]/g, "") // Remove potential HTML tags
-    .replace(/javascript:/gi, "") // Remove javascript: protocol
-    .replace(/on\w+=/gi, ""); // Remove event handlers
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .replace(/javascript:/gi, '') // Remove javascript: protocol
+    .replace(/on\w+=/gi, ''); // Remove event handlers
 }
 
 /**
  * Generate secure random string
  */
 export function generateSecureString(length: number = 32): string {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
+}
+
+/**
+ * Validate email address format
+ */
+export function validateEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Validate username format
+ */
+export function validateUsername(username: string): boolean {
+  const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+  return usernameRegex.test(username);
+}
+
+/**
+ * Calculate basic password strength
+ */
+export function calculatePasswordStrength(password: string): PasswordStrength {
+  const errors: string[] = [];
+  let score = 0;
+
+  // Length check
+  if (password.length < 8) {
+    errors.push("Password must be at least 8 characters long");
+  } else if (password.length >= 8) {
+    score += 1;
+  }
+
+  // Uppercase check
+  if (!/[A-Z]/.test(password)) {
+    errors.push("Password must contain at least one uppercase letter");
+  } else if (/[A-Z]/.test(password)) {
+    score += 1;
+  }
+
+  // Lowercase check
+  if (!/[a-z]/.test(password)) {
+    errors.push("Password must contain at least one lowercase letter");
+  } else if (/[a-z]/.test(password)) {
+    score += 1;
+  }
+
+  // Number check
+  if (!/\d/.test(password)) {
+    errors.push("Password must contain at least one number");
+  } else if (/\d/.test(password)) {
+    score += 1;
+  }
+
+  // Special character check
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+    errors.push("Password must contain at least one special character");
+  } else if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+    score += 1;
+  }
+
+  // Determine strength level
+  let strength: "weak" | "medium" | "strong" | "very-strong";
+  if (score <= 2) strength = "weak";
+  else if (score <= 3) strength = "medium";
+  else if (score <= 4) strength = "strong";
+  else strength = "very-strong";
+
+  return {
+    isValid: errors.length === 0,
+    score,
+    feedback: strength,
+    suggestions: errors
+  };
 }
 
 /**
@@ -406,19 +457,19 @@ export class RateLimiter {
   isAllowed(identifier: string): boolean {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-
+    
     if (!this.requests.has(identifier)) {
       this.requests.set(identifier, [now]);
       return true;
     }
-
+    
     const requests = this.requests.get(identifier)!;
-    const recentRequests = requests.filter((time) => time > windowStart);
-
+    const recentRequests = requests.filter(time => time > windowStart);
+    
     if (recentRequests.length >= this.maxRequests) {
       return false;
     }
-
+    
     recentRequests.push(now);
     this.requests.set(identifier, recentRequests);
     return true;
@@ -427,9 +478,9 @@ export class RateLimiter {
   cleanup(): void {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-
+    
     for (const [identifier, requests] of this.requests.entries()) {
-      const recentRequests = requests.filter((time) => time > windowStart);
+      const recentRequests = requests.filter(time => time > windowStart);
       if (recentRequests.length === 0) {
         this.requests.delete(identifier);
       } else {

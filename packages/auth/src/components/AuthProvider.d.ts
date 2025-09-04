@@ -25,7 +25,20 @@ export interface AuthContextValue {
   changePassword: (data: PasswordChangeData) => Promise<void>;
   updateProfile: (profileData: Partial<User>) => Promise<void>;
   initialize: () => Promise<void>;
-  authFetch: (url: string, options?: RequestInit) => Promise<Response>;
+  authFetch: (url: string, options?: {
+    method?: string;
+    headers?: Record<string, string> | Headers;
+    body?: string | FormData | URLSearchParams | ReadableStream | null;
+    credentials?: 'omit' | 'same-origin' | 'include';
+    mode?: 'cors' | 'no-cors' | 'same-origin';
+    cache?: 'default' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached';
+    redirect?: 'follow' | 'error' | 'manual';
+    referrer?: string;
+    referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url';
+    integrity?: string;
+    keepalive?: boolean;
+    signal?: AbortSignal | null;
+  }) => Promise<Response>;
 }
 export interface AuthProviderProps extends UseAuthOptions {
   /** Children components */
@@ -45,7 +58,7 @@ export declare function useAuthContext(): AuthContextValue;
 /**
  * Higher-order component to require authentication
  */
-export declare function withAuth<T extends Record<string, any>>(
+export declare function withAuth<T extends Record<string, unknown>>(
   WrappedComponent: Component<T>,
   options?: {
     fallback?: Component;

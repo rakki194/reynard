@@ -29,7 +29,7 @@ npm run serve
 
 ## 📁 Project Structure
 
-```
+```plaintext
 src/
 ├── components/          # Reusable UI components
 │   ├── Counter.tsx     # Reactive state demo

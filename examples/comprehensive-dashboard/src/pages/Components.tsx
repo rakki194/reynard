@@ -1,6 +1,5 @@
 import { createSignal, For, Show } from "solid-js";
 import {
-  AppLayout,
   Grid,
   DataTable,
   Drawer,
@@ -17,9 +16,21 @@ import {
 } from "@reynard/components";
 import { useI18n, useNotifications } from "@reynard/core";
 
+// Define proper types for the table data
+interface TableRow {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}
+
+// Use the Column interface from @reynard/ui
+import type { Column } from "@reynard/ui";
+
 export function Components() {
   const { t } = useI18n();
-  const { addNotification } = useNotifications();
+  const { notify } = useNotifications();
 
   // State for component demos
   const [isModalOpen, setIsModalOpen] = createSignal(false);
@@ -29,7 +40,7 @@ export function Components() {
   const [selectValue, setSelectValue] = createSignal("option1");
 
   // Sample data for table
-  const tableData = [
+  const tableData: TableRow[] = [
     {
       id: 1,
       name: "John Doe",
@@ -60,15 +71,16 @@ export function Components() {
     },
   ];
 
-  const tableColumns = [
-    { key: "name", header: t("components.table.name"), sortable: true },
-    { key: "email", header: t("components.table.email"), sortable: true },
-    { key: "role", header: t("components.table.role"), sortable: false },
+  const tableColumns: Column<unknown>[] = [
+    { id: "name", header: t("components.table.name"), accessor: (row: unknown) => (row as TableRow).name, sortable: true },
+    { id: "email", header: t("components.table.email"), accessor: (row: unknown) => (row as TableRow).email, sortable: true },
+    { id: "role", header: t("components.table.role"), accessor: (row: unknown) => (row as TableRow).role, sortable: false },
     {
-      key: "status",
+      id: "status",
       header: t("components.table.status"),
+      accessor: (row: unknown) => (row as TableRow).status,
       sortable: true,
-      render: (value: string) => (
+      cell: (value: unknown) => (
         <span
           class={`px-2 py-1 rounded-full text-xs ${
             value === "Active"
@@ -76,38 +88,42 @@ export function Components() {
               : "bg-red-100 text-red-800"
           }`}
         >
-          {value}
+          {value as string}
         </span>
       ),
     },
   ];
 
   const breadcrumbItems = [
-    { label: t("components.breadcrumb.home"), href: "/" },
-    { label: t("components.breadcrumb.components"), href: "/components" },
-    { label: t("components.breadcrumb.showcase") },
+    { id: "home", label: t("components.breadcrumb.home"), href: "/" },
+    { id: "components", label: t("components.breadcrumb.components"), href: "/components" },
+    { id: "showcase", label: t("components.breadcrumb.showcase") },
   ];
 
   const navMenuItems = [
     {
+      id: "dashboard",
       label: t("components.nav.dashboard"),
       href: "/dashboard",
       icon: "📊",
       active: false,
     },
     {
+      id: "users",
       label: t("components.nav.users"),
       href: "/users",
       icon: "👥",
       active: false,
     },
     {
+      id: "settings",
       label: t("components.nav.settings"),
       href: "/settings",
       icon: "⚙️",
       active: false,
     },
     {
+      id: "components",
       label: t("components.nav.components"),
       href: "/components",
       icon: "🧩",
@@ -149,12 +165,9 @@ export function Components() {
                     <Button
                       variant="primary"
                       onClick={() =>
-                        addNotification({
-                          type: "success",
-                          message: t("components.primitives.buttons.clicked", {
-                            variant: "Primary",
-                          }),
-                        })
+                        notify(t("components.primitives.buttons.clicked", {
+                          variant: "Primary",
+                        }), "success")
                       }
                     >
                       {t("components.primitives.buttons.primary")}
@@ -162,12 +175,9 @@ export function Components() {
                     <Button
                       variant="secondary"
                       onClick={() =>
-                        addNotification({
-                          type: "info",
-                          message: t("components.primitives.buttons.clicked", {
-                            variant: "Secondary",
-                          }),
-                        })
+                        notify(t("components.primitives.buttons.clicked", {
+                          variant: "Secondary",
+                        }), "info")
                       }
                     >
                       {t("components.primitives.buttons.secondary")}
@@ -175,12 +185,9 @@ export function Components() {
                     <Button
                       variant="tertiary"
                       onClick={() =>
-                        addNotification({
-                          type: "info",
-                          message: t("components.primitives.buttons.clicked", {
-                            variant: "Tertiary",
-                          }),
-                        })
+                        notify(t("components.primitives.buttons.clicked", {
+                          variant: "Tertiary",
+                        }), "info")
                       }
                     >
                       {t("components.primitives.buttons.tertiary")}
@@ -188,12 +195,9 @@ export function Components() {
                     <Button
                       variant="ghost"
                       onClick={() =>
-                        addNotification({
-                          type: "info",
-                          message: t("components.primitives.buttons.clicked", {
-                            variant: "Ghost",
-                          }),
-                        })
+                        notify(t("components.primitives.buttons.clicked", {
+                          variant: "Ghost",
+                        }), "info")
                       }
                     >
                       {t("components.primitives.buttons.ghost")}
@@ -201,12 +205,9 @@ export function Components() {
                     <Button
                       variant="danger"
                       onClick={() =>
-                        addNotification({
-                          type: "warning",
-                          message: t("components.primitives.buttons.clicked", {
-                            variant: "Danger",
-                          }),
-                        })
+                        notify(t("components.primitives.buttons.clicked", {
+                          variant: "Danger",
+                        }), "warning")
                       }
                     >
                       {t("components.primitives.buttons.danger")}
@@ -380,16 +381,10 @@ export function Components() {
                   <DataTable
                     data={tableData}
                     columns={tableColumns}
-                    sortable={true}
-                    searchable={true}
-                    pagination={{ pageSize: 10, showSizeChanger: true }}
-                    onRowClick={(row) =>
-                      addNotification({
-                        type: "info",
-                        message: t("components.data.table.rowClicked", {
-                          name: row.name,
-                        }),
-                      })
+                    onRowClick={(row: unknown) =>
+                      notify(t("components.data.table.rowClicked", {
+                        name: (row as TableRow).name,
+                      }), "info")
                     }
                   />
                 </div>
@@ -406,12 +401,9 @@ export function Components() {
                     <NavMenu
                       items={navMenuItems}
                       onItemClick={(item) =>
-                        addNotification({
-                          type: "info",
-                          message: t("components.navigation.menu.clicked", {
-                            label: item.label,
-                          }),
-                        })
+                        notify(t("components.navigation.menu.clicked", {
+                          label: item.label,
+                        }), "info")
                       }
                     />
                   </div>
@@ -424,12 +416,9 @@ export function Components() {
                   <Breadcrumb
                     items={breadcrumbItems}
                     onItemClick={(item) =>
-                      addNotification({
-                        type: "info",
-                        message: t("components.navigation.breadcrumb.clicked", {
-                          label: item.label,
-                        }),
-                      })
+                      notify(t("components.navigation.breadcrumb.clicked", {
+                        label: item.label,
+                      }), "info")
                     }
                   />
                 </div>
@@ -441,7 +430,7 @@ export function Components() {
 
       {/* Modal */}
       <Modal
-        isOpen={isModalOpen()}
+        open={isModalOpen()}
         onClose={() => setIsModalOpen(false)}
         title={t("components.modal.title")}
       >
@@ -455,10 +444,7 @@ export function Components() {
               variant="primary"
               onClick={() => {
                 setIsModalOpen(false);
-                addNotification({
-                  type: "success",
-                  message: t("components.modal.confirmed"),
-                });
+                notify(t("components.modal.confirmed"), "success");
               }}
             >
               {t("components.modal.confirm")}
@@ -469,7 +455,7 @@ export function Components() {
 
       {/* Drawer */}
       <Drawer
-        isOpen={isDrawerOpen()}
+        open={isDrawerOpen()}
         onClose={() => setIsDrawerOpen(false)}
         title={t("components.drawer.title")}
         position="right"
@@ -477,16 +463,13 @@ export function Components() {
         <div class="space-y-4">
           <p>{t("components.drawer.content")}</p>
           <div class="space-y-3">
-            <For each={["info", "warning", "success", "error"]}>
+            <For each={["info", "warning", "success", "error"] as const}>
               {(type) => (
                 <Button
                   variant="secondary"
                   class="w-full"
                   onClick={() => {
-                    addNotification({
-                      type: type as any,
-                      message: t("components.drawer.notification", { type }),
-                    });
+                    notify(t("components.drawer.notification", { type }), type);
                   }}
                 >
                   {t("components.drawer.show")} {type}

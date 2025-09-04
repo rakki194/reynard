@@ -71,11 +71,11 @@ const Dashboard: Component = () => {
 
   const refreshData = () => {
     setData(generateMockData());
-    notifications.add({
-      type: "success",
-      message: "Dashboard data refreshed",
-      duration: 3000,
-    });
+    notifications.notify(
+      "Dashboard data refreshed",
+      "success",
+      { duration: 3000 }
+    );
   };
 
   const recentActivities = [
@@ -144,12 +144,9 @@ const Dashboard: Component = () => {
           <Card class="dashboard__chart-card">
             <h3>{t("analytics.visitors")}</h3>
             <LineChart
-              data={data().visitors}
+              labels={data().visitors.labels}
+              datasets={data().visitors.datasets}
               height={300}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-              }}
             />
           </Card>
         </GridItem>
@@ -157,12 +154,9 @@ const Dashboard: Component = () => {
           <Card class="dashboard__chart-card">
             <h3>{t("analytics.revenue")}</h3>
             <BarChart
-              data={data().revenue}
+              labels={data().revenue.labels}
+              datasets={data().revenue.datasets}
               height={300}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-              }}
             />
           </Card>
         </GridItem>
@@ -170,7 +164,7 @@ const Dashboard: Component = () => {
 
       {/* Bottom Section */}
       <Grid columns={3} gap="lg" class="dashboard__bottom">
-        <GridItem span={2}>
+        <GridItem>
           <Card class="dashboard__activity-card">
             <h3>{t("dashboard.recentActivity")}</h3>
             <div class="dashboard__activity-list">
@@ -196,17 +190,9 @@ const Dashboard: Component = () => {
           <Card class="dashboard__chart-card">
             <h3>User Distribution</h3>
             <PieChart
-              data={data().userTypes}
+              data={data().userTypes.datasets[0].data}
+              labels={data().userTypes.labels}
               height={250}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: "bottom",
-                  },
-                },
-              }}
             />
           </Card>
         </GridItem>

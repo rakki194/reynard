@@ -197,100 +197,70 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
   };
 
   // Computed values
-  const menuStyle = () => ({
-    left: `${local.x}px`,
-    top: `${local.y}px`,
-  });
+  const setMenuPosition = () => {
+    if (menuRef) {
+      menuRef.style.setProperty('--context-menu-x', `${local.x}px`);
+      menuRef.style.setProperty('--context-menu-y', `${local.y}px`);
+    }
+  };
 
-  const submenuStyle = () => {
-    if (state().submenuOpen === null) return {};
-
-    const itemElement = menuRef?.querySelector(
-      `[data-index="${state().submenuOpen}"]`,
-    );
-    if (!itemElement) return {};
-
-    const rect = itemElement.getBoundingClientRect();
-    return {
-      left: `${rect.right + 4}px`,
-      top: `${rect.top}px`,
-    };
+  const setSubmenuPosition = () => {
+    if (submenuRef && state().submenuOpen !== null) {
+      const itemElement = menuRef?.querySelector(
+        `[data-index="${state().submenuOpen}"]`,
+      );
+      if (itemElement) {
+        const rect = itemElement.getBoundingClientRect();
+        submenuRef.style.setProperty('--context-menu-submenu-x', `${rect.right + 4}px`);
+        submenuRef.style.setProperty('--context-menu-submenu-y', `${rect.top}px`);
+      }
+    }
   };
 
   const hasSubmenu = (item: ContextMenuItem) =>
     item.submenu && item.submenu.length > 0;
 
-  // Don't render if not visible
-  if (!local.visible) return null;
+  // Set positions when component updates
+  createEffect(() => {
+    if (local.visible) {
+      setMenuPosition();
+    }
+  });
+
+  createEffect(() => {
+    if (state().submenuOpen !== null) {
+      setSubmenuPosition();
+    }
+  });
 
   return (
-    <>
-      {/* Backdrop */}
-      <div class="reynard-context-menu__backdrop" onClick={local.onClose} />
+    <Show when={local.visible}>
+      <>
+        {/* Backdrop */}
+        <div class="reynard-context-menu__backdrop" onClick={() => local.onClose()} />
 
-      {/* Main Menu */}
-      <div
-        ref={menuRef}
-        class={`reynard-context-menu ${local.class || ""}`}
-        style={menuStyle()}
-        role="menu"
-        tabindex={-1}
-      >
-        <For each={local.items}>
-          {(item, index) => (
-            <>
-              <div
-                class={`reynard-context-menu__item ${
-                  state().selectedIndex === index()
-                    ? "reynard-context-menu__item--selected"
-                    : ""
-                } ${item.disabled ? "reynard-context-menu__item--disabled" : ""}`}
-                data-index={index()}
-                role="menuitem"
-                onClick={() => handleItemClick(item)}
-                onMouseEnter={() => handleItemMouseEnter(index())}
-                onMouseLeave={handleItemMouseLeave}
-                data-testid={`context-menu-item-${item.id}`}
-              >
-                <Show when={local.showIcons && item.icon}>
-                  <span class="reynard-context-menu__item-icon">
-                    {item.icon}
-                  </span>
-                </Show>
-                <span class="reynard-context-menu__item-label">
-                  {item.label}
-                </span>
-                <Show when={hasSubmenu(item)}>
-                  <span class="reynard-context-menu__item-arrow">▶</span>
-                </Show>
-              </div>
-
-              <Show when={item.separator}>
-                <div class="reynard-context-menu__separator" />
-              </Show>
-            </>
-          )}
-        </For>
-      </div>
-
-      {/* Submenu */}
-      <Show when={state().submenuOpen !== null}>
+        {/* Main Menu */}
         <div
-          ref={submenuRef}
-          class="reynard-context-menu reynard-context-menu--submenu"
-          style={submenuStyle()}
+          ref={menuRef}
+          class={`reynard-context-menu ${local.class || ""}`}
           role="menu"
+          tabindex={-1}
         >
-          <For each={local.items[state().submenuOpen!]?.submenu || []}>
-            {(item) => (
+          <For each={local.items}>
+            {(item, index) => (
               <>
                 <div
                   class={`reynard-context-menu__item ${
-                    item.disabled ? "reynard-context-menu__item--disabled" : ""
-                  }`}
+                    state().selectedIndex === index()
+                      ? "reynard-context-menu__item--selected"
+                      : ""
+                  } ${item.disabled ? "reynard-context-menu__item--disabled" : ""}`}
+                  data-index={index()}
                   role="menuitem"
                   onClick={() => handleItemClick(item)}
-                  data-testid={`context-menu-submenu-item-${item.id}`}
+                  onMouseEnter={() => handleItemMouseEnter(index())}
+                  onMouseLeave={handleItemMouseLeave}
+                  data-testid={`context-menu-item-${item.id}`}
                 >
                   <Show when={local.showIcons && item.icon}>
                     <span class="reynard-context-menu__item-icon">
@@ -300,6 +270,9 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
                   <span class="reynard-context-menu__item-label">
                     {item.label}
                   </span>
+                  <Show when={hasSubmenu(item)}>
+                    <span class="reynard-context-menu__item-arrow">▶</span>
+                  </Show>
                 </div>
 
                 <Show when={item.separator}>
@@ -309,7 +282,44 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
             )}
           </For>
         </div>
-      </Show>
-    </>
+
+        {/* Submenu */}
+        <Show when={state().submenuOpen !== null}>
+          <div
+            ref={submenuRef}
+            class="reynard-context-menu reynard-context-menu--submenu"
+            role="menu"
+          >
+            <For each={local.items[state().submenuOpen!]?.submenu || []}>
+              {(item) => (
+                <>
+                  <div
+                    class={`reynard-context-menu__item ${
+                      item.disabled ? "reynard-context-menu__item--disabled" : ""
+                    }`}
+                    role="menuitem"
+                    onClick={() => handleItemClick(item)}
+                    data-testid={`context-menu-submenu-item-${item.id}`}
+                  >
+                    <Show when={local.showIcons && item.icon}>
+                      <span class="reynard-context-menu__item-icon">
+                        {item.icon}
+                      </span>
+                    </Show>
+                    <span class="reynard-context-menu__item-label">
+                      {item.label}
+                    </span>
+                  </div>
+
+                  <Show when={item.separator}>
+                    <div class="reynard-context-menu__separator" />
+                  </Show>
+                </>
+              )}
+            </For>
+          </div>
+        </Show>
+      </>
+    </Show>
   );
 };

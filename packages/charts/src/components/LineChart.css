@@ -1,0 +1,79 @@
+/**
+ * LineChart Component Styles
+ */
+
+.reynard-line-chart {
+  position: relative;
+  --chart-width: 400px;
+  --chart-height: 300px;
+}
+
+.reynard-line-chart.responsive {
+  width: 100%;
+  height: 100%;
+}
+
+.reynard-line-chart.fixed-size {
+  width: var(--chart-width);
+  height: var(--chart-height);
+}
+
+.reynard-chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Size-specific classes for common dimensions */
+.reynard-line-chart.size-small {
+  --chart-width: 300px;
+  --chart-height: 200px;
+}
+
+.reynard-line-chart.size-medium {
+  --chart-width: 400px;
+  --chart-height: 300px;
+}
+
+.reynard-line-chart.size-large {
+  --chart-width: 600px;
+  --chart-height: 400px;
+}
+
+.reynard-line-chart.size-xl {
+  --chart-width: 800px;
+  --chart-height: 500px;
+}
+
+.reynard-chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+}
+
+.reynard-chart-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color, #ddd);
+  border-top: 2px solid var(--primary-color, #007bff);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+.reynard-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+  font-style: italic;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

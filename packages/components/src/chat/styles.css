@@ -110,6 +110,66 @@
 }
 
 /* ==========================================================================
+   Height Utility Classes
+   ========================================================================== */
+
+.reynard-chat-container--height-auto {
+  height: auto;
+}
+
+.reynard-chat-container--height-full {
+  height: 100%;
+}
+
+.reynard-chat-container--height-screen {
+  height: 100vh;
+}
+
+.reynard-chat-container--height-400 {
+  height: 400px;
+}
+
+.reynard-chat-container--height-500 {
+  height: 500px;
+}
+
+.reynard-chat-container--height-600 {
+  height: 600px;
+}
+
+.reynard-chat-container--height-700 {
+  height: 700px;
+}
+
+.reynard-chat-container--height-800 {
+  height: 800px;
+}
+
+.reynard-chat-container--max-height-none {
+  max-height: none;
+}
+
+.reynard-chat-container--max-height-400 {
+  max-height: 400px;
+}
+
+.reynard-chat-container--max-height-500 {
+  max-height: 500px;
+}
+
+.reynard-chat-container--max-height-600 {
+  max-height: 600px;
+}
+
+.reynard-chat-container--max-height-700 {
+  max-height: 700px;
+}
+
+.reynard-chat-container--max-height-800 {
+  max-height: 800px;
+}
+
+/* ==========================================================================
    Connection Status
    ========================================================================== */
 

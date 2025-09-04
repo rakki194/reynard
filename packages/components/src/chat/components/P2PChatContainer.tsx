@@ -11,12 +11,10 @@ import {
   For,
   createEffect,
   createSignal,
-  onMount,
   onCleanup,
   createMemo,
 } from "solid-js";
 import { useP2PChat } from "../composables/useP2PChat";
-import { ChatMessage } from "./ChatMessage";
 import { MessageInput } from "./MessageInput";
 import { RoomList } from "./RoomList";
 import { UserList } from "./UserList";
@@ -266,7 +264,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
               onScroll={handleScroll}
             >
               <For each={p2pChat.messages()}>
-                {(message, index) => (
+                {(message) => (
                   <P2PMessage
                     message={message}
                     currentUser={props.currentUser}

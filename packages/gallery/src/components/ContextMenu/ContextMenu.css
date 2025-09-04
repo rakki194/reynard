@@ -20,11 +20,15 @@
   z-index: 9999;
   overflow: hidden;
   animation: contextMenuSlideIn 0.15s ease-out;
+  left: var(--context-menu-x, 0px);
+  top: var(--context-menu-y, 0px);
 }
 
 .reynard-context-menu--submenu {
   margin-left: 4px;
   animation: contextMenuSlideInRight 0.15s ease-out;
+  left: var(--context-menu-submenu-x, 0px);
+  top: var(--context-menu-submenu-y, 0px);
 }
 
 .reynard-context-menu__item {
@@ -34,8 +38,8 @@
   padding: 10px 16px;
   cursor: pointer;
   transition: all 0.15s ease;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 
 .reynard-context-menu__item:hover:not(.reynard-context-menu__item--disabled) {

@@ -3,21 +3,23 @@ import { useTheme } from "@reynard/core";
 import { Select } from "@reynard/components";
 
 const ThemeSelector: Component = () => {
-  const { theme, setTheme, availableThemes } = useTheme();
 
-  const themeOptions = availableThemes().map((t) => ({
-    value: t.name,
-    label: `${t.emoji} ${t.displayName}`,
+  const { theme, setTheme, themes, themeIconMap } = useTheme();
+
+  const themeOptions = themes.map((t) => ({
+    value: t,
+    label: `${themeIconMap[t] ? themeIconMap[t] : ''} ${t}`,
   }));
 
-  const handleThemeChange = (themeName: string) => {
-    setTheme(themeName);
+
+  const handleThemeChange = (e: Event & { target: HTMLSelectElement }) => {
+    setTheme(e.target.value as any);
   };
 
   return (
     <div class="theme-selector">
       <Select
-        value={theme().name}
+        value={theme()}
         onChange={handleThemeChange}
         options={themeOptions}
         variant="outlined"

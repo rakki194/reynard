@@ -290,6 +290,27 @@
   grid-row-end: var(--row-end, auto);
 }
 
+/* Responsive column span classes */
+.reynard-grid-item--span-responsive-xs {
+  grid-column: span var(--col-span-xs, 1);
+}
+
+.reynard-grid-item--span-responsive-sm {
+  grid-column: span var(--col-span-sm, 1);
+}
+
+.reynard-grid-item--span-responsive-md {
+  grid-column: span var(--col-span-md, 1);
+}
+
+.reynard-grid-item--span-responsive-lg {
+  grid-column: span var(--col-span-lg, 1);
+}
+
+.reynard-grid-item--span-responsive-xl {
+  grid-column: span var(--col-span-xl, 1);
+}
+
 /* Grid item span classes */
 .reynard-grid-item--span-1 {
   grid-column: span 1;
@@ -320,6 +341,226 @@
 }
 
 /* Responsive grid columns */
+.reynard-grid--cols-responsive-xs {
+  --grid-columns-xs: 1;
+  grid-template-columns: repeat(var(--grid-columns-xs, 1), 1fr);
+}
+
+.reynard-grid--cols-responsive-sm {
+  --grid-columns-sm: 1;
+  grid-template-columns: repeat(var(--grid-columns-sm, 1), 1fr);
+}
+
+.reynard-grid--cols-responsive-md {
+  --grid-columns-md: 1;
+  grid-template-columns: repeat(var(--grid-columns-md, 1), 1fr);
+}
+
+.reynard-grid--cols-responsive-lg {
+  --grid-columns-lg: 1;
+  grid-template-columns: repeat(var(--grid-columns-lg, 1), 1fr);
+}
+
+.reynard-grid--cols-responsive-xl {
+  --grid-columns-xl: 1;
+  grid-template-columns: repeat(var(--grid-columns-xl, 1), 1fr);
+}
+
+/* Utility classes to override responsive column counts */
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-1 { --grid-columns-xs: 1; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-2 { --grid-columns-xs: 2; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-3 { --grid-columns-xs: 3; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-4 { --grid-columns-xs: 4; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-5 { --grid-columns-xs: 5; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-6 { --grid-columns-xs: 6; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-8 { --grid-columns-xs: 8; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-10 { --grid-columns-xs: 10; }
+.reynard-grid--cols-responsive-xs.reynard-grid--cols-12 { --grid-columns-xs: 12; }
+
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-2 { --grid-columns-sm: 2; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-3 { --grid-columns-sm: 3; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-4 { --grid-columns-sm: 4; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-5 { --grid-columns-sm: 5; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-6 { --grid-columns-sm: 6; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-8 { --grid-columns-sm: 8; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-10 { --grid-columns-sm: 10; }
+.reynard-grid--cols-responsive-sm.reynard-grid--cols-12 { --grid-columns-sm: 12; }
+
+.reynard-grid--cols-responsive-md.reynard-grid--cols-2 { --grid-columns-md: 2; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-3 { --grid-columns-md: 3; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-4 { --grid-columns-md: 4; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-5 { --grid-columns-md: 5; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-6 { --grid-columns-md: 6; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-8 { --grid-columns-md: 8; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-10 { --grid-columns-md: 10; }
+.reynard-grid--cols-responsive-md.reynard-grid--cols-12 { --grid-columns-md: 12; }
+
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-2 { --grid-columns-lg: 2; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-3 { --grid-columns-lg: 3; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-4 { --grid-columns-lg: 4; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-5 { --grid-columns-lg: 5; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-6 { --grid-columns-lg: 6; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-8 { --grid-columns-lg: 8; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-10 { --grid-columns-lg: 10; }
+.reynard-grid--cols-responsive-lg.reynard-grid--cols-12 { --grid-columns-lg: 12; }
+
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-2 { --grid-columns-xl: 2; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-3 { --grid-columns-xl: 3; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-4 { --grid-columns-xl: 4; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-5 { --grid-columns-xl: 5; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-6 { --grid-columns-xl: 6; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-8 { --grid-columns-xl: 8; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-10 { --grid-columns-xl: 10; }
+.reynard-grid--cols-responsive-xl.reynard-grid--cols-12 { --grid-columns-xl: 12; }
+
+/* Custom gap utility classes */
+.reynard-grid--custom-gap-xs { --custom-gap: 0.25rem; }
+.reynard-grid--custom-gap-sm { --custom-gap: 0.5rem; }
+.reynard-grid--custom-gap-md { --custom-gap: 1rem; }
+.reynard-grid--custom-gap-lg { --custom-gap: 1.5rem; }
+.reynard-grid--custom-gap-xl { --custom-gap: 2rem; }
+
+/* Custom gap class for string values */
+.reynard-grid--custom-gap {
+  gap: var(--custom-gap);
+}
+
+/* Additional custom gap values for common string inputs */
+.reynard-grid--custom-gap-4px { --custom-gap: 4px; }
+.reynard-grid--custom-gap-8px { --custom-gap: 8px; }
+.reynard-grid--custom-gap-16px { --custom-gap: 16px; }
+.reynard-grid--custom-gap-24px { --custom-gap: 24px; }
+.reynard-grid--custom-gap-32px { --custom-gap: 32px; }
+
+/* Custom gap values for rem units */
+.reynard-grid--custom-gap-025rem { --custom-gap: 0.25rem; }
+.reynard-grid--custom-gap-05rem { --custom-gap: 0.5rem; }
+.reynard-grid--custom-gap-1rem { --custom-gap: 1rem; }
+.reynard-grid--custom-gap-15rem { --custom-gap: 1.5rem; }
+.reynard-grid--custom-gap-2rem { --custom-gap: 2rem; }
+
+/* Min column width utility classes */
+.reynard-grid--min-width-200 { --min-column-width: 200px; }
+.reynard-grid--min-width-250 { --min-column-width: 250px; }
+.reynard-grid--min-width-300 { --min-column-width: 300px; }
+.reynard-grid--min-width-400 { --min-column-width: 400px; }
+.reynard-grid--min-width-500 { --min-column-width: 500px; }
+
+/* Auto-fit grid with min column width */
+.reynard-grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-column-width, 200px), 1fr));
+}
+
+/* Responsive columns utility classes */
+.reynard-grid--cols-responsive-xs { --grid-columns-xs: 1; }
+.reynard-grid--cols-responsive-sm { --grid-columns-sm: 1; }
+.reynard-grid--cols-responsive-md { --grid-columns-md: 1; }
+.reynard-grid--cols-responsive-lg { --grid-columns-lg: 1; }
+.reynard-grid--cols-responsive-xl { --grid-columns-xl: 1; }
+
+/* Responsive grid columns with CSS custom properties */
+.reynard-grid {
+  grid-template-columns: repeat(var(--grid-columns, 1), 1fr);
+}
+
+/* Responsive column spans utility classes */
+.reynard-grid-item--span-responsive-xs { --col-span-xs: 1; }
+.reynard-grid-item--span-responsive-sm { --col-span-sm: 1; }
+.reynard-grid-item--span-responsive-md { --col-span-md: 1; }
+.reynard-grid-item--span-responsive-lg { --col-span-lg: 1; }
+.reynard-grid-item--span-responsive-xl { --col-span-xl: 1; }
+
+/* Grid item positioning with CSS custom properties */
+.reynard-grid-item {
+  grid-row: var(--row-span, auto) / span var(--row-span, auto);
+  grid-column: var(--col-start, auto) / var(--col-end, span var(--col-span, 1));
+  grid-row-start: var(--row-start, auto);
+  grid-row-end: var(--row-end, auto);
+}
+
+/* Responsive column span utility classes */
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-1 { --col-span-xs: 1; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-2 { --col-span-xs: 2; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-3 { --col-span-xs: 3; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-4 { --col-span-xs: 4; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-5 { --col-span-xs: 5; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-6 { --col-span-xs: 6; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-8 { --col-span-xs: 8; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-10 { --col-span-xs: 10; }
+.reynard-grid-item--span-responsive-xs.reynard-grid-item--span-12 { --col-span-xs: 12; }
+
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-2 { --col-span-sm: 2; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-3 { --col-span-sm: 3; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-4 { --col-span-sm: 4; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-5 { --col-span-sm: 5; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-6 { --col-span-sm: 6; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-8 { --col-span-sm: 8; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-10 { --col-span-sm: 10; }
+.reynard-grid-item--span-responsive-sm.reynard-grid-item--span-12 { --col-span-sm: 12; }
+
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-2 { --col-span-md: 2; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-3 { --col-span-md: 3; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-4 { --col-span-md: 4; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-5 { --col-span-md: 5; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-6 { --col-span-md: 6; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-8 { --col-span-md: 8; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-10 { --col-span-md: 10; }
+.reynard-grid-item--span-responsive-md.reynard-grid-item--span-12 { --col-span-md: 12; }
+
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-2 { --col-span-lg: 2; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-3 { --col-span-lg: 3; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-4 { --col-span-lg: 4; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-5 { --col-span-lg: 5; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-6 { --col-span-lg: 6; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-8 { --col-span-lg: 8; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-10 { --col-span-lg: 10; }
+.reynard-grid-item--span-responsive-lg.reynard-grid-item--span-12 { --col-span-lg: 12; }
+
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-2 { --col-span-xl: 2; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-3 { --col-span-xl: 3; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-4 { --col-span-xl: 4; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-5 { --col-span-xl: 5; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-6 { --col-span-xl: 6; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-8 { --col-span-xl: 8; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-10 { --col-span-xl: 10; }
+.reynard-grid-item--span-responsive-xl.reynard-grid-item--span-12 { --col-span-xl: 12; }
+
+/* Grid item positioning utility classes */
+.reynard-grid-item--row-span-1 { --row-span: 1; }
+.reynard-grid-item--row-span-2 { --row-span: 2; }
+.reynard-grid-item--row-span-3 { --row-span: 3; }
+.reynard-grid-item--row-span-4 { --row-span: 4; }
+.reynard-grid-item--row-span-5 { --row-span: 5; }
+.reynard-grid-item--row-span-6 { --row-span: 6; }
+
+.reynard-grid-item--col-start-1 { --col-start: 1; }
+.reynard-grid-item--col-start-2 { --col-start: 2; }
+.reynard-grid-item--col-start-3 { --col-start: 3; }
+.reynard-grid-item--col-start-4 { --col-start: 4; }
+.reynard-grid-item--col-start-5 { --col-start: 5; }
+.reynard-grid-item--col-start-6 { --col-start: 6; }
+
+.reynard-grid-item--col-end-1 { --col-end: 1; }
+.reynard-grid-item--col-end-2 { --col-end: 2; }
+.reynard-grid-item--col-end-3 { --col-end: 3; }
+.reynard-grid-item--col-end-4 { --col-end: 4; }
+.reynard-grid-item--col-end-5 { --col-end: 5; }
+.reynard-grid-item--col-end-6 { --col-end: 6; }
+
+.reynard-grid-item--row-start-1 { --row-start: 1; }
+.reynard-grid-item--row-start-2 { --row-start: 2; }
+.reynard-grid-item--row-start-3 { --row-start: 3; }
+.reynard-grid-item--row-start-4 { --row-start: 4; }
+.reynard-grid-item--row-start-5 { --row-start: 5; }
+.reynard-grid-item--row-start-6 { --row-start: 6; }
+
+.reynard-grid-item--row-end-1 { --row-end: 1; }
+.reynard-grid-item--row-end-2 { --row-end: 2; }
+.reynard-grid-item--row-end-3 { --row-end: 3; }
+.reynard-grid-item--row-end-4 { --row-end: 4; }
+.reynard-grid-item--row-end-5 { --row-end: 5; }
+.reynard-grid-item--row-end-6 { --row-end: 6; }
+
 @media (min-width: 576px) {
   .reynard-grid {
     grid-template-columns: repeat(

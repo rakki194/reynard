@@ -10,6 +10,9 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
+
+
+
 import type {
   User,
   AuthState,
@@ -59,7 +62,7 @@ export function useAuth(options: UseAuthOptions = {}) {
   });
 
   // Auto-refresh timer
-  let refreshTimer: NodeJS.Timeout | null = null;
+  let refreshTimer: number | null = null;
 
   // Update auth state helper
   const updateAuthState = (updates: Partial<AuthState>) => {
@@ -73,7 +76,20 @@ export function useAuth(options: UseAuthOptions = {}) {
   // API fetch wrapper with auth headers
   const authFetch = async (
     url: string,
-    options: RequestInit = {},
+    options: {
+      method?: string;
+      headers?: Record<string, string> | Headers;
+      body?: string | FormData | URLSearchParams | ReadableStream | null;
+      credentials?: 'omit' | 'same-origin' | 'include';
+      mode?: 'cors' | 'no-cors' | 'same-origin';
+      cache?: 'default' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached';
+      redirect?: 'follow' | 'error' | 'manual';
+      referrer?: string;
+      referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url';
+      integrity?: string;
+      keepalive?: boolean;
+      signal?: AbortSignal | null;
+    } = {},
   ): Promise<Response> => {
     const token = tokenManager.getAccessToken();
 
@@ -140,7 +156,7 @@ export function useAuth(options: UseAuthOptions = {}) {
           timestamp: new Date().toISOString(),
         },
       };
-    } catch (error) {
+    } catch {
       return {
         error: "Failed to parse response",
         success: false,
@@ -340,7 +356,7 @@ export function useAuth(options: UseAuthOptions = {}) {
 
         // Update user from new token
         const userInfo = getUserFromToken(accessToken);
-        if (userInfo && authState().user && userInfo.id) {
+        if (userInfo && authState().user && userInfo.username) {
           updateAuthState({
             user: { ...authState().user, ...userInfo } as User,
             isRefreshing: false,
@@ -365,7 +381,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     }
   };
 
-  // Setup automatic token refresh
+  // Setup automatic token refresh using reactive effects
   const setupTokenRefresh = () => {
     if (refreshTimer) {
       clearTimeout(refreshTimer);
@@ -382,8 +398,14 @@ export function useAuth(options: UseAuthOptions = {}) {
     const timeUntilRefresh = decoded.exp - now - refreshThreshold;
 
     if (timeUntilRefresh > 0) {
-      refreshTimer = setTimeout(() => {
-        refreshTokens().catch(console.error);
+      refreshTimer = window.setTimeout(() => {
+        // Use a reactive effect to handle the refresh
+        createEffect(() => {
+          // This will run in a proper reactive context
+          if (!authState().isRefreshing) {
+            refreshTokens().catch(console.error);
+          }
+        });
       }, timeUntilRefresh * 1000);
     } else {
       // Token is already close to expiry, refresh immediately

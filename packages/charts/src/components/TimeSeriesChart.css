@@ -1,0 +1,54 @@
+/**
+ * TimeSeriesChart Component Styles
+ */
+
+.reynard-timeseries-chart {
+  position: relative;
+}
+
+.reynard-timeseries-chart.responsive {
+  width: 100%;
+  height: 100%;
+}
+
+.reynard-timeseries-chart.fixed-size {
+  width: 400px;
+  height: 300px;
+}
+
+.reynard-timeseries-chart--stepped {
+  /* Additional styles for stepped line variant if needed */
+}
+
+.reynard-chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+}
+
+.reynard-chart-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color, #ddd);
+  border-top: 2px solid var(--primary-color, #007bff);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+.reynard-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #666);
+  font-style: italic;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

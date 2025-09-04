@@ -7,14 +7,12 @@ const NotificationCenter: Component = () => {
   const notifications = useNotifications();
   const [isOpen, setIsOpen] = createSignal(false);
 
-  const unreadCount = () => notifications.items().filter((n) => !n.read).length;
+  const unreadCount = () => notifications.notifications.length;
 
-  const markAsRead = (id: string) => {
-    notifications.markAsRead(id);
-  };
+  // Removed markAsRead logic, not supported by Notification type
 
   const clearAll = () => {
-    notifications.clear();
+    notifications.clearNotifications();
   };
 
   return (
@@ -35,15 +33,15 @@ const NotificationCenter: Component = () => {
       </div>
 
       <Drawer
-        isOpen={isOpen()}
+  open={isOpen()}
         onClose={() => setIsOpen(false)}
-        side="right"
+  position="right"
         title="Notifications"
       >
         <div class="notification-center__content">
           <div class="notification-center__header">
             <h3>Notifications</h3>
-            <Show when={notifications.items().length > 0}>
+            <Show when={notifications.notifications.length > 0}>
               <Button variant="ghost" size="sm" onClick={clearAll}>
                 Clear All
               </Button>
@@ -52,17 +50,17 @@ const NotificationCenter: Component = () => {
 
           <div class="notification-center__list">
             <Show
-              when={notifications.items().length > 0}
+              when={notifications.notifications.length > 0}
               fallback={
                 <div class="notification-center__empty">
                   <p>No notifications</p>
                 </div>
               }
             >
-              <For each={notifications.items()}>
+              <For each={notifications.notifications}>
                 {(notification) => (
                   <Card
-                    class={`notification-center__item ${!notification.read ? "notification-center__item--unread" : ""}`}
+                    class={`notification-center__item`}
                   >
                     <div class="notification-center__item-content">
                       <div class="notification-center__item-type">
@@ -73,11 +71,7 @@ const NotificationCenter: Component = () => {
                       </div>
 
                       <div class="notification-center__item-body">
-                        <Show when={notification.title}>
-                          <h4 class="notification-center__item-title">
-                            {notification.title}
-                          </h4>
-                        </Show>
+                        {/* No title property in Notification type */}
                         <p class="notification-center__item-message">
                           {notification.message}
                         </p>
@@ -89,19 +83,11 @@ const NotificationCenter: Component = () => {
                       </div>
 
                       <div class="notification-center__item-actions">
-                        <Show when={!notification.read}>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => markAsRead(notification.id)}
-                          >
-                            Mark Read
-                          </Button>
-                        </Show>
+                        {/* No read property in Notification type */}
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => notifications.remove(notification.id)}
+                          onClick={() => notifications.removeNotification(notification.id)}
                         >
                           ×
                         </Button>

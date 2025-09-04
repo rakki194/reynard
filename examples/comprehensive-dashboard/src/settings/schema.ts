@@ -158,6 +158,7 @@ export const appSettingsSchema: SettingsSchema = {
       description: "General application settings",
       icon: "⚙️",
       order: 0,
+      category: "general",
       settings: [
         "general.language",
         "general.timezone",
@@ -173,6 +174,7 @@ export const appSettingsSchema: SettingsSchema = {
       description: "Visual appearance and theming",
       icon: "🎨",
       order: 1,
+      category: "appearance",
       settings: [
         "appearance.theme",
         "appearance.fontSize",
@@ -186,6 +188,7 @@ export const appSettingsSchema: SettingsSchema = {
       description: "Privacy and security preferences",
       icon: "🔒",
       order: 2,
+      category: "privacy",
       settings: [
         "privacy.analytics",
         "privacy.sessionTimeout",

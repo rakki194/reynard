@@ -6,7 +6,7 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
 
 ## ✨ Features
 
-Reynard offers a modular architecture, with each module designed to be zero-dependency and concise—typically under 100 lines—making the framework both approachable and maintainable. The theming system is comprehensive, providing eight built-in themes and full support for custom themes, so you can tailor your application's look and feel with ease. Testing is a first-class citizen, with Vitest and Playwright integration ensuring 95%+ coverage out of the box. Accessibility is prioritized, with WCAG compliance and a robust set of a11y features. Performance is optimized through bundle splitting and lazy loading, while responsive design is achieved using a mobile-first approach and container queries. Internationalization (i18n) is built in, enabling multi-language support from the start. For developers, Reynard includes a CLI, a VS Code extension, and a suite of debugging utilities to streamline your workflow.
+Reynard offers a modular architecture, with each module designed to be slim with dependencies and concise—typically under 100 lines—making the framework both approachable and maintainable. The theming system is comprehensive, providing eight built-in themes and full support for custom themes, so you can tailor your application's look and feel with ease. Testing is a first-class citizen, with Vitest and Playwright integration ensuring 95%+ coverage out of the box. Accessibility is prioritized, with WCAG compliance and a robust set of a11y features. Performance is optimized through bundle splitting and lazy loading, while responsive design is achieved using a mobile-first approach and container queries. Internationalization (i18n) is built in, enabling multi-language support from the start. For developers, Reynard includes a CLI, a VS Code extension, and a suite of debugging utilities to streamline your workflow.
 
 ## 🎯 Philosophy
 
@@ -97,6 +97,6 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## 📄 License
 
-MIT © [Your Name](https://github.com/rakki194)
+MIT © [Balazs Horvath](https://github.com/rakki194)
 
 ---
