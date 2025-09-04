@@ -1,0 +1,113 @@
+/**
+ * Theme Styles
+ * Extracted from yipyap's comprehensive theme system
+ */
+
+/* Light Theme (Default) */
+:root[data-theme="light"] {
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(220deg 20% 95%);
+  --secondary-bg: hsl(220deg 15% 90%);
+  --card-bg: hsl(220deg 15% 85%);
+  --text-primary: hsl(240deg 15% 12%);
+  --text-secondary: hsl(240deg 10% 45%);
+  --border-color: var(--card-bg);
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  --accent: hsl(270deg 60% 70%);
+  --bg-color: hsl(220deg 15% 8%);
+  --secondary-bg: hsl(220deg 15% 12%);
+  --card-bg: hsl(220deg 15% 16%);
+  --text-primary: hsl(220deg 20% 95%);
+  --text-secondary: hsl(220deg 15% 70%);
+  --border-color: hsl(220deg 15% 24%);
+}
+
+/* Gray Theme */
+:root[data-theme="gray"] {
+  --accent: hsl(200deg 50% 60%);
+  --bg-color: hsl(0deg 0% 92%);
+  --secondary-bg: hsl(0deg 0% 87%);
+  --card-bg: hsl(0deg 0% 82%);
+  --text-primary: hsl(0deg 0% 15%);
+  --text-secondary: hsl(0deg 0% 45%);
+  --border-color: var(--card-bg);
+}
+
+/* Banana Theme */
+:root[data-theme="banana"] {
+  --accent: hsl(45deg 100% 45%);
+  --bg-color: hsl(50deg 40% 95%);
+  --secondary-bg: hsl(50deg 35% 90%);
+  --card-bg: hsl(50deg 30% 85%);
+  --text-primary: hsl(30deg 15% 15%);
+  --text-secondary: hsl(30deg 10% 45%);
+  --border-color: var(--card-bg);
+}
+
+/* Strawberry Theme */
+:root[data-theme="strawberry"] {
+  --accent: hsl(350deg 70% 55%);
+  --bg-color: hsl(350deg 30% 95%);
+  --secondary-bg: hsl(350deg 25% 90%);
+  --card-bg: hsl(350deg 20% 85%);
+  --text-primary: hsl(350deg 15% 15%);
+  --text-secondary: hsl(350deg 10% 45%);
+  --border-color: var(--card-bg);
+}
+
+/* Peanut Theme */
+:root[data-theme="peanut"] {
+  --accent: hsl(30deg 60% 50%);
+  --bg-color: hsl(35deg 25% 93%);
+  --secondary-bg: hsl(35deg 20% 88%);
+  --card-bg: hsl(35deg 15% 83%);
+  --text-primary: hsl(25deg 15% 15%);
+  --text-secondary: hsl(25deg 10% 45%);
+  --border-color: var(--card-bg);
+}
+
+/* High Contrast Black Theme */
+:root[data-theme="high-contrast-black"] {
+  --accent: hsl(60deg 100% 70%);
+  --bg-color: hsl(0deg 0% 0%);
+  --secondary-bg: hsl(0deg 0% 8%);
+  --card-bg: hsl(0deg 0% 16%);
+  --text-primary: hsl(0deg 0% 100%);
+  --text-secondary: hsl(0deg 0% 85%);
+  --border-color: hsl(0deg 0% 30%);
+}
+
+/* High Contrast Inverse Theme */
+:root[data-theme="high-contrast-inverse"] {
+  --accent: hsl(240deg 100% 40%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 96%);
+  --card-bg: hsl(0deg 0% 92%);
+  --text-primary: hsl(0deg 0% 0%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 70%);
+}
+
+/* Theme-specific animations and transitions */
+:root[data-theme="banana"] .button:hover,
+:root[data-theme="strawberry"] .button:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+:root[data-theme="dark"] .feature-card:hover,
+:root[data-theme="high-contrast-black"] .feature-card:hover {
+  box-shadow: 0 8px 16px rgb(255 255 255 / 10%);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

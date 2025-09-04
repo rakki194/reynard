@@ -1,0 +1,52 @@
+{
+  "name": "@reynard/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reynard - A cunning SolidJS framework and UI library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rakki194/reynard"
+  },
+  "keywords": [
+    "solidjs",
+    "ui",
+    "framework",
+    "template",
+    "components",
+    "themes"
+  ],
+  "author": "Balazs Horvath",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "templates/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=templates/starter",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,css,json,md}'",
+    "format:check": "prettier --check '**/*.{ts,tsx,js,jsx,css,json,md}'",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules",
+    "setup": "npm install && npm run build",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "2.29.6",
+    "@types/node": "24.3.0",
+    "prettier": "3.6.2",
+    "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,145 @@
+/**
+ * Component Styles
+ * Reusable component styling patterns
+ */
+
+@layer components {
+  /* Button Component */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--half-spacing);
+    padding: var(--spacing) var(--double-spacing);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing);
+    background: var(--accent);
+    color: white;
+    box-shadow: var(--shadow-default);
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .button:active {
+    transform: translateY(0);
+  }
+
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Button Variants */
+  .button--secondary {
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+  }
+
+  .button--success {
+    background: hsl(140deg 60% 45%);
+  }
+
+  .button--error {
+    background: hsl(0deg 70% 50%);
+  }
+
+  .button--info {
+    background: hsl(200deg 70% 45%);
+  }
+
+  .button--warning {
+    background: hsl(45deg 100% 55%);
+    color: var(--text-primary);
+  }
+
+  .button--small {
+    padding: var(--half-spacing) var(--spacing);
+    font-size: 0.8rem;
+  }
+
+  /* Button Group */
+  .button-group {
+    display: flex;
+    gap: var(--half-spacing);
+    flex-wrap: wrap;
+  }
+
+  /* Theme Selector */
+  .theme-selector {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .theme-label {
+    display: flex;
+    align-items: center;
+    gap: var(--half-spacing);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .theme-select {
+    padding: var(--half-spacing);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    min-width: 120px;
+  }
+
+  .theme-select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Counter Component */
+  .counter {
+    text-align: center;
+  }
+
+  .counter-display {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing);
+    color: var(--text-primary);
+  }
+
+  .counter-display strong {
+    color: var(--accent);
+    font-size: 1.3rem;
+  }
+
+  /* Notification Demo */
+  .notification-demo {
+    text-align: center;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .theme-selector {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .button-group {
+      justify-content: center;
+    }
+
+    .button {
+      flex: 1;
+      min-width: 100px;
+    }
+  }
+}
