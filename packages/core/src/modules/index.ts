@@ -5,6 +5,7 @@
 
 export * from './theme';
 export * from './notifications';
+export * from './i18n';
 
 // Re-export common types
 export type { Theme } from './theme';

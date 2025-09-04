@@ -2,7 +2,7 @@
  * useDebounce composable tests
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createRoot, createSignal } from 'solid-js';
 import { useDebounce, useDebouncedCallback } from './useDebounce';
 

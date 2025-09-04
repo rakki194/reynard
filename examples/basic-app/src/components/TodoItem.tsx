@@ -20,11 +20,13 @@ interface TodoItemProps {
 export const TodoItem: Component<TodoItemProps> = (props) => {
   return (
     <div class={`todo-item ${props.todo.completed ? 'completed' : ''}`}>
-      <label class="todo-checkbox">
+      <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
         <input
+          id={`todo-${props.todo.id}`}
           type="checkbox"
           checked={props.todo.completed}
           onChange={props.onToggle}
+          aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? 'incomplete' : 'complete'}`}
         />
         <span class="checkmark"></span>
       </label>

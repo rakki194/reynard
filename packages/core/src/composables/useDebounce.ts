@@ -20,7 +20,7 @@ export const useDebounce = <T>(value: () => T, delay: number) => {
     
     // Set new timeout
     timeoutId = setTimeout(() => {
-      setDebouncedValue(currentValue);
+      setDebouncedValue(() => currentValue);
     }, delay);
   });
 

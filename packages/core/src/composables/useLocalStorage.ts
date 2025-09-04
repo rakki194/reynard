@@ -80,7 +80,7 @@ export const useLocalStorage = <T>(
   const remove = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(key);
-    setValue(defaultValue);
+    setValue(() => defaultValue);
   };
 
   return [value, setValue, remove] as const;

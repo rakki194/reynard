@@ -13,14 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "declaration": true,
-    "declarationMap": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "composite": true,
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "jsxImportSource": "solid-js"
   },
   "include": ["src"]
 }

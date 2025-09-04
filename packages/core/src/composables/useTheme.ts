@@ -34,5 +34,5 @@ export const createTheme = createThemeModule;
  */
 export const useThemeValue = (): Theme => {
   const { theme } = useTheme();
-  return theme;
+  return theme();
 };

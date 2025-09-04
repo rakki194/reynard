@@ -67,7 +67,7 @@ export const getNextTheme = (currentTheme: Theme): Theme => {
 };
 
 export interface ThemeModule {
-  readonly theme: Theme;
+  theme: () => Theme;
   setTheme: (theme: Theme) => void;
   nextTheme: () => void;
   themeIconMap: Record<string, string>;
@@ -95,9 +95,7 @@ export const createThemeModule = (): ThemeModule => {
   };
 
   return {
-    get theme() {
-      return theme();
-    },
+    theme,
     setTheme,
     nextTheme,
     themeIconMap,

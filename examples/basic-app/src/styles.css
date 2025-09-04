@@ -56,6 +56,17 @@
   --border-color: hsl(350deg 25% 75%);
 }
 
+/* Gray theme */
+:root[data-theme="gray"] {
+  --accent: hsl(220deg 50% 55%);
+  --bg-color: hsl(220deg 15% 88%);
+  --secondary-bg: hsl(220deg 15% 82%);
+  --card-bg: hsl(220deg 15% 76%);
+  --text-primary: hsl(220deg 20% 15%);
+  --text-secondary: hsl(220deg 15% 35%);
+  --border-color: hsl(220deg 15% 65%);
+}
+
 /* Peanut theme */
 :root[data-theme="peanut"] {
   --accent: hsl(30deg 60% 50%);
@@ -65,6 +76,28 @@
   --text-primary: hsl(25deg 15% 15%);
   --text-secondary: hsl(25deg 10% 45%);
   --border-color: hsl(30deg 25% 75%);
+}
+
+/* High-contrast black theme */
+:root[data-theme="high-contrast-black"] {
+  --accent: hsl(60deg 100% 50%);
+  --bg-color: hsl(0deg 0% 0%);
+  --secondary-bg: hsl(0deg 0% 10%);
+  --card-bg: hsl(0deg 0% 15%);
+  --text-primary: hsl(0deg 0% 100%);
+  --text-secondary: hsl(0deg 0% 85%);
+  --border-color: hsl(0deg 0% 40%);
+}
+
+/* High-contrast inverse theme */
+:root[data-theme="high-contrast-inverse"] {
+  --accent: hsl(240deg 100% 50%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 90%);
+  --text-primary: hsl(0deg 0% 0%);
+  --text-secondary: hsl(0deg 0% 25%);
+  --border-color: hsl(0deg 0% 60%);
 }
 
 /* Reset and base styles */
@@ -138,6 +171,30 @@ body {
 .theme-toggle:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow);
+}
+
+.language-selector {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: calc(var(--spacing) / 2) var(--spacing);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all var(--transition);
+}
+
+.language-selector:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.language-selector:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .app-main {

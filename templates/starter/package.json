@@ -16,7 +16,7 @@
     "format:check": "prettier --check 'src/**/*.{ts,tsx,css,json}'"
   },
   "dependencies": {
-    "@reynard/core": "workspace:*",
+    "@reynard/core": "file:../../packages/core",
     "solid-js": "1.9.9"
   },
   "devDependencies": {
