@@ -3,7 +3,7 @@
  * Provides persistent reactive state synchronized with localStorage
  */
 
-import { createSignal, createEffect } from 'solid-js';
+import { createSignal, createEffect } from "solid-js";
 
 export interface UseLocalStorageOptions<T> {
   /** Default value if key doesn't exist */
@@ -27,14 +27,18 @@ const defaultSerializer = {
  */
 export const useLocalStorage = <T>(
   key: string,
-  options: UseLocalStorageOptions<T>
+  options: UseLocalStorageOptions<T>,
 ) => {
-  const { defaultValue, serializer = defaultSerializer, syncAcrossTabs = true } = options;
+  const {
+    defaultValue,
+    serializer = defaultSerializer,
+    syncAcrossTabs = true,
+  } = options;
 
   // Get initial value from localStorage
   const getInitialValue = (): T => {
-    if (typeof window === 'undefined') return defaultValue;
-    
+    if (typeof window === "undefined") return defaultValue;
+
     try {
       const item = localStorage.getItem(key);
       if (item === null) return defaultValue;
@@ -50,9 +54,9 @@ export const useLocalStorage = <T>(
   // Update localStorage when value changes
   createEffect(() => {
     const currentValue = value();
-    
-    if (typeof window === 'undefined') return;
-    
+
+    if (typeof window === "undefined") return;
+
     try {
       localStorage.setItem(key, serializer.write(currentValue));
     } catch (error) {
@@ -61,7 +65,7 @@ export const useLocalStorage = <T>(
   });
 
   // Listen for storage events (when changed in other tabs)
-  if (typeof window !== 'undefined' && syncAcrossTabs) {
+  if (typeof window !== "undefined" && syncAcrossTabs) {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === key && e.newValue !== null) {
         try {
@@ -72,13 +76,13 @@ export const useLocalStorage = <T>(
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener("storage", handleStorageChange);
+
     // Cleanup on component unmount would be handled by the consuming component
   }
 
   const remove = () => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.removeItem(key);
     setValue(() => defaultValue);
   };

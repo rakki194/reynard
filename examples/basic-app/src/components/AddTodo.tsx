@@ -3,15 +3,15 @@
  * Form for adding new todos
  */
 
-import { Component, createSignal } from 'solid-js';
-import { useI18n } from '@reynard/core';
+import { Component, createSignal } from "solid-js";
+import { useI18n } from "@reynard/core";
 
 interface AddTodoProps {
   onAdd: (text: string) => void;
 }
 
 export const AddTodo: Component<AddTodoProps> = (props) => {
-  const [input, setInput] = createSignal('');
+  const [input, setInput] = createSignal("");
   const { t } = useI18n();
 
   const handleSubmit = (e: Event) => {
@@ -19,7 +19,7 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
     const text = input().trim();
     if (text) {
       props.onAdd(text);
-      setInput('');
+      setInput("");
     }
   };
 
@@ -28,12 +28,12 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
       <input
         type="text"
         class="todo-input"
-        placeholder={t('todo.placeholder')}
+        placeholder={t("todo.placeholder")}
         value={input()}
         onInput={(e) => setInput(e.currentTarget.value)}
       />
       <button type="submit" class="add-button" disabled={!input().trim()}>
-        {t('todo.addButton')}
+        {t("todo.addButton")}
       </button>
     </form>
   );

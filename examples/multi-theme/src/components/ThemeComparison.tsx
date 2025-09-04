@@ -3,53 +3,56 @@
  * Side-by-side comparison of themes
  */
 
-import { Component, createSignal, For } from 'solid-js';
+import { Component, createSignal, For } from "solid-js";
 
 export const ThemeComparison: Component = () => {
-  const [selectedThemes, setSelectedThemes] = createSignal(['light', 'dark']);
-  const availableThemes = ['light', 'dark', 'banana', 'strawberry', 'peanut'];
+  const [selectedThemes, setSelectedThemes] = createSignal(["light", "dark"]);
+  const availableThemes = ["light", "dark", "banana", "strawberry", "peanut"];
 
   const addTheme = (theme: string) => {
     if (!selectedThemes().includes(theme) && selectedThemes().length < 3) {
-      setSelectedThemes(prev => [...prev, theme]);
+      setSelectedThemes((prev) => [...prev, theme]);
     }
   };
 
   const removeTheme = (theme: string) => {
     if (selectedThemes().length > 1) {
-      setSelectedThemes(prev => prev.filter(t => t !== theme));
+      setSelectedThemes((prev) => prev.filter((t) => t !== theme));
     }
   };
 
   const getThemeEmoji = (theme: string) => {
     const emojis: Record<string, string> = {
-      light: '☀️',
-      dark: '🌙', 
-      banana: '🍌',
-      strawberry: '🍓',
-      peanut: '🥜'
+      light: "☀️",
+      dark: "🌙",
+      banana: "🍌",
+      strawberry: "🍓",
+      peanut: "🥜",
     };
-    return emojis[theme] || '🎨';
+    return emojis[theme] || "🎨";
   };
 
   return (
     <div class="theme-comparison">
       <h2>⚖️ Theme Comparison</h2>
       <p>Compare themes side-by-side to see the differences</p>
-      
+
       <div class="comparison-controls">
         <h3>Selected Themes ({selectedThemes().length}/3)</h3>
         <div class="theme-selector">
           <For each={availableThemes}>
             {(theme) => (
               <button
-                class={`theme-option ${selectedThemes().includes(theme) ? 'selected' : ''}`}
-                onClick={() => 
-                  selectedThemes().includes(theme) 
-                    ? removeTheme(theme) 
+                class={`theme-option ${selectedThemes().includes(theme) ? "selected" : ""}`}
+                onClick={() =>
+                  selectedThemes().includes(theme)
+                    ? removeTheme(theme)
                     : addTheme(theme)
                 }
-                disabled={!selectedThemes().includes(theme) && selectedThemes().length >= 3}
+                disabled={
+                  !selectedThemes().includes(theme) &&
+                  selectedThemes().length >= 3
+                }
               >
                 {getThemeEmoji(theme)} {theme}
               </button>
@@ -57,18 +60,30 @@ export const ThemeComparison: Component = () => {
           </For>
         </div>
       </div>
-      
-      <div class="comparison-grid" style={{ 'grid-template-columns': `repeat(${selectedThemes().length}, 1fr)` }}>
+
+      <div
+        class="comparison-grid"
+        style={{
+          "grid-template-columns": `repeat(${selectedThemes().length}, 1fr)`,
+        }}
+      >
         <For each={selectedThemes()}>
           {(theme) => (
             <div class="comparison-column" data-theme={theme}>
               <div class="column-header">
-                <h3>{getThemeEmoji(theme)} {theme}</h3>
+                <h3>
+                  {getThemeEmoji(theme)} {theme}
+                </h3>
                 {selectedThemes().length > 1 && (
-                  <button class="remove-theme" onClick={() => removeTheme(theme)}>×</button>
+                  <button
+                    class="remove-theme"
+                    onClick={() => removeTheme(theme)}
+                  >
+                    ×
+                  </button>
                 )}
               </div>
-              
+
               <div class="comparison-content">
                 {/* Color Palette */}
                 <div class="color-section">
@@ -88,36 +103,43 @@ export const ThemeComparison: Component = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Component Samples */}
                 <div class="component-section">
                   <h4>Components</h4>
-                  
+
                   <button class="sample-button">Button</button>
-                  
-                  <input type="text" class="sample-input" placeholder="Input field" />
-                  
+
+                  <input
+                    type="text"
+                    class="sample-input"
+                    placeholder="Input field"
+                  />
+
                   <div class="sample-card">
                     <h5>Card Title</h5>
                     <p>Card content with some text to show typography.</p>
                   </div>
-                  
+
                   <label class="sample-checkbox">
                     <input type="checkbox" checked />
                     <span class="checkmark"></span>
                     Checkbox option
                   </label>
-                  
+
                   <div class="sample-alert">
                     <strong>Alert:</strong> Sample alert message
                   </div>
                 </div>
-                
+
                 {/* Typography */}
                 <div class="typography-section">
                   <h4>Typography</h4>
                   <h5>Heading</h5>
-                  <p>Regular paragraph text with <strong>bold</strong> and <em>italic</em> formatting.</p>
+                  <p>
+                    Regular paragraph text with <strong>bold</strong> and{" "}
+                    <em>italic</em> formatting.
+                  </p>
                   <code>Code snippet</code>
                 </div>
               </div>
@@ -125,7 +147,7 @@ export const ThemeComparison: Component = () => {
           )}
         </For>
       </div>
-      
+
       <div class="comparison-notes">
         <h3>💡 Comparison Tips</h3>
         <ul>

@@ -3,12 +3,19 @@
  * Demonstrates the core features of the Reynard framework
  */
 
-import { Component, createSignal } from 'solid-js';
-import { ThemeProvider, NotificationsProvider, createTheme, createNotifications, useTheme, useNotifications } from '@reynard/core';
-import { ThemeSelector } from './components/ThemeSelector';
-import { NotificationDemo } from './components/NotificationDemo';
-import { Counter } from './components/Counter';
-import './styles/app.css';
+import { Component, createSignal } from "solid-js";
+import {
+  ThemeProvider,
+  NotificationsProvider,
+  createTheme,
+  createNotifications,
+  useTheme,
+  useNotifications,
+} from "@reynard/core";
+import { ThemeSelector } from "./components/ThemeSelector";
+import { NotificationDemo } from "./components/NotificationDemo";
+import { Counter } from "./components/Counter";
+import "./styles/app.css";
 
 const AppContent: Component = () => {
   const { theme } = useTheme();
@@ -16,7 +23,7 @@ const AppContent: Component = () => {
   const [count, setCount] = createSignal(0);
 
   const handleWelcome = () => {
-    notify(`Welcome to Reynard! Current theme: ${theme}`, 'success');
+    notify(`Welcome to Reynard! Current theme: ${theme()}`, "success");
   };
 
   return (
@@ -34,7 +41,9 @@ const AppContent: Component = () => {
             <div class="feature-card">
               <h3>🎨 Theme System</h3>
               <p>8 built-in themes with reactive state management</p>
-              <p>Current theme: <strong>{theme}</strong></p>
+              <p>
+                Current theme: <strong>{theme()}</strong>
+              </p>
             </div>
 
             <div class="feature-card">
@@ -75,7 +84,11 @@ npm run dev`}</code>
       <footer class="app-footer">
         <p>Built with ❤️ using Reynard framework</p>
         <p>
-          <a href="https://github.com/yourusername/reynard" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/yourusername/reynard"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             View on GitHub
           </a>
         </p>

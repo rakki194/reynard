@@ -3,7 +3,7 @@
  * Demonstrates reactive state management
  */
 
-import { Component } from 'solid-js';
+import { Component } from "solid-js";
 
 interface CounterProps {
   count: number;

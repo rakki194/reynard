@@ -3,28 +3,29 @@
  * Allows users to switch between available languages
  */
 
-import { Component, For } from 'solid-js';
-import { useI18n } from '@reynard/core';
+import { Component, For } from "solid-js";
+import { useI18n } from "@reynard/core";
 
 export const LanguageSelector: Component = () => {
   const { locale, setLocale, languages } = useI18n();
 
   // For demo, show just a few languages
-  const availableLanguages = languages.filter((lang: { code: string; name: string }) => 
-    ['en', 'es', 'fr'].includes(lang.code)
+  const availableLanguages = languages.filter(
+    (lang: { code: string; name: string }) =>
+      ["en", "es", "fr"].includes(lang.code),
   );
 
   const getLanguageEmoji = (code: string) => {
     const emojis: Record<string, string> = {
-      en: '🇺🇸',
-      es: '🇪🇸', 
-      fr: '🇫🇷',
+      en: "🇺🇸",
+      es: "🇪🇸",
+      fr: "🇫🇷",
     };
-    return emojis[code] || '🌐';
+    return emojis[code] || "🌐";
   };
 
   return (
-    <select 
+    <select
       class="language-selector"
       value={locale()}
       onChange={(e) => setLocale(e.currentTarget.value as any)}

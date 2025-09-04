@@ -14,14 +14,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",    "types": ["vite/client"],
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
       "@reynard/core": ["../../packages/core/src"]
     }
   },
   "include": ["src"],
-  "references": [
-    { "path": "../../packages/core/tsconfig.build.json" }
-  ]
+  "references": [{ "path": "../../packages/core/tsconfig.build.json" }]
 }

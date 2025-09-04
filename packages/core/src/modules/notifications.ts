@@ -3,14 +3,14 @@
  * Extracted from yipyap's proven notification system
  */
 
-import { createSignal } from 'solid-js';
+import { createSignal } from "solid-js";
 
 export interface Notification {
   id: string;
   message: string;
-  type: 'error' | 'success' | 'info' | 'warning';
+  type: "error" | "success" | "info" | "warning";
   group?: string;
-  icon?: 'spinner' | 'success' | 'error' | 'info' | 'warning';
+  icon?: "spinner" | "success" | "error" | "info" | "warning";
   progress?: number;
   timestamp: number;
   duration?: number; // Auto-dismiss duration in ms
@@ -20,15 +20,17 @@ export interface NotificationsModule {
   readonly notifications: Notification[];
   notify: (
     message: string,
-    type?: 'error' | 'success' | 'info' | 'warning',
+    type?: "error" | "success" | "info" | "warning",
     options?: {
       group?: string;
-      icon?: 'spinner' | 'success' | 'error' | 'info' | 'warning';
+      icon?: "spinner" | "success" | "error" | "info" | "warning";
       progress?: number;
       duration?: number;
-    }
+    },
   ) => string;
-  createNotification: (notification: Omit<Notification, 'id' | 'timestamp'>) => string;
+  createNotification: (
+    notification: Omit<Notification, "id" | "timestamp">,
+  ) => string;
   updateNotification: (id: string, updates: Partial<Notification>) => void;
   removeNotification: (id: string) => void;
   clearNotifications: (group?: string) => void;
@@ -45,36 +47,40 @@ const DEFAULT_DURATIONS = {
 export const createNotificationsModule = (): NotificationsModule => {
   const [notifications, setNotifications] = createSignal<Notification[]>([]);
 
-  const generateId = () => `notification-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+  const generateId = () =>
+    `notification-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
   const notify = (
     message: string,
-    type: 'error' | 'success' | 'info' | 'warning' = 'info',
+    type: "error" | "success" | "info" | "warning" = "info",
     options: {
       group?: string;
-      icon?: 'spinner' | 'success' | 'error' | 'info' | 'warning';
+      icon?: "spinner" | "success" | "error" | "info" | "warning";
       progress?: number;
       duration?: number;
-    } = {}
+    } = {},
   ): string => {
     const id = generateId();
     const { group, icon, progress, duration } = options;
-    
+
     const notification: Notification = {
       id,
       message,
       type,
       group,
       icon: icon ?? type,
-      progress: typeof progress === 'number' ? Math.min(100, Math.max(0, progress)) : undefined,
+      progress:
+        typeof progress === "number"
+          ? Math.min(100, Math.max(0, progress))
+          : undefined,
       timestamp: Date.now(),
       duration: duration ?? DEFAULT_DURATIONS[type],
     };
 
-    setNotifications(prev => {
+    setNotifications((prev) => {
       // If grouped, replace existing notification with same group
       if (group) {
-        const filtered = prev.filter(n => n.group !== group);
+        const filtered = prev.filter((n) => n.group !== group);
         return [...filtered, notification];
       }
       return [...prev, notification];
@@ -90,7 +96,9 @@ export const createNotificationsModule = (): NotificationsModule => {
     return id;
   };
 
-  const createNotification = (notification: Omit<Notification, 'id' | 'timestamp'>): string => {
+  const createNotification = (
+    notification: Omit<Notification, "id" | "timestamp">,
+  ): string => {
     const id = generateId();
     const fullNotification: Notification = {
       ...notification,
@@ -99,10 +107,10 @@ export const createNotificationsModule = (): NotificationsModule => {
       duration: notification.duration ?? DEFAULT_DURATIONS[notification.type],
     };
 
-    setNotifications(prev => {
+    setNotifications((prev) => {
       // If grouped, replace existing notification with same group
       if (notification.group) {
-        const filtered = prev.filter(n => n.group !== notification.group);
+        const filtered = prev.filter((n) => n.group !== notification.group);
         return [...filtered, fullNotification];
       }
       return [...prev, fullNotification];
@@ -119,22 +127,20 @@ export const createNotificationsModule = (): NotificationsModule => {
   };
 
   const updateNotification = (id: string, updates: Partial<Notification>) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === id 
-          ? { ...notification, ...updates }
-          : notification
-      )
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === id ? { ...notification, ...updates } : notification,
+      ),
     );
   };
 
   const removeNotification = (id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   const clearNotifications = (group?: string) => {
     if (group) {
-      setNotifications(prev => prev.filter(n => n.group !== group));
+      setNotifications((prev) => prev.filter((n) => n.group !== group));
     } else {
       setNotifications([]);
     }

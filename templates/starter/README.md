@@ -59,10 +59,10 @@ The template includes 8 built-in themes:
 Switch themes using the theme selector or programmatically:
 
 ```tsx
-import { useTheme } from '@reynard/core';
+import { useTheme } from "@reynard/core";
 
 const { theme, setTheme, nextTheme } = useTheme();
-setTheme('dark');
+setTheme("dark");
 ```
 
 ## 📢 Notifications
@@ -70,12 +70,12 @@ setTheme('dark');
 Send toast notifications with the notification system:
 
 ```tsx
-import { useNotifications } from '@reynard/core';
+import { useNotifications } from "@reynard/core";
 
 const { notify } = useNotifications();
 
-notify('Success message!', 'success');
-notify('Error occurred', 'error', { duration: 0 }); // No auto-dismiss
+notify("Success message!", "success");
+notify("Error occurred", "error", { duration: 0 }); // No auto-dismiss
 ```
 
 ## 🧪 Testing
@@ -108,4 +108,4 @@ Found a bug or have a suggestion? Please open an issue!
 
 ---
 
-*Built with ❤️ using the Reynard framework* 🦊
+_Built with ❤️ using the Reynard framework_ 🦊

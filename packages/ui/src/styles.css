@@ -1,0 +1,612 @@
+/**
+ * Reynard UI Styles
+ * Advanced component styling with responsive design
+ */
+
+/* ==========================================================================
+   App Layout Component
+   ========================================================================== */
+
+.reynard-app-layout {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.reynard-app-layout__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: reynard-fade-in 0.2s ease-out;
+}
+
+.reynard-app-layout__sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-bg);
+  border-right: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.reynard-app-layout__sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.reynard-app-layout__sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.reynard-app-layout__sidebar-toggle:hover {
+  background-color: var(--secondary-bg);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.reynard-app-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.reynard-app-layout__header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  z-index: 10;
+}
+
+.reynard-app-layout__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.reynard-app-layout__footer {
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem;
+}
+
+/* ==========================================================================
+   Grid Components
+   ========================================================================== */
+
+.reynard-grid {
+  display: grid;
+}
+
+.reynard-grid-item {
+  /* Grid item styles handled by CSS Grid */
+}
+
+.reynard-masonry-grid {
+  display: grid;
+  align-items: start;
+}
+
+/* Responsive grid columns */
+@media (min-width: 576px) {
+  .reynard-grid {
+    grid-template-columns: repeat(var(--grid-columns-sm, var(--grid-columns, 1)), 1fr);
+  }
+  .reynard-grid-item {
+    grid-column: span var(--col-span-sm, var(--col-span, 1));
+  }
+}
+
+@media (min-width: 768px) {
+  .reynard-grid {
+    grid-template-columns: repeat(var(--grid-columns-md, var(--grid-columns, 1)), 1fr);
+  }
+  .reynard-grid-item {
+    grid-column: span var(--col-span-md, var(--col-span, 1));
+  }
+}
+
+@media (min-width: 992px) {
+  .reynard-grid {
+    grid-template-columns: repeat(var(--grid-columns-lg, var(--grid-columns, 1)), 1fr);
+  }
+  .reynard-grid-item {
+    grid-column: span var(--col-span-lg, var(--col-span, 1));
+  }
+}
+
+@media (min-width: 1200px) {
+  .reynard-grid {
+    grid-template-columns: repeat(var(--grid-columns-xl, var(--grid-columns, 1)), 1fr);
+  }
+  .reynard-grid-item {
+    grid-column: span var(--col-span-xl, var(--col-span, 1));
+  }
+}
+
+/* ==========================================================================
+   Breadcrumb Component
+   ========================================================================== */
+
+.reynard-breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.reynard-breadcrumb__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.reynard-breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reynard-breadcrumb__link {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.reynard-breadcrumb__link:hover:not(.reynard-breadcrumb__link--disabled) {
+  color: var(--text-primary);
+  background-color: var(--secondary-bg);
+}
+
+.reynard-breadcrumb__link--current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.reynard-breadcrumb__link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reynard-breadcrumb__icon {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.reynard-breadcrumb__separator {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   Navigation Menu Component
+   ========================================================================== */
+
+.reynard-nav-menu {
+  width: 100%;
+}
+
+.reynard-nav-menu__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reynard-nav-menu--horizontal .reynard-nav-menu__list {
+  display: flex;
+  align-items: center;
+}
+
+.reynard-nav-menu__item {
+  position: relative;
+}
+
+.reynard-nav-menu--horizontal .reynard-nav-menu__item {
+  display: flex;
+  align-items: center;
+}
+
+.reynard-nav-menu__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.reynard-nav-menu__link:hover:not(.reynard-nav-menu__link--disabled) {
+  color: var(--text-primary);
+  background-color: var(--secondary-bg);
+}
+
+.reynard-nav-menu__link--active {
+  color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-weight: 500;
+}
+
+.reynard-nav-menu__link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reynard-nav-menu__content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.reynard-nav-menu__icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+}
+
+.reynard-nav-menu__badge {
+  background-color: var(--accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.75rem;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.reynard-nav-menu__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.reynard-nav-menu__toggle:hover {
+  background-color: var(--secondary-bg);
+}
+
+.reynard-nav-menu__submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.reynard-nav-menu--horizontal .reynard-nav-menu__submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  min-width: 200px;
+  z-index: 100;
+}
+
+/* ==========================================================================
+   Data Table Component
+   ========================================================================== */
+
+.reynard-data-table {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: var(--card-bg);
+}
+
+.reynard-data-table__wrapper {
+  overflow-x: auto;
+}
+
+.reynard-data-table__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reynard-data-table__cell {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.reynard-data-table__cell--header {
+  background-color: var(--secondary-bg);
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.reynard-data-table__cell--select {
+  width: 48px;
+  text-align: center;
+}
+
+.reynard-data-table__cell--align-center {
+  text-align: center;
+}
+
+.reynard-data-table__cell--align-right {
+  text-align: right;
+}
+
+.reynard-data-table__cell--empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.reynard-data-table__header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.reynard-data-table__sort-icon {
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.reynard-data-table__row {
+  transition: background-color 0.2s ease;
+}
+
+.reynard-data-table__row:hover {
+  background-color: var(--secondary-bg);
+}
+
+.reynard-data-table__row[data-selected="true"] {
+  background-color: rgba(var(--accent-rgb), 0.05);
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+.reynard-data-table__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.reynard-data-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+}
+
+.reynard-data-table__pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.reynard-data-table__page-size {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reynard-data-table__page-size select {
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.reynard-data-table__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reynard-data-table__pagination-controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reynard-data-table__pagination-controls button:hover:not(:disabled) {
+  background-color: var(--secondary-bg);
+}
+
+.reynard-data-table__pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Drawer Component
+   ========================================================================== */
+
+.reynard-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.reynard-drawer__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: reynard-fade-in 0.3s ease-out;
+}
+
+.reynard-drawer__content {
+  position: relative;
+  background-color: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease-out;
+  z-index: 1;
+}
+
+.reynard-drawer__content--left {
+  margin-right: auto;
+}
+
+.reynard-drawer__content--right {
+  margin-left: auto;
+}
+
+.reynard-drawer__content--top {
+  width: 100%;
+  margin-bottom: auto;
+}
+
+.reynard-drawer__content--bottom {
+  width: 100%;
+  margin-top: auto;
+}
+
+.reynard-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.reynard-drawer__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reynard-drawer__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.reynard-drawer__close:hover {
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+}
+
+.reynard-drawer__body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.reynard-drawer__footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes reynard-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .reynard-app-layout--mobile .reynard-app-layout__sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .reynard-data-table__pagination {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .reynard-data-table__pagination-info {
+    order: 2;
+  }
+  
+  .reynard-drawer__content {
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+}

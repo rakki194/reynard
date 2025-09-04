@@ -52,7 +52,7 @@ Comprehensive demonstration of Reynard's theming capabilities.
 
 ---
 
-### 🌐 [Full-Stack App](./full-stack/) - Complete Application *(Coming Soon)*
+### 🌐 [Full-Stack App](./full-stack/) - Complete Application _(Coming Soon)_
 
 A comprehensive example with frontend, backend, and database integration.
 
@@ -96,7 +96,7 @@ npm run build
 
 - **Basic App**: <http://localhost:3001>
 - **Multi-Theme Gallery**: <http://localhost:3002>
-- **Full-Stack App**: <http://localhost:3003> *(when available)*
+- **Full-Stack App**: <http://localhost:3003> _(when available)_
 
 ## 🏗️ Architecture Overview
 
@@ -147,7 +147,7 @@ example-app/
 - Theme comparison interfaces
 - Complex state management
 
-### 3. Build Full-Stack App *(when available)*
+### 3. Build Full-Stack App _(when available)_
 
 - Real-world application architecture
 - API integration patterns
@@ -227,6 +227,6 @@ Found a bug or have an improvement idea?
 
 ---
 
-*Built with ❤️ using Reynard framework, SolidJS, and modern web technologies* 🦊
+_Built with ❤️ using Reynard framework, SolidJS, and modern web technologies_ 🦊
 
 **Happy coding!** 🚀

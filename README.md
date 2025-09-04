@@ -1,6 +1,6 @@
 # 🦊 Reynard
 
-> *A cunning SolidJS framework for building modern web applications*
+> _A cunning SolidJS framework for building modern web applications_
 
 Reynard is a comprehensive SolidJS framework and UI library extracted from battle-tested patterns in production applications. It provides a complete toolkit for building modern, performant, and accessible web applications with elegant theming, modular architecture, and exceptional developer experience.
 
@@ -14,13 +14,13 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 ## 📦 Packages
 
-| Package | Description | Version |
-|---------|-------------|---------|
-| `@reynard/core` | Core framework and utilities | `0.1.0` |
-| `@reynard/components` | UI component library | `0.1.0` |
-| `@reynard/themes` | Theme system and built-in themes | `0.1.0` |
-| `@reynard/testing` | Testing utilities and helpers | `0.1.0` |
-| `@reynard/tools` | Development tools and CLI | `0.1.0` |
+| Package               | Description                      | Version |
+| --------------------- | -------------------------------- | ------- |
+| `@reynard/core`       | Core framework and utilities     | `0.1.0` |
+| `@reynard/components` | UI component library             | `0.1.0` |
+| `@reynard/themes`     | Theme system and built-in themes | `0.1.0` |
+| `@reynard/testing`    | Testing utilities and helpers    | `0.1.0` |
+| `@reynard/tools`      | Development tools and CLI        | `0.1.0` |
 
 ## 🚀 Quick Start
 
@@ -55,8 +55,8 @@ npx @reynard/create-app my-app --template portfolio
 ## 🎨 Example
 
 ```tsx
-import { Button, Container, ThemeProvider } from '@reynard/components';
-import { useTheme } from '@reynard/core';
+import { Button, Container, ThemeProvider } from "@reynard/components";
+import { useTheme } from "@reynard/core";
 
 function App() {
   const [theme, setTheme] = useTheme();
@@ -65,9 +65,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Container>
         <h1>Welcome to Reynard</h1>
-        <Button onClick={() => setTheme('dark')}>
-          Toggle Theme
-        </Button>
+        <Button onClick={() => setTheme("dark")}>Toggle Theme</Button>
       </Container>
     </ThemeProvider>
   );

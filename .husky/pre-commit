@@ -1,0 +1,18 @@
+echo "🔍 Running pre-commit checks..."
+
+echo "📝 Checking formatting..."
+npm run format:check
+
+echo "🔧 Running linter..."
+npm run lint
+
+echo "✅ Running type check..."
+npm run typecheck
+
+echo "🧪 Running tests..."
+npm run test
+
+echo "📊 Checking test coverage..."
+npm run test:coverage
+
+echo "✅ All pre-commit checks passed!"

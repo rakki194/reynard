@@ -36,7 +36,7 @@ npm run build
 The app includes 5 beautiful themes:
 
 - **☀️ Light** - Clean and bright
-- **🌙 Dark** - Easy on the eyes  
+- **🌙 Dark** - Easy on the eyes
 - **🍌 Banana** - Warm and cheerful
 - **🍓 Strawberry** - Vibrant and energetic
 - **🥜 Peanut** - Earthy and cozy
@@ -91,4 +91,4 @@ Found a bug or have an improvement? This example is part of the Reynard framewor
 
 ---
 
-*Built with ❤️ using Reynard framework and SolidJS* 🦊
+_Built with ❤️ using Reynard framework and SolidJS_ 🦊

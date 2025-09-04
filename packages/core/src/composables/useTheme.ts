@@ -3,8 +3,12 @@
  * Provides reactive theme state and utilities
  */
 
-import { createContext, useContext } from 'solid-js';
-import { createThemeModule, type ThemeModule, type Theme } from '../modules/theme';
+import { createContext, useContext } from "solid-js";
+import {
+  createThemeModule,
+  type ThemeModule,
+  type Theme,
+} from "../modules/theme";
 
 const ThemeContext = createContext<ThemeModule>();
 
@@ -17,7 +21,7 @@ export const ThemeProvider = ThemeContext.Provider;
 export const useTheme = (): ThemeModule => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };

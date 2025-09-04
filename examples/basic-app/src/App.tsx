@@ -3,15 +3,32 @@
  * Demonstrates core Reynard features in a simple, practical application
  */
 
-import { Component, createSignal, For, createEffect, createResource, Suspense } from 'solid-js';
-import { ThemeProvider, NotificationsProvider, I18nProvider, createTheme, createNotifications, createI18nModule, useTheme, useNotifications, useI18n } from '@reynard/core';
-import { TodoItem } from './components/TodoItem';
-import { AddTodo } from './components/AddTodo';
-import { ThemeToggle } from './components/ThemeToggle';
-import { LanguageSelector } from './components/LanguageSelector';
-import { loadTranslations } from './translations';
-import { en } from './translations/en';
-import './styles.css';
+import {
+  Component,
+  createSignal,
+  For,
+  createEffect,
+  createResource,
+  Suspense,
+} from "solid-js";
+import {
+  ThemeProvider,
+  NotificationsProvider,
+  I18nProvider,
+  createTheme,
+  createNotifications,
+  createI18nModule,
+  useTheme,
+  useNotifications,
+  useI18n,
+} from "@reynard/core";
+import { TodoItem } from "./components/TodoItem";
+import { AddTodo } from "./components/AddTodo";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { LanguageSelector } from "./components/LanguageSelector";
+import { loadTranslations } from "./translations";
+import { en } from "./translations/en";
+import "./styles.css";
 
 interface Todo {
   id: number;
@@ -21,9 +38,9 @@ interface Todo {
 
 const TodoApp: Component = () => {
   const [todos, setTodos] = createSignal<Todo[]>([
-    { id: 1, text: 'Learn SolidJS', completed: true },
-    { id: 2, text: 'Try Reynard framework', completed: false },
-    { id: 3, text: 'Build something awesome', completed: false },
+    { id: 1, text: "Learn SolidJS", completed: true },
+    { id: 2, text: "Try Reynard framework", completed: false },
+    { id: 3, text: "Build something awesome", completed: false },
   ]);
   const [nextId, setNextId] = createSignal(4);
   const { theme } = useTheme();
@@ -32,7 +49,7 @@ const TodoApp: Component = () => {
 
   // Load translations reactively when locale changes
   const [translationsResource] = createResource(locale, loadTranslations);
-  
+
   // Update translations when resource loads
   createEffect(() => {
     const translations = translationsResource();
@@ -47,36 +64,38 @@ const TodoApp: Component = () => {
       text,
       completed: false,
     };
-    setTodos(prev => [...prev, newTodo]);
-    setNextId(prev => prev + 1);
-    notify(t('todo.added', { text }), 'success');
+    setTodos((prev) => [...prev, newTodo]);
+    setNextId((prev) => prev + 1);
+    notify(t("todo.added", { text }), "success");
   };
 
   const toggleTodo = (id: number) => {
-    setTodos(prev => prev.map(todo => 
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
   };
 
   const deleteTodo = (id: number) => {
-    const todo = todos().find(t => t.id === id);
-    setTodos(prev => prev.filter(todo => todo.id !== id));
+    const todo = todos().find((t) => t.id === id);
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
     if (todo) {
-      notify(t('todo.deleted', { text: todo.text }), 'info');
+      notify(t("todo.deleted", { text: todo.text }), "info");
     }
   };
 
-  const completedCount = () => todos().filter(todo => todo.completed).length;
+  const completedCount = () => todos().filter((todo) => todo.completed).length;
   const totalCount = () => todos().length;
 
   return (
     <div class="app">
       <header class="app-header">
-        <h1>🦊 {t('app.title')}</h1>
-        <p>{t('app.subtitle')}</p>
+        <h1>🦊 {t("app.title")}</h1>
+        <p>{t("app.subtitle")}</p>
         <div class="header-controls">
           <div class="theme-info">
-            {t('theme.current', { theme: t(`theme.${theme()}`) })}
+            {t("theme.current", { theme: t(`theme.${theme()}`) })}
           </div>
           <ThemeToggle />
           <LanguageSelector />
@@ -87,7 +106,7 @@ const TodoApp: Component = () => {
         <div class="todo-container">
           <div class="todo-stats">
             <span class="stat">
-              {completedCount()} / {totalCount()} {t('todo.completed')}
+              {completedCount()} / {totalCount()} {t("todo.completed")}
             </span>
           </div>
 
@@ -105,7 +124,7 @@ const TodoApp: Component = () => {
             </For>
             {todos().length === 0 && (
               <div class="empty-state">
-                <p>{t('todo.empty')}</p>
+                <p>{t("todo.empty")}</p>
               </div>
             )}
           </div>
@@ -113,7 +132,7 @@ const TodoApp: Component = () => {
       </main>
 
       <footer class="app-footer">
-        <p>{t('footer.text')}</p>
+        <p>{t("footer.text")}</p>
       </footer>
     </div>
   );
@@ -122,7 +141,7 @@ const TodoApp: Component = () => {
 const App: Component = () => {
   const themeModule = createTheme();
   const notificationsModule = createNotifications();
-  
+
   // Initialize i18n with English translations as default
   const i18nModule = createI18nModule(en);
 

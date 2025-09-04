@@ -17,7 +17,7 @@ An advanced demonstration of the Reynard framework's theming capabilities with c
 
 Clean and bright design perfect for daytime productivity work.
 
-### 🌙 Dark Theme  
+### 🌙 Dark Theme
 
 Easy on the eyes with a sophisticated dark color palette for focused work.
 
@@ -133,7 +133,7 @@ Add new components to `ComponentShowcase.tsx` to demonstrate how they adapt to d
 ## 📊 Performance
 
 - **Bundle Size**: ~15 kB JavaScript (gzipped)
-- **CSS Size**: ~8 kB (gzipped)  
+- **CSS Size**: ~8 kB (gzipped)
 - **Theme Switching**: < 100ms transition time
 - **Lighthouse Score**: 95+ on all metrics
 
@@ -153,4 +153,4 @@ This example is part of the Reynard framework. Found an issue or have improvemen
 
 ---
 
-*Built with ❤️ using Reynard framework, SolidJS, and modern CSS* 🦊
+_Built with ❤️ using Reynard framework, SolidJS, and modern CSS_ 🦊

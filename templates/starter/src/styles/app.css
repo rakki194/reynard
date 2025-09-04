@@ -3,8 +3,8 @@
  * Extracted and simplified from yipyap's proven CSS system
  */
 
-@import './themes.css';
-@import './components.css';
+@import "./themes.css";
+@import "./components.css";
 
 /* CSS Layer System */
 @layer reset, base, components, utilities;
@@ -19,19 +19,19 @@
   --text-primary: hsl(240deg 15% 12%);
   --text-secondary: hsl(240deg 10% 45%);
   --border-color: var(--card-bg);
-  
+
   /* Spacing */
   --spacing: 0.7rem;
   --half-spacing: calc(var(--spacing) / 2);
   --double-spacing: calc(var(--spacing) * 2);
   --triple-spacing: calc(var(--spacing) * 3);
-  
+
   /* Layout */
   --border-radius: 4px;
   --container-max-width: 1200px;
   --transition-duration: 0.2s;
   --transition-timing: ease;
-  
+
   /* Shadows */
   --shadow-color: rgb(0 0 0 / 20%);
   --shadow-default: 0 2px 4px var(--shadow-color);
@@ -47,7 +47,13 @@
   }
 
   html {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--bg-color);
@@ -59,7 +65,12 @@
     min-height: 100vh;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0 0 var(--spacing) 0;
     font-weight: 600;
     line-height: 1.3;
@@ -173,7 +184,7 @@
 
   .code-example pre {
     margin: 0;
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
     font-size: 0.9rem;
     line-height: 1.5;
   }
@@ -188,11 +199,11 @@
   .app-header h1 {
     font-size: 2rem;
   }
-  
+
   .app-main {
     padding: var(--spacing);
   }
-  
+
   .feature-grid {
     grid-template-columns: 1fr;
   }

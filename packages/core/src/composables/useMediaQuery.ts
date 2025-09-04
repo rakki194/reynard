@@ -3,7 +3,7 @@
  * Provides reactive boolean state for CSS media queries
  */
 
-import { createSignal, createEffect, onCleanup } from 'solid-js';
+import { createSignal, createEffect, onCleanup } from "solid-js";
 
 /**
  * Hook for reactive media query matching
@@ -12,10 +12,10 @@ export const useMediaQuery = (query: string) => {
   const [matches, setMatches] = createSignal(false);
 
   createEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia(query);
-    
+
     // Set initial value
     setMatches(mediaQuery.matches);
 
@@ -24,10 +24,10 @@ export const useMediaQuery = (query: string) => {
       setMatches(e.matches);
     };
 
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
 
     onCleanup(() => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     });
   });
 
@@ -37,14 +37,18 @@ export const useMediaQuery = (query: string) => {
 /**
  * Common breakpoint hooks
  */
-export const useIsMobile = () => useMediaQuery('(max-width: 768px)');
-export const useIsTablet = () => useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
-export const useIsDesktop = () => useMediaQuery('(min-width: 1025px)');
-export const useIsLargeScreen = () => useMediaQuery('(min-width: 1440px)');
+export const useIsMobile = () => useMediaQuery("(max-width: 768px)");
+export const useIsTablet = () =>
+  useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
+export const useIsDesktop = () => useMediaQuery("(min-width: 1025px)");
+export const useIsLargeScreen = () => useMediaQuery("(min-width: 1440px)");
 
 /**
  * Preference-based hooks
  */
-export const usePrefersReducedMotion = () => useMediaQuery('(prefers-reduced-motion: reduce)');
-export const usePrefersDarkMode = () => useMediaQuery('(prefers-color-scheme: dark)');
-export const usePrefersHighContrast = () => useMediaQuery('(prefers-contrast: high)');
+export const usePrefersReducedMotion = () =>
+  useMediaQuery("(prefers-reduced-motion: reduce)");
+export const usePrefersDarkMode = () =>
+  useMediaQuery("(prefers-color-scheme: dark)");
+export const usePrefersHighContrast = () =>
+  useMediaQuery("(prefers-contrast: high)");

@@ -4,9 +4,11 @@
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
     "outDir": "./dist",
-    "emitDeclarationOnly": true
+    "rootDir": "./src",
+    "skipLibCheck": true
   },
   "include": ["src"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"]
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx", "**/test-setup.ts"]
 }

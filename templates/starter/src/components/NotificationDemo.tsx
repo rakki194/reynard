@@ -3,26 +3,26 @@
  * Demonstrates notification system functionality
  */
 
-import { Component } from 'solid-js';
-import { useNotifications } from '@reynard/core';
+import { Component } from "solid-js";
+import { useNotifications } from "@reynard/core";
 
 export const NotificationDemo: Component = () => {
   const { notify } = useNotifications();
 
   const showSuccess = () => {
-    notify('Operation completed successfully!', 'success');
+    notify("Operation completed successfully!", "success");
   };
 
   const showError = () => {
-    notify('Something went wrong. Please try again.', 'error');
+    notify("Something went wrong. Please try again.", "error");
   };
 
   const showInfo = () => {
-    notify('Here is some helpful information.', 'info');
+    notify("Here is some helpful information.", "info");
   };
 
   const showWarning = () => {
-    notify('Please review this important notice.', 'warning');
+    notify("Please review this important notice.", "warning");
   };
 
   return (

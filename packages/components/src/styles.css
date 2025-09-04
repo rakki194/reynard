@@ -1,0 +1,870 @@
+/**
+ * Reynard Components Styles
+ * Comprehensive styling for all components with theme integration
+ */
+
+/* ==========================================================================
+   CSS Variables & Theme Integration
+   ========================================================================== */
+
+:root {
+  /* Component spacing */
+  --reynard-spacing-xs: 0.25rem;
+  --reynard-spacing-sm: 0.5rem;
+  --reynard-spacing-md: 1rem;
+  --reynard-spacing-lg: 1.5rem;
+  --reynard-spacing-xl: 2rem;
+  
+  /* Component sizes */
+  --reynard-size-sm: 2rem;
+  --reynard-size-md: 2.5rem;
+  --reynard-size-lg: 3rem;
+  
+  /* Border radius */
+  --reynard-radius-sm: 4px;
+  --reynard-radius-md: 6px;
+  --reynard-radius-lg: 8px;
+  --reynard-radius-xl: 12px;
+  
+  /* Shadows */
+  --reynard-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --reynard-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --reynard-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --reynard-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  
+  /* Typography */
+  --reynard-font-size-sm: 0.875rem;
+  --reynard-font-size-md: 1rem;
+  --reynard-font-size-lg: 1.125rem;
+  --reynard-font-weight-normal: 400;
+  --reynard-font-weight-medium: 500;
+  --reynard-font-weight-semibold: 600;
+  
+  /* Z-index */
+  --reynard-z-modal: 1000;
+  --reynard-z-dropdown: 100;
+  --reynard-z-tooltip: 200;
+}
+
+/* ==========================================================================
+   Button Component
+   ========================================================================== */
+
+.reynard-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--reynard-spacing-sm);
+  font-family: inherit;
+  font-weight: var(--reynard-font-weight-medium);
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--reynard-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  outline: none;
+}
+
+.reynard-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Button sizes */
+.reynard-button--sm {
+  height: var(--reynard-size-sm);
+  padding: 0 var(--reynard-spacing-sm);
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-button--md {
+  height: var(--reynard-size-md);
+  padding: 0 var(--reynard-spacing-md);
+  font-size: var(--reynard-font-size-md);
+}
+
+.reynard-button--lg {
+  height: var(--reynard-size-lg);
+  padding: 0 var(--reynard-spacing-lg);
+  font-size: var(--reynard-font-size-lg);
+}
+
+/* Button variants */
+.reynard-button--primary {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.reynard-button--primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: var(--reynard-shadow-md);
+}
+
+.reynard-button--secondary {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.reynard-button--secondary:hover:not(:disabled) {
+  background-color: var(--secondary-bg);
+  transform: translateY(-1px);
+  box-shadow: var(--reynard-shadow-md);
+}
+
+.reynard-button--tertiary {
+  background-color: transparent;
+  color: var(--accent);
+  border-color: transparent;
+}
+
+.reynard-button--tertiary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.reynard-button--danger {
+  background-color: var(--danger, #ef4444);
+  color: white;
+  border-color: var(--danger, #ef4444);
+}
+
+.reynard-button--danger:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--danger, #ef4444) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: var(--reynard-shadow-md);
+}
+
+.reynard-button--success {
+  background-color: var(--success, #10b981);
+  color: white;
+  border-color: var(--success, #10b981);
+}
+
+.reynard-button--success:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--success, #10b981) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: var(--reynard-shadow-md);
+}
+
+.reynard-button--warning {
+  background-color: var(--warning, #f59e0b);
+  color: white;
+  border-color: var(--warning, #f59e0b);
+}
+
+.reynard-button--warning:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--warning, #f59e0b) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: var(--reynard-shadow-md);
+}
+
+/* Button states */
+.reynard-button--full-width {
+  width: 100%;
+}
+
+.reynard-button--icon-only {
+  width: var(--reynard-size-md);
+  padding: 0;
+}
+
+.reynard-button--icon-only.reynard-button--sm {
+  width: var(--reynard-size-sm);
+}
+
+.reynard-button--icon-only.reynard-button--lg {
+  width: var(--reynard-size-lg);
+}
+
+.reynard-button--disabled,
+.reynard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.reynard-button--loading {
+  cursor: wait;
+}
+
+.reynard-button__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: reynard-spin 1s linear infinite;
+}
+
+@keyframes reynard-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reynard-button__icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.reynard-button__content {
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Card Component
+   ========================================================================== */
+
+.reynard-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--reynard-radius-lg);
+  transition: all 0.2s ease;
+}
+
+.reynard-card--elevated {
+  box-shadow: var(--reynard-shadow-md);
+  border: none;
+}
+
+.reynard-card--outlined {
+  border: 2px solid var(--border-color);
+}
+
+.reynard-card--filled {
+  background-color: var(--secondary-bg);
+  border: none;
+}
+
+.reynard-card--interactive {
+  cursor: pointer;
+}
+
+.reynard-card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--reynard-shadow-lg);
+}
+
+.reynard-card--selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* Card padding */
+.reynard-card--padding-none {
+  padding: 0;
+}
+
+.reynard-card--padding-sm {
+  padding: var(--reynard-spacing-sm);
+}
+
+.reynard-card--padding-md {
+  padding: var(--reynard-spacing-md);
+}
+
+.reynard-card--padding-lg {
+  padding: var(--reynard-spacing-lg);
+}
+
+.reynard-card__header {
+  padding-bottom: var(--reynard-spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--reynard-spacing-md);
+}
+
+.reynard-card__content {
+  flex: 1;
+}
+
+.reynard-card__footer {
+  padding-top: var(--reynard-spacing-md);
+  border-top: 1px solid var(--border-color);
+  margin-top: var(--reynard-spacing-md);
+}
+
+/* ==========================================================================
+   TextField Component
+   ========================================================================== */
+
+.reynard-textfield {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-xs);
+}
+
+.reynard-textfield--full-width {
+  width: 100%;
+}
+
+.reynard-textfield__label {
+  font-size: var(--reynard-font-size-sm);
+  font-weight: var(--reynard-font-weight-medium);
+  color: var(--text-primary);
+}
+
+.reynard-textfield__required {
+  color: var(--danger, #ef4444);
+  margin-left: 2px;
+}
+
+.reynard-textfield__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reynard-textfield__input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--reynard-radius-md);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.reynard-textfield__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.reynard-textfield__input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* TextField sizes */
+.reynard-textfield--sm .reynard-textfield__input {
+  height: var(--reynard-size-sm);
+  padding: 0 var(--reynard-spacing-sm);
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-textfield--md .reynard-textfield__input {
+  height: var(--reynard-size-md);
+  padding: 0 var(--reynard-spacing-md);
+  font-size: var(--reynard-font-size-md);
+}
+
+.reynard-textfield--lg .reynard-textfield__input {
+  height: var(--reynard-size-lg);
+  padding: 0 var(--reynard-spacing-lg);
+  font-size: var(--reynard-font-size-lg);
+}
+
+/* TextField with icons */
+.reynard-textfield__input--with-left-icon {
+  padding-left: 2.5rem;
+}
+
+.reynard-textfield__input--with-right-icon {
+  padding-right: 2.5rem;
+}
+
+.reynard-textfield__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.reynard-textfield__icon--left {
+  left: var(--reynard-spacing-sm);
+}
+
+.reynard-textfield__icon--right {
+  right: var(--reynard-spacing-sm);
+}
+
+.reynard-textfield__spinner {
+  position: absolute;
+  right: var(--reynard-spacing-sm);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: reynard-spin 1s linear infinite;
+}
+
+/* TextField variants */
+.reynard-textfield--filled .reynard-textfield__input {
+  background-color: var(--secondary-bg);
+  border: none;
+}
+
+.reynard-textfield--outlined .reynard-textfield__input {
+  border: 2px solid var(--border-color);
+}
+
+/* TextField states */
+.reynard-textfield--error .reynard-textfield__input {
+  border-color: var(--danger, #ef4444);
+}
+
+.reynard-textfield--error.reynard-textfield--focused .reynard-textfield__input {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+}
+
+.reynard-textfield__help {
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-textfield__error-message {
+  color: var(--danger, #ef4444);
+}
+
+.reynard-textfield__helper-text {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Select Component
+   ========================================================================== */
+
+.reynard-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-xs);
+}
+
+.reynard-select--full-width {
+  width: 100%;
+}
+
+.reynard-select__label {
+  font-size: var(--reynard-font-size-sm);
+  font-weight: var(--reynard-font-weight-medium);
+  color: var(--text-primary);
+}
+
+.reynard-select__required {
+  color: var(--danger, #ef4444);
+  margin-left: 2px;
+}
+
+.reynard-select__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reynard-select__input {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: var(--reynard-radius-md);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+  cursor: pointer;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+.reynard-select__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* Select sizes */
+.reynard-select--sm .reynard-select__input {
+  height: var(--reynard-size-sm);
+  padding: 0 var(--reynard-spacing-sm);
+  font-size: var(--reynard-font-size-sm);
+  padding-right: 2rem;
+}
+
+.reynard-select--md .reynard-select__input {
+  height: var(--reynard-size-md);
+  padding: 0 var(--reynard-spacing-md);
+  font-size: var(--reynard-font-size-md);
+  padding-right: 2.5rem;
+}
+
+.reynard-select--lg .reynard-select__input {
+  height: var(--reynard-size-lg);
+  padding: 0 var(--reynard-spacing-lg);
+  font-size: var(--reynard-font-size-lg);
+  padding-right: 3rem;
+}
+
+.reynard-select__input--with-left-icon {
+  padding-left: 2.5rem;
+}
+
+.reynard-select__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.reynard-select__icon--left {
+  left: var(--reynard-spacing-sm);
+}
+
+.reynard-select__chevron {
+  position: absolute;
+  right: var(--reynard-spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.reynard-select__spinner {
+  position: absolute;
+  right: 2.5rem;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: reynard-spin 1s linear infinite;
+}
+
+/* Select variants */
+.reynard-select--filled .reynard-select__input {
+  background-color: var(--secondary-bg);
+  border: none;
+}
+
+.reynard-select--outlined .reynard-select__input {
+  border: 2px solid var(--border-color);
+}
+
+/* Select states */
+.reynard-select--error .reynard-select__input {
+  border-color: var(--danger, #ef4444);
+}
+
+.reynard-select--error.reynard-select--focused .reynard-select__input {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+}
+
+.reynard-select__help {
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-select__error-message {
+  color: var(--danger, #ef4444);
+}
+
+.reynard-select__helper-text {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Modal Component
+   ========================================================================== */
+
+.reynard-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--reynard-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--reynard-spacing-md);
+}
+
+.reynard-modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--reynard-spacing-md);
+  animation: reynard-modal-backdrop-in 0.2s ease-out;
+}
+
+.reynard-modal__content {
+  background-color: var(--card-bg);
+  border-radius: var(--reynard-radius-lg);
+  box-shadow: var(--reynard-shadow-xl);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: reynard-modal-content-in 0.2s ease-out;
+  position: relative;
+}
+
+/* Modal sizes */
+.reynard-modal__content--sm {
+  width: 100%;
+  max-width: 400px;
+}
+
+.reynard-modal__content--md {
+  width: 100%;
+  max-width: 500px;
+}
+
+.reynard-modal__content--lg {
+  width: 100%;
+  max-width: 800px;
+}
+
+.reynard-modal__content--xl {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.reynard-modal__content--full {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+
+.reynard-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--reynard-spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.reynard-modal__title {
+  margin: 0;
+  font-size: var(--reynard-font-size-lg);
+  font-weight: var(--reynard-font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.reynard-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--reynard-radius-md);
+  transition: all 0.2s ease;
+}
+
+.reynard-modal__close:hover {
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+}
+
+.reynard-modal__body {
+  flex: 1;
+  padding: var(--reynard-spacing-lg);
+  overflow-y: auto;
+}
+
+@keyframes reynard-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes reynard-modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Tabs Component
+   ========================================================================== */
+
+.reynard-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.reynard-tabs__list {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  gap: 0;
+}
+
+.reynard-tabs--full-width .reynard-tabs__list {
+  width: 100%;
+}
+
+.reynard-tabs--full-width .reynard-tabs__tab {
+  flex: 1;
+}
+
+.reynard-tabs__tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--reynard-spacing-sm);
+  padding: var(--reynard-spacing-md);
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: var(--reynard-font-weight-medium);
+  transition: all 0.2s ease;
+  position: relative;
+  outline: none;
+}
+
+.reynard-tabs__tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.reynard-tabs__tab:hover:not(:disabled) {
+  color: var(--text-primary);
+  background-color: var(--secondary-bg);
+}
+
+.reynard-tabs__tab--active {
+  color: var(--accent);
+}
+
+.reynard-tabs__tab--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tab sizes */
+.reynard-tabs--sm .reynard-tabs__tab {
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-tabs--md .reynard-tabs__tab {
+  padding: var(--reynard-spacing-md);
+  font-size: var(--reynard-font-size-md);
+}
+
+.reynard-tabs--lg .reynard-tabs__tab {
+  padding: var(--reynard-spacing-md) var(--reynard-spacing-lg);
+  font-size: var(--reynard-font-size-lg);
+}
+
+/* Tab variants */
+.reynard-tabs--default .reynard-tabs__tab--active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--accent);
+}
+
+.reynard-tabs--pills .reynard-tabs__list {
+  border-bottom: none;
+  gap: var(--reynard-spacing-sm);
+}
+
+.reynard-tabs--pills .reynard-tabs__tab {
+  border-radius: var(--reynard-radius-md);
+}
+
+.reynard-tabs--pills .reynard-tabs__tab--active {
+  background-color: var(--accent);
+  color: white;
+}
+
+.reynard-tabs--underline .reynard-tabs__tab {
+  border-bottom: 2px solid transparent;
+}
+
+.reynard-tabs--underline .reynard-tabs__tab--active {
+  border-bottom-color: var(--accent);
+}
+
+.reynard-tabs__tab-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.reynard-tabs__tab-label {
+  display: flex;
+  align-items: center;
+}
+
+.reynard-tabs__tab-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.25rem;
+  background-color: var(--accent);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: var(--reynard-font-weight-semibold);
+  border-radius: 0.625rem;
+}
+
+.reynard-tabs__content {
+  padding: var(--reynard-spacing-lg) 0;
+}
+
+.reynard-tab-panel {
+  outline: none;
+}
+
+.reynard-tab-panel--hidden {
+  display: none;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .reynard-modal__content--lg {
+    max-width: 90vw;
+  }
+  
+  .reynard-modal__content--xl {
+    max-width: 95vw;
+  }
+  
+  .reynard-tabs__list {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .reynard-tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+}
