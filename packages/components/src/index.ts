@@ -3,6 +3,9 @@
  * Production-ready SolidJS component library
  */
 
+// Import styles
+import "./styles.css";
+
 // Export primitives
 export * from "./primitives";
 

@@ -218,7 +218,7 @@ describe("Chart Utilities", () => {
     it("generates colors with custom opacity", () => {
       const colors = generateColors(3, 0.5);
       expect(colors).toHaveLength(3);
-      colors.forEach(color => {
+      colors.forEach((color) => {
         // Colors should have 0.5 opacity
         expect(color).toContain("0.5");
       });
@@ -233,12 +233,16 @@ describe("Chart Utilities", () => {
       const colors = generateColors(100);
       expect(colors).toHaveLength(100);
       // For large counts, colors should be either rgba (predefined) or hsla (generated)
-      expect(colors.every(color => color.startsWith('rgba(') || color.startsWith('hsla('))).toBe(true);
+      expect(
+        colors.every(
+          (color) => color.startsWith("rgba(") || color.startsWith("hsla("),
+        ),
+      ).toBe(true);
     });
 
     it("uses predefined colors for small counts", () => {
       const colors = generateColors(3);
-      expect(colors.every(color => color.startsWith('rgba('))).toBe(true);
+      expect(colors.every((color) => color.startsWith("rgba("))).toBe(true);
     });
   });
 
@@ -340,7 +344,7 @@ describe("Chart Utilities", () => {
       expect(mockFn).not.toHaveBeenCalled();
 
       // Wait for debounce delay
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
@@ -349,7 +353,7 @@ describe("Chart Utilities", () => {
       const debouncedFn = debounce(mockFn, 100);
 
       debouncedFn("arg1", "arg2");
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(mockFn).toHaveBeenCalledWith("arg1", "arg2");
     });
@@ -359,7 +363,7 @@ describe("Chart Utilities", () => {
       const debouncedFn = debounce(mockFn, 0);
 
       debouncedFn();
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(mockFn).toHaveBeenCalled();
     });
@@ -552,7 +556,10 @@ describe("Chart Utilities", () => {
       }));
 
       const startTime = performance.now();
-      const result = validateChartData(largeDatasets, Array.from({ length: 1000 }, (_, i) => `Label ${i}`));
+      const result = validateChartData(
+        largeDatasets,
+        Array.from({ length: 1000 }, (_, i) => `Label ${i}`),
+      );
       const endTime = performance.now();
 
       expect(result).toBe(true);
@@ -579,9 +586,7 @@ describe("Chart Utilities", () => {
     });
 
     it("handles missing properties in datasets", () => {
-      const incompleteData = [
-        { label: "Incomplete" } as any,
-      ];
+      const incompleteData = [{ label: "Incomplete" } as any];
 
       expect(() => prepareDatasets(incompleteData)).not.toThrow();
     });

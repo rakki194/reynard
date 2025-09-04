@@ -22,36 +22,49 @@ npm install @reynard/charts @reynard/core chart.js solid-chartjs solid-js
 ## 🎯 Quick Start
 
 ```tsx
-import { LineChart, BarChart, PieChart, TimeSeriesChart } from '@reynard/charts';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  TimeSeriesChart,
+} from "@reynard/charts";
 
 function Dashboard() {
   const salesData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [{
-      label: 'Sales',
-      data: [12, 19, 3, 5, 2]
-    }]
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    datasets: [
+      {
+        label: "Sales",
+        data: [12, 19, 3, 5, 2],
+      },
+    ],
   };
 
   const performanceData = [
-    { timestamp: Date.now() - 300000, value: 45, label: '5 min ago' },
-    { timestamp: Date.now() - 240000, value: 52, label: '4 min ago' },
-    { timestamp: Date.now() - 180000, value: 38, label: '3 min ago' },
-    { timestamp: Date.now() - 120000, value: 67, label: '2 min ago' },
-    { timestamp: Date.now() - 60000, value: 74, label: '1 min ago' },
-    { timestamp: Date.now(), value: 82, label: 'Now' }
+    { timestamp: Date.now() - 300000, value: 45, label: "5 min ago" },
+    { timestamp: Date.now() - 240000, value: 52, label: "4 min ago" },
+    { timestamp: Date.now() - 180000, value: 38, label: "3 min ago" },
+    { timestamp: Date.now() - 120000, value: 67, label: "2 min ago" },
+    { timestamp: Date.now() - 60000, value: 74, label: "1 min ago" },
+    { timestamp: Date.now(), value: 82, label: "Now" },
   ];
 
   return (
-    <div style={{ display: 'grid', 'grid-template-columns': '1fr 1fr', gap: '2rem' }}>
+    <div
+      style={{
+        display: "grid",
+        "grid-template-columns": "1fr 1fr",
+        gap: "2rem",
+      }}
+    >
       <LineChart
         title="Sales Trend"
         labels={salesData.labels}
         datasets={salesData.datasets}
-        yAxis={{ label: 'Sales ($)' }}
+        yAxis={{ label: "Sales ($)" }}
         responsive
       />
-      
+
       <TimeSeriesChart
         title="Real-time Performance"
         data={performanceData}
@@ -73,23 +86,23 @@ Perfect for showing trends over time or continuous data.
 ```tsx
 <LineChart
   title="Website Traffic"
-  labels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
+  labels={["Mon", "Tue", "Wed", "Thu", "Fri"]}
   datasets={[
     {
-      label: 'Visitors',
+      label: "Visitors",
       data: [1200, 1900, 3000, 5000, 2300],
       tension: 0.4,
-      fill: false
+      fill: false,
     },
     {
-      label: 'Page Views', 
+      label: "Page Views",
       data: [2400, 3800, 6000, 10000, 4600],
       tension: 0.4,
-      fill: true
-    }
+      fill: true,
+    },
   ]}
-  xAxis={{ label: 'Day of Week' }}
-  yAxis={{ label: 'Count' }}
+  xAxis={{ label: "Day of Week" }}
+  yAxis={{ label: "Count" }}
   showGrid
   responsive
 />
@@ -110,24 +123,24 @@ Ideal for comparing categories or showing discrete data.
 ```tsx
 <BarChart
   title="Revenue by Quarter"
-  labels={['Q1', 'Q2', 'Q3', 'Q4']}
+  labels={["Q1", "Q2", "Q3", "Q4"]}
   datasets={[
     {
-      label: '2023',
+      label: "2023",
       data: [45000, 52000, 48000, 61000],
     },
     {
-      label: '2024',
+      label: "2024",
       data: [51000, 58000, 55000, 67000],
-    }
+    },
   ]}
   horizontal={false}
   stacked={false}
-  yAxis={{ 
-    label: 'Revenue ($)',
+  yAxis={{
+    label: "Revenue ($)",
     ticks: {
-      callback: (value) => `$${value.toLocaleString()}`
-    }
+      callback: (value) => `$${value.toLocaleString()}`,
+    },
   }}
 />
 ```
@@ -147,12 +160,12 @@ Great for showing proportions and percentages.
 ```tsx
 <PieChart
   title="Market Share"
-  labels={['Chrome', 'Firefox', 'Safari', 'Edge', 'Other']}
+  labels={["Chrome", "Firefox", "Safari", "Edge", "Other"]}
   data={[65, 15, 10, 7, 3]}
   variant="doughnut"
   cutout={0.6}
   showValues
-  colors={['#4285f4', '#ff9500', '#00c851', '#0078d4', '#6c757d']}
+  colors={["#4285f4", "#ff9500", "#00c851", "#0078d4", "#6c757d"]}
 />
 ```
 
@@ -177,9 +190,9 @@ Advanced real-time chart with automatic data management.
   updateInterval={1000}
   autoScroll
   aggregationInterval={10000} // 10 seconds
-  pointColors={(value) => value > 80 ? '#dc3545' : '#28a745'}
+  pointColors={(value) => (value > 80 ? "#dc3545" : "#28a745")}
   valueFormatter={(value) => `${value.toFixed(1)}%`}
-  onDataUpdate={(data) => console.log('Updated:', data.length, 'points')}
+  onDataUpdate={(data) => console.log("Updated:", data.length, "points")}
 />
 ```
 
@@ -225,11 +238,11 @@ Charts will automatically use these colors for:
 
 ```typescript
 const dataset = {
-  label: 'Sales',
+  label: "Sales",
   data: [10, 20, 30, 40, 50],
-  backgroundColor: '#3b82f6',
-  borderColor: '#1d4ed8',
-  borderWidth: 2
+  backgroundColor: "#3b82f6",
+  borderColor: "#1d4ed8",
+  borderWidth: 2,
 };
 ```
 
@@ -240,7 +253,7 @@ const timeSeriesData = [
   {
     timestamp: 1640995200000, // Unix timestamp
     value: 42.5,
-    label: '12:00 PM' // Optional display label
+    label: "12:00 PM", // Optional display label
   },
   // ... more data points
 ];
@@ -252,7 +265,7 @@ const timeSeriesData = [
 const dataPoints = [
   { x: 10, y: 20 },
   { x: 15, y: 25 },
-  { x: 20, y: 30 }
+  { x: 20, y: 30 },
 ];
 ```
 
@@ -294,12 +307,12 @@ const updateData = debounce((newData) => {
 <LineChart
   data={data}
   tooltip={{
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    titleColor: '#fff',
-    bodyColor: '#fff',
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    titleColor: "#fff",
+    bodyColor: "#fff",
     callbacks: {
-      label: (context) => `Value: ${context.parsed.y.toFixed(2)}`
-    }
+      label: (context) => `Value: ${context.parsed.y.toFixed(2)}`,
+    },
   }}
 />
 ```
@@ -314,8 +327,8 @@ const updateData = debounce((newData) => {
     max: 100,
     ticks: {
       stepSize: 10,
-      callback: (value) => `${value}%`
-    }
+      callback: (value) => `${value}%`,
+    },
   }}
 />
 ```
@@ -327,7 +340,7 @@ const updateData = debounce((newData) => {
   data={data}
   animation={{
     duration: 1000,
-    easing: 'easeOutBounce'
+    easing: "easeOutBounce",
   }}
 />
 ```
@@ -350,11 +363,11 @@ function DashboardChart() {
 
   onMount(async () => {
     try {
-      const response = await fetch('/api/metrics');
+      const response = await fetch("/api/metrics");
       const metrics = await response.json();
       setData(metrics);
     } catch (error) {
-      console.error('Failed to load metrics:', error);
+      console.error("Failed to load metrics:", error);
     } finally {
       setLoading(false);
     }
@@ -378,11 +391,11 @@ function RealtimeChart() {
   const [metrics, setMetrics] = createSignal([]);
 
   onMount(() => {
-    const ws = new WebSocket('ws://localhost:8080/metrics');
-    
+    const ws = new WebSocket("ws://localhost:8080/metrics");
+
     ws.onmessage = (event) => {
       const newData = JSON.parse(event.data);
-      setMetrics(prev => [...prev, newData]);
+      setMetrics((prev) => [...prev, newData]);
     };
 
     onCleanup(() => ws.close());
@@ -405,11 +418,13 @@ function RealtimeChart() {
 ```tsx
 function ChartsGrid() {
   return (
-    <div style={{
-      display: 'grid',
-      'grid-template-columns': 'repeat(auto-fit, minmax(400px, 1fr))',
-      gap: '1rem'
-    }}>
+    <div
+      style={{
+        display: "grid",
+        "grid-template-columns": "repeat(auto-fit, minmax(400px, 1fr))",
+        gap: "1rem",
+      }}
+    >
       <LineChart title="Traffic" data={trafficData} responsive />
       <BarChart title="Sales" data={salesData} responsive />
       <PieChart title="Distribution" data={distributionData} responsive />
@@ -426,7 +441,3 @@ See the main [Reynard repository](../../README.md) for contribution guidelines.
 ---
 
 **Built with ❤️ for data-driven SolidJS applications** 📊🦊
-
-
-
-

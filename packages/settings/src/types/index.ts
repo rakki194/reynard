@@ -3,9 +3,9 @@
  * Comprehensive type definitions for settings management
  */
 
-export type SettingType = 
+export type SettingType =
   | "boolean"
-  | "string" 
+  | "string"
   | "number"
   | "select"
   | "multiselect"
@@ -18,9 +18,9 @@ export type SettingType =
   | "file"
   | "folder";
 
-export type SettingCategory = 
+export type SettingCategory =
   | "general"
-  | "appearance" 
+  | "appearance"
   | "behavior"
   | "privacy"
   | "security"
@@ -36,7 +36,12 @@ export type SettingCategory =
 
 export type SettingScope = "user" | "global" | "session" | "temporary";
 
-export type SettingStorage = "localStorage" | "sessionStorage" | "indexedDB" | "memory" | "remote";
+export type SettingStorage =
+  | "localStorage"
+  | "sessionStorage"
+  | "indexedDB"
+  | "memory"
+  | "remote";
 
 export interface SettingDefinition<T = any> {
   /** Unique setting identifier */
@@ -131,7 +136,13 @@ export interface SettingCondition {
   /** Expected value or comparison */
   value?: any;
   /** Comparison operator */
-  operator?: "equals" | "not-equals" | "greater" | "less" | "contains" | "exists";
+  operator?:
+    | "equals"
+    | "not-equals"
+    | "greater"
+    | "less"
+    | "contains"
+    | "exists";
   /** Multiple conditions */
   and?: SettingCondition[];
   /** Alternative conditions */
@@ -393,7 +404,8 @@ export interface SelectSetting extends SettingDefinition<string | number> {
   options: SettingOption[];
 }
 
-export interface MultiSelectSetting extends SettingDefinition<(string | number)[]> {
+export interface MultiSelectSetting
+  extends SettingDefinition<(string | number)[]> {
   type: "multiselect";
   options: SettingOption[];
 }
@@ -454,7 +466,10 @@ export const DEFAULT_SETTINGS_CONFIG: SettingsConfiguration = {
   },
 };
 
-export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> = {
+export const COMMON_SETTING_CATEGORIES: Record<
+  SettingCategory,
+  CategoryConfig
+> = {
   general: {
     name: "General",
     description: "Basic application settings",
@@ -462,7 +477,7 @@ export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> 
     order: 1,
   },
   appearance: {
-    name: "Appearance", 
+    name: "Appearance",
     description: "Visual and theme settings",
     icon: "palette",
     order: 2,
@@ -476,7 +491,7 @@ export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> 
   privacy: {
     name: "Privacy",
     description: "Privacy and data settings",
-    icon: "privacy_tip", 
+    icon: "privacy_tip",
     order: 4,
   },
   security: {
@@ -493,7 +508,7 @@ export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> 
   },
   accessibility: {
     name: "Accessibility",
-    description: "Accessibility and usability settings", 
+    description: "Accessibility and usability settings",
     icon: "accessibility",
     order: 7,
   },
@@ -540,7 +555,3 @@ export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> 
     order: 14,
   },
 };
-
-
-
-

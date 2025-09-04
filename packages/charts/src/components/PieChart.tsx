@@ -3,7 +3,14 @@
  * A responsive pie/doughnut chart for proportional data
  */
 
-import { Component, onMount, createSignal, createEffect, Show, splitProps } from "solid-js";
+import {
+  Component,
+  onMount,
+  createSignal,
+  createEffect,
+  Show,
+  splitProps,
+} from "solid-js";
 import {
   Chart,
   Title,
@@ -90,7 +97,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
       Legend,
       DoughnutController,
       PieController,
-      ArcElement
+      ArcElement,
     );
     setIsRegistered(true);
   });
@@ -99,16 +106,16 @@ export const PieChart: Component<PieChartProps> = (props) => {
   createEffect(() => {
     if (local.labels && local.data && local.data.length > 0) {
       if (local.labels.length === local.data.length) {
-        const colors = local.colors || generateColors(local.data.length, 0.8, local.theme);
-        const borderColors = local.colors || generateColors(local.data.length, 1, local.theme);
-        
-        const dataset: any = {
+        const colors = local.colors || generateColors(local.data.length, 0.8);
+        const borderColors =
+          local.colors || generateColors(local.data.length, 1);
+
+        const dataset: Dataset = {
           label: "Data",
           data: local.data,
           backgroundColor: colors,
           borderColor: borderColors,
           borderWidth: 2,
-          hoverOffset: 4,
         };
 
         setChartData({
@@ -125,12 +132,15 @@ export const PieChart: Component<PieChartProps> = (props) => {
 
   const getChartOptions = () => {
     const baseConfig = getDefaultConfig(local.variant);
-    
+
     return {
       ...baseConfig,
       responsive: local.responsive,
       maintainAspectRatio: local.maintainAspectRatio,
-      animation: local.animation || (baseConfig as any).animation,
+      animation: local.animation || {
+        duration: 750,
+        easing: "easeOutCubic",
+      },
       cutout: local.variant === "doughnut" ? `${local.cutout * 100}%` : 0,
       plugins: {
         ...baseConfig.plugins,
@@ -155,19 +165,35 @@ export const PieChart: Component<PieChartProps> = (props) => {
             color: "var(--text-primary)",
             usePointStyle: true,
             padding: 20,
-            generateLabels: (chart: any) => {
+            generateLabels: (chart: {
+              data: {
+                labels?: string[];
+                datasets: Array<{
+                  data: number[];
+                  backgroundColor?: string | string[];
+                  borderColor?: string | string[];
+                  borderWidth?: number;
+                }>;
+              };
+            }) => {
               const data = chart.data;
               if (data.labels?.length && data.datasets.length) {
                 const dataset = data.datasets[0];
                 return data.labels.map((label: string, i: number) => {
                   const value = dataset.data[i];
-                  const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+                  const total = dataset.data.reduce(
+                    (sum: number, val: number) => sum + val,
+                    0,
+                  );
                   const percentage = ((value / total) * 100).toFixed(1);
-                  
+
                   return {
                     text: local.showValues ? `${label}: ${percentage}%` : label,
-                    fillStyle: dataset.backgroundColor[i],
-                    strokeStyle: dataset.borderColor?.[i] || dataset.backgroundColor[i],
+                    fillStyle: dataset.backgroundColor?.[i] || "#000000",
+                    strokeStyle:
+                      dataset.borderColor?.[i] ||
+                      dataset.backgroundColor?.[i] ||
+                      "#000000",
                     lineWidth: dataset.borderWidth || 0,
                     hidden: false,
                     index: i,
@@ -185,7 +211,10 @@ export const PieChart: Component<PieChartProps> = (props) => {
             label: (context: any) => {
               const label = context.label || "";
               const value = context.parsed;
-              const total = context.dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+              const total = context.dataset.data.reduce(
+                (sum: number, val: number) => sum + val,
+                0,
+              );
               const percentage = ((value / total) * 100).toFixed(1);
               return `${label}: ${value} (${percentage}%)`;
             },
@@ -196,7 +225,10 @@ export const PieChart: Component<PieChartProps> = (props) => {
   };
 
   const getContainerClasses = () => {
-    const classes = ["reynard-pie-chart", `reynard-pie-chart--${local.variant}`];
+    const classes = [
+      "reynard-pie-chart",
+      `reynard-pie-chart--${local.variant}`,
+    ];
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
@@ -204,7 +236,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
   const ChartComponent = local.variant === "doughnut" ? Doughnut : Pie;
 
   return (
-    <div 
+    <div
       class={getContainerClasses()}
       style={{
         width: local.responsive ? "100%" : `${local.width}px`,

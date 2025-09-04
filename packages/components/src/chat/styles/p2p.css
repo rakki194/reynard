@@ -353,7 +353,21 @@
   height: 100%;
   background: var(--accent);
   transition: width 0.3s ease;
+  width: 0%;
 }
+
+/* Progress width classes */
+.reynard-p2p-message__upload-bar--progress-0 { width: 0%; }
+.reynard-p2p-message__upload-bar--progress-10 { width: 10%; }
+.reynard-p2p-message__upload-bar--progress-20 { width: 20%; }
+.reynard-p2p-message__upload-bar--progress-30 { width: 30%; }
+.reynard-p2p-message__upload-bar--progress-40 { width: 40%; }
+.reynard-p2p-message__upload-bar--progress-50 { width: 50%; }
+.reynard-p2p-message__upload-bar--progress-60 { width: 60%; }
+.reynard-p2p-message__upload-bar--progress-70 { width: 70%; }
+.reynard-p2p-message__upload-bar--progress-80 { width: 80%; }
+.reynard-p2p-message__upload-bar--progress-90 { width: 90%; }
+.reynard-p2p-message__upload-bar--progress-100 { width: 100%; }
 
 .reynard-p2p-message__actions {
   display: flex;
@@ -1217,7 +1231,7 @@
     height: 100vh;
     border-radius: 0;
   }
-  
+
   .reynard-p2p-chat-sidebar {
     position: absolute;
     top: 0;
@@ -1227,11 +1241,11 @@
     transform: translateX(-100%);
     transition: transform var(--reynard-chat-transition);
   }
-  
+
   .reynard-p2p-chat-sidebar--open {
     transform: translateX(0);
   }
-  
+
   .reynard-user-list {
     position: absolute;
     top: 0;
@@ -1241,15 +1255,15 @@
     transform: translateX(100%);
     transition: transform var(--reynard-chat-transition);
   }
-  
+
   .reynard-user-list--open {
     transform: translateX(0);
   }
-  
+
   .reynard-p2p-message--own {
     max-width: 90%;
   }
-  
+
   .reynard-p2p-message--other {
     max-width: 90%;
   }

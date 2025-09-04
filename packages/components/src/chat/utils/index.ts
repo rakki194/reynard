@@ -1,13 +1,13 @@
 /**
  * Chat Utilities Index
- * 
+ *
  * Exports all chat utility functions and classes
  */
 
-export { 
+export {
   StreamingMarkdownParser,
   createStreamingMarkdownParser,
   parseMarkdown,
   parseMarkdownStream,
-  parseMarkdownBatched
-} from './StreamingMarkdownParser';
+  parseMarkdownBatched,
+} from "./StreamingMarkdownParser";

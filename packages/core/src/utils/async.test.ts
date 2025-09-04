@@ -65,17 +65,23 @@ describe("Async Utilities", () => {
 
     it("should reject when timeout is reached", async () => {
       const promise = new Promise<string>(() => {}); // Never resolves
-      await expect(withTimeout(promise, 100)).rejects.toThrow("Operation timed out");
+      await expect(withTimeout(promise, 100)).rejects.toThrow(
+        "Operation timed out",
+      );
     }, 10000);
 
     it("should use custom error message", async () => {
       const promise = new Promise<string>(() => {});
-      await expect(withTimeout(promise, 100, "Custom timeout")).rejects.toThrow("Custom timeout");
+      await expect(withTimeout(promise, 100, "Custom timeout")).rejects.toThrow(
+        "Custom timeout",
+      );
     }, 10000);
 
     it("should handle promise rejection", async () => {
       const promise = Promise.reject(new Error("Original error"));
-      await expect(withTimeout(promise, 1000)).rejects.toThrow("Original error");
+      await expect(withTimeout(promise, 1000)).rejects.toThrow(
+        "Original error",
+      );
     });
   });
 
@@ -88,7 +94,8 @@ describe("Async Utilities", () => {
     });
 
     it("should retry and eventually succeed", async () => {
-      const mockFn = vi.fn()
+      const mockFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("First failure"))
         .mockRejectedValueOnce(new Error("Second failure"))
         .mockResolvedValue("success");
@@ -105,7 +112,8 @@ describe("Async Utilities", () => {
     }, 15000);
 
     it("should use exponential backoff", async () => {
-      const mockFn = vi.fn()
+      const mockFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("First failure"))
         .mockResolvedValue("success");
 
@@ -156,11 +164,11 @@ describe("Async Utilities", () => {
       const debouncedFn = debounce(mockFn, 100);
 
       debouncedFn("arg1");
-      await new Promise(resolve => setTimeout(resolve, 50)); // Halfway through delay
+      await new Promise((resolve) => setTimeout(resolve, 50)); // Halfway through delay
 
       debouncedFn("arg2"); // Should reset the timer
-      await new Promise(resolve => setTimeout(resolve, 100)); // Wait for full delay
-      
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for full delay
+
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(mockFn).toHaveBeenCalledWith("arg2");
     }, 15000);
@@ -183,7 +191,7 @@ describe("Async Utilities", () => {
       await Promise.all([promise1, promise2, promise3]);
 
       // Wait for throttle period to pass
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       throttledFn("arg4");
       expect(mockFn).toHaveBeenCalledWith("arg4");
       // The function may be called more times due to the pending promise
@@ -201,22 +209,26 @@ describe("Async Utilities", () => {
   describe("batchExecute", () => {
     it("should execute promises in batches", async () => {
       const mockFns = Array.from({ length: 6 }, (_, i) =>
-        vi.fn().mockResolvedValue(`result${i}`)
+        vi.fn().mockResolvedValue(`result${i}`),
       );
 
       const results = await batchExecute(mockFns, 2);
 
       expect(results).toEqual([
-        "result0", "result1", "result2",
-        "result3", "result4", "result5"
+        "result0",
+        "result1",
+        "result2",
+        "result3",
+        "result4",
+        "result5",
       ]);
 
-      mockFns.forEach(fn => expect(fn).toHaveBeenCalledTimes(1));
+      mockFns.forEach((fn) => expect(fn).toHaveBeenCalledTimes(1));
     });
 
     it("should use default batch size", async () => {
       const mockFns = Array.from({ length: 3 }, (_, i) =>
-        vi.fn().mockResolvedValue(`result${i}`)
+        vi.fn().mockResolvedValue(`result${i}`),
       );
 
       const results = await batchExecute(mockFns);
@@ -231,7 +243,7 @@ describe("Async Utilities", () => {
 
     it("should handle batch size larger than array", async () => {
       const mockFns = Array.from({ length: 2 }, (_, i) =>
-        vi.fn().mockResolvedValue(`result${i}`)
+        vi.fn().mockResolvedValue(`result${i}`),
       );
 
       const results = await batchExecute(mockFns, 10);
@@ -271,7 +283,9 @@ describe("Async Utilities", () => {
       const items = [1, 2, 3];
       const mapper = vi.fn().mockRejectedValue(new Error("Mapper failed"));
 
-      await expect(mapWithConcurrency(items, mapper)).rejects.toThrow("Mapper failed");
+      await expect(mapWithConcurrency(items, mapper)).rejects.toThrow(
+        "Mapper failed",
+      );
     });
   });
 
@@ -284,7 +298,7 @@ describe("Async Utilities", () => {
       });
 
       const promise = poll(condition, 100, 1000);
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       await expect(promise).resolves.toBeUndefined();
       expect(condition).toHaveBeenCalledTimes(3);
@@ -294,7 +308,7 @@ describe("Async Utilities", () => {
       const condition = vi.fn().mockReturnValue(false);
 
       const promise = poll(condition, 100, 500);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       await expect(promise).rejects.toThrow("Polling timeout reached");
     });
@@ -307,7 +321,7 @@ describe("Async Utilities", () => {
       });
 
       const promise = poll(condition, 100, 1000);
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       await expect(promise).resolves.toBeUndefined();
       expect(condition).toHaveBeenCalledTimes(2);
@@ -337,7 +351,9 @@ describe("Async Utilities", () => {
     });
 
     it("should handle different arguments", async () => {
-      const mockFn = vi.fn().mockImplementation(async (arg: string) => `result-${arg}`);
+      const mockFn = vi
+        .fn()
+        .mockImplementation(async (arg: string) => `result-${arg}`);
       const memoizedFn = memoizeAsync(mockFn);
 
       await memoizedFn("arg1");
@@ -350,7 +366,9 @@ describe("Async Utilities", () => {
 
     it("should use custom key generator", async () => {
       const mockFn = vi.fn().mockResolvedValue("result");
-      const keyGenerator = vi.fn().mockImplementation((arg: string) => `key-${arg}`);
+      const keyGenerator = vi
+        .fn()
+        .mockImplementation((arg: string) => `key-${arg}`);
       const memoizedFn = memoizeAsync(mockFn, keyGenerator);
 
       await memoizedFn("arg1");
@@ -375,7 +393,7 @@ describe("Async Utilities", () => {
   describe("nextTick", () => {
     it("should resolve on next tick", async () => {
       const promise = nextTick();
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       await expect(promise).resolves.toBeUndefined();
     });
   });
@@ -383,7 +401,7 @@ describe("Async Utilities", () => {
   describe("nextFrame", () => {
     it("should resolve with timestamp", async () => {
       const promise = nextFrame();
-      await new Promise(resolve => setTimeout(resolve, 16)); // ~60fps
+      await new Promise((resolve) => setTimeout(resolve, 16)); // ~60fps
       await expect(promise).resolves.toBeTypeOf("number");
     });
 
@@ -392,7 +410,7 @@ describe("Async Utilities", () => {
       delete (global as any).requestAnimationFrame;
 
       const promise = nextFrame();
-      await new Promise(resolve => setTimeout(resolve, 16));
+      await new Promise((resolve) => setTimeout(resolve, 16));
       await expect(promise).resolves.toBeTypeOf("number");
 
       global.requestAnimationFrame = originalRAF;
@@ -431,7 +449,7 @@ describe("Async Utilities", () => {
       expect(cancelablePromise.isCanceled()).toBe(true);
 
       // The promise should never resolve
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       expect(cancelablePromise.isCanceled()).toBe(true);
     });
 
@@ -445,7 +463,7 @@ describe("Async Utilities", () => {
       expect(cancelablePromise.isCanceled()).toBe(true);
 
       // The promise should never reject
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       expect(cancelablePromise.isCanceled()).toBe(true);
     });
   });

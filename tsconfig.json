@@ -6,10 +6,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "preserve",
     "strict": true,
     "noUnusedLocals": true,
@@ -17,8 +15,17 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "composite": true
   },
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/components" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/settings" },
+    { "path": "./packages/gallery" }
+  ],
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }

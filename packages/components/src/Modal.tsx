@@ -2,35 +2,33 @@
  * Modal Component
  * A flexible modal dialog component with backdrop and animations
  */
-
 import {
-  Component,
-  JSX,
   splitProps,
   mergeProps,
   createEffect,
   Show,
+  Component,
 } from "solid-js";
 import { Portal } from "solid-js/web";
 
 export interface ModalProps {
   /** Whether the modal is open */
   open: boolean;
-  /** Function to call when modal should close */
+  /** Callback when modal should close */
   onClose?: () => void;
-  /** Modal size */
-  size?: "sm" | "md" | "lg" | "xl" | "full";
-  /** Whether to show close button */
+  /** Modal size variant */
+  size?: "sm" | "md" | "lg" | "xl";
+  /** Show close button in header */
   showCloseButton?: boolean;
-  /** Whether clicking backdrop closes modal */
+  /** Close modal when backdrop is clicked */
   closeOnBackdrop?: boolean;
-  /** Whether pressing escape closes modal */
+  /** Close modal when escape key is pressed */
   closeOnEscape?: boolean;
   /** Modal title */
-  title?: JSX.Element;
+  title?: string;
   /** Modal content */
-  children?: JSX.Element;
-  /** Custom class name */
+  children?: any;
+  /** Additional CSS classes */
   class?: string;
 }
 
@@ -58,13 +56,11 @@ export const Modal: Component<ModalProps> = (props) => {
   // Handle escape key
   createEffect(() => {
     if (!local.open || !local.closeOnEscape) return;
-
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         local.onClose?.();
       }
     };
-
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   });
@@ -76,7 +72,6 @@ export const Modal: Component<ModalProps> = (props) => {
     } else {
       document.body.style.overflow = "";
     }
-
     return () => {
       document.body.style.overflow = "";
     };
@@ -93,9 +88,7 @@ export const Modal: Component<ModalProps> = (props) => {
       "reynard-modal__content",
       `reynard-modal__content--${local.size}`,
     ];
-
     if (local.class) classes.push(local.class);
-
     return classes.join(" ");
   };
 

@@ -3,18 +3,13 @@
  * Responsive CSS Grid layout with flexible configurations
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  createMemo,
-  For,
-  children as resolveChildren,
-} from "solid-js";
+import { Component, JSX, splitProps, createMemo } from "solid-js";
 
 export interface GridProps {
   /** Number of columns (can be responsive object) */
-  columns?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  columns?:
+    | number
+    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Gap between grid items */
   gap?: string | number;
   /** Minimum column width (for auto-fit grids) */
@@ -33,7 +28,9 @@ export interface GridProps {
 
 export interface GridItemProps {
   /** Column span */
-  colSpan?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  colSpan?:
+    | number
+    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Row span */
   rowSpan?: number;
   /** Column start position */
@@ -50,14 +47,6 @@ export interface GridItemProps {
   children: JSX.Element;
 }
 
-const BREAKPOINTS = {
-  xs: 0,
-  sm: 576,
-  md: 768,
-  lg: 992,
-  xl: 1200,
-};
-
 export const Grid: Component<GridProps> = (props) => {
   const [local, others] = splitProps(props, [
     "columns",
@@ -70,62 +59,88 @@ export const Grid: Component<GridProps> = (props) => {
     "children",
   ]);
 
-  const gridStyles = createMemo((): JSX.CSSProperties => {
-    const styles: JSX.CSSProperties = {
-      display: "grid",
-      gap: typeof local.gap === "number" ? `${local.gap}px` : local.gap || "1rem",
-    };
-
-    if (local.autoFit && local.minColumnWidth) {
-      styles["grid-template-columns"] = `repeat(auto-fit, minmax(${local.minColumnWidth}, 1fr))`;
-    } else if (typeof local.columns === "number") {
-      styles["grid-template-columns"] = `repeat(${local.columns}, 1fr)`;
-    } else if (typeof local.columns === "object") {
-      // For responsive columns, we'll use CSS custom properties
-      // and handle responsiveness with CSS media queries
-      styles["grid-template-columns"] = `repeat(var(--grid-columns, ${local.columns.md || 1}), 1fr)`;
-    } else {
-      styles["grid-template-columns"] = "repeat(auto-fit, minmax(250px, 1fr))";
-    }
-
-    if (local.autoRows) {
-      styles["grid-auto-rows"] = local.autoRows;
-    }
-
-    if (local.autoFlow) {
-      styles["grid-auto-flow"] = local.autoFlow;
-    }
-
-    return styles;
-  });
-
   const getClasses = () => {
     const classes = ["reynard-grid"];
+
+    // Add gap classes
+    if (typeof local.gap === "number") {
+      if (local.gap <= 4) classes.push("reynard-grid--gap-xs");
+      else if (local.gap <= 8) classes.push("reynard-grid--gap-sm");
+      else if (local.gap <= 16) classes.push("reynard-grid--gap-md");
+      else if (local.gap <= 24) classes.push("reynard-grid--gap-lg");
+      else classes.push("reynard-grid--gap-xl");
+    } else if (local.gap) {
+      // Handle string gaps by adding custom CSS variable
+      classes.push("reynard-grid--custom-gap");
+    }
+
+    // Add column classes
+    if (local.autoFit) {
+      classes.push("reynard-grid--auto-fit");
+    } else if (typeof local.columns === "number") {
+      if (local.columns <= 12) {
+        classes.push(`reynard-grid--cols-${local.columns}`);
+      }
+    }
+
+    // Add auto-rows classes
+    if (local.autoRows) {
+      if (local.autoRows === "min-content")
+        classes.push("reynard-grid--auto-rows-min");
+      else if (local.autoRows === "max-content")
+        classes.push("reynard-grid--auto-rows-max");
+      else if (local.autoRows === "auto")
+        classes.push("reynard-grid--auto-rows-auto");
+    }
+
+    // Add auto-flow classes
+    if (local.autoFlow) {
+      if (local.autoFlow === "row") classes.push("reynard-grid--flow-row");
+      else if (local.autoFlow === "column")
+        classes.push("reynard-grid--flow-column");
+      else if (local.autoFlow === "row dense")
+        classes.push("reynard-grid--flow-row-dense");
+      else if (local.autoFlow === "column dense")
+        classes.push("reynard-grid--flow-column-dense");
+    }
+
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
-  // Generate CSS custom properties for responsive columns
+  // Generate CSS custom properties for responsive columns and custom gaps
   const getCustomProperties = createMemo(() => {
-    if (typeof local.columns !== "object") return {};
-
     const properties: Record<string, string> = {};
-    
-    if (local.columns.xs) properties["--grid-columns-xs"] = local.columns.xs.toString();
-    if (local.columns.sm) properties["--grid-columns-sm"] = local.columns.sm.toString();
-    if (local.columns.md) properties["--grid-columns-md"] = local.columns.md.toString();
-    if (local.columns.lg) properties["--grid-columns-lg"] = local.columns.lg.toString();
-    if (local.columns.xl) properties["--grid-columns-xl"] = local.columns.xl.toString();
+
+    // Handle responsive columns
+    if (typeof local.columns === "object") {
+      if (local.columns.xs)
+        properties["--grid-columns-xs"] = local.columns.xs.toString();
+      if (local.columns.sm)
+        properties["--grid-columns-sm"] = local.columns.sm.toString();
+      if (local.columns.md)
+        properties["--grid-columns-md"] = local.columns.md.toString();
+      if (local.columns.lg)
+        properties["--grid-columns-lg"] = local.columns.lg.toString();
+      if (local.columns.xl)
+        properties["--grid-columns-xl"] = local.columns.xl.toString();
+    }
+
+    // Handle custom gap
+    if (typeof local.gap === "string" && local.gap) {
+      properties["--custom-gap"] = local.gap;
+    }
+
+    // Handle custom minColumnWidth for auto-fit
+    if (local.autoFit && local.minColumnWidth) {
+      properties["--min-column-width"] = local.minColumnWidth;
+    }
 
     return properties;
   });
 
   return (
-    <div
-      class={getClasses()}
-      style={{ ...gridStyles(), ...getCustomProperties() }}
-      {...others}
-    >
+    <div class={getClasses()} style={getCustomProperties()} {...others}>
       {local.children}
     </div>
   );
@@ -143,65 +158,49 @@ export const GridItem: Component<GridItemProps> = (props) => {
     "children",
   ]);
 
-  const itemStyles = createMemo((): JSX.CSSProperties => {
-    const styles: JSX.CSSProperties = {};
-
-    if (typeof local.colSpan === "number") {
-      styles["grid-column"] = `span ${local.colSpan}`;
-    } else if (typeof local.colSpan === "object") {
-      // For responsive spans, use CSS custom properties
-      styles["grid-column"] = `span var(--col-span, ${local.colSpan.md || 1})`;
-    }
-
-    if (local.rowSpan) {
-      styles["grid-row"] = `span ${local.rowSpan}`;
-    }
-
-    if (local.colStart) {
-      styles["grid-column-start"] = local.colStart.toString();
-    }
-
-    if (local.colEnd) {
-      styles["grid-column-end"] = local.colEnd.toString();
-    }
-
-    if (local.rowStart) {
-      styles["grid-row-start"] = local.rowStart.toString();
-    }
-
-    if (local.rowEnd) {
-      styles["grid-row-end"] = local.rowEnd.toString();
-    }
-
-    return styles;
-  });
-
   const getClasses = () => {
     const classes = ["reynard-grid-item"];
+
+    // Add column span classes
+    if (typeof local.colSpan === "number") {
+      if (local.colSpan <= 12) {
+        classes.push(`reynard-grid-item--span-${local.colSpan}`);
+      }
+    }
+
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
   const getCustomProperties = createMemo(() => {
-    if (typeof local.colSpan !== "object") return {};
-
     const properties: Record<string, string> = {};
-    
-    if (local.colSpan.xs) properties["--col-span-xs"] = local.colSpan.xs.toString();
-    if (local.colSpan.sm) properties["--col-span-sm"] = local.colSpan.sm.toString();
-    if (local.colSpan.md) properties["--col-span-md"] = local.colSpan.md.toString();
-    if (local.colSpan.lg) properties["--col-span-lg"] = local.colSpan.lg.toString();
-    if (local.colSpan.xl) properties["--col-span-xl"] = local.colSpan.xl.toString();
+
+    // Handle responsive column spans
+    if (typeof local.colSpan === "object") {
+      if (local.colSpan.xs)
+        properties["--col-span-xs"] = local.colSpan.xs.toString();
+      if (local.colSpan.sm)
+        properties["--col-span-sm"] = local.colSpan.sm.toString();
+      if (local.colSpan.md)
+        properties["--col-span-md"] = local.colSpan.md.toString();
+      if (local.colSpan.lg)
+        properties["--col-span-lg"] = local.colSpan.lg.toString();
+      if (local.colSpan.xl)
+        properties["--col-span-xl"] = local.colSpan.xl.toString();
+    }
+
+    // Handle positioning properties that can't be easily converted to classes
+    if (local.rowSpan) properties["--row-span"] = local.rowSpan.toString();
+    if (local.colStart) properties["--col-start"] = local.colStart.toString();
+    if (local.colEnd) properties["--col-end"] = local.colEnd.toString();
+    if (local.rowStart) properties["--row-start"] = local.rowStart.toString();
+    if (local.rowEnd) properties["--row-end"] = local.rowEnd.toString();
 
     return properties;
   });
 
   return (
-    <div
-      class={getClasses()}
-      style={{ ...itemStyles(), ...getCustomProperties() }}
-      {...others}
-    >
+    <div class={getClasses()} style={getCustomProperties()} {...others}>
       {local.children}
     </div>
   );
@@ -210,7 +209,9 @@ export const GridItem: Component<GridItemProps> = (props) => {
 // Masonry Grid for dynamic heights
 export interface MasonryGridProps {
   /** Number of columns */
-  columns?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  columns?:
+    | number
+    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Gap between items */
   gap?: string | number;
   /** Custom class name */
@@ -236,32 +237,44 @@ export const MasonryGrid: Component<MasonryGridProps> = (props) => {
     return 2;
   };
 
-  const gap = typeof local.gap === "number" ? `${local.gap}px` : local.gap || "1rem";
-
   const getClasses = () => {
     const classes = ["reynard-masonry-grid"];
+
+    // Add column classes
+    const cols = getColumns();
+    if (cols <= 12) {
+      classes.push(`reynard-grid--cols-${cols}`);
+    }
+
+    // Add gap classes
+    if (typeof local.gap === "number") {
+      if (local.gap <= 4) classes.push("reynard-grid--gap-xs");
+      else if (local.gap <= 8) classes.push("reynard-grid--gap-sm");
+      else if (local.gap <= 16) classes.push("reynard-grid--gap-md");
+      else if (local.gap <= 24) classes.push("reynard-grid--gap-lg");
+      else classes.push("reynard-grid--gap-xl");
+    } else if (local.gap) {
+      classes.push("reynard-grid--custom-gap");
+    }
+
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
-  const masonryStyles = (): JSX.CSSProperties => ({
-    display: "grid",
-    "grid-template-columns": `repeat(${getColumns()}, 1fr)`,
-    gap,
-    "align-items": "start",
+  const getCustomProperties = createMemo(() => {
+    const properties: Record<string, string> = {};
+
+    // Handle custom gap
+    if (typeof local.gap === "string" && local.gap) {
+      properties["--custom-gap"] = local.gap;
+    }
+
+    return properties;
   });
 
   return (
-    <div
-      class={getClasses()}
-      style={masonryStyles()}
-      {...others}
-    >
+    <div class={getClasses()} style={getCustomProperties()} {...others}>
       {local.children}
     </div>
   );
 };
-
-
-
-

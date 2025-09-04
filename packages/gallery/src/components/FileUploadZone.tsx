@@ -3,18 +3,18 @@
  * Drag and drop file upload area with progress tracking
  */
 
-import { 
-  Component, 
-  Show, 
-  For, 
-  createSignal, 
+import {
+  Component,
+  Show,
+  For,
+  createSignal,
   onMount,
-  onCleanup
+  onCleanup,
 } from "solid-js";
 import { Button } from "@reynard/components";
 import type { UploadProgress, UploadConfiguration } from "../types";
 import { formatFileSize } from "../utils";
-import "./FileUploadZone.css";
+// import "./FileUploadZone.css";
 
 export interface FileUploadZoneProps {
   /** Upload configuration */
@@ -36,7 +36,7 @@ export interface FileUploadZoneProps {
 export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   let fileInputRef: HTMLInputElement | undefined;
   let dropZoneRef: HTMLDivElement | undefined;
-  
+
   const [isDragOver, setIsDragOver] = createSignal(false);
 
   // Handle file input change
@@ -48,18 +48,16 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     }
   };
 
-
-
   // Drag and drop handlers
   const handleDragEnter = (event: DragEvent): void => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     if (event.dataTransfer?.items) {
       const hasFiles = Array.from(event.dataTransfer.items).some(
-        item => item.kind === "file"
+        (item) => item.kind === "file",
       );
       if (hasFiles) {
         setIsDragOver(true);
@@ -69,19 +67,19 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
 
   const handleDragLeave = (event: DragEvent): void => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     setIsDragOver(false);
   };
 
   const handleDragOver = (event: DragEvent): void => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     // Set dropEffect to copy to show the correct cursor
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = "copy";
@@ -90,12 +88,12 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
 
   const handleDrop = (event: DragEvent): void => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     setIsDragOver(false);
-    
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       props.onUpload?.(Array.from(files));
@@ -106,12 +104,12 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   onMount(() => {
     if (props.enableDragDrop && dropZoneRef) {
       const element = dropZoneRef;
-      
+
       element.addEventListener("dragenter", handleDragEnter);
       element.addEventListener("dragleave", handleDragLeave);
       element.addEventListener("dragover", handleDragOver);
       element.addEventListener("drop", handleDrop);
-      
+
       onCleanup(() => {
         element.removeEventListener("dragenter", handleDragEnter);
         element.removeEventListener("dragleave", handleDragLeave);
@@ -124,11 +122,11 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   // Get upload zone classes
   const getUploadZoneClasses = (): string => {
     const classes = ["file-upload-zone"];
-    
+
     if (isDragOver()) classes.push("file-upload-zone--drag-over");
     if (props.uploading) classes.push("file-upload-zone--uploading");
     if (props.class) classes.push(props.class);
-    
+
     return classes.join(" ");
   };
 
@@ -140,7 +138,10 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   // Get progress bar width class
   const getProgressWidthClass = (progress: number): string => {
     // Round to nearest 10% and clamp between 0-100
-    const roundedProgress = Math.min(100, Math.max(0, Math.round(progress / 10) * 10));
+    const roundedProgress = Math.min(
+      100,
+      Math.max(0, Math.round(progress / 10) * 10),
+    );
     return `upload-item__progress-bar--width-${roundedProgress}`;
   };
 
@@ -151,9 +152,10 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     return (
       <div class="file-upload-zone__progress">
         <h4 class="file-upload-zone__progress-title">
-          Uploading {props.uploads.length} file{props.uploads.length !== 1 ? "s" : ""}
+          Uploading {props.uploads.length} file
+          {props.uploads.length !== 1 ? "s" : ""}
         </h4>
-        
+
         <For each={props.uploads}>
           {(upload) => (
             <div class="upload-item" data-status={upload.status}>
@@ -165,16 +167,16 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
                   {formatFileSize(upload.file.size)}
                 </span>
               </div>
-              
+
               <div class="upload-item__progress">
-                <div 
+                <div
                   class={`upload-item__progress-bar ${getProgressWidthClass(upload.progress)}`}
                 />
                 <span class="upload-item__progress-text">
                   {upload.progress}%
                 </span>
               </div>
-              
+
               <div class="upload-item__actions">
                 <Show when={upload.status === "uploading"}>
                   <Button
@@ -185,20 +187,18 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
                     Cancel
                   </Button>
                 </Show>
-                
+
                 <Show when={upload.status === "error"}>
                   <span class="upload-item__error" title={upload.error}>
                     Error
                   </span>
                 </Show>
-                
+
                 <Show when={upload.status === "completed"}>
-                  <span class="upload-item__success">
-                    ✓
-                  </span>
+                  <span class="upload-item__success">✓</span>
                 </Show>
               </div>
-              
+
               <Show when={upload.speed && upload.timeRemaining}>
                 <div class="upload-item__stats">
                   <span class="upload-item__speed">
@@ -231,29 +231,27 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
         class="file-upload-zone__file-input"
         aria-label="File upload input"
       />
-      
+
       <Show when={!props.uploading}>
         <div class="file-upload-zone__content">
           <div class="file-upload-zone__icon">
-            <span class="icon">
-              {isDragOver() ? "download" : "upload"}
-            </span>
+            <span class="icon">{isDragOver() ? "download" : "upload"}</span>
           </div>
-          
+
           <div class="file-upload-zone__text">
             <Show when={isDragOver()}>
               <h3>Drop files here to upload</h3>
               <p>Release to start uploading</p>
             </Show>
-            
+
             <Show when={!isDragOver()}>
               <h3>Upload Files</h3>
               <p>
                 <Show when={props.enableDragDrop}>
                   Drag and drop files here or{" "}
                 </Show>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   class="file-upload-zone__browse-button"
                   onClick={() => fileInputRef?.click()}
                 >
@@ -262,27 +260,17 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
               </p>
             </Show>
           </div>
-          
+
           <div class="file-upload-zone__info">
-            <p>
-              Maximum file size: {formatFileSize(props.config.maxFileSize)}
-            </p>
+            <p>Maximum file size: {formatFileSize(props.config.maxFileSize)}</p>
             <Show when={props.config.allowedTypes.length > 0}>
-              <p>
-                Supported formats: {props.config.allowedTypes.join(", ")}
-              </p>
+              <p>Supported formats: {props.config.allowedTypes.join(", ")}</p>
             </Show>
           </div>
         </div>
       </Show>
-      
-      <Show when={props.uploading}>
-        {renderUploadProgress()}
-      </Show>
+
+      <Show when={props.uploading}>{renderUploadProgress()}</Show>
     </div>
   );
 };
-
-
-
-

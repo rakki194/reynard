@@ -1217,7 +1217,7 @@
     height: 100vh;
     border-radius: 0;
   }
-  
+
   .reynard-p2p-chat-sidebar {
     position: absolute;
     top: 0;
@@ -1227,11 +1227,11 @@
     transform: translateX(-100%);
     transition: transform var(--reynard-chat-transition);
   }
-  
+
   .reynard-p2p-chat-sidebar--open {
     transform: translateX(0);
   }
-  
+
   .reynard-user-list {
     position: absolute;
     top: 0;
@@ -1241,15 +1241,15 @@
     transform: translateX(100%);
     transition: transform var(--reynard-chat-transition);
   }
-  
+
   .reynard-user-list--open {
     transform: translateX(0);
   }
-  
+
   .reynard-p2p-message--own {
     max-width: 90%;
   }
-  
+
   .reynard-p2p-message--other {
     max-width: 90%;
   }

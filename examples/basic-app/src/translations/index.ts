@@ -19,7 +19,3 @@ export const loadTranslations = async (
   // Return available translation or fallback to English
   return translations[locale] || translations.en;
 };
-
-
-
-

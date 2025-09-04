@@ -2,24 +2,19 @@
  * Tabs Component
  * A flexible tab navigation component with keyboard support
  */
-
-import {
-  Component,
-  JSX,
-  splitProps,
-  mergeProps,
-  createSignal,
-  For,
-  createEffect,
-  children,
-} from "solid-js";
+import { splitProps, mergeProps, For, Component } from "solid-js";
 
 export interface TabItem {
+  /** Unique identifier for the tab */
   id: string;
+  /** Display label for the tab */
   label: string;
-  disabled?: boolean;
-  icon?: JSX.Element;
+  /** Optional icon for the tab */
+  icon?: any;
+  /** Optional badge for the tab */
   badge?: string | number;
+  /** Whether the tab is disabled */
+  disabled?: boolean;
 }
 
 export interface TabsProps {
@@ -27,17 +22,28 @@ export interface TabsProps {
   items: TabItem[];
   /** Currently active tab ID */
   activeTab: string;
-  /** Function called when tab changes */
+  /** Callback when tab changes */
   onTabChange: (tabId: string) => void;
-  /** Tab variant */
+  /** Visual variant */
   variant?: "default" | "pills" | "underline";
-  /** Tab size */
+  /** Size variant */
   size?: "sm" | "md" | "lg";
-  /** Whether tabs should fill available width */
+  /** Whether tabs should take full width */
   fullWidth?: boolean;
   /** Tab content */
-  children?: JSX.Element;
-  /** Custom class name */
+  children?: any;
+  /** Additional CSS classes */
+  class?: string;
+}
+
+export interface TabPanelProps {
+  /** ID of the tab this panel belongs to */
+  tabId: string;
+  /** Currently active tab ID */
+  activeTab: string;
+  /** Panel content */
+  children?: any;
+  /** Additional CSS classes */
   class?: string;
 }
 
@@ -59,15 +65,14 @@ export const Tabs: Component<TabsProps> = (props) => {
     "children",
     "class",
   ]);
-
   let tabsRef: HTMLDivElement | undefined;
-  const [focusedTab, setFocusedTab] = createSignal<string | null>(null);
 
   // Handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent, tabId: string) => {
-    const currentIndex = local.items.findIndex((item) => item.id === tabId);
+    const currentIndex = local.items.findIndex(
+      (item: TabItem) => item.id === tabId,
+    );
     let nextIndex = currentIndex;
-
     switch (e.key) {
       case "ArrowLeft":
         e.preventDefault();
@@ -95,7 +100,6 @@ export const Tabs: Component<TabsProps> = (props) => {
       default:
         return;
     }
-
     // Find next non-disabled tab
     while (local.items[nextIndex]?.disabled && nextIndex !== currentIndex) {
       if (e.key === "ArrowLeft" || e.key === "End") {
@@ -104,13 +108,11 @@ export const Tabs: Component<TabsProps> = (props) => {
         nextIndex = nextIndex < local.items.length - 1 ? nextIndex + 1 : 0;
       }
     }
-
     if (!local.items[nextIndex]?.disabled) {
-      setFocusedTab(local.items[nextIndex].id);
       // Focus the tab button
       const tabButton = tabsRef?.querySelector(
         `[data-tab-id="${local.items[nextIndex].id}"]`,
-      ) as HTMLButtonElement;
+      ) as HTMLElement;
       tabButton?.focus();
     }
   };
@@ -121,40 +123,37 @@ export const Tabs: Component<TabsProps> = (props) => {
       `reynard-tabs--${local.variant}`,
       `reynard-tabs--${local.size}`,
     ];
-
     if (local.fullWidth) classes.push("reynard-tabs--full-width");
     if (local.class) classes.push(local.class);
-
     return classes.join(" ");
   };
 
   const getTabClasses = (item: TabItem) => {
     const classes = ["reynard-tabs__tab"];
-
     if (item.id === local.activeTab) classes.push("reynard-tabs__tab--active");
     if (item.disabled) classes.push("reynard-tabs__tab--disabled");
-
     return classes.join(" ");
+  };
+
+  const getAriaSelected = (item: TabItem) => {
+    return item.id === local.activeTab;
   };
 
   return (
     <div class={getTabsClasses()}>
       <div class="reynard-tabs__list" role="tablist" ref={tabsRef}>
         <For each={local.items}>
-          {(item) => (
+          {(item: TabItem) => (
             <button
               type="button"
               role="tab"
               data-tab-id={item.id}
               class={getTabClasses(item)}
-              aria-selected={item.id === local.activeTab ? "true" : "false"}
-              aria-disabled={item.disabled ? "true" : "false"}
+              attr:aria-selected={getAriaSelected(item) ? "true" : "false"}
               disabled={item.disabled}
               tabindex={item.id === local.activeTab ? 0 : -1}
               onClick={() => !item.disabled && local.onTabChange(item.id)}
               onKeyDown={(e) => handleKeyDown(e, item.id)}
-              onFocus={() => setFocusedTab(item.id)}
-              onBlur={() => setFocusedTab(null)}
             >
               {item.icon && (
                 <span class="reynard-tabs__tab-icon">{item.icon}</span>
@@ -177,18 +176,6 @@ export const Tabs: Component<TabsProps> = (props) => {
   );
 };
 
-// Tab Panel component for content
-export interface TabPanelProps {
-  /** Tab ID this panel belongs to */
-  tabId: string;
-  /** Currently active tab ID */
-  activeTab: string;
-  /** Panel content */
-  children: JSX.Element;
-  /** Custom class name */
-  class?: string;
-}
-
 export const TabPanel: Component<TabPanelProps> = (props) => {
   const [local] = splitProps(props, [
     "tabId",
@@ -196,21 +183,21 @@ export const TabPanel: Component<TabPanelProps> = (props) => {
     "children",
     "class",
   ]);
-
   const isActive = () => local.tabId === local.activeTab;
-
+  const getAriaHidden = () => {
+    return !isActive();
+  };
   const getClasses = () => {
     const classes = ["reynard-tab-panel"];
     if (!isActive()) classes.push("reynard-tab-panel--hidden");
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
-
   return (
     <div
       role="tabpanel"
       class={getClasses()}
-      aria-hidden={!isActive() ? "true" : "false"}
+      attr:aria-hidden={getAriaHidden() ? "true" : "false"}
       tabindex={isActive() ? 0 : -1}
     >
       {isActive() && local.children}

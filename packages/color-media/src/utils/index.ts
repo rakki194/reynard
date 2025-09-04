@@ -3,10 +3,10 @@
  */
 
 // Color utilities
-export * from './colorUtils';
+export * from "./colorUtils";
 
 // Theme utilities
-export * from './themeUtils';
+export * from "./themeUtils";
 
 // Modality utilities
-export * from './modalityUtils';
+export * from "./modalityUtils";

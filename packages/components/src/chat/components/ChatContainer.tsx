@@ -1,25 +1,44 @@
 /**
  * ChatContainer Component for Reynard Chat System
- * 
+ *
  * Main container component that orchestrates the entire chat experience
  * with message display, input handling, and state management.
  */
 
-import { 
-  Component, 
-  Show, 
-  For, 
-  createEffect, 
+import {
+  Component,
+  Show,
+  For,
+  createEffect,
   createSignal,
-  onMount,
-  onCleanup
-} from 'solid-js';
-import { useChat } from '../composables/useChat';
-import { ChatMessage } from './ChatMessage';
-import { MessageInput } from './MessageInput';
-import type { ChatContainerProps } from '../types';
+  onCleanup,
+  splitProps,
+  createMemo,
+} from "solid-js";
+import { useChat } from "../composables/useChat";
+import { ChatMessage } from "./ChatMessage";
+import { MessageInput } from "./MessageInput";
+import type { ChatContainerProps } from "../types";
 
 export const ChatContainer: Component<ChatContainerProps> = (props) => {
+  const [local] = splitProps(props, [
+    "endpoint",
+    "authHeaders",
+    "config",
+    "tools",
+    "initialMessages",
+    "variant",
+    "height",
+    "maxHeight",
+    "className",
+    "messageComponents",
+    "onMessageSent",
+    "onMessageReceived",
+    "onStreamingStart",
+    "onStreamingEnd",
+    "onError",
+  ]);
+
   const [autoScrollEnabled, setAutoScrollEnabled] = createSignal(true);
   let messagesContainerRef: HTMLDivElement | undefined;
   let isUserScrolling = false;
@@ -40,7 +59,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
     if (messagesContainerRef && autoScrollEnabled()) {
       messagesContainerRef.scrollTo({
         top: messagesContainerRef.scrollHeight,
-        behavior: smooth ? 'smooth' : 'auto',
+        behavior: smooth ? "smooth" : "auto",
       });
     }
   };
@@ -48,21 +67,21 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   // Handle scroll events to detect user scrolling
   const handleScroll = () => {
     if (!messagesContainerRef) return;
-    
+
     const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef;
     const isAtBottom = scrollHeight - scrollTop <= clientHeight + 50; // 50px threshold
-    
+
     // Update auto-scroll based on scroll position
     setAutoScrollEnabled(isAtBottom);
-    
+
     // Mark as user scrolling
     isUserScrolling = true;
-    
+
     // Clear existing timeout
     if (scrollTimeout) {
       clearTimeout(scrollTimeout);
     }
-    
+
     // Reset user scrolling flag after a delay
     scrollTimeout = window.setTimeout(() => {
       isUserScrolling = false;
@@ -71,14 +90,14 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
 
   // Auto-scroll effect
   createEffect(() => {
-    const messages = chat.messages();
-    const isStreaming = chat.isStreaming();
-    
+    const messages = chat().messages();
+    const isStreaming = chat().isStreaming();
+
     if (messages.length > 0 && !isUserScrolling) {
       // Small delay to ensure DOM is updated
       setTimeout(() => scrollToBottom(true), 10);
     }
-    
+
     if (isStreaming && !isUserScrolling) {
       // More frequent scrolling during streaming
       setTimeout(() => scrollToBottom(false), 50);
@@ -89,46 +108,47 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   const handleMessageSubmit = async (content: string) => {
     try {
       await chat.actions.sendMessage(content);
-      props.onMessageSent?.(chat.messages()[chat.messages().length - 1]);
+      local.onMessageSent?.(chat.messages()[chat.messages().length - 1]);
     } catch (error) {
-      console.error('Failed to send message:', error);
-      props.onError?.(error);
+      console.error("Failed to send message:", error);
+      local.onError?.(error);
     }
   };
 
   // Handle streaming events
   createEffect(() => {
-    if (chat.isStreaming()) {
-      props.onStreamingStart?.();
+    if (chat().isStreaming()) {
+      local.onStreamingStart?.();
     } else {
-      props.onStreamingEnd?.();
+      local.onStreamingEnd?.();
     }
   });
 
   // Handle new messages
   createEffect(() => {
-    const lastMessage = chat.messages()[chat.messages().length - 1];
-    if (lastMessage && lastMessage.role === 'assistant') {
-      props.onMessageReceived?.(lastMessage);
+    const lastMessage = chat().messages()[chat().messages().length - 1];
+    if (lastMessage && lastMessage.role === "assistant") {
+      local.onMessageReceived?.(lastMessage);
     }
   });
 
   // Handle errors
   createEffect(() => {
-    const error = chat.error();
+    const error = chat().error();
     if (error) {
-      props.onError?.(error);
+      local.onError?.(error);
     }
   });
 
   // Get container classes
   const getContainerClasses = () => {
-    const base = 'reynard-chat-container';
-    const variant = `${base}--${props.variant || 'default'}`;
-    const streaming = chat.isStreaming() ? `${base}--streaming` : '';
-    const connected = chat.connectionState() === 'connected' ? `${base}--connected` : '';
-    
-    return [base, variant, streaming, connected].filter(Boolean).join(' ');
+    const base = "reynard-chat-container";
+    const variant = `${base}--${local.variant || "default"}`;
+    const streaming = chat.isStreaming() ? `${base}--streaming` : "";
+    const connected =
+      chat.connectionState() === "connected" ? `${base}--connected` : "";
+
+    return [base, variant, streaming, connected].filter(Boolean).join(" ");
   };
 
   // Cleanup on unmount
@@ -139,24 +159,26 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   });
 
   return (
-    <div 
-      class={`${getContainerClasses()} ${props.className || ''}`}
+    <div
+      class={`${getContainerClasses()} ${local.className || ""}`}
       style={{
-        height: props.height,
-        'max-height': props.maxHeight,
+        height: local.height,
+        "max-height": local.maxHeight,
       }}
     >
       {/* Connection Status */}
-      <Show when={chat.connectionState() !== 'connected'}>
+      <Show when={chat.connectionState() !== "connected"}>
         <div class="reynard-chat-container__status">
           <div class="reynard-chat-container__status-indicator">
-            {chat.connectionState() === 'connecting' ? '🔄' : '⚠️'}
+            {chat.connectionState() === "connecting" ? "🔄" : "⚠️"}
           </div>
           <span class="reynard-chat-container__status-text">
-            {chat.connectionState() === 'connecting' ? 'Connecting...' : 'Connection Error'}
+            {chat.connectionState() === "connecting"
+              ? "Connecting..."
+              : "Connection Error"}
           </span>
-          <Show when={chat.connectionState() === 'error'}>
-            <button 
+          <Show when={chat.connectionState() === "error"}>
+            <button
               class="reynard-chat-container__retry-button"
               onClick={() => chat.actions.connect()}
             >
@@ -167,12 +189,12 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       </Show>
 
       {/* Messages Area */}
-      <div 
+      <div
         ref={messagesContainerRef}
         class="reynard-chat-container__messages"
         onScroll={handleScroll}
       >
-        <Show 
+        <Show
           when={chat.messages().length > 0}
           fallback={
             <div class="reynard-chat-container__empty">
@@ -185,16 +207,17 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
         >
           <For each={chat.messages()}>
             {(message, index) => {
-              const MessageComponent = props.messageComponents?.[message.role] || ChatMessage;
-              
+              const MessageComponent =
+                local.messageComponents?.[message.role] || ChatMessage;
+
               return (
                 <MessageComponent
                   message={message}
                   isLatest={index() === chat.messages().length - 1}
-                  showTimestamp={props.config?.showTimestamps}
-                  showTokenCount={props.config?.showTokenCounts}
+                  showTimestamp={local.config?.showTimestamps}
+                  showTokenCount={local.config?.showTokenCounts}
                   onToolAction={(action: any, toolCall: any) => {
-                    console.log('Tool action:', action, toolCall);
+                    console.log("Tool action:", action, toolCall);
                     // Handle tool actions here
                   }}
                 />
@@ -231,11 +254,9 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
           aria-label="Scroll to bottom"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="m6 9 6 6 6-6"/>
+            <path d="m6 9 6 6 6-6" />
           </svg>
-          <span class="reynard-chat-container__scroll-text">
-            New messages
-          </span>
+          <span class="reynard-chat-container__scroll-text">New messages</span>
         </button>
       </Show>
 
@@ -243,14 +264,14 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       <div class="reynard-chat-container__input">
         <MessageInput
           placeholder="Type your message..."
-          disabled={chat.connectionState() !== 'connected'}
+          disabled={chat.connectionState() !== "connected"}
           isStreaming={chat.isStreaming()}
           multiline={true}
           autoResize={true}
           showCounter={false}
           maxLength={4000}
           onSubmit={handleMessageSubmit}
-          variant={props.variant === 'compact' ? 'compact' : 'default'}
+          variant={local.variant === "compact" ? "compact" : "default"}
         />
       </div>
 
@@ -262,7 +283,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
               {chat.messages().length} messages
             </span>
           </Show>
-          
+
           <Show when={chat.error()}>
             <div class="reynard-chat-container__error">
               <span class="reynard-chat-container__error-icon">⚠️</span>
@@ -270,7 +291,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
                 {chat.error()!.message}
               </span>
               <Show when={chat.error()!.recoverable}>
-                <button 
+                <button
                   class="reynard-chat-container__error-retry"
                   onClick={() => chat.actions.retryLastMessage()}
                 >
@@ -285,7 +306,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
           <button
             class="reynard-chat-container__clear-button"
             onClick={() => {
-              if (confirm('Clear conversation?')) {
+              if (confirm("Clear conversation?")) {
                 chat.actions.clearConversation();
               }
             }}
@@ -293,16 +314,16 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
           >
             🗑️
           </button>
-          
+
           <button
             class="reynard-chat-container__export-button"
             onClick={() => {
-              const data = chat.actions.exportConversation('json');
-              const blob = new Blob([data], { type: 'application/json' });
+              const data = chat.actions.exportConversation("json");
+              const blob = new Blob([data], { type: "application/json" });
               const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
+              const a = document.createElement("a");
               a.href = url;
-              a.download = `chat-${new Date().toISOString().split('T')[0]}.json`;
+              a.download = `chat-${new Date().toISOString().split("T")[0]}.json`;
               a.click();
               URL.revokeObjectURL(url);
             }}

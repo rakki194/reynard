@@ -22,8 +22,8 @@ npm install @reynard/ui @reynard/core @reynard/components solid-js
 ## 🎯 Quick Start
 
 ```tsx
-import { AppLayout, Grid, GridItem, DataTable } from '@reynard/ui';
-import '@reynard/ui/styles';
+import { AppLayout, Grid, GridItem, DataTable } from "@reynard/ui";
+import "@reynard/ui/styles";
 
 function App() {
   return (
@@ -83,7 +83,7 @@ Complete application layout with sidebar, header, and content areas.
 Responsive CSS Grid system with breakpoint support.
 
 ```tsx
-<Grid 
+<Grid
   columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
   gap="1.5rem"
   autoRows="min-content"
@@ -94,20 +94,24 @@ Responsive CSS Grid system with breakpoint support.
   <GridItem>
     <Card>Regular content</Card>
   </GridItem>
-</Grid>
+</Grid>;
 
-{/* Auto-fit grid */}
+{
+  /* Auto-fit grid */
+}
 <Grid autoFit minColumnWidth="300px">
   <div>Item 1</div>
   <div>Item 2</div>
   <div>Item 3</div>
-</Grid>
+</Grid>;
 
-{/* Masonry layout */}
+{
+  /* Masonry layout */
+}
 <MasonryGrid columns={{ xs: 2, md: 3, lg: 4 }}>
   <div>Variable height content</div>
   <div>Another item</div>
-</MasonryGrid>
+</MasonryGrid>;
 ```
 
 **Props:**
@@ -125,9 +129,9 @@ Hierarchical navigation with customizable separators.
 
 ```tsx
 const breadcrumbItems = [
-  { id: 'home', label: 'Home', href: '/' },
-  { id: 'docs', label: 'Documentation', href: '/docs' },
-  { id: 'api', label: 'API Reference', current: true }
+  { id: "home", label: "Home", href: "/" },
+  { id: "docs", label: "Documentation", href: "/docs" },
+  { id: "api", label: "API Reference", current: true },
 ];
 
 <Breadcrumb
@@ -136,7 +140,7 @@ const breadcrumbItems = [
   maxItems={5}
   showHomeIcon
   onItemClick={(item, e) => navigate(item.href)}
-/>
+/>;
 ```
 
 **Features:**
@@ -153,22 +157,22 @@ Hierarchical navigation menu with keyboard support.
 ```tsx
 const menuItems = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    href: '/dashboard',
+    id: "dashboard",
+    label: "Dashboard",
+    href: "/dashboard",
     icon: <DashboardIcon />,
-    active: true
+    active: true,
   },
   {
-    id: 'users',
-    label: 'Users',
+    id: "users",
+    label: "Users",
     icon: <UsersIcon />,
     badge: 12,
     children: [
-      { id: 'all-users', label: 'All Users', href: '/users' },
-      { id: 'user-roles', label: 'Roles', href: '/users/roles' }
-    ]
-  }
+      { id: "all-users", label: "All Users", href: "/users" },
+      { id: "user-roles", label: "Roles", href: "/users/roles" },
+    ],
+  },
 ];
 
 <NavMenu
@@ -178,7 +182,7 @@ const menuItems = [
   showBadges
   onItemClick={(item) => navigate(item.href)}
   onActiveChange={(itemId) => setActiveItem(itemId)}
-/>
+/>;
 ```
 
 **Features:**
@@ -197,28 +201,32 @@ Feature-rich table with enterprise-grade functionality.
 ```tsx
 const columns = [
   {
-    id: 'name',
-    header: 'Name',
-    accessor: 'name',
+    id: "name",
+    header: "Name",
+    accessor: "name",
     sortable: true,
-    filterable: true
+    filterable: true,
   },
   {
-    id: 'email',
-    header: 'Email',
-    accessor: 'email',
-    sortable: true
+    id: "email",
+    header: "Email",
+    accessor: "email",
+    sortable: true,
   },
   {
-    id: 'actions',
-    header: 'Actions',
+    id: "actions",
+    header: "Actions",
     cell: (value, row) => (
       <div>
-        <Button size="sm" onClick={() => editUser(row)}>Edit</Button>
-        <Button size="sm" variant="danger" onClick={() => deleteUser(row)}>Delete</Button>
+        <Button size="sm" onClick={() => editUser(row)}>
+          Edit
+        </Button>
+        <Button size="sm" variant="danger" onClick={() => deleteUser(row)}>
+          Delete
+        </Button>
       </div>
-    )
-  }
+    ),
+  },
 ];
 
 <DataTable
@@ -235,7 +243,7 @@ const columns = [
   onSort={(column, direction) => handleSort(column, direction)}
   onPageChange={(page) => setCurrentPage(page)}
   onRowClick={(row) => viewUser(row)}
-/>
+/>;
 ```
 
 **Features:**
@@ -264,7 +272,9 @@ Slide-out panel component with multiple positions.
   footer={
     <div>
       <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-      <Button variant="primary" onClick={saveSettings}>Save</Button>
+      <Button variant="primary" onClick={saveSettings}>
+        Save
+      </Button>
     </div>
   }
 >
@@ -316,7 +326,7 @@ All components automatically adapt to your theme and work seamlessly with `@reyn
 
 ```tsx
 // Custom responsive configuration
-<Grid 
+<Grid
   columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }}
   gap={{ xs: "1rem", lg: "2rem" }}
 >
@@ -364,19 +374,16 @@ function RemoteDataTable() {
 ```tsx
 function AppNavigation() {
   const location = useLocation();
-  
-  const menuItems = createMemo(() => 
-    navConfig.map(item => ({
+
+  const menuItems = createMemo(() =>
+    navConfig.map((item) => ({
       ...item,
-      active: location.pathname.startsWith(item.href)
-    }))
+      active: location.pathname.startsWith(item.href),
+    })),
   );
 
   return (
-    <NavMenu
-      items={menuItems()}
-      onItemClick={(item) => navigate(item.href)}
-    />
+    <NavMenu items={menuItems()} onItemClick={(item) => navigate(item.href)} />
   );
 }
 ```

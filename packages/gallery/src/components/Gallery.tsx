@@ -3,12 +3,13 @@
  * Complete file gallery with navigation, upload, and management features
  */
 
-import { 
-  Component, 
-  Show, 
-  createSignal, 
+import {
+  Component,
+  Show,
+  For,
+  createSignal,
   createEffect,
-  splitProps
+  splitProps,
 } from "solid-js";
 import { Button } from "@reynard/components";
 import { GalleryGrid } from "./GalleryGrid";
@@ -16,13 +17,14 @@ import { BreadcrumbNavigation } from "./BreadcrumbNavigation";
 import { FileUploadZone } from "./FileUploadZone";
 import { useGalleryState } from "../composables/useGalleryState";
 import { useFileUpload } from "../composables/useFileUpload";
-import "./Gallery.css";
+// import "./Gallery.css";
 import type {
   GalleryData,
   GalleryConfiguration,
   GalleryCallbacks,
   FileItem,
   FolderItem,
+  UploadProgress,
 } from "../types";
 import {
   DEFAULT_VIEW_CONFIG,
@@ -71,7 +73,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
     "error",
     "callbacks",
     "showUpload",
-    "showBreadcrumbs", 
+    "showBreadcrumbs",
     "showToolbar",
     "class",
     "view",
@@ -86,31 +88,37 @@ export const Gallery: Component<GalleryProps> = (props) => {
   // State management
   const galleryState = useGalleryState({
     initialConfig: {
-      view: local.view,
-      sort: local.sort,
-      filter: local.filter,
-      upload: local.upload,
-      enableKeyboardShortcuts: local.enableKeyboardShortcuts,
-      enableDragAndDrop: local.enableDragAndDrop,
-      contextMenuActions: local.contextMenuActions,
+      view: DEFAULT_VIEW_CONFIG,
+      sort: DEFAULT_SORT_CONFIG,
+      filter: DEFAULT_FILTER_CONFIG,
+      upload: DEFAULT_UPLOAD_CONFIG,
+      enableKeyboardShortcuts: true,
+      enableDragAndDrop: true,
+      contextMenuActions: [],
     },
-    callbacks: local.callbacks,
+    callbacks: undefined,
     persistState: true,
     storageKey: "reynard-gallery",
   });
 
-  // File upload
+  // File upload - use default config initially
   const fileUpload = useFileUpload({
-    config: local.upload || DEFAULT_UPLOAD_CONFIG,
+    config: DEFAULT_UPLOAD_CONFIG,
     callbacks: {
-      onUploadStart: local.callbacks?.onUploadStart,
-      onUploadProgress: local.callbacks?.onUploadProgress,
-      onUploadComplete: (results) => {
+      onUploadStart: (files: File[]) => {
+        local.callbacks?.onUploadStart?.(files);
+      },
+      onUploadProgress: (progress: UploadProgress[]) => {
+        local.callbacks?.onUploadProgress?.(progress);
+      },
+      onUploadComplete: (results: UploadProgress[]) => {
         local.callbacks?.onUploadComplete?.(results);
         // Refresh gallery after upload
         galleryState.refreshData();
       },
-      onError: local.callbacks?.onError,
+      onError: (error: string, details?: unknown) => {
+        local.callbacks?.onError?.(error, details);
+      },
     },
     currentPath: galleryState.currentPath(),
   });
@@ -122,7 +130,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
     y: number;
     item: FileItem | FolderItem;
   } | null>(null);
-  
+
   let contextMenuRef: HTMLDivElement | undefined;
 
   // Update gallery data when props change
@@ -141,6 +149,34 @@ export const Gallery: Component<GalleryProps> = (props) => {
     galleryState.setErrorState(local.error || null);
   });
 
+  // Update configuration when props change
+  createEffect(() => {
+    if (local.view) {
+      galleryState.updateViewConfig(local.view);
+    }
+  });
+
+  createEffect(() => {
+    if (local.sort) {
+      galleryState.updateSortConfig(local.sort);
+    }
+  });
+
+  createEffect(() => {
+    if (local.filter) {
+      galleryState.updateFilterConfig(local.filter);
+    }
+  });
+
+  // Handle upload callbacks when they change
+  createEffect(() => {
+    // Since useFileUpload doesn't support dynamic callback updates,
+    // we handle the callbacks through our own logic
+    if (local.callbacks?.onUploadComplete) {
+      // The upload complete callback will be called from our wrapper
+    }
+  });
+
   // Set context menu position when it's shown
   createEffect(() => {
     const menu = contextMenu();
@@ -153,7 +189,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
   // Handle item selection
   const handleSelectionChange = (
     item: FileItem | FolderItem,
-    mode: "single" | "add" | "range"
+    mode: "single" | "add" | "range",
   ): void => {
     galleryState.selectItem(item, mode);
   };
@@ -171,7 +207,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
   const handleContextMenu = (
     item: FileItem | FolderItem,
     x: number,
-    y: number
+    y: number,
   ): void => {
     setContextMenu({ x, y, item });
   };
@@ -203,7 +239,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
               Upload Files
             </Button>
           </Show>
-          
+
           <Button
             variant="ghost"
             onClick={galleryState.refreshData}
@@ -224,20 +260,22 @@ export const Gallery: Component<GalleryProps> = (props) => {
             >
               <span class="icon">grid</span>
             </Button>
-            
+
             <Button
-              variant="ghost" 
+              variant="ghost"
               size="sm"
               onClick={() => galleryState.updateViewConfig({ layout: "list" })}
               aria-pressed={galleryState.viewConfig().layout === "list"}
             >
               <span class="icon">list</span>
             </Button>
-            
+
             <Button
               variant="ghost"
-              size="sm" 
-              onClick={() => galleryState.updateViewConfig({ layout: "masonry" })}
+              size="sm"
+              onClick={() =>
+                galleryState.updateViewConfig({ layout: "masonry" })
+              }
               aria-pressed={galleryState.viewConfig().layout === "masonry"}
             >
               <span class="icon">masonry</span>
@@ -245,11 +283,17 @@ export const Gallery: Component<GalleryProps> = (props) => {
           </div>
 
           <div class="gallery__sort-controls">
-            <select 
+            <select
               value={galleryState.sortConfig().field}
-              onChange={(e) => galleryState.updateSortConfig({ 
-                field: e.target.value as "name" | "size" | "lastModified" | "type"
-              })}
+              onChange={(e) =>
+                galleryState.updateSortConfig({
+                  field: e.target.value as
+                    | "name"
+                    | "size"
+                    | "lastModified"
+                    | "type",
+                })
+              }
               aria-label="Sort by"
             >
               <option value="name">Name</option>
@@ -257,15 +301,22 @@ export const Gallery: Component<GalleryProps> = (props) => {
               <option value="lastModified">Date</option>
               <option value="type">Type</option>
             </select>
-            
+
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => galleryState.updateSortConfig({
-                direction: galleryState.sortConfig().direction === "asc" ? "desc" : "asc"
-              })}
+              onClick={() =>
+                galleryState.updateSortConfig({
+                  direction:
+                    galleryState.sortConfig().direction === "asc"
+                      ? "desc"
+                      : "asc",
+                })
+              }
             >
-              <span class={`icon ${galleryState.sortConfig().direction === "asc" ? "arrow-up" : "arrow-down"}`} />
+              <span
+                class={`icon ${galleryState.sortConfig().direction === "asc" ? "arrow-up" : "arrow-down"}`}
+              />
             </Button>
           </div>
         </div>
@@ -287,7 +338,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
           onUpload={fileUpload.uploadFiles}
           onCancelUpload={fileUpload.cancelUpload}
         />
-        
+
         <Show when={showUploadZone() && !fileUpload.isUploading()}>
           <div class="gallery__upload-zone-actions">
             <Button variant="ghost" onClick={() => setShowUploadZone(false)}>
@@ -307,7 +358,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
     const actions = local.contextMenuActions || [];
 
     return (
-      <div 
+      <div
         ref={contextMenuRef}
         class="gallery__context-menu"
         onClick={(e) => e.stopPropagation()}
@@ -326,30 +377,32 @@ export const Gallery: Component<GalleryProps> = (props) => {
             </span>
             {menu.item.favorited ? "Remove from favorites" : "Add to favorites"}
           </button>
-          
+
           <Show when={actions.length > 0}>
             <div class="gallery__context-menu-separator" />
-            {actions.map(action => (
-              <button
-                type="button"
-                class={`gallery__context-menu-item ${action.destructive ? "gallery__context-menu-item--destructive" : ""}`}
-                disabled={action.disabled}
-                onClick={() => {
-                  action.handler([menu.item]);
-                  closeContextMenu();
-                }}
-              >
-                <Show when={action.icon}>
-                  <span class="icon">{action.icon}</span>
-                </Show>
-                {action.label}
-                <Show when={action.shortcut}>
-                  <span class="gallery__context-menu-shortcut">
-                    {action.shortcut}
-                  </span>
-                </Show>
-              </button>
-            ))}
+            <For each={actions}>
+              {(action) => (
+                <button
+                  type="button"
+                  class={`gallery__context-menu-item ${action.destructive ? "gallery__context-menu-item--destructive" : ""}`}
+                  disabled={action.disabled}
+                  onClick={() => {
+                    action.handler([menu.item]);
+                    closeContextMenu();
+                  }}
+                >
+                  <Show when={action.icon}>
+                    <span class="icon">{action.icon}</span>
+                  </Show>
+                  {action.label}
+                  <Show when={action.shortcut}>
+                    <span class="gallery__context-menu-shortcut">
+                      {action.shortcut}
+                    </span>
+                  </Show>
+                </button>
+              )}
+            </For>
           </Show>
         </div>
       </div>
@@ -364,7 +417,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
   };
 
   return (
-    <div 
+    <div
       class={`gallery ${local.class || ""}`}
       onClick={handleOutsideClick}
       {...others}
@@ -419,7 +472,3 @@ export const Gallery: Component<GalleryProps> = (props) => {
     </div>
   );
 };
-
-
-
-

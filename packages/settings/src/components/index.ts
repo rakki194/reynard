@@ -5,7 +5,3 @@
 
 export { SettingsPanel, type SettingsPanelProps } from "./SettingsPanel";
 export { SettingControl, type SettingControlProps } from "./SettingControl";
-
-
-
-

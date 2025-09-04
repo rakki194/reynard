@@ -3,7 +3,13 @@
  * Complete registration form with validation and password strength checking
  */
 
-import { Component, createSignal, createMemo, Show, splitProps } from "solid-js";
+import {
+  Component,
+  createSignal,
+  createMemo,
+  Show,
+  splitProps,
+} from "solid-js";
 import { Button } from "@reynard/components";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "../types";
@@ -52,7 +58,7 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
   const [local, others] = splitProps(merged, [
     "loading",
     "error",
-    "successMessage", 
+    "successMessage",
     "requireEmail",
     "requireFullName",
     "showTermsAcceptance",
@@ -89,14 +95,16 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
   const emailError = createMemo(() => {
     const value = email().trim();
     if (local.requireEmail && !value) return "Email is required";
-    if (value && !validateEmail(value)) return "Please enter a valid email address";
+    if (value && !validateEmail(value))
+      return "Please enter a valid email address";
     return null;
   });
 
   const fullNameError = createMemo(() => {
     const value = fullName().trim();
     if (local.requireFullName && !value) return "Full name is required";
-    if (value && value.length < 2) return "Full name must be at least 2 characters";
+    if (value && value.length < 2)
+      return "Full name must be at least 2 characters";
     return null;
   });
 
@@ -129,20 +137,22 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
   });
 
   const isFormValid = createMemo(() => {
-    return !usernameError() &&
-           !emailError() &&
-           !fullNameError() &&
-           !passwordError() &&
-           !confirmPasswordError() &&
-           !termsError() &&
-           !privacyError() &&
-           !local.loading;
+    return (
+      !usernameError() &&
+      !emailError() &&
+      !fullNameError() &&
+      !passwordError() &&
+      !confirmPasswordError() &&
+      !termsError() &&
+      !privacyError() &&
+      !local.loading
+    );
   });
 
   // Handle form submission
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
-    
+
     if (!isFormValid() || !local.onRegister) return;
 
     const data: RegisterData = {
@@ -193,7 +203,10 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
           <Show when={local.requireFullName || fullName()}>
             <div class="register-form__field">
               <label for="fullName" class="register-form__label">
-                Full Name {local.requireFullName && <span class="register-form__required">*</span>}
+                Full Name{" "}
+                {local.requireFullName && (
+                  <span class="register-form__required">*</span>
+                )}
               </label>
               <input
                 id="fullName"
@@ -236,7 +249,10 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
           <Show when={local.requireEmail || email()}>
             <div class="register-form__field">
               <label for="email" class="register-form__label">
-                Email Address {local.requireEmail && <span class="register-form__required">*</span>}
+                Email Address{" "}
+                {local.requireEmail && (
+                  <span class="register-form__required">*</span>
+                )}
               </label>
               <input
                 id="email"
@@ -319,7 +335,9 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 class="register-form__password-toggle"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword())}
                 disabled={local.loading}
-                aria-label={showConfirmPassword() ? "Hide password" : "Show password"}
+                aria-label={
+                  showConfirmPassword() ? "Hide password" : "Show password"
+                }
               >
                 {showConfirmPassword() ? "👁️‍🗨️" : "👁️"}
               </button>
@@ -418,7 +436,3 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
     </div>
   );
 };
-
-
-
-

@@ -184,7 +184,7 @@ The demo includes sophisticated mock services that simulate real-world behavior:
 - **Tool Execution**: Mock implementations of common tools
 - **Multiple Personalities**: Different response styles and capabilities
 
-#### P2P Chat Service  
+#### P2P Chat Service
 
 - **WebSocket Simulation**: Real-time event handling
 - **User Management**: Online/offline status tracking
@@ -252,7 +252,7 @@ To connect to real services instead of mocks:
    <ChatContainer
      endpoint={import.meta.env.VITE_ASSISTANT_API}
      authHeaders={{
-       'Authorization': `Bearer ${authToken}`,
+       Authorization: `Bearer ${authToken}`,
      }}
    />
    ```
@@ -271,7 +271,7 @@ To connect to real services instead of mocks:
 Extend the demo with your own components:
 
 ```tsx
-import { ChatContainer, P2PChatContainer } from '@reynard/components';
+import { ChatContainer, P2PChatContainer } from "@reynard/components";
 
 function CustomChatApp() {
   return (
@@ -280,7 +280,7 @@ function CustomChatApp() {
         endpoint="/api/my-assistant"
         config={{
           enableThinking: true,
-          customTheme: 'my-brand',
+          customTheme: "my-brand",
         }}
         customRenderer={(content, message) => {
           // Custom message rendering logic
@@ -299,9 +299,9 @@ The demo is fully responsive and works great on mobile:
 ```tsx
 <P2PChatContainer
   ui={{
-    compact: true,           // Compact mode for mobile
-    showUserList: false,     // Hide user list on small screens
-    showRoomList: true,      // Keep room list for navigation
+    compact: true, // Compact mode for mobile
+    showUserList: false, // Hide user list on small screens
+    showRoomList: true, // Keep room list for navigation
   }}
   config={{
     enableFileUploads: true, // Mobile file uploads work great
@@ -330,11 +330,11 @@ The demo is fully responsive and works great on mobile:
    const navItems = [
      // ... existing items
      {
-       id: 'new-feature',
-       label: 'New Feature',
-       icon: '🆕',
-       description: 'Description of your new feature'
-     }
+       id: "new-feature",
+       label: "New Feature",
+       icon: "🆕",
+       description: "Description of your new feature",
+     },
    ];
    ```
 
@@ -342,7 +342,7 @@ The demo is fully responsive and works great on mobile:
 
    ```tsx
    // src/App.tsx
-   <Show when={currentView() === 'new-feature'}>
+   <Show when={currentView() === "new-feature"}>
      <NewFeatureDemo />
    </Show>
    ```
@@ -370,13 +370,13 @@ Enable debug logging:
 ```tsx
 <ChatContainer
   config={{
-    debug: true,  // Enable debug logging
+    debug: true, // Enable debug logging
   }}
   onError={(error) => {
-    console.error('Chat error:', error);
+    console.error("Chat error:", error);
   }}
   onMessageReceived={(message) => {
-    console.log('Message:', message);
+    console.log("Message:", message);
   }}
 />
 ```
@@ -413,7 +413,7 @@ docker run -p 3001:3001 reynard-chat-demo
 # Development build
 npm run build:dev
 
-# Staging build  
+# Staging build
 npm run build:staging
 
 # Production build

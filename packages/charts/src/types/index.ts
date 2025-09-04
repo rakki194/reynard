@@ -115,10 +115,24 @@ export interface ChartConfig extends ChartOptions {
   theme?: ReynardTheme;
 }
 
-export type ChartType = "line" | "bar" | "doughnut" | "pie" | "radar" | "polarArea" | "scatter" | "bubble";
+export type ChartType =
+  | "line"
+  | "bar"
+  | "doughnut"
+  | "pie"
+  | "radar"
+  | "polarArea"
+  | "scatter"
+  | "bubble";
 
 /** Reynard theme options */
-export type ReynardTheme = "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut";
+export type ReynardTheme =
+  | "light"
+  | "dark"
+  | "gray"
+  | "banana"
+  | "strawberry"
+  | "peanut";
 
 export interface ChartTheme {
   /** Primary color */
@@ -142,14 +156,14 @@ export interface ChartTheme {
 }
 
 export const DEFAULT_COLORS = [
-  "rgba(54, 162, 235, 1)",   // Blue
-  "rgba(255, 99, 132, 1)",   // Red
-  "rgba(75, 192, 192, 1)",   // Green
-  "rgba(153, 102, 255, 1)",  // Purple
-  "rgba(255, 159, 64, 1)",   // Orange
-  "rgba(255, 205, 86, 1)",   // Yellow
-  "rgba(231, 233, 237, 1)",  // Gray
-  "rgba(255, 99, 255, 1)",   // Pink
+  "rgba(54, 162, 235, 1)", // Blue
+  "rgba(255, 99, 132, 1)", // Red
+  "rgba(75, 192, 192, 1)", // Green
+  "rgba(153, 102, 255, 1)", // Purple
+  "rgba(255, 159, 64, 1)", // Orange
+  "rgba(255, 205, 86, 1)", // Yellow
+  "rgba(231, 233, 237, 1)", // Gray
+  "rgba(255, 99, 255, 1)", // Pink
 ];
 
 export const DEFAULT_THEME: ChartTheme = {

@@ -1,13 +1,25 @@
 /**
  * Type definitions for the Reynard Chat System
- * 
+ *
  * A comprehensive type system for streaming chat functionality with
  * markdown parsing, thinking sections, and tool integration.
  */
 
 export interface MarkdownNode {
   /** Type of the markdown node */
-  type: 'paragraph' | 'heading' | 'code-block' | 'list' | 'list-item' | 'blockquote' | 'table' | 'table-row' | 'table-cell' | 'hr' | 'link' | 'image';
+  type:
+    | "paragraph"
+    | "heading"
+    | "code-block"
+    | "list"
+    | "list-item"
+    | "blockquote"
+    | "table"
+    | "table-row"
+    | "table-cell"
+    | "hr"
+    | "link"
+    | "image";
   /** Text content of the node */
   content: string;
   /** Child nodes for complex structures */
@@ -43,7 +55,7 @@ export interface StreamingParserState {
   thinkingBuffer: string;
   thinkingSections: string[];
   /** List state */
-  listStack: Array<{ type: 'ordered' | 'unordered'; level: number }>;
+  listStack: Array<{ type: "ordered" | "unordered"; level: number }>;
   /** Table state */
   inTable: boolean;
   tableHeaders: string[];
@@ -55,7 +67,7 @@ export interface StreamingParserState {
 }
 
 export interface ParserError {
-  type: 'syntax' | 'malformed' | 'incomplete';
+  type: "syntax" | "malformed" | "incomplete";
   message: string;
   line?: number;
   column?: number;
@@ -86,7 +98,7 @@ export interface ParseResult {
 }
 
 export interface ToolParameter {
-  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  type: "string" | "number" | "boolean" | "object" | "array";
   description: string;
   required?: boolean;
   enum?: string[];
@@ -109,7 +121,7 @@ export interface ToolCall {
   id: string;
   name: string;
   arguments: Record<string, any>;
-  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
+  status: "pending" | "running" | "completed" | "failed" | "cancelled";
   /** Execution progress (0-100) */
   progress?: number;
   /** Status message */
@@ -134,7 +146,7 @@ export interface ToolCall {
   result?: any;
 }
 
-export type MessageRole = 'user' | 'assistant' | 'system' | 'tool';
+export type MessageRole = "user" | "assistant" | "system" | "tool";
 
 export interface ChatMessage {
   /** Unique message identifier */
@@ -201,7 +213,15 @@ export interface ChatRequest {
 
 export interface StreamChunk {
   /** Chunk type */
-  type: 'start' | 'thinking' | 'content' | 'tool_call' | 'tool_progress' | 'tool_result' | 'complete' | 'error';
+  type:
+    | "start"
+    | "thinking"
+    | "content"
+    | "tool_call"
+    | "tool_progress"
+    | "tool_result"
+    | "complete"
+    | "error";
   /** Content for this chunk */
   content?: string;
   /** Complete response so far */
@@ -222,11 +242,11 @@ export interface StreamChunk {
     toolName: string;
     callId: string;
     parameters?: Record<string, any>;
-    status: ToolCall['status'];
+    status: ToolCall["status"];
     progress?: number;
     message?: string;
     result?: any;
-    error?: ToolCall['error'];
+    error?: ToolCall["error"];
   };
   /** Whether streaming is complete */
   done?: boolean;
@@ -250,7 +270,7 @@ export interface ChatState {
   /** Available tools */
   availableTools: Tool[];
   /** Connection state */
-  connectionState: 'disconnected' | 'connecting' | 'connected' | 'error';
+  connectionState: "disconnected" | "connecting" | "connected" | "error";
   /** Error state */
   error?: {
     type: string;
@@ -271,7 +291,10 @@ export interface ChatState {
 
 export interface ChatActions {
   /** Send a new message */
-  sendMessage: (content: string, options?: Partial<ChatRequest>) => Promise<void>;
+  sendMessage: (
+    content: string,
+    options?: Partial<ChatRequest>,
+  ) => Promise<void>;
   /** Cancel current streaming */
   cancelStreaming: () => void;
   /** Clear conversation */
@@ -279,15 +302,15 @@ export interface ChatActions {
   /** Retry last message */
   retryLastMessage: () => Promise<void>;
   /** Update configuration */
-  updateConfig: (config: Partial<ChatState['config']>) => void;
+  updateConfig: (config: Partial<ChatState["config"]>) => void;
   /** Connect to chat service */
   connect: () => Promise<void>;
   /** Disconnect from chat service */
   disconnect: () => void;
   /** Export conversation */
-  exportConversation: (format: 'json' | 'markdown' | 'txt') => string;
+  exportConversation: (format: "json" | "markdown" | "txt") => string;
   /** Import conversation */
-  importConversation: (data: string, format: 'json') => void;
+  importConversation: (data: string, format: "json") => void;
 }
 
 export interface UseChatReturn {
@@ -306,14 +329,16 @@ export interface UseChatReturn {
   /** Available tools */
   availableTools: () => Tool[];
   /** Connection state */
-  connectionState: () => 'disconnected' | 'connecting' | 'connected' | 'error';
+  connectionState: () => "disconnected" | "connecting" | "connected" | "error";
   /** Current error (if any) */
-  error: () => {
-    type: string;
-    message: string;
-    timestamp: number;
-    recoverable: boolean;
-  } | undefined;
+  error: () =>
+    | {
+        type: string;
+        message: string;
+        timestamp: number;
+        recoverable: boolean;
+      }
+    | undefined;
   /** Chat configuration */
   config: () => {
     enableThinking: boolean;
@@ -360,7 +385,7 @@ export interface ChatContainerProps {
   /** Authentication headers */
   authHeaders?: Record<string, string>;
   /** Configuration options */
-  config?: Partial<ChatState['config']>;
+  config?: Partial<ChatState["config"]>;
   /** Custom message components */
   messageComponents?: {
     user?: any;
@@ -378,7 +403,7 @@ export interface ChatContainerProps {
   height?: string;
   maxHeight?: string;
   className?: string;
-  variant?: 'default' | 'compact' | 'detailed';
+  variant?: "default" | "compact" | "detailed";
 }
 
 export interface MessageInputProps {
@@ -403,7 +428,7 @@ export interface MessageInputProps {
   /** Custom submit button */
   submitButton?: any;
   /** Input variant */
-  variant?: 'default' | 'compact';
+  variant?: "default" | "compact";
 }
 
 export interface ThinkingIndicatorProps {
@@ -414,7 +439,7 @@ export interface ThinkingIndicatorProps {
   /** Whether to show content */
   showContent?: boolean;
   /** Animation variant */
-  variant?: 'dots' | 'pulse' | 'typing';
+  variant?: "dots" | "pulse" | "typing";
   /** Custom thinking label */
   label?: string;
 }

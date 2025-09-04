@@ -1,28 +1,33 @@
-import { Component, createSignal } from 'solid-js';
-import type { ChatUser } from '@reynard/components';
+import { Component, createSignal } from "solid-js";
+import type { ChatUser } from "@reynard/components";
 
 interface HeaderProps {
   currentUser: ChatUser;
-  onUserStatusChange: (status: ChatUser['status']) => void;
+  onUserStatusChange: (status: ChatUser["status"]) => void;
 }
 
 export const Header: Component<HeaderProps> = (props) => {
   const [showUserMenu, setShowUserMenu] = createSignal(false);
-  const [theme, setTheme] = createSignal<'light' | 'dark'>('light');
+  const [theme, setTheme] = createSignal<"light" | "dark">("light");
 
   const toggleTheme = () => {
-    const newTheme = theme() === 'light' ? 'dark' : 'light';
+    const newTheme = theme() === "light" ? "dark" : "light";
     setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  const getStatusColor = (status: ChatUser['status']) => {
+  const getStatusColor = (status: ChatUser["status"]) => {
     switch (status) {
-      case 'online': return '#10b981';
-      case 'away': return '#f59e0b';
-      case 'busy': return '#ef4444';
-      case 'offline': return '#6b7280';
-      default: return '#6b7280';
+      case "online":
+        return "#10b981";
+      case "away":
+        return "#f59e0b";
+      case "busy":
+        return "#ef4444";
+      case "offline":
+        return "#6b7280";
+      default:
+        return "#6b7280";
     }
   };
 
@@ -44,9 +49,9 @@ export const Header: Component<HeaderProps> = (props) => {
           <button
             class="control-button theme-toggle"
             onClick={toggleTheme}
-            title={`Switch to ${theme() === 'light' ? 'dark' : 'light'} mode`}
+            title={`Switch to ${theme() === "light" ? "dark" : "light"} mode`}
           >
-            {theme() === 'light' ? '🌙' : '☀️'}
+            {theme() === "light" ? "🌙" : "☀️"}
           </button>
 
           {/* User Menu */}
@@ -61,9 +66,13 @@ export const Header: Component<HeaderProps> = (props) => {
               <div class="user-info">
                 <span class="user-name">{props.currentUser.name}</span>
                 <div class="user-status">
-                  <div 
+                  <div
                     class="status-dot"
-                    style={{ 'background-color': getStatusColor(props.currentUser.status) }}
+                    style={{
+                      "background-color": getStatusColor(
+                        props.currentUser.status,
+                      ),
+                    }}
                   ></div>
                   <span class="status-text">{props.currentUser.status}</span>
                 </div>
@@ -75,33 +84,44 @@ export const Header: Component<HeaderProps> = (props) => {
               <div class="user-menu-dropdown">
                 <div class="menu-section">
                   <label class="menu-label">Status</label>
-                  {(['online', 'away', 'busy', 'offline'] as const).map(status => (
-                    <button
-                      class={`status-option ${props.currentUser.status === status ? 'active' : ''}`}
-                      onClick={() => {
-                        props.onUserStatusChange(status);
-                        setShowUserMenu(false);
-                      }}
-                    >
-                      <div 
-                        class="status-dot"
-                        style={{ 'background-color': getStatusColor(status) }}
-                      ></div>
-                      <span class="status-text">{status}</span>
-                    </button>
-                  ))}
+                  {(["online", "away", "busy", "offline"] as const).map(
+                    (status) => (
+                      <button
+                        class={`status-option ${props.currentUser.status === status ? "active" : ""}`}
+                        onClick={() => {
+                          props.onUserStatusChange(status);
+                          setShowUserMenu(false);
+                        }}
+                      >
+                        <div
+                          class="status-dot"
+                          style={{ "background-color": getStatusColor(status) }}
+                        ></div>
+                        <span class="status-text">{status}</span>
+                      </button>
+                    ),
+                  )}
                 </div>
 
                 <div class="menu-divider"></div>
 
                 <div class="menu-section">
-                  <button class="menu-item" onClick={() => console.log('Profile settings')}>
+                  <button
+                    class="menu-item"
+                    onClick={() => console.log("Profile settings")}
+                  >
                     👤 Profile Settings
                   </button>
-                  <button class="menu-item" onClick={() => console.log('Chat preferences')}>
+                  <button
+                    class="menu-item"
+                    onClick={() => console.log("Chat preferences")}
+                  >
                     ⚙️ Chat Preferences
                   </button>
-                  <button class="menu-item" onClick={() => console.log('Help & Support')}>
+                  <button
+                    class="menu-item"
+                    onClick={() => console.log("Help & Support")}
+                  >
                     ❓ Help & Support
                   </button>
                 </div>

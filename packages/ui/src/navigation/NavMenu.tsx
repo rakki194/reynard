@@ -75,8 +75,6 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
   const [openSubmenus, setOpenSubmenus] = createSignal<Set<string>>(new Set());
 
-
-
   let menuRef: HTMLElement | undefined;
   let focusableItems: HTMLElement[] = [];
 
@@ -94,7 +92,10 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
     setTimeout(updateFocusableItems, 0);
   };
 
-  const handleItemClick = (item: NavMenuItem, event: MouseEvent | KeyboardEvent) => {
+  const handleItemClick = (
+    item: NavMenuItem,
+    event: MouseEvent | KeyboardEvent,
+  ) => {
     if (item.disabled) {
       event.preventDefault();
       return;
@@ -106,7 +107,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
     }
 
     local.onItemClick?.(item, event);
-    
+
     if (item.active !== undefined) {
       local.onActiveChange?.(item.id);
     }
@@ -119,21 +120,21 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
         event.preventDefault();
         handleItemClick(item, event);
         break;
-      
+
       case "ArrowDown":
         if (local.orientation === "vertical") {
           event.preventDefault();
           focusNextItem();
         }
         break;
-      
+
       case "ArrowUp":
         if (local.orientation === "vertical") {
           event.preventDefault();
           focusPreviousItem();
         }
         break;
-      
+
       case "ArrowRight":
         if (local.orientation === "horizontal") {
           event.preventDefault();
@@ -143,7 +144,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
           toggleSubmenu(item.id);
         }
         break;
-      
+
       case "ArrowLeft":
         if (local.orientation === "horizontal") {
           event.preventDefault();
@@ -153,7 +154,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
           toggleSubmenu(item.id);
         }
         break;
-      
+
       case "Escape":
         setOpenSubmenus(new Set<string>());
         setTimeout(updateFocusableItems, 0);
@@ -163,22 +164,29 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
   const focusNextItem = () => {
     const currentFocus = document.activeElement as HTMLElement;
-    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
+    const currentIndex = focusableItems.findIndex(
+      (item) => item === currentFocus,
+    );
     const nextIndex = (currentIndex + 1) % focusableItems.length;
     focusableItems[nextIndex]?.focus();
   };
 
   const focusPreviousItem = () => {
     const currentFocus = document.activeElement as HTMLElement;
-    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
-    const prevIndex = currentIndex <= 0 ? focusableItems.length - 1 : currentIndex - 1;
+    const currentIndex = focusableItems.findIndex(
+      (item) => item === currentFocus,
+    );
+    const prevIndex =
+      currentIndex <= 0 ? focusableItems.length - 1 : currentIndex - 1;
     focusableItems[prevIndex]?.focus();
   };
 
   const updateFocusableItems = () => {
     if (menuRef) {
       focusableItems = Array.from(
-        menuRef.querySelectorAll('a, span[tabindex="0"]:not([aria-disabled="true"])')
+        menuRef.querySelectorAll(
+          'a, span[tabindex="0"]:not([aria-disabled="true"])',
+        ),
       ) as HTMLElement[];
     }
   };
@@ -186,7 +194,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   const getClasses = () => {
     const classes = [
       "reynard-nav-menu",
-      `reynard-nav-menu--${local.orientation}`
+      `reynard-nav-menu--${local.orientation}`,
     ];
     if (local.class) classes.push(local.class);
     return classes.join(" ");
@@ -195,12 +203,14 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   const getItemClasses = (item: NavMenuItem, level = 0) => {
     const classes = [
       "reynard-nav-menu__item",
-      `reynard-nav-menu__item--level-${level}`
+      `reynard-nav-menu__item--level-${level}`,
     ];
     if (item.active) classes.push("reynard-nav-menu__item--active");
     if (item.disabled) classes.push("reynard-nav-menu__item--disabled");
-    if (item.children?.length) classes.push("reynard-nav-menu__item--has-children");
-    if (openSubmenus().has(item.id)) classes.push("reynard-nav-menu__item--open");
+    if (item.children?.length)
+      classes.push("reynard-nav-menu__item--has-children");
+    if (openSubmenus().has(item.id))
+      classes.push("reynard-nav-menu__item--open");
     return classes.join(" ");
   };
 
@@ -226,10 +236,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
         height="16"
         viewBox="0 0 16 16"
         fill="currentColor"
-        style={{
-          transform: openSubmenus().has(item.id) ? "rotate(90deg)" : "rotate(0deg)",
-          transition: "transform 0.2s ease",
-        }}
+        class={`reynard-nav-menu__toggle-icon ${openSubmenus().has(item.id) ? "reynard-nav-menu__toggle-icon--open" : ""}`}
       >
         <path d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06L7.28 12.78a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z" />
       </svg>
@@ -238,11 +245,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
   const renderBadge = (badge: JSX.Element | string | number) => {
     if (typeof badge === "string" || typeof badge === "number") {
-      return (
-        <span class="reynard-nav-menu__badge">
-          {badge}
-        </span>
-      );
+      return <span class="reynard-nav-menu__badge">{badge}</span>;
     }
     return badge;
   };
@@ -261,7 +264,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
               if (local.hoverToOpen && item.children?.length) {
                 setOpenSubmenus((prev) => new Set(prev).add(item.id));
                 setTimeout(updateFocusableItems, 0);
-            }
+              }
             }}
             {...(item.data || {})}
           >
@@ -269,14 +272,14 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
               <Show when={local.showIcons && item.icon}>
                 <span class="reynard-nav-menu__icon">{item.icon}</span>
               </Show>
-              
+
               <span class="reynard-nav-menu__label">{item.label}</span>
-              
+
               <Show when={local.showBadges && item.badge}>
                 {renderBadge(item.badge!)}
               </Show>
             </div>
-            
+
             <Show when={item.children?.length}>
               {renderSubmenuToggle(item)}
             </Show>
@@ -301,17 +304,15 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
             <Show when={local.showIcons && item.icon}>
               <span class="reynard-nav-menu__icon">{item.icon}</span>
             </Show>
-            
+
             <span class="reynard-nav-menu__label">{item.label}</span>
-            
+
             <Show when={local.showBadges && item.badge}>
               {renderBadge(item.badge!)}
             </Show>
           </div>
-          
-          <Show when={item.children?.length}>
-            {renderSubmenuToggle(item)}
-          </Show>
+
+          <Show when={item.children?.length}>{renderSubmenuToggle(item)}</Show>
         </a>
       </Show>
 
@@ -329,15 +330,9 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   onMount(updateFocusableItems);
 
   return (
-    <nav
-      ref={menuRef}
-      class={getClasses()}
-      {...others}
-    >
+    <nav ref={menuRef} class={getClasses()} {...others}>
       <ul class="reynard-nav-menu__list" role="menubar">
-        <For each={local.items}>
-          {(item) => renderMenuItem(item)}
-        </For>
+        <For each={local.items}>{(item) => renderMenuItem(item)}</For>
       </ul>
     </nav>
   );

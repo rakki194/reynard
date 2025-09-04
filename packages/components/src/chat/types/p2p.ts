@@ -1,18 +1,11 @@
 /**
  * Peer-to-Peer Chat Types for User-to-User Messaging
- * 
+ *
  * Extends the base chat types to support direct messaging between users
  * while sharing core infrastructure with assistant chat.
  */
 
-import type { 
-  ChatMessage, 
-  ChatState, 
-  ChatActions, 
-  StreamChunk, 
-  ParseResult,
-  Tool
-} from '../types';
+import type { ChatMessage, ChatState, ChatActions, Tool } from "../types";
 
 // User identity and presence
 export interface ChatUser {
@@ -23,7 +16,7 @@ export interface ChatUser {
   /** Avatar URL or emoji */
   avatar?: string;
   /** Current online status */
-  status: 'online' | 'away' | 'busy' | 'offline';
+  status: "online" | "away" | "busy" | "offline";
   /** Last seen timestamp */
   lastSeen?: number;
   /** User metadata */
@@ -31,7 +24,7 @@ export interface ChatUser {
     timezone?: string;
     language?: string;
     role?: string;
-    customFields?: Record<string, any>;
+    customFields?: Record<string, unknown>;
   };
 }
 
@@ -42,7 +35,7 @@ export interface ChatRoom {
   /** Room name/title */
   name: string;
   /** Room type */
-  type: 'direct' | 'group' | 'public' | 'private';
+  type: "direct" | "group" | "public" | "private";
   /** Room description */
   description?: string;
   /** Room participants */
@@ -78,7 +71,7 @@ export interface RoomSettings {
   /** Whether to allow reactions */
   allowReactions?: boolean;
   /** Custom room settings */
-  custom?: Record<string, any>;
+  custom?: Record<string, unknown>;
 }
 
 // Enhanced message types for P2P
@@ -100,13 +93,13 @@ export interface P2PChatMessage extends ChatMessage {
   /** Message attachments */
   attachments?: MessageAttachment[];
   /** Message priority */
-  priority?: 'low' | 'normal' | 'high' | 'urgent';
+  priority?: "low" | "normal" | "high" | "urgent";
   /** Whether message is pinned */
   isPinned?: boolean;
   /** Message edit history */
   editHistory?: MessageEdit[];
   /** Message delivery status */
-  deliveryStatus?: 'sent' | 'delivered' | 'read' | 'failed';
+  deliveryStatus?: "sent" | "delivered" | "read" | "failed";
 }
 
 export interface MessageReaction {
@@ -141,7 +134,7 @@ export interface MessageAttachment {
   /** Upload progress (0-100) */
   uploadProgress?: number;
   /** Upload status */
-  uploadStatus?: 'uploading' | 'completed' | 'failed';
+  uploadStatus?: "uploading" | "completed" | "failed";
 }
 
 export interface MessageEdit {
@@ -166,7 +159,7 @@ export interface TypingIndicator {
 }
 
 // Real-time events
-export type P2PChatEvent = 
+export type P2PChatEvent =
   | UserJoinedEvent
   | UserLeftEvent
   | UserStatusChangedEvent
@@ -181,41 +174,41 @@ export type P2PChatEvent =
   | ReadReceiptEvent;
 
 export interface UserJoinedEvent {
-  type: 'user_joined';
+  type: "user_joined";
   roomId: string;
   user: ChatUser;
   timestamp: number;
 }
 
 export interface UserLeftEvent {
-  type: 'user_left';
+  type: "user_left";
   roomId: string;
   user: ChatUser;
   timestamp: number;
 }
 
 export interface UserStatusChangedEvent {
-  type: 'user_status_changed';
+  type: "user_status_changed";
   user: ChatUser;
-  previousStatus: ChatUser['status'];
+  previousStatus: ChatUser["status"];
   timestamp: number;
 }
 
 export interface MessageSentEvent {
-  type: 'message_sent';
+  type: "message_sent";
   message: P2PChatMessage;
   timestamp: number;
 }
 
 export interface MessageEditedEvent {
-  type: 'message_edited';
+  type: "message_edited";
   message: P2PChatMessage;
   previousContent: string;
   timestamp: number;
 }
 
 export interface MessageDeletedEvent {
-  type: 'message_deleted';
+  type: "message_deleted";
   messageId: string;
   roomId: string;
   deletedBy: ChatUser;
@@ -223,38 +216,38 @@ export interface MessageDeletedEvent {
 }
 
 export interface MessageReactionEvent {
-  type: 'message_reaction';
+  type: "message_reaction";
   messageId: string;
   roomId: string;
   reaction: MessageReaction;
   user: ChatUser;
-  action: 'added' | 'removed';
+  action: "added" | "removed";
   timestamp: number;
 }
 
 export interface TypingStartEvent {
-  type: 'typing_start';
+  type: "typing_start";
   roomId: string;
   user: ChatUser;
   timestamp: number;
 }
 
 export interface TypingStopEvent {
-  type: 'typing_stop';
+  type: "typing_stop";
   roomId: string;
   user: ChatUser;
   timestamp: number;
 }
 
 export interface RoomCreatedEvent {
-  type: 'room_created';
+  type: "room_created";
   room: ChatRoom;
   createdBy: ChatUser;
   timestamp: number;
 }
 
 export interface RoomUpdatedEvent {
-  type: 'room_updated';
+  type: "room_updated";
   room: ChatRoom;
   updatedBy: ChatUser;
   changes: Partial<ChatRoom>;
@@ -262,7 +255,7 @@ export interface RoomUpdatedEvent {
 }
 
 export interface ReadReceiptEvent {
-  type: 'read_receipt';
+  type: "read_receipt";
   messageId: string;
   roomId: string;
   user: ChatUser;
@@ -270,7 +263,7 @@ export interface ReadReceiptEvent {
 }
 
 // P2P Chat State extending base ChatState
-export interface P2PChatState extends Omit<ChatState, 'messages'> {
+export interface P2PChatState extends Omit<ChatState, "messages"> {
   /** Current user */
   currentUser?: ChatUser;
   /** Available rooms/channels */
@@ -285,10 +278,15 @@ export interface P2PChatState extends Omit<ChatState, 'messages'> {
   typingIndicators: Record<string, TypingIndicator[]>;
   /** Connection to P2P service */
   p2pConnection: {
-    status: 'disconnected' | 'connecting' | 'connected' | 'reconnecting' | 'error';
+    status:
+      | "disconnected"
+      | "connecting"
+      | "connected"
+      | "reconnecting"
+      | "error";
     lastConnected?: number;
     reconnectAttempts: number;
-    protocol?: 'websocket' | 'webrtc' | 'sse';
+    protocol?: "websocket" | "webrtc" | "sse";
   };
   /** File upload state */
   uploads: Record<string, MessageAttachment>;
@@ -298,7 +296,11 @@ export interface P2PChatState extends Omit<ChatState, 'messages'> {
 export interface P2PChatActions extends ChatActions {
   // Room management
   /** Create a new room */
-  createRoom: (name: string, type: ChatRoom['type'], participants?: ChatUser[]) => Promise<ChatRoom>;
+  createRoom: (
+    name: string,
+    type: ChatRoom["type"],
+    participants?: ChatUser[],
+  ) => Promise<ChatRoom>;
   /** Join an existing room */
   joinRoom: (roomId: string) => Promise<void>;
   /** Leave a room */
@@ -306,19 +308,31 @@ export interface P2PChatActions extends ChatActions {
   /** Update room settings */
   updateRoom: (roomId: string, updates: Partial<ChatRoom>) => Promise<void>;
   /** Get room messages */
-  getRoomMessages: (roomId: string, limit?: number, before?: string) => Promise<P2PChatMessage[]>;
+  getRoomMessages: (
+    roomId: string,
+    limit?: number,
+    before?: string,
+  ) => Promise<P2PChatMessage[]>;
   /** Switch to a different room */
   switchRoom: (roomId: string) => void;
 
   // Message management
   /** Send message to specific room */
-  sendMessageToRoom: (roomId: string, content: string, options?: {
-    replyTo?: string;
-    threadId?: string;
-    priority?: P2PChatMessage['priority'];
-  }) => Promise<void>;
+  sendMessageToRoom: (
+    roomId: string,
+    content: string,
+    options?: {
+      replyTo?: string;
+      threadId?: string;
+      priority?: P2PChatMessage["priority"];
+    },
+  ) => Promise<void>;
   /** Edit a message */
-  editMessage: (messageId: string, newContent: string, reason?: string) => Promise<void>;
+  editMessage: (
+    messageId: string,
+    newContent: string,
+    reason?: string,
+  ) => Promise<void>;
   /** Delete a message */
   deleteMessage: (messageId: string) => Promise<void>;
   /** React to a message */
@@ -336,7 +350,7 @@ export interface P2PChatActions extends ChatActions {
 
   // User management
   /** Update user status via WebSocket */
-  updateUserStatusViaWebSocket: (status: ChatUser['status']) => Promise<void>;
+  updateUserStatusViaWebSocket: (status: ChatUser["status"]) => Promise<void>;
   /** Get user profile */
   getUserProfile: (userId: string) => Promise<ChatUser>;
   /** Block/unblock user */
@@ -346,7 +360,11 @@ export interface P2PChatActions extends ChatActions {
 
   // File handling
   /** Upload file */
-  uploadFile: (file: File, roomId: string, messageId?: string) => Promise<MessageAttachment>;
+  uploadFile: (
+    file: File,
+    roomId: string,
+    messageId?: string,
+  ) => Promise<MessageAttachment>;
   /** Download file */
   downloadFile: (attachmentId: string) => Promise<Blob>;
 
@@ -354,15 +372,18 @@ export interface P2PChatActions extends ChatActions {
   /** Search messages */
   searchMessages: (query: string, roomId?: string) => Promise<P2PChatMessage[]>;
   /** Get message history */
-  getMessageHistory: (roomId: string, options?: {
-    before?: number;
-    after?: number;
-    limit?: number;
-  }) => Promise<P2PChatMessage[]>;
+  getMessageHistory: (
+    roomId: string,
+    options?: {
+      before?: number;
+      after?: number;
+      limit?: number;
+    },
+  ) => Promise<P2PChatMessage[]>;
 
   // Presence and notifications
   /** Set user presence */
-  setPresence: (status: ChatUser['status'], message?: string) => Promise<void>;
+  setPresence: (status: ChatUser["status"], message?: string) => Promise<void>;
   /** Get room presence */
   getRoomPresence: (roomId: string) => Promise<ChatUser[]>;
   /** Configure notifications */
@@ -391,14 +412,16 @@ export interface UseP2PChatReturn {
   /** Available tools */
   availableTools: () => Tool[];
   /** Connection state */
-  connectionState: () => 'disconnected' | 'connecting' | 'connected' | 'error';
+  connectionState: () => "disconnected" | "connecting" | "connected" | "error";
   /** Current error (if any) */
-  error: () => {
-    type: string;
-    message: string;
-    timestamp: number;
-    recoverable: boolean;
-  } | undefined;
+  error: () =>
+    | {
+        type: string;
+        message: string;
+        timestamp: number;
+        recoverable: boolean;
+      }
+    | undefined;
   /** Chat configuration */
   config: () => {
     enableThinking: boolean;
@@ -408,7 +431,7 @@ export interface UseP2PChatReturn {
     showTokenCounts: boolean;
     maxHistoryLength: number;
   };
-  
+
   // P2P-specific state
   /** Current user */
   currentUser: () => ChatUser;
@@ -424,14 +447,19 @@ export interface UseP2PChatReturn {
   typingIndicators: () => Record<string, TypingIndicator[]>;
   /** Connection to P2P service */
   p2pConnection: () => {
-    status: 'disconnected' | 'connecting' | 'connected' | 'reconnecting' | 'error';
+    status:
+      | "disconnected"
+      | "connecting"
+      | "connected"
+      | "reconnecting"
+      | "error";
     lastConnected?: number;
     reconnectAttempts: number;
-    protocol?: 'websocket' | 'webrtc' | 'sse';
+    protocol?: "websocket" | "webrtc" | "sse";
   };
   /** File upload state */
   uploads: () => Record<string, MessageAttachment>;
-  
+
   /** Actions for controlling the chat */
   actions: P2PChatActions;
 }
@@ -466,14 +494,14 @@ export interface P2PChatContainerProps {
     showUserList?: boolean;
     showRoomList?: boolean;
     compact?: boolean;
-    theme?: 'light' | 'dark' | 'auto';
+    theme?: "light" | "dark" | "auto";
   };
   /** Event callbacks */
   onRoomJoined?: (room: ChatRoom) => void;
   onRoomLeft?: (room: ChatRoom) => void;
   onMessageReceived?: (message: P2PChatMessage) => void;
   onUserStatusChanged?: (user: ChatUser) => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error | unknown) => void;
 }
 
 export interface P2PMessageProps {

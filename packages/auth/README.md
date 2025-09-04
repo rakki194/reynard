@@ -25,8 +25,8 @@ npm install @reynard/auth @reynard/core @reynard/components jwt-decode @zxcvbn-t
 ### Basic Setup
 
 ```tsx
-import { AuthProvider, LoginForm, RegisterForm } from '@reynard/auth';
-import { createSignal, Show } from 'solid-js';
+import { AuthProvider, LoginForm, RegisterForm } from "@reynard/auth";
+import { createSignal, Show } from "solid-js";
 
 function App() {
   const [showLogin, setShowLogin] = createSignal(true);
@@ -34,14 +34,14 @@ function App() {
   return (
     <AuthProvider
       config={{
-        apiBaseUrl: '/api',
+        apiBaseUrl: "/api",
         autoRefresh: true,
-        loginRedirectPath: '/dashboard'
+        loginRedirectPath: "/dashboard",
       }}
       callbacks={{
-        onLoginSuccess: (user) => console.log('Welcome:', user.username),
-        onLogout: () => console.log('Goodbye!'),
-        onSessionExpired: () => console.log('Session expired')
+        onLoginSuccess: (user) => console.log("Welcome:", user.username),
+        onLogout: () => console.log("Goodbye!"),
+        onSessionExpired: () => console.log("Session expired"),
       }}
     >
       <div class="app">
@@ -49,17 +49,17 @@ function App() {
           <LoginForm
             onLogin={async (credentials) => {
               // Handle login with your API
-              console.log('Login attempt:', credentials);
+              console.log("Login attempt:", credentials);
             }}
             onRegisterClick={() => setShowLogin(false)}
           />
         </Show>
-        
+
         <Show when={!showLogin()}>
           <RegisterForm
             onRegister={async (data) => {
               // Handle registration with your API
-              console.log('Register attempt:', data);
+              console.log("Register attempt:", data);
             }}
             onLoginClick={() => setShowLogin(true)}
           />
@@ -73,7 +73,7 @@ function App() {
 ### Using the Auth Hook
 
 ```tsx
-import { useAuth } from '@reynard/auth';
+import { useAuth } from "@reynard/auth";
 
 function Dashboard() {
   const auth = useAuth();
@@ -81,9 +81,7 @@ function Dashboard() {
   return (
     <div>
       <h1>Welcome, {auth.user()?.username}!</h1>
-      <button onClick={auth.logout}>
-        Sign Out
-      </button>
+      <button onClick={auth.logout}>Sign Out</button>
     </div>
   );
 }
@@ -98,24 +96,27 @@ Context provider that manages authentication state and provides auth methods.
 ```tsx
 <AuthProvider
   config={{
-    apiBaseUrl: '/api',
-    loginEndpoint: '/auth/login',
-    refreshEndpoint: '/auth/refresh',
+    apiBaseUrl: "/api",
+    loginEndpoint: "/auth/login",
+    refreshEndpoint: "/auth/refresh",
     autoRefresh: true,
-    refreshThresholdMinutes: 10
+    refreshThresholdMinutes: 10,
   }}
   callbacks={{
     onLoginSuccess: (user, tokens) => {
-      console.log('Login successful:', user);
-      localStorage.setItem('user_preferences', JSON.stringify(user.preferences));
+      console.log("Login successful:", user);
+      localStorage.setItem(
+        "user_preferences",
+        JSON.stringify(user.preferences),
+      );
     },
     onLogout: () => {
-      localStorage.removeItem('user_preferences');
-      window.location.href = '/';
+      localStorage.removeItem("user_preferences");
+      window.location.href = "/";
     },
     onSessionExpired: () => {
-      notify('Your session has expired. Please log in again.', 'warning');
-    }
+      notify("Your session has expired. Please log in again.", "warning");
+    },
   }}
   requireAuth={false}
   loginPath="/login"
@@ -137,26 +138,26 @@ Complete login form with validation and error handling.
   showForgotPassword={true}
   onLogin={async (credentials) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
       });
-      
+
       if (response.ok) {
         const { user, accessToken, refreshToken } = await response.json();
         auth.login({ user, accessToken, refreshToken });
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         const error = await response.json();
         setLoginError(error.message);
       }
     } catch (error) {
-      setLoginError('Network error. Please try again.');
+      setLoginError("Network error. Please try again.");
     }
   }}
-  onForgotPassword={() => navigate('/forgot-password')}
-  onRegisterClick={() => navigate('/register')}
+  onForgotPassword={() => navigate("/forgot-password")}
+  onRegisterClick={() => navigate("/register")}
 />
 ```
 
@@ -173,26 +174,26 @@ Registration form with password strength checking and validation.
   showTermsAcceptance={true}
   onRegister={async (data) => {
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
-      
+
       if (response.ok) {
-        setSuccessMessage('Account created successfully! Please log in.');
-        navigate('/login');
+        setSuccessMessage("Account created successfully! Please log in.");
+        navigate("/login");
       } else {
         const error = await response.json();
         setRegisterError(error.message);
       }
     } catch (error) {
-      setRegisterError('Registration failed. Please try again.');
+      setRegisterError("Registration failed. Please try again.");
     }
   }}
-  onLoginClick={() => navigate('/login')}
-  onTermsClick={() => navigate('/terms')}
-  onPrivacyClick={() => navigate('/privacy')}
+  onLoginClick={() => navigate("/login")}
+  onTermsClick={() => navigate("/terms")}
+  onPrivacyClick={() => navigate("/privacy")}
 />
 ```
 
@@ -202,7 +203,7 @@ Advanced password strength indicator with detailed feedback.
 
 ```tsx
 function PasswordField() {
-  const [password, setPassword] = createSignal('');
+  const [password, setPassword] = createSignal("");
 
   return (
     <div>
@@ -212,10 +213,10 @@ function PasswordField() {
         onInput={(e) => setPassword(e.target.value)}
         placeholder="Enter password"
       />
-      
+
       <PasswordStrengthMeter
         password={password()}
-        userInputs={['john@example.com', 'john_doe']} // Don't use these in password
+        userInputs={["john@example.com", "john_doe"]} // Don't use these in password
         showRequirements={true}
         showSuggestions={true}
         showCrackTime={true}
@@ -237,24 +238,24 @@ function UserProfile() {
   const auth = useAuth({
     config: {
       autoRefresh: true,
-      refreshThresholdMinutes: 5
+      refreshThresholdMinutes: 5,
     },
     callbacks: {
       onTokenRefresh: (tokens) => {
-        console.log('Tokens refreshed');
-      }
-    }
+        console.log("Tokens refreshed");
+      },
+    },
   });
 
   const handleUpdateProfile = async () => {
     try {
       await auth.updateProfile({
-        fullName: 'John Doe',
-        email: 'john@example.com'
+        fullName: "John Doe",
+        email: "john@example.com",
       });
-      notify('Profile updated successfully!', 'success');
+      notify("Profile updated successfully!", "success");
     } catch (error) {
-      notify('Failed to update profile', 'error');
+      notify("Failed to update profile", "error");
     }
   };
 
@@ -263,18 +264,14 @@ function UserProfile() {
       <Show when={auth.isAuthenticated()}>
         <h2>Welcome, {auth.user()?.username}!</h2>
         <p>Role: {auth.user()?.role}</p>
-        <button onClick={handleUpdateProfile}>
-          Update Profile
-        </button>
-        <button onClick={auth.logout}>
-          Sign Out
-        </button>
+        <button onClick={handleUpdateProfile}>Update Profile</button>
+        <button onClick={auth.logout}>Sign Out</button>
       </Show>
-      
+
       <Show when={auth.isLoading()}>
         <div>Loading...</div>
       </Show>
-      
+
       <Show when={auth.error()}>
         <div class="error">{auth.error()}</div>
       </Show>
@@ -289,17 +286,14 @@ Advanced password strength analysis with zxcvbn.
 
 ```tsx
 function PasswordInput() {
-  const [password, setPassword] = createSignal('');
-  
-  const strength = usePasswordStrength(
-    () => password(),
-    {
-      useAdvanced: true,
-      minScore: 3,
-      userInputs: ['username', 'email@domain.com'],
-      customDictionary: ['company', 'product']
-    }
-  );
+  const [password, setPassword] = createSignal("");
+
+  const strength = usePasswordStrength(() => password(), {
+    useAdvanced: true,
+    minScore: 3,
+    userInputs: ["username", "email@domain.com"],
+    customDictionary: ["company", "product"],
+  });
 
   return (
     <div>
@@ -308,20 +302,20 @@ function PasswordInput() {
         value={password()}
         onInput={(e) => setPassword(e.target.value)}
       />
-      
+
       <div class="strength-indicator">
-        <div 
+        <div
           class="strength-bar"
           style={{
             width: `${strength.strengthProgress()}%`,
-            'background-color': strength.strengthColor()
+            "background-color": strength.strengthColor(),
           }}
         />
         <span style={{ color: strength.strengthColor() }}>
           {strength.strengthLabel()}
         </span>
       </div>
-      
+
       <Show when={!strength.isAcceptable()}>
         <div class="strength-feedback">
           <p>{strength.feedback()}</p>
@@ -332,12 +326,12 @@ function PasswordInput() {
           </ul>
         </div>
       </Show>
-      
+
       <div class="requirements">
         <For each={strength.requirements()}>
           {(req) => (
-            <div class={req.met ? 'met' : 'unmet'}>
-              {req.met ? '✓' : '○'} {req.label}
+            <div class={req.met ? "met" : "unmet"}>
+              {req.met ? "✓" : "○"} {req.label}
             </div>
           )}
         </For>
@@ -354,25 +348,25 @@ function PasswordInput() {
 ```typescript
 const authConfig: AuthConfiguration = {
   // API endpoints
-  apiBaseUrl: '/api',
-  loginEndpoint: '/auth/login',
-  registerEndpoint: '/auth/register', 
-  refreshEndpoint: '/auth/refresh',
-  profileEndpoint: '/auth/profile',
-  
+  apiBaseUrl: "/api",
+  loginEndpoint: "/auth/login",
+  registerEndpoint: "/auth/register",
+  refreshEndpoint: "/auth/refresh",
+  profileEndpoint: "/auth/profile",
+
   // Token management
-  tokenStorageKey: 'auth_token',
-  refreshTokenStorageKey: 'refresh_token',
+  tokenStorageKey: "auth_token",
+  refreshTokenStorageKey: "refresh_token",
   autoRefresh: true,
   refreshThresholdMinutes: 10,
-  
+
   // Navigation
-  loginRedirectPath: '/dashboard',
-  logoutRedirectPath: '/login',
-  
+  loginRedirectPath: "/dashboard",
+  logoutRedirectPath: "/login",
+
   // Features
   enableRememberMe: true,
-  sessionTimeoutMinutes: 30
+  sessionTimeoutMinutes: 30,
 };
 ```
 
@@ -385,9 +379,10 @@ const customValidation: ValidationRules = {
   requireLowercase: true,
   requireNumber: true,
   requireSpecialChar: true,
-  customPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+  customPattern:
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
   usernamePattern: /^[a-zA-Z0-9_-]{3,20}$/,
-  emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 ```
 
@@ -400,45 +395,52 @@ const customValidation: ValidationRules = {
 const auth = useAuth({
   config: {
     autoRefresh: true,
-    refreshThresholdMinutes: 10 // Refresh 10 minutes before expiry
+    refreshThresholdMinutes: 10, // Refresh 10 minutes before expiry
   },
   callbacks: {
     onTokenRefresh: (tokens) => {
-      console.log('Tokens refreshed automatically');
+      console.log("Tokens refreshed automatically");
     },
     onSessionExpired: () => {
-      notify('Session expired. Please log in again.', 'warning');
-      navigate('/login');
-    }
-  }
+      notify("Session expired. Please log in again.", "warning");
+      navigate("/login");
+    },
+  },
 });
 ```
 
 ### Secure Token Storage
 
 ```typescript
-import { TokenManager, SecureStorage } from '@reynard/auth';
+import { TokenManager, SecureStorage } from "@reynard/auth";
 
 // Secure token management
-const tokenManager = TokenManager.getInstance('app_token', 'app_refresh');
+const tokenManager = TokenManager.getInstance("app_token", "app_refresh");
 
 // Store tokens securely
 tokenManager.setTokens(accessToken, refreshToken);
 
 // Check token validity
-if (tokenManager.hasAccessToken() && !isTokenExpired(tokenManager.getAccessToken()!)) {
-  console.log('Valid token available');
+if (
+  tokenManager.hasAccessToken() &&
+  !isTokenExpired(tokenManager.getAccessToken()!)
+) {
+  console.log("Valid token available");
 }
 
 // Secure storage for sensitive data
-const storage = new SecureStorage('app_');
-storage.set('user_preferences', JSON.stringify(preferences));
+const storage = new SecureStorage("app_");
+storage.set("user_preferences", JSON.stringify(preferences));
 ```
 
 ### Password Security
 
 ```tsx
-import { validatePassword, calculatePasswordStrength, hashPassword } from '@reynard/auth';
+import {
+  validatePassword,
+  calculatePasswordStrength,
+  hashPassword,
+} from "@reynard/auth";
 
 // Validate password against rules
 const validation = validatePassword(password, {
@@ -446,11 +448,11 @@ const validation = validatePassword(password, {
   requireUppercase: true,
   requireLowercase: true,
   requireNumber: true,
-  requireSpecialChar: true
+  requireSpecialChar: true,
 });
 
 if (!validation.isValid) {
-  console.log('Password errors:', validation.errors);
+  console.log("Password errors:", validation.errors);
 }
 
 // Calculate strength
@@ -470,98 +472,97 @@ function CustomAuthProvider(props: { children: any }) {
   const auth = useAuth({
     config: {
       apiBaseUrl: import.meta.env.VITE_API_URL,
-      autoRefresh: true
+      autoRefresh: true,
     },
     callbacks: {
       onLoginSuccess: (user, tokens) => {
         // Track login event
-        analytics.track('user_login', { userId: user.id });
-        
+        analytics.track("user_login", { userId: user.id });
+
         // Set user context for error reporting
         errorReporting.setUser(user);
-        
+
         // Update last login time
-        localStorage.setItem('last_login', new Date().toISOString());
+        localStorage.setItem("last_login", new Date().toISOString());
       },
-      
+
       onLogout: () => {
         // Clear analytics
         analytics.reset();
         errorReporting.clearUser();
-        
+
         // Clear app data
         localStorage.clear();
-        
+
         // Redirect to landing page
-        window.location.href = '/';
+        window.location.href = "/";
       },
-      
+
       onSessionExpired: () => {
-        toast.error('Your session has expired. Please log in again.');
-        
+        toast.error("Your session has expired. Please log in again.");
+
         // Track session expiry
-        analytics.track('session_expired');
+        analytics.track("session_expired");
       },
-      
+
       onUnauthorized: () => {
-        toast.warning('Access denied. Please check your permissions.');
-      }
-    }
+        toast.warning("Access denied. Please check your permissions.");
+      },
+    },
   });
 
-  return (
-    <AuthProvider value={auth}>
-      {props.children}
-    </AuthProvider>
-  );
+  return <AuthProvider value={auth}>{props.children}</AuthProvider>;
 }
 ```
 
 ### Protected Routes
 
 ```tsx
-import { withAuth, useAuthContext } from '@reynard/auth';
+import { withAuth, useAuthContext } from "@reynard/auth";
 
 // Higher-order component approach
 const ProtectedDashboard = withAuth(Dashboard, {
-  redirectTo: '/login',
-  fallback: () => <div>Checking authentication...</div>
+  redirectTo: "/login",
+  fallback: () => <div>Checking authentication...</div>,
 });
 
 // Hook approach
 function AdminPanel() {
   const auth = useAuthContext();
-  
+
   // Check role-based access
-  if (!hasPermission(auth.user()?.role || 'guest', 'admin')) {
+  if (!hasPermission(auth.user()?.role || "guest", "admin")) {
     return <div>Access denied. Admin privileges required.</div>;
   }
-  
+
   return <div>Admin panel content</div>;
 }
 
 // Route guard approach (with your router)
 function AuthGuard(props: { children: any; requireRole?: UserRole }) {
   const auth = useAuthContext();
-  
+
   createEffect(() => {
     if (!auth.isLoading() && !auth.isAuthenticated()) {
-      navigate('/login');
+      navigate("/login");
     }
-    
-    if (props.requireRole && !hasPermission(auth.user()?.role || 'guest', props.requireRole)) {
-      navigate('/unauthorized');
+
+    if (
+      props.requireRole &&
+      !hasPermission(auth.user()?.role || "guest", props.requireRole)
+    ) {
+      navigate("/unauthorized");
     }
   });
-  
+
   if (auth.isLoading()) {
     return <div>Loading...</div>;
   }
-  
+
   if (!auth.isAuthenticated()) {
     return null; // Will redirect
   }
-  
+
   return <>{props.children}</>;
 }
 ```
@@ -572,35 +573,38 @@ function AuthGuard(props: { children: any; requireRole?: UserRole }) {
 // Custom auth fetch wrapper
 function useAuthenticatedApi() {
   const auth = useAuthContext();
-  
+
   const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     try {
       const response = await auth.authFetch(endpoint, options);
-      
+
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      
+
       return await response.json();
     } catch (error) {
-      console.error('API call failed:', error);
+      console.error("API call failed:", error);
       throw error;
     }
   };
-  
+
   return {
     get: (endpoint: string) => apiCall(endpoint),
-    post: (endpoint: string, data: any) => apiCall(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    }),
-    put: (endpoint: string, data: any) => apiCall(endpoint, {
-      method: 'PUT',
-      body: JSON.stringify(data)
-    }),
-    delete: (endpoint: string) => apiCall(endpoint, {
-      method: 'DELETE'
-    })
+    post: (endpoint: string, data: any) =>
+      apiCall(endpoint, {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    put: (endpoint: string, data: any) =>
+      apiCall(endpoint, {
+        method: "PUT",
+        body: JSON.stringify(data),
+      }),
+    delete: (endpoint: string) =>
+      apiCall(endpoint, {
+        method: "DELETE",
+      }),
   };
 }
 
@@ -608,28 +612,26 @@ function useAuthenticatedApi() {
 function UsersList() {
   const api = useAuthenticatedApi();
   const [users] = createResource(async () => {
-    return await api.get('/users');
+    return await api.get("/users");
   });
-  
+
   const deleteUser = async (userId: string) => {
     try {
       await api.delete(`/users/${userId}`);
-      toast.success('User deleted successfully');
+      toast.success("User deleted successfully");
       // Refetch users list
     } catch (error) {
-      toast.error('Failed to delete user');
+      toast.error("Failed to delete user");
     }
   };
-  
+
   return (
     <div>
       <For each={users()}>
         {(user) => (
           <div>
             {user.username}
-            <button onClick={() => deleteUser(user.id)}>
-              Delete
-            </button>
+            <button onClick={() => deleteUser(user.id)}>Delete</button>
           </div>
         )}
       </For>
@@ -645,14 +647,14 @@ Full TypeScript support with comprehensive type definitions:
 ```typescript
 import type {
   User,
-  UserRole, 
+  UserRole,
   AuthState,
   LoginCredentials,
   RegisterData,
   AuthConfiguration,
   PasswordStrength,
-  ValidationRules
-} from '@reynard/auth';
+  ValidationRules,
+} from "@reynard/auth";
 
 // Type-safe user management
 const updateUser = (userId: string, updates: Partial<User>): Promise<User> => {
@@ -661,13 +663,13 @@ const updateUser = (userId: string, updates: Partial<User>): Promise<User> => {
 
 // Role-based access control
 const hasAdminAccess = (user: User): boolean => {
-  return hasPermission(user.role, 'admin');
+  return hasPermission(user.role, "admin");
 };
 
 // Custom validation
 const customValidation: ValidationRules = {
   minLength: 8,
-  customPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/
+  customPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
 };
 ```
 
@@ -676,35 +678,35 @@ const customValidation: ValidationRules = {
 Testing utilities and examples:
 
 ```tsx
-import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { AuthProvider, LoginForm } from '@reynard/auth';
+import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
+import { AuthProvider, LoginForm } from "@reynard/auth";
 
-describe('LoginForm', () => {
-  test('handles login submission', async () => {
+describe("LoginForm", () => {
+  test("handles login submission", async () => {
     const mockLogin = vi.fn();
-    
+
     render(() => (
       <AuthProvider>
         <LoginForm onLogin={mockLogin} />
       </AuthProvider>
     ));
-    
+
     // Fill in the form
     fireEvent.input(screen.getByLabelText(/username/i), {
-      target: { value: 'testuser' }
+      target: { value: "testuser" },
     });
     fireEvent.input(screen.getByLabelText(/password/i), {
-      target: { value: 'password123' }
+      target: { value: "password123" },
     });
-    
+
     // Submit the form
-    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+    fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
+
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith({
-        identifier: 'testuser',
-        password: 'password123',
-        rememberMe: false
+        identifier: "testuser",
+        password: "password123",
+        rememberMe: false,
       });
     });
   });
@@ -718,7 +720,3 @@ See the main [Reynard repository](../../README.md) for contribution guidelines.
 ---
 
 **Built with 🔐 for secure SolidJS applications** 🛡️🦊
-
-
-
-

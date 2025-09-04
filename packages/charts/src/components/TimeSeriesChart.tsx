@@ -3,7 +3,15 @@
  * Advanced real-time chart with automatic data management
  */
 
-import { Component, onMount, createSignal, createEffect, Show, splitProps, onCleanup } from "solid-js";
+import {
+  Component,
+  onMount,
+  createSignal,
+  createEffect,
+  Show,
+  splitProps,
+  onCleanup,
+} from "solid-js";
 import {
   Chart,
   Title,
@@ -107,7 +115,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     labels: string[];
     datasets: any[];
   } | null>(null);
-  
+
   let updateTimer: number | null = null;
 
   // Register Chart.js components on mount
@@ -121,7 +129,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       PointElement,
       LineElement,
       LinearScale,
-      TimeScale
+      TimeScale,
     );
     setIsRegistered(true);
   });
@@ -154,7 +162,9 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     if (local.timeRange) {
       const now = Date.now();
       const cutoff = now - local.timeRange;
-      dataToProcess = dataToProcess.filter(point => point.timestamp >= cutoff);
+      dataToProcess = dataToProcess.filter(
+        (point) => point.timestamp >= cutoff,
+      );
     }
 
     // Limit data points
@@ -168,16 +178,18 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     }
 
     // Prepare chart data
-    const labels = dataToProcess.map(point => formatTimestamp(point.timestamp, "time"));
-    const values = dataToProcess.map(point => point.value);
-    
+    const labels = dataToProcess.map((point) =>
+      formatTimestamp(point.timestamp, "time"),
+    );
+    const values = dataToProcess.map((point) => point.value);
+
     // Generate point colors if function provided
     let pointBackgroundColors: string[] | undefined;
     let pointBorderColors: string[] | undefined;
-    
+
     if (local.pointColors) {
-      pointBackgroundColors = dataToProcess.map(point => 
-        local.pointColors!(point.value, point.timestamp)
+      pointBackgroundColors = dataToProcess.map((point) =>
+        local.pointColors!(point.value, point.timestamp),
       );
       pointBorderColors = pointBackgroundColors;
     }
@@ -207,20 +219,31 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   };
 
   // Aggregate data by intervals
-  const aggregateData = (data: TimeSeriesDataPoint[], intervalMs: number): TimeSeriesDataPoint[] => {
-    const aggregated = new Map<number, { sum: number; count: number; label: string }>();
-    
+  const aggregateData = (
+    data: TimeSeriesDataPoint[],
+    intervalMs: number,
+  ): TimeSeriesDataPoint[] => {
+    const aggregated = new Map<
+      number,
+      { sum: number; count: number; label: string }
+    >();
+
     for (const point of data) {
-      const intervalStart = Math.floor(point.timestamp / intervalMs) * intervalMs;
-      const existing = aggregated.get(intervalStart) || { sum: 0, count: 0, label: point.label };
-      
+      const intervalStart =
+        Math.floor(point.timestamp / intervalMs) * intervalMs;
+      const existing = aggregated.get(intervalStart) || {
+        sum: 0,
+        count: 0,
+        label: point.label,
+      };
+
       aggregated.set(intervalStart, {
         sum: existing.sum + point.value,
         count: existing.count + 1,
         label: existing.label,
       });
     }
-    
+
     return Array.from(aggregated.entries())
       .map(([timestamp, { sum, count, label }]) => ({
         timestamp,
@@ -253,7 +276,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
 
   const getChartOptions = () => {
     const baseConfig = getDefaultConfig("line");
-    
+
     return {
       ...baseConfig,
       responsive: local.responsive,
@@ -291,7 +314,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           callbacks: {
             label: (context: any) => {
               const value = context.parsed.y;
-              const formattedValue = local.valueFormatter 
+              const formattedValue = local.valueFormatter
                 ? local.valueFormatter(value)
                 : value.toLocaleString();
               return `${context.dataset.label}: ${formattedValue}`;
@@ -344,7 +367,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           ticks: {
             color: "var(--text-secondary)",
             callback: (value: any) => {
-              return local.valueFormatter 
+              return local.valueFormatter
                 ? local.valueFormatter(value)
                 : value.toLocaleString();
             },
@@ -365,7 +388,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   };
 
   return (
-    <div 
+    <div
       class={getContainerClasses()}
       style={{
         width: local.responsive ? "100%" : `${local.width}px`,
@@ -400,5 +423,3 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     </div>
   );
 };
-
-

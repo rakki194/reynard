@@ -1,13 +1,13 @@
-import { Component, createSignal, For, Show } from 'solid-js';
-import { useNotifications } from '@reynard/core';
-import { Button, Card } from '@reynard/components';
-import { Drawer } from '@reynard/ui';
+import { Component, createSignal, For, Show } from "solid-js";
+import { useNotifications } from "@reynard/core";
+import { Button, Card } from "@reynard/components";
+import { Drawer } from "@reynard/ui";
 
 const NotificationCenter: Component = () => {
   const notifications = useNotifications();
   const [isOpen, setIsOpen] = createSignal(false);
 
-  const unreadCount = () => notifications.items().filter(n => !n.read).length;
+  const unreadCount = () => notifications.items().filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
     notifications.markAsRead(id);
@@ -29,9 +29,7 @@ const NotificationCenter: Component = () => {
         >
           🔔
           <Show when={unreadCount() > 0}>
-            <span class="notification-center__badge">
-              {unreadCount()}
-            </span>
+            <span class="notification-center__badge">{unreadCount()}</span>
           </Show>
         </Button>
       </div>
@@ -46,11 +44,7 @@ const NotificationCenter: Component = () => {
           <div class="notification-center__header">
             <h3>Notifications</h3>
             <Show when={notifications.items().length > 0}>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearAll}
-              >
+              <Button variant="ghost" size="sm" onClick={clearAll}>
                 Clear All
               </Button>
             </Show>
@@ -67,17 +61,17 @@ const NotificationCenter: Component = () => {
             >
               <For each={notifications.items()}>
                 {(notification) => (
-                  <Card 
-                    class={`notification-center__item ${!notification.read ? 'notification-center__item--unread' : ''}`}
+                  <Card
+                    class={`notification-center__item ${!notification.read ? "notification-center__item--unread" : ""}`}
                   >
                     <div class="notification-center__item-content">
                       <div class="notification-center__item-type">
-                        {notification.type === 'success' && '✅'}
-                        {notification.type === 'error' && '❌'}
-                        {notification.type === 'warning' && '⚠️'}
-                        {notification.type === 'info' && 'ℹ️'}
+                        {notification.type === "success" && "✅"}
+                        {notification.type === "error" && "❌"}
+                        {notification.type === "warning" && "⚠️"}
+                        {notification.type === "info" && "ℹ️"}
                       </div>
-                      
+
                       <div class="notification-center__item-body">
                         <Show when={notification.title}>
                           <h4 class="notification-center__item-title">

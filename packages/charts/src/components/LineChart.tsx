@@ -3,7 +3,14 @@
  * A responsive line chart with time series support
  */
 
-import { Component, onMount, createSignal, createEffect, Show, splitProps } from "solid-js";
+import {
+  Component,
+  onMount,
+  createSignal,
+  createEffect,
+  Show,
+  splitProps,
+} from "solid-js";
 import {
   Chart,
   Title,
@@ -17,8 +24,18 @@ import {
   TimeScale,
 } from "chart.js";
 import { Line } from "solid-chartjs";
-import { Dataset, ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
-import { getDefaultConfig, prepareDatasets, processTimeSeriesData, validateChartData } from "../utils";
+import {
+  Dataset,
+  ChartConfig,
+  TimeSeriesDataPoint,
+  ReynardTheme,
+} from "../types";
+import {
+  getDefaultConfig,
+  prepareDatasets,
+  processTimeSeriesData,
+  validateChartData,
+} from "../utils";
 
 export interface LineChartProps extends ChartConfig {
   /** Chart labels */
@@ -97,7 +114,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
       PointElement,
       LineElement,
       LinearScale,
-      TimeScale
+      TimeScale,
     );
     setIsRegistered(true);
   });
@@ -106,13 +123,18 @@ export const LineChart: Component<LineChartProps> = (props) => {
   createEffect(() => {
     if (local.timeSeriesData && local.timeSeriesData.length > 0) {
       // Process time series data
-      const processed = processTimeSeriesData(local.timeSeriesData, local.maxDataPoints);
-      const datasets = prepareDatasets([{
-        label: "Value",
-        data: processed.data,
-        fill: false,
-        tension: 0.4,
-      }]);
+      const processed = processTimeSeriesData(
+        local.timeSeriesData,
+        local.maxDataPoints,
+      );
+      const datasets = prepareDatasets([
+        {
+          label: "Value",
+          data: processed.data,
+          fill: false,
+          tension: 0.4,
+        },
+      ]);
 
       setChartData({
         labels: processed.labels,
@@ -136,7 +158,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
 
   const getChartOptions = () => {
     const baseConfig = getDefaultConfig("line");
-    
+
     return {
       ...baseConfig,
       responsive: local.responsive,
@@ -220,7 +242,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
   };
 
   return (
-    <div 
+    <div
       class={getContainerClasses()}
       style={{
         width: local.responsive ? "100%" : `${local.width}px`,

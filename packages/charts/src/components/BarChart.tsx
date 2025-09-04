@@ -3,7 +3,14 @@
  * A responsive bar chart for categorical data
  */
 
-import { Component, onMount, createSignal, createEffect, Show, splitProps } from "solid-js";
+import {
+  Component,
+  onMount,
+  createSignal,
+  createEffect,
+  Show,
+  splitProps,
+} from "solid-js";
 import {
   Chart,
   Title,
@@ -90,7 +97,7 @@ export const BarChart: Component<BarChartProps> = (props) => {
       BarController,
       CategoryScale,
       LinearScale,
-      BarElement
+      BarElement,
     );
     setIsRegistered(true);
   });
@@ -114,11 +121,11 @@ export const BarChart: Component<BarChartProps> = (props) => {
 
   const getChartOptions = () => {
     const baseConfig = getDefaultConfig("bar");
-    
+
     // Determine which axis is categorical vs numeric based on orientation
     const categoryAxis = local.horizontal ? "y" : "x";
     const valueAxis = local.horizontal ? "x" : "y";
-    
+
     return {
       ...baseConfig,
       indexAxis: local.horizontal ? "y" : "x",
@@ -152,10 +159,17 @@ export const BarChart: Component<BarChartProps> = (props) => {
       scales: {
         [categoryAxis]: {
           type: "category",
-          display: categoryAxis === "x" ? local.xAxis?.display !== false : local.yAxis?.display !== false,
+          display:
+            categoryAxis === "x"
+              ? local.xAxis?.display !== false
+              : local.yAxis?.display !== false,
           title: {
-            display: categoryAxis === "x" ? !!local.xAxis?.label : !!local.yAxis?.label,
-            text: categoryAxis === "x" ? local.xAxis?.label : local.yAxis?.label,
+            display:
+              categoryAxis === "x"
+                ? !!local.xAxis?.label
+                : !!local.yAxis?.label,
+            text:
+              categoryAxis === "x" ? local.xAxis?.label : local.yAxis?.label,
             color: "var(--text-primary)",
           },
           grid: {
@@ -169,10 +183,17 @@ export const BarChart: Component<BarChartProps> = (props) => {
         },
         [valueAxis]: {
           type: "linear",
-          display: valueAxis === "x" ? local.xAxis?.display !== false : local.yAxis?.display !== false,
-          position: valueAxis === "y" ? (local.yAxis?.position || "left") : (local.xAxis?.position || "bottom"),
+          display:
+            valueAxis === "x"
+              ? local.xAxis?.display !== false
+              : local.yAxis?.display !== false,
+          position:
+            valueAxis === "y"
+              ? local.yAxis?.position || "left"
+              : local.xAxis?.position || "bottom",
           title: {
-            display: valueAxis === "x" ? !!local.xAxis?.label : !!local.yAxis?.label,
+            display:
+              valueAxis === "x" ? !!local.xAxis?.label : !!local.yAxis?.label,
             text: valueAxis === "x" ? local.xAxis?.label : local.yAxis?.label,
             color: "var(--text-primary)",
           },
@@ -203,7 +224,7 @@ export const BarChart: Component<BarChartProps> = (props) => {
   };
 
   return (
-    <div 
+    <div
       class={getContainerClasses()}
       style={{
         width: local.responsive ? "100%" : `${local.width}px`,

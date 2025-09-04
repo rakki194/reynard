@@ -71,6 +71,17 @@ vi.mock("solid-js", async () => {
   };
 });
 
+// Mock window.setInterval to work in test environment
+global.setInterval = vi.fn((fn: any) => {
+  // Call immediately in test environment
+  if (typeof fn === "function") {
+    fn();
+  }
+  return 1 as any;
+});
+
+global.clearInterval = vi.fn();
+
 // Mock the problematic import
 vi.doMock("chartjs-adapter-date-fns", () => ({}));
 

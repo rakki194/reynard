@@ -4,12 +4,11 @@
  */
 
 import { jwtDecode } from "jwt-decode";
-import type { 
-  DecodedToken, 
-  PasswordStrength, 
-  ValidationRules, 
-  User,
-  UserRole
+import type {
+  DecodedToken,
+  PasswordStrength,
+  ValidationRules,
+  UserRole,
 } from "../types";
 import { DEFAULT_VALIDATION_RULES } from "../types";
 
@@ -20,13 +19,17 @@ export class TokenManager {
   private static instance: TokenManager;
   private tokenKey: string;
   private refreshTokenKey: string;
+  private blacklistedTokens: Set<string> = new Set();
 
   constructor(tokenKey = "auth_token", refreshTokenKey = "refresh_token") {
     this.tokenKey = tokenKey;
     this.refreshTokenKey = refreshTokenKey;
   }
 
-  static getInstance(tokenKey?: string, refreshTokenKey?: string): TokenManager {
+  static getInstance(
+    tokenKey?: string,
+    refreshTokenKey?: string,
+  ): TokenManager {
     if (!TokenManager.instance) {
       TokenManager.instance = new TokenManager(tokenKey, refreshTokenKey);
     }
@@ -38,7 +41,7 @@ export class TokenManager {
    */
   setTokens(accessToken: string, refreshToken?: string): void {
     if (typeof localStorage === "undefined") return;
-    
+
     localStorage.setItem(this.tokenKey, accessToken);
     if (refreshToken) {
       localStorage.setItem(this.refreshTokenKey, refreshToken);
@@ -66,7 +69,7 @@ export class TokenManager {
    */
   clearTokens(): void {
     if (typeof localStorage === "undefined") return;
-    
+
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.refreshTokenKey);
   }
@@ -84,6 +87,113 @@ export class TokenManager {
   hasRefreshToken(): boolean {
     return !!this.getRefreshToken();
   }
+
+  /**
+   * Blacklist a token (revoke it)
+   */
+  blacklistToken(token: string): void {
+    this.blacklistedTokens.add(token);
+  }
+
+  /**
+   * Check if a token is blacklisted
+   */
+  isTokenBlacklisted(token: string): boolean {
+    return this.blacklistedTokens.has(token);
+  }
+
+  /**
+   * Validate token format and expiration
+   */
+  validateToken(token: string): { isValid: boolean; error?: string } {
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+
+      // Check if token is blacklisted
+      if (this.isTokenBlacklisted(token)) {
+        return { isValid: false, error: "Token has been revoked" };
+      }
+
+      // Check expiration
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        return { isValid: false, error: "Token has expired" };
+      }
+
+      // Check required fields
+      if (!decoded.sub || !decoded.role) {
+        return { isValid: false, error: "Token missing required fields" };
+      }
+
+      return { isValid: true };
+    } catch {
+      return { isValid: false, error: "Invalid token format" };
+    }
+  }
+
+  /**
+   * Get token expiration time
+   */
+  getTokenExpiration(token: string): Date | null {
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      if (decoded.exp) {
+        return new Date(decoded.exp * 1000);
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Check if token expires soon (within specified minutes)
+   */
+  isTokenExpiringSoon(token: string, minutes: number = 5): boolean {
+    const expiration = this.getTokenExpiration(token);
+    if (!expiration) return true;
+
+    const now = new Date();
+    const timeUntilExpiry = expiration.getTime() - now.getTime();
+    const minutesUntilExpiry = timeUntilExpiry / (1000 * 60);
+
+    return minutesUntilExpiry <= minutes;
+  }
+
+  /**
+   * Get token information without validation
+   */
+  getTokenInfo(token: string): DecodedToken | null {
+    try {
+      return jwtDecode<DecodedToken>(token);
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Clean up expired blacklisted tokens
+   */
+  cleanupExpiredBlacklist(): void {
+    const now = Date.now();
+    for (const token of this.blacklistedTokens) {
+      try {
+        const decoded = jwtDecode<DecodedToken>(token);
+        if (decoded.exp && decoded.exp * 1000 < now) {
+          this.blacklistedTokens.delete(token);
+        }
+      } catch {
+        // Invalid token, remove it
+        this.blacklistedTokens.delete(token);
+      }
+    }
+  }
+
+  /**
+   * Get blacklist statistics
+   */
+  getBlacklistStats(): { total: number } {
+    return { total: this.blacklistedTokens.size };
+  }
 }
 
 /**
@@ -99,312 +209,157 @@ export function decodeToken(token: string): DecodedToken | null {
 }
 
 /**
- * Check if token is expired
+ * Check if a token is expired
  */
-export function isTokenExpired(token: string, bufferMinutes = 5): boolean {
-  const decoded = decodeToken(token);
-  if (!decoded) return true;
-
-  const now = Date.now() / 1000;
-  const buffer = bufferMinutes * 60;
-  
-  return decoded.exp <= (now + buffer);
+export function isTokenExpired(token: string): boolean {
+  try {
+    const decoded = jwtDecode<DecodedToken>(token);
+    if (decoded.exp) {
+      return decoded.exp * 1000 < Date.now();
+    }
+    return true;
+  } catch {
+    return true;
+  }
 }
 
 /**
- * Get time until token expires
+ * Get user information from token
  */
-export function getTokenTimeToExpiry(token: string): number {
-  const decoded = decodeToken(token);
-  if (!decoded) return 0;
-
-  const now = Date.now() / 1000;
-  return Math.max(0, decoded.exp - now);
+export function getUserFromToken(
+  token: string,
+): { username?: string; role?: string } | null {
+  try {
+    const decoded = jwtDecode<DecodedToken>(token);
+    return {
+      username: decoded.sub,
+      role: decoded.role,
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Extract user info from token
+ * Check if token has required role
  */
-export function getUserFromToken(token: string): Partial<User> | null {
-  const decoded = decodeToken(token);
-  if (!decoded) return null;
-
-  return {
-    id: decoded.sub,
-    role: decoded.role,
-  };
+export function hasRequiredRole(
+  token: string,
+  requiredRole: UserRole,
+): boolean {
+  try {
+    const decoded = jwtDecode<DecodedToken>(token);
+    return decoded.role === requiredRole;
+  } catch {
+    return false;
+  }
 }
 
 /**
- * Password validation utilities
+ * Check if token has any of the required roles
+ */
+export function hasAnyRequiredRole(
+  token: string,
+  requiredRoles: UserRole[],
+): boolean {
+  try {
+    const decoded = jwtDecode<DecodedToken>(token);
+    return requiredRoles.includes(decoded.role as UserRole);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Validate password strength
  */
 export function validatePassword(
-  password: string, 
-  rules: ValidationRules = DEFAULT_VALIDATION_RULES
-): { isValid: boolean; errors: string[] } {
+  password: string,
+  rules: ValidationRules = DEFAULT_VALIDATION_RULES,
+): PasswordStrength {
   const errors: string[] = [];
+  let score = 0;
 
+  // Length check
   if (rules.minLength && password.length < rules.minLength) {
     errors.push(`Password must be at least ${rules.minLength} characters long`);
+  } else if (rules.minLength && password.length >= rules.minLength) {
+    score += 1;
   }
 
+  // Uppercase check
   if (rules.requireUppercase && !/[A-Z]/.test(password)) {
     errors.push("Password must contain at least one uppercase letter");
   }
+  if (/[A-Z]/.test(password)) {
+    score += 1;
+  }
 
+  // Lowercase check
   if (rules.requireLowercase && !/[a-z]/.test(password)) {
     errors.push("Password must contain at least one lowercase letter");
   }
+  if (/[a-z]/.test(password)) {
+    score += 1;
+  }
 
+  // Number check
   if (rules.requireNumber && !/\d/.test(password)) {
     errors.push("Password must contain at least one number");
   }
+  if (/\d/.test(password)) {
+    score += 1;
+  }
 
-  if (rules.requireSpecialChar && !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  // Special character check
+  if (
+    rules.requireSpecialChar &&
+    !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
+  ) {
     errors.push("Password must contain at least one special character");
   }
-
-  if (rules.customPattern && !rules.customPattern.test(password)) {
-    errors.push("Password does not meet custom requirements");
+  if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+    score += 1;
   }
+
+  // Determine strength level
+  let strength: "weak" | "medium" | "strong" | "very-strong";
+  if (score <= 2) strength = "weak";
+  else if (score <= 3) strength = "medium";
+  else if (score <= 4) strength = "strong";
+  else strength = "very-strong";
 
   return {
     isValid: errors.length === 0,
-    errors,
-  };
-}
-
-/**
- * Calculate password strength using basic heuristics
- */
-export function calculatePasswordStrength(password: string): PasswordStrength {
-  if (!password) {
-    return {
-      score: 0,
-      isValid: false,
-      feedback: "Password is required",
-      suggestions: ["Enter a password"],
-    };
-  }
-
-  let score = 0;
-  const suggestions: string[] = [];
-
-  // Length check
-  if (password.length >= 8) score += 1;
-  else suggestions.push("Make it at least 8 characters");
-
-  if (password.length >= 12) score += 1;
-
-  // Character variety
-  if (/[a-z]/.test(password)) score += 1;
-  else suggestions.push("Add lowercase letters");
-
-  if (/[A-Z]/.test(password)) score += 1;
-  else suggestions.push("Add uppercase letters");
-
-  if (/\d/.test(password)) score += 1;
-  else suggestions.push("Add numbers");
-
-  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) score += 1;
-  else suggestions.push("Add special characters");
-
-  // Reduce score for common patterns
-  if (/(.)\1{2,}/.test(password)) score -= 1; // Repeated characters
-  if (/123|abc|qwe/i.test(password)) score -= 1; // Sequential patterns
-
-  // Normalize score to 0-4 range
-  score = Math.max(0, Math.min(4, Math.floor(score / 1.5)));
-
-  const strengthLabels = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
-  
-  return {
     score,
-    isValid: score >= 2,
-    feedback: strengthLabels[score],
-    suggestions,
-    crackTime: estimateCrackTime(password, score),
+    feedback: strength,
+    suggestions: errors,
   };
 }
 
 /**
- * Estimate password crack time
- */
-function estimateCrackTime(password: string, score: number): string {
-  const times = [
-    "less than a second",
-    "a few seconds", 
-    "a few minutes",
-    "a few hours",
-    "centuries"
-  ];
-  
-  return times[score] || "unknown";
-}
-
-/**
- * Validate email address
- */
-export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-/**
- * Validate username
- */
-export function validateUsername(username: string, rules: ValidationRules = DEFAULT_VALIDATION_RULES): boolean {
-  if (!rules.usernamePattern) return username.length >= 3;
-  return rules.usernamePattern.test(username);
-}
-
-/**
- * Generate secure random string
- */
-export function generateSecureString(length = 32): string {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  
-  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
-    const array = new Uint8Array(length);
-    crypto.getRandomValues(array);
-    
-    for (let i = 0; i < length; i++) {
-      result += chars[array[i] % chars.length];
-    }
-  } else {
-    // Fallback for environments without crypto
-    for (let i = 0; i < length; i++) {
-      result += chars[Math.floor(Math.random() * chars.length)];
-    }
-  }
-  
-  return result;
-}
-
-/**
- * Hash password (for client-side hashing before transmission)
- */
-export async function hashPassword(password: string): Promise<string> {
-  if (typeof crypto === "undefined" || !crypto.subtle) {
-    throw new Error("Web Crypto API not available");
-  }
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
-/**
- * Create authorization header
- */
-export function createAuthHeader(token: string, type = "Bearer"): Record<string, string> {
-  return {
-    Authorization: `${type} ${token}`,
-  };
-}
-
-/**
- * Parse user role and check permissions
- */
-export function hasPermission(userRole: UserRole, requiredRole: UserRole): boolean {
-  const roleHierarchy: Record<UserRole, number> = {
-    guest: 0,
-    user: 1, 
-    moderator: 2,
-    admin: 3,
-  };
-
-  return roleHierarchy[userRole] >= roleHierarchy[requiredRole];
-}
-
-/**
- * Format user display name
- */
-export function formatUserDisplayName(user: Partial<User>): string {
-  if (user.fullName) return user.fullName;
-  if (user.username) return user.username;
-  if (user.email) return user.email.split("@")[0];
-  return "Unknown User";
-}
-
-/**
- * Get user initials for avatar
- */
-export function getUserInitials(user: Partial<User>): string {
-  const name = formatUserDisplayName(user);
-  const parts = name.split(" ");
-  
-  if (parts.length >= 2) {
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-  }
-  
-  return name.substring(0, 2).toUpperCase();
-}
-
-/**
- * Sanitize user input
- */
-export function sanitizeInput(input: string): string {
-  return input
-    .trim()
-    .replace(/[<>]/g, "") // Remove potential HTML tags
-    .replace(/['"]/g, ""); // Remove quotes
-}
-
-/**
- * Generate avatar URL from email (Gravatar)
- */
-export function generateAvatarUrl(email: string, size = 80): string {
-  if (typeof crypto === "undefined" || !crypto.subtle) {
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(email)}&size=${size}`;
-  }
-
-  // Would use crypto.subtle.digest for MD5 hash for Gravatar
-  // For now, return a placeholder
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(email)}&size=${size}`;
-}
-
-/**
- * Debounce function for API calls
- */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-  
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-}
-
-/**
- * Retry async operation with exponential backoff
+ * Retry function with exponential backoff
  */
 export async function retryWithBackoff<T>(
-  operation: () => Promise<T>,
-  maxAttempts = 3,
-  baseDelay = 1000
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000,
 ): Promise<T> {
   let lastError: Error;
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await operation();
+      return await fn();
     } catch (error) {
       lastError = error as Error;
-      
-      if (attempt === maxAttempts) {
+
+      if (attempt === maxRetries) {
         throw lastError;
       }
 
-      const delay = baseDelay * Math.pow(2, attempt - 1);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      // Exponential backoff with jitter
+      const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 1000;
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 
@@ -412,62 +367,74 @@ export async function retryWithBackoff<T>(
 }
 
 /**
- * Check if code is running in browser
+ * Sanitize user input for security
  */
-export function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof localStorage !== "undefined";
+export function sanitizeInput(input: string): string {
+  return input
+    .trim()
+    .replace(/[<>]/g, "") // Remove potential HTML tags
+    .replace(/javascript:/gi, "") // Remove javascript: protocol
+    .replace(/on\w+=/gi, ""); // Remove event handlers
 }
 
 /**
- * Secure storage for sensitive data
+ * Generate secure random string
  */
-export class SecureStorage {
-  private prefix: string;
+export function generateSecureString(length: number = 32): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
 
-  constructor(prefix = "auth_") {
-    this.prefix = prefix;
+/**
+ * Rate limiting utility
+ */
+export class RateLimiter {
+  private requests: Map<string, number[]> = new Map();
+  private maxRequests: number;
+  private windowMs: number;
+
+  constructor(maxRequests: number = 100, windowMs: number = 60000) {
+    this.maxRequests = maxRequests;
+    this.windowMs = windowMs;
   }
 
-  set(key: string, value: string): void {
-    if (!isBrowser()) return;
-    
-    try {
-      // In a real implementation, you might encrypt the value
-      localStorage.setItem(this.prefix + key, value);
-    } catch (error) {
-      console.warn("Failed to store secure data:", error);
+  isAllowed(identifier: string): boolean {
+    const now = Date.now();
+    const windowStart = now - this.windowMs;
+
+    if (!this.requests.has(identifier)) {
+      this.requests.set(identifier, [now]);
+      return true;
     }
-  }
 
-  get(key: string): string | null {
-    if (!isBrowser()) return null;
-    
-    try {
-      return localStorage.getItem(this.prefix + key);
-    } catch (error) {
-      console.warn("Failed to retrieve secure data:", error);
-      return null;
+    const requests = this.requests.get(identifier)!;
+    const recentRequests = requests.filter((time) => time > windowStart);
+
+    if (recentRequests.length >= this.maxRequests) {
+      return false;
     }
+
+    recentRequests.push(now);
+    this.requests.set(identifier, recentRequests);
+    return true;
   }
 
-  remove(key: string): void {
-    if (!isBrowser()) return;
-    
-    try {
-      localStorage.removeItem(this.prefix + key);
-    } catch (error) {
-      console.warn("Failed to remove secure data:", error);
-    }
-  }
+  cleanup(): void {
+    const now = Date.now();
+    const windowStart = now - this.windowMs;
 
-  clear(): void {
-    if (!isBrowser()) return;
-    
-    try {
-      const keys = Object.keys(localStorage).filter(key => key.startsWith(this.prefix));
-      keys.forEach(key => localStorage.removeItem(key));
-    } catch (error) {
-      console.warn("Failed to clear secure data:", error);
+    for (const [identifier, requests] of this.requests.entries()) {
+      const recentRequests = requests.filter((time) => time > windowStart);
+      if (recentRequests.length === 0) {
+        this.requests.delete(identifier);
+      } else {
+        this.requests.set(identifier, recentRequests);
+      }
     }
   }
 }

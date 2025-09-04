@@ -28,8 +28,8 @@ export default defineConfig({
     include: ["**/*.{test,spec}.{js,ts,jsx,tsx}"],
     exclude: ["**/node_modules/**", "**/dist/**"],
     typecheck: {
-      tsconfig: "./tsconfig.test.json"
-    }
+      tsconfig: "./tsconfig.test.json",
+    },
   },
   resolve: {
     alias: {

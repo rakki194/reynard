@@ -1,11 +1,6 @@
 /* Comprehensive Dashboard Styles */
-@import '@reynard/core/styles';
-@import '@reynard/components/styles';
-@import '@reynard/ui/styles';
-@import '@reynard/charts/styles';
-@import '@reynard/gallery/styles';
-@import '@reynard/auth/styles';
-@import '@reynard/settings/styles';
+@import "@reynard/components/styles";
+@import "@reynard/ui/styles";
 
 /* Dashboard Layout */
 .dashboard-layout {
@@ -56,7 +51,7 @@
   .md\\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
+
   .md\\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -66,19 +61,19 @@
   .lg\\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
+
   .lg\\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  
+
   .lg\\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  
+
   .lg\\:col-span-1 {
     grid-column: span 1 / span 1;
   }
-  
+
   .lg\\:col-span-3 {
     grid-column: span 3 / span 3;
   }
@@ -420,11 +415,11 @@
   .dashboard-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .grid-cols-1 {
     grid-template-columns: 1fr;
   }
-  
+
   .md\\:grid-cols-2,
   .md\\:grid-cols-3 {
     grid-template-columns: 1fr;

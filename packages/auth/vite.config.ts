@@ -12,14 +12,14 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
-        "@reynard/core", 
+        "solid-js",
+        "solid-js/web",
+        "@reynard/core",
         "@reynard/components",
         "jwt-decode",
         "@zxcvbn-ts/core",
         "@zxcvbn-ts/language-common",
-        "@zxcvbn-ts/language-en"
+        "@zxcvbn-ts/language-en",
       ],
       output: {
         globals: {
@@ -38,7 +38,3 @@ export default defineConfig({
     sourcemap: true,
   },
 });
-
-
-
-

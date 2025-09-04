@@ -14,24 +14,24 @@
   --reynard-spacing-md: 1rem;
   --reynard-spacing-lg: 1.5rem;
   --reynard-spacing-xl: 2rem;
-  
+
   /* Component sizes */
   --reynard-size-sm: 2rem;
   --reynard-size-md: 2.5rem;
   --reynard-size-lg: 3rem;
-  
+
   /* Border radius */
   --reynard-radius-sm: 4px;
   --reynard-radius-md: 6px;
   --reynard-radius-lg: 8px;
   --reynard-radius-xl: 12px;
-  
+
   /* Shadows */
   --reynard-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --reynard-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --reynard-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --reynard-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-  
+
   /* Typography */
   --reynard-font-size-sm: 0.875rem;
   --reynard-font-size-md: 1rem;
@@ -39,7 +39,7 @@
   --reynard-font-weight-normal: 400;
   --reynard-font-weight-medium: 500;
   --reynard-font-weight-semibold: 600;
-  
+
   /* Z-index */
   --reynard-z-modal: 1000;
   --reynard-z-dropdown: 100;
@@ -412,7 +412,8 @@
 }
 
 .reynard-textfield--error.reynard-textfield--focused .reynard-textfield__input {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
 }
 
 .reynard-textfield__help {
@@ -553,7 +554,8 @@
 }
 
 .reynard-select--error.reynard-select--focused .reynard-select__input {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
 }
 
 .reynard-select__help {
@@ -777,7 +779,7 @@
 
 /* Tab variants */
 .reynard-tabs--default .reynard-tabs__tab--active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -853,22 +855,18 @@
   .reynard-modal__content--lg {
     max-width: 90vw;
   }
-  
+
   .reynard-modal__content--xl {
     max-width: 95vw;
   }
-  
+
   .reynard-tabs__list {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  
+
   .reynard-tabs__list::-webkit-scrollbar {
     display: none;
   }
 }
-
-
-
-

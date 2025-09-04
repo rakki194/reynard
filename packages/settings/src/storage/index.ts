@@ -78,7 +78,7 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys = this.keys(prefix);
-      keys.forEach(key => localStorage.removeItem(targetPrefix + key));
+      keys.forEach((key) => localStorage.removeItem(targetPrefix + key));
     } catch (error) {
       console.error("LocalStorage clear error:", error);
     }
@@ -89,14 +89,14 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys: string[] = [];
-      
+
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith(targetPrefix)) {
           keys.push(key.substring(this.prefix.length));
         }
       }
-      
+
       return keys;
     } catch (error) {
       console.warn("LocalStorage keys error:", error);
@@ -178,7 +178,7 @@ export class SessionStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys = this.keys(prefix);
-      keys.forEach(key => sessionStorage.removeItem(targetPrefix + key));
+      keys.forEach((key) => sessionStorage.removeItem(targetPrefix + key));
     } catch (error) {
       console.error("SessionStorage clear error:", error);
     }
@@ -189,14 +189,14 @@ export class SessionStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys: string[] = [];
-      
+
       for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
         if (key && key.startsWith(targetPrefix)) {
           keys.push(key.substring(this.prefix.length));
         }
       }
-      
+
       return keys;
     } catch (error) {
       console.warn("SessionStorage keys error:", error);
@@ -244,13 +244,13 @@ export class MemoryAdapter implements StorageAdapter {
   keys(prefix?: string): string[] {
     const targetPrefix = this.prefix + (prefix || "");
     const keys: string[] = [];
-    
+
     for (const key of this.storage.keys()) {
       if (key.startsWith(targetPrefix)) {
         keys.push(key.substring(this.prefix.length));
       }
     }
-    
+
     return keys;
   }
 
@@ -274,7 +274,11 @@ export class IndexedDBAdapter implements StorageAdapter {
   private prefix: string;
   private db: IDBDatabase | null = null;
 
-  constructor(dbName = "reynard_settings", storeName = "settings", prefix = "") {
+  constructor(
+    dbName = "reynard_settings",
+    storeName = "settings",
+    prefix = "",
+  ) {
     this.dbName = dbName;
     this.storeName = storeName;
     this.prefix = prefix;
@@ -315,7 +319,7 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readonly");
       const store = transaction.objectStore(this.storeName);
-      
+
       return new Promise((resolve, reject) => {
         const request = store.get(this.prefix + key);
         request.onerror = () => reject(request.error);
@@ -332,7 +336,7 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       return new Promise((resolve, reject) => {
         const request = store.put(value, this.prefix + key);
         request.onerror = () => reject(request.error);
@@ -349,7 +353,7 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       return new Promise((resolve, reject) => {
         const request = store.delete(this.prefix + key);
         request.onerror = () => reject(request.error);
@@ -366,19 +370,19 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       const targetPrefix = this.prefix + (prefix || "");
-      
+
       return new Promise((resolve, reject) => {
         let completed = 0;
         const total = keys.length;
-        
+
         if (total === 0) {
           resolve();
           return;
         }
-        
-        keys.forEach(key => {
+
+        keys.forEach((key) => {
           const request = store.delete(targetPrefix + key);
           request.onerror = () => reject(request.error);
           request.onsuccess = () => {
@@ -397,15 +401,15 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readonly");
       const store = transaction.objectStore(this.storeName);
-      
+
       return new Promise((resolve, reject) => {
         const request = store.getAllKeys();
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
           const targetPrefix = this.prefix + (prefix || "");
           const keys = (request.result as string[])
-            .filter(key => key.startsWith(targetPrefix))
-            .map(key => key.substring(this.prefix.length));
+            .filter((key) => key.startsWith(targetPrefix))
+            .map((key) => key.substring(this.prefix.length));
           resolve(keys);
         };
       });
@@ -420,7 +424,7 @@ export class IndexedDBAdapter implements StorageAdapter {
       const db = await this.getDB();
       const transaction = db.transaction([this.storeName], "readonly");
       const store = transaction.objectStore(this.storeName);
-      
+
       return new Promise((resolve, reject) => {
         const request = store.getAll();
         request.onerror = () => reject(request.error);
@@ -448,12 +452,15 @@ export class StorageManager {
 
   constructor(defaultStorage: SettingStorage = "localStorage", prefix = "") {
     this.defaultAdapter = defaultStorage;
-    
+
     // Initialize adapters
     this.adapters.set("localStorage", new LocalStorageAdapter(prefix));
     this.adapters.set("sessionStorage", new SessionStorageAdapter(prefix));
     this.adapters.set("memory", new MemoryAdapter(prefix));
-    this.adapters.set("indexedDB", new IndexedDBAdapter("reynard_settings", "settings", prefix));
+    this.adapters.set(
+      "indexedDB",
+      new IndexedDBAdapter("reynard_settings", "settings", prefix),
+    );
   }
 
   /**
@@ -469,7 +476,7 @@ export class StorageManager {
   getAdapter(preferredType?: SettingStorage): StorageAdapter {
     const type = preferredType || this.defaultAdapter;
     const adapter = this.adapters.get(type);
-    
+
     if (adapter && adapter.isAvailable()) {
       return adapter;
     }
@@ -497,7 +504,11 @@ export class StorageManager {
   /**
    * Set a value using the specified or default storage
    */
-  async set(key: string, value: string, storageType?: SettingStorage): Promise<void> {
+  async set(
+    key: string,
+    value: string,
+    storageType?: SettingStorage,
+  ): Promise<void> {
     const adapter = this.getAdapter(storageType);
     const result = adapter.set(key, value);
     if (result instanceof Promise) await result;
@@ -535,10 +546,12 @@ export class StorageManager {
    */
   async export(storageType?: SettingStorage): Promise<SettingsExportData> {
     const adapter = this.getAdapter(storageType);
-    const keys = await (adapter.keys() instanceof Promise ? await adapter.keys() : adapter.keys());
-    
+    const keys = await (adapter.keys() instanceof Promise
+      ? await adapter.keys()
+      : adapter.keys());
+
     const settings: Record<string, any> = {};
-    
+
     for (const key of keys) {
       try {
         const value = await this.get(key, storageType);
@@ -564,11 +577,11 @@ export class StorageManager {
    * Import settings data
    */
   async import(
-    data: SettingsExportData, 
-    options: { merge?: boolean; storageType?: SettingStorage } = {}
+    data: SettingsExportData,
+    options: { merge?: boolean; storageType?: SettingStorage } = {},
   ): Promise<void> {
     const { merge = false, storageType } = options;
-    
+
     if (!merge) {
       await this.clear(undefined, storageType);
     }
@@ -591,7 +604,7 @@ export class StorageManager {
     total: number;
   }> {
     const adapter = this.getAdapter(storageType);
-    
+
     let used = 0;
     if (adapter.getSize) {
       const result = adapter.getSize();
@@ -599,10 +612,11 @@ export class StorageManager {
     }
 
     // Estimate available space (very rough approximation)
-    const total = storageType === "localStorage" || storageType === "sessionStorage" 
-      ? 10 * 1024 * 1024 // ~10MB typical browser limit
-      : 1024 * 1024 * 1024; // ~1GB for IndexedDB
-      
+    const total =
+      storageType === "localStorage" || storageType === "sessionStorage"
+        ? 10 * 1024 * 1024 // ~10MB typical browser limit
+        : 1024 * 1024 * 1024; // ~1GB for IndexedDB
+
     return {
       used,
       available: Math.max(0, total - used),
@@ -610,7 +624,3 @@ export class StorageManager {
     };
   }
 }
-
-
-
-

@@ -15,7 +15,7 @@
  */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return "0 B";
-  
+
   const units = ["B", "KB", "MB", "GB", "TB"];
   let size = Math.abs(bytes);
   let unitIndex = 0;
@@ -48,12 +48,12 @@ export function formatBytes(bytes: number): string {
  * formatDateTime(1704067200000) // Returns "2024-01-01 12:00:00"
  */
 export function formatDateTime(date: Date | number | string): string {
-  const dateObj = 
-    typeof date === "number" 
-      ? new Date(date) 
-      : typeof date === "string" 
-      ? new Date(date) 
-      : date;
+  const dateObj =
+    typeof date === "number"
+      ? new Date(date)
+      : typeof date === "string"
+        ? new Date(date)
+        : date;
 
   return dateObj.toISOString().replace("T", " ").substring(0, 19);
 }
@@ -88,7 +88,7 @@ export function formatNumber(num: number, locale: string = "en-US"): string {
 export function formatCurrency(
   amount: number,
   currency: string = "USD",
-  locale: string = "en-US"
+  locale: string = "en-US",
 ): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
@@ -126,7 +126,7 @@ export function formatPercentage(value: number, decimals: number = 2): string {
 export function truncateText(
   text: string,
   maxLength: number,
-  suffix: string = "..."
+  suffix: string = "...",
 ): string {
   if (text.length <= maxLength) return text;
   // Truncate to maxLength, where maxLength includes the suffix
@@ -192,8 +192,8 @@ export function kebabToCamel(str: string): string {
 export function pluralize(
   count: number,
   singular: string,
-  plural?: string
+  plural?: string,
 ): string {
-  const word = count === 1 ? singular : (plural || `${singular}s`);
+  const word = count === 1 ? singular : plural || `${singular}s`;
   return `${count} ${word}`;
 }

@@ -15,6 +15,5 @@ export * from "./types";
 // Export utilities
 export * from "./utils";
 
-
-
-
+// Export demo component
+export { AdvancedComponentsDemo } from "./components/AdvancedComponentsDemo";

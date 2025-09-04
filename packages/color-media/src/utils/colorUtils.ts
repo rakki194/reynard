@@ -3,7 +3,7 @@
  * Provides consistent color generation and manipulation
  */
 
-import type { OKLCHColor, ThemeName } from '../types';
+import type { OKLCHColor, ThemeName } from "../types";
 
 /**
  * Generate a hash from a string for consistent color generation
@@ -43,7 +43,7 @@ export function computeTagBackground(theme: ThemeName, tag: string): string {
   const { l, c, h } = getLCHColor(tag);
 
   // Adjust lightness based on theme
-  const lightness = theme === 'dark' ? l * 0.7 : l;
+  const lightness = theme === "dark" ? l * 0.7 : l;
 
   return `oklch(${lightness}% ${c} ${h})`;
 }
@@ -58,12 +58,12 @@ export function computeTagColor(theme: ThemeName, tag: string): string {
   const { l } = getLCHColor(tag);
 
   // For dark theme, use lighter text
-  if (theme === 'dark') {
-    return l < 60 ? 'rgb(240, 240, 240)' : 'rgb(20, 20, 20)';
+  if (theme === "dark") {
+    return l < 60 ? "rgb(240, 240, 240)" : "rgb(20, 20, 20)";
   }
 
   // For light theme, ensure contrast
-  return l > 65 ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
+  return l > 65 ? "rgb(20, 20, 20)" : "rgb(240, 240, 240)";
 }
 
 /**
@@ -73,20 +73,20 @@ export function computeTagColor(theme: ThemeName, tag: string): string {
  */
 export function computeHoverStyles(theme: ThemeName): Record<string, string> {
   switch (theme) {
-    case 'dark':
+    case "dark":
       return {
-        filter: 'brightness(1.2)',
-        transform: 'scale(1.05)',
+        filter: "brightness(1.2)",
+        transform: "scale(1.05)",
       };
-    case 'light':
+    case "light":
       return {
-        filter: 'brightness(0.9)',
-        transform: 'scale(1.05)',
+        filter: "brightness(0.9)",
+        transform: "scale(1.05)",
       };
     default:
       return {
-        filter: 'brightness(1.1)',
-        transform: 'scale(1.05)',
+        filter: "brightness(1.1)",
+        transform: "scale(1.05)",
       };
   }
 }
@@ -98,20 +98,20 @@ export function computeHoverStyles(theme: ThemeName): Record<string, string> {
  */
 export function computeAnimation(theme: ThemeName): string {
   switch (theme) {
-    case 'dark':
-      return 'moon';
-    case 'light':
-      return 'sun';
-    case 'gray':
-      return 'cloud';
-    case 'banana':
-      return 'banana';
-    case 'strawberry':
-      return 'strawberry';
-    case 'peanut':
-      return 'peanut';
+    case "dark":
+      return "moon";
+    case "light":
+      return "sun";
+    case "gray":
+      return "cloud";
+    case "banana":
+      return "banana";
+    case "strawberry":
+      return "strawberry";
+    case "peanut":
+      return "peanut";
     default:
-      return 'sun';
+      return "sun";
   }
 }
 
@@ -132,9 +132,13 @@ export function createTagColorGenerator() {
   const colorCache = new Map<string, OKLCHColor>();
 
   return {
-    getTagColor(theme: string, tag: string, colorIntensity: number = 1.0): OKLCHColor {
+    getTagColor(
+      theme: string,
+      tag: string,
+      colorIntensity: number = 1.0,
+    ): OKLCHColor {
       // Normalize the tag by replacing spaces with underscores for consistent hashing
-      const normalizedTag = tag.replace(/\s+/g, '_');
+      const normalizedTag = tag.replace(/\s+/g, "_");
       const cacheKey = `${theme}:${normalizedTag}:${colorIntensity}`;
 
       // Return cached color if available
@@ -157,19 +161,19 @@ export function createTagColorGenerator() {
       // Theme-specific color generation
       const color = (() => {
         switch (theme) {
-          case 'dark':
+          case "dark":
             // Dark theme: Low lightness for dark background, subtle color variations
             return { l: 25, c: 0.1 * colorIntensity, h: hue };
 
-          case 'light':
+          case "light":
             // Light theme: High lightness for light background, subtle color variations
             return { l: 85, c: 0.1 * colorIntensity, h: hue };
 
-          case 'gray':
+          case "gray":
             // Gray theme: Variable lightness, no chroma for pure grayscale
             return { l: 40 + (hash % 40), c: 0.0, h: hue };
 
-          case 'banana':
+          case "banana":
             // Banana theme: Warm yellows and creams
             return {
               l: 75 + (hash % 15), // High lightness range: 75-90%
@@ -177,10 +181,11 @@ export function createTagColorGenerator() {
               h: 40 + (hash % 40), // Hue range: 40-80 (yellow to orange)
             };
 
-          case 'strawberry': {
+          case "strawberry": {
             // Strawberry theme: Red/pink with green accents
             const strawberryHues = [350, 335, 15, 120, 150]; // Red, pink, coral, green hues
-            const selectedStrawberryHue = strawberryHues[hash % strawberryHues.length];
+            const selectedStrawberryHue =
+              strawberryHues[hash % strawberryHues.length];
             const isGreen = selectedStrawberryHue >= 120;
 
             return isGreen
@@ -196,7 +201,7 @@ export function createTagColorGenerator() {
                 };
           }
 
-          case 'peanut':
+          case "peanut":
             // Peanut theme: Warm browns and tans
             return {
               l: 35 + (hash % 15), // Mid-range lightness
@@ -234,7 +239,7 @@ export function generateColorPalette(
   count: number,
   baseHue: number = 0,
   saturation: number = 0.3,
-  lightness: number = 0.6
+  lightness: number = 0.6,
 ): string[] {
   const colors: string[] = [];
   const hueStep = 360 / count;
@@ -257,7 +262,9 @@ export function generateColorPalette(
  * @param baseColor - Base OKLCH color
  * @returns Array of complementary colors
  */
-export function generateComplementaryColors(baseColor: OKLCHColor): OKLCHColor[] {
+export function generateComplementaryColors(
+  baseColor: OKLCHColor,
+): OKLCHColor[] {
   return [
     baseColor,
     { ...baseColor, h: (baseColor.h + 180) % 360 },
@@ -285,7 +292,10 @@ export function adjustLightness(color: OKLCHColor, factor: number): OKLCHColor {
  * @param factor - Saturation adjustment factor
  * @returns Adjusted OKLCH color
  */
-export function adjustSaturation(color: OKLCHColor, factor: number): OKLCHColor {
+export function adjustSaturation(
+  color: OKLCHColor,
+  factor: number,
+): OKLCHColor {
   return {
     ...color,
     c: Math.max(0, Math.min(0.4, color.c * factor)),

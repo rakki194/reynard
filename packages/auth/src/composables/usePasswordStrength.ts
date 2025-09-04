@@ -35,7 +35,7 @@ export interface UsePasswordStrengthOptions {
 
 export function usePasswordStrength(
   password: () => string,
-  options: UsePasswordStrengthOptions = {}
+  options: UsePasswordStrengthOptions = {},
 ) {
   const {
     useAdvanced = true,
@@ -47,7 +47,7 @@ export function usePasswordStrength(
   // Password strength analysis
   const strength = createMemo((): PasswordStrength => {
     const pwd = password();
-    
+
     if (!pwd) {
       return {
         score: 0,
@@ -96,30 +96,30 @@ export function usePasswordStrength(
   // Main feedback message
   const feedback = createMemo(() => {
     const s = strength();
-    
+
     if (s.score === 0) {
       return "Choose a password";
     }
-    
+
     if (s.score === 1) {
       return "This password is too weak";
     }
-    
+
     if (s.score === 2) {
       return "This password is fair";
     }
-    
+
     if (s.score === 3) {
       return "This password is good";
     }
-    
+
     return "This password is strong";
   });
 
   // Requirements checklist
   const requirements = createMemo(() => {
     const pwd = password();
-    
+
     return [
       {
         label: "At least 8 characters",
@@ -130,7 +130,7 @@ export function usePasswordStrength(
         met: /[a-z]/.test(pwd),
       },
       {
-        label: "Contains uppercase letter", 
+        label: "Contains uppercase letter",
         met: /[A-Z]/.test(pwd),
       },
       {
@@ -147,9 +147,9 @@ export function usePasswordStrength(
   // Requirements summary
   const requirementsSummary = createMemo(() => {
     const reqs = requirements();
-    const met = reqs.filter(r => r.met).length;
+    const met = reqs.filter((r) => r.met).length;
     const total = reqs.length;
-    
+
     return {
       met,
       total,
@@ -164,15 +164,15 @@ export function usePasswordStrength(
     strengthLabel,
     strengthColor,
     strengthProgress,
-    
+
     // Validation
     isAcceptable,
     feedback,
-    
+
     // Requirements
     requirements,
     requirementsSummary,
-    
+
     // Utilities
     refresh: () => strength(), // Force recomputation
   };
@@ -184,11 +184,11 @@ export function usePasswordStrength(
 function analyzeWithZxcvbn(
   password: string,
   userInputs: string[] = [],
-  customDictionary: string[] = []
+  customDictionary: string[] = [],
 ): PasswordStrength {
   try {
     const result = zxcvbn(password, [...userInputs, ...customDictionary]);
-    
+
     const suggestions = [
       ...(result.feedback.suggestions || []),
       ...(result.feedback.warning ? [result.feedback.warning] : []),
@@ -197,12 +197,20 @@ function analyzeWithZxcvbn(
     return {
       score: result.score,
       isValid: result.score >= 2,
-      feedback: getFeedbackMessage(result.score, result.feedback.warning || undefined),
+      feedback: getFeedbackMessage(
+        result.score,
+        result.feedback.warning || undefined,
+      ),
       suggestions: suggestions.filter(Boolean),
-      crackTime: formatCrackTime(result.crackTimesDisplay.offlineSlowHashing1e4PerSecond),
+      crackTime: formatCrackTime(
+        result.crackTimesDisplay.offlineSlowHashing1e4PerSecond,
+      ),
     };
   } catch (error) {
-    console.warn("zxcvbn analysis failed, falling back to basic analysis:", error);
+    console.warn(
+      "zxcvbn analysis failed, falling back to basic analysis:",
+      error,
+    );
     return basicStrength(password);
   }
 }
@@ -214,15 +222,15 @@ function getFeedbackMessage(score: number, warning?: string): string {
   if (warning) {
     return warning;
   }
-  
+
   const messages = [
     "This password is extremely weak",
-    "This password is very weak", 
+    "This password is very weak",
     "This password is weak",
     "This password is good",
     "This password is strong",
   ];
-  
+
   return messages[score] || "Password strength unknown";
 }
 

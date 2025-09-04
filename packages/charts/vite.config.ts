@@ -12,12 +12,12 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
-        "@reynard/core", 
-        "chart.js", 
+        "solid-js",
+        "solid-js/web",
+        "@reynard/core",
+        "chart.js",
         "solid-chartjs",
-        "chartjs-adapter-date-fns"
+        "chartjs-adapter-date-fns",
       ],
       output: {
         globals: {
@@ -34,7 +34,3 @@ export default defineConfig({
     sourcemap: true,
   },
 });
-
-
-
-

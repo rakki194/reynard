@@ -100,7 +100,7 @@ describe("Date Utilities", () => {
     it("should format date with both relative and absolute time", () => {
       const date = new Date(mockNow - 60 * 1000); // 1 minute ago
       const result = formatDateWithAbsolute(date);
-      
+
       expect(result).toContain("1 minute ago");
       expect(result).toContain("1/15/2024"); // Actual format from toLocaleString
     });
@@ -108,7 +108,7 @@ describe("Date Utilities", () => {
     it("should handle timestamp input", () => {
       const timestamp = mockNow - 60 * 1000;
       const result = formatDateWithAbsolute(timestamp);
-      
+
       expect(result).toContain("1 minute ago");
       expect(result).toContain("1/15/2024"); // Actual format from toLocaleString
     });
@@ -210,7 +210,7 @@ describe("Date Utilities", () => {
     it("should return start of day", () => {
       const date = new Date("2024-01-15T14:30:45Z");
       const result = startOfDay(date);
-      
+
       expect(result.getFullYear()).toBe(2024);
       expect(result.getMonth()).toBe(0); // January
       expect(result.getDate()).toBe(15);
@@ -223,7 +223,7 @@ describe("Date Utilities", () => {
     it("should handle timestamp input", () => {
       const timestamp = new Date("2024-01-15T14:30:45Z").getTime();
       const result = startOfDay(timestamp);
-      
+
       expect(result.getHours()).toBe(0);
       expect(result.getMinutes()).toBe(0);
       expect(result.getSeconds()).toBe(0);
@@ -234,7 +234,7 @@ describe("Date Utilities", () => {
     it("should return end of day", () => {
       const date = new Date("2024-01-15T14:30:45Z");
       const result = endOfDay(date);
-      
+
       expect(result.getFullYear()).toBe(2024);
       expect(result.getMonth()).toBe(0); // January
       expect(result.getDate()).toBe(15);
@@ -247,7 +247,7 @@ describe("Date Utilities", () => {
     it("should handle timestamp input", () => {
       const timestamp = new Date("2024-01-15T14:30:45Z").getTime();
       const result = endOfDay(timestamp);
-      
+
       expect(result.getHours()).toBe(23);
       expect(result.getMinutes()).toBe(59);
       expect(result.getSeconds()).toBe(59);

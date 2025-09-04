@@ -4,7 +4,3 @@
  */
 
 export { useSettings, type UseSettingsOptions } from "./useSettings";
-
-
-
-

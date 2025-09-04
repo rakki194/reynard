@@ -37,24 +37,24 @@ npm install @reynard/color-media
 ### Color Generation
 
 ```typescript
-import { createTagColorGenerator, formatOKLCH } from '@reynard/color-media';
+import { createTagColorGenerator, formatOKLCH } from "@reynard/color-media";
 
 // Create a color generator
 const colorGenerator = createTagColorGenerator();
 
 // Generate colors for tags
-const tagColor = colorGenerator.getTagColor('dark', 'javascript', 1.0);
+const tagColor = colorGenerator.getTagColor("dark", "javascript", 1.0);
 const cssColor = formatOKLCH(tagColor); // "oklch(25% 0.1 240)"
 
 // Generate color palettes
-import { generateColorPalette } from '@reynard/color-media';
+import { generateColorPalette } from "@reynard/color-media";
 const palette = generateColorPalette(5, 0, 0.3, 0.6);
 ```
 
 ### Theme Management
 
 ```typescript
-import { createThemeContext, getStoredTheme } from '@reynard/color-media';
+import { createThemeContext, getStoredTheme } from "@reynard/color-media";
 
 // Create a theme context
 const themeContext = createThemeContext();
@@ -63,25 +63,25 @@ const themeContext = createThemeContext();
 const currentTheme = themeContext.theme;
 
 // Change theme
-themeContext.setTheme('dark');
+themeContext.setTheme("dark");
 
 // Get tag styles for current theme
-const tagStyle = themeContext.getTagStyle('react');
+const tagStyle = themeContext.getTagStyle("react");
 // Returns: { backgroundColor: "...", color: "...", hoverStyles: {...}, animation: "..." }
 ```
 
 ### Media Modalities
 
 ```typescript
-import { 
-  BaseModality, 
-  ModalityRegistry, 
-  isImageFile, 
-  isAudioFile 
-} from '@reynard/color-media';
+import {
+  BaseModality,
+  ModalityRegistry,
+  isImageFile,
+  isAudioFile,
+} from "@reynard/color-media";
 
 // Check file types
-const file = new File([''], 'image.jpg');
+const file = new File([""], "image.jpg");
 console.log(isImageFile(file)); // true
 console.log(isAudioFile(file)); // false
 
@@ -90,13 +90,13 @@ const registry = new ModalityRegistry();
 
 // Register custom modality
 class CustomModality extends BaseModality {
-  readonly id = 'custom';
-  readonly name = 'Custom';
-  readonly icon = 'custom-icon';
-  readonly description = 'Custom modality for special files';
+  readonly id = "custom";
+  readonly name = "Custom";
+  readonly icon = "custom-icon";
+  readonly description = "Custom modality for special files";
   readonly enabled = true;
-  readonly fileExtensions = ['.custom'];
-  readonly supportedFunctionalities = ['view', 'edit'];
+  readonly fileExtensions = [".custom"];
+  readonly supportedFunctionalities = ["view", "edit"];
   readonly component = CustomComponent;
 }
 
@@ -106,7 +106,7 @@ registry.registerModality(new CustomModality());
 ### File Utilities
 
 ```typescript
-import { formatFileSize, formatDuration } from '@reynard/color-media';
+import { formatFileSize, formatDuration } from "@reynard/color-media";
 
 // Format file sizes
 console.log(formatFileSize(1024)); // "1 KB"

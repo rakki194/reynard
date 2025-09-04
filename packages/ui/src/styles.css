@@ -11,6 +11,8 @@
   display: flex;
   min-height: 100vh;
   overflow: hidden;
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 60px;
 }
 
 .reynard-app-layout__overlay {
@@ -31,6 +33,7 @@
   border-right: 1px solid var(--border-color);
   transition: all 0.3s ease;
   overflow: hidden;
+  width: var(--sidebar-width, 280px);
 }
 
 .reynard-app-layout__sidebar-content {
@@ -88,12 +91,67 @@
   padding: 1rem;
 }
 
+/* Dynamic sidebar states */
+.reynard-app-layout__sidebar--closed {
+  transform: translateX(-100%);
+}
+
+.reynard-app-layout__sidebar--open {
+  transform: translateX(0);
+}
+
+.reynard-app-layout__sidebar--fixed {
+  position: fixed;
+  z-index: 1000;
+}
+
+.reynard-app-layout__sidebar--relative {
+  position: relative;
+}
+
+/* Sidebar width states */
+.reynard-app-layout--sidebar-width-280 {
+  --sidebar-width: 280px;
+}
+
+.reynard-app-layout--sidebar-width-60 {
+  --sidebar-width: 60px;
+}
+
+.reynard-app-layout--sidebar-width-0 {
+  --sidebar-width: 0px;
+}
+
+/* Dynamic content margins */
+.reynard-app-layout__main--with-sidebar {
+  margin-left: var(--sidebar-width, 0px);
+}
+
+.reynard-app-layout__main--without-sidebar {
+  margin-left: 0;
+}
+
+/* Toggle button rotation */
+.reynard-app-layout__sidebar-toggle-icon--rotated {
+  transform: rotate(180deg);
+}
+
+.reynard-app-layout__sidebar-toggle-icon--normal {
+  transform: rotate(0deg);
+}
+
+.reynard-app-layout__sidebar-toggle-icon--rotated,
+.reynard-app-layout__sidebar-toggle-icon--normal {
+  transition: transform 0.2s ease;
+}
+
 /* ==========================================================================
    Grid Components
    ========================================================================== */
 
 .reynard-grid {
   display: grid;
+  gap: 1rem;
 }
 
 .reynard-grid-item {
@@ -105,10 +163,169 @@
   align-items: start;
 }
 
+/* Grid gap variations */
+.reynard-grid--gap-xs {
+  gap: 0.25rem;
+}
+.reynard-grid--gap-sm {
+  gap: 0.5rem;
+}
+.reynard-grid--gap-md {
+  gap: 1rem;
+}
+.reynard-grid--gap-lg {
+  gap: 1.5rem;
+}
+.reynard-grid--gap-xl {
+  gap: 2rem;
+}
+
+/* Grid column variations */
+.reynard-grid--cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+.reynard-grid--cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.reynard-grid--cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.reynard-grid--cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+.reynard-grid--cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+.reynard-grid--cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+.reynard-grid--cols-8 {
+  grid-template-columns: repeat(8, 1fr);
+}
+.reynard-grid--cols-10 {
+  grid-template-columns: repeat(10, 1fr);
+}
+.reynard-grid--cols-12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Auto-fit grid */
+.reynard-grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Grid item span variations */
+.reynard-grid-item--span-1 {
+  grid-column: span 1;
+}
+.reynard-grid-item--span-2 {
+  grid-column: span 2;
+}
+.reynard-grid-item--span-3 {
+  grid-column: span 3;
+}
+.reynard-grid-item--span-4 {
+  grid-column: span 4;
+}
+.reynard-grid-item--span-5 {
+  grid-column: span 5;
+}
+.reynard-grid-item--span-6 {
+  grid-column: span 6;
+}
+.reynard-grid-item--span-8 {
+  grid-column: span 8;
+}
+.reynard-grid-item--span-10 {
+  grid-column: span 10;
+}
+.reynard-grid-item--span-12 {
+  grid-column: span 12;
+}
+
+/* Grid auto-rows */
+.reynard-grid--auto-rows-min {
+  grid-auto-rows: min-content;
+}
+.reynard-grid--auto-rows-max {
+  grid-auto-rows: max-content;
+}
+.reynard-grid--auto-rows-auto {
+  grid-auto-rows: auto;
+}
+
+/* Grid auto-flow */
+.reynard-grid--flow-row {
+  grid-auto-flow: row;
+}
+.reynard-grid--flow-column {
+  grid-auto-flow: column;
+}
+.reynard-grid--flow-row-dense {
+  grid-auto-flow: row dense;
+}
+.reynard-grid--flow-column-dense {
+  grid-auto-flow: column dense;
+}
+
+/* Custom gap handling */
+.reynard-grid--custom-gap {
+  gap: var(--custom-gap);
+}
+
+/* Custom min-column-width for auto-fit */
+.reynard-grid--auto-fit {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--min-column-width, 250px), 1fr)
+  );
+}
+
+/* Grid item positioning via CSS custom properties */
+.reynard-grid-item {
+  grid-row: var(--row-span, auto);
+  grid-column-start: var(--col-start, auto);
+  grid-column-end: var(--col-end, auto);
+  grid-row-start: var(--row-start, auto);
+  grid-row-end: var(--row-end, auto);
+}
+
+/* Grid item span classes */
+.reynard-grid-item--span-1 {
+  grid-column: span 1;
+}
+.reynard-grid-item--span-2 {
+  grid-column: span 2;
+}
+.reynard-grid-item--span-3 {
+  grid-column: span 3;
+}
+.reynard-grid-item--span-4 {
+  grid-column: span 4;
+}
+.reynard-grid-item--span-5 {
+  grid-column: span 5;
+}
+.reynard-grid-item--span-6 {
+  grid-column: span 6;
+}
+.reynard-grid-item--span-8 {
+  grid-column: span 8;
+}
+.reynard-grid-item--span-10 {
+  grid-column: span 10;
+}
+.reynard-grid-item--span-12 {
+  grid-column: span 12;
+}
+
 /* Responsive grid columns */
 @media (min-width: 576px) {
   .reynard-grid {
-    grid-template-columns: repeat(var(--grid-columns-sm, var(--grid-columns, 1)), 1fr);
+    grid-template-columns: repeat(
+      var(--grid-columns-sm, var(--grid-columns, 1)),
+      1fr
+    );
   }
   .reynard-grid-item {
     grid-column: span var(--col-span-sm, var(--col-span, 1));
@@ -117,7 +334,10 @@
 
 @media (min-width: 768px) {
   .reynard-grid {
-    grid-template-columns: repeat(var(--grid-columns-md, var(--grid-columns, 1)), 1fr);
+    grid-template-columns: repeat(
+      var(--grid-columns-md, var(--grid-columns, 1)),
+      1fr
+    );
   }
   .reynard-grid-item {
     grid-column: span var(--col-span-md, var(--col-span, 1));
@@ -126,7 +346,10 @@
 
 @media (min-width: 992px) {
   .reynard-grid {
-    grid-template-columns: repeat(var(--grid-columns-lg, var(--grid-columns, 1)), 1fr);
+    grid-template-columns: repeat(
+      var(--grid-columns-lg, var(--grid-columns, 1)),
+      1fr
+    );
   }
   .reynard-grid-item {
     grid-column: span var(--col-span-lg, var(--col-span, 1));
@@ -135,7 +358,10 @@
 
 @media (min-width: 1200px) {
   .reynard-grid {
-    grid-template-columns: repeat(var(--grid-columns-xl, var(--grid-columns, 1)), 1fr);
+    grid-template-columns: repeat(
+      var(--grid-columns-xl, var(--grid-columns, 1)),
+      1fr
+    );
   }
   .reynard-grid-item {
     grid-column: span var(--col-span-xl, var(--col-span, 1));
@@ -303,6 +529,14 @@
 
 .reynard-nav-menu__toggle:hover {
   background-color: var(--secondary-bg);
+}
+
+.reynard-nav-menu__toggle-icon {
+  transition: transform 0.2s ease;
+}
+
+.reynard-nav-menu__toggle-icon--open {
+  transform: rotate(90deg);
 }
 
 .reynard-nav-menu__submenu {
@@ -595,16 +829,16 @@
     left: 0;
     z-index: 1000;
   }
-  
+
   .reynard-data-table__pagination {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .reynard-data-table__pagination-info {
     order: 2;
   }
-  
+
   .reynard-drawer__content {
     max-width: 90vw;
     max-height: 90vh;

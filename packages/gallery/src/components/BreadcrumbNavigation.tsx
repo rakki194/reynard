@@ -18,7 +18,9 @@ export interface BreadcrumbNavigationProps {
   class?: string;
 }
 
-export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (props) => {
+export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
+  props,
+) => {
   const handleNavigate = (path: string): void => {
     props.onNavigate?.(path);
   };
@@ -36,7 +38,7 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (props
   };
 
   return (
-    <nav 
+    <nav
       class={`breadcrumb-navigation ${props.class || ""}`}
       aria-label="Folder navigation"
     >
@@ -59,15 +61,18 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (props
           <For each={props.breadcrumbs}>
             {(breadcrumb, index) => {
               const isLast = index() === props.breadcrumbs.length - 1;
-              
+
               return (
                 <li class="breadcrumb-navigation__item" role="listitem">
                   <Show when={index() > 0}>
-                    <span class="breadcrumb-navigation__separator" aria-hidden="true">
+                    <span
+                      class="breadcrumb-navigation__separator"
+                      aria-hidden="true"
+                    >
                       /
                     </span>
                   </Show>
-                  
+
                   <Show when={breadcrumb.clickable && !isLast}>
                     <button
                       type="button"
@@ -78,9 +83,9 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (props
                       {breadcrumb.label}
                     </button>
                   </Show>
-                  
+
                   <Show when={!breadcrumb.clickable || isLast}>
-                    <span 
+                    <span
                       class="breadcrumb-navigation__current"
                       aria-current={isLast ? "page" : undefined}
                     >
@@ -96,7 +101,3 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (props
     </nav>
   );
 };
-
-
-
-

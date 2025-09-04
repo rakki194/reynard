@@ -16,7 +16,7 @@
     "solid-js": "1.9.9",
     "@solidjs/router": "0.15.3",
     "@reynard/core": "file:../../packages/core",
-    "@reynard/components": "file:../../packages/components", 
+    "@reynard/components": "file:../../packages/components",
     "@reynard/ui": "file:../../packages/ui",
     "@reynard/charts": "file:../../packages/charts",
     "@reynard/gallery": "file:../../packages/gallery",

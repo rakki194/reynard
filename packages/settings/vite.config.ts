@@ -12,10 +12,10 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
-        "@reynard/core", 
-        "@reynard/components"
+        "solid-js",
+        "solid-js/web",
+        "@reynard/core",
+        "@reynard/components",
       ],
       output: {
         globals: {
@@ -30,7 +30,3 @@ export default defineConfig({
     sourcemap: true,
   },
 });
-
-
-
-

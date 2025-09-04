@@ -18,12 +18,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && vite build",
     "dev": "vite build --watch",
-    "typecheck": "tsc --noEmit",
+    "build": "vite build && tsc -p tsconfig.json",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "solidjs",

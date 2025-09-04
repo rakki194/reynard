@@ -95,14 +95,18 @@ export function formatDuration(duration: number): string {
   const remainingSeconds = seconds % 60;
 
   if (minutes < 60) {
-    return remainingSeconds > 0 ? `${minutes}m ${remainingSeconds}s` : `${minutes}m`;
+    return remainingSeconds > 0
+      ? `${minutes}m ${remainingSeconds}s`
+      : `${minutes}m`;
   }
 
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
 
   if (hours < 24) {
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes}m`
+      : `${hours}h`;
   }
 
   const days = Math.floor(hours / 24);
@@ -131,7 +135,7 @@ export function getCurrentTime(): string {
 export function isToday(date: Date | number): boolean {
   const today = new Date();
   const checkDate = typeof date === "number" ? new Date(date) : date;
-  
+
   return checkDate.toDateString() === today.toDateString();
 }
 
@@ -142,7 +146,7 @@ export function isYesterday(date: Date | number): boolean {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   const checkDate = typeof date === "number" ? new Date(date) : date;
-  
+
   return checkDate.toDateString() === yesterday.toDateString();
 }
 
@@ -163,7 +167,3 @@ export function endOfDay(date: Date | number): Date {
   d.setHours(23, 59, 59, 999);
   return d;
 }
-
-
-
-

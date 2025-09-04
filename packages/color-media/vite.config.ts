@@ -1,19 +1,19 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { defineConfig } from "vite";
+import { resolve } from "path";
 
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'ReynardColorMedia',
-      fileName: 'index',
-      formats: ['es', 'umd'],
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "ReynardColorMedia",
+      fileName: "index",
+      formats: ["es", "umd"],
     },
     rollupOptions: {
-      external: ['solid-js'],
+      external: ["solid-js"],
       output: {
         globals: {
-          'solid-js': 'SolidJS',
+          "solid-js": "SolidJS",
         },
       },
     },
@@ -21,7 +21,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': resolve(__dirname, 'src'),
+      "~": resolve(__dirname, "src"),
     },
   },
 });

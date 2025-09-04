@@ -66,8 +66,14 @@ describe("Chart Integration Tests", () => {
     it("renders multiple chart types simultaneously", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
           <TimeSeriesChart data={mockTimeSeriesData} />
         </div>
@@ -83,17 +89,17 @@ describe("Chart Integration Tests", () => {
     it("handles different chart configurations in the same container", () => {
       render(() => (
         <div>
-          <BarChart 
+          <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
-            horizontal={true} 
-            stacked={true} 
+            horizontal={true}
+            stacked={true}
           />
-          <LineChart 
+          <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
           />
-          <PieChart 
+          <PieChart
             labels={mockPieLabels}
             data={mockPieData}
             variant="doughnut"
@@ -117,9 +123,21 @@ describe("Chart Integration Tests", () => {
     it("handles responsive charts in different container sizes", () => {
       render(() => (
         <div style={{ width: "800px", height: "600px" }}>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} responsive={true} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} responsive={true} />
-          <PieChart labels={mockPieLabels} data={mockPieData} responsive={true} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+            responsive={true}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+            responsive={true}
+          />
+          <PieChart
+            labels={mockPieLabels}
+            data={mockPieData}
+            responsive={true}
+          />
         </div>
       ));
 
@@ -130,26 +148,26 @@ describe("Chart Integration Tests", () => {
     it("maintains aspect ratios across different chart types", () => {
       render(() => (
         <div>
-          <BarChart 
+          <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
-            maintainAspectRatio={true} 
-            width={400} 
-            height={300} 
+            maintainAspectRatio={true}
+            width={400}
+            height={300}
           />
-          <LineChart 
+          <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
-            maintainAspectRatio={true} 
-            width={400} 
-            height={300} 
+            maintainAspectRatio={true}
+            width={400}
+            height={300}
           />
-          <PieChart 
+          <PieChart
             labels={mockPieLabels}
             data={mockPieData}
-            maintainAspectRatio={true} 
-            width={400} 
-            height={300} 
+            maintainAspectRatio={true}
+            width={400}
+            height={300}
           />
         </div>
       ));
@@ -163,8 +181,14 @@ describe("Chart Integration Tests", () => {
     it("applies consistent themes across all chart types", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
           <TimeSeriesChart data={mockTimeSeriesData} />
         </div>
@@ -178,25 +202,25 @@ describe("Chart Integration Tests", () => {
     it("uses mockConfig and mockTheme for chart configuration", () => {
       render(() => (
         <div>
-          <BarChart 
-            labels={mockBarData.labels} 
-            datasets={mockBarData.datasets} 
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
             responsive={mockConfig.responsive}
             maintainAspectRatio={mockConfig.maintainAspectRatio}
             animation={mockConfig.animation}
             tooltip={mockConfig.tooltip}
             colors={[mockTheme.primary, mockTheme.secondary, mockTheme.success]}
           />
-          <LineChart 
-            labels={mockLineData.labels} 
-            datasets={mockLineData.datasets} 
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
             responsive={mockConfig.responsive}
             maintainAspectRatio={mockConfig.maintainAspectRatio}
             colors={[mockTheme.primary, mockTheme.secondary, mockTheme.success]}
           />
-          <PieChart 
-            labels={mockPieLabels} 
-            data={mockPieData} 
+          <PieChart
+            labels={mockPieLabels}
+            data={mockPieData}
             responsive={mockConfig.responsive}
             maintainAspectRatio={mockConfig.maintainAspectRatio}
             colors={[mockTheme.primary, mockTheme.secondary, mockTheme.success]}
@@ -211,15 +235,21 @@ describe("Chart Integration Tests", () => {
     it("handles theme switching across all charts", () => {
       const { unmount } = render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
 
       // Unmount and render with different theme
       unmount();
-      
+
       const darkTheme: ChartTheme = {
         primary: "#1f2937",
         secondary: "#374151",
@@ -234,19 +264,19 @@ describe("Chart Integration Tests", () => {
 
       render(() => (
         <div>
-          <BarChart 
-            labels={mockBarData.labels} 
-            datasets={mockBarData.datasets} 
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
             colors={[darkTheme.primary, darkTheme.secondary, darkTheme.success]}
           />
-          <LineChart 
-            labels={mockLineData.labels} 
-            datasets={mockLineData.datasets} 
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
             colors={[darkTheme.primary, darkTheme.secondary, darkTheme.success]}
           />
-          <PieChart 
-            labels={mockPieLabels} 
-            data={mockPieData} 
+          <PieChart
+            labels={mockPieLabels}
+            data={mockPieData}
             colors={[darkTheme.primary, darkTheme.secondary, darkTheme.success]}
           />
         </div>
@@ -261,15 +291,21 @@ describe("Chart Integration Tests", () => {
     it("updates multiple charts with synchronized data", () => {
       const { unmount } = render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
 
       // Unmount and render with updated data
       unmount();
-      
+
       const updatedBarData = {
         ...mockBarData,
         datasets: [{ ...mockBarData.datasets[0], data: [15, 25, 35] }],
@@ -282,8 +318,14 @@ describe("Chart Integration Tests", () => {
 
       render(() => (
         <div>
-          <BarChart labels={updatedBarData.labels} datasets={updatedBarData.datasets} />
-          <LineChart labels={updatedLineData.labels} datasets={updatedLineData.datasets} />
+          <BarChart
+            labels={updatedBarData.labels}
+            datasets={updatedBarData.datasets}
+          />
+          <LineChart
+            labels={updatedLineData.labels}
+            datasets={updatedLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
@@ -295,8 +337,14 @@ describe("Chart Integration Tests", () => {
     it("handles different data types across chart types", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
           <TimeSeriesChart data={mockTimeSeriesData} />
         </div>
@@ -311,11 +359,17 @@ describe("Chart Integration Tests", () => {
   describe("Performance Integration", () => {
     it("renders multiple charts efficiently", () => {
       const startTime = performance.now();
-      
+
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
           <TimeSeriesChart data={mockTimeSeriesData} />
         </div>
@@ -333,24 +387,34 @@ describe("Chart Integration Tests", () => {
     it("handles large datasets across multiple charts", () => {
       const largeBarData = {
         labels: Array.from({ length: 100 }, (_, i) => `Month ${i + 1}`),
-        datasets: [{
-          label: "Large Dataset",
-          data: Array.from({ length: 100 }, () => Math.random() * 1000),
-        }],
+        datasets: [
+          {
+            label: "Large Dataset",
+            data: Array.from({ length: 100 }, () => Math.random() * 1000),
+          },
+        ],
       };
 
       const largeLineData = {
         labels: Array.from({ length: 100 }, (_, i) => `Point ${i + 1}`),
-        datasets: [{
-          label: "Large Line Dataset",
-          data: Array.from({ length: 100 }, () => Math.random() * 1000),
-        }],
+        datasets: [
+          {
+            label: "Large Line Dataset",
+            data: Array.from({ length: 100 }, () => Math.random() * 1000),
+          },
+        ],
       };
 
       render(() => (
         <div>
-          <BarChart labels={largeBarData.labels} datasets={largeBarData.datasets} />
-          <LineChart labels={largeLineData.labels} datasets={largeLineData.datasets} />
+          <BarChart
+            labels={largeBarData.labels}
+            datasets={largeBarData.datasets}
+          />
+          <LineChart
+            labels={largeLineData.labels}
+            datasets={largeLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
@@ -379,7 +443,10 @@ describe("Chart Integration Tests", () => {
     it("handles mixed valid and invalid data", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
           <LineChart labels={[]} datasets={[]} />
           <PieChart labels={[]} data={[]} />
           <TimeSeriesChart data={[]} />
@@ -396,8 +463,14 @@ describe("Chart Integration Tests", () => {
     it("provides consistent accessibility across all chart types", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
           <TimeSeriesChart data={mockTimeSeriesData} />
         </div>
@@ -408,7 +481,7 @@ describe("Chart Integration Tests", () => {
       const lineCharts = screen.getAllByText("Line Chart");
       const lineChart = lineCharts[0].closest("div"); // First LineChart
       const pieChart = screen.getByText("Pie Chart").closest("div");
-      
+
       expect(barChart).toHaveAttribute("role", "img");
       expect(barChart).toHaveAttribute("aria-label");
       expect(lineChart).toHaveAttribute("role", "img");
@@ -420,14 +493,20 @@ describe("Chart Integration Tests", () => {
     it("supports keyboard navigation across all charts", () => {
       render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
 
       const charts = screen.getAllByText(/Chart/);
-      charts.forEach(chart => {
+      charts.forEach((chart) => {
         const container = chart.closest("div");
         expect(container).toBeInTheDocument();
         // Note: Focus testing is limited in jsdom, so we just verify the element exists
@@ -439,16 +518,22 @@ describe("Chart Integration Tests", () => {
     it("allows dynamic chart type switching", () => {
       const { unmount } = render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
         </div>
       ));
 
       // Unmount and render different chart type
       unmount();
-      
+
       render(() => (
         <div>
-          <LineChart labels={mockLineData.labels} datasets={mockLineData.datasets} />
+          <LineChart
+            labels={mockLineData.labels}
+            datasets={mockLineData.datasets}
+          />
         </div>
       ));
 
@@ -458,14 +543,17 @@ describe("Chart Integration Tests", () => {
     it("handles dynamic data updates across chart types", () => {
       const { unmount } = render(() => (
         <div>
-          <BarChart labels={mockBarData.labels} datasets={mockBarData.datasets} />
+          <BarChart
+            labels={mockBarData.labels}
+            datasets={mockBarData.datasets}
+          />
           <PieChart labels={mockPieLabels} data={mockPieData} />
         </div>
       ));
 
       // Unmount and render with updated data
       unmount();
-      
+
       const newBarData = {
         labels: ["Q1", "Q2", "Q3", "Q4"],
         datasets: [{ label: "Quarterly", data: [100, 200, 150, 300] }],

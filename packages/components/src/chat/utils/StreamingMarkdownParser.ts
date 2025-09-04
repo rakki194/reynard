@@ -1,6 +1,6 @@
 /**
  * Advanced Streaming Markdown Parser for Reynard Chat System
- * 
+ *
  * Greatly enhanced from yipyap's initial implementation with:
  * - Better error handling and recovery
  * - Performance optimizations
@@ -10,12 +10,12 @@
  * - TypeScript-first design
  */
 
-import type { 
-  MarkdownNode, 
-  StreamingParserState, 
-  ParseResult, 
-  ParserError 
-} from '../types';
+import type {
+  MarkdownNode,
+  StreamingParserState,
+  ParseResult,
+  ParserError,
+} from "../types";
 
 export class StreamingMarkdownParser {
   private state: StreamingParserState;
@@ -25,36 +25,36 @@ export class StreamingMarkdownParser {
     // Headers
     heading: /^(#{1,6})\s+(.*)$/,
     headingUnderline: /^(=+|-+)\s*$/,
-    
+
     // Code blocks
     codeBlock: /^```(\w*)\s*$/,
     codeBlockEnd: /^```\s*$/,
     indentedCode: /^(    |\t)(.*)$/,
-    
+
     // Lists
     listItem: /^(\s*)([-*+])\s+(.*)$/,
     numberedList: /^(\s*)(\d+)\.\s+(.*)$/,
     taskList: /^(\s*)([-*+])\s+\[([ xX])\]\s+(.*)$/,
-    
+
     // Quotes and callouts
     blockquote: /^>\s+(.*)$/,
-    
+
     // Tables
     tableRow: /^\|(.+)\|$/,
     tableSeparator: /^\|(\s*:?-+:?\s*\|)+$/,
-    
+
     // Horizontal rules
     horizontalRule: /^(\*{3,}|-{3,}|_{3,})\s*$/,
-    
+
     // Thinking sections
     thinkingStart: /^<think>\s*$/,
     thinkingEnd: /^<\/think>\s*$/,
     inlineThinking: /<think>(.*?)<\/think>/gs,
-    
+
     // Math blocks
     mathBlock: /^\$\$(.*)$/,
     mathBlockEnd: /^(.*)\$\$$/,
-    
+
     // HTML blocks
     htmlBlock: /^<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/,
     htmlBlockEnd: /^<\/([a-zA-Z][a-zA-Z0-9]*)>/,
@@ -67,15 +67,15 @@ export class StreamingMarkdownParser {
     italicAsterisk: /\*((?:[^*]|\*\*)+)\*/g,
     italicUnderscore: /_([^_]+)_/g,
     strikethrough: /~~([^~]+)~~/g,
-    
+
     // Code and links
     inlineCode: /`([^`]+)`/g,
     link: /\[([^\]]+)\]\(([^)]+)\)/g,
     autoLink: /(https?:\/\/[^\s]+)/g,
-    
+
     // Math
     inlineMath: /\$([^$]+)\$/g,
-    
+
     // Special characters
     emoji: /:([a-z_]+):/g,
   };
@@ -88,13 +88,13 @@ export class StreamingMarkdownParser {
   private createInitialState(): StreamingParserState {
     return {
       nodes: [],
-      buffer: '',
+      buffer: "",
       currentNode: null,
       inCodeBlock: false,
-      codeBlockLanguage: '',
+      codeBlockLanguage: "",
       codeBlockContent: [],
       inThinking: false,
-      thinkingBuffer: '',
+      thinkingBuffer: "",
       thinkingSections: [],
       listStack: [],
       inTable: false,
@@ -152,18 +152,18 @@ export class StreamingMarkdownParser {
   }
 
   private processCompleteLines(): void {
-    const lines = this.state.buffer.split('\n');
-    
+    const lines = this.state.buffer.split("\n");
+
     // Keep incomplete last line in buffer unless it ends with newline
     let linesToProcess: string[];
     let remainingBuffer: string;
 
-    if (this.state.buffer.endsWith('\n')) {
+    if (this.state.buffer.endsWith("\n")) {
       linesToProcess = lines.slice(0, -1); // Exclude empty string at end
-      remainingBuffer = '';
+      remainingBuffer = "";
     } else {
       linesToProcess = lines.slice(0, -1);
-      remainingBuffer = lines[lines.length - 1] || '';
+      remainingBuffer = lines[lines.length - 1] || "";
     }
 
     // Process each complete line
@@ -177,14 +177,14 @@ export class StreamingMarkdownParser {
 
   private processRemainingBuffer(): void {
     if (this.state.buffer.trim()) {
-      const lines = this.state.buffer.split('\n');
+      const lines = this.state.buffer.split("\n");
       for (const line of lines) {
         if (line.trim()) {
           this.processLine(line);
           this.state.lineNumber++;
         }
       }
-      this.state.buffer = '';
+      this.state.buffer = "";
     }
   }
 
@@ -197,7 +197,7 @@ export class StreamingMarkdownParser {
 
       // Skip processing content inside thinking sections
       if (this.state.inThinking) {
-        this.state.thinkingBuffer += line + '\n';
+        this.state.thinkingBuffer += line + "\n";
         return;
       }
 
@@ -214,36 +214,47 @@ export class StreamingMarkdownParser {
 
       // Process markdown content
       this.processMarkdownLine(line);
-
     } catch (error) {
-      this.addError('syntax', `Error processing line ${this.state.lineNumber}: ${error}`, true);
+      this.addError(
+        "syntax",
+        `Error processing line ${this.state.lineNumber}: ${error}`,
+        true,
+      );
     }
   }
 
   private handleThinkingSection(line: string): boolean {
-    const thinkingStartMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.thinkingStart);
-    const thinkingEndMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.thinkingEnd);
+    const thinkingStartMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.thinkingStart,
+    );
+    const thinkingEndMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.thinkingEnd,
+    );
 
     if (thinkingStartMatch) {
       if (this.state.inThinking) {
-        this.addError('syntax', 'Nested thinking sections not allowed', true);
+        this.addError("syntax", "Nested thinking sections not allowed", true);
       }
       this.state.inThinking = true;
-      this.state.thinkingBuffer = '';
+      this.state.thinkingBuffer = "";
       return true;
     }
 
     if (thinkingEndMatch) {
       if (!this.state.inThinking) {
-        this.addError('syntax', 'Closing thinking tag without opening tag', true);
+        this.addError(
+          "syntax",
+          "Closing thinking tag without opening tag",
+          true,
+        );
         return true;
       }
-      
+
       this.state.inThinking = false;
       if (this.state.thinkingBuffer.trim()) {
         this.state.thinkingSections.push(this.state.thinkingBuffer.trim());
       }
-      this.state.thinkingBuffer = '';
+      this.state.thinkingBuffer = "";
       return true;
     }
 
@@ -251,13 +262,17 @@ export class StreamingMarkdownParser {
   }
 
   private handleCodeBlock(line: string): boolean {
-    const codeBlockMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.codeBlock);
-    const codeBlockEndMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.codeBlockEnd);
+    const codeBlockMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.codeBlock,
+    );
+    const codeBlockEndMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.codeBlockEnd,
+    );
 
     if (codeBlockMatch && !this.state.inCodeBlock) {
       this.flushCurrentNode();
       this.state.inCodeBlock = true;
-      this.state.codeBlockLanguage = codeBlockMatch[1] || '';
+      this.state.codeBlockLanguage = codeBlockMatch[1] || "";
       this.state.codeBlockContent = [];
       return true;
     }
@@ -265,13 +280,13 @@ export class StreamingMarkdownParser {
     if (codeBlockEndMatch && this.state.inCodeBlock) {
       this.state.inCodeBlock = false;
       this.addNode({
-        type: 'code-block',
-        content: this.state.codeBlockContent.join('\n'),
+        type: "code-block",
+        content: this.state.codeBlockContent.join("\n"),
         attributes: { language: this.state.codeBlockLanguage },
         isComplete: true,
       });
       this.state.codeBlockContent = [];
-      this.state.codeBlockLanguage = '';
+      this.state.codeBlockLanguage = "";
       return true;
     }
 
@@ -283,7 +298,7 @@ export class StreamingMarkdownParser {
     let processedLine = this.extractInlineThinking(line);
 
     // Handle empty lines - they break blocks
-    if (processedLine.trim() === '') {
+    if (processedLine.trim() === "") {
       this.flushCurrentNode();
       return;
     }
@@ -301,15 +316,19 @@ export class StreamingMarkdownParser {
 
   private extractInlineThinking(line: string): string {
     let processedLine = line;
-    const thinkingMatches = Array.from(processedLine.matchAll(StreamingMarkdownParser.BLOCK_PATTERNS.inlineThinking));
-    
+    const thinkingMatches = Array.from(
+      processedLine.matchAll(
+        StreamingMarkdownParser.BLOCK_PATTERNS.inlineThinking,
+      ),
+    );
+
     for (const match of thinkingMatches) {
       if (match[1].trim()) {
         this.state.thinkingSections.push(match[1].trim());
       }
-      processedLine = processedLine.replace(match[0], '');
+      processedLine = processedLine.replace(match[0], "");
     }
-    
+
     return processedLine;
   }
 
@@ -317,8 +336,8 @@ export class StreamingMarkdownParser {
     if (StreamingMarkdownParser.BLOCK_PATTERNS.horizontalRule.test(line)) {
       this.flushCurrentNode();
       this.addNode({
-        type: 'hr',
-        content: '',
+        type: "hr",
+        content: "",
         isComplete: true,
       });
       return true;
@@ -327,11 +346,13 @@ export class StreamingMarkdownParser {
   }
 
   private handleHeading(line: string): boolean {
-    const headingMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.heading);
+    const headingMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.heading,
+    );
     if (headingMatch) {
       this.flushCurrentNode();
       this.addNode({
-        type: 'heading',
+        type: "heading",
         content: headingMatch[2].trim(),
         attributes: { level: headingMatch[1].length.toString() },
         isComplete: true,
@@ -343,14 +364,19 @@ export class StreamingMarkdownParser {
   }
 
   private handleBlockquote(line: string): boolean {
-    const blockquoteMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.blockquote);
+    const blockquoteMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.blockquote,
+    );
     if (blockquoteMatch) {
-      if (this.state.currentNode?.type === 'blockquote' && !this.state.currentNode.isComplete) {
-        this.state.currentNode.content += '\n' + blockquoteMatch[1];
+      if (
+        this.state.currentNode?.type === "blockquote" &&
+        !this.state.currentNode.isComplete
+      ) {
+        this.state.currentNode.content += "\n" + blockquoteMatch[1];
       } else {
         this.flushCurrentNode();
         this.state.currentNode = {
-          type: 'blockquote',
+          type: "blockquote",
           content: blockquoteMatch[1],
           isComplete: false,
         };
@@ -361,42 +387,48 @@ export class StreamingMarkdownParser {
   }
 
   private handleTable(line: string): boolean {
-    const tableRowMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.tableRow);
-    const tableSeparatorMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.tableSeparator);
+    const tableRowMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.tableRow,
+    );
+    const tableSeparatorMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.tableSeparator,
+    );
 
     if (tableRowMatch) {
-      const cells = tableRowMatch[1].split('|').map(cell => cell.trim());
-      
+      const cells = tableRowMatch[1].split("|").map((cell) => cell.trim());
+
       if (!this.state.inTable) {
         // Start new table
         this.flushCurrentNode();
         this.state.inTable = true;
         this.state.tableHeaders = cells;
         this.state.currentNode = {
-          type: 'table',
-          content: '',
-          children: [{
-            type: 'table-row',
-            content: '',
-            children: cells.map(cell => ({
-              type: 'table-cell',
-              content: cell,
+          type: "table",
+          content: "",
+          children: [
+            {
+              type: "table-row",
+              content: "",
+              children: cells.map((cell) => ({
+                type: "table-cell",
+                content: cell,
+                isComplete: true,
+                attributes: { header: "true" },
+              })),
               isComplete: true,
-              attributes: { header: 'true' }
-            })),
-            isComplete: true,
-            attributes: { header: 'true' }
-          }],
+              attributes: { header: "true" },
+            },
+          ],
           isComplete: false,
         };
       } else {
         // Add row to existing table
-        if (this.state.currentNode?.type === 'table') {
+        if (this.state.currentNode?.type === "table") {
           this.state.currentNode.children!.push({
-            type: 'table-row',
-            content: '',
-            children: cells.map(cell => ({
-              type: 'table-cell',
+            type: "table-row",
+            content: "",
+            children: cells.map((cell) => ({
+              type: "table-cell",
               content: cell,
               isComplete: true,
             })),
@@ -422,25 +454,37 @@ export class StreamingMarkdownParser {
   }
 
   private handleList(line: string): boolean {
-    const listItemMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.listItem);
-    const numberedListMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.numberedList);
-    const taskListMatch = line.match(StreamingMarkdownParser.BLOCK_PATTERNS.taskList);
+    const listItemMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.listItem,
+    );
+    const numberedListMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.numberedList,
+    );
+    const taskListMatch = line.match(
+      StreamingMarkdownParser.BLOCK_PATTERNS.taskList,
+    );
 
     if (taskListMatch) {
       const [, indent, marker, checked, content] = taskListMatch;
-      this.handleListItem('unordered', content, indent.length, true, checked.toLowerCase() === 'x');
+      this.handleListItem(
+        "unordered",
+        content,
+        indent.length,
+        true,
+        checked.toLowerCase() === "x",
+      );
       return true;
     }
 
     if (listItemMatch) {
       const [, indent, marker, content] = listItemMatch;
-      this.handleListItem('unordered', content, indent.length);
+      this.handleListItem("unordered", content, indent.length);
       return true;
     }
 
     if (numberedListMatch) {
       const [, indent, number, content] = numberedListMatch;
-      this.handleListItem('ordered', content, indent.length);
+      this.handleListItem("ordered", content, indent.length);
       return true;
     }
 
@@ -454,11 +498,11 @@ export class StreamingMarkdownParser {
   }
 
   private handleListItem(
-    listType: 'ordered' | 'unordered', 
-    content: string, 
+    listType: "ordered" | "unordered",
+    content: string,
     indentLevel: number,
     isTask: boolean = false,
-    isChecked: boolean = false
+    isChecked: boolean = false,
   ): void {
     const currentLevel = Math.floor(indentLevel / 2); // 2 spaces per level
 
@@ -466,14 +510,14 @@ export class StreamingMarkdownParser {
     this.adjustListStack(listType, currentLevel);
 
     // Create or update list
-    if (!this.state.currentNode || this.state.currentNode.type !== 'list') {
+    if (!this.state.currentNode || this.state.currentNode.type !== "list") {
       this.flushCurrentNode();
       this.state.currentNode = {
-        type: 'list',
-        content: '',
-        attributes: { 
+        type: "list",
+        content: "",
+        attributes: {
           listType,
-          ...(isTask && { taskList: 'true' })
+          ...(isTask && { taskList: "true" }),
         },
         children: [],
         isComplete: false,
@@ -482,24 +526,27 @@ export class StreamingMarkdownParser {
 
     // Add list item
     const listItem: MarkdownNode = {
-      type: 'list-item',
+      type: "list-item",
       content,
       isComplete: true,
-      ...(isTask && { 
-        attributes: { 
-          task: 'true', 
-          checked: isChecked.toString() 
-        } 
+      ...(isTask && {
+        attributes: {
+          task: "true",
+          checked: isChecked.toString(),
+        },
       }),
     };
 
     this.state.currentNode.children!.push(listItem);
   }
 
-  private adjustListStack(listType: 'ordered' | 'unordered', level: number): void {
+  private adjustListStack(
+    listType: "ordered" | "unordered",
+    level: number,
+  ): void {
     // Trim stack to current level
     this.state.listStack = this.state.listStack.slice(0, level + 1);
-    
+
     // Ensure we have an entry for current level
     if (this.state.listStack.length <= level) {
       this.state.listStack.push({ type: listType, level });
@@ -509,12 +556,15 @@ export class StreamingMarkdownParser {
   }
 
   private handleParagraph(line: string): void {
-    if (this.state.currentNode?.type === 'paragraph' && !this.state.currentNode.isComplete) {
-      this.state.currentNode.content += '\n' + line;
+    if (
+      this.state.currentNode?.type === "paragraph" &&
+      !this.state.currentNode.isComplete
+    ) {
+      this.state.currentNode.content += "\n" + line;
     } else {
       this.flushCurrentNode();
       this.state.currentNode = {
-        type: 'paragraph',
+        type: "paragraph",
         content: line,
         isComplete: false,
         raw: line,
@@ -539,19 +589,23 @@ export class StreamingMarkdownParser {
     if (this.state.inThinking && this.state.thinkingBuffer.trim()) {
       this.state.thinkingSections.push(this.state.thinkingBuffer.trim());
       this.state.inThinking = false;
-      this.addError('incomplete', 'Thinking section was not properly closed', true);
+      this.addError(
+        "incomplete",
+        "Thinking section was not properly closed",
+        true,
+      );
     }
 
     // Close any open code blocks
     if (this.state.inCodeBlock) {
       this.addNode({
-        type: 'code-block',
-        content: this.state.codeBlockContent.join('\n'),
+        type: "code-block",
+        content: this.state.codeBlockContent.join("\n"),
         attributes: { language: this.state.codeBlockLanguage },
         isComplete: true,
       });
       this.state.inCodeBlock = false;
-      this.addError('incomplete', 'Code block was not properly closed', true);
+      this.addError("incomplete", "Code block was not properly closed", true);
     }
 
     // Close any open tables
@@ -561,7 +615,7 @@ export class StreamingMarkdownParser {
   }
 
   private markNodesComplete(nodes: MarkdownNode[]): void {
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       node.isComplete = true;
       if (node.children) {
         this.markNodesComplete(node.children);
@@ -569,7 +623,11 @@ export class StreamingMarkdownParser {
     });
   }
 
-  private addError(type: ParserError['type'], message: string, recoverable: boolean): void {
+  private addError(
+    type: ParserError["type"],
+    message: string,
+    recoverable: boolean,
+  ): void {
     this.state.errors.push({
       type,
       message,
@@ -582,10 +640,13 @@ export class StreamingMarkdownParser {
     const thinking = this.extractThinking();
 
     // Include current node if it exists and streaming
-    const nodesToReturn = isComplete 
+    const nodesToReturn = isComplete
       ? [...this.state.nodes]
       : this.state.currentNode && !this.state.inCodeBlock
-        ? [...this.state.nodes, { ...this.state.currentNode, isComplete: false }]
+        ? [
+            ...this.state.nodes,
+            { ...this.state.currentNode, isComplete: false },
+          ]
         : [...this.state.nodes];
 
     return {
@@ -594,7 +655,9 @@ export class StreamingMarkdownParser {
       isComplete,
       hasThinking: thinking.length > 0,
       thinking,
-      currentThinking: this.state.inThinking ? this.state.thinkingBuffer : undefined,
+      currentThinking: this.state.inThinking
+        ? this.state.thinkingBuffer
+        : undefined,
       errors: [...this.state.errors],
       stats: {
         totalNodes: nodesToReturn.length,
@@ -606,78 +669,92 @@ export class StreamingMarkdownParser {
 
   private extractThinking(): string[] {
     const thinking = [...this.state.thinkingSections];
-    
+
     // Add current thinking if in progress
     if (this.state.inThinking && this.state.thinkingBuffer.trim()) {
       thinking.push(this.state.thinkingBuffer.trim());
     }
-    
+
     return thinking;
   }
 
   private renderToHTML(nodes: MarkdownNode[]): string {
-    return nodes.map(node => this.renderNodeToHTML(node)).join('');
+    return nodes.map((node) => this.renderNodeToHTML(node)).join("");
   }
 
   private renderNodeToHTML(node: MarkdownNode): string {
     const processedContent = this.processInlineMarkdown(node.content);
 
     switch (node.type) {
-      case 'heading': {
-        const level = Math.min(6, Math.max(1, parseInt(node.attributes?.level || '1')));
+      case "heading": {
+        const level = Math.min(
+          6,
+          Math.max(1, parseInt(node.attributes?.level || "1")),
+        );
         return `<h${level}>${processedContent}</h${level}>`;
       }
 
-      case 'paragraph':
+      case "paragraph":
         return `<p>${processedContent}</p>`;
 
-      case 'code-block': {
-        const language = node.attributes?.language || '';
+      case "code-block": {
+        const language = node.attributes?.language || "";
         const escapedContent = this.escapeHtml(node.content);
         return `<pre><code class="language-${language}">${escapedContent}</code></pre>`;
       }
 
-      case 'list': {
-        const listType = node.attributes?.listType === 'ordered' ? 'ol' : 'ul';
-        const isTaskList = node.attributes?.taskList === 'true';
-        const items = node.children?.map(child => this.renderNodeToHTML(child)).join('') || '';
-        const className = isTaskList ? ' class="task-list"' : '';
+      case "list": {
+        const listType = node.attributes?.listType === "ordered" ? "ol" : "ul";
+        const isTaskList = node.attributes?.taskList === "true";
+        const items =
+          node.children
+            ?.map((child) => this.renderNodeToHTML(child))
+            .join("") || "";
+        const className = isTaskList ? ' class="task-list"' : "";
         return `<${listType}${className}>${items}</${listType}>`;
       }
 
-      case 'list-item': {
-        const isTask = node.attributes?.task === 'true';
-        const isChecked = node.attributes?.checked === 'true';
-        
+      case "list-item": {
+        const isTask = node.attributes?.task === "true";
+        const isChecked = node.attributes?.checked === "true";
+
         if (isTask) {
-          const checkedAttr = isChecked ? ' checked' : '';
+          const checkedAttr = isChecked ? " checked" : "";
           return `<li class="task-list-item"><input type="checkbox"${checkedAttr} disabled> ${processedContent}</li>`;
         }
         return `<li>${processedContent}</li>`;
       }
 
-      case 'blockquote':
+      case "blockquote":
         return `<blockquote>${processedContent}</blockquote>`;
 
-      case 'table': {
-        const rows = node.children?.map(child => this.renderNodeToHTML(child)).join('') || '';
+      case "table": {
+        const rows =
+          node.children
+            ?.map((child) => this.renderNodeToHTML(child))
+            .join("") || "";
         return `<table>${rows}</table>`;
       }
 
-      case 'table-row': {
-        const isHeader = node.attributes?.header === 'true';
-        const cells = node.children?.map(child => this.renderNodeToHTML(child)).join('') || '';
-        return isHeader ? `<thead><tr>${cells}</tr></thead>` : `<tr>${cells}</tr>`;
+      case "table-row": {
+        const isHeader = node.attributes?.header === "true";
+        const cells =
+          node.children
+            ?.map((child) => this.renderNodeToHTML(child))
+            .join("") || "";
+        return isHeader
+          ? `<thead><tr>${cells}</tr></thead>`
+          : `<tr>${cells}</tr>`;
       }
 
-      case 'table-cell': {
-        const isHeader = node.attributes?.header === 'true';
-        const tag = isHeader ? 'th' : 'td';
+      case "table-cell": {
+        const isHeader = node.attributes?.header === "true";
+        const tag = isHeader ? "th" : "td";
         return `<${tag}>${processedContent}</${tag}>`;
       }
 
-      case 'hr':
-        return '<hr>';
+      case "hr":
+        return "<hr>";
 
       default:
         return `<div>${processedContent}</div>`;
@@ -685,23 +762,41 @@ export class StreamingMarkdownParser {
   }
 
   private processInlineMarkdown(text: string): string {
-    if (!text) return '';
+    if (!text) return "";
 
     let processed = text;
 
     // Process in order of specificity to avoid conflicts
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.inlineCode, '<code>$1</code>');
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.link, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.boldDouble, '<strong>$1</strong>');
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.italicAsterisk, '<em>$1</em>');
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.strikethrough, '<del>$1</del>');
-    processed = processed.replace(StreamingMarkdownParser.INLINE_PATTERNS.inlineMath, '<span class="math-inline">$1</span>');
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.inlineCode,
+      "<code>$1</code>",
+    );
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.link,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+    );
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.boldDouble,
+      "<strong>$1</strong>",
+    );
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.italicAsterisk,
+      "<em>$1</em>",
+    );
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.strikethrough,
+      "<del>$1</del>",
+    );
+    processed = processed.replace(
+      StreamingMarkdownParser.INLINE_PATTERNS.inlineMath,
+      '<span class="math-inline">$1</span>',
+    );
 
     return processed;
   }
 
   private escapeHtml(text: string): string {
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
   }
@@ -714,9 +809,9 @@ export function createStreamingMarkdownParser(): StreamingMarkdownParser {
 
 export function parseMarkdownStream(chunks: string[]): ParseResult {
   const parser = createStreamingMarkdownParser();
-  
+
   let result: ParseResult = {
-    html: '',
+    html: "",
     nodes: [],
     isComplete: false,
     hasThinking: false,
@@ -739,13 +834,16 @@ export function parseMarkdown(content: string): ParseResult {
 }
 
 // Performance-optimized version for large content
-export function parseMarkdownBatched(content: string, batchSize: number = 1024): ParseResult {
+export function parseMarkdownBatched(
+  content: string,
+  batchSize: number = 1024,
+): ParseResult {
   const parser = createStreamingMarkdownParser();
-  
+
   for (let i = 0; i < content.length; i += batchSize) {
     const chunk = content.slice(i, i + batchSize);
     parser.parseChunk(chunk);
   }
-  
+
   return parser.finalize();
 }

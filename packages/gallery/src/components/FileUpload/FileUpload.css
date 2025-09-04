@@ -1,0 +1,452 @@
+.reynard-file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.reynard-file-upload__drop-zone {
+  position: relative;
+  min-height: 200px;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reynard-file-upload__drop-zone:hover {
+  border-color: #9ca3af;
+  background: #f3f4f6;
+}
+
+.reynard-file-upload__drop-zone--drag-over {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.reynard-file-upload__drop-zone-content {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.reynard-file-upload__drop-zone-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.reynard-file-upload__drop-zone-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px 0;
+}
+
+.reynard-file-upload__drop-zone-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 20px 0;
+}
+
+.reynard-file-upload__browse-button {
+  font-weight: 500;
+}
+
+.reynard-file-upload__file-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reynard-file-upload__file-list {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.reynard-file-upload__file-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.reynard-file-upload__file-list-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.reynard-file-upload__file-list-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.reynard-file-upload__file-items {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.reynard-file-upload__file-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.reynard-file-upload__file-item:hover {
+  background: #f9fafb;
+}
+
+.reynard-file-upload__file-item:last-child {
+  border-bottom: none;
+}
+
+.reynard-file-upload__file-item--uploading {
+  background: #eff6ff;
+}
+
+.reynard-file-upload__file-item--completed {
+  background: #f0fdf4;
+}
+
+.reynard-file-upload__file-item--error {
+  background: #fef2f2;
+}
+
+.reynard-file-upload__file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.reynard-file-upload__file-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reynard-file-upload__file-details {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.reynard-file-upload__file-size,
+.reynard-file-upload__file-speed,
+.reynard-file-upload__file-time {
+  white-space: nowrap;
+}
+
+.reynard-file-upload__progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.reynard-file-upload__progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.reynard-file-upload__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.reynard-file-upload__progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  min-width: 40px;
+  text-align: right;
+}
+
+.reynard-file-upload__file-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.reynard-file-upload__file-error {
+  font-size: 16px;
+  cursor: help;
+}
+
+.reynard-file-upload__file-success {
+  font-size: 16px;
+  color: #059669;
+  font-weight: bold;
+}
+
+.reynard-file-upload__remove-button {
+  padding: 4px 8px;
+  font-size: 18px;
+  line-height: 1;
+  min-width: auto;
+}
+
+.reynard-file-upload__overall-progress {
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+}
+
+.reynard-file-upload__overall-progress-bar {
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.reynard-file-upload__overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.reynard-file-upload__overall-progress-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+  display: block;
+}
+
+.reynard-file-upload__instructions {
+  padding: 16px 20px;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.reynard-file-upload__instructions p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #92400e;
+}
+
+.reynard-file-upload__instructions p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .reynard-file-upload__drop-zone {
+    min-height: 160px;
+  }
+
+  .reynard-file-upload__drop-zone-content {
+    padding: 24px 16px;
+  }
+
+  .reynard-file-upload__drop-zone-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .reynard-file-upload__drop-zone-title {
+    font-size: 18px;
+  }
+
+  .reynard-file-upload__file-list-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .reynard-file-upload__file-list-actions {
+    justify-content: center;
+  }
+
+  .reynard-file-upload__file-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .reynard-file-upload__progress-container {
+    min-width: auto;
+  }
+
+  .reynard-file-upload__file-actions {
+    justify-content: center;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .reynard-file-upload__drop-zone {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+
+  .reynard-file-upload__drop-zone:hover {
+    background: #374151;
+    border-color: #6b7280;
+  }
+
+  .reynard-file-upload__drop-zone--drag-over {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+  }
+
+  .reynard-file-upload__drop-zone-title {
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__drop-zone-subtitle {
+    color: #9ca3af;
+  }
+
+  .reynard-file-upload__file-list {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+
+  .reynard-file-upload__file-list-header {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .reynard-file-upload__file-list-title {
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__file-item {
+    border-color: #374151;
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__file-item:hover {
+    background: #374151;
+  }
+
+  .reynard-file-upload__file-item--uploading {
+    background: #1e3a8a;
+  }
+
+  .reynard-file-upload__file-item--completed {
+    background: #064e3b;
+  }
+
+  .reynard-file-upload__file-item--error {
+    background: #7f1d1d;
+  }
+
+  .reynard-file-upload__file-name {
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__file-details {
+    color: #9ca3af;
+  }
+
+  .reynard-file-upload__progress-text {
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__overall-progress {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .reynard-file-upload__overall-progress-text {
+    color: #f9fafb;
+  }
+
+  .reynard-file-upload__instructions {
+    background: #451a03;
+    border-color: #d97706;
+  }
+
+  .reynard-file-upload__instructions p {
+    color: #fbbf24;
+  }
+}
+
+/* Focus states for accessibility */
+.reynard-file-upload__drop-zone:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.reynard-file-upload__file-item:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Animation for drag over state */
+.reynard-file-upload__drop-zone--drag-over {
+  animation: dragOverPulse 0.6s ease-in-out;
+}
+
+@keyframes dragOverPulse {
+  0%,
+  100% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Loading state */
+.reynard-file-upload--uploading .reynard-file-upload__drop-zone {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .reynard-file-upload__drop-zone {
+    border-width: 3px;
+  }
+
+  .reynard-file-upload__progress-fill {
+    background: #000;
+  }
+
+  .reynard-file-upload__overall-progress-fill {
+    background: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .reynard-file-upload__drop-zone,
+  .reynard-file-upload__progress-fill,
+  .reynard-file-upload__overall-progress-fill {
+    transition: none;
+  }
+
+  .reynard-file-upload__drop-zone--drag-over {
+    animation: none;
+  }
+}

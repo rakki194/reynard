@@ -3,12 +3,11 @@
  * Handles file uploads with progress tracking and validation
  */
 
-import { createSignal, createEffect, onCleanup } from "solid-js";
-import type { 
-  UploadConfiguration, 
-  UploadProgress, 
-  FileItem, 
-  GalleryCallbacks 
+import { createSignal, onCleanup } from "solid-js";
+import type {
+  UploadConfiguration,
+  UploadProgress,
+  GalleryCallbacks,
 } from "../types";
 import { validateFile, extractFileMetadata, generateFileId } from "../utils";
 
@@ -16,7 +15,10 @@ export interface UseFileUploadOptions {
   /** Upload configuration */
   config: UploadConfiguration;
   /** Upload callbacks */
-  callbacks?: Pick<GalleryCallbacks, "onUploadStart" | "onUploadProgress" | "onUploadComplete" | "onError">;
+  callbacks?: Pick<
+    GalleryCallbacks,
+    "onUploadStart" | "onUploadProgress" | "onUploadComplete" | "onError"
+  >;
   /** Current folder path */
   currentPath?: string;
 }
@@ -30,7 +32,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
 
   onCleanup(() => {
     // Cancel all active uploads on cleanup
-    uploadControllers.forEach(controller => controller.abort());
+    uploadControllers.forEach((controller) => controller.abort());
     uploadControllers.clear();
   });
 
@@ -60,7 +62,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
     if (errors.length > 0) {
       options.callbacks?.onError?.(
         `Some files could not be uploaded:\n${errors.join("\n")}`,
-        { errors }
+        { errors },
       );
     }
 
@@ -70,10 +72,10 @@ export function useFileUpload(options: UseFileUploadOptions) {
     if (options.config.maxTotalSize) {
       const totalSize = validFiles.reduce((sum, file) => sum + file.size, 0);
       if (totalSize > options.config.maxTotalSize) {
-        options.callbacks?.onError?.(
-          `Total upload size exceeds limit`,
-          { totalSize, limit: options.config.maxTotalSize }
-        );
+        options.callbacks?.onError?.(`Total upload size exceeds limit`, {
+          totalSize,
+          limit: options.config.maxTotalSize,
+        });
         return;
       }
     }
@@ -82,7 +84,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
     options.callbacks?.onUploadStart?.(validFiles);
 
     // Initialize upload progress
-    const initialProgress: UploadProgress[] = validFiles.map(file => ({
+    const initialProgress: UploadProgress[] = validFiles.map((file) => ({
       id: generateFileId(file),
       file,
       progress: 0,
@@ -92,33 +94,33 @@ export function useFileUpload(options: UseFileUploadOptions) {
     setUploads(initialProgress);
 
     // Upload files concurrently
-    const uploadPromises = validFiles.map((file, index) => 
-      uploadSingleFile(file, initialProgress[index])
+    const uploadPromises = validFiles.map((file, index) =>
+      uploadSingleFile(file, initialProgress[index]),
     );
 
     try {
       await Promise.all(uploadPromises);
-      
+
       const finalUploads = uploads();
-      const successful = finalUploads.filter(u => u.status === "completed");
-      const failed = finalUploads.filter(u => u.status === "error");
+      const failed = finalUploads.filter((u) => u.status === "error");
 
       if (failed.length > 0) {
         options.callbacks?.onError?.(
           `${failed.length} file(s) failed to upload`,
-          { failed: failed.map(u => ({ name: u.file.name, error: u.error })) }
+          {
+            failed: failed.map((u) => ({ name: u.file.name, error: u.error })),
+          },
         );
       }
 
       options.callbacks?.onUploadComplete?.(finalUploads);
     } catch (error) {
-      options.callbacks?.onError?.(
-        "Upload failed",
-        { error: error instanceof Error ? error.message : String(error) }
-      );
+      options.callbacks?.onError?.("Upload failed", {
+        error: error instanceof Error ? error.message : String(error),
+      });
     } finally {
       setIsUploading(false);
-      
+
       // Clear uploads after a delay
       setTimeout(() => {
         setUploads([]);
@@ -130,7 +132,10 @@ export function useFileUpload(options: UseFileUploadOptions) {
   /**
    * Upload a single file
    */
-  const uploadSingleFile = async (file: File, initialProgress: UploadProgress): Promise<void> => {
+  const uploadSingleFile = async (
+    file: File,
+    initialProgress: UploadProgress,
+  ): Promise<void> => {
     const uploadId = initialProgress.id;
     const controller = new AbortController();
     uploadControllers.set(uploadId, controller);
@@ -140,7 +145,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
       updateUploadProgress(uploadId, { status: "uploading" });
 
       // Extract metadata if enabled
-      let metadata: any = {};
+      let metadata: Record<string, unknown> = {};
       if (options.config.generateThumbnails) {
         metadata = await extractFileMetadata(file);
       }
@@ -153,7 +158,6 @@ export function useFileUpload(options: UseFileUploadOptions) {
 
       // Track upload progress
       let startTime = Date.now();
-      let lastProgress = 0;
 
       const xhr = new XMLHttpRequest();
 
@@ -163,19 +167,19 @@ export function useFileUpload(options: UseFileUploadOptions) {
           const progress = Math.round((event.loaded / event.total) * 100);
           const currentTime = Date.now();
           const elapsed = (currentTime - startTime) / 1000;
-          
+
           if (elapsed > 0) {
             const speed = event.loaded / elapsed;
             const remaining = (event.total - event.loaded) / speed;
-            
+
             updateUploadProgress(uploadId, {
               progress,
               speed,
               timeRemaining: remaining,
             });
           }
-          
-          lastProgress = progress;
+
+
         }
       });
 
@@ -228,7 +232,6 @@ export function useFileUpload(options: UseFileUploadOptions) {
           xhr.abort();
         });
       });
-
     } catch (error) {
       updateUploadProgress(uploadId, {
         status: "error",
@@ -243,12 +246,15 @@ export function useFileUpload(options: UseFileUploadOptions) {
   /**
    * Update upload progress for a specific upload
    */
-  const updateUploadProgress = (uploadId: string, updates: Partial<UploadProgress>): void => {
-    setUploads(prev => prev.map(upload => 
-      upload.id === uploadId 
-        ? { ...upload, ...updates }
-        : upload
-    ));
+  const updateUploadProgress = (
+    uploadId: string,
+    updates: Partial<UploadProgress>,
+  ): void => {
+    setUploads((prev) =>
+      prev.map((upload) =>
+        upload.id === uploadId ? { ...upload, ...updates } : upload,
+      ),
+    );
 
     // Trigger progress callback
     options.callbacks?.onUploadProgress?.(uploads());
@@ -281,14 +287,22 @@ export function useFileUpload(options: UseFileUploadOptions) {
   const getUploadStats = () => {
     const currentUploads = uploads();
     const total = currentUploads.length;
-    const completed = currentUploads.filter(u => u.status === "completed").length;
-    const failed = currentUploads.filter(u => u.status === "error").length;
-    const cancelled = currentUploads.filter(u => u.status === "cancelled").length;
-    const inProgress = currentUploads.filter(u => u.status === "uploading").length;
-    
-    const totalProgress = total > 0 
-      ? currentUploads.reduce((sum, upload) => sum + upload.progress, 0) / total 
-      : 0;
+    const completed = currentUploads.filter(
+      (u) => u.status === "completed",
+    ).length;
+    const failed = currentUploads.filter((u) => u.status === "error").length;
+    const cancelled = currentUploads.filter(
+      (u) => u.status === "cancelled",
+    ).length;
+    const inProgress = currentUploads.filter(
+      (u) => u.status === "uploading",
+    ).length;
+
+    const totalProgress =
+      total > 0
+        ? currentUploads.reduce((sum, upload) => sum + upload.progress, 0) /
+          total
+        : 0;
 
     return {
       total,
@@ -304,17 +318,13 @@ export function useFileUpload(options: UseFileUploadOptions) {
     // State
     uploads,
     isUploading,
-    
+
     // Actions
     uploadFiles,
     cancelUpload,
     cancelAllUploads,
-    
+
     // Computed
     getUploadStats,
   };
 }
-
-
-
-

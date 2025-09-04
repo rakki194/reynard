@@ -1,6 +1,6 @@
 /**
  * ChatMessage Component for Reynard Chat System
- * 
+ *
  * Displays individual chat messages with comprehensive support for:
  * - Streaming content with markdown rendering
  * - Thinking sections with expandable UI
@@ -9,12 +9,12 @@
  * - Accessibility and keyboard navigation
  */
 
-import { Component, Show, For, createMemo, createSignal } from 'solid-js';
-import { Dynamic } from 'solid-js/web';
-import type { ChatMessageProps } from '../types';
-import { MarkdownRenderer } from './MarkdownRenderer';
-import { ThinkingIndicator } from './ThinkingIndicator';
-import { ToolCallDisplay } from './ToolCallDisplay';
+import { Component, Show, For, createMemo, createSignal } from "solid-js";
+import { Dynamic } from "solid-js/web";
+import type { ChatMessageProps } from "../types";
+import { MarkdownRenderer } from "./MarkdownRenderer";
+import { ThinkingIndicator } from "./ThinkingIndicator";
+import { ToolCallDisplay } from "./ToolCallDisplay";
 
 export const ChatMessage: Component<ChatMessageProps> = (props) => {
   const [showThinking, setShowThinking] = createSignal(false);
@@ -25,28 +25,33 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
     const date = new Date(timestamp);
     const now = new Date();
     const isToday = date.toDateString() === now.toDateString();
-    
+
     if (isToday) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } else {
-      return date.toLocaleDateString([], { 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit', 
-        minute: '2-digit' 
+      return date.toLocaleDateString([], {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     }
   };
 
   // Get role-specific styling classes
   const getRoleClasses = () => {
-    const base = 'reynard-chat-message';
+    const base = "reynard-chat-message";
     const role = `${base}--${props.message.role}`;
-    const streaming = props.message.streaming?.isStreaming ? `${base}--streaming` : '';
-    const error = props.message.error ? `${base}--error` : '';
-    const latest = props.isLatest ? `${base}--latest` : '';
-    
-    return [base, role, streaming, error, latest].filter(Boolean).join(' ');
+    const streaming = props.message.streaming?.isStreaming
+      ? `${base}--streaming`
+      : "";
+    const error = props.message.error ? `${base}--error` : "";
+    const latest = props.isLatest ? `${base}--latest` : "";
+
+    return [base, role, streaming, error, latest].filter(Boolean).join(" ");
   };
 
   // Get avatar component or emoji based on role
@@ -54,32 +59,32 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
     if (props.avatar) {
       return props.avatar;
     }
-    
+
     switch (props.message.role) {
-      case 'user':
-        return '👤';
-      case 'assistant':
-        return '🦊';
-      case 'system':
-        return '⚙️';
-      case 'tool':
-        return '🔧';
+      case "user":
+        return "👤";
+      case "assistant":
+        return "🦊";
+      case "system":
+        return "⚙️";
+      case "tool":
+        return "🔧";
       default:
-        return '💬';
+        return "💬";
     }
   };
 
   // Get role display name
   const getRoleName = () => {
     switch (props.message.role) {
-      case 'user':
-        return 'You';
-      case 'assistant':
-        return 'Assistant';
-      case 'system':
-        return 'System';
-      case 'tool':
-        return props.message.toolName || 'Tool';
+      case "user":
+        return "You";
+      case "assistant":
+        return "Assistant";
+      case "system":
+        return "System";
+      case "tool":
+        return props.message.toolName || "Tool";
       default:
         return props.message.role;
     }
@@ -87,8 +92,10 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
 
   // Check if message has thinking content
   const hasThinking = createMemo(() => {
-    return props.message.streaming?.currentThinking ||
-           (props.message.content && props.message.content.includes('<think>'));
+    return (
+      props.message.streaming?.currentThinking ||
+      (props.message.content && props.message.content.includes("<think>"))
+    );
   });
 
   // Extract thinking content
@@ -96,10 +103,10 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
     if (props.message.streaming?.currentThinking) {
       return props.message.streaming.currentThinking;
     }
-    
+
     // Extract from HTML content if finalized
     const thinkingMatch = props.message.content.match(/<think>(.*?)<\/think>/s);
-    return thinkingMatch ? thinkingMatch[1] : '';
+    return thinkingMatch ? thinkingMatch[1] : "";
   });
 
   // Get current content for display
@@ -107,11 +114,11 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
     if (props.customRenderer) {
       return props.customRenderer(props.message.content, props.message);
     }
-    
+
     if (props.message.streaming?.isStreaming) {
       return props.message.streaming.currentContent;
     }
-    
+
     return props.message.content;
   });
 
@@ -138,40 +145,38 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
         <div class="reynard-chat-message__avatar">
           <Dynamic component={() => getAvatar()} />
         </div>
-        
+
         <div class="reynard-chat-message__meta">
-          <span class="reynard-chat-message__role">
-            {getRoleName()}
-          </span>
-          
+          <span class="reynard-chat-message__role">{getRoleName()}</span>
+
           <Show when={props.showTimestamp}>
-            <time 
+            <time
               class="reynard-chat-message__timestamp"
               datetime={new Date(props.message.timestamp).toISOString()}
             >
               {formatTimestamp(props.message.timestamp)}
             </time>
           </Show>
-          
+
           <Show when={getTokenCount()}>
             <span class="reynard-chat-message__tokens">
               {getTokenCount()} tokens
             </span>
           </Show>
-          
+
           <Show when={getProcessingTime()}>
             <span class="reynard-chat-message__processing-time">
               {getProcessingTime()}ms
             </span>
           </Show>
-          
+
           {/* Streaming indicator */}
           <Show when={props.message.streaming?.isStreaming}>
             <span class="reynard-chat-message__streaming-indicator">
               <span class="reynard-chat-message__typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span />
+                <span />
+                <span />
               </span>
             </span>
           </Show>
@@ -183,18 +188,18 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
             <button
               class="reynard-chat-message__thinking-toggle"
               onClick={() => setShowThinking(!showThinking())}
-              aria-expanded={showThinking()}
-              aria-label={showThinking() ? 'Hide thinking' : 'Show thinking'}
+              attr:aria-expanded={showThinking() ? "true" : "false"}
+              aria-label={showThinking() ? "Hide thinking" : "Show thinking"}
             >
               💭
             </button>
           </Show>
-          
+
           <button
             class="reynard-chat-message__details-toggle"
             onClick={() => setShowDetails(!showDetails())}
-            aria-expanded={showDetails()}
-            aria-label={showDetails() ? 'Hide details' : 'Show details'}
+            attr:aria-expanded={showDetails() ? "true" : "false"}
+            aria-label={showDetails() ? "Hide details" : "Show details"}
           >
             ⋯
           </button>
@@ -202,7 +207,12 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
       </div>
 
       {/* Thinking Section */}
-      <Show when={hasThinking() && (showThinking() || props.message.streaming?.isThinking)}>
+      <Show
+        when={
+          hasThinking() &&
+          (showThinking() || props.message.streaming?.isThinking)
+        }
+      >
         <div class="reynard-chat-message__thinking">
           <ThinkingIndicator
             content={getThinkingContent()}
@@ -216,7 +226,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
 
       {/* Main Content */}
       <div class="reynard-chat-message__content">
-        <Show 
+        <Show
           when={getDisplayContent()}
           fallback={
             <Show when={props.message.streaming?.isStreaming}>
@@ -239,7 +249,9 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
       </div>
 
       {/* Tool Calls */}
-      <Show when={props.message.toolCalls && props.message.toolCalls.length > 0}>
+      <Show
+        when={props.message.toolCalls && props.message.toolCalls.length > 0}
+      >
         <div class="reynard-chat-message__tools">
           <For each={props.message.toolCalls}>
             {(toolCall) => (
@@ -261,11 +273,11 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
               {props.message.error!.message}
             </div>
             <Show when={props.message.error!.recoverable}>
-              <button 
+              <button
                 class="reynard-chat-message__error-retry"
                 onClick={() => {
                   // Emit retry event or handle via callback
-                  console.log('Retry message:', props.message.id);
+                  console.log("Retry message:", props.message.id);
                 }}
               >
                 Retry
@@ -283,28 +295,28 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
               <label>Message ID:</label>
               <code>{props.message.id}</code>
             </div>
-            
+
             <Show when={props.message.metadata?.model}>
               <div class="reynard-chat-message__details-item">
                 <label>Model:</label>
                 <span>{props.message.metadata!.model}</span>
               </div>
             </Show>
-            
+
             <Show when={props.message.metadata?.temperature}>
               <div class="reynard-chat-message__details-item">
                 <label>Temperature:</label>
                 <span>{props.message.metadata!.temperature}</span>
               </div>
             </Show>
-            
+
             <div class="reynard-chat-message__details-item">
               <label>Timestamp:</label>
               <time datetime={new Date(props.message.timestamp).toISOString()}>
                 {new Date(props.message.timestamp).toLocaleString()}
               </time>
             </div>
-            
+
             <Show when={props.message.metadata?.context}>
               <div class="reynard-chat-message__details-item reynard-chat-message__details-item--full">
                 <label>Context:</label>

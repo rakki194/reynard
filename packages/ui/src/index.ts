@@ -3,6 +3,9 @@
  * Advanced layout and navigation components
  */
 
+// Import styles
+import "./styles.css";
+
 // Export layout components
 export * from "./layouts";
 
@@ -14,7 +17,3 @@ export * from "./data";
 
 // Export overlay components
 export * from "./overlays";
-
-
-
-

@@ -37,7 +37,7 @@ describe("BarChart", () => {
           title="Test Chart"
         />
       ));
-      
+
       // The component renders "Bar Chart" from the mock
       expect(screen.getByText("Bar Chart")).toBeInTheDocument();
     });
@@ -51,7 +51,7 @@ describe("BarChart", () => {
           height={400}
         />
       ));
-      
+
       // Check for the chart container div
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveClass("reynard-bar-chart");
@@ -59,25 +59,17 @@ describe("BarChart", () => {
 
     it("shows loading state when loading prop is true", () => {
       render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-          loading={true}
-        />
+        <BarChart labels={mockLabels} datasets={mockDatasets} loading={true} />
       ));
-      
+
       expect(screen.getByText("Loading chart...")).toBeInTheDocument();
     });
 
     it("shows empty state when no data is provided", () => {
       render(() => (
-        <BarChart
-          labels={[]}
-          datasets={[]}
-          emptyMessage="No data available"
-        />
+        <BarChart labels={[]} datasets={[]} emptyMessage="No data available" />
       ));
-      
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -89,7 +81,7 @@ describe("BarChart", () => {
           class="custom-chart-class"
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveClass("custom-chart-class");
     });
@@ -104,20 +96,16 @@ describe("BarChart", () => {
           horizontal={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveClass("reynard-bar-chart--horizontal");
     });
 
     it("renders stacked bars when stacked prop is true", () => {
       render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-          stacked={true}
-        />
+        <BarChart labels={mockLabels} datasets={mockDatasets} stacked={true} />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveClass("reynard-bar-chart--stacked");
     });
@@ -131,7 +119,7 @@ describe("BarChart", () => {
           stacked={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveClass("reynard-bar-chart--horizontal");
       expect(chartContainer).toHaveClass("reynard-bar-chart--stacked");
@@ -147,7 +135,7 @@ describe("BarChart", () => {
           responsive={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveStyle("width: 100%");
       expect(chartContainer).toHaveStyle("height: 100%");
@@ -163,7 +151,7 @@ describe("BarChart", () => {
           height={300}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toHaveStyle("width: 500px");
       expect(chartContainer).toHaveStyle("height: 300px");
@@ -177,7 +165,7 @@ describe("BarChart", () => {
           maintainAspectRatio={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -192,7 +180,7 @@ describe("BarChart", () => {
           xAxis={{ label: "Months" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -205,7 +193,7 @@ describe("BarChart", () => {
           yAxis={{ label: "Values" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -218,7 +206,7 @@ describe("BarChart", () => {
           yAxis={{ position: "right" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -231,7 +219,7 @@ describe("BarChart", () => {
           yAxis={{ min: 0, max: 100 }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -246,7 +234,7 @@ describe("BarChart", () => {
           showGrid={false}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -259,7 +247,7 @@ describe("BarChart", () => {
           showLegend={false}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -274,7 +262,7 @@ describe("BarChart", () => {
           animation={{ duration: 2000, easing: "easeInOutQuart" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -287,7 +275,7 @@ describe("BarChart", () => {
           tooltip={{ enabled: false, backgroundColor: "rgba(0,0,0,0.8)" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -295,24 +283,14 @@ describe("BarChart", () => {
 
   describe("Edge Cases and Error Handling", () => {
     it("handles empty labels array", () => {
-      render(() => (
-        <BarChart
-          labels={[]}
-          datasets={mockDatasets}
-        />
-      ));
-      
+      render(() => <BarChart labels={[]} datasets={mockDatasets} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
     it("handles empty datasets array", () => {
-      render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={[]}
-        />
-      ));
-      
+      render(() => <BarChart labels={mockLabels} datasets={[]} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -327,13 +305,8 @@ describe("BarChart", () => {
         },
       ];
 
-      render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={emptyDatasets}
-        />
-      ));
-      
+      render(() => <BarChart labels={mockLabels} datasets={emptyDatasets} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -349,12 +322,9 @@ describe("BarChart", () => {
       ];
 
       render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={mismatchedDatasets}
-        />
+        <BarChart labels={mockLabels} datasets={mismatchedDatasets} />
       ));
-      
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -370,13 +340,8 @@ describe("BarChart", () => {
         },
       ];
 
-      render(() => (
-        <BarChart
-          labels={largeLabels}
-          datasets={largeDatasets}
-        />
-      ));
-      
+      render(() => <BarChart labels={largeLabels} datasets={largeDatasets} />);
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -389,13 +354,8 @@ describe("BarChart", () => {
         },
       ];
 
-      render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={minimalDatasets}
-        />
-      ));
-      
+      render(() => <BarChart labels={mockLabels} datasets={minimalDatasets} />);
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -404,20 +364,15 @@ describe("BarChart", () => {
   describe("Performance Tests", () => {
     it("renders quickly with small datasets", () => {
       const startTime = performance.now();
-      
-      render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-        />
-      ));
-      
+
+      render(() => <BarChart labels={mockLabels} datasets={mockDatasets} />);
+
       const endTime = performance.now();
       const renderTime = endTime - startTime;
-      
+
       // Should render in under 100ms
       expect(renderTime).toBeLessThan(100);
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -446,19 +401,14 @@ describe("BarChart", () => {
           title="Accessible Chart"
         />
       ));
-      
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
 
     it("supports keyboard navigation", () => {
-      render(() => (
-        <BarChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-        />
-      ));
-      
+      render(() => <BarChart labels={mockLabels} datasets={mockDatasets} />);
+
       const chartContainer = screen.getByText("Bar Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });

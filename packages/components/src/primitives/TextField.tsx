@@ -3,13 +3,21 @@
  * A flexible text input component with validation and styling
  */
 
-import { Component, JSX, splitProps, mergeProps, createSignal, createEffect } from 'solid-js';
+import {
+  Component,
+  JSX,
+  splitProps,
+  mergeProps,
+  createSignal,
+  createEffect,
+} from "solid-js";
 
-export interface TextFieldProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface TextFieldProps
+  extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "size"> {
   /** Input variant */
-  variant?: 'default' | 'filled' | 'outlined';
+  variant?: "default" | "filled" | "outlined";
   /** Input size */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   /** Error state */
   error?: boolean;
   /** Error message */
@@ -31,57 +39,61 @@ export interface TextFieldProps extends Omit<JSX.InputHTMLAttributes<HTMLInputEl
 }
 
 const defaultProps: Partial<TextFieldProps> = {
-  variant: 'default',
-  size: 'md',
+  variant: "default",
+  size: "md",
   error: false,
   required: false,
   fullWidth: false,
   loading: false,
-  type: 'text',
+  type: "text",
 };
 
 export const TextField: Component<TextFieldProps> = (props) => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
-    'variant',
-    'size',
-    'error',
-    'errorMessage',
-    'helperText',
-    'label',
-    'required',
-    'leftIcon',
-    'rightIcon',
-    'fullWidth',
-    'loading',
-    'class',
-    'id'
+    "variant",
+    "size",
+    "error",
+    "errorMessage",
+    "helperText",
+    "label",
+    "required",
+    "leftIcon",
+    "rightIcon",
+    "fullWidth",
+    "loading",
+    "class",
+    "id",
   ]);
 
-  const [inputId] = createSignal(local.id || `textfield-${Math.random().toString(36).substr(2, 9)}`);
+  const [inputId] = createSignal(
+    local.id || `textfield-${Math.random().toString(36).substr(2, 9)}`,
+  );
   const [focused, setFocused] = createSignal(false);
 
   const getWrapperClasses = () => {
     const classes = [
-      'reynard-textfield',
+      "reynard-textfield",
       `reynard-textfield--${local.variant}`,
-      `reynard-textfield--${local.size}`
+      `reynard-textfield--${local.size}`,
     ];
 
-    if (local.error) classes.push('reynard-textfield--error');
-    if (focused()) classes.push('reynard-textfield--focused');
-    if (local.fullWidth) classes.push('reynard-textfield--full-width');
-    if (local.loading) classes.push('reynard-textfield--loading');
+    if (local.error) classes.push("reynard-textfield--error");
+    if (focused()) classes.push("reynard-textfield--focused");
+    if (local.fullWidth) classes.push("reynard-textfield--full-width");
+    if (local.loading) classes.push("reynard-textfield--loading");
     if (local.class) classes.push(local.class);
 
-    return classes.join(' ');
+    return classes.join(" ");
   };
 
   const getInputClasses = () => {
-    const classes = ['reynard-textfield__input'];
-    if (local.leftIcon) classes.push('reynard-textfield__input--with-left-icon');
-    if (local.rightIcon) classes.push('reynard-textfield__input--with-right-icon');
-    return classes.join(' ');
+    const classes = ["reynard-textfield__input"];
+    if (local.leftIcon)
+      classes.push("reynard-textfield__input--with-left-icon");
+    if (local.rightIcon)
+      classes.push("reynard-textfield__input--with-right-icon");
+    return classes.join(" ");
   };
 
   return (
@@ -92,14 +104,14 @@ export const TextField: Component<TextFieldProps> = (props) => {
           {local.required && <span class="reynard-textfield__required">*</span>}
         </label>
       )}
-      
+
       <div class="reynard-textfield__input-wrapper">
         {local.leftIcon && (
           <div class="reynard-textfield__icon reynard-textfield__icon--left">
             {local.leftIcon}
           </div>
         )}
-        
+
         <input
           id={inputId()}
           class={getInputClasses()}
@@ -107,25 +119,27 @@ export const TextField: Component<TextFieldProps> = (props) => {
           onBlur={() => setFocused(false)}
           {...others}
         />
-        
-        {local.loading && (
-          <div class="reynard-textfield__spinner" />
-        )}
-        
+
+        {local.loading && <div class="reynard-textfield__spinner" />}
+
         {local.rightIcon && (
           <div class="reynard-textfield__icon reynard-textfield__icon--right">
             {local.rightIcon}
           </div>
         )}
       </div>
-      
+
       {(local.errorMessage || local.helperText) && (
         <div class="reynard-textfield__help">
           {local.error && local.errorMessage ? (
-            <span class="reynard-textfield__error-message">{local.errorMessage}</span>
+            <span class="reynard-textfield__error-message">
+              {local.errorMessage}
+            </span>
           ) : (
             local.helperText && (
-              <span class="reynard-textfield__helper-text">{local.helperText}</span>
+              <span class="reynard-textfield__helper-text">
+                {local.helperText}
+              </span>
             )
           )}
         </div>
@@ -133,7 +147,3 @@ export const TextField: Component<TextFieldProps> = (props) => {
     </div>
   );
 };
-
-
-
-

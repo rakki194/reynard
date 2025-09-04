@@ -1,11 +1,11 @@
-import { Component } from 'solid-js';
-import { useTheme } from '@reynard/core';
-import { Select } from '@reynard/components';
+import { Component } from "solid-js";
+import { useTheme } from "@reynard/core";
+import { Select } from "@reynard/components";
 
 const ThemeSelector: Component = () => {
   const { theme, setTheme, availableThemes } = useTheme();
 
-  const themeOptions = availableThemes().map(t => ({
+  const themeOptions = availableThemes().map((t) => ({
     value: t.name,
     label: `${t.emoji} ${t.displayName}`,
   }));
@@ -29,5 +29,3 @@ const ThemeSelector: Component = () => {
 };
 
 export default ThemeSelector;
-
-

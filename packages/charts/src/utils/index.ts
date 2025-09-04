@@ -3,20 +3,26 @@
  * Helper functions for chart configuration and data processing
  */
 
-import { ChartType, ChartTheme, Dataset, DEFAULT_THEME, DEFAULT_COLORS } from "../types";
+import {
+  ChartType,
+  ChartTheme,
+  Dataset,
+  DEFAULT_THEME,
+  DEFAULT_COLORS,
+} from "../types";
 
 /**
  * Generate a color palette for datasets
  */
 export function generateColors(count: number, opacity: number = 1): string[] {
   const colors: string[] = [];
-  
+
   for (let i = 0; i < count; i++) {
     if (i < DEFAULT_COLORS.length) {
       // Use predefined colors with custom opacity
       const color = DEFAULT_COLORS[i];
       const rgba = color.replace(/rgba?\(([^)]+)\)/, (_, values) => {
-        const [r, g, b] = values.split(',').map((v: string) => v.trim());
+        const [r, g, b] = values.split(",").map((v: string) => v.trim());
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
       });
       colors.push(rgba);
@@ -26,7 +32,7 @@ export function generateColors(count: number, opacity: number = 1): string[] {
       colors.push(`hsla(${hue}, 70%, 50%, ${opacity})`);
     }
   }
-  
+
   return colors;
 }
 
@@ -40,7 +46,10 @@ export function applyTheme(theme: Partial<ChartTheme> = {}): ChartTheme {
 /**
  * Format number values for display
  */
-export function formatValue(value: number, type: "number" | "currency" | "percentage" = "number"): string {
+export function formatValue(
+  value: number,
+  type: "number" | "currency" | "percentage" = "number",
+): string {
   switch (type) {
     case "currency":
       return new Intl.NumberFormat("en-US", {
@@ -57,9 +66,12 @@ export function formatValue(value: number, type: "number" | "currency" | "percen
 /**
  * Format timestamp for display
  */
-export function formatTimestamp(timestamp: number, format: "time" | "date" | "datetime" = "datetime"): string {
+export function formatTimestamp(
+  timestamp: number,
+  format: "time" | "date" | "datetime" = "datetime",
+): string {
   const date = new Date(timestamp);
-  
+
   switch (format) {
     case "time":
       return date.toLocaleTimeString();
@@ -76,15 +88,18 @@ export function formatTimestamp(timestamp: number, format: "time" | "date" | "da
 export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
   const colors = generateColors(datasets.length);
   const backgroundColors = generateColors(datasets.length, 0.6);
-  
-  return datasets.map((dataset, index) => ({
-    label: dataset.label || `Dataset ${index + 1}`,
-    data: dataset.data || [],
-    ...dataset,
-    backgroundColor: dataset.backgroundColor || backgroundColors[index],
-    borderColor: dataset.borderColor || colors[index],
-    borderWidth: dataset.borderWidth || 2,
-  } as Dataset));
+
+  return datasets.map(
+    (dataset, index) =>
+      ({
+        label: dataset.label || `Dataset ${index + 1}`,
+        data: dataset.data || [],
+        ...dataset,
+        backgroundColor: dataset.backgroundColor || backgroundColors[index],
+        borderColor: dataset.borderColor || colors[index],
+        borderWidth: dataset.borderWidth || 2,
+      }) as Dataset,
+  );
 }
 
 /**
@@ -92,7 +107,7 @@ export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
  */
 export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
   const appliedTheme = applyTheme(theme);
-  
+
   const baseConfig = {
     responsive: true,
     maintainAspectRatio: false,
@@ -152,7 +167,7 @@ export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
           },
         },
       };
-      
+
     case "bar":
       return {
         ...baseConfig,
@@ -177,7 +192,7 @@ export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
           },
         },
       };
-      
+
     case "doughnut":
     case "pie":
       return {
@@ -190,7 +205,7 @@ export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
           },
         },
       };
-      
+
     default:
       return baseConfig;
   }
@@ -201,10 +216,10 @@ export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
  */
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout>;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -216,32 +231,35 @@ export function debounce<T extends (...args: any[]) => any>(
  */
 export function calculateDimensions(
   container: HTMLElement,
-  aspectRatio: number = 2
+  aspectRatio: number = 2,
 ): { width: number; height: number } {
   const containerWidth = container.clientWidth;
   const width = Math.max(containerWidth, 300);
   const height = Math.max(width / aspectRatio, 200);
-  
+
   return { width, height };
 }
 /**
  * Validate chart data
  */
-export function validateChartData(datasets: Dataset[], labels?: string[]): boolean {
+export function validateChartData(
+  datasets: Dataset[],
+  labels?: string[],
+): boolean {
   if (!Array.isArray(datasets) || datasets.length === 0) {
     return false;
   }
-  
+
   for (const dataset of datasets) {
     if (!Array.isArray(dataset.data) || dataset.data.length === 0) {
       return false;
     }
-    
+
     if (labels && dataset.data.length !== labels.length) {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -250,17 +268,19 @@ export function validateChartData(datasets: Dataset[], labels?: string[]): boole
  */
 export function processTimeSeriesData(
   data: Array<{ timestamp: number; value: number; label?: string }>,
-  maxPoints: number = 100
+  maxPoints: number = 100,
 ): { labels: string[]; data: number[] } {
   // Sort by timestamp
   const sortedData = [...data].sort((a, b) => a.timestamp - b.timestamp);
-  
+
   // Limit data points for performance
   const limitedData = sortedData.slice(-maxPoints);
-  
+
   return {
-    labels: limitedData.map(item => item.label || formatTimestamp(item.timestamp, "time")),
-    data: limitedData.map(item => item.value),
+    labels: limitedData.map(
+      (item) => item.label || formatTimestamp(item.timestamp, "time"),
+    ),
+    data: limitedData.map((item) => item.value),
   };
 }
 
@@ -269,20 +289,20 @@ export function processTimeSeriesData(
  */
 export function aggregateByInterval(
   data: Array<{ timestamp: number; value: number }>,
-  intervalMs: number
+  intervalMs: number,
 ): Array<{ timestamp: number; value: number; count: number }> {
   const aggregated = new Map<number, { sum: number; count: number }>();
-  
+
   for (const item of data) {
     const intervalStart = Math.floor(item.timestamp / intervalMs) * intervalMs;
     const existing = aggregated.get(intervalStart) || { sum: 0, count: 0 };
-    
+
     aggregated.set(intervalStart, {
       sum: existing.sum + item.value,
       count: existing.count + 1,
     });
   }
-  
+
   return Array.from(aggregated.entries())
     .map(([timestamp, { sum, count }]) => ({
       timestamp,
@@ -291,4 +311,3 @@ export function aggregateByInterval(
     }))
     .sort((a, b) => a.timestamp - b.timestamp);
 }
-

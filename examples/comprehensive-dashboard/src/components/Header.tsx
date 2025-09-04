@@ -1,10 +1,10 @@
-import { Component } from 'solid-js';
-import { useI18n, useTheme, useNotifications } from '@reynard/core';
-import { useAuth } from '@reynard/auth';
-import { Button } from '@reynard/components';
-import ThemeSelector from './ThemeSelector';
-import LanguageSelector from './LanguageSelector';
-import NotificationCenter from './NotificationCenter';
+import { Component } from "solid-js";
+import { useI18n, useTheme, useNotifications } from "@reynard/core";
+import { useAuth } from "@reynard/auth";
+import { Button } from "@reynard/components";
+import ThemeSelector from "./ThemeSelector";
+import LanguageSelector from "./LanguageSelector";
+import NotificationCenter from "./NotificationCenter";
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -21,14 +21,14 @@ const Header: Component<HeaderProps> = (props) => {
     try {
       await logout();
       notifications.add({
-        type: 'success',
-        message: 'Logged out successfully',
+        type: "success",
+        message: "Logged out successfully",
         duration: 3000,
       });
     } catch (error) {
       notifications.add({
-        type: 'error',
-        message: 'Failed to logout',
+        type: "error",
+        message: "Failed to logout",
         duration: 5000,
       });
     }
@@ -42,16 +42,14 @@ const Header: Component<HeaderProps> = (props) => {
           size="sm"
           onClick={props.onToggleSidebar}
           class="header__menu-toggle"
-          title={props.sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          title={props.sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           ☰
         </Button>
       </div>
 
       <div class="header__center">
-        <h1 class="header__title">
-          {t('dashboard.title')}
-        </h1>
+        <h1 class="header__title">{t("dashboard.title")}</h1>
       </div>
 
       <div class="header__right">
@@ -59,16 +57,14 @@ const Header: Component<HeaderProps> = (props) => {
           <ThemeSelector />
           <LanguageSelector />
           <NotificationCenter />
-          
+
           <div class="header__user">
-            <span class="header__username">
-              {user()?.username || 'Guest'}
-            </span>
+            <span class="header__username">{user()?.username || "Guest"}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleLogout}
-              title={t('auth.logout')}
+              title={t("auth.logout")}
             >
               🚪
             </Button>
@@ -80,5 +76,3 @@ const Header: Component<HeaderProps> = (props) => {
 };
 
 export { Header };
-
-

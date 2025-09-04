@@ -42,14 +42,14 @@ A comprehensive peer-to-peer chat system built on top of the Reynard chat founda
 ### Basic P2P Chat
 
 ```tsx
-import { P2PChatContainer } from '@reynard/components';
+import { P2PChatContainer } from "@reynard/components";
 
 function MyApp() {
   const currentUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online',
-    avatar: '👤'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
+    avatar: "👤",
   };
 
   return (
@@ -71,19 +71,19 @@ function MyApp() {
 ### Custom P2P Chat with Hooks
 
 ```tsx
-import { useP2PChat } from '@reynard/components';
+import { useP2PChat } from "@reynard/components";
 
 function CustomChat() {
   const currentUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
   };
 
   const p2pChat = useP2PChat({
     currentUser,
-    realtimeEndpoint: 'wss://your-server.com/chat',
-    autoConnect: true
+    realtimeEndpoint: "wss://your-server.com/chat",
+    autoConnect: true,
   });
 
   const sendMessage = async (content: string) => {
@@ -96,14 +96,14 @@ function CustomChat() {
   return (
     <div>
       <h2>Rooms ({p2pChat.rooms().length})</h2>
-      {p2pChat.rooms().map(room => (
+      {p2pChat.rooms().map((room) => (
         <div key={room.id} onClick={() => p2pChat.actions.switchRoom(room.id)}>
           {room.name}
         </div>
       ))}
-      
+
       <div>
-        {p2pChat.messages().map(message => (
+        {p2pChat.messages().map((message) => (
           <div key={message.id}>
             <strong>{message.sender?.name}:</strong> {message.content}
           </div>
@@ -232,7 +232,7 @@ interface ChatUser {
   id: string;
   name: string;
   avatar?: string;
-  status: 'online' | 'away' | 'busy' | 'offline';
+  status: "online" | "away" | "busy" | "offline";
   lastSeen?: number;
   metadata?: {
     timezone?: string;
@@ -245,7 +245,7 @@ interface ChatUser {
 interface ChatRoom {
   id: string;
   name: string;
-  type: 'direct' | 'group' | 'public' | 'private';
+  type: "direct" | "group" | "public" | "private";
   description?: string;
   participants: ChatUser[];
   metadata?: {
@@ -267,17 +267,17 @@ interface P2PChatMessage extends ChatMessage {
   reactions?: MessageReaction[];
   readBy?: MessageReadReceipt[];
   attachments?: MessageAttachment[];
-  priority?: 'low' | 'normal' | 'high' | 'urgent';
+  priority?: "low" | "normal" | "high" | "urgent";
   isPinned?: boolean;
   editHistory?: MessageEdit[];
-  deliveryStatus?: 'sent' | 'delivered' | 'read' | 'failed';
+  deliveryStatus?: "sent" | "delivered" | "read" | "failed";
 }
 ```
 
 ### Real-time Events
 
 ```tsx
-type P2PChatEvent = 
+type P2PChatEvent =
   | UserJoinedEvent
   | UserLeftEvent
   | UserStatusChangedEvent
@@ -316,7 +316,7 @@ interface UIConfig {
   showUserList?: boolean;
   showRoomList?: boolean;
   compact?: boolean;
-  theme?: 'light' | 'dark' | 'auto';
+  theme?: "light" | "dark" | "auto";
 }
 ```
 
@@ -377,8 +377,8 @@ The P2P chat system uses CSS custom properties for theming:
 Import the styles:
 
 ```tsx
-import '@reynard/components/dist/chat/styles.css';
-import '@reynard/components/dist/chat/styles/p2p.css';
+import "@reynard/components/dist/chat/styles.css";
+import "@reynard/components/dist/chat/styles/p2p.css";
 ```
 
 ## Examples

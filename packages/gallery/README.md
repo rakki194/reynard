@@ -24,8 +24,8 @@ npm install @reynard/gallery @reynard/core @reynard/components solid-js
 ## 🎯 Quick Start
 
 ```tsx
-import { Gallery } from '@reynard/gallery';
-import type { GalleryData } from '@reynard/gallery';
+import { Gallery } from "@reynard/gallery";
+import type { GalleryData } from "@reynard/gallery";
 
 function FileManager() {
   const [galleryData, setGalleryData] = createSignal<GalleryData>({
@@ -38,19 +38,19 @@ function FileManager() {
         size: 2048576,
         lastModified: Date.now(),
         path: "/documents/presentation.pdf",
-        thumbnailUrl: "/thumbnails/presentation.jpg"
+        thumbnailUrl: "/thumbnails/presentation.jpg",
       },
       {
-        id: "2", 
+        id: "2",
         name: "photos",
         type: "folder",
         size: 0,
         lastModified: Date.now(),
         path: "/documents/photos",
-        itemCount: 24
-      }
+        itemCount: 24,
+      },
     ],
-    totalItems: 2
+    totalItems: 2,
   });
 
   return (
@@ -60,17 +60,17 @@ function FileManager() {
       showBreadcrumbs={true}
       callbacks={{
         onNavigate: (path) => {
-          console.log('Navigate to:', path);
+          console.log("Navigate to:", path);
           // Fetch new data for path
         },
         onItemOpen: (item) => {
-          console.log('Open item:', item.name);
+          console.log("Open item:", item.name);
           // Handle file opening
         },
         onUploadComplete: (results) => {
-          console.log('Upload complete:', results);
+          console.log("Upload complete:", results);
           // Refresh gallery data
-        }
+        },
       }}
     />
   );
@@ -88,27 +88,27 @@ Complete file gallery with all features integrated.
   data={galleryData}
   view={{
     layout: "grid",
-    itemSize: "medium", 
+    itemSize: "medium",
     showThumbnails: true,
-    showFileNames: true
+    showFileNames: true,
   }}
   sort={{
     field: "name",
-    direction: "asc"
+    direction: "asc",
   }}
   filter={{
     fileTypes: ["image/*", "video/*"],
-    searchQuery: "vacation"
+    searchQuery: "vacation",
   }}
   upload={{
     maxFileSize: 100 * 1024 * 1024, // 100MB
     allowedTypes: ["image/*", "video/*"],
-    multiple: true
+    multiple: true,
   }}
   callbacks={{
     onNavigate: handleNavigation,
     onItemOpen: handleItemOpen,
-    onSelectionChange: handleSelection
+    onSelectionChange: handleSelection,
   }}
 />
 ```
@@ -124,7 +124,7 @@ Responsive grid component for displaying files and folders.
     layout: "masonry",
     itemSize: "large",
     showThumbnails: true,
-    showMetadata: true
+    showMetadata: true,
   }}
   selectionState={selectionState}
   onItemClick={handleItemClick}
@@ -141,7 +141,7 @@ Drag-and-drop file upload area with progress tracking.
   config={{
     maxFileSize: 50 * 1024 * 1024,
     allowedTypes: ["image/*", "application/pdf"],
-    multiple: true
+    multiple: true,
   }}
   uploading={isUploading}
   uploads={uploadProgress}
@@ -160,7 +160,7 @@ Hierarchical navigation for folder paths.
   breadcrumbs={[
     { path: "", label: "Home", clickable: true },
     { path: "/documents", label: "Documents", clickable: true },
-    { path: "/documents/projects", label: "Projects", clickable: false }
+    { path: "/documents/projects", label: "Projects", clickable: false },
   ]}
   onNavigate={handleNavigate}
   showUpButton={true}
@@ -180,7 +180,7 @@ const viewConfig: ViewConfiguration = {
   showFileNames: true,
   showFileSizes: false,
   showMetadata: true,
-  infiniteScroll: true
+  infiniteScroll: true,
 };
 ```
 
@@ -190,20 +190,14 @@ const viewConfig: ViewConfiguration = {
 const uploadConfig: UploadConfiguration = {
   maxFileSize: 100 * 1024 * 1024, // 100MB
   maxTotalSize: 500 * 1024 * 1024, // 500MB total
-  allowedTypes: [
-    "image/*",
-    "video/*", 
-    "audio/*",
-    "application/pdf",
-    "text/*"
-  ],
+  allowedTypes: ["image/*", "video/*", "audio/*", "application/pdf", "text/*"],
   multiple: true,
   allowFolders: false,
   generateThumbnails: true,
   uploadUrl: "/api/upload",
   headers: {
-    "Authorization": "Bearer " + token
-  }
+    Authorization: "Bearer " + token,
+  },
 };
 ```
 
@@ -214,15 +208,15 @@ const filterConfig: FilterConfiguration = {
   fileTypes: ["image/*", "video/*"],
   dateRange: {
     start: new Date("2024-01-01"),
-    end: new Date()
+    end: new Date(),
   },
   sizeRange: {
     min: 1024, // 1KB
-    max: 10 * 1024 * 1024 // 10MB
+    max: 10 * 1024 * 1024, // 10MB
   },
   searchQuery: "vacation photos",
   favoritesOnly: false,
-  showHidden: false
+  showHidden: false,
 };
 ```
 
@@ -269,13 +263,13 @@ function CustomGallery() {
   const galleryState = useGalleryState({
     initialConfig: {
       view: { layout: "grid", itemSize: "medium" },
-      sort: { field: "name", direction: "asc" }
+      sort: { field: "name", direction: "asc" },
     },
     callbacks: {
       onNavigate: handleNavigate,
-      onSelectionChange: handleSelection
+      onSelectionChange: handleSelection,
     },
-    persistState: true
+    persistState: true,
   });
 
   return (
@@ -302,13 +296,13 @@ function FileUploadExample() {
     config: {
       maxFileSize: 50 * 1024 * 1024,
       allowedTypes: ["image/*"],
-      uploadUrl: "/api/upload"
+      uploadUrl: "/api/upload",
     },
     callbacks: {
-      onUploadStart: (files) => console.log('Starting upload:', files.length),
-      onUploadProgress: (progress) => console.log('Progress:', progress),
-      onUploadComplete: (results) => console.log('Complete:', results)
-    }
+      onUploadStart: (files) => console.log("Starting upload:", files.length),
+      onUploadProgress: (progress) => console.log("Progress:", progress),
+      onUploadComplete: (results) => console.log("Complete:", results),
+    },
   });
 
   return (
@@ -321,9 +315,9 @@ function FileUploadExample() {
           fileUpload.uploadFiles(files);
         }}
       />
-      
+
       <div>
-        {fileUpload.uploads().map(upload => (
+        {fileUpload.uploads().map((upload) => (
           <div key={upload.id}>
             {upload.file.name}: {upload.progress}%
             {upload.status === "uploading" && (
@@ -392,7 +386,7 @@ For large file collections, enable virtual scrolling:
   enableVirtualScrolling={true}
   view={{
     layout: "list", // Works best with list layout
-    itemSize: "small"
+    itemSize: "small",
   }}
 />
 ```
@@ -403,11 +397,7 @@ Images and thumbnails are loaded lazily by default:
 
 ```tsx
 // Thumbnails load as they come into view
-<img
-  src={item.thumbnailUrl}
-  loading="lazy"
-  alt={item.name}
-/>
+<img src={item.thumbnailUrl} loading="lazy" alt={item.name} />
 ```
 
 ### Debounced Search
@@ -418,8 +408,8 @@ Search and filtering are automatically debounced:
 const galleryState = useGalleryState({
   // Search is debounced by 300ms by default
   callbacks: {
-    onSearch: debounce(handleSearch, 300)
-  }
+    onSearch: debounce(handleSearch, 300),
+  },
 });
 ```
 
@@ -435,15 +425,15 @@ const galleryState = useGalleryState({
       id: "download",
       label: "Download",
       icon: "download",
-      handler: (items) => downloadFiles(items)
+      handler: (items) => downloadFiles(items),
     },
     {
       id: "delete",
       label: "Delete",
       icon: "trash",
       destructive: true,
-      handler: (items) => deleteFiles(items)
-    }
+      handler: (items) => deleteFiles(items),
+    },
   ]}
 />
 ```
@@ -454,11 +444,16 @@ const galleryState = useGalleryState({
 // Override default file icon logic
 const getCustomFileIcon = (item: FileItem) => {
   switch (item.type) {
-    case "image": return "📸";
-    case "video": return "🎬"; 
-    case "audio": return "🎵";
-    case "text": return "📄";
-    default: return "📎";
+    case "image":
+      return "📸";
+    case "video":
+      return "🎬";
+    case "audio":
+      return "🎵";
+    case "text":
+      return "📄";
+    default:
+      return "📎";
   }
 };
 ```
@@ -470,9 +465,11 @@ function BackendIntegratedGallery() {
   const [data, { mutate, refetch }] = createResource(
     () => currentPath(),
     async (path) => {
-      const response = await fetch(`/api/files?path=${encodeURIComponent(path)}`);
+      const response = await fetch(
+        `/api/files?path=${encodeURIComponent(path)}`,
+      );
       return response.json();
-    }
+    },
   );
 
   return (
@@ -485,7 +482,7 @@ function BackendIntegratedGallery() {
         onDelete: async (items) => {
           await deleteFiles(items);
           refetch();
-        }
+        },
       }}
     />
   );
@@ -507,12 +504,12 @@ The gallery is fully responsive and touch-friendly:
   view={{
     layout: "grid",
     itemsPerRow: undefined, // Auto-calculate for screen size
-    itemSize: "medium"
+    itemSize: "medium",
   }}
   // Mobile-optimized upload
   upload={{
     allowedTypes: ["image/*", "video/*"],
-    multiple: true
+    multiple: true,
   }}
 />
 ```
@@ -523,7 +520,7 @@ The gallery is fully responsive and touch-friendly:
 
 ```tsx
 async function openDirectoryPicker() {
-  if ('showDirectoryPicker' in window) {
+  if ("showDirectoryPicker" in window) {
     const dirHandle = await window.showDirectoryPicker();
     const files = await processDirectoryHandle(dirHandle);
     setGalleryData({ path: dirHandle.name, items: files });
@@ -543,8 +540,8 @@ const cloudGallery = useGalleryState({
     },
     onUpload: async (files) => {
       return await cloudStorage.uploadFiles(files, currentPath());
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -553,20 +550,27 @@ const cloudGallery = useGalleryState({
 The gallery includes comprehensive test utilities:
 
 ```tsx
-import { render, screen } from '@solidjs/testing-library';
-import { Gallery } from '@reynard/gallery';
+import { render, screen } from "@solidjs/testing-library";
+import { Gallery } from "@reynard/gallery";
 
-test('displays files in grid layout', () => {
+test("displays files in grid layout", () => {
   const mockData = {
     path: "/test",
     items: [
-      { id: "1", name: "test.jpg", type: "image", size: 1024, lastModified: Date.now(), path: "/test.jpg" }
+      {
+        id: "1",
+        name: "test.jpg",
+        type: "image",
+        size: 1024,
+        lastModified: Date.now(),
+        path: "/test.jpg",
+      },
     ],
-    totalItems: 1
+    totalItems: 1,
   };
 
   render(() => <Gallery data={mockData} />);
-  
+
   expect(screen.getByText("test.jpg")).toBeInTheDocument();
 });
 ```
@@ -578,7 +582,3 @@ See the main [Reynard repository](../../README.md) for contribution guidelines.
 ---
 
 **Built with ❤️ for modern file management in SolidJS applications** 📁🦊
-
-
-
-

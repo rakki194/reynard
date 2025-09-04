@@ -14,7 +14,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": new URL("./src", import.meta.url).pathname,
-      "@reynard/core": new URL("../../packages/core/src", import.meta.url).pathname,
+      "@reynard/core": new URL("../../packages/core/src", import.meta.url)
+        .pathname,
     },
   },
 });

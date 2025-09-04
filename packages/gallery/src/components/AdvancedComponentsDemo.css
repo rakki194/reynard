@@ -1,0 +1,294 @@
+.reynard-advanced-components-demo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.reynard-advanced-components-demo__header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+}
+
+.reynard-advanced-components-demo__header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.reynard-advanced-components-demo__header p {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.reynard-advanced-components-demo__content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.reynard-advanced-components-demo__section {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.reynard-advanced-components-demo__section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.reynard-advanced-components-demo__component-container {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reynard-advanced-components-demo__selection-info {
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.reynard-advanced-components-demo__selection-info p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.reynard-advanced-components-demo__selection-info p:last-child {
+  margin-bottom: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.reynard-advanced-components-demo__context-menu-demo {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  cursor: context-menu;
+  transition: all 0.2s ease;
+}
+
+.reynard-advanced-components-demo__context-menu-demo:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.reynard-advanced-components-demo__context-menu-demo p {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #374151;
+}
+
+.reynard-advanced-components-demo__context-menu-demo p:last-child {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.reynard-advanced-components-demo__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.reynard-advanced-components-demo__feature {
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.reynard-advanced-components-demo__feature h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reynard-advanced-components-demo__feature ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.reynard-advanced-components-demo__feature li {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #374151;
+  position: relative;
+}
+
+.reynard-advanced-components-demo__feature li::before {
+  content: "✓";
+  position: absolute;
+  left: -20px;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.reynard-advanced-components-demo__feature li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .reynard-advanced-components-demo {
+    padding: 16px;
+  }
+
+  .reynard-advanced-components-demo__header {
+    padding: 24px 16px;
+  }
+
+  .reynard-advanced-components-demo__header h1 {
+    font-size: 2rem;
+  }
+
+  .reynard-advanced-components-demo__header p {
+    font-size: 1rem;
+  }
+
+  .reynard-advanced-components-demo__section {
+    padding: 20px;
+  }
+
+  .reynard-advanced-components-demo__section h2 {
+    font-size: 1.3rem;
+  }
+
+  .reynard-advanced-components-demo__component-container {
+    min-height: 150px;
+  }
+
+  .reynard-advanced-components-demo__context-menu-demo {
+    padding: 24px 16px;
+  }
+
+  .reynard-advanced-components-demo__features {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reynard-advanced-components-demo__feature {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reynard-advanced-components-demo__header h1 {
+    font-size: 1.8rem;
+  }
+
+  .reynard-advanced-components-demo__section {
+    padding: 16px;
+  }
+
+  .reynard-advanced-components-demo__component-container {
+    min-height: 120px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .reynard-advanced-components-demo {
+    background: #111827;
+    color: #f9fafb;
+  }
+
+  .reynard-advanced-components-demo__section {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+
+  .reynard-advanced-components-demo__section h2 {
+    color: #f9fafb;
+    border-bottom-color: #374151;
+  }
+
+  .reynard-advanced-components-demo__selection-info {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .reynard-advanced-components-demo__selection-info p {
+    color: #d1d5db;
+  }
+
+  .reynard-advanced-components-demo__selection-info p:last-child {
+    color: #9ca3af;
+  }
+
+  .reynard-advanced-components-demo__context-menu-demo {
+    background: #374151;
+    border-color: #6b7280;
+  }
+
+  .reynard-advanced-components-demo__context-menu-demo:hover {
+    background: #4b5563;
+    border-color: #9ca3af;
+  }
+
+  .reynard-advanced-components-demo__context-menu-demo p {
+    color: #d1d5db;
+  }
+
+  .reynard-advanced-components-demo__context-menu-demo p:last-child {
+    color: #9ca3af;
+  }
+
+  .reynard-advanced-components-demo__feature {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .reynard-advanced-components-demo__feature h3 {
+    color: #f9fafb;
+  }
+
+  .reynard-advanced-components-demo__feature li {
+    color: #d1d5db;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .reynard-advanced-components-demo__section {
+    border-width: 2px;
+  }
+
+  .reynard-advanced-components-demo__selection-info,
+  .reynard-advanced-components-demo__context-menu-demo,
+  .reynard-advanced-components-demo__feature {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .reynard-advanced-components-demo__context-menu-demo {
+    transition: none;
+  }
+}

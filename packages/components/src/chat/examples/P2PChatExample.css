@@ -1,0 +1,203 @@
+/* P2P Chat Example Styles */
+
+/* Container styles */
+.p2p-chat-container {
+  height: 600px;
+  width: 100%;
+}
+
+.p2p-chat-container-column {
+  height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.p2p-chat-container-flex {
+  height: 600px;
+  display: flex;
+}
+
+/* Tab Navigation */
+.p2p-tab-navigation {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.p2p-tab-button {
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+}
+
+.p2p-tab-button-active {
+  background: #3b82f6;
+  color: white;
+}
+
+.p2p-tab-button-inactive {
+  background: transparent;
+  color: #64748b;
+}
+
+/* Chat Content */
+.p2p-chat-content {
+  flex: 1;
+}
+
+/* Room List */
+.p2p-room-list {
+  width: 250px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.p2p-room-item {
+  padding: 12px;
+  cursor: pointer;
+}
+
+.p2p-room-item-active {
+  background: #e0e7ff;
+}
+
+.p2p-room-item-inactive {
+  background: transparent;
+}
+
+.p2p-unread-badge {
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.p2p-start-dm-button {
+  width: 100%;
+  padding: 12px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Chat Area */
+.p2p-chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.p2p-messages-container {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.p2p-message {
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.p2p-message-own {
+  background: #dbeafe;
+  margin-left: 20%;
+  margin-right: 0;
+}
+
+.p2p-message-other {
+  background: #f3f4f6;
+  margin-left: 0;
+  margin-right: 20%;
+}
+
+.p2p-message-sender {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.p2p-message-timestamp {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.p2p-input-container {
+  padding: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.p2p-message-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+
+/* Connection Status */
+.p2p-connection-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: white;
+}
+
+.p2p-connection-connected {
+  background: #10b981;
+}
+
+.p2p-connection-disconnected {
+  background: #ef4444;
+}
+
+/* Demo Controls */
+.p2p-demo-container {
+  height: 600px;
+  padding: 20px;
+}
+
+.p2p-demo-section {
+  margin-bottom: 20px;
+}
+
+.p2p-demo-label {
+  margin-right: 8px;
+}
+
+.p2p-demo-select {
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.p2p-demo-button {
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.p2p-demo-button:hover {
+  background: #2563eb;
+}
+
+.p2p-demo-input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.p2p-demo-file-input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}

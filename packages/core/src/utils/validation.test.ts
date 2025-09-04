@@ -145,7 +145,9 @@ describe("validation", () => {
   describe("isValidFileType", () => {
     it("validates file types correctly", () => {
       expect(isValidFileType("image.jpg", ["jpg", "png", "gif"])).toBe(true);
-      expect(isValidFileType("document.pdf", ["jpg", "png", "gif"])).toBe(false);
+      expect(isValidFileType("document.pdf", ["jpg", "png", "gif"])).toBe(
+        false,
+      );
       expect(isValidFileType("image.JPG", ["jpg", "png", "gif"])).toBe(true); // Case insensitive
     });
   });
@@ -176,7 +178,7 @@ describe("validation", () => {
     it("validates age correctly", () => {
       const twentyYearsAgo = new Date();
       twentyYearsAgo.setFullYear(twentyYearsAgo.getFullYear() - 20);
-      
+
       const tenYearsAgo = new Date();
       tenYearsAgo.setFullYear(tenYearsAgo.getFullYear() - 10);
 
@@ -185,7 +187,3 @@ describe("validation", () => {
     });
   });
 });
-
-
-
-

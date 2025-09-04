@@ -3,14 +3,7 @@
  * Hierarchical navigation component with customizable separators
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  For,
-  Show,
-  createMemo,
-} from "solid-js";
+import { Component, JSX, splitProps, For, Show, createMemo } from "solid-js";
 
 export interface BreadcrumbItem {
   /** Unique identifier */
@@ -61,7 +54,7 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
 
   const processedItems = createMemo(() => {
     const items = local.items;
-    
+
     if (items.length <= local.maxItems) {
       return items;
     }
@@ -69,7 +62,7 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
     // Show first item, ellipsis, and last few items
     const firstItem = items[0];
     const lastItems = items.slice(-(local.maxItems - 2));
-    
+
     return [
       firstItem,
       {
@@ -86,7 +79,7 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
       event.preventDefault();
       return;
     }
-    
+
     local.onItemClick?.(item, event);
   };
 
@@ -150,11 +143,7 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
   );
 
   return (
-    <nav
-      class={getClasses()}
-      aria-label="Breadcrumb navigation"
-      {...others}
-    >
+    <nav class={getClasses()} aria-label="Breadcrumb navigation" {...others}>
       <ol class="reynard-breadcrumb__list">
         <For each={processedItems()}>
           {(item, index) => (
@@ -170,9 +159,16 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
                       {renderEllipsis()}
                     </Show>
                     <Show when={item.id !== "ellipsis"}>
-                      <Show when={item.icon || (local.showHomeIcon && index() === 0)}>
+                      <Show
+                        when={
+                          item.icon || (local.showHomeIcon && index() === 0)
+                        }
+                      >
                         <span class="reynard-breadcrumb__icon">
-                          {item.icon || (local.showHomeIcon && index() === 0 ? renderHomeIcon() : null)}
+                          {item.icon ||
+                            (local.showHomeIcon && index() === 0
+                              ? renderHomeIcon()
+                              : null)}
                         </span>
                       </Show>
                       <span class="reynard-breadcrumb__text">{item.label}</span>
@@ -186,9 +182,14 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
                   onClick={(e) => handleItemClick(item, e)}
                   aria-current={item.current ? "page" : undefined}
                 >
-                  <Show when={item.icon || (local.showHomeIcon && index() === 0)}>
+                  <Show
+                    when={item.icon || (local.showHomeIcon && index() === 0)}
+                  >
                     <span class="reynard-breadcrumb__icon">
-                      {item.icon || (local.showHomeIcon && index() === 0 ? renderHomeIcon() : null)}
+                      {item.icon ||
+                        (local.showHomeIcon && index() === 0
+                          ? renderHomeIcon()
+                          : null)}
                     </span>
                   </Show>
                   <span class="reynard-breadcrumb__text">{item.label}</span>
@@ -206,7 +207,3 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
     </nav>
   );
 };
-
-
-
-

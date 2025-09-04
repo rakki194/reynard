@@ -1,13 +1,13 @@
-import { Component } from 'solid-js';
-import { useI18n } from '@reynard/core';
-import { Select } from '@reynard/components';
+import { Component } from "solid-js";
+import { useI18n } from "@reynard/core";
+import { Select } from "@reynard/components";
 
 const LanguageSelector: Component = () => {
   const { locale, setLocale, availableLocales } = useI18n();
 
-  const languageOptions = availableLocales().map(l => ({
+  const languageOptions = availableLocales().map((l) => ({
     value: l.code,
-    label: `${l.flag || '🏳️'} ${l.name}`,
+    label: `${l.flag || "🏳️"} ${l.name}`,
   }));
 
   const handleLanguageChange = (localeCode: string) => {
@@ -29,5 +29,3 @@ const LanguageSelector: Component = () => {
 };
 
 export default LanguageSelector;
-
-

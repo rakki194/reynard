@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [solid()],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        styles: resolve(__dirname, "src/styles.css"),
+      },
       name: "ReynardComponents",
       fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
     },
@@ -18,9 +21,20 @@ export default defineConfig({
           "solid-js/web": "solidWeb",
           "@reynard/core": "ReynardCore",
         },
+        assetFileNames: (assetInfo) => {
+          const assetName = (assetInfo as { fileName?: string }).fileName;
+          if (assetName === "style.css") {
+            return "styles.css";
+          }
+          if (assetName === "components.css") {
+            return "styles.css";
+          }
+          return assetName || "asset";
+        },
       },
     },
     target: "esnext",
     sourcemap: true,
+    cssCodeSplit: false,
   },
 });

@@ -19,9 +19,20 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Path mappings for local packages */
+    "baseUrl": ".",
+    "paths": {
+      "@reynard/core": ["../../packages/core/src"],
+      "@reynard/components": ["../../packages/components/src"],
+      "@reynard/ui": ["../../packages/ui/src"],
+      "@reynard/charts": ["../../packages/charts/src"],
+      "@reynard/gallery": ["../../packages/gallery/src"],
+      "@reynard/auth": ["../../packages/auth/src"],
+      "@reynard/settings": ["../../packages/settings/src"]
+    }
   },
   "include": ["src/**/*", "vite-env.d.ts"]
 }
-
-

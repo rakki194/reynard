@@ -5,6 +5,7 @@ A complete showcase of all Reynard framework components and features, demonstrat
 ## Features Demonstrated
 
 ### 🎨 All Reynard Packages
+
 - **@reynard/core** - Theme management, i18n, notifications, utilities
 - **@reynard/components** - Primitive UI components (Button, Card, TextField, etc.)
 - **@reynard/ui** - Advanced components (AppLayout, DataTable, Drawer, etc.)
@@ -14,16 +15,19 @@ A complete showcase of all Reynard framework components and features, demonstrat
 - **@reynard/settings** - Comprehensive settings management
 
 ### 🌍 Internationalization
+
 - Multi-language support with reactive translations
 - Dynamic language switching without page refresh
 - Comprehensive translation coverage for all components
 
 ### 🎭 Theming System
+
 - 8 built-in themes including high contrast options
 - Real-time theme switching
 - Persistent theme preferences
 
 ### 📊 Dashboard Pages
+
 1. **Dashboard** - Overview with stats, quick actions, and recent activity
 2. **Charts** - Interactive data visualization showcase
 3. **Components** - Complete component library demonstration
@@ -32,6 +36,7 @@ A complete showcase of all Reynard framework components and features, demonstrat
 6. **Settings** - Comprehensive settings panel with all options
 
 ### 🎯 Key Features
+
 - **Responsive Design** - Works on mobile, tablet, and desktop
 - **Dark/Light Themes** - Multiple theme options with accessibility support
 - **Real-time Updates** - Reactive state management with SolidJS
@@ -43,6 +48,7 @@ A complete showcase of all Reynard framework components and features, demonstrat
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm 9+
 
@@ -100,15 +106,17 @@ src/
 ### Key Implementation Patterns
 
 #### 1. Reactive State Management
+
 ```tsx
 // Theme switching with persistence
 const { theme, setTheme } = useTheme();
 createEffect(() => {
-  localStorage.setItem('theme', theme().name);
+  localStorage.setItem("theme", theme().name);
 });
 ```
 
 #### 2. Internationalization
+
 ```tsx
 // Reactive translations
 const { t, locale, setLocale } = useI18n();
@@ -116,45 +124,51 @@ const [translations] = createResource(() => locale(), loadTranslations);
 ```
 
 #### 3. Settings Integration
+
 ```tsx
 // Settings with schema validation
 const settings = useSettings({
   schema: appSettingsSchema,
-  storageKey: 'reynard-dashboard-settings',
-  autoSave: true
+  storageKey: "reynard-dashboard-settings",
+  autoSave: true,
 });
 ```
 
 #### 4. Authentication Flow
+
 ```tsx
 // JWT-based authentication
 const { user, login, logout, isLoading } = useAuth();
 ```
 
 #### 5. File Management
+
 ```tsx
 // Gallery with upload and navigation
 const galleryState = useGalleryState({
   items: mediaItems(),
   onNavigate: setCurrentPath,
-  onSelect: handleSelection
+  onSelect: handleSelection,
 });
 ```
 
 ### Customization
 
 #### Adding New Pages
+
 1. Create component in `src/pages/`
 2. Add route in `App.tsx`
 3. Update navigation in `Sidebar.tsx`
 4. Add translations
 
 #### Extending Settings
+
 1. Update `src/settings/schema.ts`
 2. Add UI controls in `Settings.tsx`
 3. Add translations for new settings
 
 #### Custom Themes
+
 1. Define theme in `@reynard/core/themes`
 2. Update theme selector components
 3. Add CSS custom properties
@@ -189,6 +203,7 @@ The built files will be in the `dist/` directory, ready for deployment to any st
 ### Contributing
 
 This example serves as both a showcase and a template. Feel free to:
+
 - Add new component demonstrations
 - Extend the settings schema
 - Add more chart types

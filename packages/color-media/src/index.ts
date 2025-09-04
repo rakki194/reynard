@@ -1,6 +1,6 @@
 /**
  * Color and Media Utilities Package
- * 
+ *
  * This package provides:
  * - OKLCH color generation and manipulation utilities
  * - Theme management with multiple theme support
@@ -10,10 +10,10 @@
  */
 
 // Export all types
-export * from './types';
+export * from "./types";
 
 // Export all utilities
-export * from './utils';
+export * from "./utils";
 
 // Export specific utilities for direct access
 export {
@@ -23,7 +23,7 @@ export {
   generateComplementaryColors,
   adjustLightness,
   adjustSaturation,
-} from './utils/colorUtils';
+} from "./utils/colorUtils";
 
 export {
   createThemeContext,
@@ -35,7 +35,7 @@ export {
   getPreviousTheme,
   getThemeByName,
   getAllThemes,
-} from './utils/themeUtils';
+} from "./utils/themeUtils";
 
 export {
   BaseModality,
@@ -48,4 +48,4 @@ export {
   isAudioFile,
   isVideoFile,
   isTextFile,
-} from './utils/modalityUtils';
+} from "./utils/modalityUtils";

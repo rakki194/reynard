@@ -17,8 +17,20 @@
     "jsxImportSource": "solid-js",
     "declaration": true,
     "declarationMap": true,
-    "outDir": "dist"
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*", "src/chat"]
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/test-setup.ts",
+    "dist"
+  ]
 }

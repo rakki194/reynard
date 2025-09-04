@@ -21,17 +21,13 @@ npm install @reynard/components @reynard/core solid-js
 ## 🎯 Quick Start
 
 ```tsx
-import { Button, Card, TextField } from '@reynard/components';
-import '@reynard/components/styles';
+import { Button, Card, TextField } from "@reynard/components";
+import "@reynard/components/styles";
 
 function App() {
   return (
     <Card padding="lg">
-      <TextField 
-        label="Email"
-        type="email"
-        placeholder="Enter your email"
-      />
+      <TextField label="Email" type="email" placeholder="Enter your email" />
       <Button variant="primary" fullWidth>
         Sign Up
       </Button>
@@ -77,8 +73,8 @@ Versatile button component with multiple variants and states.
 Flexible container component with consistent styling.
 
 ```tsx
-<Card 
-  variant="elevated" 
+<Card
+  variant="elevated"
   padding="lg"
   header={<h3>Card Title</h3>}
   footer={<Button>Action</Button>}
@@ -131,9 +127,9 @@ Dropdown select component with options support.
   label="Country"
   placeholder="Choose a country"
   options={[
-    { value: 'us', label: 'United States' },
-    { value: 'ca', label: 'Canada' },
-    { value: 'uk', label: 'United Kingdom' }
+    { value: "us", label: "United States" },
+    { value: "ca", label: "Canada" },
+    { value: "uk", label: "United Kingdom" },
   ]}
 />
 ```
@@ -162,11 +158,11 @@ const [isOpen, setIsOpen] = createSignal(false);
   size="md"
 >
   <p>Are you sure you want to continue?</p>
-  <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+  <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
     <Button onClick={() => setIsOpen(false)}>Cancel</Button>
     <Button variant="primary">Confirm</Button>
   </div>
-</Modal>
+</Modal>;
 ```
 
 **Props:**
@@ -183,12 +179,12 @@ const [isOpen, setIsOpen] = createSignal(false);
 Tab navigation with keyboard support and accessibility.
 
 ```tsx
-const [activeTab, setActiveTab] = createSignal('tab1');
+const [activeTab, setActiveTab] = createSignal("tab1");
 
 const tabs = [
-  { id: 'tab1', label: 'Overview', icon: <OverviewIcon /> },
-  { id: 'tab2', label: 'Settings', badge: 3 },
-  { id: 'tab3', label: 'Help' }
+  { id: "tab1", label: "Overview", icon: <OverviewIcon /> },
+  { id: "tab2", label: "Settings", badge: 3 },
+  { id: "tab3", label: "Help" },
 ];
 
 <Tabs
@@ -206,7 +202,7 @@ const tabs = [
   <TabPanel tabId="tab3" activeTab={activeTab()}>
     <h3>Help Content</h3>
   </TabPanel>
-</Tabs>
+</Tabs>;
 ```
 
 **Props:**
@@ -237,15 +233,13 @@ Components automatically adapt to your theme using CSS custom properties:
 Works seamlessly with `@reynard/core` theme system:
 
 ```tsx
-import { useTheme } from '@reynard/core';
+import { useTheme } from "@reynard/core";
 
 function ThemedComponent() {
   const { theme, setTheme } = useTheme();
-  
+
   return (
-    <Button onClick={() => setTheme('dark')}>
-      Current theme: {theme()}
-    </Button>
+    <Button onClick={() => setTheme("dark")}>Current theme: {theme()}</Button>
   );
 }
 ```
@@ -279,7 +273,7 @@ npm run test:ui     # Visual test runner
 Complete streaming chat messaging system with AI assistant support.
 
 ```tsx
-import { ChatContainer } from '@reynard/components';
+import { ChatContainer } from "@reynard/components";
 
 <ChatContainer
   endpoint="/api/chat"
@@ -289,15 +283,15 @@ import { ChatContainer } from '@reynard/components';
     enableTools: true,
     showTimestamps: true,
   }}
-  onMessageSent={(message) => console.log('Sent:', message)}
-  onMessageReceived={(message) => console.log('Received:', message)}
-/>
+  onMessageSent={(message) => console.log("Sent:", message)}
+  onMessageReceived={(message) => console.log("Received:", message)}
+/>;
 ```
 
 **Features:**
 
 - **Real-time Streaming**: Advanced streaming text processing with real-time markdown rendering
-- **Thinking Sections**: Support for AI assistant thinking process visualization  
+- **Thinking Sections**: Support for AI assistant thinking process visualization
 - **Tool Integration**: Complete tool calling system with progress tracking
 - **Markdown Parsing**: Full markdown support including tables, code blocks, and math
 - **Accessibility**: Full WCAG 2.1 compliance with keyboard navigation

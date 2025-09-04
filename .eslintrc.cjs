@@ -7,6 +7,7 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
+    "plugin:solid/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -16,10 +17,12 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "solid"],
   rules: {
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "warn",
+    "solid/jsx-no-undef": "error",
+    "solid/jsx-uses-vars": "error",
   },
   overrides: [
     {

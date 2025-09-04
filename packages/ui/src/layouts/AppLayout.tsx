@@ -7,7 +7,6 @@ import {
   Component,
   JSX,
   createSignal,
-  createEffect,
   splitProps,
   Show,
   onMount,
@@ -70,7 +69,7 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
 
   // Responsive state
   const [isMobile, setIsMobile] = createSignal(false);
-  
+
   // Sidebar state - simplified for now, we can add persistence later
   const [sidebarOpen, setSidebarOpen] = createSignal(local.defaultSidebarOpen);
   const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
@@ -97,21 +96,24 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
   };
 
   // Keyboard shortcuts
-  const handleKeyDown = (e: KeyboardEvent) => {
-    // Ctrl/Cmd + B to toggle sidebar
-    if ((e.ctrlKey || e.metaKey) && e.key === "b") {
-      e.preventDefault();
-      toggleSidebar();
-    }
-    // Escape to close sidebar on mobile
-    if (e.key === "Escape" && isMobile() && sidebarOpen()) {
-      setSidebarOpen(false);
-    }
-  };
+  onMount(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl/Cmd + B to toggle sidebar
+      if ((e.ctrlKey || e.metaKey) && e.key === "b") {
+        e.preventDefault();
+        toggleSidebar();
+      }
+      // Escape to close sidebar on mobile
+      if (e.key === "Escape" && isMobile() && sidebarOpen()) {
+        setSidebarOpen(false);
+      }
+    };
 
-  createEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+
+    onCleanup(() => {
+      document.removeEventListener("keydown", handleKeyDown);
+    });
   });
 
   const toggleSidebar = () => {
@@ -122,54 +124,66 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
     }
   };
 
-  const getCurrentSidebarWidth = () => {
-    if (!sidebarOpen()) return 0;
-    if (isMobile()) return local.sidebarWidth;
-    return sidebarCollapsed() ? local.collapsedWidth : local.sidebarWidth;
-  };
-
   const getLayoutClasses = () => {
     const classes = ["reynard-app-layout"];
     if (sidebarOpen()) classes.push("reynard-app-layout--sidebar-open");
-    if (sidebarCollapsed()) classes.push("reynard-app-layout--sidebar-collapsed");
+    if (sidebarCollapsed())
+      classes.push("reynard-app-layout--sidebar-collapsed");
     if (isMobile()) classes.push("reynard-app-layout--mobile");
+
+    // Add width classes
+    if (sidebarOpen()) {
+      if (isMobile()) {
+        classes.push("reynard-app-layout--sidebar-width-280");
+      } else if (sidebarCollapsed()) {
+        classes.push("reynard-app-layout--sidebar-width-60");
+      } else {
+        classes.push("reynard-app-layout--sidebar-width-280");
+      }
+    } else {
+      classes.push("reynard-app-layout--sidebar-width-0");
+    }
+
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
-  const getSidebarStyles = (): JSX.CSSProperties => ({
-    width: `${getCurrentSidebarWidth()}px`,
-    transform: sidebarOpen() ? "translateX(0)" : "translateX(-100%)",
-    position: isMobile() && local.overlayOnMobile ? "fixed" : "relative",
-    "z-index": isMobile() && local.overlayOnMobile ? 1000 : "auto",
-  });
+  const getSidebarClasses = () => {
+    const classes = ["reynard-app-layout__sidebar"];
+    if (!sidebarOpen()) classes.push("reynard-app-layout__sidebar--closed");
+    if (sidebarOpen()) classes.push("reynard-app-layout__sidebar--open");
+    if (isMobile() && local.overlayOnMobile)
+      classes.push("reynard-app-layout__sidebar--fixed");
+    if (!isMobile() || !local.overlayOnMobile)
+      classes.push("reynard-app-layout__sidebar--relative");
+    return classes.join(" ");
+  };
 
-  const getContentStyles = (): JSX.CSSProperties => ({
-    "margin-left": isMobile() || !sidebarOpen() ? "0" : `${getCurrentSidebarWidth()}px`,
-  });
+  const getMainClasses = () => {
+    const classes = ["reynard-app-layout__main"];
+    if (sidebarOpen() && !isMobile())
+      classes.push("reynard-app-layout__main--with-sidebar");
+    if (!sidebarOpen() || isMobile())
+      classes.push("reynard-app-layout__main--without-sidebar");
+    return classes.join(" ");
+  };
 
   return (
     <div class={getLayoutClasses()} {...others}>
       {/* Mobile overlay */}
       <Show when={isMobile() && sidebarOpen() && local.overlayOnMobile}>
-        <div
-          class="reynard-app-layout__overlay"
-          onClick={handleOverlayClick}
-        />
+        <div class="reynard-app-layout__overlay" onClick={handleOverlayClick} />
       </Show>
 
       {/* Sidebar */}
       <Show when={local.sidebar}>
         <aside
-          class="reynard-app-layout__sidebar"
-          style={getSidebarStyles()}
+          class={getSidebarClasses()}
           data-collapsed={sidebarCollapsed()}
           data-mobile={isMobile()}
         >
-          <div class="reynard-app-layout__sidebar-content">
-            {local.sidebar}
-          </div>
-          
+          <div class="reynard-app-layout__sidebar-content">{local.sidebar}</div>
+
           {/* Sidebar toggle button */}
           <Show when={local.collapsible}>
             <button
@@ -184,10 +198,11 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
                 height="16"
                 viewBox="0 0 16 16"
                 fill="currentColor"
-                style={{
-                  transform: sidebarOpen() ? "rotate(180deg)" : "rotate(0deg)",
-                  transition: "transform 0.2s ease",
-                }}
+                class={
+                  sidebarOpen()
+                    ? "reynard-app-layout__sidebar-toggle-icon--rotated"
+                    : "reynard-app-layout__sidebar-toggle-icon--normal"
+                }
               >
                 <path d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06L7.28 12.78a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z" />
               </svg>
@@ -197,27 +212,18 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
       </Show>
 
       {/* Main content area */}
-      <div 
-        class="reynard-app-layout__main"
-        style={getContentStyles()}
-      >
+      <div class={getMainClasses()}>
         {/* Header */}
         <Show when={local.header}>
-          <header class="reynard-app-layout__header">
-            {local.header}
-          </header>
+          <header class="reynard-app-layout__header">{local.header}</header>
         </Show>
 
         {/* Content */}
-        <main class="reynard-app-layout__content">
-          {local.children}
-        </main>
+        <main class="reynard-app-layout__content">{local.children}</main>
 
         {/* Footer */}
         <Show when={local.footer}>
-          <footer class="reynard-app-layout__footer">
-            {local.footer}
-          </footer>
+          <footer class="reynard-app-layout__footer">{local.footer}</footer>
         </Show>
       </div>
     </div>

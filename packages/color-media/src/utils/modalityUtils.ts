@@ -2,7 +2,7 @@
  * Modality utility functions for managing media modalities
  */
 
-import type { Modality } from '../types';
+import type { Modality } from "../types";
 
 /**
  * Base modality class that defines the common interface for all modalities
@@ -38,7 +38,7 @@ export abstract class BaseModality implements Modality {
    * @returns True if the file is supported
    */
   validateFile(file: File): boolean {
-    const extension = '.' + file.name.split('.').pop()?.toLowerCase();
+    const extension = "." + file.name.split(".").pop()?.toLowerCase();
     return this.fileExtensions.includes(extension);
   }
 
@@ -115,7 +115,9 @@ export class ModalityRegistry {
    */
   registerModality(modality: Modality) {
     if (this.modalities.has(modality.id)) {
-      console.warn(`Modality with id '${modality.id}' is already registered. Overwriting.`);
+      console.warn(
+        `Modality with id '${modality.id}' is already registered. Overwriting.`,
+      );
     }
 
     this.modalities.set(modality.id, modality);
@@ -151,7 +153,7 @@ export class ModalityRegistry {
    * @returns Array of enabled modalities
    */
   getEnabledModalities(): Modality[] {
-    return this.getAllModalities().filter(modality => modality.enabled);
+    return this.getAllModalities().filter((modality) => modality.enabled);
   }
 
   /**
@@ -160,8 +162,8 @@ export class ModalityRegistry {
    * @returns Array of modalities that support the functionality
    */
   getModalitiesForFunctionality(functionalityId: string): Modality[] {
-    return this.getAllModalities().filter(modality => 
-      modality.supportedFunctionalities.includes(functionalityId)
+    return this.getAllModalities().filter((modality) =>
+      modality.supportedFunctionalities.includes(functionalityId),
     );
   }
 
@@ -172,8 +174,10 @@ export class ModalityRegistry {
    */
   getModalitiesForFileExtension(extension: string): Modality[] {
     const normalizedExtension = extension.toLowerCase();
-    return this.getAllModalities().filter(modality =>
-      modality.fileExtensions.some(ext => ext.toLowerCase() === normalizedExtension)
+    return this.getAllModalities().filter((modality) =>
+      modality.fileExtensions.some(
+        (ext) => ext.toLowerCase() === normalizedExtension,
+      ),
     );
   }
 
@@ -183,7 +187,9 @@ export class ModalityRegistry {
    * @returns Array of modalities that support the file
    */
   getModalitiesForFile(file: File): Modality[] {
-    return this.getAllModalities().filter(modality => modality.validateFile(file));
+    return this.getAllModalities().filter((modality) =>
+      modality.validateFile(file),
+    );
   }
 }
 
@@ -197,11 +203,11 @@ export class ModalityRegistry {
  * @returns Formatted file size string
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 B';
+  if (bytes === 0) return "0 B";
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
 /**
@@ -210,15 +216,15 @@ export function formatFileSize(bytes: number): string {
  * @returns Formatted duration string
  */
 export function formatDuration(seconds?: number): string {
-  if (!seconds) return 'Unknown';
+  if (!seconds) return "Unknown";
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
 
   if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   }
-  return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
 
 /**
@@ -227,7 +233,7 @@ export function formatDuration(seconds?: number): string {
  * @returns File extension with dot (e.g., '.jpg')
  */
 export function getFileExtension(filename: string): string {
-  return '.' + filename.split('.').pop()?.toLowerCase();
+  return "." + filename.split(".").pop()?.toLowerCase();
 }
 
 /**
@@ -236,7 +242,16 @@ export function getFileExtension(filename: string): string {
  * @returns True if file is an image
  */
 export function isImageFile(file: File): boolean {
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff', '.svg'];
+  const imageExtensions = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",
+    ".bmp",
+    ".tiff",
+    ".svg",
+  ];
   return imageExtensions.includes(getFileExtension(file.name));
 }
 
@@ -246,7 +261,16 @@ export function isImageFile(file: File): boolean {
  * @returns True if file is an audio file
  */
 export function isAudioFile(file: File): boolean {
-  const audioExtensions = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a', '.wma', '.opus'];
+  const audioExtensions = [
+    ".mp3",
+    ".wav",
+    ".flac",
+    ".aac",
+    ".ogg",
+    ".m4a",
+    ".wma",
+    ".opus",
+  ];
   return audioExtensions.includes(getFileExtension(file.name));
 }
 
@@ -256,7 +280,16 @@ export function isAudioFile(file: File): boolean {
  * @returns True if file is a video file
  */
 export function isVideoFile(file: File): boolean {
-  const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv', '.webm', '.flv', '.wmv', '.m4v'];
+  const videoExtensions = [
+    ".mp4",
+    ".avi",
+    ".mov",
+    ".mkv",
+    ".webm",
+    ".flv",
+    ".wmv",
+    ".m4v",
+  ];
   return videoExtensions.includes(getFileExtension(file.name));
 }
 
@@ -266,6 +299,16 @@ export function isVideoFile(file: File): boolean {
  * @returns True if file is a text file
  */
 export function isTextFile(file: File): boolean {
-  const textExtensions = ['.txt', '.md', '.json', '.xml', '.html', '.css', '.js', '.ts', '.tsx'];
+  const textExtensions = [
+    ".txt",
+    ".md",
+    ".json",
+    ".xml",
+    ".html",
+    ".css",
+    ".js",
+    ".ts",
+    ".tsx",
+  ];
   return textExtensions.includes(getFileExtension(file.name));
 }

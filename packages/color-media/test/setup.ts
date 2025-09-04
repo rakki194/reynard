@@ -12,7 +12,7 @@ const localStorageMock = {
 global.localStorage = localStorageMock;
 
 // Mock document.documentElement for theme tests
-Object.defineProperty(document, 'documentElement', {
+Object.defineProperty(document, "documentElement", {
   value: {
     setAttribute: vi.fn(),
     getAttribute: vi.fn(),

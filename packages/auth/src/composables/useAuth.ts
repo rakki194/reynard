@@ -3,12 +3,12 @@
  * Main authentication hook with state management and API integration
  */
 
-import { 
-  createSignal, 
-  createEffect, 
+import {
+  createSignal,
+  createEffect,
   createResource,
   onMount,
-  onCleanup
+  onCleanup,
 } from "solid-js";
 import type {
   User,
@@ -21,12 +21,12 @@ import type {
   AuthTokens,
   ApiResponse,
 } from "../types";
-import { 
+import {
   TokenManager,
   decodeToken,
   isTokenExpired,
   getUserFromToken,
-  retryWithBackoff
+  retryWithBackoff,
 } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
 
@@ -46,7 +46,7 @@ export function useAuth(options: UseAuthOptions = {}) {
   // Token manager instance
   const tokenManager = TokenManager.getInstance(
     config.tokenStorageKey,
-    config.refreshTokenStorageKey
+    config.refreshTokenStorageKey,
   );
 
   // Auth state
@@ -63,7 +63,7 @@ export function useAuth(options: UseAuthOptions = {}) {
 
   // Update auth state helper
   const updateAuthState = (updates: Partial<AuthState>) => {
-    setAuthState(prev => {
+    setAuthState((prev) => {
       const newState = { ...prev, ...updates };
       callbacks.onAuthStateChange?.(newState);
       return newState;
@@ -71,9 +71,12 @@ export function useAuth(options: UseAuthOptions = {}) {
   };
 
   // API fetch wrapper with auth headers
-  const authFetch = async (url: string, options: RequestInit = {}): Promise<Response> => {
+  const authFetch = async (
+    url: string,
+    options: RequestInit = {},
+  ): Promise<Response> => {
     const token = tokenManager.getAccessToken();
-    
+
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       ...(options.headers as Record<string, string>),
@@ -121,12 +124,16 @@ export function useAuth(options: UseAuthOptions = {}) {
   };
 
   // Parse API response
-  const parseApiResponse = async <T>(response: Response): Promise<ApiResponse<T>> => {
+  const parseApiResponse = async <T>(
+    response: Response,
+  ): Promise<ApiResponse<T>> => {
     try {
       const data = await response.json();
       return {
         data: response.ok ? data : undefined,
-        error: response.ok ? undefined : data.message || data.detail || "Request failed",
+        error: response.ok
+          ? undefined
+          : data.message || data.detail || "Request failed",
         success: response.ok,
         status: response.status,
         meta: {
@@ -150,22 +157,27 @@ export function useAuth(options: UseAuthOptions = {}) {
     updateAuthState({ isLoading: true, error: null });
 
     try {
-      const response = await fetch(`${config.apiBaseUrl}${config.loginEndpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${config.apiBaseUrl}${config.loginEndpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
         },
-        body: JSON.stringify(credentials),
-      });
+      );
 
-      const result = await parseApiResponse<AuthTokens & { user: User }>(response);
+      const result = await parseApiResponse<AuthTokens & { user: User }>(
+        response,
+      );
 
       if (result.success && result.data) {
         const { user, accessToken, refreshToken } = result.data;
-        
+
         // Store tokens
         tokenManager.setTokens(accessToken, refreshToken);
-        
+
         // Update state
         updateAuthState({
           user,
@@ -191,7 +203,8 @@ export function useAuth(options: UseAuthOptions = {}) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Login failed";
+      const errorMessage =
+        error instanceof Error ? error.message : "Login failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -206,27 +219,32 @@ export function useAuth(options: UseAuthOptions = {}) {
     updateAuthState({ isLoading: true, error: null });
 
     try {
-      const response = await fetch(`${config.apiBaseUrl}${config.registerEndpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${config.apiBaseUrl}${config.registerEndpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      });
+      );
 
-      const result = await parseApiResponse<{ user: User; message?: string }>(response);
+      const result = await parseApiResponse<{ user: User; message?: string }>(
+        response,
+      );
 
       if (result.success) {
         updateAuthState({
           isLoading: false,
           error: null,
         });
-        
+
         // Optionally auto-login after registration
         if (result.data?.user) {
-          await login({ 
-            identifier: data.username, 
-            password: data.password 
+          await login({
+            identifier: data.username,
+            password: data.password,
           });
         }
       } else {
@@ -238,7 +256,8 @@ export function useAuth(options: UseAuthOptions = {}) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Registration failed";
+      const errorMessage =
+        error instanceof Error ? error.message : "Registration failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -252,13 +271,13 @@ export function useAuth(options: UseAuthOptions = {}) {
     try {
       // Clear tokens
       tokenManager.clearTokens();
-      
+
       // Clear refresh timer
       if (refreshTimer) {
         clearTimeout(refreshTimer);
         refreshTimer = null;
       }
-      
+
       // Update state
       updateAuthState({
         user: null,
@@ -270,7 +289,7 @@ export function useAuth(options: UseAuthOptions = {}) {
 
       // Trigger callback
       callbacks.onLogout?.();
-      
+
       // Optional API call to invalidate tokens on server
       try {
         await fetch(`${config.apiBaseUrl}/auth/logout`, {
@@ -315,10 +334,10 @@ export function useAuth(options: UseAuthOptions = {}) {
 
       if (result.success && result.data) {
         const { accessToken, refreshToken: newRefreshToken } = result.data;
-        
+
         // Store new tokens
         tokenManager.setTokens(accessToken, newRefreshToken);
-        
+
         // Update user from new token
         const userInfo = getUserFromToken(accessToken);
         if (userInfo && authState().user && userInfo.id) {
@@ -395,7 +414,8 @@ export function useAuth(options: UseAuthOptions = {}) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Password change failed";
+      const errorMessage =
+        error instanceof Error ? error.message : "Password change failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -413,18 +433,18 @@ export function useAuth(options: UseAuthOptions = {}) {
       try {
         const response = await authFetch(config.profileEndpoint!);
         const result = await parseApiResponse<User>(response);
-        
+
         if (result.success && result.data) {
           updateAuthState({ user: result.data });
           return result.data;
         }
-        
+
         return null;
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
         return null;
       }
-    }
+    },
   );
 
   // Update user profile
@@ -453,7 +473,8 @@ export function useAuth(options: UseAuthOptions = {}) {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Profile update failed";
+      const errorMessage =
+        error instanceof Error ? error.message : "Profile update failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -468,10 +489,10 @@ export function useAuth(options: UseAuthOptions = {}) {
 
     try {
       const token = tokenManager.getAccessToken();
-      
+
       if (token && !isTokenExpired(token)) {
         const userInfo = getUserFromToken(token);
-        
+
         if (userInfo) {
           updateAuthState({
             user: userInfo as User,
@@ -522,7 +543,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     isLoading: () => authState().isLoading,
     error: () => authState().error,
     isRefreshing: () => authState().isRefreshing,
-    
+
     // Actions
     login,
     register,
@@ -531,10 +552,10 @@ export function useAuth(options: UseAuthOptions = {}) {
     changePassword,
     updateProfile,
     initialize,
-    
+
     // Resources
     userProfile,
-    
+
     // Utilities
     authFetch,
     tokenManager,

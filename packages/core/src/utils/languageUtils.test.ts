@@ -229,7 +229,9 @@ describe("Language Utilities", () => {
     });
 
     it("should handle files with multiple dots", () => {
-      expect(getFileNameWithoutExtension("config.prod.env")).toBe("config.prod");
+      expect(getFileNameWithoutExtension("config.prod.env")).toBe(
+        "config.prod",
+      );
       expect(getFileNameWithoutExtension("bundle.min.js")).toBe("bundle.min");
     });
   });
@@ -251,7 +253,9 @@ describe("Language Utilities", () => {
     it("should return directory path from file path", () => {
       expect(getDirectoryPath("path/to/script.js")).toBe("path/to");
       expect(getDirectoryPath("styles.css")).toBe("/");
-      expect(getDirectoryPath("folder/subfolder/file.txt")).toBe("folder/subfolder");
+      expect(getDirectoryPath("folder/subfolder/file.txt")).toBe(
+        "folder/subfolder",
+      );
     });
 
     it("should handle root files", () => {
@@ -260,5 +264,3 @@ describe("Language Utilities", () => {
     });
   });
 });
-
-

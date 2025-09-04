@@ -6,6 +6,7 @@
 import { Component, Show, For, createMemo } from "solid-js";
 import { usePasswordStrength } from "../composables/usePasswordStrength";
 import type { UsePasswordStrengthOptions } from "../composables/usePasswordStrength";
+// import "./PasswordStrengthMeter.css";
 
 export interface PasswordStrengthMeterProps extends UsePasswordStrengthOptions {
   /** Password to analyze */
@@ -22,53 +23,50 @@ export interface PasswordStrengthMeterProps extends UsePasswordStrengthOptions {
   class?: string;
 }
 
-export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (props) => {
-  const {
-    password,
-    showRequirements = true,
-    showSuggestions = true,
-    showCrackTime = true,
-    compact = false,
-    class: className,
-    ...strengthOptions
-  } = props;
+export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (
+  props,
+) => {
+  const passwordSignal = () => props.password;
 
-  const passwordSignal = () => password;
-  
   const {
     strength,
     strengthLabel,
-    strengthColor,
     strengthProgress,
     isAcceptable,
     feedback,
     requirements,
     requirementsSummary,
-  } = usePasswordStrength(passwordSignal, strengthOptions);
+  } = usePasswordStrength(passwordSignal, props);
 
   // Don't show anything if no password
-  const shouldShow = createMemo(() => password && password.length > 0);
+  const shouldShow = createMemo(
+    () => props.password && props.password.length > 0,
+  );
 
   // Get strength bar classes
   const getStrengthBarClasses = () => {
     const classes = ["password-strength-meter__bar"];
-    
-    if (strength().score >= 4) classes.push("password-strength-meter__bar--excellent");
-    else if (strength().score >= 3) classes.push("password-strength-meter__bar--good");
-    else if (strength().score >= 2) classes.push("password-strength-meter__bar--fair");
-    else if (strength().score >= 1) classes.push("password-strength-meter__bar--weak");
+
+    if (strength().score >= 4)
+      classes.push("password-strength-meter__bar--excellent");
+    else if (strength().score >= 3)
+      classes.push("password-strength-meter__bar--good");
+    else if (strength().score >= 2)
+      classes.push("password-strength-meter__bar--fair");
+    else if (strength().score >= 1)
+      classes.push("password-strength-meter__bar--weak");
     else classes.push("password-strength-meter__bar--very-weak");
-    
+
     return classes.join(" ");
   };
 
   // Get container classes
   const getContainerClasses = () => {
     const classes = ["password-strength-meter"];
-    
-    if (compact) classes.push("password-strength-meter--compact");
-    if (className) classes.push(className);
-    
+
+    if (props.compact) classes.push("password-strength-meter--compact");
+    if (props.class) classes.push(props.class);
+
     return classes.join(" ");
   };
 
@@ -77,43 +75,36 @@ export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (pro
       <div class={getContainerClasses()}>
         {/* Strength Bar */}
         <div class="password-strength-meter__progress">
-          <div 
-            class={getStrengthBarClasses()}
-            style={{
-              width: `${strengthProgress()}%`,
-              "background-color": strengthColor(),
-            }}
+          <div
+            class={`${getStrengthBarClasses()} password-strength-meter__bar--width-${Math.floor(strengthProgress() / 20) * 20}`}
           />
         </div>
 
         {/* Strength Label and Feedback */}
-        <Show when={!compact}>
+        <Show when={!props.compact}>
           <div class="password-strength-meter__feedback">
             <div class="password-strength-meter__strength">
-              <span 
-                class="password-strength-meter__label"
-                style={{ color: strengthColor() }}
+              <span
+                class={`password-strength-meter__label password-strength-meter__label--${strength().score >= 4 ? "excellent" : strength().score >= 3 ? "good" : strength().score >= 2 ? "fair" : strength().score >= 1 ? "weak" : "very-weak"}`}
               >
                 {strengthLabel()}
               </span>
-              
-              <Show when={showCrackTime && strength().crackTime}>
+
+              <Show when={props.showCrackTime && strength().crackTime}>
                 <span class="password-strength-meter__crack-time">
                   Time to crack: {strength().crackTime}
                 </span>
               </Show>
             </div>
-            
+
             <Show when={feedback()}>
-              <div class="password-strength-meter__message">
-                {feedback()}
-              </div>
+              <div class="password-strength-meter__message">{feedback()}</div>
             </Show>
           </div>
         </Show>
 
         {/* Requirements Checklist */}
-        <Show when={showRequirements && !compact}>
+        <Show when={props.showRequirements && !props.compact}>
           <div class="password-strength-meter__requirements">
             <div class="password-strength-meter__requirements-header">
               <span class="password-strength-meter__requirements-title">
@@ -123,14 +114,14 @@ export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (pro
                 {requirementsSummary().met} of {requirementsSummary().total} met
               </span>
             </div>
-            
+
             <ul class="password-strength-meter__requirements-list">
               <For each={requirements()}>
                 {(requirement) => (
-                  <li 
+                  <li
                     class={`password-strength-meter__requirement ${
-                      requirement.met 
-                        ? "password-strength-meter__requirement--met" 
+                      requirement.met
+                        ? "password-strength-meter__requirement--met"
                         : "password-strength-meter__requirement--unmet"
                     }`}
                   >
@@ -148,7 +139,13 @@ export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (pro
         </Show>
 
         {/* Suggestions */}
-        <Show when={showSuggestions && strength().suggestions.length > 0 && !compact}>
+        <Show
+          when={
+            props.showSuggestions &&
+            strength().suggestions.length > 0 &&
+            !props.compact
+          }
+        >
           <div class="password-strength-meter__suggestions">
             <div class="password-strength-meter__suggestions-title">
               Suggestions to improve:
@@ -166,15 +163,14 @@ export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (pro
         </Show>
 
         {/* Compact Mode Summary */}
-        <Show when={compact}>
+        <Show when={props.compact}>
           <div class="password-strength-meter__compact-summary">
-            <span 
-              class="password-strength-meter__compact-label"
-              style={{ color: strengthColor() }}
+            <span
+              class={`password-strength-meter__compact-label password-strength-meter__compact-label--${strength().score >= 4 ? "excellent" : strength().score >= 3 ? "good" : strength().score >= 2 ? "fair" : strength().score >= 1 ? "weak" : "very-weak"}`}
             >
               {strengthLabel()}
             </span>
-            
+
             <Show when={!isAcceptable()}>
               <span class="password-strength-meter__compact-warning">
                 Password too weak
@@ -186,7 +182,3 @@ export const PasswordStrengthMeter: Component<PasswordStrengthMeterProps> = (pro
     </Show>
   );
 };
-
-
-
-

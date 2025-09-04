@@ -1,36 +1,36 @@
 /**
  * Main chat composable for Reynard Chat System
- * 
+ *
  * Provides comprehensive state management and streaming functionality
  * for chat applications with markdown parsing, thinking sections,
  * and tool integration.
  */
 
-import { 
-  createSignal, 
-  createEffect, 
-  createResource, 
-  batch, 
+import {
+  createSignal,
+  createEffect,
+  createResource,
+  batch,
   onCleanup,
   createMemo,
-  onMount
-} from 'solid-js';
-import type { Accessor, Resource } from 'solid-js';
-import { 
+  onMount,
+} from "solid-js";
+import type { Accessor, Resource } from "solid-js";
+import {
   StreamingMarkdownParser,
-  createStreamingMarkdownParser 
-} from '../utils/StreamingMarkdownParser';
-import type { 
-  ChatState, 
-  ChatActions, 
-  ChatMessage, 
-  ChatRequest, 
-  StreamChunk, 
+  createStreamingMarkdownParser,
+} from "../utils/StreamingMarkdownParser";
+import type {
+  ChatState,
+  ChatActions,
+  ChatMessage,
+  ChatRequest,
+  StreamChunk,
   UseChatReturn,
   Tool,
   ToolCall,
-  ParseResult
-} from '../types';
+  ParseResult,
+} from "../types";
 
 export interface UseChatOptions {
   /** Chat service endpoint */
@@ -38,7 +38,7 @@ export interface UseChatOptions {
   /** Authentication headers */
   authHeaders?: Record<string, string>;
   /** Initial configuration */
-  config?: Partial<ChatState['config']>;
+  config?: Partial<ChatState["config"]>;
   /** Available tools */
   tools?: Tool[];
   /** Initial messages */
@@ -56,7 +56,7 @@ export interface UseChatOptions {
   };
 }
 
-const DEFAULT_CONFIG: ChatState['config'] = {
+const DEFAULT_CONFIG: ChatState["config"] = {
   enableThinking: true,
   enableTools: true,
   autoScroll: true,
@@ -74,7 +74,7 @@ const DEFAULT_RECONNECTION = {
 
 export function useChat(options: UseChatOptions = {}): UseChatReturn {
   const {
-    endpoint = '/api/chat',
+    endpoint = "/api/chat",
     authHeaders = {},
     config: userConfig = {},
     tools = [],
@@ -86,24 +86,29 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
   // Core state
   const [messages, setMessages] = createSignal<ChatMessage[]>(initialMessages);
-  const [currentMessage, setCurrentMessage] = createSignal<ChatMessage | undefined>();
+  const [currentMessage, setCurrentMessage] = createSignal<
+    ChatMessage | undefined
+  >();
   const [isStreaming, setIsStreaming] = createSignal(false);
   const [isThinking, setIsThinking] = createSignal(false);
   const [availableModels, setAvailableModels] = createSignal<string[]>([]);
   const [selectedModel, setSelectedModel] = createSignal<string>();
   const [availableTools, setAvailableTools] = createSignal<Tool[]>(tools);
-  const [connectionState, setConnectionState] = createSignal<ChatState['connectionState']>('disconnected');
-  const [error, setError] = createSignal<ChatState['error']>();
-  const [config, setConfig] = createSignal<ChatState['config']>({
+  const [connectionState, setConnectionState] =
+    createSignal<ChatState["connectionState"]>("disconnected");
+  const [error, setError] = createSignal<ChatState["error"]>();
+  const [config, setConfig] = createSignal<ChatState["config"]>({
     ...DEFAULT_CONFIG,
     ...userConfig,
   });
 
   // Streaming state
-  const [streamController, setStreamController] = createSignal<AbortController | null>(null);
-  const [streamingParser, setStreamingParser] = createSignal<StreamingMarkdownParser | null>(null);
-  const [currentResponse, setCurrentResponse] = createSignal('');
-  const [currentThinking, setCurrentThinking] = createSignal('');
+  const [streamController, setStreamController] =
+    createSignal<AbortController | null>(null);
+  const [streamingParser, setStreamingParser] =
+    createSignal<StreamingMarkdownParser | null>(null);
+  const [currentResponse, setCurrentResponse] = createSignal("");
+  const [currentThinking, setCurrentThinking] = createSignal("");
 
   // Reconnection state
   const [reconnectionAttempts, setReconnectionAttempts] = createSignal(0);
@@ -117,7 +122,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   });
 
   const hasError = createMemo(() => !!error());
-  const isConnected = createMemo(() => connectionState() === 'connected');
+  const isConnected = createMemo(() => connectionState() === "connected");
 
   // Resource for checking connection
   const [connectionCheck] = createResource(
@@ -131,7 +136,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       } catch {
         return false;
       }
-    }
+    },
   );
 
   // Generate unique message ID
@@ -145,7 +150,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Add a new message to the conversation
-  const addMessage = (message: Omit<ChatMessage, 'id' | 'timestamp'>): ChatMessage => {
+  const addMessage = (
+    message: Omit<ChatMessage, "id" | "timestamp">,
+  ): ChatMessage => {
     const newMessage: ChatMessage = {
       id: generateMessageId(),
       timestamp: Date.now(),
@@ -153,12 +160,10 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     };
 
     batch(() => {
-      setMessages(prev => {
+      setMessages((prev) => {
         const updated = [...prev, newMessage];
         const maxLength = config().maxHistoryLength;
-        return updated.length > maxLength 
-          ? updated.slice(-maxLength)
-          : updated;
+        return updated.length > maxLength ? updated.slice(-maxLength) : updated;
       });
     });
 
@@ -167,10 +172,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
   // Update an existing message
   const updateMessage = (id: string, updates: Partial<ChatMessage>) => {
-    setMessages(prev => 
-      prev.map(msg => 
-        msg.id === id ? { ...msg, ...updates } : msg
-      )
+    setMessages((prev) =>
+      prev.map((msg) => (msg.id === id ? { ...msg, ...updates } : msg)),
     );
   };
 
@@ -179,25 +182,28 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     batch(() => {
       setMessages([]);
       setCurrentMessage(undefined);
-      setCurrentResponse('');
-      setCurrentThinking('');
+      setCurrentResponse("");
+      setCurrentThinking("");
       setError(undefined);
     });
   };
 
   // Send a message
-  const sendMessage = async (content: string, requestOptions: Partial<ChatRequest> = {}) => {
+  const sendMessage = async (
+    content: string,
+    requestOptions: Partial<ChatRequest> = {},
+  ) => {
     if (isStreaming()) {
-      throw new Error('Cannot send message while streaming');
+      throw new Error("Cannot send message while streaming");
     }
 
     if (!content.trim()) {
-      throw new Error('Message content cannot be empty');
+      throw new Error("Message content cannot be empty");
     }
 
     // Add user message
     const userMessage = addMessage({
-      role: 'user',
+      role: "user",
       content: content.trim(),
     });
 
@@ -214,21 +220,23 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     try {
       await streamResponse(request);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error("Failed to send message:", error);
       setError({
-        type: 'request_failed',
-        message: error instanceof Error ? error.message : 'Failed to send message',
+        type: "request_failed",
+        message:
+          error instanceof Error ? error.message : "Failed to send message",
         timestamp: Date.now(),
         recoverable: true,
       });
 
       // Add error message
       addMessage({
-        role: 'assistant',
-        content: 'I apologize, but I encountered an error processing your message. Please try again.',
+        role: "assistant",
+        content:
+          "I apologize, but I encountered an error processing your message. Please try again.",
         error: {
-          type: 'request_failed',
-          message: error instanceof Error ? error.message : 'Unknown error',
+          type: "request_failed",
+          message: error instanceof Error ? error.message : "Unknown error",
           recoverable: true,
         },
       });
@@ -245,8 +253,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     batch(() => {
       setIsStreaming(true);
       setIsThinking(false);
-      setCurrentResponse('');
-      setCurrentThinking('');
+      setCurrentResponse("");
+      setCurrentThinking("");
       setError(undefined);
     });
 
@@ -256,13 +264,13 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
     // Create assistant message
     const assistantMessage = addMessage({
-      role: 'assistant',
-      content: '',
+      role: "assistant",
+      content: "",
       streaming: {
         isStreaming: true,
         isThinking: false,
-        currentContent: '',
-        currentThinking: '',
+        currentContent: "",
+        currentThinking: "",
         chunks: [],
       },
     });
@@ -271,9 +279,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
     try {
       const response = await fetchFn(endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...authHeaders,
         },
         body: JSON.stringify(request),
@@ -286,7 +294,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
       const reader = response.body?.getReader();
       if (!reader) {
-        throw new Error('Response body is not readable');
+        throw new Error("Response body is not readable");
       }
 
       const decoder = new TextDecoder();
@@ -294,29 +302,28 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       try {
         while (true) {
           const { done, value } = await reader.read();
-          
+
           if (done) break;
 
           const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
+          const lines = chunk.split("\n");
 
           for (const line of lines) {
-            if (line.trim() === '') continue;
+            if (line.trim() === "") continue;
 
             try {
-              const data: StreamChunk = JSON.parse(line.replace(/^data: /, ''));
+              const data: StreamChunk = JSON.parse(line.replace(/^data: /, ""));
               await processStreamChunk(data, parser, assistantMessage.id);
             } catch (parseError) {
-              console.warn('Failed to parse stream chunk:', line, parseError);
+              console.warn("Failed to parse stream chunk:", line, parseError);
             }
           }
         }
       } finally {
         reader.releaseLock();
       }
-
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
+      if (error instanceof Error && error.name === "AbortError") {
         // Request was cancelled
         return;
       }
@@ -329,19 +336,19 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
   // Process a single stream chunk
   const processStreamChunk = async (
-    chunk: StreamChunk, 
+    chunk: StreamChunk,
     parser: StreamingMarkdownParser,
-    messageId: string
+    messageId: string,
   ) => {
     switch (chunk.type) {
-      case 'start':
+      case "start":
         batch(() => {
           setIsStreaming(true);
-          setConnectionState('connected');
+          setConnectionState("connected");
         });
         break;
 
-      case 'thinking':
+      case "thinking":
         if (chunk.content) {
           const newThinking = currentThinking() + chunk.content;
           batch(() => {
@@ -361,11 +368,11 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         }
         break;
 
-      case 'content':
+      case "content":
         if (chunk.content) {
           const parseResult = parser.parseChunk(chunk.content);
           const newResponse = currentResponse() + chunk.content;
-          
+
           batch(() => {
             setCurrentResponse(newResponse);
             setIsThinking(false);
@@ -384,29 +391,29 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         }
         break;
 
-      case 'tool_call':
+      case "tool_call":
         if (chunk.toolExecution) {
           await handleToolCall(chunk.toolExecution, messageId);
         }
         break;
 
-      case 'tool_progress':
+      case "tool_progress":
         if (chunk.toolExecution) {
           updateToolCallProgress(chunk.toolExecution, messageId);
         }
         break;
 
-      case 'tool_result':
+      case "tool_result":
         if (chunk.toolExecution) {
           handleToolResult(chunk.toolExecution, messageId);
         }
         break;
 
-      case 'complete':
+      case "complete":
         // Streaming complete - will be handled in finalize
         break;
 
-      case 'error':
+      case "error":
         if (chunk.error) {
           setError({
             type: chunk.error.type,
@@ -420,12 +427,15 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Handle tool call execution
-  const handleToolCall = async (toolExecution: NonNullable<StreamChunk['toolExecution']>, messageId: string) => {
+  const handleToolCall = async (
+    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
+    messageId: string,
+  ) => {
     const toolCall: ToolCall = {
       id: generateToolCallId(),
       name: toolExecution.toolName,
       arguments: toolExecution.parameters || {},
-      status: 'running',
+      status: "running",
       progress: toolExecution.progress,
       message: toolExecution.message,
       timing: {
@@ -439,11 +449,14 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Update tool call progress
-  const updateToolCallProgress = (toolExecution: NonNullable<StreamChunk['toolExecution']>, messageId: string) => {
-    const message = messages().find(m => m.id === messageId);
+  const updateToolCallProgress = (
+    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
+    messageId: string,
+  ) => {
+    const message = messages().find((m) => m.id === messageId);
     if (!message?.toolCalls) return;
 
-    const updatedToolCalls = message.toolCalls.map(tc => 
+    const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
             ...tc,
@@ -451,7 +464,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
             message: toolExecution.message,
             status: toolExecution.status,
           }
-        : tc
+        : tc,
     );
 
     updateMessage(messageId, {
@@ -460,11 +473,14 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Handle tool result
-  const handleToolResult = (toolExecution: NonNullable<StreamChunk['toolExecution']>, messageId: string) => {
-    const message = messages().find(m => m.id === messageId);
+  const handleToolResult = (
+    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
+    messageId: string,
+  ) => {
+    const message = messages().find((m) => m.id === messageId);
     if (!message?.toolCalls) return;
 
-    const updatedToolCalls = message.toolCalls.map(tc => 
+    const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
             ...tc,
@@ -477,7 +493,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
               duration: Date.now() - tc.timing!.startTime,
             },
           }
-        : tc
+        : tc,
     );
 
     updateMessage(messageId, {
@@ -486,9 +502,12 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Finalize streaming
-  const finalizeStreaming = async (parser: StreamingMarkdownParser, messageId: string) => {
+  const finalizeStreaming = async (
+    parser: StreamingMarkdownParser,
+    messageId: string,
+  ) => {
     const finalResult = parser.finalize();
-    
+
     batch(() => {
       setIsStreaming(false);
       setIsThinking(false);
@@ -526,36 +545,43 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Retry last message
   const retryLastMessage = async () => {
     const msgs = messages();
-    const lastUserMessage = [...msgs].reverse().find(m => m.role === 'user');
-    
+    const lastUserMessage = [...msgs].reverse().find((m) => m.role === "user");
+
     if (!lastUserMessage) {
-      throw new Error('No user message to retry');
+      throw new Error("No user message to retry");
     }
 
     await sendMessage(lastUserMessage.content);
   };
 
   // Update configuration
-  const updateConfig = (newConfig: Partial<ChatState['config']>) => {
-    setConfig(prev => ({ ...prev, ...newConfig }));
+  const updateConfig = (newConfig: Partial<ChatState["config"]>) => {
+    setConfig((prev) => ({ ...prev, ...newConfig }));
   };
 
   // Connect to chat service
   const connect = async () => {
-    setConnectionState('connecting');
-    
+    setConnectionState("connecting");
+
     try {
       const isHealthy = await connectionCheck();
-      setConnectionState(isHealthy ? 'connected' : 'error');
+      setConnectionState(isHealthy ? "connected" : "error");
       setReconnectionAttempts(0);
     } catch (error) {
-      setConnectionState('error');
-      
-      if (reconnection.enabled && reconnectionAttempts() < reconnection.maxAttempts) {
-        setTimeout(() => {
-          setReconnectionAttempts(prev => prev + 1);
-          connect();
-        }, reconnection.delay * Math.pow(reconnection.backoff, reconnectionAttempts()));
+      setConnectionState("error");
+
+      if (
+        reconnection.enabled &&
+        reconnectionAttempts() < reconnection.maxAttempts
+      ) {
+        setTimeout(
+          () => {
+            setReconnectionAttempts((prev) => prev + 1);
+            connect();
+          },
+          reconnection.delay *
+            Math.pow(reconnection.backoff, reconnectionAttempts()),
+        );
       }
     }
   };
@@ -563,47 +589,51 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Disconnect from chat service
   const disconnect = () => {
     cancelStreaming();
-    setConnectionState('disconnected');
+    setConnectionState("disconnected");
   };
 
   // Export conversation
-  const exportConversation = (format: 'json' | 'markdown' | 'txt'): string => {
+  const exportConversation = (format: "json" | "markdown" | "txt"): string => {
     const msgs = messages();
-    
+
     switch (format) {
-      case 'json':
+      case "json":
         return JSON.stringify(msgs, null, 2);
-        
-      case 'markdown':
-        return msgs.map(msg => {
-          const timestamp = new Date(msg.timestamp).toLocaleString();
-          const role = msg.role === 'user' ? '**User**' : '**Assistant**';
-          return `## ${role} (${timestamp})\n\n${msg.content}\n\n---\n`;
-        }).join('\n');
-        
-      case 'txt':
-        return msgs.map(msg => {
-          const timestamp = new Date(msg.timestamp).toLocaleString();
-          return `[${timestamp}] ${msg.role.toUpperCase()}: ${msg.content}`;
-        }).join('\n\n');
-        
+
+      case "markdown":
+        return msgs
+          .map((msg) => {
+            const timestamp = new Date(msg.timestamp).toLocaleString();
+            const role = msg.role === "user" ? "**User**" : "**Assistant**";
+            return `## ${role} (${timestamp})\n\n${msg.content}\n\n---\n`;
+          })
+          .join("\n");
+
+      case "txt":
+        return msgs
+          .map((msg) => {
+            const timestamp = new Date(msg.timestamp).toLocaleString();
+            return `[${timestamp}] ${msg.role.toUpperCase()}: ${msg.content}`;
+          })
+          .join("\n\n");
+
       default:
         throw new Error(`Unsupported export format: ${format}`);
     }
   };
 
   // Import conversation
-  const importConversation = (data: string, format: 'json') => {
+  const importConversation = (data: string, format: "json") => {
     switch (format) {
-      case 'json':
+      case "json":
         try {
           const importedMessages = JSON.parse(data) as ChatMessage[];
           setMessages(importedMessages);
         } catch (error) {
-          throw new Error('Invalid JSON format');
+          throw new Error("Invalid JSON format");
         }
         break;
-        
+
       default:
         throw new Error(`Unsupported import format: ${format}`);
     }

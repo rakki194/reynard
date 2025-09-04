@@ -1,15 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  BarChart,
-  LineChart,
-  PieChart,
-  TimeSeriesChart,
-} from "../components";
-import {
-  validateChartData,
-  prepareDatasets,
-  getDefaultConfig,
-} from "../utils";
+import { BarChart, LineChart, PieChart, TimeSeriesChart } from "../components";
+import { validateChartData, prepareDatasets, getDefaultConfig } from "../utils";
 
 describe("Package Exports", () => {
   describe("Components", () => {

@@ -9,7 +9,12 @@ import { getOwner } from "solid-js";
 // Suppress SolidJS lifecycle warnings in tests
 const originalWarn = console.warn;
 console.warn = (...args: any[]) => {
-  if (typeof args[0] === 'string' && args[0].includes('computations created outside a `createRoot` or `render` will never be disposed')) {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes(
+      "computations created outside a `createRoot` or `render` will never be disposed",
+    )
+  ) {
     return; // Suppress this specific warning
   }
   originalWarn(...args);
@@ -92,6 +97,6 @@ afterEach(() => {
   const owner = getOwner();
   if (owner) {
     // Clean up any remaining computations
-    owner.cleanups?.forEach(cleanup => cleanup());
+    owner.cleanups?.forEach((cleanup) => cleanup());
   }
 });

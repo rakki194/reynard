@@ -1,5 +1,5 @@
 /**
- * Setting Control Component  
+ * Setting Control Component
  * Dynamic form control based on setting type
  */
 
@@ -23,9 +23,9 @@ export interface SettingControlProps {
 }
 
 export const SettingControl: Component<SettingControlProps> = (props) => {
-  const [local, others] = splitProps(props, [
+  const [local] = splitProps(props, [
     "definition",
-    "value", 
+    "value",
     "onChange",
     "error",
     "disabled",
@@ -38,20 +38,24 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
   // Handle change with type conversion
   const handleChange = (newValue: any) => {
     const { type } = local.definition;
-    
+
     let convertedValue = newValue;
-    
+
     // Type conversion based on setting type
     switch (type) {
       case "number":
       case "range":
-        convertedValue = typeof newValue === "string" ? parseFloat(newValue) : newValue;
+        convertedValue =
+          typeof newValue === "string" ? parseFloat(newValue) : newValue;
         break;
-        
+
       case "boolean":
-        convertedValue = typeof newValue === "string" ? newValue === "true" : Boolean(newValue);
+        convertedValue =
+          typeof newValue === "string"
+            ? newValue === "true"
+            : Boolean(newValue);
         break;
-        
+
       case "json":
         if (typeof newValue === "string") {
           try {
@@ -62,14 +66,14 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
           }
         }
         break;
-        
+
       case "multiselect":
         if (!Array.isArray(convertedValue)) {
           convertedValue = [];
         }
         break;
     }
-    
+
     local.onChange(convertedValue);
   };
 
@@ -77,7 +81,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
   const renderControl = () => {
     const { type, validation, options } = local.definition;
     const isDisabled = local.disabled || local.definition.readonly;
-    
+
     switch (type) {
       case "boolean":
         return (
@@ -139,9 +143,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
               step={validation?.step}
               class="setting-control__range-input"
             />
-            <span class="setting-control__range-value">
-              {local.value}
-            </span>
+            <span class="setting-control__range-value">{local.value}</span>
           </div>
         );
 
@@ -166,12 +168,17 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
                 <label class="setting-control__checkbox-option">
                   <input
                     type="checkbox"
-                    checked={Array.isArray(local.value) && local.value.includes(option.value)}
+                    checked={
+                      Array.isArray(local.value) &&
+                      local.value.includes(option.value)
+                    }
                     onChange={(e) => {
-                      const currentValues = Array.isArray(local.value) ? local.value : [];
+                      const currentValues = Array.isArray(local.value)
+                        ? local.value
+                        : [];
                       const newValues = e.target.checked
                         ? [...currentValues, option.value]
-                        : currentValues.filter(v => v !== option.value);
+                        : currentValues.filter((v) => v !== option.value);
                       handleChange(newValues);
                     }}
                     disabled={isDisabled || option.disabled}
@@ -212,7 +219,13 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
           <TextField
             id={controlId()}
             type="date"
-            value={local.value ? (local.value instanceof Date ? local.value.toISOString().split('T')[0] : local.value) : ""}
+            value={
+              local.value
+                ? local.value instanceof Date
+                  ? local.value.toISOString().split("T")[0]
+                  : local.value
+                : ""
+            }
             onInput={(e) => handleChange(e.target.value)}
             disabled={isDisabled}
             error={!!local.error}
@@ -236,7 +249,13 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
           <TextField
             id={controlId()}
             type="datetime-local"
-            value={local.value ? (local.value instanceof Date ? local.value.toISOString().slice(0, 16) : local.value) : ""}
+            value={
+              local.value
+                ? local.value instanceof Date
+                  ? local.value.toISOString().slice(0, 16)
+                  : local.value
+                : ""
+            }
             onInput={(e) => handleChange(e.target.value)}
             disabled={isDisabled}
             error={!!local.error}
@@ -247,7 +266,11 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
         return (
           <textarea
             id={controlId()}
-            value={typeof local.value === "string" ? local.value : JSON.stringify(local.value, null, 2)}
+            value={
+              typeof local.value === "string"
+                ? local.value
+                : JSON.stringify(local.value, null, 2)
+            }
             onInput={(e) => handleChange(e.target.value)}
             disabled={isDisabled}
             placeholder="Enter JSON data..."
@@ -265,7 +288,9 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
               value={local.value || ""}
               onInput={(e) => handleChange(e.target.value)}
               disabled={isDisabled}
-              placeholder={type === "file" ? "Enter file path..." : "Enter folder path..."}
+              placeholder={
+                type === "file" ? "Enter file path..." : "Enter folder path..."
+              }
               error={!!local.error}
             />
             <Button
@@ -310,8 +335,8 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
   return (
     <div class={`setting-control ${local.class || ""}`}>
       <div class="setting-control__header">
-        <label 
-          for={controlId()} 
+        <label
+          for={controlId()}
           class={`setting-control__label ${local.definition.required ? "setting-control__label--required" : ""}`}
         >
           {local.definition.label}
@@ -319,7 +344,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             <span class="setting-control__required">*</span>
           </Show>
         </label>
-        
+
         <Show when={local.definition.help}>
           <button
             type="button"
@@ -333,39 +358,54 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             ?
           </button>
         </Show>
-        
+
         <Show when={local.definition.experimental}>
-          <span class="setting-control__experimental">
-            Experimental
-          </span>
+          <span class="setting-control__experimental">Experimental</span>
         </Show>
       </div>
-      
+
       <Show when={local.definition.description}>
         <div class="setting-control__description">
           {local.definition.description}
         </div>
       </Show>
-      
-      <div class="setting-control__input">
-        {renderControl()}
-      </div>
-      
+
+      <div class="setting-control__input">{renderControl()}</div>
+
       <Show when={local.error}>
-        <div class="setting-control__error">
-          {local.error}
-        </div>
+        <div class="setting-control__error">{local.error}</div>
       </Show>
-      
-      <Show when={local.definition.validation?.min !== undefined || local.definition.validation?.max !== undefined}>
+
+      <Show
+        when={
+          local.definition.validation?.min !== undefined ||
+          local.definition.validation?.max !== undefined
+        }
+      >
         <div class="setting-control__hint">
-          <Show when={local.definition.validation?.min !== undefined && local.definition.validation?.max !== undefined}>
-            Range: {local.definition.validation!.min} - {local.definition.validation!.max}
+          <Show
+            when={
+              local.definition.validation?.min !== undefined &&
+              local.definition.validation?.max !== undefined
+            }
+          >
+            Range: {local.definition.validation!.min} -{" "}
+            {local.definition.validation!.max}
           </Show>
-          <Show when={local.definition.validation?.min !== undefined && local.definition.validation?.max === undefined}>
+          <Show
+            when={
+              local.definition.validation?.min !== undefined &&
+              local.definition.validation?.max === undefined
+            }
+          >
             Minimum: {local.definition.validation!.min}
           </Show>
-          <Show when={local.definition.validation?.min === undefined && local.definition.validation?.max !== undefined}>
+          <Show
+            when={
+              local.definition.validation?.min === undefined &&
+              local.definition.validation?.max !== undefined
+            }
+          >
             Maximum: {local.definition.validation!.max}
           </Show>
         </div>
@@ -373,4 +413,3 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
     </div>
   );
 };
-

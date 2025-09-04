@@ -12,13 +12,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
-        "@reynard/core", 
+        "solid-js",
+        "solid-js/web",
+        "@reynard/core",
         "@reynard/components",
         "@solid-primitives/intersection-observer",
         "@solid-primitives/resize-observer",
-        "@solid-primitives/event-listener"
+        "@solid-primitives/event-listener",
       ],
       output: {
         globals: {
@@ -26,7 +26,8 @@ export default defineConfig({
           "solid-js/web": "solidWeb",
           "@reynard/core": "ReynardCore",
           "@reynard/components": "ReynardComponents",
-          "@solid-primitives/intersection-observer": "SolidPrimitivesIntersectionObserver",
+          "@solid-primitives/intersection-observer":
+            "SolidPrimitivesIntersectionObserver",
           "@solid-primitives/resize-observer": "SolidPrimitivesResizeObserver",
           "@solid-primitives/event-listener": "SolidPrimitivesEventListener",
         },
@@ -36,7 +37,3 @@ export default defineConfig({
     sourcemap: true,
   },
 });
-
-
-
-

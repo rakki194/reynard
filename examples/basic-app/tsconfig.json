@@ -21,6 +21,5 @@
       "@reynard/core": ["../../packages/core/src"]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "../../packages/core/tsconfig.build.json" }]
+  "include": ["src"]
 }

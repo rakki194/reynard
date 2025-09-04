@@ -2,13 +2,13 @@
  * Theme utility functions for managing theme state and color generation
  */
 
-import type { ThemeName } from '../types';
+import type { ThemeName } from "../types";
 import {
   computeTagBackground,
   computeTagColor,
   computeHoverStyles,
   computeAnimation,
-} from './colorUtils';
+} from "./colorUtils";
 
 /**
  * Theme context interface
@@ -27,53 +27,56 @@ export interface ThemeContext {
 /**
  * Default theme configuration
  */
-export const DEFAULT_THEME: ThemeName = 'light';
+export const DEFAULT_THEME: ThemeName = "light";
 
 /**
  * Available themes
  */
 export const AVAILABLE_THEMES: ThemeName[] = [
-  'dark',
-  'light',
-  'gray',
-  'banana',
-  'strawberry',
-  'peanut',
+  "dark",
+  "light",
+  "gray",
+  "banana",
+  "strawberry",
+  "peanut",
 ];
 
 /**
  * Theme metadata for UI display
  */
-export const THEME_METADATA: Record<ThemeName, { name: string; description: string; icon: string }> = {
+export const THEME_METADATA: Record<
+  ThemeName,
+  { name: string; description: string; icon: string }
+> = {
   dark: {
-    name: 'Dark',
-    description: 'Dark theme with high contrast',
-    icon: 'moon',
+    name: "Dark",
+    description: "Dark theme with high contrast",
+    icon: "moon",
   },
   light: {
-    name: 'Light',
-    description: 'Light theme with clean aesthetics',
-    icon: 'sun',
+    name: "Light",
+    description: "Light theme with clean aesthetics",
+    icon: "sun",
   },
   gray: {
-    name: 'Gray',
-    description: 'Monochromatic gray theme',
-    icon: 'cloud',
+    name: "Gray",
+    description: "Monochromatic gray theme",
+    icon: "cloud",
   },
   banana: {
-    name: 'Banana',
-    description: 'Warm yellow and cream theme',
-    icon: 'banana',
+    name: "Banana",
+    description: "Warm yellow and cream theme",
+    icon: "banana",
   },
   strawberry: {
-    name: 'Strawberry',
-    description: 'Red and pink with green accents',
-    icon: 'strawberry',
+    name: "Strawberry",
+    description: "Red and pink with green accents",
+    icon: "strawberry",
   },
   peanut: {
-    name: 'Peanut',
-    description: 'Warm brown and tan theme',
-    icon: 'peanut',
+    name: "Peanut",
+    description: "Warm brown and tan theme",
+    icon: "peanut",
   },
 };
 
@@ -82,9 +85,9 @@ export const THEME_METADATA: Record<ThemeName, { name: string; description: stri
  * @returns Current theme name
  */
 export function getStoredTheme(): ThemeName {
-  if (typeof window === 'undefined') return DEFAULT_THEME;
-  
-  const stored = localStorage.getItem('theme') as ThemeName;
+  if (typeof window === "undefined") return DEFAULT_THEME;
+
+  const stored = localStorage.getItem("theme") as ThemeName;
   return AVAILABLE_THEMES.includes(stored) ? stored : DEFAULT_THEME;
 }
 
@@ -93,10 +96,10 @@ export function getStoredTheme(): ThemeName {
  * @param theme - Theme to set
  */
 export function setStoredTheme(theme: ThemeName): void {
-  if (typeof window === 'undefined') return;
-  
-  localStorage.setItem('theme', theme);
-  document.documentElement.setAttribute('data-theme', theme);
+  if (typeof window === "undefined") return;
+
+  localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute("data-theme", theme);
 }
 
 /**
@@ -119,7 +122,9 @@ export function getTagStyle(theme: ThemeName, tag: string) {
  * @param initialTheme - Initial theme to use
  * @returns Theme context object
  */
-export function createThemeContext(initialTheme: ThemeName = DEFAULT_THEME): ThemeContext {
+export function createThemeContext(
+  initialTheme: ThemeName = DEFAULT_THEME,
+): ThemeContext {
   let currentTheme = initialTheme;
 
   return {
@@ -161,7 +166,8 @@ export function getNextTheme(currentTheme: ThemeName): ThemeName {
  */
 export function getPreviousTheme(currentTheme: ThemeName): ThemeName {
   const currentIndex = AVAILABLE_THEMES.indexOf(currentTheme);
-  const previousIndex = currentIndex === 0 ? AVAILABLE_THEMES.length - 1 : currentIndex - 1;
+  const previousIndex =
+    currentIndex === 0 ? AVAILABLE_THEMES.length - 1 : currentIndex - 1;
   return AVAILABLE_THEMES[previousIndex];
 }
 
@@ -182,7 +188,7 @@ export function getThemeByName(name: string) {
  * @returns Array of all available themes with metadata
  */
 export function getAllThemes() {
-  return AVAILABLE_THEMES.map(theme => ({
+  return AVAILABLE_THEMES.map((theme) => ({
     id: theme,
     ...THEME_METADATA[theme],
   }));

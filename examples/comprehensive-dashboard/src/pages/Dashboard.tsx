@@ -1,39 +1,45 @@
-import { Component, createSignal, createEffect, For } from 'solid-js';
-import { useI18n, useNotifications } from '@reynard/core';
-import { Card, Button } from '@reynard/components';
-import { Grid, GridItem } from '@reynard/ui';
-import { LineChart, BarChart, PieChart } from '@reynard/charts';
+import { Component, createSignal, createEffect, For } from "solid-js";
+import { useI18n, useNotifications } from "@reynard/core";
+import { Card, Button } from "@reynard/components";
+import { Grid, GridItem } from "@reynard/ui";
+import { LineChart, BarChart, PieChart } from "@reynard/charts";
 
 // Mock data for demonstration
 const generateMockData = () => ({
   visitors: {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [{
-      label: 'Visitors',
-      data: [120, 190, 300, 500, 200, 300, 450],
-      borderColor: 'var(--color-primary)',
-      backgroundColor: 'var(--color-primary-alpha)',
-    }]
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    datasets: [
+      {
+        label: "Visitors",
+        data: [120, 190, 300, 500, 200, 300, 450],
+        borderColor: "var(--color-primary)",
+        backgroundColor: "var(--color-primary-alpha)",
+      },
+    ],
   },
   revenue: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{
-      label: 'Revenue ($)',
-      data: [1200, 1900, 3000, 5000, 2000, 3000],
-      backgroundColor: 'var(--color-success)',
-    }]
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Revenue ($)",
+        data: [1200, 1900, 3000, 5000, 2000, 3000],
+        backgroundColor: "var(--color-success)",
+      },
+    ],
   },
   userTypes: {
-    labels: ['New Users', 'Returning Users', 'Premium Users'],
-    datasets: [{
-      data: [300, 500, 200],
-      backgroundColor: [
-        'var(--color-primary)',
-        'var(--color-secondary)', 
-        'var(--color-warning)'
-      ]
-    }]
-  }
+    labels: ["New Users", "Returning Users", "Premium Users"],
+    datasets: [
+      {
+        data: [300, 500, 200],
+        backgroundColor: [
+          "var(--color-primary)",
+          "var(--color-secondary)",
+          "var(--color-warning)",
+        ],
+      },
+    ],
+  },
 });
 
 const Dashboard: Component = () => {
@@ -50,11 +56,13 @@ const Dashboard: Component = () => {
   // Simulate real-time updates
   createEffect(() => {
     const interval = setInterval(() => {
-      setStats(prev => ({
+      setStats((prev) => ({
         totalUsers: prev.totalUsers + Math.floor(Math.random() * 3),
         activeUsers: prev.activeUsers + Math.floor(Math.random() * 2) - 1,
         revenue: prev.revenue + Math.floor(Math.random() * 100),
-        conversionRate: Number((prev.conversionRate + (Math.random() - 0.5) * 0.1).toFixed(1)),
+        conversionRate: Number(
+          (prev.conversionRate + (Math.random() - 0.5) * 0.1).toFixed(1),
+        ),
       }));
     }, 5000);
 
@@ -64,31 +72,29 @@ const Dashboard: Component = () => {
   const refreshData = () => {
     setData(generateMockData());
     notifications.add({
-      type: 'success',
-      message: 'Dashboard data refreshed',
+      type: "success",
+      message: "Dashboard data refreshed",
       duration: 3000,
     });
   };
 
   const recentActivities = [
-    { user: 'Alice Johnson', action: 'Created new project', time: '2 min ago' },
-    { user: 'Bob Smith', action: 'Updated profile', time: '5 min ago' },
-    { user: 'Carol Wilson', action: 'Uploaded files', time: '10 min ago' },
-    { user: 'David Brown', action: 'Shared document', time: '15 min ago' },
+    { user: "Alice Johnson", action: "Created new project", time: "2 min ago" },
+    { user: "Bob Smith", action: "Updated profile", time: "5 min ago" },
+    { user: "Carol Wilson", action: "Uploaded files", time: "10 min ago" },
+    { user: "David Brown", action: "Shared document", time: "15 min ago" },
   ];
 
   return (
     <div class="dashboard">
       <div class="dashboard__header">
-        <h1 class="dashboard__title">
-          {t('dashboard.welcome')}
-        </h1>
+        <h1 class="dashboard__title">{t("dashboard.welcome")}</h1>
         <Button
           variant="primary"
           onClick={refreshData}
           leftIcon={<span>🔄</span>}
         >
-          {t('common.refresh')}
+          {t("common.refresh")}
         </Button>
       </div>
 
@@ -99,7 +105,7 @@ const Dashboard: Component = () => {
             <div class="dashboard__stat-icon">👥</div>
             <div class="dashboard__stat-content">
               <h3>{stats().totalUsers.toLocaleString()}</h3>
-              <p>{t('users.total')}</p>
+              <p>{t("users.total")}</p>
             </div>
           </Card>
         </GridItem>
@@ -108,7 +114,7 @@ const Dashboard: Component = () => {
             <div class="dashboard__stat-icon">🟢</div>
             <div class="dashboard__stat-content">
               <h3>{stats().activeUsers.toLocaleString()}</h3>
-              <p>{t('users.active')}</p>
+              <p>{t("users.active")}</p>
             </div>
           </Card>
         </GridItem>
@@ -117,7 +123,7 @@ const Dashboard: Component = () => {
             <div class="dashboard__stat-icon">💰</div>
             <div class="dashboard__stat-content">
               <h3>${stats().revenue.toLocaleString()}</h3>
-              <p>{t('analytics.revenue')}</p>
+              <p>{t("analytics.revenue")}</p>
             </div>
           </Card>
         </GridItem>
@@ -126,7 +132,7 @@ const Dashboard: Component = () => {
             <div class="dashboard__stat-icon">📈</div>
             <div class="dashboard__stat-content">
               <h3>{stats().conversionRate}%</h3>
-              <p>{t('analytics.conversionRate')}</p>
+              <p>{t("analytics.conversionRate")}</p>
             </div>
           </Card>
         </GridItem>
@@ -136,7 +142,7 @@ const Dashboard: Component = () => {
       <Grid columns={2} gap="lg" class="dashboard__charts">
         <GridItem>
           <Card class="dashboard__chart-card">
-            <h3>{t('analytics.visitors')}</h3>
+            <h3>{t("analytics.visitors")}</h3>
             <LineChart
               data={data().visitors}
               height={300}
@@ -149,7 +155,7 @@ const Dashboard: Component = () => {
         </GridItem>
         <GridItem>
           <Card class="dashboard__chart-card">
-            <h3>{t('analytics.revenue')}</h3>
+            <h3>{t("analytics.revenue")}</h3>
             <BarChart
               data={data().revenue}
               height={300}
@@ -166,7 +172,7 @@ const Dashboard: Component = () => {
       <Grid columns={3} gap="lg" class="dashboard__bottom">
         <GridItem span={2}>
           <Card class="dashboard__activity-card">
-            <h3>{t('dashboard.recentActivity')}</h3>
+            <h3>{t("dashboard.recentActivity")}</h3>
             <div class="dashboard__activity-list">
               <For each={recentActivities}>
                 {(activity) => (
@@ -175,7 +181,9 @@ const Dashboard: Component = () => {
                       {activity.user.charAt(0)}
                     </div>
                     <div class="dashboard__activity-content">
-                      <p><strong>{activity.user}</strong> {activity.action}</p>
+                      <p>
+                        <strong>{activity.user}</strong> {activity.action}
+                      </p>
                       <time>{activity.time}</time>
                     </div>
                   </div>
@@ -195,9 +203,9 @@ const Dashboard: Component = () => {
                 maintainAspectRatio: false,
                 plugins: {
                   legend: {
-                    position: 'bottom',
-                  }
-                }
+                    position: "bottom",
+                  },
+                },
               }}
             />
           </Card>
@@ -208,5 +216,3 @@ const Dashboard: Component = () => {
 };
 
 export { Dashboard };
-
-

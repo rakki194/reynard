@@ -104,14 +104,36 @@
 }
 
 /* Progress bar width classes for different progress values */
-.upload-item__progress-bar--width-0 { width: 0%; }
-.upload-item__progress-bar--width-10 { width: 10%; }
-.upload-item__progress-bar--width-20 { width: 20%; }
-.upload-item__progress-bar--width-30 { width: 30%; }
-.upload-item__progress-bar--width-40 { width: 40%; }
-.upload-item__progress-bar--width-50 { width: 50%; }
-.upload-item__progress-bar--width-60 { width: 60%; }
-.upload-item__progress-bar--width-70 { width: 70%; }
-.upload-item__progress-bar--width-80 { width: 80%; }
-.upload-item__progress-bar--width-90 { width: 90%; }
-.upload-item__progress-bar--width-100 { width: 100%; }
+.upload-item__progress-bar--width-0 {
+  width: 0%;
+}
+.upload-item__progress-bar--width-10 {
+  width: 10%;
+}
+.upload-item__progress-bar--width-20 {
+  width: 20%;
+}
+.upload-item__progress-bar--width-30 {
+  width: 30%;
+}
+.upload-item__progress-bar--width-40 {
+  width: 40%;
+}
+.upload-item__progress-bar--width-50 {
+  width: 50%;
+}
+.upload-item__progress-bar--width-60 {
+  width: 60%;
+}
+.upload-item__progress-bar--width-70 {
+  width: 70%;
+}
+.upload-item__progress-bar--width-80 {
+  width: 80%;
+}
+.upload-item__progress-bar--width-90 {
+  width: 90%;
+}
+.upload-item__progress-bar--width-100 {
+  width: 100%;
+}

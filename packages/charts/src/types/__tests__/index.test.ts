@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type {
-  Dataset,
-  ChartConfig,
-  AxisOptions,
-  ChartTheme,
-} from "../index";
+import type { Dataset, ChartConfig, AxisOptions, ChartTheme } from "../index";
 
 describe("Chart Types", () => {
   describe("Dataset", () => {

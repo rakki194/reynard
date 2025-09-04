@@ -1,5 +1,5 @@
-import { Component } from 'solid-js';
-import type { DemoView } from '../App';
+import { Component } from "solid-js";
+import type { DemoView } from "../App";
 
 interface NavigationProps {
   currentView: DemoView;
@@ -9,44 +9,42 @@ interface NavigationProps {
 export const Navigation: Component<NavigationProps> = (props) => {
   const navItems = [
     {
-      id: 'assistant' as const,
-      label: 'AI Assistant',
-      icon: '🤖',
-      description: 'Streaming AI chat with thinking sections and tool calls'
+      id: "assistant" as const,
+      label: "AI Assistant",
+      icon: "🤖",
+      description: "Streaming AI chat with thinking sections and tool calls",
     },
     {
-      id: 'p2p' as const,
-      label: 'Team Chat',
-      icon: '👥',
-      description: 'Real-time user messaging with rooms and presence'
+      id: "p2p" as const,
+      label: "Team Chat",
+      icon: "👥",
+      description: "Real-time user messaging with rooms and presence",
     },
     {
-      id: 'dual' as const,
-      label: 'Dual View',
-      icon: '⚡',
-      description: 'Side-by-side AI assistant and team chat'
+      id: "dual" as const,
+      label: "Dual View",
+      icon: "⚡",
+      description: "Side-by-side AI assistant and team chat",
     },
     {
-      id: 'features' as const,
-      label: 'Features',
-      icon: '✨',
-      description: 'Interactive feature demonstrations'
-    }
+      id: "features" as const,
+      label: "Features",
+      icon: "✨",
+      description: "Interactive feature demonstrations",
+    },
   ];
 
   return (
     <nav class="app-nav">
       <div class="nav-header">
         <h3 class="nav-title">Chat Demos</h3>
-        <p class="nav-subtitle">
-          Explore Reynard's powerful chat capabilities
-        </p>
+        <p class="nav-subtitle">Explore Reynard's powerful chat capabilities</p>
       </div>
 
       <div class="nav-items">
-        {navItems.map(item => (
+        {navItems.map((item) => (
           <button
-            class={`nav-item ${props.currentView === item.id ? 'active' : ''}`}
+            class={`nav-item ${props.currentView === item.id ? "active" : ""}`}
             onClick={() => props.onViewChange(item.id)}
           >
             <div class="nav-item-icon">{item.icon}</div>
@@ -73,9 +71,9 @@ export const Navigation: Component<NavigationProps> = (props) => {
         </div>
 
         <div class="github-link">
-          <a 
-            href="https://github.com/your-org/reynard" 
-            target="_blank" 
+          <a
+            href="https://github.com/your-org/reynard"
+            target="_blank"
             rel="noopener noreferrer"
             class="github-button"
           >

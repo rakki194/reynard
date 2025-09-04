@@ -10,7 +10,7 @@ export interface ButtonProps
   /** Button variant */
   variant?:
     | "primary"
-    | "secondary" 
+    | "secondary"
     | "tertiary"
     | "ghost"
     | "danger"
@@ -50,7 +50,7 @@ export const Button: Component<ButtonProps> = (props) => {
     "size",
     "loading",
     "disabled",
-    "fullWidth", 
+    "fullWidth",
     "iconOnly",
     "leftIcon",
     "rightIcon",
@@ -60,35 +60,35 @@ export const Button: Component<ButtonProps> = (props) => {
 
   const getButtonClasses = () => {
     const classes = ["reynard-button"];
-    
+
     // Add variant class
     classes.push(`reynard-button--${local.variant}`);
-    
+
     // Add size class
     classes.push(`reynard-button--${local.size}`);
-    
+
     // Add state classes
     if (local.disabled || local.loading) {
       classes.push("reynard-button--disabled");
     }
-    
+
     if (local.loading) {
       classes.push("reynard-button--loading");
     }
-    
+
     if (local.fullWidth) {
       classes.push("reynard-button--full-width");
     }
-    
+
     if (local.iconOnly) {
       classes.push("reynard-button--icon-only");
     }
-    
+
     // Add custom class
     if (local.class) {
       classes.push(local.class);
     }
-    
+
     return classes.join(" ");
   };
 
@@ -103,19 +103,15 @@ export const Button: Component<ButtonProps> = (props) => {
           {local.leftIcon}
         </span>
       )}
-      
-      {local.loading && (
-        <span class="reynard-button__spinner" />
-      )}
-      
+
+      {local.loading && <span class="reynard-button__spinner" />}
+
       {!local.iconOnly && local.children && (
-        <span class="reynard-button__content">
-          {local.children}
-        </span>
+        <span class="reynard-button__content">{local.children}</span>
       )}
-      
+
       {local.iconOnly && local.children}
-      
+
       {local.rightIcon && (
         <span class="reynard-button__icon reynard-button__icon--right">
           {local.rightIcon}

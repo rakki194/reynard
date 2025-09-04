@@ -3,20 +3,20 @@
  * Context provider for authentication state and methods
  */
 
-import { 
-  Component, 
-  createContext, 
-  useContext, 
+import {
+  Component,
+  createContext,
+  useContext,
   ParentComponent,
-  createEffect
+  createEffect,
 } from "solid-js";
 import { useAuth } from "../composables/useAuth";
-import type { 
+import type {
   AuthState,
   LoginCredentials,
   RegisterData,
   PasswordChangeData,
-  User
+  User,
 } from "../types";
 import type { UseAuthOptions } from "../composables/useAuth";
 
@@ -28,7 +28,7 @@ export interface AuthContextValue {
   isLoading: () => boolean;
   error: () => string | null;
   isRefreshing: () => boolean;
-  
+
   // Actions
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
@@ -37,7 +37,7 @@ export interface AuthContextValue {
   changePassword: (data: PasswordChangeData) => Promise<void>;
   updateProfile: (profileData: Partial<User>) => Promise<void>;
   initialize: () => Promise<void>;
-  
+
   // Utilities
   authFetch: (url: string, options?: RequestInit) => Promise<Response>;
 }
@@ -88,7 +88,7 @@ export const AuthProvider: ParentComponent<AuthProviderProps> = (props) => {
     isLoading: auth.isLoading,
     error: auth.error,
     isRefreshing: auth.isRefreshing,
-    
+
     // Actions
     login: auth.login,
     register: auth.register,
@@ -97,7 +97,7 @@ export const AuthProvider: ParentComponent<AuthProviderProps> = (props) => {
     changePassword: auth.changePassword,
     updateProfile: auth.updateProfile,
     initialize: auth.initialize,
-    
+
     // Utilities
     authFetch: auth.authFetch,
   };
@@ -108,9 +108,7 @@ export const AuthProvider: ParentComponent<AuthProviderProps> = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
@@ -133,7 +131,7 @@ export function withAuth<T extends Record<string, any>>(
   options: {
     fallback?: Component;
     redirectTo?: string;
-  } = {}
+  } = {},
 ): Component<T> {
   return (props: T) => {
     const auth = useAuthContext();

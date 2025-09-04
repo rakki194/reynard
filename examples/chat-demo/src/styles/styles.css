@@ -19,7 +19,7 @@
   --reynard-chat-surface: var(--card-bg, #f8fafc);
   --reynard-chat-border: var(--border-color, #e2e8f0);
   --reynard-chat-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
-  
+
   /* Message colors */
   --reynard-chat-user-bg: var(--accent, #3b82f6);
   --reynard-chat-user-text: #ffffff;
@@ -29,31 +29,38 @@
   --reynard-chat-system-text: #92400e;
   --reynard-chat-tool-bg: #ecfdf5;
   --reynard-chat-tool-text: #065f46;
-  
+
   /* State colors */
   --reynard-chat-error: #ef4444;
   --reynard-chat-warning: #f59e0b;
   --reynard-chat-success: #10b981;
   --reynard-chat-info: #3b82f6;
-  
+
   /* Spacing */
   --reynard-chat-spacing-xs: 0.25rem;
   --reynard-chat-spacing-sm: 0.5rem;
   --reynard-chat-spacing-md: 1rem;
   --reynard-chat-spacing-lg: 1.5rem;
   --reynard-chat-spacing-xl: 2rem;
-  
+
   /* Typography */
-  --reynard-chat-font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  --reynard-chat-font-family: var(
+    --font-family,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif
+  );
   --reynard-chat-font-size-xs: 0.75rem;
   --reynard-chat-font-size-sm: 0.875rem;
   --reynard-chat-font-size-base: 1rem;
   --reynard-chat-font-size-lg: 1.125rem;
-  
+
   /* Animation */
   --reynard-chat-transition: 0.2s ease-in-out;
   --reynard-chat-transition-slow: 0.3s ease-in-out;
-  
+
   /* Z-index */
   --reynard-chat-z-overlay: 1000;
   --reynard-chat-z-tooltip: 1010;
@@ -66,7 +73,7 @@
     --reynard-chat-bg: var(--bg-color, #0f172a);
     --reynard-chat-surface: var(--card-bg, #1e293b);
     --reynard-chat-border: var(--border-color, #334155);
-    
+
     --reynard-chat-assistant-bg: var(--card-bg, #1e293b);
     --reynard-chat-assistant-text: var(--text-primary, #f1f5f9);
     --reynard-chat-system-bg: #451a03;
@@ -451,11 +458,15 @@
   animation: thinking-dots 1.4s infinite;
 }
 
-.reynard-thinking-indicator--dots .reynard-thinking-indicator__dots span:nth-child(2) {
+.reynard-thinking-indicator--dots
+  .reynard-thinking-indicator__dots
+  span:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-.reynard-thinking-indicator--dots .reynard-thinking-indicator__dots span:nth-child(3) {
+.reynard-thinking-indicator--dots
+  .reynard-thinking-indicator__dots
+  span:nth-child(3) {
   animation-delay: 0.4s;
 }
 
@@ -587,7 +598,9 @@
   border: 1px solid var(--reynard-chat-border);
   border-radius: 0.25rem;
   padding: var(--reynard-chat-spacing-md);
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
   font-size: var(--reynard-chat-font-size-sm);
   overflow-x: auto;
   white-space: pre-wrap;
@@ -867,7 +880,9 @@
   border: 1px solid var(--reynard-chat-border);
   border-radius: 0.25rem;
   padding: 0.125em 0.25em;
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
   font-size: 0.9em;
 }
 
@@ -956,7 +971,7 @@
 }
 
 .reynard-math {
-  font-family: 'Computer Modern', 'Latin Modern Math', 'STIX Two Math', serif;
+  font-family: "Computer Modern", "Latin Modern Math", "STIX Two Math", serif;
 }
 
 .reynard-math--inline {
@@ -1145,7 +1160,9 @@
 }
 
 .reynard-chat-message__details-item code {
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
   font-size: var(--reynard-chat-font-size-xs);
   background: var(--reynard-chat-bg);
   padding: 0.25rem 0.5rem;
@@ -1158,7 +1175,9 @@
   border: 1px solid var(--reynard-chat-border);
   border-radius: 0.25rem;
   padding: var(--reynard-chat-spacing-sm);
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
   font-size: var(--reynard-chat-font-size-xs);
   overflow-x: auto;
   white-space: pre-wrap;
@@ -1191,7 +1210,9 @@
 }
 
 @keyframes typing-dots {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.4;
   }
@@ -1202,7 +1223,9 @@
 }
 
 @keyframes thinking-dots {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: scale(1);
     opacity: 0.4;
   }
@@ -1213,7 +1236,8 @@
 }
 
 @keyframes thinking-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.6;
   }
@@ -1224,16 +1248,20 @@
 }
 
 @keyframes thinking-cursor {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+  51%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes spinner {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
   }
   30% {
@@ -1242,7 +1270,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -1270,27 +1299,27 @@
     border-radius: 0;
     height: 100vh;
   }
-  
+
   .reynard-chat-message__details-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .reynard-chat-container__footer {
     flex-direction: column;
     gap: var(--reynard-chat-spacing-sm);
     align-items: stretch;
   }
-  
+
   .reynard-chat-container__footer-info,
   .reynard-chat-container__footer-actions {
     justify-content: center;
   }
-  
+
   .reynard-message-input__container {
     flex-direction: column;
     gap: var(--reynard-chat-spacing-sm);
   }
-  
+
   .reynard-message-input__actions {
     align-self: flex-end;
   }
@@ -1324,7 +1353,7 @@
   .reynard-chat-container {
     border-width: 2px;
   }
-  
+
   .reynard-chat-message__content,
   .reynard-tool-call,
   .reynard-thinking-indicator {
@@ -1340,12 +1369,12 @@
   .reynard-chat-message__actions {
     display: none !important;
   }
-  
+
   .reynard-chat-container {
     border: none;
     box-shadow: none;
   }
-  
+
   .reynard-chat-message {
     break-inside: avoid;
   }

@@ -18,7 +18,13 @@ export interface OKLCHColor {
 /**
  * Theme names for color generation
  */
-export type ThemeName = 'dark' | 'light' | 'gray' | 'banana' | 'strawberry' | 'peanut';
+export type ThemeName =
+  | "dark"
+  | "light"
+  | "gray"
+  | "banana"
+  | "strawberry"
+  | "peanut";
 
 /**
  * Represents a content modality (image, video, text, audio, etc.)
@@ -68,26 +74,26 @@ export interface ModalityProps {
  * Predefined modality IDs
  */
 export const MODALITY_IDS = {
-  IMAGE: 'image',
-  VIDEO: 'video',
-  TEXT: 'text',
-  AUDIO: 'audio',
-  CODE: 'code',
-  LORA: 'lora',
+  IMAGE: "image",
+  VIDEO: "video",
+  TEXT: "text",
+  AUDIO: "audio",
+  CODE: "code",
+  LORA: "lora",
 } as const;
 
 /**
  * Predefined functionality IDs
  */
 export const FUNCTIONALITY_IDS = {
-  SCRIPT_EDITING: 'script-editing',
-  CODE_EDITOR: 'code-editor',
-  LORA_ANALYSIS: 'lora-analysis',
-  BATCH_PROCESSING: 'batch-processing',
-  DATA_ANALYSIS: 'data-analysis',
-  EXPORT: 'export',
-  IMPORT: 'import',
-  RAG: 'rag',
+  SCRIPT_EDITING: "script-editing",
+  CODE_EDITOR: "code-editor",
+  LORA_ANALYSIS: "lora-analysis",
+  BATCH_PROCESSING: "batch-processing",
+  DATA_ANALYSIS: "data-analysis",
+  EXPORT: "export",
+  IMPORT: "import",
+  RAG: "rag",
 } as const;
 
 /**
@@ -98,7 +104,8 @@ export type ModalityId = (typeof MODALITY_IDS)[keyof typeof MODALITY_IDS];
 /**
  * Type for functionality ID
  */
-export type FunctionalityId = (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
+export type FunctionalityId =
+  (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
 
 /**
  * Audio item interface

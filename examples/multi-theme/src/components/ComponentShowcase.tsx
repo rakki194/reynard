@@ -234,5 +234,3 @@ export const ComponentShowcase: Component = () => {
     </div>
   );
 };
-
-

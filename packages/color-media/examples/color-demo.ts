@@ -10,50 +10,52 @@ import {
   isImageFile,
   isAudioFile,
   formatFileSize,
-} from '../src/index';
+} from "../src/index";
 
 // Color generation example
-console.log('=== Color Generation Examples ===');
+console.log("=== Color Generation Examples ===");
 
 const colorGenerator = createTagColorGenerator();
 
 // Generate colors for different tags
-const tags = ['javascript', 'react', 'typescript', 'solidjs', 'css'];
-tags.forEach(tag => {
-  const color = colorGenerator.getTagColor('dark', tag);
+const tags = ["javascript", "react", "typescript", "solidjs", "css"];
+tags.forEach((tag) => {
+  const color = colorGenerator.getTagColor("dark", tag);
   console.log(`${tag}: ${formatOKLCH(color)}`);
 });
 
 // Generate a color palette
 const palette = generateColorPalette(6, 0, 0.3, 0.6);
-console.log('\nColor Palette:', palette);
+console.log("\nColor Palette:", palette);
 
 // Theme management example
-console.log('\n=== Theme Management Examples ===');
+console.log("\n=== Theme Management Examples ===");
 
-const themeContext = createThemeContext('light');
-console.log('Current theme:', themeContext.theme);
+const themeContext = createThemeContext("light");
+console.log("Current theme:", themeContext.theme);
 
 // Get tag styles for different themes
-const themes = ['light', 'dark', 'banana', 'strawberry'] as const;
-themes.forEach(theme => {
+const themes = ["light", "dark", "banana", "strawberry"] as const;
+themes.forEach((theme) => {
   themeContext.setTheme(theme);
-  const style = themeContext.getTagStyle('example');
-  console.log(`${theme} theme - Background: ${style.backgroundColor}, Color: ${style.color}`);
+  const style = themeContext.getTagStyle("example");
+  console.log(
+    `${theme} theme - Background: ${style.backgroundColor}, Color: ${style.color}`,
+  );
 });
 
 // File utilities example
-console.log('\n=== File Utilities Examples ===');
+console.log("\n=== File Utilities Examples ===");
 
 // Create mock files
 const mockFiles = [
-  new File([''], 'image.jpg'),
-  new File([''], 'audio.mp3'),
-  new File([''], 'video.mp4'),
-  new File([''], 'document.txt'),
+  new File([""], "image.jpg"),
+  new File([""], "audio.mp3"),
+  new File([""], "video.mp4"),
+  new File([""], "document.txt"),
 ];
 
-mockFiles.forEach(file => {
+mockFiles.forEach((file) => {
   console.log(`${file.name}:`);
   console.log(`  - Image: ${isImageFile(file)}`);
   console.log(`  - Audio: ${isAudioFile(file)}`);
@@ -62,7 +64,7 @@ mockFiles.forEach(file => {
 
 // File size formatting examples
 const sizes = [0, 1024, 1048576, 1073741824];
-console.log('\nFile size examples:');
-sizes.forEach(size => {
+console.log("\nFile size examples:");
+sizes.forEach((size) => {
   console.log(`${size} bytes = ${formatFileSize(size)}`);
 });

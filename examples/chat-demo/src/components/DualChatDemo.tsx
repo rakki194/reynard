@@ -1,18 +1,24 @@
-import { Component, createSignal } from 'solid-js';
-import { ChatContainer, P2PChatContainer, type ChatUser } from '@reynard/components';
+import { Component, createSignal } from "solid-js";
+import {
+  ChatContainer,
+  P2PChatContainer,
+  type ChatUser,
+} from "@reynard/components";
 
 interface DualChatDemoProps {
   currentUser: ChatUser;
 }
 
 export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
-  const [layout, setLayout] = createSignal<'horizontal' | 'vertical'>('horizontal');
+  const [layout, setLayout] = createSignal<"horizontal" | "vertical">(
+    "horizontal",
+  );
   const [assistantConfig, setAssistantConfig] = createSignal({
     enableThinking: true,
     enableTools: true,
     showTimestamps: true,
   });
-  
+
   const [p2pConfig, setP2pConfig] = createSignal({
     enableReactions: true,
     enableTypingIndicators: true,
@@ -22,41 +28,65 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
   // Mock data for P2P demo
   const sampleRooms = [
     {
-      id: 'room-collab',
-      name: 'AI Collaboration',
-      type: 'group' as const,
-      description: 'Discussing AI assistant integration',
+      id: "room-collab",
+      name: "AI Collaboration",
+      type: "group" as const,
+      description: "Discussing AI assistant integration",
       participants: [
         props.currentUser,
-        { id: 'user-team-1', name: 'Sarah Wilson', status: 'online' as const, avatar: '👩‍💻' },
-        { id: 'user-team-2', name: 'Mike Chen', status: 'away' as const, avatar: '👨‍💼' }
+        {
+          id: "user-team-1",
+          name: "Sarah Wilson",
+          status: "online" as const,
+          avatar: "👩‍💻",
+        },
+        {
+          id: "user-team-2",
+          name: "Mike Chen",
+          status: "away" as const,
+          avatar: "👨‍💼",
+        },
       ],
       lastMessage: {
-        id: 'msg-collab-1',
-        role: 'user' as const,
-        content: 'The AI assistant responses look great! Should we integrate this with our main app?',
+        id: "msg-collab-1",
+        role: "user" as const,
+        content:
+          "The AI assistant responses look great! Should we integrate this with our main app?",
         timestamp: Date.now() - 180000, // 3 minutes ago
-        roomId: 'room-collab',
-        sender: { id: 'user-team-1', name: 'Sarah Wilson', status: 'online' as const }
-      }
+        roomId: "room-collab",
+        sender: {
+          id: "user-team-1",
+          name: "Sarah Wilson",
+          status: "online" as const,
+        },
+      },
     },
     {
-      id: 'dm-product',
-      name: 'Product Manager',
-      type: 'direct' as const,
+      id: "dm-product",
+      name: "Product Manager",
+      type: "direct" as const,
       participants: [
         props.currentUser,
-        { id: 'user-pm', name: 'Jessica Taylor', status: 'online' as const, avatar: '👩‍💼' }
+        {
+          id: "user-pm",
+          name: "Jessica Taylor",
+          status: "online" as const,
+          avatar: "👩‍💼",
+        },
       ],
       lastMessage: {
-        id: 'msg-pm-1',
-        role: 'user' as const,
-        content: 'Can you show me the latest chat features in action?',
+        id: "msg-pm-1",
+        role: "user" as const,
+        content: "Can you show me the latest chat features in action?",
         timestamp: Date.now() - 60000, // 1 minute ago
-        roomId: 'dm-product',
-        sender: { id: 'user-pm', name: 'Jessica Taylor', status: 'online' as const }
-      }
-    }
+        roomId: "dm-product",
+        sender: {
+          id: "user-pm",
+          name: "Jessica Taylor",
+          status: "online" as const,
+        },
+      },
+    },
   ];
 
   return (
@@ -65,8 +95,8 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
         <div class="demo-title">
           <h2>⚡ Dual Chat Experience</h2>
           <p>
-            Experience both AI assistant and team chat side-by-side. 
-            Perfect for collaborative AI workflows and team coordination.
+            Experience both AI assistant and team chat side-by-side. Perfect for
+            collaborative AI workflows and team coordination.
           </p>
         </div>
 
@@ -76,14 +106,14 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
             <label class="control-label">Layout</label>
             <div class="button-group">
               <button
-                class={`button-group-item ${layout() === 'horizontal' ? 'active' : ''}`}
-                onClick={() => setLayout('horizontal')}
+                class={`button-group-item ${layout() === "horizontal" ? "active" : ""}`}
+                onClick={() => setLayout("horizontal")}
               >
                 ↔️ Horizontal
               </button>
               <button
-                class={`button-group-item ${layout() === 'vertical' ? 'active' : ''}`}
-                onClick={() => setLayout('vertical')}
+                class={`button-group-item ${layout() === "vertical" ? "active" : ""}`}
+                onClick={() => setLayout("vertical")}
               >
                 ↕️ Vertical
               </button>
@@ -98,22 +128,26 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                 <input
                   type="checkbox"
                   checked={assistantConfig().enableThinking}
-                  onChange={(e) => setAssistantConfig(prev => ({ 
-                    ...prev, 
-                    enableThinking: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setAssistantConfig((prev) => ({
+                      ...prev,
+                      enableThinking: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">🧠 Thinking</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={assistantConfig().enableTools}
-                  onChange={(e) => setAssistantConfig(prev => ({ 
-                    ...prev, 
-                    enableTools: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setAssistantConfig((prev) => ({
+                      ...prev,
+                      enableTools: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">🔧 Tools</span>
               </label>
@@ -127,22 +161,26 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                 <input
                   type="checkbox"
                   checked={p2pConfig().enableReactions}
-                  onChange={(e) => setP2pConfig(prev => ({ 
-                    ...prev, 
-                    enableReactions: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setP2pConfig((prev) => ({
+                      ...prev,
+                      enableReactions: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">😊 Reactions</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={p2pConfig().enableTypingIndicators}
-                  onChange={(e) => setP2pConfig(prev => ({ 
-                    ...prev, 
-                    enableTypingIndicators: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setP2pConfig((prev) => ({
+                      ...prev,
+                      enableTypingIndicators: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">✏️ Typing</span>
               </label>
@@ -165,25 +203,24 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                 <span>GPT-4</span>
               </div>
             </div>
-            
+
             <div class="panel-content">
               <ChatContainer
                 endpoint="/api/assistant"
-                height={layout() === 'horizontal' ? '500px' : '300px'}
+                height={layout() === "horizontal" ? "500px" : "300px"}
                 config={assistantConfig()}
                 authHeaders={{
-                  'Authorization': 'Bearer demo-token-123',
-                  'X-Demo-Mode': 'dual-chat'
+                  Authorization: "Bearer demo-token-123",
+                  "X-Demo-Mode": "dual-chat",
                 }}
                 onMessageSent={(message) => {
-                  console.log('AI message sent:', message);
+                  console.log("AI message sent:", message);
                 }}
                 onMessageReceived={(message) => {
-                  console.log('AI message received:', message);
+                  console.log("AI message received:", message);
                 }}
-
                 onError={(error) => {
-                  console.error('AI chat error:', error);
+                  console.error("AI chat error:", error);
                 }}
               />
             </div>
@@ -201,15 +238,15 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                 <span>3 online</span>
               </div>
             </div>
-            
+
             <div class="panel-content">
               <P2PChatContainer
                 currentUser={props.currentUser}
                 realtimeEndpoint="ws://localhost:8080/chat"
                 apiEndpoint="/api/chat"
                 authHeaders={{
-                  'Authorization': 'Bearer demo-token-123',
-                  'X-Demo-Mode': 'dual-chat'
+                  Authorization: "Bearer demo-token-123",
+                  "X-Demo-Mode": "dual-chat",
                 }}
                 initialRooms={sampleRooms}
                 initialRoomId="room-collab"
@@ -219,15 +256,15 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                   enableReadReceipts: true,
                 }}
                 ui={{
-                  showUserList: layout() === 'horizontal',
+                  showUserList: layout() === "horizontal",
                   showRoomList: true,
-                  compact: layout() === 'vertical',
+                  compact: layout() === "vertical",
                 }}
                 onMessageReceived={(message) => {
-                  console.log('Team message received:', message);
+                  console.log("Team message received:", message);
                 }}
                 onError={(error) => {
-                  console.error('Team chat error:', error);
+                  console.error("Team chat error:", error);
                 }}
               />
             </div>
@@ -242,31 +279,35 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
               <div class="use-case-icon">🚀</div>
               <div class="use-case-title">Product Development</div>
               <div class="use-case-description">
-                Use AI for code generation and analysis while coordinating with your team in real-time
+                Use AI for code generation and analysis while coordinating with
+                your team in real-time
               </div>
             </div>
-            
+
             <div class="use-case-card">
               <div class="use-case-icon">📝</div>
               <div class="use-case-title">Content Creation</div>
               <div class="use-case-description">
-                Get AI assistance for writing while collaborating with editors and reviewers
+                Get AI assistance for writing while collaborating with editors
+                and reviewers
               </div>
             </div>
-            
+
             <div class="use-case-card">
               <div class="use-case-icon">🎓</div>
               <div class="use-case-title">Learning & Teaching</div>
               <div class="use-case-description">
-                Students can ask AI questions while participating in group discussions
+                Students can ask AI questions while participating in group
+                discussions
               </div>
             </div>
-            
+
             <div class="use-case-card">
               <div class="use-case-icon">🔬</div>
               <div class="use-case-title">Research Projects</div>
               <div class="use-case-description">
-                Leverage AI for research assistance while maintaining team communication
+                Leverage AI for research assistance while maintaining team
+                communication
               </div>
             </div>
           </div>
@@ -281,13 +322,14 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
               <div class="step-content">
                 <div class="step-title">Ask AI for Help</div>
                 <div class="step-description">
-                  Request code review, brainstorming, or analysis from the AI assistant
+                  Request code review, brainstorming, or analysis from the AI
+                  assistant
                 </div>
               </div>
             </div>
-            
+
             <div class="workflow-arrow">→</div>
-            
+
             <div class="workflow-step">
               <div class="step-number">2</div>
               <div class="step-content">
@@ -297,9 +339,9 @@ export const DualChatDemo: Component<DualChatDemoProps> = (props) => {
                 </div>
               </div>
             </div>
-            
+
             <div class="workflow-arrow">→</div>
-            
+
             <div class="workflow-step">
               <div class="step-number">3</div>
               <div class="step-content">

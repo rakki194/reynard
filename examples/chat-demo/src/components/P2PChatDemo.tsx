@@ -1,5 +1,5 @@
-import { Component, createSignal, onMount } from 'solid-js';
-import { P2PChatContainer, type ChatUser } from '@reynard/components';
+import { Component, createSignal, onMount } from "solid-js";
+import { P2PChatContainer, type ChatUser } from "@reynard/components";
 
 interface P2PChatDemoProps {
   currentUser: ChatUser;
@@ -19,10 +19,12 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
     showUserList: true,
     showRoomList: true,
     compact: false,
-    theme: 'auto' as const,
+    theme: "auto" as const,
   });
 
-  const [connectionStatus, setConnectionStatus] = createSignal<'disconnected' | 'connecting' | 'connected'>('connecting');
+  const [connectionStatus, setConnectionStatus] = createSignal<
+    "disconnected" | "connecting" | "connected"
+  >("connecting");
   const [stats, setStats] = createSignal({
     rooms: 0,
     onlineUsers: 0,
@@ -32,74 +34,112 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
   // Mock initial rooms for the demo
   const initialRooms = [
     {
-      id: 'room-general',
-      name: 'General',
-      type: 'public' as const,
-      description: 'General discussion for everyone',
+      id: "room-general",
+      name: "General",
+      type: "public" as const,
+      description: "General discussion for everyone",
       participants: [
         props.currentUser,
-        { id: 'user-2', name: 'Alice Smith', status: 'online' as const, avatar: '👩' },
-        { id: 'user-3', name: 'Bob Johnson', status: 'away' as const, avatar: '👨' },
-        { id: 'user-4', name: 'Carol Davis', status: 'online' as const, avatar: '👩‍💼' }
+        {
+          id: "user-2",
+          name: "Alice Smith",
+          status: "online" as const,
+          avatar: "👩",
+        },
+        {
+          id: "user-3",
+          name: "Bob Johnson",
+          status: "away" as const,
+          avatar: "👨",
+        },
+        {
+          id: "user-4",
+          name: "Carol Davis",
+          status: "online" as const,
+          avatar: "👩‍💼",
+        },
       ],
       unreadCount: 2,
       lastMessage: {
-        id: 'msg-1',
-        role: 'user' as const,
-        content: 'Hey everyone! How\'s the project going?',
+        id: "msg-1",
+        role: "user" as const,
+        content: "Hey everyone! How's the project going?",
         timestamp: Date.now() - 300000, // 5 minutes ago
-        roomId: 'room-general',
-        sender: { id: 'user-2', name: 'Alice Smith', status: 'online' as const }
-      }
+        roomId: "room-general",
+        sender: {
+          id: "user-2",
+          name: "Alice Smith",
+          status: "online" as const,
+        },
+      },
     },
     {
-      id: 'room-dev',
-      name: 'Development',
-      type: 'private' as const,
-      description: 'Development team discussions',
+      id: "room-dev",
+      name: "Development",
+      type: "private" as const,
+      description: "Development team discussions",
       participants: [
         props.currentUser,
-        { id: 'user-2', name: 'Alice Smith', status: 'online' as const, avatar: '👩' },
-        { id: 'user-5', name: 'Dev Lead', status: 'busy' as const, avatar: '👨‍💻' }
+        {
+          id: "user-2",
+          name: "Alice Smith",
+          status: "online" as const,
+          avatar: "👩",
+        },
+        {
+          id: "user-5",
+          name: "Dev Lead",
+          status: "busy" as const,
+          avatar: "👨‍💻",
+        },
       ],
       unreadCount: 0,
       lastMessage: {
-        id: 'msg-2',
-        role: 'user' as const,
-        content: 'The new chat system is looking great! 🚀',
+        id: "msg-2",
+        role: "user" as const,
+        content: "The new chat system is looking great! 🚀",
         timestamp: Date.now() - 600000, // 10 minutes ago
-        roomId: 'room-dev',
-        sender: { id: 'user-5', name: 'Dev Lead', status: 'busy' as const }
-      }
+        roomId: "room-dev",
+        sender: { id: "user-5", name: "Dev Lead", status: "busy" as const },
+      },
     },
     {
-      id: 'dm-alice',
-      name: 'Alice Smith',
-      type: 'direct' as const,
+      id: "dm-alice",
+      name: "Alice Smith",
+      type: "direct" as const,
       participants: [
         props.currentUser,
-        { id: 'user-2', name: 'Alice Smith', status: 'online' as const, avatar: '👩' }
+        {
+          id: "user-2",
+          name: "Alice Smith",
+          status: "online" as const,
+          avatar: "👩",
+        },
       ],
       unreadCount: 1,
       lastMessage: {
-        id: 'msg-3',
-        role: 'user' as const,
-        content: 'Can we sync up about the Reynard demo?',
+        id: "msg-3",
+        role: "user" as const,
+        content: "Can we sync up about the Reynard demo?",
         timestamp: Date.now() - 120000, // 2 minutes ago
-        roomId: 'dm-alice',
-        sender: { id: 'user-2', name: 'Alice Smith', status: 'online' as const }
-      }
-    }
+        roomId: "dm-alice",
+        sender: {
+          id: "user-2",
+          name: "Alice Smith",
+          status: "online" as const,
+        },
+      },
+    },
   ];
 
   onMount(() => {
     // Simulate connection and stats updates
     setTimeout(() => {
-      setConnectionStatus('connected');
+      setConnectionStatus("connected");
       setStats({
         rooms: initialRooms.length,
         onlineUsers: 4,
-        totalMessages: 127
+        totalMessages: 127,
       });
     }, 1500);
   });
@@ -110,8 +150,8 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
         <div class="demo-title">
           <h2>👥 Team Chat (P2P)</h2>
           <p>
-            Real-time user messaging with rooms, presence indicators, 
-            file sharing, reactions, and advanced collaboration features.
+            Real-time user messaging with rooms, presence indicators, file
+            sharing, reactions, and advanced collaboration features.
           </p>
         </div>
 
@@ -124,46 +164,54 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 <input
                   type="checkbox"
                   checked={config().enableReactions}
-                  onChange={(e) => setConfig(prev => ({ 
-                    ...prev, 
-                    enableReactions: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      enableReactions: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">😊 Reactions</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={config().enableTypingIndicators}
-                  onChange={(e) => setConfig(prev => ({ 
-                    ...prev, 
-                    enableTypingIndicators: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      enableTypingIndicators: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">✏️ Typing Indicators</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={config().enableReadReceipts}
-                  onChange={(e) => setConfig(prev => ({ 
-                    ...prev, 
-                    enableReadReceipts: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      enableReadReceipts: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">✓ Read Receipts</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={config().enableFileUploads}
-                  onChange={(e) => setConfig(prev => ({ 
-                    ...prev, 
-                    enableFileUploads: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setConfig((prev) => ({
+                      ...prev,
+                      enableFileUploads: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">📎 File Uploads</span>
               </label>
@@ -178,34 +226,40 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 <input
                   type="checkbox"
                   checked={uiConfig().showRoomList}
-                  onChange={(e) => setUiConfig(prev => ({ 
-                    ...prev, 
-                    showRoomList: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setUiConfig((prev) => ({
+                      ...prev,
+                      showRoomList: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">📁 Room List</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={uiConfig().showUserList}
-                  onChange={(e) => setUiConfig(prev => ({ 
-                    ...prev, 
-                    showUserList: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setUiConfig((prev) => ({
+                      ...prev,
+                      showUserList: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">👥 User List</span>
               </label>
-              
+
               <label class="toggle-item">
                 <input
                   type="checkbox"
                   checked={uiConfig().compact}
-                  onChange={(e) => setUiConfig(prev => ({ 
-                    ...prev, 
-                    compact: e.target.checked 
-                  }))}
+                  onChange={(e) =>
+                    setUiConfig((prev) => ({
+                      ...prev,
+                      compact: e.target.checked,
+                    }))
+                  }
                 />
                 <span class="toggle-label">📱 Compact Mode</span>
               </label>
@@ -231,12 +285,18 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
           {/* Connection Status */}
           <div class="connection-status">
             <div class={`status-indicator ${connectionStatus()}`}>
-              {connectionStatus() === 'connected' ? '🟢' : 
-               connectionStatus() === 'connecting' ? '🟡' : '🔴'}
+              {connectionStatus() === "connected"
+                ? "🟢"
+                : connectionStatus() === "connecting"
+                  ? "🟡"
+                  : "🔴"}
             </div>
             <span class="status-text">
-              {connectionStatus() === 'connected' ? 'Connected' : 
-               connectionStatus() === 'connecting' ? 'Connecting...' : 'Disconnected'}
+              {connectionStatus() === "connected"
+                ? "Connected"
+                : connectionStatus() === "connecting"
+                  ? "Connecting..."
+                  : "Disconnected"}
             </span>
           </div>
         </div>
@@ -249,32 +309,32 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
             realtimeEndpoint="ws://localhost:8080/chat"
             apiEndpoint="/api/chat"
             authHeaders={{
-              'Authorization': 'Bearer demo-token-123',
-              'X-Demo-Mode': 'true'
+              Authorization: "Bearer demo-token-123",
+              "X-Demo-Mode": "true",
             }}
             initialRooms={initialRooms}
             initialRoomId="room-general"
             config={config()}
             ui={uiConfig()}
             onRoomJoined={(room) => {
-              console.log('Joined room:', room.name);
+              console.log("Joined room:", room.name);
             }}
             onRoomLeft={(room) => {
-              console.log('Left room:', room.name);
+              console.log("Left room:", room.name);
             }}
             onMessageReceived={(message) => {
-              console.log('Message received:', message);
+              console.log("Message received:", message);
               // Update stats
-              setStats(prev => ({ 
-                ...prev, 
-                totalMessages: prev.totalMessages + 1 
+              setStats((prev) => ({
+                ...prev,
+                totalMessages: prev.totalMessages + 1,
               }));
             }}
             onUserStatusChanged={(user) => {
-              console.log('User status changed:', user);
+              console.log("User status changed:", user);
             }}
             onError={(error) => {
-              console.error('P2P Chat error:', error);
+              console.error("P2P Chat error:", error);
             }}
           />
         </div>
@@ -290,7 +350,7 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 Instant message delivery with WebSocket connections
               </div>
             </div>
-            
+
             <div class="feature-card">
               <div class="feature-icon">🏠</div>
               <div class="feature-title">Room Management</div>
@@ -298,7 +358,7 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 Public channels, private groups, and direct messages
               </div>
             </div>
-            
+
             <div class="feature-card">
               <div class="feature-icon">👁️</div>
               <div class="feature-title">Presence & Status</div>
@@ -306,7 +366,7 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 Online indicators and custom status messages
               </div>
             </div>
-            
+
             <div class="feature-card">
               <div class="feature-icon">📎</div>
               <div class="feature-title">File Sharing</div>
@@ -314,7 +374,7 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 Upload images, documents, and media with previews
               </div>
             </div>
-            
+
             <div class="feature-card">
               <div class="feature-icon">😊</div>
               <div class="feature-title">Rich Interactions</div>
@@ -322,7 +382,7 @@ export const P2PChatDemo: Component<P2PChatDemoProps> = (props) => {
                 Emoji reactions, message threading, and mentions
               </div>
             </div>
-            
+
             <div class="feature-card">
               <div class="feature-icon">🔍</div>
               <div class="feature-title">Search & History</div>

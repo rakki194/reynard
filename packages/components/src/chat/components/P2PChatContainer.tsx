@@ -1,33 +1,35 @@
 /**
  * P2P Chat Container for User-to-User Messaging
- * 
+ *
  * Extends the base ChatContainer with peer-to-peer functionality including
  * room management, user lists, typing indicators, and file sharing.
  */
 
-import { 
-  Component, 
-  Show, 
-  For, 
-  createEffect, 
+import {
+  Component,
+  Show,
+  For,
+  createEffect,
   createSignal,
   onMount,
   onCleanup,
-  createMemo
-} from 'solid-js';
-import { useP2PChat } from '../composables/useP2PChat';
-import { ChatMessage } from './ChatMessage';
-import { MessageInput } from './MessageInput';
-import { RoomList } from './RoomList';
-import { UserList } from './UserList';
-import { P2PMessage } from './P2PMessage';
-import type { P2PChatContainerProps } from '../types/p2p';
+  createMemo,
+} from "solid-js";
+import { useP2PChat } from "../composables/useP2PChat";
+import { ChatMessage } from "./ChatMessage";
+import { MessageInput } from "./MessageInput";
+import { RoomList } from "./RoomList";
+import { UserList } from "./UserList";
+import { P2PMessage } from "./P2PMessage";
+import type { P2PChatContainerProps } from "../types/p2p";
 
 export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
   const [sidebarOpen, setSidebarOpen] = createSignal(true);
-  const [userListOpen, setUserListOpen] = createSignal(props.ui?.showUserList ?? true);
-  const [searchQuery, setSearchQuery] = createSignal('');
-  
+  const [userListOpen, setUserListOpen] = createSignal(
+    props.ui?.showUserList ?? true,
+  );
+  const [searchQuery, setSearchQuery] = createSignal("");
+
   let messagesContainerRef: HTMLDivElement | undefined;
   let isUserScrolling = false;
   let scrollTimeout: number | undefined;
@@ -48,23 +50,23 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
     if (messagesContainerRef && !isUserScrolling) {
       messagesContainerRef.scrollTo({
         top: messagesContainerRef.scrollHeight,
-        behavior: smooth ? 'smooth' : 'auto',
+        behavior: smooth ? "smooth" : "auto",
       });
     }
   };
 
   const handleScroll = () => {
     if (!messagesContainerRef) return;
-    
+
     const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef;
     const isAtBottom = scrollHeight - scrollTop <= clientHeight + 50;
-    
+
     isUserScrolling = !isAtBottom;
-    
+
     if (scrollTimeout) {
       clearTimeout(scrollTimeout);
     }
-    
+
     scrollTimeout = window.setTimeout(() => {
       isUserScrolling = false;
     }, 150);
@@ -92,7 +94,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
     try {
       await p2pChat.actions.sendMessageToRoom(activeRoom.id, content);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error("Failed to send message:", error);
       props.onError?.(error);
     }
   };
@@ -113,11 +115,14 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
   const filteredRooms = createMemo(() => {
     const query = searchQuery().toLowerCase();
     if (!query) return p2pChat.rooms();
-    
-    return p2pChat.rooms().filter(room => 
-      room.name.toLowerCase().includes(query) ||
-      room.participants.some(p => p.name.toLowerCase().includes(query))
-    );
+
+    return p2pChat
+      .rooms()
+      .filter(
+        (room) =>
+          room.name.toLowerCase().includes(query) ||
+          room.participants.some((p) => p.name.toLowerCase().includes(query)),
+      );
   });
 
   // Get current room participants
@@ -130,29 +135,29 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
   const typingUsers = createMemo(() => {
     const room = p2pChat.activeRoom();
     if (!room) return [];
-    
+
     const indicators = p2pChat.typingIndicators()[room.id] || [];
     return indicators
-      .filter(t => t.user.id !== props.currentUser.id)
-      .map(t => t.user);
+      .filter((t) => t.user.id !== props.currentUser.id)
+      .map((t) => t.user);
   });
 
   // Connection status display
   const getConnectionStatus = () => {
     const status = p2pChat.p2pConnection().status;
     switch (status) {
-      case 'connected':
-        return { icon: '🟢', text: 'Connected' };
-      case 'connecting':
-        return { icon: '🟡', text: 'Connecting...' };
-      case 'reconnecting':
-        return { icon: '🟠', text: 'Reconnecting...' };
-      case 'disconnected':
-        return { icon: '🔴', text: 'Disconnected' };
-      case 'error':
-        return { icon: '❌', text: 'Connection Error' };
+      case "connected":
+        return { icon: "🟢", text: "Connected" };
+      case "connecting":
+        return { icon: "🟡", text: "Connecting..." };
+      case "reconnecting":
+        return { icon: "🟠", text: "Reconnecting..." };
+      case "disconnected":
+        return { icon: "🔴", text: "Disconnected" };
+      case "error":
+        return { icon: "❌", text: "Connection Error" };
       default:
-        return { icon: '⚪', text: 'Unknown' };
+        return { icon: "⚪", text: "Unknown" };
     }
   };
 
@@ -164,7 +169,9 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
   });
 
   return (
-    <div class={`reynard-p2p-chat-container ${props.ui?.compact ? 'reynard-p2p-chat-container--compact' : ''}`}>
+    <div
+      class={`reynard-p2p-chat-container ${props.ui?.compact ? "reynard-p2p-chat-container--compact" : ""}`}
+    >
       {/* Sidebar */}
       <Show when={sidebarOpen() && (props.ui?.showRoomList ?? true)}>
         <div class="reynard-p2p-chat-sidebar">
@@ -193,7 +200,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
             onRoomSelect={handleRoomSelect}
             onCreateRoom={() => {
               // TODO: Implement room creation modal
-              console.log('Create room');
+              console.log("Create room");
             }}
             searchQuery={searchQuery()}
             onSearch={setSearchQuery}
@@ -242,7 +249,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
 
         {/* Messages Area */}
         <div class="reynard-p2p-chat-content">
-          <Show 
+          <Show
             when={p2pChat.activeRoom()}
             fallback={
               <div class="reynard-p2p-chat-empty">
@@ -253,7 +260,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
               </div>
             }
           >
-            <div 
+            <div
               ref={messagesContainerRef}
               class="reynard-p2p-chat-messages"
               onScroll={handleScroll}
@@ -269,7 +276,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
                     showReactions={props.config?.enableReactions}
                     showReadReceipts={props.config?.enableReadReceipts}
                     onMessageAction={(action, msg) => {
-                      console.log('Message action:', action, msg);
+                      console.log("Message action:", action, msg);
                       // Handle message actions (edit, delete, reply, etc.)
                     }}
                     onReaction={(emoji) => {
@@ -294,10 +301,9 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
                     </For>
                   </div>
                   <div class="reynard-p2p-chat-typing__text">
-                    {typingUsers().length === 1 
+                    {typingUsers().length === 1
                       ? `${typingUsers()[0].name} is typing...`
-                      : `${typingUsers().length} people are typing...`
-                    }
+                      : `${typingUsers().length} people are typing...`}
                   </div>
                   <div class="reynard-p2p-chat-typing__dots">
                     <span></span>
@@ -312,13 +318,13 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
             <div class="reynard-p2p-chat-input">
               <MessageInput
                 placeholder="Type a message..."
-                disabled={p2pChat.p2pConnection().status !== 'connected'}
+                disabled={p2pChat.p2pConnection().status !== "connected"}
                 multiline={true}
                 autoResize={true}
                 maxLength={4000}
                 onSubmit={handleMessageSubmit}
                 onChange={handleInputChange}
-                variant={props.ui?.compact ? 'compact' : 'default'}
+                variant={props.ui?.compact ? "compact" : "default"}
               />
             </div>
           </Show>
@@ -326,13 +332,19 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
       </div>
 
       {/* User List */}
-      <Show when={userListOpen() && p2pChat.activeRoom() && (props.ui?.showUserList ?? true)}>
+      <Show
+        when={
+          userListOpen() &&
+          p2pChat.activeRoom() &&
+          (props.ui?.showUserList ?? true)
+        }
+      >
         <div class="reynard-p2p-chat-userlist">
           <UserList
             users={currentRoomParticipants()}
             currentUser={props.currentUser}
             onUserSelect={(user) => {
-              console.log('User selected:', user);
+              console.log("User selected:", user);
               // TODO: Handle user selection (profile, DM, etc.)
             }}
             showStatus={true}

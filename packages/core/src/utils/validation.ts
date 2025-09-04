@@ -7,7 +7,8 @@
  * Email validation using RFC 5322 compliant regex
  */
 export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email);
 }
 
@@ -29,7 +30,7 @@ export function isValidUrl(url: string): boolean {
 export function isValidPhoneNumber(phone: string): boolean {
   // Remove all non-digit characters
   const digitsOnly = phone.replace(/\D/g, "");
-  
+
   // Check if it's a valid length (7-15 digits for international numbers)
   return digitsOnly.length >= 7 && digitsOnly.length <= 15;
 }
@@ -100,7 +101,7 @@ export function validatePasswordStrength(password: string): PasswordStrength {
 export function isValidCreditCard(cardNumber: string): boolean {
   // Remove all non-digit characters
   const digits = cardNumber.replace(/\D/g, "");
-  
+
   // Check if it's a valid length
   if (digits.length < 13 || digits.length > 19) {
     return false;
@@ -130,7 +131,10 @@ export function isValidCreditCard(cardNumber: string): boolean {
 /**
  * ZIP/Postal code validation (US and international)
  */
-export function isValidPostalCode(postalCode: string, country: string = "US"): boolean {
+export function isValidPostalCode(
+  postalCode: string,
+  country: string = "US",
+): boolean {
   const patterns: Record<string, RegExp> = {
     US: /^\d{5}(-\d{4})?$/, // 12345 or 12345-6789
     CA: /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/, // A1A 1A1
@@ -151,7 +155,7 @@ export function isValidPostalCode(postalCode: string, country: string = "US"): b
 export function isValidSSN(ssn: string): boolean {
   // Remove all non-digit characters
   const digits = ssn.replace(/\D/g, "");
-  
+
   // Must be exactly 9 digits
   if (digits.length !== 9) {
     return false;
@@ -159,8 +163,16 @@ export function isValidSSN(ssn: string): boolean {
 
   // Invalid patterns
   const invalidPatterns = [
-    "000000000", "111111111", "222222222", "333333333", "444444444",
-    "555555555", "666666666", "777777777", "888888888", "999999999"
+    "000000000",
+    "111111111",
+    "222222222",
+    "333333333",
+    "444444444",
+    "555555555",
+    "666666666",
+    "777777777",
+    "888888888",
+    "999999999",
   ];
 
   if (invalidPatterns.includes(digits)) {
@@ -210,11 +222,12 @@ export function isValidHexColor(color: string): boolean {
  */
 export function isValidIPAddress(ip: string): boolean {
   // IPv4 pattern
-  const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-  
+  const ipv4Regex =
+    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
   // IPv6 pattern (simplified)
   const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
-  
+
   return ipv4Regex.test(ip) || ipv6Regex.test(ip);
 }
 
@@ -231,7 +244,7 @@ export function isInRange(value: number, min: number, max: number): boolean {
 export function isValidLength(
   str: string,
   minLength: number = 0,
-  maxLength: number = Number.MAX_SAFE_INTEGER
+  maxLength: number = Number.MAX_SAFE_INTEGER,
 ): boolean {
   return str.length >= minLength && str.length <= maxLength;
 }
@@ -249,7 +262,10 @@ export function isRequired(value: any): boolean {
 /**
  * File type validation
  */
-export function isValidFileType(filename: string, allowedTypes: string[]): boolean {
+export function isValidFileType(
+  filename: string,
+  allowedTypes: string[],
+): boolean {
   const extension = filename.split(".").pop()?.toLowerCase();
   return extension ? allowedTypes.includes(extension) : false;
 }
@@ -267,10 +283,10 @@ export function isValidFileSize(size: number, maxSize: number): boolean {
 export function isValidDate(
   date: string | Date,
   minDate?: Date,
-  maxDate?: Date
+  maxDate?: Date,
 ): boolean {
   const dateObj = typeof date === "string" ? new Date(date) : date;
-  
+
   // Check if date is valid
   if (isNaN(dateObj.getTime())) {
     return false;
@@ -297,10 +313,10 @@ export function isValidAge(birthDate: string | Date, minAge: number): boolean {
   const today = new Date();
   const age = today.getFullYear() - birth.getFullYear();
   const monthDiff = today.getMonth() - birth.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
     return age - 1 >= minAge;
   }
-  
+
   return age >= minAge;
 }

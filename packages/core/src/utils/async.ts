@@ -41,7 +41,7 @@ export function delay<T>(value: T, ms: number): Promise<T> {
 export function withTimeout<T>(
   promise: Promise<T>,
   ms: number,
-  errorMessage: string = "Operation timed out"
+  errorMessage: string = "Operation timed out",
 ): Promise<T> {
   const timeout = new Promise<never>((_, reject) => {
     setTimeout(() => reject(new Error(errorMessage)), ms);
@@ -64,7 +64,7 @@ export function withTimeout<T>(
 export async function retry<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  baseDelay: number = 1000
+  baseDelay: number = 1000,
 ): Promise<T> {
   let lastError: Error;
 
@@ -73,7 +73,7 @@ export async function retry<T>(
       return await fn();
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      
+
       if (attempt === maxRetries) {
         throw lastError;
       }
@@ -99,7 +99,7 @@ export async function retry<T>(
  */
 export function debounce<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {
   let timeoutId: NodeJS.Timeout | null = null;
   let pendingPromise: Promise<ReturnType<T>> | null = null;
@@ -147,14 +147,14 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
  * @param fn - Async function to throttle
  * @param delay - Minimum delay between executions
  * @returns Throttled function
- * 
+ *
  * This function implements leading-edge throttling, meaning only the first call
  * in a burst executes immediately, and subsequent calls are completely ignored
  * until the delay period passes.
  */
 export function throttle<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => Promise<ReturnType<T> | void> {
   let lastExecuted = 0;
   let pendingPromise: Promise<ReturnType<T>> | null = null;
@@ -187,13 +187,13 @@ export function throttle<T extends (...args: any[]) => Promise<any>>(
  */
 export async function batchExecute<T>(
   promises: Array<() => Promise<T>>,
-  batchSize: number = 5
+  batchSize: number = 5,
 ): Promise<T[]> {
   const results: T[] = [];
-  
+
   for (let i = 0; i < promises.length; i += batchSize) {
     const batch = promises.slice(i, i + batchSize);
-    const batchResults = await Promise.all(batch.map(fn => fn()));
+    const batchResults = await Promise.all(batch.map((fn) => fn()));
     results.push(...batchResults);
   }
 
@@ -211,14 +211,14 @@ export async function batchExecute<T>(
 export async function mapWithConcurrency<T, U>(
   items: T[],
   mapper: (item: T, index: number) => Promise<U>,
-  concurrency: number = 5
+  concurrency: number = 5,
 ): Promise<U[]> {
   const results: U[] = new Array(items.length);
   const executing: Promise<void>[] = [];
 
   for (let i = 0; i < items.length; i++) {
     const index = i; // Capture the index for this iteration
-    const promise = mapper(items[i], index).then(result => {
+    const promise = mapper(items[i], index).then((result) => {
       results[index] = result;
     });
 
@@ -246,7 +246,7 @@ export async function mapWithConcurrency<T, U>(
 export async function poll(
   condition: () => Promise<boolean> | boolean,
   interval: number = 1000,
-  timeout: number = 30000
+  timeout: number = 30000,
 ): Promise<void> {
   const startTime = Date.now();
 
@@ -269,13 +269,13 @@ export async function poll(
  */
 export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  keyGenerator?: (...args: Parameters<T>) => string
+  keyGenerator?: (...args: Parameters<T>) => string,
 ): T {
   const cache = new Map<string, Promise<ReturnType<T>>>();
 
   return ((...args: Parameters<T>): Promise<ReturnType<T>> => {
     const key = keyGenerator ? keyGenerator(...args) : JSON.stringify(args);
-    
+
     if (cache.has(key)) {
       return cache.get(key)!;
     }
@@ -294,14 +294,14 @@ export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
  * Waits for the next event loop tick
  */
 export function nextTick(): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, 0));
+  return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
  * Waits for the next animation frame (browser only)
  */
 export function nextFrame(): Promise<number> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     if (typeof requestAnimationFrame !== "undefined") {
       requestAnimationFrame(() => resolve(Date.now()));
     } else {
@@ -323,12 +323,12 @@ export function makeCancelable<T>(promise: Promise<T>): CancelablePromise<T> {
 
   const wrappedPromise = new Promise<T>((resolve, reject) => {
     promise
-      .then(value => {
+      .then((value) => {
         if (!isCanceled) {
           resolve(value);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (!isCanceled) {
           reject(error);
         }

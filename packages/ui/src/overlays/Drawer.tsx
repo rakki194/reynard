@@ -112,7 +112,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
   createEffect(() => {
     if (local.open && drawerRef) {
       const focusableElements = drawerRef.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       const firstElement = focusableElements[0] as HTMLElement;
       firstElement?.focus();
@@ -183,15 +183,9 @@ export const Drawer: Component<DrawerProps> = (props) => {
   return (
     <Show when={local.open}>
       <Portal>
-        <div 
-          class="reynard-drawer"
-          style={{ "z-index": local.zIndex }}
-        >
-          <div
-            class="reynard-drawer__backdrop"
-            onClick={handleBackdropClick}
-          />
-          
+        <div class="reynard-drawer" style={{ "z-index": local.zIndex }}>
+          <div class="reynard-drawer__backdrop" onClick={handleBackdropClick} />
+
           <div
             ref={drawerRef}
             class={getDrawerClasses()}
@@ -211,7 +205,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
                     {local.title}
                   </h2>
                 </Show>
-                
+
                 <Show when={local.showCloseButton}>
                   <button
                     type="button"
@@ -231,17 +225,13 @@ export const Drawer: Component<DrawerProps> = (props) => {
                 </Show>
               </div>
             </Show>
-            
+
             {/* Body */}
-            <div class="reynard-drawer__body">
-              {local.children}
-            </div>
-            
+            <div class="reynard-drawer__body">{local.children}</div>
+
             {/* Footer */}
             <Show when={local.footer}>
-              <div class="reynard-drawer__footer">
-                {local.footer}
-              </div>
+              <div class="reynard-drawer__footer">{local.footer}</div>
             </Show>
           </div>
         </div>
@@ -249,7 +239,3 @@ export const Drawer: Component<DrawerProps> = (props) => {
     </Show>
   );
 };
-
-
-
-

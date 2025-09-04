@@ -46,7 +46,7 @@ describe("LineChart", () => {
           title="Temperature & Humidity"
         />
       ));
-      
+
       expect(screen.getByText("Line Chart")).toBeInTheDocument();
     });
 
@@ -59,32 +59,24 @@ describe("LineChart", () => {
           height={400}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toHaveClass("reynard-line-chart");
     });
 
     it("shows loading state when loading prop is true", () => {
       render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-          loading={true}
-        />
+        <LineChart labels={mockLabels} datasets={mockDatasets} loading={true} />
       ));
-      
+
       expect(screen.getByText("Loading chart...")).toBeInTheDocument();
     });
 
     it("shows empty state when no data is provided", () => {
       render(() => (
-        <LineChart
-          labels={[]}
-          datasets={[]}
-          emptyMessage="No data available"
-        />
+        <LineChart labels={[]} datasets={[]} emptyMessage="No data available" />
       ));
-      
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -96,7 +88,7 @@ describe("LineChart", () => {
           class="custom-chart-class"
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toHaveClass("custom-chart-class");
     });
@@ -105,12 +97,9 @@ describe("LineChart", () => {
   describe("Chart Variants", () => {
     it("renders with time series data when provided", () => {
       render(() => (
-        <LineChart
-          timeSeriesData={mockTimeSeriesData}
-          maxDataPoints={50}
-        />
+        <LineChart timeSeriesData={mockTimeSeriesData} maxDataPoints={50} />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -123,7 +112,7 @@ describe("LineChart", () => {
           maxDataPoints={200}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -136,7 +125,7 @@ describe("LineChart", () => {
           useTimeScale={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -151,7 +140,7 @@ describe("LineChart", () => {
           responsive={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toHaveStyle("width: 100%");
       expect(chartContainer).toHaveStyle("height: 100%");
@@ -167,7 +156,7 @@ describe("LineChart", () => {
           height={300}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toHaveStyle("width: 500px");
       expect(chartContainer).toHaveStyle("height: 300px");
@@ -181,7 +170,7 @@ describe("LineChart", () => {
           maintainAspectRatio={true}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -196,7 +185,7 @@ describe("LineChart", () => {
           xAxis={{ label: "Days" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -209,7 +198,7 @@ describe("LineChart", () => {
           yAxis={{ label: "Values" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -222,7 +211,7 @@ describe("LineChart", () => {
           yAxis={{ position: "right" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -235,7 +224,7 @@ describe("LineChart", () => {
           yAxis={{ min: 0, max: 100 }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -248,7 +237,7 @@ describe("LineChart", () => {
           xAxis={{ label: "Date" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -261,7 +250,7 @@ describe("LineChart", () => {
           yAxis={{ label: "Temperature (°C)" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -276,7 +265,7 @@ describe("LineChart", () => {
           showGrid={false}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -289,7 +278,7 @@ describe("LineChart", () => {
           showLegend={false}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -302,7 +291,7 @@ describe("LineChart", () => {
           xAxis={{ grid: { color: "rgba(0,0,0,0.1)" } }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -317,7 +306,7 @@ describe("LineChart", () => {
           animation={{ duration: 2000, easing: "easeInOutQuart" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -330,7 +319,7 @@ describe("LineChart", () => {
           tooltip={{ enabled: false, backgroundColor: "rgba(0,0,0,0.8)" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -343,7 +332,7 @@ describe("LineChart", () => {
           tooltip={{ enabled: true, backgroundColor: "rgba(0,0,0,0.9)" }}
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -351,24 +340,14 @@ describe("LineChart", () => {
 
   describe("Edge Cases and Error Handling", () => {
     it("handles empty labels array", () => {
-      render(() => (
-        <LineChart
-          labels={[]}
-          datasets={mockDatasets}
-        />
-      ));
-      
+      render(() => <LineChart labels={[]} datasets={mockDatasets} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
     it("handles empty datasets array", () => {
-      render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={[]}
-        />
-      ));
-      
+      render(() => <LineChart labels={mockLabels} datasets={[]} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -383,13 +362,8 @@ describe("LineChart", () => {
         },
       ];
 
-      render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={emptyDatasets}
-        />
-      ));
-      
+      render(() => <LineChart labels={mockLabels} datasets={emptyDatasets} />);
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
@@ -405,17 +379,17 @@ describe("LineChart", () => {
       ];
 
       render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={mismatchedDatasets}
-        />
+        <LineChart labels={mockLabels} datasets={mismatchedDatasets} />
       ));
-      
+
       expect(screen.getByText("No data available")).toBeInTheDocument();
     });
 
     it("handles very large datasets", () => {
-      const largeLabels = Array.from({ length: 100 }, (_, i) => `Label ${i + 1}`);
+      const largeLabels = Array.from(
+        { length: 100 },
+        (_, i) => `Label ${i + 1}`,
+      );
       const largeDatasets: Dataset[] = [
         {
           label: "Large Dataset",
@@ -426,13 +400,8 @@ describe("LineChart", () => {
         },
       ];
 
-      render(() => (
-        <LineChart
-          labels={largeLabels}
-          datasets={largeDatasets}
-        />
-      ));
-      
+      render(() => <LineChart labels={largeLabels} datasets={largeDatasets} />);
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -446,12 +415,9 @@ describe("LineChart", () => {
       ];
 
       render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={minimalDatasets}
-        />
+        <LineChart labels={mockLabels} datasets={minimalDatasets} />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -468,12 +434,9 @@ describe("LineChart", () => {
       ];
 
       render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={negativeDatasets}
-        />
+        <LineChart labels={mockLabels} datasets={negativeDatasets} />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -489,13 +452,8 @@ describe("LineChart", () => {
         },
       ];
 
-      render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={zeroDatasets}
-        />
-      ));
-      
+      render(() => <LineChart labels={mockLabels} datasets={zeroDatasets} />);
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -504,20 +462,15 @@ describe("LineChart", () => {
   describe("Performance Tests", () => {
     it("renders quickly with small datasets", () => {
       const startTime = performance.now();
-      
-      render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-        />
-      ));
-      
+
+      render(() => <LineChart labels={mockLabels} datasets={mockDatasets} />);
+
       const endTime = performance.now();
       const renderTime = endTime - startTime;
-      
+
       // Should render in under 100ms
       expect(renderTime).toBeLessThan(100);
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -537,7 +490,10 @@ describe("LineChart", () => {
     });
 
     it("handles large dataset updates efficiently", () => {
-      const largeLabels = Array.from({ length: 100 }, (_, i) => `Label ${i + 1}`);
+      const largeLabels = Array.from(
+        { length: 100 },
+        (_, i) => `Label ${i + 1}`,
+      );
       const largeDatasets: Dataset[] = [
         {
           label: "Large Dataset",
@@ -549,16 +505,11 @@ describe("LineChart", () => {
       ];
 
       const startTime = performance.now();
-      render(() => (
-        <LineChart
-          labels={largeLabels}
-          datasets={largeDatasets}
-        />
-      ));
+      render(() => <LineChart labels={largeLabels} datasets={largeDatasets} />);
       const endTime = performance.now();
 
       expect(endTime - startTime).toBeLessThan(200); // Should render in under 200ms
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
@@ -573,19 +524,14 @@ describe("LineChart", () => {
           title="Accessible Line Chart"
         />
       ));
-      
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
     });
 
     it("supports keyboard navigation", () => {
-      render(() => (
-        <LineChart
-          labels={mockLabels}
-          datasets={mockDatasets}
-        />
-      ));
-      
+      render(() => <LineChart labels={mockLabels} datasets={mockDatasets} />);
+
       const chartContainer = screen.getByText("Line Chart").closest("div");
       expect(chartContainer).toBeInTheDocument();
       // Note: Focus testing is limited in jsdom, so we just verify the element exists

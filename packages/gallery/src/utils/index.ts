@@ -3,40 +3,53 @@
  * Helper functions for file management, thumbnails, and media processing
  */
 
-import type { 
-  FileItem, 
-  FolderItem, 
-  FileMetadata, 
+import type {
+  FileItem,
+  FolderItem,
+  FileMetadata,
   ThumbnailOptions,
   SortConfiguration,
   FilterConfiguration,
-  BreadcrumbItem
+  BreadcrumbItem,
 } from "../types";
 
 /**
  * File type detection utilities
  */
-export function getFileType(fileName: string, mimeType?: string): FileItem["type"] {
+export function getFileType(
+  fileName: string,
+  mimeType?: string,
+): FileItem["type"] {
   const ext = getFileExtension(fileName);
-  
+
   if (mimeType) {
     if (mimeType.startsWith("image/")) return "image";
     if (mimeType.startsWith("video/")) return "video";
     if (mimeType.startsWith("audio/")) return "audio";
     if (mimeType.startsWith("text/")) return "text";
   }
-  
+
   // Fallback to extension-based detection
   const imageExts = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "ico"];
   const videoExts = ["mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v"];
   const audioExts = ["mp3", "wav", "ogg", "m4a", "flac", "aac", "wma"];
-  const textExts = ["txt", "md", "json", "xml", "html", "css", "js", "ts", "py"];
-  
+  const textExts = [
+    "txt",
+    "md",
+    "json",
+    "xml",
+    "html",
+    "css",
+    "js",
+    "ts",
+    "py",
+  ];
+
   if (imageExts.includes(ext)) return "image";
   if (videoExts.includes(ext)) return "video";
   if (audioExts.includes(ext)) return "audio";
   if (textExts.includes(ext)) return "text";
-  
+
   return "unknown";
 }
 
@@ -53,11 +66,11 @@ export function getFileExtension(fileName: string): string {
  */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return "0 B";
-  
+
   const units = ["B", "KB", "MB", "GB", "TB"];
   const k = 1024;
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return `${(bytes / Math.pow(k, i)).toFixed(1)} ${units[i]}`;
 }
 
@@ -68,25 +81,28 @@ export function formatDuration(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
-  
+
   if (hours > 0) {
     return `${hours}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   }
-  
+
   return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
 
 /**
  * Format timestamp for display
  */
-export function formatDate(timestamp: number, format: "short" | "long" | "relative" = "short"): string {
+export function formatDate(
+  timestamp: number,
+  format: "short" | "long" | "relative" = "short",
+): string {
   const date = new Date(timestamp);
   const now = new Date();
-  
+
   if (format === "relative") {
     const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) return "Today";
     if (diffDays === 1) return "Yesterday";
     if (diffDays < 7) return `${diffDays} days ago`;
@@ -94,7 +110,7 @@ export function formatDate(timestamp: number, format: "short" | "long" | "relati
     if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
     return `${Math.floor(diffDays / 365)} years ago`;
   }
-  
+
   if (format === "long") {
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -104,7 +120,7 @@ export function formatDate(timestamp: number, format: "short" | "long" | "relati
       minute: "2-digit",
     });
   }
-  
+
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -117,16 +133,16 @@ export function formatDate(timestamp: number, format: "short" | "long" | "relati
  */
 export function generateThumbnailUrl(
   baseUrl: string,
-  options: Partial<ThumbnailOptions> = {}
+  options: Partial<ThumbnailOptions> = {},
 ): string {
   const params = new URLSearchParams();
-  
+
   if (options.width) params.set("w", options.width.toString());
   if (options.height) params.set("h", options.height.toString());
   if (options.quality) params.set("q", options.quality.toString());
   if (options.format) params.set("format", options.format);
   if (options.maintainAspectRatio === false) params.set("fit", "fill");
-  
+
   const queryString = params.toString();
   return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 }
@@ -137,7 +153,7 @@ export function generateThumbnailUrl(
 export function calculateGridDimensions(
   containerWidth: number,
   itemSize: "small" | "medium" | "large" | "xl",
-  itemsPerRow?: number
+  itemsPerRow?: number,
 ): { itemWidth: number; itemHeight: number; columns: number } {
   const baseSizes = {
     small: 120,
@@ -145,12 +161,12 @@ export function calculateGridDimensions(
     large: 240,
     xl: 320,
   };
-  
+
   const baseSize = baseSizes[itemSize];
   const gap = 16; // CSS gap between items
-  
+
   if (itemsPerRow) {
-    const availableWidth = containerWidth - (gap * (itemsPerRow - 1));
+    const availableWidth = containerWidth - gap * (itemsPerRow - 1);
     const itemWidth = Math.max(availableWidth / itemsPerRow, 100);
     return {
       itemWidth,
@@ -158,12 +174,15 @@ export function calculateGridDimensions(
       columns: itemsPerRow,
     };
   }
-  
+
   // Auto-calculate columns based on container width
-  const columns = Math.max(1, Math.floor((containerWidth + gap) / (baseSize + gap)));
-  const availableWidth = containerWidth - (gap * (columns - 1));
+  const columns = Math.max(
+    1,
+    Math.floor((containerWidth + gap) / (baseSize + gap)),
+  );
+  const availableWidth = containerWidth - gap * (columns - 1);
   const itemWidth = availableWidth / columns;
-  
+
   return {
     itemWidth,
     itemHeight: itemWidth,
@@ -176,25 +195,26 @@ export function calculateGridDimensions(
  */
 export function sortItems(
   items: (FileItem | FolderItem)[],
-  config: SortConfiguration
+  config: SortConfiguration,
 ): (FileItem | FolderItem)[] {
   const { field, direction } = config;
   const multiplier = direction === "asc" ? 1 : -1;
-  
+
   return [...items].sort((a, b) => {
     // Always put folders first
     if (a.type === "folder" && b.type !== "folder") return -1;
     if (a.type !== "folder" && b.type === "folder") return 1;
-    
+
     let comparison = 0;
-    
+
     switch (field) {
       case "name":
         comparison = a.name.localeCompare(b.name);
         break;
       case "size":
-        comparison = (a.type === "folder" ? 0 : (a as FileItem).size) - 
-                    (b.type === "folder" ? 0 : (b as FileItem).size);
+        comparison =
+          (a.type === "folder" ? 0 : (a as FileItem).size) -
+          (b.type === "folder" ? 0 : (b as FileItem).size);
         break;
       case "lastModified":
         comparison = a.lastModified - b.lastModified;
@@ -210,7 +230,7 @@ export function sortItems(
       default:
         comparison = a.name.localeCompare(b.name);
     }
-    
+
     return comparison * multiplier;
   });
 }
@@ -220,9 +240,9 @@ export function sortItems(
  */
 export function filterItems(
   items: (FileItem | FolderItem)[],
-  config: FilterConfiguration
+  config: FilterConfiguration,
 ): (FileItem | FolderItem)[] {
-  return items.filter(item => {
+  return items.filter((item) => {
     // Search query filter
     if (config.searchQuery) {
       const query = config.searchQuery.toLowerCase();
@@ -230,48 +250,56 @@ export function filterItems(
         return false;
       }
     }
-    
+
     // File type filter
     if (config.fileTypes.length > 0 && item.type !== "folder") {
       const fileItem = item as FileItem;
-      const matchesType = config.fileTypes.some(type => {
+      const matchesType = config.fileTypes.some((type) => {
         if (type === "*") return true;
         if (type.endsWith("/*")) {
           const category = type.slice(0, -2);
           return fileItem.type === category;
         }
-        return fileItem.mimeType?.includes(type) || 
-               fileItem.name.toLowerCase().endsWith(`.${type}`);
+        return (
+          fileItem.mimeType?.includes(type) ||
+          fileItem.name.toLowerCase().endsWith(`.${type}`)
+        );
       });
       if (!matchesType) return false;
     }
-    
+
     // Favorites filter
     if (config.favoritesOnly && !item.favorited) {
       return false;
     }
-    
+
     // Date range filter
     if (config.dateRange) {
       const itemDate = new Date(item.lastModified);
-      if (itemDate < config.dateRange.start || itemDate > config.dateRange.end) {
+      if (
+        itemDate < config.dateRange.start ||
+        itemDate > config.dateRange.end
+      ) {
         return false;
       }
     }
-    
+
     // Size range filter
     if (config.sizeRange && item.type !== "folder") {
       const fileItem = item as FileItem;
-      if (fileItem.size < config.sizeRange.min || fileItem.size > config.sizeRange.max) {
+      if (
+        fileItem.size < config.sizeRange.min ||
+        fileItem.size > config.sizeRange.max
+      ) {
         return false;
       }
     }
-    
+
     // Hidden files filter
     if (!config.showHidden && item.name.startsWith(".")) {
       return false;
     }
-    
+
     return true;
   });
 }
@@ -288,7 +316,7 @@ export function generateBreadcrumbs(currentPath: string): BreadcrumbItem[] {
       clickable: true,
     },
   ];
-  
+
   let accumulatedPath = "";
   for (const part of parts) {
     accumulatedPath += `/${part}`;
@@ -298,7 +326,7 @@ export function generateBreadcrumbs(currentPath: string): BreadcrumbItem[] {
       clickable: true,
     });
   }
-  
+
   return breadcrumbs;
 }
 
@@ -310,7 +338,7 @@ export function validateFile(
   config: {
     maxFileSize: number;
     allowedTypes: string[];
-  }
+  },
 ): { valid: boolean; error?: string } {
   // Size validation
   if (file.size > config.maxFileSize) {
@@ -319,17 +347,17 @@ export function validateFile(
       error: `File size (${formatFileSize(file.size)}) exceeds maximum allowed size (${formatFileSize(config.maxFileSize)})`,
     };
   }
-  
+
   // Type validation
   if (config.allowedTypes.length > 0) {
-    const isAllowed = config.allowedTypes.some(type => {
+    const isAllowed = config.allowedTypes.some((type) => {
       if (type === "*/*") return true;
       if (type.endsWith("/*")) {
         return file.type.startsWith(type.slice(0, -1));
       }
       return file.type === type;
     });
-    
+
     if (!isAllowed) {
       return {
         valid: false,
@@ -337,16 +365,18 @@ export function validateFile(
       };
     }
   }
-  
+
   return { valid: true };
 }
 
 /**
  * Extract metadata from file
  */
-export async function extractFileMetadata(file: File): Promise<Partial<FileMetadata>> {
+export async function extractFileMetadata(
+  file: File,
+): Promise<Partial<FileMetadata>> {
   const metadata: Partial<FileMetadata> = {};
-  
+
   if (file.type.startsWith("image/")) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -360,7 +390,7 @@ export async function extractFileMetadata(file: File): Promise<Partial<FileMetad
       img.src = URL.createObjectURL(file);
     });
   }
-  
+
   if (file.type.startsWith("video/")) {
     return new Promise((resolve) => {
       const video = document.createElement("video");
@@ -375,7 +405,7 @@ export async function extractFileMetadata(file: File): Promise<Partial<FileMetad
       video.src = URL.createObjectURL(file);
     });
   }
-  
+
   if (file.type.startsWith("audio/")) {
     return new Promise((resolve) => {
       const audio = new Audio();
@@ -387,7 +417,7 @@ export async function extractFileMetadata(file: File): Promise<Partial<FileMetad
       audio.src = URL.createObjectURL(file);
     });
   }
-  
+
   return metadata;
 }
 
@@ -398,17 +428,17 @@ export function generateFileId(file: File | string, path?: string): string {
   const name = typeof file === "string" ? file : file.name;
   const size = typeof file === "string" ? 0 : file.size;
   const modified = typeof file === "string" ? Date.now() : file.lastModified;
-  
+
   const input = `${name}-${size}-${modified}-${path || ""}`;
-  
+
   // Simple hash function for generating IDs
   let hash = 0;
   for (let i = 0; i < input.length; i++) {
     const char = input.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
-  
+
   return Math.abs(hash).toString(36);
 }
 
@@ -417,10 +447,10 @@ export function generateFileId(file: File | string, path?: string): string {
  */
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -432,15 +462,15 @@ export function debounce<T extends (...args: any[]) => any>(
  */
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
-  
+
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 }
@@ -498,7 +528,7 @@ export function getFileIcon(item: FileItem | FolderItem): string {
  */
 export function joinPaths(...paths: string[]): string {
   return paths
-    .map(path => path.replace(/^\/+|\/+$/g, ""))
+    .map((path) => path.replace(/^\/+|\/+$/g, ""))
     .filter(Boolean)
     .join("/");
 }
@@ -519,7 +549,3 @@ export function isChildPath(childPath: string, parentPath: string): boolean {
   if (parentPath === "") return true; // Root is parent of all
   return childPath.startsWith(parentPath + "/");
 }
-
-
-
-

@@ -1,36 +1,32 @@
 /**
  * P2P Chat Example
- * 
+ *
  * Demonstrates how to use the P2P chat system for user-to-user messaging
  * with both assistant chat and peer-to-peer functionality.
  */
 
-import { Component, createSignal } from 'solid-js';
-import { 
-  P2PChatContainer, 
-  ChatContainer, 
-  useP2PChat,
-  type ChatUser,
-  type ChatRoom 
-} from '@reynard/components';
+import { Component, createSignal, For } from "solid-js";
+import { ChatContainer } from "../components";
+import { P2PChatContainer, useP2PChat, type ChatUser } from "../p2p";
+import "./P2PChatExample.css";
 
 // Example: Basic P2P Chat
 export const BasicP2PChat: Component = () => {
   const currentUser: ChatUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online',
-    avatar: '👤'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
+    avatar: "👤",
   };
 
   return (
-    <div style={{ height: '600px', width: '100%' }}>
+    <div class="p2p-chat-container">
       <P2PChatContainer
         currentUser={currentUser}
         realtimeEndpoint="wss://your-websocket-server.com/chat"
         apiEndpoint="/api/chat"
         authHeaders={{
-          'Authorization': 'Bearer your-auth-token'
+          Authorization: "Bearer your-auth-token",
         }}
         config={{
           enableFileUploads: true,
@@ -44,9 +40,11 @@ export const BasicP2PChat: Component = () => {
           showRoomList: true,
           compact: false,
         }}
-        onRoomJoined={(room) => console.log('Joined room:', room.name)}
-        onMessageReceived={(message) => console.log('New message:', message.content)}
-        onError={(error) => console.error('Chat error:', error)}
+        onRoomJoined={(room) => console.log("Joined room:", room.name)}
+        onMessageReceived={(message) =>
+          console.log("New message:", message.content)
+        }
+        onError={(error) => console.error("Chat error:", error)}
       />
     </div>
   );
@@ -54,52 +52,38 @@ export const BasicP2PChat: Component = () => {
 
 // Example: Side-by-side Assistant and P2P Chat
 export const DualChatExample: Component = () => {
-  const [activeTab, setActiveTab] = createSignal<'assistant' | 'p2p'>('assistant');
+  const [activeTab, setActiveTab] = createSignal<"assistant" | "p2p">(
+    "assistant",
+  );
 
   const currentUser: ChatUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online',
-    avatar: '👤'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
+    avatar: "👤",
   };
 
   return (
-    <div style={{ height: '600px', width: '100%', display: 'flex', 'flex-direction': 'column' }}>
+    <div class="p2p-chat-container-column">
       {/* Tab Navigation */}
-      <div style={{ 
-        display: 'flex', 
-        'border-bottom': '1px solid #e2e8f0',
-        'background': '#f8fafc' 
-      }}>
+      <div class="p2p-tab-navigation">
         <button
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            background: activeTab() === 'assistant' ? '#3b82f6' : 'transparent',
-            color: activeTab() === 'assistant' ? 'white' : '#64748b',
-            cursor: 'pointer'
-          }}
-          onClick={() => setActiveTab('assistant')}
+          class={`p2p-tab-button ${activeTab() === "assistant" ? "p2p-tab-button-active" : "p2p-tab-button-inactive"}`}
+          onClick={() => setActiveTab("assistant")}
         >
           🦊 AI Assistant
         </button>
         <button
-          style={{
-            padding: '12px 24px',
-            border: 'none',
-            background: activeTab() === 'p2p' ? '#3b82f6' : 'transparent',
-            color: activeTab() === 'p2p' ? 'white' : '#64748b',
-            cursor: 'pointer'
-          }}
-          onClick={() => setActiveTab('p2p')}
+          class={`p2p-tab-button ${activeTab() === "p2p" ? "p2p-tab-button-active" : "p2p-tab-button-inactive"}`}
+          onClick={() => setActiveTab("p2p")}
         >
           👥 Team Chat
         </button>
       </div>
 
       {/* Chat Content */}
-      <div style={{ flex: 1 }}>
-        {activeTab() === 'assistant' ? (
+      <div class="p2p-chat-content">
+        {activeTab() === "assistant" ? (
           <ChatContainer
             endpoint="/api/assistant"
             height="100%"
@@ -114,7 +98,6 @@ export const DualChatExample: Component = () => {
             currentUser={currentUser}
             realtimeEndpoint="wss://your-websocket-server.com/chat"
             apiEndpoint="/api/chat"
-            height="100%"
           />
         )}
       </div>
@@ -125,21 +108,21 @@ export const DualChatExample: Component = () => {
 // Example: Custom P2P Chat with Hooks
 export const CustomP2PChat: Component = () => {
   const currentUser: ChatUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
   };
 
   const p2pChat = useP2PChat({
     currentUser,
-    realtimeEndpoint: 'wss://your-websocket-server.com/chat',
-    apiEndpoint: '/api/chat',
+    realtimeEndpoint: "wss://your-websocket-server.com/chat",
+    apiEndpoint: "/api/chat",
     autoConnect: true,
     config: {
       enableFileUploads: true,
       enableReactions: true,
       enableTypingIndicators: true,
-    }
+    },
   });
 
   const handleSendMessage = async (content: string) => {
@@ -151,105 +134,75 @@ export const CustomP2PChat: Component = () => {
 
   const handleCreateDirectMessage = async (userId: string) => {
     const room = await p2pChat.actions.createRoom(
-      `DM with ${userId}`, 
-      'direct', 
-      [{ id: userId, name: 'Other User', status: 'online' }]
+      `DM with ${userId}`,
+      "direct",
+      [{ id: userId, name: "Other User", status: "online" }],
     );
     p2pChat.actions.switchRoom(room.id);
   };
 
   return (
-    <div style={{ height: '600px', display: 'flex' }}>
+    <div class="p2p-chat-container-flex">
       {/* Custom Room List */}
-      <div style={{ width: '250px', 'border-right': '1px solid #e2e8f0' }}>
+      <div class="p2p-room-list">
         <h3>Rooms ({p2pChat.rooms().length})</h3>
         <div>
-          {p2pChat.rooms().map(room => (
-            <div
-              key={room.id}
-              style={{
-                padding: '12px',
-                cursor: 'pointer',
-                background: p2pChat.activeRoom()?.id === room.id ? '#e0e7ff' : 'transparent'
-              }}
-              onClick={() => p2pChat.actions.switchRoom(room.id)}
-            >
-              <strong>{room.name}</strong>
-              {room.unreadCount && room.unreadCount > 0 && (
-                <span style={{
-                  background: '#ef4444',
-                  color: 'white',
-                  'border-radius': '50%',
-                  padding: '2px 6px',
-                  'font-size': '12px',
-                  'margin-left': '8px'
-                }}>
-                  {room.unreadCount}
-                </span>
-              )}
-            </div>
-          ))}
+          <For each={p2pChat.rooms()}>
+            {(room) => (
+              <div
+                class={`p2p-room-item ${p2pChat.activeRoom()?.id === room.id ? "p2p-room-item-active" : "p2p-room-item-inactive"}`}
+                onClick={() => p2pChat.actions.switchRoom(room.id)}
+              >
+                <strong>{room.name}</strong>
+                {room.unreadCount && room.unreadCount > 0 && (
+                  <span class="p2p-unread-badge">{room.unreadCount}</span>
+                )}
+              </div>
+            )}
+          </For>
         </div>
-        
+
         <button
-          onClick={() => handleCreateDirectMessage('other-user-id')}
-          style={{
-            width: '100%',
-            padding: '12px',
-            background: '#3b82f6',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer'
-          }}
+          onClick={() => handleCreateDirectMessage("other-user-id")}
+          class="p2p-start-dm-button"
         >
           Start DM
         </button>
       </div>
 
       {/* Custom Chat Area */}
-      <div style={{ flex: 1, display: 'flex', 'flex-direction': 'column' }}>
+      <div class="p2p-chat-area">
         {/* Messages */}
-        <div style={{ flex: 1, padding: '16px', 'overflow-y': 'auto' }}>
-          {p2pChat.messages().map(message => (
-            <div
-              key={message.id}
-              style={{
-                'margin-bottom': '16px',
-                padding: '12px',
-                background: message.sender?.id === currentUser.id ? '#dbeafe' : '#f3f4f6',
-                'border-radius': '8px',
-                'margin-left': message.sender?.id === currentUser.id ? '20%' : '0',
-                'margin-right': message.sender?.id === currentUser.id ? '0' : '20%'
-              }}
-            >
-              <div style={{ 'font-weight': 'bold', 'margin-bottom': '4px' }}>
-                {message.sender?.name || 'Unknown'}
+        <div class="p2p-messages-container">
+          <For each={p2pChat.messages()}>
+            {(message) => (
+              <div
+                class={`p2p-message ${message.sender?.id === currentUser.id ? "p2p-message-own" : "p2p-message-other"}`}
+              >
+                <div class="p2p-message-sender">
+                  {message.sender?.name || "Unknown"}
+                </div>
+                <div>{message.content}</div>
+                <div class="p2p-message-timestamp">
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                </div>
               </div>
-              <div>{message.content}</div>
-              <div style={{ 'font-size': '12px', color: '#6b7280', 'margin-top': '4px' }}>
-                {new Date(message.timestamp).toLocaleTimeString()}
-              </div>
-            </div>
-          ))}
+            )}
+          </For>
         </div>
 
         {/* Input */}
-        <div style={{ padding: '16px', 'border-top': '1px solid #e2e8f0' }}>
+        <div class="p2p-input-container">
           <input
             type="text"
             placeholder="Type a message..."
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '1px solid #d1d5db',
-              'border-radius': '6px'
-            }}
+            class="p2p-message-input"
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 const target = e.target as HTMLInputElement;
                 if (target.value.trim()) {
                   handleSendMessage(target.value.trim());
-                  target.value = '';
+                  target.value = "";
                 }
               }
             }}
@@ -258,16 +211,9 @@ export const CustomP2PChat: Component = () => {
       </div>
 
       {/* Connection Status */}
-      <div style={{
-        position: 'absolute',
-        top: '10px',
-        right: '10px',
-        padding: '8px 12px',
-        background: p2pChat.p2pConnection().status === 'connected' ? '#10b981' : '#ef4444',
-        color: 'white',
-        'border-radius': '4px',
-        'font-size': '12px'
-      }}>
+      <div
+        class={`p2p-connection-status ${p2pChat.p2pConnection().status === "connected" ? "p2p-connection-connected" : "p2p-connection-disconnected"}`}
+      >
         {p2pChat.p2pConnection().status}
       </div>
     </div>
@@ -277,33 +223,35 @@ export const CustomP2PChat: Component = () => {
 // Example: Real-time Features Demo
 export const RealtimeFeaturesDemo: Component = () => {
   const currentUser: ChatUser = {
-    id: 'user-123',
-    name: 'John Doe',
-    status: 'online'
+    id: "user-123",
+    name: "John Doe",
+    status: "online",
   };
 
   const p2pChat = useP2PChat({
     currentUser,
-    realtimeEndpoint: 'wss://your-websocket-server.com/chat',
+    realtimeEndpoint: "wss://your-websocket-server.com/chat",
     config: {
       enableTypingIndicators: true,
       enableReactions: true,
       enableReadReceipts: true,
-    }
+    },
   });
 
   return (
-    <div style={{ height: '600px', padding: '20px' }}>
+    <div class="p2p-demo-container">
       <h2>Real-time Features Demo</h2>
-      
+
       {/* Status Controls */}
-      <div style={{ 'margin-bottom': '20px' }}>
-        <label>Status: </label>
+      <div class="p2p-demo-section">
+        <label class="p2p-demo-label">Status: </label>
         <select
+          class="p2p-demo-select"
+          aria-label="Select user status"
           value={currentUser.status}
           onChange={(e) => {
-            const newStatus = e.target.value as ChatUser['status'];
-            p2pChat.actions.updateUserStatus(newStatus);
+            const newStatus = e.target.value as ChatUser["status"];
+            p2pChat.actions.updateUserStatusViaWebSocket(newStatus);
           }}
         >
           <option value="online">Online</option>
@@ -314,9 +262,10 @@ export const RealtimeFeaturesDemo: Component = () => {
       </div>
 
       {/* Typing Indicators */}
-      <div style={{ 'margin-bottom': '20px' }}>
+      <div class="p2p-demo-section">
         <h3>Typing Indicators</h3>
         <button
+          class="p2p-demo-button"
           onClick={() => {
             const activeRoom = p2pChat.activeRoom();
             if (activeRoom) {
@@ -332,19 +281,24 @@ export const RealtimeFeaturesDemo: Component = () => {
       </div>
 
       {/* File Upload */}
-      <div style={{ 'margin-bottom': '20px' }}>
+      <div class="p2p-demo-section">
         <h3>File Upload</h3>
         <input
           type="file"
+          class="p2p-demo-file-input"
+          aria-label="Select file to upload"
           onChange={async (e) => {
             const file = e.target.files?.[0];
             const activeRoom = p2pChat.activeRoom();
             if (file && activeRoom) {
               try {
-                const attachment = await p2pChat.actions.uploadFile(file, activeRoom.id);
-                console.log('File uploaded:', attachment);
+                const attachment = await p2pChat.actions.uploadFile(
+                  file,
+                  activeRoom.id,
+                );
+                console.log("File uploaded:", attachment);
               } catch (error) {
-                console.error('Upload failed:', error);
+                console.error("Upload failed:", error);
               }
             }
           }}
@@ -352,16 +306,17 @@ export const RealtimeFeaturesDemo: Component = () => {
       </div>
 
       {/* Search */}
-      <div style={{ 'margin-bottom': '20px' }}>
+      <div class="p2p-demo-section">
         <h3>Message Search</h3>
         <input
           type="text"
           placeholder="Search messages..."
+          class="p2p-demo-input"
           onInput={async (e) => {
             const query = e.target.value;
             if (query.length > 2) {
               const results = await p2pChat.actions.searchMessages(query);
-              console.log('Search results:', results);
+              console.log("Search results:", results);
             }
           }}
         />
@@ -371,13 +326,14 @@ export const RealtimeFeaturesDemo: Component = () => {
       <div>
         <h3>Export/Import</h3>
         <button
+          class="p2p-demo-button"
           onClick={() => {
-            const json = p2pChat.actions.exportConversation('json');
-            const blob = new Blob([json], { type: 'application/json' });
+            const json = p2pChat.actions.exportConversation("json");
+            const blob = new Blob([json], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href = url;
-            a.download = 'chat-export.json';
+            a.download = "chat-export.json";
             a.click();
             URL.revokeObjectURL(url);
           }}

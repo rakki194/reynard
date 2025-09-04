@@ -16,11 +16,11 @@ import type {
   GalleryCallbacks,
 } from "../types";
 import { sortItems, filterItems, generateBreadcrumbs } from "../utils";
-import { 
-  DEFAULT_VIEW_CONFIG, 
-  DEFAULT_SORT_CONFIG, 
+import {
+  DEFAULT_VIEW_CONFIG,
+  DEFAULT_SORT_CONFIG,
   DEFAULT_FILTER_CONFIG,
-  DEFAULT_SELECTION_STATE
+  DEFAULT_SELECTION_STATE,
 } from "../types";
 
 export interface UseGalleryStateOptions {
@@ -42,7 +42,7 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
     if (!options.persistState || typeof localStorage === "undefined") {
       return defaultValue;
     }
-    
+
     try {
       const stored = localStorage.getItem(`${storageKey}-${key}`);
       return stored ? JSON.parse(stored) : defaultValue;
@@ -54,7 +54,7 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   // Save state to localStorage
   const saveState = <T>(key: string, value: T): void => {
     if (!options.persistState || typeof localStorage === "undefined") return;
-    
+
     try {
       localStorage.setItem(`${storageKey}-${key}`, JSON.stringify(value));
     } catch {
@@ -69,18 +69,26 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   const [error, setError] = createSignal<string | null>(null);
 
   // Configuration state
-  const [viewConfig, setViewConfig] = createSignal<ViewConfiguration>(
-    { ...DEFAULT_VIEW_CONFIG, ...options.initialConfig?.view, ...loadPersistedState("view", {}) }
-  );
-  const [sortConfig, setSortConfig] = createSignal<SortConfiguration>(
-    { ...DEFAULT_SORT_CONFIG, ...options.initialConfig?.sort, ...loadPersistedState("sort", {}) }
-  );
-  const [filterConfig, setFilterConfig] = createSignal<FilterConfiguration>(
-    { ...DEFAULT_FILTER_CONFIG, ...options.initialConfig?.filter, ...loadPersistedState("filter", {}) }
-  );
+  const [viewConfig, setViewConfig] = createSignal<ViewConfiguration>({
+    ...DEFAULT_VIEW_CONFIG,
+    ...options.initialConfig?.view,
+    ...loadPersistedState("view", {}),
+  });
+  const [sortConfig, setSortConfig] = createSignal<SortConfiguration>({
+    ...DEFAULT_SORT_CONFIG,
+    ...options.initialConfig?.sort,
+    ...loadPersistedState("sort", {}),
+  });
+  const [filterConfig, setFilterConfig] = createSignal<FilterConfiguration>({
+    ...DEFAULT_FILTER_CONFIG,
+    ...options.initialConfig?.filter,
+    ...loadPersistedState("filter", {}),
+  });
 
   // Selection state
-  const [selectionState, setSelectionState] = createSignal<SelectionState>(DEFAULT_SELECTION_STATE);
+  const [selectionState, setSelectionState] = createSignal<SelectionState>(
+    DEFAULT_SELECTION_STATE,
+  );
 
   // Persist configuration changes
   createEffect(() => {
@@ -97,7 +105,7 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   const items = createMemo(() => {
     const data = galleryData();
     if (!data || !data.items) return [];
-    
+
     const filtered = filterItems(data.items, filterConfig());
     return sortItems(filtered, sortConfig());
   });
@@ -105,7 +113,7 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   const selectedItems = createMemo(() => {
     const allItems = items();
     const selectedIds = selectionState().selectedIds;
-    return allItems.filter(item => selectedIds.has(item.id));
+    return allItems.filter((item) => selectedIds.has(item.id));
   });
 
   const breadcrumbs = createMemo(() => {
@@ -114,12 +122,12 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
 
   const stats = createMemo(() => {
     const allItems = galleryData()?.items || [];
-    const folders = allItems.filter(item => item.type === "folder").length;
-    const files = allItems.filter(item => item.type !== "folder").length;
+    const folders = allItems.filter((item) => item.type === "folder").length;
+    const files = allItems.filter((item) => item.type !== "folder").length;
     const totalSize = allItems
       .filter((item): item is FileItem => item.type !== "folder")
       .reduce((sum, file) => sum + file.size, 0);
-    
+
     return {
       totalItems: allItems.length,
       folders,
@@ -149,7 +157,9 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
 
   const navigateToItem = (item: FileItem | FolderItem): void => {
     if (item.type === "folder") {
-      const newPath = currentPath() ? `${currentPath()}/${item.name}` : `/${item.name}`;
+      const newPath = currentPath()
+        ? `${currentPath()}/${item.name}`
+        : `/${item.name}`;
       navigateToPath(newPath);
     } else {
       options.callbacks?.onItemOpen?.(item);
@@ -157,10 +167,13 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   };
 
   // Selection actions
-  const selectItem = (item: FileItem | FolderItem, mode: "single" | "add" | "range" = "single"): void => {
-    setSelectionState(prev => {
+  const selectItem = (
+    item: FileItem | FolderItem,
+    mode: "single" | "add" | "range" = "single",
+  ): void => {
+    setSelectionState((prev) => {
       const newSelectedIds = new Set(prev.selectedIds);
-      
+
       if (mode === "single") {
         newSelectedIds.clear();
         newSelectedIds.add(item.id);
@@ -172,19 +185,21 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
         }
       } else if (mode === "range" && prev.lastSelectedId) {
         const allItems = items();
-        const lastIndex = allItems.findIndex(i => i.id === prev.lastSelectedId);
-        const currentIndex = allItems.findIndex(i => i.id === item.id);
-        
+        const lastIndex = allItems.findIndex(
+          (i) => i.id === prev.lastSelectedId,
+        );
+        const currentIndex = allItems.findIndex((i) => i.id === item.id);
+
         if (lastIndex !== -1 && currentIndex !== -1) {
           const start = Math.min(lastIndex, currentIndex);
           const end = Math.max(lastIndex, currentIndex);
-          
+
           for (let i = start; i <= end; i++) {
             newSelectedIds.add(allItems[i].id);
           }
         }
       }
-      
+
       const newState = {
         ...prev,
         selectedIds: newSelectedIds,
@@ -193,34 +208,34 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
       };
 
       // Trigger callback
-      const selectedItemsList = items().filter(i => newSelectedIds.has(i.id));
+      const selectedItemsList = items().filter((i) => newSelectedIds.has(i.id));
       options.callbacks?.onSelectionChange?.(selectedItemsList);
-      
+
       return newState;
     });
   };
 
   const selectAll = (): void => {
     const allItems = items();
-    const allIds = new Set(allItems.map(item => item.id));
-    
-    setSelectionState(prev => ({
+    const allIds = new Set(allItems.map((item) => item.id));
+
+    setSelectionState((prev) => ({
       ...prev,
       selectedIds: allIds,
       active: allIds.size > 0,
     }));
-    
+
     options.callbacks?.onSelectionChange?.(allItems);
   };
 
   const clearSelection = (): void => {
-    setSelectionState(prev => ({
+    setSelectionState((prev) => ({
       ...prev,
       selectedIds: new Set(),
       lastSelectedId: undefined,
       active: false,
     }));
-    
+
     options.callbacks?.onSelectionChange?.([]);
   };
 
@@ -231,35 +246,33 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
   // Favorite actions
   const toggleFavorite = (item: FileItem | FolderItem): void => {
     const newFavorited = !item.favorited;
-    
+
     // Update item in gallery data
-    setGalleryData(prev => {
+    setGalleryData((prev) => {
       if (!prev) return prev;
-      
+
       return {
         ...prev,
-        items: prev.items.map(i => 
-          i.id === item.id 
-            ? { ...i, favorited: newFavorited }
-            : i
+        items: prev.items.map((i) =>
+          i.id === item.id ? { ...i, favorited: newFavorited } : i,
         ),
       };
     });
-    
+
     options.callbacks?.onFavorite?.(item, newFavorited);
   };
 
   // Configuration actions
   const updateViewConfig = (updates: Partial<ViewConfiguration>): void => {
-    setViewConfig(prev => ({ ...prev, ...updates }));
+    setViewConfig((prev) => ({ ...prev, ...updates }));
   };
 
   const updateSortConfig = (updates: Partial<SortConfiguration>): void => {
-    setSortConfig(prev => ({ ...prev, ...updates }));
+    setSortConfig((prev) => ({ ...prev, ...updates }));
   };
 
   const updateFilterConfig = (updates: Partial<FilterConfiguration>): void => {
-    setFilterConfig(prev => ({ ...prev, ...updates }));
+    setFilterConfig((prev) => ({ ...prev, ...updates }));
   };
 
   const resetFilters = (): void => {
@@ -299,33 +312,33 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
     sortConfig,
     filterConfig,
     selectionState,
-    
+
     // Computed
     items,
     selectedItems,
     breadcrumbs,
     stats,
-    
+
     // Navigation
     navigateToPath,
     navigateUp,
     navigateToItem,
-    
+
     // Selection
     selectItem,
     selectAll,
     clearSelection,
     toggleItemSelection,
-    
+
     // Favorites
     toggleFavorite,
-    
+
     // Configuration
     updateViewConfig,
     updateSortConfig,
     updateFilterConfig,
     resetFilters,
-    
+
     // Data management
     refreshData,
     updateData,
@@ -333,7 +346,3 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
     setErrorState,
   };
 }
-
-
-
-
