@@ -10,8 +10,7 @@ import {
   For,
   Show,
   createSignal,
-  createEffect,
-  onCleanup,
+  onMount,
 } from "solid-js";
 
 export interface NavMenuItem {
@@ -49,7 +48,7 @@ export interface NavMenuProps {
   /** Custom class name */
   class?: string;
   /** Click handler for items */
-  onItemClick?: (item: NavMenuItem, event: MouseEvent) => void;
+  onItemClick?: (item: NavMenuItem, event: MouseEvent | KeyboardEvent) => void;
   /** Active item change handler */
   onActiveChange?: (itemId: string) => void;
 }
@@ -75,9 +74,11 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   ]);
 
   const [openSubmenus, setOpenSubmenus] = createSignal<Set<string>>(new Set());
-  const [focusedItem, setFocusedItem] = createSignal<string | null>(null);
+
+
 
   let menuRef: HTMLElement | undefined;
+  let focusableItems: HTMLElement[] = [];
 
   const toggleSubmenu = (itemId: string) => {
     setOpenSubmenus((prev) => {
@@ -89,9 +90,11 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
       }
       return newSet;
     });
+    // Update focusable items after submenu state changes
+    setTimeout(updateFocusableItems, 0);
   };
 
-  const handleItemClick = (item: NavMenuItem, event: MouseEvent) => {
+  const handleItemClick = (item: NavMenuItem, event: MouseEvent | KeyboardEvent) => {
     if (item.disabled) {
       event.preventDefault();
       return;
@@ -114,7 +117,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
       case "Enter":
       case " ":
         event.preventDefault();
-        handleItemClick(item, event as any);
+        handleItemClick(item, event);
         break;
       
       case "ArrowDown":
@@ -153,18 +156,31 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
       
       case "Escape":
         setOpenSubmenus(new Set<string>());
+        setTimeout(updateFocusableItems, 0);
         break;
     }
   };
 
   const focusNextItem = () => {
-    // Implementation for keyboard navigation
-    // This would focus the next focusable menu item
+    const currentFocus = document.activeElement as HTMLElement;
+    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
+    const nextIndex = (currentIndex + 1) % focusableItems.length;
+    focusableItems[nextIndex]?.focus();
   };
 
   const focusPreviousItem = () => {
-    // Implementation for keyboard navigation
-    // This would focus the previous focusable menu item
+    const currentFocus = document.activeElement as HTMLElement;
+    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
+    const prevIndex = currentIndex <= 0 ? focusableItems.length - 1 : currentIndex - 1;
+    focusableItems[prevIndex]?.focus();
+  };
+
+  const updateFocusableItems = () => {
+    if (menuRef) {
+      focusableItems = Array.from(
+        menuRef.querySelectorAll('a, span[tabindex="0"]:not([aria-disabled="true"])')
+      ) as HTMLElement[];
+    }
   };
 
   const getClasses = () => {
@@ -239,14 +255,13 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
           <span
             class={getLinkClasses(item)}
             tabindex={item.disabled ? -1 : 0}
-            role="menuitem"
-            aria-disabled={item.disabled}
             onKeyDown={(e) => handleKeyDown(e, item)}
             onClick={(e) => handleItemClick(item, e)}
             onMouseEnter={() => {
               if (local.hoverToOpen && item.children?.length) {
                 setOpenSubmenus((prev) => new Set(prev).add(item.id));
-              }
+                setTimeout(updateFocusableItems, 0);
+            }
             }}
             {...(item.data || {})}
           >
@@ -271,14 +286,13 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
         <a
           href={item.href}
           class={getLinkClasses(item)}
-          role="menuitem"
           tabindex={item.disabled ? -1 : 0}
-          aria-disabled={item.disabled}
           onKeyDown={(e) => handleKeyDown(e, item)}
           onClick={(e) => handleItemClick(item, e)}
           onMouseEnter={() => {
             if (local.hoverToOpen && item.children?.length) {
               setOpenSubmenus((prev) => new Set(prev).add(item.id));
+              setTimeout(updateFocusableItems, 0);
             }
           }}
           {...(item.data || {})}
@@ -312,15 +326,15 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
     </li>
   );
 
+  onMount(updateFocusableItems);
+
   return (
     <nav
       ref={menuRef}
       class={getClasses()}
-      role="menubar"
-      aria-orientation={local.orientation}
       {...others}
     >
-      <ul class="reynard-nav-menu__list" role="menu">
+      <ul class="reynard-nav-menu__list" role="menubar">
         <For each={local.items}>
           {(item) => renderMenuItem(item)}
         </For>

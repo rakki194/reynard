@@ -78,3 +78,7 @@ export const Card: Component<CardProps> = (props) => {
     </div>
   );
 };
+
+
+
+

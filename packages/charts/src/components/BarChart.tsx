@@ -15,7 +15,7 @@ import {
   BarElement,
 } from "chart.js";
 import { Bar } from "solid-chartjs";
-import { Dataset, ChartConfig } from "../types";
+import { Dataset, ChartConfig, ReynardTheme } from "../types";
 import { getDefaultConfig, prepareDatasets, validateChartData } from "../utils";
 
 export interface BarChartProps extends ChartConfig {
@@ -33,6 +33,8 @@ export interface BarChartProps extends ChartConfig {
   loading?: boolean;
   /** Empty state message */
   emptyMessage?: string;
+  /** Theme for the chart */
+  theme?: ReynardTheme;
 }
 
 const defaultProps = {
@@ -45,6 +47,7 @@ const defaultProps = {
   horizontal: false,
   stacked: false,
   emptyMessage: "No data available",
+  theme: "light" as ReynardTheme,
 };
 
 export const BarChart: Component<BarChartProps> = (props) => {
@@ -69,6 +72,7 @@ export const BarChart: Component<BarChartProps> = (props) => {
     "emptyMessage",
     "animation",
     "tooltip",
+    "theme",
   ]);
 
   const [isRegistered, setIsRegistered] = createSignal(false);
@@ -206,6 +210,8 @@ export const BarChart: Component<BarChartProps> = (props) => {
         height: local.responsive ? "100%" : `${local.height}px`,
         position: "relative",
       }}
+      role="img"
+      aria-label={local.title || "bar chart"}
       {...others}
     >
       <Show when={local.loading}>

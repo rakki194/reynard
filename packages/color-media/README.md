@@ -5,6 +5,7 @@ A comprehensive package for color generation, theme management, and media handli
 ## Features
 
 ### 🎨 Color Generation
+
 - **OKLCH Color Space**: Perceptually uniform color generation for consistent theming
 - **Tag-based Colors**: Deterministic color generation based on text tags
 - **Theme-aware Colors**: Automatic color adjustment based on light/dark themes
@@ -12,12 +13,14 @@ A comprehensive package for color generation, theme management, and media handli
 - **Color Manipulation**: Adjust lightness, saturation, and other color properties
 
 ### 🌓 Theme Management
+
 - **Multiple Themes**: Support for dark, light, gray, banana, strawberry, and peanut themes
 - **Theme Persistence**: Automatic theme saving to localStorage
 - **Theme Rotation**: Easy theme switching with rotation helpers
 - **Theme Metadata**: Rich theme information for UI display
 
 ### 📱 Media Modalities
+
 - **File Type Detection**: Automatic detection of image, audio, video, and text files
 - **Modality Registry**: Centralized management of different content types
 - **File Validation**: Built-in file extension validation
@@ -119,63 +122,81 @@ console.log(formatDuration(3661)); // "1:01:01"
 ### Color Utilities
 
 #### `createTagColorGenerator()`
+
 Creates a color generator with caching for performance.
 
 #### `formatOKLCH(color: OKLCHColor): string`
+
 Formats an OKLCH color object into a CSS color string.
 
 #### `generateColorPalette(count: number, baseHue?: number, saturation?: number, lightness?: number): string[]`
+
 Generates a color palette with the specified number of colors.
 
 #### `generateComplementaryColors(baseColor: OKLCHColor): OKLCHColor[]`
+
 Generates complementary colors based on a base color.
 
 ### Theme Utilities
 
 #### `createThemeContext(initialTheme?: ThemeName): ThemeContext`
+
 Creates a theme context object for managing theme state.
 
 #### `getStoredTheme(): ThemeName`
+
 Gets the current theme from localStorage or returns the default.
 
 #### `setStoredTheme(theme: ThemeName): void`
+
 Sets the theme in localStorage and updates the document attribute.
 
 #### `getTagStyle(theme: ThemeName, tag: string)`
+
 Gets the complete tag style object for a given theme and tag.
 
 ### Modality Utilities
 
 #### `BaseModality`
+
 Abstract base class for implementing modalities.
 
 #### `ModalityRegistry`
+
 Class for managing all available modalities.
 
 #### `isImageFile(file: File): boolean`
+
 Checks if a file is an image file.
 
 #### `isAudioFile(file: File): boolean`
+
 Checks if a file is an audio file.
 
 #### `isVideoFile(file: File): boolean`
+
 Checks if a file is a video file.
 
 #### `isTextFile(file: File): boolean`
+
 Checks if a file is a text file.
 
 ## Supported File Types
 
 ### Images
+
 - `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.bmp`, `.tiff`, `.svg`
 
 ### Audio
+
 - `.mp3`, `.wav`, `.flac`, `.aac`, `.ogg`, `.m4a`, `.wma`, `.opus`
 
 ### Video
+
 - `.mp4`, `.avi`, `.mov`, `.mkv`, `.webm`, `.flv`, `.wmv`, `.m4v`
 
 ### Text
+
 - `.txt`, `.md`, `.json`, `.xml`, `.html`, `.css`, `.js`, `.ts`, `.tsx`
 
 ## Themes

@@ -1,0 +1,15 @@
+.gallery__context-menu {
+  position: fixed;
+  z-index: 1000;
+}
+
+.gallery__context-menu--positioned {
+  /* This class will be used for dynamic positioning */
+}
+
+.gallery__context-menu {
+  position: fixed;
+  z-index: 1000;
+  left: var(--context-menu-x, 0);
+  top: var(--context-menu-y, 0);
+}

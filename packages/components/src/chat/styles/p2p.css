@@ -1,0 +1,1256 @@
+/**
+ * P2P Chat System Styles
+ * 
+ * Additional styles for peer-to-peer chat functionality
+ * extending the base chat styles.
+ */
+
+/* ==========================================================================
+   P2P Chat Container
+   ========================================================================== */
+
+.reynard-p2p-chat-container {
+  display: flex;
+  height: 100%;
+  background: var(--reynard-chat-bg);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-family: var(--reynard-chat-font-family);
+}
+
+.reynard-p2p-chat-container--compact {
+  font-size: var(--reynard-chat-font-size-sm);
+}
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+
+.reynard-p2p-chat-sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--reynard-chat-surface);
+  border-right: 1px solid var(--reynard-chat-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.reynard-p2p-chat-status {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-p2p-chat-status__indicator {
+  font-size: 1.2em;
+}
+
+.reynard-p2p-chat-status__text {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.reynard-p2p-chat-status__toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--reynard-chat-spacing-xs);
+  border-radius: 0.25rem;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-chat-status__toggle:hover {
+  background: var(--reynard-chat-surface);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Main Chat Area
+   ========================================================================== */
+
+.reynard-p2p-chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.reynard-p2p-chat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-md);
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-p2p-chat-header__sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: var(--reynard-chat-spacing-xs);
+  border-radius: 0.25rem;
+}
+
+.reynard-p2p-chat-header__sidebar-toggle:hover {
+  background: var(--reynard-chat-surface);
+  color: var(--text-primary);
+}
+
+.reynard-p2p-chat-header__info {
+  flex: 1;
+}
+
+.reynard-p2p-chat-header__title {
+  margin: 0;
+  font-size: var(--reynard-chat-font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reynard-p2p-chat-header__participants {
+  font-size: var(--reynard-chat-font-size-sm);
+  color: var(--text-secondary);
+}
+
+.reynard-p2p-chat-header__actions {
+  display: flex;
+  gap: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-p2p-chat-header__user-toggle {
+  background: none;
+  border: 1px solid var(--reynard-chat-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--reynard-chat-spacing-sm);
+  border-radius: 0.25rem;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-chat-header__user-toggle:hover {
+  background: var(--reynard-chat-surface);
+  color: var(--text-primary);
+}
+
+.reynard-p2p-chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reynard-p2p-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--reynard-chat-spacing-md);
+  scroll-behavior: smooth;
+}
+
+.reynard-p2p-chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.reynard-p2p-chat-empty__icon {
+  font-size: 3rem;
+  margin-bottom: var(--reynard-chat-spacing-md);
+  opacity: 0.6;
+}
+
+.reynard-p2p-chat-empty__text {
+  font-size: var(--reynard-chat-font-size-lg);
+  font-weight: 500;
+}
+
+.reynard-p2p-chat-input {
+  border-top: 1px solid var(--reynard-chat-border);
+  background: var(--reynard-chat-bg);
+}
+
+/* ==========================================================================
+   P2P Messages
+   ========================================================================== */
+
+.reynard-p2p-message {
+  margin-bottom: var(--reynard-chat-spacing-lg);
+}
+
+.reynard-p2p-message--own {
+  margin-left: auto;
+  max-width: 85%;
+}
+
+.reynard-p2p-message--other {
+  margin-right: auto;
+  max-width: 85%;
+}
+
+.reynard-p2p-message__reply-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  margin-bottom: var(--reynard-chat-spacing-xs);
+  padding-left: var(--reynard-chat-spacing-md);
+  opacity: 0.7;
+}
+
+.reynard-p2p-message__reply-line {
+  width: 3px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.reynard-p2p-message__reply-text {
+  font-size: var(--reynard-chat-font-size-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.reynard-p2p-message__container {
+  display: flex;
+  gap: var(--reynard-chat-spacing-sm);
+  align-items: flex-end;
+}
+
+.reynard-p2p-message--own .reynard-p2p-message__container {
+  flex-direction: row-reverse;
+}
+
+.reynard-p2p-message__avatar {
+  width: 2rem;
+  height: 2rem;
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
+.reynard-p2p-message__avatar--own {
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+
+.reynard-p2p-message__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reynard-p2p-message__header {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  margin-bottom: var(--reynard-chat-spacing-xs);
+}
+
+.reynard-p2p-message__sender {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--reynard-chat-font-size-sm);
+}
+
+.reynard-p2p-message__timestamp {
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+}
+
+.reynard-p2p-message__body {
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 1rem;
+  padding: var(--reynard-chat-spacing-md);
+  position: relative;
+}
+
+.reynard-p2p-message--own .reynard-p2p-message__body {
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+
+.reynard-p2p-message__text {
+  line-height: 1.5;
+}
+
+.reynard-p2p-message--own .reynard-p2p-message__text {
+  color: white;
+}
+
+.reynard-p2p-message__attachments {
+  margin-top: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-p2p-message__attachment {
+  margin-bottom: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-p2p-message__image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.reynard-p2p-message__file {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-sm);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.reynard-p2p-message__file-icon {
+  font-size: 1.5rem;
+}
+
+.reynard-p2p-message__file-info {
+  flex: 1;
+}
+
+.reynard-p2p-message__file-name {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.reynard-p2p-message__file-size {
+  font-size: var(--reynard-chat-font-size-xs);
+  opacity: 0.8;
+}
+
+.reynard-p2p-message__upload-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: var(--reynard-chat-spacing-xs);
+}
+
+.reynard-p2p-message__upload-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.reynard-p2p-message__actions {
+  display: flex;
+  gap: var(--reynard-chat-spacing-xs);
+  margin-top: var(--reynard-chat-spacing-sm);
+  opacity: 0;
+  transition: opacity var(--reynard-chat-transition);
+}
+
+.reynard-p2p-message:hover .reynard-p2p-message__actions {
+  opacity: 1;
+}
+
+.reynard-p2p-message__action {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-message__action:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.reynard-p2p-message__quick-reactions {
+  display: flex;
+  gap: var(--reynard-chat-spacing-xs);
+  margin-top: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-sm);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+.reynard-p2p-message__quick-reaction {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-message__quick-reaction:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.reynard-p2p-message__more-actions {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  background: var(--reynard-chat-bg);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.5rem;
+  box-shadow: var(--reynard-chat-shadow);
+  margin-top: var(--reynard-chat-spacing-xs);
+  min-width: 150px;
+}
+
+.reynard-p2p-message__more-actions button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: var(--reynard-chat-spacing-sm);
+  cursor: pointer;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-message__more-actions button:hover {
+  background: var(--reynard-chat-surface);
+}
+
+.reynard-p2p-message__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-p2p-message__reactions {
+  display: flex;
+  gap: var(--reynard-chat-spacing-xs);
+  flex-wrap: wrap;
+}
+
+.reynard-p2p-message__reaction {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--reynard-chat-font-size-sm);
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-p2p-message__reaction:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.reynard-p2p-message__reaction-emoji {
+  font-size: 1rem;
+}
+
+.reynard-p2p-message__reaction-count {
+  font-weight: 500;
+}
+
+.reynard-p2p-message__status {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-xs);
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+}
+
+.reynard-p2p-message__timestamp--own {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-p2p-message__delivery-status {
+  color: var(--text-secondary);
+}
+
+.reynard-p2p-message--own .reynard-p2p-message__delivery-status {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-p2p-message__read-receipts {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.reynard-p2p-message__read-receipt {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+.reynard-p2p-message__read-count {
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+}
+
+.reynard-p2p-message__edited {
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: var(--reynard-chat-spacing-xs);
+}
+
+.reynard-p2p-message__priority {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-xs);
+  margin-top: var(--reynard-chat-spacing-xs);
+  font-size: var(--reynard-chat-font-size-xs);
+  font-weight: 600;
+}
+
+.reynard-p2p-message__priority--urgent {
+  color: var(--reynard-chat-error);
+}
+
+.reynard-p2p-message__priority--high {
+  color: var(--reynard-chat-warning);
+}
+
+/* ==========================================================================
+   Typing Indicators
+   ========================================================================== */
+
+.reynard-p2p-chat-typing {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-md);
+  margin-bottom: var(--reynard-chat-spacing-md);
+  opacity: 0.7;
+}
+
+.reynard-p2p-chat-typing__avatars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reynard-p2p-chat-typing__avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.reynard-p2p-chat-typing__text {
+  font-size: var(--reynard-chat-font-size-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.reynard-p2p-chat-typing__dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reynard-p2p-chat-typing__dots span {
+  width: 4px;
+  height: 4px;
+  background: var(--text-secondary);
+  border-radius: 50%;
+  animation: typing-dots 1.4s infinite;
+}
+
+.reynard-p2p-chat-typing__dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.reynard-p2p-chat-typing__dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ==========================================================================
+   Room List
+   ========================================================================== */
+
+.reynard-room-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reynard-room-list--compact {
+  font-size: var(--reynard-chat-font-size-sm);
+}
+
+.reynard-room-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+}
+
+.reynard-room-list__title {
+  margin: 0;
+  font-size: var(--reynard-chat-font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reynard-room-list__create-button {
+  width: 2rem;
+  height: 2rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-room-list__create-button:hover {
+  background: var(--accent-hover, #2563eb);
+}
+
+.reynard-room-list__search {
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+}
+
+.reynard-room-list__search-input {
+  width: 100%;
+  padding: var(--reynard-chat-spacing-sm);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.5rem;
+  background: var(--reynard-chat-bg);
+  color: var(--text-primary);
+  font-size: var(--reynard-chat-font-size-sm);
+  outline: none;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-room-list__search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.reynard-room-list__create-form {
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+  background: var(--reynard-chat-surface);
+}
+
+.reynard-room-list__create-input {
+  width: 100%;
+  padding: var(--reynard-chat-spacing-sm);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.5rem;
+  background: var(--reynard-chat-bg);
+  color: var(--text-primary);
+  font-size: var(--reynard-chat-font-size-sm);
+  outline: none;
+  margin-bottom: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-room-list__create-actions {
+  display: flex;
+  gap: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-room-list__create-confirm,
+.reynard-room-list__create-cancel {
+  flex: 1;
+  padding: var(--reynard-chat-spacing-sm);
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.25rem;
+  font-size: var(--reynard-chat-font-size-sm);
+  cursor: pointer;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-room-list__create-confirm {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.reynard-room-list__create-confirm:hover:not(:disabled) {
+  background: var(--accent-hover, #2563eb);
+}
+
+.reynard-room-list__create-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reynard-room-list__create-cancel {
+  background: var(--reynard-chat-bg);
+  color: var(--text-primary);
+}
+
+.reynard-room-list__create-cancel:hover {
+  background: var(--reynard-chat-surface);
+}
+
+.reynard-room-list__items {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.reynard-room-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: var(--reynard-chat-spacing-xl);
+}
+
+.reynard-room-list__empty-icon {
+  font-size: 2rem;
+  margin-bottom: var(--reynard-chat-spacing-md);
+  opacity: 0.6;
+}
+
+.reynard-room-list__empty-text {
+  font-size: var(--reynard-chat-font-size-base);
+  font-weight: 500;
+}
+
+.reynard-room-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-md);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: var(--reynard-chat-transition);
+  position: relative;
+}
+
+.reynard-room-list__item:hover {
+  background: var(--reynard-chat-surface);
+}
+
+.reynard-room-list__item--active {
+  background: var(--accent);
+  color: white;
+}
+
+.reynard-room-list__item--active:hover {
+  background: var(--accent);
+}
+
+.reynard-room-list__item-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-avatar {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.reynard-room-list__item-icon,
+.reynard-room-list__item-user-avatar {
+  color: var(--text-primary);
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-icon,
+.reynard-room-list__item--active .reynard-room-list__item-user-avatar {
+  color: white;
+}
+
+.reynard-room-list__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reynard-room-list__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.reynard-room-list__item-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  font-size: var(--reynard-chat-font-size-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-name {
+  color: white;
+}
+
+.reynard-room-list__item-time {
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-time {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-room-list__item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reynard-room-list__item-preview {
+  font-size: var(--reynard-chat-font-size-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-preview {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-room-list__item-indicators {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-xs);
+}
+
+.reynard-room-list__item-unread {
+  background: var(--accent);
+  color: white;
+  font-size: var(--reynard-chat-font-size-xs);
+  font-weight: 600;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.75rem;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.reynard-room-list__item--active .reynard-room-list__item-unread {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.reynard-room-list__item-typing,
+.reynard-room-list__item-online {
+  font-size: 0.8rem;
+}
+
+.reynard-room-list__item-actions {
+  position: absolute;
+  top: 50%;
+  right: var(--reynard-chat-spacing-md);
+  transform: translateY(-50%);
+}
+
+.reynard-room-list__item-unread-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.reynard-room-list__footer {
+  border-top: 1px solid var(--reynard-chat-border);
+  padding: var(--reynard-chat-spacing-md);
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-room-list__user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+}
+
+.reynard-room-list__user-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.reynard-room-list__user-details {
+  flex: 1;
+}
+
+.reynard-room-list__user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--reynard-chat-font-size-sm);
+}
+
+.reynard-room-list__user-status {
+  font-size: var(--reynard-chat-font-size-xs);
+  text-transform: capitalize;
+}
+
+.reynard-room-list__user-status--online {
+  color: var(--reynard-chat-success);
+}
+
+.reynard-room-list__user-status--away {
+  color: var(--reynard-chat-warning);
+}
+
+.reynard-room-list__user-status--busy {
+  color: var(--reynard-chat-error);
+}
+
+.reynard-room-list__user-status--offline {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   User List
+   ========================================================================== */
+
+.reynard-user-list {
+  width: 240px;
+  min-width: 240px;
+  background: var(--reynard-chat-surface);
+  border-left: 1px solid var(--reynard-chat-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.reynard-user-list--compact {
+  width: 200px;
+  min-width: 200px;
+  font-size: var(--reynard-chat-font-size-sm);
+}
+
+.reynard-user-list__header {
+  padding: var(--reynard-chat-spacing-md);
+  border-bottom: 1px solid var(--reynard-chat-border);
+}
+
+.reynard-user-list__title {
+  margin: 0;
+  font-size: var(--reynard-chat-font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reynard-user-list__items {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.reynard-user-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: var(--reynard-chat-spacing-xl);
+}
+
+.reynard-user-list__empty-icon {
+  font-size: 2rem;
+  margin-bottom: var(--reynard-chat-spacing-md);
+  opacity: 0.6;
+}
+
+.reynard-user-list__empty-text {
+  font-size: var(--reynard-chat-font-size-base);
+  font-weight: 500;
+}
+
+.reynard-user-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-sm);
+  padding: var(--reynard-chat-spacing-md);
+  cursor: pointer;
+  transition: var(--reynard-chat-transition);
+  position: relative;
+}
+
+.reynard-user-list__item:hover {
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-user-list__item--current {
+  background: rgba(var(--accent-rgb, 59, 130, 246), 0.1);
+}
+
+.reynard-user-list__item--selected {
+  background: var(--accent);
+  color: white;
+}
+
+.reynard-user-list__item-avatar {
+  position: relative;
+}
+
+.reynard-user-list__avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--reynard-chat-surface);
+  border: 1px solid var(--reynard-chat-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reynard-user-list__item--selected .reynard-user-list__avatar {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.reynard-user-list__status-indicator {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--reynard-chat-surface);
+}
+
+.reynard-user-list__status-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.reynard-user-list__status--online .reynard-user-list__status-dot {
+  background: var(--reynard-chat-success);
+}
+
+.reynard-user-list__status--away .reynard-user-list__status-dot {
+  background: var(--reynard-chat-warning);
+}
+
+.reynard-user-list__status--busy .reynard-user-list__status-dot {
+  background: var(--reynard-chat-error);
+}
+
+.reynard-user-list__status--offline .reynard-user-list__status-dot {
+  background: var(--text-secondary);
+}
+
+.reynard-user-list__item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reynard-user-list__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.reynard-user-list__item-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--reynard-chat-font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reynard-user-list__item--selected .reynard-user-list__item-name {
+  color: white;
+}
+
+.reynard-user-list__you-indicator {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.reynard-user-list__item--selected .reynard-user-list__you-indicator {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-user-list__status-icon {
+  font-size: 0.8rem;
+}
+
+.reynard-user-list__item-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-chat-spacing-xs);
+}
+
+.reynard-user-list__status-text {
+  font-size: var(--reynard-chat-font-size-xs);
+  text-transform: capitalize;
+}
+
+.reynard-user-list__status-text.reynard-user-list__status--online {
+  color: var(--reynard-chat-success);
+}
+
+.reynard-user-list__status-text.reynard-user-list__status--away {
+  color: var(--reynard-chat-warning);
+}
+
+.reynard-user-list__status-text.reynard-user-list__status--busy {
+  color: var(--reynard-chat-error);
+}
+
+.reynard-user-list__status-text.reynard-user-list__status--offline {
+  color: var(--text-secondary);
+}
+
+.reynard-user-list__last-seen,
+.reynard-user-list__role {
+  font-size: var(--reynard-chat-font-size-xs);
+  color: var(--text-secondary);
+}
+
+.reynard-user-list__item--selected .reynard-user-list__last-seen,
+.reynard-user-list__item--selected .reynard-user-list__role {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reynard-user-list__item-actions {
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity var(--reynard-chat-transition);
+}
+
+.reynard-user-list__item:hover .reynard-user-list__item-actions {
+  opacity: 1;
+}
+
+.reynard-user-list__action {
+  background: none;
+  border: 1px solid var(--reynard-chat-border);
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--reynard-chat-transition);
+}
+
+.reynard-user-list__action:hover {
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-user-list__footer {
+  border-top: 1px solid var(--reynard-chat-border);
+  padding: var(--reynard-chat-spacing-md);
+  background: var(--reynard-chat-bg);
+}
+
+.reynard-user-list__online-count {
+  font-size: var(--reynard-chat-font-size-sm);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .reynard-p2p-chat-container {
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .reynard-p2p-chat-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--reynard-chat-transition);
+  }
+  
+  .reynard-p2p-chat-sidebar--open {
+    transform: translateX(0);
+  }
+  
+  .reynard-user-list {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform var(--reynard-chat-transition);
+  }
+  
+  .reynard-user-list--open {
+    transform: translateX(0);
+  }
+  
+  .reynard-p2p-message--own {
+    max-width: 90%;
+  }
+  
+  .reynard-p2p-message--other {
+    max-width: 90%;
+  }
+}

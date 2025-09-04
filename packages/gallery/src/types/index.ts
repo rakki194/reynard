@@ -367,3 +367,7 @@ export const DEFAULT_GALLERY_THEME: GalleryTheme = {
   errorColor: "var(--error)",
   successColor: "var(--success)",
 };
+
+
+
+

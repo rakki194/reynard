@@ -111,9 +111,14 @@ export interface ChartConfig extends ChartOptions {
     borderColor?: string;
     borderWidth?: number;
   };
+  /** Theme for the chart */
+  theme?: ReynardTheme;
 }
 
 export type ChartType = "line" | "bar" | "doughnut" | "pie" | "radar" | "polarArea" | "scatter" | "bubble";
+
+/** Reynard theme options */
+export type ReynardTheme = "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut";
 
 export interface ChartTheme {
   /** Primary color */

@@ -578,3 +578,7 @@ See the main [Reynard repository](../../README.md) for contribution guidelines.
 ---
 
 **Built with ❤️ for modern file management in SolidJS applications** 📁🦊
+
+
+
+

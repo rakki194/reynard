@@ -1,0 +1,33 @@
+{
+  "name": "@reynard/comprehensive-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Comprehensive dashboard showcasing all Reynard features",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "@solidjs/router": "0.15.3",
+    "@reynard/core": "file:../../packages/core",
+    "@reynard/components": "file:../../packages/components", 
+    "@reynard/ui": "file:../../packages/ui",
+    "@reynard/charts": "file:../../packages/charts",
+    "@reynard/gallery": "file:../../packages/gallery",
+    "@reynard/auth": "file:../../packages/auth",
+    "@reynard/settings": "file:../../packages/settings"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  }
+}

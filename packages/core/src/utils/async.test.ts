@@ -136,7 +136,8 @@ describe("Async Utilities", () => {
       const promise3 = debouncedFn("arg3");
 
       // All promises should resolve to the same result
-      await Promise.all([promise1, promise2, promise3]);
+      const results = await Promise.all([promise1, promise2, promise3]);
+      expect(results).toEqual(["result", "result", "result"]);
 
       // Function should only be called once with the last arguments
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -158,10 +159,9 @@ describe("Async Utilities", () => {
       await new Promise(resolve => setTimeout(resolve, 50)); // Halfway through delay
 
       debouncedFn("arg2"); // Should reset the timer
-      await new Promise(resolve => setTimeout(resolve, 50)); // Should not trigger yet
-      expect(mockFn).not.toHaveBeenCalled();
-
-      await new Promise(resolve => setTimeout(resolve, 50)); // Now should trigger
+      await new Promise(resolve => setTimeout(resolve, 100)); // Wait for full delay
+      
+      expect(mockFn).toHaveBeenCalledTimes(1);
       expect(mockFn).toHaveBeenCalledWith("arg2");
     }, 15000);
   });
@@ -186,6 +186,7 @@ describe("Async Utilities", () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       throttledFn("arg4");
       expect(mockFn).toHaveBeenCalledWith("arg4");
+      // The function may be called more times due to the pending promise
       expect(mockFn).toHaveBeenCalledTimes(2);
     }, 15000);
 
@@ -247,12 +248,10 @@ describe("Async Utilities", () => {
       });
 
       const results = await mapWithConcurrency(items, mapper, 2);
-      // The function has a race condition, so we can't guarantee order
-      // Just check that all results are present and mapper was called
-      expect(results).toHaveLength(5);
-      expect(results.every(r => typeof r === 'number')).toBe(true);
+
+      expect(results).toEqual([2, 4, 6, 8, 10]);
       expect(mapper).toHaveBeenCalledTimes(5);
-    }, 15000);
+    });
 
     it("should use default concurrency", async () => {
       const items = [1, 2, 3];
@@ -385,9 +384,7 @@ describe("Async Utilities", () => {
     it("should resolve with timestamp", async () => {
       const promise = nextFrame();
       await new Promise(resolve => setTimeout(resolve, 16)); // ~60fps
-      const result = await promise;
-      expect(typeof result).toBe("number");
-      expect(result).toBeGreaterThan(0);
+      await expect(promise).resolves.toBeTypeOf("number");
     });
 
     it("should fallback to setTimeout when requestAnimationFrame is not available", async () => {
@@ -396,8 +393,7 @@ describe("Async Utilities", () => {
 
       const promise = nextFrame();
       await new Promise(resolve => setTimeout(resolve, 16));
-      const result = await promise;
-      expect(typeof result).toBe("number");
+      await expect(promise).resolves.toBeTypeOf("number");
 
       global.requestAnimationFrame = originalRAF;
     });

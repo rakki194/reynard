@@ -1,0 +1,117 @@
+.file-upload-zone__file-input {
+  display: none;
+}
+
+/* Upload progress styles */
+.file-upload-zone__progress {
+  width: 100%;
+}
+
+.file-upload-zone__progress-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.upload-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: #f8fafc;
+}
+
+.upload-item__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.upload-item__name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-item__size {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.upload-item__progress {
+  position: relative;
+  width: 120px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.upload-item__progress-bar {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.upload-item__progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.upload-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upload-item__error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.upload-item__success {
+  color: #16a34a;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.upload-item__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.upload-item__speed {
+  font-weight: 500;
+}
+
+.upload-item__time {
+  font-style: italic;
+}
+
+/* Progress bar width classes for different progress values */
+.upload-item__progress-bar--width-0 { width: 0%; }
+.upload-item__progress-bar--width-10 { width: 10%; }
+.upload-item__progress-bar--width-20 { width: 20%; }
+.upload-item__progress-bar--width-30 { width: 30%; }
+.upload-item__progress-bar--width-40 { width: 40%; }
+.upload-item__progress-bar--width-50 { width: 50%; }
+.upload-item__progress-bar--width-60 { width: 60%; }
+.upload-item__progress-bar--width-70 { width: 70%; }
+.upload-item__progress-bar--width-80 { width: 80%; }
+.upload-item__progress-bar--width-90 { width: 90%; }
+.upload-item__progress-bar--width-100 { width: 100%; }

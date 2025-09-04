@@ -3,7 +3,7 @@
  * Helper functions for chart configuration and data processing
  */
 
-import { ChartType, ChartTheme, Dataset, DEFAULT_COLORS, DEFAULT_THEME } from "../types";
+import { ChartType, ChartTheme, Dataset, DEFAULT_THEME, DEFAULT_COLORS } from "../types";
 
 /**
  * Generate a color palette for datasets
@@ -203,7 +203,7 @@ export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
@@ -224,7 +224,6 @@ export function calculateDimensions(
   
   return { width, height };
 }
-
 /**
  * Validate chart data
  */
@@ -292,3 +291,4 @@ export function aggregateByInterval(
     }))
     .sort((a, b) => a.timestamp - b.timestamp);
 }
+

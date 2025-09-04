@@ -55,5 +55,23 @@ global.console = {
   error: vi.fn(),
 };
 
+// Mock onMount to ensure Chart.js registration works in tests
+vi.mock("solid-js", async () => {
+  const actual = await vi.importActual("solid-js");
+  return {
+    ...actual,
+    onMount: (fn: () => void) => {
+      // Call the function immediately in test environment
+      fn();
+    },
+    createEffect: (fn: () => void) => {
+      // Call the function immediately in test environment
+      fn();
+    },
+  };
+});
+
 // Mock the problematic import
 vi.doMock("chartjs-adapter-date-fns", () => ({}));
+
+// Remove the problematic utils mock to allow debounce to work properly

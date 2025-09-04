@@ -17,7 +17,7 @@ import {
   TimeScale,
 } from "chart.js";
 import { Line } from "solid-chartjs";
-import { Dataset, ChartConfig, TimeSeriesDataPoint } from "../types";
+import { Dataset, ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
 import { getDefaultConfig, prepareDatasets, processTimeSeriesData, validateChartData } from "../utils";
 
 export interface LineChartProps extends ChartConfig {
@@ -37,6 +37,8 @@ export interface LineChartProps extends ChartConfig {
   loading?: boolean;
   /** Empty state message */
   emptyMessage?: string;
+  /** Theme for the chart */
+  theme?: ReynardTheme;
 }
 
 const defaultProps = {
@@ -49,6 +51,7 @@ const defaultProps = {
   maxDataPoints: 100,
   useTimeScale: false,
   emptyMessage: "No data available",
+  theme: "light" as ReynardTheme,
 };
 
 export const LineChart: Component<LineChartProps> = (props) => {
@@ -74,6 +77,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
     "emptyMessage",
     "animation",
     "tooltip",
+    "theme",
   ]);
 
   const [isRegistered, setIsRegistered] = createSignal(false);
@@ -223,6 +227,8 @@ export const LineChart: Component<LineChartProps> = (props) => {
         height: local.responsive ? "100%" : `${local.height}px`,
         position: "relative",
       }}
+      role="img"
+      aria-label={local.title || "line chart"}
       {...others}
     >
       <Show when={local.loading}>

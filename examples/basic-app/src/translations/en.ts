@@ -31,3 +31,5 @@ export const en = {
     text: "Built with Reynard framework • SolidJS • Love",
   },
 };
+
+

@@ -18,7 +18,7 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import { Line } from "solid-chartjs";
-import { ChartConfig, TimeSeriesDataPoint } from "../types";
+import { ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
 import { getDefaultConfig, formatTimestamp, debounce } from "../utils";
 
 export interface TimeSeriesChartProps extends ChartConfig {
@@ -34,6 +34,12 @@ export interface TimeSeriesChartProps extends ChartConfig {
   timeRange?: number;
   /** Data aggregation interval (in milliseconds) */
   aggregationInterval?: number;
+  /** Whether to render as stepped line */
+  stepped?: boolean;
+  /** Line tension (0-1) */
+  tension?: number;
+  /** Whether to fill area under the line */
+  fill?: boolean;
   /** Custom data point colors */
   pointColors?: (value: number, timestamp: number) => string;
   /** Value formatter */
@@ -46,6 +52,8 @@ export interface TimeSeriesChartProps extends ChartConfig {
   emptyMessage?: string;
   /** Real-time data callback */
   onDataUpdate?: (data: TimeSeriesDataPoint[]) => void;
+  /** Theme for the chart */
+  theme?: ReynardTheme;
 }
 
 const defaultProps = {
@@ -59,6 +67,7 @@ const defaultProps = {
   updateInterval: 1000,
   autoScroll: true,
   emptyMessage: "No data available",
+  theme: "light" as ReynardTheme,
 };
 
 export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
@@ -77,6 +86,9 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     "autoScroll",
     "timeRange",
     "aggregationInterval",
+    "stepped",
+    "tension",
+    "fill",
     "pointColors",
     "valueFormatter",
     "xAxis",
@@ -87,6 +99,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     "animation",
     "tooltip",
     "onDataUpdate",
+    "theme",
   ]);
 
   const [isRegistered, setIsRegistered] = createSignal(false);
@@ -95,7 +108,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     datasets: any[];
   } | null>(null);
   
-  let updateTimer: NodeJS.Timeout | null = null;
+  let updateTimer: number | null = null;
 
   // Register Chart.js components on mount
   onMount(() => {
@@ -179,8 +192,9 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       pointRadius: 3,
       pointHoverRadius: 5,
       borderWidth: 2,
-      fill: false,
-      tension: 0.4,
+      fill: local.fill || false,
+      tension: local.tension || 0.4,
+      stepped: local.stepped || false,
     };
 
     setProcessedData({
@@ -224,14 +238,14 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   // Set up auto-update timer
   createEffect(() => {
     if (local.updateInterval && local.data.length > 0) {
-      updateTimer = setInterval(() => {
+      updateTimer = window.setInterval(() => {
         processTimeSeriesData();
       }, local.updateInterval);
     }
 
     return () => {
       if (updateTimer) {
-        clearInterval(updateTimer);
+        window.clearInterval(updateTimer);
         updateTimer = null;
       }
     };
@@ -345,6 +359,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
 
   const getContainerClasses = () => {
     const classes = ["reynard-timeseries-chart"];
+    if (local.stepped) classes.push("reynard-timeseries-chart--stepped");
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
@@ -357,6 +372,8 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
         height: local.responsive ? "100%" : `${local.height}px`,
         position: "relative",
       }}
+      role="img"
+      aria-label={local.title || "time series chart"}
       {...others}
     >
       <Show when={local.loading}>
@@ -383,3 +400,5 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     </div>
   );
 };
+
+

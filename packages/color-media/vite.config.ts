@@ -7,7 +7,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'ReynardColorMedia',
       fileName: 'index',
-      formats: ['es', 'cjs', 'umd'],
+      formats: ['es', 'umd'],
     },
     rollupOptions: {
       external: ['solid-js'],

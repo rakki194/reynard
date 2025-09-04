@@ -5,4 +5,5 @@
  */
 
 export { useChat } from './useChat';
-export type { UseChatOptions, UseChatReturn } from './useChat';
+export type { UseChatOptions } from './useChat';
+export type { UseChatReturn } from '../types';

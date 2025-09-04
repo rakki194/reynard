@@ -290,7 +290,40 @@ export interface ChatActions {
   importConversation: (data: string, format: 'json') => void;
 }
 
-export interface UseChatReturn extends ChatState {
+export interface UseChatReturn {
+  /** Current conversation messages */
+  messages: () => ChatMessage[];
+  /** Currently streaming message (if any) */
+  currentMessage: () => ChatMessage | undefined;
+  /** Whether the chat is currently streaming */
+  isStreaming: () => boolean;
+  /** Whether the assistant is currently thinking */
+  isThinking: () => boolean;
+  /** Available models for selection */
+  availableModels: () => string[];
+  /** Currently selected model */
+  selectedModel: () => string | undefined;
+  /** Available tools */
+  availableTools: () => Tool[];
+  /** Connection state */
+  connectionState: () => 'disconnected' | 'connecting' | 'connected' | 'error';
+  /** Current error (if any) */
+  error: () => {
+    type: string;
+    message: string;
+    timestamp: number;
+    recoverable: boolean;
+  } | undefined;
+  /** Chat configuration */
+  config: () => {
+    enableThinking: boolean;
+    enableTools: boolean;
+    autoScroll: boolean;
+    showTimestamps: boolean;
+    showTokenCounts: boolean;
+    maxHistoryLength: number;
+  };
+  /** Actions for controlling the chat */
   actions: ChatActions;
 }
 

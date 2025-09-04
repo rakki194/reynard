@@ -219,3 +219,7 @@ export function getDirectoryPath(filePath: string): string {
   parts.pop(); // Remove filename
   return parts.join("/") || "/";
 }
+
+
+
+

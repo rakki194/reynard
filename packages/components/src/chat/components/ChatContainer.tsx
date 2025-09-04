@@ -193,7 +193,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
                   isLatest={index() === chat.messages().length - 1}
                   showTimestamp={props.config?.showTimestamps}
                   showTokenCount={props.config?.showTokenCounts}
-                  onToolAction={(action, toolCall) => {
+                  onToolAction={(action: any, toolCall: any) => {
                     console.log('Tool action:', action, toolCall);
                     // Handle tool actions here
                   }}

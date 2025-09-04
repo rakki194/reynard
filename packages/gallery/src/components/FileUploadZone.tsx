@@ -8,13 +8,13 @@ import {
   Show, 
   For, 
   createSignal, 
-  createEffect,
   onMount,
   onCleanup
 } from "solid-js";
 import { Button } from "@reynard/components";
 import type { UploadProgress, UploadConfiguration } from "../types";
-import { formatFileSize, validateFile } from "../utils";
+import { formatFileSize } from "../utils";
+import "./FileUploadZone.css";
 
 export interface FileUploadZoneProps {
   /** Upload configuration */
@@ -38,7 +38,6 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   let dropZoneRef: HTMLDivElement | undefined;
   
   const [isDragOver, setIsDragOver] = createSignal(false);
-  const [dragCounter, setDragCounter] = createSignal(0);
 
   // Handle file input change
   const handleFileChange = (event: Event): void => {
@@ -49,10 +48,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     }
   };
 
-  // Handle click to open file dialog
-  const handleClick = (): void => {
-    fileInputRef?.click();
-  };
+
 
   // Drag and drop handlers
   const handleDragEnter = (event: DragEvent): void => {
@@ -60,8 +56,6 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     
     event.preventDefault();
     event.stopPropagation();
-    
-    setDragCounter(prev => prev + 1);
     
     if (event.dataTransfer?.items) {
       const hasFiles = Array.from(event.dataTransfer.items).some(
@@ -79,13 +73,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     event.preventDefault();
     event.stopPropagation();
     
-    setDragCounter(prev => {
-      const newCount = prev - 1;
-      if (newCount === 0) {
-        setIsDragOver(false);
-      }
-      return newCount;
-    });
+    setIsDragOver(false);
   };
 
   const handleDragOver = (event: DragEvent): void => {
@@ -107,7 +95,6 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     event.stopPropagation();
     
     setIsDragOver(false);
-    setDragCounter(0);
     
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
@@ -150,6 +137,13 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     return props.config.allowedTypes.join(",");
   };
 
+  // Get progress bar width class
+  const getProgressWidthClass = (progress: number): string => {
+    // Round to nearest 10% and clamp between 0-100
+    const roundedProgress = Math.min(100, Math.max(0, Math.round(progress / 10) * 10));
+    return `upload-item__progress-bar--width-${roundedProgress}`;
+  };
+
   // Render upload progress
   const renderUploadProgress = () => {
     if (!props.uploads || props.uploads.length === 0) return null;
@@ -174,8 +168,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
               
               <div class="upload-item__progress">
                 <div 
-                  class="upload-item__progress-bar"
-                  style={{ width: `${upload.progress}%` }}
+                  class={`upload-item__progress-bar ${getProgressWidthClass(upload.progress)}`}
                 />
                 <span class="upload-item__progress-text">
                   {upload.progress}%
@@ -227,9 +220,6 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     <div
       ref={dropZoneRef}
       class={getUploadZoneClasses()}
-      onClick={handleClick}
-      role="button"
-      tabIndex={0}
       aria-label="Upload files"
     >
       <input
@@ -238,7 +228,8 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
         multiple={props.config.multiple}
         accept={getAcceptedTypes()}
         onChange={handleFileChange}
-        style={{ display: "none" }}
+        class="file-upload-zone__file-input"
+        aria-label="File upload input"
       />
       
       <Show when={!props.uploading}>
@@ -261,7 +252,11 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
                 <Show when={props.enableDragDrop}>
                   Drag and drop files here or{" "}
                 </Show>
-                <button type="button" class="file-upload-zone__browse-button">
+                <button 
+                  type="button" 
+                  class="file-upload-zone__browse-button"
+                  onClick={() => fileInputRef?.click()}
+                >
                   browse files
                 </button>
               </p>
@@ -287,3 +282,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     </div>
   );
 };
+
+
+
+

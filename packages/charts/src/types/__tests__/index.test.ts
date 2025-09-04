@@ -2,10 +2,8 @@ import { describe, it, expect } from "vitest";
 import type {
   Dataset,
   ChartConfig,
-  AxisConfig,
-  ColorConfig,
-  AnimationConfig,
-  TooltipConfig,
+  AxisOptions,
+  ChartTheme,
 } from "../index";
 
 describe("Chart Types", () => {
@@ -81,7 +79,7 @@ describe("Chart Types", () => {
         },
         tooltip: {
           enabled: true,
-          mode: "index",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
         },
       };
 
@@ -92,104 +90,48 @@ describe("Chart Types", () => {
     });
   });
 
-  describe("AxisConfig", () => {
-    it("has required properties", () => {
-      const axisConfig: AxisConfig = {
-        type: "linear",
-        display: true,
-        position: "left",
-      };
-
-      expect(axisConfig.type).toBe("linear");
-      expect(axisConfig.display).toBe(true);
-      expect(axisConfig.position).toBe("left");
-    });
-
-    it("allows optional properties", () => {
-      const axisConfig: AxisConfig = {
-        type: "time",
+  describe("AxisOptions", () => {
+    it("has optional properties", () => {
+      const axisOptions: AxisOptions = {
+        label: "Time",
         display: true,
         position: "bottom",
-        title: {
-          display: true,
-          text: "Time",
-        },
         grid: {
           display: true,
           color: "rgba(0, 0, 0, 0.1)",
         },
       };
 
-      expect(axisConfig.title?.display).toBe(true);
-      expect(axisConfig.title?.text).toBe("Time");
-      expect(axisConfig.grid?.display).toBe(true);
+      expect(axisOptions.label).toBe("Time");
+      expect(axisOptions.display).toBe(true);
+      expect(axisOptions.position).toBe("bottom");
+      expect(axisOptions.grid?.display).toBe(true);
     });
   });
 
-  describe("ColorConfig", () => {
-    it("can be a string array", () => {
-      const colors: ColorConfig = ["#FF6384", "#36A2EB", "#FFCE56"];
-      expect(colors).toEqual(["#FF6384", "#36A2EB", "#FFCE56"]);
-    });
-
-    it("can be a function", () => {
-      const colors: ColorConfig = (index: number) => `hsl(${index * 60}, 70%, 50%)`;
-      expect(typeof colors).toBe("function");
-      expect(colors(0)).toBe("hsl(0, 70%, 50%)");
-    });
-  });
-
-  describe("AnimationConfig", () => {
-    it("has required properties", () => {
-      const animation: AnimationConfig = {
-        duration: 1000,
-        easing: "easeInOutQuart",
+  describe("ChartTheme", () => {
+    it("has all required properties", () => {
+      const theme: ChartTheme = {
+        primary: "#FF6384",
+        secondary: "#36A2EB",
+        success: "#4CAF50",
+        warning: "#FF9800",
+        danger: "#F44336",
+        info: "#2196F3",
+        background: "#FFFFFF",
+        text: "#000000",
+        grid: "#E0E0E0",
       };
 
-      expect(animation.duration).toBe(1000);
-      expect(animation.easing).toBe("easeInOutQuart");
-    });
-
-    it("allows optional properties", () => {
-      const animation: AnimationConfig = {
-        duration: 1000,
-        easing: "easeInOutQuart",
-        delay: 100,
-        loop: false,
-      };
-
-      expect(animation.delay).toBe(100);
-      expect(animation.loop).toBe(false);
-    });
-  });
-
-  describe("TooltipConfig", () => {
-    it("has required properties", () => {
-      const tooltip: TooltipConfig = {
-        enabled: true,
-        mode: "index",
-      };
-
-      expect(tooltip.enabled).toBe(true);
-      expect(tooltip.mode).toBe("index");
-    });
-
-    it("allows optional properties", () => {
-      const tooltip: TooltipConfig = {
-        enabled: true,
-        mode: "index",
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        titleColor: "#ffffff",
-        bodyColor: "#ffffff",
-        borderColor: "#ffffff",
-        borderWidth: 1,
-      };
-
-      expect(tooltip.backgroundColor).toBe("rgba(0, 0, 0, 0.8)");
-      expect(tooltip.titleColor).toBe("#ffffff");
-      expect(tooltip.bodyColor).toBe("#ffffff");
-      expect(tooltip.borderColor).toBe("#ffffff");
-      expect(tooltip.borderWidth).toBe(1);
+      expect(theme.primary).toBe("#FF6384");
+      expect(theme.secondary).toBe("#36A2EB");
+      expect(theme.success).toBe("#4CAF50");
+      expect(theme.warning).toBe("#FF9800");
+      expect(theme.danger).toBe("#F44336");
+      expect(theme.info).toBe("#2196F3");
+      expect(theme.background).toBe("#FFFFFF");
+      expect(theme.text).toBe("#000000");
+      expect(theme.grid).toBe("#E0E0E0");
     });
   });
 });

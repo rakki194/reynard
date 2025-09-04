@@ -333,3 +333,7 @@ export function useGalleryState(options: UseGalleryStateOptions = {}) {
     setErrorState,
   };
 }
+
+
+
+

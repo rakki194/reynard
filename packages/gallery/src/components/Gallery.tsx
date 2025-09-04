@@ -16,6 +16,7 @@ import { BreadcrumbNavigation } from "./BreadcrumbNavigation";
 import { FileUploadZone } from "./FileUploadZone";
 import { useGalleryState } from "../composables/useGalleryState";
 import { useFileUpload } from "../composables/useFileUpload";
+import "./Gallery.css";
 import type {
   GalleryData,
   GalleryConfiguration,
@@ -121,6 +122,8 @@ export const Gallery: Component<GalleryProps> = (props) => {
     y: number;
     item: FileItem | FolderItem;
   } | null>(null);
+  
+  let contextMenuRef: HTMLDivElement | undefined;
 
   // Update gallery data when props change
   createEffect(() => {
@@ -136,6 +139,15 @@ export const Gallery: Component<GalleryProps> = (props) => {
 
   createEffect(() => {
     galleryState.setErrorState(local.error || null);
+  });
+
+  // Set context menu position when it's shown
+  createEffect(() => {
+    const menu = contextMenu();
+    if (menu && contextMenuRef) {
+      contextMenuRef.style.left = `${menu.x}px`;
+      contextMenuRef.style.top = `${menu.y}px`;
+    }
   });
 
   // Handle item selection
@@ -236,8 +248,9 @@ export const Gallery: Component<GalleryProps> = (props) => {
             <select 
               value={galleryState.sortConfig().field}
               onChange={(e) => galleryState.updateSortConfig({ 
-                field: e.target.value as any 
+                field: e.target.value as "name" | "size" | "lastModified" | "type"
               })}
+              aria-label="Sort by"
             >
               <option value="name">Name</option>
               <option value="size">Size</option>
@@ -295,13 +308,8 @@ export const Gallery: Component<GalleryProps> = (props) => {
 
     return (
       <div 
+        ref={contextMenuRef}
         class="gallery__context-menu"
-        style={{ 
-          left: `${menu.x}px`, 
-          top: `${menu.y}px`,
-          position: "fixed",
-          "z-index": 1000,
-        }}
         onClick={(e) => e.stopPropagation()}
       >
         <div class="gallery__context-menu-content">
@@ -349,7 +357,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
   };
 
   // Close context menu on outside click
-  const handleOutsideClick = (event: MouseEvent): void => {
+  const handleOutsideClick = (): void => {
     if (contextMenu()) {
       closeContextMenu();
     }
@@ -411,3 +419,7 @@ export const Gallery: Component<GalleryProps> = (props) => {
     </div>
   );
 };
+
+
+
+

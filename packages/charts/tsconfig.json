@@ -12,13 +12,13 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist"
   },
-  "include": ["src"],
-  "exclude": ["dist", "node_modules", "**/*.test.*", "**/*.spec.*"]
+  "include": ["src", "test"],
+  "exclude": ["dist", "node_modules"]
 }

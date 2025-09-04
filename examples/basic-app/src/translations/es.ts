@@ -32,3 +32,7 @@ export const es = {
     text: "Construido con framework Reynard • SolidJS • Amor",
   },
 };
+
+
+
+

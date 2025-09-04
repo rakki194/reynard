@@ -9,7 +9,6 @@ import {
   Show, 
   createSignal, 
   createMemo, 
-  createEffect,
   onMount,
   onCleanup
 } from "solid-js";
@@ -27,7 +26,6 @@ import {
   formatDate, 
   getFileIcon,
   isImage,
-  isVideo 
 } from "../utils";
 
 export interface GalleryGridProps {

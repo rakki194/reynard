@@ -14,8 +14,8 @@ import {
   ArcElement,
 } from "chart.js";
 import { Pie, Doughnut } from "solid-chartjs";
-import { Dataset, ChartConfig } from "../types";
-import { getDefaultConfig, generateColors, validateChartData } from "../utils";
+import { Dataset, ChartConfig, ReynardTheme } from "../types";
+import { getDefaultConfig, generateColors } from "../utils";
 
 export interface PieChartProps extends ChartConfig {
   /** Chart labels */
@@ -36,6 +36,8 @@ export interface PieChartProps extends ChartConfig {
   loading?: boolean;
   /** Empty state message */
   emptyMessage?: string;
+  /** Theme for the chart */
+  theme?: ReynardTheme;
 }
 
 const defaultProps = {
@@ -48,6 +50,7 @@ const defaultProps = {
   cutout: 0.5,
   showValues: true,
   emptyMessage: "No data available",
+  theme: "light" as ReynardTheme,
 };
 
 export const PieChart: Component<PieChartProps> = (props) => {
@@ -70,6 +73,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
     "emptyMessage",
     "animation",
     "tooltip",
+    "theme",
   ]);
 
   const [isRegistered, setIsRegistered] = createSignal(false);
@@ -95,8 +99,8 @@ export const PieChart: Component<PieChartProps> = (props) => {
   createEffect(() => {
     if (local.labels && local.data && local.data.length > 0) {
       if (local.labels.length === local.data.length) {
-        const colors = local.colors || generateColors(local.data.length, 0.8);
-        const borderColors = local.colors || generateColors(local.data.length, 1);
+        const colors = local.colors || generateColors(local.data.length, 0.8, local.theme);
+        const borderColors = local.colors || generateColors(local.data.length, 1, local.theme);
         
         const dataset: any = {
           label: "Data",
@@ -207,6 +211,8 @@ export const PieChart: Component<PieChartProps> = (props) => {
         height: local.responsive ? "100%" : `${local.height}px`,
         position: "relative",
       }}
+      role="img"
+      aria-label={local.title || `${local.variant} chart`}
       {...others}
     >
       <Show when={local.loading}>

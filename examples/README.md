@@ -230,3 +230,7 @@ Found a bug or have an improvement idea?
 _Built with ❤️ using Reynard framework, SolidJS, and modern web technologies_ 🦊
 
 **Happy coding!** 🚀
+
+
+
+

@@ -103,27 +103,39 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {
   let timeoutId: NodeJS.Timeout | null = null;
   let pendingPromise: Promise<ReturnType<T>> | null = null;
+  let resolvePending: ((value: ReturnType<T>) => void) | null = null;
+  let rejectPending: ((error: any) => void) | null = null;
 
   return (...args: Parameters<T>): Promise<ReturnType<T>> => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
 
+    // If there's no pending promise, create a new one
     if (!pendingPromise) {
-      pendingPromise = new Promise((resolve, reject) => {
-        timeoutId = setTimeout(async () => {
-          try {
-            const result = await fn(...args);
-            resolve(result);
-          } catch (error) {
-            reject(error);
-          } finally {
-            pendingPromise = null;
-            timeoutId = null;
-          }
-        }, delay);
+      pendingPromise = new Promise<ReturnType<T>>((resolve, reject) => {
+        resolvePending = resolve;
+        rejectPending = reject;
       });
     }
+
+    timeoutId = setTimeout(async () => {
+      try {
+        const result = await fn(...args);
+        if (resolvePending) {
+          resolvePending(result);
+        }
+      } catch (error) {
+        if (rejectPending) {
+          rejectPending(error);
+        }
+      } finally {
+        pendingPromise = null;
+        resolvePending = null;
+        rejectPending = null;
+        timeoutId = null;
+      }
+    }, delay);
 
     return pendingPromise;
   };
@@ -135,6 +147,10 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
  * @param fn - Async function to throttle
  * @param delay - Minimum delay between executions
  * @returns Throttled function
+ * 
+ * This function implements leading-edge throttling, meaning only the first call
+ * in a burst executes immediately, and subsequent calls are completely ignored
+ * until the delay period passes.
  */
 export function throttle<T extends (...args: any[]) => Promise<any>>(
   fn: T,
@@ -151,18 +167,9 @@ export function throttle<T extends (...args: any[]) => Promise<any>>(
       return await fn(...args);
     }
 
-    if (!pendingPromise) {
-      pendingPromise = new Promise((resolve) => {
-        setTimeout(async () => {
-          lastExecuted = Date.now();
-          const result = await fn(...args);
-          pendingPromise = null;
-          resolve(result);
-        }, delay - (now - lastExecuted));
-      });
-    }
-
-    return pendingPromise;
+    // If we're in a throttled period, return a resolved promise with no value
+    // This ensures the function is never called during the throttled period
+    return Promise.resolve();
   };
 }
 
@@ -210,15 +217,17 @@ export async function mapWithConcurrency<T, U>(
   const executing: Promise<void>[] = [];
 
   for (let i = 0; i < items.length; i++) {
-    const promise = mapper(items[i], i).then(result => {
-      results[i] = result;
+    const index = i; // Capture the index for this iteration
+    const promise = mapper(items[i], index).then(result => {
+      results[index] = result;
     });
 
     executing.push(promise);
 
     if (executing.length >= concurrency) {
       await Promise.race(executing);
-      executing.splice(executing.findIndex(p => p === promise), 1);
+      // Remove completed promises
+      executing.splice(0, executing.length);
     }
   }
 
