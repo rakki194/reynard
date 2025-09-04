@@ -4,7 +4,7 @@
  */
 
 import { Component } from 'solid-js';
-import { useNotifications } from '../../../packages/core/src';
+import { useNotifications } from '@reynard/core';
 
 export const NotificationDemo: Component = () => {
   const { notify } = useNotifications();

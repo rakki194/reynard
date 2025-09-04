@@ -1,0 +1,356 @@
+/**
+ * Basic Todo App Styles
+ * Demonstrates Reynard theming with a practical application
+ */
+
+/* Theme Variables */
+:root {
+  /* Light theme (default) */
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(220deg 20% 95%);
+  --secondary-bg: hsl(220deg 15% 90%);
+  --card-bg: hsl(220deg 15% 85%);
+  --text-primary: hsl(240deg 15% 12%);
+  --text-secondary: hsl(240deg 10% 45%);
+  --border-color: hsl(220deg 15% 75%);
+  --success: hsl(140deg 60% 45%);
+  --danger: hsl(0deg 70% 50%);
+  
+  /* Spacing and layout */
+  --spacing: 0.75rem;
+  --border-radius: 6px;
+  --shadow: 0 2px 4px rgb(0 0 0 / 10%);
+  --transition: 0.2s ease;
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  --accent: hsl(270deg 60% 70%);
+  --bg-color: hsl(220deg 15% 8%);
+  --secondary-bg: hsl(220deg 15% 12%);
+  --card-bg: hsl(220deg 15% 16%);
+  --text-primary: hsl(220deg 20% 95%);
+  --text-secondary: hsl(220deg 15% 70%);
+  --border-color: hsl(220deg 15% 24%);
+}
+
+/* Banana theme */
+:root[data-theme="banana"] {
+  --accent: hsl(45deg 100% 45%);
+  --bg-color: hsl(50deg 40% 95%);
+  --secondary-bg: hsl(50deg 35% 90%);
+  --card-bg: hsl(50deg 30% 85%);
+  --text-primary: hsl(30deg 15% 15%);
+  --text-secondary: hsl(30deg 10% 45%);
+  --border-color: hsl(45deg 25% 75%);
+}
+
+/* Strawberry theme */
+:root[data-theme="strawberry"] {
+  --accent: hsl(350deg 70% 55%);
+  --bg-color: hsl(350deg 30% 95%);
+  --secondary-bg: hsl(350deg 25% 90%);
+  --card-bg: hsl(350deg 20% 85%);
+  --text-primary: hsl(350deg 15% 15%);
+  --text-secondary: hsl(350deg 10% 45%);
+  --border-color: hsl(350deg 25% 75%);
+}
+
+/* Peanut theme */
+:root[data-theme="peanut"] {
+  --accent: hsl(30deg 60% 50%);
+  --bg-color: hsl(35deg 25% 93%);
+  --secondary-bg: hsl(35deg 20% 88%);
+  --card-bg: hsl(35deg 15% 83%);
+  --text-primary: hsl(25deg 15% 15%);
+  --text-secondary: hsl(25deg 10% 45%);
+  --border-color: hsl(30deg 25% 75%);
+}
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* App layout */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--secondary-bg);
+  padding: var(--spacing) calc(var(--spacing) * 2);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+  margin: 0 0 calc(var(--spacing) / 2) 0;
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.app-header p {
+  margin: 0 0 var(--spacing) 0;
+  color: var(--text-secondary);
+}
+
+.header-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing);
+  flex-wrap: wrap;
+}
+
+.theme-info {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.theme-toggle {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: calc(var(--spacing) / 2) var(--spacing);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.app-main {
+  flex: 1;
+  padding: calc(var(--spacing) * 2);
+  display: flex;
+  justify-content: center;
+}
+
+.todo-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.todo-stats {
+  text-align: center;
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+.stat {
+  background: var(--card-bg);
+  padding: calc(var(--spacing) / 2) var(--spacing);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Add todo form */
+.add-todo {
+  display: flex;
+  gap: calc(var(--spacing) / 2);
+  margin-bottom: calc(var(--spacing) * 2);
+}
+
+.todo-input {
+  flex: 1;
+  padding: var(--spacing);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.todo-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.add-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: var(--spacing) calc(var(--spacing) * 1.5);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition);
+}
+
+.add-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.add-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Todo list */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) / 2);
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  background: var(--card-bg);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  transition: all var(--transition);
+}
+
+.todo-item:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.todo-item.completed {
+  opacity: 0.7;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* Custom checkbox */
+.todo-checkbox {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.todo-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+
+.todo-checkbox:hover .checkmark {
+  border-color: var(--accent);
+}
+
+.todo-checkbox input:checked ~ .checkmark {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.todo-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.todo-delete {
+  background: var(--danger);
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.todo-delete:hover {
+  transform: scale(1.1);
+}
+
+.empty-state {
+  text-align: center;
+  padding: calc(var(--spacing) * 3);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.app-footer {
+  background: var(--secondary-bg);
+  padding: var(--spacing);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .app-header {
+    padding: var(--spacing);
+  }
+  
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .app-main {
+    padding: var(--spacing);
+  }
+  
+  .header-controls {
+    flex-direction: column;
+    gap: calc(var(--spacing) / 2);
+  }
+  
+  .add-todo {
+    flex-direction: column;
+  }
+}

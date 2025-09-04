@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal } from 'solid-js';
-import { ThemeProvider, NotificationsProvider, createTheme, createNotifications, useTheme, useNotifications } from '../../packages/core/src';
+import { ThemeProvider, NotificationsProvider, createTheme, createNotifications, useTheme, useNotifications } from '@reynard/core';
 import { ThemeSelector } from './components/ThemeSelector';
 import { NotificationDemo } from './components/NotificationDemo';
 import { Counter } from './components/Counter';

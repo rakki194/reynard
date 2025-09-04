@@ -3,22 +3,29 @@
  * Delays updates to a value until after a specified delay
  */
 
-import { createSignal, createEffect } from 'solid-js';
+import { createSignal, createEffect, onCleanup } from 'solid-js';
 
 /**
  * Debounces a reactive value
  */
 export const useDebounce = <T>(value: () => T, delay: number) => {
   const [debouncedValue, setDebouncedValue] = createSignal<T>(value());
+  let timeoutId: ReturnType<typeof setTimeout>;
 
   createEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value());
+    const currentValue = value();
+    
+    // Clear existing timeout
+    clearTimeout(timeoutId);
+    
+    // Set new timeout
+    timeoutId = setTimeout(() => {
+      setDebouncedValue(currentValue);
     }, delay);
+  });
 
-    return () => {
-      clearTimeout(handler);
-    };
+  onCleanup(() => {
+    clearTimeout(timeoutId);
   });
 
   return debouncedValue;

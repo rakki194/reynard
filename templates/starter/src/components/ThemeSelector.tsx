@@ -4,7 +4,7 @@
  */
 
 import { Component } from 'solid-js';
-import { useTheme } from '../../../packages/core/src';
+import { useTheme } from '@reynard/core';
 
 export const ThemeSelector: Component = () => {
   const { theme, setTheme, nextTheme, themes } = useTheme();
@@ -18,7 +18,7 @@ export const ThemeSelector: Component = () => {
           value={theme} 
           onChange={(e) => setTheme(e.target.value as any)}
         >
-          {themes.map((themeName) => (
+          {themes.map((themeName: string) => (
             <option value={themeName}>
               {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
             </option>
