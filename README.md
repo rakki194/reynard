@@ -4,6 +4,111 @@
 
 Reynard is a comprehensive SolidJS framework and UI library extracted from battle-tested patterns in production applications. It provides a complete toolkit for building modern, performant, and accessible web applications with elegant theming, modular architecture, and exceptional developer experience.
 
+## 📔 Table of Contents
+
+- [🦊 Reynard](#-reynard)
+  - [📔 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [🎯 Philosophy](#-philosophy)
+  - [📦 Packages](#-packages)
+  - [🚀 Quick Start](#-quick-start)
+    - [Installation](#installation)
+    - [Basic Usage](#basic-usage)
+  - [📚 Complete Tutorial: Building Your First Reynard App](#-complete-tutorial-building-your-first-reynard-app)
+    - [Step 1: Project Setup](#step-1-project-setup)
+      - [Option A: Using the Test App Template](#option-a-using-the-test-app-template)
+      - [Option B: Create a New Project](#option-b-create-a-new-project)
+    - [Step 2: Basic Project Structure](#step-2-basic-project-structure)
+    - [Step 3: Configuration Files](#step-3-configuration-files)
+      - [`vite.config.ts`](#viteconfigts)
+      - [`tsconfig.json`](#tsconfigjson)
+      - [`index.html`](#indexhtml)
+    - [Step 4: Theme Setup](#step-4-theme-setup)
+      - [`src/themes.css`](#srcthemescss)
+    - [Step 5: Application Entry Point](#step-5-application-entry-point)
+      - [`src/main.tsx`](#srcmaintsx)
+    - [Step 6: Main Application Component](#step-6-main-application-component)
+      - [`src/App.tsx`](#srcapptsx)
+    - [Step 7: Creating Your First Component](#step-7-creating-your-first-component)
+      - [`src/components/ThemeDemo.tsx`](#srccomponentsthemedemotsx)
+    - [Step 8: Building a Complete Todo App](#step-8-building-a-complete-todo-app)
+      - [Enhanced `src/App.tsx` for Todo App](#enhanced-srcapptsx-for-todo-app)
+      - [`src/components/TodoItem.tsx`](#srccomponentstodoitemtsx)
+      - [`src/components/AddTodo.tsx`](#srccomponentsaddtodotsx)
+      - [`src/components/ThemeToggle.tsx`](#srccomponentsthemetoggletsx)
+    - [Step 9: Adding Styles](#step-9-adding-styles)
+      - [Enhanced `src/themes.css` with Todo App Styles](#enhanced-srcthemescss-with-todo-app-styles)
+    - [Step 10: Running Your Application](#step-10-running-your-application)
+    - [Step 11: Advanced Features](#step-11-advanced-features)
+      - [Adding Internationalization](#adding-internationalization)
+      - [Adding Local Storage Persistence](#adding-local-storage-persistence)
+    - [Step 12: Deployment](#step-12-deployment)
+      - [Build for Production](#build-for-production)
+      - [Deploy to Vercel](#deploy-to-vercel)
+      - [Deploy to Netlify](#deploy-to-netlify)
+    - [🎯 What You've Learned](#-what-youve-learned)
+    - [🚀 Next Steps](#-next-steps)
+  - [📚 Package Documentation](#-package-documentation)
+    - [@reynard/core](#reynardcore)
+      - [Modules](#modules)
+      - [Core Composables](#core-composables)
+      - [Utilities](#utilities)
+      - [Core Example Usage](#core-example-usage)
+    - [@reynard/components](#reynardcomponents)
+      - [Primitives](#primitives)
+      - [Composite Components](#composite-components)
+      - [Chat System Features](#chat-system-features)
+      - [Components Example Usage](#components-example-usage)
+    - [@reynard/auth](#reynardauth)
+      - [Auth Features](#auth-features)
+      - [Auth Components](#auth-components)
+      - [Auth Composables](#auth-composables)
+      - [Auth Example Usage](#auth-example-usage)
+    - [@reynard/charts](#reynardcharts)
+      - [Chart Types](#chart-types)
+      - [Charts Features](#charts-features)
+      - [Charts Example Usage](#charts-example-usage)
+    - [@reynard/gallery](#reynardgallery)
+      - [Gallery Features](#gallery-features)
+      - [Gallery Components](#gallery-components)
+      - [Gallery Composables](#gallery-composables)
+      - [Gallery Example Usage](#gallery-example-usage)
+    - [@reynard/settings](#reynardsettings)
+      - [Settings Features](#settings-features)
+      - [Setting Types](#setting-types)
+      - [Settings Components](#settings-components)
+      - [Settings Composables](#settings-composables)
+      - [Settings Example Usage](#settings-example-usage)
+    - [@reynard/file-processing](#reynardfile-processing)
+      - [Supported File Types](#supported-file-types)
+      - [Core Components](#core-components)
+      - [File Processing Example Usage](#file-processing-example-usage)
+  - [🎨 Theming System](#-theming-system)
+    - [Custom Themes](#custom-themes)
+  - [📱 Examples and Templates](#-examples-and-templates)
+    - [Examples](#examples)
+    - [Templates](#templates)
+    - [Running Examples](#running-examples)
+  - [🧪 Testing](#-testing)
+    - [Test Coverage](#test-coverage)
+  - [🚀 Performance](#-performance)
+    - [Bundle Sizes](#bundle-sizes)
+  - [♿ Accessibility](#-accessibility)
+  - [🌍 Internationalization](#-internationalization)
+  - [🛠️ Development Tools](#️-development-tools)
+    - [CLI Tools](#cli-tools)
+    - [VS Code Extension](#vs-code-extension)
+  - [📖 API Reference](#-api-reference)
+    - [Core API](#core-api)
+    - [Component API](#component-api)
+  - [🧪 Development](#-development)
+  - [🤝 Contributing](#-contributing)
+    - [Development Setup](#development-setup)
+    - [Code Style](#code-style)
+  - [📄 License](#-license)
+  - [🙏 Acknowledgments](#-acknowledgments)
+  - [📞 Support](#-support)
+
 ## ✨ Features
 
 Reynard offers a modular architecture, with each module designed to be slim with dependencies and concise—typically under 100 lines—making the framework both approachable and maintainable. The theming system is comprehensive, providing eight built-in themes and full support for custom themes, so you can tailor your application's look and feel with ease. Testing is a first-class citizen, with Vitest and Playwright integration ensuring 95%+ coverage out of the box. Accessibility is prioritized, with WCAG compliance and a robust set of a11y features. Performance is optimized through bundle splitting and lazy loading, while responsive design is achieved using a mobile-first approach and container queries. Internationalization (i18n) is built in, enabling multi-language support from the start. For developers, Reynard includes a CLI, a VS Code extension, and a suite of debugging utilities to streamline your workflow.
@@ -110,7 +215,7 @@ npm install -D vite vite-plugin-solid typescript @types/node
 
 Create the following file structure:
 
-```
+```plaintext
 my-reynard-app/
 ├── index.html
 ├── package.json
@@ -872,7 +977,7 @@ The foundation of the Reynard framework, providing essential utilities, composab
 - **Notifications** - Toast notification system with auto-dismiss and multiple types
 - **Internationalization** - Built-in i18n support with translation management
 
-#### Composables
+#### Core Composables
 
 - **`useTheme()`** - Theme management with persistence and reactive switching
 - **`useNotifications()`** - Toast notification system with queue management
@@ -887,7 +992,7 @@ The foundation of the Reynard framework, providing essential utilities, composab
 - **Formatters** - Text, number, and currency formatting functions
 - **Validation** - Input validation and sanitization utilities
 
-#### Example Usage
+#### Core Example Usage
 
 ```tsx
 import { 
@@ -941,7 +1046,7 @@ Production-ready SolidJS component library with comprehensive theming and access
 - **Markdown Parsing** - Full markdown support including tables, code blocks, and math
 - **P2P Support** - Peer-to-peer chat capabilities with WebRTC
 
-#### Example Usage
+#### Components Example Usage
 
 ```tsx
 import { 
@@ -1008,7 +1113,7 @@ function MyApp() {
 
 Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive security features.
 
-#### Features
+#### Auth Features
 
 - **JWT Authentication** - Complete token-based authentication with refresh tokens
 - **Login & Registration** - Ready-to-use forms with validation and error handling
@@ -1016,7 +1121,7 @@ Complete authentication and user management system with JWT tokens, password str
 - **User Management** - Profile management, password changes, and user preferences
 - **Security** - Automatic token refresh, secure storage, and CSRF protection
 
-#### Components
+#### Auth Components
 
 - **AuthProvider** - Context provider for authentication state and methods
 - **LoginForm** - Complete login form with validation
@@ -1024,13 +1129,13 @@ Complete authentication and user management system with JWT tokens, password str
 - **ProfileForm** - User profile management form
 - **PasswordChangeForm** - Secure password change form
 
-#### Composables
+#### Auth Composables
 
 - **`useAuth()`** - Main authentication hook with state management and API integration
 - **`useAuthContext()`** - Access authentication context
 - **`withAuth()`** - Higher-order component for authentication requirements
 
-#### Example Usage
+#### Auth Example Usage
 
 ```tsx
 import { 
@@ -1086,7 +1191,7 @@ Advanced data visualization components built on Chart.js with real-time updates 
 - **PieChart** - Great for showing proportions and percentages
 - **TimeSeriesChart** - Advanced real-time chart with automatic data management
 
-#### Features
+#### Charts Features
 
 - **Real-time Updates** - Live data streaming with automatic management
 - **Theme Integration** - Seamlessly works with Reynard's theming system
@@ -1094,7 +1199,7 @@ Advanced data visualization components built on Chart.js with real-time updates 
 - **Performance** - Optimized rendering with data aggregation and limits
 - **Accessibility** - Screen reader friendly with proper ARIA labels
 
-#### Example Usage
+#### Charts Example Usage
 
 ```tsx
 import { 
@@ -1148,7 +1253,7 @@ function Dashboard() {
 
 Advanced file and media management system with drag-and-drop, responsive grids, and comprehensive file handling.
 
-#### Features
+#### Gallery Features
 
 - **File Management** - Complete file browser with folder navigation
 - **Media Support** - Images, videos, audio, text, and document preview
@@ -1158,7 +1263,7 @@ Advanced file and media management system with drag-and-drop, responsive grids, 
 - **Favorites** - Mark files as favorites with persistent storage
 - **Selection** - Multi-select with keyboard shortcuts and context menus
 
-#### Components
+#### Gallery Components
 
 - **Gallery** - Main gallery component with navigation and management
 - **GalleryGrid** - Responsive grid layout with virtual scrolling
@@ -1166,13 +1271,13 @@ Advanced file and media management system with drag-and-drop, responsive grids, 
 - **FileUploadZone** - Drag-and-drop file upload with progress tracking
 - **BreadcrumbNavigation** - Folder navigation breadcrumbs
 
-#### Composables
+#### Gallery Composables
 
 - **`useGalleryState()`** - Gallery state management with persistence
 - **`useFileUpload()`** - File upload handling with progress tracking
 - **`useMultiSelect()`** - Multi-selection system with keyboard shortcuts
 
-#### Example Usage
+#### Gallery Example Usage
 
 ```tsx
 import { Gallery } from "@reynard/gallery";
@@ -1209,7 +1314,7 @@ function FileManager() {
 
 Comprehensive configuration management system with validation, persistence, and UI components.
 
-#### Features
+#### Settings Features
 
 - **Settings Schema** - Type-safe settings definitions with validation
 - **Multiple Storage** - localStorage, sessionStorage, IndexedDB, and remote storage
@@ -1230,19 +1335,19 @@ Comprehensive configuration management system with validation, persistence, and 
 - **File** - File upload inputs
 - **JSON** - JSON object inputs with validation
 
-#### Components
+#### Settings Components
 
 - **SettingsPanel** - Complete settings interface with categories and search
 - **SettingControl** - Individual setting control components
 - **SettingsProvider** - Context provider for settings management
 
-#### Composables
+#### Settings Composables
 
 - **`useSettings()`** - Main settings management hook
 - **`useSetting()`** - Individual setting management
 - **`useSettingsValidation()`** - Settings validation utilities
 
-#### Example Usage
+#### Settings Example Usage
 
 ```tsx
 import { 
@@ -1308,7 +1413,7 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 - **ContentAnalyzer** - Content analysis and processing utilities
 - **ProgressTracker** - Progress tracking and callback system
 
-#### Example Usage
+#### File Processing Example Usage
 
 ```tsx
 import { 

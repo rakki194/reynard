@@ -94,13 +94,13 @@ const thumbnail = await thumbnailGenerator.generateThumbnail(file);
 
 The main class that orchestrates all file processing operations.
 
-#### Constructor
+#### FileProcessingPipeline Constructor
 
 ```typescript
 new FileProcessingPipeline(config?: Partial<ProcessingConfig>)
 ```
 
-#### Methods
+#### FileProcessingPipeline Methods
 
 - `processFile(file, options?)`: Process a single file
 - `processFiles(files, options?)`: Process multiple files
@@ -136,13 +136,13 @@ interface ProcessingConfig {
 
 Specialized class for generating thumbnails from various file types.
 
-#### Constructor
+#### ThumbnailGenerator Constructor
 
 ```typescript
 new ThumbnailGenerator(options?: ThumbnailGeneratorOptions)
 ```
 
-#### Methods
+#### ThumbnailGenerator Methods
 
 - `generateThumbnail(file, options?)`: Generate a thumbnail
 - `destroy()`: Clean up resources

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
 import { BarChart, LineChart, PieChart, TimeSeriesChart } from "../components";
 import type { ChartConfig, ChartTheme } from "../types";
+import "./integration.test.css";
 
 // Mock console methods to reduce noise
 vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -122,7 +123,7 @@ describe("Chart Integration Tests", () => {
   describe("Responsive Layout Integration", () => {
     it("handles responsive charts in different container sizes", () => {
       render(() => (
-        <div style={{ width: "800px", height: "600px" }}>
+        <div class="test-container">
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
