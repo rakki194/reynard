@@ -34,6 +34,7 @@ const AppContent: Component = () => {
           <span class="reynard-logo">
             {fluentIconsPackage.getIcon("yipyap") && (
               <div
+                // eslint-disable-next-line solid/no-innerhtml
                 innerHTML={fluentIconsPackage.getIcon("yipyap")?.outerHTML}
               />
             )}
@@ -53,6 +54,7 @@ const AppContent: Component = () => {
                 <span class="feature-icon">
                   {fluentIconsPackage.getIcon("palette") && (
                     <div
+                      // eslint-disable-next-line solid/no-innerhtml
                       innerHTML={
                         fluentIconsPackage.getIcon("palette")?.outerHTML
                       }
@@ -72,6 +74,7 @@ const AppContent: Component = () => {
                 <span class="feature-icon">
                   {fluentIconsPackage.getIcon("alert") && (
                     <div
+                      // eslint-disable-next-line solid/no-innerhtml
                       innerHTML={fluentIconsPackage.getIcon("alert")?.outerHTML}
                     />
                   )}
@@ -87,6 +90,7 @@ const AppContent: Component = () => {
                 <span class="feature-icon">
                   {fluentIconsPackage.getIcon("puzzle-piece") && (
                     <div
+                      // eslint-disable-next-line solid/no-innerhtml
                       innerHTML={
                         fluentIconsPackage.getIcon("puzzle-piece")?.outerHTML
                       }
@@ -104,6 +108,7 @@ const AppContent: Component = () => {
                 <span class="feature-icon">
                   {fluentIconsPackage.getIcon("rocket") && (
                     <div
+                      // eslint-disable-next-line solid/no-innerhtml
                       innerHTML={
                         fluentIconsPackage.getIcon("rocket")?.outerHTML
                       }
