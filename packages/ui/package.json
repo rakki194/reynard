@@ -19,7 +19,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.json && mv dist/ui.css dist/styles.css",
+    "build": "vite build && tsc -p tsconfig.json --declaration --declarationMap && cp src/overlays/Drawer.css dist/overlays/ 2>/dev/null || true && (mv dist/ui.css dist/styles.css 2>/dev/null || true)",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",

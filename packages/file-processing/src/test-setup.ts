@@ -9,7 +9,7 @@ global.File = class MockFile {
   lastModified: number;
 
   constructor(
-    parts: (string | Blob | ArrayBuffer | ArrayBufferView)[],
+    _parts: (string | Blob | ArrayBuffer | ArrayBufferView)[],
     filename: string,
     options?: { size?: number; type?: string; lastModified?: number },
   ) {
@@ -18,7 +18,7 @@ global.File = class MockFile {
     this.type = options?.type || "";
     this.lastModified = options?.lastModified || Date.now();
   }
-} as any;
+} as typeof File;
 
 // Mock URL.createObjectURL
 global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
@@ -42,8 +42,8 @@ global.HTMLCanvasElement.prototype.getContext = vi.fn(
         width: 10,
         height: 10,
       })),
-    }) as any,
-);
+    }) as unknown as CanvasRenderingContext2D,
+) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
 global.HTMLCanvasElement.prototype.toBlob = vi.fn((callback) => {
   const blob = new Blob(["mock-image"], { type: "image/png" });
@@ -75,7 +75,7 @@ global.Image = class MockImage {
       this.onload?.();
     }, 0);
   }
-} as any;
+} as typeof Image;
 
 // Mock Audio for audio processing
 global.Audio = class MockAudio {
@@ -108,7 +108,7 @@ global.Audio = class MockAudio {
   load(): void {
     // Mock implementation
   }
-} as any;
+} as typeof Audio;
 
 // Mock Video for video processing
 global.HTMLVideoElement.prototype.load = vi.fn();
@@ -123,7 +123,7 @@ global.createImageBitmap = vi.fn(() =>
     width: 100,
     height: 100,
     close: vi.fn(),
-  } as any),
+  } as ImageBitmap),
 );
 
 // Mock OffscreenCanvas if not available
@@ -151,11 +151,11 @@ if (!global.OffscreenCanvas) {
           width: 10,
           height: 10,
         })),
-      } as any;
+      } as unknown as OffscreenCanvasRenderingContext2D;
     }
 
     convertToBlob() {
       return Promise.resolve(new Blob(["mock"], { type: "image/png" }));
     }
-  } as any;
+  } as unknown as typeof OffscreenCanvas;
 }

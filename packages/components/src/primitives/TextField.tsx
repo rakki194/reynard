@@ -9,7 +9,6 @@ import {
   splitProps,
   mergeProps,
   createSignal,
-  createEffect,
 } from "solid-js";
 
 export interface TextFieldProps

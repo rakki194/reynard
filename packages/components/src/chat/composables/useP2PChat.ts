@@ -7,20 +7,16 @@
 
 import {
   createSignal,
-  createEffect,
-  createResource,
   batch,
   onCleanup,
   createMemo,
   onMount,
 } from "solid-js";
-import type { Accessor, Resource } from "solid-js";
 import { useChat } from "./useChat";
 import type {
   ChatUser,
   ChatRoom,
   P2PChatMessage,
-  P2PChatState,
   P2PChatActions,
   P2PChatEvent,
   TypingIndicator,
@@ -145,10 +141,6 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
   // Typing timer management
   const typingTimers = new Map<string, number>();
 
-  // Generate unique message ID
-  const generateMessageId = (): string => {
-    return `p2p-msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  };
 
   // Generate unique attachment ID
   const generateAttachmentId = (): string => {
@@ -623,7 +615,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       throw new Error(`Failed to send message: ${response.statusText}`);
     }
 
-    const sentMessage: P2PChatMessage = await response.json();
+    await response.json();
     // Message will be added via WebSocket event
   };
 
@@ -888,10 +880,6 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     return room ? messagesByRoom()[room.id] || [] : [];
   });
 
-  const currentRoomTyping = createMemo(() => {
-    const room = activeRoom();
-    return room ? typingIndicators()[room.id] || [] : [];
-  });
 
   // Auto-connect on mount
   onMount(() => {
@@ -936,11 +924,11 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     stopTyping,
     updateUserStatusViaWebSocket,
     getUserProfile,
-    blockUser: async (userId: string, block: boolean) => {
+    blockUser: async (_userId: string, _block: boolean) => {
       // Implementation for blocking users
       throw new Error("Not implemented");
     },
-    inviteUser: async (roomId: string, userId: string) => {
+    inviteUser: async (_roomId: string, _userId: string) => {
       // Implementation for inviting users
       throw new Error("Not implemented");
     },
@@ -950,7 +938,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     getMessageHistory: async (roomId: string, options = {}) => {
       return getRoomMessages(roomId, options.limit, options.before?.toString());
     },
-    setPresence: async (status: ChatUser["status"], message?: string) => {
+    setPresence: async (status: ChatUser["status"], _message?: string) => {
       return updateUserStatusViaWebSocket(status);
     },
     getRoomPresence: async (roomId: string) => {

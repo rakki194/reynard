@@ -632,13 +632,13 @@ export function isSupportedExtension(extension: string): boolean {
  */
 export function getAllSupportedExtensions(): Set<string> {
   return new Set([
-    ...IMAGE_EXTENSIONS,
-    ...VIDEO_EXTENSIONS,
-    ...AUDIO_EXTENSIONS,
-    ...TEXT_EXTENSIONS,
-    ...CODE_EXTENSIONS,
-    ...DOCUMENT_EXTENSIONS,
-    ...LORA_EXTENSIONS,
+    ...Array.from(IMAGE_EXTENSIONS),
+    ...Array.from(VIDEO_EXTENSIONS),
+    ...Array.from(AUDIO_EXTENSIONS),
+    ...Array.from(TEXT_EXTENSIONS),
+    ...Array.from(CODE_EXTENSIONS),
+    ...Array.from(DOCUMENT_EXTENSIONS),
+    ...Array.from(LORA_EXTENSIONS),
   ]);
 }
 

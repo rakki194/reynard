@@ -88,7 +88,13 @@ const App: Component = () => {
     <ThemeProvider value={theme}>
       <I18nProvider value={i18n}>
         <NotificationsProvider value={notifications}>
-          <AuthProvider>
+          <AuthProvider
+            config={{
+              apiBaseUrl: "http://localhost:3002/api",
+              enableRememberMe: true,
+              autoRefresh: false, // Disable auto-refresh for demo
+            }}
+          >
             <AppLayout
               sidebar={
                 <Sidebar

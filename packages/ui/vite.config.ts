@@ -28,14 +28,11 @@ export default defineConfig({
           "@reynard/components": "ReynardComponents",
         },
         assetFileNames: (assetInfo) => {
-          const assetName = (assetInfo as { fileName?: string }).fileName;
-          if (assetName === "style.css") {
+          // Ensure consistent CSS naming - always use styles.css
+          if (assetInfo.name && assetInfo.name.includes('css')) {
             return "styles.css";
           }
-          if (assetName === "ui.css") {
-            return "styles.css";
-          }
-          return assetName || "asset";
+          return assetInfo.name || "asset";
         },
       },
     },

@@ -18,12 +18,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && vite build",
     "dev": "vite build --watch",
-    "typecheck": "tsc --noEmit",
+    "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "solidjs",

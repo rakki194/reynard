@@ -157,7 +157,7 @@ export function throttle<T extends (...args: any[]) => Promise<any>>(
   delay: number,
 ): (...args: Parameters<T>) => Promise<ReturnType<T> | void> {
   let lastExecuted = 0;
-  let pendingPromise: Promise<ReturnType<T>> | null = null;
+  // let pendingPromise: Promise<ReturnType<T>> | null = null;
 
   return async (...args: Parameters<T>): Promise<ReturnType<T> | void> => {
     const now = Date.now();

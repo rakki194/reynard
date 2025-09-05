@@ -11,7 +11,6 @@ import {
   createResource,
   batch,
   onCleanup,
-  createMemo,
   onMount,
 } from "solid-js";
 import {
@@ -102,24 +101,22 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Streaming state
   const [streamController, setStreamController] =
     createSignal<AbortController | null>(null);
-  const [streamingParser, setStreamingParser] =
-    createSignal<StreamingMarkdownParser | null>(null);
+  const [streamingParser, setStreamingParser] = createSignal<StreamingMarkdownParser | null>(null);
   const [currentResponse, setCurrentResponse] = createSignal("");
   const [currentThinking, setCurrentThinking] = createSignal("");
 
   // Reconnection state
   const [reconnectionAttempts, setReconnectionAttempts] = createSignal(0);
-  const [isReconnecting, setIsReconnecting] = createSignal(false);
 
   // Computed values
-  const totalMessages = createMemo(() => messages().length);
-  const lastMessage = createMemo(() => {
-    const msgs = messages();
-    return msgs[msgs.length - 1];
-  });
+  // const totalMessages = createMemo(() => messages().length);
+  // const lastMessage = createMemo(() => {
+  //   const msgs = messages();
+  //   return msgs[msgs.length - 1];
+  // });
 
-  const hasError = createMemo(() => !!error());
-  const isConnected = createMemo(() => connectionState() === "connected");
+  // const hasError = createMemo(() => !!error());
+  // const isConnected = createMemo(() => connectionState() === "connected");
 
   // Resource for checking connection
   const [connectionCheck] = createResource(
@@ -199,7 +196,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     }
 
     // Add user message
-    const userMessage = addMessage({
+    addMessage({
       role: "user",
       content: content.trim(),
     });
@@ -297,6 +294,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       const decoder = new TextDecoder();
 
       try {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const { done, value } = await reader.read();
 
@@ -327,7 +325,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       throw error;
     } finally {
       // Finalize streaming
-      await finalizeStreaming(parser, assistantMessage.id);
+      await finalizeStreaming(assistantMessage.id);
     }
   };
 
@@ -456,11 +454,11 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
-            ...tc,
-            progress: toolExecution.progress,
-            message: toolExecution.message,
-            status: toolExecution.status,
-          }
+          ...tc,
+          progress: toolExecution.progress,
+          message: toolExecution.message,
+          status: toolExecution.status,
+        }
         : tc,
     );
 
@@ -480,16 +478,16 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
-            ...tc,
-            status: toolExecution.status,
-            result: toolExecution.result,
-            error: toolExecution.error,
-            timing: {
-              ...tc.timing!,
-              endTime: Date.now(),
-              duration: Date.now() - tc.timing!.startTime,
-            },
-          }
+          ...tc,
+          status: toolExecution.status,
+          result: toolExecution.result,
+          error: toolExecution.error,
+          timing: {
+            ...tc.timing!,
+            endTime: Date.now(),
+            duration: Date.now() - tc.timing!.startTime,
+          },
+        }
         : tc,
     );
 
@@ -500,9 +498,11 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
   // Finalize streaming
   const finalizeStreaming = async (
-    parser: StreamingMarkdownParser,
     messageId: string,
   ) => {
+    const parser = streamingParser();
+    if (!parser) return;
+
     const finalResult = parser.finalize();
 
     batch(() => {
@@ -564,7 +564,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       const isHealthy = await connectionCheck();
       setConnectionState(isHealthy ? "connected" : "error");
       setReconnectionAttempts(0);
-    } catch (error) {
+    } catch {
       setConnectionState("error");
 
       if (
@@ -577,7 +577,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
             connect();
           },
           reconnection.delay *
-            Math.pow(reconnection.backoff, reconnectionAttempts()),
+          Math.pow(reconnection.backoff, reconnectionAttempts()),
         );
       }
     }
@@ -626,7 +626,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         try {
           const importedMessages = JSON.parse(data) as ChatMessage[];
           setMessages(importedMessages);
-        } catch (error) {
+        } catch {
           throw new Error("Invalid JSON format");
         }
         break;

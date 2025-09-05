@@ -10,9 +10,10 @@ export const loadTranslations = async (
       en: {
         // Navigation
         "nav.dashboard": "Dashboard",
-        "nav.analytics": "Analytics",
-        "nav.users": "Users",
+        "nav.charts": "Charts",
+        "nav.components": "Components",
         "nav.gallery": "Gallery",
+        "nav.auth": "Authentication",
         "nav.settings": "Settings",
 
         // Dashboard

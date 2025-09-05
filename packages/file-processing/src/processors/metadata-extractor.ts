@@ -15,6 +15,7 @@ import {
   LoraMetadata,
   DocumentMetadata,
   FileMetadata,
+  ExifData,
 } from "../types";
 import { getFileTypeInfo, getFileCategory } from "../config/file-types";
 
@@ -65,7 +66,7 @@ export class MetadataExtractor {
         };
       }
 
-      const { name, size, type } = fileInfo.data!;
+      const { name } = fileInfo.data!;
       const extension = this.getFileExtension(name);
       const fileTypeInfo = getFileTypeInfo(extension);
       const category = getFileCategory(extension);
@@ -88,16 +89,16 @@ export class MetadataExtractor {
           metadata = await this.extractImageMetadata(file, mergedOptions);
           break;
         case "video":
-          metadata = await this.extractVideoMetadata(file, mergedOptions);
+          metadata = await this.extractVideoMetadata(file);
           break;
         case "audio":
-          metadata = await this.extractAudioMetadata(file, mergedOptions);
+          metadata = await this.extractAudioMetadata(file);
           break;
         case "text":
           metadata = await this.extractTextMetadata(file, mergedOptions);
           break;
         case "code":
-          metadata = await this.extractCodeMetadata(file, mergedOptions);
+          metadata = await this.extractCodeMetadata(file);
           break;
         case "lora":
           metadata = await this.extractLoraMetadata(file, mergedOptions);
@@ -155,14 +156,14 @@ export class MetadataExtractor {
     // Extract EXIF data if enabled
     if (options.extractExif) {
       try {
-        const exif = await this.extractExifData(file);
+        const exif = await this.extractExifData();
         if (exif) {
           metadata.exif = exif;
           // Update metadata with EXIF information
-          if (exif.ImageWidth) metadata.width = exif.ImageWidth;
-          if (exif.ImageLength) metadata.height = exif.ImageLength;
-          if (exif.BitsPerSample) metadata.bitDepth = exif.BitsPerSample;
-          if (exif.ColorSpace) metadata.colorSpace = exif.ColorSpace;
+          if (exif.XResolution) metadata.width = exif.XResolution;
+          if (exif.YResolution) metadata.height = exif.YResolution;
+          if (exif.ISOSpeedRatings) metadata.bitDepth = exif.ISOSpeedRatings;
+          if (exif.ColorSpace) metadata.colorSpace = exif.ColorSpace.toString();
         }
       } catch (error) {
         // EXIF extraction failed, continue without it
@@ -172,7 +173,7 @@ export class MetadataExtractor {
 
     // Detect animation for GIF and WebP
     if (metadata.isAnimated) {
-      const animationInfo = await this.extractAnimationInfo(file);
+      const animationInfo = await this.extractAnimationInfo();
       if (animationInfo) {
         metadata.frameCount = animationInfo.frameCount;
         metadata.duration = animationInfo.duration;
@@ -187,7 +188,6 @@ export class MetadataExtractor {
    */
   private async extractVideoMetadata(
     file: File | string,
-    options: MetadataExtractionOptions,
   ): Promise<VideoMetadata> {
     const video = await this.loadVideo(file);
     const basicInfo = await this.getBasicFileInfo(file);
@@ -205,7 +205,7 @@ export class MetadataExtractor {
 
     // Try to extract more detailed video information
     try {
-      const videoInfo = await this.extractVideoInfo(file);
+      const videoInfo = await this.extractVideoInfo();
       if (videoInfo) {
         metadata.fps = videoInfo.fps || metadata.fps;
         metadata.bitrate = videoInfo.bitrate || metadata.bitrate;
@@ -226,7 +226,6 @@ export class MetadataExtractor {
    */
   private async extractAudioMetadata(
     file: File | string,
-    options: MetadataExtractionOptions,
   ): Promise<AudioMetadata> {
     const audio = await this.loadAudio(file);
     const basicInfo = await this.getBasicFileInfo(file);
@@ -243,7 +242,7 @@ export class MetadataExtractor {
 
     // Try to extract more detailed audio information
     try {
-      const audioInfo = await this.extractAudioInfo(file);
+      const audioInfo = await this.extractAudioInfo();
       if (audioInfo) {
         metadata.sampleRate = audioInfo.sampleRate || metadata.sampleRate;
         metadata.channels = audioInfo.channels || metadata.channels;
@@ -288,7 +287,7 @@ export class MetadataExtractor {
     // Analyze content if enabled
     if (options.analyzeContent) {
       try {
-        const contentAnalysis = await this.analyzeTextContent(text);
+        const contentAnalysis = await this.analyzeTextContent();
         if (contentAnalysis) {
           metadata.encoding = contentAnalysis.encoding || metadata.encoding;
         }
@@ -305,7 +304,6 @@ export class MetadataExtractor {
    */
   private async extractCodeMetadata(
     file: File | string,
-    options: MetadataExtractionOptions,
   ): Promise<CodeMetadata> {
     const text = await this.loadText(file);
     const basicInfo = await this.getBasicFileInfo(file);
@@ -313,12 +311,12 @@ export class MetadataExtractor {
 
     const metadata: CodeMetadata = {
       ...basicInfo,
-      language: this.detectProgrammingLanguage(extension, text),
+      language: this.detectProgrammingLanguage(extension),
       lineCount: text.split("\n").length,
       characterCount: text.length,
       hasSyntaxErrors: false, // Would need syntax checking
       dependencies: this.extractDependencies(text, extension),
-      purpose: this.detectCodePurpose(extension, text),
+      purpose: this.detectCodePurpose(extension),
     };
 
     return metadata;
@@ -348,7 +346,7 @@ export class MetadataExtractor {
     // Try to extract model information from file content
     if (options.extractEmbedded) {
       try {
-        const modelInfo = await this.extractLoraModelInfo(file);
+        const modelInfo = await this.extractLoraModelInfo();
         if (modelInfo) {
           metadata.description = modelInfo.description || metadata.description;
           metadata.baseModel = modelInfo.baseModel || metadata.baseModel;
@@ -390,7 +388,7 @@ export class MetadataExtractor {
     // Try to extract document information
     if (options.extractEmbedded) {
       try {
-        const docInfo = await this.extractDocumentInfo(file);
+        const docInfo = await this.extractDocumentInfo();
         if (docInfo) {
           metadata.pageCount = docInfo.pageCount || metadata.pageCount;
           metadata.title = docInfo.title || metadata.title;
@@ -553,23 +551,19 @@ export class MetadataExtractor {
     return extension === ".gif" || extension === ".webp";
   }
 
-  private async extractExifData(
-    file: File | string,
-  ): Promise<Record<string, any> | null> {
+  private async extractExifData(): Promise<ExifData | null> {
     // This would require a proper EXIF library
     // For now, return null
     return null;
   }
 
-  private async extractAnimationInfo(
-    file: File | string,
-  ): Promise<{ frameCount: number; duration: number } | null> {
+  private async extractAnimationInfo(): Promise<{ frameCount: number; duration: number } | null> {
     // This would require parsing the actual file format
     // For now, return null
     return null;
   }
 
-  private async extractVideoInfo(file: File | string): Promise<{
+  private async extractVideoInfo(): Promise<{
     fps: number;
     bitrate: number;
     codec: string;
@@ -582,7 +576,7 @@ export class MetadataExtractor {
     return null;
   }
 
-  private async extractAudioInfo(file: File | string): Promise<{
+  private async extractAudioInfo(): Promise<{
     sampleRate: number;
     channels: number;
     bitrate: number;
@@ -618,9 +612,7 @@ export class MetadataExtractor {
     return "unknown";
   }
 
-  private async analyzeTextContent(
-    text: string,
-  ): Promise<{ encoding: string } | null> {
+  private async analyzeTextContent(): Promise<{ encoding: string } | null> {
     // Simple encoding detection
     // This is a very basic implementation
     return { encoding: "UTF-8" };
@@ -628,7 +620,6 @@ export class MetadataExtractor {
 
   private detectProgrammingLanguage(
     extension: string,
-    content: string,
   ): string {
     const languageMap: Record<string, string> = {
       ".py": "Python",
@@ -722,7 +713,7 @@ export class MetadataExtractor {
     return dependencies;
   }
 
-  private detectCodePurpose(extension: string, content: string): string {
+  private detectCodePurpose(extension: string): string {
     const filename = extension.replace(".", "");
 
     if (filename.includes("test") || filename.includes("spec")) return "test";
@@ -739,19 +730,19 @@ export class MetadataExtractor {
     return "source";
   }
 
-  private async extractLoraModelInfo(file: File | string): Promise<{
+  private async extractLoraModelInfo(): Promise<{
     description: string;
     baseModel: string;
     trainingData: string;
     tags: string[];
-    parameters: Record<string, any>;
+    parameters: Record<string, string | number | boolean>;
   } | null> {
     // This would require parsing the actual LoRA file format
     // For now, return null
     return null;
   }
 
-  private async extractDocumentInfo(file: File | string): Promise<{
+  private async extractDocumentInfo(): Promise<{
     pageCount: number;
     title: string;
     author: string;

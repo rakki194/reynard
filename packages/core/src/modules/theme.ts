@@ -17,16 +17,16 @@ export type Theme =
   | "high-contrast-inverse";
 
 /** Base themes that are always available */
-const baseThemes: Record<string, string> = {
-  light: "sun",
-  gray: "cloud",
-  dark: "moon",
-  banana: "banana",
-  strawberry: "strawberry",
-  peanut: "peanut",
-  "high-contrast-black": "contrast",
-  "high-contrast-inverse": "contrast-inverse",
-};
+// const baseThemes: Record<string, string> = {
+//   light: "sun",
+//   gray: "cloud",
+//   dark: "moon",
+//   banana: "banana",
+//   strawberry: "strawberry",
+//   peanut: "peanut",
+//   "high-contrast-black": "contrast",
+//   "high-contrast-inverse": "contrast-inverse",
+// };
 
 /**
  * Maps theme names to their corresponding icon identifiers.

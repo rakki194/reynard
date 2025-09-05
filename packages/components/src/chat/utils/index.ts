@@ -11,3 +11,9 @@ export {
   parseMarkdownStream,
   parseMarkdownBatched,
 } from "./StreamingMarkdownParser";
+
+export {
+  createStreamingText,
+  createStreamingSequence,
+  createMarkdownStreaming,
+} from "./StreamingTextRenderer";

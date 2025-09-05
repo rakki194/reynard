@@ -78,7 +78,7 @@ export const getInitialLocale = (): Locale => {
 };
 
 /** RTL languages list */
-export const rtlLanguages: Set<Locale> = new Set(["ar", "he"]);
+export const rtlLanguages: Set<Locale> = new Set(["ar", "he"] as Locale[]);
 
 /** Check if a language is RTL */
 export const isRTL = (locale: Locale): boolean => rtlLanguages.has(locale);

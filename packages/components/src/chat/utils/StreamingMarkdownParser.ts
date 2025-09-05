@@ -465,7 +465,7 @@ export class StreamingMarkdownParser {
     );
 
     if (taskListMatch) {
-      const [, indent, marker, checked, content] = taskListMatch;
+      const [, indent, , checked, content] = taskListMatch;
       this.handleListItem(
         "unordered",
         content,
@@ -477,13 +477,13 @@ export class StreamingMarkdownParser {
     }
 
     if (listItemMatch) {
-      const [, indent, marker, content] = listItemMatch;
+      const [, indent, , content] = listItemMatch;
       this.handleListItem("unordered", content, indent.length);
       return true;
     }
 
     if (numberedListMatch) {
-      const [, indent, number, content] = numberedListMatch;
+      const [, indent, , content] = numberedListMatch;
       this.handleListItem("ordered", content, indent.length);
       return true;
     }
@@ -810,18 +810,8 @@ export function createStreamingMarkdownParser(): StreamingMarkdownParser {
 export function parseMarkdownStream(chunks: string[]): ParseResult {
   const parser = createStreamingMarkdownParser();
 
-  let result: ParseResult = {
-    html: "",
-    nodes: [],
-    isComplete: false,
-    hasThinking: false,
-    thinking: [],
-    errors: [],
-    stats: { totalNodes: 0, processedChars: 0, parsingTime: 0 },
-  };
-
   for (const chunk of chunks) {
-    result = parser.parseChunk(chunk);
+    parser.parseChunk(chunk);
   }
 
   return parser.finalize();
