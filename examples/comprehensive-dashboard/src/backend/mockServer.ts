@@ -208,11 +208,11 @@ class MockBackendServer {
   }
 
   private handleAuthLogin = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const body = await this.parseBody(req);
+      const body = await this.parseBody(_req);
       const { email, password } = body;
 
       if (!email || !password) {
@@ -247,11 +247,11 @@ class MockBackendServer {
   };
 
   private handleAuthRegister = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const body = await this.parseBody(req);
+      const body = await this.parseBody(_req);
       const { email, password, name } = body;
 
       if (!email || !password || !name) {
@@ -293,11 +293,11 @@ class MockBackendServer {
   };
 
   private handleAuthRefresh = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const body = await this.parseBody(req);
+      const body = await this.parseBody(_req);
       const { refreshToken } = body;
 
       if (!refreshToken) {
@@ -323,11 +323,11 @@ class MockBackendServer {
   };
 
   private handleAuthProfile = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const authHeader = req.headers.authorization;
+      const authHeader = _req.headers.authorization;
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return this.sendError(res, 401, "Authorization header required");
       }
@@ -346,7 +346,7 @@ class MockBackendServer {
   };
 
   private handleDashboardStats = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
@@ -365,7 +365,7 @@ class MockBackendServer {
   };
 
   private handleDashboardCharts = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
@@ -409,7 +409,7 @@ class MockBackendServer {
   };
 
   private handleDashboardActivity = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
@@ -420,7 +420,7 @@ class MockBackendServer {
   };
 
   private handleFilesList = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
@@ -432,15 +432,15 @@ class MockBackendServer {
   };
 
   private handleFilesUpload = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const body = await this.parseBody(req);
+      const body = await this.parseBody(_req);
       const { name, type, size, url } = body;
 
       const newFile: FileItem = {
-        id: `file-${Date.now()}`,
+        id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         name: name || "uploaded-file",
         type: type || "other",
         size: size || 0,
@@ -449,11 +449,19 @@ class MockBackendServer {
         uploadedBy: "user-1",
       };
 
+      // Add thumbnail for image files
+      if (newFile.type === "image") {
+        newFile.thumbnail = newFile.url.replace(
+          "/uploads/",
+          "/uploads/thumbs/",
+        );
+      }
+
       this.files.set(newFile.id, newFile);
 
       // Add activity
       this.activities.unshift({
-        id: `activity-${Date.now()}`,
+        id: `activity-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         user: "Current User",
         action: "Uploaded file",
         time: "Just now",
@@ -467,7 +475,7 @@ class MockBackendServer {
   };
 
   private handleSettingsGet = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
@@ -479,11 +487,11 @@ class MockBackendServer {
   };
 
   private handleSettingsUpdate = async (
-    req: IncomingMessage,
+    _req: IncomingMessage,
     res: ServerResponse,
   ) => {
     try {
-      const body = await this.parseBody(req);
+      const body = await this.parseBody(_req);
       const { settings } = body;
 
       if (!settings || typeof settings !== "object") {

@@ -206,8 +206,19 @@ body {
   margin-bottom: var(--spacing);
 }
 
-.theme-emoji {
+.theme-icon {
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.theme-icon svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
 }
 
 .theme-name {

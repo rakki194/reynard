@@ -5,6 +5,7 @@
 
 import { Component, For } from "solid-js";
 import { useI18n } from "@reynard/core";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 
 export const LanguageSelector: Component = () => {
   const { locale, setLocale, languages } = useI18n();
@@ -15,13 +16,13 @@ export const LanguageSelector: Component = () => {
       ["en", "es", "fr"].includes(lang.code),
   );
 
-  const getLanguageEmoji = (code: string) => {
-    const emojis: Record<string, string> = {
-      en: "🇺🇸",
-      es: "🇪🇸",
-      fr: "🇫🇷",
+  const getLanguageIcon = (code: string) => {
+    const icons: Record<string, string> = {
+      en: "globe",
+      es: "globe",
+      fr: "globe",
     };
-    return emojis[code] || "🌐";
+    return icons[code] || "globe";
   };
 
   return (
@@ -35,7 +36,19 @@ export const LanguageSelector: Component = () => {
       <For each={availableLanguages}>
         {(lang) => (
           <option value={lang.code}>
-            {getLanguageEmoji(lang.code)} {lang.name}
+            <span class="language-option">
+              <span class="language-icon">
+                {fluentIconsPackage.getIcon(getLanguageIcon(lang.code)) && (
+                  <div
+                    innerHTML={
+                      fluentIconsPackage.getIcon(getLanguageIcon(lang.code))
+                        ?.outerHTML
+                    }
+                  />
+                )}
+              </span>
+              {lang.name}
+            </span>
           </option>
         )}
       </For>

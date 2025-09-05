@@ -8,6 +8,7 @@
 import { Component, Show, For, createMemo, createSignal } from "solid-js";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import type { P2PMessageProps } from "../types/p2p";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 
 export const P2PMessage: Component<P2PMessageProps> = (props) => {
   const [showReactions, setShowReactions] = createSignal(false);
@@ -238,13 +239,28 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
             {/* Quick reactions */}
             <Show when={showReactions()}>
               <div class="reynard-p2p-message__quick-reactions">
-                <For each={["👍", "❤️", "😂", "😮", "😢", "😡"]}>
-                  {(emoji) => (
+                <For
+                  each={[
+                    "thumbs-up",
+                    "heart",
+                    "emoji-laugh",
+                    "emoji-surprised",
+                    "emoji-sad",
+                    "emoji-angry",
+                  ]}
+                >
+                  {(reaction) => (
                     <button
                       class="reynard-p2p-message__quick-reaction"
-                      onClick={() => handleQuickReaction(emoji)}
+                      onClick={() => handleQuickReaction(reaction)}
                     >
-                      {emoji}
+                      {fluentIconsPackage.getIcon(reaction) && (
+                        <div
+                          innerHTML={
+                            fluentIconsPackage.getIcon(reaction)?.outerHTML
+                          }
+                        />
+                      )}
                     </button>
                   )}
                 </For>

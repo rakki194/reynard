@@ -9,7 +9,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { apiRequest, getTestServer } from "../test-setup";
+import { apiRequest, getTestServer as _getTestServer } from "../test-setup";
 
 describe("Authentication API", () => {
   describe("POST /api/auth/login", () => {

@@ -64,7 +64,7 @@ export class StreamingMarkdownParser {
     // Text formatting
     boldDouble: /\*\*((?:[^*]|\*(?!\*))+)\*\*/g,
     boldSingle: /\b_((?:[^_]|_(?!_))+)_\b/g,
-    italicAsterisk: /\*((?:[^*]|\*\*)+)\*/g,
+    italicAsterisk: /\*([^*]+?)\*/g,
     italicUnderscore: /_([^_]+)_/g,
     strikethrough: /~~([^~]+)~~/g,
 

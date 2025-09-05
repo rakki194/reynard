@@ -2,46 +2,23 @@
  * RAG Search Component
  *
  * A comprehensive search interface for RAG (Retrieval-Augmented Generation) systems
- * with EmbeddingGemma integration.
+ * with EmbeddingGemma integration using Reynard conventions.
  */
 
-import { createSignal, createEffect, onMount, Show, For } from "solid-js";
+import { createSignal, onMount, Show, For } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
-import { Card } from "../ui/Card";
-import { Badge } from "../ui/Badge";
-import { Spinner } from "../ui/Spinner";
-import { Alert } from "../ui/Alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/Tabs";
-import { Slider } from "../ui/Slider";
-import { Switch } from "../ui/Switch";
-import { Label } from "../ui/Label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/Select";
-import { Textarea } from "../ui/Textarea";
-import { FileUpload } from "../ui/FileUpload";
-import { Progress } from "../ui/Progress";
-import { Separator } from "../ui/Separator";
-import {
-  Search,
-  Upload,
-  FileText,
-  Code,
-  Database,
-  Settings,
-  Download,
-  Trash2,
-  Eye,
-  Clock,
-  Zap,
-  Brain,
-} from "lucide-solid";
+import { Button, Card, TextField, Select, Tabs, TabPanel } from "../index";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
+
+// Helper function to get icon as JSX element
+const getIcon = (name: string) => {
+  const icon = fluentIconsPackage.getIcon(name);
+  if (icon) {
+    return <div innerHTML={icon.outerHTML} />;
+  }
+  return null;
+};
+import "./styles.css";
 
 // Types
 interface RAGResult {
@@ -272,296 +249,336 @@ export function RAGSearch(props: RAGSearchProps) {
     props.onResultClick?.(result);
   };
 
+  const handleFileSelect = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      uploadFile(file);
+    }
+  };
+
   // Computed values
   const hasResults = () => results().length > 0;
   const currentStats = () => stats();
 
+  const tabItems = [
+    { id: "search", label: "Search", icon: getIcon("search") },
+    { id: "documents", label: "Documents", icon: getIcon("box") },
+    { id: "upload", label: "Upload", icon: getIcon("upload") },
+    { id: "settings", label: "Settings", icon: getIcon("settings") },
+  ];
+
   return (
     <div class={`rag-search ${props.className || ""}`}>
-      <Tabs value={activeTab()} onValueChange={setActiveTab}>
-        <TabsList class="grid w-full grid-cols-4">
-          <TabsTrigger value="search" class="flex items-center gap-2">
-            <Search class="h-4 w-4" />
-            Search
-          </TabsTrigger>
-          <TabsTrigger value="documents" class="flex items-center gap-2">
-            <FileText class="h-4 w-4" />
-            Documents
-          </TabsTrigger>
-          <TabsTrigger value="upload" class="flex items-center gap-2">
-            <Upload class="h-4 w-4" />
-            Upload
-          </TabsTrigger>
-          <TabsTrigger value="settings" class="flex items-center gap-2">
-            <Settings class="h-4 w-4" />
-            Settings
-          </TabsTrigger>
-        </TabsList>
-
+      <Tabs
+        items={tabItems}
+        activeTab={activeTab()}
+        onTabChange={setActiveTab}
+        variant="default"
+        fullWidth
+      >
         {/* Search Tab */}
-        <TabsContent value="search" class="space-y-4">
-          <Card class="p-6">
-            <div class="space-y-4">
-              <div class="flex gap-2">
-                <Input
-                  value={query()}
-                  onInput={(e) => setQuery(e.currentTarget.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask a question or search for information..."
-                  class="flex-1"
-                  disabled={isSearching()}
-                />
-                <Button
-                  onClick={handleSearch}
-                  disabled={isSearching() || !query().trim()}
-                  class="px-6"
-                >
-                  {isSearching() ? (
-                    <Spinner class="h-4 w-4" />
-                  ) : (
-                    <Search class="h-4 w-4" />
+        <TabPanel tabId="search" activeTab={activeTab()}>
+          <div class="search-tab-content">
+            <Card variant="elevated" padding="lg">
+              <div class="search-form">
+                <div class="search-input-group">
+                  <TextField
+                    value={query()}
+                    onInput={(e) => setQuery(e.currentTarget.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask a question or search for information..."
+                    fullWidth
+                    disabled={isSearching()}
+                  />
+                  <Button
+                    onClick={handleSearch}
+                    disabled={isSearching() || !query().trim()}
+                    leftIcon={getIcon("search")}
+                    loading={isSearching()}
+                  >
+                    Search
+                  </Button>
+                </div>
+
+                <Show when={error()}>
+                  <div class="error-message">{error()}</div>
+                </Show>
+
+                <Show when={queryResponse()}>
+                  <div class="query-stats">
+                    <div class="stat-item">
+                      <div class="stat-icon">{getIcon("refresh")}</div>
+                      <span>
+                        Query: {queryResponse()!.query_time.toFixed(2)}ms
+                      </span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-icon">{getIcon("server")}</div>
+                      <span>
+                        Embedding: {queryResponse()!.embedding_time.toFixed(2)}
+                        ms
+                      </span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-icon">{getIcon("refresh")}</div>
+                      <span>
+                        Search: {queryResponse()!.search_time.toFixed(2)}ms
+                      </span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-icon">{getIcon("server")}</div>
+                      <span>{queryResponse()!.total_results} results</span>
+                    </div>
+                  </div>
+                </Show>
+              </div>
+            </Card>
+
+            <Show when={hasResults()}>
+              <div class="results-list">
+                <For each={results()}>
+                  {(result) => (
+                    <Card
+                      variant="elevated"
+                      padding="md"
+                      interactive
+                      onClick={() => handleResultClick(result)}
+                    >
+                      <div class="result-item">
+                        <div class="result-header">
+                          <div class="result-badges">
+                            <span class="rank-badge">#{result.rank}</span>
+                            <span class="model-badge">
+                              {result.metadata.embedding_model || "unknown"}
+                            </span>
+                            <span class="source-badge">
+                              {result.metadata.document_source ||
+                                "Unknown source"}
+                            </span>
+                          </div>
+                          <span class="similarity-score">
+                            {(result.similarity_score * 100).toFixed(1)}%
+                          </span>
+                        </div>
+
+                        <p class="result-text">{result.text}</p>
+
+                        <div class="result-meta">
+                          <span>Chunk ID: {result.chunk_id}</span>
+                          <span>•</span>
+                          <span>{result.metadata.chunk_length || 0} chars</span>
+                        </div>
+                      </div>
+                    </Card>
                   )}
+                </For>
+              </div>
+            </Show>
+          </div>
+        </TabPanel>
+
+        {/* Documents Tab */}
+        <TabPanel tabId="documents" activeTab={activeTab()}>
+          <div class="documents-tab-content">
+            <Card variant="elevated" padding="lg">
+              <div class="documents-header">
+                <h3>Documents</h3>
+                <Button variant="secondary" size="sm" onClick={loadDocuments}>
+                  Refresh
                 </Button>
               </div>
 
-              <Show when={error()}>
-                <Alert variant="destructive">{error()}</Alert>
-              </Show>
-
-              <Show when={queryResponse()}>
-                <div class="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div class="flex items-center gap-1">
-                    <Clock class="h-4 w-4" />
-                    Query: {queryResponse()!.query_time.toFixed(2)}ms
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <Brain class="h-4 w-4" />
-                    Embedding: {queryResponse()!.embedding_time.toFixed(2)}ms
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <Zap class="h-4 w-4" />
-                    Search: {queryResponse()!.search_time.toFixed(2)}ms
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <Database class="h-4 w-4" />
-                    {queryResponse()!.total_results} results
-                  </div>
-                </div>
-              </Show>
-            </div>
-          </Card>
-
-          <Show when={hasResults()}>
-            <div class="space-y-3">
-              <For each={results()}>
-                {(result, index) => (
-                  <Card
-                    class="p-4 cursor-pointer hover:shadow-md transition-shadow"
-                    onClick={() => handleResultClick(result)}
-                  >
-                    <div class="space-y-2">
-                      <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                          <Badge variant="secondary">#{result.rank}</Badge>
-                          <Badge variant="outline">
-                            {result.metadata.embedding_model || "unknown"}
-                          </Badge>
-                          <span class="text-sm text-muted-foreground">
-                            {result.metadata.document_source ||
-                              "Unknown source"}
-                          </span>
+              <div class="documents-list">
+                <For each={documents}>
+                  {(doc) => (
+                    <Card variant="outlined" padding="md">
+                      <div class="document-item">
+                        <div class="document-info">
+                          <h4>{doc.title}</h4>
+                          <div class="document-meta">
+                            <span class="type-badge">{doc.document_type}</span>
+                            <span>{doc.chunk_count} chunks</span>
+                            <span>•</span>
+                            <span>{doc.source}</span>
+                          </div>
                         </div>
-                        <Badge variant="default">
-                          {(result.similarity_score * 100).toFixed(1)}%
-                        </Badge>
-                      </div>
-
-                      <p class="text-sm leading-relaxed">{result.text}</p>
-
-                      <div class="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>Chunk ID: {result.chunk_id}</span>
-                        <span>•</span>
-                        <span>{result.metadata.chunk_length || 0} chars</span>
-                      </div>
-                    </div>
-                  </Card>
-                )}
-              </For>
-            </div>
-          </Show>
-        </TabsContent>
-
-        {/* Documents Tab */}
-        <TabsContent value="documents" class="space-y-4">
-          <Card class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold">Documents</h3>
-              <Button variant="outline" size="sm" onClick={loadDocuments}>
-                Refresh
-              </Button>
-            </div>
-
-            <div class="space-y-3">
-              <For each={documents}>
-                {(doc) => (
-                  <Card class="p-4">
-                    <div class="flex items-center justify-between">
-                      <div class="space-y-1">
-                        <h4 class="font-medium">{doc.title}</h4>
-                        <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Badge variant="outline">{doc.document_type}</Badge>
-                          <span>{doc.chunk_count} chunks</span>
-                          <span>•</span>
-                          <span>{doc.source}</span>
+                        <div class="document-actions">
+                          <Button variant="ghost" size="sm" iconOnly>
+                            {getIcon("eye")}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            iconOnly
+                            onClick={() => deleteDocument(doc.id)}
+                          >
+                            {getIcon("delete")}
+                          </Button>
                         </div>
                       </div>
-                      <div class="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Eye class="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => deleteDocument(doc.id)}
-                        >
-                          <Trash2 class="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
-                )}
-              </For>
-            </div>
-          </Card>
-        </TabsContent>
+                    </Card>
+                  )}
+                </For>
+              </div>
+            </Card>
+          </div>
+        </TabPanel>
 
         {/* Upload Tab */}
-        <TabsContent value="upload" class="space-y-4">
-          <Card class="p-6">
-            <h3 class="text-lg font-semibold mb-4">Upload Documents</h3>
+        <TabPanel tabId="upload" activeTab={activeTab()}>
+          <div class="upload-tab-content">
+            <Card variant="elevated" padding="lg">
+              <h3>Upload Documents</h3>
 
-            <FileUpload
-              onFileSelect={uploadFile}
-              accept=".txt,.md,.py,.js,.ts,.json,.yaml,.yml,.html"
-              disabled={isUploading()}
-            />
-
-            <Show when={isUploading()}>
-              <div class="mt-4">
-                <Progress value={uploadProgress()} />
-                <p class="text-sm text-muted-foreground mt-2">
-                  Uploading and processing document...
-                </p>
+              <div class="upload-area">
+                <input
+                  type="file"
+                  id="file-upload"
+                  accept=".txt,.md,.py,.js,.ts,.json,.yaml,.yml,.html"
+                  onChange={handleFileSelect}
+                  disabled={isUploading()}
+                  class="hidden"
+                />
+                <label for="file-upload" class="upload-label">
+                  <div class="upload-icon">{getIcon("upload")}</div>
+                  <span>Click to upload or drag and drop</span>
+                  <small>
+                    Supports: .txt, .md, .py, .js, .ts, .json, .yaml, .html
+                  </small>
+                </label>
               </div>
-            </Show>
-          </Card>
-        </TabsContent>
+
+              <Show when={isUploading()}>
+                <div class="upload-progress">
+                  <div class="upload-progress-bar">
+                    <div
+                      class="upload-progress-fill"
+                      style={`--progress-width: ${uploadProgress()}%`}
+                    />
+                  </div>
+                  <p>Uploading and processing document...</p>
+                </div>
+              </Show>
+            </Card>
+          </div>
+        </TabPanel>
 
         {/* Settings Tab */}
-        <TabsContent value="settings" class="space-y-4">
-          <Card class="p-6">
-            <h3 class="text-lg font-semibold mb-4">Search Settings</h3>
+        <TabPanel tabId="settings" activeTab={activeTab()}>
+          <div class="settings-tab-content">
+            <Card variant="elevated" padding="lg">
+              <h3>Search Settings</h3>
 
-            <div class="space-y-6">
-              <div class="space-y-2">
-                <Label>Embedding Model</Label>
-                <Select
-                  value={embeddingModel()}
-                  onValueChange={setEmbeddingModel}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="embeddinggemma:latest">
-                      EmbeddingGemma (Latest)
-                    </SelectItem>
-                    <SelectItem value="embeddinggemma:300m">
-                      EmbeddingGemma (300M)
-                    </SelectItem>
-                    <SelectItem value="mxbai-embed-large">
-                      MXBAI Embed Large
-                    </SelectItem>
-                    <SelectItem value="nomic-embed-text">
-                      Nomic Embed Text
-                    </SelectItem>
-                    <SelectItem value="all-minilm">All-MiniLM</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div class="space-y-2">
-                <Label>Max Results: {maxResults()}</Label>
-                <Slider
-                  value={[maxResults()]}
-                  onValueChange={(value) => setMaxResults(value[0])}
-                  min={1}
-                  max={50}
-                  step={1}
-                />
-              </div>
-
-              <div class="space-y-2">
-                <Label>
-                  Similarity Threshold:{" "}
-                  {(similarityThreshold() * 100).toFixed(0)}%
-                </Label>
-                <Slider
-                  value={[similarityThreshold()]}
-                  onValueChange={(value) => setSimilarityThreshold(value[0])}
-                  min={0.1}
-                  max={1.0}
-                  step={0.05}
-                />
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <Switch
-                  checked={enableReranking()}
-                  onCheckedChange={setEnableReranking}
-                />
-                <Label>Enable Reranking</Label>
-              </div>
-            </div>
-          </Card>
-
-          <Show when={currentStats()}>
-            <Card class="p-6">
-              <h3 class="text-lg font-semibold mb-4">System Statistics</h3>
-
-              <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">
-                    Total Documents
-                  </div>
-                  <div class="text-2xl font-bold">
-                    {currentStats()!.total_documents}
-                  </div>
+              <div class="settings-form">
+                <div class="setting-group">
+                  <label>Embedding Model</label>
+                  <Select
+                    value={embeddingModel()}
+                    onChange={(e) => setEmbeddingModel(e.currentTarget.value)}
+                    options={[
+                      {
+                        value: "embeddinggemma:latest",
+                        label: "EmbeddingGemma (Latest)",
+                      },
+                      {
+                        value: "embeddinggemma:300m",
+                        label: "EmbeddingGemma (300M)",
+                      },
+                      {
+                        value: "mxbai-embed-large",
+                        label: "MXBAI Embed Large",
+                      },
+                      { value: "nomic-embed-text", label: "Nomic Embed Text" },
+                      { value: "all-minilm", label: "All-MiniLM" },
+                    ]}
+                    fullWidth
+                  />
                 </div>
-                <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">Total Chunks</div>
-                  <div class="text-2xl font-bold">
-                    {currentStats()!.total_chunks}
-                  </div>
+
+                <div class="setting-group">
+                  <label>Max Results: {maxResults()}</label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="50"
+                    value={maxResults()}
+                    onInput={(e) =>
+                      setMaxResults(parseInt(e.currentTarget.value))
+                    }
+                    class="range-slider"
+                    title="Maximum number of search results"
+                    aria-label="Maximum number of search results"
+                  />
                 </div>
-                <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">
-                    Embedding Coverage
-                  </div>
-                  <div class="text-2xl font-bold">
-                    {(currentStats()!.embedding_coverage * 100).toFixed(1)}%
-                  </div>
+
+                <div class="setting-group">
+                  <label>
+                    Similarity Threshold:{" "}
+                    {(similarityThreshold() * 100).toFixed(0)}%
+                  </label>
+                  <input
+                    type="range"
+                    min="0.1"
+                    max="1.0"
+                    step="0.05"
+                    value={similarityThreshold()}
+                    onInput={(e) =>
+                      setSimilarityThreshold(parseFloat(e.currentTarget.value))
+                    }
+                    class="range-slider"
+                    title="Similarity threshold for search results"
+                    aria-label="Similarity threshold for search results"
+                  />
                 </div>
-                <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">Default Model</div>
-                  <div class="text-sm font-mono">
-                    {currentStats()!.default_model}
-                  </div>
+
+                <div class="setting-group">
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={enableReranking()}
+                      onChange={(e) =>
+                        setEnableReranking(e.currentTarget.checked)
+                      }
+                    />
+                    Enable Reranking
+                  </label>
                 </div>
               </div>
             </Card>
-          </Show>
-        </TabsContent>
+
+            <Show when={currentStats()}>
+              <Card variant="elevated" padding="lg">
+                <h3>System Statistics</h3>
+
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <div class="stat-label">Total Documents</div>
+                    <div class="stat-value">
+                      {currentStats()!.total_documents}
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Total Chunks</div>
+                    <div class="stat-value">{currentStats()!.total_chunks}</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Embedding Coverage</div>
+                    <div class="stat-value">
+                      {(currentStats()!.embedding_coverage * 100).toFixed(1)}%
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Default Model</div>
+                    <div class="stat-model">
+                      {currentStats()!.default_model}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </Show>
+          </div>
+        </TabPanel>
       </Tabs>
     </div>
   );

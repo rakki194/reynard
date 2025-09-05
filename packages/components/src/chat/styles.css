@@ -890,6 +890,7 @@
 
 .reynard-markdown-renderer p {
   margin: 0.75em 0;
+  white-space: pre-wrap;
 }
 
 .reynard-markdown-renderer p:first-child {

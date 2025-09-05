@@ -166,7 +166,7 @@ describe("Backend Integration Tests", () => {
 
   describe("Error Handling and Edge Cases", () => {
     it("should handle malformed JSON requests", async () => {
-      const response = await fetch("http://localhost:3003/api/auth/login", {
+      const response = await fetch("http://localhost:15383/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +187,7 @@ describe("Backend Integration Tests", () => {
     });
 
     it("should handle CORS preflight requests", async () => {
-      const response = await fetch("http://localhost:3003/api/auth/login", {
+      const response = await fetch("http://localhost:15383/api/auth/login", {
         method: "OPTIONS",
         headers: {
           "Access-Control-Request-Method": "POST",
@@ -396,7 +396,7 @@ describe("Backend Integration Tests", () => {
       });
 
       // Simulate server restart
-      const testServer = getTestServer();
+      const testServer = await getTestServer();
       testServer.clearData();
 
       // Verify data was reset

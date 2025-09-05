@@ -15,13 +15,14 @@ import {
   ThemeProvider,
   NotificationsProvider,
   I18nProvider,
-  createTheme,
-  createNotifications,
-  createI18nModule,
   useTheme,
   useNotifications,
   useI18n,
+  createThemeModule,
+  createNotificationsModule,
+  createI18nModule,
 } from "@reynard/core";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 import { TodoItem } from "./components/TodoItem";
 import { AddTodo } from "./components/AddTodo";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -91,7 +92,16 @@ const TodoApp: Component = () => {
   return (
     <div class="app">
       <header class="app-header">
-        <h1>🦊 {t("app.title")}</h1>
+        <h1>
+          <span class="reynard-logo">
+            {fluentIconsPackage.getIcon("yipyap") && (
+              <div
+                innerHTML={fluentIconsPackage.getIcon("yipyap")?.outerHTML}
+              />
+            )}
+          </span>
+          {t("app.title")}
+        </h1>
         <p>{t("app.subtitle")}</p>
         <div class="header-controls">
           <div class="theme-info">
@@ -139,19 +149,17 @@ const TodoApp: Component = () => {
 };
 
 const App: Component = () => {
-  const themeModule = createTheme();
-  const notificationsModule = createNotifications();
-
-  // Initialize i18n with English translations as default
-  const i18nModule = createI18nModule(en);
+  const themeModule = createThemeModule();
+  const notificationsModule = createNotificationsModule();
+  const i18nModule = createI18nModule();
 
   return (
     <ThemeProvider value={themeModule}>
-      <NotificationsProvider value={notificationsModule}>
-        <I18nProvider value={i18nModule}>
+      <I18nProvider value={i18nModule}>
+        <NotificationsProvider value={notificationsModule}>
           <TodoApp />
-        </I18nProvider>
-      </NotificationsProvider>
+        </NotificationsProvider>
+      </I18nProvider>
     </ThemeProvider>
   );
 };

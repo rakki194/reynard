@@ -144,6 +144,24 @@ body {
   margin: 0 0 calc(var(--spacing) / 2) 0;
   font-size: 2rem;
   color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.reynard-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+.reynard-logo svg {
+  width: 48px;
+  height: 48px;
+  fill: currentColor;
 }
 
 .app-header p {

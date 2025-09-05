@@ -11,7 +11,7 @@ let testServer: MockBackendServer | null = null;
 // Helper function to get or create test server
 const getOrCreateTestServer = async (): Promise<MockBackendServer> => {
   if (!testServer) {
-    testServer = new MockBackendServer(3003); // Use different port for tests
+    testServer = new MockBackendServer(15383); // Use unique port for comprehensive dashboard tests
     await testServer.start();
     (global as any).testServer = testServer;
   }
@@ -33,8 +33,10 @@ afterAll(async () => {
 
 beforeEach(async () => {
   // Clear data before each test to ensure isolation
-  const server = await getOrCreateTestServer();
-  server.clearData();
+  // Only clear if server exists to avoid issues
+  if (testServer) {
+    testServer.clearData();
+  }
 });
 
 // Helper function to make API requests
@@ -42,7 +44,7 @@ export const apiRequest = async (
   endpoint: string,
   options: RequestInit = {},
 ): Promise<Response> => {
-  const url = `http://localhost:3003/api${endpoint}`;
+  const url = `http://localhost:15383/api${endpoint}`;
   return fetch(url, {
     headers: {
       "Content-Type": "application/json",

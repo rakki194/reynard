@@ -1,5 +1,6 @@
 import { Component, createSignal, For } from "solid-js";
 import { type ChatUser } from "@reynard/components";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 
 interface FeatureShowcaseProps {
   currentUser: ChatUser;
@@ -440,10 +441,10 @@ const PresenceDemo: Component<{ currentUser: ChatUser }> = () => {
 const ReactionsDemo: Component = () => {
   const [reactions, setReactions] = createSignal(
     new Map([
-      ["👍", 3],
-      ["❤️", 2],
-      ["😂", 1],
-      ["😮", 1],
+      ["thumbs-up", 3],
+      ["heart", 2],
+      ["emoji-laugh", 1],
+      ["emoji-surprised", 1],
     ]),
   );
 
@@ -470,25 +471,49 @@ const ReactionsDemo: Component = () => {
     setSelectedReactions(newSelected);
   };
 
-  const availableEmojis = ["👍", "👎", "❤️", "😂", "😮", "😢", "😡", "🎉"];
+  const availableReactions = [
+    "thumbs-up",
+    "thumbs-down",
+    "heart",
+    "emoji-laugh",
+    "emoji-surprised",
+    "emoji-sad",
+    "emoji-angry",
+    "party-popper",
+  ];
 
   return (
     <div class="reactions-demo">
       <div class="demo-output">
         <div class="sample-message">
           <div class="message-content">
-            Check out this amazing new feature we just shipped! 🚀
+            Check out this amazing new feature we just shipped!
+            <span class="rocket-icon">
+              {fluentIconsPackage.getIcon("rocket") && (
+                <div
+                  innerHTML={fluentIconsPackage.getIcon("rocket")?.outerHTML}
+                />
+              )}
+            </span>
           </div>
 
           <div class="message-reactions">
             <For each={Array.from(reactions().entries())}>
-              {([emoji, count]) =>
+              {([reaction, count]) =>
                 count > 0 && (
                   <button
-                    class={`reaction-chip ${selectedReactions().has(emoji) ? "selected" : ""}`}
-                    onClick={() => toggleReaction(emoji)}
+                    class={`reaction-chip ${selectedReactions().has(reaction) ? "selected" : ""}`}
+                    onClick={() => toggleReaction(reaction)}
                   >
-                    <span class="reaction-emoji">{emoji}</span>
+                    <span class="reaction-icon">
+                      {fluentIconsPackage.getIcon(reaction) && (
+                        <div
+                          innerHTML={
+                            fluentIconsPackage.getIcon(reaction)?.outerHTML
+                          }
+                        />
+                      )}
+                    </span>
                     <span class="reaction-count">{count}</span>
                   </button>
                 )
@@ -496,15 +521,27 @@ const ReactionsDemo: Component = () => {
             </For>
 
             <div class="add-reaction">
-              <button class="add-reaction-trigger">😊</button>
-              <div class="emoji-picker">
-                <For each={availableEmojis}>
-                  {(emoji) => (
+              <button class="add-reaction-trigger">
+                {fluentIconsPackage.getIcon("emoji") && (
+                  <div
+                    innerHTML={fluentIconsPackage.getIcon("emoji")?.outerHTML}
+                  />
+                )}
+              </button>
+              <div class="reaction-picker">
+                <For each={availableReactions}>
+                  {(reaction) => (
                     <button
-                      class="emoji-option"
-                      onClick={() => toggleReaction(emoji)}
+                      class="reaction-option"
+                      onClick={() => toggleReaction(reaction)}
                     >
-                      {emoji}
+                      {fluentIconsPackage.getIcon(reaction) && (
+                        <div
+                          innerHTML={
+                            fluentIconsPackage.getIcon(reaction)?.outerHTML
+                          }
+                        />
+                      )}
                     </button>
                   )}
                 </For>

@@ -12,6 +12,7 @@ import {
   useTheme,
   useNotifications,
 } from "@reynard/core";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 import { ThemeSelector } from "./components/ThemeSelector";
 import { NotificationDemo } from "./components/NotificationDemo";
 import { Counter } from "./components/Counter";
@@ -29,7 +30,16 @@ const AppContent: Component = () => {
   return (
     <div class="app">
       <header class="app-header">
-        <h1>🦊 Reynard Starter</h1>
+        <h1>
+          <span class="reynard-logo">
+            {fluentIconsPackage.getIcon("yipyap") && (
+              <div
+                innerHTML={fluentIconsPackage.getIcon("yipyap")?.outerHTML}
+              />
+            )}
+          </span>
+          Reynard Starter
+        </h1>
         <p>A cunning SolidJS framework for modern web applications</p>
         <ThemeSelector />
       </header>
@@ -39,7 +49,18 @@ const AppContent: Component = () => {
           <h2>Framework Features</h2>
           <div class="feature-grid">
             <div class="feature-card">
-              <h3>🎨 Theme System</h3>
+              <h3>
+                <span class="feature-icon">
+                  {fluentIconsPackage.getIcon("palette") && (
+                    <div
+                      innerHTML={
+                        fluentIconsPackage.getIcon("palette")?.outerHTML
+                      }
+                    />
+                  )}
+                </span>
+                Theme System
+              </h3>
               <p>8 built-in themes with reactive state management</p>
               <p>
                 Current theme: <strong>{theme()}</strong>
@@ -47,19 +68,50 @@ const AppContent: Component = () => {
             </div>
 
             <div class="feature-card">
-              <h3>📢 Notifications</h3>
+              <h3>
+                <span class="feature-icon">
+                  {fluentIconsPackage.getIcon("alert") && (
+                    <div
+                      innerHTML={fluentIconsPackage.getIcon("alert")?.outerHTML}
+                    />
+                  )}
+                </span>
+                Notifications
+              </h3>
               <p>Toast notifications with auto-dismiss and grouping</p>
               <NotificationDemo />
             </div>
 
             <div class="feature-card">
-              <h3>🧩 Modular Architecture</h3>
+              <h3>
+                <span class="feature-icon">
+                  {fluentIconsPackage.getIcon("puzzle-piece") && (
+                    <div
+                      innerHTML={
+                        fluentIconsPackage.getIcon("puzzle-piece")?.outerHTML
+                      }
+                    />
+                  )}
+                </span>
+                Modular Architecture
+              </h3>
               <p>Zero-dependency modules under 100 lines each</p>
               <Counter count={count()} setCount={setCount} />
             </div>
 
             <div class="feature-card">
-              <h3>🚀 Performance</h3>
+              <h3>
+                <span class="feature-icon">
+                  {fluentIconsPackage.getIcon("rocket") && (
+                    <div
+                      innerHTML={
+                        fluentIconsPackage.getIcon("rocket")?.outerHTML
+                      }
+                    />
+                  )}
+                </span>
+                Performance
+              </h3>
               <p>Optimized builds with lazy loading and tree shaking</p>
               <button class="button" onClick={handleWelcome}>
                 Test Performance

@@ -114,6 +114,38 @@
     font-size: 2.5rem;
     margin-bottom: var(--half-spacing);
     color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .reynard-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+  }
+
+  .reynard-logo svg {
+    width: 48px;
+    height: 48px;
+    fill: currentColor;
+  }
+
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    width: 24px;
+    height: 24px;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
   }
 
   .app-header p {

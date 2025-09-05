@@ -4,6 +4,7 @@
  */
 
 import { Component } from "solid-js";
+import { fluentIconsPackage } from "@reynard/fluent-icons";
 
 interface ThemeCardProps {
   name: string;
@@ -13,20 +14,20 @@ interface ThemeCardProps {
 }
 
 export const ThemeCard: Component<ThemeCardProps> = (props) => {
-  const getThemeEmoji = () => {
+  const getThemeIcon = () => {
     switch (props.name) {
       case "light":
-        return "☀️";
+        return "sun";
       case "dark":
-        return "🌙";
+        return "moon";
       case "banana":
-        return "🍌";
+        return "banana";
       case "strawberry":
-        return "🍓";
+        return "strawberry";
       case "peanut":
-        return "🥜";
+        return "peanut";
       default:
-        return "🎨";
+        return "palette";
     }
   };
 
@@ -68,7 +69,13 @@ export const ThemeCard: Component<ThemeCardProps> = (props) => {
       onClick={props.onSelect}
     >
       <div class="theme-header">
-        <span class="theme-emoji">{getThemeEmoji()}</span>
+        <span class="theme-icon">
+          {fluentIconsPackage.getIcon(getThemeIcon()) && (
+            <div
+              innerHTML={fluentIconsPackage.getIcon(getThemeIcon())?.outerHTML}
+            />
+          )}
+        </span>
         <h3 class="theme-name">{props.name}</h3>
         {props.isActive && <span class="active-badge">Active</span>}
       </div>

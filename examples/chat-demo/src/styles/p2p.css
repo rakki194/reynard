@@ -466,6 +466,56 @@
   font-size: 1rem;
 }
 
+/* New reaction icon styles */
+.reaction-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.reaction-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.rocket-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.rocket-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.reaction-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.reaction-option:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.reaction-option svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 .reynard-p2p-message__reaction-count {
   font-weight: 500;
 }

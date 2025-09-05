@@ -290,21 +290,21 @@ export function validatePassword(
   // Uppercase check
   if (rules.requireUppercase && !/[A-Z]/.test(password)) {
     errors.push("Password must contain at least one uppercase letter");
-  } else if (/[A-Z]/.test(password)) {
+  } else if (rules.requireUppercase && /[A-Z]/.test(password)) {
     score += 1;
   }
 
   // Lowercase check
   if (rules.requireLowercase && !/[a-z]/.test(password)) {
     errors.push("Password must contain at least one lowercase letter");
-  } else if (/[a-z]/.test(password)) {
+  } else if (rules.requireLowercase && /[a-z]/.test(password)) {
     score += 1;
   }
 
   // Number check
   if (rules.requireNumber && !/\d/.test(password)) {
     errors.push("Password must contain at least one number");
-  } else if (/\d/.test(password)) {
+  } else if (rules.requireNumber && /\d/.test(password)) {
     score += 1;
   }
 
@@ -314,7 +314,10 @@ export function validatePassword(
     !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
   ) {
     errors.push("Password must contain at least one special character");
-  } else if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+  } else if (
+    rules.requireSpecialChar &&
+    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
+  ) {
     score += 1;
   }
 

@@ -360,7 +360,7 @@ describe("Settings API", () => {
       });
 
       // Simulate server restart by clearing data
-      const testServer = getTestServer();
+      const testServer = await getTestServer();
       testServer.clearData();
 
       // Get settings after "restart"

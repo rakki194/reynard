@@ -4,45 +4,10 @@
  * Tests all API endpoints for the comprehensive dashboard backend
  */
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import { MockBackendServer } from "../mockServer";
-
-// Test server instance
-let testServer: MockBackendServer;
-
-// Helper function to make API requests
-const apiRequest = async (
-  endpoint: string,
-  options: RequestInit = {},
-): Promise<Response> => {
-  const url = `http://localhost:3003/api${endpoint}`;
-  return fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-    ...options,
-  });
-};
+import { describe, it, expect } from "vitest";
+import { apiRequest, getTestServer as _getTestServer } from "../test-setup";
 
 describe("Comprehensive Dashboard Backend API", () => {
-  beforeAll(async () => {
-    testServer = new MockBackendServer(3003);
-    await testServer.start();
-    console.log("Mock server started for testing");
-  }, 30000);
-
-  afterAll(async () => {
-    if (testServer) {
-      await testServer.stop();
-      console.log("Mock server stopped");
-    }
-  }, 10000);
-
-  beforeEach(() => {
-    testServer.clearData();
-  });
-
   describe("Authentication Endpoints", () => {
     it("should handle user registration", async () => {
       const response = await apiRequest("/auth/register", {
@@ -278,7 +243,7 @@ describe("Comprehensive Dashboard Backend API", () => {
 
       expect(registerResponse.status).toBe(201);
       const registerData = await registerResponse.json();
-      const { accessToken, user } = registerData;
+      const { accessToken, user: _user } = registerData;
 
       // 2. Get profile
       const profileResponse = await apiRequest("/auth/profile", {

@@ -1,0 +1,556 @@
+/**
+ * RAG Search Component Styles
+ * Using Reynard's CSS conventions and design system
+ */
+
+/* ==========================================================================
+   RAG Search Container
+   ========================================================================== */
+
+.rag-search {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ==========================================================================
+   Search Tab
+   ========================================================================== */
+
+.search-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-lg);
+  height: 100%;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-md);
+}
+
+.search-input-group {
+  display: flex;
+  gap: var(--reynard-spacing-sm);
+  align-items: flex-end;
+}
+
+.search-input-group .reynard-textfield {
+  flex: 1;
+}
+
+.error-message {
+  background-color: color-mix(in srgb, var(--danger, #ef4444) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  border-radius: var(--reynard-radius-md);
+  padding: var(--reynard-spacing-sm);
+  color: var(--danger, #ef4444);
+  font-size: var(--reynard-font-size-sm);
+}
+
+.query-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--reynard-spacing-md);
+  padding: var(--reynard-spacing-sm);
+  background-color: var(--secondary-bg);
+  border-radius: var(--reynard-radius-md);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-xs);
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+}
+
+.stat-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-md);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-sm);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--reynard-spacing-sm);
+}
+
+.result-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-xs);
+  flex-wrap: wrap;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+  font-size: var(--reynard-font-size-sm);
+  font-weight: var(--reynard-font-weight-medium);
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  border-radius: var(--reynard-radius-sm);
+}
+
+.model-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-size: var(--reynard-font-size-sm);
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  border-radius: var(--reynard-radius-sm);
+}
+
+.source-badge {
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+}
+
+.similarity-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent);
+  color: white;
+  font-size: var(--reynard-font-size-sm);
+  font-weight: var(--reynard-font-weight-medium);
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  border-radius: var(--reynard-radius-sm);
+}
+
+.result-text {
+  font-size: var(--reynard-font-size-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-xs);
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Documents Tab
+   ========================================================================== */
+
+.documents-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-lg);
+  height: 100%;
+}
+
+.documents-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--reynard-spacing-md);
+}
+
+.documents-header h3 {
+  font-size: var(--reynard-font-size-lg);
+  font-weight: var(--reynard-font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-sm);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--reynard-spacing-md);
+}
+
+.document-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-xs);
+}
+
+.document-info h4 {
+  font-size: var(--reynard-font-size-md);
+  font-weight: var(--reynard-font-weight-medium);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.document-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-xs);
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-size: var(--reynard-font-size-sm);
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  border-radius: var(--reynard-radius-sm);
+}
+
+.document-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-xs);
+}
+
+/* ==========================================================================
+   Upload Tab
+   ========================================================================== */
+
+.upload-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-lg);
+  height: 100%;
+}
+
+.upload-tab-content h3 {
+  font-size: var(--reynard-font-size-lg);
+  font-weight: var(--reynard-font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--reynard-spacing-md) 0;
+}
+
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--reynard-radius-lg);
+  padding: var(--reynard-spacing-xl);
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--reynard-spacing-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.upload-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--accent);
+}
+
+.upload-label span {
+  font-size: var(--reynard-font-size-md);
+  font-weight: var(--reynard-font-weight-medium);
+  color: var(--text-primary);
+}
+
+.upload-label small {
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+}
+
+.upload-progress {
+  margin-top: var(--reynard-spacing-md);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--secondary-bg);
+  border-radius: var(--reynard-radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--reynard-spacing-sm);
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.upload-progress p {
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Settings Tab
+   ========================================================================== */
+
+.settings-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-lg);
+  height: 100%;
+}
+
+.settings-tab-content h3 {
+  font-size: var(--reynard-font-size-lg);
+  font-weight: var(--reynard-font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--reynard-spacing-md) 0;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-lg);
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-sm);
+}
+
+.setting-group label {
+  font-size: var(--reynard-font-size-sm);
+  font-weight: var(--reynard-font-weight-medium);
+  color: var(--text-primary);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-sm);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+}
+
+.range-slider {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--secondary-bg);
+  border-radius: var(--reynard-radius-sm);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--reynard-spacing-md);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--reynard-spacing-xs);
+  text-align: center;
+  padding: var(--reynard-spacing-md);
+  background-color: var(--secondary-bg);
+  border-radius: var(--reynard-radius-md);
+}
+
+.stat-label {
+  font-size: var(--reynard-font-size-sm);
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: var(--reynard-font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.stat-model {
+  font-size: var(--reynard-font-size-sm);
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .search-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--reynard-spacing-sm);
+  }
+
+  .result-badges {
+    width: 100%;
+  }
+
+  .document-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--reynard-spacing-sm);
+  }
+
+  .document-actions {
+    align-self: flex-end;
+  }
+
+  .query-stats {
+    flex-direction: column;
+    gap: var(--reynard-spacing-sm);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-area {
+    padding: var(--reynard-spacing-lg);
+  }
+}
+
+/* ==========================================================================
+   Focus States
+   ========================================================================== */
+
+.rag-search *:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Animation Enhancements
+   ========================================================================== */
+
+.result-item {
+  transition: all 0.2s ease;
+}
+
+.result-item:hover {
+  transform: translateY(-1px);
+}
+
+.upload-area {
+  transition: all 0.2s ease;
+}
+
+.progress-fill {
+  transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.hidden {
+  display: none;
+}
+
+.upload-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--secondary-bg);
+  border-radius: var(--reynard-radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--reynard-spacing-sm);
+}
+
+.upload-progress-fill {
+  height: 100%;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+  width: var(--progress-width, 0%);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .rag-search {
+    background: white;
+  }
+
+  .reynard-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .upload-area {
+    border: 1px solid #ccc;
+  }
+}

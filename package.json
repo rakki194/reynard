@@ -44,7 +44,7 @@
     "@changesets/cli": "2.29.6",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
-    "@types/node": "24.3.0",
+    "@types/node": "24.3.1",
     "@typescript-eslint/eslint-plugin": "8.42.0",
     "@typescript-eslint/parser": "8.42.0",
     "eslint": "8.57.0",

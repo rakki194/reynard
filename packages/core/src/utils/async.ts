@@ -101,7 +101,7 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
   fn: T,
   delay: number,
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {
-  let timeoutId: NodeJS.Timeout | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let pendingPromise: Promise<ReturnType<T>> | null = null;
   let resolvePending: ((value: ReturnType<T>) => void) | null = null;
   let rejectPending: ((error: any) => void) | null = null;

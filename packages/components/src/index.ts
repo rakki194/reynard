@@ -21,3 +21,9 @@ export {
 
 // Export chat system
 export * from "./chat";
+
+// Export RAG components
+export { RAGSearch } from "./rag/RAGSearch";
+
+// Export icons
+export * from "./icons";
