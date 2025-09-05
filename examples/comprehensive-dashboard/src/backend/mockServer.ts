@@ -63,17 +63,17 @@ interface ActivityItem {
   user: string;
   action: string;
   time: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 class MockBackendServer {
-  private server: any;
+  private server: ReturnType<typeof createServer> | null = null;
   private users: Map<string, User> = new Map();
   private sessions: Map<string, { userId: string; expires: number }> =
     new Map();
   private files: Map<string, FileItem> = new Map();
   private activities: ActivityItem[] = [];
-  private settings: Map<string, any> = new Map();
+  private settings: Map<string, unknown> = new Map();
 
   constructor(private port: number = 3002) {
     this.initializeData();
@@ -182,7 +182,7 @@ class MockBackendServer {
     return this.users.get(session.userId) || null;
   }
 
-  private parseBody(req: IncomingMessage): Promise<any> {
+  private parseBody(req: IncomingMessage): Promise<Record<string, unknown>> {
     return new Promise((resolve, reject) => {
       let body = "";
       req.on("data", (chunk) => {
@@ -198,7 +198,7 @@ class MockBackendServer {
     });
   }
 
-  private sendResponse(res: ServerResponse, status: number, data: any) {
+  private sendResponse(res: ServerResponse, status: number, data: Record<string, unknown>) {
     res.writeHead(status, { "Content-Type": "application/json" });
     res.end(JSON.stringify(data));
   }
@@ -215,7 +215,7 @@ class MockBackendServer {
       const body = await this.parseBody(_req);
       const { email, password } = body;
 
-      if (!email || !password) {
+      if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
         return this.sendError(res, 400, "Email and password are required");
       }
 
@@ -254,7 +254,10 @@ class MockBackendServer {
       const body = await this.parseBody(_req);
       const { email, password, name } = body;
 
-      if (!email || !password || !name) {
+      if (!email || !password || !name || 
+          typeof email !== 'string' || 
+          typeof password !== 'string' || 
+          typeof name !== 'string') {
         return this.sendError(
           res,
           400,
@@ -441,10 +444,10 @@ class MockBackendServer {
 
       const newFile: FileItem = {
         id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        name: name || "uploaded-file",
-        type: type || "other",
-        size: size || 0,
-        url: url || "/uploads/uploaded-file",
+        name: (typeof name === 'string' ? name : "uploaded-file"),
+        type: (typeof type === 'string' && ['image', 'document', 'video', 'audio', 'other'].includes(type) ? type : "other") as FileItem['type'],
+        size: (typeof size === 'number' ? size : 0),
+        url: (typeof url === 'string' ? url : "/uploads/uploaded-file"),
         uploadedAt: new Date().toISOString(),
         uploadedBy: "user-1",
       };
@@ -610,7 +613,7 @@ class MockBackendServer {
     return this.activities;
   }
 
-  getSettings(): Record<string, any> {
+  getSettings(): Record<string, unknown> {
     return Object.fromEntries(this.settings);
   }
 

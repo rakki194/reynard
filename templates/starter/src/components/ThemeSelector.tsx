@@ -4,7 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { useTheme } from "@reynard/core";
+import { useTheme, type Theme } from "@reynard/core";
 
 export const ThemeSelector: Component = () => {
   const { theme, setTheme, nextTheme, themes } = useTheme();
@@ -16,7 +16,7 @@ export const ThemeSelector: Component = () => {
         <select
           class="theme-select"
           value={theme()}
-          onChange={(e) => setTheme(e.target.value as any)}
+          onChange={(e) => setTheme(e.target.value as Theme)}
         >
           <For each={themes}>
             {(themeName: string) => (

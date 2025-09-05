@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { useTheme } from "@reynard/core";
+import { useTheme, type Theme } from "@reynard/core";
 import { Select } from "@reynard/components";
 
 const ThemeSelector: Component = () => {
@@ -11,7 +11,7 @@ const ThemeSelector: Component = () => {
   }));
 
   const handleThemeChange = (e: Event & { target: HTMLSelectElement }) => {
-    setTheme(e.target.value as any);
+    setTheme(e.target.value as Theme);
   };
 
   return (

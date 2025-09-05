@@ -11,6 +11,8 @@ interface SidebarProps {
 
 const Sidebar: Component<SidebarProps> = (props) => {
   const { t } = useI18n();
+  
+  const handleToggle = () => props.onToggle();
 
   const menuItems = [
     {
@@ -61,7 +63,7 @@ const Sidebar: Component<SidebarProps> = (props) => {
 
         <button
           class="sidebar__toggle"
-          onClick={props.onToggle}
+          onClick={handleToggle}
           title={props.collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {props.collapsed ? "→" : "←"}

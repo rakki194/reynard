@@ -13,7 +13,7 @@ const getOrCreateTestServer = async (): Promise<MockBackendServer> => {
   if (!testServer) {
     testServer = new MockBackendServer(15383); // Use unique port for comprehensive dashboard tests
     await testServer.start();
-    (global as any).testServer = testServer;
+    (global as Record<string, unknown>).testServer = testServer;
   }
   return testServer;
 };

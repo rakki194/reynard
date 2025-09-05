@@ -107,7 +107,7 @@ export function Charts() {
         <div class="flex gap-4">
           <Select
             value={chartType()}
-            onInput={(e) => setChartType(e.target.value as any)}
+            onInput={(e) => setChartType(e.target.value as "line" | "bar" | "pie" | "timeseries")}
             options={[
               { value: "line", label: t("charts.types.line") },
               { value: "bar", label: t("charts.types.bar") },
@@ -117,7 +117,7 @@ export function Charts() {
           />
           <Select
             value={dataSet()}
-            onInput={(e) => setDataSet(e.target.value as any)}
+            onInput={(e) => setDataSet(e.target.value as "sales" | "users" | "performance")}
             options={[
               { value: "sales", label: t("charts.data.sales") },
               { value: "users", label: t("charts.data.users") },

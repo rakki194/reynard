@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { useI18n } from "@reynard/core";
+import { useI18n, type Locale } from "@reynard/core";
 import { Select } from "@reynard/components";
 
 const LanguageSelector: Component = () => {
@@ -11,7 +11,7 @@ const LanguageSelector: Component = () => {
   }));
 
   const handleLanguageChange = (e: Event & { target: HTMLSelectElement }) => {
-    setLocale(e.target.value as any);
+    setLocale(e.target.value as Locale);
   };
 
   return (
