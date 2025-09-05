@@ -101,7 +101,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Streaming state
   const [streamController, setStreamController] =
     createSignal<AbortController | null>(null);
-  const [streamingParser, setStreamingParser] = createSignal<StreamingMarkdownParser | null>(null);
+  const [streamingParser, setStreamingParser] =
+    createSignal<StreamingMarkdownParser | null>(null);
   const [currentResponse, setCurrentResponse] = createSignal("");
   const [currentThinking, setCurrentThinking] = createSignal("");
 
@@ -454,11 +455,11 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
-          ...tc,
-          progress: toolExecution.progress,
-          message: toolExecution.message,
-          status: toolExecution.status,
-        }
+            ...tc,
+            progress: toolExecution.progress,
+            message: toolExecution.message,
+            status: toolExecution.status,
+          }
         : tc,
     );
 
@@ -478,16 +479,16 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     const updatedToolCalls = message.toolCalls.map((tc) =>
       tc.name === toolExecution.toolName
         ? {
-          ...tc,
-          status: toolExecution.status,
-          result: toolExecution.result,
-          error: toolExecution.error,
-          timing: {
-            ...tc.timing!,
-            endTime: Date.now(),
-            duration: Date.now() - tc.timing!.startTime,
-          },
-        }
+            ...tc,
+            status: toolExecution.status,
+            result: toolExecution.result,
+            error: toolExecution.error,
+            timing: {
+              ...tc.timing!,
+              endTime: Date.now(),
+              duration: Date.now() - tc.timing!.startTime,
+            },
+          }
         : tc,
     );
 
@@ -497,9 +498,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   };
 
   // Finalize streaming
-  const finalizeStreaming = async (
-    messageId: string,
-  ) => {
+  const finalizeStreaming = async (messageId: string) => {
     const parser = streamingParser();
     if (!parser) return;
 
@@ -577,7 +576,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
             connect();
           },
           reconnection.delay *
-          Math.pow(reconnection.backoff, reconnectionAttempts()),
+            Math.pow(reconnection.backoff, reconnectionAttempts()),
         );
       }
     }

@@ -167,24 +167,24 @@
     background-color: #1f2937;
     color: #f9fafb;
   }
-  
+
   .reynard-drawer__header {
     border-bottom-color: #374151;
   }
-  
+
   .reynard-drawer__title {
     color: #f9fafb;
   }
-  
+
   .reynard-drawer__close {
     color: #9ca3af;
   }
-  
+
   .reynard-drawer__close:hover {
     background-color: #374151;
     color: #d1d5db;
   }
-  
+
   .reynard-drawer__footer {
     border-top-color: #374151;
   }

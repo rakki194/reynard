@@ -27,7 +27,6 @@ import {
   getFileIcon,
 } from "../utils";
 
-
 export interface GalleryGridProps {
   /** Items to display */
   items: (FileItem | FolderItem)[];
@@ -210,8 +209,6 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
     return classes.join(" ");
   };
 
-
-
   // Render thumbnail
   const renderThumbnail = (item: FileItem | FolderItem) => {
     if (!props.viewConfig.showThumbnails) {
@@ -247,9 +244,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
               if (iconEl) iconEl.style.display = "flex";
             }}
           />
-          <div
-            class="gallery-item__icon gallery-item__icon--fallback gallery-item__icon--hidden"
-          >
+          <div class="gallery-item__icon gallery-item__icon--fallback gallery-item__icon--hidden">
             <span class="icon">{getFileIcon(item)}</span>
           </div>
         </div>

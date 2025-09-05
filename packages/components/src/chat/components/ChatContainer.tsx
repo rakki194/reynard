@@ -45,14 +45,16 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   let scrollTimeout: number | undefined;
 
   // Initialize chat composable
-  const chat = createMemo(() => useChat({
-    endpoint: props.endpoint,
-    authHeaders: props.authHeaders,
-    config: props.config,
-    tools: props.tools,
-    initialMessages: props.initialMessages,
-    autoConnect: true,
-  }));
+  const chat = createMemo(() =>
+    useChat({
+      endpoint: props.endpoint,
+      authHeaders: props.authHeaders,
+      config: props.config,
+      tools: props.tools,
+      initialMessages: props.initialMessages,
+      autoConnect: true,
+    }),
+  );
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = (smooth = true) => {
@@ -153,7 +155,10 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
     if (local.height) {
       if (typeof local.height === "string") {
         if (local.height === "100%" || local.height === "100vh") {
-          heightClass = local.height === "100vh" ? `${base}--height-screen` : `${base}--height-full`;
+          heightClass =
+            local.height === "100vh"
+              ? `${base}--height-screen`
+              : `${base}--height-full`;
         } else if (local.height.endsWith("px")) {
           const heightValue = parseInt(local.height);
           if (heightValue <= 400) heightClass = `${base}--height-400`;
@@ -174,15 +179,20 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
         } else if (local.maxHeight.endsWith("px")) {
           const maxHeightValue = parseInt(local.maxHeight);
           if (maxHeightValue <= 400) maxHeightClass = `${base}--max-height-400`;
-          else if (maxHeightValue <= 500) maxHeightClass = `${base}--max-height-500`;
-          else if (maxHeightValue <= 600) maxHeightClass = `${base}--max-height-600`;
-          else if (maxHeightValue <= 700) maxHeightClass = `${base}--max-height-700`;
+          else if (maxHeightValue <= 500)
+            maxHeightClass = `${base}--max-height-500`;
+          else if (maxHeightValue <= 600)
+            maxHeightClass = `${base}--max-height-600`;
+          else if (maxHeightValue <= 700)
+            maxHeightClass = `${base}--max-height-700`;
           else maxHeightClass = `${base}--max-height-800`;
         }
       }
     }
 
-    return [base, variant, streaming, connected, heightClass, maxHeightClass].filter(Boolean).join(" ");
+    return [base, variant, streaming, connected, heightClass, maxHeightClass]
+      .filter(Boolean)
+      .join(" ");
   };
 
   // Cleanup on unmount
@@ -193,9 +203,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
   });
 
   return (
-    <div
-      class={`${getContainerClasses()} ${local.className || ""}`}
-    >
+    <div class={`${getContainerClasses()} ${local.className || ""}`}>
       {/* Connection Status */}
       <Show when={chat().connectionState() !== "connected"}>
         <div class="reynard-chat-container__status">

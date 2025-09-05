@@ -1,6 +1,6 @@
 /**
  * Streaming Text Renderer for Real-time Text Animation
- * 
+ *
  * Provides smooth character-by-character text streaming with configurable
  * speed, pause patterns, and restart capabilities.
  */
@@ -59,10 +59,10 @@ const DEFAULT_OPTIONS: Required<StreamingTextOptions> = {
 
 export function createStreamingText(
   text: string,
-  options: StreamingTextOptions = {}
+  options: StreamingTextOptions = {},
 ) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  
+
   const [state, setState] = createSignal<StreamingTextState>({
     currentText: "",
     isStreaming: false,
@@ -78,8 +78,8 @@ export function createStreamingText(
 
   const start = () => {
     if (state().isStreaming) return;
-    
-    setState(prev => ({
+
+    setState((prev) => ({
       ...prev,
       isStreaming: true,
       isPaused: false,
@@ -97,12 +97,12 @@ export function createStreamingText(
       clearTimeout(streamTimer);
       streamTimer = null;
     }
-    setState(prev => ({ ...prev, isPaused: true }));
+    setState((prev) => ({ ...prev, isPaused: true }));
   };
 
   const resume = () => {
     if (state().isPaused && !state().isComplete) {
-      setState(prev => ({ ...prev, isPaused: false }));
+      setState((prev) => ({ ...prev, isPaused: false }));
       streamNext();
     }
   };
@@ -116,7 +116,7 @@ export function createStreamingText(
       clearTimeout(restartTimer);
       restartTimer = null;
     }
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       isStreaming: false,
       isPaused: false,
@@ -138,7 +138,7 @@ export function createStreamingText(
 
     if (currentState.currentIndex >= text.length) {
       // Streaming complete
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         isStreaming: false,
         isComplete: true,
@@ -158,7 +158,7 @@ export function createStreamingText(
     const nextIndex = currentState.currentIndex + 1;
     const progress = (nextIndex / text.length) * 100;
 
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       currentText: nextText,
       currentIndex: nextIndex,
@@ -173,11 +173,11 @@ export function createStreamingText(
       delay += opts.pauseAtPunctuation;
     }
     // Pause at line breaks
-    else if (char === '\n') {
+    else if (char === "\n") {
       delay += opts.pauseAtLineBreak;
     }
     // Pause at word boundaries
-    else if (opts.pauseAtWords && char === ' ') {
+    else if (opts.pauseAtWords && char === " ") {
       delay += opts.wordPause;
     }
 
@@ -206,14 +206,14 @@ export function createStreamingText(
  * Hook for streaming multiple text sequences with different configurations
  */
 export function createStreamingSequence(
-  sequences: Array<{ text: string; options?: StreamingTextOptions }>
+  sequences: Array<{ text: string; options?: StreamingTextOptions }>,
 ) {
   const [currentSequence, setCurrentSequence] = createSignal(0);
   const [isActive, setIsActive] = createSignal(false);
 
   const currentStream = createStreamingText(
     sequences[currentSequence()]?.text || "",
-    sequences[currentSequence()]?.options || {}
+    sequences[currentSequence()]?.options || {},
   );
 
   const start = () => {
@@ -261,10 +261,10 @@ export function createStreamingSequence(
  */
 export function createMarkdownStreaming(
   markdownText: string,
-  options: StreamingTextOptions = {}
+  options: StreamingTextOptions = {},
 ) {
   const stream = createStreamingText(markdownText, options);
-  
+
   // Enhanced state that includes parsed markdown
   const [parsedContent, setParsedContent] = createSignal("");
 
@@ -273,15 +273,15 @@ export function createMarkdownStreaming(
     if (currentText) {
       // Basic markdown parsing for streaming display
       let parsed = currentText
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-        .replace(/^- (.*$)/gm, '<li>$1</li>')
-        .replace(/\n/g, '<br>');
-      
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/^### (.*$)/gm, "<h3>$1</h3>")
+        .replace(/^## (.*$)/gm, "<h2>$1</h2>")
+        .replace(/^# (.*$)/gm, "<h1>$1</h1>")
+        .replace(/^- (.*$)/gm, "<li>$1</li>")
+        .replace(/\n/g, "<br>");
+
       setParsedContent(parsed);
     }
   });

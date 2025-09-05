@@ -330,7 +330,10 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: { parsed: { y: number }; dataset: { label: string } }) => {
+            label: (context: {
+              parsed: { y: number };
+              dataset: { label: string };
+            }) => {
               const value = context.parsed.y;
               const formattedValue = local.valueFormatter
                 ? local.valueFormatter(value)

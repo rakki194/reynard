@@ -5,13 +5,7 @@
  * while sharing core infrastructure and markdown parsing capabilities.
  */
 
-import {
-  createSignal,
-  batch,
-  onCleanup,
-  createMemo,
-  onMount,
-} from "solid-js";
+import { createSignal, batch, onCleanup, createMemo, onMount } from "solid-js";
 import { useChat } from "./useChat";
 import type {
   ChatUser,
@@ -140,7 +134,6 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
 
   // Typing timer management
   const typingTimers = new Map<string, number>();
-
 
   // Generate unique attachment ID
   const generateAttachmentId = (): string => {
@@ -879,7 +872,6 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     const room = activeRoom();
     return room ? messagesByRoom()[room.id] || [] : [];
   });
-
 
   // Auto-connect on mount
   onMount(() => {

@@ -39,20 +39,37 @@ export interface AuthContextValue {
   initialize: () => Promise<void>;
 
   // Utilities
-  authFetch: (url: string, options?: {
-    method?: string;
-    headers?: Record<string, string> | Headers;
-    body?: string | FormData | URLSearchParams | ReadableStream | null;
-    credentials?: 'omit' | 'same-origin' | 'include';
-    mode?: 'cors' | 'no-cors' | 'same-origin';
-    cache?: 'default' | 'no-store' | 'reload' | 'no-cache' | 'force-cache' | 'only-if-cached';
-    redirect?: 'follow' | 'error' | 'manual';
-    referrer?: string;
-    referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url';
-    integrity?: string;
-    keepalive?: boolean;
-    signal?: AbortSignal | null;
-  }) => Promise<Response>;
+  authFetch: (
+    url: string,
+    options?: {
+      method?: string;
+      headers?: Record<string, string> | Headers;
+      body?: string | FormData | URLSearchParams | ReadableStream | null;
+      credentials?: "omit" | "same-origin" | "include";
+      mode?: "cors" | "no-cors" | "same-origin";
+      cache?:
+        | "default"
+        | "no-store"
+        | "reload"
+        | "no-cache"
+        | "force-cache"
+        | "only-if-cached";
+      redirect?: "follow" | "error" | "manual";
+      referrer?: string;
+      referrerPolicy?:
+        | "no-referrer"
+        | "no-referrer-when-downgrade"
+        | "origin"
+        | "origin-when-cross-origin"
+        | "same-origin"
+        | "strict-origin"
+        | "strict-origin-when-cross-origin"
+        | "unsafe-url";
+      integrity?: string;
+      keepalive?: boolean;
+      signal?: AbortSignal | null;
+    },
+  ) => Promise<Response>;
 }
 
 const AuthContext = createContext<AuthContextValue>();

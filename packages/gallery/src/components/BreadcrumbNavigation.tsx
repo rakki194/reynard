@@ -60,7 +60,9 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
         <ol class="breadcrumb-navigation__list" role="list">
           <For each={props.breadcrumbs}>
             {(breadcrumb, index) => {
-              const isLast = createMemo(() => index() === props.breadcrumbs.length - 1);
+              const isLast = createMemo(
+                () => index() === props.breadcrumbs.length - 1,
+              );
 
               return (
                 <li class="breadcrumb-navigation__item" role="listitem">

@@ -53,8 +53,6 @@ const defaultProps: Partial<DrawerProps> = {
   zIndex: 1000,
 };
 
-
-
 export const Drawer: Component<DrawerProps> = (props) => {
   const merged = mergeProps(defaultProps, props);
   const [local] = splitProps(merged, [
@@ -86,7 +84,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
     };
 
     document.addEventListener("keydown", handleEscape);
-    
+
     onCleanup(() => {
       document.removeEventListener("keydown", handleEscape);
     });
@@ -122,8 +120,6 @@ export const Drawer: Component<DrawerProps> = (props) => {
     }
   };
 
-
-
   const getDrawerClasses = () => {
     const classes = [
       "reynard-drawer__content",
@@ -131,7 +127,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
       `reynard-drawer__content--${local.size}`,
     ];
 
-      // Add custom size class if customSize is provided
+    // Add custom size class if customSize is provided
     if (local.customSize) {
       classes.push("reynard-drawer__content--custom");
     }
@@ -150,7 +146,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
 
   const getDrawerContainerClasses = () => {
     const classes = ["reynard-drawer"];
-    
+
     // Add z-index class based on the zIndex prop
     if (local.zIndex) {
       if (local.zIndex <= 1000) classes.push("reynard-drawer--z-1000");

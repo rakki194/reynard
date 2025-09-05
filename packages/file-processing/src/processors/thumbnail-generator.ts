@@ -26,7 +26,9 @@ export class ThumbnailGenerator {
   private videoCache = new Map<string, HTMLVideoElement>();
   private audioCache = new Map<string, HTMLAudioElement>();
 
-  constructor(private options: ThumbnailGeneratorOptions = { size: [200, 200] }) {
+  constructor(
+    private options: ThumbnailGeneratorOptions = { size: [200, 200] },
+  ) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -90,7 +92,12 @@ export class ThumbnailGenerator {
       // Generate thumbnail based on file type
       let thumbnail: Blob | string;
       const category = getFileCategory(extension);
-      console.log("File category determined:", category, "for extension:", extension);
+      console.log(
+        "File category determined:",
+        category,
+        "for extension:",
+        extension,
+      );
 
       switch (category) {
         case "image":
@@ -270,7 +277,7 @@ export class ThumbnailGenerator {
     console.log("Starting audio thumbnail generation...");
     const audio = await this.loadAudio(file);
     console.log("Audio loaded:", { duration: audio.duration, src: audio.src });
-    
+
     const canvas = this.getCanvas();
     const ctx = canvas.getContext("2d")!;
 
@@ -629,18 +636,19 @@ export class ThumbnailGenerator {
       console.log("Attempting to analyze audio data...");
       const audioData = await this.analyzeAudioData(audio);
       console.log("Audio data received:", audioData);
-      
+
       // Check if we got meaningful data
-      const hasData = audioData.some(value => value > 0.01);
+      const hasData = audioData.some((value) => value > 0.01);
       console.log("Has meaningful data:", hasData);
-      
+
       if (hasData) {
         console.log("Drawing real audio waveform");
         for (let i = 0; i < bars; i++) {
           const dataIndex = Math.floor((i / bars) * audioData.length);
           const amplitude = audioData[dataIndex] || 0;
-          
-          const barHeight = Math.max(0.1, Math.min(0.9, amplitude)) * height * 0.6;
+
+          const barHeight =
+            Math.max(0.1, Math.min(0.9, amplitude)) * height * 0.6;
           const x = i * barWidth + barSpacing;
           const y = (height - barHeight) / 2;
 
@@ -648,12 +656,17 @@ export class ThumbnailGenerator {
         }
       } else {
         // No meaningful data, use fallback
-        console.warn("No meaningful audio data detected, using fallback waveform");
+        console.warn(
+          "No meaningful audio data detected, using fallback waveform",
+        );
         this.drawFallbackWaveform(ctx, width, height, audio);
       }
     } catch (error) {
       // Fallback to synthetic waveform if audio analysis fails
-      console.warn("Failed to analyze audio data, using fallback waveform:", error);
+      console.warn(
+        "Failed to analyze audio data, using fallback waveform:",
+        error,
+      );
       this.drawFallbackWaveform(ctx, width, height, audio);
     }
   }
@@ -664,71 +677,83 @@ export class ThumbnailGenerator {
   private async analyzeAudioData(audio: HTMLAudioElement): Promise<number[]> {
     return new Promise((resolve, reject) => {
       try {
-        const audioContext = new (window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+        const audioContext = new (window.AudioContext ||
+          (
+            window as typeof window & {
+              webkitAudioContext: typeof AudioContext;
+            }
+          ).webkitAudioContext)();
         const source = audioContext.createMediaElementSource(audio);
         const analyser = audioContext.createAnalyser();
-        
+
         // Configure analyser for better data capture
         analyser.fftSize = 512; // Larger FFT for more data points
         analyser.smoothingTimeConstant = 0.1; // Less smoothing for more dynamic data
-        
+
         source.connect(analyser);
         analyser.connect(audioContext.destination);
-        
+
         // Get frequency data
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
-        
+
         // Play audio at different positions to get varied data
         const originalTime = audio.currentTime;
         audio.muted = true;
-        
+
         const playPromise = audio.play();
         if (playPromise !== undefined) {
-          playPromise.then(() => {
-            // Sample at multiple time points
-            let samples: number[][] = [];
-            let sampleCount = 0;
-            const maxSamples = 5;
-            
-            const sampleInterval = setInterval(() => {
-              analyser.getByteFrequencyData(dataArray);
-              samples.push(Array.from(dataArray));
-              sampleCount++;
-              
-              if (sampleCount >= maxSamples) {
-                clearInterval(sampleInterval);
-                audio.pause();
-                audio.currentTime = originalTime;
-                audio.muted = false;
-                
-                // Average the samples for more stable data
-                const averagedData = new Array(bufferLength).fill(0);
-                for (let i = 0; i < bufferLength; i++) {
-                  for (let j = 0; j < samples.length; j++) {
-                    averagedData[i] += samples[j][i];
+          playPromise
+            .then(() => {
+              // Sample at multiple time points
+              let samples: number[][] = [];
+              let sampleCount = 0;
+              const maxSamples = 5;
+
+              const sampleInterval = setInterval(() => {
+                analyser.getByteFrequencyData(dataArray);
+                samples.push(Array.from(dataArray));
+                sampleCount++;
+
+                if (sampleCount >= maxSamples) {
+                  clearInterval(sampleInterval);
+                  audio.pause();
+                  audio.currentTime = originalTime;
+                  audio.muted = false;
+
+                  // Average the samples for more stable data
+                  const averagedData = new Array(bufferLength).fill(0);
+                  for (let i = 0; i < bufferLength; i++) {
+                    for (let j = 0; j < samples.length; j++) {
+                      averagedData[i] += samples[j][i];
+                    }
+                    averagedData[i] /= samples.length;
                   }
-                  averagedData[i] /= samples.length;
+
+                  // Convert to amplitude values and normalize
+                  const amplitudes = averagedData.map((value) =>
+                    Math.min(1, value / 128),
+                  );
+
+                  console.log(
+                    "Audio analysis complete, max amplitude:",
+                    Math.max(...amplitudes),
+                  );
+                  audioContext.close();
+                  resolve(amplitudes);
                 }
-                
-                // Convert to amplitude values and normalize
-                const amplitudes = averagedData.map(value => Math.min(1, value / 128));
-                
-                console.log('Audio analysis complete, max amplitude:', Math.max(...amplitudes));
-                audioContext.close();
-                resolve(amplitudes);
-              }
-            }, 100); // Sample every 100ms
-          }).catch((error) => {
-            console.warn('Audio play failed, using fallback:', error);
-            audioContext.close();
-            reject(error);
-          });
+              }, 100); // Sample every 100ms
+            })
+            .catch((error) => {
+              console.warn("Audio play failed, using fallback:", error);
+              audioContext.close();
+              reject(error);
+            });
         } else {
-          reject(new Error('Audio play not supported'));
+          reject(new Error("Audio play not supported"));
         }
       } catch (error) {
-        console.warn('Audio analysis failed:', error);
+        console.warn("Audio analysis failed:", error);
         reject(error);
       }
     });
@@ -743,64 +768,90 @@ export class ThumbnailGenerator {
     height: number,
     audio: HTMLAudioElement,
   ): void {
-    console.log("Drawing fallback waveform", { width, height, duration: audio.duration });
-    
+    console.log("Drawing fallback waveform", {
+      width,
+      height,
+      duration: audio.duration,
+    });
+
     // Set fill style for fallback waveform
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)"; // White bars
     console.log("Fallback waveform fill style set to:", ctx.fillStyle);
-    
+
     const bars = 20;
     const barWidth = width / bars;
     const barSpacing = 2;
 
     const duration = audio.duration || 0;
     const baseAmplitude = Math.min(1, Math.max(0.3, duration / 5));
-    
-    console.log("Fallback waveform params:", { bars, barWidth, barSpacing, duration, baseAmplitude });
-    
+
+    console.log("Fallback waveform params:", {
+      bars,
+      barWidth,
+      barSpacing,
+      duration,
+      baseAmplitude,
+    });
+
     // Create a more interesting pattern based on duration
     for (let i = 0; i < bars; i++) {
       const position = i / bars;
-      
+
       // Create multiple frequency components for more realistic look
       const freq1 = 1 + position * 2;
       const freq2 = 3 + position * 4;
       const freq3 = 0.5 + position * 1.5;
-      
+
       const amp1 = Math.sin(position * Math.PI * 2 * freq1) * 0.4;
       const amp2 = Math.sin(position * Math.PI * 2 * freq2) * 0.3;
       const amp3 = Math.sin(position * Math.PI * 2 * freq3) * 0.3;
-      
+
       const combinedAmplitude = baseAmplitude * (0.2 + amp1 + amp2 + amp3);
       const noise = (Math.random() - 0.5) * 0.2;
-      
-      const barHeight = Math.max(0.15, Math.min(0.85, combinedAmplitude + noise)) * height * 0.6;
+
+      const barHeight =
+        Math.max(0.15, Math.min(0.85, combinedAmplitude + noise)) *
+        height *
+        0.6;
       const x = i * barWidth + barSpacing;
       const y = (height - barHeight) / 2;
 
-      console.log(`Bar ${i}:`, { position, barHeight, x, y, barWidth: barWidth - barSpacing });
-      
+      console.log(`Bar ${i}:`, {
+        position,
+        barHeight,
+        x,
+        y,
+        barWidth: barWidth - barSpacing,
+      });
+
       // Ensure we have a visible bar with better positioning
       const finalBarHeight = Math.max(4, barHeight); // Minimum 4px height for visibility
       const finalY = (height - finalBarHeight) / 2;
-      
-      console.log(`Drawing bar ${i} at (${x}, ${finalY}) with size (${barWidth - barSpacing}, ${finalBarHeight})`);
-      
+
+      console.log(
+        `Drawing bar ${i} at (${x}, ${finalY}) with size (${barWidth - barSpacing}, ${finalBarHeight})`,
+      );
+
       // Create gradient for modern look
-      const gradient = ctx.createLinearGradient(x, finalY, x, finalY + finalBarHeight);
+      const gradient = ctx.createLinearGradient(
+        x,
+        finalY,
+        x,
+        finalY + finalBarHeight,
+      );
       gradient.addColorStop(0, "rgba(255, 255, 255, 0.9)");
       gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.7)");
       gradient.addColorStop(1, "rgba(255, 255, 255, 0.5)");
-      
+
       ctx.fillStyle = gradient;
-      
+
       // Draw rounded rectangle for modern look
       const radius = 2;
       ctx.beginPath();
       ctx.roundRect(x, finalY, barWidth - barSpacing, finalBarHeight, radius);
       ctx.fill();
     }
-    
+
     console.log("Fallback waveform drawing complete");
   }
 
@@ -829,11 +880,11 @@ export class ThumbnailGenerator {
       ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
       ctx.lineWidth = 1.5;
       ctx.lineCap = "round";
-      
+
       const centerX = x + size / 2;
       const centerY = y + size / 2;
       const waveRadius = size * 0.15;
-      
+
       // Draw 3 audio waves
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();

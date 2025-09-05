@@ -557,7 +557,10 @@ export class MetadataExtractor {
     return null;
   }
 
-  private async extractAnimationInfo(): Promise<{ frameCount: number; duration: number } | null> {
+  private async extractAnimationInfo(): Promise<{
+    frameCount: number;
+    duration: number;
+  } | null> {
     // This would require parsing the actual file format
     // For now, return null
     return null;
@@ -618,9 +621,7 @@ export class MetadataExtractor {
     return { encoding: "UTF-8" };
   }
 
-  private detectProgrammingLanguage(
-    extension: string,
-  ): string {
+  private detectProgrammingLanguage(extension: string): string {
     const languageMap: Record<string, string> = {
       ".py": "Python",
       ".js": "JavaScript",

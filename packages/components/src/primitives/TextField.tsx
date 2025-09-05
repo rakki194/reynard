@@ -3,13 +3,7 @@
  * A flexible text input component with validation and styling
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  mergeProps,
-  createSignal,
-} from "solid-js";
+import { Component, JSX, splitProps, mergeProps, createSignal } from "solid-js";
 
 export interface TextFieldProps
   extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "size"> {

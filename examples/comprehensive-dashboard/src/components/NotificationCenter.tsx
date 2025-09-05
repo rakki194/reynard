@@ -33,9 +33,9 @@ const NotificationCenter: Component = () => {
       </div>
 
       <Drawer
-  open={isOpen()}
+        open={isOpen()}
         onClose={() => setIsOpen(false)}
-  position="right"
+        position="right"
         title="Notifications"
       >
         <div class="notification-center__content">
@@ -59,9 +59,7 @@ const NotificationCenter: Component = () => {
             >
               <For each={notifications.notifications}>
                 {(notification) => (
-                  <Card
-                    class={`notification-center__item`}
-                  >
+                  <Card class={`notification-center__item`}>
                     <div class="notification-center__item-content">
                       <div class="notification-center__item-type">
                         {notification.type === "success" && "✅"}
@@ -87,7 +85,9 @@ const NotificationCenter: Component = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => notifications.removeNotification(notification.id)}
+                          onClick={() =>
+                            notifications.removeNotification(notification.id)
+                          }
                         >
                           ×
                         </Button>

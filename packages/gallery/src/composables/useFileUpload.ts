@@ -178,8 +178,6 @@ export function useFileUpload(options: UseFileUploadOptions) {
               timeRemaining: remaining,
             });
           }
-
-
         }
       });
 

@@ -247,13 +247,13 @@ export const LineChart: Component<LineChartProps> = (props) => {
 
   const getSizeClass = () => {
     if (local.responsive) return "";
-    
+
     const area = local.width * local.height;
-    
-    if (area <= 60000) return "size-small";      // 300x200
-    if (area <= 120000) return "size-medium";    // 400x300
-    if (area <= 240000) return "size-large";     // 600x400
-    return "size-xl";                             // 800x500+
+
+    if (area <= 60000) return "size-small"; // 300x200
+    if (area <= 120000) return "size-medium"; // 400x300
+    if (area <= 240000) return "size-large"; // 600x400
+    return "size-xl"; // 800x500+
   };
 
   return (

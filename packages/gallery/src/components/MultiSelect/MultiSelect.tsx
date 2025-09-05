@@ -100,7 +100,10 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
     const currentState = state();
     const newMode = local.mode || "multiple";
     if (currentState.mode !== newMode) {
-      setState((prev) => ({ ...prev, mode: newMode as 'single' | 'multiple' | 'range' }));
+      setState((prev) => ({
+        ...prev,
+        mode: newMode as "single" | "multiple" | "range",
+      }));
     }
   });
 
@@ -231,7 +234,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
       };
 
       document.addEventListener("keydown", handleKeyboardShortcuts);
-      
+
       onCleanup(() => {
         document.removeEventListener("keydown", handleKeyboardShortcuts);
       });

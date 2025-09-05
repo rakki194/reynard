@@ -1,6 +1,6 @@
 /**
  * Mock Backend Server for Comprehensive Dashboard
- * 
+ *
  * Simulates all the API endpoints that the dashboard expects:
  * - Authentication (login, register, refresh, profile)
  * - Dashboard data (stats, charts, activity)
@@ -9,8 +9,8 @@
  * - User management
  */
 
-import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { URL } from 'url';
+import { createServer, IncomingMessage, ServerResponse } from "http";
+import { URL } from "url";
 
 // Types for our mock data
 interface User {
@@ -18,7 +18,7 @@ interface User {
   email: string;
   name: string;
   avatar?: string;
-  role: 'admin' | 'user' | 'moderator';
+  role: "admin" | "user" | "moderator";
   createdAt: string;
   lastLogin?: string;
 }
@@ -50,7 +50,7 @@ interface ChartData {
 interface FileItem {
   id: string;
   name: string;
-  type: 'image' | 'document' | 'video' | 'audio' | 'other';
+  type: "image" | "document" | "video" | "audio" | "other";
   size: number;
   url: string;
   thumbnail?: string;
@@ -69,7 +69,8 @@ interface ActivityItem {
 class MockBackendServer {
   private server: any;
   private users: Map<string, User> = new Map();
-  private sessions: Map<string, { userId: string; expires: number }> = new Map();
+  private sessions: Map<string, { userId: string; expires: number }> =
+    new Map();
   private files: Map<string, FileItem> = new Map();
   private activities: ActivityItem[] = [];
   private settings: Map<string, any> = new Map();
@@ -82,81 +83,81 @@ class MockBackendServer {
     // Initialize with sample users
     const sampleUsers: User[] = [
       {
-        id: 'user-1',
-        email: 'admin@reynard.com',
-        name: 'Admin User',
-        role: 'admin',
+        id: "user-1",
+        email: "admin@reynard.com",
+        name: "Admin User",
+        role: "admin",
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
       },
       {
-        id: 'user-2',
-        email: 'demo@reynard.com',
-        name: 'Demo User',
-        role: 'user',
+        id: "user-2",
+        email: "demo@reynard.com",
+        name: "Demo User",
+        role: "user",
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
       },
     ];
 
-    sampleUsers.forEach(user => {
+    sampleUsers.forEach((user) => {
       this.users.set(user.id, user);
     });
 
     // Initialize with sample files
     const sampleFiles: FileItem[] = [
       {
-        id: 'file-1',
-        name: 'dashboard-screenshot.png',
-        type: 'image',
+        id: "file-1",
+        name: "dashboard-screenshot.png",
+        type: "image",
         size: 245760,
-        url: '/uploads/dashboard-screenshot.png',
-        thumbnail: '/uploads/thumbs/dashboard-screenshot.png',
+        url: "/uploads/dashboard-screenshot.png",
+        thumbnail: "/uploads/thumbs/dashboard-screenshot.png",
         uploadedAt: new Date().toISOString(),
-        uploadedBy: 'user-1',
+        uploadedBy: "user-1",
       },
       {
-        id: 'file-2',
-        name: 'project-documentation.pdf',
-        type: 'document',
+        id: "file-2",
+        name: "project-documentation.pdf",
+        type: "document",
         size: 1024000,
-        url: '/uploads/project-documentation.pdf',
+        url: "/uploads/project-documentation.pdf",
         uploadedAt: new Date().toISOString(),
-        uploadedBy: 'user-2',
+        uploadedBy: "user-2",
       },
     ];
 
-    sampleFiles.forEach(file => {
+    sampleFiles.forEach((file) => {
       this.files.set(file.id, file);
     });
 
     // Initialize with sample activities
     this.activities = [
       {
-        id: 'activity-1',
-        user: 'Admin User',
-        action: 'Created new project',
-        time: '2 min ago',
+        id: "activity-1",
+        user: "Admin User",
+        action: "Created new project",
+        time: "2 min ago",
       },
       {
-        id: 'activity-2',
-        user: 'Demo User',
-        action: 'Updated profile',
-        time: '5 min ago',
+        id: "activity-2",
+        user: "Demo User",
+        action: "Updated profile",
+        time: "5 min ago",
       },
       {
-        id: 'activity-3',
-        user: 'Admin User',
-        action: 'Uploaded files',
-        time: '10 min ago',
+        id: "activity-3",
+        user: "Admin User",
+        action: "Uploaded files",
+        time: "10 min ago",
       },
     ];
 
     // Initialize default settings
-    this.settings.set('theme', 'light');
-    this.settings.set('language', 'en');
-    this.settings.set('notifications', true);
-    this.settings.set('autoSave', true);
+    this.settings.set("theme", "light");
+    this.settings.set("language", "en");
+    this.settings.set("notifications", true);
+    this.settings.set("autoSave", true);
   }
 
   private generateTokens(userId: string): AuthTokens {
@@ -183,11 +184,11 @@ class MockBackendServer {
 
   private parseBody(req: IncomingMessage): Promise<any> {
     return new Promise((resolve, reject) => {
-      let body = '';
-      req.on('data', chunk => {
+      let body = "";
+      req.on("data", (chunk) => {
         body += chunk.toString();
       });
-      req.on('end', () => {
+      req.on("end", () => {
         try {
           resolve(body ? JSON.parse(body) : {});
         } catch (error) {
@@ -198,7 +199,7 @@ class MockBackendServer {
   }
 
   private sendResponse(res: ServerResponse, status: number, data: any) {
-    res.writeHead(status, { 'Content-Type': 'application/json' });
+    res.writeHead(status, { "Content-Type": "application/json" });
     res.end(JSON.stringify(data));
   }
 
@@ -206,21 +207,26 @@ class MockBackendServer {
     this.sendResponse(res, status, { error: message });
   }
 
-  private handleAuthLogin = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleAuthLogin = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const body = await this.parseBody(req);
       const { email, password } = body;
 
       if (!email || !password) {
-        return this.sendError(res, 400, 'Email and password are required');
+        return this.sendError(res, 400, "Email and password are required");
       }
 
       // Simple mock authentication - accept any email/password
-      const user = Array.from(this.users.values()).find(u => u.email === email) || {
-        id: 'user-new',
+      const user = Array.from(this.users.values()).find(
+        (u) => u.email === email,
+      ) || {
+        id: "user-new",
         email,
-        name: email.split('@')[0],
-        role: 'user' as const,
+        name: email.split("@")[0],
+        role: "user" as const,
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
       };
@@ -236,23 +242,32 @@ class MockBackendServer {
         ...tokens,
       });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleAuthRegister = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleAuthRegister = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const body = await this.parseBody(req);
       const { email, password, name } = body;
 
       if (!email || !password || !name) {
-        return this.sendError(res, 400, 'Email, password, and name are required');
+        return this.sendError(
+          res,
+          400,
+          "Email, password, and name are required",
+        );
       }
 
       // Check if user already exists
-      const existingUser = Array.from(this.users.values()).find(u => u.email === email);
+      const existingUser = Array.from(this.users.values()).find(
+        (u) => u.email === email,
+      );
       if (existingUser) {
-        return this.sendError(res, 409, 'User already exists');
+        return this.sendError(res, 409, "User already exists");
       }
 
       // Create new user
@@ -260,7 +275,7 @@ class MockBackendServer {
         id: `user-${Date.now()}`,
         email,
         name,
-        role: 'user',
+        role: "user",
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
       };
@@ -273,24 +288,27 @@ class MockBackendServer {
         ...tokens,
       });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleAuthRefresh = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleAuthRefresh = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const body = await this.parseBody(req);
       const { refreshToken } = body;
 
       if (!refreshToken) {
-        return this.sendError(res, 400, 'Refresh token is required');
+        return this.sendError(res, 400, "Refresh token is required");
       }
 
       // Simple refresh logic - generate new tokens
-      const userId = 'user-1'; // Mock user ID
+      const userId = "user-1"; // Mock user ID
       const user = this.users.get(userId);
       if (!user) {
-        return this.sendError(res, 401, 'Invalid refresh token');
+        return this.sendError(res, 401, "Invalid refresh token");
       }
 
       const tokens = this.generateTokens(userId);
@@ -300,31 +318,37 @@ class MockBackendServer {
         ...tokens,
       });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleAuthProfile = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleAuthProfile = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const authHeader = req.headers.authorization;
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return this.sendError(res, 401, 'Authorization header required');
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return this.sendError(res, 401, "Authorization header required");
       }
 
       const token = authHeader.substring(7);
       const user = this.validateToken(token);
 
       if (!user) {
-        return this.sendError(res, 401, 'Invalid or expired token');
+        return this.sendError(res, 401, "Invalid or expired token");
       }
 
       this.sendResponse(res, 200, { user });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleDashboardStats = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleDashboardStats = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const stats: DashboardStats = {
         totalUsers: this.users.size,
@@ -336,75 +360,93 @@ class MockBackendServer {
 
       this.sendResponse(res, 200, { stats });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleDashboardCharts = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleDashboardCharts = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const charts = {
         visitors: {
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{
-            label: 'Visitors',
-            data: [120, 190, 300, 500, 200, 300, 450],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          }],
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [
+            {
+              label: "Visitors",
+              data: [120, 190, 300, 500, 200, 300, 450],
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59, 130, 246, 0.1)",
+            },
+          ],
         },
         revenue: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Revenue ($)',
-            data: [1200, 1900, 3000, 5000, 2000, 3000],
-            backgroundColor: '#10b981',
-          }],
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Revenue ($)",
+              data: [1200, 1900, 3000, 5000, 2000, 3000],
+              backgroundColor: "#10b981",
+            },
+          ],
         },
         userTypes: {
-          labels: ['New Users', 'Returning Users', 'Premium Users'],
-          datasets: [{
-            data: [300, 500, 200],
-            backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b'],
-          }],
+          labels: ["New Users", "Returning Users", "Premium Users"],
+          datasets: [
+            {
+              data: [300, 500, 200],
+              backgroundColor: ["#3b82f6", "#8b5cf6", "#f59e0b"],
+            },
+          ],
         },
       };
 
       this.sendResponse(res, 200, { charts });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleDashboardActivity = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleDashboardActivity = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       this.sendResponse(res, 200, { activities: this.activities });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleFilesList = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleFilesList = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const files = Array.from(this.files.values());
       this.sendResponse(res, 200, { files });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleFilesUpload = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleFilesUpload = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const body = await this.parseBody(req);
       const { name, type, size, url } = body;
 
       const newFile: FileItem = {
         id: `file-${Date.now()}`,
-        name: name || 'uploaded-file',
-        type: type || 'other',
+        name: name || "uploaded-file",
+        type: type || "other",
         size: size || 0,
-        url: url || '/uploads/uploaded-file',
+        url: url || "/uploads/uploaded-file",
         uploadedAt: new Date().toISOString(),
-        uploadedBy: 'user-1',
+        uploadedBy: "user-1",
       };
 
       this.files.set(newFile.id, newFile);
@@ -412,109 +454,123 @@ class MockBackendServer {
       // Add activity
       this.activities.unshift({
         id: `activity-${Date.now()}`,
-        user: 'Current User',
-        action: 'Uploaded file',
-        time: 'Just now',
+        user: "Current User",
+        action: "Uploaded file",
+        time: "Just now",
         details: { fileName: newFile.name },
       });
 
       this.sendResponse(res, 201, { file: newFile });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleSettingsGet = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleSettingsGet = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const settings = Object.fromEntries(this.settings);
       this.sendResponse(res, 200, { settings });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
-  private handleSettingsUpdate = async (req: IncomingMessage, res: ServerResponse) => {
+  private handleSettingsUpdate = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
     try {
       const body = await this.parseBody(req);
       const { settings } = body;
 
-      if (!settings || typeof settings !== 'object') {
-        return this.sendError(res, 400, 'Settings object is required');
+      if (!settings || typeof settings !== "object") {
+        return this.sendError(res, 400, "Settings object is required");
       }
 
       Object.entries(settings).forEach(([key, value]) => {
         this.settings.set(key, value);
       });
 
-      this.sendResponse(res, 200, { 
-        message: 'Settings updated successfully',
+      this.sendResponse(res, 200, {
+        message: "Settings updated successfully",
         settings: Object.fromEntries(this.settings),
       });
     } catch (error) {
-      this.sendError(res, 500, 'Internal server error');
+      this.sendError(res, 500, "Internal server error");
     }
   };
 
   private handleRequest = async (req: IncomingMessage, res: ServerResponse) => {
-    const url = new URL(req.url || '', `http://localhost:${this.port}`);
+    const url = new URL(req.url || "", `http://localhost:${this.port}`);
     const path = url.pathname;
     const method = req.method;
 
     // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS",
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization",
+    );
 
-    if (method === 'OPTIONS') {
+    if (method === "OPTIONS") {
       res.writeHead(200);
       res.end();
       return;
     }
 
     // Route handling
-    if (path.startsWith('/api/auth/login') && method === 'POST') {
+    if (path.startsWith("/api/auth/login") && method === "POST") {
       return this.handleAuthLogin(req, res);
     }
-    if (path.startsWith('/api/auth/register') && method === 'POST') {
+    if (path.startsWith("/api/auth/register") && method === "POST") {
       return this.handleAuthRegister(req, res);
     }
-    if (path.startsWith('/api/auth/refresh') && method === 'POST') {
+    if (path.startsWith("/api/auth/refresh") && method === "POST") {
       return this.handleAuthRefresh(req, res);
     }
-    if (path.startsWith('/api/auth/profile') && method === 'GET') {
+    if (path.startsWith("/api/auth/profile") && method === "GET") {
       return this.handleAuthProfile(req, res);
     }
-    if (path.startsWith('/api/dashboard/stats') && method === 'GET') {
+    if (path.startsWith("/api/dashboard/stats") && method === "GET") {
       return this.handleDashboardStats(req, res);
     }
-    if (path.startsWith('/api/dashboard/charts') && method === 'GET') {
+    if (path.startsWith("/api/dashboard/charts") && method === "GET") {
       return this.handleDashboardCharts(req, res);
     }
-    if (path.startsWith('/api/dashboard/activity') && method === 'GET') {
+    if (path.startsWith("/api/dashboard/activity") && method === "GET") {
       return this.handleDashboardActivity(req, res);
     }
-    if (path.startsWith('/api/files') && method === 'GET') {
+    if (path.startsWith("/api/files") && method === "GET") {
       return this.handleFilesList(req, res);
     }
-    if (path.startsWith('/api/files/upload') && method === 'POST') {
+    if (path.startsWith("/api/files/upload") && method === "POST") {
       return this.handleFilesUpload(req, res);
     }
-    if (path.startsWith('/api/settings') && method === 'GET') {
+    if (path.startsWith("/api/settings") && method === "GET") {
       return this.handleSettingsGet(req, res);
     }
-    if (path.startsWith('/api/settings') && method === 'PUT') {
+    if (path.startsWith("/api/settings") && method === "PUT") {
       return this.handleSettingsUpdate(req, res);
     }
 
     // 404 for unmatched routes
-    this.sendError(res, 404, 'Endpoint not found');
+    this.sendError(res, 404, "Endpoint not found");
   };
 
   start(): Promise<void> {
     return new Promise((resolve) => {
       this.server = createServer(this.handleRequest);
       this.server.listen(this.port, () => {
-        console.log(`Mock backend server running on http://localhost:${this.port}`);
+        console.log(
+          `Mock backend server running on http://localhost:${this.port}`,
+        );
         resolve();
       });
     });
@@ -524,7 +580,7 @@ class MockBackendServer {
     return new Promise((resolve) => {
       if (this.server) {
         this.server.close(() => {
-          console.log('Mock backend server stopped');
+          console.log("Mock backend server stopped");
           resolve();
         });
       } else {
@@ -561,4 +617,11 @@ class MockBackendServer {
 }
 
 export { MockBackendServer };
-export type { User, AuthTokens, DashboardStats, ChartData, FileItem, ActivityItem };
+export type {
+  User,
+  AuthTokens,
+  DashboardStats,
+  ChartData,
+  FileItem,
+  ActivityItem,
+};

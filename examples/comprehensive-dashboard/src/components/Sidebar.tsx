@@ -15,37 +15,37 @@ const Sidebar: Component<SidebarProps> = (props) => {
   const menuItems = [
     {
       id: "dashboard",
-  label: t("nav.dashboard"),
+      label: t("nav.dashboard"),
       href: "/",
       icon: "📊",
     },
     {
       id: "charts",
-  label: t("nav.charts"),
+      label: t("nav.charts"),
       href: "/charts",
       icon: "📈",
     },
     {
       id: "components",
-  label: t("nav.components"),
+      label: t("nav.components"),
       href: "/components",
       icon: "🧩",
     },
     {
       id: "gallery",
-  label: t("nav.gallery"),
+      label: t("nav.gallery"),
       href: "/gallery",
       icon: "🖼️",
     },
     {
       id: "auth",
-  label: t("nav.auth"),
+      label: t("nav.auth"),
       href: "/auth",
       icon: "🔐",
     },
     {
       id: "settings",
-  label: t("nav.settings"),
+      label: t("nav.settings"),
       href: "/settings",
       icon: "⚙️",
     },
@@ -69,9 +69,7 @@ const Sidebar: Component<SidebarProps> = (props) => {
       </div>
 
       <nav class="sidebar__nav">
-        <NavMenu
-          items={menuItems}
-        />
+        <NavMenu items={menuItems} />
       </nav>
     </div>
   );

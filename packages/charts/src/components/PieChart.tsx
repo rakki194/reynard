@@ -210,7 +210,11 @@ export const PieChart: Component<PieChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: { label?: string; parsed: number; dataset: { data: number[] } }) => {
+            label: (context: {
+              label?: string;
+              parsed: number;
+              dataset: { data: number[] };
+            }) => {
               const label = context.label || "";
               const value = context.parsed;
               const total = context.dataset.data.reduce(
@@ -231,7 +235,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
       "reynard-pie-chart",
       `reynard-pie-chart--${local.variant}`,
     ];
-    
+
     if (local.responsive) {
       classes.push("reynard-pie-chart--responsive");
     } else {
@@ -250,13 +254,13 @@ export const PieChart: Component<PieChartProps> = (props) => {
         classes.push("reynard-pie-chart--fixed-custom");
       }
     }
-    
+
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
-  const ChartComponent = createMemo(() => 
-    local.variant === "doughnut" ? Doughnut : Pie
+  const ChartComponent = createMemo(() =>
+    local.variant === "doughnut" ? Doughnut : Pie,
   );
 
   return (

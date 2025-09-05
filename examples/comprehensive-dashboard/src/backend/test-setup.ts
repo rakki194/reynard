@@ -2,8 +2,8 @@
  * Test setup for backend API testing
  */
 
-import { beforeAll, afterAll, beforeEach } from 'vitest';
-import { MockBackendServer } from './mockServer';
+import { beforeAll, afterAll, beforeEach } from "vitest";
+import { MockBackendServer } from "./mockServer";
 
 // Global test server instance
 let testServer: MockBackendServer | null = null;
@@ -40,12 +40,12 @@ beforeEach(async () => {
 // Helper function to make API requests
 export const apiRequest = async (
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> => {
   const url = `http://localhost:3003/api${endpoint}`;
   return fetch(url, {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     },
     ...options,

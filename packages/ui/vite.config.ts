@@ -6,10 +6,7 @@ export default defineConfig({
   plugins: [solid()],
   build: {
     lib: {
-      entry: {
-        index: resolve(__dirname, "src/index.ts"),
-        styles: resolve(__dirname, "src/styles.css"),
-      },
+      entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardUI",
       fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
     },
@@ -29,7 +26,7 @@ export default defineConfig({
         },
         assetFileNames: (assetInfo) => {
           // Ensure consistent CSS naming - always use styles.css
-          if (assetInfo.name && assetInfo.name.includes('css')) {
+          if (assetInfo.name && assetInfo.name.includes("css")) {
             return "styles.css";
           }
           return assetInfo.name || "asset";

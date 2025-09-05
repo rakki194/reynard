@@ -119,20 +119,20 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 ## 📦 Packages
 
-| Package               | Description                      | Version |
-| --------------------- | -------------------------------- | ------- |
-| `@reynard/core`       | Core framework and utilities     | `0.1.0` |
-| `@reynard/components` | UI component library             | `0.1.0` |
-| `@reynard/auth`       | Authentication and user management | `0.1.0` |
-| `@reynard/charts`     | Data visualization components    | `0.1.0` |
-| `@reynard/gallery`    | File and media management        | `0.1.0` |
-| `@reynard/settings`   | Configuration management         | `0.1.0` |
-| `@reynard/file-processing` | Advanced file processing pipeline | `0.1.0` |
-| `@reynard/color-media` | Color and media utilities        | `0.1.0` |
-| `@reynard/ui`         | Additional UI components         | `0.1.0` |
-| `@reynard/themes`     | Theme system and built-in themes | `0.1.0` |
-| `@reynard/testing`    | Testing utilities and helpers    | `0.1.0` |
-| `@reynard/tools`      | Development tools and CLI        | `0.1.0` |
+| Package                    | Description                        | Version |
+| -------------------------- | ---------------------------------- | ------- |
+| `@reynard/core`            | Core framework and utilities       | `0.1.0` |
+| `@reynard/components`      | UI component library               | `0.1.0` |
+| `@reynard/auth`            | Authentication and user management | `0.1.0` |
+| `@reynard/charts`          | Data visualization components      | `0.1.0` |
+| `@reynard/gallery`         | File and media management          | `0.1.0` |
+| `@reynard/settings`        | Configuration management           | `0.1.0` |
+| `@reynard/file-processing` | Advanced file processing pipeline  | `0.1.0` |
+| `@reynard/color-media`     | Color and media utilities          | `0.1.0` |
+| `@reynard/ui`              | Additional UI components           | `0.1.0` |
+| `@reynard/themes`          | Theme system and built-in themes   | `0.1.0` |
+| `@reynard/testing`         | Testing utilities and helpers      | `0.1.0` |
+| `@reynard/tools`           | Development tools and CLI          | `0.1.0` |
 
 ## 🚀 Quick Start
 
@@ -234,14 +234,14 @@ my-reynard-app/
 #### `vite.config.ts`
 
 ```typescript
-import { defineConfig } from 'vite';
-import solid from 'vite-plugin-solid';
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
   plugins: [solid()],
   server: {
-    port: 3001
-  }
+    port: 3001,
+  },
 });
 ```
 
@@ -333,11 +333,11 @@ export default defineConfig({
 #### `src/main.tsx`
 
 ```tsx
-import { render } from 'solid-js/web';
-import './themes.css';
-import App from './App';
+import { render } from "solid-js/web";
+import "./themes.css";
+import App from "./App";
 
-render(() => <App />, document.getElementById('root')!);
+render(() => <App />, document.getElementById("root")!);
 ```
 
 ### Step 6: Main Application Component
@@ -411,12 +411,7 @@ Let's build a more comprehensive example - a todo application that demonstrates 
 #### Enhanced `src/App.tsx` for Todo App
 
 ```tsx
-import {
-  Component,
-  createSignal,
-  For,
-  createEffect,
-} from "solid-js";
+import { Component, createSignal, For, createEffect } from "solid-js";
 import {
   ThemeProvider,
   NotificationsProvider,
@@ -483,9 +478,7 @@ const TodoApp: Component = () => {
         <h1>🦊 Reynard Todo App</h1>
         <p>Built with SolidJS and Reynard framework</p>
         <div class="header-controls">
-          <div class="theme-info">
-            Current theme: {theme()}
-          </div>
+          <div class="theme-info">Current theme: {theme()}</div>
           <ThemeToggle />
         </div>
       </header>
@@ -629,17 +622,26 @@ export const ThemeToggle: Component = () => {
 
   const getThemeEmoji = (theme: string) => {
     switch (theme) {
-      case "light": return "☀️";
-      case "dark": return "🌙";
-      case "banana": return "🍌";
-      case "strawberry": return "🍓";
-      case "peanut": return "🥜";
-      default: return "🎨";
+      case "light":
+        return "☀️";
+      case "dark":
+        return "🌙";
+      case "banana":
+        return "🍌";
+      case "strawberry":
+        return "🍓";
+      case "peanut":
+        return "🥜";
+      default:
+        return "🎨";
     }
   };
 
   return (
-    <Button onClick={nextTheme} style="display: flex; align-items: center; gap: 0.5rem;">
+    <Button
+      onClick={nextTheme}
+      style="display: flex; align-items: center; gap: 0.5rem;"
+    >
       {getThemeEmoji(theme())} {theme()}
     </Button>
   );
@@ -727,7 +729,7 @@ export const ThemeToggle: Component = () => {
 .todo-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent)20;
+  box-shadow: 0 0 0 2px var(--accent) 20;
 }
 
 .todo-list {
@@ -834,16 +836,16 @@ export const ThemeToggle: Component = () => {
   .app-header {
     padding: 1rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .header-controls {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .add-todo {
     flex-direction: column;
   }
@@ -883,14 +885,14 @@ const i18nModule = createI18nModule({
       "app.title": "Aplicación de Tareas",
       "todo.add": "Agregar Tarea",
       "todo.placeholder": "¿Qué necesita hacerse?",
-    }
-  }
+    },
+  },
 });
 
 // Wrap your app
 <I18nProvider value={i18nModule}>
   <TodoApp />
-</I18nProvider>
+</I18nProvider>;
 ```
 
 #### Adding Local Storage Persistence
@@ -903,7 +905,7 @@ const TodoApp: Component = () => {
     { id: 1, text: "Learn SolidJS", completed: true },
     { id: 2, text: "Try Reynard framework", completed: false },
   ]);
-  
+
   // Todos will automatically persist to localStorage
   // and restore on page reload
 };
@@ -995,11 +997,11 @@ The foundation of the Reynard framework, providing essential utilities, composab
 #### Core Example Usage
 
 ```tsx
-import { 
-  useTheme, 
-  useNotifications, 
+import {
+  useTheme,
+  useNotifications,
   useLocalStorage,
-  useDebounce 
+  useDebounce,
 } from "@reynard/core";
 
 function MyComponent() {
@@ -1010,9 +1012,7 @@ function MyComponent() {
 
   return (
     <div>
-      <button onClick={() => setTheme("dark")}>
-        Switch to Dark Theme
-      </button>
+      <button onClick={() => setTheme("dark")}>Switch to Dark Theme</button>
       <button onClick={() => notify("Success!", "success")}>
         Show Notification
       </button>
@@ -1049,13 +1049,13 @@ Production-ready SolidJS component library with comprehensive theming and access
 #### Components Example Usage
 
 ```tsx
-import { 
-  Button, 
-  Card, 
-  TextField, 
-  Modal, 
+import {
+  Button,
+  Card,
+  TextField,
+  Modal,
   Tabs,
-  ChatContainer 
+  ChatContainer,
 } from "@reynard/components";
 
 function MyApp() {
@@ -1065,30 +1065,26 @@ function MyApp() {
   return (
     <div>
       <Card padding="lg">
-        <TextField 
-          label="Email" 
-          type="email" 
-          placeholder="Enter your email" 
-        />
+        <TextField label="Email" type="email" placeholder="Enter your email" />
         <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           Open Modal
         </Button>
       </Card>
 
-      <Modal 
-        open={isModalOpen()} 
+      <Modal
+        open={isModalOpen()}
         onClose={() => setIsModalOpen(false)}
         title="Example Modal"
       >
         <p>Modal content goes here</p>
       </Modal>
 
-      <Tabs 
-        activeTab={activeTab()} 
+      <Tabs
+        activeTab={activeTab()}
         onTabChange={setActiveTab}
         tabs={[
           { id: "tab1", label: "Overview" },
-          { id: "tab2", label: "Details" }
+          { id: "tab2", label: "Details" },
         ]}
       >
         <div slot="tab1">Overview content</div>
@@ -1138,20 +1134,20 @@ Complete authentication and user management system with JWT tokens, password str
 #### Auth Example Usage
 
 ```tsx
-import { 
-  AuthProvider, 
-  LoginForm, 
+import {
+  AuthProvider,
+  LoginForm,
   RegisterForm,
-  useAuthContext 
+  useAuthContext,
 } from "@reynard/auth";
 
 function App() {
   return (
-    <AuthProvider 
+    <AuthProvider
       config={{
         apiUrl: "/api/auth",
         tokenStorageKey: "auth_token",
-        refreshTokenStorageKey: "refresh_token"
+        refreshTokenStorageKey: "refresh_token",
       }}
     >
       <AuthApp />
@@ -1202,20 +1198,22 @@ Advanced data visualization components built on Chart.js with real-time updates 
 #### Charts Example Usage
 
 ```tsx
-import { 
-  LineChart, 
-  BarChart, 
-  PieChart, 
-  TimeSeriesChart 
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  TimeSeriesChart,
 } from "@reynard/charts";
 
 function Dashboard() {
   const salesData = {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-    datasets: [{
-      label: "Sales",
-      data: [12, 19, 3, 5, 2],
-    }]
+    datasets: [
+      {
+        label: "Sales",
+        data: [12, 19, 3, 5, 2],
+      },
+    ],
   };
 
   const performanceData = [
@@ -1228,7 +1226,13 @@ function Dashboard() {
   ];
 
   return (
-    <div style={{ display: "grid", "grid-template-columns": "1fr 1fr", gap: "2rem" }}>
+    <div
+      style={{
+        display: "grid",
+        "grid-template-columns": "1fr 1fr",
+        gap: "2rem",
+      }}
+    >
       <LineChart
         title="Sales Trend"
         labels={salesData.labels}
@@ -1289,11 +1293,9 @@ function FileManager() {
       { id: "1", name: "document.pdf", type: "file", size: 1024 },
       { id: "2", name: "image.jpg", type: "file", size: 2048 },
     ],
-    folders: [
-      { id: "3", name: "Documents", type: "folder" }
-    ],
+    folders: [{ id: "3", name: "Documents", type: "folder" }],
     currentPath: "/",
-    breadcrumbs: [{ name: "Home", path: "/" }]
+    breadcrumbs: [{ name: "Home", path: "/" }],
   });
 
   return (
@@ -1350,10 +1352,10 @@ Comprehensive configuration management system with validation, persistence, and 
 #### Settings Example Usage
 
 ```tsx
-import { 
-  SettingsPanel, 
+import {
+  SettingsPanel,
   SettingsProvider,
-  useSettings 
+  useSettings,
 } from "@reynard/settings";
 
 const settingsSchema = {
@@ -1365,24 +1367,24 @@ const settingsSchema = {
       defaultValue: "light",
       options: [
         { value: "light", label: "Light" },
-        { value: "dark", label: "Dark" }
-      ]
-    }
+        { value: "dark", label: "Dark" },
+      ],
+    },
   },
   behavior: {
     autoSave: {
       key: "behavior.autoSave",
       label: "Auto Save",
       type: "boolean",
-      defaultValue: true
-    }
-  }
+      defaultValue: true,
+    },
+  },
 };
 
 function App() {
   return (
     <SettingsProvider config={{ schema: settingsSchema }}>
-      <SettingsPanel 
+      <SettingsPanel
         title="Application Settings"
         showSearch={true}
         showCategories={true}
@@ -1416,10 +1418,10 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 #### File Processing Example Usage
 
 ```tsx
-import { 
-  ThumbnailGenerator, 
+import {
+  ThumbnailGenerator,
   MetadataExtractor,
-  useFileProcessing 
+  useFileProcessing,
 } from "@reynard/file-processing";
 
 function FileProcessor() {
@@ -1430,7 +1432,7 @@ function FileProcessor() {
     const thumbnail = await generateThumbnail(file, {
       width: 200,
       height: 200,
-      quality: 0.8
+      quality: 0.8,
     });
 
     // Extract metadata
@@ -1441,10 +1443,7 @@ function FileProcessor() {
   };
 
   return (
-    <input 
-      type="file" 
-      onChange={(e) => handleFileUpload(e.target.files[0])}
-    />
+    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
   );
 }
 ```
@@ -1454,7 +1453,7 @@ function FileProcessor() {
 Reynard includes a comprehensive theming system with 8 built-in themes:
 
 - **Light** - Clean and bright
-- **Dark** - Easy on the eyes  
+- **Dark** - Easy on the eyes
 - **Gray** - Professional neutral
 - **Banana** - Warm and cheerful
 - **Strawberry** - Vibrant and energetic
@@ -1476,8 +1475,8 @@ const customTheme = createTheme({
     secondary: "#00aaff",
     background: "#f0f8ff",
     surface: "#ffffff",
-    text: "#001122"
-  }
+    text: "#001122",
+  },
 });
 ```
 
@@ -1634,8 +1633,8 @@ const { t, locale, setLocale } = useI18n();
 </Button>
 
 // Card with header and footer
-<Card 
-  variant="elevated" 
+<Card
+  variant="elevated"
   padding="lg"
   header={<h3>Title</h3>}
   footer={<Button>Action</Button>}

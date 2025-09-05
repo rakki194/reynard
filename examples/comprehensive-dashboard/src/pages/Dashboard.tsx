@@ -71,11 +71,9 @@ const Dashboard: Component = () => {
 
   const refreshData = () => {
     setData(generateMockData());
-    notifications.notify(
-      "Dashboard data refreshed",
-      "success",
-      { duration: 3000 }
-    );
+    notifications.notify("Dashboard data refreshed", "success", {
+      duration: 3000,
+    });
   };
 
   const recentActivities = [

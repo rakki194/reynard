@@ -12,7 +12,7 @@ import "./Gallery.css";
 export function Gallery() {
   const { t } = useI18n();
   const [currentPath, setCurrentPath] = createSignal<string[]>([]);
-  
+
   // Sample gallery data with proper structure
   const sampleData = createMemo(
     (): GalleryData => ({
@@ -22,7 +22,7 @@ export function Gallery() {
           id: "1",
           name: "landscape.jpg",
           type: "image",
-      size: 1024000,
+          size: 1024000,
           mimeType: "image/jpeg",
           lastModified: new Date("2023-01-15").getTime(),
           path: "/landscape.jpg",
@@ -92,7 +92,7 @@ export function Gallery() {
           previewUrl: "https://picsum.photos/400/300?random=4",
           downloadUrl: "https://picsum.photos/400/300?random=4",
           favorited: false,
-      metadata: {
+          metadata: {
             width: 2048,
             height: 1365,
             aspectRatio: 3 / 2,
@@ -352,14 +352,14 @@ export function Gallery() {
 
       {/* Stats Cards */}
       <div class="gallery-stats">
-          <Card>
+        <Card>
           <div class="stat-card">
             <div class="stat-icon stat-icon--images">🖼️</div>
             <div class="stat-content">
               <div class="stat-value">{stats().images}</div>
               <div class="stat-label">Images</div>
-                </div>
-              </div>
+            </div>
+          </div>
         </Card>
 
         <Card>
@@ -369,18 +369,18 @@ export function Gallery() {
               <div class="stat-value">{stats().videos}</div>
               <div class="stat-label">Videos</div>
             </div>
-            </div>
-          </Card>
+          </div>
+        </Card>
 
-          <Card>
+        <Card>
           <div class="stat-card">
             <div class="stat-icon stat-icon--audio">🎵</div>
             <div class="stat-content">
               <div class="stat-value">{stats().audio}</div>
               <div class="stat-label">Audio</div>
             </div>
-            </div>
-          </Card>
+          </div>
+        </Card>
 
         <Card>
           <div class="stat-card">
@@ -391,7 +391,7 @@ export function Gallery() {
             </div>
           </div>
         </Card>
-        
+
         <Card>
           <div class="stat-card">
             <div class="stat-icon stat-icon--folders">📁</div>
@@ -401,7 +401,7 @@ export function Gallery() {
             </div>
           </div>
         </Card>
-        
+
         <Card>
           <div class="stat-card">
             <div class="stat-icon stat-icon--favorites">⭐</div>
@@ -411,7 +411,7 @@ export function Gallery() {
             </div>
           </div>
         </Card>
-        
+
         <Card>
           <div class="stat-card">
             <div class="stat-icon stat-icon--size">💾</div>

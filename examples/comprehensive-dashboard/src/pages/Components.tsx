@@ -1,11 +1,5 @@
 import { createSignal, For, Show } from "solid-js";
-import {
-  Grid,
-  DataTable,
-  Drawer,
-  NavMenu,
-  Breadcrumb,
-} from "@reynard/ui";
+import { Grid, DataTable, Drawer, NavMenu, Breadcrumb } from "@reynard/ui";
 import {
   Card,
   Modal,
@@ -72,9 +66,24 @@ export function Components() {
   ];
 
   const tableColumns: Column<unknown>[] = [
-    { id: "name", header: t("components.table.name"), accessor: (row: unknown) => (row as TableRow).name, sortable: true },
-    { id: "email", header: t("components.table.email"), accessor: (row: unknown) => (row as TableRow).email, sortable: true },
-    { id: "role", header: t("components.table.role"), accessor: (row: unknown) => (row as TableRow).role, sortable: false },
+    {
+      id: "name",
+      header: t("components.table.name"),
+      accessor: (row: unknown) => (row as TableRow).name,
+      sortable: true,
+    },
+    {
+      id: "email",
+      header: t("components.table.email"),
+      accessor: (row: unknown) => (row as TableRow).email,
+      sortable: true,
+    },
+    {
+      id: "role",
+      header: t("components.table.role"),
+      accessor: (row: unknown) => (row as TableRow).role,
+      sortable: false,
+    },
     {
       id: "status",
       header: t("components.table.status"),
@@ -96,7 +105,11 @@ export function Components() {
 
   const breadcrumbItems = [
     { id: "home", label: t("components.breadcrumb.home"), href: "/" },
-    { id: "components", label: t("components.breadcrumb.components"), href: "/components" },
+    {
+      id: "components",
+      label: t("components.breadcrumb.components"),
+      href: "/components",
+    },
     { id: "showcase", label: t("components.breadcrumb.showcase") },
   ];
 
@@ -165,9 +178,12 @@ export function Components() {
                     <Button
                       variant="primary"
                       onClick={() =>
-                        notify(t("components.primitives.buttons.clicked", {
-                          variant: "Primary",
-                        }), "success")
+                        notify(
+                          t("components.primitives.buttons.clicked", {
+                            variant: "Primary",
+                          }),
+                          "success",
+                        )
                       }
                     >
                       {t("components.primitives.buttons.primary")}
@@ -175,9 +191,12 @@ export function Components() {
                     <Button
                       variant="secondary"
                       onClick={() =>
-                        notify(t("components.primitives.buttons.clicked", {
-                          variant: "Secondary",
-                        }), "info")
+                        notify(
+                          t("components.primitives.buttons.clicked", {
+                            variant: "Secondary",
+                          }),
+                          "info",
+                        )
                       }
                     >
                       {t("components.primitives.buttons.secondary")}
@@ -185,9 +204,12 @@ export function Components() {
                     <Button
                       variant="tertiary"
                       onClick={() =>
-                        notify(t("components.primitives.buttons.clicked", {
-                          variant: "Tertiary",
-                        }), "info")
+                        notify(
+                          t("components.primitives.buttons.clicked", {
+                            variant: "Tertiary",
+                          }),
+                          "info",
+                        )
                       }
                     >
                       {t("components.primitives.buttons.tertiary")}
@@ -195,9 +217,12 @@ export function Components() {
                     <Button
                       variant="ghost"
                       onClick={() =>
-                        notify(t("components.primitives.buttons.clicked", {
-                          variant: "Ghost",
-                        }), "info")
+                        notify(
+                          t("components.primitives.buttons.clicked", {
+                            variant: "Ghost",
+                          }),
+                          "info",
+                        )
                       }
                     >
                       {t("components.primitives.buttons.ghost")}
@@ -205,9 +230,12 @@ export function Components() {
                     <Button
                       variant="danger"
                       onClick={() =>
-                        notify(t("components.primitives.buttons.clicked", {
-                          variant: "Danger",
-                        }), "warning")
+                        notify(
+                          t("components.primitives.buttons.clicked", {
+                            variant: "Danger",
+                          }),
+                          "warning",
+                        )
                       }
                     >
                       {t("components.primitives.buttons.danger")}
@@ -382,9 +410,12 @@ export function Components() {
                     data={tableData}
                     columns={tableColumns}
                     onRowClick={(row: unknown) =>
-                      notify(t("components.data.table.rowClicked", {
-                        name: (row as TableRow).name,
-                      }), "info")
+                      notify(
+                        t("components.data.table.rowClicked", {
+                          name: (row as TableRow).name,
+                        }),
+                        "info",
+                      )
                     }
                   />
                 </div>
@@ -401,9 +432,12 @@ export function Components() {
                     <NavMenu
                       items={navMenuItems}
                       onItemClick={(item) =>
-                        notify(t("components.navigation.menu.clicked", {
-                          label: item.label,
-                        }), "info")
+                        notify(
+                          t("components.navigation.menu.clicked", {
+                            label: item.label,
+                          }),
+                          "info",
+                        )
                       }
                     />
                   </div>
@@ -416,9 +450,12 @@ export function Components() {
                   <Breadcrumb
                     items={breadcrumbItems}
                     onItemClick={(item) =>
-                      notify(t("components.navigation.breadcrumb.clicked", {
-                        label: item.label,
-                      }), "info")
+                      notify(
+                        t("components.navigation.breadcrumb.clicked", {
+                          label: item.label,
+                        }),
+                        "info",
+                      )
                     }
                   />
                 </div>

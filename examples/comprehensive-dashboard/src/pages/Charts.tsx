@@ -82,26 +82,11 @@ export function Charts() {
     const data = getCurrentData();
     switch (chartType()) {
       case "line":
-        return (
-          <LineChart
-            labels={data.labels}
-            datasets={data.datasets}
-          />
-        );
+        return <LineChart labels={data.labels} datasets={data.datasets} />;
       case "bar":
-        return (
-          <BarChart
-            labels={data.labels}
-            datasets={data.datasets}
-          />
-        );
+        return <BarChart labels={data.labels} datasets={data.datasets} />;
       case "pie":
-        return (
-          <PieChart
-            labels={data.labels}
-            data={data.datasets[0].data}
-          />
-        );
+        return <PieChart labels={data.labels} data={data.datasets[0].data} />;
       case "timeseries":
         // Convert to array of TimeSeriesDataPoint objects
         const timeSeriesPoints = data.labels.map((label, idx) => ({
@@ -109,18 +94,9 @@ export function Charts() {
           value: data.datasets[0].data[idx],
           label,
         }));
-        return (
-          <TimeSeriesChart
-            data={timeSeriesPoints}
-          />
-        );
+        return <TimeSeriesChart data={timeSeriesPoints} />;
       default:
-        return (
-          <LineChart
-            labels={data.labels}
-            datasets={data.datasets}
-          />
-        );
+        return <LineChart labels={data.labels} datasets={data.datasets} />;
     }
   };
 
@@ -169,7 +145,13 @@ export function Charts() {
             <div class="h-64">
               <BarChart
                 labels={["Q1", "Q2", "Q3", "Q4"]}
-                datasets={[{ label: "2022", data: [10, 20, 30, 40], backgroundColor: "rgba(255, 99, 132, 0.5)" }]}
+                datasets={[
+                  {
+                    label: "2022",
+                    data: [10, 20, 30, 40],
+                    backgroundColor: "rgba(255, 99, 132, 0.5)",
+                  },
+                ]}
               />
             </div>
           </div>
@@ -185,7 +167,14 @@ export function Charts() {
             <div class="h-32">
               <LineChart
                 labels={["Week 1", "Week 2", "Week 3", "Week 4"]}
-                datasets={[{ label: "Revenue", data: [1000, 1500, 1200, 1800], borderColor: "rgba(75, 192, 192, 1)", backgroundColor: "rgba(75, 192, 192, 0.2)" }]}
+                datasets={[
+                  {
+                    label: "Revenue",
+                    data: [1000, 1500, 1200, 1800],
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                  },
+                ]}
               />
             </div>
           </div>
@@ -213,7 +202,18 @@ export function Charts() {
             <div class="h-32">
               <BarChart
                 labels={["CPU", "Memory", "Disk", "Network"]}
-                datasets={[{ label: "Performance", data: [65, 45, 30, 85], backgroundColor: ["rgba(153, 102, 255, 0.8)", "rgba(255, 159, 64, 0.8)", "rgba(75, 192, 192, 0.8)", "rgba(255, 99, 132, 0.8)"] }]}
+                datasets={[
+                  {
+                    label: "Performance",
+                    data: [65, 45, 30, 85],
+                    backgroundColor: [
+                      "rgba(153, 102, 255, 0.8)",
+                      "rgba(255, 159, 64, 0.8)",
+                      "rgba(75, 192, 192, 0.8)",
+                      "rgba(255, 99, 132, 0.8)",
+                    ],
+                  },
+                ]}
               />
             </div>
           </div>

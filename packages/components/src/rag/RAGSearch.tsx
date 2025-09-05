@@ -1,41 +1,47 @@
 /**
  * RAG Search Component
- * 
+ *
  * A comprehensive search interface for RAG (Retrieval-Augmented Generation) systems
  * with EmbeddingGemma integration.
  */
 
-import { createSignal, createEffect, onMount, Show, For } from 'solid-js';
-import { createStore } from 'solid-js/store';
-import { Button } from '../ui/Button';
-import { Input } from '../ui/Input';
-import { Card } from '../ui/Card';
-import { Badge } from '../ui/Badge';
-import { Spinner } from '../ui/Spinner';
-import { Alert } from '../ui/Alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs';
-import { Slider } from '../ui/Slider';
-import { Switch } from '../ui/Switch';
-import { Label } from '../ui/Label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select';
-import { Textarea } from '../ui/Textarea';
-import { FileUpload } from '../ui/FileUpload';
-import { Progress } from '../ui/Progress';
-import { Separator } from '../ui/Separator';
-import { 
-  Search, 
-  Upload, 
-  FileText, 
-  Code, 
-  Database, 
-  Settings, 
+import { createSignal, createEffect, onMount, Show, For } from "solid-js";
+import { createStore } from "solid-js/store";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
+import { Card } from "../ui/Card";
+import { Badge } from "../ui/Badge";
+import { Spinner } from "../ui/Spinner";
+import { Alert } from "../ui/Alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/Tabs";
+import { Slider } from "../ui/Slider";
+import { Switch } from "../ui/Switch";
+import { Label } from "../ui/Label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/Select";
+import { Textarea } from "../ui/Textarea";
+import { FileUpload } from "../ui/FileUpload";
+import { Progress } from "../ui/Progress";
+import { Separator } from "../ui/Separator";
+import {
+  Search,
+  Upload,
+  FileText,
+  Code,
+  Database,
+  Settings,
   Download,
   Trash2,
   Eye,
   Clock,
   Zap,
-  Brain
-} from 'lucide-solid';
+  Brain,
+} from "lucide-solid";
 
 // Types
 interface RAGResult {
@@ -101,26 +107,33 @@ interface RAGSearchProps {
 
 export function RAGSearch(props: RAGSearchProps) {
   // Signals
-  const [query, setQuery] = createSignal('');
+  const [query, setQuery] = createSignal("");
   const [isSearching, setIsSearching] = createSignal(false);
   const [results, setResults] = createSignal<RAGResult[]>([]);
-  const [queryResponse, setQueryResponse] = createSignal<RAGQueryResponse | null>(null);
+  const [queryResponse, setQueryResponse] =
+    createSignal<RAGQueryResponse | null>(null);
   const [documents, setDocuments] = createStore<RAGDocument[]>([]);
   const [stats, setStats] = createSignal<RAGStats | null>(null);
   const [error, setError] = createSignal<string | null>(null);
-  const [activeTab, setActiveTab] = createSignal('search');
-  
+  const [activeTab, setActiveTab] = createSignal("search");
+
   // Search settings
-  const [embeddingModel, setEmbeddingModel] = createSignal(props.defaultModel || 'embeddinggemma:latest');
+  const [embeddingModel, setEmbeddingModel] = createSignal(
+    props.defaultModel || "embeddinggemma:latest",
+  );
   const [maxResults, setMaxResults] = createSignal(props.maxResults || 10);
-  const [similarityThreshold, setSimilarityThreshold] = createSignal(props.similarityThreshold || 0.7);
-  const [enableReranking, setEnableReranking] = createSignal(props.enableReranking || false);
-  
+  const [similarityThreshold, setSimilarityThreshold] = createSignal(
+    props.similarityThreshold || 0.7,
+  );
+  const [enableReranking, setEnableReranking] = createSignal(
+    props.enableReranking || false,
+  );
+
   // Upload state
   const [isUploading, setIsUploading] = createSignal(false);
   const [uploadProgress, setUploadProgress] = createSignal(0);
-  
-  const apiBaseUrl = props.apiBaseUrl || 'http://localhost:8000';
+
+  const apiBaseUrl = props.apiBaseUrl || "http://localhost:8000";
 
   // Load initial data
   onMount(() => {
@@ -133,7 +146,7 @@ export function RAGSearch(props: RAGSearchProps) {
     try {
       const response = await fetch(`${apiBaseUrl}${endpoint}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...options.headers,
         },
         ...options,
@@ -145,7 +158,7 @@ export function RAGSearch(props: RAGSearchProps) {
 
       return await response.json();
     } catch (err) {
-      console.error('API call failed:', err);
+      console.error("API call failed:", err);
       throw err;
     }
   };
@@ -157,8 +170,8 @@ export function RAGSearch(props: RAGSearchProps) {
     setError(null);
 
     try {
-      const response = await apiCall('/api/rag/query', {
-        method: 'POST',
+      const response = await apiCall("/api/rag/query", {
+        method: "POST",
         body: JSON.stringify({
           query: searchQuery,
           embedding_model: embeddingModel(),
@@ -171,7 +184,7 @@ export function RAGSearch(props: RAGSearchProps) {
       setResults(response.results);
       setQueryResponse(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Search failed');
+      setError(err instanceof Error ? err.message : "Search failed");
     } finally {
       setIsSearching(false);
     }
@@ -179,19 +192,19 @@ export function RAGSearch(props: RAGSearchProps) {
 
   const loadDocuments = async () => {
     try {
-      const response = await apiCall('/api/rag/documents');
+      const response = await apiCall("/api/rag/documents");
       setDocuments(response);
     } catch (err) {
-      console.error('Failed to load documents:', err);
+      console.error("Failed to load documents:", err);
     }
   };
 
   const loadStats = async () => {
     try {
-      const response = await apiCall('/api/rag/stats');
+      const response = await apiCall("/api/rag/stats");
       setStats(response);
     } catch (err) {
-      console.error('Failed to load stats:', err);
+      console.error("Failed to load stats:", err);
     }
   };
 
@@ -202,11 +215,11 @@ export function RAGSearch(props: RAGSearchProps) {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('generate_embeddings', 'true');
+      formData.append("file", file);
+      formData.append("generate_embeddings", "true");
 
       const response = await fetch(`${apiBaseUrl}/api/rag/ingest/file`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
@@ -216,14 +229,14 @@ export function RAGSearch(props: RAGSearchProps) {
 
       const result = await response.json();
       setUploadProgress(100);
-      
+
       // Reload documents and stats
       await loadDocuments();
       await loadStats();
-      
+
       props.onDocumentUpload?.(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed');
+      setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setIsUploading(false);
       setTimeout(() => setUploadProgress(0), 1000);
@@ -233,13 +246,13 @@ export function RAGSearch(props: RAGSearchProps) {
   const deleteDocument = async (documentId: string) => {
     try {
       await apiCall(`/api/rag/documents/${documentId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
-      
+
       await loadDocuments();
       await loadStats();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Delete failed');
+      setError(err instanceof Error ? err.message : "Delete failed");
     }
   };
 
@@ -249,7 +262,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSearch();
     }
@@ -264,7 +277,7 @@ export function RAGSearch(props: RAGSearchProps) {
   const currentStats = () => stats();
 
   return (
-    <div class={`rag-search ${props.className || ''}`}>
+    <div class={`rag-search ${props.className || ""}`}>
       <Tabs value={activeTab()} onValueChange={setActiveTab}>
         <TabsList class="grid w-full grid-cols-4">
           <TabsTrigger value="search" class="flex items-center gap-2">
@@ -298,8 +311,8 @@ export function RAGSearch(props: RAGSearchProps) {
                   class="flex-1"
                   disabled={isSearching()}
                 />
-                <Button 
-                  onClick={handleSearch} 
+                <Button
+                  onClick={handleSearch}
                   disabled={isSearching() || !query().trim()}
                   class="px-6"
                 >
@@ -312,9 +325,7 @@ export function RAGSearch(props: RAGSearchProps) {
               </div>
 
               <Show when={error()}>
-                <Alert variant="destructive">
-                  {error()}
-                </Alert>
+                <Alert variant="destructive">{error()}</Alert>
               </Show>
 
               <Show when={queryResponse()}>
@@ -344,32 +355,29 @@ export function RAGSearch(props: RAGSearchProps) {
             <div class="space-y-3">
               <For each={results()}>
                 {(result, index) => (
-                  <Card 
+                  <Card
                     class="p-4 cursor-pointer hover:shadow-md transition-shadow"
                     onClick={() => handleResultClick(result)}
                   >
                     <div class="space-y-2">
                       <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                          <Badge variant="secondary">
-                            #{result.rank}
-                          </Badge>
+                          <Badge variant="secondary">#{result.rank}</Badge>
                           <Badge variant="outline">
-                            {result.metadata.embedding_model || 'unknown'}
+                            {result.metadata.embedding_model || "unknown"}
                           </Badge>
                           <span class="text-sm text-muted-foreground">
-                            {result.metadata.document_source || 'Unknown source'}
+                            {result.metadata.document_source ||
+                              "Unknown source"}
                           </span>
                         </div>
                         <Badge variant="default">
                           {(result.similarity_score * 100).toFixed(1)}%
                         </Badge>
                       </div>
-                      
-                      <p class="text-sm leading-relaxed">
-                        {result.text}
-                      </p>
-                      
+
+                      <p class="text-sm leading-relaxed">{result.text}</p>
+
                       <div class="flex items-center gap-2 text-xs text-muted-foreground">
                         <span>Chunk ID: {result.chunk_id}</span>
                         <span>•</span>
@@ -392,7 +400,7 @@ export function RAGSearch(props: RAGSearchProps) {
                 Refresh
               </Button>
             </div>
-            
+
             <div class="space-y-3">
               <For each={documents}>
                 {(doc) => (
@@ -411,8 +419,8 @@ export function RAGSearch(props: RAGSearchProps) {
                         <Button variant="ghost" size="sm">
                           <Eye class="h-4 w-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="sm"
                           onClick={() => deleteDocument(doc.id)}
                         >
@@ -431,13 +439,13 @@ export function RAGSearch(props: RAGSearchProps) {
         <TabsContent value="upload" class="space-y-4">
           <Card class="p-6">
             <h3 class="text-lg font-semibold mb-4">Upload Documents</h3>
-            
+
             <FileUpload
               onFileSelect={uploadFile}
               accept=".txt,.md,.py,.js,.ts,.json,.yaml,.yml,.html"
               disabled={isUploading()}
             />
-            
+
             <Show when={isUploading()}>
               <div class="mt-4">
                 <Progress value={uploadProgress()} />
@@ -453,19 +461,30 @@ export function RAGSearch(props: RAGSearchProps) {
         <TabsContent value="settings" class="space-y-4">
           <Card class="p-6">
             <h3 class="text-lg font-semibold mb-4">Search Settings</h3>
-            
+
             <div class="space-y-6">
               <div class="space-y-2">
                 <Label>Embedding Model</Label>
-                <Select value={embeddingModel()} onValueChange={setEmbeddingModel}>
+                <Select
+                  value={embeddingModel()}
+                  onValueChange={setEmbeddingModel}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="embeddinggemma:latest">EmbeddingGemma (Latest)</SelectItem>
-                    <SelectItem value="embeddinggemma:300m">EmbeddingGemma (300M)</SelectItem>
-                    <SelectItem value="mxbai-embed-large">MXBAI Embed Large</SelectItem>
-                    <SelectItem value="nomic-embed-text">Nomic Embed Text</SelectItem>
+                    <SelectItem value="embeddinggemma:latest">
+                      EmbeddingGemma (Latest)
+                    </SelectItem>
+                    <SelectItem value="embeddinggemma:300m">
+                      EmbeddingGemma (300M)
+                    </SelectItem>
+                    <SelectItem value="mxbai-embed-large">
+                      MXBAI Embed Large
+                    </SelectItem>
+                    <SelectItem value="nomic-embed-text">
+                      Nomic Embed Text
+                    </SelectItem>
                     <SelectItem value="all-minilm">All-MiniLM</SelectItem>
                   </SelectContent>
                 </Select>
@@ -483,7 +502,10 @@ export function RAGSearch(props: RAGSearchProps) {
               </div>
 
               <div class="space-y-2">
-                <Label>Similarity Threshold: {(similarityThreshold() * 100).toFixed(0)}%</Label>
+                <Label>
+                  Similarity Threshold:{" "}
+                  {(similarityThreshold() * 100).toFixed(0)}%
+                </Label>
                 <Slider
                   value={[similarityThreshold()]}
                   onValueChange={(value) => setSimilarityThreshold(value[0])}
@@ -506,25 +528,35 @@ export function RAGSearch(props: RAGSearchProps) {
           <Show when={currentStats()}>
             <Card class="p-6">
               <h3 class="text-lg font-semibold mb-4">System Statistics</h3>
-              
+
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">Total Documents</div>
-                  <div class="text-2xl font-bold">{currentStats()!.total_documents}</div>
+                  <div class="text-sm text-muted-foreground">
+                    Total Documents
+                  </div>
+                  <div class="text-2xl font-bold">
+                    {currentStats()!.total_documents}
+                  </div>
                 </div>
                 <div class="space-y-2">
                   <div class="text-sm text-muted-foreground">Total Chunks</div>
-                  <div class="text-2xl font-bold">{currentStats()!.total_chunks}</div>
+                  <div class="text-2xl font-bold">
+                    {currentStats()!.total_chunks}
+                  </div>
                 </div>
                 <div class="space-y-2">
-                  <div class="text-sm text-muted-foreground">Embedding Coverage</div>
+                  <div class="text-sm text-muted-foreground">
+                    Embedding Coverage
+                  </div>
                   <div class="text-2xl font-bold">
                     {(currentStats()!.embedding_coverage * 100).toFixed(1)}%
                   </div>
                 </div>
                 <div class="space-y-2">
                   <div class="text-sm text-muted-foreground">Default Model</div>
-                  <div class="text-sm font-mono">{currentStats()!.default_model}</div>
+                  <div class="text-sm font-mono">
+                    {currentStats()!.default_model}
+                  </div>
                 </div>
               </div>
             </Card>

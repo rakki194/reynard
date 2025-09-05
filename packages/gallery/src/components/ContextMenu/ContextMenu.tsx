@@ -199,8 +199,8 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
   // Computed values
   const setMenuPosition = () => {
     if (menuRef) {
-      menuRef.style.setProperty('--context-menu-x', `${local.x}px`);
-      menuRef.style.setProperty('--context-menu-y', `${local.y}px`);
+      menuRef.style.setProperty("--context-menu-x", `${local.x}px`);
+      menuRef.style.setProperty("--context-menu-y", `${local.y}px`);
     }
   };
 
@@ -211,8 +211,14 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
       );
       if (itemElement) {
         const rect = itemElement.getBoundingClientRect();
-        submenuRef.style.setProperty('--context-menu-submenu-x', `${rect.right + 4}px`);
-        submenuRef.style.setProperty('--context-menu-submenu-y', `${rect.top}px`);
+        submenuRef.style.setProperty(
+          "--context-menu-submenu-x",
+          `${rect.right + 4}px`,
+        );
+        submenuRef.style.setProperty(
+          "--context-menu-submenu-y",
+          `${rect.top}px`,
+        );
       }
     }
   };
@@ -237,7 +243,10 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
     <Show when={local.visible}>
       <>
         {/* Backdrop */}
-        <div class="reynard-context-menu__backdrop" onClick={() => local.onClose()} />
+        <div
+          class="reynard-context-menu__backdrop"
+          onClick={() => local.onClose()}
+        />
 
         {/* Main Menu */}
         <div
@@ -295,7 +304,9 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
                 <>
                   <div
                     class={`reynard-context-menu__item ${
-                      item.disabled ? "reynard-context-menu__item--disabled" : ""
+                      item.disabled
+                        ? "reynard-context-menu__item--disabled"
+                        : ""
                     }`}
                     role="menuitem"
                     onClick={() => handleItemClick(item)}

@@ -35,12 +35,12 @@ declare global {
 const sanitizeHTML = (html: string): string => {
   // Remove potentially dangerous tags and attributes
   return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
-    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '')
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, "")
+    .replace(/javascript:/gi, "")
+    .replace(/on\w+\s*=/gi, "")
     .replace(/<a[^>]*href\s*=\s*["']?javascript:/gi, '<a href="#"');
 };
 
@@ -136,11 +136,7 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
       }
 
       // Apply math rendering if available
-      if (
-        props.enableMath &&
-        typeof window !== "undefined" &&
-        window.MathJax
-      ) {
+      if (props.enableMath && typeof window !== "undefined" && window.MathJax) {
         window.MathJax!.typesetPromise([containerRef]);
       }
 

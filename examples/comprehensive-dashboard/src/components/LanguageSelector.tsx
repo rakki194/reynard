@@ -3,7 +3,6 @@ import { useI18n } from "@reynard/core";
 import { Select } from "@reynard/components";
 
 const LanguageSelector: Component = () => {
-
   const { locale, setLocale, languages } = useI18n();
 
   const languageOptions = languages.map((l) => ({

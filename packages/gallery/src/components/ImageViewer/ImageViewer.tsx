@@ -190,8 +190,12 @@ export const ImageViewer: Component<ImageViewerProps> = (props) => {
   const imageClasses = () => {
     const currentState = state();
     const baseClass = "reynard-image-viewer__image";
-    const draggingClass = currentState.isDragging ? " reynard-image-viewer__image--dragging" : "";
-    const panEnabledClass = local.enablePan ? " reynard-image-viewer__image--pan-enabled" : "";
+    const draggingClass = currentState.isDragging
+      ? " reynard-image-viewer__image--dragging"
+      : "";
+    const panEnabledClass = local.enablePan
+      ? " reynard-image-viewer__image--pan-enabled"
+      : "";
     return baseClass + draggingClass + panEnabledClass;
   };
 
@@ -199,9 +203,9 @@ export const ImageViewer: Component<ImageViewerProps> = (props) => {
   createEffect(() => {
     const currentState = state();
     if (containerRef) {
-      containerRef.style.setProperty('--pan-x', `${currentState.panX}px`);
-      containerRef.style.setProperty('--pan-y', `${currentState.panY}px`);
-      containerRef.style.setProperty('--zoom', currentState.zoom.toString());
+      containerRef.style.setProperty("--pan-x", `${currentState.panX}px`);
+      containerRef.style.setProperty("--pan-y", `${currentState.panY}px`);
+      containerRef.style.setProperty("--zoom", currentState.zoom.toString());
     }
   });
 

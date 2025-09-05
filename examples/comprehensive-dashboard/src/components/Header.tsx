@@ -20,17 +20,11 @@ const Header: Component<HeaderProps> = (props) => {
   const handleLogout = async () => {
     try {
       await logout();
-      notifications.notify(
-        "Logged out successfully",
-        "success",
-        { duration: 3000 }
-      );
+      notifications.notify("Logged out successfully", "success", {
+        duration: 3000,
+      });
     } catch (error) {
-      notifications.notify(
-        "Failed to logout",
-        "error",
-        { duration: 5000 }
-      );
+      notifications.notify("Failed to logout", "error", { duration: 5000 });
     }
   };
 

@@ -73,16 +73,26 @@ export const Grid: Component<GridProps> = (props) => {
       // Handle string gaps by adding custom gap class
       classes.push("reynard-grid--custom-gap");
       // Add specific gap size classes for common values
-      if (local.gap === "0.25rem") classes.push("reynard-grid--custom-gap-025rem");
-      else if (local.gap === "0.5rem") classes.push("reynard-grid--custom-gap-05rem");
-      else if (local.gap === "1rem") classes.push("reynard-grid--custom-gap-1rem");
-      else if (local.gap === "1.5rem") classes.push("reynard-grid--custom-gap-15rem");
-      else if (local.gap === "2rem") classes.push("reynard-grid--custom-gap-2rem");
-      else if (local.gap === "4px") classes.push("reynard-grid--custom-gap-4px");
-      else if (local.gap === "8px") classes.push("reynard-grid--custom-gap-8px");
-      else if (local.gap === "16px") classes.push("reynard-grid--custom-gap-16px");
-      else if (local.gap === "24px") classes.push("reynard-grid--custom-gap-24px");
-      else if (local.gap === "32px") classes.push("reynard-grid--custom-gap-32px");
+      if (local.gap === "0.25rem")
+        classes.push("reynard-grid--custom-gap-025rem");
+      else if (local.gap === "0.5rem")
+        classes.push("reynard-grid--custom-gap-05rem");
+      else if (local.gap === "1rem")
+        classes.push("reynard-grid--custom-gap-1rem");
+      else if (local.gap === "1.5rem")
+        classes.push("reynard-grid--custom-gap-15rem");
+      else if (local.gap === "2rem")
+        classes.push("reynard-grid--custom-gap-2rem");
+      else if (local.gap === "4px")
+        classes.push("reynard-grid--custom-gap-4px");
+      else if (local.gap === "8px")
+        classes.push("reynard-grid--custom-gap-8px");
+      else if (local.gap === "16px")
+        classes.push("reynard-grid--custom-gap-16px");
+      else if (local.gap === "24px")
+        classes.push("reynard-grid--custom-gap-24px");
+      else if (local.gap === "32px")
+        classes.push("reynard-grid--custom-gap-32px");
     }
 
     // Add column classes
@@ -139,11 +149,16 @@ export const Grid: Component<GridProps> = (props) => {
 
     // Add min column width classes for auto-fit
     if (local.autoFit && local.minColumnWidth) {
-      if (local.minColumnWidth === "200px") classes.push("reynard-grid--min-width-200");
-      else if (local.minColumnWidth === "250px") classes.push("reynard-grid--min-width-250");
-      else if (local.minColumnWidth === "300px") classes.push("reynard-grid--min-width-300");
-      else if (local.minColumnWidth === "400px") classes.push("reynard-grid--min-width-400");
-      else if (local.minColumnWidth === "500px") classes.push("reynard-grid--min-width-500");
+      if (local.minColumnWidth === "200px")
+        classes.push("reynard-grid--min-width-200");
+      else if (local.minColumnWidth === "250px")
+        classes.push("reynard-grid--min-width-250");
+      else if (local.minColumnWidth === "300px")
+        classes.push("reynard-grid--min-width-300");
+      else if (local.minColumnWidth === "400px")
+        classes.push("reynard-grid--min-width-400");
+      else if (local.minColumnWidth === "500px")
+        classes.push("reynard-grid--min-width-500");
     }
 
     if (local.class) classes.push(local.class);

@@ -178,17 +178,39 @@
 }
 
 /* Progress width classes for different progress values */
-.reynard-file-upload__progress-fill--0 { width: 0%; }
-.reynard-file-upload__progress-fill--10 { width: 10%; }
-.reynard-file-upload__progress-fill--20 { width: 20%; }
-.reynard-file-upload__progress-fill--30 { width: 30%; }
-.reynard-file-upload__progress-fill--40 { width: 40%; }
-.reynard-file-upload__progress-fill--50 { width: 50%; }
-.reynard-file-upload__progress-fill--60 { width: 60%; }
-.reynard-file-upload__progress-fill--70 { width: 70%; }
-.reynard-file-upload__progress-fill--80 { width: 80%; }
-.reynard-file-upload__progress-fill--90 { width: 90%; }
-.reynard-file-upload__progress-fill--100 { width: 100%; }
+.reynard-file-upload__progress-fill--0 {
+  width: 0%;
+}
+.reynard-file-upload__progress-fill--10 {
+  width: 10%;
+}
+.reynard-file-upload__progress-fill--20 {
+  width: 20%;
+}
+.reynard-file-upload__progress-fill--30 {
+  width: 30%;
+}
+.reynard-file-upload__progress-fill--40 {
+  width: 40%;
+}
+.reynard-file-upload__progress-fill--50 {
+  width: 50%;
+}
+.reynard-file-upload__progress-fill--60 {
+  width: 60%;
+}
+.reynard-file-upload__progress-fill--70 {
+  width: 70%;
+}
+.reynard-file-upload__progress-fill--80 {
+  width: 80%;
+}
+.reynard-file-upload__progress-fill--90 {
+  width: 90%;
+}
+.reynard-file-upload__progress-fill--100 {
+  width: 100%;
+}
 
 .reynard-file-upload__progress-text {
   font-size: 12px;
@@ -246,17 +268,39 @@
 }
 
 /* Overall progress width classes */
-.reynard-file-upload__overall-progress-fill--0 { width: 0%; }
-.reynard-file-upload__overall-progress-fill--10 { width: 10%; }
-.reynard-file-upload__overall-progress-fill--20 { width: 20%; }
-.reynard-file-upload__overall-progress-fill--30 { width: 30%; }
-.reynard-file-upload__overall-progress-fill--40 { width: 40%; }
-.reynard-file-upload__overall-progress-fill--50 { width: 50%; }
-.reynard-file-upload__overall-progress-fill--60 { width: 60%; }
-.reynard-file-upload__overall-progress-fill--70 { width: 70%; }
-.reynard-file-upload__overall-progress-fill--80 { width: 80%; }
-.reynard-file-upload__overall-progress-fill--90 { width: 90%; }
-.reynard-file-upload__overall-progress-fill--100 { width: 100%; }
+.reynard-file-upload__overall-progress-fill--0 {
+  width: 0%;
+}
+.reynard-file-upload__overall-progress-fill--10 {
+  width: 10%;
+}
+.reynard-file-upload__overall-progress-fill--20 {
+  width: 20%;
+}
+.reynard-file-upload__overall-progress-fill--30 {
+  width: 30%;
+}
+.reynard-file-upload__overall-progress-fill--40 {
+  width: 40%;
+}
+.reynard-file-upload__overall-progress-fill--50 {
+  width: 50%;
+}
+.reynard-file-upload__overall-progress-fill--60 {
+  width: 60%;
+}
+.reynard-file-upload__overall-progress-fill--70 {
+  width: 70%;
+}
+.reynard-file-upload__overall-progress-fill--80 {
+  width: 80%;
+}
+.reynard-file-upload__overall-progress-fill--90 {
+  width: 90%;
+}
+.reynard-file-upload__overall-progress-fill--100 {
+  width: 100%;
+}
 
 .reynard-file-upload__overall-progress-text {
   font-size: 14px;

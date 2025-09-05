@@ -6,10 +6,7 @@ export default defineConfig({
   plugins: [solid()],
   build: {
     lib: {
-      entry: {
-        index: resolve(__dirname, "src/index.ts"),
-        styles: resolve(__dirname, "src/styles.css"),
-      },
+      entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardComponents",
       fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
     },
