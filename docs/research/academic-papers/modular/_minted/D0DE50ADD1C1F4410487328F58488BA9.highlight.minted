@@ -1,0 +1,10 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Service}\PYG{+w}{ }\PYG{n+nx}{manager}\PYG{+w}{ }\PYG{n+nx}{integration}
+\PYG{n+nx}{service\PYGZus{}manager}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{await}\PYG{+w}{ }\PYG{n+nx}{initialize\PYGZus{}core\PYGZus{}services}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Get}\PYG{+w}{ }\PYG{n+nx}{service}\PYG{+w}{ }\PYG{n+nx}{instances}\PYG{+w}{ }\PYG{k+kr}{from}\PYG{+w}{ }\PYG{n+nx}{the}\PYG{+w}{ }\PYG{n+nx}{service}\PYG{+w}{ }\PYG{n+nx}{manager}
+\PYG{n+nx}{config\PYGZus{}manager}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{service\PYGZus{}manager}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}service}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}config\PYGZus{}manager\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nx}{threading\PYGZus{}manager}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{service\PYGZus{}manager}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}service}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}threading\PYGZus{}manager\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nx}{data\PYGZus{}source\PYGZus{}service}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{service\PYGZus{}manager}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}service}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}data\PYGZus{}source\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nx}{file\PYGZus{}watcher\PYGZus{}service}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{service\PYGZus{}manager}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}service}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}file\PYGZus{}watcher\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}

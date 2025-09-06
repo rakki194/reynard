@@ -1,7 +1,8 @@
 import { createSignal, Show } from "solid-js";
 import { LoginForm, RegisterForm, useAuth, AuthProvider } from "reynard-auth";
 import { Card, Button } from "reynard-components";
-import { useI18n, useNotifications } from "reynard-core";
+import { useI18n } from "reynard-i18n";
+import { useNotifications } from "reynard-core";
 import type { LoginCredentials, RegisterData } from "reynard-auth";
 
 function AuthContent() {

@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "reynard-core": "file:../../packages/core",
-    "reynard-themes": "file:../../packages/themes",
-    "reynard-fluent-icons": "file:../../packages/fluent-icons",
+    "reynard-core": "0.1.1",
+    "reynard-themes": "0.1.1",
+    "reynard-fluent-icons": "0.1.1",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

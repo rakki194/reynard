@@ -16,7 +16,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "reynard-core": ["../../packages/core/src"],
+      "reynard-themes": ["../../packages/themes/src"],
+      "reynard-components": ["../../packages/components/src"],
+      "reynard-fluent-icons": ["../../packages/fluent-icons/src"],
+      "reynard-chat": ["../../packages/chat/src"],
+      "reynard-algorithms": ["../../packages/algorithms/src"],
+      "reynard-games": ["../../packages/games/src"],
+      "reynard-monaco": ["../../packages/monaco/src"]
+    }
   },
   "include": ["src"]
 }

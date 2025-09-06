@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+
+\bibitem{Conti2015}
+{\em Pen Testing a City}, 2015.
+
+\bibitem{Altulaihan2023}
+Esra~Abdullatif Altulaihan, Abrar Alismail, and Mounir Frikha.
+\newblock A survey on web application penetration testing.
+\newblock {\em Electronics}, 12(5):1229, 2023.
+
+\bibitem{Phong2014}
+Chiem~Trieu Phong and Wei~Qi Yan.
+\newblock An overview of penetration testing.
+\newblock {\em International Journal of Digital Crime and Forensics (IJDCF)},
+  6(4):50--74, 2014.
+
+\bibitem{Wai2001}
+Chan Wai.
+\newblock Conducting a penetration test on an organization.
+\newblock {\em SANS Institute Whitepaper}, 2001.
+
+\end{thebibliography}

@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { useI18n } from "reynard-core";
+import { useI18n } from "reynard-i18n";
 import { SettingsPanel } from "reynard-settings";
 import { Card } from "reynard-components";
 import { appSettingsSchema } from "../settings/schema";

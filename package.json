@@ -22,7 +22,10 @@
     "framework",
     "template",
     "components",
-    "themes"
+    "themes",
+    "i18n",
+    "internationalization",
+    "translations"
   ],
   "author": "Balazs Horvath",
   "license": "MIT",
@@ -68,7 +71,12 @@
     "doc-tests:validate": "node scripts/doc-tests.js validate",
     "doc-tests:test": "node scripts/doc-tests.js test",
     "doc-tests:demo": "node scripts/demo-doc-tests.js",
-    "doc-tests:validate-simple": "node scripts/simple-doc-validation.js"
+    "doc-tests:validate-simple": "node scripts/simple-doc-validation.js",
+    "docs:generate": "cd packages/docs-generator && npm run generate",
+    "docs:watch": "cd packages/docs-generator && npm run generate:watch",
+    "docs:dev": "cd packages/docs-site && npm run dev",
+    "docs:build": "cd packages/docs-site && npm run build",
+    "docs:serve": "cd packages/docs-site && npm run serve"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",
@@ -117,6 +125,11 @@
     "reynard-testing": "^0.1.0",
     "reynard-themes": "^0.1.0",
     "reynard-tools": "^0.1.0",
-    "reynard-ui": "^0.1.0"
+    "reynard-ui": "^0.1.0",
+    "reynard-3d": "^0.1.0",
+    "reynard-i18n": "^1.0.0",
+    "reynard-docs-core": "^0.1.0",
+    "reynard-docs-components": "^0.1.0",
+    "reynard-docs-generator": "^0.1.0"
   }
 }

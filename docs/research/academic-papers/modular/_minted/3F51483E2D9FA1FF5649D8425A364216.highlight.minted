@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Core}\PYG{+w}{ }\PYG{n+nx}{lazy}\PYG{+w}{ }\PYG{n+nx}{loader}\PYG{+w}{ }\PYG{n+nx}{imports}\PYG{+w}{ }\PYG{n+nx}{extracted}\PYG{+w}{ }\PYG{k+kr}{module}\PYG{n+nx}{s}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{package\PYGZus{}manager}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{PackageManager}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{dependency\PYGZus{}resolution\PYGZus{}engine}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{DependencyResolutionEngine}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{memory\PYGZus{}pressure\PYGZus{}detection}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{MemoryPressureDetector}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{background\PYGZus{}loading\PYGZus{}system}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{BackgroundLoadingSystem}
+\end{MintedVerbatim}

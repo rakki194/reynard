@@ -237,4 +237,6 @@ Try toggling different services to see how features adapt in real-time, and expl
 
 ---
 
-*Built with 🦊 Reynard - The cunning framework for modern applications*
+## Built with 🦊 Reynard
+
+The cunning framework for modern applications

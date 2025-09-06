@@ -22,7 +22,6 @@ export const PACKAGES: PackageConfig[] = [
     path: 'packages/core',
     docPath: 'packages/core/README.md',
     setup: `
-      import { ThemeProvider, createTheme } from 'reynard-core';
       import { NotificationsProvider, createNotifications } from 'reynard-core';
     `
   },
@@ -32,7 +31,8 @@ export const PACKAGES: PackageConfig[] = [
     docPath: 'packages/components/README.md',
     setup: `
       import { Button, Card, TextField, Modal, Tabs } from 'reynard-components';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {
@@ -41,7 +41,8 @@ export const PACKAGES: PackageConfig[] = [
     docPath: 'packages/auth/README.md',
     setup: `
       import { AuthProvider, LoginForm, RegisterForm, useAuth } from 'reynard-auth';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {
@@ -50,7 +51,8 @@ export const PACKAGES: PackageConfig[] = [
     docPath: 'packages/chat/README.md',
     setup: `
       import { ChatContainer, useChat, useStreamingChat, useP2PChat } from 'reynard-chat';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {

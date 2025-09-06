@@ -6,9 +6,8 @@
  * Command-line tool to run documentation tests across all packages
  */
 
-import { execSync } from 'child_process';
 import { writeFileSync, existsSync, readFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { join } from 'path';
 
 export const PACKAGES = [
   {
@@ -16,7 +15,6 @@ export const PACKAGES = [
     path: 'packages/core',
     docPath: '../../packages/core/README.md',
     setup: `
-      import { ThemeProvider, createTheme } from 'reynard-core';
       import { NotificationsProvider, createNotifications } from 'reynard-core';
     `
   },
@@ -26,7 +24,8 @@ export const PACKAGES = [
     docPath: '../../packages/components/README.md',
     setup: `
       import { Button, Card, TextField, Modal, Tabs } from 'reynard-components';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {
@@ -35,7 +34,8 @@ export const PACKAGES = [
     docPath: '../../packages/auth/README.md',
     setup: `
       import { AuthProvider, LoginForm, RegisterForm, useAuth } from 'reynard-auth';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {
@@ -44,7 +44,8 @@ export const PACKAGES = [
     docPath: '../../packages/chat/README.md',
     setup: `
       import { ChatContainer, useChat, useStreamingChat, useP2PChat } from 'reynard-chat';
-      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { ReynardProvider } from 'reynard-themes';
+      import 'reynard-themes/themes.css';
     `
   },
   {
@@ -213,7 +214,10 @@ ${validation.invalid > 0 ?
 /**
  * Validate all documentation examples
  */
+import process from 'process';
+
 export function validateAllDocs(rootPath = process.cwd()) {
+  // eslint-disable-next-line no-undef
   console.log('🦦 Validating documentation examples...');
   
   const reports = [];
@@ -232,8 +236,10 @@ export function validateAllDocs(rootPath = process.cwd()) {
       
       reports.push(`## ${pkg.name}\n${report}`);
       
+      // eslint-disable-next-line no-undef
       console.log(`📊 ${pkg.name}: ${validation.valid} valid, ${validation.invalid} invalid`);
     } else {
+      // eslint-disable-next-line no-undef
       console.log(`⚠️  ${pkg.name}: Documentation file not found at ${docPath}`);
     }
   });
@@ -254,14 +260,16 @@ ${reports.join('\n\n')}
 
 ## Next Steps
 ${totalInvalid > 0 ? 
-  '1. Review and fix invalid examples\n2. Run \`npm run test:docs\` to execute tests\n3. Update documentation as needed' :
-  '1. All examples are valid!\n2. Run \`npm run test:docs\` to execute tests\n3. Consider adding more examples'}
+  '1. Review and fix invalid examples\n2. Run `npm run test:docs` to execute tests\n3. Update documentation as needed' :
+  '1. All examples are valid!\n2. Run `npm run test:docs` to execute tests\n3. Consider adding more examples'}
 `;
   
   const reportPath = join(rootPath, 'docs-test-report.md');
   writeFileSync(reportPath, combinedReport);
   
+  // eslint-disable-next-line no-undef
   console.log(`📋 Full report saved to: ${reportPath}`);
+  // eslint-disable-next-line no-undef
   console.log(`🎯 Overall: ${totalValid} valid, ${totalInvalid} invalid examples`);
 }
 
@@ -278,6 +286,7 @@ export function main() {
       break;
       
     default:
+      // eslint-disable-next-line no-undef
       console.log(`
 🦊 Reynard Documentation Test Runner
 

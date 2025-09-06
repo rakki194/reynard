@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state Service connection state (one\PYGZhy{}hot)
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state gauge
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}connected\PYGZdq{}\PYGZcb{} 1
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}reconnecting\PYGZdq{}\PYGZcb{} 0
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}disconnected\PYGZdq{}\PYGZcb{} 0
+\end{MintedVerbatim}

@@ -18,9 +18,4 @@ describe("Modules Index Exports", () => {
     expect(Modules).toHaveProperty("createNotificationsModule");
   });
 
-  it("should export i18n module functions", () => {
-    expect(Modules).toHaveProperty("createI18nModule");
-    expect(Modules).toHaveProperty("languages");
-    expect(Modules).toHaveProperty("isRTL");
-  });
 });

@@ -3,28 +3,35 @@
  * Allows switching between different languages
  */
 
-import { useLanguage } from "reynard-core";
+import { For } from "solid-js";
+import { useI18n, type LanguageCode } from "reynard-themes";
 
 export default function LanguageSelector() {
-  const { t, currentLanguage, setCurrentLanguage, availableLanguages } = useLanguage();
+  const { locale, setLocale, languages } = useI18n();
 
-  const handleLanguageChange = (event: Event) => {
-    const select = event.target as HTMLSelectElement;
-    setCurrentLanguage(select.value);
-  };
+  // For demo, show just a few languages
+  const availableLanguages = languages.filter(
+    (lang: { code: LanguageCode; name: string }) =>
+      (["en", "es", "fr"] as LanguageCode[]).includes(lang.code),
+  );
 
   return (
-    <select 
-      class="language-selector" 
-      value={currentLanguage()} 
-      onChange={handleLanguageChange}
+    <select
+      class="language-selector"
+      value={locale}
+      onChange={(e) => {
+        const newLocale = e.currentTarget.value as LanguageCode;
+        setLocale(newLocale);
+      }}
       aria-label="Select language"
     >
-      {availableLanguages().map(lang => (
-        <option value={lang.code}>
-          {lang.flag} {lang.name}
-        </option>
-      ))}
+      <For each={availableLanguages}>
+        {(lang) => (
+          <option value={lang.code}>
+            🌐 {lang.name}
+          </option>
+        )}
+      </For>
     </select>
   );
 }

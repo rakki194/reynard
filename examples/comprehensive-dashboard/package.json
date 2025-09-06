@@ -15,13 +15,15 @@
   "dependencies": {
     "solid-js": "1.9.9",
     "@solidjs/router": "0.15.3",
-    "reynard-core": "file:../../packages/core",
-    "reynard-components": "file:../../packages/components",
-    "reynard-ui": "file:../../packages/ui",
-    "reynard-charts": "file:../../packages/charts",
-    "reynard-gallery": "file:../../packages/gallery",
-    "reynard-auth": "file:../../packages/auth",
-    "reynard-settings": "file:../../packages/settings"
+    "reynard-core": "0.1.1",
+    "reynard-components": "0.1.1",
+    "reynard-ui": "0.1.0",
+    "reynard-charts": "0.1.0",
+    "reynard-gallery": "0.1.0",
+    "reynard-auth": "0.1.0",
+    "reynard-settings": "0.1.0",
+    "reynard-themes": "0.1.1",
+    "reynard-i18n": "1.0.0"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

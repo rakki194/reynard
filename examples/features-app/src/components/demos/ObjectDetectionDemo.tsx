@@ -5,14 +5,14 @@
 
 import { createSignal } from "solid-js";
 import { useFeatureAware, useFeatureStatus } from "reynard-features";
-import { useLanguage } from "reynard-core";
+import { useI18n } from "reynard-themes";
 
 export default function ObjectDetectionDemo() {
-  const { t } = useLanguage();
+  const { t } = useI18n();
   const { shouldRender, fallback } = useFeatureAware(
     "object-detection",
     <div class="demo-content unavailable">
-      <p>{t("demo.objectDetection.unavailable")}</p>
+      <p>Object detection is currently unavailable</p>
     </div>
   );
   
@@ -35,12 +35,12 @@ export default function ObjectDetectionDemo() {
 
   return (
     <div class="feature-demo">
-      <h3>🎯 {t("demo.objectDetection.title")}</h3>
-      <p>{t("demo.objectDetection.description")}</p>
+      <h3>🎯 Object Detection</h3>
+      <p>Detect and identify objects in images</p>
       
       {shouldRender() ? (
         <div class="demo-content">
-          <p>{t("demo.objectDetection.available")}</p>
+          <p>Object detection is fully available</p>
           
           {status()?.degraded && (
             <div class="status-message warning">
@@ -48,7 +48,7 @@ export default function ObjectDetectionDemo() {
             </div>
           )}
           
-          <div style="margin-top: var(--spacing);">
+          <div style={{"margin-top": "var(--spacing)"}}>
             <button 
               class="btn" 
               onClick={simulateDetection}
@@ -58,18 +58,18 @@ export default function ObjectDetectionDemo() {
             </button>
             
             {isDetecting() && (
-              <div style="margin-top: var(--spacing); text-align: center;">
-                <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--accent); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <p style="margin-top: calc(var(--spacing) / 2); color: var(--text-secondary);">Analyzing image...</p>
+              <div style={{"margin-top": "var(--spacing)", "text-align": "center"}}>
+                <div style={{"display": "inline-block", "width": "20px", "height": "20px", "border": "2px solid var(--accent)", "border-top": "2px solid transparent", "border-radius": "50%", "animation": "spin 1s linear infinite"}}></div>
+                <p style={{"margin-top": "calc(var(--spacing) / 2)", "color": "var(--text-secondary)"}}>Analyzing image...</p>
               </div>
             )}
             
             {detectedObjects().length > 0 && (
-              <div style="margin-top: var(--spacing); padding: var(--spacing); background: var(--secondary-bg); border-radius: var(--border-radius); border: 1px solid var(--border-color);">
+              <div style={{"margin-top": "var(--spacing)", "padding": "var(--spacing)", "background": "var(--secondary-bg)", "border-radius": "var(--border-radius)", "border": "1px solid var(--border-color)"}}>
                 <strong>Detected Objects:</strong>
-                <div style="display: flex; flex-wrap: wrap; gap: calc(var(--spacing) / 2); margin-top: calc(var(--spacing) / 2);">
+                <div style={{"display": "flex", "flex-wrap": "wrap", "gap": "calc(var(--spacing) / 2)", "margin-top": "calc(var(--spacing) / 2)"}}>
                   {detectedObjects().map(object => (
-                    <span style="background: var(--accent); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem;">
+                    <span style={{"background": "var(--accent)", "color": "white", "padding": "2px 8px", "border-radius": "12px", "font-size": "0.8rem"}}>
                       {object}
                     </span>
                   ))}

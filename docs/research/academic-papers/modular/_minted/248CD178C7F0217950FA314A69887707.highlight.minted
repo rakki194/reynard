@@ -1,0 +1,16 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Main}\PYG{p}{.}\PYG{n+nx}{py}\PYG{+w}{ }\PYG{n+nx}{integration}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{data\PYGZus{}access}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{CachedFileSystemDataSource}
+
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Service}\PYG{+w}{ }\PYG{n+nx}{manager}\PYG{+w}{ }\PYG{n+nx}{integration}
+\PYG{n+nx}{data\PYGZus{}source\PYGZus{}service}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{service\PYGZus{}manager}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}service}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}data\PYGZus{}source\PYGZdq{}}\PYG{p}{)}
+\PYG{n+nx}{data\PYGZus{}source}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{data\PYGZus{}source\PYGZus{}service}\PYG{p}{.}\PYG{n+nx}{get\PYGZus{}data\PYGZus{}source}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Dependency}\PYG{+w}{ }\PYG{n+nx}{injection}
+\PYG{n+nx}{def}\PYG{+w}{ }\PYG{n+nx}{get\PYGZus{}data\PYGZus{}source}\PYG{p}{(}\PYG{p}{)}\PYG{o}{:}
+\PYG{+w}{    }\PYG{n+nb}{global}\PYG{+w}{ }\PYG{n+nx}{data\PYGZus{}source}
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{n+nx}{data\PYGZus{}source}\PYG{+w}{ }\PYG{n+nx}{is}\PYG{+w}{ }\PYG{n+nx}{None}\PYG{o}{:}
+\PYG{+w}{        }\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Fallback}\PYG{+w}{ }\PYG{n+nx}{to}\PYG{+w}{ }\PYG{n+nx}{old}\PYG{+w}{ }\PYG{n+nx}{method}\PYG{+w}{ }\PYG{k}{if}\PYG{+w}{ }\PYG{n+nx}{service}\PYG{+w}{ }\PYG{n+nx}{system}\PYG{+w}{ }\PYG{n+nx}{is}\PYG{+w}{ }\PYG{n+nx}{not}\PYG{+w}{ }\PYG{n+nx}{available}
+\PYG{+w}{        }\PYG{n+nx}{data\PYGZus{}source}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{CachedFileSystemDataSource}\PYG{p}{(}\PYG{p}{...}\PYG{p}{)}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nx}{data\PYGZus{}source}
+\end{MintedVerbatim}

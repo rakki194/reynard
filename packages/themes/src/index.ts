@@ -16,15 +16,8 @@ export type {
   ThemeShadows,
   ThemeBorders,
   ThemeContext,
-  TranslationContext,
   ReynardContext,
   ThemeProviderProps,
-  Translations,
-  CommonTranslations,
-  ThemeTranslations,
-  TranslationParams,
-  TranslationValue,
-  TranslationFunction,
   Language,
 } from "./types";
 
@@ -51,16 +44,14 @@ export {
   onSystemThemeChange,
 } from "./themeUtils";
 
-// Export translation system
+// Re-export i18n system from reynard-i18n
 export {
   languages,
-  loadTranslations,
-  getTranslationValue,
-  getLanguage,
   isRTL,
-  getBrowserLocale,
-  getPluralForm,
-} from "./translations";
+  useI18n as useI18nCore,
+  I18nProvider,
+  createI18nModule,
+} from "reynard-i18n";
 
 // Export providers and hooks
 export {

@@ -105,13 +105,15 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
   let pendingPromise: Promise<ReturnType<T>> | null = null;
   let resolvePending: ((value: ReturnType<T>) => void) | null = null;
   let rejectPending: ((error: any) => void) | null = null;
-  let isCanceled = false;
+  let currentArgs: Parameters<T> | null = null;
 
   return (...args: Parameters<T>): Promise<ReturnType<T>> => {
-    // Cancel previous timeout and mark as canceled
+    // Store the latest arguments
+    currentArgs = args;
+
+    // Cancel previous timeout
     if (timeoutId) {
       clearTimeout(timeoutId);
-      isCanceled = true;
     }
 
     // If there's no pending promise, create a new one
@@ -123,29 +125,25 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
     }
 
     timeoutId = setTimeout(async () => {
-      // Check if this execution was canceled
-      if (isCanceled) {
-        isCanceled = false;
-        return;
-      }
-
+      // Use the latest arguments
+      const argsToUse = currentArgs!;
+      
       try {
-        const result = await fn(...args);
-        if (resolvePending && !isCanceled) {
+        const result = await fn(...argsToUse);
+        if (resolvePending) {
           resolvePending(result);
         }
       } catch (error) {
-        if (rejectPending && !isCanceled) {
+        if (rejectPending) {
           rejectPending(error);
         }
       } finally {
-        // Only clean up if not canceled
-        if (!isCanceled) {
-          pendingPromise = null;
-          resolvePending = null;
-          rejectPending = null;
-          timeoutId = null;
-        }
+        // Clean up
+        pendingPromise = null;
+        resolvePending = null;
+        rejectPending = null;
+        timeoutId = null;
+        currentArgs = null;
       }
     }, delay);
 
@@ -169,13 +167,20 @@ export function throttle<T extends (...args: any[]) => Promise<any>>(
   delay: number,
 ): (...args: Parameters<T>) => Promise<ReturnType<T> | void> {
   let lastExecuted = 0;
-  // let pendingPromise: Promise<ReturnType<T>> | null = null;
+  let isThrottled = false;
 
   return async (...args: Parameters<T>): Promise<ReturnType<T> | void> => {
     const now = Date.now();
 
-    if (now - lastExecuted >= delay) {
+    if (!isThrottled || now - lastExecuted >= delay) {
       lastExecuted = now;
+      isThrottled = true;
+      
+      // Reset throttled flag after delay
+      setTimeout(() => {
+        isThrottled = false;
+      }, delay);
+      
       return await fn(...args);
     }
 

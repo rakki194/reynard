@@ -1,0 +1,138 @@
+\documentclass[10pt]{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{microtype}
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    columns=flexible
+}
+
+\begin{document}
+
+\title{FACET: Fox-guided AI for Contextual Editing and Tagging in Interactive Image Annotation and Dataset Management}
+
+\author{Technical Documentation Team\\
+YipYap Project\\
+\includegraphics[width=0.5cm]{favicon.pdf}}
+
+\maketitle
+
+\begin{abstract}
+We introduce FACET (Fox-guided AI for Contextual Editing and Tagging), a novel AI assistant deeply integrated into the YipYap image annotation platform. FACET leverages local Large Language Models (LLMs) powered by Ollama, providing real-time, context-aware assistance for tasks such as image dataset organization, tagging, captioning, and Git-based version control. The system features a robust tool-calling mechanism, enabling the LLM to interact directly with the underlying YipYap data and Git managers. This paper details FACET's architecture, core functionalities, integration methodologies, and performance considerations, highlighting its role in enhancing user productivity and streamlining complex dataset management workflows.
+\end{abstract}
+
+\section{Introduction}
+Modern image annotation and dataset management often involve complex, repetitive tasks that can be time-consuming and error-prone. The integration of AI assistants, particularly those powered by Large Language Models (LLMs), presents a significant opportunity to streamline these workflows. FACET addresses these challenges by providing an intelligent, context-aware assistant directly within the YipYap application, allowing users to interact naturally and efficiently with their datasets.
+
+\section{System Architecture}
+\subsection{Core Components}
+FACET consists of several interconnected components, designed for seamless integration and optimal performance:
+\begin{enumerate}
+    \item Ollama Client Integration
+    \item YipYap Assistant Core
+    \item Tool Calling System
+    \item Context Management
+    \item Streaming Interface
+\end{enumerate}
+
+\subsection{Architectural Flow}
+The FACET system operates through a tightly integrated frontend-backend architecture. On the backend, the \texttt{OllamaManager} initializes and manages the \texttt{OllamaClient} and the \texttt{YipYapAssistant} instance. This setup occurs during the application's lifespan, ensuring the assistant is ready upon startup. The \texttt{YipYapAssistant} itself is responsible for building the system prompt, managing conversation history, and orchestrating tool calls.
+
+On the frontend, a SolidJS composable \texttt{useOllama} interacts with the backend \texttt{/api/ollama} endpoints. The \texttt{YipYapAssistant} UI component provides the chat interface, handling user input, displaying streaming responses, and visualizing tool execution.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=2cm, auto]
+    % Nodes
+    \node (User) {User};
+    \node[right of=User, node distance=2.5cm] (Frontend) {YipYap Frontend (SolidJS)};
+    \node[right of=Frontend, node distance=3.5cm] (Backend) {YipYap Backend (FastAPI)};
+    \node[below of=Backend, node distance=2.5cm] (Ollama) {Ollama Server (Local LLM)};
+    \node[below of=Frontend, node distance=2.5cm] (Tools) {Backend Tools (Git, File, Dataset)};
+    \node[below of=Ollama, node distance=2cm] (Dataset) {Image Dataset & Git Repo};
+
+    % Paths
+    \draw[->] (User) -- (Frontend) node[midway, above] {Chat Input};
+    \draw[->] (Frontend) -- (Backend) node[midway, above] {API Request (\texttt{/api/ollama/chat})};
+    \draw[<->] (Backend) -- (Ollama) node[midway, left] {Ollama API Calls};
+    \draw[->] (Backend) -- (Tools) node[midway, right] {Tool Execution};
+    \draw[<->] (Tools) -- (Dataset) node[midway, right] {Data Access};
+    \draw[->] (Backend) -- (Frontend) node[midway, below] {Streaming Response (SSE)};
+    \draw[->] (Frontend) -- (User) node[midway, below] {Assistant Output};
+    \draw[->] (Dataset) |- (Backend) node[midway, right] {Context Data};
+    \draw[->] (Frontend) |- (Dataset) node[midway, left] {Context (Path, Images)};
+
+    % Arrows
+    \draw[thick, dashed, ->] (Backend.east) -- ++(1,0) node[midway, above] {Contextual Info};
+    \draw[thick, dashed, ->] (Ollama.east) -- ++(1,0) node[midway, below] {LLM Response};
+
+\end{tikzpicture}
+\caption{FACET System Architecture and Data Flow}
+\label{fig:facet_architecture}
+\end{figure}
+
+\section{Algorithmic Implementation}
+\subsection{Context-Aware Prompt Engineering}
+The \texttt{YipYapAssistant} constructs a dynamic system prompt to provide the LLM with relevant context. This includes:
+\begin{itemize}
+    \item A predefined personality (e.g., 🦊, friendly, knowledgeable about dataset management).
+    \item Details about YipYap's features and functionalities.
+    \item A dynamically generated list of available tools, including their names, descriptions, and parameters, ensuring the LLM understands its capabilities.
+    \item Relevant memories retrieved from a \texttt{MemoryManager}, providing historical context from previous interactions.
+\end{itemize}
+The system also injects real-time contextual information into user messages, such as the current directory path, selected images, and Git repository status, enabling the LLM to provide highly relevant assistance.
+
+\subsection{Tool Calling Mechanism}
+A pivotal feature of FACET is its robust tool-calling system. The \texttt{YipYapAssistant} can parse tool call requests from the LLM's responses and execute them through a \texttt{ToolRegistry}. This allows the LLM to perform actions like:
+\begin{itemize}
+    \item Git operations (e.g., \texttt{git status}, \texttt{git commit}).
+    \item File operations (e.g., directory listing, file information).
+    \item Dataset management (e.g., organization, statistics, analysis).
+\end{itemize}
+The tool execution is handled asynchronously, with results streamed back to the LLM and the user, facilitating complex multi-step interactions.
+
+\subsection{Streaming and Responsiveness}
+FACET utilizes Server-Sent Events (SSE) for real-time streaming of LLM responses to the frontend. This provides immediate feedback to the user, enhancing the interactive experience. The frontend's SolidJS composable \texttt{useOllama} manages the streaming state, updating the UI as new chunks of response or "thinking" content arrive. An \texttt{AbortController} is used to allow users to stop ongoing generation if needed.
+
+\section{Performance Considerations}
+FACET's performance is heavily influenced by the underlying Ollama setup and the chosen LLM. Key optimization strategies include:
+\begin{itemize}
+    \item \textbf{Local LLM Inference}: By leveraging Ollama for local model execution, FACET minimizes network latency and ensures data privacy, as all processing occurs on the user's machine.
+    \item \textbf{Model Selection}: Users can configure the default LLM model, with recommendations provided for various use cases (e.g., \texttt{qwen3:8b} for general queries). Smaller models generally offer faster response times.
+    \item \textbf{Hardware Acceleration}: Ollama automatically utilizes available GPU resources, significantly accelerating inference for compatible models.
+    \item \textbf{Memory Management}: Efficient management of LLM models in memory is crucial, with recommendations to only keep necessary models pulled to optimize RAM usage.
+\end{itemize}
+While no specific performance benchmarks for FACET's LLM interaction were conducted in isolation, the system aims to maintain the high responsiveness characteristic of the YipYap platform, as demonstrated by the sub-3ms response times of the NEXUS collision detection system.
+
+\section{Security and Privacy}
+FACET is designed with a strong emphasis on security and privacy:
+\begin{itemize}
+    \item \textbf{Local Processing}: All LLM inference and data processing occurs locally on the user's machine, ensuring no sensitive data leaves the user's environment.
+    \item \textbf{No API Keys}: The system does not rely on external LLM APIs, eliminating the need for API keys and external service dependencies.
+    \item \textbf{Data Privacy}: Conversations are not logged or transmitted externally, safeguarding user interactions.
+    \item \textbf{Access Control}: FACET integrates with YipYap's existing authentication system, ensuring that tool execution and data access are governed by defined user roles and permissions.
+\end{itemize}
+
+\section{Conclusion}
+FACET represents a significant advancement in interactive image annotation and dataset management by seamlessly integrating a context-aware LLM assistant directly into the YipYap platform. By combining local LLM inference with a robust tool-calling mechanism and intelligent context management, FACET empowers users with real-time, intelligent assistance for a wide array of tasks. This novel approach enhances productivity, streamlines complex workflows, and maintains a strong focus on user privacy and security. Future enhancements include multi-modal support and deeper integration with existing YipYap features.
+
+\bibliographystyle{IEEEtran}
+\begin{thebibliography}{99}
+\bibitem{ollama} Ollama: Get up and running with large language models locally. \url{https://ollama.ai/}
+\bibitem{fastapi} FastAPI: The Web framework for APIs. \url{https://fastapi.tiangolo.com/}
+\bibitem{solidjs} SolidJS: Simple and Performant Reactive Library. \url{https://www.solidjs.com/}
+\bibitem{nexus_paper} Technical Documentation Team. NEXUS: A High-Performance Collision Detection System for Interactive Image Annotation. YipYap Project.
+\end{thebibliography}
+
+\end{document} 

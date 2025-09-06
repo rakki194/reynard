@@ -7,7 +7,7 @@ import {
   useReynardMonaco,
   getMonacoLanguageFromName
 } from 'reynard-monaco';
-import { useTheme } from 'reynard-core';
+import { useTheme } from 'reynard-themes';
 import './MonacoEditorDemo.css';
 
 interface LanguageOption {
@@ -444,7 +444,7 @@ export const MonacoEditorDemo: Component = () => {
   
   // Reynard Monaco integration with theme sync
   const reynardMonaco = useReynardMonaco({
-    reynardTheme: currentReynardTheme(),
+    reynardTheme: currentReynardTheme,
     lang: selectedLanguage(),
     enableShikiHighlighting: true,
   });
@@ -519,7 +519,7 @@ interface User {
         <h1>Monaco Editor Demo</h1>
         <p>Comprehensive test of reynard-monaco with forked solid-monaco components</p>
         <p class="theme-sync-note">
-          🎨 Theme automatically syncs with Reynard theme: <strong>{currentReynardTheme()}</strong>
+          🎨 Theme automatically syncs with Reynard theme: <strong>{currentReynardTheme}</strong>
         </p>
       </div>
 
@@ -631,7 +631,7 @@ interface User {
                 Language: {getCurrentLanguage()?.label} ({selectedLanguage()})
               </span>
               <span class="theme-info">
-                Theme: {currentReynardTheme()} (Reynard)
+                Theme: {currentReynardTheme} (Reynard)
               </span>
               <Show when={languageDetection.isNaturalLanguageDetectionAvailable()}>
                 <span class="detection-info">

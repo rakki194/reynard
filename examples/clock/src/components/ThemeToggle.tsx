@@ -5,10 +5,10 @@
 
 import { Component } from "solid-js";
 import { Button } from "reynard-components";
-import { useTheme } from "reynard-core";
+import { useTheme, type ThemeName } from "reynard-themes";
 
 export const ThemeToggle: Component = () => {
-  const { theme, nextTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const getThemeEmoji = (theme: string) => {
     switch (theme) {
@@ -22,12 +22,19 @@ export const ThemeToggle: Component = () => {
     }
   };
 
+  const cycleTheme = () => {
+    const themes: ThemeName[] = ["light", "dark", "banana", "strawberry", "peanut", "gray"];
+    const currentIndex = themes.indexOf(theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    setTheme(themes[nextIndex]);
+  };
+
   return (
     <Button 
-      onClick={nextTheme} 
+      onClick={cycleTheme} 
       class="btn btn-secondary theme-toggle-button"
     >
-      {getThemeEmoji(theme())} {theme()}
+      {getThemeEmoji(theme)} {theme}
     </Button>
   );
 };

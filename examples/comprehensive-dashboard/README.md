@@ -6,7 +6,8 @@ A complete showcase of all Reynard framework components and features, demonstrat
 
 ### 🎨 All Reynard Packages
 
-- **reynard-core** - Theme management, i18n, notifications, utilities
+- **reynard-core** - Notifications, utilities, and core functionality
+- **reynard-themes** - Theme management and internationalization
 - **reynard-components** - Primitive UI components (Button, Card, TextField, etc.)
 - **reynard-ui** - Advanced components (AppLayout, DataTable, Drawer, etc.)
 - **reynard-charts** - Data visualization with Chart.js integration
@@ -169,7 +170,7 @@ const galleryState = useGalleryState({
 
 #### Custom Themes
 
-1. Define theme in `reynard-core/themes`
+1. Define theme in `reynard-themes`
 2. Update theme selector components
 3. Add CSS custom properties
 

@@ -6,15 +6,18 @@ import {
 } from "solid-js";
 import { Route } from "@solidjs/router";
 import {
-  createThemeModule,
-  createI18nModule,
   createNotificationsModule,
-  I18nProvider,
-  ThemeProvider,
   NotificationsProvider,
-  type Theme,
-  type Locale,
 } from "reynard-core";
+import {
+  ReynardProvider,
+  useTheme,
+} from "reynard-themes";
+import {
+  useI18n,
+  I18nProvider,
+  createI18nModule,
+} from "reynard-i18n";
 import { AuthProvider } from "reynard-auth";
 import { AppLayout } from "reynard-ui";
 import { useSettings } from "reynard-settings";
@@ -37,8 +40,6 @@ import { loadTranslations } from "./utils/translations";
 
 const App: Component = () => {
   // Initialize core modules
-  const theme = createThemeModule();
-  const i18n = createI18nModule();
   const notifications = createNotificationsModule();
 
   // Initialize settings with comprehensive schema
@@ -140,9 +141,8 @@ const App: Component = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = createSignal(false);
 
   return (
-    <ThemeProvider value={theme}>
-      <I18nProvider value={i18n}>
-        <NotificationsProvider value={notifications}>
+    <ReynardProvider>
+      <NotificationsProvider value={notifications}>
           <AuthProvider
             config={{
               apiBaseUrl: "http://localhost:3002/api",
@@ -176,8 +176,7 @@ const App: Component = () => {
             </AppLayout>
           </AuthProvider>
         </NotificationsProvider>
-      </I18nProvider>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

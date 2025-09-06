@@ -4,7 +4,8 @@
  */
 
 import { Component, createSignal, onMount, Show } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "reynard-core";
+import { ReynardProvider, useTheme } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { Button, Card } from "reynard-components";
 import { RAGSearch } from "reynard-rag";
 import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
@@ -312,12 +313,10 @@ const RAGDemoApp: Component = () => {
 };
 
 const App: Component = () => {
-  const themeModule = createTheme();
-
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <RAGDemoApp />
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

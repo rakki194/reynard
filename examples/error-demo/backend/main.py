@@ -78,6 +78,7 @@ class RecoveryResponse(BaseModel):
 
 # Health check endpoint
 @app.get("/health")
+@app.get("/api/health")
 async def health_check():
     """Health check endpoint"""
     return {

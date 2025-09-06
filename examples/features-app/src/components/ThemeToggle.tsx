@@ -4,19 +4,17 @@
  */
 
 import { useTheme } from "reynard-themes";
-import { useLanguage } from "reynard-core";
 
 export default function ThemeToggle() {
-  const { t } = useLanguage();
-  const [currentTheme, setCurrentTheme] = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setCurrentTheme(currentTheme() === "light" ? "dark" : "light");
+    setTheme(theme === "light" ? "dark" : "light");
   };
 
   return (
     <button class="theme-toggle" onClick={toggleTheme}>
-      {currentTheme() === "light" ? "🌙" : "☀️"} {t("theme.toggle")}
+      {theme === "light" ? "🌙" : "☀️"} Toggle Theme
     </button>
   );
 }

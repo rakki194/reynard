@@ -58,7 +58,8 @@ reynard-test-app/
 
 ### Dependency Analysis
 
-- **reynard-core**: Provides theme management, composables, and core utilities
+- **reynard-core**: Provides composables and core utilities
+- **reynard-themes**: Provides theme management and internationalization
 - **reynard-components**: UI component library with Button, Card, and other primitives
 - **solid-js**: The reactive framework powering the application
 - **vite-plugin-solid**: SolidJS integration for Vite build system
@@ -142,21 +143,22 @@ Each theme overrides these variables using the `data-theme` attribute selector:
 ### Component Integration
 
 ```tsx
-import { ThemeProvider, createTheme } from "reynard-core";
+import { ReynardProvider } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { Button, Card } from "reynard-components";
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 
 function App() {
-  const themeModule = createTheme();
+  const { setTheme } = useTheme();
   
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <Card>
         <Button onClick={() => setTheme("dark")}>
           Switch Theme
         </Button>
       </Card>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 }
 ```

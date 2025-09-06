@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} app/api/services.py (extract)}
+\PYG{n+nd}{@router}\PYG{o}{.}\PYG{n}{post}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{/restart/}\PYG{l+s+si}{\PYGZob{}service\PYGZus{}name\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{async} \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{restart\PYGZus{}service}\PYG{p}{(}\PYG{n}{service\PYGZus{}name}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{current\PYGZus{}user}\PYG{p}{:} \PYG{n}{User} \PYG{o}{=} \PYG{n}{Depends}\PYG{p}{(}\PYG{n}{get\PYGZus{}current\PYGZus{}user}\PYG{p}{)}\PYG{p}{)}\PYG{p}{:}
+    \PYG{k}{await} \PYG{n}{service}\PYG{o}{.}\PYG{n}{stop}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;} \PYG{k}{await} \PYG{n}{asyncio}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{;} \PYG{n}{success} \PYG{o}{=} \PYG{k}{await} \PYG{n}{service}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,12 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Router}\PYG{+w}{ }\PYG{n+nx}{imports}\PYG{+w}{ }\PYG{k+kr}{from}\PYG{+w}{ }\PYG{n+nx}{separate}\PYG{+w}{ }\PYG{n+nx}{files}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{browse}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{CAPTION\PYGZus{}TYPE\PYGZus{}ORDER}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{setup\PYGZus{}browse\PYGZus{}routes}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{index}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{index\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{ollama}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{ollama\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{memory}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{memory\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{tools}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{tools\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{auth}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{auth\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{engagement}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{engagement\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{training}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{training\PYGZus{}router}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{api}\PYG{p}{.}\PYG{n+nx}{services}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{router}\PYG{+w}{ }\PYG{k+kr}{as}\PYG{+w}{ }\PYG{n+nx}{services\PYGZus{}router}
+\end{MintedVerbatim}

@@ -7,14 +7,13 @@ import { createMemo } from "solid-js";
 import { 
   useFeatures, 
   useFeaturesByCategory, 
-  useFeaturesByPriority,
   useCriticalFeatures 
 } from "reynard-features";
-import { useLanguage } from "reynard-core";
+import { useI18n } from "reynard-themes";
 
 export default function FeatureDashboard() {
-  const { t } = useLanguage();
-  const { featureSummary, availableFeatures, degradedFeatures } = useFeatures();
+  const { t } = useI18n();
+  const { featureSummary } = useFeatures();
   const criticalFeatures = useCriticalFeatures();
   
   const coreFeatures = useFeaturesByCategory("core");
@@ -24,10 +23,6 @@ export default function FeatureDashboard() {
   const uiFeatures = useFeaturesByCategory("ui");
   const dataFeatures = useFeaturesByCategory("data");
 
-  const criticalFeaturesList = useFeaturesByPriority("critical");
-  const highFeaturesList = useFeaturesByPriority("high");
-  const mediumFeaturesList = useFeaturesByPriority("medium");
-  const lowFeaturesList = useFeaturesByPriority("low");
 
   const summary = createMemo(() => featureSummary());
 
@@ -35,34 +30,34 @@ export default function FeatureDashboard() {
     <div class="feature-dashboard">
       {/* Feature Statistics */}
       <div class="feature-panel">
-        <h3>📊 {t("features.overview")}</h3>
+        <h3>📊 Feature Overview</h3>
         <div class="feature-stats">
           <div class="stat-card">
             <div class="stat-value">{summary().total}</div>
-            <div class="stat-label">{t("features.total")}</div>
+            <div class="stat-label">Total</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value" style="color: var(--success);">{summary().available}</div>
-            <div class="stat-label">{t("features.available")}</div>
+            <div class="stat-value success">{summary().available}</div>
+            <div class="stat-label">Available</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value" style="color: var(--warning);">{summary().degraded}</div>
-            <div class="stat-label">{t("features.degraded")}</div>
+            <div class="stat-value warning">{summary().degraded}</div>
+            <div class="stat-label">Degraded</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value" style="color: var(--danger);">{summary().unavailable}</div>
-            <div class="stat-label">{t("features.unavailable")}</div>
+            <div class="stat-value danger">{summary().unavailable}</div>
+            <div class="stat-label">Unavailable</div>
           </div>
           <div class="stat-card">
             <div class="stat-value">{Math.round(summary().successRate)}%</div>
-            <div class="stat-label">{t("features.successRate")}</div>
+            <div class="stat-label">Success Rate</div>
           </div>
         </div>
         
         {/* Critical Features Status */}
-        <div style="margin-top: var(--spacing);">
-          <h4 style="margin: 0 0 calc(var(--spacing) / 2) 0; color: var(--accent);">
-            🚨 {t("features.critical")} Features
+        <div class="critical-features-section">
+          <h4 class="critical-features-title">
+            🚨 Critical Features
           </h4>
           <div class="status-message" classList={{
             success: criticalFeatures().available,
@@ -71,7 +66,7 @@ export default function FeatureDashboard() {
             {criticalFeatures().available ? "✅ All critical features available" : "❌ Some critical features unavailable"}
           </div>
           {!criticalFeatures().available && (
-            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: calc(var(--spacing) / 2);">
+            <div class="critical-features-details">
               Unavailable: {criticalFeatures().unavailable.map(f => f.name).join(", ")}
             </div>
           )}
@@ -83,7 +78,7 @@ export default function FeatureDashboard() {
         <h3>📂 Features by Category</h3>
         <div class="feature-list">
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Core ({coreFeatures().length})</div>
               <div class="feature-description">Essential application features</div>
@@ -92,7 +87,7 @@ export default function FeatureDashboard() {
           </div>
           
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">ML/AI ({mlFeatures().length})</div>
               <div class="feature-description">Machine learning capabilities</div>
@@ -101,7 +96,7 @@ export default function FeatureDashboard() {
           </div>
           
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Integration ({integrationFeatures().length})</div>
               <div class="feature-description">Third-party service integrations</div>
@@ -110,7 +105,7 @@ export default function FeatureDashboard() {
           </div>
           
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Utility ({utilityFeatures().length})</div>
               <div class="feature-description">Supporting utilities and tools</div>
@@ -119,7 +114,7 @@ export default function FeatureDashboard() {
           </div>
           
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">UI ({uiFeatures().length})</div>
               <div class="feature-description">User interface features</div>
@@ -128,7 +123,7 @@ export default function FeatureDashboard() {
           </div>
           
           <div class="feature-item">
-            <div class="feature-status available"></div>
+            <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Data ({dataFeatures().length})</div>
               <div class="feature-description">Data processing and management</div>

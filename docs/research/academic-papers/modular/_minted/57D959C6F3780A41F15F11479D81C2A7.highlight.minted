@@ -1,0 +1,13 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{delays} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.5}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{]}  \PYG{c+c1}{\PYGZsh{} base, capped}
+\PYG{k}{for} \PYG{n}{d} \PYG{o+ow}{in} \PYG{n}{delays}\PYG{p}{:}
+    \PYG{k}{try}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}rebuild\PYGZus{}engine}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+            \PYG{k}{with} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}engine}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{p}{)} \PYG{k}{as} \PYG{n}{conn}\PYG{p}{:}
+                \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+                \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1 FROM pg\PYGZus{}extension WHERE extname=}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{vector}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}last\PYGZus{}ok\PYGZus{}ts} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;} \PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{HEALTHY}
+    \PYG{k}{except} \PYG{n+ne}{Exception}\PYG{p}{:}
+        \PYG{k}{await} \PYG{n}{asyncio}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{n}{d} \PYG{o}{*} \PYG{n}{random}\PYG{o}{.}\PYG{n}{uniform}\PYG{p}{(}\PYG{l+m+mf}{0.8}\PYG{p}{,} \PYG{l+m+mf}{1.2}\PYG{p}{)}\PYG{p}{)}
+\PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{UNHEALTHY}
+\end{MintedVerbatim}

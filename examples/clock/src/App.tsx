@@ -9,12 +9,11 @@ import {
   Show,
 } from "solid-js";
 import {
-  ThemeProvider,
   NotificationsProvider,
-  createTheme,
   createNotifications,
-  useTheme,
 } from "reynard-core";
+import { ReynardProvider, useTheme } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { Clock } from "./components/Clock";
 import { Timer } from "./components/Timer";
 import { Alarm } from "./components/Alarm";
@@ -56,7 +55,7 @@ const ClockApp: Component = () => {
         <p>Clock, Timer, Alarm & Countdown - Built with Reynard Framework</p>
         <div class="header-controls">
           <div class="theme-info">
-            Current theme: {theme()}
+            Current theme: {theme}
           </div>
           <ThemeToggle />
         </div>
@@ -84,15 +83,14 @@ const ClockApp: Component = () => {
 };
 
 const App: Component = () => {
-  const themeModule = createTheme();
   const notificationsModule = createNotifications();
 
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <NotificationsProvider value={notificationsModule}>
         <ClockApp />
       </NotificationsProvider>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

@@ -8,29 +8,29 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./core": {
+      "types": "./dist/core.d.ts",
       "import": "./dist/core.js",
-      "require": "./dist/core.cjs",
-      "types": "./dist/core.d.ts"
+      "require": "./dist/core.cjs"
     },
     "./registry": {
+      "types": "./dist/registry.d.ts",
       "import": "./dist/registry.js",
-      "require": "./dist/registry.cjs",
-      "types": "./dist/registry.d.ts"
+      "require": "./dist/registry.cjs"
     },
     "./dependencies": {
+      "types": "./dist/dependencies.d.ts",
       "import": "./dist/dependencies.js",
-      "require": "./dist/dependencies.cjs",
-      "types": "./dist/dependencies.d.ts"
+      "require": "./dist/dependencies.cjs"
     },
     "./presets": {
+      "types": "./dist/presets.d.ts",
       "import": "./dist/presets.js",
-      "require": "./dist/presets.cjs",
-      "types": "./dist/presets.d.ts"
+      "require": "./dist/presets.cjs"
     }
   },
   "scripts": {

@@ -2,13 +2,12 @@
 
 > **The Foundation of the Reynard Framework** 🦊
 
-Core utilities, composables, and modules that power the entire Reynard ecosystem. This package provides the essential building blocks for reactive state management, theming, notifications, and utility functions.
+Core utilities, composables, and modules that power the entire Reynard ecosystem. This package provides the essential building blocks for reactive state management, notifications, and utility functions.
 
 ## ✨ Features
 
 ### 🎯 **Core Composables**
 
-- **Theme Management**: Reactive theme switching with persistence
 - **Notifications**: Toast notification system with queue management
 - **Local Storage**: Reactive localStorage with cross-tab synchronization
 - **Debouncing**: Performance-optimized debounced values and callbacks
@@ -25,9 +24,7 @@ Core utilities, composables, and modules that power the entire Reynard ecosystem
 
 ### 🎨 **Core Modules**
 
-- **Theme System**: 8 built-in themes with custom theme support
 - **Notification System**: Toast notifications with auto-dismiss
-- **I18n System**: Translation management with pluralization
 
 ## 📦 Installation
 
@@ -37,64 +34,31 @@ npm install reynard-core solid-js
 
 ## 🚀 Quick Start
 
-### Basic Theme Management
+### Basic Notifications
 
 ```tsx
 import { createSignal } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "reynard-core";
+import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
 
 function App() {
-  const themeModule = createTheme();
+  const notificationsModule = createNotifications();
   
   return (
-    <ThemeProvider value={themeModule}>
-      <ThemedComponent />
-    </ThemeProvider>
+    <NotificationsProvider value={notificationsModule}>
+      <NotificationDemo />
+    </NotificationsProvider>
   );
 }
 
-function ThemedComponent() {
-  const { theme, setTheme, nextTheme } = useTheme();
+function NotificationDemo() {
+  const { notify } = useNotifications();
   
   return (
     <div>
-      <p>Current theme: {theme()}</p>
-      <button onClick={() => setTheme("dark")}>Dark Theme</button>
-      <button onClick={nextTheme}>Next Theme</button>
-    </div>
-  );
-}
-```
-
-### Testable Theme Example
-
-```tsx
-import { createSignal } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "reynard-core";
-
-function ThemeDemo() {
-  const { theme, setTheme } = useTheme();
-  
-  return (
-    <div data-testid="theme-demo">
-      <span data-testid="current-theme">{theme()}</span>
-      <button 
-        data-testid="theme-button"
-        onClick={() => setTheme("dark")}
-      >
-        Switch to Dark
+      <button onClick={() => notify("Hello World!", "success")}>
+        Show Notification
       </button>
     </div>
-  );
-}
-
-function TestableApp() {
-  const themeModule = createTheme();
-  
-  return (
-    <ThemeProvider value={themeModule}>
-      <ThemeDemo />
-    </ThemeProvider>
   );
 }
 ```
@@ -139,19 +103,18 @@ import { useLocalStorage } from "reynard-core";
 
 function SettingsComponent() {
   const [settings, setSettings] = useLocalStorage("app-settings", {
-    theme: "light",
     language: "en",
     notifications: true,
   });
   
-  const updateTheme = (theme: string) => {
-    setSettings(prev => ({ ...prev, theme }));
+  const updateLanguage = (language: string) => {
+    setSettings(prev => ({ ...prev, language }));
   };
   
   return (
     <div>
-      <p>Current theme: {settings().theme}</p>
-      <button onClick={() => updateTheme("dark")}>Switch to Dark</button>
+      <p>Current language: {settings().language}</p>
+      <button onClick={() => updateLanguage("es")}>Switch to Spanish</button>
     </div>
   );
 }
@@ -160,37 +123,6 @@ function SettingsComponent() {
 ## 📚 API Reference
 
 ### Composables
-
-#### `useTheme()`
-
-Reactive theme management with persistence and cross-tab synchronization.
-
-```tsx
-const { theme, setTheme, nextTheme, availableThemes } = useTheme();
-```
-
-**Returns:**
-
-- `theme()`: Current theme name
-- `setTheme(name)`: Set specific theme
-- `nextTheme()`: Cycle to next theme
-- `availableThemes()`: Array of available theme names
-
-**Example:**
-
-```tsx
-function ThemeSelector() {
-  const { theme, setTheme, availableThemes } = useTheme();
-  
-  return (
-    <select value={theme()} onChange={(e) => setTheme(e.target.value)}>
-      <For each={availableThemes()}>
-        {(themeName) => <option value={themeName}>{themeName}</option>}
-      </For>
-    </select>
-  );
-}
-```
 
 #### `useNotifications()`
 
@@ -442,28 +374,6 @@ const data = await pollUntil(
 
 ### Core Modules
 
-#### Theme System
-
-```tsx
-import { createTheme, ThemeProvider } from "reynard-core";
-
-// Create theme module
-const themeModule = createTheme({
-  defaultTheme: "light",
-  storageKey: "app-theme",
-  availableThemes: ["light", "dark", "banana", "strawberry"],
-});
-
-// Use in app
-function App() {
-  return (
-    <ThemeProvider value={themeModule}>
-      <YourApp />
-    </ThemeProvider>
-  );
-}
-```
-
 #### Notification System
 
 ```tsx
@@ -486,67 +396,6 @@ function App() {
 }
 ```
 
-#### Internationalization
-
-```tsx
-import { createI18nModule, I18nProvider } from "reynard-core";
-
-// Create i18n module
-const i18nModule = createI18nModule({
-  locale: "en",
-  fallbackLocale: "en",
-  translations: {
-    en: {
-      "welcome": "Welcome to Reynard!",
-      "user.greeting": "Hello, {{name}}!",
-    },
-    es: {
-      "welcome": "¡Bienvenido a Reynard!",
-      "user.greeting": "¡Hola, {{name}}!",
-    },
-  },
-});
-
-// Use in app
-function App() {
-  return (
-    <I18nProvider value={i18nModule}>
-      <YourApp />
-    </I18nProvider>
-  );
-}
-```
-
-## 🎨 Theming
-
-Reynard Core provides a comprehensive theming system with 8 built-in themes:
-
-- **Light**: Clean and bright
-- **Dark**: Easy on the eyes  
-- **Gray**: Professional neutral
-- **Banana**: Warm and cheerful
-- **Strawberry**: Vibrant and energetic
-- **Peanut**: Earthy and cozy
-- **High Contrast Black**: Maximum accessibility
-- **High Contrast Inverse**: Alternative high contrast
-
-### Custom Themes
-
-```tsx
-import { createTheme } from "reynard-core";
-
-const customTheme = createTheme({
-  name: "ocean",
-  colors: {
-    primary: "#0066cc",
-    secondary: "#00aaff", 
-    background: "#f0f8ff",
-    surface: "#ffffff",
-    text: "#001122",
-  },
-});
-```
-
 ## 🧪 Testing
 
 Run the test suite:
@@ -564,10 +413,9 @@ The async utility tests (`src/utils/async.test.ts`) are currently excluded from 
 
 ## 📦 Bundle Size
 
-- **Core composables**: ~8 kB (gzipped)
+- **Core composables**: ~6 kB (gzipped)
 - **Utility functions**: ~12 kB (gzipped)  
-- **Theme system**: ~4 kB (gzipped)
-- **Total**: ~24 kB (gzipped)
+- **Total**: ~18 kB (gzipped)
 
 ## 🤝 Contributing
 

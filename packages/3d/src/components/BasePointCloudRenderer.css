@@ -1,0 +1,138 @@
+.base-point-cloud-renderer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.renderer-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.info-item .label {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: #212529;
+}
+
+.renderer-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.control-button {
+  background: #e9ecef;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover {
+  background: #dee2e6;
+  border-color: #adb5bd;
+}
+
+.control-button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.control-button.active:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+.renderer-stats {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.stats-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.stats-item .label {
+  color: #6c757d;
+}
+
+.stats-item .value {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .renderer-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .renderer-controls {
+    flex-direction: column;
+  }
+  
+  .renderer-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .base-point-cloud-renderer {
+    border-color: #000;
+  }
+  
+  .renderer-info,
+  .renderer-stats {
+    border-color: #000;
+  }
+  
+  .control-button {
+    border-color: #000;
+  }
+  
+  .control-button.active {
+    background: #000;
+    border-color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .control-button {
+    transition: none;
+  }
+}

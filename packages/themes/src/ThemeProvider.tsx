@@ -13,13 +13,11 @@ import {
 } from "solid-js";
 import type {
   ThemeName,
-  LanguageCode,
   ThemeContext,
-  TranslationContext,
   ReynardContext,
   ThemeProviderProps,
-  Translations,
 } from "./types";
+import type { TranslationContext } from "reynard-i18n";
 import { themes, isDarkTheme, isHighContrastTheme } from "./themes";
 import {
   computeTagBackground,
@@ -31,15 +29,12 @@ import {
   onSystemThemeChange,
 } from "./themeUtils";
 import {
-  languages,
-  loadTranslations,
-  getTranslationValue,
-  getBrowserLocale,
-  isRTL,
-} from "./translations";
+  I18nProvider,
+  createI18nModule,
+} from "reynard-i18n";
 
 // Create contexts
-const ReynardContext = createContext<ReynardContext | undefined>();
+const ReynardContextInstance = createContext<ReynardContext | undefined>();
 
 // Theme Provider Component
 export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
@@ -48,23 +43,20 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
     props.defaultTheme || getSystemThemePreference(),
   );
 
-  // Translation state
-  const [locale, setLocaleState] = createSignal<LanguageCode>(
-    props.defaultLocale || getBrowserLocale(),
-  );
+  // Create i18n module
+  const i18nModule = createI18nModule();
 
-  // Translation data
-  const [translationData, setTranslationData] =
-    createSignal<Translations | null>(null);
-
-  // Load translations when locale changes
-  const loadTranslationsForLocale = async (newLocale: LanguageCode) => {
-    try {
-      const translations = await loadTranslations(newLocale);
-      setTranslationData(translations);
-    } catch (error) {
-      console.error("Failed to load translations:", error);
-    }
+  // Create translation context from i18n module
+  const translationContext: TranslationContext = {
+    get locale() {
+      return i18nModule.locale();
+    },
+    setLocale: i18nModule.setLocale,
+    t: i18nModule.t,
+    languages: i18nModule.languages,
+    get isRTL() {
+      return i18nModule.isRTL;
+    },
   };
 
   // Theme context
@@ -98,47 +90,6 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
     },
   };
 
-  // Translation context
-  const translationContext: TranslationContext = {
-    get locale() {
-      return locale();
-    },
-
-    setLocale(newLocale: LanguageCode) {
-      setLocaleState(newLocale);
-      loadTranslationsForLocale(newLocale);
-      localStorage.setItem("reynard-locale", newLocale);
-
-      // Update document direction for RTL languages
-      document.documentElement.setAttribute(
-        "dir",
-        isRTL(newLocale) ? "rtl" : "ltr",
-      );
-      document.documentElement.setAttribute("lang", newLocale);
-    },
-
-    t(key: string, params?: any): string {
-      const translations = translationData();
-      if (!translations) return key;
-
-      try {
-        const value = getTranslationValue(translations, key, params);
-        return value || key;
-      } catch (error) {
-        console.warn(`Translation error for key "${key}":`, error);
-        return key;
-      }
-    },
-
-    get languages() {
-      return languages;
-    },
-
-    get isRTL() {
-      return isRTL(locale());
-    },
-  };
-
   // Combined context
   const context: ReynardContext = {
     theme: themeContext,
@@ -154,19 +105,12 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
     }
     applyTheme(theme());
 
-    // Load saved locale or use browser locale
-    const savedLocale = localStorage.getItem("reynard-locale") as LanguageCode;
-    if (savedLocale) {
-      setLocaleState(savedLocale);
-    }
-    await loadTranslationsForLocale(locale());
-
-    // Set initial document attributes
+    // Set initial document attributes (i18n module handles locale automatically)
     document.documentElement.setAttribute(
       "dir",
-      isRTL(locale()) ? "rtl" : "ltr",
+      i18nModule.isRTL ? "rtl" : "ltr",
     );
-    document.documentElement.setAttribute("lang", locale());
+    document.documentElement.setAttribute("lang", i18nModule.locale());
 
     // Listen for system theme changes
     const cleanup = onSystemThemeChange((systemTheme) => {
@@ -182,16 +126,17 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
   });
 
   return (
-    <ReynardContext.Provider
-      value={context}
-      {...props}
-    ></ReynardContext.Provider>
+    <I18nProvider value={translationContext}>
+      <ReynardContextInstance.Provider value={context}>
+        {props.children}
+      </ReynardContextInstance.Provider>
+    </I18nProvider>
   );
 };
 
 // Hook to use the Reynard context
 export const useReynard = (): ReynardContext => {
-  const context = useContext(ReynardContext);
+  const context = useContext(ReynardContextInstance);
   if (!context) {
     throw new Error("useReynard must be used within a ReynardProvider");
   }
@@ -216,4 +161,4 @@ export const useI18n = (): TranslationContext => {
 };
 
 // Export individual contexts for advanced usage
-export { ReynardContext };
+export { ReynardContextInstance as ReynardContext };

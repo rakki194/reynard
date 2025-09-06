@@ -144,6 +144,23 @@ export default [
     },
   },
 
+  // JavaScript config files - Node.js environment
+  {
+    files: ["**/*.config.js", "**/*.config.mjs"],
+    languageOptions: {
+      globals: {
+        process: "readonly",
+        global: "readonly",
+        NodeJS: "readonly",
+        require: "readonly",
+        module: "readonly",
+        exports: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+      },
+    },
+  },
+
   // Test files configuration - more lenient
   {
     files: [

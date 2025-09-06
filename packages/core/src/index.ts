@@ -13,6 +13,4 @@ export * from "./composables";
 export * from "./utils";
 
 // Re-export key types for convenience
-export type { Theme } from "./modules/theme";
 export type { Notification } from "./modules/notifications";
-export type { Locale, TranslationFunction, Translations } from "./modules/i18n";

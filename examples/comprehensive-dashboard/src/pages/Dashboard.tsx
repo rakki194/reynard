@@ -1,5 +1,6 @@
 import { Component, createSignal, createEffect, For } from "solid-js";
-import { useI18n, useNotifications } from "reynard-core";
+import { useI18n } from "reynard-i18n";
+import { useNotifications } from "reynard-core";
 import { Card, Button } from "reynard-components";
 import { Grid, GridItem } from "reynard-ui";
 import { LineChart, BarChart, PieChart } from "reynard-charts";

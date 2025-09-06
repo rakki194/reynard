@@ -1,6 +1,6 @@
 import { createSignal, For } from "solid-js";
 import { Button, Card, TextField, Select, Modal } from "reynard-components";
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 import { getIcon } from "reynard-fluent-icons";
 
 export function ComponentsDemo() {
@@ -232,7 +232,7 @@ export function ComponentsDemo() {
         >
           <div class="modal-content">
             <p>This is a demonstration of the Modal component.</p>
-            <p>Current theme: <strong>{theme()}</strong></p>
+            <p>Current theme: <strong>{theme}</strong></p>
             <p>You can close this modal by:</p>
             <ul>
               <li>Clicking the X button in the header</li>

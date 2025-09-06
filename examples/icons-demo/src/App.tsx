@@ -10,12 +10,11 @@ import {
   Show,
 } from "solid-js";
 import {
-  ThemeProvider,
   NotificationsProvider,
-  createTheme,
   createNotifications,
-  useTheme,
 } from "reynard-core";
+import { ReynardProvider, useTheme } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { IconGrid } from "./components/IconGrid";
 import { SearchSection } from "./components/SearchSection";
 import { IconModal } from "./components/IconModal";
@@ -185,15 +184,14 @@ const IconsDemo: Component = () => {
 };
 
 const App: Component = () => {
-  const themeModule = createTheme();
   const notificationsModule = createNotifications();
 
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <NotificationsProvider value={notificationsModule}>
         <IconsDemo />
       </NotificationsProvider>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

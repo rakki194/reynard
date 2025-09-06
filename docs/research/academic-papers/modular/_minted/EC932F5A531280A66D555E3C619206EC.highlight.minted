@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n+nd}{@patch}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{app.api.services.get\PYGZus{}service\PYGZus{}manager}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{test\PYGZus{}restart\PYGZus{}comfy\PYGZus{}success}\PYG{p}{(}\PYG{o}{.}\PYG{o}{.}\PYG{o}{.}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{mock\PYGZus{}service} \PYG{o}{=} \PYG{n}{Mock}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;} \PYG{n}{mock\PYGZus{}service}\PYG{o}{.}\PYG{n}{stop} \PYG{o}{=} \PYG{n}{AsyncMock}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;} \PYG{n}{mock\PYGZus{}service}\PYG{o}{.}\PYG{n}{start} \PYG{o}{=} \PYG{n}{AsyncMock}\PYG{p}{(}\PYG{n}{return\PYGZus{}value}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+    \PYG{n}{mock\PYGZus{}manager}\PYG{o}{.}\PYG{n}{get\PYGZus{}service}\PYG{o}{.}\PYG{n}{return\PYGZus{}value} \PYG{o}{=} \PYG{n}{mock\PYGZus{}service}
+    \PYG{n}{resp} \PYG{o}{=} \PYG{n}{client}\PYG{o}{.}\PYG{n}{post}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{/api/services/restart/comfy}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{;} \PYG{k}{assert} \PYG{n}{resp}\PYG{o}{.}\PYG{n}{status\PYGZus{}code} \PYG{o}{==} \PYG{l+m+mi}{200}
+\end{MintedVerbatim}

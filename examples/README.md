@@ -4,6 +4,31 @@ Welcome to the Reynard framework examples! These practical applications demonstr
 
 ## 📱 Available Examples
 
+### 🌍 [i18n Demo](./i18n-demo/) - Internationalization Showcase
+
+A comprehensive demonstration of Reynard's internationalization system with 37 language support.
+
+**What you'll learn:**
+
+- Global translation system implementation
+- Advanced pluralization rules
+- RTL support for Arabic and Hebrew
+- Type-safe translations with autocomplete
+- Dynamic loading for optimal performance
+
+**Features:**
+
+- 🌍 37 languages with comprehensive coverage
+- 🎯 Advanced pluralization (Arabic, Russian, Polish, etc.)
+- 📱 RTL support for Arabic and Hebrew
+- 🔧 Type-safe translations with autocomplete
+- ⚡ Dynamic loading for optimal performance
+- 🎨 Integration with Reynard's theming system
+
+**Bundle size:** ~15 kB total (gzipped)
+
+---
+
 ### 🚀 [Basic App](./basic-app/) - Todo Application
 
 A minimal todo application demonstrating core Reynard features.

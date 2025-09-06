@@ -20,17 +20,13 @@
     "jsxImportSource": "solid-js",
     "outDir": "./dist",
     "rootDir": "./src",
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "paths": {
       "~/*": ["./src/*"]
     }
   },
   "include": ["src"],
   "exclude": [
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/test-setup.ts",
     "dist"
   ]
 }

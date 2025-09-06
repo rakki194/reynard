@@ -3,7 +3,7 @@
  * Shows interactive examples of feature-aware components
  */
 
-import { useLanguage } from "reynard-core";
+import { useI18n } from "reynard-themes";
 import ImageProcessingDemo from "./demos/ImageProcessingDemo";
 import CaptionGenerationDemo from "./demos/CaptionGenerationDemo";
 import ObjectDetectionDemo from "./demos/ObjectDetectionDemo";
@@ -11,14 +11,14 @@ import TextAnalysisDemo from "./demos/TextAnalysisDemo";
 import GitIntegrationDemo from "./demos/GitIntegrationDemo";
 
 export default function FeatureDemos() {
-  const { t } = useLanguage();
+  const { t } = useI18n();
 
   return (
     <div class="feature-demo">
-      <h3>🎯 {t("demos.title")}</h3>
-      <p>{t("demos.description")}</p>
+      <h3>🎯 Feature Demonstrations</h3>
+      <p>Interactive examples of feature-aware components</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing);">
+      <div class="feature-demo-grid">
         <ImageProcessingDemo />
         <CaptionGenerationDemo />
         <ObjectDetectionDemo />

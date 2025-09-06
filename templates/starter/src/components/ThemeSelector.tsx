@@ -4,10 +4,11 @@
  */
 
 import { Component, For } from "solid-js";
-import { useTheme, type Theme } from "reynard-core";
+import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export const ThemeSelector: Component = () => {
-  const { theme, setTheme, nextTheme, themes } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const availableThemes = getAvailableThemes();
 
   return (
     <div class="theme-selector">
@@ -15,22 +16,18 @@ export const ThemeSelector: Component = () => {
         Theme:
         <select
           class="theme-select"
-          value={theme()}
-          onChange={(e) => setTheme(e.target.value as Theme)}
+          value={theme}
+          onChange={(e) => setTheme(e.target.value as ThemeName)}
         >
-          <For each={themes}>
-            {(themeName: string) => (
-              <option value={themeName}>
-                {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
+          <For each={availableThemes}>
+            {(themeConfig) => (
+              <option value={themeConfig.name}>
+                {themeConfig.displayName}
               </option>
             )}
           </For>
         </select>
       </label>
-
-      <button class="button button--secondary" onClick={nextTheme}>
-        Next Theme
-      </button>
     </div>
   );
 };

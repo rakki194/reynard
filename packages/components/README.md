@@ -230,16 +230,16 @@ Components automatically adapt to your theme using CSS custom properties:
 }
 ```
 
-Works seamlessly with `reynard-core` theme system:
+Works seamlessly with `reynard-themes` theme system:
 
 ```tsx
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 
 function ThemedComponent() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Button onClick={() => setTheme("dark")}>Current theme: {theme()}</Button>
+    <Button onClick={() => setTheme("dark")}>Current theme: {theme}</Button>
   );
 }
 ```

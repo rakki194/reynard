@@ -24,12 +24,5 @@ describe("Core Framework Exports", () => {
     expect(Core).toHaveProperty("useTheme");
     expect(Core).toHaveProperty("useNotifications");
     expect(Core).toHaveProperty("useMediaQuery");
-    expect(Core).toHaveProperty("useI18n");
-  });
-
-  it("should export i18n module", () => {
-    expect(Core).toHaveProperty("createI18nModule");
-    expect(Core).toHaveProperty("languages");
-    expect(Core).toHaveProperty("isRTL");
   });
 });

@@ -1,0 +1,25 @@
+{
+  "name": "reynard-i18n-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Demo application showcasing Reynard's comprehensive i18n system with 37 languages",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-i18n": "1.0.0",
+    "reynard-themes": "0.1.1",
+    "reynard-core": "0.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  }
+}

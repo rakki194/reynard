@@ -1,4 +1,6 @@
-import { ThemeProvider, createTheme, NotificationsProvider, createNotifications } from "reynard-core";
+import { NotificationsProvider, createNotifications } from "reynard-core";
+import { ReynardProvider } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { Tabs, TabPanel } from "reynard-components";
 import { getIcon } from "reynard-fluent-icons";
 import { createSignal } from "solid-js";
@@ -21,7 +23,6 @@ import "reynard-games/dist/index.css";
 
 function App() {
   console.log("App: Creating modules");
-  const themeModule = createTheme();
   const notificationsModule = createNotifications();
   console.log("App: Notifications module created", notificationsModule);
   const [activeTab, setActiveTab] = createSignal("tutorial");
@@ -40,7 +41,7 @@ function App() {
 
   return (
     <>
-      <ThemeProvider value={themeModule}>
+      <ReynardProvider>
         <NotificationsProvider value={notificationsModule}>
           <NotificationToast />
           <div class="app-container">
@@ -101,7 +102,7 @@ function App() {
             </div>
           </div>
         </NotificationsProvider>
-      </ThemeProvider>
+      </ReynardProvider>
     </>
   );
 }

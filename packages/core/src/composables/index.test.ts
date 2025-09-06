@@ -26,7 +26,4 @@ describe("Composables Index Exports", () => {
     expect(Composables).toHaveProperty("useMediaQuery");
   });
 
-  it("should export useI18n composable", () => {
-    expect(Composables).toHaveProperty("useI18n");
-  });
 });

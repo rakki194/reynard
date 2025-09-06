@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "reynard-components": "file:../reynard/packages/components",
-    "reynard-core": "file:../reynard/packages/core",
+    "reynard-components": "0.1.1",
+    "reynard-core": "0.1.1",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

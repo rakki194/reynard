@@ -5,7 +5,8 @@
 
 import { Component, createSignal } from 'solid-js';
 import { ErrorBoundary, ErrorFallback, builtInRecoveryStrategies } from 'reynard-error-boundaries';
-import { ThemeProvider, createTheme, useTheme } from 'reynard-core';
+import { ReynardProvider, useTheme } from 'reynard-themes';
+import 'reynard-themes/themes.css';
 import { Button, Card } from 'reynard-components';
 
 // Component that can throw an error
@@ -70,12 +71,10 @@ const ErrorBoundaryDemo: Component = () => {
 
 // App with theme provider
 const App: Component = () => {
-  const themeModule = createTheme();
-
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <ErrorBoundaryDemo />
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

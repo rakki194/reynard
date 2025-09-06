@@ -1,0 +1,30 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}attempts\PYGZus{}total Reconnection attempts since start
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}attempts\PYGZus{}total counter
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}attempts\PYGZus{}total\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{}\PYGZcb{} 12
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}attempts\PYGZus{}total\PYGZob{}service=\PYGZdq{}nlweb\PYGZus{}router\PYGZdq{}\PYGZcb{} 3
+
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}last\PYGZus{}ok\PYGZus{}seconds UNIX time of last successful probe
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}last\PYGZus{}ok\PYGZus{}seconds gauge
+yipyap\PYGZus{}service\PYGZus{}last\PYGZus{}ok\PYGZus{}seconds\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{}\PYGZcb{} 1.72603593e+09
+
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state Service connection state (one\PYGZhy{}hot)
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state gauge
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}connected\PYGZdq{}\PYGZcb{} 1
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}reconnecting\PYGZdq{}\PYGZcb{} 0
+yipyap\PYGZus{}service\PYGZus{}connection\PYGZus{}state\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},state=\PYGZdq{}disconnected\PYGZdq{}\PYGZcb{} 0
+
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}health\PYGZus{}state Service health (one\PYGZhy{}hot)
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}health\PYGZus{}state gauge
+yipyap\PYGZus{}service\PYGZus{}health\PYGZus{}state\PYGZob{}service=\PYGZdq{}vector\PYGZus{}db\PYGZdq{},state=\PYGZdq{}healthy\PYGZdq{}\PYGZcb{} 1
+yipyap\PYGZus{}service\PYGZus{}health\PYGZus{}state\PYGZob{}service=\PYGZdq{}vector\PYGZus{}db\PYGZdq{},state=\PYGZdq{}degraded\PYGZdq{}\PYGZcb{} 0
+yipyap\PYGZus{}service\PYGZus{}health\PYGZus{}state\PYGZob{}service=\PYGZdq{}vector\PYGZus{}db\PYGZdq{},state=\PYGZdq{}unhealthy\PYGZdq{}\PYGZcb{} 0
+
+\PYGZsh{} HELP yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds Reconnection delay distribution
+\PYGZsh{} TYPE yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds histogram
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds\PYGZus{}bucket\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},le=\PYGZdq{}0.05\PYGZdq{}\PYGZcb{} 1
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds\PYGZus{}bucket\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{},le=\PYGZdq{}0.1\PYGZdq{}\PYGZcb{} 2
+...
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds\PYGZus{}sum\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{}\PYGZcb{} 3.4
+yipyap\PYGZus{}service\PYGZus{}reconnect\PYGZus{}delay\PYGZus{}seconds\PYGZus{}count\PYGZob{}service=\PYGZdq{}comfy\PYGZdq{}\PYGZcb{} 7
+\end{MintedVerbatim}

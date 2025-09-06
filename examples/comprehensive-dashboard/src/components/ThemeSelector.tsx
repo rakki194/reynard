@@ -1,23 +1,24 @@
 import { Component } from "solid-js";
-import { useTheme, type Theme } from "reynard-core";
+import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 import { Select } from "reynard-components";
 
 const ThemeSelector: Component = () => {
-  const { theme, setTheme, themes, themeIconMap } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const availableThemes = getAvailableThemes();
 
-  const themeOptions = themes.map((t) => ({
-    value: t,
-    label: `${themeIconMap[t] ? themeIconMap[t] : ""} ${t}`,
+  const themeOptions = availableThemes.map((themeConfig) => ({
+    value: themeConfig.name,
+    label: themeConfig.displayName,
   }));
 
   const handleThemeChange = (e: Event & { target: HTMLSelectElement }) => {
-    setTheme(e.target.value as Theme);
+    setTheme(e.target.value as ThemeName);
   };
 
   return (
     <div class="theme-selector">
       <Select
-        value={theme()}
+        value={theme}
         onChange={handleThemeChange}
         options={themeOptions}
         variant="outlined"

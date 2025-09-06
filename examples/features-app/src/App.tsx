@@ -3,16 +3,13 @@
  * Showcasing Reynard feature management system with interactive examples
  */
 
-import { createSignal, createEffect } from "solid-js";
+import { createSignal } from "solid-js";
 import { 
   FeatureProvider, 
-  COMMON_FEATURES, 
-  FEATURE_CATEGORIES,
-  FEATURE_PRIORITIES 
+  COMMON_FEATURES
 } from "reynard-features";
-import { ThemeProvider, useTheme } from "reynard-themes";
-import { LanguageProvider, useLanguage } from "reynard-core";
-import { translations } from "./translations";
+import { ReynardProvider, useTheme } from "reynard-themes";
+import "reynard-themes/themes.css";
 import FeatureDashboard from "./components/FeatureDashboard";
 import ServiceControls from "./components/ServiceControls";
 import FeatureDemos from "./components/FeatureDemos";
@@ -54,7 +51,7 @@ const featureConfig = {
   serviceChecker,
   autoRefresh: true,
   refreshInterval: 5000, // Refresh every 5 seconds
-  onStatusChange: (featureId: string, status: any) => {
+  onStatusChange: (featureId: string, status: unknown) => {
     console.log(`Feature ${featureId} status changed:`, status);
   },
   onAvailabilityChange: (featureId: string, available: boolean) => {
@@ -63,52 +60,55 @@ const featureConfig = {
 };
 
 function App() {
-  const [currentTheme, setCurrentTheme] = useTheme();
-  const [currentLanguage, setCurrentLanguage] = useLanguage();
-
   return (
-    <ThemeProvider>
-      <LanguageProvider translations={translations}>
-        <FeatureProvider config={featureConfig}>
-          <div class="app">
-            <header class="app-header">
-              <h1>
-                <div class="reynard-logo">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                </div>
-                Reynard Features Demo
-              </h1>
-              <p>Interactive demonstration of the Reynard feature management system</p>
-              <div class="header-controls">
-                <div class="theme-info">
-                  Current theme: <strong>{currentTheme()}</strong>
-                </div>
-                <ThemeToggle />
-                <LanguageSelector />
-              </div>
-            </header>
+    <ReynardProvider>
+      <FeatureProvider config={featureConfig}>
+        <AppContent />
+      </FeatureProvider>
+    </ReynardProvider>
+  );
+}
 
-            <main class="app-main">
-              <FeatureDashboard />
-              <ServiceControls 
-                serviceAvailability={serviceAvailability}
-                setServiceAvailability={setServiceAvailability}
-              />
-              <FeatureDemos />
-            </main>
-
-            <footer class="app-footer">
-              <p>
-                This demo showcases how the Reynard features package manages application capabilities, 
-                dependencies, and graceful degradation. Toggle services above to see features adapt in real-time!
-              </p>
-            </footer>
+function AppContent() {
+  const { theme } = useTheme();
+  
+  return (
+    <div class="app">
+      <header class="app-header">
+        <h1>
+          <div class="reynard-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
           </div>
-        </FeatureProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+          Reynard Features Demo
+        </h1>
+        <p>Interactive demonstration of the Reynard feature management system</p>
+        <div class="header-controls">
+          <div class="theme-info">
+            Current theme: <strong>{theme}</strong>
+          </div>
+          <ThemeToggle />
+          <LanguageSelector />
+        </div>
+      </header>
+
+          <main class="app-main">
+            <FeatureDashboard />
+            <ServiceControls 
+              serviceAvailability={serviceAvailability}
+              setServiceAvailability={setServiceAvailability}
+            />
+            <FeatureDemos />
+          </main>
+
+          <footer class="app-footer">
+            <p>
+              This demo showcases how the Reynard features package manages application capabilities, 
+              dependencies, and graceful degradation. Toggle services above to see features adapt in real-time!
+            </p>
+          </footer>
+        </div>
   );
 }
 

@@ -5,14 +5,14 @@
 
 import { createSignal } from "solid-js";
 import { useFeatureAware, useFeatureStatus } from "reynard-features";
-import { useLanguage } from "reynard-core";
+import { useI18n } from "reynard-themes";
 
 export default function ImageProcessingDemo() {
-  const { t } = useLanguage();
+  const { t } = useI18n();
   const { shouldRender, fallback } = useFeatureAware(
     "image-processing",
     <div class="demo-content unavailable">
-      <p>{t("demo.imageProcessing.unavailable")}</p>
+      <p>Image processing is currently unavailable</p>
     </div>
   );
   
@@ -33,12 +33,12 @@ export default function ImageProcessingDemo() {
 
   return (
     <div class="feature-demo">
-      <h3>🖼️ {t("demo.imageProcessing.title")}</h3>
-      <p>{t("demo.imageProcessing.description")}</p>
+      <h3>🖼️ Image Processing</h3>
+      <p>Upload and process images with AI-powered analysis</p>
       
       {shouldRender() ? (
         <div class="demo-content">
-          <p>{t("demo.imageProcessing.available")}</p>
+          <p>Image processing is fully available</p>
           
           {status()?.degraded && (
             <div class="status-message warning">
@@ -46,12 +46,12 @@ export default function ImageProcessingDemo() {
             </div>
           )}
           
-          <div style="margin-top: var(--spacing);">
+          <div style={{"margin-top": "var(--spacing)"}}>
             <input
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              style="margin-bottom: var(--spacing);"
+              style={{"margin-bottom": "var(--spacing)"}}
               aria-label="Upload image for processing"
             />
             
@@ -60,9 +60,9 @@ export default function ImageProcessingDemo() {
                 <img 
                   src={uploadedImage()!} 
                   alt="Uploaded" 
-                  style="max-width: 100%; height: auto; border-radius: var(--border-radius);"
+                  style={{"max-width": "100%", "height": "auto", "border-radius": "var(--border-radius)"}}
                 />
-                <p style="margin-top: calc(var(--spacing) / 2); font-size: 0.9rem; color: var(--text-secondary);">
+                <p style={{"margin-top": "calc(var(--spacing) / 2)", "font-size": "0.9rem", "color": "var(--text-secondary)"}}>
                   Image uploaded successfully! Processing features would be available here.
                 </p>
               </div>

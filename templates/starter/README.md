@@ -59,7 +59,7 @@ The template includes 8 built-in themes:
 Switch themes using the theme selector or programmatically:
 
 ```tsx
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 
 const { theme, setTheme, nextTheme } = useTheme();
 setTheme("dark");

@@ -1,0 +1,68 @@
+{
+  "name": "reynard-docs-core",
+  "version": "0.1.0",
+  "description": "Core documentation rendering engine for Reynard framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser/index.d.ts",
+      "import": "./dist/parser/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "documentation",
+    "markdown",
+    "rendering",
+    "reynard",
+    "solidjs"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "marked": "16.2.1",
+    "highlight.js": "11.11.1",
+    "gray-matter": "4.0.3",
+    "reynard-core": "0.1.1",
+    "reynard-components": "0.1.1"
+  },
+  "devDependencies": {
+    "@types/marked": "5.0.2",
+    "@types/highlight.js": "9.12.4",
+    "@types/node": "24.3.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

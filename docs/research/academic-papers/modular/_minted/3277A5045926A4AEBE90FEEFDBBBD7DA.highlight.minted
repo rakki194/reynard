@@ -1,0 +1,15 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{async} \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{reconnect}\PYG{p}{(}\PYG{n}{base}\PYG{p}{,} \PYG{n}{cap}\PYG{p}{,} \PYG{n}{epsilon}\PYG{o}{=}\PYG{l+m+mf}{0.05}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{attempts}\PYG{p}{,} \PYG{n}{delay} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{base}
+    \PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+        \PYG{n}{attempts} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{1}
+        \PYG{k}{if} \PYG{k}{await} \PYG{n}{probe\PYGZus{}ok}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+            \PYG{n}{state} \PYG{o}{=} \PYG{n}{CONNECTED}
+            \PYG{n}{attempts} \PYG{o}{=} \PYG{l+m+mi}{0}
+            \PYG{n}{last\PYGZus{}ok} \PYG{o}{=} \PYG{n}{now}\PYG{p}{(}\PYG{p}{)}
+            \PYG{k}{return}
+        \PYG{n}{jitter} \PYG{o}{=} \PYG{n}{random}\PYG{o}{.}\PYG{n}{uniform}\PYG{p}{(}\PYG{l+m+mf}{0.8}\PYG{p}{,} \PYG{l+m+mf}{1.2}\PYG{p}{)}
+        \PYG{n}{effective} \PYG{o}{=} \PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{epsilon}\PYG{p}{,} \PYG{n+nb}{min}\PYG{p}{(}\PYG{n}{cap}\PYG{p}{,} \PYG{n}{delay}\PYG{p}{)} \PYG{o}{*} \PYG{n}{jitter}\PYG{p}{)}
+        \PYG{k}{await} \PYG{n}{sleep}\PYG{p}{(}\PYG{n}{effective}\PYG{p}{)}
+        \PYG{n}{delay} \PYG{o}{=} \PYG{n+nb}{min}\PYG{p}{(}\PYG{n}{cap}\PYG{p}{,} \PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{base}\PYG{p}{,} \PYG{n}{delay} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{)}\PYG{p}{)}
+\end{MintedVerbatim}

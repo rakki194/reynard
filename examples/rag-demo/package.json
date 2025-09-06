@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "solid-js": "1.9.9",
-    "reynard-core": "file:../../packages/core",
-    "reynard-components": "file:../../packages/components",
-    "reynard-rag": "file:../../packages/rag",
-    "reynard-fluent-icons": "file:../../packages/fluent-icons"
+    "reynard-core": "0.1.1",
+    "reynard-components": "0.1.1",
+    "reynard-rag": "0.1.1",
+    "reynard-fluent-icons": "0.1.1"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

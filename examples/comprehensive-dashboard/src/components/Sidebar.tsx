@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 // import { A } from "@solidjs/router"; // Remove unused import
-import { useI18n } from "reynard-core";
+import { useI18n } from "reynard-i18n";
 import { NavMenu } from "reynard-ui";
 // import type { MenuItem } from "reynard-ui"; // Remove unused import
 

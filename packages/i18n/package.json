@@ -1,0 +1,63 @@
+{
+  "name": "reynard-i18n",
+  "version": "1.0.0",
+  "description": "Comprehensive internationalization system for Reynard framework with 37 language support",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    },
+    "./plurals": {
+      "import": "./dist/plurals.js",
+      "types": "./dist/plurals.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "localization",
+    "translations",
+    "reynard",
+    "solidjs",
+    "typescript"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4",
+    "eslint": "8.57.0"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}

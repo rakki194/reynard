@@ -184,7 +184,8 @@ npm install reynard-components reynard-chat reynard-rag reynard-auth reynard-cha
 
 ```tsx
 import { createSignal } from "solid-js";
-import { useTheme, useNotifications } from "reynard-core";
+import { useNotifications } from "reynard-core";
+import { useTheme } from "reynard-themes";
 import { Button, Card } from "reynard-components";
 
 function App() {
@@ -379,14 +380,13 @@ render(() => <App />, document.getElementById("root")!);
 #### `src/App.tsx`
 
 ```tsx
-import { ThemeProvider, createTheme } from "reynard-core";
+import { ReynardProvider } from "reynard-themes";
+import "reynard-themes/themes.css";
 import { ThemeDemo } from "./components/ThemeDemo";
 
 function App() {
-  const themeModule = createTheme();
-
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <div style="min-height: 100vh; background-color: var(--bg-color); color: var(--text-primary); transition: all 0.2s ease;">
         <div style="padding: 2rem; max-width: 800px; margin: 0 auto;">
           <h1 style="margin-bottom: 1rem; color: var(--text-primary);">
@@ -398,7 +398,7 @@ function App() {
           <ThemeDemo />
         </div>
       </div>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 }
 
@@ -411,7 +411,7 @@ export default App;
 
 ```tsx
 import { Button, Card } from "reynard-components";
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 
 export function ThemeDemo() {
   const { theme, setTheme, nextTheme } = useTheme();
@@ -649,7 +649,7 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
 ```tsx
 import { Component } from "solid-js";
 import { Button } from "reynard-components";
-import { useTheme } from "reynard-core";
+import { useTheme } from "reynard-themes";
 
 export const ThemeToggle: Component = () => {
   const { theme, nextTheme } = useTheme();
@@ -1011,13 +1011,11 @@ The foundation of the Reynard framework, providing essential utilities, composab
 
 #### Modules
 
-- **Theme System** - Comprehensive theming with 8 built-in themes and custom theme support
 - **Notifications** - Toast notification system with auto-dismiss and multiple types
 - **Internationalization** - Built-in i18n support with translation management
 
 #### Core Composables
 
-- **`useTheme()`** - Theme management with persistence and reactive switching
 - **`useNotifications()`** - Toast notification system with queue management
 - **`useLocalStorage()`** - Reactive local storage with type safety
 - **`useDebounce()`** - Debounced values for performance optimization
@@ -1034,24 +1032,65 @@ The foundation of the Reynard framework, providing essential utilities, composab
 
 ```tsx
 import {
-  useTheme,
   useNotifications,
   useLocalStorage,
   useDebounce,
 } from "reynard-core";
 
 function MyComponent() {
-  const { theme, setTheme, nextTheme } = useTheme();
   const { notify } = useNotifications();
   const [count, setCount] = useLocalStorage("counter", 0);
   const [searchTerm, setSearchTerm] = useDebounce("", 300);
 
   return (
     <div>
-      <button onClick={() => setTheme("dark")}>Switch to Dark Theme</button>
       <button onClick={() => notify("Success!", "success")}>
         Show Notification
       </button>
+      <p>Count: {count()}</p>
+      <input 
+        value={searchTerm()} 
+        onInput={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+      />
+    </div>
+  );
+}
+```
+
+### reynard-themes
+
+Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities.
+
+#### Features
+
+- **8 Built-in Themes** - Light, Dark, Gray, Banana, Strawberry, Peanut, High Contrast Black, High Contrast Inverse
+- **Custom Themes** - Create your own theme configurations
+- **Internationalization** - 30+ languages with RTL support
+- **CSS Custom Properties** - Dynamic theme switching with CSS variables
+- **System Theme Detection** - Automatic light/dark mode based on user preferences
+
+#### Usage
+
+```tsx
+import { ReynardProvider, useTheme } from "reynard-themes";
+import "reynard-themes/themes.css";
+
+function App() {
+  return (
+    <ReynardProvider defaultTheme="light" defaultLocale="en">
+      <MyApp />
+    </ReynardProvider>
+  );
+}
+
+function MyComponent() {
+  const { theme, setTheme } = useTheme();
+  
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <button onClick={() => setTheme("dark")}>Switch to Dark</button>
     </div>
   );
 }
@@ -1703,7 +1742,7 @@ Reynard includes a comprehensive theming system with 8 built-in themes:
 Create custom themes by extending the base theme configuration:
 
 ```tsx
-import { createTheme } from "reynard-core";
+import { createTheme } from "reynard-themes";
 
 const customTheme = createTheme({
   name: "ocean",

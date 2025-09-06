@@ -1,0 +1,307 @@
+\documentclass[10pt]{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{fancyvrb}
+\usepackage{geometry}
+\usepackage{xcolor}
+
+% Define TypeScript language for listings
+\lstdefinelanguage{TypeScript}{
+  keywords={break, case, catch, class, const, continue, debugger, default, delete, do, else, enum, export, extends, finally, for, function, if, import, in, instanceof, new, null, return, super, switch, this, throw, true, try, typeof, var, void, while, with,
+            interface, type, public, private, protected, readonly, abstract, implements, static, declare, async, await, get, set, of, any, unknown, never, namespace, module, require, from, as, is},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true,
+}[keywords, comments, strings]
+
+% Set page margins to reduce overfull boxes
+\geometry{
+  margin=1.25in,
+  includeheadfoot
+}
+
+% Adjust float parameters to allow larger floats
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.9}
+\renewcommand{\textfraction}{.1}
+\renewcommand{\floatpagefraction}{.8}
+
+% Configure listings for better code formatting
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    columns=flexible,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    breakindent=0pt
+}
+
+% Adjust paragraph spacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+% Adjust line spacing
+\linespread{1.1}
+
+% Adjust code block margins
+\fvset{
+    xleftmargin=1em,
+    xrightmargin=1em
+}
+
+\begin{document}
+
+\title{REFINE: Rate-limited Event Fetching for Interactive Network Experiences}
+
+\author{Technical Documentation Team\\
+YipYap Project\\
+\includegraphics[width=0.5cm]{favicon.pdf}}
+
+\maketitle
+
+\begin{abstract}
+This paper introduces REFINE, a novel system designed to enhance the responsiveness and efficiency of client-server interactions in web applications by implementing modular and reliable rate-limiting for GET requests. Focusing on polling-based status updates, as exemplified by the download manager in the YipYap application, REFINE proposes a generic client-side mechanism to prevent excessive network requests, reduce server load, and improve overall user experience. We detail the current polling implementation, identify its limitations, and present a new composable-based architecture that enables adaptive polling intervals, dynamic rate adjustment, and centralized control over network resource consumption.
+\end{abstract}
+
+\section{Introduction}
+
+In modern web applications, real-time feedback and status updates are crucial for a rich user experience. Polling, where the client periodically requests status from the server, is a common pattern for achieving this. However, unconstrained polling can lead to inefficient resource utilization, increased server load, and unnecessary network traffic. The YipYap application, which includes features like model downloads and indexing, currently employs fixed-interval polling for status checks. This document outlines REFINE, a system designed to introduce intelligent rate-limiting to these polling mechanisms, ensuring optimal performance and resource management without compromising responsiveness.
+
+\section{Current Polling Implementation (YipYap Download Manager Example)}
+
+The YipYap application utilizes a \texttt{ModelDownloadManager} on the backend (\url{app/model\_download\_manager.py}) to manage the state and progress of background model downloads. The frontend retrieves this status via a dedicated REST API endpoint, \texttt{/api/joycaption/download-status}, exposed by \texttt{app/main.py}.
+
+On the client-side, the \url{src/contexts/app.tsx} file contains the \texttt{checkJoyCaptionDownload} function, which is responsible for initiating these status checks. This function is called periodically using \texttt{window.setInterval} with a fixed interval of 3000 milliseconds (3 seconds).
+
+\begin{lstlisting}[language=TeX, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/contexts/app.tsx
+// ... existing code ...
+      // Start polling if not already started
+      if (!downloadCheckInterval) {
+        console.log("[JoyCaption] Starting polling for download status.");
+        downloadCheckInterval = window.setInterval(
+          checkJoyCaptionDownload,
+          3000 // Check every 3 seconds for smoother progress updates
+        );
+      }
+// ... existing code ...
+\end{lstlisting}
+
+While effective for providing real-time updates, this fixed-interval polling approach does not adapt to network conditions, server load, or the actual rate of status changes. This can result in unnecessary GET requests when the status is unlikely to change rapidly or, conversely, a delayed update if a critical status change occurs between polling intervals.
+
+\section{Limitations of Current Approach}
+
+\begin{enumerate}
+    \item \textbf{Fixed Polling Interval:} The static 3-second interval does not dynamically adjust to the download's progress or network conditions. During periods of slow progress or server-side delays, excessive requests may be made.
+    \item \textbf{Increased Server Load:} Frequent polling from multiple clients or for multiple concurrent operations can collectively burden the backend, leading to performance degradation.
+    \item \textbf{Network Inefficiency:} Unnecessary requests consume bandwidth and client resources, particularly on mobile devices or constrained networks.
+    \item \textbf{Lack of Centralized Control:} Each polling mechanism (e.g., for downloads, indexing) is managed independently, making it difficult to implement a unified rate-limiting strategy across the application.
+\end{enumerate}
+
+\section{Proposed REFINE System Design}
+
+The REFINE system proposes a centralized, composable-based approach to rate-limit GET requests for status checks. This system will introduce an adaptive polling mechanism that can dynamically adjust the polling interval based on various factors, such as the perceived change rate of the status, network latency, and configurable thresholds.
+
+\subsection{Core Components}
+
+\begin{enumerate}
+    \item \textbf{\texttt{useRateLimitedFetcher} Composable:} This new SolidJS composable will encapsulate the logic for making rate-limited GET requests. It will accept a fetch function, an initial interval, and configuration options for adaptive rate limiting.
+    \begin{itemize}
+        \item \textbf{Adaptive Interval Calculation:} The composable will dynamically adjust the polling interval. For instance, if the status has not changed for a certain number of checks, the interval could gradually increase (e.g., exponential backoff). Conversely, if the status is changing rapidly (e.g., during an active download), the interval could decrease to provide more real-time updates, up to a minimum threshold.
+        \item \textbf{Concurrency Control:} The composable will ensure that only one request is in flight at a time for a given endpoint, preventing race conditions and duplicate requests.
+        \item \textbf{Centralized Configuration:} The \texttt{useRateLimitedFetcher} will allow for global configuration of rate-limiting parameters, ensuring consistent behavior across different polling mechanisms.
+    \end{itemize}
+    \item \textbf{Backend Rate Limiting (Conceptual):} While the primary focus of REFINE is client-side rate limiting, the paper will acknowledge the importance of complementary backend rate-limiting measures (e.g., token bucket algorithm) to protect server resources from malicious or overly aggressive clients.
+\end{enumerate}
+
+\subsection{Implementation Details (\texttt{useRateLimitedFetcher})}
+
+The \texttt{useRateLimitedFetcher} composable would reside in \texttt{src/composables/useRateLimitedFetcher.ts}. It would manage its own internal state for the current polling interval, the last successful fetch time, and potentially a history of status changes to inform adaptive adjustments.
+
+Here's a conceptual outline of the \texttt{useRateLimitedFetcher} composable:
+
+\begin{lstlisting}[language=TypeScript, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/composables/useRateLimitedFetcher.ts
+import { createSignal, onCleanup, createEffect } from 'solid-js';
+
+type FetcherFunction<T> = () => Promise<T>;
+
+interface RateLimiterOptions {
+  initialIntervalMs?: number;
+  minIntervalMs?: number;
+  maxIntervalMs?: number;
+  // Factor by which to increase interval if no change detected
+  increaseFactor?: number;
+  // Factor by which to decrease interval if change detected
+  decreaseFactor?: number;
+  // How many stable checks before increasing interval
+  stableChecksThreshold?: number;
+}
+
+export function useRateLimitedFetcher<T>(
+  fetcher: FetcherFunction<T>,
+  options?: RateLimiterOptions
+) {
+  const effectiveOptions = {
+    initialIntervalMs: 3000,
+    minIntervalMs: 1000,
+    maxIntervalMs: 30000,
+    increaseFactor: 1.5,
+    decreaseFactor: 0.8,
+    stableChecksThreshold: 3,
+    ...options,
+  };
+
+  const [data, setData] = createSignal<T | null>(null);
+  const [isLoading, setIsLoading] = createSignal(false);
+  const [error, setError] = createSignal<any | null>(null);
+  const [currentInterval, setCurrentInterval] = createSignal(effectiveOptions.initialIntervalMs);
+  const [stableChecks, setStableChecks] = createSignal(0);
+
+  let intervalId: number | undefined;
+  let lastFetchedData: T | null = null;
+
+  const fetchData = async () => {
+    if (isLoading()) return; // Prevent concurrent fetches
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await fetcher();
+      setData(() => result); // Use a function to set signal for direct access to value
+
+      // Adaptive interval logic
+      if (JSON.stringify(result) === JSON.stringify(lastFetchedData)) {
+        setStableChecks(prev => prev + 1);
+        if (stableChecks() >= effectiveOptions.stableChecksThreshold) {
+          setCurrentInterval(prev => Math.min(prev * effectiveOptions.increaseFactor, effectiveOptions.maxIntervalMs));
+        }
+      } else {
+        setStableChecks(0);
+        setCurrentInterval(prev => Math.max(prev * effectiveOptions.decreaseFactor, effectiveOptions.minIntervalMs));
+      }
+      lastFetchedData = result;
+
+    } catch (err) {
+      setError(err);
+      // On error, perhaps reset interval to initial or increase more aggressively
+      setCurrentInterval(effectiveOptions.initialIntervalMs);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const startPolling = () => {
+    stopPolling(); // Ensure no multiple intervals
+    intervalId = window.setInterval(fetchData, currentInterval());
+  };
+
+  const stopPolling = () => {
+    if (intervalId) {
+      window.clearInterval(intervalId);
+      intervalId = undefined;
+    }
+  };
+
+  // Effect to manage polling based on currentInterval
+  createEffect(() => {
+    stopPolling();
+    startPolling();
+  });
+
+  onCleanup(() => {
+    stopPolling();
+  });
+
+  return { data, isLoading, error, refetch: fetchData, stopPolling, startPolling };
+}
+
+\end{lstlisting}
+By integrating this \texttt{useRateLimitedFetcher} into components requiring status updates, such as the JoyCaption download status, we can achieve:
+
+\begin{itemize}
+    \item \textbf{Reduced Network Overhead:} Fewer unnecessary requests during periods of inactivity.
+    \item \textbf{Improved Responsiveness:} Faster updates when status changes are frequent.
+    \item \textbf{Centralized Control:} A single, reusable composable for managing polling logic across the application.
+    \item \textbf{Modularity:} Easy to apply to any polling-based status check without modifying core application logic.
+\end{itemize}
+
+\section{Applications of REFINE in YipYap}
+
+Beyond the \texttt{ModelDownloadManager} example, several other components within the YipYap application can significantly benefit from integrating the REFINE system. By replacing fixed-interval polling with the adaptive \texttt{useRateLimitedFetcher} composable, we can further optimize network resource consumption and improve the overall responsiveness of these features.
+
+\subsection{Performance Dashboard Metrics}
+The \url{src/components/Debug/PerformanceDashboard.tsx} component periodically fetches various performance metrics (e.g., memory usage, browser responsiveness, frame rate) to display a real-time overview of the application\'s performance. Currently, these metrics are updated at a fixed interval using \texttt{window.setInterval}.
+
+\begin{lstlisting}[language=TypeScript, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/components/Debug/PerformanceDashboard.tsx
+// ... existing code ...
+        updateInterval = window.setInterval(async () => {
+            // Update current metrics if monitoring
+            if (performanceMonitor.isMonitoring()) {
+                setCurrentMetrics(performanceMonitor.metrics());
+                setWarnings(performanceMonitor.warnings());
+            }
+// ... existing code ...
+\end{lstlisting}
+
+Applying REFINE here would allow the polling interval to adapt based on whether the dashboard is actively viewed or if the metrics are changing rapidly. For instance, if the application is idle and performance metrics are stable, the polling interval could increase, reducing unnecessary computations and network activity. Conversely, if the system is under load and metrics are fluctuating, the interval could decrease to provide more granular feedback.
+
+\subsection{Scroll Performance Monitor Memory Usage}
+The \url{src/composables/useScrollPerformanceMonitor.ts} composable includes a mechanism to periodically measure memory usage as part of its performance monitoring capabilities. This is currently implemented with a fixed 1-second interval.
+
+\begin{lstlisting}[language=TypeScript, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/composables/useScrollPerformanceMonitor.ts
+// ... existing code ...
+    if (isMonitoring()) {
+      const interval = setInterval(async () => {
+        const currentMemory = await performanceMonitor.measureMemoryUsage();
+        setMemoryUsage(currentMemory);\
+      }, 1000); // Update every 1 second
+// ... existing code ...
+\end{lstlisting}
+
+Integrating \texttt{useRateLimitedFetcher} would enable adaptive polling for memory usage. When memory consumption is stable, the interval could lengthen, reducing the overhead of frequent measurements. If memory usage fluctuates significantly, the interval could shorten to capture more dynamic changes, providing more relevant data to the performance monitor without constant polling.
+
+\subsection{Indexing Status}
+The application features a background indexing process, and its status is regularly polled via the \url{src/composables/useIndexing.ts} composable. This polling mechanism is crucial for providing users with real-time updates on the progress of image indexing, which can be a long-running operation. The current implementation uses a fixed 2-second interval.
+
+\begin{lstlisting}[language=TypeScript, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/composables/useIndexing.ts
+// ... existing code ...
+    statusInterval = window.setInterval(() => {
+      fetchStatus();
+    }, 2000); // Poll every 2 seconds
+// ... existing code ...
+\end{lstlisting}
+
+REFINE would greatly enhance the indexing status polling. When indexing is active and progress is rapidly changing, the interval could be reduced to provide immediate feedback. However, if indexing is paused, idle, or making very slow progress, the interval could be significantly increased, drastically reducing server load and client-side processing without compromising the user experience.
+
+\subsection{YapCoin Balance}
+The user\'s YapCoin balance is periodically refreshed via the \url{src/composables/useYapCoins.ts} composable, currently at a fixed interval of 5 minutes.
+
+\begin{lstlisting}[language=TypeScript, basicstyle=\small\ttfamily, numbers=left, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+// src/composables/useYapCoins.ts
+// ... existing code ...
+    refreshTimer = setInterval(refreshBalance, REFRESH_INTERVAL);
+// ... existing code ...
+\end{lstlisting}
+
+While a 5-minute interval is already relatively long, applying REFINE could further optimize this. For instance, if the user is actively making transactions, the interval could temporarily shorten to provide more up-to-date balance information. Conversely, if the user is inactive or not on a page that displays the balance, the polling could be paused or the interval significantly extended, saving network resources and battery life, particularly on mobile devices.
+
+\section{Conclusion}
+The REFINE system offers a pragmatic solution to optimize client-server communication in dynamic web applications. By introducing intelligent, adaptive rate-limiting to GET requests, particularly for status polling, REFINE significantly enhances application performance, reduces server strain, and provides a more fluid and efficient user experience. This modular approach, encapsulated within a reusable SolidJS composable, lays the groundwork for more resilient and scalable frontend architectures. The extension of REFINE\'s application to include performance metrics, indexing status, and YapCoin balance polling demonstrates its versatility and potential for widespread positive impact across the YipYap application.
+\end{document} 

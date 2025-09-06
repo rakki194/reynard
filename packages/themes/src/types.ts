@@ -49,23 +49,13 @@ export type LanguageCode =
 
 export type Locale = LanguageCode;
 
-// Translation parameter types
-export type TranslationParams = {
-  count?: number;
-  folders?: number;
-  images?: number;
-  name?: string;
-  [key: string]: string | number | undefined;
-};
-
-// Translation value type
-export type TranslationValue = string | ((params: TranslationParams) => string);
-
-// Translation function type
-export type TranslationFunction = {
-  (key: string): string;
-  (key: string, params: TranslationParams): string;
-};
+// Re-export i18n types from reynard-i18n
+export type {
+  TranslationParams,
+  getTranslationValue,
+  TranslationFunction,
+  Translations,
+} from "reynard-i18n";
 
 // Theme configuration interface
 export interface ThemeConfig {
@@ -232,14 +222,8 @@ export interface ThemeContext {
   isHighContrast: boolean;
 }
 
-// Translation context interface
-export interface TranslationContext {
-  locale: LanguageCode;
-  setLocale: (locale: LanguageCode) => void;
-  t: TranslationFunction;
-  languages: Language[];
-  isRTL: boolean;
-}
+// Import i18n context from reynard-i18n for internal use
+import type { TranslationContext } from "reynard-i18n";
 
 // Language interface
 export interface Language {
@@ -249,66 +233,6 @@ export interface Language {
   rtl?: boolean;
 }
 
-// Common translations interface
-export interface CommonTranslations {
-  close: string;
-  delete: string;
-  cancel: string;
-  save: string;
-  edit: string;
-  add: string;
-  remove: string;
-  loading: string;
-  error: string;
-  success: string;
-  confirm: string;
-  download: string;
-  path: string;
-  size: string;
-  date: string;
-  name: string;
-  type: string;
-  actions: string;
-  search: string;
-  filter: string;
-  apply: string;
-  reset: string;
-  selected: string;
-  all: string;
-  none: string;
-  notFound: string;
-  toggleTheme: string;
-  theme: string;
-  language: string;
-  description: string;
-  upload: string;
-  ok: string;
-  open: string;
-  copy: string;
-  warning: string;
-  info: string;
-  update: string;
-  clear: string;
-}
-
-// Theme translations interface
-export interface ThemeTranslations {
-  light: string;
-  gray: string;
-  dark: string;
-  banana: string;
-  strawberry: string;
-  peanut: string;
-  "high-contrast-black": string;
-  "high-contrast-inverse": string;
-}
-
-// Main translations interface
-export interface Translations {
-  common: CommonTranslations;
-  themes: ThemeTranslations;
-  [key: string]: any; // Allow for additional translation sections
-}
 
 // Icon mapping for theme-specific icons
 export interface ThemeIconMapping {
@@ -319,7 +243,6 @@ export interface ThemeIconMapping {
 export interface ThemeProviderProps {
   defaultTheme?: ThemeName;
   defaultLocale?: LanguageCode;
-  children: any;
 }
 
 // Combined context interface

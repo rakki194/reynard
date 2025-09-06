@@ -8,7 +8,8 @@ import {
   TextField,
   Select,
 } from "reynard-components";
-import { useI18n, useNotifications } from "reynard-core";
+import { useI18n } from "reynard-i18n";
+import { useNotifications } from "reynard-core";
 
 // Define proper types for the table data
 interface TableRow {

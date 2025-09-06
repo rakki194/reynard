@@ -1,0 +1,59 @@
+graph TB
+    subgraph "Input Processing"
+        A["Mouse Event"] --> B["Throttle<br/>(50ms)"]
+        B --> C["Convert to<br/>Image Coordinates"]
+    end
+
+    subgraph "Collision Detection"
+        D["Find Overlapping<br/>Boxes at Point"]
+        E["Find All<br/>Overlapping Groups"]
+        F["Cache Check<br/>(100ms validity)"]
+        
+        C --> D
+        D --> E
+        E --> F
+        F -- "Cache Hit" --> G["Return Cached<br/>Groups"]
+        F -- "Cache Miss" --> H["Compute New<br/>Groups"]
+    end
+
+    subgraph "Union-Find Algorithm"
+        I["Initialize<br/>Union-Find"]
+        J["Check All Box Pairs<br/>for Overlap"]
+        K["AABB Collision Test"]
+        L["Union Overlapping<br/>Boxes"]
+        M["Extract Connected<br/>Components"]
+        
+        H --> I
+        I --> J
+        J --> K
+        K -- "Overlap" --> L
+        L --> M
+    end
+
+    subgraph "Group Processing"
+        N["Sort Groups by Size"]
+        O["Sort Boxes by Area"]
+        P["Update Cache"]
+        
+        M --> N
+        N --> O
+        O --> P
+        P --> G
+    end
+
+    subgraph "Box Cycling"
+        Q["Start Cycle at<br/>Mouse Position"]
+        R["Handle Shift<br/>Double-Tap"]
+        S["Cycle to Next Box"]
+        T["Update Selection"]
+        
+        G --> Q
+        Q --> R
+        R --> S
+        S --> T
+    end
+
+    style A fill:#e6b3ff,stroke:#333,stroke-width:2px,color:#000
+    style G fill:#b3ffb3,stroke:#333,stroke-width:2px,color:#000
+    style K fill:#fff2b3,stroke:#333,stroke-width:2px,color:#000
+    style T fill:#b3e6ff,stroke:#333,stroke-width:2px,color:#000

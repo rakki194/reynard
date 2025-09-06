@@ -3,8 +3,8 @@
  * Allows toggling service availability to demonstrate feature adaptation
  */
 
-import { createMemo } from "solid-js";
-import { useLanguage } from "reynard-core";
+import { createMemo, For } from "solid-js";
+import { useI18n } from "reynard-themes";
 
 interface ServiceControlsProps {
   serviceAvailability: () => Record<string, boolean>;
@@ -12,7 +12,7 @@ interface ServiceControlsProps {
 }
 
 export default function ServiceControls(props: ServiceControlsProps) {
-  const { t } = useLanguage();
+  const { t } = useI18n();
 
   const services = createMemo(() => [
     { name: "DataSourceService", label: "Data Source Service", category: "Core" },
@@ -45,9 +45,10 @@ export default function ServiceControls(props: ServiceControlsProps) {
   };
 
   const toggleAllServices = (enabled: boolean) => {
+    const currentServices = services();
     props.setServiceAvailability(prev => {
       const newState = { ...prev };
-      services().forEach(service => {
+      currentServices.forEach(service => {
         newState[service.name] = enabled;
       });
       return newState;
@@ -62,11 +63,11 @@ export default function ServiceControls(props: ServiceControlsProps) {
 
   return (
     <div class="service-controls">
-      <h3>🔧 {t("services.controls")}</h3>
-      <p>{t("services.description")}</p>
+      <h3>🔧 Service Controls</h3>
+      <p>Toggle services to see how features adapt in real-time</p>
       
       {/* Bulk Controls */}
-      <div style="display: flex; gap: calc(var(--spacing) / 2); margin-bottom: var(--spacing);">
+      <div class="service-bulk-controls">
         <button 
           class="btn btn-secondary"
           onClick={() => toggleAllServices(true)}
@@ -83,21 +84,23 @@ export default function ServiceControls(props: ServiceControlsProps) {
 
       {/* Service Grid */}
       <div class="service-grid">
-        {services().map(service => (
-          <label class="service-toggle">
-            <input
-              type="checkbox"
-              checked={props.serviceAvailability()[service.name]}
-              onChange={() => toggleService(service.name)}
-            />
-            <div class="service-label">
-              <div style="font-weight: 500;">{service.label}</div>
-              <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                {service.category}
+        <For each={services()}>
+          {(service) => (
+            <label class="service-toggle">
+              <input
+                type="checkbox"
+                checked={props.serviceAvailability()[service.name]}
+                onChange={() => toggleService(service.name)}
+              />
+              <div class="service-label">
+                <div class="service-label-name">{service.label}</div>
+                <div class="service-label-category">
+                  {service.category}
+                </div>
               </div>
-            </div>
-          </label>
-        ))}
+            </label>
+          )}
+        </For>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { createSignal, createEffect, For } from "solid-js";
 import { Button, Card, TextField } from "reynard-components";
 import { 
-  useTheme, 
   useLocalStorage, 
   useDebounce, 
   useMediaQuery,
@@ -9,9 +8,9 @@ import {
   formatNumber,
   formatCurrency,
   isValidEmail,
-  isValidUrl,
-  themes
+  isValidUrl
 } from "reynard-core";
+import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export function CoreDemo() {
   const { theme, setTheme } = useTheme();
@@ -73,15 +72,15 @@ export function CoreDemo() {
         <p>Demonstrates the theme system with reactive theme switching.</p>
         
         <div class="demo-subsection">
-          <h4>Current Theme: {theme()}</h4>
+          <h4>Current Theme: {theme}</h4>
           <div class="theme-grid">
-            <For each={themes}>
-              {(themeName) => (
+            <For each={getAvailableThemes()}>
+              {(themeConfig) => (
                 <Button 
-                  variant={themeName === theme() ? "primary" : "secondary"}
-                  onClick={() => setTheme(themeName)}
+                  variant={themeConfig.name === theme ? "primary" : "secondary"}
+                  onClick={() => setTheme(themeConfig.name as ThemeName)}
                 >
-                  {themeName}
+                  {themeConfig.displayName}
                 </Button>
               )}
             </For>

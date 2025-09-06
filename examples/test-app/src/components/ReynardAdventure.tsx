@@ -94,7 +94,8 @@ Reynard follows a modular architecture where each package has a specific respons
         title: 'Basic App Structure',
         language: 'tsx',
         content: `import { createSignal } from "solid-js";
-import { useTheme, useNotifications } from "reynard-core";
+import { useNotifications } from "reynard-core";
+import { useTheme } from "reynard-themes";
 import { Button, Card } from "reynard-components";
 
 function App() {

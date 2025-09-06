@@ -1,6 +1,6 @@
 import { Component, Show } from 'solid-js';
 import { CodeEditor } from 'reynard-monaco';
-import { useTheme } from 'reynard-core';
+import { useTheme } from 'reynard-themes';
 import './CodeBlock.css';
 
 interface CodeBlockProps {
@@ -48,7 +48,7 @@ export const CodeBlock: Component<CodeBlockProps> = (props) => {
           <CodeEditor
             value={props.code}
             language={props.language || 'text'}
-            theme={currentTheme()}
+            theme={currentTheme}
             readOnly={true}
             showLineNumbers={props.showLineNumbers !== false}
             height={(() => {

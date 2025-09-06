@@ -271,17 +271,15 @@ test('works', () => {
 
 ```typescript
 import { renderWithProviders } from 'reynard-testing';
-import { ThemeProvider, createTheme } from 'reynard-core';
+import { ReynardProvider } from 'reynard-themes';
 
 describe('ThemedComponent', () => {
   test('renders with light theme', () => {
-    const themeModule = createTheme({ defaultTheme: 'light' });
-    
     renderWithProviders(
       () => <ThemedComponent />,
       {
         providers: [
-          [ThemeProvider, { value: themeModule }]
+          [ReynardProvider, { defaultTheme: 'light' }]
         ]
       }
     );

@@ -5,13 +5,15 @@
 
 import { Component, createSignal } from "solid-js";
 import {
-  ThemeProvider,
   NotificationsProvider,
-  createTheme,
   createNotifications,
-  useTheme,
   useNotifications,
 } from "reynard-core";
+import {
+  ReynardProvider,
+  useTheme,
+} from "reynard-themes";
+import "reynard-themes/themes.css";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ThemeSelector } from "./components/ThemeSelector";
 import { NotificationDemo } from "./components/NotificationDemo";
@@ -25,7 +27,7 @@ const AppContent: Component = () => {
   const [count, setCount] = createSignal(0);
 
   const handleWelcome = () => {
-    notify(`Welcome to Reynard! Current theme: ${theme()}`, "success");
+    notify(`Welcome to Reynard! Current theme: ${theme}`, "success");
   };
 
   return (
@@ -66,7 +68,7 @@ const AppContent: Component = () => {
               </h3>
               <p>8 built-in themes with reactive state management</p>
               <p>
-                Current theme: <strong>{theme()}</strong>
+                Current theme: <strong>{theme}</strong>
               </p>
             </div>
 
@@ -156,16 +158,15 @@ npm run dev`}</code>
 };
 
 const App: Component = () => {
-  const themeModule = createTheme();
   const notificationsModule = createNotifications();
 
   return (
-    <ThemeProvider value={themeModule}>
+    <ReynardProvider>
       <NotificationsProvider value={notificationsModule}>
         <NotificationToast />
         <AppContent />
       </NotificationsProvider>
-    </ThemeProvider>
+    </ReynardProvider>
   );
 };
 

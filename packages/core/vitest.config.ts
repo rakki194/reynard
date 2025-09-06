@@ -22,5 +22,9 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src')
     }
+  },
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'solid-js'
   }
 });

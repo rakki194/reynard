@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} app/services/integration/vector\PYGZus{}db\PYGZus{}service.py (extract)}
+\PYG{k}{except} \PYG{n}{OperationalError} \PYG{k}{as} \PYG{n}{oe}\PYG{p}{:}
+    \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}reconnect\PYGZus{}on\PYGZus{}error} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}dsn} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}rebuild\PYGZus{}engine}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+        \PYG{k}{try}\PYG{p}{:}
+            \PYG{k}{with} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}engine}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{p}{)} \PYG{k}{as} \PYG{n}{conn}\PYG{p}{:}
+                \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+                \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1 FROM pg\PYGZus{}extension WHERE extname = }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{vector}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}last\PYGZus{}ok\PYGZus{}ts} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+            \PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{HEALTHY}
+        \PYG{k}{except} \PYG{n+ne}{Exception}\PYG{p}{:}
+            \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
+    \PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{UNHEALTHY}
+\end{MintedVerbatim}

@@ -5,15 +5,20 @@
  * Run with: npm run test:docs
  */
 
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+/** @jsxImportSource solid-js */
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@solidjs/testing-library';
-import { createSignal, createEffect, onCleanup } from 'solid-js';
 // For now, we'll use a simple approach without the complex doc-tests system
 // import { runDocTests } from 'reynard-testing/doc-tests';
 
+// Custom assertion helper since we can't import from reynard-testing yet
+function expectElementToBeInTheDocument(element: Element | null) {
+  expect(element).toBeTruthy();
+  expect(element).toBeInTheDocument();
+}
+
 // Package-specific setup
-import { ThemeProvider, createTheme, useTheme } from 'reynard-core';
-import { NotificationsProvider, createNotifications } from 'reynard-core';
+import { NotificationsProvider, createNotificationsModule, useNotifications, isValidEmail } from 'reynard-core';
 
 // Simple documentation test example
 describe('Documentation Examples', () => {
@@ -21,20 +26,19 @@ describe('Documentation Examples', () => {
     cleanup();
   });
 
-  it('should render theme demo component from documentation', () => {
-    const themeModule = createTheme();
+  it('should render notifications demo component from documentation', () => {
+    const notificationsModule = createNotificationsModule();
     
-    function ThemeDemo() {
-      const { theme, setTheme } = useTheme();
+    function NotificationsDemo() {
+      const { notify } = useNotifications();
       
       return (
-        <div data-testid="theme-demo">
-          <span data-testid="current-theme">{theme()}</span>
+        <div data-testid="notifications-demo">
           <button 
-            data-testid="theme-button"
-            onClick={() => setTheme("dark")}
+            data-testid="notification-button"
+            onClick={() => notify("Test notification", "success")}
           >
-            Switch to Dark
+            Show Notification
           </button>
         </div>
       );
@@ -42,26 +46,21 @@ describe('Documentation Examples', () => {
 
     function TestableApp() {
       return (
-        <ThemeProvider value={themeModule}>
-          <ThemeDemo />
-        </ThemeProvider>
+        <NotificationsProvider value={notificationsModule}>
+          <NotificationsDemo />
+        </NotificationsProvider>
       );
     }
 
     render(() => <TestableApp />);
     
-    expect(screen.getByTestId('theme-demo')).toBeInTheDocument();
-    expect(screen.getByTestId('current-theme')).toBeInTheDocument();
-    expect(screen.getByTestId('theme-button')).toBeInTheDocument();
+    expectElementToBeInTheDocument(screen.getByTestId('notifications-demo'));
+    expectElementToBeInTheDocument(screen.getByTestId('notification-button'));
   });
 
   it('should execute utility examples from documentation', () => {
     // Test that utility functions work as documented
-    const { validateEmail } = require('reynard-core');
-    
-    if (validateEmail) {
-      expect(validateEmail("user@example.com")).toBe(true);
-      expect(validateEmail("invalid-email")).toBe(false);
-    }
+    expect(isValidEmail("user@example.com")).toBe(true);
+    expect(isValidEmail("invalid-email")).toBe(false);
   });
 });
