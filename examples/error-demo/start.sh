@@ -31,19 +31,19 @@ echo "✅ Prerequisites check passed"
 echo ""
 
 # Install Python dependencies
-echo "📦 Installing Python dependencies..."
-cd backend
-if [ -f "requirements.txt" ]; then
-    pip3 install -r requirements.txt
-    if [ $? -ne 0 ]; then
-        echo "❌ Failed to install Python dependencies"
-        exit 1
-    fi
-    echo "✅ Python dependencies installed"
-else
-    echo "⚠️  No requirements.txt found, skipping Python dependencies"
-fi
-cd ..
+#echo "📦 Installing Python dependencies..."
+#cd backend
+#if [ -f "requirements.txt" ]; then
+#    pip3 install -r requirements.txt
+#    if [ $? -ne 0 ]; then
+#        echo "❌ Failed to install Python dependencies"
+#        exit 1
+#    fi
+#    echo "✅ Python dependencies installed"
+#else
+#    echo "⚠️  No requirements.txt found, skipping Python dependencies"
+#fi
+#cd ..
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
