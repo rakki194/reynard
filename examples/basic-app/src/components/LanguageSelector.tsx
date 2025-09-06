@@ -4,25 +4,30 @@
  */
 
 import { Component, For } from "solid-js";
-import { useI18n } from "reynard-themes";
+import { useI18n, type LanguageCode } from "reynard-themes";
 
-export const LanguageSelector: Component = () => {
-  const { locale, setLocale, languages } = useI18n();
+interface LanguageSelectorProps {
+  setLocale?: (locale: LanguageCode) => void;
+}
+
+export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
+  const { locale, setLocale: themeSetLocale, languages } = useI18n();
+  const setLocale = props.setLocale || themeSetLocale;
 
   // For demo, show just a few languages
   const availableLanguages = languages.filter(
-    (lang: { code: string; name: string }) =>
-      ["en", "es", "fr"].includes(lang.code),
+    (lang: { code: LanguageCode; name: string }) =>
+      (["en", "es", "fr"] as LanguageCode[]).includes(lang.code),
   );
 
   return (
     <select
       class="language-selector"
-      value={locale()}
+      value={locale}
       onChange={(e) => {
-        const newLocale = e.currentTarget.value;
+        const newLocale = e.currentTarget.value as LanguageCode;
         console.log('Language selector changing locale to:', newLocale);
-        setLocale(newLocale as any);
+        setLocale(newLocale);
       }}
       aria-label="Select language"
       title="Select language"

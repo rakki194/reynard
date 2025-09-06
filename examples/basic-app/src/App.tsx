@@ -15,6 +15,7 @@ import {
   ReynardProvider,
   useTheme,
   useI18n,
+  type LanguageCode,
 } from "reynard-themes";
 import { loadTranslations } from "./translations";
 import {
@@ -55,16 +56,31 @@ const TodoApp: Component = () => {
   const [nextId, setNextId] = createSignal(4);
   const { theme } = useTheme();
   const { notify } = useNotifications();
-  const { locale, t, setLocale } = useI18n();
+  const { locale, setLocale } = useI18n();
+
+  // Create a reactive signal for locale changes
+  const [currentLocale, setCurrentLocale] = createSignal(locale);
+  
+  // Custom setLocale that updates both the theme provider and our signal
+  const customSetLocale = (newLocale: LanguageCode) => {
+    console.log('Custom setLocale called with:', newLocale);
+    setLocale(newLocale);
+    setCurrentLocale(newLocale);
+  };
 
   // Load custom translations for this app
-  const [translationsResource] = createResource(() => locale(), loadTranslations);
+  const [translationsResource] = createResource(() => {
+    console.log('Translation resource triggered with locale:', currentLocale());
+    return currentLocale();
+  }, loadTranslations);
   
   // Create a custom translation function that uses our app's translations
   const customT = (key: string, params?: Record<string, string>) => {
     const translations = translationsResource();
+    console.log('customT called with key:', key, 'translations:', translations, 'locale:', currentLocale());
     
     if (!translations) {
+      console.log('No translations loaded, returning key:', key);
       return key;
     }
     
@@ -85,6 +101,7 @@ const TodoApp: Component = () => {
       return value;
     }
     
+    console.log('Translation not found for key:', key, 'value:', value);
     return key;
   };
 
@@ -135,7 +152,7 @@ const TodoApp: Component = () => {
           <CustomTranslationContext.Provider value={customT}>
             <ThemeToggle />
           </CustomTranslationContext.Provider>
-          <LanguageSelector />
+          <LanguageSelector setLocale={customSetLocale} />
         </div>
       </header>
 

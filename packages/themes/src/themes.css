@@ -320,9 +320,20 @@
 
   /* Status Colors */
   --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-success-dark: #1e7e34;
   --color-warning: #ffc107;
+  --color-warning-light: #fff3cd;
+  --color-warning-dark: #856404;
   --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-error-dark: #721c24;
+  --color-danger: #dc3545;
+  --color-danger-light: #f8d7da;
+  --color-danger-dark: #721c24;
   --color-info: #17a2b8;
+  --color-info-light: #d1ecf1;
+  --color-info-dark: #0c5460;
 
   /* Accent Colors */
   --color-accent: #ffc107;
@@ -376,9 +387,20 @@
 
   /* Status Colors */
   --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-success-dark: #1e7e34;
   --color-warning: #ffc107;
+  --color-warning-light: #fff3cd;
+  --color-warning-dark: #856404;
   --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-error-dark: #721c24;
+  --color-danger: #dc3545;
+  --color-danger-light: #f8d7da;
+  --color-danger-dark: #721c24;
   --color-info: #17a2b8;
+  --color-info-light: #d1ecf1;
+  --color-info-dark: #0c5460;
 
   /* Accent Colors */
   --color-accent: #e91e63;
@@ -432,9 +454,20 @@
 
   /* Status Colors */
   --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-success-dark: #1e7e34;
   --color-warning: #ffc107;
+  --color-warning-light: #fff3cd;
+  --color-warning-dark: #856404;
   --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-error-dark: #721c24;
+  --color-danger: #dc3545;
+  --color-danger-light: #f8d7da;
+  --color-danger-dark: #721c24;
   --color-info: #17a2b8;
+  --color-info-light: #d1ecf1;
+  --color-info-dark: #0c5460;
 
   /* Accent Colors */
   --color-accent: #8d6e63;
@@ -488,9 +521,20 @@
 
   /* Status Colors */
   --color-success: #00ff00;
+  --color-success-light: #00cc00;
+  --color-success-dark: #009900;
   --color-warning: #ffff00;
+  --color-warning-light: #cccc00;
+  --color-warning-dark: #999900;
   --color-error: #ff0000;
+  --color-error-light: #cc0000;
+  --color-error-dark: #990000;
+  --color-danger: #ff0000;
+  --color-danger-light: #cc0000;
+  --color-danger-dark: #990000;
   --color-info: #00ffff;
+  --color-info-light: #00cccc;
+  --color-info-dark: #009999;
 
   /* Accent Colors */
   --color-accent: #0066cc;
@@ -541,9 +585,20 @@
 
   /* Status Colors */
   --color-success: #008000;
+  --color-success-light: #00cc00;
+  --color-success-dark: #006600;
   --color-warning: #ff8000;
+  --color-warning-light: #ffaa00;
+  --color-warning-dark: #cc6600;
   --color-error: #ff0000;
+  --color-error-light: #ff3333;
+  --color-error-dark: #cc0000;
+  --color-danger: #ff0000;
+  --color-danger-light: #ff3333;
+  --color-danger-dark: #cc0000;
   --color-info: #0080ff;
+  --color-info-light: #3399ff;
+  --color-info-dark: #0066cc;
 
   /* Accent Colors */
   --color-accent: #0066cc;
