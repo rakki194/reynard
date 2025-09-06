@@ -4,7 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { iconCategories } from "@reynard/fluent-icons";
+import { iconCategories } from "reynard-fluent-icons";
 
 interface SearchSectionProps {
   searchQuery: () => string;

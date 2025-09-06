@@ -48,7 +48,7 @@
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",
-    "doc-tests": "tsx src/doc-test-runner.ts",
+    "doc-tests": "node src/doc-test-runner.js",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },

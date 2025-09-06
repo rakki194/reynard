@@ -5,7 +5,7 @@
 
 import { createSignal, createEffect, onCleanup } from 'solid-js';
 import { ErrorReport, ErrorReportingConfig, ErrorFilter } from '../types/ErrorTypes';
-import { createErrorReport, serializeErrorReport } from '../utils/ErrorSerializer';
+import { createErrorReport } from '../utils/ErrorSerializer';
 
 interface UseErrorReportingOptions extends ErrorReportingConfig {
   onReport?: (report: ErrorReport) => void;
@@ -28,13 +28,11 @@ interface ErrorMetrics {
   lastReportTime?: number;
 }
 
-export function useErrorReporting(options: UseErrorReportingOptions = {}): UseErrorReportingReturn {
+export function useErrorReporting(options: UseErrorReportingOptions = { enabled: true }): UseErrorReportingReturn {
   const [reports, setReports] = createSignal<ErrorReport[]>([]);
-  const [lastFlushTime, setLastFlushTime] = createSignal<number>(Date.now());
 
   // Default options
   const config = {
-    enabled: true,
     batchSize: 10,
     flushInterval: 30000, // 30 seconds
     includeStackTrace: true,
@@ -44,7 +42,7 @@ export function useErrorReporting(options: UseErrorReportingOptions = {}): UseEr
   };
 
   // Auto-flush reports at intervals
-  let flushInterval: number | undefined;
+  let flushInterval: NodeJS.Timeout | undefined;
   
   createEffect(() => {
     if (config.enabled && config.flushInterval && config.flushInterval > 0) {
@@ -87,7 +85,7 @@ export function useErrorReporting(options: UseErrorReportingOptions = {}): UseEr
       }
 
       const matches = value === filter.value || 
-                     (typeof value === 'string' && value.includes(filter.value));
+                     (typeof value === 'string' && typeof filter.value === 'string' && value.includes(filter.value));
 
       if (filter.action === 'include' && !matches) {
         return false;
@@ -160,7 +158,6 @@ export function useErrorReporting(options: UseErrorReportingOptions = {}): UseEr
 
       // Clear reports after successful flush
       setReports([]);
-      setLastFlushTime(Date.now());
     } catch (error) {
       console.warn('Failed to flush error reports:', error);
       // Keep reports for retry

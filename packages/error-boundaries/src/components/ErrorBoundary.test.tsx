@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@reynard/testing';
+import { render, screen, fireEvent, waitFor } from "reynard-testing";
 import { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 import { builtInRecoveryStrategies } from '../utils/RecoveryStrategies';
 

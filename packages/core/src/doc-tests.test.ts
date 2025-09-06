@@ -1,5 +1,5 @@
 /**
- * Auto-generated documentation tests for @reynard/core
+ * Auto-generated documentation tests for reynard-core
  * 
  * This file contains tests extracted from the documentation examples.
  * Run with: npm run test:docs
@@ -12,8 +12,8 @@ import { createSignal, createEffect, onCleanup } from 'solid-js';
 // import { runDocTests } from 'reynard-testing/doc-tests';
 
 // Package-specific setup
-import { ThemeProvider, createTheme } from '@reynard/core';
-import { NotificationsProvider, createNotifications } from '@reynard/core';
+import { ThemeProvider, createTheme } from 'reynard-core';
+import { NotificationsProvider, createNotifications } from 'reynard-core';
 
 // Simple documentation test example
 describe('Documentation Examples', () => {
@@ -57,7 +57,7 @@ describe('Documentation Examples', () => {
 
   it('should execute utility examples from documentation', () => {
     // Test that utility functions work as documented
-    const { validateEmail } = require('@reynard/core');
+    const { validateEmail } = require('reynard-core');
     
     if (validateEmail) {
       expect(validateEmail("user@example.com")).toBe(true);

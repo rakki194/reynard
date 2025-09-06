@@ -1,4 +1,4 @@
-# @reynard/auth
+# reynard-auth
 
 Complete authentication and user management system for SolidJS applications with JWT tokens, password strength analysis, and comprehensive security features.
 
@@ -17,7 +17,7 @@ Complete authentication and user management system for SolidJS applications with
 ## 📦 Installation
 
 ```bash
-npm install @reynard/auth @reynard/core @reynard/components jwt-decode @zxcvbn-ts/core solid-js
+npm install reynard-auth reynard-core reynard-components jwt-decode @zxcvbn-ts/core solid-js
 ```
 
 ## 🎯 Quick Start
@@ -25,7 +25,7 @@ npm install @reynard/auth @reynard/core @reynard/components jwt-decode @zxcvbn-t
 ### Basic Setup
 
 ```tsx
-import { AuthProvider, LoginForm, RegisterForm } from "@reynard/auth";
+import { AuthProvider, LoginForm, RegisterForm } from "reynard-auth";
 import { createSignal, Show } from "solid-js";
 
 function App() {
@@ -73,7 +73,7 @@ function App() {
 ### Using the Auth Hook
 
 ```tsx
-import { useAuth } from "@reynard/auth";
+import { useAuth } from "reynard-auth";
 
 function Dashboard() {
   const auth = useAuth();
@@ -414,7 +414,7 @@ const auth = useAuth({
 #### 1. **Token Validation & Sanitization**
 
 ```tsx
-import { validateToken, sanitizeUserInput } from "@reynard/auth";
+import { validateToken, sanitizeUserInput } from "reynard-auth";
 
 // Always validate tokens before use
 const isValidToken = validateToken(token, {
@@ -434,7 +434,7 @@ const cleanUsername = sanitizeUserInput(username, {
 #### 2. **Rate Limiting & Brute Force Protection**
 
 ```tsx
-import { RateLimiter, BruteForceProtection } from "@reynard/auth";
+import { RateLimiter, BruteForceProtection } from "reynard-auth";
 
 // Implement rate limiting for login attempts
 const rateLimiter = new RateLimiter({
@@ -478,7 +478,7 @@ const handleLogin = async (credentials) => {
 #### 3. **CSRF Protection**
 
 ```tsx
-import { CSRFProtection } from "@reynard/auth";
+import { CSRFProtection } from "reynard-auth";
 
 // Generate CSRF token
 const csrfToken = CSRFProtection.generateToken();
@@ -501,7 +501,7 @@ const validateCSRF = (token: string) => {
 #### 4. **Secure Session Management**
 
 ```tsx
-import { SecureSessionManager } from "@reynard/auth";
+import { SecureSessionManager } from "reynard-auth";
 
 const sessionManager = new SecureSessionManager({
   sessionTimeout: 30 * 60 * 1000, // 30 minutes
@@ -525,7 +525,7 @@ const isSessionValid = () => {
 ### Secure Token Storage
 
 ```typescript
-import { TokenManager, SecureStorage } from "@reynard/auth";
+import { TokenManager, SecureStorage } from "reynard-auth";
 
 // Secure token management
 const tokenManager = TokenManager.getInstance("app_token", "app_refresh");
@@ -553,7 +553,7 @@ import {
   validatePassword,
   calculatePasswordStrength,
   hashPassword,
-} from "@reynard/auth";
+} from "reynard-auth";
 
 // Validate password against rules
 const validation = validatePassword(password, {
@@ -631,7 +631,7 @@ function CustomAuthProvider(props: { children: any }) {
 ### Protected Routes
 
 ```tsx
-import { withAuth, useAuthContext } from "@reynard/auth";
+import { withAuth, useAuthContext } from "reynard-auth";
 
 // Higher-order component approach
 const ProtectedDashboard = withAuth(Dashboard, {
@@ -767,7 +767,7 @@ import type {
   AuthConfiguration,
   PasswordStrength,
   ValidationRules,
-} from "@reynard/auth";
+} from "reynard-auth";
 
 // Type-safe user management
 const updateUser = (userId: string, updates: Partial<User>): Promise<User> => {
@@ -792,7 +792,7 @@ Testing utilities and examples:
 
 ```tsx
 import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
-import { AuthProvider, LoginForm } from "@reynard/auth";
+import { AuthProvider, LoginForm } from "reynard-auth";
 
 describe("LoginForm", () => {
   test("handles login submission", async () => {

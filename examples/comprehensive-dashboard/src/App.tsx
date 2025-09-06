@@ -14,10 +14,10 @@ import {
   NotificationsProvider,
   type Theme,
   type Locale,
-} from "@reynard/core";
-import { AuthProvider } from "@reynard/auth";
-import { AppLayout } from "@reynard/ui";
-import { useSettings } from "@reynard/settings";
+} from "reynard-core";
+import { AuthProvider } from "reynard-auth";
+import { AppLayout } from "reynard-ui";
+import { useSettings } from "reynard-settings";
 
 // Pages
 import { Dashboard } from "./pages/Dashboard";

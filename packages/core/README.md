@@ -1,4 +1,4 @@
-# @reynard/core
+# reynard-core
 
 > **The Foundation of the Reynard Framework** 🦊
 
@@ -32,7 +32,7 @@ Core utilities, composables, and modules that power the entire Reynard ecosystem
 ## 📦 Installation
 
 ```bash
-npm install @reynard/core solid-js
+npm install reynard-core solid-js
 ```
 
 ## 🚀 Quick Start
@@ -41,7 +41,7 @@ npm install @reynard/core solid-js
 
 ```tsx
 import { createSignal } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "@reynard/core";
+import { ThemeProvider, createTheme, useTheme } from "reynard-core";
 
 function App() {
   const themeModule = createTheme();
@@ -70,7 +70,7 @@ function ThemedComponent() {
 
 ```tsx
 import { createSignal } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "@reynard/core";
+import { ThemeProvider, createTheme, useTheme } from "reynard-core";
 
 function ThemeDemo() {
   const { theme, setTheme } = useTheme();
@@ -102,7 +102,7 @@ function TestableApp() {
 ### Notifications System
 
 ```tsx
-import { NotificationsProvider, createNotifications, useNotifications } from "@reynard/core";
+import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
 
 function App() {
   const notificationsModule = createNotifications();
@@ -135,7 +135,7 @@ function NotificationDemo() {
 ### Local Storage with Reactivity
 
 ```tsx
-import { useLocalStorage } from "@reynard/core";
+import { useLocalStorage } from "reynard-core";
 
 function SettingsComponent() {
   const [settings, setSettings] = useLocalStorage("app-settings", {
@@ -365,7 +365,7 @@ function ResponsiveComponent() {
 #### Validation Utilities
 
 ```tsx
-import { validateEmail, validatePassword, sanitizeInput } from "@reynard/core";
+import { validateEmail, validatePassword, sanitizeInput } from "reynard-core";
 
 // Email validation
 const isValidEmail = validateEmail("user@example.com"); // true
@@ -386,7 +386,7 @@ const cleanInput = sanitizeInput("<script>alert('xss')</script>"); // "alert('xs
 #### Formatting Utilities
 
 ```tsx
-import { formatDate, formatNumber, formatCurrency } from "@reynard/core";
+import { formatDate, formatNumber, formatCurrency } from "reynard-core";
 
 // Date formatting
 const formattedDate = formatDate(new Date(), "YYYY-MM-DD"); // "2024-01-15"
@@ -409,7 +409,7 @@ import {
   mapWithConcurrency, 
   retryWithBackoff,
   pollUntil 
-} from "@reynard/core";
+} from "reynard-core";
 
 // Batch execution
 const results = await batchExecute([
@@ -445,7 +445,7 @@ const data = await pollUntil(
 #### Theme System
 
 ```tsx
-import { createTheme, ThemeProvider } from "@reynard/core";
+import { createTheme, ThemeProvider } from "reynard-core";
 
 // Create theme module
 const themeModule = createTheme({
@@ -467,7 +467,7 @@ function App() {
 #### Notification System
 
 ```tsx
-import { createNotifications, NotificationsProvider } from "@reynard/core";
+import { createNotifications, NotificationsProvider } from "reynard-core";
 
 // Create notifications module
 const notificationsModule = createNotifications({
@@ -489,7 +489,7 @@ function App() {
 #### Internationalization
 
 ```tsx
-import { createI18nModule, I18nProvider } from "@reynard/core";
+import { createI18nModule, I18nProvider } from "reynard-core";
 
 // Create i18n module
 const i18nModule = createI18nModule({
@@ -533,7 +533,7 @@ Reynard Core provides a comprehensive theming system with 8 built-in themes:
 ### Custom Themes
 
 ```tsx
-import { createTheme } from "@reynard/core";
+import { createTheme } from "reynard-core";
 
 const customTheme = createTheme({
   name: "ocean",

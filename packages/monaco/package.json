@@ -1,6 +1,6 @@
 {
   "name": "reynard-monaco",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Monaco code editor and text editing components for Reynard",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,5 +1,5 @@
 /**
- * Mock exports for @reynard/testing
+ * Mock exports for reynard-testing
  */
 
 export * from './browser-mocks';

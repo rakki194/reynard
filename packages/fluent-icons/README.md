@@ -1,4 +1,4 @@
-# @reynard/fluent-icons
+# reynard-fluent-icons
 
 A comprehensive icon system for Reynard applications, featuring Fluent UI icons and custom SVG assets with a powerful registry system.
 
@@ -43,7 +43,7 @@ A comprehensive icon system for Reynard applications, featuring Fluent UI icons 
 ## Installation
 
 ```bash
-npm install @reynard/fluent-icons
+npm install reynard-fluent-icons
 ```
 
 ## Quick Start
@@ -51,7 +51,7 @@ npm install @reynard/fluent-icons
 ### Basic Usage
 
 ```tsx
-import { fluentIconsPackage, getIcon } from "@reynard/fluent-icons";
+import { fluentIconsPackage, getIcon } from "reynard-fluent-icons";
 
 function MyComponent() {
   const saveIcon = getIcon("save");
@@ -68,7 +68,7 @@ function MyComponent() {
 ### Using Icon Categories
 
 ```tsx
-import { actionsIcons, navigationIcons } from "@reynard/fluent-icons";
+import { actionsIcons, navigationIcons } from "reynard-fluent-icons";
 
 function ActionButtons() {
   return (
@@ -84,7 +84,7 @@ function ActionButtons() {
 ### Dynamic Icon Rendering
 
 ```tsx
-import { fluentIconsPackage, getIconMetadata } from "@reynard/fluent-icons";
+import { fluentIconsPackage, getIconMetadata } from "reynard-fluent-icons";
 
 function IconButton({ iconName }: { iconName: string }) {
   const iconSvg = getIcon(iconName);
@@ -125,7 +125,7 @@ const metadata = getIconMetadata("save");
 Registers a new icon package.
 
 ```tsx
-import { registerIconPackage } from "@reynard/fluent-icons";
+import { registerIconPackage } from "reynard-fluent-icons";
 
 registerIconPackage({
   name: "custom-icons",
@@ -152,7 +152,7 @@ import {
   animalsIcons,
   securityIcons,
   customIcons,
-} from "@reynard/fluent-icons";
+} from "reynard-fluent-icons";
 ```
 
 ### Icon Registry
@@ -188,7 +188,7 @@ Every icon in the Reynard icon system includes a natural language caption design
 ### Using Captions
 
 ```tsx
-import { getIcon, getAllCaptions, searchIconsByCaption } from "@reynard/fluent-icons";
+import { getIcon, getAllCaptions, searchIconsByCaption } from "reynard-fluent-icons";
 
 // Get an icon's caption
 const saveIcon = getIcon("save");
@@ -212,7 +212,7 @@ import {
   validateCaption,
   suggestCaptionImprovements,
   exportCaptions
-} from "@reynard/fluent-icons";
+} from "reynard-fluent-icons";
 
 // Generate a caption for an icon without one
 const caption = generateCaption(iconMetadata);
@@ -317,7 +317,7 @@ const captionsMarkdown = exportCaptions(allIcons, 'markdown');
 ### Icon Button Component
 
 ```tsx
-import { getIcon, getIconMetadata } from "@reynard/fluent-icons";
+import { getIcon, getIconMetadata } from "reynard-fluent-icons";
 
 interface IconButtonProps {
   icon: string;
@@ -345,7 +345,7 @@ function IconButton({ icon, onClick, disabled }: IconButtonProps) {
 ### Icon Grid Component
 
 ```tsx
-import { allIcons, iconCategories } from "@reynard/fluent-icons";
+import { allIcons, iconCategories } from "reynard-fluent-icons";
 
 function IconGrid() {
   return (
@@ -371,7 +371,7 @@ function IconGrid() {
 ### Searchable Icon Picker
 
 ```tsx
-import { allIcons, getIconMetadata } from "@reynard/fluent-icons";
+import { allIcons, getIconMetadata } from "reynard-fluent-icons";
 import { createSignal, createMemo } from "solid-js";
 
 function IconPicker() {
@@ -496,7 +496,7 @@ function IconPicker() {
 
 ```tsx
 import { createMemo } from "solid-js";
-import { getIcon } from "@reynard/fluent-icons";
+import { getIcon } from "reynard-fluent-icons";
 
 function LazyIcon({ name }: { name: string }) {
   const iconSvg = createMemo(() => {
@@ -516,10 +516,10 @@ The registry system automatically caches loaded icons for optimal performance.
 
 ```tsx
 // Import only specific categories
-import { actionsIcons } from "@reynard/fluent-icons";
+import { actionsIcons } from "reynard-fluent-icons";
 
 // Or import individual icons
-import { getIcon } from "@reynard/fluent-icons";
+import { getIcon } from "reynard-fluent-icons";
 const saveIcon = getIcon("save");
 ```
 
@@ -544,7 +544,7 @@ export const customIcons = {
 ### Creating Icon Packages
 
 ```tsx
-import { registerIconPackage } from "@reynard/fluent-icons";
+import { registerIconPackage } from "reynard-fluent-icons";
 
 const myIconPackage = {
   name: "my-package",
@@ -582,7 +582,7 @@ npm run test:run      # Run once (CI mode)
 
 If you're migrating from yipyap's icon system:
 
-1. Replace `yipyap/icons` imports with `@reynard/fluent-icons`
+1. Replace `yipyap/icons` imports with `reynard-fluent-icons`
 2. Update icon names to match Fluent UI naming conventions
 3. Use the new registry system for custom icons
 4. Update CSS classes for icon styling

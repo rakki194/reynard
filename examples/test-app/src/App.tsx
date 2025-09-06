@@ -1,6 +1,6 @@
-import { ThemeProvider, createTheme, NotificationsProvider, createNotifications } from "@reynard/core";
-import { Tabs, TabPanel } from "@reynard/components";
-import { getIcon } from "@reynard/fluent-icons";
+import { ThemeProvider, createTheme, NotificationsProvider, createNotifications } from "reynard-core";
+import { Tabs, TabPanel } from "reynard-components";
+import { getIcon } from "reynard-fluent-icons";
 import { createSignal } from "solid-js";
 import { ThemeDemo } from "./components/ThemeDemo";
 import { ComponentsDemo } from "./components/ComponentsDemo";
@@ -15,9 +15,9 @@ import ReynardTutorial from "./components/ReynardAdventure";
 import "./App.css";
 import "./styles/streaming-demo.css";
 // Import Reynard component styles
-import "@reynard/components/styles";
+import "reynard-components/styles";
 // Import Reynard games styles
-import "@reynard/games/dist/index.css";
+import "reynard-games/dist/index.css";
 
 function App() {
   console.log("App: Creating modules");

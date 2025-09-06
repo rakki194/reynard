@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import {
   PointOps,
   RectangleOps,
   CircleOps,
   PolygonOps,
-} from "@reynard/algorithms";
+} from "reynard-algorithms";
 import { Shape, Operation } from "../types";
 import "./GeometryDemo.css";
 

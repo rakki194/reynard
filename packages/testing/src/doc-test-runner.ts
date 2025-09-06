@@ -18,39 +18,39 @@ export interface PackageConfig {
 
 export const PACKAGES: PackageConfig[] = [
   {
-    name: '@reynard/core',
+    name: 'reynard-core',
     path: 'packages/core',
     docPath: 'packages/core/README.md',
     setup: `
-      import { ThemeProvider, createTheme } from '@reynard/core';
-      import { NotificationsProvider, createNotifications } from '@reynard/core';
+      import { ThemeProvider, createTheme } from 'reynard-core';
+      import { NotificationsProvider, createNotifications } from 'reynard-core';
     `
   },
   {
-    name: '@reynard/components',
+    name: 'reynard-components',
     path: 'packages/components',
     docPath: 'packages/components/README.md',
     setup: `
-      import { Button, Card, TextField, Modal, Tabs } from '@reynard/components';
-      import { ThemeProvider, createTheme } from '@reynard/core';
+      import { Button, Card, TextField, Modal, Tabs } from 'reynard-components';
+      import { ThemeProvider, createTheme } from 'reynard-core';
     `
   },
   {
-    name: '@reynard/auth',
+    name: 'reynard-auth',
     path: 'packages/auth',
     docPath: 'packages/auth/README.md',
     setup: `
-      import { AuthProvider, LoginForm, RegisterForm, useAuth } from '@reynard/auth';
-      import { ThemeProvider, createTheme } from '@reynard/core';
+      import { AuthProvider, LoginForm, RegisterForm, useAuth } from 'reynard-auth';
+      import { ThemeProvider, createTheme } from 'reynard-core';
     `
   },
   {
-    name: '@reynard/chat',
+    name: 'reynard-chat',
     path: 'packages/chat',
     docPath: 'packages/chat/README.md',
     setup: `
-      import { ChatContainer, useChat, useStreamingChat, useP2PChat } from '@reynard/chat';
-      import { ThemeProvider, createTheme } from '@reynard/core';
+      import { ChatContainer, useChat, useStreamingChat, useP2PChat } from 'reynard-chat';
+      import { ThemeProvider, createTheme } from 'reynard-core';
     `
   },
   {
@@ -63,19 +63,19 @@ export const PACKAGES: PackageConfig[] = [
     `
   },
   {
-    name: '@reynard/algorithms',
+    name: 'reynard-algorithms',
     path: 'packages/algorithms',
     docPath: 'packages/algorithms/README.md',
     setup: `
-      import { UnionFind, checkCollision, SpatialHash, PerformanceTimer } from '@reynard/algorithms';
+      import { UnionFind, checkCollision, SpatialHash, PerformanceTimer } from 'reynard-algorithms';
     `
   },
   {
-    name: '@reynard/file-processing',
+    name: 'reynard-file-processing',
     path: 'packages/file-processing',
     docPath: 'packages/file-processing/README.md',
     setup: `
-      import { FileProcessingPipeline, ThumbnailGenerator } from '@reynard/file-processing';
+      import { FileProcessingPipeline, ThumbnailGenerator } from 'reynard-file-processing';
     `
   }
 ];
@@ -282,7 +282,7 @@ Commands:
 Examples:
   npm run doc-tests generate
   npm run doc-tests validate
-  npm run doc-tests test @reynard/core
+  npm run doc-tests test reynard-core
   npm run doc-tests test
   npm run doc-tests all
 `);

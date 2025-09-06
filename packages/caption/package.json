@@ -39,9 +39,9 @@
         "editing"
     ],
     "dependencies": {
-        "@reynard/core": "file:../core",
-        "@reynard/components": "file:../components",
-        "@reynard/fluent-icons": "file:../fluent-icons"
+        "reynard-core": "file:../core",
+        "reynard-components": "file:../components",
+        "reynard-fluent-icons": "file:../fluent-icons"
     },
     "devDependencies": {
         "@types/node": "24.3.1",

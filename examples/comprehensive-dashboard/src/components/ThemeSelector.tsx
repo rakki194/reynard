@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
-import { useTheme, type Theme } from "@reynard/core";
-import { Select } from "@reynard/components";
+import { useTheme, type Theme } from "reynard-core";
+import { Select } from "reynard-components";
 
 const ThemeSelector: Component = () => {
   const { theme, setTheme, themes, themeIconMap } = useTheme();

@@ -18,7 +18,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@reynard/core": ["../../packages/core/src"]
+      "reynard-core": ["../../packages/core/src"]
     }
   },
   "include": ["src"]

@@ -4,8 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { useI18n } from "@reynard/core";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { useI18n } from "reynard-themes";
 
 export const LanguageSelector: Component = () => {
   const { locale, setLocale, languages } = useI18n();
@@ -16,19 +15,11 @@ export const LanguageSelector: Component = () => {
       ["en", "es", "fr"].includes(lang.code),
   );
 
-  const getLanguageIcon = (code: string) => {
-    const icons: Record<string, string> = {
-      en: "globe",
-      es: "globe",
-      fr: "globe",
-    };
-    return icons[code] || "globe";
-  };
 
   return (
     <select
       class="language-selector"
-      value={locale()}
+      value={locale}
       onChange={(e) => setLocale(e.currentTarget.value as any)}
       aria-label="Select language"
       title="Select language"
@@ -38,14 +29,7 @@ export const LanguageSelector: Component = () => {
           <option value={lang.code}>
             <span class="language-option">
               <span class="language-icon">
-                {fluentIconsPackage.getIcon(getLanguageIcon(lang.code)) && (
-                  <div
-                    innerHTML={
-                      fluentIconsPackage.getIcon(getLanguageIcon(lang.code))
-                        ?.outerHTML
-                    }
-                  />
-                )}
+                🌐
               </span>
               {lang.name}
             </span>

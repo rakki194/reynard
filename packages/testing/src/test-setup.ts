@@ -1,5 +1,5 @@
 /**
- * Global test setup for @reynard/testing
+ * Global test setup for reynard-testing
  */
 
 import '@testing-library/jest-dom';

@@ -11,7 +11,7 @@ import {
   splitProps,
   Show,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import "./ImageViewer.css";
 
 export interface ImageViewerProps {

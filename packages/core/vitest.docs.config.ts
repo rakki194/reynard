@@ -7,14 +7,14 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test-setup.ts'],
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     exclude: ['src/**/index.test.ts'],
     testTimeout: 10000,
     hookTimeout: 10000,
   },
   resolve: {
     alias: {
-      '@reynard/core': new URL('./src', import.meta.url).pathname,
+      'reynard-core': new URL('./src', import.meta.url).pathname,
     },
   },
 });

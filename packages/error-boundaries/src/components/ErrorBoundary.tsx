@@ -3,9 +3,9 @@
  * Comprehensive error boundary with recovery and reporting capabilities
  */
 
-import { Component, createSignal, createMemo, Show, onCleanup } from 'solid-js';
-import { ErrorBoundaryConfig, ErrorFallbackProps, ErrorContext } from '../types/ErrorTypes';
-import { RecoveryAction, RecoveryStrategy } from '../types/RecoveryTypes';
+import { Component, createSignal, createMemo, Show, onCleanup, JSX } from 'solid-js';
+import { ErrorBoundaryConfig } from '../types/ErrorTypes';
+import { RecoveryAction } from '../types/RecoveryTypes';
 import { createErrorContext } from '../utils/ErrorAnalyzer';
 import { getApplicableStrategies, executeRecoveryStrategy } from '../utils/RecoveryStrategies';
 import { createErrorReport } from '../utils/ErrorSerializer';
@@ -19,7 +19,7 @@ interface ErrorBoundaryState {
   lastRecoveryAttempt?: number;
 }
 
-export const ErrorBoundary: Component<ErrorBoundaryConfig> = (props) => {
+export const ErrorBoundary: Component<ErrorBoundaryConfig & { children: JSX.Element }> = (props) => {
   const [state, setState] = createSignal<ErrorBoundaryState>({
     error: null,
     errorInfo: null,

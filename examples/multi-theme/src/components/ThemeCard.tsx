@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 
 interface ThemeCardProps {
   name: string;

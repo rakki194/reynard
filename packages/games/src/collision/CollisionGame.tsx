@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { Ball, Collision, GameStats, GameConfig } from "../types";
 import "./CollisionGame.css";
 

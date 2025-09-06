@@ -3,9 +3,9 @@
  * Comprehensive recovery strategy definitions for error handling
  */
 
-import type { Error, ErrorContext } from './ErrorTypes';
+import type { ErrorContext } from './ErrorTypes';
 
-export enum RecoveryAction {
+export enum RecoveryActionType {
   RETRY = 'retry',
   RESET = 'reset',
   FALLBACK = 'fallback',
@@ -26,9 +26,9 @@ export interface RecoveryStrategy {
 
 export interface RecoveryResult {
   success: boolean;
-  action: RecoveryAction;
+  action: RecoveryActionType;
   message?: string;
-  data?: any;
+  data?: unknown;
   error?: Error;
 }
 
@@ -36,10 +36,10 @@ export interface RecoveryAction {
   id: string;
   name: string;
   description: string;
-  action: RecoveryAction;
+  action: RecoveryActionType;
   priority: number;
   timeout?: number;
-  data?: any;
+  data?: unknown;
 }
 
 export interface RecoveryContext {

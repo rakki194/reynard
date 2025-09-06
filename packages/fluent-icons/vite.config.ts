@@ -8,14 +8,19 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardFluentIcons",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: (format) => {
+        if (format === "es") return "index.js";
+        if (format === "cjs") return "index.cjs";
+        return `index.${format}`;
+      },
+      formats: ["es", "cjs", "umd"],
     },
     rollupOptions: {
-      external: ["solid-js", "@reynard/core"],
+      external: ["solid-js", "reynard-core"],
       output: {
         globals: {
           "solid-js": "solid",
-          "@reynard/core": "ReynardCore",
+          "reynard-core": "ReynardCore",
         },
       },
     },

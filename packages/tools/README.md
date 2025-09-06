@@ -1,4 +1,4 @@
-# @reynard/tools
+# reynard-tools
 
 Development and runtime tools for Reynard applications with a comprehensive tool calling system, validation, and execution management.
 
@@ -15,7 +15,7 @@ Development and runtime tools for Reynard applications with a comprehensive tool
 ## Installation
 
 ```bash
-npm install @reynard/tools
+npm install reynard-tools
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ npm install @reynard/tools
 ### Basic Tool Usage
 
 ```typescript
-import { ToolRegistry, ToolExecutor, BaseTool, ToolDefinition, ParameterType } from '@reynard/tools';
+import { ToolRegistry, ToolExecutor, BaseTool, ToolDefinition, ParameterType } from 'reynard-tools';
 
 // Create a custom tool
 class GreetTool extends BaseTool {
@@ -94,7 +94,7 @@ console.log(result.data.greeting); // "Hello, Alice!"
 ### Development Tools
 
 ```typescript
-import { ReadFileTool, WriteFileTool, ListDirectoryTool } from '@reynard/tools';
+import { ReadFileTool, WriteFileTool, ListDirectoryTool } from 'reynard-tools';
 
 const registry = new ToolRegistry();
 const executor = new ToolExecutor();

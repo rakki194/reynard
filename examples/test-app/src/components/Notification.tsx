@@ -1,5 +1,5 @@
 import { Component, createSignal, createEffect, createMemo, Show } from "solid-js";
-import { getIcon } from "@reynard/fluent-icons";
+import { getIcon } from "reynard-fluent-icons";
 import "./Notification.css";
 
 export interface NotificationProps {

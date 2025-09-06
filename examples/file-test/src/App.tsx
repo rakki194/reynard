@@ -1,5 +1,5 @@
 import { createSignal, For } from 'solid-js';
-import { ThumbnailGenerator } from '@reynard/file-processing';
+import { ThumbnailGenerator } from 'reynard-file-processing';
 import FileUploader from './components/FileUploader';
 import ThumbnailViewer from './components/ThumbnailViewer';
 import AudioTest from './components/AudioTest';

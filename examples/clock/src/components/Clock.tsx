@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount, onCleanup, Show, createEffect } from "solid-js";
-import { Button, Card } from "@reynard/components";
+import { Button, Card } from "reynard-components";
 
 interface TimeState {
   hours: number;

@@ -4,9 +4,9 @@
  */
 
 import { Component, createSignal } from 'solid-js';
-import { ErrorBoundary, ErrorFallback, builtInRecoveryStrategies } from '@reynard/error-boundaries';
-import { ThemeProvider, createTheme, useTheme } from '@reynard/core';
-import { Button, Card } from '@reynard/components';
+import { ErrorBoundary, ErrorFallback, builtInRecoveryStrategies } from 'reynard-error-boundaries';
+import { ThemeProvider, createTheme, useTheme } from 'reynard-core';
+import { Button, Card } from 'reynard-components';
 
 // Component that can throw an error
 const RiskyComponent: Component<{ shouldThrow?: boolean }> = (props) => {

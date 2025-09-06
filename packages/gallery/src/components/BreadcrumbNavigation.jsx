@@ -3,7 +3,7 @@
  * Shows the current path and allows navigation to parent folders
  */
 import { For, Show } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 export const BreadcrumbNavigation = (props) => {
   const handleNavigate = (path) => {
     props.onNavigate?.(path);

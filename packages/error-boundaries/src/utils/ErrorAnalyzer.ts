@@ -12,7 +12,7 @@ export function analyzeError(error: Error, errorInfo: any): {
   severity: ErrorSeverity;
   category: ErrorCategory;
   recoverable: boolean;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 } {
   const message = error.message.toLowerCase();
   const name = error.name.toLowerCase();
@@ -42,7 +42,7 @@ export function analyzeError(error: Error, errorInfo: any): {
  * Determine error category based on error characteristics
  */
 function determineErrorCategory(
-  error: Error, 
+  _error: Error, 
   message: string, 
   name: string, 
   stack: string
@@ -133,7 +133,7 @@ function determineErrorCategory(
 function determineErrorSeverity(
   category: ErrorCategory,
   error: Error,
-  errorInfo: any
+  _errorInfo: any
 ): ErrorSeverity {
   // Critical errors that break the entire application
   if (
@@ -174,7 +174,7 @@ function determineErrorSeverity(
 function isErrorRecoverable(
   category: ErrorCategory,
   severity: ErrorSeverity,
-  error: Error
+  _error: Error
 ): boolean {
   // Critical errors are generally not recoverable
   if (severity === ErrorSeverity.CRITICAL) {
@@ -208,11 +208,11 @@ function isErrorRecoverable(
  * Extract metadata from error and error info
  */
 function extractErrorMetadata(
-  error: Error,
+  _error: Error,
   errorInfo: any,
   stack: string
-): Record<string, any> {
-  const metadata: Record<string, any> = {};
+): Record<string, unknown> {
+  const metadata: Record<string, unknown> = {};
 
   // Extract component information from stack
   const componentMatch = stack.match(/at\s+(\w+)/g);
@@ -263,13 +263,13 @@ function extractErrorMetadata(
  */
 export function createErrorContext(
   error: Error,
-  errorInfo: any,
+  _errorInfo: any,
   additionalContext?: Partial<ErrorContext>
 ): ErrorContext {
-  const analysis = analyzeError(error, errorInfo);
+  const analysis = analyzeError(error, _errorInfo);
   
   return {
-    componentStack: errorInfo?.componentStack?.split('\n') || [],
+    componentStack: _errorInfo?.componentStack?.split('\n') || [],
     errorBoundaryId: generateErrorBoundaryId(),
     timestamp: Date.now(),
     userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
@@ -279,7 +279,7 @@ export function createErrorContext(
     category: analysis.category,
     recoverable: analysis.recoverable,
     metadata: analysis.metadata,
-    errorBoundaryStack: errorInfo?.errorBoundaryStack,
+    errorBoundaryStack: _errorInfo?.errorBoundaryStack,
     ...additionalContext
   };
 }

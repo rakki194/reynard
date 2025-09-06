@@ -1,4 +1,4 @@
-# @reynard/charts
+# reynard-charts
 
 Advanced data visualization components for SolidJS applications, built on Chart.js.
 
@@ -16,7 +16,7 @@ Advanced data visualization components for SolidJS applications, built on Chart.
 ## 📦 Installation
 
 ```bash
-npm install @reynard/charts @reynard/core chart.js solid-chartjs solid-js
+npm install reynard-charts reynard-core chart.js solid-chartjs solid-js
 ```
 
 ## 🎯 Quick Start
@@ -27,7 +27,7 @@ import {
   BarChart,
   PieChart,
   TimeSeriesChart,
-} from "@reynard/charts";
+} from "reynard-charts";
 
 function Dashboard() {
   const salesData = {

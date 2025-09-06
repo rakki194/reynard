@@ -1,4 +1,4 @@
-# @reynard/annotating
+# reynard-annotating
 
 A comprehensive annotation and caption generation system for Reynard applications that handles image captioning, tagging, and annotation workflows.
 
@@ -15,13 +15,13 @@ A comprehensive annotation and caption generation system for Reynard application
 ## Installation
 
 ```bash
-npm install @reynard/annotating
+npm install reynard-annotating
 ```
 
 ## Quick Start
 
 ```typescript
-import { AnnotationManager, CaptionType, CaptionTask } from '@reynard/annotating';
+import { AnnotationManager, CaptionType, CaptionTask } from 'reynard-annotating';
 
 // Create annotation manager
 const annotationManager = new AnnotationManager();
@@ -186,7 +186,7 @@ interface CaptionResult {
 ### Custom Caption Generator
 
 ```typescript
-import { BaseCaptionGenerator, CaptionType, CaptionGeneratorConfig } from '@reynard/annotating';
+import { BaseCaptionGenerator, CaptionType, CaptionGeneratorConfig } from 'reynard-annotating';
 
 class MyCustomGenerator extends BaseCaptionGenerator {
   constructor() {

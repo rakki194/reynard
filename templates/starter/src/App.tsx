@@ -11,10 +11,11 @@ import {
   createNotifications,
   useTheme,
   useNotifications,
-} from "@reynard/core";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+} from "reynard-core";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ThemeSelector } from "./components/ThemeSelector";
 import { NotificationDemo } from "./components/NotificationDemo";
+import { NotificationToast } from "./components/NotificationToast";
 import { Counter } from "./components/Counter";
 import "./styles/app.css";
 
@@ -130,7 +131,7 @@ const AppContent: Component = () => {
           <div class="code-example">
             <pre>
               <code>{`// Create a new Reynard app
-npx @reynard/create-app my-app
+npx reynard-create-app my-app
 cd my-app
 npm run dev`}</code>
             </pre>
@@ -161,6 +162,7 @@ const App: Component = () => {
   return (
     <ThemeProvider value={themeModule}>
       <NotificationsProvider value={notificationsModule}>
+        <NotificationToast />
         <AppContent />
       </NotificationsProvider>
     </ThemeProvider>

@@ -1,4 +1,4 @@
-# @reynard/games
+# reynard-games
 
 Interactive games and visualizations showcasing Reynard's algorithm primitives.
 
@@ -13,13 +13,13 @@ Interactive games and visualizations showcasing Reynard's algorithm primitives.
 ## Installation
 
 ```bash
-npm install @reynard/games
+npm install reynard-games
 ```
 
 ## Usage
 
 ```tsx
-import { UnionFindGame, CollisionGame, SpatialHashDemo } from '@reynard/games';
+import { UnionFindGame, CollisionGame, SpatialHashDemo } from 'reynard-games';
 
 // Use individual game components
 <UnionFindGame />
@@ -29,7 +29,7 @@ import { UnionFindGame, CollisionGame, SpatialHashDemo } from '@reynard/games';
 
 ## Dependencies
 
-- `@reynard/algorithms` - Core algorithm implementations
-- `@reynard/components` - UI components
-- `@reynard/fluent-icons` - Icon library
+- `reynard-algorithms` - Core algorithm implementations
+- `reynard-components` - UI components
+- `reynard-fluent-icons` - Icon library
 - `solid-js` - Reactive framework

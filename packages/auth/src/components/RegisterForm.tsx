@@ -10,7 +10,7 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "../types";
 import { validateEmail, validateUsername } from "../utils";

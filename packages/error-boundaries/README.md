@@ -1,4 +1,4 @@
-# @reynard/error-boundaries
+# reynard-error-boundaries
 
 > **Comprehensive Error Boundary System for Reynard Framework** 🦊
 
@@ -41,7 +41,7 @@ A sophisticated error boundary system that provides graceful error handling, rec
 ## 📦 Installation
 
 ```bash
-npm install @reynard/error-boundaries @reynard/core @reynard/components
+npm install reynard-error-boundaries reynard-core reynard-components
 ```
 
 ## 🚀 Quick Start
@@ -49,8 +49,8 @@ npm install @reynard/error-boundaries @reynard/core @reynard/components
 ### Basic Error Boundary
 
 ```tsx
-import { ErrorBoundary } from '@reynard/error-boundaries';
-import { ErrorFallback } from '@reynard/error-boundaries';
+import { ErrorBoundary } from 'reynard-error-boundaries';
+import { ErrorFallback } from 'reynard-error-boundaries';
 
 function App() {
   return (
@@ -72,7 +72,7 @@ function App() {
 import { 
   ErrorBoundary, 
   builtInRecoveryStrategies 
-} from '@reynard/error-boundaries';
+} from 'reynard-error-boundaries';
 
 function App() {
   return (
@@ -91,7 +91,7 @@ function App() {
 ### Error Boundary with Reporting
 
 ```tsx
-import { ErrorBoundary } from '@reynard/error-boundaries';
+import { ErrorBoundary } from 'reynard-error-boundaries';
 
 function App() {
   return (
@@ -162,7 +162,7 @@ interface ErrorReportingConfig {
 ### Custom Recovery Strategy
 
 ```tsx
-import { createRecoveryStrategy } from '@reynard/error-boundaries';
+import { createRecoveryStrategy } from 'reynard-error-boundaries';
 
 const customStrategy = createRecoveryStrategy(
   'custom-retry',
@@ -207,7 +207,7 @@ const customStrategy = createRecoveryStrategy(
 ### Using Error Boundary Hook
 
 ```tsx
-import { useErrorBoundary } from '@reynard/error-boundaries';
+import { useErrorBoundary } from 'reynard-error-boundaries';
 
 function MyComponent() {
   const { error, handleError, retry, executeRecovery } = useErrorBoundary({
@@ -241,8 +241,8 @@ function MyComponent() {
 ## 🧪 Testing
 
 ```tsx
-import { render, screen } from '@reynard/testing';
-import { ErrorBoundary } from '@reynard/error-boundaries';
+import { render, screen } from 'reynard-testing';
+import { ErrorBoundary } from 'reynard-error-boundaries';
 
 const ThrowError = () => {
   throw new Error('Test error');
@@ -275,7 +275,7 @@ The error boundary components integrate seamlessly with Reynard's theming system
 ## 📊 Error Analytics
 
 ```tsx
-import { useErrorReporting } from '@reynard/error-boundaries';
+import { useErrorReporting } from 'reynard-error-boundaries';
 
 function ErrorDashboard() {
   const { getMetrics } = useErrorReporting({

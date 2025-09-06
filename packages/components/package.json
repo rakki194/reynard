@@ -1,6 +1,6 @@
 {
   "name": "reynard-components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reynard UI Components - Production-ready SolidJS component library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -25,6 +25,8 @@
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "test:docs": "vitest run --config vitest.docs.config.ts",
     "test:ui": "vitest --ui",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
-import { Button } from "@reynard/components";
-import { SpatialHash } from "@reynard/algorithms";
+import { Button } from "reynard-components";
+import { SpatialHash } from "reynard-algorithms";
 import { SpatialObject, QueryRect, GameConfig } from "../types";
 import "./SpatialHashDemo.css";
 

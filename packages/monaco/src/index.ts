@@ -1,5 +1,5 @@
 /**
- * @reynard/monaco - Monaco code editor and text editing components for Reynard
+ * reynard-monaco - Monaco code editor and text editing components for Reynard
  */
 
 // Solid-Monaco Components (Forked and Updated)

@@ -11,7 +11,7 @@ import {
   For,
   splitProps,
 } from "solid-js";
-import { Button, TextField, Modal, Tabs } from "@reynard/components";
+import { Button, TextField, Modal, Tabs } from "reynard-components";
 import type {
   SettingDefinition,
   SettingCategory,

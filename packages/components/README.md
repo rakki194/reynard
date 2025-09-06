@@ -1,4 +1,4 @@
-# @reynard/components
+# reynard-components
 
 Production-ready SolidJS component library with comprehensive theming and accessibility support.
 
@@ -15,14 +15,14 @@ Production-ready SolidJS component library with comprehensive theming and access
 ## 📦 Installation
 
 ```bash
-npm install @reynard/components @reynard/core solid-js
+npm install reynard-components reynard-core solid-js
 ```
 
 ## 🎯 Quick Start
 
 ```tsx
-import { Button, Card, TextField } from "@reynard/components";
-import "@reynard/components/styles";
+import { Button, Card, TextField } from "reynard-components";
+import "reynard-components/styles";
 
 function App() {
   return (
@@ -230,10 +230,10 @@ Components automatically adapt to your theme using CSS custom properties:
 }
 ```
 
-Works seamlessly with `@reynard/core` theme system:
+Works seamlessly with `reynard-core` theme system:
 
 ```tsx
-import { useTheme } from "@reynard/core";
+import { useTheme } from "reynard-core";
 
 function ThemedComponent() {
   const { theme, setTheme } = useTheme();
@@ -273,7 +273,7 @@ npm run test:ui     # Visual test runner
 Complete streaming chat messaging system with AI assistant support.
 
 ```tsx
-import { ChatContainer } from "@reynard/components";
+import { ChatContainer } from "reynard-components";
 
 <ChatContainer
   endpoint="/api/chat"

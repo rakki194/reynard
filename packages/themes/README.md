@@ -1,4 +1,4 @@
-# @reynard/themes
+# reynard-themes
 
 A comprehensive theming and internationalization system for Reynard applications, based on yipyap's proven architecture.
 
@@ -33,7 +33,7 @@ A comprehensive theming and internationalization system for Reynard applications
 ## Installation
 
 ```bash
-npm install @reynard/themes
+npm install reynard-themes
 ```
 
 ## Quick Start
@@ -41,8 +41,8 @@ npm install @reynard/themes
 ### Basic Setup
 
 ```tsx
-import { ReynardProvider } from "@reynard/themes";
-import "@reynard/themes/themes.css";
+import { ReynardProvider } from "reynard-themes";
+import "reynard-themes/themes.css";
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function App() {
 ### Using Themes
 
 ```tsx
-import { useTheme } from "@reynard/themes";
+import { useTheme } from "reynard-themes";
 
 function ThemeToggle() {
   const { theme, setTheme, availableThemes } = useTheme();
@@ -76,7 +76,7 @@ function ThemeToggle() {
 ### Using Translations
 
 ```tsx
-import { useTranslation } from "@reynard/themes";
+import { useTranslation } from "reynard-themes";
 
 function WelcomeMessage() {
   const t = useTranslation();
@@ -251,7 +251,7 @@ Each theme provides a comprehensive set of CSS custom properties:
 Generates background colors for tags based on theme.
 
 ```tsx
-import { computeTagBackground } from "@reynard/themes";
+import { computeTagBackground } from "reynard-themes";
 
 const bgColor = computeTagBackground("primary", "light");
 // Returns: 'lch(95% 0.05 250)'
@@ -262,7 +262,7 @@ const bgColor = computeTagBackground("primary", "light");
 Generates text colors for tags based on theme.
 
 ```tsx
-import { computeTagColor } from "@reynard/themes";
+import { computeTagColor } from "reynard-themes";
 
 const textColor = computeTagColor("primary", "light");
 // Returns: 'lch(30% 0.2 250)'
@@ -273,7 +273,7 @@ const textColor = computeTagColor("primary", "light");
 Generates hover styles for interactive elements.
 
 ```tsx
-import { computeHoverStyles } from "@reynard/themes";
+import { computeHoverStyles } from "reynard-themes";
 
 const hoverStyles = computeHoverStyles("primary", "light");
 // Returns: { backgroundColor: 'lch(90% 0.1 250)', transform: 'translateY(-1px)' }
@@ -284,7 +284,7 @@ const hoverStyles = computeHoverStyles("primary", "light");
 Generates animation properties based on user preferences.
 
 ```tsx
-import { computeAnimation } from "@reynard/themes";
+import { computeAnimation } from "reynard-themes";
 
 const animation = computeAnimation("fadeIn");
 // Returns: { animation: 'fadeIn 0.3s ease-in-out' } or {} if reduced motion
@@ -337,7 +337,7 @@ For RTL languages, the system automatically:
 ### Custom Theme Creation
 
 ```tsx
-import { createTheme } from "@reynard/themes";
+import { createTheme } from "reynard-themes";
 
 const customTheme = createTheme({
   name: "custom",
@@ -352,7 +352,7 @@ const customTheme = createTheme({
 ### Custom Translation Loading
 
 ```tsx
-import { loadTranslations } from "@reynard/themes";
+import { loadTranslations } from "reynard-themes";
 
 // Load custom translations
 await loadTranslations("custom-lang", {
@@ -365,7 +365,7 @@ await loadTranslations("custom-lang", {
 ### Theme-Aware Components
 
 ```tsx
-import { useTheme } from "@reynard/themes";
+import { useTheme } from "reynard-themes";
 
 function ThemedButton() {
   const { theme, isDark } = useTheme();
@@ -402,9 +402,9 @@ function ThemedButton() {
 If you're migrating from yipyap's theme system:
 
 1. Replace `ThemeProvider` with `ReynardProvider`
-2. Update import paths from `yipyap/themes` to `@reynard/themes`
+2. Update import paths from `yipyap/themes` to `reynard-themes`
 3. Use the new unified hooks (`useTheme`, `useTranslation`)
-4. Update CSS imports to `@reynard/themes/themes.css`
+4. Update CSS imports to `reynard-themes/themes.css`
 
 ## Contributing
 

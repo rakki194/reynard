@@ -1,4 +1,4 @@
-# @reynard/algorithms
+# reynard-algorithms
 
 > Algorithm primitives and data structures for Reynard applications
 
@@ -15,7 +15,7 @@ A comprehensive collection of reusable algorithmic building blocks including Uni
 ## Installation
 
 ```bash
-npm install @reynard/algorithms
+npm install reynard-algorithms
 ```
 
 ## Quick Start
@@ -29,7 +29,7 @@ import {
   PerformanceTimer,
   PointOps,
   VectorOps,
-} from '@reynard/algorithms';
+} from 'reynard-algorithms';
 
 // Union-Find for connected components
 const uf = new UnionFind(10);
@@ -65,7 +65,7 @@ const distance = PointOps.distance(point1, point2); // 5
 ### Union-Find Algorithm
 
 ```typescript
-import { UnionFind, detectCycle, findConnectedComponents } from '@reynard/algorithms';
+import { UnionFind, detectCycle, findConnectedComponents } from 'reynard-algorithms';
 
 const uf = new UnionFind(10);
 uf.union(0, 1);
@@ -81,7 +81,7 @@ const components = findConnectedComponents([[0, 1], [2, 3]]); // [[0, 1], [2, 3]
 ### AABB Collision Detection
 
 ```typescript
-import { checkCollision, batchCollisionDetection, AABB } from '@reynard/algorithms';
+import { checkCollision, batchCollisionDetection, AABB } from 'reynard-algorithms';
 
 const aabb1: AABB = { x: 0, y: 0, width: 100, height: 100 };
 const aabb2: AABB = { x: 50, y: 50, width: 100, height: 100 };
@@ -98,7 +98,7 @@ const collisions = batchCollisionDetection(aabbs);
 ### Spatial Hashing
 
 ```typescript
-import { SpatialHash, createOptimizedSpatialHash } from '@reynard/algorithms';
+import { SpatialHash, createOptimizedSpatialHash } from 'reynard-algorithms';
 
 const spatialHash = new SpatialHash<{ name: string }>({
   cellSize: 100,
@@ -126,7 +126,7 @@ import {
   throttle,
   debounce,
   PerformanceBenchmark,
-} from '@reynard/algorithms';
+} from 'reynard-algorithms';
 
 // Performance timing
 const timer = new PerformanceTimer();
@@ -160,7 +160,7 @@ import {
   CircleOps,
   PolygonOps,
   TransformOps,
-} from '@reynard/algorithms';
+} from 'reynard-algorithms';
 
 // Point operations
 const point1 = PointOps.create(0, 0);

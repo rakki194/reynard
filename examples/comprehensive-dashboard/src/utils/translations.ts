@@ -1,4 +1,4 @@
-import type { Locale, Translations } from "@reynard/core";
+import type { Locale, Translations } from "reynard-core";
 
 // Translation loader that dynamically imports translation files
 export const loadTranslations = async (

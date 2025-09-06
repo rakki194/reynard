@@ -59,7 +59,7 @@ The template includes 8 built-in themes:
 Switch themes using the theme selector or programmatically:
 
 ```tsx
-import { useTheme } from "@reynard/core";
+import { useTheme } from "reynard-core";
 
 const { theme, setTheme, nextTheme } = useTheme();
 setTheme("dark");
@@ -70,7 +70,7 @@ setTheme("dark");
 Send toast notifications with the notification system:
 
 ```tsx
-import { useNotifications } from "@reynard/core";
+import { useNotifications } from "reynard-core";
 
 const { notify } = useNotifications();
 

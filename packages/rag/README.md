@@ -30,7 +30,7 @@ A comprehensive RAG (Retrieval-Augmented Generation) system for SolidJS applicat
 ## 📦 Installation
 
 ```bash
-npm install @reynard/rag @reynard/components solid-js
+npm install reynard-rag reynard-components solid-js
 ```
 
 ## 🎯 Quick Start
@@ -38,8 +38,8 @@ npm install @reynard/rag @reynard/components solid-js
 ### Basic RAG Search Implementation
 
 ```tsx
-import { RAGSearch } from "@reynard/rag";
-import "@reynard/rag/styles";
+import { RAGSearch } from "reynard-rag";
+import "reynard-rag/styles";
 
 function App() {
   return (
@@ -61,7 +61,7 @@ function App() {
 ### Advanced Usage with Custom Configuration
 
 ```tsx
-import { RAGSearch } from "@reynard/rag";
+import { RAGSearch } from "reynard-rag";
 
 function CustomRAGApp() {
   const handleSearch = (query: string) => {
@@ -139,7 +139,7 @@ interface RAGResult {
 The RAG system comes with built-in styles that integrate seamlessly with Reynard's theming system:
 
 ```tsx
-import "@reynard/rag/styles";
+import "reynard-rag/styles";
 ```
 
 ### Custom Styling

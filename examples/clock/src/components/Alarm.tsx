@@ -4,8 +4,8 @@
  */
 
 import { Component, createSignal, onMount, onCleanup, Show, For } from "solid-js";
-import { useNotifications } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
+import { useNotifications } from "reynard-core";
+import { Button, Card } from "reynard-components";
 
 interface Alarm {
   id: string;

@@ -14,8 +14,8 @@ export function sanitizeHTML(input: string): string {
   return input
     .replace(/<script[^>]*>.*?<\/script>/gi, '')
     .replace(/<style[^>]*>.*?<\/style>/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '')
+    .replace(/javascript:.*/gi, '')
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')
     .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
     .replace(/<object[^>]*>.*?<\/object>/gi, '')
     .replace(/<embed[^>]*>.*?<\/embed>/gi, '')
@@ -25,7 +25,9 @@ export function sanitizeHTML(input: string): string {
     .replace(/<input[^>]*>/gi, '')
     .replace(/<button[^>]*>.*?<\/button>/gi, '')
     .replace(/<select[^>]*>.*?<\/select>/gi, '')
-    .replace(/<textarea[^>]*>.*?<\/textarea>/gi, '');
+    .replace(/<textarea[^>]*>.*?<\/textarea>/gi, '')
+    .replace(/<img[^>]*on\w+[^>]*>/gi, '')
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
 }
 
 /**
@@ -69,15 +71,21 @@ export function validateFileName(filename: string): { isValid: boolean; sanitize
   const dangerousPatterns = [
     /\.\./,           // Directory traversal
     /[<>:"|?*]/,      // Invalid characters
-    /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i, // Windows reserved names
+    /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i, // Windows reserved names
     /^\./,            // Hidden files
     /\.(exe|bat|cmd|com|scr|pif|msi)$/i, // Executable files
+    // Null bytes - using string method instead of regex
   ];
 
   for (const pattern of dangerousPatterns) {
     if (pattern.test(filename)) {
       return { isValid: false };
     }
+  }
+
+  // Check for null bytes using string method
+  if (filename.includes('\0')) {
+    return { isValid: false };
   }
 
   // Sanitize filename
@@ -92,7 +100,7 @@ export function validateFileName(filename: string): { isValid: boolean; sanitize
 /**
  * Validate JSON for security
  */
-export function validateJSON(input: string): { isValid: boolean; parsed?: any } {
+export function validateJSON(input: string): { isValid: boolean; parsed?: unknown } {
   if (!input || typeof input !== 'string') {
     return { isValid: false };
   }
@@ -102,7 +110,7 @@ export function validateJSON(input: string): { isValid: boolean; parsed?: any } 
     
     // Check for prototype pollution
     if (typeof parsed === 'object' && parsed !== null) {
-      if ('__proto__' in parsed || 'constructor' in parsed) {
+      if (Object.prototype.hasOwnProperty.call(parsed, '__proto__') || Object.prototype.hasOwnProperty.call(parsed, 'constructor')) {
         return { isValid: false };
       }
     }
@@ -123,12 +131,19 @@ export function validateSQLInput(input: string): boolean {
 
   const sqlPatterns = [
     /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/i,
-    /(--|\#|\/\*|\*\/)/,
+    /(--|#|\/\*|\*\/)/,
     /(\b(OR|AND)\b.*=.*\b(OR|AND)\b)/i,
     /(\b(OR|AND)\b.*\d+\s*=\s*\d+)/i,
     /(UNION.*SELECT)/i,
     /(SCRIPT.*>)/i,
     /(<\s*SCRIPT)/i,
+    /(\b(OR|AND)\b\s+\d+\s*=\s*\d+)/i,
+    /(\b(OR|AND)\b\s+['"]\s*=\s*['"])/i,
+    /(\b(OR|AND)\b\s+['"]\d+['"]\s*=\s*['"]\d+['"])/i,
+    /(\b(OR|AND)\b\s+['"]\d+['"]\s*=\s*\d+)/i,
+    /(\b(OR|AND)\b\s+\d+\s*=\s*['"]\d+['"])/i,
+    /(\b(OR|AND)\b.*1.*=.*1)/i,
+    /(\b(OR|AND)\b.*'1'.*=.*'1')/i,
   ];
 
   return !sqlPatterns.some(pattern => pattern.test(input));
@@ -215,6 +230,36 @@ export function validateInput(input: string, options: {
   // XSS validation
   if (!options.allowXSS && !validateXSSInput(input)) {
     errors.push('Input contains potentially dangerous XSS patterns');
+  }
+
+  // Path traversal validation
+  if (/\.\./.test(input)) {
+    errors.push('Input contains path traversal patterns');
+  }
+
+  // Windows reserved names validation
+  if (/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i.test(input)) {
+    errors.push('Input contains Windows reserved names');
+  }
+
+  // Executable file validation (but not for email addresses)
+  if (/\.(exe|bat|cmd|scr|pif|msi)$/i.test(input) || /\.com$/i.test(input) && !/@/.test(input)) {
+    errors.push('Input contains executable file extensions');
+  }
+
+  // Null byte validation
+  if (input.includes('\0')) {
+    errors.push('Input contains null bytes');
+  }
+
+  // Hidden file validation
+  if (/^\./.test(input)) {
+    errors.push('Input contains hidden files');
+  }
+
+  // JavaScript file validation
+  if (/\.(js|javascript)$/i.test(input)) {
+    errors.push('Input contains JavaScript file extensions');
   }
 
   // Pattern validation

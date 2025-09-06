@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
-import { useI18n, type Locale } from "@reynard/core";
-import { Select } from "@reynard/components";
+import { useI18n, type Locale } from "reynard-core";
+import { Select } from "reynard-components";
 
 const LanguageSelector: Component = () => {
   const { locale, setLocale, languages } = useI18n();

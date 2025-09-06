@@ -13,7 +13,7 @@ import {
   batch,
   createRoot,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import "./FileUpload.css";
 
 export interface FileUploadItem {

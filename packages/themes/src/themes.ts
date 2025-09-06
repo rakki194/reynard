@@ -310,14 +310,14 @@ const peanutTheme: ThemeConfig = {
     primaryHover: "#795548",
     primaryActive: "#6d4c41",
 
-    background: "#f3e5f5",
-    backgroundSecondary: "#e1bee7",
-    backgroundTertiary: "#ce93d8",
+    background: "#f5f3f0",
+    backgroundSecondary: "#ede7e0",
+    backgroundTertiary: "#d7ccc8",
 
     surface: "#ffffff",
-    surfaceHover: "#f3e5f5",
-    surfaceActive: "#e1bee7",
-    surfaceSelected: "#f3e5f5",
+    surfaceHover: "#f5f3f0",
+    surfaceActive: "#ede7e0",
+    surfaceSelected: "#f5f3f0",
 
     accent: "#8d6e63",
     accentHover: "#795548",

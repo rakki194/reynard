@@ -4,7 +4,7 @@
  */
 
 import { ErrorCategory, ErrorSeverity, ErrorContext } from '../types/ErrorTypes';
-import { RecoveryStrategy, RecoveryResult, RecoveryAction } from '../types/RecoveryTypes';
+import { RecoveryStrategy, RecoveryResult, RecoveryActionType } from '../types/RecoveryTypes';
 
 /**
  * Retry strategy for network and resource errors
@@ -22,7 +22,7 @@ export const retryStrategy: RecoveryStrategy = {
     // trigger a retry of the original operation
     return {
       success: true,
-      action: RecoveryAction.RETRY,
+      action: RecoveryActionType.RETRY,
       message: 'Operation retried successfully'
     };
   },
@@ -42,7 +42,7 @@ export const fallbackUIStrategy: RecoveryStrategy = {
   recover: async (_error, _context) => {
     return {
       success: true,
-      action: RecoveryAction.FALLBACK,
+      action: RecoveryActionType.FALLBACK,
       message: 'Fallback UI displayed'
     };
   },
@@ -62,7 +62,7 @@ export const resetStrategy: RecoveryStrategy = {
   recover: async (_error, _context) => {
     return {
       success: true,
-      action: RecoveryAction.RESET,
+      action: RecoveryActionType.RESET,
       message: 'Component reset successfully'
     };
   },
@@ -87,7 +87,7 @@ export const redirectStrategy: RecoveryStrategy = {
     }
     return {
       success: true,
-      action: RecoveryAction.REDIRECT,
+      action: RecoveryActionType.REDIRECT,
       message: 'Redirected to safe page'
     };
   },
@@ -109,7 +109,7 @@ export const reloadStrategy: RecoveryStrategy = {
     }
     return {
       success: true,
-      action: RecoveryAction.RELOAD,
+      action: RecoveryActionType.RELOAD,
       message: 'Application reloaded'
     };
   },
@@ -127,7 +127,7 @@ export const customStrategy: RecoveryStrategy = {
   recover: async (_error, _context) => {
     return {
       success: false,
-      action: RecoveryAction.CUSTOM,
+      action: RecoveryActionType.CUSTOM,
       message: 'Custom recovery not implemented',
       error: new Error('Custom recovery strategy requires implementation')
     };
@@ -179,7 +179,7 @@ export async function executeRecoveryStrategy(
   } catch (recoveryError) {
     return {
       success: false,
-      action: RecoveryAction.CUSTOM,
+      action: RecoveryActionType.CUSTOM,
       message: 'Recovery strategy failed',
       error: recoveryError instanceof Error ? recoveryError : new Error(String(recoveryError))
     };

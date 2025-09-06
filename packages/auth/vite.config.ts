@@ -14,8 +14,8 @@ export default defineConfig({
       external: [
         "solid-js",
         "solid-js/web",
-        "@reynard/core",
-        "@reynard/components",
+        "reynard-core",
+        "reynard-components",
         "jwt-decode",
         "@zxcvbn-ts/core",
         "@zxcvbn-ts/language-common",
@@ -25,8 +25,8 @@ export default defineConfig({
         globals: {
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
-          "@reynard/core": "ReynardCore",
-          "@reynard/components": "ReynardComponents",
+          "reynard-core": "ReynardCore",
+          "reynard-components": "ReynardComponents",
           "jwt-decode": "jwtDecode",
           "@zxcvbn-ts/core": "ZxcvbnCore",
           "@zxcvbn-ts/language-common": "ZxcvbnLanguageCommon",

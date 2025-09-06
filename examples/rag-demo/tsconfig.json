@@ -18,8 +18,8 @@
     "types": ["vite/client", "node"],
     "baseUrl": ".",
     "paths": {
-      "@reynard/core": ["../reynard/packages/core/src"],
-      "@reynard/components": ["../reynard/packages/components/src"]
+      "reynard-core": ["../reynard/packages/core/src"],
+      "reynard-components": ["../reynard/packages/components/src"]
     }
   },
   "include": ["src"]

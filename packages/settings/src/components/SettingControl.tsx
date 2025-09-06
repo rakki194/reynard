@@ -4,7 +4,7 @@
  */
 
 import { Component, createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Select } from "@reynard/components";
+import { Button, TextField, Select } from "reynard-components";
 import type { SettingDefinition } from "../types";
 
 export interface SettingControlProps {

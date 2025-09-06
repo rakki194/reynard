@@ -7,26 +7,26 @@ import {
   Component,
   createSignal,
   For,
-  createEffect,
   createResource,
+  createContext,
+  useContext,
 } from "solid-js";
 import {
-  ThemeProvider,
-  NotificationsProvider,
-  I18nProvider,
+  ReynardProvider,
   useTheme,
-  useNotifications,
   useI18n,
-  createThemeModule,
+} from "reynard-themes";
+import { loadTranslations } from "./translations";
+import {
+  NotificationsProvider,
+  useNotifications,
   createNotificationsModule,
-  createI18nModule,
-} from "@reynard/core";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+} from "reynard-core";
 import { TodoItem } from "./components/TodoItem";
 import { AddTodo } from "./components/AddTodo";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { LanguageSelector } from "./components/LanguageSelector";
-import { loadTranslations } from "./translations";
+import "reynard-themes/reynard-themes.css";
 import "./styles.css";
 
 interface Todo {
@@ -34,6 +34,17 @@ interface Todo {
   text: string;
   completed: boolean;
 }
+
+// Custom translation context
+const CustomTranslationContext = createContext<((key: string, params?: Record<string, string>) => string) | undefined>();
+
+export const useCustomTranslation = () => {
+  const context = useContext(CustomTranslationContext);
+  if (!context) {
+    throw new Error("useCustomTranslation must be used within a CustomTranslationProvider");
+  }
+  return context;
+};
 
 const TodoApp: Component = () => {
   const [todos, setTodos] = createSignal<Todo[]>([
@@ -44,18 +55,38 @@ const TodoApp: Component = () => {
   const [nextId, setNextId] = createSignal(4);
   const { theme } = useTheme();
   const { notify } = useNotifications();
-  const { t, locale, setTranslations } = useI18n();
+  const { locale, t, setLocale } = useI18n();
 
-  // Load translations reactively when locale changes
-  const [translationsResource] = createResource(locale, loadTranslations);
-
-  // Update translations when resource loads
-  createEffect(() => {
+  // Load custom translations for this app
+  const [translationsResource] = createResource(() => locale, loadTranslations);
+  
+  // Create a custom translation function that uses our app's translations
+  const customT = (key: string, params?: Record<string, string>) => {
     const translations = translationsResource();
-    if (translations) {
-      setTranslations(translations);
+    
+    if (!translations) {
+      return key;
     }
-  });
+    
+    // Simple nested key lookup
+    const keys = key.split('.');
+    let value: unknown = translations;
+    for (const k of keys) {
+      value = (value as Record<string, unknown>)?.[k];
+    }
+    
+    if (typeof value === 'string') {
+      // Simple parameter replacement
+      if (params) {
+        return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
+          return params[paramKey] || match;
+        });
+      }
+      return value;
+    }
+    
+    return key;
+  };
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
@@ -65,7 +96,7 @@ const TodoApp: Component = () => {
     };
     setTodos((prev) => [...prev, newTodo]);
     setNextId((prev) => prev + 1);
-    notify(t("todo.added", { text }), "success");
+    notify(customT("todo.added", { text }), "success");
   };
 
   const toggleTodo = (id: number) => {
@@ -80,7 +111,7 @@ const TodoApp: Component = () => {
     const todo = todos().find((t) => t.id === id);
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
     if (todo) {
-      notify(t("todo.deleted", { text: todo.text }), "info");
+      notify(customT("todo.deleted", { text: todo.text }), "info");
     }
   };
 
@@ -92,20 +123,18 @@ const TodoApp: Component = () => {
       <header class="app-header">
         <h1>
           <span class="reynard-logo">
-            {fluentIconsPackage.getIcon("yipyap") && (
-              <div
-                innerHTML={fluentIconsPackage.getIcon("yipyap")?.outerHTML}
-              />
-            )}
+            🦊
           </span>
-          {t("app.title")}
+          {customT("app.title")}
         </h1>
-        <p>{t("app.subtitle")}</p>
+        <p>{customT("app.subtitle")}</p>
         <div class="header-controls">
           <div class="theme-info">
-            {t("theme.current", { theme: t(`theme.${theme()}`) })}
+            {customT("theme.current", { theme: customT(`theme.${theme}`) })}
           </div>
-          <ThemeToggle />
+          <CustomTranslationContext.Provider value={customT}>
+            <ThemeToggle />
+          </CustomTranslationContext.Provider>
           <LanguageSelector />
         </div>
       </header>
@@ -114,11 +143,13 @@ const TodoApp: Component = () => {
         <div class="todo-container">
           <div class="todo-stats">
             <span class="stat">
-              {completedCount()} / {totalCount()} {t("todo.completed")}
+              {completedCount()} / {totalCount()} {customT("todo.completed")}
             </span>
           </div>
 
-          <AddTodo onAdd={addTodo} />
+          <CustomTranslationContext.Provider value={customT}>
+            <AddTodo onAdd={addTodo} />
+          </CustomTranslationContext.Provider>
 
           <div class="todo-list">
             <For each={todos()}>
@@ -132,7 +163,7 @@ const TodoApp: Component = () => {
             </For>
             {todos().length === 0 && (
               <div class="empty-state">
-                <p>{t("todo.empty")}</p>
+                <p>{customT("todo.empty")}</p>
               </div>
             )}
           </div>
@@ -140,25 +171,23 @@ const TodoApp: Component = () => {
       </main>
 
       <footer class="app-footer">
-        <p>{t("footer.text")}</p>
+        <p>{customT("footer.text")}</p>
       </footer>
     </div>
   );
 };
 
 const App: Component = () => {
-  const themeModule = createThemeModule();
   const notificationsModule = createNotificationsModule();
-  const i18nModule = createI18nModule();
 
   return (
-    <ThemeProvider value={themeModule}>
-      <I18nProvider value={i18nModule}>
-        <NotificationsProvider value={notificationsModule}>
-          <TodoApp />
-        </NotificationsProvider>
-      </I18nProvider>
-    </ThemeProvider>
+    <ReynardProvider 
+      defaultLocale="en"
+    >
+      <NotificationsProvider value={notificationsModule}>
+        <TodoApp />
+      </NotificationsProvider>
+    </ReynardProvider>
   );
 };
 

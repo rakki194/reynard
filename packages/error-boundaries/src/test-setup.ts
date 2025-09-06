@@ -6,8 +6,6 @@
 import { vi } from 'vitest';
 
 // Mock global error handlers
-const originalAddEventListener = window.addEventListener;
-const originalRemoveEventListener = window.removeEventListener;
 
 // Mock fetch for error reporting tests
 global.fetch = vi.fn();

@@ -30,7 +30,7 @@ A comprehensive, production-ready chat messaging system for SolidJS applications
 ## 📦 Installation
 
 ```bash
-npm install @reynard/components solid-js
+npm install reynard-components solid-js
 ```
 
 ## 🎯 Quick Start
@@ -38,8 +38,8 @@ npm install @reynard/components solid-js
 ### Basic Chat Implementation
 
 ```tsx
-import { ChatContainer } from "@reynard/components";
-import "@reynard/components/styles";
+import { ChatContainer } from "reynard-components";
+import "reynard-components/styles";
 
 function App() {
   return (
@@ -66,7 +66,7 @@ import {
   ChatMessage,
   MessageInput,
   useChat,
-} from "@reynard/components";
+} from "reynard-components";
 
 function CustomChatApp() {
   const chat = useChat({
@@ -429,7 +429,7 @@ npm test ChatMessage
 
 ```tsx
 import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { ChatContainer } from "@reynard/components";
+import { ChatContainer } from "reynard-components";
 
 test("sends message correctly", async () => {
   const onMessageSent = vi.fn();
@@ -459,7 +459,7 @@ test("sends message correctly", async () => {
 
 ```tsx
 // Use batched parsing for large content
-import { parseMarkdownBatched } from "@reynard/components";
+import { parseMarkdownBatched } from "reynard-components";
 
 const result = parseMarkdownBatched(largeContent, 1024); // 1KB chunks
 ```
@@ -480,7 +480,7 @@ const chat = useChat({
 ```tsx
 // Lazy load chat components
 const ChatContainer = lazy(() =>
-  import("@reynard/components").then((m) => ({
+  import("reynard-components").then((m) => ({
     default: m.ChatContainer,
   })),
 );
@@ -525,7 +525,7 @@ const CustomMessageRenderer = (props: { message: CustomMessage }) => {
 ### Custom Streaming Parser
 
 ```tsx
-import { StreamingMarkdownParser } from "@reynard/components";
+import { StreamingMarkdownParser } from "reynard-components";
 
 class CustomParser extends StreamingMarkdownParser {
   protected processCustomBlock(line: string): boolean {

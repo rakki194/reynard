@@ -15,9 +15,9 @@ A comprehensive authentication demonstration app built with the Reynard framewor
 
 ### Frontend (SolidJS + Reynard)
 
-- **@reynard/auth**: Authentication components and hooks
-- **@reynard/core**: Theme and notification system
-- **@reynard/components**: UI components
+- **reynard-auth**: Authentication components and hooks
+- **reynard-core**: Theme and notification system
+- **reynard-components**: UI components
 - **Vite**: Fast development server with hot reload
 
 ### Backend (FastAPI + Gatekeeper)

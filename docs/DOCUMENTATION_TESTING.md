@@ -72,7 +72,7 @@ const validation = validateDocExamples('README.md');
 // Runs as actual tests
 runDocTests({
   docPath: 'README.md',
-  packageName: '@reynard/core'
+  packageName: 'reynard-core'
 });
 ```
 
@@ -112,7 +112,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@reynard/core': new URL('./src', import.meta.url).pathname,
+      'reynard-core': new URL('./src', import.meta.url).pathname,
     },
   },
 });
@@ -155,7 +155,7 @@ function ThemeDemo() {
 
 ```typescript
 // Utility function example
-import { validateEmail } from '@reynard/core';
+import { validateEmail } from 'reynard-core';
 
 const email = "user@example.com";
 const isValid = validateEmail(email);
@@ -181,14 +181,14 @@ const result = someFunction(/* ... */);
 
 ```typescript
 // packages/auth/src/doc-tests.test.ts
-import { runDocTests } from '@reynard/testing/doc-tests';
+import { runDocTests } from 'reynard-testing/doc-tests';
 
 runDocTests({
   docPath: 'packages/auth/README.md',
-  packageName: '@reynard/auth',
+  packageName: 'reynard-auth',
   setup: `
-    import { AuthProvider, useAuth } from '@reynard/auth';
-    import { mockFetch } from '@reynard/testing/mocks';
+    import { AuthProvider, useAuth } from 'reynard-auth';
+    import { mockFetch } from 'reynard-testing/mocks';
     
     // Mock authentication responses
     mockFetch('/api/auth/login', { token: 'mock-token' });

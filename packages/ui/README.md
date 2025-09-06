@@ -1,4 +1,4 @@
-# @reynard/ui
+# reynard-ui
 
 Advanced layout and navigation components for building sophisticated SolidJS applications.
 
@@ -16,14 +16,14 @@ Advanced layout and navigation components for building sophisticated SolidJS app
 ## 📦 Installation
 
 ```bash
-npm install @reynard/ui @reynard/core @reynard/components solid-js
+npm install reynard-ui reynard-core reynard-components solid-js
 ```
 
 ## 🎯 Quick Start
 
 ```tsx
-import { AppLayout, Grid, GridItem, DataTable } from "@reynard/ui";
-import "@reynard/ui/styles";
+import { AppLayout, Grid, GridItem, DataTable } from "reynard-ui";
+import "reynard-ui/styles";
 
 function App() {
   return (
@@ -304,7 +304,7 @@ Components use CSS custom properties for theming:
 }
 ```
 
-All components automatically adapt to your theme and work seamlessly with `@reynard/core`'s theming system.
+All components automatically adapt to your theme and work seamlessly with `reynard-core`'s theming system.
 
 ## ♿ Accessibility
 
@@ -318,7 +318,7 @@ All components automatically adapt to your theme and work seamlessly with `@reyn
 
 - **Core package**: ~35 kB (8.4 kB gzipped)
 - **Tree-shakable**: Import only the components you need
-- **Dependency-aware**: Efficiently reuses @reynard/core utilities
+- **Dependency-aware**: Efficiently reuses reynard-core utilities
 
 ## 🔧 Advanced Usage
 

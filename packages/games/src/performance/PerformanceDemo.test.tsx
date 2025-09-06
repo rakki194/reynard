@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { renderWithTestProviders } from '@reynard/testing/utils';
+import { renderWithTestProviders } from 'reynard-testing/utils';
 import { PerformanceDemo } from './PerformanceDemo';
 
 describe('PerformanceDemo', () => {

@@ -1,7 +1,7 @@
 import { createSignal, For } from "solid-js";
-import { Button, Card, TextField, Select, Modal } from "@reynard/components";
-import { useTheme } from "@reynard/core";
-import { getIcon } from "@reynard/fluent-icons";
+import { Button, Card, TextField, Select, Modal } from "reynard-components";
+import { useTheme } from "reynard-core";
+import { getIcon } from "reynard-fluent-icons";
 
 export function ComponentsDemo() {
   const { theme } = useTheme();

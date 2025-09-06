@@ -1,4 +1,4 @@
-import { SettingsSchema } from "@reynard/settings";
+import { SettingsSchema } from "reynard-settings";
 
 export const appSettingsSchema: SettingsSchema = {
   version: "1.0.0",

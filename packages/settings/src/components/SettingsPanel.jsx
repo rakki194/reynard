@@ -3,7 +3,7 @@
  * Complete settings interface with categories, search, and controls
  */
 import { createSignal, createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Modal, Tabs } from "@reynard/components";
+import { Button, TextField, Modal, Tabs } from "reynard-components";
 import { COMMON_SETTING_CATEGORIES } from "../types";
 import { useSettings } from "../composables/useSettings";
 import { SettingControl } from "./SettingControl";

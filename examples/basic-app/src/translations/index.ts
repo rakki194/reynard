@@ -2,7 +2,7 @@
  * Translation loader for Basic Todo App
  */
 
-import type { Translations } from "@reynard/core";
+import type { Translations } from "reynard-core";
 import { en } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";

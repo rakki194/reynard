@@ -10,7 +10,7 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import type { LoginCredentials } from "../types";
 import { validateEmail } from "../utils";
 

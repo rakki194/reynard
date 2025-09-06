@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
-import { useI18n, useNotifications } from "@reynard/core";
-import { useAuth } from "@reynard/auth";
-import { Button } from "@reynard/components";
+import { useI18n, useNotifications } from "reynard-core";
+import { useAuth } from "reynard-auth";
+import { Button } from "reynard-components";
 import ThemeSelector from "./ThemeSelector";
 import LanguageSelector from "./LanguageSelector";
 import NotificationCenter from "./NotificationCenter";

@@ -111,7 +111,7 @@ example-app/
 │   ├── App.tsx             # Main application
 │   ├── index.tsx           # Entry point
 │   └── styles.css          # Theme-aware styles
-├── package.json            # Dependencies (uses @reynard/core)
+├── package.json            # Dependencies (uses reynard-core)
 ├── vite.config.ts          # Build configuration
 ├── tsconfig.json           # TypeScript setup
 └── README.md               # Example documentation

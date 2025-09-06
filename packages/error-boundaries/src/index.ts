@@ -1,5 +1,5 @@
 /**
- * @reynard/error-boundaries
+ * reynard-error-boundaries
  * Comprehensive error boundary system for Reynard framework
  */
 

@@ -9,7 +9,7 @@ import {
   P2PChatContainer,
   ChatContainer,
   useP2PChat,
-} from "@reynard/components";
+} from "reynard-components";
 // Example: Basic P2P Chat
 export const BasicP2PChat = () => {
   const currentUser = {

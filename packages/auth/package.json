@@ -40,8 +40,8 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "@reynard/core": "file:../core",
-    "@reynard/components": "file:../components",
+    "reynard-core": "file:../core",
+    "reynard-components": "file:../components",
     "jwt-decode": "4.0.0",
     "@zxcvbn-ts/core": "3.0.4",
     "@zxcvbn-ts/language-common": "3.0.4",

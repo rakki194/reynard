@@ -39,8 +39,8 @@ reynard-test-app/
 
 ```json
 {
-  "@reynard/core": "file:../reynard/packages/core",
-  "@reynard/components": "file:../reynard/packages/components", 
+  "reynard-core": "file:../reynard/packages/core",
+  "reynard-components": "file:../reynard/packages/components", 
   "solid-js": "1.9.9"
 }
 ```
@@ -58,8 +58,8 @@ reynard-test-app/
 
 ### Dependency Analysis
 
-- **@reynard/core**: Provides theme management, composables, and core utilities
-- **@reynard/components**: UI component library with Button, Card, and other primitives
+- **reynard-core**: Provides theme management, composables, and core utilities
+- **reynard-components**: UI component library with Button, Card, and other primitives
 - **solid-js**: The reactive framework powering the application
 - **vite-plugin-solid**: SolidJS integration for Vite build system
 
@@ -129,22 +129,22 @@ Each theme overrides these variables using the `data-theme` attribute selector:
 
 #### Button Component
 
-- **Source**: `@reynard/components`
+- **Source**: `reynard-components`
 - **Variants**: Multiple button styles and states
 - **Accessibility**: Full keyboard navigation and screen reader support
 
 #### Card Component  
 
-- **Source**: `@reynard/components`
+- **Source**: `reynard-components`
 - **Features**: Flexible container with consistent styling
 - **Theming**: Fully integrated with theme system
 
 ### Component Integration
 
 ```tsx
-import { ThemeProvider, createTheme } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
-import { useTheme } from "@reynard/core";
+import { ThemeProvider, createTheme } from "reynard-core";
+import { Button, Card } from "reynard-components";
+import { useTheme } from "reynard-core";
 
 function App() {
   const themeModule = createTheme();
@@ -222,7 +222,7 @@ cd reynard-test-app
 npm install
 
 # Verify Reynard packages are linked correctly
-npm ls @reynard/core @reynard/components
+npm ls reynard-core reynard-components
 ```
 
 ### Development Server

@@ -8,7 +8,7 @@
 import { Component, Show, For, createMemo, createSignal } from "solid-js";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import type { P2PMessageProps } from "../types/p2p";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const P2PMessage: Component<P2PMessageProps> = (props) => {
   const [showReactions, setShowReactions] = createSignal(false);

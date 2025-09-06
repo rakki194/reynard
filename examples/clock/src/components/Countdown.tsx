@@ -4,8 +4,8 @@
  */
 
 import { Component, createSignal, onMount, onCleanup, Show } from "solid-js";
-import { useNotifications } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
+import { useNotifications } from "reynard-core";
+import { Button, Card } from "reynard-components";
 
 interface CountdownTime {
   days: number;

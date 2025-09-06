@@ -3,7 +3,7 @@
  * Complete registration form with validation and password strength checking
  */
 import { createSignal, createMemo, Show, splitProps } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import { validateEmail, validateUsername } from "../utils";
 const defaultProps = {

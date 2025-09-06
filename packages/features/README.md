@@ -1,4 +1,4 @@
-# @reynard/features
+# reynard-features
 
 Advanced feature system for managing application features, dependencies, and capabilities. This package provides a comprehensive framework for feature registration, dependency resolution, and runtime feature management.
 
@@ -15,7 +15,7 @@ Advanced feature system for managing application features, dependencies, and cap
 ## Installation
 
 ```bash
-npm install @reynard/features
+npm install reynard-features
 ```
 
 ## Usage
@@ -23,8 +23,8 @@ npm install @reynard/features
 ### Basic Setup
 
 ```typescript
-import { FeatureProvider, useFeatures } from '@reynard/features';
-import { COMMON_FEATURES } from '@reynard/features/presets';
+import { FeatureProvider, useFeatures } from 'reynard-features';
+import { COMMON_FEATURES } from 'reynard-features/presets';
 
 function App() {
   return (
@@ -46,7 +46,7 @@ function App() {
 ### Using Features in Components
 
 ```typescript
-import { useFeatureAvailable, useFeatureStatus } from '@reynard/features';
+import { useFeatureAvailable, useFeatureStatus } from 'reynard-features';
 
 function MyComponent() {
   const isImageProcessingAvailable = useFeatureAvailable('image-processing');
@@ -71,7 +71,7 @@ function MyComponent() {
 ### Feature-Aware Components
 
 ```typescript
-import { useFeatureAware } from '@reynard/features';
+import { useFeatureAware } from 'reynard-features';
 
 function FeatureAwareComponent() {
   const { isAvailable, isDegraded, shouldRender, fallback } = useFeatureAware(
@@ -94,7 +94,7 @@ function FeatureAwareComponent() {
 ### Feature Configuration
 
 ```typescript
-import { useFeatureConfiguration } from '@reynard/features';
+import { useFeatureConfiguration } from 'reynard-features';
 
 function FeatureSettings() {
   const { config, updateConfig, setConfigValue } = useFeatureConfiguration('image-processing');
@@ -121,7 +121,7 @@ function FeatureSettings() {
 ### Custom Feature Definitions
 
 ```typescript
-import { FeatureProvider } from '@reynard/features';
+import { FeatureProvider } from 'reynard-features';
 
 const customFeatures = [
   {
@@ -157,7 +157,7 @@ function App() {
 ### Dependency Resolution
 
 ```typescript
-import { DependencyResolver } from '@reynard/features';
+import { DependencyResolver } from 'reynard-features';
 
 const resolver = new DependencyResolver();
 
@@ -183,7 +183,7 @@ import {
   FEATURE_PRIORITIES,
   useFeaturesByCategory,
   useFeaturesByPriority 
-} from '@reynard/features';
+} from 'reynard-features';
 
 function FeatureDashboard() {
   const coreFeatures = useFeaturesByCategory('core');

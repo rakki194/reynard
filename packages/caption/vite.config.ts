@@ -12,13 +12,13 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['solid-js', '@reynard/core', '@reynard/components', '@reynard/fluent-icons'],
+      external: ['solid-js', 'reynard-core', 'reynard-components', 'reynard-fluent-icons'],
       output: {
         globals: {
           'solid-js': 'SolidJS',
-          '@reynard/core': 'ReynardCore',
-          '@reynard/components': 'ReynardComponents',
-          '@reynard/fluent-icons': 'ReynardFluentIcons'
+          'reynard-core': 'ReynardCore',
+          'reynard-components': 'ReynardComponents',
+          'reynard-fluent-icons': 'ReynardFluentIcons'
         }
       }
     }

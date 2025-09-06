@@ -1,12 +1,12 @@
 import { createSignal, createMemo, For } from "solid-js";
-import { Gallery as GalleryComponent } from "@reynard/gallery";
-import { Card, Button } from "@reynard/components";
-import { useI18n } from "@reynard/core";
+import { Gallery as GalleryComponent } from "reynard-gallery";
+import { Card, Button } from "reynard-components";
+import { useI18n } from "reynard-core";
 import type {
   GalleryData,
   GalleryCallbacks,
   ContextMenuAction,
-} from "@reynard/gallery";
+} from "reynard-gallery";
 import "./Gallery.css";
 
 export function Gallery() {

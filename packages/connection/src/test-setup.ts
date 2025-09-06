@@ -1,5 +1,5 @@
 /**
- * Test setup for @reynard/connection
+ * Test setup for reynard-connection
  */
 
 import '@testing-library/jest-dom';

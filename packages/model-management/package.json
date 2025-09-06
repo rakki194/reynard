@@ -46,8 +46,8 @@
         "lifecycle"
     ],
     "dependencies": {
-        "@reynard/core": "file:../core",
-        "@reynard/service-manager": "file:../service-manager"
+        "reynard-core": "file:../core",
+        "reynard-service-manager": "file:../service-manager"
     },
     "devDependencies": {
         "@types/node": "24.3.1",

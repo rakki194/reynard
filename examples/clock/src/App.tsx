@@ -14,7 +14,7 @@ import {
   createTheme,
   createNotifications,
   useTheme,
-} from "@reynard/core";
+} from "reynard-core";
 import { Clock } from "./components/Clock";
 import { Timer } from "./components/Timer";
 import { Alarm } from "./components/Alarm";

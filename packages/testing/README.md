@@ -1,4 +1,4 @@
-# @reynard/testing
+# reynard-testing
 
 Unified testing framework for Reynard packages with comprehensive utilities, mocks, and configurations.
 
@@ -13,7 +13,7 @@ Unified testing framework for Reynard packages with comprehensive utilities, moc
 ## Installation
 
 ```bash
-npm install @reynard/testing --save-dev
+npm install reynard-testing --save-dev
 ```
 
 ## Quick Start
@@ -22,7 +22,7 @@ npm install @reynard/testing --save-dev
 
 ```typescript
 // vitest.config.ts
-import { createComponentTestConfig } from '@reynard/testing/config';
+import { createComponentTestConfig } from 'reynard-testing/config';
 
 export default createComponentTestConfig('my-package');
 ```
@@ -31,7 +31,7 @@ export default createComponentTestConfig('my-package');
 
 ```typescript
 // my-component.test.tsx
-import { renderWithProviders, expectComponentToRender } from '@reynard/testing';
+import { renderWithProviders, expectComponentToRender } from 'reynard-testing';
 
 test('renders without errors', () => {
   const MyComponent = () => <div>Hello World</div>;
@@ -43,7 +43,7 @@ test('renders without errors', () => {
 
 ```typescript
 // my-test.ts
-import { mockFetch, mockLocalStorage } from '@reynard/testing/mocks';
+import { mockFetch, mockLocalStorage } from 'reynard-testing/mocks';
 
 test('uses fetch', async () => {
   mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ data: 'test' }) });
@@ -58,7 +58,7 @@ test('uses fetch', async () => {
 ### Base Configuration
 
 ```typescript
-import { createBaseVitestConfig } from '@reynard/testing/config';
+import { createBaseVitestConfig } from 'reynard-testing/config';
 
 export default createBaseVitestConfig({
   packageName: 'my-package',
@@ -75,7 +75,7 @@ export default createBaseVitestConfig({
 ### Component Testing
 
 ```typescript
-import { createComponentTestConfig } from '@reynard/testing/config';
+import { createComponentTestConfig } from 'reynard-testing/config';
 
 export default createComponentTestConfig('my-component-package');
 ```
@@ -83,7 +83,7 @@ export default createComponentTestConfig('my-component-package');
 ### Integration Testing
 
 ```typescript
-import { createIntegrationTestConfig } from '@reynard/testing/config';
+import { createIntegrationTestConfig } from 'reynard-testing/config';
 
 export default createIntegrationTestConfig('my-integration-package');
 ```
@@ -97,7 +97,7 @@ import {
   renderWithProviders, 
   renderWithTheme, 
   renderWithRouter 
-} from '@reynard/testing/utils';
+} from 'reynard-testing/utils';
 
 // Render with all providers
 renderWithProviders(() => <MyComponent />);
@@ -116,7 +116,7 @@ import {
   createMockFn, 
   createMockResponse, 
   createMockFile 
-} from '@reynard/testing/utils';
+} from 'reynard-testing/utils';
 
 // Create mock function
 const mockFn = createMockFn();
@@ -135,7 +135,7 @@ import {
   expectComponentToRender,
   expectPromiseToResolve,
   expectElementToHaveClass
-} from '@reynard/testing/utils';
+} from 'reynard-testing/utils';
 
 // Component assertions
 expectComponentToRender(MyComponent);
@@ -156,7 +156,7 @@ import {
   mockFetch, 
   mockLocalStorage, 
   mockWebSocket 
-} from '@reynard/testing/mocks';
+} from 'reynard-testing/mocks';
 
 // Mock fetch
 mockFetch.mockResolvedValueOnce({ ok: true });
@@ -171,7 +171,7 @@ const ws = new mockWebSocket();
 ### External Libraries
 
 ```typescript
-import { mockFabric, mockD3 } from '@reynard/testing/mocks';
+import { mockFabric, mockD3 } from 'reynard-testing/mocks';
 
 // Mock Fabric.js
 const canvas = new mockFabric.Canvas();
@@ -193,7 +193,7 @@ const selection = mockD3.select('body');
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "@reynard/testing": "workspace:*",
+    "reynard-testing": "workspace:*",
     "vitest": "^3.0.0"
   }
 }
@@ -209,7 +209,7 @@ const selection = mockD3.select('body');
     "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@reynard/testing": "workspace:*",
+    "reynard-testing": "workspace:*",
     "vitest": "^3.0.0"
   }
 }
@@ -243,7 +243,7 @@ render(() => (
 
 ```typescript
 // Good: Use provided mocks
-import { mockFetch } from '@reynard/testing/mocks';
+import { mockFetch } from 'reynard-testing/mocks';
 
 // Avoid: Manual fetch mocking
 global.fetch = vi.fn();
@@ -270,8 +270,8 @@ test('works', () => {
 #### 1. **Testing with Context Providers**
 
 ```typescript
-import { renderWithProviders } from '@reynard/testing';
-import { ThemeProvider, createTheme } from '@reynard/core';
+import { renderWithProviders } from 'reynard-testing';
+import { ThemeProvider, createTheme } from 'reynard-core';
 
 describe('ThemedComponent', () => {
   test('renders with light theme', () => {
@@ -313,7 +313,7 @@ describe('ThemedComponent', () => {
 
 ```typescript
 import { waitFor } from '@solidjs/testing-library';
-import { mockFetch } from '@reynard/testing/mocks';
+import { mockFetch } from 'reynard-testing/mocks';
 
 describe('AsyncComponent', () => {
   test('loads data and displays it', async () => {
@@ -398,7 +398,7 @@ describe('ContactForm', () => {
 #### 1. **Testing Pure Functions**
 
 ```typescript
-import { formatDate, validateEmail, sanitizeInput } from '@reynard/core';
+import { formatDate, validateEmail, sanitizeInput } from 'reynard-core';
 
 describe('formatDate', () => {
   test('formats date correctly', () => {
@@ -430,7 +430,7 @@ describe('validateEmail', () => {
 #### 2. **Testing Async Utilities**
 
 ```typescript
-import { retryWithBackoff, batchExecute } from '@reynard/core';
+import { retryWithBackoff, batchExecute } from 'reynard-core';
 
 describe('retryWithBackoff', () => {
   test('retries failed operations', async () => {
@@ -678,7 +678,7 @@ import {
   mockLocalStorage, 
   mockWebSocket,
   mockIntersectionObserver 
-} from '@reynard/testing/mocks';
+} from 'reynard-testing/mocks';
 
 describe('Component with External Dependencies', () => {
   beforeEach(() => {
@@ -714,7 +714,7 @@ describe('Component with External Dependencies', () => {
 #### 2. **Custom Mock Factories**
 
 ```typescript
-import { createMockUser, createMockPost } from '@reynard/testing/fixtures';
+import { createMockUser, createMockPost } from 'reynard-testing/fixtures';
 
 describe('User Components', () => {
   test('renders user profile', () => {

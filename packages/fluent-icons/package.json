@@ -1,15 +1,16 @@
 {
   "name": "reynard-fluent-icons",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fluent UI icons for Reynard design system",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -17,13 +18,12 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "npm run clean && vite build && npm run build:declarations",
-    "build:declarations": "node scripts/build-declarations.js",
-    "generate-types": "node scripts/generate-types.js",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "test:docs": "vitest run --config vitest.docs.config.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },

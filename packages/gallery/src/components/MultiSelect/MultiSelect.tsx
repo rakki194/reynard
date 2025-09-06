@@ -12,7 +12,7 @@ import {
   For,
   Show,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import "./MultiSelect.css";
 
 export interface SelectableItem {

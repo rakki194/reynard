@@ -14,8 +14,8 @@ export default defineConfig({
       external: [
         "solid-js",
         "solid-js/web",
-        "@reynard/core",
-        "@reynard/components",
+        "reynard-core",
+        "reynard-components",
         "@solid-primitives/intersection-observer",
         "@solid-primitives/resize-observer",
         "@solid-primitives/event-listener",
@@ -24,8 +24,8 @@ export default defineConfig({
         globals: {
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
-          "@reynard/core": "ReynardCore",
-          "@reynard/components": "ReynardComponents",
+          "reynard-core": "ReynardCore",
+          "reynard-components": "ReynardComponents",
           "@solid-primitives/intersection-observer":
             "SolidPrimitivesIntersectionObserver",
           "@solid-primitives/resize-observer": "SolidPrimitivesResizeObserver",

@@ -46,7 +46,7 @@
     "monitoring"
   ],
   "dependencies": {
-    "@reynard/core": "file:../core"
+    "reynard-core": "file:../core"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

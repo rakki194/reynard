@@ -1,5 +1,5 @@
 /**
- * Test setup for @reynard/boundingbox
+ * Test setup for reynard-boundingbox
  * 
  * Configures the testing environment for the bounding box package.
  */

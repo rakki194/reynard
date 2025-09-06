@@ -1,5 +1,5 @@
 import { createSignal, For, Show } from 'solid-js';
-import { Card, Button, Tabs, TabPanel } from '@reynard/components';
+import { Card, Button, Tabs, TabPanel } from 'reynard-components';
 import { CodeBlock } from './CodeBlock';
 import './ReynardAdventure.css';
 
@@ -55,10 +55,10 @@ Reynard is a comprehensive SolidJS framework designed for building modern, perfo
         title: 'Quick Installation',
         language: 'bash',
         content: `# Install core package
-npm install @reynard/core solid-js
+npm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install @reynard/components @reynard/auth @reynard/charts`
+npm install reynard-components reynard-auth reynard-charts`
       }
     ]
   },
@@ -78,24 +78,24 @@ Reynard follows a modular architecture where each package has a specific respons
 
 ## Package Structure
 
-- **@reynard/core**: Core utilities, composables, and modules
-- **@reynard/components**: UI component library
-- **@reynard/auth**: Authentication and user management
-- **@reynard/charts**: Data visualization components
-- **@reynard/gallery**: File and media management
-- **@reynard/settings**: Configuration management
-- **@reynard/file-processing**: Advanced file processing pipeline
-- **@reynard/color-media**: Color and media utilities
-- **@reynard/ui**: Additional UI components
-- **@reynard/themes**: Theme system and built-in themes`
+- **reynard-core**: Core utilities, composables, and modules
+- **reynard-components**: UI component library
+- **reynard-auth**: Authentication and user management
+- **reynard-charts**: Data visualization components
+- **reynard-gallery**: File and media management
+- **reynard-settings**: Configuration management
+- **reynard-file-processing**: Advanced file processing pipeline
+- **reynard-color-media**: Color and media utilities
+- **reynard-ui**: Additional UI components
+- **reynard-themes**: Theme system and built-in themes`
       },
       {
         type: 'code',
         title: 'Basic App Structure',
         language: 'tsx',
         content: `import { createSignal } from "solid-js";
-import { useTheme, useNotifications } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
+import { useTheme, useNotifications } from "reynard-core";
+import { Button, Card } from "reynard-components";
 
 function App() {
   const { theme, setTheme } = useTheme();

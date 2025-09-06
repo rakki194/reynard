@@ -38,8 +38,8 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "@reynard/core": "file:../core",
-    "@reynard/components": "file:../components",
+    "reynard-core": "file:../core",
+    "reynard-components": "file:../components",
     "@solid-primitives/intersection-observer": "2.2.2",
     "@solid-primitives/resize-observer": "2.1.3",
     "@solid-primitives/event-listener": "2.4.3"

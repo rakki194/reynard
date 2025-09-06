@@ -6,18 +6,18 @@
  * This script manages documentation tests across all packages
  */
 
-const { execSync } = require('child_process');
-const { readFileSync, writeFileSync, existsSync } = require('fs');
-const { join } = require('path');
+import { execSync } from 'child_process';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const PACKAGES = [
-  { name: '@reynard/core', path: 'packages/core' },
-  { name: '@reynard/components', path: 'packages/components' },
-  { name: '@reynard/auth', path: 'packages/auth' },
-  { name: '@reynard/chat', path: 'packages/chat' },
-  { name: '@reynard/testing', path: 'packages/testing' },
-  { name: '@reynard/algorithms', path: 'packages/algorithms' },
-  { name: '@reynard/file-processing', path: 'packages/file-processing' }
+  { name: 'reynard-core', path: 'packages/core' },
+  { name: 'reynard-components', path: 'packages/components' },
+  { name: 'reynard-auth', path: 'packages/auth' },
+  { name: 'reynard-chat', path: 'packages/chat' },
+  { name: 'reynard-testing', path: 'packages/testing' },
+  { name: 'reynard-algorithms', path: 'packages/algorithms' },
+  { name: 'reynard-file-processing', path: 'packages/file-processing' }
 ];
 
 function runCommand(command, cwd = process.cwd()) {

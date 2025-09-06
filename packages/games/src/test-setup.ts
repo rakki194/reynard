@@ -1,5 +1,5 @@
 /**
- * Test setup for @reynard/games package
+ * Test setup for reynard-games package
  */
 
 import '@testing-library/jest-dom';

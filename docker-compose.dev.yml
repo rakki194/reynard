@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  # Reynard Backend API
+  reynard-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: reynard-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - JWT_SECRET_KEY=your-secret-key-change-in-production
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - REFRESH_TOKEN_EXPIRE_DAYS=7
+      - ENVIRONMENT=development
+      - DEBUG=true
+    volumes:
+      - ./backend:/app
+      - /app/venv  # Exclude venv from volume mount
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Reynard Frontend (Vite dev server)
+  reynard-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: reynard-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/packages/*/node_modules
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    networks:
+      - reynard-network
+    depends_on:
+      - reynard-backend
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: reynard-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - ./nginx/reynard.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - certbot-webroot:/var/www/certbot
+      - certbot-certs:/etc/letsencrypt
+    networks:
+      - reynard-network
+    depends_on:
+      - reynard-backend
+      - reynard-frontend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Certbot for SSL certificates
+  certbot:
+    image: certbot/certbot
+    container_name: reynard-certbot
+    volumes:
+      - certbot-webroot:/var/www/certbot
+      - certbot-certs:/etc/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/certbot --email admin@reynard.local --agree-tos --no-eff-email --staging -d reynard.local
+    networks:
+      - reynard-network
+    profiles:
+      - ssl
+
+  # Redis for session storage and caching
+  redis:
+    image: redis:7-alpine
+    container_name: reynard-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL for user data (optional, can use SQLite for development)
+  postgres:
+    image: postgres:15-alpine
+    container_name: reynard-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=reynard
+      - POSTGRES_USER=reynard
+      - POSTGRES_PASSWORD=reynard123
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reynard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - database
+
+volumes:
+  certbot-webroot:
+  certbot-certs:
+  redis-data:
+  postgres-data:
+
+networks:
+  reynard-network:
+    driver: bridge

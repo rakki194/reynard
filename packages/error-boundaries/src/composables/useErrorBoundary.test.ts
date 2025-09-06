@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@reynard/testing';
+import { renderHook, act } from "reynard-testing";
 import { useErrorBoundary } from './useErrorBoundary';
 import { ErrorCategory, ErrorSeverity } from '../types/ErrorTypes';
 import { RecoveryAction } from '../types/RecoveryTypes';

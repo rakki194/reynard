@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount } from "solid-js";
-import { Button } from "@reynard/components";
-import { UnionFind } from "@reynard/algorithms";
+import { Button } from "reynard-components";
+import { UnionFind } from "reynard-algorithms";
 import { GameState, GameStats, GameConfig } from "../types";
 import "./UnionFindGame.css";
 

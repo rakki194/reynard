@@ -1,4 +1,4 @@
-# @reynard/boundingbox
+# reynard-boundingbox
 
 > Reusable bounding box and annotation editing components for Reynard
 
@@ -21,14 +21,14 @@ A comprehensive set of tools for creating, editing, and managing bounding box an
 ### Installation
 
 ```bash
-npm install @reynard/boundingbox solid-js fabric
+npm install reynard-boundingbox solid-js fabric
 ```
 
 ### Basic Usage
 
 ```tsx
-import { BoundingBoxEditor } from '@reynard/boundingbox';
-import type { BoundingBox, ImageInfo } from '@reynard/boundingbox';
+import { BoundingBoxEditor } from 'reynard-boundingbox';
+import type { BoundingBox, ImageInfo } from 'reynard-boundingbox';
 
 function MyApp() {
   const imageInfo: ImageInfo = { 
@@ -146,7 +146,7 @@ interface EditorConfig {
 Manages a collection of bounding boxes with reactive state.
 
 ```tsx
-import { useBoundingBoxes } from '@reynard/boundingbox';
+import { useBoundingBoxes } from 'reynard-boundingbox';
 
 const {
   boxes,           // Signal<BoundingBox[]>
@@ -173,7 +173,7 @@ const {
 Provides resize functionality for bounding boxes.
 
 ```tsx
-import { useBoxResize } from '@reynard/boundingbox';
+import { useBoxResize } from 'reynard-boundingbox';
 
 const {
   resizeState,     // Signal<ResizeState>
@@ -199,7 +199,7 @@ const {
 Provides move functionality for bounding boxes.
 
 ```tsx
-import { useBoxMove } from '@reynard/boundingbox';
+import { useBoxMove } from 'reynard-boundingbox';
 
 const {
   moveState,       // Signal<MoveState | null>
@@ -229,7 +229,7 @@ import {
   displayToImageCoords,
   boundingBoxToDisplayCoords,
   boundingBoxToImageCoords 
-} from '@reynard/boundingbox';
+} from 'reynard-boundingbox';
 
 // Convert between coordinate systems
 const displayCoords = imageToDisplayCoords(
@@ -254,7 +254,7 @@ import {
   validateBoundingBox, 
   checkBoundingBoxConstraints,
   boundingBoxesOverlap 
-} from '@reynard/boundingbox';
+} from 'reynard-boundingbox';
 
 // Validate bounding box
 const validation = validateBoundingBox(box, imageInfo);
@@ -303,7 +303,7 @@ The package is organized into several layers for maximum reusability and extensi
 
 This architecture is designed to support future annotation types:
 
-### Polygon Segmentation (`@reynard/segmentation`)
+### Polygon Segmentation (`reynard-segmentation`)
 
 - Extend `BaseAnnotation` for polygon points
 - Reuse coordinate transformation utilities

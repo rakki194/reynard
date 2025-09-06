@@ -1,5 +1,5 @@
 /**
- * @reynard/algorithms
+ * reynard-algorithms
  * 
  * Algorithm primitives and data structures for Reynard applications.
  * A comprehensive collection of reusable algorithmic building blocks.

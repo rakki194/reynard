@@ -3,7 +3,7 @@
  * Drag and drop file upload area with progress tracking
  */
 import { Show, For, createSignal, onMount, onCleanup } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { formatFileSize } from "../utils";
 import "./FileUploadZone.css";
 export const FileUploadZone = (props) => {

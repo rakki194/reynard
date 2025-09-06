@@ -1,4 +1,4 @@
-# @reynard/color-media
+# reynard-color-media
 
 A comprehensive package for color generation, theme management, and media handling using OKLCH color space.
 
@@ -29,7 +29,7 @@ A comprehensive package for color generation, theme management, and media handli
 ## Installation
 
 ```bash
-npm install @reynard/color-media
+npm install reynard-color-media
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ npm install @reynard/color-media
 ### Color Generation
 
 ```typescript
-import { createTagColorGenerator, formatOKLCH } from "@reynard/color-media";
+import { createTagColorGenerator, formatOKLCH } from "reynard-color-media";
 
 // Create a color generator
 const colorGenerator = createTagColorGenerator();
@@ -47,14 +47,14 @@ const tagColor = colorGenerator.getTagColor("dark", "javascript", 1.0);
 const cssColor = formatOKLCH(tagColor); // "oklch(25% 0.1 240)"
 
 // Generate color palettes
-import { generateColorPalette } from "@reynard/color-media";
+import { generateColorPalette } from "reynard-color-media";
 const palette = generateColorPalette(5, 0, 0.3, 0.6);
 ```
 
 ### Theme Management
 
 ```typescript
-import { createThemeContext, getStoredTheme } from "@reynard/color-media";
+import { createThemeContext, getStoredTheme } from "reynard-color-media";
 
 // Create a theme context
 const themeContext = createThemeContext();
@@ -78,7 +78,7 @@ import {
   ModalityRegistry,
   isImageFile,
   isAudioFile,
-} from "@reynard/color-media";
+} from "reynard-color-media";
 
 // Check file types
 const file = new File([""], "image.jpg");
@@ -106,7 +106,7 @@ registry.registerModality(new CustomModality());
 ### File Utilities
 
 ```typescript
-import { formatFileSize, formatDuration } from "@reynard/color-media";
+import { formatFileSize, formatDuration } from "reynard-color-media";
 
 // Format file sizes
 console.log(formatFileSize(1024)); // "1 KB"

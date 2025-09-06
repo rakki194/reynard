@@ -30,7 +30,7 @@ A comprehensive, production-ready chat messaging system for SolidJS applications
 ## 📦 Installation
 
 ```bash
-npm install @reynard/components solid-js
+npm install reynard-components solid-js
 ```
 
 ## 🎯 Quick Start
@@ -38,8 +38,8 @@ npm install @reynard/components solid-js
 ### Basic Chat Implementation
 
 ```tsx
-import { ChatContainer } from "@reynard/components";
-import "@reynard/components/styles";
+import { ChatContainer } from "reynard-components";
+import "reynard-components/styles";
 
 function App() {
   return (
@@ -66,7 +66,7 @@ import {
   ChatMessage,
   MessageInput,
   useChat,
-} from "@reynard/components";
+} from "reynard-components";
 
 function CustomChatApp() {
   const { messages, sendMessage, isStreaming } = useChat({
@@ -104,7 +104,7 @@ function CustomChatApp() {
 ### Real-time Streaming Chat
 
 ```tsx
-import { ChatContainer, useStreamingChat } from "@reynard/components";
+import { ChatContainer, useStreamingChat } from "reynard-components";
 
 function StreamingChatApp() {
   const { 
@@ -176,7 +176,7 @@ function StreamingChatApp() {
 ### P2P Chat Implementation
 
 ```tsx
-import { P2PChatContainer, useP2PChat } from "@reynard/components";
+import { P2PChatContainer, useP2PChat } from "reynard-components";
 
 function P2PChatApp() {
   const { 
@@ -266,7 +266,7 @@ function P2PChatApp() {
 ### Tool Integration Example
 
 ```tsx
-import { ChatContainer, useChatWithTools } from "@reynard/components";
+import { ChatContainer, useChatWithTools } from "reynard-components";
 
 function ChatWithToolsApp() {
   const { 
@@ -513,7 +513,7 @@ function ChatWithToolsApp() {
 ### Advanced Configuration
 
 ```tsx
-import { ChatContainer } from "@reynard/components";
+import { ChatContainer } from "reynard-components";
 
 function AdvancedChatApp() {
   return (
@@ -637,6 +637,8 @@ function AdvancedChatApp() {
 The main orchestrator component that provides a complete chat experience.
 
 ```tsx
+import { ChatContainer } from "reynard-components";
+
 <ChatContainer
   endpoint="/api/chat"
   authHeaders={{ Authorization: "Bearer token" }}
@@ -943,7 +945,7 @@ npm test ChatMessage
 
 ```tsx
 import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { ChatContainer } from "@reynard/components";
+import { ChatContainer } from "reynard-components";
 
 test("sends message correctly", async () => {
   const onMessageSent = vi.fn();
@@ -973,7 +975,7 @@ test("sends message correctly", async () => {
 
 ```tsx
 // Use batched parsing for large content
-import { parseMarkdownBatched } from "@reynard/components";
+import { parseMarkdownBatched } from "reynard-components";
 
 const result = parseMarkdownBatched(largeContent, 1024); // 1KB chunks
 ```
@@ -994,7 +996,7 @@ const chat = useChat({
 ```tsx
 // Lazy load chat components
 const ChatContainer = lazy(() =>
-  import("@reynard/components").then((m) => ({
+  import("reynard-components").then((m) => ({
     default: m.ChatContainer,
   })),
 );
@@ -1039,7 +1041,7 @@ const CustomMessageRenderer = (props: { message: CustomMessage }) => {
 ### Custom Streaming Parser
 
 ```tsx
-import { StreamingMarkdownParser } from "@reynard/components";
+import { StreamingMarkdownParser } from "reynard-components";
 
 class CustomParser extends StreamingMarkdownParser {
   protected processCustomBlock(line: string): boolean {
@@ -1078,6 +1080,8 @@ The chat system is fully responsive and mobile-optimized:
 The markdown renderer automatically sanitizes HTML:
 
 ```tsx
+import { MarkdownRenderer } from "reynard-components";
+
 // Content is automatically escaped
 <MarkdownRenderer content="<script>alert('xss')</script>" />
 // Renders as: &lt;script&gt;alert('xss')&lt;/script&gt;

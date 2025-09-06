@@ -1,4 +1,4 @@
-# @reynard/gallery
+# reynard-gallery
 
 Advanced file and media management system for SolidJS applications with drag-and-drop, responsive grids, and comprehensive file handling.
 
@@ -18,14 +18,14 @@ Advanced file and media management system for SolidJS applications with drag-and
 ## 📦 Installation
 
 ```bash
-npm install @reynard/gallery @reynard/core @reynard/components solid-js
+npm install reynard-gallery reynard-core reynard-components solid-js
 ```
 
 ## 🎯 Quick Start
 
 ```tsx
-import { Gallery } from "@reynard/gallery";
-import type { GalleryData } from "@reynard/gallery";
+import { Gallery } from "reynard-gallery";
+import type { GalleryData } from "reynard-gallery";
 
 function FileManager() {
   const [galleryData, setGalleryData] = createSignal<GalleryData>({
@@ -551,7 +551,7 @@ The gallery includes comprehensive test utilities:
 
 ```tsx
 import { render, screen } from "@solidjs/testing-library";
-import { Gallery } from "@reynard/gallery";
+import { Gallery } from "reynard-gallery";
 
 test("displays files in grid layout", () => {
   const mockData = {

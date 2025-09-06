@@ -1,5 +1,5 @@
-import { Button, Card } from "@reynard/components";
-import { useTheme } from "@reynard/core";
+import { Button, Card } from "reynard-components";
+import { useTheme } from "reynard-core";
 
 export function ThemeDemo() {
   const { theme, setTheme, nextTheme } = useTheme();

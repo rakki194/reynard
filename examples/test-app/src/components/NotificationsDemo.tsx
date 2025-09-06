@@ -1,6 +1,6 @@
 import { createSignal, For } from "solid-js";
-import { Button, Card } from "@reynard/components";
-import { useNotifications } from "@reynard/core";
+import { Button, Card } from "reynard-components";
+import { useNotifications } from "reynard-core";
 
 export function NotificationsDemo() {
   console.log("NotificationsDemo: Component rendering");

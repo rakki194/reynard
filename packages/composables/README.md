@@ -1,4 +1,4 @@
-# @reynard/composables
+# reynard-composables
 
 Reusable SolidJS composables extracted and refined from the yipyap codebase. This package provides a collection of high-quality, modular composables for common application patterns.
 
@@ -14,7 +14,7 @@ Reusable SolidJS composables extracted and refined from the yipyap codebase. Thi
 ## Installation
 
 ```bash
-npm install @reynard/composables
+npm install reynard-composables
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install @reynard/composables
 ### Authentication
 
 ```typescript
-import { useAuthFetch, createAuthFetch } from '@reynard/composables';
+import { useAuthFetch, createAuthFetch } from 'reynard-composables';
 
 // With SolidJS context
 const authFetch = useAuthFetch({
@@ -44,7 +44,7 @@ const response = await authFetch('/api/protected-endpoint');
 ### Service Management
 
 ```typescript
-import { useServiceManager } from '@reynard/composables';
+import { useServiceManager } from 'reynard-composables';
 
 const serviceManager = useServiceManager({
   authFetch: myAuthFetch,
@@ -65,7 +65,7 @@ await serviceManager.refreshStatus();
 ### Drag and Drop
 
 ```typescript
-import { useDragAndDrop } from '@reynard/composables';
+import { useDragAndDrop } from 'reynard-composables';
 
 const { isMoving } = useDragAndDrop({
   onDragStateChange: (isDragging) => {
@@ -91,7 +91,7 @@ const { isMoving } = useDragAndDrop({
 ### Performance Monitoring
 
 ```typescript
-import { usePerformanceMonitor } from '@reynard/composables';
+import { usePerformanceMonitor } from 'reynard-composables';
 
 const monitor = usePerformanceMonitor({
   thresholds: {
@@ -116,7 +116,7 @@ monitor.logPerformanceReport();
 ### RAG (Retrieval-Augmented Generation)
 
 ```typescript
-import { useRAG, createRAGClient } from '@reynard/composables';
+import { useRAG, createRAGClient } from 'reynard-composables';
 
 // With SolidJS reactivity
 const rag = useRAG({
@@ -143,7 +143,7 @@ await rag.ingestDocuments([
 ### File Upload
 
 ```typescript
-import { useFileUpload } from '@reynard/composables';
+import { useFileUpload } from 'reynard-composables';
 
 const {
   uploadFiles,
@@ -172,7 +172,7 @@ const progress = uploadProgress();
 ### Storage
 
 ```typescript
-import { useLocalStorage, useSessionStorage } from '@reynard/composables';
+import { useLocalStorage, useSessionStorage } from 'reynard-composables';
 
 // Local storage with cross-tab sync
 const [user, setUser, removeUser] = useLocalStorage('user', {

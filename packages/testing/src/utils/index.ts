@@ -1,5 +1,5 @@
 /**
- * Test utilities exports for @reynard/testing
+ * Test utilities exports for reynard-testing
  */
 
 export * from './test-utils';

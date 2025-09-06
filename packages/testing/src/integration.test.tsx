@@ -116,7 +116,7 @@ import {
   createMockSolidResource,
 } from './index';
 
-describe('@reynard/testing Integration Tests', () => {
+describe('reynard-testing Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     setupBrowserMocks();

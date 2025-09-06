@@ -10,12 +10,12 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["solid-js", "@reynard/core", "@reynard/utils"],
+      external: ["solid-js", "reynard-core", "reynard-utils"],
       output: {
         globals: {
           "solid-js": "SolidJS",
-          "@reynard/core": "ReynardCore",
-          "@reynard/utils": "ReynardUtils",
+          "reynard-core": "ReynardCore",
+          "reynard-utils": "ReynardUtils",
         },
       },
     },

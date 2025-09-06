@@ -1,4 +1,4 @@
-# @reynard/caption
+# reynard-caption
 
 Caption editing UI components for Reynard applications - provides textarea and tag bubbles for caption editing with a modern, accessible interface.
 
@@ -14,13 +14,13 @@ Caption editing UI components for Reynard applications - provides textarea and t
 ## Installation
 
 ```bash
-npm install @reynard/caption
+npm install reynard-caption
 ```
 
 ## Quick Start
 
 ```typescript
-import { TagBubble, CaptionInput, CaptionType } from '@reynard/caption';
+import { TagBubble, CaptionInput, CaptionType } from 'reynard-caption';
 
 // Basic tag bubble
 const MyTagBubble = () => {
@@ -160,7 +160,7 @@ enum CaptionType {
 ### Tag Utilities
 
 ```typescript
-import { splitAndCleanTags, validateTag, formatTags } from '@reynard/caption';
+import { splitAndCleanTags, validateTag, formatTags } from 'reynard-caption';
 
 // Split comma-separated tags
 const tags = splitAndCleanTags('furry, anthro, digital art');
@@ -178,7 +178,7 @@ const tagString = formatTags(['furry', 'anthro']);
 ### Tag Colors
 
 ```typescript
-import { createTagColorGenerator, getTagColor } from '@reynard/caption';
+import { createTagColorGenerator, getTagColor } from 'reynard-caption';
 
 // Create a color generator
 const generator = createTagColorGenerator();
@@ -192,7 +192,7 @@ const color = getTagColor('anthro');
 ### Tag Autocomplete
 
 ```typescript
-import { useTagAutocomplete, createTagAutocompleteManager } from '@reynard/caption';
+import { useTagAutocomplete, createTagAutocompleteManager } from 'reynard-caption';
 
 // Use in a component
 const MyComponent = () => {
@@ -226,7 +226,7 @@ const MyComponent = () => {
 ### Custom Tag Colors
 
 ```typescript
-import { TagColorGenerator } from '@reynard/caption';
+import { TagColorGenerator } from 'reynard-caption';
 
 const customGenerator = new TagColorGenerator();
 // Add custom colors
@@ -242,7 +242,7 @@ const color = customGenerator.getColor('custom-tag');
 ### Tag Validation
 
 ```typescript
-import { validateTag, cleanTag } from '@reynard/caption';
+import { validateTag, cleanTag } from 'reynard-caption';
 
 const validateAndCleanTag = (tag: string) => {
   const cleaned = cleanTag(tag);

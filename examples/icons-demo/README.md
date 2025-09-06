@@ -1,6 +1,6 @@
 # Reynard Icons Demo
 
-A comprehensive demonstration application showcasing the `@reynard/fluent-icons` package with modern UI components and interactive features.
+A comprehensive demonstration application showcasing the `reynard-fluent-icons` package with modern UI components and interactive features.
 
 ## Features
 
@@ -83,7 +83,7 @@ The main application component featuring:
 
 ```tsx
 import { createSignal } from 'solid-js';
-import { fluentIconsPackage, iconCategories, allIcons } from '@reynard/fluent-icons';
+import { fluentIconsPackage, iconCategories, allIcons } from 'reynard-fluent-icons';
 
 function App() {
   const [activeTab, setActiveTab] = createSignal('browse');
@@ -134,8 +134,8 @@ A theme switching component featuring:
 - **Accessibility**: Proper ARIA labels and keyboard support
 
 ```tsx
-import { useTheme } from '@reynard/themes';
-import { fluentIconsPackage } from '@reynard/fluent-icons';
+import { useTheme } from 'reynard-themes';
+import { fluentIconsPackage } from 'reynard-fluent-icons';
 
 function ThemeToggle() {
   const { theme, setTheme, isDark } = useTheme();
@@ -270,10 +270,10 @@ The application uses a modern CSS architecture with:
 
 ### Core Dependencies
 
-- **@reynard/fluent-icons**: Icon system and registry
-- **@reynard/themes**: Theming and internationalization
-- **@reynard/components**: UI components and primitives
-- **@reynard/core**: Core utilities and modules
+- **reynard-fluent-icons**: Icon system and registry
+- **reynard-themes**: Theming and internationalization
+- **reynard-components**: UI components and primitives
+- **reynard-core**: Core utilities and modules
 - **solid-js**: Reactive framework
 
 ### Development Dependencies

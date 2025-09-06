@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import {
   PerformanceTimer,
   MemoryMonitor,
   throttle,
   debounce,
-} from "@reynard/algorithms";
+} from "reynard-algorithms";
 import { Measurement } from "../types";
 import "./PerformanceDemo.css";
 

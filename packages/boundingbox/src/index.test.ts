@@ -1,5 +1,5 @@
 /**
- * Basic tests for @reynard/boundingbox package
+ * Basic tests for reynard-boundingbox package
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -8,7 +8,7 @@ import { validateBoundingBox } from './utils/validation';
 import { imageToDisplayCoords, displayToImageCoords } from './utils/coordinateTransform';
 import type { BoundingBox, ImageInfo } from './types';
 
-describe('@reynard/boundingbox', () => {
+describe('reynard-boundingbox', () => {
   const mockImageInfo: ImageInfo = {
     width: 1920,
     height: 1080,

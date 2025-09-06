@@ -20,14 +20,27 @@ export function generateSecureBytes(length: number): Uint8Array {
  * Generate cryptographically secure random string
  */
 export function generateSecureString(length: number = 32, charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): string {
-  const bytes = generateSecureBytes(length);
-  let result = '';
-  
-  for (let i = 0; i < length; i++) {
-    result += charset[bytes[i] % charset.length];
+  if (charset.length === 0) {
+    return ''; // Return empty string for empty charset
   }
   
-  return result;
+  try {
+    const bytes = generateSecureBytes(length);
+    let result = '';
+    
+    for (let i = 0; i < length; i++) {
+      result += charset[bytes[i] % charset.length];
+    }
+    
+    return result;
+  } catch (error) {
+    // Fallback to Math.random when crypto is not available
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += charset[Math.floor(Math.random() * charset.length)];
+    }
+    return result;
+  }
 }
 
 /**
@@ -116,6 +129,12 @@ export function generateCSRFToken(): string {
  * Validate CSRF token with constant-time comparison
  */
 export function validateCSRFToken(token: string, expectedToken: string): boolean {
+  if (!token && !expectedToken) {
+    return true; // Both empty strings are equal
+  }
+  if (!token || !expectedToken) {
+    return false;
+  }
   return constantTimeCompare(token, expectedToken);
 }
 
@@ -152,6 +171,14 @@ export function generateEmailVerificationToken(): string {
  * Secure random number between min and max (inclusive)
  */
 export function secureRandomInt(min: number, max: number): number {
+  if (min > max) {
+    return min; // Return min value for invalid range
+  }
+  
+  if (min === max) {
+    return min;
+  }
+  
   const range = max - min + 1;
   const bytesNeeded = Math.ceil(Math.log2(range) / 8);
   const maxValidValue = Math.floor(256 ** bytesNeeded / range) * range - 1;

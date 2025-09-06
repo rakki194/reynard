@@ -1,4 +1,4 @@
-// Main exports for @reynard/games package
+// Main exports for reynard-games package
 
 // Game components
 export { UnionFindGame } from './union-find';

@@ -1,0 +1,38 @@
+{
+  "name": "reynard-error-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A comprehensive error boundary demo app built with Reynard framework",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "backend": "python backend/main.py",
+    "dev:full": "concurrently \"npm run backend\" \"npm run dev\""
+  },
+  "dependencies": {
+    "reynard-error-boundaries": "file:../../packages/error-boundaries",
+    "reynard-components": "file:../../packages/components",
+    "reynard-core": "file:../../packages/core",
+    "reynard-themes": "file:../../packages/themes",
+    "reynard-ui": "file:../../packages/ui",
+    "reynard-fluent-icons": "file:../../packages/fluent-icons",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "concurrently": "^8.2.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8"
+  },
+  "keywords": [
+    "reynard",
+    "solidjs",
+    "error-boundaries",
+    "error-handling",
+    "recovery-strategies"
+  ],
+  "author": "Reynard Framework",
+  "license": "MIT"
+}

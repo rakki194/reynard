@@ -180,6 +180,7 @@ export function createSecureFetch(baseUrl: string, options: RequestInit = {}): t
     const secureInit: RequestInit = {
       ...options,
       ...init,
+      credentials: 'same-origin',
       headers: {
         ...options.headers,
         ...init.headers,

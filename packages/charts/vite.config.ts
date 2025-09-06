@@ -14,7 +14,7 @@ export default defineConfig({
       external: [
         "solid-js",
         "solid-js/web",
-        "@reynard/core",
+        "reynard-core",
         "chart.js",
         "solid-chartjs",
         "chartjs-adapter-date-fns",
@@ -23,7 +23,7 @@ export default defineConfig({
         globals: {
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
-          "@reynard/core": "ReynardCore",
+          "reynard-core": "ReynardCore",
           "chart.js": "Chart",
           "solid-chartjs": "SolidChartJS",
           "chartjs-adapter-date-fns": "ChartJSAdapterDateFns",

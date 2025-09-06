@@ -1,5 +1,5 @@
 import { createSignal, createEffect, For } from "solid-js";
-import { Button, Card, TextField } from "@reynard/components";
+import { Button, Card, TextField } from "reynard-components";
 import { 
   useTheme, 
   useLocalStorage, 
@@ -11,7 +11,7 @@ import {
   isValidEmail,
   isValidUrl,
   themes
-} from "@reynard/core";
+} from "reynard-core";
 
 export function CoreDemo() {
   const { theme, setTheme } = useTheme();

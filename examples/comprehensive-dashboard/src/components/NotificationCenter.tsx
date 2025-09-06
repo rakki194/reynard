@@ -1,7 +1,7 @@
 import { Component, createSignal, For, Show } from "solid-js";
-import { useNotifications } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
-import { Drawer } from "@reynard/ui";
+import { useNotifications } from "reynard-core";
+import { Button, Card } from "reynard-components";
+import { Drawer } from "reynard-ui";
 
 const NotificationCenter: Component = () => {
   const notifications = useNotifications();

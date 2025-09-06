@@ -20,7 +20,7 @@ vi.mock('../ReynardAdventure', () => ({
           type: 'code',
           title: 'Quick Installation',
           language: 'bash',
-          content: 'npm install @reynard/core solid-js'
+          content: 'npm install reynard-core solid-js'
         }
       ]
     },
@@ -60,7 +60,7 @@ vi.mock('../ReynardAdventure', () => ({
           type: 'code',
           title: 'Button Component',
           language: 'tsx',
-          content: 'import { Button } from "@reynard/components";\n// ...'
+          content: 'import { Button } from "reynard-components";\n// ...'
         }
       ]
     }

@@ -1,6 +1,6 @@
 import { For } from "solid-js";
-import { useNotifications } from "@reynard/core";
-import { getIcon } from "@reynard/fluent-icons";
+import { useNotifications } from "reynard-core";
+import { getIcon } from "reynard-fluent-icons";
 import "./NotificationToast.css";
 
 export function NotificationToast() {

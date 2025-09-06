@@ -14,11 +14,11 @@ import {
   createTheme,
   createNotifications,
   useTheme,
-} from "@reynard/core";
-import { AuthProvider, useAuth } from "@reynard/auth";
-import { LoginForm, RegisterForm } from "@reynard/auth";
-import { ReynardProvider, useReynard } from "@reynard/themes";
-import { Card, Button } from "@reynard/components";
+} from "reynard-core";
+import { AuthProvider, useAuth } from "reynard-auth";
+import { LoginForm, RegisterForm } from "reynard-auth";
+import { ReynardProvider, useReynard } from "reynard-themes";
+import { Card, Button } from "reynard-components";
 import { 
   Person, 
   Shield, 
@@ -27,8 +27,8 @@ import {
   CheckmarkCircle,
   Warning,
   Info
-} from "@reynard/fluent-icons";
-import type { LoginCredentials, RegisterData } from "@reynard/auth";
+} from "reynard-fluent-icons";
+import type { LoginCredentials, RegisterData } from "reynard-auth";
 
 type AuthMode = "login" | "register";
 

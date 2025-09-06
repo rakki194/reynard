@@ -16,15 +16,13 @@
     "declaration": true,
     "declarationMap": true,
     "composite": true,
-    "downlevelIteration": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "outDir": "./dist",
     "rootDir": "./src",
     "paths": {
       "~/*": ["./src/*"]
-    },
-    "types": ["vite/client"]
+    }
   },
   "include": ["src"],
   "exclude": [

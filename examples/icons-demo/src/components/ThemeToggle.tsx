@@ -4,8 +4,8 @@
  */
 
 import { Component } from "solid-js";
-import { useTheme } from "@reynard/core";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { useTheme } from "reynard-core";
+import { getIcon } from "reynard-fluent-icons";
 
 export const ThemeToggle: Component = () => {
   const { theme, setTheme } = useTheme();
@@ -15,7 +15,7 @@ export const ThemeToggle: Component = () => {
   };
 
   const iconName = theme() === "light" ? "moon" : "sun";
-  const iconElement = fluentIconsPackage.getIcon(iconName);
+  const iconElement = getIcon(iconName);
 
   return (
     <button 
@@ -24,7 +24,7 @@ export const ThemeToggle: Component = () => {
       title={`Switch to ${theme() === "light" ? "dark" : "light"} theme`}
     >
       {iconElement && (
-        <div innerHTML={iconElement.outerHTML} />
+        <div innerHTML={iconElement} />
       )}
     </button>
   );

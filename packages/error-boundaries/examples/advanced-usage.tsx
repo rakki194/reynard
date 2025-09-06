@@ -10,9 +10,9 @@ import {
   createRecoveryStrategy,
   useErrorBoundary,
   useErrorReporting 
-} from '@reynard/error-boundaries';
-import { ThemeProvider, createTheme } from '@reynard/core';
-import { Button, Card } from '@reynard/components';
+} from 'reynard-error-boundaries';
+import { ThemeProvider, createTheme } from 'reynard-core';
+import { Button, Card } from 'reynard-components';
 
 // Custom recovery strategy for network errors
 const networkRetryStrategy = createRecoveryStrategy(

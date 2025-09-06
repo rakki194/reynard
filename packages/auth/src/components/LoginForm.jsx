@@ -3,7 +3,7 @@
  * Complete login form with validation and error handling
  */
 import { createSignal, createMemo, Show, splitProps } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { validateEmail } from "../utils";
 const defaultProps = {
   loading: false,

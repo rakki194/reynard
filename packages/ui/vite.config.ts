@@ -14,15 +14,15 @@ export default defineConfig({
       external: [
         "solid-js",
         "solid-js/web",
-        "@reynard/core",
-        "@reynard/components",
+        "reynard-core",
+        "reynard-components",
       ],
       output: {
         globals: {
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
-          "@reynard/core": "ReynardCore",
-          "@reynard/components": "ReynardComponents",
+          "reynard-core": "ReynardCore",
+          "reynard-components": "ReynardComponents",
         },
         assetFileNames: (assetInfo) => {
           // Ensure consistent CSS naming - always use styles.css

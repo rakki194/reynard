@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/starter-template",
+  "name": "reynard-starter-template",
   "version": "0.1.0",
   "description": "Reynard Starter Template - A SolidJS application template",
   "type": "module",
@@ -16,7 +16,9 @@
     "format:check": "prettier --check 'src/**/*.{ts,tsx,css,json}'"
   },
   "dependencies": {
-    "@reynard/core": "file:../../packages/core",
+    "reynard-core": "file:../../packages/core",
+    "reynard-fluent-icons": "file:../../packages/fluent-icons",
+    "reynard-themes": "file:../../packages/themes",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

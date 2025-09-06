@@ -11,7 +11,7 @@ import {
   createNotifications,
   useTheme,
   useNotifications,
-} from "@reynard/core";
+} from "reynard-core";
 import { ThemeCard } from "./components/ThemeCard";
 import { ComponentShowcase } from "./components/ComponentShowcase";
 import { ThemeComparison } from "./components/ThemeComparison";

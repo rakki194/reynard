@@ -1,4 +1,4 @@
-# @reynard/connection
+# reynard-connection
 
 Enterprise-grade networking for Reynard applications with comprehensive connection management, health monitoring, and recovery strategies.
 
@@ -15,7 +15,7 @@ Enterprise-grade networking for Reynard applications with comprehensive connecti
 ## Installation
 
 ```bash
-npm install @reynard/connection
+npm install reynard-connection
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ npm install @reynard/connection
 ### Basic HTTP Connection
 
 ```typescript
-import { HTTPConnection, ConnectionConfigManager } from '@reynard/connection';
+import { HTTPConnection, ConnectionConfigManager } from 'reynard-connection';
 
 const configManager = new ConnectionConfigManager();
 const config = configManager.get('http');
@@ -41,7 +41,7 @@ const response = await httpConn.send({ method: 'GET', url: '/users' });
 ### WebSocket Connection
 
 ```typescript
-import { WebSocketConnection, ConnectionManager } from '@reynard/connection';
+import { WebSocketConnection, ConnectionManager } from 'reynard-connection';
 
 const wsConn = new WebSocketConnection({
   url: 'wss://api.example.com/ws',
@@ -63,7 +63,7 @@ const message = await wsConn.receive();
 ### Connection Pooling
 
 ```typescript
-import { WebSocketConnectionPool } from '@reynard/connection';
+import { WebSocketConnectionPool } from 'reynard-connection';
 
 const pool = new WebSocketConnectionPool(
   {
@@ -113,7 +113,7 @@ VITE_SSE_URL=https://api.example.com/events
 ### Custom Configuration
 
 ```typescript
-import { ConnectionConfig } from '@reynard/connection';
+import { ConnectionConfig } from 'reynard-connection';
 
 const customConfig: ConnectionConfig = {
   name: 'api',
@@ -214,7 +214,7 @@ console.log(event.data);
 Centralized management of multiple connections.
 
 ```typescript
-import { ConnectionManager } from '@reynard/connection';
+import { ConnectionManager } from 'reynard-connection';
 
 const manager = new ConnectionManager();
 
@@ -243,7 +243,7 @@ await manager.stop();
 Efficient connection reuse with automatic lifecycle management.
 
 ```typescript
-import { ConnectionPool, WebSocketConnectionPool } from '@reynard/connection';
+import { ConnectionPool, WebSocketConnectionPool } from 'reynard-connection';
 
 // Generic pool
 const pool = new ConnectionPool<WebSocketConnection>(
@@ -280,7 +280,7 @@ if (conn) {
 ### Exponential Backoff
 
 ```typescript
-import { ExponentialBackoffRetry } from '@reynard/connection';
+import { ExponentialBackoffRetry } from 'reynard-connection';
 
 const retry = new ExponentialBackoffRetry(5, 1, 2); // 5 attempts: 1s, 2s, 4s, 8s, 16s
 
@@ -294,7 +294,7 @@ const result = await retry.execute(async () => {
 ### Linear Backoff
 
 ```typescript
-import { LinearBackoffRetry } from '@reynard/connection';
+import { LinearBackoffRetry } from 'reynard-connection';
 
 const retry = new LinearBackoffRetry(3, 1, 2); // 3 attempts: 1s, 3s, 5s
 
@@ -306,7 +306,7 @@ const result = await retry.execute(async () => {
 ### Jitter Retry
 
 ```typescript
-import { JitterRetry } from '@reynard/connection';
+import { JitterRetry } from 'reynard-connection';
 
 const retry = new JitterRetry(4, 1, 0.5); // 4 attempts with ±50% jitter
 
@@ -354,7 +354,7 @@ connection.onEvent((event) => {
 ### Security Levels
 
 ```typescript
-import { SecurityLevel, ConnectionSecurity } from '@reynard/connection';
+import { SecurityLevel, ConnectionSecurity } from 'reynard-connection';
 
 // Configure security level
 const config = {

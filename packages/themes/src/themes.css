@@ -178,7 +178,7 @@
   --color-surface-selected: #1f6feb;
 
   /* Text Colors */
-  --color-text: hsl(0deg 0% 10%);
+  --color-text: #f0f6fc;
   --color-text-secondary: #8b949e;
   --color-text-tertiary: #6e7681;
   --color-text-disabled: #484f58;
@@ -192,9 +192,20 @@
 
   /* Status Colors */
   --color-success: #238636;
+  --color-success-light: #1a5f2a;
+  --color-success-dark: #0d3b15;
   --color-warning: #d29922;
+  --color-warning-light: #b8860b;
+  --color-warning-dark: #8b6914;
   --color-error: #da3633;
+  --color-error-light: #b91c1c;
+  --color-error-dark: #7f1d1d;
+  --color-danger: #da3633;
+  --color-danger-light: #b91c1c;
+  --color-danger-dark: #7f1d1d;
   --color-info: #0969da;
+  --color-info-light: #0757b8;
+  --color-info-dark: #053d7a;
 
   /* Accent Colors */
   --color-accent: #1f6feb;
@@ -245,9 +256,20 @@
 
   /* Status Colors */
   --color-success: #28a745;
+  --color-success-light: #d4edda;
+  --color-success-dark: #1e7e34;
   --color-warning: #ffc107;
+  --color-warning-light: #fff3cd;
+  --color-warning-dark: #856404;
   --color-error: #dc3545;
+  --color-error-light: #f8d7da;
+  --color-error-dark: #721c24;
+  --color-danger: #dc3545;
+  --color-danger-light: #f8d7da;
+  --color-danger-dark: #721c24;
   --color-info: #17a2b8;
+  --color-info-light: #d1ecf1;
+  --color-info-dark: #0c5460;
 
   /* Accent Colors */
   --color-accent: #6c757d;
@@ -384,16 +406,16 @@
   --color-secondary-disabled: #adb5bd;
 
   /* Background Colors */
-  --color-background: #f3e5f5;
-  --color-background-secondary: #e1bee7;
-  --color-background-tertiary: #ce93d8;
+  --color-background: #f5f3f0;
+  --color-background-secondary: #ede7e0;
+  --color-background-tertiary: #d7ccc8;
   --color-background-overlay: rgba(0, 0, 0, 0.5);
 
   /* Surface Colors */
   --color-surface: #ffffff;
-  --color-surface-hover: #f3e5f5;
-  --color-surface-active: #e1bee7;
-  --color-surface-selected: #f3e5f5;
+  --color-surface-hover: #f5f3f0;
+  --color-surface-active: #ede7e0;
+  --color-surface-selected: #f5f3f0;
 
   /* Text Colors */
   --color-text: hsl(0deg 0% 10%);
@@ -452,7 +474,7 @@
   --color-surface-selected: #0066cc;
 
   /* Text Colors */
-  --color-text: hsl(0deg 0% 10%);
+  --color-text: #ffffff;
   --color-text-secondary: #cccccc;
   --color-text-tertiary: #999999;
   --color-text-disabled: #666666;
@@ -564,7 +586,7 @@
 
   :root[data-theme="dark"] {
     --color-border: #ffffff;
-    --color-text: hsl(0deg 0% 10%);
+    --color-text: #ffffff;
     --color-background: #000000;
   }
 }

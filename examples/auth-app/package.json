@@ -11,12 +11,12 @@
     "dev:full": "concurrently \"npm run backend\" \"npm run dev\""
   },
   "dependencies": {
-    "@reynard/auth": "file:../reynard/packages/auth",
-    "@reynard/components": "file:../reynard/packages/components",
-    "@reynard/core": "file:../reynard/packages/core",
-    "@reynard/themes": "file:../reynard/packages/themes",
-    "@reynard/ui": "file:../reynard/packages/ui",
-    "@reynard/fluent-icons": "file:../reynard/packages/fluent-icons",
+    "reynard-auth": "file:../../packages/auth",
+    "reynard-components": "file:../../packages/components",
+    "reynard-core": "file:../../packages/core",
+    "reynard-themes": "file:../../packages/themes",
+    "reynard-ui": "file:../../packages/ui",
+    "reynard-fluent-icons": "file:../../packages/fluent-icons",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

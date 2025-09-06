@@ -8,7 +8,6 @@ import { ErrorFallbackProps } from '../types/ErrorTypes';
 import { RecoveryAction } from '../types/RecoveryTypes';
 
 export const ErrorFallback: Component<ErrorFallbackProps> = (props) => {
-  const [showDetails, setShowDetails] = createSignal(false);
   const [userReport, setUserReport] = createSignal('');
 
   const handleRetry = () => {
@@ -77,7 +76,7 @@ export const ErrorFallback: Component<ErrorFallbackProps> = (props) => {
             </h3>
             <div class="reynard-error-fallback__recovery-actions">
               <For each={props.recoveryActions}>
-                {(action) => (
+                {(action: RecoveryAction) => (
                   <button
                     class="reynard-error-fallback__recovery-button"
                     onClick={() => handleRecovery(action)}
@@ -104,7 +103,7 @@ export const ErrorFallback: Component<ErrorFallbackProps> = (props) => {
             class="reynard-error-fallback__report-textarea"
             placeholder="Describe what you were doing when this error occurred..."
             value={userReport()}
-            onInput={(e) => setUserReport(e.currentTarget.value)}
+            onInput={(e: Event) => setUserReport((e.target as HTMLTextAreaElement).value)}
           />
           <button
             class="reynard-error-fallback__report-button"

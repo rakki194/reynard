@@ -249,7 +249,7 @@ export function createDocTestFile(config: DocTestConfig): string {
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@solidjs/testing-library';
 import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { runDocTests } from '@reynard/testing/doc-tests';
+import { runDocTests } from 'reynard-testing/doc-tests';
 
 // Package-specific setup
 ${setup}
@@ -277,8 +277,22 @@ export function validateDocExamples(docPath: string): { valid: number; invalid: 
       // Basic syntax validation
       if (example.isTypeScript) {
         // For TypeScript, we'll do basic validation
-        if (example.code.includes('import') && !example.code.includes('from')) {
-          throw new Error('Invalid import statement');
+        // Check for import statements - handle multi-line imports
+        const lines = example.code.split('\n');
+        let hasImport = false;
+        let hasFrom = false;
+        
+        for (const line of lines) {
+          if (line.trim().startsWith('import')) {
+            hasImport = true;
+          }
+          if (line.trim().includes('from')) {
+            hasFrom = true;
+          }
+        }
+        
+        if (hasImport && !hasFrom) {
+          throw new Error('Invalid import statement - missing "from" clause');
         }
         if (example.code.includes('function') && !example.code.includes('{')) {
           throw new Error('Invalid function syntax');
@@ -293,7 +307,7 @@ export function validateDocExamples(docPath: string): { valid: number; invalid: 
         valid++;
       }
     } catch (error) {
-      errors.push(`Example ${index + 1}: ${error.message}`);
+      errors.push(`Example ${index + 1}: ${error.message}\nCode: ${example.code.substring(0, 200)}...`);
       invalid++;
     }
   });

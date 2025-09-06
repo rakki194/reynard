@@ -1,6 +1,6 @@
 /**
  * Icons Export
- * Re-exports commonly used icons from @reynard/fluent-icons
+ * Re-exports commonly used icons from reynard-fluent-icons
  */
 
 import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";

@@ -12,7 +12,7 @@ import {
   createMemo,
   splitProps,
 } from "solid-js";
-import { pluralize } from "@reynard/core";
+import { pluralize } from "reynard-core";
 
 export interface Column<T = unknown> {
   /** Unique column identifier */

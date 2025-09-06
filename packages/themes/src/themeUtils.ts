@@ -4,6 +4,7 @@
  */
 
 import type { ThemeName } from "./types";
+import { themes } from "./themes";
 
 // LCH color space utilities for consistent color generation
 function hashString(str: string): number {
@@ -120,7 +121,6 @@ export function computeAnimation(theme: ThemeName): string {
  * Generate CSS custom properties for a theme
  */
 export function generateThemeCSS(themeName: ThemeName): string {
-  const { themes } = require("./themes");
   const theme = themes[themeName];
 
   if (!theme) {
@@ -193,7 +193,6 @@ export function applyTheme(themeName: ThemeName): void {
   // Update meta theme-color for mobile browsers
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if (metaThemeColor) {
-    const { themes } = require("./themes");
     const theme = themes[themeName];
     if (theme) {
       metaThemeColor.setAttribute("content", theme.colors.primary);

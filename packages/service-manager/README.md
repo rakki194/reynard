@@ -1,4 +1,4 @@
-# @reynard/service-manager
+# reynard-service-manager
 
 A comprehensive service management system for Reynard applications that handles service lifecycle, dependencies, health monitoring, and parallel initialization.
 
@@ -14,13 +14,13 @@ A comprehensive service management system for Reynard applications that handles 
 ## Installation
 
 ```bash
-npm install @reynard/service-manager
+npm install reynard-service-manager
 ```
 
 ## Quick Start
 
 ```typescript
-import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from '@reynard/service-manager';
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from 'reynard-service-manager';
 
 // Create a custom service
 class MyService extends BaseService {

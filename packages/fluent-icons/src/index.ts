@@ -1,5 +1,5 @@
 /**
- * @reynard/fluent-icons
+ * reynard-fluent-icons
  *
  * Fluent UI icons package for the Reynard design system.
  * Provides a modular icon system with Fluent UI icons.

@@ -1,5 +1,5 @@
 /**
- * Core exports for @reynard/tools
+ * Core exports for reynard-tools
  */
 
 export * from './types';

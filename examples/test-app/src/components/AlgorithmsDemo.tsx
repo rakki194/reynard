@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
-import { Card, Tabs, TabPanel } from "@reynard/components";
-import { getIcon } from "@reynard/fluent-icons";
+import { Card, Tabs, TabPanel } from "reynard-components";
+import { getIcon } from "reynard-fluent-icons";
 import {
   UnionFindGame,
   CollisionGame,

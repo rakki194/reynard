@@ -1,5 +1,5 @@
 /**
- * Main exports for @reynard/testing
+ * Main exports for reynard-testing
  */
 
 export * from './config';

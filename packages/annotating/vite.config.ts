@@ -12,13 +12,13 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['solid-js', '@reynard/core', '@reynard/service-manager', '@reynard/model-management'],
+      external: ['solid-js', 'reynard-core', 'reynard-service-manager', 'reynard-model-management'],
       output: {
         globals: {
           'solid-js': 'SolidJS',
-          '@reynard/core': 'ReynardCore',
-          '@reynard/service-manager': 'ReynardServiceManager',
-          '@reynard/model-management': 'ReynardModelManagement'
+          'reynard-core': 'ReynardCore',
+          'reynard-service-manager': 'ReynardServiceManager',
+          'reynard-model-management': 'ReynardModelManagement'
         }
       }
     }

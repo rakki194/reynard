@@ -3,7 +3,7 @@
  * Dynamic form control based on setting type
  */
 import { createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Select } from "@reynard/components";
+import { Button, TextField, Select } from "reynard-components";
 export const SettingControl = (props) => {
   const [local, others] = splitProps(props, [
     "definition",

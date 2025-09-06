@@ -4,7 +4,7 @@
  */
 
 import { Component, createMemo } from "solid-js";
-import { iconCategories, allIcons } from "@reynard/fluent-icons";
+import { iconCategories, allIcons } from "reynard-fluent-icons";
 
 export const CategoryStats: Component = () => {
   const stats = createMemo(() => {

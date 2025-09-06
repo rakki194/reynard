@@ -4,7 +4,7 @@
  */
 
 import { Component, createMemo } from "solid-js";
-import { fluentIconsPackage, allIcons } from "@reynard/fluent-icons";
+import { getIcon, allIcons } from "reynard-fluent-icons";
 
 interface IconModalProps {
   iconName: string;
@@ -13,7 +13,7 @@ interface IconModalProps {
 
 export const IconModal: Component<IconModalProps> = (props) => {
   const iconData = createMemo(() => allIcons[props.iconName as keyof typeof allIcons]);
-  const iconElement = createMemo(() => fluentIconsPackage.getIcon(props.iconName));
+  const iconElement = createMemo(() => getIcon(props.iconName));
   const metadata = createMemo(() => iconData()?.metadata);
 
   return (
@@ -28,7 +28,7 @@ export const IconModal: Component<IconModalProps> = (props) => {
         
         <div class="modal-icon-display">
           {iconElement() && (
-            <div innerHTML={iconElement()!.outerHTML} />
+            <div innerHTML={iconElement()!} />
           )}
         </div>
         

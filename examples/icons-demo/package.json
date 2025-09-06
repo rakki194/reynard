@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reynard/components": "file:../reynard/packages/components",
-    "@reynard/core": "file:../reynard/packages/core",
-    "@reynard/fluent-icons": "file:../reynard/packages/fluent-icons",
+    "reynard-components": "file:../../packages/components",
+    "reynard-core": "file:../../packages/core",
+    "reynard-fluent-icons": "file:../../packages/fluent-icons",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

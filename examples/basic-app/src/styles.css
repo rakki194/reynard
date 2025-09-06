@@ -3,102 +3,27 @@
  * Demonstrates Reynard theming with a practical application
  */
 
-/* Theme Variables */
+/* Reynard Theme Variables - using proper theme system */
 :root {
-  /* Light theme (default) */
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-  --success: hsl(120deg 60% 50%);
-  --danger: hsl(0deg 60% 50%);
+  /* Map Reynard theme variables to app-specific names */
+  --accent: var(--color-accent);
+  --bg-color: var(--color-background);
+  --secondary-bg: var(--color-background-secondary);
+  --card-bg: var(--color-surface);
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --border-color: var(--color-border);
+  --success: var(--color-success);
+  --danger: var(--color-danger);
 
   /* Spacing and layout */
-  --spacing: 1rem;
-  --border-radius: 0.5rem;
-  --shadow: 0 2px 4px hsl(0deg 0% 0% / 0.1);
-  --transition: 250ms ease-in-out;
+  --spacing: var(--spacing-base);
+  --border-radius: var(--border-radius-lg);
+  --shadow: var(--elevation-2);
+  --transition: var(--duration-base) var(--easing-standard);
 }
 
-/* Dark theme */
-:root[data-theme="dark"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* Banana theme */
-:root[data-theme="banana"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* Strawberry theme */
-:root[data-theme="strawberry"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* Gray theme */
-:root[data-theme="gray"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* Peanut theme */
-:root[data-theme="peanut"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* High-contrast black theme */
-:root[data-theme="high-contrast-black"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
-
-/* High-contrast inverse theme */
-:root[data-theme="high-contrast-inverse"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
-}
+/* All theme-specific variables are now handled by reynard-themes.css */
 
 /* Reset and base styles */
 * {

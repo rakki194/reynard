@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { ThumbnailGenerator } from '@reynard/file-processing';
+import { ThumbnailGenerator } from 'reynard-file-processing';
 
 interface AudioTestProps {
   thumbnailGenerator: ThumbnailGenerator;

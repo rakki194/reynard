@@ -11,7 +11,7 @@ import {
   createEffect,
   splitProps,
 } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import { GalleryGrid } from "./GalleryGrid";
 import { BreadcrumbNavigation } from "./BreadcrumbNavigation";
 import { FileUploadZone } from "./FileUploadZone";

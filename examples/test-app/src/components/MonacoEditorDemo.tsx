@@ -264,7 +264,7 @@ func fetchUserData(ctx context.Context, id int) (*User, error) {
     sample: `{
   "name": "Monaco Editor Demo",
   "version": "1.0.0",
-  "description": "A comprehensive test of @reynard/monaco",
+  "description": "A comprehensive test of reynard-monaco",
   "features": {
     "syntax_highlighting": true,
     "auto_completion": true,
@@ -306,7 +306,7 @@ func fetchUserData(ctx context.Context, id int) (*User, error) {
     sample: `# YAML Configuration Sample
 name: Monaco Editor Demo
 version: 1.0.0
-description: A comprehensive test of @reynard/monaco
+description: A comprehensive test of reynard-monaco
 
 features:
   syntax_highlighting: true
@@ -360,7 +360,7 @@ environments:
     label: 'Markdown',
     sample: `# Monaco Editor Demo
 
-A comprehensive test of the **@reynard/monaco** package with forked solid-monaco components.
+A comprehensive test of the **reynard-monaco** package with forked solid-monaco components.
 
 ## Features
 
@@ -517,7 +517,7 @@ interface User {
     <div class="monaco-demo">
       <div class="demo-header">
         <h1>Monaco Editor Demo</h1>
-        <p>Comprehensive test of @reynard/monaco with forked solid-monaco components</p>
+        <p>Comprehensive test of reynard-monaco with forked solid-monaco components</p>
         <p class="theme-sync-note">
           🎨 Theme automatically syncs with Reynard theme: <strong>{currentReynardTheme()}</strong>
         </p>

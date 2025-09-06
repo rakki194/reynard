@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { useI18n } from "@reynard/core";
+import { useCustomTranslation } from "../App";
 
 interface AddTodoProps {
   onAdd: (text: string) => void;
@@ -12,7 +12,7 @@ interface AddTodoProps {
 
 export const AddTodo: Component<AddTodoProps> = (props) => {
   const [input, setInput] = createSignal("");
-  const { t } = useI18n();
+  const t = useCustomTranslation();
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();

@@ -15,7 +15,7 @@ import {
   createTheme,
   createNotifications,
   useTheme,
-} from "@reynard/core";
+} from "reynard-core";
 import { IconGrid } from "./components/IconGrid";
 import { SearchSection } from "./components/SearchSection";
 import { IconModal } from "./components/IconModal";
@@ -24,8 +24,8 @@ import { CategoryStats } from "./components/CategoryStats";
 import { 
   iconCategories, 
   allIcons,
-  fluentIconsPackage
-} from "@reynard/fluent-icons";
+  getIcon
+} from "reynard-fluent-icons";
 
 type TabType = "browse" | "search" | "categories" | "stats";
 
@@ -152,7 +152,7 @@ const IconsDemo: Component = () => {
       <main class="app-main">
         <div class="tab-navigation">
           {tabs.map((tab) => {
-            const iconElement = fluentIconsPackage.getIcon(tab.icon);
+            const iconElement = getIcon(tab.icon);
             return (
               <button
                 class={`tab-button ${activeTab() === tab.id ? "active" : ""}`}
@@ -160,7 +160,7 @@ const IconsDemo: Component = () => {
               >
                 <span class="icon">
                   {iconElement && (
-                    <div innerHTML={iconElement.outerHTML} />
+                    <div innerHTML={iconElement} />
                   )}
                 </span>
                 {tab.label}

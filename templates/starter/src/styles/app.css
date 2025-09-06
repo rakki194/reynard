@@ -3,7 +3,7 @@
  * Extracted and simplified from yipyap's proven CSS system
  */
 
-@import "./themes.css";
+@import "reynard-themes/dist/index.css";
 @import "./components.css";
 
 /* CSS Layer System */
@@ -11,14 +11,14 @@
 
 /* Root Variables */
 :root {
-  /* Colors */
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --border-color: hsl(0deg 0% 85%);
+  /* Colors - using Reynard theme variables */
+  --accent: var(--color-accent, #007bff);
+  --bg-color: var(--color-background, #ffffff);
+  --secondary-bg: var(--color-background-secondary, #f8f9fa);
+  --card-bg: var(--color-surface, #ffffff);
+  --text-primary: var(--color-text, hsl(0deg 0% 10%));
+  --text-secondary: var(--color-text-secondary, #6c757d);
+  --border-color: var(--color-border, #dee2e6);
 
   /* Spacing */
   --spacing: 1rem;

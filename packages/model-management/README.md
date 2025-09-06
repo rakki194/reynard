@@ -1,4 +1,4 @@
-# @reynard/model-management
+# reynard-model-management
 
 A comprehensive model management system for Reynard applications that handles ML model registration, downloading, loading, and lifecycle management.
 
@@ -14,13 +14,13 @@ A comprehensive model management system for Reynard applications that handles ML
 ## Installation
 
 ```bash
-npm install @reynard/model-management
+npm install reynard-model-management
 ```
 
 ## Quick Start
 
 ```typescript
-import { ModelManager, ModelType, ModelStatus, ModelHealth } from '@reynard/model-management';
+import { ModelManager, ModelType, ModelStatus, ModelHealth } from 'reynard-model-management';
 
 // Create model manager
 const modelManager = new ModelManager({
@@ -163,7 +163,7 @@ modelManager.addEventListener((event) => {
 ### Custom Model Implementation
 
 ```typescript
-import { BaseModel, ModelType, ModelHealth } from '@reynard/model-management';
+import { BaseModel, ModelType, ModelHealth } from 'reynard-model-management';
 
 class MyCaptionModel extends BaseModel {
   constructor() {

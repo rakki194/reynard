@@ -1,5 +1,5 @@
 /**
- * @reynard/boundingbox
+ * reynard-boundingbox
  * 
  * Reusable bounding box and annotation editing components for Reynard.
  * 
@@ -21,7 +21,7 @@
  * ## Usage
  * 
  * ```tsx
- * import { BoundingBoxEditor } from '@reynard/boundingbox';
+ * import { BoundingBoxEditor } from 'reynard-boundingbox';
  * 
  * function MyApp() {
  *   const imageInfo = { width: 1920, height: 1080, src: '/image.jpg' };

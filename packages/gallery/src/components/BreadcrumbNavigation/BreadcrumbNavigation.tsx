@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, splitProps, For, Show } from "solid-js";
-import { Button } from "@reynard/components";
+import { Button } from "reynard-components";
 import "./BreadcrumbNavigation.css";
 
 export interface BreadcrumbItem {

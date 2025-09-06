@@ -1,4 +1,4 @@
-# @reynard/file-processing
+# reynard-file-processing
 
 Advanced file processing, thumbnail generation, and media analysis for SolidJS applications.
 
@@ -16,7 +16,7 @@ Advanced file processing, thumbnail generation, and media analysis for SolidJS a
 ## Installation
 
 ```bash
-npm install @reynard/file-processing
+npm install reynard-file-processing
 ```
 
 ## Quick Start
@@ -25,7 +25,7 @@ npm install @reynard/file-processing
 import {
   FileProcessingPipeline,
   ThumbnailGenerator,
-} from "@reynard/file-processing";
+} from "reynard-file-processing";
 
 // Create a processing pipeline
 const pipeline = new FileProcessingPipeline({
@@ -169,7 +169,7 @@ interface ThumbnailGeneratorOptions {
 ### Basic File Processing
 
 ```typescript
-import { FileProcessingPipeline } from "@reynard/file-processing";
+import { FileProcessingPipeline } from "reynard-file-processing";
 
 const pipeline = new FileProcessingPipeline();
 
@@ -186,7 +186,7 @@ if (result.success) {
 ### Custom Thumbnail Generation
 
 ```typescript
-import { ThumbnailGenerator } from "@reynard/file-processing";
+import { ThumbnailGenerator } from "reynard-file-processing";
 
 const generator = new ThumbnailGenerator({
   size: [400, 400],
@@ -205,7 +205,7 @@ const thumbnail = await generator.generateThumbnail(file, {
 ### Batch Processing with Progress
 
 ```typescript
-import { FileProcessingPipeline } from "@reynard/file-processing";
+import { FileProcessingPipeline } from "reynard-file-processing";
 
 const pipeline = new FileProcessingPipeline();
 
@@ -231,7 +231,7 @@ console.log(`Processed ${results.length} files`);
 import {
   getFileTypeInfo,
   isSupportedExtension,
-} from "@reynard/file-processing";
+} from "reynard-file-processing";
 
 const fileInfo = getFileTypeInfo(".jpg");
 console.log(fileInfo);
@@ -250,7 +250,7 @@ console.log(isSupported); // false
 ### Directory Scanning
 
 ```typescript
-import { FileProcessingPipeline } from "@reynard/file-processing";
+import { FileProcessingPipeline } from "reynard-file-processing";
 
 const pipeline = new FileProcessingPipeline();
 
@@ -333,6 +333,6 @@ MIT License - see LICENSE file for details.
 
 ## Related Packages
 
-- `@reynard/core` - Core framework utilities
-- `@reynard/gallery` - File gallery components
-- `@reynard/ui` - UI components and themes
+- `reynard-core` - Core framework utilities
+- `reynard-gallery` - File gallery components
+- `reynard-ui` - UI components and themes

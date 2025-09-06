@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { useNotifications } from "@reynard/core";
+import { useNotifications } from "reynard-core";
 
 export const ComponentShowcase: Component = () => {
   const [inputValue, setInputValue] = createSignal("");

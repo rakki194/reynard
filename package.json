@@ -1,9 +1,17 @@
 {
   "name": "reynard",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "type": "module",
   "description": "Reynard - A cunning SolidJS framework and UI library",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/rakki194/reynard"
@@ -25,8 +33,15 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=templates/starter",
+    "dev:backend": "cd backend && source venv/bin/activate && python main.py",
+    "dev:frontend": "npm run dev --workspace=templates/starter",
+    "dev:both": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build": "npm run build --workspaces --if-present",
+    "build:all": "npm run build --workspaces --if-present",
+    "build:backend": "cd backend && source venv/bin/activate && python -m py_compile main.py",
     "test": "npm run test --workspaces --if-present",
+    "test:security": "npm run test --workspace=packages/core -- --run src/security/",
+    "test:backend": "cd backend && source venv/bin/activate && python -m pytest",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
     "test:coverage:check": "npm run test:coverage:check --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
@@ -36,6 +51,11 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "clean": "npm run clean --workspaces --if-present && rm -rf node_modules",
     "setup": "npm install && npm run build",
+    "setup:dev": "chmod +x scripts/dev-setup.sh && ./scripts/dev-setup.sh",
+    "setup:nginx": "chmod +x scripts/setup-nginx-arch.sh && ./scripts/setup-nginx-arch.sh",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:build": "docker-compose -f docker-compose.dev.yml build",
+    "docker:down": "docker-compose -f docker-compose.dev.yml down",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish",
@@ -46,7 +66,9 @@
     "doc-tests": "node scripts/doc-tests.js",
     "doc-tests:generate": "node scripts/doc-tests.js generate",
     "doc-tests:validate": "node scripts/doc-tests.js validate",
-    "doc-tests:test": "node scripts/doc-tests.js test"
+    "doc-tests:test": "node scripts/doc-tests.js test",
+    "doc-tests:demo": "node scripts/demo-doc-tests.js",
+    "doc-tests:validate-simple": "node scripts/simple-doc-validation.js"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",
@@ -56,6 +78,7 @@
     "@typescript-eslint/eslint-plugin": "8.42.0",
     "@typescript-eslint/parser": "8.42.0",
     "audit-ci": "7.1.0",
+    "concurrently": "9.2.1",
     "eslint": "8.57.0",
     "eslint-plugin-solid": "0.14.5",
     "husky": "9.1.7",
@@ -66,5 +89,34 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "reynard-algorithms": "^0.1.0",
+    "reynard-annotating": "^0.1.0",
+    "reynard-auth": "^0.1.0",
+    "reynard-boundingbox": "^0.1.0",
+    "reynard-caption": "^0.1.0",
+    "reynard-charts": "^0.1.0",
+    "reynard-chat": "^0.1.0",
+    "reynard-color-media": "^0.1.0",
+    "reynard-components": "^0.1.1",
+    "reynard-composables": "^0.1.0",
+    "reynard-connection": "^0.1.0",
+    "reynard-core": "^0.1.1",
+    "reynard-error-boundaries": "^0.1.1",
+    "reynard-features": "^0.1.0",
+    "reynard-file-processing": "^0.1.0",
+    "reynard-fluent-icons": "^0.1.1",
+    "reynard-gallery": "^0.1.0",
+    "reynard-games": "^0.1.0",
+    "reynard-model-management": "^0.1.0",
+    "reynard-monaco": "^0.1.1",
+    "reynard-rag": "^0.1.1",
+    "reynard-service-manager": "^0.1.0",
+    "reynard-settings": "^0.1.0",
+    "reynard-testing": "^0.1.0",
+    "reynard-themes": "^0.1.0",
+    "reynard-tools": "^0.1.0",
+    "reynard-ui": "^0.1.0"
   }
 }

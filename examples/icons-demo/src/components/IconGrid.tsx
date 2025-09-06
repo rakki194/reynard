@@ -4,7 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { getIcon } from "reynard-fluent-icons";
 
 interface IconGridProps {
   icons: [string, any][];
@@ -16,7 +16,7 @@ export const IconGrid: Component<IconGridProps> = (props) => {
     <div class="icon-grid">
       <For each={props.icons}>
         {([iconName, iconData]) => {
-          const iconElement = fluentIconsPackage.getIcon(iconName);
+          const iconElement = getIcon(iconName);
           const metadata = iconData.metadata;
           
           return (
@@ -26,7 +26,7 @@ export const IconGrid: Component<IconGridProps> = (props) => {
             >
               <div class="icon-display">
                 {iconElement && (
-                  <div innerHTML={iconElement.outerHTML} />
+                  <div innerHTML={iconElement} />
                 )}
               </div>
               <div class="icon-name">{metadata.name}</div>

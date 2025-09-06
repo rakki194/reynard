@@ -42,7 +42,7 @@ A comprehensive peer-to-peer chat system built on top of the Reynard chat founda
 ### Basic P2P Chat
 
 ```tsx
-import { P2PChatContainer } from "@reynard/components";
+import { P2PChatContainer } from "reynard-components";
 
 function MyApp() {
   const currentUser = {
@@ -71,7 +71,7 @@ function MyApp() {
 ### Custom P2P Chat with Hooks
 
 ```tsx
-import { useP2PChat } from "@reynard/components";
+import { useP2PChat } from "reynard-components";
 
 function CustomChat() {
   const currentUser = {
@@ -377,8 +377,8 @@ The P2P chat system uses CSS custom properties for theming:
 Import the styles:
 
 ```tsx
-import "@reynard/components/dist/chat/styles.css";
-import "@reynard/components/dist/chat/styles/p2p.css";
+import "reynard-components/dist/chat/styles.css";
+import "reynard-components/dist/chat/styles/p2p.css";
 ```
 
 ## Examples

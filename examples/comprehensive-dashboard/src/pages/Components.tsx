@@ -1,5 +1,5 @@
 import { createSignal, For, Show } from "solid-js";
-import { Grid, DataTable, Drawer, NavMenu, Breadcrumb } from "@reynard/ui";
+import { Grid, DataTable, Drawer, NavMenu, Breadcrumb } from "reynard-ui";
 import {
   Card,
   Modal,
@@ -7,8 +7,8 @@ import {
   Button,
   TextField,
   Select,
-} from "@reynard/components";
-import { useI18n, useNotifications } from "@reynard/core";
+} from "reynard-components";
+import { useI18n, useNotifications } from "reynard-core";
 
 // Define proper types for the table data
 interface TableRow {
@@ -19,8 +19,8 @@ interface TableRow {
   status: string;
 }
 
-// Use the Column interface from @reynard/ui
-import type { Column } from "@reynard/ui";
+// Use the Column interface from reynard-ui
+import type { Column } from "reynard-ui";
 
 export function Components() {
   const { t } = useI18n();

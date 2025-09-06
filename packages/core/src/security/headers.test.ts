@@ -292,6 +292,7 @@ describe('Security Headers', () => {
       expect(mockFetch).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
+          headers: expect.any(Object),
           credentials: 'same-origin'
         })
       );

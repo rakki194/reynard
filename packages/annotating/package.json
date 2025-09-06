@@ -46,9 +46,9 @@
     "ai"
   ],
   "dependencies": {
-    "@reynard/core": "file:../core",
-    "@reynard/service-manager": "file:../service-manager",
-    "@reynard/model-management": "file:../model-management"
+    "reynard-core": "file:../core",
+    "reynard-service-manager": "file:../service-manager",
+    "reynard-model-management": "file:../model-management"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

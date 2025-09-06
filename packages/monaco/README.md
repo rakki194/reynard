@@ -1,4 +1,4 @@
-# @reynard/monaco
+# reynard-monaco
 
 Monaco code editor and text editing components for Reynard, built with SolidJS.
 
@@ -14,7 +14,7 @@ Monaco code editor and text editing components for Reynard, built with SolidJS.
 ## Installation
 
 ```bash
-npm install @reynard/monaco
+npm install reynard-monaco
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install @reynard/monaco
 ### Basic Code Editor
 
 ```tsx
-import { CodeEditor } from '@reynard/monaco';
+import { CodeEditor } from 'reynard-monaco';
 
 function App() {
   const [code, setCode] = createSignal('console.log("Hello, World!");');
@@ -42,7 +42,7 @@ function App() {
 ### With Language Detection
 
 ```tsx
-import { CodeEditor, useLanguageDetection } from '@reynard/monaco';
+import { CodeEditor, useLanguageDetection } from 'reynard-monaco';
 
 function App() {
   const [code, setCode] = createSignal('def hello_world():\n    print("Hello, World!")');
@@ -62,7 +62,7 @@ function App() {
 ### With Shiki Integration
 
 ```tsx
-import { CodeEditor, useMonacoShiki } from '@reynard/monaco';
+import { CodeEditor, useMonacoShiki } from 'reynard-monaco';
 
 function App() {
   const [code, setCode] = createSignal('const x = 42;');
@@ -150,7 +150,7 @@ import {
   getLanguageDisplayName,
   isCodeFile,
   getLanguageInfo,
-} from '@reynard/monaco';
+} from 'reynard-monaco';
 
 // Get Monaco language from file path
 const lang = getMonacoLanguage('app.js'); // 'javascript'

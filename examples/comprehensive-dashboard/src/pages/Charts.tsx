@@ -4,9 +4,9 @@ import {
   BarChart,
   PieChart,
   TimeSeriesChart,
-} from "@reynard/charts";
-import { Card, Select } from "@reynard/components";
-import { useI18n } from "@reynard/core";
+} from "reynard-charts";
+import { Card, Select } from "reynard-components";
+import { useI18n } from "reynard-core";
 
 export function Charts() {
   const { t } = useI18n();

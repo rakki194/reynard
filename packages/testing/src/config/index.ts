@@ -1,5 +1,5 @@
 /**
- * Configuration exports for @reynard/testing
+ * Configuration exports for reynard-testing
  */
 
 export { createBaseVitestConfig, createComponentTestConfig, createUtilityTestConfig, createIntegrationTestConfig } from "./vitest.base";
