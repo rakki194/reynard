@@ -1,0 +1,80 @@
+.geometry-demo {
+  padding: var(--spacing);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.demo-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+  padding: var(--spacing);
+  background: var(--secondary-bg);
+  border-radius: var(--border-radius);
+}
+
+.demo-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--half-spacing);
+  background: transparent;
+}
+
+.geometry-canvas {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing) 0;
+  background: var(--secondary-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing);
+}
+
+.geometry-svg {
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+}
+
+.geometry-operations {
+  background: var(--secondary-bg);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing);
+}
+
+.geometry-operations h4 {
+  margin: 0 0 var(--spacing) 0;
+  color: var(--text-primary);
+}
+
+.operation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--half-spacing);
+  margin-bottom: var(--spacing);
+}
+
+.operation-results {
+  background: var(--card-bg);
+  padding: var(--half-spacing);
+  border-radius: var(--border-radius);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.operation-result {
+  padding: var(--quarter-spacing) 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.operation-result:last-child {
+  border-bottom: none;
+}

@@ -1,0 +1,298 @@
+.code-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-color, #ffffff);
+  border: 1px solid var(--border-color, #e1e5e9);
+  border-radius: var(--border-radius, 8px);
+  overflow: hidden;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing, 12px);
+  background: var(--secondary-bg, #f8f9fa);
+  border-bottom: 1px solid var(--border-color, #e1e5e9);
+  min-height: 48px;
+}
+
+.language-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing, 12px);
+}
+
+.language-name {
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+  font-size: var(--font-size, 14px);
+}
+
+.read-only-badge {
+  background: var(--accent, #007bff);
+  color: var(--text-on-accent, #ffffff);
+  padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
+  border-radius: var(--border-radius, 8px);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--half-spacing, 8px);
+}
+
+.save-button {
+  display: flex;
+  align-items: center;
+  gap: var(--quarter-spacing, 4px);
+  padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
+  background: var(--accent, #007bff);
+  color: var(--text-on-accent, #ffffff);
+  border: none;
+  border-radius: var(--border-radius, 8px);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-duration, 0.2s) var(--transition-timing, ease);
+}
+
+.save-button:hover {
+  background: color-mix(in srgb, var(--accent, #007bff) 85%, rgb(0 0 0));
+  transform: var(--hover-transform, translateY(-1px));
+  box-shadow: var(--shadow-hover, 0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.save-button:active {
+  transform: translateY(0);
+}
+
+.editor-container {
+  flex: 1;
+  position: relative;
+  min-height: 200px;
+}
+
+.monaco-editor-container {
+  width: 100%;
+  height: 100%;
+}
+
+.monaco-editor-container--custom-height {
+  height: var(--editor-height, 400px);
+}
+
+.monaco-editor-container--custom-width {
+  width: var(--editor-width, 100%);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #6c757d);
+  font-size: var(--font-size, 14px);
+}
+
+.editor-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--half-spacing, 8px) var(--spacing, 12px);
+  background: var(--secondary-bg, #f8f9fa);
+  border-top: 1px solid var(--border-color, #e1e5e9);
+  min-height: 32px;
+  font-size: 12px;
+  color: var(--text-secondary, #6c757d);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--quarter-spacing, 4px);
+}
+
+/* Monaco Editor Theme Integration */
+.code-editor .monaco-editor .margin {
+  background: var(--secondary-bg, #f8f9fa);
+}
+
+.code-editor .monaco-editor .monaco-editor-background {
+  background: var(--bg-color, #ffffff);
+}
+
+.code-editor .monaco-editor .scrollbar .slider {
+  background: var(--border-color, #e1e5e9);
+}
+
+.code-editor .monaco-editor .scrollbar .slider:hover {
+  background: var(--accent, #007bff);
+}
+
+.code-editor .monaco-editor .scrollbar .slider.active {
+  background: var(--accent, #007bff);
+}
+
+/* Minimap spacing and positioning */
+.code-editor .monaco-editor .minimap {
+  margin-left: var(--spacing, 12px);
+  border-left: 1px solid var(--border-color, #e1e5e9);
+}
+
+.code-editor .monaco-editor .minimap-slider {
+  background: var(--accent, #007bff);
+  opacity: 0.3;
+}
+
+.code-editor .monaco-editor .minimap-slider:hover {
+  opacity: 0.5;
+}
+
+.code-editor .monaco-editor .minimap-slider.active {
+  opacity: 0.7;
+}
+
+/* Ensure proper spacing between editor content and minimap */
+.code-editor .monaco-editor .editor-container {
+  padding-right: var(--spacing, 12px);
+}
+
+/* Remove overview ruler to prevent overlap */
+.code-editor .monaco-editor .overview-ruler {
+  display: none;
+}
+
+/* Language detection indicator */
+.language-detection-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--quarter-spacing, 4px);
+  color: var(--accent, #007bff);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.detection-icon {
+  font-size: 10px;
+}
+
+.confidence {
+  opacity: 0.7;
+  font-size: 10px;
+}
+
+/* Shiki indicator */
+.shiki-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--quarter-spacing, 4px);
+  color: var(--accent, #007bff);
+  font-size: 11px;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+.shiki-icon {
+  font-size: 10px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Theme-specific overrides */
+[data-theme="dark"] .code-editor {
+  background: var(--bg-color, #1a1a1a);
+  border-color: var(--border-color, #333333);
+}
+
+[data-theme="light"] .code-editor {
+  background: var(--bg-color, #ffffff);
+  border-color: var(--border-color, #e1e5e9);
+}
+
+[data-theme="gray"] .code-editor {
+  background: var(--bg-color, #f8f9fa);
+  border-color: var(--border-color, #dee2e6);
+}
+
+/* Responsive Design */
+@media (width <=768px) {
+  .editor-header {
+    padding: var(--half-spacing, 8px);
+    min-height: 40px;
+  }
+
+  .editor-status {
+    padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
+  }
+
+  .language-info {
+    gap: var(--half-spacing, 8px);
+  }
+
+  .editor-actions {
+    gap: var(--quarter-spacing, 4px);
+  }
+}
+
+/* Focus States */
+.save-button:focus-visible {
+  outline: 2px solid var(--accent, #007bff);
+  outline-offset: 2px;
+}
+
+.monaco-editor-container:focus-visible {
+  outline: 2px solid var(--accent, #007bff);
+  outline-offset: 2px;
+}
+
+/* Error container */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing, 12px);
+  text-align: center;
+  color: var(--error, #dc3545);
+}
+
+.error-icon {
+  font-size: 24px;
+  margin-bottom: var(--half-spacing, 8px);
+}
+
+.error-container h3 {
+  margin: 0 0 var(--half-spacing, 8px) 0;
+  font-size: 16px;
+}
+
+.error-container p {
+  margin: 0 0 var(--spacing, 12px) 0;
+  font-size: 14px;
+}
+
+.error-container button {
+  padding: var(--half-spacing, 8px) var(--spacing, 12px);
+  background: var(--accent, #007bff);
+  color: var(--text-on-accent, #ffffff);
+  border: none;
+  border-radius: var(--border-radius, 8px);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+

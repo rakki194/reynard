@@ -7,97 +7,97 @@
 :root {
   /* Light theme (default) */
   --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(220deg 20% 95%);
-  --secondary-bg: hsl(220deg 15% 90%);
-  --card-bg: hsl(220deg 15% 85%);
-  --text-primary: hsl(240deg 15% 12%);
-  --text-secondary: hsl(240deg 10% 45%);
-  --border-color: hsl(220deg 15% 75%);
-  --success: hsl(140deg 60% 45%);
-  --danger: hsl(0deg 70% 50%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
+  --success: hsl(120deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
 
   /* Spacing and layout */
-  --spacing: 0.75rem;
-  --border-radius: 6px;
-  --shadow: 0 2px 4px rgb(0 0 0 / 10%);
-  --transition: 0.2s ease;
+  --spacing: 1rem;
+  --border-radius: 0.5rem;
+  --shadow: 0 2px 4px hsl(0deg 0% 0% / 0.1);
+  --transition: 250ms ease-in-out;
 }
 
 /* Dark theme */
 :root[data-theme="dark"] {
-  --accent: hsl(270deg 60% 70%);
-  --bg-color: hsl(220deg 15% 8%);
-  --secondary-bg: hsl(220deg 15% 12%);
-  --card-bg: hsl(220deg 15% 16%);
-  --text-primary: hsl(220deg 20% 95%);
-  --text-secondary: hsl(220deg 15% 70%);
-  --border-color: hsl(220deg 15% 24%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* Banana theme */
 :root[data-theme="banana"] {
-  --accent: hsl(45deg 100% 45%);
-  --bg-color: hsl(50deg 40% 95%);
-  --secondary-bg: hsl(50deg 35% 90%);
-  --card-bg: hsl(50deg 30% 85%);
-  --text-primary: hsl(30deg 15% 15%);
-  --text-secondary: hsl(30deg 10% 45%);
-  --border-color: hsl(45deg 25% 75%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* Strawberry theme */
 :root[data-theme="strawberry"] {
-  --accent: hsl(350deg 70% 55%);
-  --bg-color: hsl(350deg 30% 95%);
-  --secondary-bg: hsl(350deg 25% 90%);
-  --card-bg: hsl(350deg 20% 85%);
-  --text-primary: hsl(350deg 15% 15%);
-  --text-secondary: hsl(350deg 10% 45%);
-  --border-color: hsl(350deg 25% 75%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* Gray theme */
 :root[data-theme="gray"] {
-  --accent: hsl(220deg 50% 55%);
-  --bg-color: hsl(220deg 15% 88%);
-  --secondary-bg: hsl(220deg 15% 82%);
-  --card-bg: hsl(220deg 15% 76%);
-  --text-primary: hsl(220deg 20% 15%);
-  --text-secondary: hsl(220deg 15% 35%);
-  --border-color: hsl(220deg 15% 65%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* Peanut theme */
 :root[data-theme="peanut"] {
-  --accent: hsl(30deg 60% 50%);
-  --bg-color: hsl(35deg 25% 93%);
-  --secondary-bg: hsl(35deg 20% 88%);
-  --card-bg: hsl(35deg 15% 83%);
-  --text-primary: hsl(25deg 15% 15%);
-  --text-secondary: hsl(25deg 10% 45%);
-  --border-color: hsl(30deg 25% 75%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* High-contrast black theme */
 :root[data-theme="high-contrast-black"] {
-  --accent: hsl(60deg 100% 50%);
-  --bg-color: hsl(0deg 0% 0%);
-  --secondary-bg: hsl(0deg 0% 10%);
-  --card-bg: hsl(0deg 0% 15%);
-  --text-primary: hsl(0deg 0% 100%);
-  --text-secondary: hsl(0deg 0% 85%);
-  --border-color: hsl(0deg 0% 40%);
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* High-contrast inverse theme */
 :root[data-theme="high-contrast-inverse"] {
-  --accent: hsl(240deg 100% 50%);
+  --accent: hsl(270deg 60% 60%);
   --bg-color: hsl(0deg 0% 100%);
   --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 90%);
-  --text-primary: hsl(0deg 0% 0%);
-  --text-secondary: hsl(0deg 0% 25%);
-  --border-color: hsl(0deg 0% 60%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --border-color: hsl(0deg 0% 85%);
 }
 
 /* Reset and base styles */

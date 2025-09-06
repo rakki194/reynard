@@ -1,0 +1,20 @@
+.algorithms-demo {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.demo-header h2 {
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.demo-header p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+}

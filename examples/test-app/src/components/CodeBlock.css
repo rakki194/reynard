@@ -1,0 +1,295 @@
+/* CodeBlock Component Styles */
+.code-block-container {
+  margin: 1.5rem 0;
+}
+
+.code-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.code-title::before {
+  content: '💻';
+  font-size: 1rem;
+}
+
+.code-block-wrapper {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--secondary-bg);
+  width: 100%;
+}
+
+.code-block {
+  position: relative;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--secondary-bg);
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.code-block.scrollable {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.code-block.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.code-block.error {
+  border-color: var(--error-color, #ef4444);
+  background: var(--error-bg, #fee2e2);
+}
+
+.highlighted-code {
+  margin: 0;
+  white-space: pre;
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fallback-code {
+  margin: 0;
+  background: var(--secondary-bg);
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  white-space: pre;
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fallback-code code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Loading state */
+.code-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--secondary-bg);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.code-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--error-bg, #fee2e2);
+  color: var(--error-color, #ef4444);
+  font-size: 0.875rem;
+  z-index: 10;
+  padding: 1rem;
+}
+
+.error-icon {
+  font-size: 1rem;
+}
+
+/* Code explanation */
+.code-explanation {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--info-bg, #f0f9ff);
+  border-left: 4px solid var(--info-color, #3b82f6);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Shiki theme overrides for better integration */
+.highlighted-code :global(.shiki) {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.highlighted-code :global(.shiki code) {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: block !important;
+}
+
+/* Line numbers support */
+.code-block.with-line-numbers .highlighted-code {
+  counter-reset: line-numbering;
+  padding-left: 0;
+}
+
+.code-block.with-line-numbers .highlighted-code :global(.line) {
+  counter-increment: line-numbering;
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.code-block.with-line-numbers .highlighted-code :global(.line::before) {
+  content: counter(line-numbering);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  text-align: right;
+  color: var(--text-secondary, #666);
+  font-size: 0.75rem;
+  line-height: inherit;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-right: 0.25rem;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .code-block {
+    font-size: 0.8rem;
+  }
+  
+  .highlighted-code,
+  .fallback-code {
+    padding: 0.5rem;
+  }
+  
+  .code-title {
+    font-size: 1rem;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .code-block {
+    border-color: var(--border-color-dark, #374151);
+  }
+  
+  .code-explanation {
+    background: var(--info-bg-dark, #1e3a8a);
+    border-left-color: var(--info-color-dark, #60a5fa);
+  }
+  
+  .code-block.with-line-numbers .highlighted-code :global(.line::before) {
+    color: var(--text-secondary-dark, #999);
+  }
+}
+
+/* Theme-specific line number colors */
+.code-block.with-line-numbers .highlighted-code :global(.line::before) {
+  color: var(--text-secondary, #666);
+}
+
+/* Ensure line numbers are visible in strawberry theme */
+[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
+  color: #e91e63;
+  opacity: 0.6;
+}
+
+/* Ensure line numbers are visible in dark themes */
+[data-theme="dark"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
+[data-theme="gray"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
+[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
+  color: #999;
+  opacity: 0.8;
+}
+
+/* Focus and accessibility */
+.code-block:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.code-block[tabindex] {
+  cursor: pointer;
+}
+
+.code-block[tabindex]:hover {
+  border-color: var(--accent);
+}
+
+/* Copy button support (for future enhancement) */
+.code-block-container:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 5;
+}
+
+.copy-button:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}

@@ -19,6 +19,13 @@ A comprehensive icon system for Reynard applications, featuring Fluent UI icons 
 - **Package System**: Support for multiple icon packages
 - **Dynamic Registration**: Register new icon packages at runtime
 
+### 🤖 AI/LLM Integration
+
+- **Natural Language Captions**: Every icon includes a descriptive caption for AI understanding
+- **Semantic Search**: Search icons using natural language queries
+- **Caption Utilities**: Tools for generating, validating, and managing icon captions
+- **LLM-Friendly Export**: Export captions in formats optimized for language models
+
 ### 📦 Categories
 
 - **Actions**: Common actions (save, delete, edit, etc.)
@@ -168,10 +175,66 @@ interface IconMetadata {
   name: string;
   category: string;
   description?: string;
+  caption?: string;  // Natural language caption for AI/LLM understanding
   tags?: string[];
   keywords?: string[];
 }
 ```
+
+## Natural Language Captions
+
+Every icon in the Reynard icon system includes a natural language caption designed to help AI and language models understand the icon's purpose and appearance. This makes it easier for AI systems to select appropriate icons for user interfaces.
+
+### Using Captions
+
+```tsx
+import { getIcon, getAllCaptions, searchIconsByCaption } from "@reynard/fluent-icons";
+
+// Get an icon's caption
+const saveIcon = getIcon("save");
+const metadata = fluentIconsPackage.getIconMetadata("save");
+console.log(metadata?.caption); // "A floppy disk icon for saving documents or data to storage"
+
+// Get all captions
+const allCaptions = getAllCaptions(allIcons);
+console.log(allCaptions["delete"]); // "A trash can icon for deleting or removing items permanently"
+
+// Search icons by natural language
+const results = searchIconsByCaption(allIcons, "save file");
+// Returns icons with captions matching "save file" with relevance scores
+```
+
+### Caption Utilities
+
+```tsx
+import {
+  generateCaption,
+  validateCaption,
+  suggestCaptionImprovements,
+  exportCaptions
+} from "@reynard/fluent-icons";
+
+// Generate a caption for an icon without one
+const caption = generateCaption(iconMetadata);
+
+// Validate caption quality
+const isValid = validateCaption(iconMetadata);
+
+// Get suggestions for improving a caption
+const suggestions = suggestCaptionImprovements(iconMetadata);
+
+// Export all captions for AI training
+const captionsJson = exportCaptions(allIcons, 'json');
+const captionsMarkdown = exportCaptions(allIcons, 'markdown');
+```
+
+### Example Captions
+
+- **save**: "A floppy disk icon for saving documents or data to storage"
+- **delete**: "A trash can icon for deleting or removing items permanently"
+- **search**: "A magnifying glass icon for searching, finding, or looking up content"
+- **heart**: "A heart icon for love, favorites, emotional reactions, or affection"
+- **brain**: "A brain icon representing artificial intelligence, machine learning, or cognitive computing"
 
 ## Available Icons
 

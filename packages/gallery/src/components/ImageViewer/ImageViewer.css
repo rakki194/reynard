@@ -138,8 +138,7 @@
   justify-content: center;
 }
 
-.reynard-image-viewer--loading::before {
-  content: "";
+.reynard-image-viewer--loading: before{content:"";
   width: 32px;
   height: 32px;
   border: 3px solid #e5e7eb;

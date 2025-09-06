@@ -1,0 +1,131 @@
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.notification:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.notification--success {
+  border-left: 4px solid var(--success-color, #10b981);
+}
+
+.notification--error {
+  border-left: 4px solid var(--error-color, #ef4444);
+}
+
+.notification--warning {
+  border-left: 4px solid var(--warning-color, #f59e0b);
+}
+
+.notification--info {
+  border-left: 4px solid var(--info-color, #3b82f6);
+}
+
+.notification--exiting {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+.notification__icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notification__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification__message {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-primary);
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.notification__progress {
+  margin-top: 8px;
+  height: 4px;
+  background: var(--bg-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.notification__progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+  width: var(--progress-width, 0%);
+}
+
+.notification__close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.notification__close:hover {
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .notification {
+    padding: 12px;
+    min-width: auto;
+    max-width: none;
+  }
+  
+  .notification__message {
+    font-size: 13px;
+  }
+}

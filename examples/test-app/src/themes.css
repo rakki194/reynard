@@ -1,0 +1,165 @@
+/**
+ * Theme Styles
+ * Extracted from Reynard's comprehensive theme system
+ */
+
+/* Light Theme (Default) */
+:root {
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 10%);
+  --text-secondary: hsl(0deg 0% 30%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(0deg 0% 85%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  --accent: hsl(270deg 60% 60%);
+  --bg-color: hsl(0deg 0% 10%);
+  --secondary-bg: hsl(0deg 0% 15%);
+  --card-bg: hsl(0deg 0% 15%);
+  --text-primary: hsl(0deg 0% 90%);
+  --text-secondary: hsl(0deg 0% 70%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(0deg 0% 25%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Gray Theme */
+:root[data-theme="gray"] {
+  --accent: hsl(0deg 0% 50%);
+  --bg-color: hsl(0deg 0% 95%);
+  --secondary-bg: hsl(0deg 0% 90%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 20%);
+  --text-secondary: hsl(0deg 0% 40%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(0deg 0% 75%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Banana Theme */
+:root[data-theme="banana"] {
+  --accent: hsl(45deg 100% 50%);
+  --bg-color: hsl(45deg 100% 95%);
+  --secondary-bg: hsl(45deg 100% 90%);
+  --card-bg: hsl(45deg 100% 98%);
+  --text-primary: hsl(45deg 100% 15%);
+  --text-secondary: hsl(45deg 100% 35%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(45deg 100% 80%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Strawberry Theme */
+:root[data-theme="strawberry"] {
+  --accent: hsl(330deg 100% 50%);
+  --bg-color: hsl(330deg 100% 95%);
+  --secondary-bg: hsl(330deg 100% 90%);
+  --card-bg: hsl(330deg 100% 98%);
+  --text-primary: hsl(330deg 100% 15%);
+  --text-secondary: hsl(330deg 100% 35%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(330deg 100% 80%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Peanut Theme */
+:root[data-theme="peanut"] {
+  --accent: hsl(30deg 50% 50%);
+  --bg-color: hsl(30deg 50% 95%);
+  --secondary-bg: hsl(30deg 50% 90%);
+  --card-bg: hsl(30deg 50% 98%);
+  --text-primary: hsl(30deg 50% 15%);
+  --text-secondary: hsl(30deg 50% 35%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(30deg 50% 80%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* High Contrast Black Theme */
+:root[data-theme="high-contrast-black"] {
+  --accent: hsl(200deg 100% 50%);
+  --bg-color: hsl(0deg 0% 0%);
+  --secondary-bg: hsl(0deg 0% 10%);
+  --card-bg: hsl(0deg 0% 5%);
+  --text-primary: hsl(0deg 0% 100%);
+  --text-secondary: hsl(0deg 0% 80%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(0deg 0% 50%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.8);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* High Contrast Inverse Theme */
+:root[data-theme="high-contrast-inverse"] {
+  --accent: hsl(200deg 100% 50%);
+  --bg-color: hsl(0deg 0% 100%);
+  --secondary-bg: hsl(0deg 0% 95%);
+  --card-bg: hsl(0deg 0% 100%);
+  --text-primary: hsl(0deg 0% 0%);
+  --text-secondary: hsl(0deg 0% 20%);
+  --text-on-accent: hsl(0deg 0% 100%);
+  --border-color: hsl(0deg 0% 0%);
+  --success: hsl(120deg 60% 50%);
+  --warning: hsl(45deg 60% 50%);
+  --danger: hsl(0deg 60% 50%);
+  --info: hsl(200deg 60% 50%);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-backdrop: blur(4px);
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Apply theme colors to body */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+/* Test comment */
+/* Another test comment */

@@ -1,0 +1,71 @@
+{
+  "name": "@reynard/games",
+  "version": "0.1.0",
+  "description": "Interactive games and visualizations for Reynard framework",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./dist/index.css": "./dist/index.css",
+    "./union-find": {
+      "types": "./dist/union-find/index.d.ts",
+      "import": "./dist/union-find/index.js"
+    },
+    "./collision": {
+      "types": "./dist/collision/index.d.ts",
+      "import": "./dist/collision/index.js"
+    },
+    "./spatial-hash": {
+      "types": "./dist/spatial-hash/index.d.ts",
+      "import": "./dist/spatial-hash/index.js"
+    },
+    "./geometry": {
+      "types": "./dist/geometry/index.d.ts",
+      "import": "./dist/geometry/index.js"
+    },
+    "./performance": {
+      "types": "./dist/performance/index.d.ts",
+      "import": "./dist/performance/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist --jsx preserve --jsxImportSource solid-js --target ES2022 --moduleResolution bundler --skipLibCheck",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "@reynard/algorithms": "file:../algorithms",
+    "@reynard/components": "file:../components",
+    "@reynard/fluent-icons": "file:../fluent-icons",
+    "@reynard/testing": "file:../testing"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@testing-library/jest-dom": "6.8.0",
+    "@types/node": "24.3.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "jsdom": "26.1.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}

@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+psycopg2-binary
+python-jose[cryptography]
+argon2-cffi
+passlib[bcrypt]

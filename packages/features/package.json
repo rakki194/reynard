@@ -1,0 +1,77 @@
+{
+  "name": "@reynard/features",
+  "version": "0.1.0",
+  "description": "Advanced feature system for managing application features, dependencies, and capabilities",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs",
+      "types": "./dist/core.d.ts"
+    },
+    "./registry": {
+      "import": "./dist/registry.js",
+      "require": "./dist/registry.cjs",
+      "types": "./dist/registry.d.ts"
+    },
+    "./dependencies": {
+      "import": "./dist/dependencies.js",
+      "require": "./dist/dependencies.cjs",
+      "types": "./dist/dependencies.d.ts"
+    },
+    "./presets": {
+      "import": "./dist/presets.js",
+      "require": "./dist/presets.cjs",
+      "types": "./dist/presets.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc --build",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist .turbo node_modules"
+  },
+  "keywords": [
+    "reynard",
+    "features",
+    "feature-system",
+    "dependencies",
+    "capabilities",
+    "solidjs",
+    "monorepo"
+  ],
+  "author": "Kade",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "eslint": "8.57.0",
+    "eslint-plugin-solid": "0.14.5",
+    "solid-js": "1.9.9",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

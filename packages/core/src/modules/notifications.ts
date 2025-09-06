@@ -45,7 +45,9 @@ const DEFAULT_DURATIONS = {
 } as const;
 
 export const createNotificationsModule = (): NotificationsModule => {
+  console.log("createNotificationsModule: Creating notifications module");
   const [notifications, setNotifications] = createSignal<Notification[]>([]);
+  
 
   const generateId = () =>
     `notification-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -60,6 +62,10 @@ export const createNotificationsModule = (): NotificationsModule => {
       duration?: number;
     } = {},
   ): string => {
+    console.log("notify: Called with", message, type, options);
+    
+    // Always use internal state for new NotificationToast system
+    console.log("notify: Using internal state");
     const id = generateId();
     const { group, icon, progress, duration } = options;
 
@@ -135,14 +141,30 @@ export const createNotificationsModule = (): NotificationsModule => {
   };
 
   const removeNotification = (id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    // Use global notification container if available
+    if (typeof window !== 'undefined' && (window as any).__notificationContainer) {
+      (window as any).__notificationContainer.removeNotification(id);
+    } else {
+      // Fallback to internal state if global container not available
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    }
   };
 
   const clearNotifications = (group?: string) => {
-    if (group) {
-      setNotifications((prev) => prev.filter((n) => n.group !== group));
+    // Use global notification container if available
+    if (typeof window !== 'undefined' && (window as any).__notificationContainer) {
+      if (group) {
+        (window as any).__notificationContainer.removeNotificationByGroup(group);
+      } else {
+        (window as any).__notificationContainer.clearAllNotifications();
+      }
     } else {
-      setNotifications([]);
+      // Fallback to internal state if global container not available
+      if (group) {
+        setNotifications((prev) => prev.filter((n) => n.group !== group));
+      } else {
+        setNotifications([]);
+      }
     }
   };
 

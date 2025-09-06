@@ -9,7 +9,6 @@ import {
   For,
   createEffect,
   createResource,
-  Suspense,
 } from "solid-js";
 import {
   ThemeProvider,
@@ -28,7 +27,6 @@ import { AddTodo } from "./components/AddTodo";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { loadTranslations } from "./translations";
-import { en } from "./translations/en";
 import "./styles.css";
 
 interface Todo {

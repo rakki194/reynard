@@ -1,3 +1,9 @@
+/* CSS Custom Properties for Drawer */
+:root {
+  --drawer-custom-width: 400px;
+  --drawer-custom-height: 300px;
+}
+
 .reynard-drawer {
   position: fixed;
   top: 0;

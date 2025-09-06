@@ -1,0 +1,110 @@
+.performance-demo {
+  padding: var(--spacing);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.demo-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+  padding: var(--spacing);
+  background: var(--secondary-bg);
+  border-radius: var(--border-radius);
+}
+
+.demo-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--half-spacing);
+  background: transparent;
+}
+
+.performance-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing);
+  margin: var(--spacing) 0;
+}
+
+.metric-card {
+  background: var(--secondary-bg);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.metric-card h4 {
+  margin: 0 0 var(--spacing) 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.measurements-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--half-spacing);
+}
+
+.measurement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--half-spacing);
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+}
+
+.measurement-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.measurement-duration {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.measurement-memory {
+  color: var(--info);
+  font-weight: 500;
+}
+
+.memory-info {
+  background: var(--card-bg);
+  padding: var(--half-spacing);
+  border-radius: var(--border-radius);
+}
+
+.memory-info p {
+  margin: var(--quarter-spacing) 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.demo-instructions {
+  background: var(--secondary-bg);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing);
+}
+
+.demo-instructions p {
+  margin: var(--half-spacing) 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .performance-metrics {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,831 @@
+/* ChatDemo Component Styles */
+
+.chat-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Chat font for all messages */
+.message-content,
+.message-text {
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.demo-section {
+  padding: 1.5rem;
+}
+
+.demo-tab-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.chat-container-demo {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chat-message--user {
+  align-items: flex-end;
+}
+
+.chat-message--assistant {
+  align-items: flex-start;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.message-sender {
+  font-weight: 600;
+}
+
+.message-time {
+  font-size: 0.75rem;
+}
+
+.message-content {
+  background: #f8fafc;
+  color: #1f2937;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* Override MarkdownRenderer text color in message content */
+.message-content .reynard-markdown-renderer {
+  color: #1f2937 !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message-content .reynard-markdown-renderer p {
+  color: #1f2937 !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.chat-message--user .message-content {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Override MarkdownRenderer text color for user messages */
+.chat-message--user .message-content .reynard-markdown-renderer {
+  color: white !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.chat-message--user .message-content .reynard-markdown-renderer p {
+  color: white !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message-thinking {
+  margin-top: 0.5rem;
+}
+
+.thinking-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fef3c7;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+.message-tools {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tool-call {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+}
+
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tool-name {
+  font-weight: 600;
+  font-family: monospace;
+  color: #1e40af;
+}
+
+.tool-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tool-status--completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tool-status--running {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.tool-status--error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tool-input,
+.tool-result {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.tool-input strong,
+.tool-result strong {
+  color: #374151;
+}
+
+.chat-input-demo {
+  border-top: 1px solid #e2e8f0;
+  padding: 1rem;
+}
+
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.advanced-features {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.feature-demo {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.feature-demo h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.feature-demo p {
+  margin: 0 0 1rem 0;
+  color: #6b7280;
+}
+
+.streaming-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.streaming-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.demo-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.streaming-status {
+  color: #6b7280;
+}
+
+.progress {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.streaming-demo {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  min-height: 200px;
+}
+
+.streaming-content {
+  position: relative;
+}
+
+.streaming-text {
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.streaming-cursor {
+  color: #3b82f6;
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.thinking-demo {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.thinking-dots {
+  display: flex;
+  gap: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+.thinking-dots span {
+  width: 6px;
+  height: 6px;
+  background: #f59e0b;
+  border-radius: 50%;
+  animation: thinking 1.4s infinite ease-in-out;
+}
+
+.thinking-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.thinking-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes thinking {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.tool-demo {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.tool-progress {
+  margin-top: 0.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #10b981;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill--complete {
+  width: 100%;
+}
+
+.markdown-demo {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.markdown-content {
+  line-height: 1.6;
+}
+
+.markdown-content h5 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.markdown-content pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.markdown-content code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.markdown-content ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-content li {
+  margin: 0.25rem 0;
+}
+
+.config-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.config-section {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.config-section h4 {
+  margin: 0 0 0.75rem 0;
+  color: #1f2937;
+}
+
+.config-section ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.config-section li {
+  margin: 0.5rem 0;
+  color: #6b7280;
+}
+
+.config-section strong {
+  color: #374151;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+/* P2P Chat Demo Styles */
+.p2p-chat-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.p2p-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.connection-status {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.p2p-demo-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 200px;
+  gap: 1rem;
+  height: 500px;
+}
+
+.room-list,
+.user-list {
+  overflow-y: auto;
+}
+
+.room-list h4,
+.user-list h4 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.room-items,
+.user-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.room-item {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: 1px solid transparent;
+}
+
+.room-item:hover {
+  background: #f3f4f6;
+}
+
+.room-item.active {
+  background: #dbeafe;
+  border-color: #3b82f6;
+}
+
+.room-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.room-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.room-participants {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.unread-badge {
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.chat-header h4 {
+  margin: 0;
+  color: #1f2937;
+}
+
+.participant-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.message {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.message.own {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.message-content {
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message.own .message-content {
+  align-items: flex-end;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.sender-name {
+  font-weight: 600;
+  color: #374151;
+}
+
+.message-time {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.message-text {
+  background: #f3f4f6;
+  color: #1f2937;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+/* Override MarkdownRenderer text color in P2P message text */
+.message-text .reynard-markdown-renderer {
+  color: #1f2937 !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message-text .reynard-markdown-renderer p {
+  color: #1f2937 !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message.own .message-text {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Override MarkdownRenderer text color for user's own messages in P2P */
+.message.own .message-text .reynard-markdown-renderer {
+  color: white !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message.own .message-text .reynard-markdown-renderer p {
+  color: white !important;
+  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.5 !important;
+}
+
+.message-reactions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.reaction {
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reaction:hover {
+  background: #e5e7eb;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f3f4f6;
+  border-radius: 0.75rem;
+  max-width: fit-content;
+}
+
+.typing-avatars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.typing-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.typing-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.125rem;
+}
+
+.typing-dots span {
+  width: 4px;
+  height: 4px;
+  background: #9ca3af;
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.message-input-area {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.message-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.message-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.user-item:hover {
+  background: #f3f4f6;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.user-status {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.user-status.online {
+  color: #059669;
+}
+
+.user-status.away {
+  color: #d97706;
+}
+
+.user-status.busy {
+  color: #dc2626;
+}
+
+.user-status.offline {
+  color: #6b7280;
+}

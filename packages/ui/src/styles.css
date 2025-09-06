@@ -13,6 +13,7 @@
   overflow: hidden;
   --sidebar-width: 280px;
   --sidebar-collapsed-width: 60px;
+  --accent-rgb: 59, 130, 246; /* RGB values for --accent color */
 }
 
 .reynard-app-layout__overlay {

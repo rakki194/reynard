@@ -1,0 +1,54 @@
+{
+  "name": "@reynard/composables",
+  "version": "0.1.0",
+  "description": "Reusable reactive logic for Reynard applications",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc --build",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "composables",
+    "solidjs",
+    "reactive",
+    "hooks",
+    "reynard"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  },
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

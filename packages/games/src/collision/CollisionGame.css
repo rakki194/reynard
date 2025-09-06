@@ -1,0 +1,62 @@
+.collision-game {
+  padding: var(--spacing);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.game-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+  padding: var(--spacing);
+  background: var(--secondary-bg);
+  border-radius: var(--border-radius);
+}
+
+.game-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.game-controls {
+  display: flex;
+  gap: var(--half-spacing);
+  background: transparent;
+}
+
+.game-stats {
+  display: flex;
+  gap: var(--spacing);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.collision-canvas {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing) 0;
+  background: var(--secondary-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing);
+}
+
+.balls-svg {
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+}
+
+.game-instructions {
+  background: var(--secondary-bg);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing);
+}
+
+.game-instructions p {
+  margin: var(--half-spacing) 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}

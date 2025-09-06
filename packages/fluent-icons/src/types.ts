@@ -41,6 +41,9 @@ export interface IconMetadata {
   /** Icon description */
   description?: string;
 
+  /** Natural language caption for AI/LLM understanding */
+  caption?: string;
+
   /** Icon keywords for search */
   keywords?: string[];
 }

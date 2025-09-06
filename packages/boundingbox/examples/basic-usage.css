@@ -1,0 +1,31 @@
+/* Basic Usage Example Styles */
+
+.example-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.example-description {
+  margin-bottom: 1rem;
+}
+
+.example-instructions {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.example-instructions h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.example-instructions ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.example-instructions li {
+  margin-bottom: 0.25rem;
+}

@@ -58,6 +58,17 @@ export {
   iconCategories,
 } from "./categories";
 
+// Export caption utilities
+export {
+  generateCaption,
+  searchIconsByCaption,
+  getAllCaptions,
+  validateCaption,
+  suggestCaptionImprovements,
+  generateMissingCaptions,
+  exportCaptions,
+} from "./caption-utils";
+
 // Auto-register the Fluent UI icons package
 import { fluentIconsPackage } from "./fluentIcons";
 import { iconRegistry } from "./registry";

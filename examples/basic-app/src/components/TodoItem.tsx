@@ -25,15 +25,15 @@ export const TodoItem: Component<TodoItemProps> = (props) => {
           id={`todo-${props.todo.id}`}
           type="checkbox"
           checked={props.todo.completed}
-          onChange={props.onToggle}
+          onChange={() => props.onToggle()}
           aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
         />
-        <span class="checkmark"></span>
+        <span class="checkmark" />
       </label>
 
       <span class="todo-text">{props.todo.text}</span>
 
-      <button class="todo-delete" onClick={props.onDelete} title="Delete todo">
+      <button class="todo-delete" onClick={() => props.onDelete()} title="Delete todo">
         ×
       </button>
     </div>

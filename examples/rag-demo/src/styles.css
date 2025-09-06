@@ -1,0 +1,553 @@
+/**
+ * RAG Demo App Styles
+ * Using Reynard's CSS conventions and design system
+ */
+
+/* ==========================================================================
+   CSS Variables & Theme Integration
+   ========================================================================== */
+
+:root {
+  /* App-specific spacing */
+  --app-spacing-xs: 0.25rem;
+  --app-spacing-sm: 0.5rem;
+  --app-spacing-md: 1rem;
+  --app-spacing-lg: 1.5rem;
+  --app-spacing-xl: 2rem;
+  --app-spacing-2xl: 3rem;
+
+  /* App-specific colors */
+  --app-primary: var(--accent);
+  --bg-primary: var(--bg-color);
+  --bg-secondary: var(--secondary-bg);
+  --app-secondary: var(--secondary-bg);
+  --app-success: var(--success, #10b981);
+  --app-warning: var(--warning, #f59e0b);
+  --app-danger: var(--danger, #ef4444);
+
+  /* App-specific shadows */
+  --app-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --app-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --app-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --app-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* App-specific border radius */
+  --app-radius-sm: 4px;
+  --app-radius-md: 6px;
+  --app-radius-lg: 8px;
+  --app-radius-xl: 12px;
+  --app-radius-2xl: 16px;
+}
+
+/* ==========================================================================
+   App Layout
+   ========================================================================== */
+
+.rag-demo-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.app-header {
+  padding: var(--app-spacing-xl) var(--app-spacing-lg);
+  text-align: center;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--app-shadow-sm);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--app-spacing-md);
+  margin-bottom: var(--app-spacing-md);
+}
+
+.header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--app-primary);
+}
+
+.header-title h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.header-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--app-spacing-lg) 0;
+}
+
+/* API Status */
+.api-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--app-spacing-sm);
+  margin-bottom: var(--app-spacing-lg);
+}
+
+.status-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.status-connected {
+  background-color: var(--app-success);
+}
+
+.status-error {
+  background-color: var(--app-danger);
+}
+
+.status-checking {
+  background-color: var(--app-warning);
+}
+
+.status-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-text.status-connected {
+  color: var(--app-success);
+}
+
+.status-text.status-error {
+  color: var(--app-danger);
+}
+
+.status-text.status-checking {
+  color: var(--app-warning);
+}
+
+.error-alert {
+  background-color: color-mix(in srgb, var(--app-danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--app-danger) 20%, transparent);
+  border-radius: var(--app-radius-md);
+  padding: var(--app-spacing-md);
+  color: var(--app-danger);
+  font-size: 0.875rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Features Section
+   ========================================================================== */
+
+.features-section {
+  padding: var(--app-spacing-2xl) var(--app-spacing-lg);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--app-spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--app-shadow-lg);
+}
+
+.feature-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--app-spacing-md);
+}
+
+.feature-icon {
+  width: 3rem;
+  height: 3rem;
+  padding: var(--app-spacing-sm);
+  border-radius: var(--app-radius-lg);
+  color: white;
+}
+
+.brain-icon {
+  background-color: var(--app-primary);
+}
+
+.database-icon {
+  background-color: var(--app-success);
+}
+
+.code-icon {
+  background-color: #8b5cf6;
+}
+
+.feature-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.feature-content p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Main Content
+   ========================================================================== */
+
+.main-content {
+  flex: 1;
+  padding: var(--app-spacing-xl) var(--app-spacing-lg);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--app-spacing-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-section {
+  min-height: 600px;
+}
+
+.rag-search-container {
+  height: 100%;
+}
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-spacing-lg);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--app-spacing-sm);
+  margin-bottom: var(--app-spacing-md);
+}
+
+.card-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--app-primary);
+}
+
+.card-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Result Details */
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-spacing-md);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-spacing-xs);
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.similarity-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--app-primary);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: var(--app-spacing-xs) var(--app-spacing-sm);
+  border-radius: var(--app-radius-md);
+  width: fit-content;
+}
+
+.rank-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.source-code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.75rem;
+  background-color: var(--secondary-bg);
+  padding: var(--app-spacing-xs) var(--app-spacing-sm);
+  border-radius: var(--app-radius-sm);
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.chunk-id {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.75rem;
+  background-color: var(--secondary-bg);
+  padding: var(--app-spacing-xs) var(--app-spacing-sm);
+  border-radius: var(--app-radius-sm);
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.model-name {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+/* Actions */
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-spacing-sm);
+}
+
+/* Getting Started */
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-spacing-md);
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--app-spacing-md);
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: color-mix(in srgb, var(--app-primary) 20%, transparent);
+  color: var(--app-primary);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--app-spacing-xs);
+}
+
+.step-description {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.app-footer {
+  padding: var(--app-spacing-lg);
+  text-align: center;
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+.app-footer p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.heart {
+  color: var(--app-danger);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: var(--app-spacing-lg);
+  }
+
+  .sidebar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: var(--app-spacing-lg) var(--app-spacing-md);
+  }
+
+  .header-title h1 {
+    font-size: 2rem;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  .features-section {
+    padding: var(--app-spacing-xl) var(--app-spacing-md);
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--app-spacing-md);
+  }
+
+  .main-content {
+    padding: var(--app-spacing-lg) var(--app-spacing-md);
+  }
+
+  .content-grid {
+    gap: var(--app-spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    flex-direction: column;
+    gap: var(--app-spacing-sm);
+  }
+
+  .header-title h1 {
+    font-size: 1.75rem;
+  }
+
+  .feature-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .step-item {
+    gap: var(--app-spacing-sm);
+  }
+}
+
+/* ==========================================================================
+   Dark Mode Adjustments
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .rag-demo-app {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  }
+}
+
+/* ==========================================================================
+   Animation Enhancements
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.feature-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* ==========================================================================
+   Focus States
+   ========================================================================== */
+
+.rag-demo-app *:focus-visible {
+  outline: 2px solid var(--app-primary);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .rag-demo-app {
+    background: white;
+  }
+
+  .app-header,
+  .features-section,
+  .app-footer {
+    background: white;
+    box-shadow: none;
+    border: none;
+  }
+
+  .feature-card,
+  .result-details-card,
+  .actions-card,
+  .getting-started-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}

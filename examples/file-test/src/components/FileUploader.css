@@ -1,0 +1,9 @@
+.upload-text p {
+  margin: 0;
+}
+
+.upload-text .file-types {
+  font-size: 0.875rem;
+  color: #999;
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,1 @@
+export { UnionFindGame } from './UnionFindGame';

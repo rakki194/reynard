@@ -57,8 +57,16 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
     - [@reynard/components](#reynardcomponents)
       - [Primitives](#primitives)
       - [Composite Components](#composite-components)
-      - [Chat System Features](#chat-system-features)
       - [Components Example Usage](#components-example-usage)
+    - [@reynard/chat](#reynardchat)
+      - [Chat Features](#chat-features)
+      - [Chat Components](#chat-components)
+      - [Chat Composables](#chat-composables)
+      - [Chat Example Usage](#chat-example-usage)
+    - [@reynard/rag](#reynardrag)
+      - [RAG Features](#rag-features)
+      - [RAG Components](#rag-components)
+      - [RAG Example Usage](#rag-example-usage)
     - [@reynard/auth](#reynardauth)
       - [Auth Features](#auth-features)
       - [Auth Components](#auth-components)
@@ -79,6 +87,10 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
       - [Settings Components](#settings-components)
       - [Settings Composables](#settings-composables)
       - [Settings Example Usage](#settings-example-usage)
+    - [@reynard/algorithms](#reynardalgorithms)
+      - [Algorithm Types](#algorithm-types)
+      - [Core Features](#core-features)
+      - [Algorithms Example Usage](#algorithms-example-usage)
     - [@reynard/file-processing](#reynardfile-processing)
       - [Supported File Types](#supported-file-types)
       - [Core Components](#core-components)
@@ -123,11 +135,14 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 | -------------------------- | ---------------------------------- | ------- |
 | `@reynard/core`            | Core framework and utilities       | `0.1.0` |
 | `@reynard/components`      | UI component library               | `0.1.0` |
+| `@reynard/chat`            | Chat system and messaging          | `0.1.0` |
+| `@reynard/rag`             | RAG search and retrieval           | `0.1.0` |
 | `@reynard/auth`            | Authentication and user management | `0.1.0` |
 | `@reynard/charts`          | Data visualization components      | `0.1.0` |
 | `@reynard/gallery`         | File and media management          | `0.1.0` |
 | `@reynard/settings`        | Configuration management           | `0.1.0` |
 | `@reynard/file-processing` | Advanced file processing pipeline  | `0.1.0` |
+| `@reynard/algorithms`      | Algorithm primitives and data structures | `0.1.0` |
 | `@reynard/color-media`     | Color and media utilities          | `0.1.0` |
 | `@reynard/ui`              | Additional UI components           | `0.1.0` |
 | `@reynard/themes`          | Theme system and built-in themes   | `0.1.0` |
@@ -143,7 +158,7 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 npm install @reynard/core solid-js
 
 # Install additional packages as needed
-npm install @reynard/components @reynard/auth @reynard/charts
+npm install @reynard/components @reynard/chat @reynard/rag @reynard/auth @reynard/charts
 ```
 
 ### Basic Usage
@@ -207,7 +222,7 @@ cd my-reynard-app
 npm init -y
 
 # Install dependencies
-npm install @reynard/core @reynard/components solid-js
+npm install @reynard/core @reynard/components @reynard/chat @reynard/rag solid-js
 npm install -D vite vite-plugin-solid typescript @types/node
 ```
 
@@ -958,6 +973,8 @@ This tutorial covered:
 
 Now that you have a solid foundation, try:
 
+- **Adding Chat Features** - Use `@reynard/chat` for messaging and real-time communication
+- **Implementing RAG Search** - Add intelligent search with `@reynard/rag`
 - **Adding Authentication** - Use `@reynard/auth` for user management
 - **Data Visualization** - Add charts with `@reynard/charts`
 - **File Management** - Implement file uploads with `@reynard/gallery`
@@ -1036,15 +1053,6 @@ Production-ready SolidJS component library with comprehensive theming and access
 
 - **Modal** - Flexible modal dialog with backdrop and animations
 - **Tabs** - Tab navigation with keyboard support and accessibility
-- **Chat System** - Complete chat interface with streaming, markdown, and tool integration
-
-#### Chat System Features
-
-- **Real-time Streaming** - Advanced streaming text processing with real-time markdown rendering
-- **Thinking Sections** - Support for AI assistant thinking process visualization
-- **Tool Integration** - Complete tool calling system with progress tracking
-- **Markdown Parsing** - Full markdown support including tables, code blocks, and math
-- **P2P Support** - Peer-to-peer chat capabilities with WebRTC
 
 #### Components Example Usage
 
@@ -1055,8 +1063,8 @@ import {
   TextField,
   Modal,
   Tabs,
-  ChatContainer,
 } from "@reynard/components";
+import { ChatContainer } from "@reynard/chat";
 
 function MyApp() {
   const [isModalOpen, setIsModalOpen] = createSignal(false);
@@ -1101,6 +1109,108 @@ function MyApp() {
         }}
       />
     </div>
+  );
+}
+```
+
+### @reynard/chat
+
+Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.
+
+#### Chat Features
+
+- **Real-time Streaming** - Advanced streaming text processing with real-time markdown rendering
+- **Thinking Sections** - Support for AI assistant thinking process visualization
+- **Tool Integration** - Complete tool calling system with progress tracking
+- **Markdown Parsing** - Full markdown support including tables, code blocks, and math
+- **P2P Support** - Peer-to-peer chat capabilities with WebRTC
+- **TypeScript First** - Complete type safety with excellent IntelliSense
+
+#### Chat Components
+
+- **ChatContainer** - Main chat interface with message display and input handling
+- **ChatMessage** - Individual message component with markdown rendering
+- **MessageInput** - Text input with send functionality and keyboard shortcuts
+- **P2PChatContainer** - Peer-to-peer chat interface with user management
+- **ThinkingIndicator** - Visual indicator for AI thinking processes
+- **ToolCallDisplay** - Display component for tool call results and progress
+
+#### Chat Composables
+
+- **`useChat()`** - Main chat state management with streaming support
+- **`useP2PChat()`** - Peer-to-peer chat functionality with WebRTC
+
+#### Chat Example Usage
+
+```tsx
+import { ChatContainer, P2PChatContainer } from "@reynard/chat";
+
+function ChatApp() {
+  return (
+    <div>
+      <ChatContainer
+        endpoint="/api/chat"
+        height="600px"
+        config={{
+          enableThinking: true,
+          enableTools: true,
+          showTimestamps: true,
+        }}
+        onMessageSent={(message) => console.log("Sent:", message)}
+        onMessageReceived={(message) => console.log("Received:", message)}
+      />
+      
+      <P2PChatContainer
+        currentUser={{ id: "user1", name: "Alice", status: "online" }}
+        realtimeEndpoint="ws://localhost:8080"
+        config={{
+          enableTyping: true,
+          enablePresence: true,
+        }}
+      />
+    </div>
+  );
+}
+```
+
+### @reynard/rag
+
+RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive search capabilities.
+
+#### RAG Features
+
+- **Advanced Search Interface** - Comprehensive search UI with filtering and sorting
+- **EmbeddingGemma Integration** - Built-in support for EmbeddingGemma models
+- **Real-time Results** - Live search results with similarity scoring
+- **Metadata Support** - Rich metadata display and filtering
+- **TypeScript First** - Complete type safety with excellent IntelliSense
+
+#### RAG Components
+
+- **RAGSearch** - Main search interface with query input and result display
+- **SearchFilters** - Advanced filtering options for search results
+- **ResultCard** - Individual search result display with metadata
+- **SimilarityIndicator** - Visual similarity score display
+
+#### RAG Example Usage
+
+```tsx
+import { RAGSearch } from "@reynard/rag";
+
+function RAGApp() {
+  return (
+    <RAGSearch
+      endpoint="/api/rag/search"
+      height="600px"
+      config={{
+        enableFilters: true,
+        showMetadata: true,
+        maxResults: 20,
+        similarityThreshold: 0.7,
+      }}
+      onSearch={(query) => console.log("Searching:", query)}
+      onResultClick={(result) => console.log("Selected:", result)}
+    />
   );
 }
 ```
@@ -1395,6 +1505,71 @@ function App() {
 }
 ```
 
+### @reynard/algorithms
+
+Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and geometric calculations.
+
+#### Algorithm Types
+
+- **Union-Find Algorithm** - Efficient set operations and cycle detection with path compression
+- **AABB Collision Detection** - Spatial queries and overlap detection with spatial hashing support
+- **Spatial Hashing** - Efficient spatial partitioning and nearest neighbor searches
+- **Performance Utilities** - Benchmarking, profiling, and monitoring tools
+- **Geometry Operations** - 2D geometric calculations and transformations
+
+#### Core Features
+
+- **High Performance** - Optimized algorithms with O(α(n)) Union-Find and O(1) collision detection
+- **Memory Efficient** - Minimal memory overhead with automatic cleanup and optimization
+- **Type Safe** - Full TypeScript support with comprehensive type definitions
+- **Framework Agnostic** - Pure algorithms that work with any JavaScript framework
+
+#### Algorithms Example Usage
+
+```tsx
+import {
+  UnionFind,
+  detectCycle,
+  checkCollision,
+  SpatialHash,
+  PerformanceTimer,
+  PointOps,
+  VectorOps,
+} from "@reynard/algorithms";
+
+function AlgorithmDemo() {
+  // Union-Find for connected components
+  const uf = new UnionFind(10);
+  uf.union(0, 1);
+  uf.union(1, 2);
+  console.log(uf.connected(0, 2)); // true
+
+  // Collision detection
+  const aabb1 = { x: 0, y: 0, width: 100, height: 100 };
+  const aabb2 = { x: 50, y: 50, width: 100, height: 100 };
+  const collision = checkCollision(aabb1, aabb2);
+  console.log(collision.colliding); // true
+
+  // Spatial hashing
+  const spatialHash = new SpatialHash({ cellSize: 100 });
+  spatialHash.insert({ id: '1', x: 50, y: 50, data: { name: 'object1' } });
+  const nearby = spatialHash.queryRadius(0, 0, 100);
+
+  // Performance monitoring
+  const timer = new PerformanceTimer();
+  timer.start();
+  // ... perform operation
+  const duration = timer.stop();
+
+  // Geometry operations
+  const point1 = PointOps.create(0, 0);
+  const point2 = PointOps.create(3, 4);
+  const distance = PointOps.distance(point1, point2); // 5
+
+  return <div>Algorithm demo running...</div>;
+}
+```
+
 ### @reynard/file-processing
 
 Advanced file processing pipeline with thumbnail generation, metadata extraction, and comprehensive file type support.
@@ -1486,7 +1661,7 @@ const customTheme = createTheme({
 
 - **Basic App** - Minimal todo application demonstrating core features
 - **Multi-Theme Gallery** - Advanced theming showcase with component library
-- **Chat Demo** - Complete chat application with streaming and tool integration
+- **Chat Demo** - Complete chat application with streaming, P2P, and tool integration
 - **Comprehensive Dashboard** - Full-featured dashboard with charts and settings
 - **Full-Stack App** - Complete application with backend integration _(Coming Soon)_
 
@@ -1551,6 +1726,8 @@ Reynard is optimized for performance:
 
 - **@reynard/core** - ~15 kB (3.2 kB gzipped)
 - **@reynard/components** - ~45 kB (12.1 kB gzipped)
+- **@reynard/chat** - ~110 kB (25.1 kB gzipped)
+- **@reynard/rag** - ~22 kB (5.7 kB gzipped)
 - **@reynard/auth** - ~28 kB (7.8 kB gzipped)
 - **@reynard/charts** - ~27 kB (5.4 kB gzipped)
 - **@reynard/gallery** - ~52 kB (14.2 kB gzipped)

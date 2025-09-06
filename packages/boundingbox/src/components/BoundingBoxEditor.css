@@ -1,0 +1,354 @@
+/**
+ * BoundingBoxEditor Styles
+ * 
+ * Provides styling for the bounding box editor component with support for:
+ * - Responsive layout
+ * - Theme-aware colors
+ * - Interactive states
+ * - Accessibility features
+ */
+
+.bounding-box-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.canvas-container {
+  position: relative;
+  background: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  width: 800px;
+  height: 600px;
+}
+
+.canvas-container canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+.canvas-container canvas:not(.drawing) {
+  cursor: default;
+}
+
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.label-classes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label-classes label {
+  font-weight: 500;
+  color: #374151;
+  min-width: 80px;
+}
+
+.label-classes select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.label-classes select:focus {
+  outline: none;
+  border-color: #007acc;
+  box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+}
+
+.box-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.box-list h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.box-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.box-item:hover {
+  background: #f1f3f4;
+  border-color: #d1d5db;
+}
+
+.box-item.selected {
+  background: #e3f2fd;
+  border-color: #007acc;
+  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.2);
+}
+
+.box-label {
+  font-weight: 500;
+  color: #1f2937;
+  min-width: 80px;
+}
+
+.box-coords {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  flex: 1;
+}
+
+.box-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.box-actions button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.box-actions button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.box-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.box-actions button:active:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(1px);
+}
+
+.editing-controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 6px;
+}
+
+.editing-controls button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editing-controls button:first-child {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.editing-controls button:first-child:hover {
+  background: #059669;
+}
+
+.editing-controls button:last-child {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.editing-controls button:last-child:hover {
+  background: #dc2626;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bounding-box-editor {
+    gap: 0.75rem;
+  }
+  
+  .controls-panel {
+    padding: 0.75rem;
+  }
+  
+  .box-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .box-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .label-classes {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .label-classes label {
+    min-width: auto;
+  }
+}
+
+/* Dark Theme Support */
+@media (prefers-color-scheme: dark) {
+  .bounding-box-editor {
+    color: #f9fafb;
+  }
+  
+  .canvas-container {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .controls-panel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .label-classes select {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .label-classes select:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  }
+  
+  .box-item {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .box-item:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+  }
+  
+  .box-item.selected {
+    background: #1e3a8a;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.2);
+  }
+  
+  .box-label {
+    color: #f9fafb;
+  }
+  
+  .box-coords {
+    color: #9ca3af;
+  }
+  
+  .box-actions button {
+    background: #4b5563;
+    border-color: #6b7280;
+    color: #f9fafb;
+  }
+  
+  .box-actions button:hover:not(:disabled) {
+    background: #6b7280;
+    border-color: #9ca3af;
+  }
+  
+  .editing-controls {
+    background: #1e3a8a;
+    border-color: #0ea5e9;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .box-item {
+    border-width: 2px;
+  }
+  
+  .box-item.selected {
+    border-width: 3px;
+  }
+  
+  .box-actions button {
+    border-width: 2px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .box-item,
+  .box-actions button,
+  .editing-controls button {
+    transition: none;
+  }
+}
+
+/* Focus Management */
+.box-actions button:focus,
+.editing-controls button:focus,
+.label-classes select:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Loading States */
+.bounding-box-editor.loading .canvas-container {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.bounding-box-editor.loading::after {
+  content: 'Loading...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}

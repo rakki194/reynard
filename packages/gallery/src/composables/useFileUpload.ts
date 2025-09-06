@@ -157,7 +157,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
       formData.append("metadata", JSON.stringify(metadata));
 
       // Track upload progress
-      let startTime = Date.now();
+      const startTime = Date.now();
 
       const xhr = new XMLHttpRequest();
 

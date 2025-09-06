@@ -3,6 +3,8 @@
  * Comprehensive styling for all components with theme integration
  */
 
+@import "./theme.css";
+
 /* ==========================================================================
    CSS Variables & Theme Integration
    ========================================================================== */
@@ -93,26 +95,37 @@
 /* Button variants */
 .reynard-button--primary {
   background-color: var(--accent);
-  color: white;
+  color: var(--text-on-accent);
   border-color: var(--accent);
 }
 
 .reynard-button--primary:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--accent) 90%, black);
+  /* Fallback for older browsers */
+  background-color: var(--accent);
+  border-color: var(--accent);
   transform: translateY(-1px);
-  box-shadow: var(--reynard-shadow-md);
+  box-shadow: var(--shadow-default);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-button--primary:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--accent) 85%, var(--text-primary));
+    border-color: color-mix(in srgb, var(--accent) 85%, var(--text-primary));
+  }
 }
 
 .reynard-button--secondary {
-  background-color: var(--card-bg);
-  color: var(--text-primary);
+  background-color: var(--bg-color);
+  color: var(--text-secondary);
   border-color: var(--border-color);
 }
 
 .reynard-button--secondary:hover:not(:disabled) {
   background-color: var(--secondary-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
   transform: translateY(-1px);
-  box-shadow: var(--reynard-shadow-md);
+  box-shadow: var(--shadow-default);
 }
 
 .reynard-button--tertiary {
@@ -122,43 +135,89 @@
 }
 
 .reynard-button--tertiary:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+  /* Fallback for older browsers */
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-button--tertiary:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+  }
+}
+
+.reynard-button--ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.reynard-button--ghost:hover:not(:disabled) {
+  background-color: var(--secondary-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
 }
 
 .reynard-button--danger {
-  background-color: var(--danger, #ef4444);
-  color: white;
-  border-color: var(--danger, #ef4444);
+  background-color: var(--error);
+  color: var(--text-on-accent);
+  border-color: var(--error);
 }
 
 .reynard-button--danger:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--danger, #ef4444) 90%, black);
+  /* Fallback for older browsers */
+  background-color: var(--error);
+  border-color: var(--error);
   transform: translateY(-1px);
-  box-shadow: var(--reynard-shadow-md);
+  box-shadow: var(--shadow-default);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-button--danger:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--error) 85%, var(--text-primary));
+    border-color: color-mix(in srgb, var(--error) 85%, var(--text-primary));
+  }
 }
 
 .reynard-button--success {
-  background-color: var(--success, #10b981);
-  color: white;
-  border-color: var(--success, #10b981);
+  background-color: var(--success);
+  color: var(--text-on-accent);
+  border-color: var(--success);
 }
 
 .reynard-button--success:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--success, #10b981) 90%, black);
+  /* Fallback for older browsers */
+  background-color: var(--success);
+  border-color: var(--success);
   transform: translateY(-1px);
-  box-shadow: var(--reynard-shadow-md);
+  box-shadow: var(--shadow-default);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-button--success:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--success) 85%, var(--text-primary));
+    border-color: color-mix(in srgb, var(--success) 85%, var(--text-primary));
+  }
 }
 
 .reynard-button--warning {
-  background-color: var(--warning, #f59e0b);
-  color: white;
-  border-color: var(--warning, #f59e0b);
+  background-color: var(--warning);
+  color: var(--text-on-accent);
+  border-color: var(--warning);
 }
 
 .reynard-button--warning:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--warning, #f59e0b) 90%, black);
+  /* Fallback for older browsers */
+  background-color: var(--warning);
+  border-color: var(--warning);
   transform: translateY(-1px);
-  box-shadow: var(--reynard-shadow-md);
+  box-shadow: var(--shadow-default);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-button--warning:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--warning) 85%, var(--text-primary));
+    border-color: color-mix(in srgb, var(--warning) 85%, var(--text-primary));
+  }
 }
 
 /* Button states */
@@ -210,6 +269,13 @@
   display: flex;
   align-items: center;
   font-size: 1.2em;
+  width: 20px;
+  height: 20px;
+}
+
+.reynard-button__icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .reynard-button__content {
@@ -333,7 +399,14 @@
 
 .reynard-textfield__input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+  /* Fallback for older browsers */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-textfield__input:focus {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
 }
 
 .reynard-textfield__input::placeholder {
@@ -361,11 +434,11 @@
 
 /* TextField with icons */
 .reynard-textfield__input--with-left-icon {
-  padding-left: 2.5rem;
+  padding-left: 3rem !important;
 }
 
 .reynard-textfield__input--with-right-icon {
-  padding-right: 2.5rem;
+  padding-right: 3rem !important;
 }
 
 .reynard-textfield__icon {
@@ -375,6 +448,13 @@
   justify-content: center;
   color: var(--text-secondary);
   pointer-events: none;
+  width: 20px;
+  height: 20px;
+}
+
+.reynard-textfield__icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .reynard-textfield__icon--left {
@@ -412,8 +492,15 @@
 }
 
 .reynard-textfield--error.reynard-textfield--focused .reynard-textfield__input {
-  box-shadow: 0 0 0 2px
-    color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  /* Fallback for older browsers */
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-textfield--error.reynard-textfield--focused .reynard-textfield__input {
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  }
 }
 
 .reynard-textfield__help {
@@ -475,7 +562,14 @@
 
 .reynard-select__input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+  /* Fallback for older browsers */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-select__input:focus {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
 }
 
 /* Select sizes */
@@ -501,7 +595,7 @@
 }
 
 .reynard-select__input--with-left-icon {
-  padding-left: 2.5rem;
+  padding-left: 3rem !important;
 }
 
 .reynard-select__icon {
@@ -511,6 +605,13 @@
   justify-content: center;
   color: var(--text-secondary);
   pointer-events: none;
+  width: 20px;
+  height: 20px;
+}
+
+.reynard-select__icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .reynard-select__icon--left {
@@ -554,8 +655,15 @@
 }
 
 .reynard-select--error.reynard-select--focused .reynard-select__input {
-  box-shadow: 0 0 0 2px
-    color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  /* Fallback for older browsers */
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  .reynard-select--error.reynard-select--focused .reynard-select__input {
+    box-shadow: 0 0 0 2px
+      color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
+  }
 }
 
 .reynard-select__help {
@@ -593,12 +701,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--overlay-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--reynard-spacing-md);
   animation: reynard-modal-backdrop-in 0.2s ease-out;
+  -webkit-backdrop-filter: var(--overlay-backdrop);
+  backdrop-filter: var(--overlay-backdrop);
 }
 
 .reynard-modal__content {
@@ -814,6 +924,13 @@
   display: flex;
   align-items: center;
   font-size: 1.1em;
+  width: 24px;
+  height: 24px;
+}
+
+.reynard-tabs__tab-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .reynard-tabs__tab-label {
@@ -862,8 +979,13 @@
 
   .reynard-tabs__list {
     overflow-x: auto;
-    scrollbar-width: none;
     -ms-overflow-style: none;
+  }
+
+  @supports (scrollbar-width: none) {
+    .reynard-tabs__list {
+      scrollbar-width: none;
+    }
   }
 
   .reynard-tabs__list::-webkit-scrollbar {

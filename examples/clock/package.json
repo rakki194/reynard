@@ -1,0 +1,32 @@
+{
+  "name": "reynard-clock-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A comprehensive clock, timer, alarm, and countdown application built with Reynard framework",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@reynard/components": "file:../reynard/packages/components",
+    "@reynard/core": "file:../reynard/packages/core",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8"
+  },
+  "keywords": [
+    "reynard",
+    "solidjs",
+    "clock",
+    "timer",
+    "alarm",
+    "countdown"
+  ],
+  "author": "Reynard Framework",
+  "license": "MIT"
+}
