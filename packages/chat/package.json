@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/chat",
+  "name": "reynard-chat",
   "version": "0.1.0",
   "description": "Reynard Chat System - Production-ready chat messaging system for SolidJS",
   "type": "module",

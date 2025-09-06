@@ -14,9 +14,19 @@
  * formatFileSize(1500000) // Returns "1.4 MB"
  */
 export function formatFileSize(bytes: number): string {
+  // Handle edge cases
+  if (typeof bytes !== 'number' || !isFinite(bytes)) {
+    return "0 B";
+  }
+
   if (bytes === 0) return "0 B";
 
-  const units = ["B", "KB", "MB", "GB", "TB"];
+  // Handle extremely large numbers
+  if (bytes > Number.MAX_SAFE_INTEGER) {
+    return "> 1 PB";
+  }
+
+  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
   let size = Math.abs(bytes);
   let unitIndex = 0;
 
@@ -25,16 +35,60 @@ export function formatFileSize(bytes: number): string {
     unitIndex++;
   }
 
-  const formatted = unitIndex === 0 ? size.toString() : size.toFixed(1);
+  // Prevent precision issues with very small numbers
+  if (size < 0.1 && unitIndex > 0) {
+    size = Math.round(size * 1000) / 1000;
+  }
+
+  const formatted = unitIndex === 0 ? Math.round(size).toString() : size.toFixed(1);
   return `${formatted} ${units[unitIndex]}`;
 }
 
 /**
- * Formats bytes into a human-readable string with appropriate units.
- * Alias for formatFileSize for consistency.
+ * Formats bytes into a human-readable string with appropriate units and custom precision.
+ *
+ * @param bytes - The file size in bytes to format
+ * @param precision - Number of decimal places to show (defaults to 1)
+ * @returns A string representing the file size with units (e.g. "1.5 KB")
+ *
+ * @example
+ * formatBytes(1500) // Returns "1.5 KB"
+ * formatBytes(1500, 2) // Returns "1.46 KB"
+ * formatBytes(1024, 0) // Returns "1 KB"
  */
-export function formatBytes(bytes: number): string {
-  return formatFileSize(bytes);
+export function formatBytes(bytes: number, precision: number = 1): string {
+  // Handle edge cases
+  if (typeof bytes !== 'number' || !isFinite(bytes)) {
+    return "0 B";
+  }
+
+  if (typeof precision !== 'number' || !isFinite(precision) || precision < 0 || precision > 10) {
+    precision = 1;
+  }
+
+  if (bytes === 0) return "0 B";
+
+  // Handle extremely large numbers
+  if (bytes > Number.MAX_SAFE_INTEGER) {
+    return "> 1 PB";
+  }
+
+  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+  let size = Math.abs(bytes);
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+
+  // Prevent precision issues with very small numbers
+  if (size < 0.1 && unitIndex > 0) {
+    size = Math.round(size * Math.pow(10, precision)) / Math.pow(10, precision);
+  }
+
+  const formatted = unitIndex === 0 ? Math.round(size).toString() : size.toFixed(precision);
+  return `${formatted} ${units[unitIndex]}`;
 }
 
 /**
@@ -48,12 +102,35 @@ export function formatBytes(bytes: number): string {
  * formatDateTime(1704067200000) // Returns "2024-01-01 12:00:00"
  */
 export function formatDateTime(date: Date | number | string): string {
-  const dateObj =
-    typeof date === "number"
-      ? new Date(date)
-      : typeof date === "string"
-        ? new Date(date)
-        : date;
+  // Handle null/undefined input
+  if (date == null) {
+    return "Invalid Date";
+  }
+
+  let dateObj: Date;
+
+  if (typeof date === "number") {
+    // Validate timestamp
+    if (!isFinite(date) || date < 0) {
+      return "Invalid Date";
+    }
+    dateObj = new Date(date);
+  } else if (typeof date === "string") {
+    // Validate string input
+    if (date.trim() === "") {
+      return "Invalid Date";
+    }
+    dateObj = new Date(date);
+  } else if (date instanceof Date) {
+    dateObj = date;
+  } else {
+    return "Invalid Date";
+  }
+
+  // Check if date is valid
+  if (isNaN(dateObj.getTime())) {
+    return "Invalid Date";
+  }
 
   return dateObj.toISOString().replace("T", " ").substring(0, 19);
 }
@@ -70,7 +147,21 @@ export function formatDateTime(date: Date | number | string): string {
  * formatNumber(1234567, 'de-DE') // Returns "1.234.567"
  */
 export function formatNumber(num: number, locale: string = "en-US"): string {
-  return new Intl.NumberFormat(locale).format(num);
+  // Handle edge cases
+  if (typeof num !== 'number' || !isFinite(num)) {
+    return "0";
+  }
+
+  if (typeof locale !== 'string' || locale.trim() === '') {
+    locale = "en-US";
+  }
+
+  try {
+    return new Intl.NumberFormat(locale).format(num);
+  } catch (error) {
+    // Fallback to default locale if provided locale is invalid
+    return new Intl.NumberFormat("en-US").format(num);
+  }
 }
 
 /**

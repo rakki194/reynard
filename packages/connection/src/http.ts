@@ -57,11 +57,23 @@ export class HTTPConnection extends BaseConnection {
     try {
       this.controller = new AbortController();
       const method = typeof data === 'object' && data !== null ? 'POST' : 'POST';
+      
+      // Ensure HTTPS in production
+      if (process.env.NODE_ENV === 'production' && !this['config'].url.startsWith('https:')) {
+        throw new Error('HTTPS required in production');
+      }
+      
       const res = await fetch(this['config'].url, {
         method,
-        headers: { 'Content-Type': 'application/json', ...(this['config'].customHeaders ?? {}) },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          ...(this['config'].customHeaders ?? {}) 
+        },
         body: typeof data === 'object' ? JSON.stringify(data) : (data as any),
         signal: this.controller.signal,
+        credentials: 'same-origin', // Only send credentials to same origin
       });
       return res.status < 500;
     } catch (e) {

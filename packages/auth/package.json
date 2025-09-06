@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/auth",
+  "name": "reynard-auth",
   "version": "0.1.0",
   "description": "Reynard Auth - Authentication and user management for SolidJS",
   "type": "module",

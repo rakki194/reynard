@@ -69,6 +69,520 @@ import {
 } from "@reynard/components";
 
 function CustomChatApp() {
+  const { messages, sendMessage, isStreaming } = useChat({
+    endpoint: "/api/chat",
+    config: {
+      enableThinking: true,
+      enableTools: true,
+      showTimestamps: true,
+    },
+  });
+
+  return (
+    <div class="custom-chat">
+      <div class="messages">
+        <For each={messages()}>
+          {(message) => (
+            <ChatMessage
+              message={message}
+              showTimestamp={true}
+              showThinking={message.type === "assistant"}
+            />
+          )}
+        </For>
+      </div>
+      <MessageInput
+        onSend={sendMessage}
+        disabled={isStreaming()}
+        placeholder="Type your message..."
+      />
+    </div>
+  );
+}
+```
+
+### Real-time Streaming Chat
+
+```tsx
+import { ChatContainer, useStreamingChat } from "@reynard/components";
+
+function StreamingChatApp() {
+  const { 
+    messages, 
+    sendMessage, 
+    isStreaming, 
+    streamStatus,
+    thinkingContent 
+  } = useStreamingChat({
+    endpoint: "/api/chat/stream",
+    config: {
+      enableThinking: true,
+      enableTools: true,
+      streamMode: "real-time",
+      bufferSize: 1024,
+    },
+    onStreamStart: () => console.log("Stream started"),
+    onStreamEnd: () => console.log("Stream ended"),
+    onThinkingUpdate: (content) => console.log("Thinking:", content),
+  });
+
+  return (
+    <div class="streaming-chat">
+      <div class="chat-header">
+        <h3>AI Assistant</h3>
+        <div class="status">
+          {isStreaming() && <span class="streaming">Streaming...</span>}
+          {streamStatus() && <span class="status">{streamStatus()}</span>}
+        </div>
+      </div>
+      
+      <div class="messages-container">
+        <For each={messages()}>
+          {(message) => (
+            <div class={`message ${message.role}`}>
+              <div class="message-content">
+                {message.content}
+              </div>
+              {message.timestamp && (
+                <div class="timestamp">
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                </div>
+              )}
+            </div>
+          )}
+        </For>
+        
+        {thinkingContent() && (
+          <div class="thinking-section">
+            <div class="thinking-header">🤔 Thinking...</div>
+            <div class="thinking-content">{thinkingContent()}</div>
+          </div>
+        )}
+      </div>
+      
+      <div class="input-area">
+        <MessageInput
+          onSend={sendMessage}
+          disabled={isStreaming()}
+          placeholder="Ask me anything..."
+          showSendButton={true}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### P2P Chat Implementation
+
+```tsx
+import { P2PChatContainer, useP2PChat } from "@reynard/components";
+
+function P2PChatApp() {
+  const { 
+    messages, 
+    sendMessage, 
+    isConnected, 
+    connectionStatus,
+    participants,
+    joinRoom,
+    leaveRoom 
+  } = useP2PChat({
+    signalingServer: "wss://signaling.example.com",
+    iceServers: [
+      { urls: "stun:stun.l.google.com:19302" },
+      { urls: "turn:turn.example.com", username: "user", credential: "pass" }
+    ],
+    config: {
+      enableFileSharing: true,
+      enableScreenSharing: true,
+      enableVoiceChat: false,
+      maxParticipants: 10,
+    },
+    onConnectionChange: (status) => console.log("Connection:", status),
+    onParticipantJoin: (user) => console.log("User joined:", user),
+    onParticipantLeave: (user) => console.log("User left:", user),
+  });
+
+  const handleJoinRoom = async (roomId: string) => {
+    try {
+      await joinRoom(roomId);
+      console.log("Joined room:", roomId);
+    } catch (error) {
+      console.error("Failed to join room:", error);
+    }
+  };
+
+  return (
+    <div class="p2p-chat">
+      <div class="chat-header">
+        <h3>P2P Chat Room</h3>
+        <div class="connection-status">
+          Status: <span class={connectionStatus()}>{connectionStatus()}</span>
+        </div>
+        <div class="participants">
+          Participants: {participants().length}
+        </div>
+      </div>
+      
+      <div class="room-controls">
+        <input 
+          type="text" 
+          placeholder="Room ID" 
+          id="roomId"
+        />
+        <button onClick={() => handleJoinRoom(document.getElementById('roomId')?.value || '')}>
+          Join Room
+        </button>
+        <button onClick={leaveRoom}>Leave Room</button>
+      </div>
+      
+      <div class="messages-container">
+        <For each={messages()}>
+          {(message) => (
+            <div class={`message ${message.senderId === 'me' ? 'own' : 'other'}`}>
+              <div class="sender">{message.senderName}</div>
+              <div class="content">{message.content}</div>
+              <div class="timestamp">
+                {new Date(message.timestamp).toLocaleTimeString()}
+              </div>
+            </div>
+          )}
+        </For>
+      </div>
+      
+      <div class="input-area">
+        <MessageInput
+          onSend={sendMessage}
+          disabled={!isConnected()}
+          placeholder={isConnected() ? "Type a message..." : "Not connected"}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### Tool Integration Example
+
+```tsx
+import { ChatContainer, useChatWithTools } from "@reynard/components";
+
+function ChatWithToolsApp() {
+  const { 
+    messages, 
+    sendMessage, 
+    isStreaming,
+    activeTools,
+    toolResults 
+  } = useChatWithTools({
+    endpoint: "/api/chat/tools",
+    tools: [
+      {
+        name: "search_web",
+        description: "Search the web for information",
+        parameters: {
+          type: "object",
+          properties: {
+            query: { type: "string", description: "Search query" },
+            limit: { type: "number", description: "Number of results", default: 5 }
+          },
+          required: ["query"]
+        }
+      },
+      {
+        name: "get_weather",
+        description: "Get current weather for a location",
+        parameters: {
+          type: "object",
+          properties: {
+            location: { type: "string", description: "City name" },
+            units: { type: "string", enum: ["celsius", "fahrenheit"], default: "celsius" }
+          },
+          required: ["location"]
+        }
+      },
+      {
+        name: "calculate",
+        description: "Perform mathematical calculations",
+        parameters: {
+          type: "object",
+          properties: {
+            expression: { type: "string", description: "Mathematical expression" }
+          },
+          required: ["expression"]
+        }
+      }
+    ],
+    config: {
+      enableToolExecution: true,
+      showToolProgress: true,
+      allowToolSelection: true,
+    },
+    onToolStart: (toolName, parameters) => {
+      console.log(`Tool started: ${toolName}`, parameters);
+    },
+    onToolComplete: (toolName, result) => {
+      console.log(`Tool completed: ${toolName}`, result);
+    },
+    onToolError: (toolName, error) => {
+      console.error(`Tool error: ${toolName}`, error);
+    },
+  });
+
+  return (
+    <div class="chat-with-tools">
+      <div class="chat-header">
+        <h3>AI Assistant with Tools</h3>
+        <div class="active-tools">
+          {activeTools().length > 0 && (
+            <div class="tools-status">
+              Active tools: {activeTools().map(t => t.name).join(", ")}
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div class="messages-container">
+        <For each={messages()}>
+          {(message) => (
+            <div class={`message ${message.role}`}>
+              <div class="message-content">
+                {message.content}
+              </div>
+              
+              {message.toolCalls && (
+                <div class="tool-calls">
+                  <For each={message.toolCalls}>
+                    {(toolCall) => (
+                      <div class="tool-call">
+                        <div class="tool-name">🔧 {toolCall.name}</div>
+                        <div class="tool-parameters">
+                          {JSON.stringify(toolCall.parameters, null, 2)}
+                        </div>
+                        {toolCall.result && (
+                          <div class="tool-result">
+                            {toolCall.result}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </For>
+                </div>
+              )}
+            </div>
+          )}
+        </For>
+      </div>
+      
+      <div class="input-area">
+        <MessageInput
+          onSend={sendMessage}
+          disabled={isStreaming()}
+          placeholder="Ask me to search, calculate, or get weather..."
+          showToolSuggestions={true}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### Custom Chat Styling
+
+```css
+/* Custom chat styles */
+.streaming-chat {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--secondary-bg);
+}
+
+.status {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.streaming {
+  color: var(--accent);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 1rem 1rem 0.25rem 1rem;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 0.75rem;
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  border: 1px solid var(--border-color);
+}
+
+.thinking-section {
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem 0;
+}
+
+.thinking-header {
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.thinking-content {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.tool-call {
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.tool-name {
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.tool-parameters {
+  background: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.tool-result {
+  background: var(--success);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+```
+
+### Advanced Configuration
+
+```tsx
+import { ChatContainer } from "@reynard/components";
+
+function AdvancedChatApp() {
+  return (
+    <ChatContainer
+      endpoint="/api/chat"
+      height="600px"
+      config={{
+        // Streaming configuration
+        enableStreaming: true,
+        streamBufferSize: 2048,
+        streamTimeout: 30000,
+        
+        // Thinking configuration
+        enableThinking: true,
+        thinkingDelay: 1000,
+        maxThinkingTime: 10000,
+        
+        // Tool configuration
+        enableTools: true,
+        toolTimeout: 15000,
+        maxConcurrentTools: 3,
+        
+        // UI configuration
+        showTimestamps: true,
+        showTypingIndicator: true,
+        showMessageStatus: true,
+        enableMarkdown: true,
+        enableCodeHighlighting: true,
+        
+        // Performance configuration
+        maxMessages: 100,
+        messageRetention: "session",
+        enableVirtualization: true,
+        
+        // Accessibility configuration
+        enableKeyboardNavigation: true,
+        announceMessages: true,
+        highContrastMode: false,
+      }}
+      onMessageSent={(message) => {
+        console.log("Message sent:", message);
+        analytics.track("chat_message_sent", { length: message.length });
+      }}
+      onMessageReceived={(message) => {
+        console.log("Message received:", message);
+        analytics.track("chat_message_received", { 
+          type: message.type,
+          hasTools: !!message.toolCalls 
+        });
+      }}
+      onStreamStart={() => {
+        console.log("Stream started");
+        analytics.track("chat_stream_started");
+      }}
+      onStreamEnd={() => {
+        console.log("Stream ended");
+        analytics.track("chat_stream_ended");
+      }}
+      onToolExecution={(toolName, parameters) => {
+        console.log("Tool execution:", toolName, parameters);
+        analytics.track("chat_tool_executed", { tool: toolName });
+      }}
+      onError={(error) => {
+        console.error("Chat error:", error);
+        analytics.track("chat_error", { error: error.message });
+      }}
+    />
+  );
+}
   const chat = useChat({
     endpoint: "/api/chat",
     authHeaders: { Authorization: "Bearer token" },

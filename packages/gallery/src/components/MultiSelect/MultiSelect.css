@@ -71,7 +71,8 @@
   box-shadow: 0 0 0 1px #3b82f6;
 }
 
-.reynard-multi-select__item--selected: hover{background:#1e40af};
+.reynard-multi-select__item--selected:hover {
+  background: #1e40af;
 }
 
 .reynard-multi-select__item-checkbox {
@@ -196,7 +197,8 @@
     border-color: #3b82f6;
   }
 
-  .reynard-multi-select__item--selected: hover{background:#1e40af};
+  .reynard-multi-select__item--selected:hover {
+    background: #1e40af;
   }
 
   .reynard-multi-select__item-checkbox {

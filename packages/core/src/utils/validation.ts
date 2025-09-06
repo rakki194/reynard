@@ -7,6 +7,11 @@
  * Email validation using RFC 5322 compliant regex
  */
 export function isValidEmail(email: string): boolean {
+  // Handle null/undefined/empty input
+  if (!email || typeof email !== 'string') {
+    return false;
+  }
+
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email);
@@ -16,6 +21,11 @@ export function isValidEmail(email: string): boolean {
  * URL validation
  */
 export function isValidUrl(url: string): boolean {
+  // Handle null/undefined/empty input
+  if (!url || typeof url !== 'string') {
+    return false;
+  }
+
   try {
     new URL(url);
     return true;
@@ -28,6 +38,11 @@ export function isValidUrl(url: string): boolean {
  * Phone number validation (supports various formats)
  */
 export function isValidPhoneNumber(phone: string): boolean {
+  // Handle null/undefined/empty input
+  if (!phone || typeof phone !== 'string') {
+    return false;
+  }
+
   // Remove all non-digit characters
   const digitsOnly = phone.replace(/\D/g, "");
 
@@ -77,7 +92,7 @@ export function validatePasswordStrength(password: string): PasswordStrength {
   }
 
   // Special character check
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     feedback.push("Password must contain at least one special character");
   } else {
     score += 10;
@@ -135,6 +150,11 @@ export function isValidPostalCode(
   postalCode: string,
   country: string = "US",
 ): boolean {
+  // Handle null/undefined/empty input
+  if (!postalCode || typeof postalCode !== 'string' || !country || typeof country !== 'string') {
+    return false;
+  }
+
   const patterns: Record<string, RegExp> = {
     US: /^\d{5}(-\d{4})?$/, // 12345 or 12345-6789
     CA: /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/, // A1A 1A1
@@ -146,13 +166,18 @@ export function isValidPostalCode(
   };
 
   const pattern = patterns[country.toUpperCase()];
-  return pattern ? pattern.test(postalCode) : true; // Default to valid if country not found
+  return pattern ? pattern.test(postalCode) : false; // Return false for unknown countries
 }
 
 /**
  * Social Security Number validation (US format)
  */
 export function isValidSSN(ssn: string): boolean {
+  // Handle null/undefined/empty input
+  if (!ssn || typeof ssn !== 'string') {
+    return false;
+  }
+
   // Remove all non-digit characters
   const digits = ssn.replace(/\D/g, "");
 
@@ -252,7 +277,7 @@ export function isValidLength(
 /**
  * Required field validation
  */
-export function isRequired(value: any): boolean {
+export function isRequired(value: unknown): boolean {
   if (value === null || value === undefined) return false;
   if (typeof value === "string") return value.trim().length > 0;
   if (Array.isArray(value)) return value.length > 0;

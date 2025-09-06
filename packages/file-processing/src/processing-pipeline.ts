@@ -56,7 +56,7 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   }
 
   /**
-   * Process a single file
+   * Process a single file with security validation
    */
   async processFile(
     file: File | string,
@@ -65,7 +65,18 @@ export class FileProcessingPipeline implements ProcessingPipeline {
     const startTime = Date.now();
 
     try {
-      // Validate file
+      // Security validation
+      const securityCheck = this.validateFileSecurity(file);
+      if (!securityCheck.isValid) {
+        return {
+          success: false,
+          error: "File security validation failed",
+          duration: Date.now() - startTime,
+          timestamp: new Date(),
+        };
+      }
+
+      // Validate file type
       if (!this.isSupported(file)) {
         return {
           success: false,
@@ -75,12 +86,24 @@ export class FileProcessingPipeline implements ProcessingPipeline {
         };
       }
 
-      // Check file size
-      if (options?.maxFileSize && typeof file !== "string") {
-        if (file.size > options.maxFileSize) {
+      // Check file size with additional security limits
+      const maxSize = options?.maxFileSize || this.config.maxFileSize;
+      if (typeof file !== "string" && file.size > maxSize) {
+        return {
+          success: false,
+          error: "File size exceeds maximum allowed size",
+          duration: Date.now() - startTime,
+          timestamp: new Date(),
+        };
+      }
+
+      // Additional security checks for file content
+      if (typeof file !== "string") {
+        const contentCheck = await this.validateFileContent(file);
+        if (!contentCheck.isValid) {
           return {
             success: false,
-            error: `File size ${file.size} exceeds maximum allowed size ${options.maxFileSize}`,
+            error: "File content validation failed",
             duration: Date.now() - startTime,
             timestamp: new Date(),
           };
@@ -259,6 +282,133 @@ export class FileProcessingPipeline implements ProcessingPipeline {
       const extension = this.getFileExtension(file.name);
       return isSupportedExtension(extension);
     }
+  }
+
+  /**
+   * Validate file security
+   */
+  private validateFileSecurity(file: File | string): { isValid: boolean; error?: string } {
+    if (typeof file === "string") {
+      // Validate file path for directory traversal
+      if (file.includes("..") || file.includes("~") || file.startsWith("/")) {
+        return { isValid: false, error: "Invalid file path" };
+      }
+      return { isValid: true };
+    }
+
+    // Validate file name
+    if (!file.name || file.name.length === 0) {
+      return { isValid: false, error: "Invalid file name" };
+    }
+
+    // Check for dangerous file names
+    const dangerousNames = [".htaccess", "web.config", "crossdomain.xml"];
+    if (dangerousNames.includes(file.name.toLowerCase())) {
+      return { isValid: false, error: "Dangerous file name" };
+    }
+
+    // Check for path traversal in file name
+    if (file.name.includes("..") || file.name.includes("/") || file.name.includes("\\")) {
+      return { isValid: false, error: "Invalid file name" };
+    }
+
+    // Check file size limits
+    if (file.size === 0) {
+      return { isValid: false, error: "Empty file" };
+    }
+
+    if (file.size > this.config.maxFileSize) {
+      return { isValid: false, error: "File too large" };
+    }
+
+    return { isValid: true };
+  }
+
+  /**
+   * Validate file content for security
+   */
+  private async validateFileContent(file: File): Promise<{ isValid: boolean; error?: string }> {
+    try {
+      // Check file extension matches content
+      const extension = this.getFileExtension(file.name);
+      const mimeType = file.type;
+
+      // Basic MIME type validation
+      if (mimeType && !this.isValidMimeType(extension, mimeType)) {
+        return { isValid: false, error: "File type mismatch" };
+      }
+
+      // Check for executable content in non-executable files
+      if (this.isExecutableFile(extension)) {
+        return { isValid: false, error: "Executable files not allowed" };
+      }
+
+      // Check for zip bombs and other compression attacks
+      if (this.isCompressedFile(extension)) {
+        const compressionCheck = await this.validateCompressedFile(file);
+        if (!compressionCheck.isValid) {
+          return compressionCheck;
+        }
+      }
+
+      return { isValid: true };
+    } catch (error) {
+      return { isValid: false, error: "Content validation failed" };
+    }
+  }
+
+  /**
+   * Check if MIME type matches extension
+   */
+  private isValidMimeType(extension: string, mimeType: string): boolean {
+    const validMimeTypes: Record<string, string[]> = {
+      '.jpg': ['image/jpeg'],
+      '.jpeg': ['image/jpeg'],
+      '.png': ['image/png'],
+      '.gif': ['image/gif'],
+      '.webp': ['image/webp'],
+      '.svg': ['image/svg+xml'],
+      '.pdf': ['application/pdf'],
+      '.txt': ['text/plain'],
+      '.json': ['application/json'],
+      '.xml': ['application/xml', 'text/xml'],
+    };
+
+    const expectedTypes = validMimeTypes[extension.toLowerCase()];
+    return !expectedTypes || expectedTypes.includes(mimeType);
+  }
+
+  /**
+   * Check if file is executable
+   */
+  private isExecutableFile(extension: string): boolean {
+    const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.scr', '.pif', '.msi', '.app', '.deb', '.rpm', '.dmg'];
+    return executableExtensions.includes(extension.toLowerCase());
+  }
+
+  /**
+   * Check if file is compressed
+   */
+  private isCompressedFile(extension: string): boolean {
+    const compressedExtensions = ['.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz'];
+    return compressedExtensions.includes(extension.toLowerCase());
+  }
+
+  /**
+   * Validate compressed files for zip bombs
+   */
+  private async validateCompressedFile(file: File): Promise<{ isValid: boolean; error?: string }> {
+    // Basic validation - in a real implementation, you'd want to:
+    // 1. Check compression ratio
+    // 2. Validate file structure
+    // 3. Check for nested archives
+    // 4. Limit decompression size
+    
+    if (file.size > 50 * 1024 * 1024) { // 50MB limit for compressed files
+      return { isValid: false, error: "Compressed file too large" };
+    }
+
+    return { isValid: true };
   }
 
   /**

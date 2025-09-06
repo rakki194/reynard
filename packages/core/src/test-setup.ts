@@ -1,102 +1,90 @@
 /**
- * Test setup file for Vitest
- * Provides common mocks and test environment setup
+ * Test Setup
+ * Global test configuration and mocks
  */
 
-import { vi, beforeEach, afterEach } from "vitest";
-import { getOwner } from "solid-js";
+import { vi } from 'vitest';
 
-// Suppress SolidJS lifecycle warnings in tests
-const originalWarn = console.warn;
-console.warn = (...args: any[]) => {
-  if (
-    typeof args[0] === "string" &&
-    args[0].includes(
-      "computations created outside a `createRoot` or `render` will never be disposed",
-    )
-  ) {
-    return; // Suppress this specific warning
+// Mock localStorage and sessionStorage
+const createStorage = () => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+    get length() {
+      return Object.keys(store).length;
+    },
+    key: (index: number) => {
+      const keys = Object.keys(store);
+      return keys[index] || null;
+    }
+  };
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: createStorage(),
+  writable: true
+});
+
+Object.defineProperty(window, 'sessionStorage', {
+  value: createStorage(),
+  writable: true
+});
+
+// Mock crypto API
+Object.defineProperty(global, 'crypto', {
+  value: {
+    getRandomValues: (array: Uint8Array) => {
+      for (let i = 0; i < array.length; i++) {
+        array[i] = Math.floor(Math.random() * 256);
+      }
+      return array;
+    },
+    subtle: {
+      digest: vi.fn(async (algorithm: string, data: Uint8Array) => {
+        const hash = new Uint8Array(32);
+        for (let i = 0; i < hash.length; i++) {
+          hash[i] = (data[i % data.length] + i) % 256;
+        }
+        return hash;
+      })
+    }
+  },
+  writable: true
+});
+
+// Mock fetch
+global.fetch = vi.fn();
+
+// Mock performance API
+Object.defineProperty(global, 'performance', {
+  value: {
+    now: vi.fn(() => Date.now())
+  },
+  writable: true
+});
+
+// Mock btoa for base64 encoding
+global.btoa = vi.fn((str: string) => Buffer.from(str, 'binary').toString('base64'));
+
+// Mock TextEncoder
+global.TextEncoder = class TextEncoder {
+  encode(input: string): Uint8Array {
+    return new Uint8Array(Buffer.from(input, 'utf8'));
   }
-  originalWarn(...args);
 };
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn(),
-};
-
-Object.defineProperty(window, "localStorage", {
-  value: localStorageMock,
-  writable: true,
-});
-
-// Mock sessionStorage
-const sessionStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn(),
-};
-
-Object.defineProperty(window, "sessionStorage", {
-  value: sessionStorageMock,
-  writable: true,
-});
-
-// Mock matchMedia
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
-
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock requestAnimationFrame
-global.requestAnimationFrame = vi.fn(
-  (cb: FrameRequestCallback) => setTimeout(cb, 0) as any,
-);
-global.cancelAnimationFrame = vi.fn((id: number) => clearTimeout(id));
-
-// Reset mocks before each test
-beforeEach(() => {
-  vi.clearAllMocks();
-  localStorageMock.getItem.mockReturnValue(null);
-  sessionStorageMock.getItem.mockReturnValue(null);
-});
-
-// Clean up SolidJS computations after each test
-afterEach(() => {
-  const owner = getOwner();
-  if (owner) {
-    // Clean up any remaining computations
-    owner.cleanups?.forEach((cleanup) => cleanup());
+// Mock TextDecoder
+global.TextDecoder = class TextDecoder {
+  decode(input: Uint8Array): string {
+    return Buffer.from(input).toString('utf8');
   }
-});
+};

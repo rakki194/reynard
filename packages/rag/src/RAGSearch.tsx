@@ -7,14 +7,14 @@
 
 import { createSignal, onMount, Show, For } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Button, Card, TextField, Select, Tabs, TabPanel } from "@reynard/components";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { Button, Card, TextField, Select, Tabs, TabPanel } from "reynard-components";
+import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 
 // Helper function to get icon as JSX element
 const getIcon = (name: string) => {
-  const icon = fluentIconsPackage.getIcon(name);
+  const icon = getIconFromRegistry(name);
   if (icon) {
-    return <div innerHTML={icon.outerHTML} />;
+    return <div innerHTML={icon} />;
   }
   return null;
 };

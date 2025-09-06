@@ -16,6 +16,7 @@ import {
   isValidFileSize,
   isValidDate,
   isValidAge,
+  isValidSSN,
 } from "./validation";
 
 describe("validation", () => {
@@ -184,6 +185,63 @@ describe("validation", () => {
 
       expect(isValidAge(twentyYearsAgo, 18)).toBe(true);
       expect(isValidAge(tenYearsAgo, 18)).toBe(false);
+    });
+
+    it("handles edge cases for age validation", () => {
+      const today = new Date();
+      const yesterday = new Date(today.getTime() - 86400000);
+      const tomorrow = new Date(today.getTime() + 86400000);
+
+      expect(isValidAge(today, 0)).toBe(true);
+      expect(isValidAge(yesterday, 0)).toBe(true);
+      expect(isValidAge(tomorrow, 0)).toBe(false);
+    });
+  });
+
+  describe("validation edge cases", () => {
+    it("handles null and undefined values", () => {
+      expect(isValidEmail(null as any)).toBe(false);
+      expect(isValidEmail(undefined as any)).toBe(false);
+      expect(isValidUrl(null as any)).toBe(false);
+      expect(isValidUrl(undefined as any)).toBe(false);
+      // Fixed: isValidPhoneNumber now handles null/undefined properly
+      expect(isValidPhoneNumber(null as any)).toBe(false);
+      expect(isValidPhoneNumber(undefined as any)).toBe(false);
+      expect(isValidPostalCode(null as any, "US")).toBe(false);
+      expect(isValidPostalCode("12345", null as any)).toBe(false);
+      expect(isValidSSN(null as any)).toBe(false);
+      expect(isValidSSN(undefined as any)).toBe(false);
+    });
+
+    it("handles empty strings", () => {
+      expect(isValidEmail("")).toBe(false);
+      expect(isValidUrl("")).toBe(false);
+      expect(isValidPhoneNumber("")).toBe(false);
+      expect(isValidHexColor("")).toBe(false);
+      expect(isValidIPAddress("")).toBe(false);
+      expect(isValidPostalCode("", "US")).toBe(false);
+      expect(isValidSSN("")).toBe(false);
+    });
+
+    it("handles invalid input types", () => {
+      expect(isValidEmail(123 as any)).toBe(false);
+      expect(isValidUrl({} as any)).toBe(false);
+      expect(isValidPhoneNumber([] as any)).toBe(false);
+      expect(isValidPostalCode(123 as any, "US")).toBe(false);
+      expect(isValidPostalCode("12345", 123 as any)).toBe(false);
+    });
+
+    it("handles unknown countries in postal code validation", () => {
+      // Fixed: Now returns false for unknown countries instead of true
+      expect(isValidPostalCode("12345", "XX")).toBe(false);
+      expect(isValidPostalCode("anything", "UNKNOWN")).toBe(false);
+    });
+
+    it("handles extremely long inputs", () => {
+      const longString = "a".repeat(10000);
+      expect(isValidEmail(longString)).toBe(false);
+      expect(isValidUrl(longString)).toBe(false);
+      expect(isValidPhoneNumber(longString)).toBe(false);
     });
   });
 });

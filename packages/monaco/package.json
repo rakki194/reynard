@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/monaco",
+  "name": "reynard-monaco",
   "version": "0.1.0",
   "description": "Monaco code editor and text editing components for Reynard",
   "type": "module",
@@ -18,7 +18,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly",
+    "build": "vite build && npm run build:types",
+    "build:types": "rm -f tsconfig.tsbuildinfo && tsc --build tsconfig.declarations.json --force",
     "dev": "vite build --watch",
     "test": "vitest",
     "test:ui": "vitest --ui",

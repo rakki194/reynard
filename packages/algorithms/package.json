@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/algorithms",
+  "name": "reynard-algorithms",
   "version": "0.1.0",
   "description": "Algorithm primitives and data structures for Reynard applications",
   "type": "module",

@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg-color, #ffffff);
-  border: 1px solid var(--border-color, #e1e5e9);
-  border-radius: var(--border-radius, 8px);
+  background: var(--color-background, #ffffff);
+  border: 1px solid var(--color-border, #e1e5e9);
+  border-radius: var(--border-radius-base, 8px);
   overflow: hidden;
 }
 
@@ -12,29 +12,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing, 12px);
-  background: var(--secondary-bg, #f8f9fa);
-  border-bottom: 1px solid var(--border-color, #e1e5e9);
+  padding: var(--spacing-base, 12px);
+  background: var(--color-background-secondary, #f8f9fa);
+  border-bottom: 1px solid var(--color-border, #e1e5e9);
   min-height: 48px;
 }
 
 .language-info {
   display: flex;
   align-items: center;
-  gap: var(--spacing, 12px);
+  gap: var(--spacing-base, 12px);
 }
 
 .language-name {
   font-weight: 600;
-  color: var(--text-primary, #212529);
-  font-size: var(--font-size, 14px);
+  color: var(--color-text, #212529);
+  font-size: var(--font-size-base, 14px);
 }
 
 .read-only-badge {
-  background: var(--accent, #007bff);
-  color: var(--text-on-accent, #ffffff);
-  padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
-  border-radius: var(--border-radius, 8px);
+  background: var(--color-accent, #007bff);
+  color: var(--color-text-inverse, #ffffff);
+  padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+  border-radius: var(--border-radius-base, 8px);
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
@@ -43,28 +43,28 @@
 .editor-actions {
   display: flex;
   align-items: center;
-  gap: var(--half-spacing, 8px);
+  gap: var(--spacing-sm, 8px);
 }
 
 .save-button {
   display: flex;
   align-items: center;
-  gap: var(--quarter-spacing, 4px);
-  padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
-  background: var(--accent, #007bff);
-  color: var(--text-on-accent, #ffffff);
+  gap: var(--spacing-xs, 4px);
+  padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+  background: var(--color-accent, #007bff);
+  color: var(--color-text-inverse, #ffffff);
   border: none;
-  border-radius: var(--border-radius, 8px);
+  border-radius: var(--border-radius-base, 8px);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-duration, 0.2s) var(--transition-timing, ease);
+  transition: all var(--duration-base, 0.2s) var(--easing-standard, ease);
 }
 
 .save-button:hover {
-  background: color-mix(in srgb, var(--accent, #007bff) 85%, rgb(0 0 0));
+  background: color-mix(in srgb, var(--color-accent, #007bff) 85%, rgb(0 0 0));
   transform: var(--hover-transform, translateY(-1px));
-  box-shadow: var(--shadow-hover, 0 2px 4px rgba(0, 0, 0, 0.1));
+  box-shadow: var(--elevation-2, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .save-button:active {
@@ -74,12 +74,14 @@
 .editor-container {
   flex: 1;
   position: relative;
-  min-height: 200px;
+  min-height: 400px;
+  height: 400px; /* Ensure explicit height */
 }
 
 .monaco-editor-container {
   width: 100%;
   height: 100%;
+  min-height: 200px;
 }
 
 .monaco-editor-container--custom-height {
@@ -87,6 +89,15 @@
 }
 
 .monaco-editor-container--custom-width {
+  width: 100%;
+}
+
+/* Dynamic height and width using CSS custom properties set via data attributes */
+.monaco-editor-container[data-editor-height] {
+  height: var(--editor-height, 400px);
+}
+
+.monaco-editor-container[data-editor-width] {
   width: var(--editor-width, 100%);
 }
 
@@ -95,57 +106,57 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--text-secondary, #6c757d);
-  font-size: var(--font-size, 14px);
+  color: var(--color-text-secondary, #6c757d);
+  font-size: var(--font-size-base, 14px);
 }
 
 .editor-status {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--half-spacing, 8px) var(--spacing, 12px);
-  background: var(--secondary-bg, #f8f9fa);
-  border-top: 1px solid var(--border-color, #e1e5e9);
+  padding: var(--spacing-sm, 8px) var(--spacing-base, 12px);
+  background: var(--color-background-secondary, #f8f9fa);
+  border-top: 1px solid var(--color-border, #e1e5e9);
   min-height: 32px;
   font-size: 12px;
-  color: var(--text-secondary, #6c757d);
+  color: var(--color-text-secondary, #6c757d);
 }
 
 .status-item {
   display: flex;
   align-items: center;
-  gap: var(--quarter-spacing, 4px);
+  gap: var(--spacing-xs, 4px);
 }
 
 /* Monaco Editor Theme Integration */
 .code-editor .monaco-editor .margin {
-  background: var(--secondary-bg, #f8f9fa);
+  background: var(--color-background-secondary, #f8f9fa);
 }
 
 .code-editor .monaco-editor .monaco-editor-background {
-  background: var(--bg-color, #ffffff);
+  background: var(--color-background, #ffffff);
 }
 
 .code-editor .monaco-editor .scrollbar .slider {
-  background: var(--border-color, #e1e5e9);
+  background: var(--color-border, #e1e5e9);
 }
 
 .code-editor .monaco-editor .scrollbar .slider:hover {
-  background: var(--accent, #007bff);
+  background: var(--color-accent, #007bff);
 }
 
 .code-editor .monaco-editor .scrollbar .slider.active {
-  background: var(--accent, #007bff);
+  background: var(--color-accent, #007bff);
 }
 
 /* Minimap spacing and positioning */
 .code-editor .monaco-editor .minimap {
-  margin-left: var(--spacing, 12px);
-  border-left: 1px solid var(--border-color, #e1e5e9);
+  margin-left: var(--spacing-base, 12px);
+  border-left: 1px solid var(--color-border, #e1e5e9);
 }
 
 .code-editor .monaco-editor .minimap-slider {
-  background: var(--accent, #007bff);
+  background: var(--color-accent, #007bff);
   opacity: 0.3;
 }
 
@@ -159,7 +170,7 @@
 
 /* Ensure proper spacing between editor content and minimap */
 .code-editor .monaco-editor .editor-container {
-  padding-right: var(--spacing, 12px);
+  padding-right: var(--spacing-base, 12px);
 }
 
 /* Remove overview ruler to prevent overlap */
@@ -171,8 +182,8 @@
 .language-detection-indicator {
   display: flex;
   align-items: center;
-  gap: var(--quarter-spacing, 4px);
-  color: var(--accent, #007bff);
+  gap: var(--spacing-xs, 4px);
+  color: var(--color-accent, #007bff);
   font-size: 11px;
   font-weight: 500;
 }
@@ -190,8 +201,8 @@
 .shiki-indicator {
   display: flex;
   align-items: center;
-  gap: var(--quarter-spacing, 4px);
-  color: var(--accent, #007bff);
+  gap: var(--spacing-xs, 4px);
+  color: var(--color-accent, #007bff);
   font-size: 11px;
   font-weight: 500;
   animation: pulse 2s infinite;
@@ -214,48 +225,48 @@
 
 /* Theme-specific overrides */
 [data-theme="dark"] .code-editor {
-  background: var(--bg-color, #1a1a1a);
-  border-color: var(--border-color, #333333);
+  background: var(--color-background, #1a1a1a);
+  border-color: var(--color-border, #333333);
 }
 
 [data-theme="light"] .code-editor {
-  background: var(--bg-color, #ffffff);
-  border-color: var(--border-color, #e1e5e9);
+  background: var(--color-background, #ffffff);
+  border-color: var(--color-border, #e1e5e9);
 }
 
 [data-theme="gray"] .code-editor {
-  background: var(--bg-color, #f8f9fa);
-  border-color: var(--border-color, #dee2e6);
+  background: var(--color-background, #f8f9fa);
+  border-color: var(--color-border, #dee2e6);
 }
 
 /* Responsive Design */
 @media (width <=768px) {
   .editor-header {
-    padding: var(--half-spacing, 8px);
+    padding: var(--spacing-sm, 8px);
     min-height: 40px;
   }
 
   .editor-status {
-    padding: var(--quarter-spacing, 4px) var(--half-spacing, 8px);
+    padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
   }
 
   .language-info {
-    gap: var(--half-spacing, 8px);
+    gap: var(--spacing-sm, 8px);
   }
 
   .editor-actions {
-    gap: var(--quarter-spacing, 4px);
+    gap: var(--spacing-xs, 4px);
   }
 }
 
 /* Focus States */
 .save-button:focus-visible {
-  outline: 2px solid var(--accent, #007bff);
+  outline: 2px solid var(--color-accent, #007bff);
   outline-offset: 2px;
 }
 
 .monaco-editor-container:focus-visible {
-  outline: 2px solid var(--accent, #007bff);
+  outline: 2px solid var(--color-accent, #007bff);
   outline-offset: 2px;
 }
 
@@ -265,32 +276,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing, 12px);
+  padding: var(--spacing-base, 12px);
   text-align: center;
-  color: var(--error, #dc3545);
+  color: var(--color-error, #dc3545);
 }
 
 .error-icon {
   font-size: 24px;
-  margin-bottom: var(--half-spacing, 8px);
+  margin-bottom: var(--spacing-sm, 8px);
 }
 
 .error-container h3 {
-  margin: 0 0 var(--half-spacing, 8px) 0;
+  margin: 0 0 var(--spacing-sm, 8px) 0;
   font-size: 16px;
 }
 
 .error-container p {
-  margin: 0 0 var(--spacing, 12px) 0;
+  margin: 0 0 var(--spacing-base, 12px) 0;
   font-size: 14px;
 }
 
 .error-container button {
-  padding: var(--half-spacing, 8px) var(--spacing, 12px);
-  background: var(--accent, #007bff);
-  color: var(--text-on-accent, #ffffff);
+  padding: var(--spacing-sm, 8px) var(--spacing-base, 12px);
+  background: var(--color-accent, #007bff);
+  color: var(--color-text-inverse, #ffffff);
   border: none;
-  border-radius: var(--border-radius, 8px);
+  border-radius: var(--border-radius-base, 8px);
   cursor: pointer;
   font-size: 14px;
 }

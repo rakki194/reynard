@@ -1,78 +1,78 @@
 .geometry-demo {
-  padding: var(--spacing);
-  font-family: system-ui, -apple-system, sans-serif;
+  padding: var(--spacing-base);
+  font-family: var(--font-family-primary);
 }
 
 .demo-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing);
-  margin-bottom: var(--spacing);
-  padding: var(--spacing);
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  padding: var(--spacing-base);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
 }
 
 .demo-header h3 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .demo-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--half-spacing);
+  gap: var(--spacing-sm);
   background: transparent;
 }
 
 .geometry-canvas {
   display: flex;
   justify-content: center;
-  margin: var(--spacing) 0;
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
-  padding: var(--spacing);
+  margin: var(--spacing-base) 0;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-base);
 }
 
 .geometry-svg {
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  background: var(--color-surface);
 }
 
 .geometry-operations {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  margin-top: var(--spacing);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-base);
+  border-radius: var(--border-radius-base);
+  margin-top: var(--spacing-base);
 }
 
 .geometry-operations h4 {
-  margin: 0 0 var(--spacing) 0;
-  color: var(--text-primary);
+  margin: 0 0 var(--spacing-base) 0;
+  color: var(--color-text);
 }
 
 .operation-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--half-spacing);
-  margin-bottom: var(--spacing);
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-base);
 }
 
 .operation-results {
-  background: var(--card-bg);
-  padding: var(--half-spacing);
-  border-radius: var(--border-radius);
+  background: var(--color-surface);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-base);
   max-height: 200px;
   overflow-y: auto;
 }
 
 .operation-result {
-  padding: var(--quarter-spacing) 0;
-  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--color-border);
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .operation-result:last-child {

@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/gallery",
+  "name": "reynard-gallery",
   "version": "0.1.0",
   "description": "Reynard Gallery - File and media management components for SolidJS",
   "type": "module",

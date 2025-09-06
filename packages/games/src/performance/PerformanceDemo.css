@@ -1,106 +1,106 @@
 .performance-demo {
-  padding: var(--spacing);
-  font-family: system-ui, -apple-system, sans-serif;
+  padding: var(--spacing-base);
+  font-family: var(--font-family-primary);
 }
 
 .demo-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing);
-  margin-bottom: var(--spacing);
-  padding: var(--spacing);
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  padding: var(--spacing-base);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
 }
 
 .demo-header h3 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .demo-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--half-spacing);
+  gap: var(--spacing-sm);
   background: transparent;
 }
 
 .performance-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing);
-  margin: var(--spacing) 0;
+  gap: var(--spacing-base);
+  margin: var(--spacing-base) 0;
 }
 
 .metric-card {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-base);
+  border-radius: var(--border-radius-base);
+  border: 1px solid var(--color-border);
 }
 
 .metric-card h4 {
-  margin: 0 0 var(--spacing) 0;
-  color: var(--text-primary);
+  margin: 0 0 var(--spacing-base) 0;
+  color: var(--color-text);
   font-size: 1rem;
 }
 
 .measurements-list {
   display: flex;
   flex-direction: column;
-  gap: var(--half-spacing);
+  gap: var(--spacing-sm);
 }
 
 .measurement {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--half-spacing);
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  background: var(--color-surface);
+  border-radius: var(--border-radius-base);
   font-size: 0.9rem;
 }
 
 .measurement-name {
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .measurement-duration {
-  color: var(--success);
+  color: var(--color-success);
   font-weight: 500;
 }
 
 .measurement-memory {
-  color: var(--info);
+  color: var(--color-info);
   font-weight: 500;
 }
 
 .memory-info {
-  background: var(--card-bg);
-  padding: var(--half-spacing);
-  border-radius: var(--border-radius);
+  background: var(--color-surface);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-base);
 }
 
 .memory-info p {
-  margin: var(--quarter-spacing) 0;
+  margin: var(--spacing-xs) 0;
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .demo-instructions {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  margin-top: var(--spacing);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-base);
+  border-radius: var(--border-radius-base);
+  margin-top: var(--spacing-base);
 }
 
 .demo-instructions p {
-  margin: var(--half-spacing) 0;
+  margin: var(--spacing-sm) 0;
   font-size: 0.9rem;
   line-height: 1.4;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 @media (max-width: 768px) {

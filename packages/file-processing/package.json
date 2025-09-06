@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/file-processing",
+  "name": "reynard-file-processing",
   "version": "0.1.0",
   "description": "Reynard File Processing - Advanced file processing, thumbnail generation, and media analysis for SolidJS applications",
   "type": "module",
@@ -43,8 +43,7 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "@reynard/core": "file:../core",
-    "@reynard/utils": "file:../utils"
+    "reynard-core": "file:../core"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

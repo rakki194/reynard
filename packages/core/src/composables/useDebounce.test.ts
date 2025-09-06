@@ -160,4 +160,44 @@ describe("useDebounce", () => {
       expect(mockFn).toHaveBeenCalledWith("third");
     });
   });
+
+  describe("useDebounce edge cases", () => {
+    it("should handle cleanup when component unmounts", () => {
+      createRoot((dispose) => {
+        const [value, setValue] = createSignal("initial");
+        const debouncedValue = useDebounce(value, 100);
+
+        setValue("updated");
+        
+        // Dispose before timeout completes
+        dispose();
+        
+        // Advance time to ensure cleanup worked
+        vi.advanceTimersByTime(200);
+        
+        // Should not throw errors
+        expect(() => dispose()).not.toThrow();
+      });
+    });
+
+    it("should handle multiple rapid changes and cleanup", () => {
+      createRoot((dispose) => {
+        const [value, setValue] = createSignal("initial");
+        const debouncedValue = useDebounce(value, 50);
+
+        // Rapid changes
+        setValue("change1");
+        setValue("change2");
+        setValue("change3");
+        
+        // Dispose before any timeout completes
+        dispose();
+        
+        // Advance time
+        vi.advanceTimersByTime(100);
+        
+        expect(() => dispose()).not.toThrow();
+      });
+    });
+  });
 });

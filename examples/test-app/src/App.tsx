@@ -13,10 +13,9 @@ import { AlgorithmsDemo } from "./components/AlgorithmsDemo";
 import { MonacoEditorDemo } from "./components/MonacoEditorDemo";
 import ReynardTutorial from "./components/ReynardAdventure";
 import "./App.css";
-import "./themes.css";
 import "./styles/streaming-demo.css";
 // Import Reynard component styles
-import "../../reynard/packages/components/src/styles.css";
+import "@reynard/components/styles";
 // Import Reynard games styles
 import "@reynard/games/dist/index.css";
 

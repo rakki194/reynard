@@ -1,15 +1,16 @@
 {
-  "name": "@reynard/core",
+  "name": "reynard-core",
   "version": "0.1.0",
   "description": "Core utilities and modules for Reynard framework",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./modules": {
       "types": "./dist/modules/index.d.ts",
@@ -21,11 +22,12 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
+    "test:docs": "vitest run --config vitest.docs.config.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },

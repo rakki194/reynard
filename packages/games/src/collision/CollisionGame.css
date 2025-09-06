@@ -1,62 +1,62 @@
 .collision-game {
-  padding: var(--spacing);
-  font-family: system-ui, -apple-system, sans-serif;
+  padding: var(--spacing-base);
+  font-family: var(--font-family-primary);
 }
 
 .game-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing);
-  margin-bottom: var(--spacing);
-  padding: var(--spacing);
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  padding: var(--spacing-base);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
 }
 
 .game-header h3 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .game-controls {
   display: flex;
-  gap: var(--half-spacing);
+  gap: var(--spacing-sm);
   background: transparent;
 }
 
 .game-stats {
   display: flex;
-  gap: var(--spacing);
+  gap: var(--spacing-base);
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .collision-canvas {
   display: flex;
   justify-content: center;
-  margin: var(--spacing) 0;
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
-  padding: var(--spacing);
+  margin: var(--spacing-base) 0;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-base);
 }
 
 .balls-svg {
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--card-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  background: var(--color-surface);
 }
 
 .game-instructions {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  margin-top: var(--spacing);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-base);
+  border-radius: var(--border-radius-base);
+  margin-top: var(--spacing-base);
 }
 
 .game-instructions p {
-  margin: var(--half-spacing) 0;
+  margin: var(--spacing-sm) 0;
   font-size: 0.9rem;
   line-height: 1.4;
-  color: var(--text-primary);
+  color: var(--color-text);
 }

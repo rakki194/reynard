@@ -26,14 +26,14 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--text-secondary, #666);
+  color: var(--color-text-secondary, #666);
 }
 
 .reynard-chart-spinner {
   width: 24px;
   height: 24px;
-  border: 2px solid var(--border-color, #ddd);
-  border-top: 2px solid var(--primary-color, #007bff);
+  border: 2px solid var(--color-border, #ddd);
+  border-top: 2px solid var(--color-primary, #007bff);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 8px;
@@ -44,7 +44,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--text-secondary, #666);
+  color: var(--color-text-secondary, #666);
   font-style: italic;
 }
 

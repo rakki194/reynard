@@ -40,6 +40,13 @@ export {
   REYNARD_TO_SHIKI_THEME_MAP,
 } from './utils/themeMapping';
 
+// Custom Monaco themes
+export {
+  getCustomMonacoTheme,
+  registerCustomMonacoTheme,
+  getMonacoThemeName,
+} from './utils/customThemes';
+
 // Types
 export type {
   LanguageInfo,

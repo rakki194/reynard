@@ -10,6 +10,7 @@ import {
   getShikiThemeFromReynard,
   isReynardThemeDark
 } from '../utils/themeMapping';
+import { registerCustomMonacoTheme } from '../utils/customThemes';
 // Define ThemeName locally to avoid dependency issues
 type ThemeName = 
   | "light"
@@ -22,10 +23,10 @@ type ThemeName =
   | "high-contrast-inverse";
 
 export interface ReynardMonacoOptions {
-  /** The current Reynard theme */
-  reynardTheme: ThemeName;
-  /** Language for syntax highlighting */
-  lang?: string;
+  /** The current Reynard theme (can be a function for reactivity) */
+  reynardTheme: ThemeName | (() => ThemeName);
+  /** Language for syntax highlighting (can be a function for reactivity) */
+  lang?: string | (() => string);
   /** Whether to enable Shiki syntax highlighting */
   enableShikiHighlighting?: boolean;
   /** Additional Monaco editor options */
@@ -48,25 +49,46 @@ export interface ReynardMonacoState {
  * Automatically syncs Monaco Editor theme with the current Reynard theme
  */
 export const useReynardMonaco = (options: ReynardMonacoOptions) => {
+  // Helper functions to get reactive values
+  const getReynardTheme = (): ThemeName => {
+    return typeof options.reynardTheme === 'function' ? options.reynardTheme() : options.reynardTheme;
+  };
+  
+  const getLang = (): string => {
+    return typeof options.lang === 'function' ? options.lang() : (options.lang || 'javascript');
+  };
+
   const [state, setState] = createSignal<ReynardMonacoState>({
-    monacoTheme: getMonacoThemeFromReynard(options.reynardTheme),
-    shikiTheme: getShikiThemeFromReynard(options.reynardTheme),
-    isDark: isReynardThemeDark(options.reynardTheme),
+    monacoTheme: getMonacoThemeFromReynard(getReynardTheme()),
+    shikiTheme: getShikiThemeFromReynard(getReynardTheme()),
+    isDark: isReynardThemeDark(getReynardTheme()),
     isShikiEnabled: options.enableShikiHighlighting !== false,
   });
 
   // Initialize Monaco Shiki with Reynard theme
   const monacoShiki = useMonacoShiki({
-    theme: getShikiThemeFromReynard(options.reynardTheme),
-    lang: options.lang || 'javascript',
+    theme: getShikiThemeFromReynard(getReynardTheme()),
+    lang: getLang(),
     enableShikiHighlighting: options.enableShikiHighlighting !== false,
-    reynardTheme: options.reynardTheme,
-    useReynardTheme: true,
   });
+
+  // Register custom Monaco themes
+  const registerThemes = (monaco: any) => {
+    if (monaco && monaco.editor) {
+      const reynardTheme = getReynardTheme();
+      console.log('Registering custom Monaco theme for Reynard theme:', reynardTheme);
+      registerCustomMonacoTheme(monaco, reynardTheme);
+      
+      // Also set the theme immediately after registration
+      const themeName = `reynard-${reynardTheme}`;
+      console.log('Setting Monaco theme to:', themeName);
+      monaco.editor.setTheme(themeName);
+    }
+  };
 
   // Update state when Reynard theme changes
   createEffect(() => {
-    const reynardTheme = options.reynardTheme;
+    const reynardTheme = getReynardTheme();
     const newMonacoTheme = getMonacoThemeFromReynard(reynardTheme);
     const newShikiTheme = getShikiThemeFromReynard(reynardTheme);
     const newIsDark = isReynardThemeDark(reynardTheme);
@@ -78,8 +100,10 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
       isShikiEnabled: options.enableShikiHighlighting !== false,
     });
 
-    // Update Monaco Shiki theme
-    monacoShiki.updateTheme(newShikiTheme);
+    // Update Monaco Shiki theme only if it's different
+    if (monacoShiki.currentTheme() !== newShikiTheme) {
+      monacoShiki.updateTheme(newShikiTheme);
+    }
   });
 
   // Get Monaco editor options with Reynard theme
@@ -98,6 +122,7 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
       scrollBeyondLastLine: false,
       fontSize: 14,
       fontFamily: 'var(--font-family-mono)',
+      lineHeight: 20,
       lineNumbers: 'on',
       roundedSelection: false,
       scrollbar: {
@@ -141,6 +166,7 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
     
     // Utilities
     getMonacoOptions,
+    registerThemes,
     
     // Theme utilities
     getMonacoThemeFromReynard,

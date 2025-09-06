@@ -3,7 +3,8 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { createTheme, ThemeProvider } from "./useTheme";
+import { createRoot } from "solid-js";
+import { createTheme, ThemeProvider, useTheme, useThemeValue } from "./useTheme";
 
 describe("useTheme Composable", () => {
   describe("createTheme", () => {
@@ -53,6 +54,40 @@ describe("useTheme Composable", () => {
   describe("ThemeProvider", () => {
     it("should be defined", () => {
       expect(ThemeProvider).toBeDefined();
+    });
+  });
+
+  describe("useTheme", () => {
+    it("should throw error when used outside provider", () => {
+      createRoot(() => {
+        expect(() => useTheme()).toThrow("useTheme must be used within a ThemeProvider");
+      });
+    });
+
+    it("should return context when used within provider", () => {
+      const themeModule = createTheme();
+      
+      createRoot((dispose) => {
+        // Test that the module has the expected structure
+        expect(themeModule).toBeDefined();
+        expect(typeof themeModule.theme).toBe("function");
+        expect(typeof themeModule.setTheme).toBe("function");
+        expect(typeof themeModule.nextTheme).toBe("function");
+        dispose();
+      });
+    });
+  });
+
+  describe("useThemeValue", () => {
+    it("should return theme value", () => {
+      const themeModule = createTheme();
+      
+      createRoot((dispose) => {
+        // Test that the module has the expected structure
+        expect(themeModule).toBeDefined();
+        expect(themeModule.theme()).toBe("light");
+        dispose();
+      });
     });
   });
 });

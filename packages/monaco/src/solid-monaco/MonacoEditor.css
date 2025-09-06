@@ -1,14 +1,17 @@
 .monaco-editor-wrapper {
   width: 100%;
-  height: 100%;
+  height: 400px; /* Default height */
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
 }
 
 .monaco-editor-wrapper--custom-height {
-  height: var(--editor-height, 400px);
+  height: attr(data-height, 400px);
 }
 
 .monaco-editor-wrapper--custom-width {
-  width: var(--editor-width, 100%);
+  width: attr(data-width, 100%);
 }
 
 .monaco-editor-loading {

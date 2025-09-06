@@ -177,5 +177,99 @@ describe("Notifications Module", () => {
       vi.advanceTimersByTime(1100);
       expect(notificationsModule.notifications).toHaveLength(0);
     });
+
+    it("should handle global notification container when available", () => {
+      const notificationsModule = createNotificationsModule();
+      
+      // Mock global notification container
+      const mockContainer = {
+        removeNotification: vi.fn(),
+        removeNotificationByGroup: vi.fn(),
+        clearAllNotifications: vi.fn(),
+      };
+      
+      (window as any).__notificationContainer = mockContainer;
+
+      const id = notificationsModule.notify("Test message");
+      
+      // Test removeNotification with global container
+      notificationsModule.removeNotification(id);
+      expect(mockContainer.removeNotification).toHaveBeenCalledWith(id);
+      
+      // Test clearNotifications with group
+      notificationsModule.clearNotifications("test-group");
+      expect(mockContainer.removeNotificationByGroup).toHaveBeenCalledWith("test-group");
+      
+      // Test clearNotifications without group
+      notificationsModule.clearNotifications();
+      expect(mockContainer.clearAllNotifications).toHaveBeenCalled();
+      
+      // Cleanup
+      delete (window as any).__notificationContainer;
+    });
+
+    it("should fallback to internal state when global container not available", () => {
+      const notificationsModule = createNotificationsModule();
+      
+      // Ensure no global container
+      delete (window as any).__notificationContainer;
+
+      const id = notificationsModule.notify("Test message");
+      expect(notificationsModule.notifications).toHaveLength(1);
+      
+      // Test removeNotification fallback
+      notificationsModule.removeNotification(id);
+      expect(notificationsModule.notifications).toHaveLength(0);
+      
+      // Add notifications for clear tests
+      notificationsModule.notify("Group message", "info", { group: "test-group" });
+      notificationsModule.notify("Regular message");
+      
+      // Test clearNotifications with group fallback
+      notificationsModule.clearNotifications("test-group");
+      expect(notificationsModule.notifications).toHaveLength(1);
+      expect(notificationsModule.notifications[0].group).toBeUndefined();
+      
+      // Test clearNotifications without group fallback
+      notificationsModule.clearNotifications();
+      expect(notificationsModule.notifications).toHaveLength(0);
+    });
+
+    it("should handle createNotification with auto-dismiss", () => {
+      const notificationsModule = createNotificationsModule();
+
+      const id = notificationsModule.createNotification({
+        message: "Created notification",
+        type: "success",
+        duration: 2000,
+      });
+
+      expect(notificationsModule.notifications).toHaveLength(1);
+      expect(notificationsModule.notifications[0].id).toBe(id);
+      expect(notificationsModule.notifications[0].duration).toBe(2000);
+
+      // Should auto-dismiss after 2 seconds
+      vi.advanceTimersByTime(2100);
+      expect(notificationsModule.notifications).toHaveLength(0);
+    });
+
+    it("should handle createNotification with grouped notifications", () => {
+      const notificationsModule = createNotificationsModule();
+
+      notificationsModule.createNotification({
+        message: "First grouped",
+        type: "info",
+        group: "test-group",
+      });
+
+      notificationsModule.createNotification({
+        message: "Second grouped",
+        type: "info",
+        group: "test-group",
+      });
+
+      expect(notificationsModule.notifications).toHaveLength(1);
+      expect(notificationsModule.notifications[0].message).toBe("Second grouped");
+    });
   });
 });

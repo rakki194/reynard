@@ -3,6 +3,8 @@
  * Maps Reynard theme names to appropriate Monaco Editor themes
  */
 
+import { getCustomMonacoTheme } from './customThemes';
+
 // Define ThemeName locally to avoid dependency issues
 type ThemeName = 
   | "light"
@@ -23,7 +25,7 @@ export const REYNARD_TO_MONACO_THEME_MAP: Record<ThemeName, string> = {
   "dark": "vs-dark", 
   "gray": "vs-dark",
   "banana": "vs",
-  "strawberry": "vs-dark",
+  "strawberry": "vs",
   "peanut": "vs-dark",
   "high-contrast-black": "hc-black",
   "high-contrast-inverse": "hc-black",
@@ -38,7 +40,7 @@ export const REYNARD_TO_SHIKI_THEME_MAP: Record<ThemeName, string> = {
   "dark": "github-dark",
   "gray": "github-dark", 
   "banana": "github-light",
-  "strawberry": "github-dark",
+  "strawberry": "github-light",
   "peanut": "github-dark",
   "high-contrast-black": "github-dark",
   "high-contrast-inverse": "github-light",
@@ -50,7 +52,19 @@ export const REYNARD_TO_SHIKI_THEME_MAP: Record<ThemeName, string> = {
  * @returns The corresponding Monaco Editor theme name
  */
 export const getMonacoThemeFromReynard = (reynardTheme: ThemeName): string => {
-  return REYNARD_TO_MONACO_THEME_MAP[reynardTheme] || "vs-dark";
+  // Try to get custom theme first
+  const customTheme = getCustomMonacoTheme(reynardTheme);
+  console.log('getMonacoThemeFromReynard:', { reynardTheme, customTheme });
+  if (customTheme) {
+    const themeName = `reynard-${reynardTheme}`;
+    console.log('Using custom theme:', themeName);
+    return themeName;
+  }
+  
+  // Fallback to standard theme mapping
+  const fallbackTheme = REYNARD_TO_MONACO_THEME_MAP[reynardTheme] || "vs-dark";
+  console.log('Using fallback theme:', fallbackTheme);
+  return fallbackTheme;
 };
 
 /**
@@ -68,7 +82,7 @@ export const getShikiThemeFromReynard = (reynardTheme: ThemeName): string => {
  * @returns True if the theme is dark, false otherwise
  */
 export const isReynardThemeDark = (reynardTheme: ThemeName): boolean => {
-  const darkThemes: ThemeName[] = ["dark", "gray", "strawberry", "peanut", "high-contrast-black"];
+  const darkThemes: ThemeName[] = ["dark", "gray", "peanut", "high-contrast-black"];
   return darkThemes.includes(reynardTheme);
 };
 

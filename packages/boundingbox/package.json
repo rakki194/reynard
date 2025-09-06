@@ -1,5 +1,5 @@
 {
-    "name": "@reynard/boundingbox",
+    "name": "reynard-boundingbox",
     "version": "0.1.0",
     "description": "Reusable bounding box and annotation editing components for Reynard",
     "type": "module",

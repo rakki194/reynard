@@ -3,7 +3,14 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { createNotifications, NotificationsProvider } from "./useNotifications";
+import { createRoot } from "solid-js";
+import { 
+  createNotifications, 
+  NotificationsProvider, 
+  useNotifications, 
+  useNotify, 
+  useNotificationValues 
+} from "./useNotifications";
 
 describe("useNotifications Composable", () => {
   describe("createNotifications", () => {
@@ -69,6 +76,56 @@ describe("useNotifications Composable", () => {
   describe("NotificationsProvider", () => {
     it("should be defined", () => {
       expect(NotificationsProvider).toBeDefined();
+    });
+  });
+
+  describe("useNotifications", () => {
+    it("should throw error when used outside provider", () => {
+      createRoot(() => {
+        expect(() => useNotifications()).toThrow("useNotifications must be used within a NotificationsProvider");
+      });
+    });
+
+    it("should return context when used within provider", () => {
+      const notificationsModule = createNotifications();
+      
+      createRoot((dispose) => {
+        // Test that the module has the expected structure
+        expect(notificationsModule).toBeDefined();
+        expect(typeof notificationsModule.notify).toBe("function");
+        expect(typeof notificationsModule.clearNotifications).toBe("function");
+        expect(Array.isArray(notificationsModule.notifications)).toBe(true);
+        dispose();
+      });
+    });
+  });
+
+  describe("useNotify", () => {
+    it("should return notification utilities", () => {
+      const notificationsModule = createNotifications();
+      
+      createRoot((dispose) => {
+        // Test that the module has the expected structure
+        expect(notificationsModule).toBeDefined();
+        expect(typeof notificationsModule.notify).toBe("function");
+        expect(typeof notificationsModule.createNotification).toBe("function");
+        expect(typeof notificationsModule.removeNotification).toBe("function");
+        expect(typeof notificationsModule.clearNotifications).toBe("function");
+        dispose();
+      });
+    });
+  });
+
+  describe("useNotificationValues", () => {
+    it("should return notification values", () => {
+      const notificationsModule = createNotifications();
+      
+      createRoot((dispose) => {
+        // Test that the module has the expected structure
+        expect(notificationsModule).toBeDefined();
+        expect(Array.isArray(notificationsModule.notifications)).toBe(true);
+        dispose();
+      });
     });
   });
 });

@@ -409,6 +409,119 @@ const auth = useAuth({
 });
 ```
 
+### Security Best Practices
+
+#### 1. **Token Validation & Sanitization**
+
+```tsx
+import { validateToken, sanitizeUserInput } from "@reynard/auth";
+
+// Always validate tokens before use
+const isValidToken = validateToken(token, {
+  verifySignature: true,
+  checkExpiration: true,
+  allowedIssuers: ["your-app.com"],
+});
+
+// Sanitize all user inputs
+const cleanUsername = sanitizeUserInput(username, {
+  maxLength: 50,
+  allowedChars: /^[a-zA-Z0-9_-]+$/,
+  trimWhitespace: true,
+});
+```
+
+#### 2. **Rate Limiting & Brute Force Protection**
+
+```tsx
+import { RateLimiter, BruteForceProtection } from "@reynard/auth";
+
+// Implement rate limiting for login attempts
+const rateLimiter = new RateLimiter({
+  maxAttempts: 5,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  blockDurationMs: 30 * 60 * 1000, // 30 minutes
+});
+
+// Brute force protection
+const bruteForceProtection = new BruteForceProtection({
+  maxFailedAttempts: 3,
+  lockoutDurationMs: 10 * 60 * 1000, // 10 minutes
+  progressiveDelay: true,
+});
+
+// Usage in login handler
+const handleLogin = async (credentials) => {
+  const clientId = getClientIdentifier(); // IP + User-Agent hash
+  
+  if (await rateLimiter.isBlocked(clientId)) {
+    throw new Error("Too many login attempts. Please try again later.");
+  }
+  
+  if (await bruteForceProtection.isLocked(credentials.identifier)) {
+    throw new Error("Account temporarily locked due to failed attempts.");
+  }
+  
+  try {
+    const result = await authenticate(credentials);
+    await rateLimiter.reset(clientId);
+    await bruteForceProtection.reset(credentials.identifier);
+    return result;
+  } catch (error) {
+    await rateLimiter.recordAttempt(clientId);
+    await bruteForceProtection.recordFailedAttempt(credentials.identifier);
+    throw error;
+  }
+};
+```
+
+#### 3. **CSRF Protection**
+
+```tsx
+import { CSRFProtection } from "@reynard/auth";
+
+// Generate CSRF token
+const csrfToken = CSRFProtection.generateToken();
+
+// Include in forms
+<form onSubmit={handleSubmit}>
+  <input type="hidden" name="csrf_token" value={csrfToken} />
+  {/* form fields */}
+</form>
+
+// Validate in API calls
+const validateCSRF = (token: string) => {
+  return CSRFProtection.validateToken(token, {
+    maxAge: 3600000, // 1 hour
+    requireSecure: true, // HTTPS only
+  });
+};
+```
+
+#### 4. **Secure Session Management**
+
+```tsx
+import { SecureSessionManager } from "@reynard/auth";
+
+const sessionManager = new SecureSessionManager({
+  sessionTimeout: 30 * 60 * 1000, // 30 minutes
+  slidingExpiration: true,
+  secureCookies: true,
+  httpOnly: true,
+  sameSite: "strict",
+});
+
+// Track user activity
+const trackActivity = () => {
+  sessionManager.updateLastActivity();
+};
+
+// Check session validity
+const isSessionValid = () => {
+  return sessionManager.isValid() && !sessionManager.isExpired();
+};
+```
+
 ### Secure Token Storage
 
 ```typescript

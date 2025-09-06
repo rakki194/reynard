@@ -6,7 +6,7 @@
  */
 
 import { Component, JSX, createMemo } from "solid-js";
-import { getIcon, iconRegistry } from "@reynard/fluent-icons";
+import { getIcon, iconRegistry } from "reynard-fluent-icons";
 
 // Icon component props
 export interface IconProps {
@@ -123,4 +123,4 @@ export {
   searchIcons,
   getAllIconNames,
   getIconPackages,
-} from "@reynard/fluent-icons";
+} from "reynard-fluent-icons";

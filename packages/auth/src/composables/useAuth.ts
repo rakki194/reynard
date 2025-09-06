@@ -28,6 +28,7 @@ import {
   isTokenExpired,
   getUserFromToken,
   retryWithBackoff,
+  generateCSRFToken,
 } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
 
@@ -71,7 +72,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     });
   };
 
-  // API fetch wrapper with auth headers
+  // API fetch wrapper with auth headers and CSRF protection
   const authFetch = async (
     url: string,
     options: {
@@ -112,6 +113,13 @@ export function useAuth(options: UseAuthOptions = {}) {
 
     if (token) {
       headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Add CSRF protection for state-changing requests
+    const method = options.method?.toUpperCase() || 'GET';
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+      const csrfToken = generateCSRFToken();
+      headers['X-CSRF-Token'] = csrfToken;
     }
 
     const response = await fetch(`${config.apiBaseUrl}${url}`, {

@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/basic-app-example",
+  "name": "reynard-basic-app",
   "version": "0.1.0",
   "description": "Basic Todo App - Minimal Reynard framework example",
   "type": "module",

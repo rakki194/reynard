@@ -3,7 +3,7 @@
  * Provides persistent reactive state synchronized with localStorage
  */
 
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, onCleanup } from "solid-js";
 
 export interface UseLocalStorageOptions<T> {
   /** Default value if key doesn't exist */
@@ -17,8 +17,28 @@ export interface UseLocalStorageOptions<T> {
   syncAcrossTabs?: boolean;
 }
 
+// Safe JSON parser that prevents XSS attacks
+const safeJsonParse = (value: string): any => {
+  try {
+    // Basic validation to prevent prototype pollution and XSS
+    if (typeof value !== 'string' || value.length > 1000000) { // 1MB limit
+      throw new Error('Invalid JSON input');
+    }
+    
+    // Check for dangerous patterns
+    if (value.includes('__proto__') || value.includes('constructor') || value.includes('prototype')) {
+      throw new Error('Potentially dangerous JSON detected');
+    }
+    
+    return JSON.parse(value);
+  } catch (error) {
+    console.warn('Failed to parse JSON from localStorage:', error);
+    throw error;
+  }
+};
+
 const defaultSerializer = {
-  read: JSON.parse,
+  read: safeJsonParse,
   write: JSON.stringify,
 };
 
@@ -34,6 +54,11 @@ export const useLocalStorage = <T>(
     serializer = defaultSerializer,
     syncAcrossTabs = true,
   } = options;
+
+  // Validate key input
+  if (!key || typeof key !== 'string' || key.trim() === '') {
+    throw new Error('useLocalStorage key must be a non-empty string');
+  }
 
   // Get initial value from localStorage
   const getInitialValue = (): T => {
@@ -64,9 +89,11 @@ export const useLocalStorage = <T>(
     }
   });
 
-  // Listen for storage events (when changed in other tabs)
+  // Storage event handler with proper cleanup
+  let handleStorageChange: ((e: StorageEvent) => void) | null = null;
+
   if (typeof window !== "undefined" && syncAcrossTabs) {
-    const handleStorageChange = (e: StorageEvent) => {
+    handleStorageChange = (e: StorageEvent) => {
       if (e.key === key && e.newValue !== null) {
         try {
           setValue(serializer.read(e.newValue));
@@ -77,9 +104,18 @@ export const useLocalStorage = <T>(
     };
 
     window.addEventListener("storage", handleStorageChange);
-
-    // Cleanup on component unmount would be handled by the consuming component
   }
+
+  // Cleanup function
+  const cleanup = () => {
+    if (handleStorageChange && typeof window !== "undefined") {
+      window.removeEventListener("storage", handleStorageChange);
+      handleStorageChange = null;
+    }
+  };
+
+  // Register cleanup
+  onCleanup(cleanup);
 
   const remove = () => {
     if (typeof window === "undefined") return;
@@ -87,5 +123,5 @@ export const useLocalStorage = <T>(
     setValue(() => defaultValue);
   };
 
-  return [value, setValue, remove] as const;
+  return [value, setValue, remove, cleanup] as const;
 };

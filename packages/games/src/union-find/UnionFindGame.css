@@ -1,29 +1,29 @@
 .union-find-game {
-  padding: var(--spacing);
-  font-family: system-ui, -apple-system, sans-serif;
+  padding: var(--spacing-base);
+  font-family: var(--font-family-primary);
 }
 
 .game-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing);
-  margin-bottom: var(--spacing);
-  padding: var(--spacing);
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  padding: var(--spacing-base);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
 }
 
 .game-header h3 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .game-stats {
   display: flex;
-  gap: var(--spacing);
+  gap: var(--spacing-base);
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .game-grid {
@@ -31,10 +31,10 @@
   grid-template-columns: repeat(8, 1fr);
   gap: 2px;
   max-width: 400px;
-  margin: 0 auto var(--spacing);
-  background: var(--border-color);
+  margin: 0 auto var(--spacing-base);
+  background: var(--color-border);
   padding: 4px;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-base);
 }
 
 .game-cell {
@@ -108,58 +108,58 @@
 
 .game-over-message {
   text-align: center;
-  padding: var(--double-spacing);
-  background: var(--error-bg);
-  border: 1px solid var(--error);
-  border-radius: var(--border-radius);
-  margin: var(--spacing) 0;
+  padding: var(--spacing-2xl);
+  background: var(--color-danger-light);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--border-radius-base);
+  margin: var(--spacing-base) 0;
 }
 
 .game-over-message h3 {
-  color: var(--error-text);
-  margin-bottom: var(--spacing);
+  color: var(--color-danger);
+  margin-bottom: var(--spacing-base);
 }
 
 .game-instructions {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  margin-top: var(--spacing);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-base);
+  border-radius: var(--border-radius-base);
+  margin-top: var(--spacing-base);
 }
 
 .game-instructions p {
-  margin: var(--half-spacing) 0;
+  margin: var(--spacing-sm) 0;
   font-size: 0.9rem;
   line-height: 1.4;
-  color: var(--text-primary);
+  color: var(--color-text);
 }
 
 .game-instructions kbd {
-  background: var(--text-secondary);
-  color: var(--text-on-accent);
+  background: var(--color-text-secondary);
+  color: var(--color-text-inverse);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 0.8rem;
 }
 
 .game-stats-detail {
-  margin-top: var(--spacing);
-  padding: var(--spacing);
-  background: var(--secondary-bg);
-  border-radius: var(--border-radius);
+  margin-top: var(--spacing-base);
+  padding: var(--spacing-base);
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-base);
 }
 
 .game-stats-detail h4 {
-  margin: 0 0 var(--half-spacing) 0;
-  color: var(--text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text);
 }
 
 .game-stats-detail pre {
-  background: var(--card-bg);
-  padding: var(--half-spacing);
-  border-radius: var(--border-radius);
+  background: var(--color-surface);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-base);
   font-size: 0.8rem;
   overflow-x: auto;
   margin: 0;
-  color: var(--text-primary);
+  color: var(--color-text);
 }

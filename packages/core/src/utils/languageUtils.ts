@@ -356,8 +356,21 @@ const LANGUAGE_MAP: Record<string, LanguageInfo> = {
  * Get Monaco language ID from file path or extension
  */
 export function getMonacoLanguage(filePath: string): string {
-  const fileName = filePath.split("/").pop() || "";
+  // Validate input
+  if (!filePath || typeof filePath !== 'string') {
+    return "plaintext";
+  }
+
+  // Sanitize path to prevent directory traversal attacks
+  const sanitizedPath = filePath.replace(/[\/\\]/g, '/').replace(/\.\./g, '');
+  
+  const fileName = sanitizedPath.split("/").pop() || "";
   const extension = fileName.split(".").pop()?.toLowerCase() || "";
+
+  // Validate filename and extension
+  if (fileName.length > 255 || extension.length > 10) {
+    return "plaintext";
+  }
 
   // Check for full filename first (e.g., package.json)
   if (LANGUAGE_MAP[fileName]) {
@@ -372,8 +385,21 @@ export function getMonacoLanguage(filePath: string): string {
  * Get display name for language from file path or extension
  */
 export function getLanguageDisplayName(filePath: string): string {
-  const fileName = filePath.split("/").pop() || "";
+  // Validate input
+  if (!filePath || typeof filePath !== 'string') {
+    return "Plain Text";
+  }
+
+  // Sanitize path to prevent directory traversal attacks
+  const sanitizedPath = filePath.replace(/[\/\\]/g, '/').replace(/\.\./g, '');
+  
+  const fileName = sanitizedPath.split("/").pop() || "";
   const extension = fileName.split(".").pop()?.toLowerCase() || "";
+
+  // Validate filename and extension
+  if (fileName.length > 255 || extension.length > 10) {
+    return "Plain Text";
+  }
 
   // Check for full filename first
   if (LANGUAGE_MAP[fileName]) {
@@ -388,8 +414,21 @@ export function getLanguageDisplayName(filePath: string): string {
  * Check if file is a code file based on extension
  */
 export function isCodeFile(filePath: string): boolean {
-  const fileName = filePath.split("/").pop() || "";
+  // Validate input
+  if (!filePath || typeof filePath !== 'string') {
+    return false;
+  }
+
+  // Sanitize path to prevent directory traversal attacks
+  const sanitizedPath = filePath.replace(/[\/\\]/g, '/').replace(/\.\./g, '');
+  
+  const fileName = sanitizedPath.split("/").pop() || "";
   const extension = fileName.split(".").pop()?.toLowerCase() || "";
+
+  // Validate filename and extension
+  if (fileName.length > 255 || extension.length > 10) {
+    return false;
+  }
 
   // Check for full filename first
   if (LANGUAGE_MAP[fileName]) {
@@ -404,8 +443,31 @@ export function isCodeFile(filePath: string): boolean {
  * Get complete language info from file path
  */
 export function getLanguageInfo(filePath: string): LanguageInfo {
-  const fileName = filePath.split("/").pop() || "";
+  // Validate input
+  if (!filePath || typeof filePath !== 'string') {
+    return {
+      monacoLanguage: "plaintext",
+      displayName: "Plain Text",
+      isCode: false,
+      category: "other",
+    };
+  }
+
+  // Sanitize path to prevent directory traversal attacks
+  const sanitizedPath = filePath.replace(/[\/\\]/g, '/').replace(/\.\./g, '');
+  
+  const fileName = sanitizedPath.split("/").pop() || "";
   const extension = fileName.split(".").pop()?.toLowerCase() || "";
+
+  // Validate filename and extension
+  if (fileName.length > 255 || extension.length > 10) {
+    return {
+      monacoLanguage: "plaintext",
+      displayName: "Plain Text",
+      isCode: false,
+      category: "other",
+    };
+  }
 
   // Check for full filename first
   if (LANGUAGE_MAP[fileName]) {
@@ -461,7 +523,16 @@ export function isShellFile(filePath: string): boolean {
  * Get file extension from path
  */
 export function getFileExtension(filePath: string): string {
-  return filePath.split(".").pop()?.toLowerCase() || "";
+  if (!filePath || typeof filePath !== 'string') {
+    return "";
+  }
+  
+  const parts = filePath.split(".");
+  if (parts.length < 2) {
+    return "";
+  }
+  
+  return parts.pop()?.toLowerCase() || "";
 }
 
 /**

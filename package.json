@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/monorepo",
+  "name": "reynard",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -38,7 +38,15 @@
     "setup": "npm install && npm run build",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "audit": "npm audit --audit-level=moderate",
+    "audit:fix": "npm audit fix",
+    "security:check": "npm audit --audit-level=high && npm run security:scan",
+    "security:scan": "npx audit-ci --config audit-ci.json",
+    "doc-tests": "node scripts/doc-tests.js",
+    "doc-tests:generate": "node scripts/doc-tests.js generate",
+    "doc-tests:validate": "node scripts/doc-tests.js validate",
+    "doc-tests:test": "node scripts/doc-tests.js test"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",
@@ -47,6 +55,7 @@
     "@types/node": "24.3.1",
     "@typescript-eslint/eslint-plugin": "8.42.0",
     "@typescript-eslint/parser": "8.42.0",
+    "audit-ci": "7.1.0",
     "eslint": "8.57.0",
     "eslint-plugin-solid": "0.14.5",
     "husky": "9.1.7",

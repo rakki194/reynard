@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/settings",
+  "name": "reynard-settings",
   "version": "0.1.0",
   "description": "Reynard Settings - Comprehensive settings and preferences management for SolidJS",
   "type": "module",

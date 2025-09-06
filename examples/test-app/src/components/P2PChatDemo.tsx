@@ -1,7 +1,7 @@
 import { createSignal, For, Show, onCleanup } from "solid-js";
-import { Button, Card } from "@reynard/components";
-import { MarkdownRenderer } from "@reynard/chat";
-import { getIcon } from "@reynard/fluent-icons";
+import { Button, Card } from "reynard-components";
+import { MarkdownRenderer } from "reynard-chat";
+import { getIcon } from "reynard-fluent-icons";
 
 interface MockUser {
   id: string;

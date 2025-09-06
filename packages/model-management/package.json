@@ -1,5 +1,5 @@
 {
-    "name": "@reynard/model-management",
+    "name": "reynard-model-management",
     "version": "0.1.0",
     "description": "Model management system for Reynard - handles ML model loading, downloading, and lifecycle management",
     "type": "module",

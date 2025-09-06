@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/features",
+  "name": "reynard-features",
   "version": "0.1.0",
   "description": "Advanced feature system for managing application features, dependencies, and capabilities",
   "type": "module",

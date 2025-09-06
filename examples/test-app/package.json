@@ -12,13 +12,13 @@
     "validate-story": "npm test -- --run"
   },
   "dependencies": {
-    "@reynard/algorithms": "file:../reynard/packages/algorithms",
-    "@reynard/chat": "file:../reynard/packages/chat",
-    "@reynard/components": "file:../reynard/packages/components",
-    "@reynard/core": "file:../reynard/packages/core",
-    "@reynard/fluent-icons": "file:../reynard/packages/fluent-icons",
-    "@reynard/games": "file:../reynard/packages/games",
-    "@reynard/monaco": "file:../reynard/packages/monaco",
+    "reynard-algorithms": "file:../../packages/algorithms",
+    "reynard-chat": "file:../../packages/chat",
+    "reynard-components": "file:../../packages/components",
+    "reynard-core": "file:../../packages/core",
+    "reynard-fluent-icons": "file:../../packages/fluent-icons",
+    "reynard-games": "file:../../packages/games",
+    "reynard-monaco": "file:../../packages/monaco",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

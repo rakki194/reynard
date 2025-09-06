@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { createRoot } from "solid-js";
 import {
   useMediaQuery,
   useIsMobile,
@@ -122,6 +123,20 @@ describe("useMediaQuery Composable", () => {
         expect(typeof hook).toBe("function");
         expect(hook.length).toBe(0);
       });
+    });
+  });
+
+  describe("useMediaQuery Integration", () => {
+    it("should handle SSR when window is undefined", () => {
+      const originalWindow = global.window;
+      delete (global as any).window;
+
+      createRoot(() => {
+        const matches = useMediaQuery("(max-width: 768px)");
+        expect(matches()).toBe(false); // Default value when window is undefined
+      });
+
+      global.window = originalWindow;
     });
   });
 });

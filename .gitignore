@@ -1,3 +1,7 @@
+# My junk
+third_party/
+css-validation-report.md
+
 # Python junk
 __pycache__/
 *.egg-info/

@@ -105,10 +105,13 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
   let pendingPromise: Promise<ReturnType<T>> | null = null;
   let resolvePending: ((value: ReturnType<T>) => void) | null = null;
   let rejectPending: ((error: any) => void) | null = null;
+  let isCanceled = false;
 
   return (...args: Parameters<T>): Promise<ReturnType<T>> => {
+    // Cancel previous timeout and mark as canceled
     if (timeoutId) {
       clearTimeout(timeoutId);
+      isCanceled = true;
     }
 
     // If there's no pending promise, create a new one
@@ -120,20 +123,29 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
     }
 
     timeoutId = setTimeout(async () => {
+      // Check if this execution was canceled
+      if (isCanceled) {
+        isCanceled = false;
+        return;
+      }
+
       try {
         const result = await fn(...args);
-        if (resolvePending) {
+        if (resolvePending && !isCanceled) {
           resolvePending(result);
         }
       } catch (error) {
-        if (rejectPending) {
+        if (rejectPending && !isCanceled) {
           rejectPending(error);
         }
       } finally {
-        pendingPromise = null;
-        resolvePending = null;
-        rejectPending = null;
-        timeoutId = null;
+        // Only clean up if not canceled
+        if (!isCanceled) {
+          pendingPromise = null;
+          resolvePending = null;
+          rejectPending = null;
+          timeoutId = null;
+        }
       }
     }, delay);
 
@@ -213,6 +225,15 @@ export async function mapWithConcurrency<T, U>(
   mapper: (item: T, index: number) => Promise<U>,
   concurrency: number = 5,
 ): Promise<U[]> {
+  // Handle edge cases
+  if (!Array.isArray(items) || items.length === 0) {
+    return [];
+  }
+
+  if (concurrency <= 0) {
+    throw new Error("Concurrency must be greater than 0");
+  }
+
   const results: U[] = new Array(items.length);
   const executing: Promise<void>[] = [];
 
@@ -220,14 +241,36 @@ export async function mapWithConcurrency<T, U>(
     const index = i; // Capture the index for this iteration
     const promise = mapper(items[i], index).then((result) => {
       results[index] = result;
+    }).catch((error) => {
+      // Store error in results array to maintain order
+      results[index] = error as U;
     });
 
     executing.push(promise);
 
     if (executing.length >= concurrency) {
+      // Wait for at least one promise to complete
       await Promise.race(executing);
-      // Remove completed promises
-      executing.splice(0, executing.length);
+      // Remove completed promises by creating a new array with only pending ones
+      const pendingPromises: Promise<void>[] = [];
+      
+      for (const promise of executing) {
+        // Use Promise.race to check if promise is still pending
+        try {
+          await Promise.race([
+            promise,
+            new Promise((resolve) => setTimeout(() => resolve('timeout'), 0))
+          ]);
+        } catch {
+          // Promise was rejected, it's completed
+        }
+        
+        // If we get here, the promise is still pending
+        pendingPromises.push(promise);
+      }
+      
+      executing.length = 0;
+      executing.push(...pendingPromises);
     }
   }
 
@@ -320,23 +363,28 @@ export interface CancelablePromise<T> extends Promise<T> {
 
 export function makeCancelable<T>(promise: Promise<T>): CancelablePromise<T> {
   let isCanceled = false;
+  let isResolved = false;
 
   const wrappedPromise = new Promise<T>((resolve, reject) => {
     promise
       .then((value) => {
-        if (!isCanceled) {
+        if (!isCanceled && !isResolved) {
+          isResolved = true;
           resolve(value);
         }
       })
       .catch((error) => {
-        if (!isCanceled) {
+        if (!isCanceled && !isResolved) {
+          isResolved = true;
           reject(error);
         }
       });
   }) as CancelablePromise<T>;
 
   wrappedPromise.cancel = () => {
-    isCanceled = true;
+    if (!isResolved) {
+      isCanceled = true;
+    }
   };
 
   wrappedPromise.isCanceled = () => isCanceled;

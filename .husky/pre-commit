@@ -1,12 +1,88 @@
-echo "🔍 Running pre-commit checks..."
+#!/bin/bash
+set -e
 
-echo "📝 Checking formatting..."
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🔍 Running pre-commit checks...${NC}"
+
+echo -e "${BLUE}📝 Checking formatting...${NC}"
 npm run format:check
 
-echo "🔧 Running linter..."
+echo -e "${BLUE}🔧 Running linter...${NC}"
 npm run lint
 
-echo "✅ Running type check..."
+echo -e "${BLUE}✅ Running type check...${NC}"
 npm run typecheck
 
-echo "✅ All pre-commit checks passed!"
+# CSS Variable Validation
+echo -e "${BLUE}🎨 Running CSS variable validation...${NC}"
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-css-variables.js"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Check if validator script exists
+if [ ! -f "$VALIDATOR_SCRIPT" ]; then
+    echo -e "${YELLOW}⚠️  CSS validator script not found at: $VALIDATOR_SCRIPT${NC}"
+    echo -e "${YELLOW}   Skipping CSS validation...${NC}"
+else
+    # Check if we're in a Reynard project
+    if [ ! -f "$PROJECT_ROOT/package.json" ]; then
+        echo -e "${YELLOW}⚠️  Not in a Reynard project, skipping CSS validation${NC}"
+    elif ! grep -q "reynard" "$PROJECT_ROOT/package.json" 2>/dev/null; then
+        echo -e "${YELLOW}⚠️  Not a Reynard project, skipping CSS validation${NC}"
+    else
+        # Get list of staged CSS files
+        STAGED_CSS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.css$' || true)
+
+        if [ -z "$STAGED_CSS_FILES" ]; then
+            echo -e "${GREEN}✅ No CSS files staged for commit${NC}"
+        else
+            echo -e "${BLUE}📁 Staged CSS files:${NC}"
+            echo "$STAGED_CSS_FILES" | sed 's/^/  - /'
+            echo ""
+
+            # Run CSS validation
+            echo -e "${BLUE}🔍 Running CSS variable validation...${NC}"
+
+            cd "$PROJECT_ROOT"
+
+            # Run the validator with strict mode for pre-commit
+            if node "$VALIDATOR_SCRIPT" --strict; then
+                echo -e "${GREEN}✅ CSS validation passed${NC}"
+            else
+                VALIDATION_EXIT_CODE=$?
+                
+                if [ $VALIDATION_EXIT_CODE -eq 1 ]; then
+                    echo -e "${RED}❌ CSS validation failed with errors${NC}"
+                    echo -e "${RED}   Please fix the issues above before committing${NC}"
+                    echo ""
+                    echo -e "${YELLOW}💡 Tips:${NC}"
+                    echo -e "${YELLOW}   - Check the css-validation-report.md file for details${NC}"
+                    echo -e "${YELLOW}   - Run 'node .husky/validate-css-variables.js' to see full report${NC}"
+                    echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+                    exit 1
+                elif [ $VALIDATION_EXIT_CODE -eq 2 ]; then
+                    echo -e "${YELLOW}⚠️  CSS validation passed with warnings${NC}"
+                    echo -e "${YELLOW}   Consider fixing the warnings above${NC}"
+                    echo ""
+                    echo -e "${BLUE}💡 To see full details, run:${NC}"
+                    echo -e "${BLUE}   node .husky/validate-css-variables.js${NC}"
+                    echo ""
+                    echo -e "${YELLOW}   Continuing with commit...${NC}"
+                else
+                    echo -e "${RED}❌ CSS validation script failed unexpectedly${NC}"
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+fi
+
+echo -e "${GREEN}✅ All pre-commit checks passed!${NC}"

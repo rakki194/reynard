@@ -288,19 +288,21 @@ class ToolRegistry:
                 "user_role": context.user_role,
             }
 
+            # Log security events without exposing sensitive data
             logger.warning(
-                f"Tool '{tool_name}' enhanced validation failed for user {context.user_id} "
-                f"(role: {context.user_role}): {validation_result.errors}"
+                f"Tool validation failed: {tool_name} for user {context.user_id[:8]}... "
+                f"(role: {context.user_role})"
             )
 
             if validation_result.warnings:
                 logger.info(
-                    f"Tool '{tool_name}' validation warnings for user {context.user_id}: {validation_result.warnings}"
+                    f"Tool validation warnings: {tool_name} for user {context.user_id[:8]}..."
                 )
 
             if validation_result.security_risks:
                 logger.warning(
-                    f"Tool '{tool_name}' security risks detected for user {context.user_id}: {[risk.value for risk in validation_result.security_risks]}"
+                    f"Security risks detected: {tool_name} for user {context.user_id[:8]}... "
+                    f"risks: {len(validation_result.security_risks)}"
                 )
 
             # Convert error lists to strings

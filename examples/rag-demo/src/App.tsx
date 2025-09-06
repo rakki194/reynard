@@ -3,17 +3,18 @@
  * Demonstrates RAG system with EmbeddingGemma integration
  */
 
-import { Component, createSignal, onMount, Show, For } from "solid-js";
-import { ThemeProvider, createTheme, useTheme } from "@reynard/core";
-import { Button, Card, TextField, Select, Tabs, TabPanel, RAGSearch } from "@reynard/components";
-import { fluentIconsPackage } from "@reynard/fluent-icons";
+import { Component, createSignal, onMount, Show } from "solid-js";
+import { ThemeProvider, createTheme, useTheme } from "reynard-core";
+import { Button, Card } from "reynard-components";
+import { RAGSearch } from "reynard-rag";
+import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 import "./styles.css";
 
 // Helper function to get icon as JSX element
 const getIcon = (name: string) => {
-  const icon = fluentIconsPackage.getIcon(name);
+  const icon = getIconFromRegistry(name);
   if (icon) {
-    return <div innerHTML={icon.outerHTML} />;
+    return <div innerHTML={icon} />;
   }
   return null;
 };
@@ -39,7 +40,7 @@ interface RAGDocument {
   metadata: Record<string, any>;
 }
 
-interface RAGStats {
+interface _RAGStats {
   total_documents: number;
   total_chunks: number;
   chunks_with_embeddings: number;
@@ -54,8 +55,7 @@ const RAGDemoApp: Component = () => {
   const [selectedResult, setSelectedResult] = createSignal<RAGResult | null>(null);
   const [apiStatus, setApiStatus] = createSignal<'checking' | 'connected' | 'error'>('checking');
   const [apiError, setApiError] = createSignal<string | null>(null);
-  const [activeTab, setActiveTab] = createSignal('search');
-  const { theme } = useTheme();
+  const { theme: _theme } = useTheme();
 
   // Check API connection on mount
   onMount(async () => {
@@ -97,12 +97,6 @@ const RAGDemoApp: Component = () => {
     }
   };
 
-  const tabItems = [
-    { id: 'search', label: 'Search', icon: getIcon('search') },
-    { id: 'documents', label: 'Documents', icon: getIcon('box') },
-    { id: 'upload', label: 'Upload', icon: getIcon('upload') },
-    { id: 'settings', label: 'Settings', icon: getIcon('settings') }
-  ];
 
   return (
     <div class="rag-demo-app">

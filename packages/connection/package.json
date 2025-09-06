@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/connection",
+  "name": "reynard-connection",
   "version": "0.1.0",
   "description": "Enterprise-grade networking for Reynard applications",
   "type": "module",

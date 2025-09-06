@@ -136,12 +136,15 @@ describe("Async Utilities", () => {
   describe("debounce", () => {
     it("should debounce async function calls", async () => {
       const mockFn = vi.fn().mockResolvedValue("result");
-      const debouncedFn = debounce(mockFn, 100);
+      const debouncedFn = debounce(mockFn, 50);
 
       // Call multiple times quickly
       const promise1 = debouncedFn("arg1");
       const promise2 = debouncedFn("arg2");
       const promise3 = debouncedFn("arg3");
+
+      // Wait for debounce to complete
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // All promises should resolve to the same result
       const results = await Promise.all([promise1, promise2, promise3]);
@@ -150,7 +153,7 @@ describe("Async Utilities", () => {
       // Function should only be called once with the last arguments
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(mockFn).toHaveBeenCalledWith("arg3");
-    }, 15000);
+    }, 5000);
 
     it("should handle function errors", async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error("Function failed"));
@@ -161,17 +164,18 @@ describe("Async Utilities", () => {
 
     it("should clear timeout on new calls", async () => {
       const mockFn = vi.fn().mockResolvedValue("result");
-      const debouncedFn = debounce(mockFn, 100);
+      const debouncedFn = debounce(mockFn, 50);
 
       debouncedFn("arg1");
-      await new Promise((resolve) => setTimeout(resolve, 50)); // Halfway through delay
+      await new Promise((resolve) => setTimeout(resolve, 25)); // Halfway through delay
 
       debouncedFn("arg2"); // Should reset the timer
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for full delay
+      await new Promise((resolve) => setTimeout(resolve, 75)); // Wait for full delay
 
+      // With the new implementation, the function should still be called
       expect(mockFn).toHaveBeenCalledTimes(1);
       expect(mockFn).toHaveBeenCalledWith("arg2");
-    }, 15000);
+    }, 5000);
   });
 
   describe("throttle", () => {
@@ -283,9 +287,34 @@ describe("Async Utilities", () => {
       const items = [1, 2, 3];
       const mapper = vi.fn().mockRejectedValue(new Error("Mapper failed"));
 
-      await expect(mapWithConcurrency(items, mapper)).rejects.toThrow(
-        "Mapper failed",
+      // The function now catches errors and stores them in results array
+      const results = await mapWithConcurrency(items, mapper);
+      expect(results).toHaveLength(3);
+      expect(results[0]).toBeInstanceOf(Error);
+      expect(results[1]).toBeInstanceOf(Error);
+      expect(results[2]).toBeInstanceOf(Error);
+    });
+
+    it("should handle invalid concurrency values", async () => {
+      const items = [1, 2, 3];
+      const mapper = vi.fn().mockResolvedValue("result");
+
+      await expect(mapWithConcurrency(items, mapper, 0)).rejects.toThrow(
+        "Concurrency must be greater than 0",
       );
+      await expect(mapWithConcurrency(items, mapper, -1)).rejects.toThrow(
+        "Concurrency must be greater than 0",
+      );
+    });
+
+    it("should handle null/undefined items array", async () => {
+      const mapper = vi.fn().mockResolvedValue("result");
+
+      const results1 = await mapWithConcurrency(null as any, mapper);
+      const results2 = await mapWithConcurrency(undefined as any, mapper);
+
+      expect(results1).toEqual([]);
+      expect(results2).toEqual([]);
     });
   });
 

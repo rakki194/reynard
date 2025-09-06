@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/service-manager",
+  "name": "reynard-service-manager",
   "version": "0.1.0",
   "description": "Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring",
   "type": "module",

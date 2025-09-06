@@ -1,8 +1,8 @@
 import { createSignal, For, Show, createEffect, onCleanup } from "solid-js";
-import { Button, Card } from "@reynard/components";
-import { MarkdownRenderer } from "@reynard/chat";
+import { Button, Card } from "reynard-components";
+import { MarkdownRenderer } from "reynard-chat";
 import { P2PChatDemo } from "./P2PChatDemo";
-import { getIcon } from "@reynard/fluent-icons";
+import { getIcon } from "reynard-fluent-icons";
 import "./ChatDemo.css";
 
 // Local streaming text implementation
@@ -116,7 +116,7 @@ function createMarkdownStreaming(text: string, options: any = {}) {
   createEffect(() => {
     const currentText = stream.state().currentText;
     if (currentText) {
-      let parsed = currentText
+      const parsed = currentText
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/`(.*?)`/g, '<code>$1</code>')

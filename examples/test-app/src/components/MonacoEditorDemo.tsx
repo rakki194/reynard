@@ -4,11 +4,10 @@ import {
   MonacoDiffEditor, 
   CodeEditor,
   useLanguageDetection,
-  useMonacoShiki,
   useReynardMonaco,
   getMonacoLanguageFromName
-} from '@reynard/monaco';
-import { useTheme } from '@reynard/core';
+} from 'reynard-monaco';
+import { useTheme } from 'reynard-core';
 import './MonacoEditorDemo.css';
 
 interface LanguageOption {
@@ -655,12 +654,15 @@ interface User {
                 options={getMonacoOptions()}
                 onMount={(editor: any, monaco: any) => {
                   console.log('Monaco Editor mounted:', { editor, monaco });
+                  // Register custom themes when Monaco is available
+                  reynardMonaco.registerThemes(monaco);
                 }}
                 style={{
                   width: '100%',
                   height: '500px',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px'
+                  'min-height': '300px',
+                  border: '1px solid var(--color-border)',
+                  'border-radius': 'var(--border-radius-sm)'
                 }}
               />
             </Show>
@@ -688,21 +690,23 @@ interface User {
             </div>
             
             <div class="diff-wrapper">
-            <MonacoDiffEditor
-              original={diffValue1()}
-              modified={diffValue2()}
-              originalLanguage={getMonacoLanguageFromName(selectedLanguage())}
-              modifiedLanguage={getMonacoLanguageFromName(selectedLanguage())}
-              theme={reynardMonaco.monacoTheme()}
-              onChange={handleDiffChange}
-              options={getMonacoOptions()}
-              style={{
-                width: '100%',
-                height: '400px',
-                border: '1px solid #ccc',
-                borderRadius: '4px'
-              }}
-            />
+            <div style={{
+              width: '100%',
+              height: '400px',
+              'min-height': '300px',
+              border: '1px solid var(--color-border)',
+              'border-radius': 'var(--border-radius-sm)'
+            }}>
+              <MonacoDiffEditor
+                original={diffValue1()}
+                modified={diffValue2()}
+                originalLanguage={getMonacoLanguageFromName(selectedLanguage())}
+                modifiedLanguage={getMonacoLanguageFromName(selectedLanguage())}
+                theme={reynardMonaco.monacoTheme()}
+                onChange={handleDiffChange}
+                options={getMonacoOptions()}
+              />
+            </div>
             </div>
           </div>
         </Show>

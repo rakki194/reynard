@@ -7,7 +7,7 @@ import {
   SpatialHashDemo,
   GeometryDemo,
   PerformanceDemo,
-} from "@reynard/games";
+} from "reynard-games";
 import "./AlgorithmsDemo.css";
 
 export function AlgorithmsDemo() {

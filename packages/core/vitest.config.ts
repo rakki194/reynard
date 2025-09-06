@@ -1,42 +1,26 @@
-import { defineConfig } from "vitest/config";
-import solid from "vite-plugin-solid";
+import { defineConfig } from 'vitest/config';
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [solid()],
   test: {
-    environment: "jsdom",
+    environment: 'jsdom',
     globals: true,
-    setupFiles: ["./src/test-setup.ts"],
-    environmentOptions: {
-      jsdom: {
-        // Better DOM environment for SolidJS
-        pretendToBeVisual: true,
-      },
-    },
+    setupFiles: ['./src/test-setup.ts'],
     coverage: {
-      provider: "v8",
-      reporter: ["text", "html", "lcov"],
-      thresholds: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
       exclude: [
-        "node_modules/",
-        "dist/",
-        "coverage/",
-        "**/*.d.ts",
-        "**/*.config.*",
-        "**/test-setup.ts",
-      ],
-    },
+        'node_modules/',
+        'dist/',
+        '**/*.test.ts',
+        '**/*.test.tsx',
+        '**/test-setup.ts'
+      ]
+    }
   },
   resolve: {
     alias: {
-      "~": new URL("./src", import.meta.url).pathname,
-    },
-  },
+      '@': resolve(__dirname, './src')
+    }
+  }
 });

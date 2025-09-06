@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/composables",
+  "name": "reynard-composables",
   "version": "0.1.0",
   "description": "Reusable reactive logic for Reynard applications",
   "type": "module",

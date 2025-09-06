@@ -365,10 +365,11 @@ async def execute_tool(
         )
     except Exception as e:
         execution_time = time.time() - start_time
-        logger.error(f"Unexpected error executing tool '{tool_name}': {e}")
+        # Log full error details for debugging but don't expose to client
+        logger.error(f"Unexpected error executing tool '{tool_name}': {e}", exc_info=True)
         return ToolExecutionResult(
             success=False,
-            error=f"Unexpected error: {str(e)}",
+            error="An unexpected error occurred during tool execution",
             execution_time=execution_time,
             tool_name=tool_name
         )

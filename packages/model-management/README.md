@@ -67,7 +67,7 @@ await modelManager.unloadModel('my-caption-model');
 
 The main orchestrator for model management.
 
-#### Constructor
+#### ModelManager Constructor
 
 ```typescript
 new ModelManager(config?: ModelManagerConfig)
@@ -90,7 +90,7 @@ new ModelManager(config?: ModelManagerConfig)
 
 Abstract base class that all model implementations must extend.
 
-#### Constructor
+#### BaseModel Constructor
 
 ```typescript
 constructor(modelId: string, modelType: ModelType, config: Record<string, any> = {})

@@ -1,6 +1,6 @@
-# Reynard CSS Variable Validation Tools
+# Reynard Git Hooks
 
-This directory contains tools for maintaining CSS variable consistency across all Reynard projects.
+This directory contains all Git hooks and related tools for the Reynard project, managed by Husky.
 
 ## 🛠️ Tools Overview
 
@@ -14,38 +14,37 @@ A comprehensive CSS variable validator that checks for:
 - **Potential typos** in variable names
 - **Theme-specific inconsistencies**
 
-### 2. `pre-commit-hook`
+### 2. `pre-commit`
 
-A Git pre-commit hook that automatically runs CSS validation before commits.
+A Git pre-commit hook that automatically runs:
 
-### 3. `setup-git-hooks.sh`
+- Format checking (`npm run format:check`)
+- Linting (`npm run lint`)
+- Type checking (`npm run typecheck`)
+- CSS variable validation (using `validate-css-variables.js`)
 
-A setup script that installs the pre-commit hook across all Reynard projects.
+### 3. `commit-msg`
 
-## 🚀 Quick Start
+A Git commit-msg hook that validates commit messages using commitlint with conventional commit format.
 
-### Install Hooks for All Reynard Projects
+## 🚀 Usage
 
-```bash
-# From the reynard/scripts directory
-./setup-git-hooks.sh
-
-# Or from any Reynard project directory
-../../reynard/scripts/setup-git-hooks.sh
-```
-
-### Manual Validation
+### Manual CSS Validation
 
 ```bash
 # Run validation in any Reynard project
-node scripts/validate-css-variables.js
+node .husky/validate-css-variables.js
 
 # Run with strict mode (fails on warnings)
-node scripts/validate-css-variables.js --strict
+node .husky/validate-css-variables.js --strict
 
 # Run with verbose output
-node scripts/validate-css-variables.js --verbose
+node .husky/validate-css-variables.js --verbose
 ```
+
+### Hooks are Automatically Installed
+
+The Git hooks are automatically installed when you run `npm install` thanks to Husky. No manual setup required!
 
 ## 📋 What Gets Validated
 
@@ -95,36 +94,20 @@ node scripts/validate-css-variables.js --verbose
 - Potential typos in variable names
 - Non-critical variables with inconsistencies
 
-## 📁 File Structure
-
-```
-reynard/scripts/
-├── validate-css-variables.js    # Main validation script
-├── pre-commit-hook              # Git pre-commit hook
-├── setup-git-hooks.sh          # Hook installation script
-└── README.md                   # This file
-```
-
 ## 🎯 Usage Examples
 
 ### Check a Specific Project
 
 ```bash
 cd reynard-test-app
-node ../reynard/scripts/validate-css-variables.js
-```
-
-### Install Hooks for Specific Projects
-
-```bash
-./setup-git-hooks.sh /path/to/reynard-test-app /path/to/reynard-auth-app
+node ../reynard/.husky/validate-css-variables.js
 ```
 
 ### Run Validation in CI/CD
 
 ```bash
 # In your CI pipeline
-node scripts/validate-css-variables.js --strict
+node .husky/validate-css-variables.js --strict
 # Exit code 1 = errors (block deployment)
 # Exit code 2 = warnings (allow deployment)
 # Exit code 0 = clean
@@ -169,8 +152,8 @@ The validator generates:
 # Check if hook is installed
 ls -la .git/hooks/pre-commit
 
-# Reinstall hooks
-./setup-git-hooks.sh
+# Reinstall hooks (if needed)
+npx husky install
 ```
 
 ### Validation Failing
@@ -180,7 +163,7 @@ ls -la .git/hooks/pre-commit
 cat css-validation-report.md
 
 # Run with verbose output
-node scripts/validate-css-variables.js --verbose
+node .husky/validate-css-variables.js --verbose
 ```
 
 ### Skip Validation (Not Recommended)
@@ -209,18 +192,6 @@ When adding new CSS variables:
 
 ## 🔗 Integration
 
-### VS Code
-
-Add to your workspace settings:
-
-```json
-{
-  "scripts": {
-    "validate-css": "node scripts/validate-css-variables.js"
-  }
-}
-```
-
 ### Package.json
 
 Add to your project's package.json:
@@ -228,8 +199,8 @@ Add to your project's package.json:
 ```json
 {
   "scripts": {
-    "validate-css": "node scripts/validate-css-variables.js",
-    "validate-css:strict": "node scripts/validate-css-variables.js --strict"
+    "validate-css": "node .husky/validate-css-variables.js",
+    "validate-css:strict": "node .husky/validate-css-variables.js --strict"
   }
 }
 ```
@@ -238,5 +209,19 @@ Add to your project's package.json:
 
 ```yaml
 - name: Validate CSS Variables
-  run: node scripts/validate-css-variables.js --strict
+  run: node .husky/validate-css-variables.js --strict
 ```
+
+## 📁 File Structure
+
+```plaintext
+reynard/.husky/
+├── validate-css-variables.js    # Main validation script
+├── pre-commit                   # Git pre-commit hook (includes CSS validation)
+├── commit-msg                   # Git commit-msg hook (commitlint)
+└── README.md                    # This documentation file
+```
+
+## 🔄 Migration from scripts/
+
+The CSS validation tools were previously located in `scripts/` but have been consolidated here for better integration with Husky. The old `scripts/` directory setup scripts are no longer needed as Husky handles hook installation automatically.

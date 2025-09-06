@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/charts",
+  "name": "reynard-charts",
   "version": "0.1.0",
   "description": "Reynard Charts - Data visualization components for SolidJS",
   "type": "module",

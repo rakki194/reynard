@@ -1,7 +1,7 @@
 import { Component, createSignal, createEffect, onMount, Show } from 'solid-js';
 import { MonacoEditor } from '../solid-monaco/MonacoEditor';
 import { useLanguageDetection } from '../composables/useLanguageDetection';
-import { useMonacoShiki } from '../composables/useMonacoShiki';
+import { useReynardMonaco } from '../composables/useReynardMonaco';
 import { getMonacoLanguageFromName, getDisplayNameFromLanguage } from '../utils/languageUtils';
 import './CodeEditor.css';
 
@@ -21,15 +21,17 @@ interface CodeEditorProps {
 
 export const CodeEditor: Component<CodeEditorProps> = props => {
   const languageDetection = useLanguageDetection();
-  // Temporarily disable Shiki integration to fix highlighting issues
-  const monacoShiki = useMonacoShiki({
-    theme: props.theme === 'dark' || props.theme === 'gray' ? 'github-dark' : 'github-light',
-    lang: (props.language as any) || 'javascript',
-    enableShikiHighlighting: false,
+  
+  // Use Reynard Monaco integration for proper theme support
+  const reynardMonaco = useReynardMonaco({
+    reynardTheme: () => (props.theme as 'light' | 'dark' | 'gray' | 'banana' | 'strawberry' | 'peanut' | 'high-contrast-black' | 'high-contrast-inverse') || 'light',
+    lang: () => props.language || 'javascript',
+    enableShikiHighlighting: true,
   });
 
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
+  let editorContainerRef: HTMLDivElement | undefined;
 
   // Initialize Monaco editor
   onMount(async () => {
@@ -53,8 +55,10 @@ export const CodeEditor: Component<CodeEditorProps> = props => {
     }
   });
 
+  // Height and width are now handled by the MonacoEditor component directly
+
   const getMonacoTheme = (): string => {
-    return monacoShiki.monacoTheme();
+    return reynardMonaco.monacoTheme();
   };
 
   const getMonacoLanguage = (language: string): string => {
@@ -89,21 +93,24 @@ export const CodeEditor: Component<CodeEditorProps> = props => {
 
         <Show when={!error() && !isLoading()} fallback={<div class="loading">Loading...</div>}>
           <div
+            ref={editorContainerRef}
             class={`monaco-editor-container ${props.height ? 'monaco-editor-container--custom-height' : ''} ${props.width ? 'monaco-editor-container--custom-width' : ''}`}
-            style={{
-              '--editor-height': props.height || '400px',
-              '--editor-width': props.width || '100%',
-            } as any}
           >
             <MonacoEditor
               value={props.value || ''}
               language={getMonacoLanguage(props.language || 'javascript')}
               theme={getMonacoTheme()}
               onChange={props.onChange}
-              options={monacoShiki.getMonacoOptions({
+              height={props.height}
+              width={props.width}
+              options={reynardMonaco.getMonacoOptions({
                 lineNumbers: props.showLineNumbers !== false ? 'on' : 'off',
                 readOnly: props.readOnly || false,
               })}
+              onMount={(_, monaco) => {
+                // Register custom themes when Monaco is available
+                reynardMonaco.registerThemes(monaco);
+              }}
             />
           </div>
         </Show>
@@ -131,7 +138,7 @@ export const CodeEditor: Component<CodeEditorProps> = props => {
         <span class="status-item">
           Theme: {props.theme || 'auto'}
         </span>
-        <Show when={monacoShiki.isShikiEnabled()}>
+        <Show when={reynardMonaco.isShikiEnabled()}>
           <span class="status-item shiki-indicator">
             <span class="shiki-icon">✨</span>
             Shiki Enhanced

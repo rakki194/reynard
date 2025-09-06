@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/tools",
+  "name": "reynard-tools",
   "version": "0.1.0",
   "description": "Development and runtime tools for Reynard applications",
   "type": "module",

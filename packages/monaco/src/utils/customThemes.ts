@@ -409,10 +409,16 @@ const getGrayTheme = (): editor.IStandaloneThemeData => ({
  * @param monaco - Monaco editor instance
  * @param reynardTheme - Current Reynard theme
  */
-export const registerCustomMonacoTheme = (monaco: any, reynardTheme: string): void => {
+export const registerCustomMonacoTheme = (monaco: typeof import('monaco-editor'), reynardTheme: string): void => {
   const customTheme = getCustomMonacoTheme(reynardTheme);
-  if (customTheme) {
-    monaco.editor.defineTheme(`reynard-${reynardTheme}`, customTheme);
+  console.log('registerCustomMonacoTheme:', { reynardTheme, customTheme, monaco: !!monaco });
+  if (customTheme && monaco && monaco.editor) {
+    const themeName = `reynard-${reynardTheme}`;
+    console.log('Defining Monaco theme:', themeName);
+    monaco.editor.defineTheme(themeName, customTheme);
+    console.log('Theme defined successfully');
+  } else {
+    console.log('Cannot register theme:', { hasCustomTheme: !!customTheme, hasMonaco: !!monaco, hasEditor: !!(monaco && monaco.editor) });
   }
 };
 

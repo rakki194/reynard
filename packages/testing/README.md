@@ -263,6 +263,488 @@ test('works', () => {
 });
 ```
 
+## 🧪 Advanced Testing Patterns
+
+### Component Testing Patterns
+
+#### 1. **Testing with Context Providers**
+
+```typescript
+import { renderWithProviders } from '@reynard/testing';
+import { ThemeProvider, createTheme } from '@reynard/core';
+
+describe('ThemedComponent', () => {
+  test('renders with light theme', () => {
+    const themeModule = createTheme({ defaultTheme: 'light' });
+    
+    renderWithProviders(
+      () => <ThemedComponent />,
+      {
+        providers: [
+          [ThemeProvider, { value: themeModule }]
+        ]
+      }
+    );
+    
+    expect(screen.getByTestId('component')).toHaveClass('theme-light');
+  });
+  
+  test('switches theme on button click', async () => {
+    const themeModule = createTheme({ defaultTheme: 'light' });
+    
+    renderWithProviders(
+      () => <ThemeToggle />,
+      {
+        providers: [
+          [ThemeProvider, { value: themeModule }]
+        ]
+      }
+    );
+    
+    const toggleButton = screen.getByRole('button', { name: /toggle theme/i });
+    await userEvent.click(toggleButton);
+    
+    expect(screen.getByTestId('component')).toHaveClass('theme-dark');
+  });
+});
+```
+
+#### 2. **Testing Async Operations**
+
+```typescript
+import { waitFor } from '@solidjs/testing-library';
+import { mockFetch } from '@reynard/testing/mocks';
+
+describe('AsyncComponent', () => {
+  test('loads data and displays it', async () => {
+    const mockData = { id: 1, name: 'Test Item' };
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockData)
+    });
+    
+    render(() => <AsyncComponent />);
+    
+    // Wait for loading to complete
+    await waitFor(() => {
+      expect(screen.getByText('Test Item')).toBeInTheDocument();
+    });
+    
+    expect(mockFetch).toHaveBeenCalledWith('/api/data');
+  });
+  
+  test('handles loading states', () => {
+    mockFetch.mockImplementation(() => 
+      new Promise(resolve => setTimeout(resolve, 100))
+    );
+    
+    render(() => <AsyncComponent />);
+    
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+  
+  test('handles error states', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network error'));
+    
+    render(() => <AsyncComponent />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Error loading data')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+#### 3. **Testing Form Interactions**
+
+```typescript
+import { userEvent } from '@testing-library/user-event';
+
+describe('ContactForm', () => {
+  test('submits form with valid data', async () => {
+    const user = userEvent.setup();
+    const mockSubmit = vi.fn();
+    
+    render(() => <ContactForm onSubmit={mockSubmit} />);
+    
+    await user.type(screen.getByLabelText(/name/i), 'John Doe');
+    await user.type(screen.getByLabelText(/email/i), 'john@example.com');
+    await user.type(screen.getByLabelText(/message/i), 'Hello world');
+    
+    await user.click(screen.getByRole('button', { name: /submit/i }));
+    
+    expect(mockSubmit).toHaveBeenCalledWith({
+      name: 'John Doe',
+      email: 'john@example.com',
+      message: 'Hello world'
+    });
+  });
+  
+  test('shows validation errors', async () => {
+    const user = userEvent.setup();
+    
+    render(() => <ContactForm />);
+    
+    await user.click(screen.getByRole('button', { name: /submit/i }));
+    
+    expect(screen.getByText('Name is required')).toBeInTheDocument();
+    expect(screen.getByText('Email is required')).toBeInTheDocument();
+  });
+});
+```
+
+### Utility Testing Patterns
+
+#### 1. **Testing Pure Functions**
+
+```typescript
+import { formatDate, validateEmail, sanitizeInput } from '@reynard/core';
+
+describe('formatDate', () => {
+  test('formats date correctly', () => {
+    const date = new Date('2024-01-15T10:30:00Z');
+    
+    expect(formatDate(date, 'YYYY-MM-DD')).toBe('2024-01-15');
+    expect(formatDate(date, 'MM/DD/YYYY')).toBe('01/15/2024');
+    expect(formatDate(date, 'relative')).toBe('2 hours ago');
+  });
+  
+  test('handles invalid dates', () => {
+    expect(formatDate(new Date('invalid'), 'YYYY-MM-DD')).toBe('Invalid Date');
+  });
+});
+
+describe('validateEmail', () => {
+  test.each([
+    ['user@example.com', true],
+    ['test.email@domain.co.uk', true],
+    ['invalid-email', false],
+    ['@domain.com', false],
+    ['user@', false],
+  ])('validates email %s as %s', (email, expected) => {
+    expect(validateEmail(email)).toBe(expected);
+  });
+});
+```
+
+#### 2. **Testing Async Utilities**
+
+```typescript
+import { retryWithBackoff, batchExecute } from '@reynard/core';
+
+describe('retryWithBackoff', () => {
+  test('retries failed operations', async () => {
+    let attempts = 0;
+    const failingOperation = async () => {
+      attempts++;
+      if (attempts < 3) throw new Error('Temporary failure');
+      return 'success';
+    };
+    
+    const result = await retryWithBackoff(failingOperation, 3, 100);
+    
+    expect(result).toBe('success');
+    expect(attempts).toBe(3);
+  });
+  
+  test('fails after max retries', async () => {
+    const failingOperation = async () => {
+      throw new Error('Permanent failure');
+    };
+    
+    await expect(retryWithBackoff(failingOperation, 2, 100))
+      .rejects.toThrow('Permanent failure');
+  });
+});
+
+describe('batchExecute', () => {
+  test('executes operations in batches', async () => {
+    const operations = [
+      () => Promise.resolve('result1'),
+      () => Promise.resolve('result2'),
+      () => Promise.resolve('result3'),
+      () => Promise.resolve('result4'),
+    ];
+    
+    const results = await batchExecute(operations, 2);
+    
+    expect(results).toEqual(['result1', 'result2', 'result3', 'result4']);
+  });
+});
+```
+
+### Integration Testing Patterns
+
+#### 1. **Testing Component Integration**
+
+```typescript
+describe('UserDashboard Integration', () => {
+  test('complete user workflow', async () => {
+    const user = userEvent.setup();
+    
+    // Mock API responses
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ user: { id: 1, name: 'John' } })
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ posts: [{ id: 1, title: 'Post 1' }] })
+      });
+    
+    renderWithProviders(() => <UserDashboard />);
+    
+    // Wait for user data to load
+    await waitFor(() => {
+      expect(screen.getByText('Welcome, John')).toBeInTheDocument();
+    });
+    
+    // Wait for posts to load
+    await waitFor(() => {
+      expect(screen.getByText('Post 1')).toBeInTheDocument();
+    });
+    
+    // Test user interaction
+    await user.click(screen.getByRole('button', { name: /create post/i }));
+    
+    await user.type(screen.getByLabelText(/title/i), 'New Post');
+    await user.type(screen.getByLabelText(/content/i), 'Post content');
+    await user.click(screen.getByRole('button', { name: /save/i }));
+    
+    // Verify post was created
+    await waitFor(() => {
+      expect(screen.getByText('New Post')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+#### 2. **Testing Error Boundaries**
+
+```typescript
+describe('ErrorBoundary', () => {
+  test('catches and displays errors', () => {
+    const ThrowError = () => {
+      throw new Error('Test error');
+    };
+    
+    render(() => (
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <ThrowError />
+      </ErrorBoundary>
+    ));
+    
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+  });
+  
+  test('recovers from errors', async () => {
+    const [shouldThrow, setShouldThrow] = createSignal(true);
+    
+    const ConditionalError = () => {
+      if (shouldThrow()) throw new Error('Test error');
+      return <div>Recovered</div>;
+    };
+    
+    render(() => (
+      <ErrorBoundary fallback={<div>Error occurred</div>}>
+        <ConditionalError />
+      </ErrorBoundary>
+    ));
+    
+    expect(screen.getByText('Error occurred')).toBeInTheDocument();
+    
+    setShouldThrow(false);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Recovered')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### Performance Testing
+
+#### 1. **Testing Component Performance**
+
+```typescript
+import { performance } from 'perf_hooks';
+
+describe('Performance Tests', () => {
+  test('component renders within time limit', () => {
+    const start = performance.now();
+    
+    render(() => <LargeDataTable data={largeDataset} />);
+    
+    const end = performance.now();
+    const renderTime = end - start;
+    
+    expect(renderTime).toBeLessThan(100); // Should render in under 100ms
+  });
+  
+  test('handles large datasets efficiently', () => {
+    const largeDataset = Array.from({ length: 10000 }, (_, i) => ({
+      id: i,
+      name: `Item ${i}`,
+      value: Math.random()
+    }));
+    
+    render(() => <VirtualizedList items={largeDataset} />);
+    
+    // Should only render visible items
+    const renderedItems = screen.getAllByTestId(/list-item/);
+    expect(renderedItems.length).toBeLessThan(100);
+  });
+});
+```
+
+#### 2. **Memory Leak Testing**
+
+```typescript
+describe('Memory Leak Tests', () => {
+  test('cleans up event listeners', () => {
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+    
+    const { unmount } = render(() => <ComponentWithListeners />);
+    
+    expect(addEventListenerSpy).toHaveBeenCalled();
+    
+    unmount();
+    
+    expect(removeEventListenerSpy).toHaveBeenCalled();
+  });
+  
+  test('cleans up timers', () => {
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
+    const clearTimeoutSpy = vi.spyOn(global, 'clearTimeout');
+    
+    const { unmount } = render(() => <ComponentWithTimers />);
+    
+    expect(setTimeoutSpy).toHaveBeenCalled();
+    
+    unmount();
+    
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+  });
+});
+```
+
+### Accessibility Testing
+
+#### 1. **Testing ARIA Attributes**
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
+
+describe('Accessibility Tests', () => {
+  test('has no accessibility violations', async () => {
+    const { container } = render(() => <AccessibleComponent />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+  
+  test('supports keyboard navigation', async () => {
+    const user = userEvent.setup();
+    
+    render(() => <KeyboardNavigableComponent />);
+    
+    const firstButton = screen.getByRole('button', { name: /first/i });
+    firstButton.focus();
+    
+    await user.keyboard('{Tab}');
+    
+    expect(screen.getByRole('button', { name: /second/i })).toHaveFocus();
+  });
+  
+  test('announces changes to screen readers', () => {
+    render(() => <AnnouncingComponent />);
+    
+    const statusRegion = screen.getByRole('status');
+    expect(statusRegion).toHaveAttribute('aria-live', 'polite');
+  });
+});
+```
+
+### Mock Strategies
+
+#### 1. **Comprehensive Mocking**
+
+```typescript
+import { 
+  mockFetch, 
+  mockLocalStorage, 
+  mockWebSocket,
+  mockIntersectionObserver 
+} from '@reynard/testing/mocks';
+
+describe('Component with External Dependencies', () => {
+  beforeEach(() => {
+    // Reset all mocks
+    vi.clearAllMocks();
+    mockLocalStorage.clear();
+  });
+  
+  test('works with mocked dependencies', async () => {
+    // Setup fetch mock
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ data: 'test' })
+    });
+    
+    // Setup localStorage mock
+    mockLocalStorage.setItem('user', JSON.stringify({ id: 1 }));
+    
+    // Setup WebSocket mock
+    const mockWs = mockWebSocket.createMock();
+    mockWs.onmessage({ data: JSON.stringify({ type: 'update' }) });
+    
+    render(() => <ComponentWithDependencies />);
+    
+    // Test interactions
+    await waitFor(() => {
+      expect(screen.getByText('test')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+#### 2. **Custom Mock Factories**
+
+```typescript
+import { createMockUser, createMockPost } from '@reynard/testing/fixtures';
+
+describe('User Components', () => {
+  test('renders user profile', () => {
+    const mockUser = createMockUser({
+      name: 'John Doe',
+      email: 'john@example.com',
+      role: 'admin'
+    });
+    
+    render(() => <UserProfile user={mockUser} />);
+    
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Admin')).toBeInTheDocument();
+  });
+  
+  test('renders user posts', () => {
+    const mockPosts = [
+      createMockPost({ title: 'Post 1', author: 'John' }),
+      createMockPost({ title: 'Post 2', author: 'John' })
+    ];
+    
+    render(() => <UserPosts posts={mockPosts} />);
+    
+    expect(screen.getByText('Post 1')).toBeInTheDocument();
+    expect(screen.getByText('Post 2')).toBeInTheDocument();
+  });
+});
+```
+
 ## Coverage Requirements
 
 - **Components**: 85%+ branches, 90%+ functions/lines/statements

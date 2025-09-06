@@ -49,52 +49,56 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
     - [🎯 What You've Learned](#-what-youve-learned)
     - [🚀 Next Steps](#-next-steps)
   - [📚 Package Documentation](#-package-documentation)
-    - [@reynard/core](#reynardcore)
+    - [reynard-core](#reynard-core)
       - [Modules](#modules)
       - [Core Composables](#core-composables)
       - [Utilities](#utilities)
       - [Core Example Usage](#core-example-usage)
-    - [@reynard/components](#reynardcomponents)
+    - [reynard-components](#reynard-components)
       - [Primitives](#primitives)
       - [Composite Components](#composite-components)
       - [Components Example Usage](#components-example-usage)
-    - [@reynard/chat](#reynardchat)
+    - [reynard-chat](#reynard-chat)
       - [Chat Features](#chat-features)
       - [Chat Components](#chat-components)
       - [Chat Composables](#chat-composables)
       - [Chat Example Usage](#chat-example-usage)
-    - [@reynard/rag](#reynardrag)
+    - [reynard-rag](#reynard-rag)
       - [RAG Features](#rag-features)
       - [RAG Components](#rag-components)
       - [RAG Example Usage](#rag-example-usage)
-    - [@reynard/auth](#reynardauth)
+    - [reynard-auth](#reynard-auth)
       - [Auth Features](#auth-features)
       - [Auth Components](#auth-components)
       - [Auth Composables](#auth-composables)
       - [Auth Example Usage](#auth-example-usage)
-    - [@reynard/charts](#reynardcharts)
+    - [reynard-charts](#reynard-charts)
       - [Chart Types](#chart-types)
       - [Charts Features](#charts-features)
       - [Charts Example Usage](#charts-example-usage)
-    - [@reynard/gallery](#reynardgallery)
+    - [reynard-gallery](#reynard-gallery)
       - [Gallery Features](#gallery-features)
       - [Gallery Components](#gallery-components)
       - [Gallery Composables](#gallery-composables)
       - [Gallery Example Usage](#gallery-example-usage)
-    - [@reynard/settings](#reynardsettings)
+    - [reynard-settings](#reynard-settings)
       - [Settings Features](#settings-features)
       - [Setting Types](#setting-types)
       - [Settings Components](#settings-components)
       - [Settings Composables](#settings-composables)
       - [Settings Example Usage](#settings-example-usage)
-    - [@reynard/algorithms](#reynardalgorithms)
+    - [reynard-algorithms](#reynard-algorithms)
       - [Algorithm Types](#algorithm-types)
       - [Core Features](#core-features)
       - [Algorithms Example Usage](#algorithms-example-usage)
-    - [@reynard/file-processing](#reynardfile-processing)
+    - [reynard-file-processing](#reynard-file-processing)
       - [Supported File Types](#supported-file-types)
       - [Core Components](#core-components)
       - [File Processing Example Usage](#file-processing-example-usage)
+    - [reynard-testing](#reynard-testing)
+      - [Testing Features](#testing-features)
+      - [Testing Utilities](#testing-utilities)
+      - [Testing Example Usage](#testing-example-usage)
   - [🎨 Theming System](#-theming-system)
     - [Custom Themes](#custom-themes)
   - [📱 Examples and Templates](#-examples-and-templates)
@@ -131,23 +135,38 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 ## 📦 Packages
 
+All Reynard packages are published to npm and ready for production use! Each package is independently versioned and can be installed as needed.
+
 | Package                    | Description                        | Version |
 | -------------------------- | ---------------------------------- | ------- |
-| `@reynard/core`            | Core framework and utilities       | `0.1.0` |
-| `@reynard/components`      | UI component library               | `0.1.0` |
-| `@reynard/chat`            | Chat system and messaging          | `0.1.0` |
-| `@reynard/rag`             | RAG search and retrieval           | `0.1.0` |
-| `@reynard/auth`            | Authentication and user management | `0.1.0` |
-| `@reynard/charts`          | Data visualization components      | `0.1.0` |
-| `@reynard/gallery`         | File and media management          | `0.1.0` |
-| `@reynard/settings`        | Configuration management           | `0.1.0` |
-| `@reynard/file-processing` | Advanced file processing pipeline  | `0.1.0` |
-| `@reynard/algorithms`      | Algorithm primitives and data structures | `0.1.0` |
-| `@reynard/color-media`     | Color and media utilities          | `0.1.0` |
-| `@reynard/ui`              | Additional UI components           | `0.1.0` |
-| `@reynard/themes`          | Theme system and built-in themes   | `0.1.0` |
-| `@reynard/testing`         | Testing utilities and helpers      | `0.1.0` |
-| `@reynard/tools`           | Development tools and CLI          | `0.1.0` |
+| `reynard-core`             | Core framework and utilities       | `0.1.0` |
+| `reynard-components`       | UI component library               | `0.1.0` |
+| `reynard-chat`             | Chat system and messaging          | `0.1.0` |
+| `reynard-rag`              | RAG search and retrieval           | `0.1.0` |
+| `reynard-auth`             | Authentication and user management | `0.1.0` |
+| `reynard-charts`           | Data visualization components      | `0.1.0` |
+| `reynard-gallery`          | File and media management          | `0.1.0` |
+| `reynard-settings`         | Configuration management           | `0.1.0` |
+| `reynard-file-processing`  | Advanced file processing pipeline  | `0.1.0` |
+| `reynard-algorithms`       | Algorithm primitives and data structures | `0.1.0` |
+| `reynard-color-media`      | Color and media utilities          | `1.0.0` |
+| `reynard-ui`               | Additional UI components           | `0.1.0` |
+| `reynard-themes`           | Theme system and built-in themes   | `0.1.0` |
+| `reynard-monaco`           | Monaco code editor components      | `0.1.0` |
+| `reynard-annotating`       | Annotation tools                   | `0.1.0` |
+| `reynard-boundingbox`      | Bounding box utilities             | `0.1.0` |
+| `reynard-caption`          | Caption components                 | `0.1.0` |
+| `reynard-composables`      | Vue/Solid composables              | `0.1.0` |
+| `reynard-connection`       | Connection management              | `0.1.0` |
+| `reynard-features`         | Feature management                 | `0.1.0` |
+| `reynard-fluent-icons`     | Icon components                    | `0.1.0` |
+| `reynard-games`            | Game components                    | `0.1.0` |
+| `reynard-model-management` | Model management                   | `0.1.0` |
+| `reynard-service-manager`  | Service management                 | `0.1.0` |
+| `reynard-tools`            | Development tools and CLI          | `0.1.0` |
+| `reynard-testing`          | Testing utilities and helpers      | `0.1.0` |
+| `reynard-basic-app`        | Basic todo app example             | `0.1.0` |
+| `reynard-clock-app`        | Clock and timer app example        | `1.0.0` |
 
 ## 🚀 Quick Start
 
@@ -155,18 +174,18 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 ```bash
 # Install core package
-npm install @reynard/core solid-js
+npm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install @reynard/components @reynard/chat @reynard/rag @reynard/auth @reynard/charts
+npm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
 ```
 
 ### Basic Usage
 
 ```tsx
 import { createSignal } from "solid-js";
-import { useTheme, useNotifications } from "@reynard/core";
-import { Button, Card } from "@reynard/components";
+import { useTheme, useNotifications } from "reynard-core";
+import { Button, Card } from "reynard-components";
 
 function App() {
   const { theme, setTheme } = useTheme();
@@ -222,7 +241,7 @@ cd my-reynard-app
 npm init -y
 
 # Install dependencies
-npm install @reynard/core @reynard/components @reynard/chat @reynard/rag solid-js
+npm install reynard-core reynard-components reynard-chat reynard-rag solid-js
 npm install -D vite vite-plugin-solid typescript @types/node
 ```
 
@@ -360,7 +379,7 @@ render(() => <App />, document.getElementById("root")!);
 #### `src/App.tsx`
 
 ```tsx
-import { ThemeProvider, createTheme } from "@reynard/core";
+import { ThemeProvider, createTheme } from "reynard-core";
 import { ThemeDemo } from "./components/ThemeDemo";
 
 function App() {
@@ -391,8 +410,8 @@ export default App;
 #### `src/components/ThemeDemo.tsx`
 
 ```tsx
-import { Button, Card } from "@reynard/components";
-import { useTheme } from "@reynard/core";
+import { Button, Card } from "reynard-components";
+import { useTheme } from "reynard-core";
 
 export function ThemeDemo() {
   const { theme, setTheme, nextTheme } = useTheme();
@@ -434,8 +453,8 @@ import {
   createNotifications,
   useTheme,
   useNotifications,
-} from "@reynard/core";
-import { Button, Card } from "@reynard/components";
+} from "reynard-core";
+import { Button, Card } from "reynard-components";
 import { TodoItem } from "./components/TodoItem";
 import { AddTodo } from "./components/AddTodo";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -629,8 +648,8 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
 
 ```tsx
 import { Component } from "solid-js";
-import { Button } from "@reynard/components";
-import { useTheme } from "@reynard/core";
+import { Button } from "reynard-components";
+import { useTheme } from "reynard-core";
 
 export const ThemeToggle: Component = () => {
   const { theme, nextTheme } = useTheme();
@@ -885,7 +904,7 @@ npm run preview
 #### Adding Internationalization
 
 ```tsx
-import { I18nProvider, createI18nModule, useI18n } from "@reynard/core";
+import { I18nProvider, createI18nModule, useI18n } from "reynard-core";
 
 // In your App component
 const i18nModule = createI18nModule({
@@ -913,7 +932,7 @@ const i18nModule = createI18nModule({
 #### Adding Local Storage Persistence
 
 ```tsx
-import { useLocalStorage } from "@reynard/core";
+import { useLocalStorage } from "reynard-core";
 
 const TodoApp: Component = () => {
   const [todos, setTodos] = useLocalStorage("todos", [
@@ -973,12 +992,12 @@ This tutorial covered:
 
 Now that you have a solid foundation, try:
 
-- **Adding Chat Features** - Use `@reynard/chat` for messaging and real-time communication
-- **Implementing RAG Search** - Add intelligent search with `@reynard/rag`
-- **Adding Authentication** - Use `@reynard/auth` for user management
-- **Data Visualization** - Add charts with `@reynard/charts`
-- **File Management** - Implement file uploads with `@reynard/gallery`
-- **Advanced Settings** - Add configuration with `@reynard/settings`
+- **Adding Chat Features** - Use `reynard-chat` for messaging and real-time communication
+- **Implementing RAG Search** - Add intelligent search with `reynard-rag`
+- **Adding Authentication** - Use `reynard-auth` for user management
+- **Data Visualization** - Add charts with `reynard-charts`
+- **File Management** - Implement file uploads with `reynard-gallery`
+- **Advanced Settings** - Add configuration with `reynard-settings`
 - **Real-time Features** - WebSocket integration for live updates
 - **Progressive Web App** - Add PWA capabilities
 - **Testing** - Write unit and integration tests
@@ -986,7 +1005,7 @@ Now that you have a solid foundation, try:
 
 ## 📚 Package Documentation
 
-### @reynard/core
+### reynard-core
 
 The foundation of the Reynard framework, providing essential utilities, composables, and modules.
 
@@ -1019,7 +1038,7 @@ import {
   useNotifications,
   useLocalStorage,
   useDebounce,
-} from "@reynard/core";
+} from "reynard-core";
 
 function MyComponent() {
   const { theme, setTheme, nextTheme } = useTheme();
@@ -1038,7 +1057,7 @@ function MyComponent() {
 }
 ```
 
-### @reynard/components
+### reynard-components
 
 Production-ready SolidJS component library with comprehensive theming and accessibility support.
 
@@ -1063,8 +1082,8 @@ import {
   TextField,
   Modal,
   Tabs,
-} from "@reynard/components";
-import { ChatContainer } from "@reynard/chat";
+} from "reynard-components";
+import { ChatContainer } from "reynard-chat";
 
 function MyApp() {
   const [isModalOpen, setIsModalOpen] = createSignal(false);
@@ -1113,7 +1132,7 @@ function MyApp() {
 }
 ```
 
-### @reynard/chat
+### reynard-chat
 
 Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.
 
@@ -1143,7 +1162,7 @@ Production-ready chat messaging system for SolidJS applications with advanced st
 #### Chat Example Usage
 
 ```tsx
-import { ChatContainer, P2PChatContainer } from "@reynard/chat";
+import { ChatContainer, P2PChatContainer } from "reynard-chat";
 
 function ChatApp() {
   return (
@@ -1173,7 +1192,7 @@ function ChatApp() {
 }
 ```
 
-### @reynard/rag
+### reynard-rag
 
 RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive search capabilities.
 
@@ -1195,7 +1214,7 @@ RAG (Retrieval-Augmented Generation) system for SolidJS applications with Embedd
 #### RAG Example Usage
 
 ```tsx
-import { RAGSearch } from "@reynard/rag";
+import { RAGSearch } from "reynard-rag";
 
 function RAGApp() {
   return (
@@ -1215,7 +1234,7 @@ function RAGApp() {
 }
 ```
 
-### @reynard/auth
+### reynard-auth
 
 Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive security features.
 
@@ -1249,7 +1268,7 @@ import {
   LoginForm,
   RegisterForm,
   useAuthContext,
-} from "@reynard/auth";
+} from "reynard-auth";
 
 function App() {
   return (
@@ -1286,7 +1305,7 @@ function AuthApp() {
 }
 ```
 
-### @reynard/charts
+### reynard-charts
 
 Advanced data visualization components built on Chart.js with real-time updates and comprehensive theming.
 
@@ -1313,7 +1332,7 @@ import {
   BarChart,
   PieChart,
   TimeSeriesChart,
-} from "@reynard/charts";
+} from "reynard-charts";
 
 function Dashboard() {
   const salesData = {
@@ -1363,7 +1382,7 @@ function Dashboard() {
 }
 ```
 
-### @reynard/gallery
+### reynard-gallery
 
 Advanced file and media management system with drag-and-drop, responsive grids, and comprehensive file handling.
 
@@ -1394,8 +1413,8 @@ Advanced file and media management system with drag-and-drop, responsive grids, 
 #### Gallery Example Usage
 
 ```tsx
-import { Gallery } from "@reynard/gallery";
-import type { GalleryData } from "@reynard/gallery";
+import { Gallery } from "reynard-gallery";
+import type { GalleryData } from "reynard-gallery";
 
 function FileManager() {
   const [galleryData, setGalleryData] = createSignal<GalleryData>({
@@ -1422,7 +1441,7 @@ function FileManager() {
 }
 ```
 
-### @reynard/settings
+### reynard-settings
 
 Comprehensive configuration management system with validation, persistence, and UI components.
 
@@ -1466,7 +1485,7 @@ import {
   SettingsPanel,
   SettingsProvider,
   useSettings,
-} from "@reynard/settings";
+} from "reynard-settings";
 
 const settingsSchema = {
   appearance: {
@@ -1505,7 +1524,7 @@ function App() {
 }
 ```
 
-### @reynard/algorithms
+### reynard-algorithms
 
 Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and geometric calculations.
 
@@ -1535,7 +1554,7 @@ import {
   PerformanceTimer,
   PointOps,
   VectorOps,
-} from "@reynard/algorithms";
+} from "reynard-algorithms";
 
 function AlgorithmDemo() {
   // Union-Find for connected components
@@ -1570,7 +1589,7 @@ function AlgorithmDemo() {
 }
 ```
 
-### @reynard/file-processing
+### reynard-file-processing
 
 Advanced file processing pipeline with thumbnail generation, metadata extraction, and comprehensive file type support.
 
@@ -1597,7 +1616,7 @@ import {
   ThumbnailGenerator,
   MetadataExtractor,
   useFileProcessing,
-} from "@reynard/file-processing";
+} from "reynard-file-processing";
 
 function FileProcessor() {
   const { generateThumbnail, extractMetadata } = useFileProcessing();
@@ -1623,6 +1642,49 @@ function FileProcessor() {
 }
 ```
 
+### reynard-testing
+
+Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities, and assertion utilities.
+
+#### Testing Features
+
+- **Vitest Integration** - Pre-configured Vitest configurations for different testing scenarios
+- **Component Testing** - Utilities for testing SolidJS components with proper rendering
+- **Mock Utilities** - Comprehensive mocking for browser APIs, external libraries, and SolidJS
+- **Assertion Utilities** - Enhanced assertion helpers for common testing patterns
+- **Test Fixtures** - Reusable test fixtures and setup utilities
+
+#### Testing Utilities
+
+- **Test Configurations** - Base, component, integration, and E2E test configurations
+- **Render Utilities** - Component rendering with proper context and providers
+- **Mock Utilities** - Browser mocks, external library mocks, and SolidJS mocks
+- **Assertion Helpers** - Custom matchers and assertion utilities
+- **Test Setup** - Automated test setup and teardown utilities
+
+#### Testing Example Usage
+
+```tsx
+import { describe, it, expect } from "vitest";
+import { render, screen } from "reynard-testing";
+import { Button } from "reynard-components";
+
+describe("Button Component", () => {
+  it("renders with correct text", () => {
+    render(() => <Button>Click me</Button>);
+    expect(screen.getByText("Click me")).toBeInTheDocument();
+  });
+
+  it("handles click events", async () => {
+    const handleClick = vi.fn();
+    render(() => <Button onClick={handleClick}>Click me</Button>);
+    
+    await userEvent.click(screen.getByText("Click me"));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
 ## 🎨 Theming System
 
 Reynard includes a comprehensive theming system with 8 built-in themes:
@@ -1641,7 +1703,7 @@ Reynard includes a comprehensive theming system with 8 built-in themes:
 Create custom themes by extending the base theme configuration:
 
 ```tsx
-import { createTheme } from "@reynard/core";
+import { createTheme } from "reynard-core";
 
 const customTheme = createTheme({
   name: "ocean",
@@ -1659,7 +1721,8 @@ const customTheme = createTheme({
 
 ### Examples
 
-- **Basic App** - Minimal todo application demonstrating core features
+- **Basic App** - Minimal todo application demonstrating core features (`reynard-basic-app`)
+- **Clock App** - Clock, timer, and alarm application (`reynard-clock-app`)
 - **Multi-Theme Gallery** - Advanced theming showcase with component library
 - **Chat Demo** - Complete chat application with streaming, P2P, and tool integration
 - **Comprehensive Dashboard** - Full-featured dashboard with charts and settings
@@ -1724,14 +1787,20 @@ Reynard is optimized for performance:
 
 ### Bundle Sizes
 
-- **@reynard/core** - ~15 kB (3.2 kB gzipped)
-- **@reynard/components** - ~45 kB (12.1 kB gzipped)
-- **@reynard/chat** - ~110 kB (25.1 kB gzipped)
-- **@reynard/rag** - ~22 kB (5.7 kB gzipped)
-- **@reynard/auth** - ~28 kB (7.8 kB gzipped)
-- **@reynard/charts** - ~27 kB (5.4 kB gzipped)
-- **@reynard/gallery** - ~52 kB (14.2 kB gzipped)
-- **@reynard/settings** - ~31 kB (8.9 kB gzipped)
+- **reynard-core** - ~15 kB (3.2 kB gzipped)
+- **reynard-components** - ~45 kB (12.1 kB gzipped)
+- **reynard-chat** - ~110 kB (25.1 kB gzipped)
+- **reynard-rag** - ~22 kB (5.7 kB gzipped)
+- **reynard-auth** - ~28 kB (7.8 kB gzipped)
+- **reynard-charts** - ~27 kB (5.4 kB gzipped)
+- **reynard-gallery** - ~52 kB (14.2 kB gzipped)
+- **reynard-settings** - ~31 kB (8.9 kB gzipped)
+- **reynard-monaco** - ~85 kB (18.2 kB gzipped)
+- **reynard-algorithms** - ~12 kB (3.1 kB gzipped)
+- **reynard-file-processing** - ~25 kB (6.8 kB gzipped)
+- **reynard-testing** - ~45 kB (12.1 kB gzipped)
+- **reynard-basic-app** - ~8 kB (2.1 kB gzipped)
+- **reynard-clock-app** - ~12 kB (3.2 kB gzipped)
 
 ## ♿ Accessibility
 
@@ -1759,13 +1828,13 @@ Built-in i18n support with:
 
 ```bash
 # Create new Reynard project
-npx @reynard/cli create my-app
+npx reynard-tools create my-app
 
 # Generate component
-npx @reynard/cli generate component MyComponent
+npx reynard-tools generate component MyComponent
 
 # Build and analyze bundle
-npx @reynard/cli build --analyze
+npx reynard-tools build --analyze
 ```
 
 ### VS Code Extension

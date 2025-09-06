@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/games",
+  "name": "reynard-games",
   "version": "0.1.0",
   "description": "Interactive games and visualizations for Reynard framework",
   "type": "module",

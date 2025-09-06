@@ -1,5 +1,5 @@
 {
-    "name": "@reynard/caption",
+    "name": "reynard-caption",
     "version": "0.1.0",
     "description": "Caption editing UI components for Reynard - textarea and tag bubbles for caption editing",
     "type": "module",

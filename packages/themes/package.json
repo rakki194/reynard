@@ -1,5 +1,5 @@
 {
-  "name": "@reynard/themes",
+  "name": "reynard-themes",
   "version": "0.1.0",
   "description": "Comprehensive theming system for Reynard applications with translation support",
   "type": "module",

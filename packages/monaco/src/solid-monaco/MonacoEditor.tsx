@@ -53,14 +53,6 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
 
         setEditor(editorInstance);
 
-        // Set up change listener
-        if (props.onChange) {
-          editorInstance.onDidChangeModelContent(() => {
-            const value = editorInstance.getValue();
-            props.onChange?.(value);
-          });
-        }
-
         // Set up validation listener
         if (props.onValidate) {
           const model = editorInstance.getModel();
@@ -77,6 +69,21 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
         console.error('Failed to create Monaco editor:', err);
         setError(err instanceof Error ? err.message : 'Failed to create editor');
       }
+    }
+  });
+
+  // Set up change listener
+  createEffect(() => {
+    const editorInstance = editor();
+    const onChange = props.onChange;
+    if (editorInstance && onChange) {
+      const disposable = editorInstance.onDidChangeModelContent(() => {
+        const value = editorInstance.getValue();
+        onChange(value);
+      });
+      
+      // Return cleanup function
+      return () => disposable.dispose();
     }
   });
 
@@ -134,8 +141,11 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
       style={{
         '--editor-height': props.height || '400px',
         '--editor-width': props.width || '100%',
+        height: props.height || '400px',
+        width: props.width || '100%',
+        'min-height': '200px',
         ...props.style,
-      } as any}
+      } as JSX.CSSProperties}
     >
       {isLoading() && (
         <div class="monaco-editor-loading">

@@ -8,17 +8,18 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardRAG",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format === "es" ? "js" : format}`,
     },
     rollupOptions: {
-      external: ["solid-js", "solid-js/web", "@reynard/core", "@reynard/fluent-icons", "@reynard/components"],
+      external: ["solid-js", "solid-js/web", "reynard-core", "reynard-fluent-icons", "reynard-components"],
       output: {
         globals: {
           "solid-js": "solid",
           "solid-js/web": "solidWeb",
-          "@reynard/core": "ReynardCore",
-          "@reynard/fluent-icons": "ReynardFluentIcons",
-          "@reynard/components": "ReynardComponents",
+          "reynard-core": "ReynardCore",
+          "reynard-fluent-icons": "ReynardFluentIcons",
+          "reynard-components": "ReynardComponents",
         },
         assetFileNames: (assetInfo) => {
           const assetName = (assetInfo as { fileName?: string }).fileName;
