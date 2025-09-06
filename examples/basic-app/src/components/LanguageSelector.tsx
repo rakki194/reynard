@@ -15,12 +15,15 @@ export const LanguageSelector: Component = () => {
       ["en", "es", "fr"].includes(lang.code),
   );
 
-
   return (
     <select
       class="language-selector"
-      value={locale}
-      onChange={(e) => setLocale(e.currentTarget.value as any)}
+      value={locale()}
+      onChange={(e) => {
+        const newLocale = e.currentTarget.value;
+        console.log('Language selector changing locale to:', newLocale);
+        setLocale(newLocale as any);
+      }}
       aria-label="Select language"
       title="Select language"
     >

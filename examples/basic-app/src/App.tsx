@@ -58,7 +58,7 @@ const TodoApp: Component = () => {
   const { locale, t, setLocale } = useI18n();
 
   // Load custom translations for this app
-  const [translationsResource] = createResource(() => locale, loadTranslations);
+  const [translationsResource] = createResource(() => locale(), loadTranslations);
   
   // Create a custom translation function that uses our app's translations
   const customT = (key: string, params?: Record<string, string>) => {
