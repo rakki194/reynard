@@ -25,8 +25,8 @@
         "test:coverage": "vitest run --coverage",
         "test:watch": "vitest --watch",
         "type-check": "tsc --noEmit",
-        "lint": "eslint src --ext .ts,.tsx",
-        "lint:fix": "eslint src --ext .ts,.tsx --fix"
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix"
     },
     "keywords": [
         "reynard",

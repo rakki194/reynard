@@ -21,3 +21,8 @@ export interface TestData {
   acceleration: { ax: number; ay: number };
   mass: { mass: number };
 }
+
+export interface BenchmarkResults {
+  simd: BenchmarkResult[];
+  reynard: BenchmarkResult[];
+}

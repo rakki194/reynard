@@ -3,4 +3,939 @@ globs: *.py
 alwaysApply: false
 ---
 
-# The Modular Manifesto
+# The Modular Manifesto for Python
+
+*A comprehensive guide to writing modular Python based on proven patterns from the Reynard framework*
+
+## Core Principles
+
+### The 100-Line Axiom
+
+Every Python source file should be under 100 lines (excluding blank lines and comments). This constraint forces:
+
+- **Clear Separation of Concerns**: Each file has a single, well-defined responsibility
+- **Improved Readability**: Files are small enough to understand at a glance
+- **Better Testability**: Smaller modules are easier to test comprehensively
+- **Enhanced Maintainability**: Changes are localized and predictable
+
+### The Three Pillars of Python Modularity
+
+1. **Small** - Each line of code costs energy to maintain
+2. **Modular** - Organized into groups of swappable modules
+3. **Self-contained** - Easily reusable via cross-project integration
+
+## Python-Specific Modular Patterns
+
+### 1. Service-Oriented Architecture
+
+Use service classes with clear lifecycle management:
+
+```python
+# services/database.py (95 lines)
+class DatabaseService:
+    """Database service with connection pooling and reload optimization"""
+    
+    def __init__(self):
+        self.connection_pool = None
+        self.is_initialized = False
+        self.connection_count = 0
+    
+    async def initialize(self):
+        """Initialize database connection pool"""
+        if IS_RELOAD_MODE:
+            print("[INFO] Skipping database initialization during reload")
+            return
+        
+        print("[INFO] Initializing database service...")
+        await asyncio.sleep(0.1)  # Simulate connection time
+        
+        self.connection_pool = {
+            "url": "sqlite:///./reynard.db",
+            "pool_size": 5,
+            "max_overflow": 10,
+            "connections": []
+        }
+        
+        self.is_initialized = True
+        self.connection_count = 0
+        print("[OK] Database service initialized")
+    
+    async def get_connection(self):
+        """Get a database connection from the pool"""
+        if not self.is_initialized:
+            raise RuntimeError("Database service not initialized")
+        
+        self.connection_count += 1
+        connection_id = f"conn_{self.connection_count}"
+        print(f"[INFO] Database connection acquired: {connection_id}")
+        
+        return {
+            "id": connection_id,
+            "created_at": asyncio.get_event_loop().time()
+        }
+    
+    async def close(self):
+        """Close database connections and cleanup"""
+        if not self.is_initialized:
+            return
+        
+        print("[INFO] Closing database service...")
+        await asyncio.sleep(0.05)
+        
+        self.connection_pool = None
+        self.is_initialized = False
+        self.connection_count = 0
+        print("[OK] Database service closed")
+```
+
+### 2. Lazy Loading with Proxy Pattern
+
+Implement intelligent lazy loading for heavy dependencies:
+
+```python
+# utils/lazy_loader.py (80 lines)
+class LazyPackageExport:
+    """Lazy loading proxy for heavy packages with validation and monitoring"""
+    
+    def __init__(self, package_name: str, validation_level: str = "BASIC"):
+        self.package_name = package_name
+        self.validation_level = validation_level
+        self._module = None
+        self._load_time = None
+        self._access_count = 0
+    
+    def __getattr__(self, name: str):
+        """Lazy load the module and return the requested attribute"""
+        if self._module is None:
+            self._load_module()
+        
+        self._access_count += 1
+        return getattr(self._module, name)
+    
+    def _load_module(self):
+        """Load the actual module with validation"""
+        import time
+        start_time = time.time()
+        
+        try:
+            self._module = __import__(self.package_name)
+            self._validate_module()
+            self._load_time = time.time() - start_time
+            
+            print(f"[OK] Loaded {self.package_name} in {self._load_time:.3f}s")
+            
+        except ImportError as e:
+            raise ImportError(f"Failed to load {self.package_name}: {e}")
+    
+    def _validate_module(self):
+        """Validate the loaded module based on validation level"""
+        if self.validation_level == "STRICT":
+            required_attrs = ["__name__", "__file__", "__package__"]
+            for attr in required_attrs:
+                if not hasattr(self._module, attr):
+                    raise ValidationError(f"Module missing required attribute: {attr}")
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """Get loading statistics"""
+        return {
+            "package_name": self.package_name,
+            "loaded": self._module is not None,
+            "load_time": self._load_time,
+            "access_count": self._access_count
+        }
+```
+
+### 3. FastAPI Modular Architecture
+
+Structure FastAPI applications with clear separation:
+
+```python
+# main.py (90 lines)
+from fastapi import FastAPI, Depends
+from contextlib import asynccontextmanager
+
+from services import DatabaseService, CacheService, BackgroundService
+from routes import health, users
+from config import UvicornConfig
+
+# Global services
+database_service: Optional[DatabaseService] = None
+cache_service: Optional[CacheService] = None
+background_service: Optional[BackgroundService] = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application lifespan manager with reload optimization"""
+    global database_service, cache_service, background_service
+    
+    if IS_RELOAD_MODE:
+        logger.info("Running in uvicorn reload mode - skipping heavy initialization")
+        yield
+        return
+    
+    # Full initialization for normal startup
+    logger.info("Starting Reynard Backend...")
+    start_time = time.time()
+    
+    try:
+        # Initialize services
+        database_service = DatabaseService()
+        await database_service.initialize()
+        
+        cache_service = CacheService()
+        await cache_service.initialize()
+        
+        background_service = BackgroundService()
+        await background_service.start()
+        
+        init_time = time.time() - start_time
+        logger.info(f"Backend initialized successfully in {init_time:.2f}s")
+        
+    except Exception as e:
+        logger.error(f"Failed to initialize backend: {e}", exc_info=True)
+        raise
+    
+    yield
+    
+    # Cleanup
+    logger.info("Cleaning up services...")
+    if background_service:
+        await background_service.stop()
+    if cache_service:
+        await cache_service.close()
+    if database_service:
+        await database_service.close()
+
+# Create FastAPI app
+app = FastAPI(
+    title="Reynard Backend",
+    description="Modular FastAPI backend with service architecture",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Include routers
+app.include_router(health.router, prefix="/api", tags=["health"])
+app.include_router(users.router, prefix="/api/users", tags=["users"])
+
+# Dependency injection
+def get_database_service() -> DatabaseService:
+    if database_service is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database service not available"
+        )
+    return database_service
+```
+
+### 4. Authentication Module Pattern
+
+Create focused authentication modules:
+
+```python
+# auth/token_manager.py (85 lines)
+class TokenManager:
+    """Token management class for JWT operations"""
+    
+    def __init__(self, config: TokenConfig):
+        self.config = config
+        self._validate_config()
+        self._blacklisted_tokens: Set[str] = set()
+        self._rate_limit_tracker: Dict[str, list] = defaultdict(list)
+        self._max_requests_per_minute = 60
+    
+    def _validate_config(self) -> None:
+        """Validate the token configuration"""
+        if not self.config.secret_key:
+            raise ValueError("Secret key is required for token management")
+        
+        if self.config.secret_key == "test-secret-key-for-testing-only":
+            logger.warning("Using test secret key - not suitable for production")
+    
+    def create_token(self, data: TokenData) -> TokenResponse:
+        """Create a new JWT token"""
+        to_encode = data.dict().copy()
+        expire = datetime.now(timezone.utc) + timedelta(seconds=self.config.expire_seconds)
+        to_encode.update({"exp": expire})
+        
+        encoded_jwt = jwt.encode(to_encode, self.config.secret_key, algorithm=self.config.algorithm)
+        
+        return TokenResponse(
+            access_token=encoded_jwt,
+            token_type="bearer",
+            expires_in=self.config.expire_seconds
+        )
+    
+    def validate_token(self, token: str) -> TokenValidationResult:
+        """Validate a JWT token"""
+        try:
+            if token in self._blacklisted_tokens:
+                return TokenValidationResult(valid=False, error="Token has been revoked")
+            
+            payload = jwt.decode(token, self.config.secret_key, algorithms=[self.config.algorithm])
+            username: str = payload.get("sub")
+            
+            if username is None:
+                return TokenValidationResult(valid=False, error="Invalid token payload")
+            
+            return TokenValidationResult(valid=True, username=username)
+            
+        except JWTError as e:
+            return TokenValidationResult(valid=False, error=f"Token validation failed: {e}")
+```
+
+### 5. Backend Abstraction Pattern
+
+Create pluggable backend implementations:
+
+```python
+# backends/base.py (60 lines)
+from abc import ABC, abstractmethod
+from typing import List, Optional, Dict, Any
+
+class BackendError(Exception):
+    """Base exception for backend operations"""
+    pass
+
+class UserBackend(ABC):
+    """Abstract base class for user backends"""
+    
+    @abstractmethod
+    async def create_user(self, user_data: Dict[str, Any]) -> User:
+        """Create a new user"""
+        pass
+    
+    @abstractmethod
+    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+        """Get user by ID"""
+        pass
+    
+    @abstractmethod
+    async def get_user_by_username(self, username: str) -> Optional[User]:
+        """Get user by username"""
+        pass
+    
+    @abstractmethod
+    async def update_user(self, user_id: str, updates: Dict[str, Any]) -> Optional[User]:
+        """Update user data"""
+        pass
+    
+    @abstractmethod
+    async def delete_user(self, user_id: str) -> bool:
+        """Delete a user"""
+        pass
+
+# backends/sqlite.py (95 lines)
+class SQLiteBackend(UserBackend):
+    """SQLite implementation of user backend"""
+    
+    def __init__(self, database_url: str = "sqlite:///./gatekeeper.db"):
+        self.database_url = database_url
+        self.engine = None
+        self.session_factory = None
+        self._initialized = False
+    
+    async def _initialize(self) -> None:
+        """Initialize the database connection and create tables"""
+        if self._initialized:
+            return
+        
+        try:
+            self.engine = create_engine(
+                self.database_url,
+                echo=False,
+                pool_size=5,
+                max_overflow=10,
+                pool_pre_ping=True,
+            )
+            
+            self.session_factory = sessionmaker(
+                bind=self.engine, 
+                class_=Session, 
+                expire_on_commit=False
+            )
+            
+            Base.metadata.create_all(bind=self.engine)
+            self._initialized = True
+            logger.info("SQLite backend initialized successfully")
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize SQLite backend: {e}")
+            raise BackendError(f"Failed to initialize SQLite backend: {e}")
+    
+    async def create_user(self, user_data: Dict[str, Any]) -> User:
+        """Create a new user in SQLite"""
+        await self._initialize()
+        
+        with self._get_session() as session:
+            user_model = UserModel(**user_data)
+            session.add(user_model)
+            session.commit()
+            session.refresh(user_model)
+            
+            return self._model_to_user(user_model)
+```
+
+## Refactoring Strategies
+
+### Strategy 1: Extract Service Classes
+
+**Before** (Monolithic):
+
+```python
+# main.py (500+ lines)
+class Application:
+    def __init__(self):
+        self.database = None
+        self.cache = None
+        self.auth = None
+        # ... 400+ more lines of mixed concerns
+    
+    def setup_database(self):
+        # 100+ lines of database setup
+    
+    def setup_cache(self):
+        # 100+ lines of cache setup
+    
+    def setup_auth(self):
+        # 100+ lines of auth setup
+```
+
+**After** (Modular):
+
+```python
+# services/database.py (80 lines)
+class DatabaseService:
+    async def initialize(self): pass
+    async def close(self): pass
+
+# services/cache.py (70 lines)
+class CacheService:
+    async def initialize(self): pass
+    async def close(self): pass
+
+# services/auth.py (60 lines)
+class AuthService:
+    async def initialize(self): pass
+    async def close(self): pass
+
+# main.py (50 lines) - Orchestrator
+class Application:
+    def __init__(self):
+        self.database = DatabaseService()
+        self.cache = CacheService()
+        self.auth = AuthService()
+```
+
+### Strategy 2: Extract Route Modules
+
+**Before** (Single Routes File):
+
+```python
+# routes.py (300+ lines)
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/users")
+async def get_users(): pass  # 50+ lines
+
+@router.post("/users")
+async def create_user(): pass  # 50+ lines
+
+@router.get("/health")
+async def health_check(): pass  # 30+ lines
+
+@router.get("/metrics")
+async def get_metrics(): pass  # 40+ lines
+```
+
+**After** (Modular Routes):
+
+```python
+# routes/users.py (80 lines)
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/")
+async def get_users(): pass
+
+@router.post("/")
+async def create_user(): pass
+
+# routes/health.py (60 lines)
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/")
+async def health_check(): pass
+
+@router.get("/metrics")
+async def get_metrics(): pass
+
+# routes/__init__.py (20 lines)
+from .users import router as users_router
+from .health import router as health_router
+
+__all__ = ["users_router", "health_router"]
+```
+
+### Strategy 3: Extract Configuration Modules
+
+**Before** (Single Config File):
+
+```python
+# config.py (200+ lines)
+class Config:
+    # Database config (50+ lines)
+    DATABASE_URL = "sqlite:///./app.db"
+    DATABASE_POOL_SIZE = 5
+    # ... 40+ more database settings
+    
+    # Cache config (50+ lines)
+    CACHE_TTL = 3600
+    CACHE_MAX_SIZE = 1000
+    # ... 40+ more cache settings
+    
+    # Auth config (50+ lines)
+    JWT_SECRET = "secret"
+    JWT_ALGORITHM = "HS256"
+    # ... 40+ more auth settings
+```
+
+**After** (Category-Specific Configs):
+
+```python
+# config/database.py (40 lines)
+class DatabaseConfig:
+    DATABASE_URL = "sqlite:///./app.db"
+    POOL_SIZE = 5
+    MAX_OVERFLOW = 10
+    ECHO = False
+
+# config/cache.py (30 lines)
+class CacheConfig:
+    TTL = 3600
+    MAX_SIZE = 1000
+    CLEANUP_INTERVAL = 300
+
+# config/auth.py (35 lines)
+class AuthConfig:
+    JWT_SECRET = "secret"
+    JWT_ALGORITHM = "HS256"
+    TOKEN_EXPIRE_MINUTES = 30
+
+# config/__init__.py (25 lines)
+from .database import DatabaseConfig
+from .cache import CacheConfig
+from .auth import AuthConfig
+
+class Config:
+    database = DatabaseConfig()
+    cache = CacheConfig()
+    auth = AuthConfig()
+```
+
+## Python-Specific Patterns
+
+### 1. Context Managers for Resource Management
+
+```python
+# utils/context_managers.py (70 lines)
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
+@asynccontextmanager
+async def database_connection(service: DatabaseService) -> AsyncGenerator[Connection, None]:
+    """Context manager for database connections"""
+    connection = await service.get_connection()
+    try:
+        yield connection
+    finally:
+        await service.release_connection(connection)
+
+@asynccontextmanager
+async def cache_lock(cache_service: CacheService, key: str) -> AsyncGenerator[bool, None]:
+    """Context manager for cache operations with locking"""
+    acquired = await cache_service.acquire_lock(key)
+    try:
+        yield acquired
+    finally:
+        if acquired:
+            await cache_service.release_lock(key)
+```
+
+### 2. Dependency Injection Pattern
+
+```python
+# dependencies.py (60 lines)
+from fastapi import Depends, HTTPException, status
+from typing import Optional
+
+# Global service instances
+_database_service: Optional[DatabaseService] = None
+_cache_service: Optional[CacheService] = None
+
+def get_database_service() -> DatabaseService:
+    """Dependency to get database service"""
+    if _database_service is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database service not available"
+        )
+    return _database_service
+
+def get_cache_service() -> CacheService:
+    """Dependency to get cache service"""
+    if _cache_service is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Cache service not available"
+        )
+    return _cache_service
+
+def set_services(database: DatabaseService, cache: CacheService):
+    """Set global service instances"""
+    global _database_service, _cache_service
+    _database_service = database
+    _cache_service = cache
+```
+
+### 3. Async Service Pattern
+
+```python
+# services/background.py (85 lines)
+import asyncio
+from typing import Dict, Any, Optional
+
+class BackgroundService:
+    """Background service for async operations"""
+    
+    def __init__(self):
+        self.tasks: Dict[str, asyncio.Task] = {}
+        self.is_running = False
+        self.cleanup_interval = 60  # seconds
+    
+    async def start(self):
+        """Start the background service"""
+        if self.is_running:
+            return
+        
+        self.is_running = True
+        print("[INFO] Starting background service...")
+        
+        # Start cleanup task
+        cleanup_task = asyncio.create_task(self._cleanup_loop())
+        self.tasks["cleanup"] = cleanup_task
+        
+        print("[OK] Background service started")
+    
+    async def stop(self):
+        """Stop the background service"""
+        if not self.is_running:
+            return
+        
+        print("[INFO] Stopping background service...")
+        self.is_running = False
+        
+        # Cancel all tasks
+        for task_name, task in self.tasks.items():
+            if not task.done():
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
+        
+        self.tasks.clear()
+        print("[OK] Background service stopped")
+    
+    async def _cleanup_loop(self):
+        """Background cleanup loop"""
+        while self.is_running:
+            try:
+                await asyncio.sleep(self.cleanup_interval)
+                await self._perform_cleanup()
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                print(f"[ERROR] Cleanup error: {e}")
+    
+    async def _perform_cleanup(self):
+        """Perform cleanup operations"""
+        # Implementation for cleanup tasks
+        pass
+```
+
+## Testing Modular Python
+
+### 1. Unit Testing Services
+
+```python
+# tests/test_database_service.py
+import pytest
+from services.database import DatabaseService
+
+@pytest.fixture
+async def database_service():
+    service = DatabaseService()
+    await service.initialize()
+    yield service
+    await service.close()
+
+@pytest.mark.asyncio
+async def test_database_initialization(database_service):
+    """Test database service initialization"""
+    assert database_service.is_initialized
+    assert database_service.connection_pool is not None
+
+@pytest.mark.asyncio
+async def test_connection_management(database_service):
+    """Test connection acquisition and release"""
+    connection = await database_service.get_connection()
+    assert connection is not None
+    assert "id" in connection
+    
+    await database_service.release_connection(connection)
+```
+
+### 2. Integration Testing
+
+```python
+# tests/test_integration.py
+import pytest
+from fastapi.testclient import TestClient
+from main import app
+
+@pytest.fixture
+def client():
+    return TestClient(app)
+
+def test_health_endpoint(client):
+    """Test health check endpoint"""
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "healthy"
+
+def test_user_endpoints(client):
+    """Test user management endpoints"""
+    # Test user creation
+    user_data = {"username": "testuser", "email": "test@example.com"}
+    response = client.post("/api/users", json=user_data)
+    assert response.status_code == 201
+    
+    # Test user retrieval
+    response = client.get("/api/users")
+    assert response.status_code == 200
+    users = response.json()
+    assert len(users) > 0
+```
+
+## Performance Considerations
+
+### 1. Lazy Loading Optimization
+
+```python
+# utils/package_manager.py (80 lines)
+class PackageManager:
+    """Manages lazy loading of heavy packages with optimization"""
+    
+    def __init__(self):
+        self._packages: Dict[str, LazyPackageExport] = {}
+        self._load_stats: Dict[str, Dict[str, Any]] = {}
+    
+    def get_package(self, name: str, validation_level: str = "BASIC") -> LazyPackageExport:
+        """Get a lazy-loaded package"""
+        if name not in self._packages:
+            self._packages[name] = LazyPackageExport(name, validation_level)
+        
+        return self._packages[name]
+    
+    def preload_packages(self, package_names: List[str]):
+        """Preload commonly used packages"""
+        for name in package_names:
+            package = self.get_package(name)
+            # Trigger loading
+            _ = package.__dict__
+    
+    def get_optimization_suggestions(self) -> List[str]:
+        """Get suggestions for package loading optimization"""
+        suggestions = []
+        
+        for name, stats in self._load_stats.items():
+            if stats["load_time"] > 1.0:
+                suggestions.append(f"Consider preloading {name} (load time: {stats['load_time']:.2f}s)")
+        
+        return suggestions
+```
+
+### 2. Memory Management
+
+```python
+# utils/memory_manager.py (70 lines)
+import gc
+import psutil
+from typing import Dict, Any
+
+class MemoryManager:
+    """Manages memory usage and cleanup"""
+    
+    def __init__(self):
+        self.memory_threshold = 0.8  # 80% memory usage threshold
+        self.cleanup_interval = 300  # 5 minutes
+    
+    def get_memory_usage(self) -> Dict[str, Any]:
+        """Get current memory usage statistics"""
+        process = psutil.Process()
+        memory_info = process.memory_info()
+        
+        return {
+            "rss": memory_info.rss,  # Resident Set Size
+            "vms": memory_info.vms,  # Virtual Memory Size
+            "percent": process.memory_percent(),
+            "available": psutil.virtual_memory().available
+        }
+    
+    def should_cleanup(self) -> bool:
+        """Check if memory cleanup is needed"""
+        memory_usage = self.get_memory_usage()
+        return memory_usage["percent"] > (self.memory_threshold * 100)
+    
+    def perform_cleanup(self):
+        """Perform memory cleanup operations"""
+        # Force garbage collection
+        collected = gc.collect()
+        
+        # Clear module caches if needed
+        if self.should_cleanup():
+            self._clear_module_caches()
+        
+        return collected
+    
+    def _clear_module_caches(self):
+        """Clear module caches to free memory"""
+        # Implementation for clearing caches
+        pass
+```
+
+## Best Practices
+
+### 1. File Organization
+
+```
+backend/
+├── main.py                 # FastAPI application entry point (90 lines)
+├── config.py              # Configuration management (50 lines)
+├── services/
+│   ├── __init__.py        # Service exports (10 lines)
+│   ├── database.py        # Database service (95 lines)
+│   ├── cache.py           # Cache service (85 lines)
+│   └── background.py      # Background service (85 lines)
+├── routes/
+│   ├── __init__.py        # Route exports (15 lines)
+│   ├── health.py          # Health endpoints (60 lines)
+│   └── users.py           # User endpoints (80 lines)
+├── auth/
+│   ├── __init__.py        # Auth exports (10 lines)
+│   ├── token_manager.py   # Token management (85 lines)
+│   └── password_manager.py # Password handling (70 lines)
+├── backends/
+│   ├── __init__.py        # Backend exports (10 lines)
+│   ├── base.py            # Abstract base (60 lines)
+│   ├── sqlite.py          # SQLite implementation (95 lines)
+│   └── postgresql.py      # PostgreSQL implementation (90 lines)
+└── utils/
+    ├── __init__.py        # Utility exports (10 lines)
+    ├── lazy_loader.py     # Lazy loading (80 lines)
+    └── memory_manager.py  # Memory management (70 lines)
+```
+
+### 2. Naming Conventions
+
+- **Modules**: `snake_case.py` (e.g., `database_service.py`)
+- **Classes**: `PascalCase` (e.g., `DatabaseService`)
+- **Functions**: `snake_case` (e.g., `get_connection`)
+- **Constants**: `UPPER_SNAKE_CASE` (e.g., `DEFAULT_TIMEOUT`)
+- **Private methods**: `_snake_case` (e.g., `_validate_config`)
+
+### 3. Documentation
+
+```python
+class DatabaseService:
+    """Database service with connection pooling and reload optimization.
+    
+    This service manages database connections with automatic pooling,
+    health checks, and graceful shutdown handling. It's optimized for
+    development workflows with uvicorn reload support.
+    
+    Example:
+        ```python
+        service = DatabaseService()
+        await service.initialize()
+        
+        async with service.get_connection_context() as conn:
+            result = await conn.execute("SELECT * FROM users")
+        
+        await service.close()
+        ```
+    
+    Attributes:
+        connection_pool: Database connection pool configuration
+        is_initialized: Whether the service has been initialized
+        connection_count: Number of active connections
+    """
+    
+    async def initialize(self) -> None:
+        """Initialize database connection pool.
+        
+        Sets up the connection pool and prepares the service for use.
+        Skips initialization in reload mode for development efficiency.
+        
+        Raises:
+            RuntimeError: If initialization fails
+        """
+        # Implementation
+```
+
+## Migration Strategy
+
+### Phase 1: Identify Monoliths
+
+1. Scan for files > 100 lines
+2. Identify mixed concerns in classes
+3. Map service dependencies
+
+### Phase 2: Extract Services
+
+1. Start with pure utility functions
+2. Extract service classes with clear interfaces
+3. Implement dependency injection
+
+### Phase 3: Refactor Routes
+
+1. Break down large route files
+2. Extract business logic to services
+3. Implement proper error handling
+
+### Phase 4: Optimize Performance
+
+1. Implement lazy loading for heavy dependencies
+2. Add caching layers
+3. Optimize database connections
+
+## Conclusion
+
+Modular Python architecture is about creating maintainable, testable, and scalable applications. The 100-line axiom forces us to think about separation of concerns, clear interfaces, and reusable components.
+
+By following these patterns, your Python code becomes:
+
+- **Maintainable**: Easy to understand and modify
+- **Testable**: Small, focused units that can be thoroughly tested
+- **Reusable**: Self-contained modules that can be shared across projects
+- **Scalable**: Architecture that grows with your application
+- **Performant**: Optimized loading and memory management
+
+Remember: *Every line of Python code is a liability. Make each line count by keeping it focused, clear, and purposeful.*

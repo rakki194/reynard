@@ -173,7 +173,7 @@ export function runDocTests(config: DocTestConfig) {
   const { docPath, packageName, setup = '' } = config;
   
   describe(`Documentation Examples - ${packageName}`, () => {
-    let examples: CodeExample[];
+    let examples: CodeExample[] = [];
     
     beforeAll(() => {
       examples = extractCodeExamples(docPath);
@@ -307,7 +307,8 @@ export function validateDocExamples(docPath: string): { valid: number; invalid: 
         valid++;
       }
     } catch (error) {
-      errors.push(`Example ${index + 1}: ${error.message}\nCode: ${example.code.substring(0, 200)}...`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      errors.push(`Example ${index + 1}: ${errorMessage}\nCode: ${example.code.substring(0, 200)}...`);
       invalid++;
     }
   });

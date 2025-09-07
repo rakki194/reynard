@@ -204,6 +204,11 @@ describe('Browser Mocks', () => {
           ok: false,
           status: 404,
           json: vi.fn().mockResolvedValue({ error: 'Not found' }),
+          text: vi.fn().mockResolvedValue('Not found'),
+          blob: vi.fn().mockResolvedValue(new Blob()),
+          arrayBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(0)),
+          formData: vi.fn().mockResolvedValue(new FormData()),
+          clone: vi.fn().mockReturnThis(),
         });
         
         expect(mockFetch('/test')).resolves.toMatchObject({
@@ -229,7 +234,7 @@ describe('Browser Mocks', () => {
         const ws = new mockWebSocket();
         
         await new Promise<void>((resolve) => {
-          ws.onopen = (event) => {
+          ws.onopen = (event: Event) => {
             expect(ws.readyState).toBe(WebSocket.OPEN);
             expect(event.type).toBe('open');
             resolve();
@@ -253,7 +258,7 @@ describe('Browser Mocks', () => {
         const es = new mockEventSource();
         
         await new Promise<void>((resolve) => {
-          es.onopen = (event) => {
+          es.onopen = (event: Event) => {
             expect(es.readyState).toBe(EventSource.OPEN);
             expect(event.type).toBe('open');
             resolve();

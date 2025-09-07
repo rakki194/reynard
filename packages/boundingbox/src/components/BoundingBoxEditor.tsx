@@ -98,7 +98,7 @@ export const BoundingBoxEditor: Component<BoundingBoxEditorProps> = (props) => {
         boundingBoxes.updateBox(boxId, updatedBox);
       }
     },
-    onResizeEnd: (boxId, finalDimensions) => {
+    onResizeEnd: (boxId, _finalDimensions) => {
       console.debug('[BoundingBoxEditor] Resize ended:', boxId);
       eventHandlers.onAnnotationUpdate?.(boxId, boundingBoxes.getBox(boxId)!);
     },

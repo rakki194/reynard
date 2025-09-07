@@ -86,7 +86,7 @@ describe('BoundingBoxEditor', () => {
           imageInfo={mockImageInfo}
           config={defaultConfig}
           eventHandlers={mockEventHandlers}
-          className={customClass}
+          class={customClass}
         />
       ));
 

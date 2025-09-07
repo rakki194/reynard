@@ -21,9 +21,9 @@ import {
 
 // Dynamic import of translation files using import.meta.glob (like Yipyap)
 export const translations: Record<string, () => Promise<Translations>> = Object.fromEntries(
-  Object.entries(import.meta.glob<Translations>('./lang/*.ts', { import: 'default' })).map(([key, value]) => [
+  Object.entries((import.meta as any).glob('./lang/*.ts', { import: 'default' })).map(([key, value]) => [
     key.replace(/^\.\/lang\/(.+)\.ts$/, '$1'),
-    value,
+    value as () => Promise<Translations>,
   ])
 );
 
@@ -100,7 +100,7 @@ export function createI18nModule(initialTranslations?: Partial<Translations>): I
 
 
   const t: TranslationFunction = (key: string, params?: TranslationParams) => {
-    return getTranslationValue(translations(), key, params);
+    return getTranslationValue(translations() as unknown as Record<string, unknown>, key, params);
   };
 
   return {

@@ -15,7 +15,7 @@ describe('Component Assertions', () => {
       const TestComponent: Component = () => <div>Hello World</div>;
       
       expect(() => {
-        expectComponentToRender(TestComponent);
+        expectComponentToRender(() => TestComponent);
       }).not.toThrow();
     });
 
@@ -25,7 +25,7 @@ describe('Component Assertions', () => {
       };
       
       expect(() => {
-        expectComponentToRender(ErrorComponent);
+        expectComponentToRender(() => ErrorComponent);
       }).toThrow('Component error');
     });
   });
@@ -37,7 +37,7 @@ describe('Component Assertions', () => {
       };
       
       expect(() => {
-        expectComponentToThrow(ErrorComponent, 'Expected error');
+        expectComponentToThrow(() => ErrorComponent, 'Expected error');
       }).not.toThrow();
     });
 
@@ -45,7 +45,7 @@ describe('Component Assertions', () => {
       const TestComponent: Component = () => <div>Hello World</div>;
       
       expect(() => {
-        expectComponentToThrow(TestComponent, 'Expected error');
+        expectComponentToThrow(() => TestComponent, 'Expected error');
       }).toThrow();
     });
 
@@ -55,7 +55,7 @@ describe('Component Assertions', () => {
       };
       
       expect(() => {
-        expectComponentToThrow(ErrorComponent, /Expected error/);
+        expectComponentToThrow(() => ErrorComponent, /Expected error/);
       }).not.toThrow();
     });
 
@@ -65,7 +65,7 @@ describe('Component Assertions', () => {
       };
       
       expect(() => {
-        expectComponentToThrow(ErrorComponent);
+        expectComponentToThrow(() => ErrorComponent);
       }).not.toThrow();
     });
   });

@@ -27,6 +27,11 @@
   },
   "include": ["src"],
   "exclude": [
-    "dist"
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/test-setup.ts"
   ]
 }

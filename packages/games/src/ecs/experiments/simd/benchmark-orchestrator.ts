@@ -1,6 +1,6 @@
 // Benchmark orchestrator for running multiple benchmark suites
 
-import { BenchmarkSuite, BenchmarkResult } from './benchmark-types.js';
+import { BenchmarkSuite } from './benchmark-types.js';
 
 export class BenchmarkOrchestrator {
   private suites: BenchmarkSuite[] = [];

@@ -107,7 +107,7 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
   }
 
   // Calculate snapping to grid or other boxes
-  function calculateSnapping(x: number, y: number, box: BoundingBox): { x: number; y: number } {
+  function calculateSnapping(x: number, y: number, _box: BoundingBox): { x: number; y: number } {
     if (!enableSnapping) {
       return { x, y };
     }

@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import solid from "eslint-plugin-solid/configs/typescript";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
 export default [
   // Base configuration for all files
@@ -138,12 +139,23 @@ export default [
   {
     files: ["**/*.{tsx,jsx}"],
     ...solid,
+    plugins: {
+      ...solid.plugins,
+      "jsx-a11y": jsxA11y,
+    },
     rules: {
       ...solid.rules,
       "solid/reactivity": "warn", // Relax to warning
       "solid/no-destructure": "warn", // Relax to warning
       "solid/jsx-no-undef": "error",
       "solid/no-innerhtml": "warn", // Relax to warning for demo purposes
+      // Accessibility rules
+      "jsx-a11y/aria-role": "error",
+      "jsx-a11y/aria-props": "error",
+      "jsx-a11y/aria-proptypes": "error",
+      "jsx-a11y/aria-unsupported-elements": "error",
+      "jsx-a11y/role-has-required-aria-props": "error",
+      "jsx-a11y/role-supports-aria-props": "error",
     },
   },
 

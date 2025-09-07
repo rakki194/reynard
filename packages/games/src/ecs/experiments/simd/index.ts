@@ -35,7 +35,7 @@ export async function fullBenchmark(): Promise<void> {
 // Auto-run quick test if imported
 if (typeof window !== 'undefined') {
   // Browser environment
-  (window as any).ReynardECSSIMD = {
+  (window as typeof window & { ReynardECSSIMD: Record<string, unknown> }).ReynardECSSIMD = {
     quickStart,
     fullBenchmark,
     PositionSystem: (await import('./position-system.js')).PositionSystem,

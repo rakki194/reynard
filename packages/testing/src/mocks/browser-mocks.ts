@@ -94,9 +94,10 @@ export const mockCancelAnimationFrame = vi.fn((id: number) => clearTimeout(id));
 /**
  * Mock fetch
  */
-export const mockFetch = vi.fn(() =>
+export const mockFetch = vi.fn((_url?: string) =>
   Promise.resolve({
     ok: true,
+    status: 200,
     json: () => Promise.resolve({}),
     text: () => Promise.resolve(''),
     blob: () => Promise.resolve(new Blob()),

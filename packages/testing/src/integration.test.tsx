@@ -256,18 +256,18 @@ describe('reynard-testing Integration Tests', () => {
       const integrationConfig = createIntegrationTestConfig('test');
       
       // Component config should have higher thresholds than base
-      expect(componentConfig.test.coverage.thresholds.global.functions).toBeGreaterThan(
-        baseConfig.test.coverage.thresholds.global.functions
+      expect((componentConfig.test?.coverage as any)?.thresholds?.global?.functions).toBeGreaterThan(
+        (baseConfig.test?.coverage as any)?.thresholds?.global?.functions
       );
       
       // Utility config should have highest thresholds
-      expect(utilityConfig.test.coverage.thresholds.global.functions).toBeGreaterThan(
-        componentConfig.test.coverage.thresholds.global.functions
+      expect((utilityConfig.test?.coverage as any)?.thresholds?.global?.functions).toBeGreaterThan(
+        (componentConfig.test?.coverage as any)?.thresholds?.global?.functions
       );
       
       // Integration config should have lower thresholds
-      expect(integrationConfig.test.coverage.thresholds.global.functions).toBeLessThan(
-        baseConfig.test.coverage.thresholds.global.functions
+      expect((integrationConfig.test?.coverage as any)?.thresholds?.global?.functions).toBeLessThan(
+        (baseConfig.test?.coverage as any)?.thresholds?.global?.functions
       );
     });
   });
@@ -346,8 +346,8 @@ describe('reynard-testing Integration Tests', () => {
         throw new Error('Component error');
       };
       
-      expectComponentToRender(TestComponent);
-      expectComponentToThrow(ErrorComponent, 'Component error');
+      expectComponentToRender(() => TestComponent);
+      expectComponentToThrow(() => ErrorComponent, 'Component error');
     });
 
     it('should work with promise testing', async () => {

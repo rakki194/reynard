@@ -1,0 +1,90 @@
+// WASM module loader for SIMD position system
+
+export interface WasmSystemInterface {
+  add_entity(x: number, y: number, vx: number, vy: number, ax: number, ay: number, mass: number): void;
+  update_positions(deltaTime: number): void;
+  detect_collisions(radius: number): number[];
+  spatial_query(queryX: number, queryY: number, radius: number): number[];
+  clear(): void;
+  free(): void;
+}
+
+export interface WasmModule {
+  init: () => Promise<void>;
+  initSync: (wasmBytes: Uint8Array) => void;
+  PositionSystemSIMD: new (maxEntities: number) => WasmSystemInterface;
+  simd_vector_add: (a: Float32Array, b: Float32Array, result: Float32Array) => void;
+}
+
+export interface WasmLoaderResult {
+  module: WasmModule | null;
+  error?: Error;
+}
+
+export class WasmLoader {
+  private static instance: WasmLoader | null = null;
+  private wasmModule: WasmModule | null = null;
+  private loadError: Error | null = null;
+
+  private constructor() {}
+
+  static getInstance(): WasmLoader {
+    if (!WasmLoader.instance) {
+      WasmLoader.instance = new WasmLoader();
+    }
+    return WasmLoader.instance;
+  }
+
+  async loadWasmModule(): Promise<WasmLoaderResult> {
+    if (this.wasmModule) {
+      return { module: this.wasmModule };
+    }
+
+    if (this.loadError) {
+      return { module: null, error: this.loadError };
+    }
+
+    try {
+      const wasmModule = await import('./pkg/ecs_simd.js');
+      this.wasmModule = {
+        init: () => wasmModule.default() as unknown as Promise<void>,
+        initSync: wasmModule.initSync,
+        PositionSystemSIMD: wasmModule.PositionSystemSIMD as any,
+        simd_vector_add: wasmModule.simd_vector_add
+      };
+      return { module: this.wasmModule };
+    } catch (error) {
+      this.loadError = error as Error;
+      console.warn('🦊> WASM module not available, using mock implementation');
+      return { module: null, error: this.loadError };
+    }
+  }
+
+  async initializeWasm(maxEntities: number): Promise<WasmSystemInterface> {
+    const { module, error } = await this.loadWasmModule();
+    
+    if (!module) {
+      throw error || new Error('WASM module not available');
+    }
+
+    // Load the WebAssembly module - use sync init for Node.js
+    if (typeof window === 'undefined') {
+      // Node.js environment
+      const { readFileSync } = await import('fs');
+      const { fileURLToPath } = await import('url');
+      const { dirname, join } = await import('path');
+      const wasmPath = join(dirname(fileURLToPath(import.meta.url)), 'pkg', 'ecs_simd_bg.wasm');
+      const wasmBytes = readFileSync(wasmPath);
+      module.initSync(wasmBytes);
+    } else {
+      // Browser environment
+      await module.init();
+    }
+
+    return new module.PositionSystemSIMD(maxEntities);
+  }
+
+  getSimdVectorAdd(): ((a: Float32Array, b: Float32Array, result: Float32Array) => void) | null {
+    return this.wasmModule?.simd_vector_add || null;
+  }
+}

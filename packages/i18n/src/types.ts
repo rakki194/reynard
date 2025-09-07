@@ -81,7 +81,7 @@ export interface Translations {
   chat: ChatTranslations;
   monaco: MonacoTranslations;
   // Enhanced translations from Yipyap
-  settings: SettingsTranslations;
+  settings?: SettingsTranslations;
 }
 
 // Import additional types for I18nModule

@@ -1,24 +1,27 @@
 /**
  * useBoxResize composable
  * 
- * Provides resize functionality for bounding boxes with support for:
- * - Corner and edge resize handles
- * - Proportional resizing with aspect ratio maintenance
- * - Size constraints and validation
- * - Fabric.js integration for smooth canvas-based editing
+ * Orchestrates resize functionality for bounding boxes by coordinating:
+ * - Resize handle generation
+ * - Resize operations and state management
+ * - Constraint application
+ * - Event callbacks
  */
 
 import { createSignal, createMemo } from 'solid-js';
-import type { BoundingBox, ResizeHandle, TransformConstraints } from '../types';
-// checkBoundingBoxConstraints import removed as it's not used
-
-export interface ResizeState {
-  isResizing: boolean;
-  activeHandle: ResizeHandle | null;
-  startDimensions: { width: number; height: number; x: number; y: number } | null;
-  currentDimensions: { width: number; height: number; x: number; y: number } | null;
-  proportional: boolean;
-}
+import type { ResizeHandle } from '../types';
+import type { ResizeDimensions } from './resize-constraints';
+import type { ResizeState, ResizeCallbacks } from './resize-operations';
+import { generateResizeHandles } from './resize-handles';
+import {
+  createInitialResizeState,
+  startResizeOperation,
+  updateResizeOperation,
+  endResizeOperation,
+  cancelResizeOperation,
+  isResizing as checkIsResizing,
+  getActiveHandle as getActiveResizeHandle,
+} from './resize-operations';
 
 export interface ResizeOptions {
   minWidth?: number;
@@ -28,22 +31,17 @@ export interface ResizeOptions {
   enableProportionalResizing?: boolean;
   enableCornerHandles?: boolean;
   enableEdgeHandles?: boolean;
-  // handleSize, handleColor, handleBorderColor removed as they're not used
   onResizeStart?: (boxId: string, handle: ResizeHandle) => void;
-  onResizeMove?: (boxId: string, dimensions: { width: number; height: number; x: number; y: number }) => void;
-  onResizeEnd?: (boxId: string, finalDimensions: { width: number; height: number; x: number; y: number }) => void;
+  onResizeMove?: (boxId: string, dimensions: ResizeDimensions) => void;
+  onResizeEnd?: (boxId: string, finalDimensions: ResizeDimensions) => void;
   onResizeCancel?: (boxId: string) => void;
 }
 
 export interface UseBoxResizeReturn {
   resizeState: () => ResizeState;
   handles: () => ResizeHandle[];
-  startResize: (
-    boxId: string,
-    handle: ResizeHandle,
-    startDimensions: { width: number; height: number; x: number; y: number }
-  ) => void;
-  updateResize: (newDimensions: { width: number; height: number; x: number; y: number }) => void;
+  startResize: (boxId: string, handle: ResizeHandle, startDimensions: ResizeDimensions) => void;
+  updateResize: (newDimensions: ResizeDimensions) => void;
   endResize: () => void;
   cancelResize: () => void;
   isResizing: () => boolean;
@@ -61,210 +59,82 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     enableProportionalResizing = true,
     enableCornerHandles = true,
     enableEdgeHandles = true,
-    // handleSize, handleColor, handleBorderColor removed as they're not used
     onResizeStart,
     onResizeMove,
     onResizeEnd,
     onResizeCancel,
   } = options;
 
-  const [resizeState, setResizeState] = createSignal<ResizeState>({
-    isResizing: false,
-    activeHandle: null,
-    startDimensions: null,
-    currentDimensions: null,
-    proportional: false,
-  });
-
+  const [resizeState, setResizeState] = createSignal<ResizeState>(createInitialResizeState());
   const [currentBoxId, setCurrentBoxId] = createSignal<string | null>(null);
 
-  // Define resize handles based on options
+  // Generate resize handles using the extracted module
   const handles = createMemo((): ResizeHandle[] => {
-    const handleList: ResizeHandle[] = [];
-
-    if (enableCornerHandles) {
-      handleList.push(
-        {
-          id: 'top-left',
-          position: 'top-left',
-          cursor: 'nw-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight, maintainAspectRatio: enableProportionalResizing },
-        },
-        {
-          id: 'top-right',
-          position: 'top-right',
-          cursor: 'ne-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight, maintainAspectRatio: enableProportionalResizing },
-        },
-        {
-          id: 'bottom-left',
-          position: 'bottom-left',
-          cursor: 'sw-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight, maintainAspectRatio: enableProportionalResizing },
-        },
-        {
-          id: 'bottom-right',
-          position: 'bottom-right',
-          cursor: 'se-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight, maintainAspectRatio: enableProportionalResizing },
-        }
-      );
-    }
-
-    if (enableEdgeHandles) {
-      handleList.push(
-        {
-          id: 'top',
-          position: 'top',
-          cursor: 'n-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight },
-        },
-        {
-          id: 'right',
-          position: 'right',
-          cursor: 'e-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight },
-        },
-        {
-          id: 'bottom',
-          position: 'bottom',
-          cursor: 's-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight },
-        },
-        {
-          id: 'left',
-          position: 'left',
-          cursor: 'w-resize',
-          constraints: { minWidth, minHeight, maxWidth, maxHeight },
-        }
-      );
-    }
-
-    return handleList;
+    return generateResizeHandles({
+      minWidth,
+      minHeight,
+      maxWidth,
+      maxHeight,
+      enableProportionalResizing,
+      enableCornerHandles,
+      enableEdgeHandles,
+    });
   });
 
-  function startResize(
-    boxId: string,
-    handle: ResizeHandle,
-    startDimensions: { width: number; height: number; x: number; y: number }
-  ) {
-    setCurrentBoxId(boxId);
-    
-    // Calculate aspect ratio if proportional resizing is enabled
-    const aspectRatio = startDimensions.width / startDimensions.height;
-    const updatedHandle = {
-      ...handle,
-      constraints: {
-        ...handle.constraints,
-        aspectRatio: handle.constraints.maintainAspectRatio ? aspectRatio : undefined
-      }
-    };
-    
-    setResizeState({
-      isResizing: true,
-      activeHandle: updatedHandle,
-      startDimensions,
-      currentDimensions: startDimensions,
-      proportional: handle.constraints.maintainAspectRatio || false,
-    });
+  // Create callbacks object for resize operations
+  const callbacks: ResizeCallbacks = {
+    onResizeStart,
+    onResizeMove,
+    onResizeEnd,
+    onResizeCancel,
+  };
 
-    onResizeStart?.(boxId, updatedHandle);
+  function startResize(boxId: string, handle: ResizeHandle, startDimensions: ResizeDimensions) {
+    setCurrentBoxId(boxId);
+    const newState = startResizeOperation(boxId, handle, startDimensions, callbacks);
+    setResizeState(newState);
   }
 
-  function updateResize(newDimensions: { width: number; height: number; x: number; y: number }) {
+  function updateResize(newDimensions: ResizeDimensions) {
     const state = resizeState();
-    if (!state.isResizing || !state.activeHandle) return;
-
     const boxId = currentBoxId();
+    
     if (!boxId) return;
 
-    // Apply constraints
-    const constrainedDimensions = applyResizeConstraints(newDimensions, state.activeHandle.constraints);
-
-    setResizeState(prev => ({
-      ...prev,
-      currentDimensions: constrainedDimensions,
-    }));
-
-    onResizeMove?.(boxId, constrainedDimensions);
+    const newState = updateResizeOperation(newDimensions, state, callbacks);
+    setResizeState(newState);
+    
+    if (newState.currentDimensions) {
+      onResizeMove?.(boxId, newState.currentDimensions);
+    }
   }
 
   function endResize() {
     const state = resizeState();
     const boxId = currentBoxId();
     
-    if (!state.isResizing || !boxId) return;
+    if (!boxId) return;
 
-    const finalDimensions = state.currentDimensions || state.startDimensions;
-    if (finalDimensions) {
-      onResizeEnd?.(boxId, finalDimensions);
-    }
-
-    setResizeState({
-      isResizing: false,
-      activeHandle: null,
-      startDimensions: null,
-      currentDimensions: null,
-      proportional: false,
-    });
+    const { state: newState } = endResizeOperation(state, boxId, callbacks);
+    setResizeState(newState);
     setCurrentBoxId(null);
   }
 
   function cancelResize() {
+    const state = resizeState();
     const boxId = currentBoxId();
     
-    setResizeState({
-      isResizing: false,
-      activeHandle: null,
-      startDimensions: null,
-      currentDimensions: null,
-      proportional: false,
-    });
+    const newState = cancelResizeOperation(state, boxId, callbacks);
+    setResizeState(newState);
     setCurrentBoxId(null);
-
-    if (boxId) {
-      onResizeCancel?.(boxId);
-    }
-  }
-
-  function applyResizeConstraints(
-    dimensions: { width: number; height: number; x: number; y: number },
-    constraints: TransformConstraints
-  ): { width: number; height: number; x: number; y: number } {
-    let { width, height, x, y } = dimensions;
-
-    // Apply size constraints
-    if (constraints.minWidth !== undefined) {
-      width = Math.max(width, constraints.minWidth);
-    }
-    if (constraints.minHeight !== undefined) {
-      height = Math.max(height, constraints.minHeight);
-    }
-    if (constraints.maxWidth !== undefined) {
-      width = Math.min(width, constraints.maxWidth);
-    }
-    if (constraints.maxHeight !== undefined) {
-      height = Math.min(height, constraints.maxHeight);
-    }
-
-    // Apply aspect ratio constraint
-    if (constraints.maintainAspectRatio && constraints.aspectRatio) {
-      const currentAspectRatio = width / height;
-      if (Math.abs(currentAspectRatio - constraints.aspectRatio) > 0.01) {
-        // Adjust height to maintain aspect ratio
-        height = width / constraints.aspectRatio;
-      }
-    }
-
-    return { width, height, x, y };
   }
 
   function isResizing(): boolean {
-    return resizeState().isResizing;
+    return checkIsResizing(resizeState());
   }
 
   function getActiveHandle(): ResizeHandle | null {
-    return resizeState().activeHandle;
+    return getActiveResizeHandle(resizeState());
   }
 
   function getCurrentBoxId(): string | null {

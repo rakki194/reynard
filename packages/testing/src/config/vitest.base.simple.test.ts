@@ -14,9 +14,9 @@ describe('Vitest Configuration Utilities (Simple)', () => {
       expect(config).toBeDefined();
       expect(config.plugins).toBeDefined();
       expect(config.test).toBeDefined();
-      expect(config.test.environment).toBe('jsdom');
-      expect(config.test.globals).toBe(true);
-      expect(config.test.setupFiles).toEqual(['./src/test-setup.ts']);
+      expect(config.test?.environment).toBe('jsdom');
+      expect(config.test?.globals).toBe(true);
+      expect(config.test?.setupFiles).toEqual(['./src/test-setup.ts']);
     });
 
     it('should create a base vitest configuration with custom options', () => {
@@ -36,15 +36,15 @@ describe('Vitest Configuration Utilities (Simple)', () => {
         excludeFromCoverage: customExcludeFromCoverage,
       });
 
-      expect(config.test.setupFiles).toEqual(customSetupFiles);
-      expect(config.test.coverage.thresholds.global).toEqual(customCoverageThresholds);
-      expect(config.test.coverage.exclude).toContain('custom-exclude/**');
+      expect(config.test?.setupFiles).toEqual(customSetupFiles);
+      expect((config.test?.coverage as any)?.thresholds?.global).toEqual(customCoverageThresholds);
+      expect(config.test?.coverage?.exclude).toContain('custom-exclude/**');
     });
 
     it('should handle minimal options', () => {
       const config = createBaseVitestConfig({ packageName: 'minimal-package' });
       
-      expect(config.test.coverage.thresholds.global).toEqual({
+      expect((config.test?.coverage as any)?.thresholds?.global).toEqual({
         branches: 80,
         functions: 80,
         lines: 80,
@@ -56,13 +56,13 @@ describe('Vitest Configuration Utilities (Simple)', () => {
       const config = createBaseVitestConfig({ packageName: 'test-package' });
       
       expect(config.plugins).toHaveLength(1);
-      expect(config.plugins[0]).toBeDefined();
+      expect(config.plugins?.[0]).toBeDefined();
     });
 
     it('should set up jsdom environment options correctly', () => {
       const config = createBaseVitestConfig({ packageName: 'test-package' });
       
-      expect(config.test.environmentOptions.jsdom).toEqual({
+      expect(config.test?.environmentOptions?.jsdom).toEqual({
         pretendToBeVisual: true,
         url: 'http://localhost/',
       });
@@ -71,8 +71,8 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should configure coverage provider and reporters', () => {
       const config = createBaseVitestConfig({ packageName: 'test-package' });
       
-      expect(config.test.coverage.provider).toBe('v8');
-      expect(config.test.coverage.reporter).toEqual(['text', 'html', 'lcov']);
+      expect(config.test?.coverage?.provider).toBe('v8');
+      expect((config.test?.coverage as any)?.reporter).toEqual(['text', 'html', 'lcov']);
     });
   });
 
@@ -80,7 +80,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should create a component test configuration with higher coverage thresholds', () => {
       const config = createComponentTestConfig('component-package');
       
-      expect(config.test.coverage.thresholds.global).toEqual({
+      expect((config.test?.coverage as any)?.thresholds?.global).toEqual({
         branches: 85,
         functions: 90,
         lines: 90,
@@ -91,7 +91,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should use default setup files', () => {
       const config = createComponentTestConfig('component-package');
       
-      expect(config.test.setupFiles).toEqual(['./src/test-setup.ts']);
+      expect(config.test?.setupFiles).toEqual(['./src/test-setup.ts']);
     });
   });
 
@@ -99,7 +99,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should create a utility test configuration with highest coverage thresholds', () => {
       const config = createUtilityTestConfig('utility-package');
       
-      expect(config.test.coverage.thresholds.global).toEqual({
+      expect((config.test?.coverage as any)?.thresholds?.global).toEqual({
         branches: 90,
         functions: 95,
         lines: 95,
@@ -110,7 +110,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should use default setup files', () => {
       const config = createUtilityTestConfig('utility-package');
       
-      expect(config.test.setupFiles).toEqual(['./src/test-setup.ts']);
+      expect(config.test?.setupFiles).toEqual(['./src/test-setup.ts']);
     });
   });
 
@@ -118,7 +118,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should create an integration test configuration with lower coverage thresholds', () => {
       const config = createIntegrationTestConfig('integration-package');
       
-      expect(config.test.coverage.thresholds.global).toEqual({
+      expect((config.test?.coverage as any)?.thresholds?.global).toEqual({
         branches: 75,
         functions: 80,
         lines: 80,
@@ -129,7 +129,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
     it('should use default setup files', () => {
       const config = createIntegrationTestConfig('integration-package');
       
-      expect(config.test.setupFiles).toEqual(['./src/test-setup.ts']);
+      expect(config.test?.setupFiles).toEqual(['./src/test-setup.ts']);
     });
   });
 
@@ -149,7 +149,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
       ];
 
       expectedExclusions.forEach(exclusion => {
-        expect(config.test.coverage.exclude).toContain(exclusion);
+        expect(config.test?.coverage?.exclude).toContain(exclusion);
       });
     });
 
@@ -161,7 +161,7 @@ describe('Vitest Configuration Utilities (Simple)', () => {
       });
       
       customExclusions.forEach(exclusion => {
-        expect(config.test.coverage.exclude).toContain(exclusion);
+        expect(config.test?.coverage?.exclude).toContain(exclusion);
       });
     });
   });
