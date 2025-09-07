@@ -1,7 +1,7 @@
 {
-  "name": "reynard-3d-demo",
+  "name": "reynard-algo-bench",
   "version": "0.1.0",
-  "description": "3D Games and Interactive Demos - Reynard 3D Package Showcase",
+  "description": "AABB Collision Detection & Performance Benchmarking Demo",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,11 +13,9 @@
     "reynard-core": "0.1.1",
     "reynard-themes": "0.1.1",
     "reynard-fluent-icons": "0.1.1",
-    "reynard-3d": "0.1.0",
+    "reynard-algorithms": "0.1.0",
     "reynard-components": "0.1.1",
-    "solid-js": "1.9.9",
-    "three": "0.180.0",
-    "@types/three": "0.180.0"
+    "solid-js": "1.9.9"
   },
   "devDependencies": {
     "@types/node": "24.3.1",
