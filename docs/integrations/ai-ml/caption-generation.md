@@ -1,12 +1,17 @@
 # Caption Generation
 
-This system provides a unified, model-agnostic way to generate captions and tags. It discovers captioners at runtime, applies retry and post-processing policies, and can persist results for the gallery.
+This system provides a unified, model-agnostic way to generate captions and tags in the Reynard framework. It discovers captioners at runtime, applies retry and post-processing policies, and can persist results for the gallery. The system is implemented in the `reynard-annotating` package.
 
 ## Architecture
 
-Captioning is implemented as a plugin system that discovers available generators at runtime and exposes a single service surface. The abstract interface in `base.py` defines async generation, availability checks, configuration schema, versioning, and a `caption_type`. The `CaptionerManager` in `__init__.py` uses `plugin_loader.py` to discover model plugins under `plugins/` such as JTP2, WDv3, Joy, and Florence2. The `UnifiedCaptionService` coordinates model loading with concurrency locks, bounded retries, post-processing, and optional persistence to the data source.
+Captioning is implemented as a plugin system in the `reynard-annotating` package that discovers available generators at runtime and exposes a single service surface. The abstract interface `BaseCaptionGenerator` defines async generation, availability checks, configuration schema, versioning, and a `caption_type`. The `AnnotationManager` coordinates model loading with concurrency locks, bounded retries, post-processing, and optional persistence to the data source.
 
-- Files:
+- Frontend Files (packages/annotating):
+  - `src/AnnotationManager.ts` - Main orchestrator
+  - `src/AnnotationService.ts` - Service layer
+  - `src/BaseCaptionGenerator.ts` - Abstract base class
+  - `src/generators/*` - Generator implementations
+- Backend Files (TBD):
   - `app/caption_generation/base.py`
   - `app/caption_generation/__init__.py`
   - `app/caption_generation/plugin_loader.py`

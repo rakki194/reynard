@@ -54,6 +54,9 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
       - [Core Composables](#core-composables)
       - [Utilities](#utilities)
       - [Core Example Usage](#core-example-usage)
+    - [reynard-themes](#reynard-themes)
+      - [Features](#features)
+      - [Usage](#usage)
     - [reynard-components](#reynard-components)
       - [Primitives](#primitives)
       - [Composite Components](#composite-components)
@@ -95,6 +98,15 @@ Reynard is a comprehensive SolidJS framework and UI library extracted from battl
       - [Supported File Types](#supported-file-types)
       - [Core Components](#core-components)
       - [File Processing Example Usage](#file-processing-example-usage)
+    - [reynard-annotating](#reynard-annotating)
+      - [Annotating Features](#annotating-features)
+      - [Annotating Components](#annotating-components)
+      - [Annotating Example Usage](#annotating-example-usage)
+    - [reynard-caption](#reynard-caption)
+      - [Caption Features](#caption-features)
+      - [Caption Components](#caption-components)
+      - [Caption Example Usage](#caption-example-usage)
+      - [Complete Caption Workflow Example](#complete-caption-workflow-example)
     - [reynard-testing](#reynard-testing)
       - [Testing Features](#testing-features)
       - [Testing Utilities](#testing-utilities)
@@ -139,34 +151,42 @@ All Reynard packages are published to npm and ready for production use! Each pac
 
 | Package                    | Description                        | Version |
 | -------------------------- | ---------------------------------- | ------- |
-| `reynard-core`             | Core framework and utilities       | `0.1.0` |
-| `reynard-components`       | UI component library               | `0.1.0` |
-| `reynard-chat`             | Chat system and messaging          | `0.1.0` |
-| `reynard-rag`              | RAG search and retrieval           | `0.1.0` |
-| `reynard-auth`             | Authentication and user management | `0.1.0` |
-| `reynard-charts`           | Data visualization components      | `0.1.0` |
-| `reynard-gallery`          | File and media management          | `0.1.0` |
-| `reynard-settings`         | Configuration management           | `0.1.0` |
-| `reynard-file-processing`  | Advanced file processing pipeline  | `0.1.0` |
-| `reynard-algorithms`       | Algorithm primitives and data structures | `0.1.0` |
-| `reynard-color-media`      | Color and media utilities          | `1.0.0` |
-| `reynard-ui`               | Additional UI components           | `0.1.0` |
-| `reynard-themes`           | Theme system and built-in themes   | `0.1.0` |
-| `reynard-monaco`           | Monaco code editor components      | `0.1.0` |
-| `reynard-annotating`       | Annotation tools                   | `0.1.0` |
-| `reynard-boundingbox`      | Bounding box utilities             | `0.1.0` |
-| `reynard-caption`          | Caption components                 | `0.1.0` |
-| `reynard-composables`      | Vue/Solid composables              | `0.1.0` |
-| `reynard-connection`       | Connection management              | `0.1.0` |
-| `reynard-features`         | Feature management                 | `0.1.0` |
-| `reynard-fluent-icons`     | Icon components                    | `0.1.0` |
-| `reynard-games`            | Game components                    | `0.1.0` |
-| `reynard-model-management` | Model management                   | `0.1.0` |
-| `reynard-service-manager`  | Service management                 | `0.1.0` |
-| `reynard-tools`            | Development tools and CLI          | `0.1.0` |
-| `reynard-testing`          | Testing utilities and helpers      | `0.1.0` |
-| `reynard-basic-app`        | Basic todo app example             | `0.1.0` |
-| `reynard-clock-app`        | Clock and timer app example        | `1.0.0` |
+| `reynard-core`             | Core utilities and modules for Reynard framework | `0.1.1` |
+| `reynard-components`       | Production-ready SolidJS component library | `0.1.1` |
+| `reynard-chat`             | Production-ready chat messaging system for SolidJS | `0.1.0` |
+| `reynard-rag`              | Retrieval-Augmented Generation components for SolidJS | `0.1.1` |
+| `reynard-auth`             | Authentication and user management for SolidJS | `0.1.0` |
+| `reynard-charts`           | Data visualization components for SolidJS | `0.1.0` |
+| `reynard-gallery`          | File and media management components for SolidJS | `0.1.0` |
+| `reynard-settings`         | Comprehensive settings and preferences management for SolidJS | `0.1.0` |
+| `reynard-file-processing`  | Advanced file processing, thumbnail generation, and media analysis for SolidJS applications | `0.1.0` |
+| `reynard-algorithms`       | Algorithm primitives and data structures for Reynard applications | `0.1.0` |
+| `reynard-color-media`      | Color generation utilities and media handling components using OKLCH color space | `1.0.0` |
+| `reynard-ui`               | Advanced layout and navigation components | `0.1.0` |
+| `reynard-themes`           | Comprehensive theming system for Reynard applications with translation support | `0.1.1` |
+| `reynard-monaco`           | Monaco code editor and text editing components for Reynard | `0.1.1` |
+| `reynard-annotating`       | Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows | `0.1.0` |
+| `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard | `0.1.0` |
+| `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing | `0.1.0` |
+| `reynard-composables`      | Reusable reactive logic for Reynard applications | `0.1.0` |
+| `reynard-connection`       | Enterprise-grade networking for Reynard applications | `0.1.0` |
+| `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities | `0.1.0` |
+| `reynard-fluent-icons`     | Fluent UI icons for Reynard design system | `0.1.1` |
+| `reynard-games`            | Interactive games and visualizations for Reynard framework | `0.1.0` |
+| `reynard-model-management` | Model management system for Reynard - handles ML model loading, downloading, and lifecycle management | `0.1.0` |
+| `reynard-service-manager`  | Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring | `0.1.0` |
+| `reynard-tools`            | Development and runtime tools for Reynard applications | `0.1.0` |
+| `reynard-testing`          | Unified testing framework for Reynard packages | `0.1.0` |
+| `reynard-3d`               | 3D graphics and visualization components for Reynard framework using Three.js | `0.1.0` |
+| `reynard-error-boundaries` | Comprehensive error boundary system for Reynard framework | `0.1.1` |
+| `reynard-i18n`             | Comprehensive internationalization system for Reynard framework with 37 language support | `1.0.0` |
+| `reynard-docs-components`  | Beautiful UI components for Reynard documentation sites | `0.1.0` |
+| `reynard-docs-core`        | Core documentation rendering engine for Reynard framework | `0.1.0` |
+| `reynard-docs-generator`   | Automated documentation generator for Reynard packages | `0.1.0` |
+| `reynard-docs-site`        | Beautiful documentation site application for Reynard framework | `0.1.0` |
+| `reynard-basic-app`        | Basic Todo App - Minimal Reynard framework example | `0.1.0` |
+| `reynard-clock-app`        | A comprehensive clock, timer, alarm, and countdown application built with Reynard framework | `1.0.0` |
+| `reynard-test-app`         | Comprehensive test application showcasing Reynard framework features | `1.0.0` |
 
 ## 🚀 Quick Start
 
@@ -178,6 +198,9 @@ npm install reynard-core solid-js
 
 # Install additional packages as needed
 npm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
+
+# For caption generation workflows
+npm install reynard-annotating reynard-caption
 ```
 
 ### Basic Usage
@@ -997,6 +1020,7 @@ Now that you have a solid foundation, try:
 - **Adding Authentication** - Use `reynard-auth` for user management
 - **Data Visualization** - Add charts with `reynard-charts`
 - **File Management** - Implement file uploads with `reynard-gallery`
+- **Caption Generation** - Add AI-powered caption generation with `reynard-annotating` and `reynard-caption`
 - **Advanced Settings** - Add configuration with `reynard-settings`
 - **Real-time Features** - WebSocket integration for live updates
 - **Progressive Web App** - Add PWA capabilities
@@ -1681,6 +1705,265 @@ function FileProcessor() {
 }
 ```
 
+### reynard-annotating
+
+AI/ML-powered caption generation engine with multiple model support, batch processing, and comprehensive lifecycle management.
+
+#### Annotating Features
+
+- **Multiple AI Models** - Support for JTP2, JoyCaption, WDv3, Florence2, and other caption generation models
+- **Batch Processing** - Efficient batch caption generation with progress tracking
+- **Model Management** - Dynamic model loading, switching, and lifecycle management
+- **Confidence Scoring** - Confidence threshold management and quality assessment
+- **Event System** - Comprehensive event system for annotation lifecycle tracking
+- **TypeScript First** - Complete type safety with excellent IntelliSense
+
+#### Annotating Components
+
+- **AnnotationManager** - Main orchestrator for caption generation workflows
+- **AnnotationService** - Core caption generation service with model integration
+- **BaseCaptionGenerator** - Abstract base class for implementing custom generators
+- **ModelRegistry** - Dynamic model registration and management system
+
+#### Annotating Example Usage
+
+```tsx
+import { AnnotationManager, AnnotationService } from "reynard-annotating";
+
+function CaptionGenerator() {
+  const annotationManager = new AnnotationManager();
+  const annotationService = new AnnotationService();
+
+  const generateCaptions = async (images: File[]) => {
+    // Configure annotation service
+    await annotationService.configure({
+      model: "florence2",
+      confidenceThreshold: 0.8,
+      batchSize: 5,
+    });
+
+    // Generate captions with progress tracking
+    const results = await annotationService.generateCaptions(images, {
+      onProgress: (progress) => console.log(`Progress: ${progress}%`),
+      onComplete: (result) => console.log("Generation complete:", result),
+    });
+
+    return results;
+  };
+
+  return (
+    <div>
+      <input 
+        type="file" 
+        multiple 
+        accept="image/*"
+        onChange={(e) => generateCaptions(Array.from(e.target.files))}
+      />
+    </div>
+  );
+}
+```
+
+### reynard-caption
+
+Caption editing UI components with tag management, validation, and comprehensive user interface for caption workflows.
+
+> **💡 Architecture Note**: `reynard-caption` provides the UI components for caption editing, while `reynard-annotating` handles the AI/ML caption generation. Use them together for complete caption workflows!
+
+#### Caption Features
+
+- **Tag Management** - Interactive tag editing with autocomplete and validation
+- **Multiple Caption Types** - Support for CAPTION, TAGS, E621, TOML, and custom formats
+- **Real-time Validation** - Live validation with error highlighting and suggestions
+- **Accessibility** - Full keyboard navigation and screen reader support
+- **Theming Integration** - Seamless integration with Reynard's theming system
+
+#### Caption Components
+
+- **TagBubble** - Interactive tag editing component with drag-and-drop
+- **CaptionInput** - Comprehensive caption input with multiple caption types
+- **TagAutocomplete** - Smart autocomplete for tag suggestions
+- **CaptionValidator** - Real-time validation and error display
+
+#### Caption Example Usage
+
+```tsx
+import { TagBubble, CaptionInput, CaptionValidator } from "reynard-caption";
+
+function CaptionEditor() {
+  const [caption, setCaption] = createSignal("");
+  const [tags, setTags] = createSignal<string[]>([]);
+
+  return (
+    <div>
+      <CaptionInput
+        value={caption()}
+        onInput={setCaption}
+        captionType="CAPTION"
+        placeholder="Enter your caption..."
+      />
+      
+      <TagBubble
+        tags={tags()}
+        onTagsChange={setTags}
+        suggestions={["portrait", "landscape", "abstract", "nature"]}
+        maxTags={10}
+      />
+      
+      <CaptionValidator
+        caption={caption()}
+        tags={tags()}
+        onValidationChange={(isValid, errors) => {
+          console.log("Validation:", isValid, errors);
+        }}
+      />
+    </div>
+  );
+}
+```
+
+#### Complete Caption Workflow Example
+
+Here's how to combine both packages for a complete caption generation and editing workflow:
+
+```tsx
+import { AnnotationManager, AnnotationService } from "reynard-annotating";
+import { TagBubble, CaptionInput, CaptionValidator } from "reynard-caption";
+import { Button, Card } from "reynard-components";
+import { useNotifications } from "reynard-core";
+
+function CompleteCaptionWorkflow() {
+  const [image, setImage] = createSignal<File | null>(null);
+  const [generatedCaption, setGeneratedCaption] = createSignal("");
+  const [editedCaption, setEditedCaption] = createSignal("");
+  const [tags, setTags] = createSignal<string[]>([]);
+  const [isGenerating, setIsGenerating] = createSignal(false);
+  
+  const { notify } = useNotifications();
+  const annotationService = new AnnotationService();
+
+  const generateCaption = async () => {
+    if (!image()) return;
+    
+    setIsGenerating(true);
+    try {
+      // Use reynard-annotating for AI caption generation
+      const result = await annotationService.generateCaptions([image()!], {
+        model: "florence2",
+        confidenceThreshold: 0.8,
+      });
+      
+      const caption = result[0]?.caption || "";
+      setGeneratedCaption(caption);
+      setEditedCaption(caption);
+      
+      // Extract tags from generated caption
+      const extractedTags = caption.split(/[,\s]+/).filter(tag => tag.length > 2);
+      setTags(extractedTags);
+      
+      notify("Caption generated successfully!", "success");
+    } catch (error) {
+      notify("Failed to generate caption", "error");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const saveCaption = () => {
+    // Save the final caption and tags
+    const finalData = {
+      caption: editedCaption(),
+      tags: tags(),
+      image: image()?.name,
+    };
+    
+    console.log("Saving caption data:", finalData);
+    notify("Caption saved!", "success");
+  };
+
+  return (
+    <Card padding="lg">
+      <h3>Complete Caption Workflow</h3>
+      
+      {/* Image Upload */}
+      <div style="margin-bottom: 1rem;">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files?.[0] || null)}
+        />
+        {image() && (
+          <p>Selected: {image()!.name}</p>
+        )}
+      </div>
+
+      {/* AI Generation */}
+      <div style="margin-bottom: 1rem;">
+        <Button 
+          onClick={generateCaption}
+          disabled={!image() || isGenerating()}
+          loading={isGenerating()}
+        >
+          {isGenerating() ? "Generating..." : "Generate Caption with AI"}
+        </Button>
+      </div>
+
+      {/* Generated Caption Display */}
+      {generatedCaption() && (
+        <div style="margin-bottom: 1rem; padding: 1rem; background: var(--secondary-bg); border-radius: 6px;">
+          <h4>AI Generated Caption:</h4>
+          <p style="font-style: italic; color: var(--text-secondary);">
+            {generatedCaption()}
+          </p>
+        </div>
+      )}
+
+      {/* Caption Editing with reynard-caption */}
+      <div style="margin-bottom: 1rem;">
+        <CaptionInput
+          value={editedCaption()}
+          onInput={setEditedCaption}
+          captionType="CAPTION"
+          placeholder="Edit your caption..."
+          label="Edit Caption"
+        />
+      </div>
+
+      {/* Tag Management with reynard-caption */}
+      <div style="margin-bottom: 1rem;">
+        <TagBubble
+          tags={tags()}
+          onTagsChange={setTags}
+          suggestions={["portrait", "landscape", "abstract", "nature", "art", "photography"]}
+          maxTags={15}
+          label="Tags"
+        />
+      </div>
+
+      {/* Validation */}
+      <CaptionValidator
+        caption={editedCaption()}
+        tags={tags()}
+        onValidationChange={(isValid, errors) => {
+          if (!isValid && errors.length > 0) {
+            console.log("Validation errors:", errors);
+          }
+        }}
+      />
+
+      {/* Save Button */}
+      <Button 
+        onClick={saveCaption}
+        disabled={!editedCaption().trim()}
+        variant="primary"
+      >
+        Save Caption
+      </Button>
+    </Card>
+  );
+}
+```
+
 ### reynard-testing
 
 Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities, and assertion utilities.
@@ -1826,18 +2109,39 @@ Reynard is optimized for performance:
 
 ### Bundle Sizes
 
-- **reynard-core** - ~15 kB (3.2 kB gzipped)
-- **reynard-components** - ~45 kB (12.1 kB gzipped)
+- **reynard-core** - ~16 kB (3.7 kB gzipped)
+- **reynard-components** - ~46 kB (11.8 kB gzipped)
 - **reynard-chat** - ~110 kB (25.1 kB gzipped)
-- **reynard-rag** - ~22 kB (5.7 kB gzipped)
-- **reynard-auth** - ~28 kB (7.8 kB gzipped)
-- **reynard-charts** - ~27 kB (5.4 kB gzipped)
-- **reynard-gallery** - ~52 kB (14.2 kB gzipped)
-- **reynard-settings** - ~31 kB (8.9 kB gzipped)
-- **reynard-monaco** - ~85 kB (18.2 kB gzipped)
-- **reynard-algorithms** - ~12 kB (3.1 kB gzipped)
-- **reynard-file-processing** - ~25 kB (6.8 kB gzipped)
+- **reynard-rag** - ~21 kB (6.7 kB gzipped)
+- **reynard-auth** - ~46 kB (11.8 kB gzipped)
+- **reynard-charts** - ~28 kB (8.4 kB gzipped)
+- **reynard-gallery** - ~87 kB (21.3 kB gzipped)
+- **reynard-settings** - ~35 kB (8.8 kB gzipped)
+- **reynard-monaco** - ~232 kB (62.0 kB gzipped)
+- **reynard-annotating** - ~35 kB (8.8 kB gzipped)
+- **reynard-caption** - ~22 kB (7.0 kB gzipped)
+- **reynard-algorithms** - ~12 kB (3.6 kB gzipped)
+- **reynard-file-processing** - ~28 kB (8.8 kB gzipped)
 - **reynard-testing** - ~45 kB (12.1 kB gzipped)
+- **reynard-themes** - ~22 kB (6.1 kB gzipped)
+- **reynard-fluent-icons** - ~21 kB (4.7 kB gzipped)
+- **reynard-error-boundaries** - ~16 kB (3.6 kB gzipped)
+- **reynard-3d** - ~60 kB (19.6 kB gzipped)
+- **reynard-i18n** - ~22 kB (6.1 kB gzipped)
+- **reynard-ui** - ~38 kB (12.2 kB gzipped)
+- **reynard-composables** - ~16 kB (3.6 kB gzipped)
+- **reynard-connection** - ~27 kB (5.6 kB gzipped)
+- **reynard-features** - ~11 kB (3.6 kB gzipped)
+- **reynard-model-management** - ~21 kB (4.7 kB gzipped)
+- **reynard-service-manager** - ~22 kB (7.1 kB gzipped)
+- **reynard-tools** - ~21 kB (5.6 kB gzipped)
+- **reynard-boundingbox** - ~28 kB (8.4 kB gzipped)
+- **reynard-color-media** - ~26 kB (7.0 kB gzipped)
+- **reynard-games** - ~34 kB (12.2 kB gzipped)
+- **reynard-docs-core** - ~22 kB (6.1 kB gzipped)
+- **reynard-docs-components** - ~38 kB (12.2 kB gzipped)
+- **reynard-docs-generator** - ~340 kB (72.6 kB gzipped)
+- **reynard-docs-site** - ~192 kB (57.8 kB gzipped)
 - **reynard-basic-app** - ~8 kB (2.1 kB gzipped)
 - **reynard-clock-app** - ~12 kB (3.2 kB gzipped)
 

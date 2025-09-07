@@ -2,7 +2,7 @@
 
 ## Overview
 
-YipYap uses JWT (JSON Web Tokens) for authentication with both access tokens and refresh tokens for enhanced security. The system employs modern password hashing using the argon2-cffi library with Argon2 as the primary algorithm, providing robust security while maintaining backward compatibility with legacy bcrypt hashes. This guide explains how to set up secure authentication in your deployment and provides a detailed technical overview of its implementation.
+The Reynard framework uses JWT (JSON Web Tokens) for authentication with both access tokens and refresh tokens for enhanced security. The system employs modern password hashing using PBKDF2 with HMAC-SHA256, providing robust security for the modular framework architecture. This guide explains how to set up secure authentication in your Reynard deployment and provides a detailed technical overview of its implementation.
 
 ## Environment Variables
 
@@ -10,7 +10,7 @@ The authentication system requires the following environment variables:
 
 ### Required Variables
 
-- `JWT_SECRET_KEY`: A cryptographically secure secret key for signing JWT tokens
+- `SECRET_KEY`: A cryptographically secure secret key for signing JWT tokens
 - `ACCESS_TOKEN_EXPIRE_MINUTES`: Access token expiration time in minutes (default: 30)
 - `REFRESH_TOKEN_EXPIRE_DAYS`: Refresh token expiration time in days (default: 7)
 

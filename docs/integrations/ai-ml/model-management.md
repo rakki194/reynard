@@ -1,8 +1,8 @@
 # Model Management System
 
-This document describes the comprehensive model management system in yipyap,
+This document describes the comprehensive model management system in the Reynard framework,
 which provides administrators with a centralized interface for configuring and
-managing all AI models used by the application.
+managing all AI models used by Reynard applications through the `reynard-model-management` package.
 
 ## Overview
 

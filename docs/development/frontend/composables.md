@@ -1,7 +1,7 @@
 # Composables
 
-SolidJS composables live in `src/composables/` and are prefixed with `use`. They
-hide reusable reactive logic behind typed, minimal APIs.
+SolidJS composables in the Reynard framework live in `packages/composables/` and are prefixed with `use`. They
+hide reusable reactive logic behind typed, minimal APIs and are designed to be modular and reusable across different Reynard applications.
 
 ## Conventions
 
@@ -15,9 +15,9 @@ hide reusable reactive logic behind typed, minimal APIs.
 
 ## Current Composable Inventory
 
-The codebase contains **80+ composables** organized by functionality:
+The Reynard framework contains **80+ composables** organized by functionality across multiple packages:
 
-### Core State Management
+### Core State Management (packages/core)
 
 - `useAuthFetch.ts` - Authentication-aware fetch with token refresh
 - `useServiceManager.ts` - Service status and health monitoring
