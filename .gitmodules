@@ -1,3 +1,6 @@
 [submodule "libraries/gatekeeper"]
 	path = libraries/gatekeeper
 	url = https://github.com/rakki194/gatekeeper
+[submodule "libraries/beacon"]
+	path = libraries/beacon
+	url = https://github.com/rakki194/beacon

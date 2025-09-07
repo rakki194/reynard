@@ -357,7 +357,7 @@ describe("ChatMessage", () => {
     const CustomAvatar = () => <div data-testid="custom-avatar">CA</div>;
     const message = createMockMessage();
 
-    render(() => <ChatMessage message={message} avatar={CustomAvatar} />);
+    render(() => <ChatMessage message={message} avatar={<CustomAvatar />} />);
 
     expect(screen.getByTestId("custom-avatar")).toBeInTheDocument();
   });

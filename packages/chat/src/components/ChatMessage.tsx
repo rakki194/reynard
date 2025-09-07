@@ -111,15 +111,19 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
 
   // Get current content for display
   const getDisplayContent = createMemo(() => {
-    if (props.customRenderer) {
-      return props.customRenderer(props.message.content, props.message);
-    }
-
     if (props.message.streaming?.isStreaming) {
       return props.message.streaming.currentContent;
     }
 
     return props.message.content;
+  });
+
+  // Get custom rendered content
+  const getCustomContent = createMemo(() => {
+    if (props.customRenderer) {
+      return props.customRenderer(props.message.content, props.message);
+    }
+    return null;
   });
 
   // Token count display
@@ -227,24 +231,31 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
       {/* Main Content */}
       <div class="reynard-chat-message__content">
         <Show
-          when={getDisplayContent()}
+          when={getCustomContent()}
           fallback={
-            <Show when={props.message.streaming?.isStreaming}>
-              <div class="reynard-chat-message__placeholder">
-                <span class="reynard-chat-message__typing-indicator">
-                  Preparing response...
-                </span>
-              </div>
+            <Show
+              when={getDisplayContent()}
+              fallback={
+                <Show when={props.message.streaming?.isStreaming}>
+                  <div class="reynard-chat-message__placeholder">
+                    <span class="reynard-chat-message__typing-indicator">
+                      Preparing response...
+                    </span>
+                  </div>
+                </Show>
+              }
+            >
+              <MarkdownRenderer
+                content={getDisplayContent()}
+                streaming={!!props.message.streaming?.isStreaming}
+                enableMath={true}
+                enableDiagrams={true}
+                codeTheme="github-dark"
+              />
             </Show>
           }
         >
-          <MarkdownRenderer
-            content={getDisplayContent()}
-            streaming={!!props.message.streaming?.isStreaming}
-            enableMath={true}
-            enableDiagrams={true}
-            codeTheme="github-dark"
-          />
+          {getCustomContent()}
         </Show>
       </div>
 

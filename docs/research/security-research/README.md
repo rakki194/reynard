@@ -1,12 +1,12 @@
 # 🔒 Security Research Archive
 
-This directory contains comprehensive security research and penetration testing documentation conducted on the YipYap backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities in web applications.
+This directory contains comprehensive security research and penetration testing documentation conducted on the Reynard backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities in web applications.
 
 ## 🎯 Security Assessment Overview
 
 ### Research Scope
 
-The security assessment focused on the YipYap backend system, a Python-based FastAPI application serving image management and caption generation functionalities. The assessment covered:
+The security assessment focused on the Reynard backend system, a Python-based FastAPI application serving image management and caption generation functionalities. The assessment covered:
 
 - **Authentication and Authorization** mechanisms
 - **Input Validation** and injection vulnerabilities
@@ -36,7 +36,7 @@ The security research employed a systematic approach:
 **Key Sections:**
 
 - **Abstract**: Security assessment objectives and scope
-- **Introduction**: YipYap system overview and security context
+- **Introduction**: Reynard system overview and security context
 - **Methodology**: Systematic testing approach and tools
 - **Threat Model**: OWASP Top 10 alignment and scope definition
 - **Vulnerability Assessment**: Detailed findings and analysis

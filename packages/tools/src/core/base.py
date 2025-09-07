@@ -7,11 +7,11 @@ along with supporting data structures for parameters, results, and execution con
 
 import asyncio
 import logging
+import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from pathlib import Path
-import os
 from enum import Enum
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 logger = logging.getLogger("uvicorn")
@@ -318,9 +318,9 @@ class BaseTool(ABC):
 
         # Additional safety validation for potential path parameters
         try:
-            from app.utils.common_utils import (
+            from app.utils.common_utils import (  # Local import to avoid cycles
                 resolve_path,
-            )  # Local import to avoid cycles
+            )
 
             path_like_names = {
                 "path",

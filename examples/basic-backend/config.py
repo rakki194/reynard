@@ -9,7 +9,7 @@ from typing import List, Optional
 
 class UvicornConfig:
     """Uvicorn server configuration"""
-    
+
     def __init__(self):
         self.host = os.getenv("UVICORN_HOST", "0.0.0.0")
         self.port = int(os.getenv("UVICORN_PORT", "8000"))
@@ -19,12 +19,12 @@ class UvicornConfig:
         self.log_level = os.getenv("UVICORN_LOG_LEVEL", "info")
         self.access_log = os.getenv("UVICORN_ACCESS_LOG", "true").lower() == "true"
         self.use_colors = os.getenv("UVICORN_USE_COLORS", "true").lower() == "true"
-    
+
     def _parse_reload_dirs(self) -> List[str]:
         """Parse reload directories from environment variable"""
         dirs = os.getenv("UVICORN_RELOAD_DIRS", ".")
         return [d.strip() for d in dirs.split(",") if d.strip()]
-    
+
     def __repr__(self) -> str:
         return (
             f"UvicornConfig(host='{self.host}', port={self.port}, "
@@ -35,13 +35,13 @@ class UvicornConfig:
 
 class DatabaseConfig:
     """Database configuration"""
-    
+
     def __init__(self):
         self.url = os.getenv("DATABASE_URL", "sqlite:///./reynard.db")
         self.echo = os.getenv("DATABASE_ECHO", "false").lower() == "true"
         self.pool_size = int(os.getenv("DATABASE_POOL_SIZE", "5"))
         self.max_overflow = int(os.getenv("DATABASE_MAX_OVERFLOW", "10"))
-    
+
     def __repr__(self) -> str:
         return (
             f"DatabaseConfig(url='{self.url}', echo={self.echo}, "
@@ -51,12 +51,12 @@ class DatabaseConfig:
 
 class CacheConfig:
     """Cache configuration"""
-    
+
     def __init__(self):
         self.url = os.getenv("CACHE_URL", "redis://localhost:6379/0")
         self.ttl = int(os.getenv("CACHE_TTL", "3600"))  # 1 hour default
         self.max_connections = int(os.getenv("CACHE_MAX_CONNECTIONS", "10"))
-    
+
     def __repr__(self) -> str:
         return (
             f"CacheConfig(url='{self.url}', ttl={self.ttl}, "
@@ -66,19 +66,23 @@ class CacheConfig:
 
 class AppConfig:
     """Application configuration"""
-    
+
     def __init__(self):
         self.environment = os.getenv("ENVIRONMENT", "development")
         self.debug = os.getenv("DEBUG", "true").lower() == "true"
-        self.secret_key = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+        self.secret_key = os.getenv(
+            "SECRET_KEY", "your-secret-key-change-in-production"
+        )
         self.cors_origins = self._parse_cors_origins()
         self.rate_limit = int(os.getenv("RATE_LIMIT", "100"))  # requests per minute
-    
+
     def _parse_cors_origins(self) -> List[str]:
         """Parse CORS origins from environment variable"""
-        origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173")
+        origins = os.getenv(
+            "CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"
+        )
         return [origin.strip() for origin in origins.split(",") if origin.strip()]
-    
+
     def __repr__(self) -> str:
         return (
             f"AppConfig(environment='{self.environment}', debug={self.debug}, "

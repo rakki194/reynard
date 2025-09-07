@@ -6,5 +6,6 @@ python-dotenv
 sqlalchemy
 aiosqlite
 alembic
+PyYAML
 # Gatekeeper auth library
 -e ../../third_party/libraries/gatekeeper

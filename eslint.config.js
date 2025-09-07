@@ -128,6 +128,9 @@ export default [
       "no-prototype-builtins": "error",
       "no-redeclare": "error",
       "no-import-assign": "error",
+      // Modularity enforcement rules
+      "max-lines": ["error", { max: 140, skipBlankLines: true, skipComments: true }],
+      "max-lines-per-function": ["error", { max: 50, skipBlankLines: true, skipComments: true }],
     },
   },
 
@@ -171,6 +174,9 @@ export default [
     rules: {
       "@typescript-eslint/no-unused-vars": "off", // Allow unused vars in tests
       "@typescript-eslint/no-explicit-any": "off", // Allow any in tests
+      // Test files can be longer but still have reasonable limits
+      "max-lines": ["error", { max: 200, skipBlankLines: true, skipComments: true }],
+      "max-lines-per-function": ["error", { max: 100, skipBlankLines: true, skipComments: true }],
     },
   },
 

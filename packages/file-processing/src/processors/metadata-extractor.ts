@@ -2,35 +2,20 @@
  * Metadata Extractor for the Reynard File Processing system.
  *
  * This module provides unified metadata extraction for various file types
- * including images, videos, audio, text, code, and documents.
+ * using a factory pattern with specialized extractors.
  */
 
 import {
   ProcessingResult,
-  ImageMetadata,
-  VideoMetadata,
-  AudioMetadata,
   TextMetadata,
   CodeMetadata,
   LoraMetadata,
-  DocumentMetadata,
   FileMetadata,
-  ExifData,
 } from "../types";
 import { getFileTypeInfo, getFileCategory } from "../config/file-types";
+import { MetadataExtractorFactory, MetadataExtractionOptions } from "./extractors";
 
-export interface MetadataExtractionOptions {
-  /** Whether to extract EXIF data from images */
-  extractExif?: boolean;
-  /** Whether to perform content analysis */
-  analyzeContent?: boolean;
-  /** Whether to detect language for text files */
-  detectLanguage?: boolean;
-  /** Whether to extract embedded metadata */
-  extractEmbedded?: boolean;
-  /** Maximum content length to analyze */
-  maxContentLength?: number;
-}
+export { MetadataExtractionOptions };
 
 export class MetadataExtractor {
   constructor(private options: MetadataExtractionOptions = {}) {
@@ -86,13 +71,12 @@ export class MetadataExtractor {
 
       switch (category) {
         case "image":
-          metadata = await this.extractImageMetadata(file, mergedOptions);
-          break;
         case "video":
-          metadata = await this.extractVideoMetadata(file);
-          break;
         case "audio":
-          metadata = await this.extractAudioMetadata(file);
+        case "document":
+          // Use factory-created extractors for these types
+          const extractor = MetadataExtractorFactory.createExtractor(name, mergedOptions);
+          metadata = await extractor.extractMetadata(file, mergedOptions);
           break;
         case "text":
           metadata = await this.extractTextMetadata(file, mergedOptions);
@@ -102,9 +86,6 @@ export class MetadataExtractor {
           break;
         case "lora":
           metadata = await this.extractLoraMetadata(file, mergedOptions);
-          break;
-        case "document":
-          metadata = await this.extractDocumentMetadata(file, mergedOptions);
           break;
         default:
           return {
@@ -132,129 +113,6 @@ export class MetadataExtractor {
     }
   }
 
-  /**
-   * Extract metadata from image files
-   */
-  private async extractImageMetadata(
-    file: File | string,
-    options: MetadataExtractionOptions,
-  ): Promise<ImageMetadata> {
-    const image = await this.loadImage(file);
-    const basicInfo = await this.getBasicFileInfo(file);
-
-    const metadata: ImageMetadata = {
-      ...basicInfo,
-      width: image.naturalWidth,
-      height: image.naturalHeight,
-      isAnimated: await this.detectImageAnimation(file),
-      frameCount: 1, // Default for static images
-      duration: 0, // Default for static images
-      colorSpace: "sRGB", // Default assumption
-      bitDepth: 8, // Default assumption
-    };
-
-    // Extract EXIF data if enabled
-    if (options.extractExif) {
-      try {
-        const exif = await this.extractExifData();
-        if (exif) {
-          metadata.exif = exif;
-          // Update metadata with EXIF information
-          if (exif.XResolution) metadata.width = exif.XResolution;
-          if (exif.YResolution) metadata.height = exif.YResolution;
-          if (exif.ISOSpeedRatings) metadata.bitDepth = exif.ISOSpeedRatings;
-          if (exif.ColorSpace) metadata.colorSpace = exif.ColorSpace.toString();
-        }
-      } catch (error) {
-        // EXIF extraction failed, continue without it
-        console.warn("EXIF extraction failed:", error);
-      }
-    }
-
-    // Detect animation for GIF and WebP
-    if (metadata.isAnimated) {
-      const animationInfo = await this.extractAnimationInfo();
-      if (animationInfo) {
-        metadata.frameCount = animationInfo.frameCount;
-        metadata.duration = animationInfo.duration;
-      }
-    }
-
-    return metadata;
-  }
-
-  /**
-   * Extract metadata from video files
-   */
-  private async extractVideoMetadata(
-    file: File | string,
-  ): Promise<VideoMetadata> {
-    const video = await this.loadVideo(file);
-    const basicInfo = await this.getBasicFileInfo(file);
-
-    const metadata: VideoMetadata = {
-      ...basicInfo,
-      width: video.videoWidth,
-      height: video.videoHeight,
-      duration: video.duration,
-      fps: 30, // Default assumption
-      bitrate: 0, // Would need more complex analysis
-      codec: "unknown", // Would need more complex analysis
-      frameCount: Math.floor(video.duration * 30), // Estimate based on default FPS
-    };
-
-    // Try to extract more detailed video information
-    try {
-      const videoInfo = await this.extractVideoInfo();
-      if (videoInfo) {
-        metadata.fps = videoInfo.fps || metadata.fps;
-        metadata.bitrate = videoInfo.bitrate || metadata.bitrate;
-        metadata.codec = videoInfo.codec || metadata.codec;
-        metadata.frameCount = videoInfo.frameCount || metadata.frameCount;
-        metadata.audioCodec = videoInfo.audioCodec;
-        metadata.audioBitrate = videoInfo.audioBitrate;
-      }
-    } catch (error) {
-      console.warn("Detailed video info extraction failed:", error);
-    }
-
-    return metadata;
-  }
-
-  /**
-   * Extract metadata from audio files
-   */
-  private async extractAudioMetadata(
-    file: File | string,
-  ): Promise<AudioMetadata> {
-    const audio = await this.loadAudio(file);
-    const basicInfo = await this.getBasicFileInfo(file);
-
-    const metadata: AudioMetadata = {
-      ...basicInfo,
-      duration: audio.duration,
-      sampleRate: 44100, // Default assumption
-      channels: 2, // Default assumption
-      bitrate: 0, // Would need more complex analysis
-      codec: "unknown", // Would need more complex analysis
-      format: this.getFileExtension(basicInfo.name).substring(1).toUpperCase(),
-    };
-
-    // Try to extract more detailed audio information
-    try {
-      const audioInfo = await this.extractAudioInfo();
-      if (audioInfo) {
-        metadata.sampleRate = audioInfo.sampleRate || metadata.sampleRate;
-        metadata.channels = audioInfo.channels || metadata.channels;
-        metadata.bitrate = audioInfo.bitrate || metadata.bitrate;
-        metadata.codec = audioInfo.codec || metadata.codec;
-      }
-    } catch (error) {
-      console.warn("Detailed audio info extraction failed:", error);
-    }
-
-    return metadata;
-  }
 
   /**
    * Extract metadata from text files
@@ -363,51 +221,8 @@ export class MetadataExtractor {
     return metadata;
   }
 
-  /**
-   * Extract metadata from document files
-   */
-  private async extractDocumentMetadata(
-    file: File | string,
-    options: MetadataExtractionOptions,
-  ): Promise<DocumentMetadata> {
-    const basicInfo = await this.getBasicFileInfo(file);
-    const extension = this.getFileExtension(basicInfo.name);
 
-    const metadata: DocumentMetadata = {
-      ...basicInfo,
-      documentType: extension.substring(1).toUpperCase(),
-      pageCount: 1, // Default assumption
-      title: "", // Would need to extract from file content
-      author: "", // Would need to extract from file content
-      subject: "", // Would need to extract from file content
-      keywords: [], // Would need to extract from file content
-      hasText: true, // Default assumption
-      ocrConfidence: 0, // Default assumption
-    };
-
-    // Try to extract document information
-    if (options.extractEmbedded) {
-      try {
-        const docInfo = await this.extractDocumentInfo();
-        if (docInfo) {
-          metadata.pageCount = docInfo.pageCount || metadata.pageCount;
-          metadata.title = docInfo.title || metadata.title;
-          metadata.author = docInfo.author || metadata.author;
-          metadata.subject = docInfo.subject || metadata.subject;
-          metadata.keywords = docInfo.keywords || metadata.keywords;
-          metadata.hasText = docInfo.hasText ?? metadata.hasText;
-          metadata.ocrConfidence =
-            docInfo.ocrConfidence || metadata.ocrConfidence;
-        }
-      } catch (error) {
-        console.warn("Document info extraction failed:", error);
-      }
-    }
-
-    return metadata;
-  }
-
-  // Helper methods
+  // Helper methods for remaining extractors
 
   private async getFileInfo(
     file: File | string,
@@ -478,62 +293,6 @@ export class MetadataExtractor {
       : "";
   }
 
-  private async loadImage(file: File | string): Promise<HTMLImageElement> {
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-
-    if (typeof file === "string") {
-      image.src = file;
-    } else {
-      image.src = URL.createObjectURL(file);
-    }
-
-    await new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error("Failed to load image"));
-    });
-
-    return image;
-  }
-
-  private async loadVideo(file: File | string): Promise<HTMLVideoElement> {
-    const video = document.createElement("video");
-    video.crossOrigin = "anonymous";
-    video.muted = true;
-    video.playsInline = true;
-
-    if (typeof file === "string") {
-      video.src = file;
-    } else {
-      video.src = URL.createObjectURL(file);
-    }
-
-    await new Promise<void>((resolve, reject) => {
-      video.onloadedmetadata = () => resolve();
-      video.onerror = () => reject(new Error("Failed to load video"));
-    });
-
-    return video;
-  }
-
-  private async loadAudio(file: File | string): Promise<HTMLAudioElement> {
-    const audio = new Audio();
-    audio.crossOrigin = "anonymous";
-
-    if (typeof file === "string") {
-      audio.src = file;
-    } else {
-      audio.src = URL.createObjectURL(file);
-    }
-
-    await new Promise<void>((resolve, reject) => {
-      audio.onloadedmetadata = () => resolve();
-      audio.onerror = () => reject(new Error("Failed to load audio"));
-    });
-
-    return audio;
-  }
-
   private async loadText(file: File | string): Promise<string> {
     if (typeof file === "string") {
       const response = await fetch(file);
@@ -541,53 +300,6 @@ export class MetadataExtractor {
     } else {
       return await file.text();
     }
-  }
-
-  private async detectImageAnimation(file: File | string): Promise<boolean> {
-    // Simple detection based on file extension
-    const extension = this.getFileExtension(
-      typeof file === "string" ? file : file.name,
-    );
-    return extension === ".gif" || extension === ".webp";
-  }
-
-  private async extractExifData(): Promise<ExifData | null> {
-    // This would require a proper EXIF library
-    // For now, return null
-    return null;
-  }
-
-  private async extractAnimationInfo(): Promise<{
-    frameCount: number;
-    duration: number;
-  } | null> {
-    // This would require parsing the actual file format
-    // For now, return null
-    return null;
-  }
-
-  private async extractVideoInfo(): Promise<{
-    fps: number;
-    bitrate: number;
-    codec: string;
-    frameCount: number;
-    audioCodec?: string;
-    audioBitrate?: number;
-  } | null> {
-    // This would require more complex video analysis
-    // For now, return null
-    return null;
-  }
-
-  private async extractAudioInfo(): Promise<{
-    sampleRate: number;
-    channels: number;
-    bitrate: number;
-    codec: string;
-  } | null> {
-    // This would require more complex audio analysis
-    // For now, return null
-    return null;
   }
 
   private detectStructuredData(text: string): boolean {

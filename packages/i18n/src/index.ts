@@ -19,18 +19,41 @@ import {
   getTranslationValue
 } from './utils';
 
-// Translation loading function
+// Dynamic import of translation files using import.meta.glob (like Yipyap)
+export const translations: Record<string, () => Promise<Translations>> = Object.fromEntries(
+  Object.entries(import.meta.glob<Translations>('./lang/*.ts', { import: 'default' })).map(([key, value]) => [
+    key.replace(/^\.\/lang\/(.+)\.ts$/, '$1'),
+    value,
+  ])
+);
+
+// Translation loading function with enhanced error handling
 export async function loadTranslations(locale: LanguageCode): Promise<Translations> {
   try {
-    // Dynamic import of translation files
+    // Use dynamic imports with fallback
+    const translationLoader = translations[locale];
+    if (translationLoader) {
+      return await translationLoader();
+    }
+    
+    // Fallback to dynamic import if not in glob
     const translationModule = await import(`./lang/${locale}.js`);
     return translationModule.default;
   } catch (error) {
     console.warn(`Failed to load translations for ${locale}, falling back to English:`, error);
     // Fallback to English
     if (locale !== 'en') {
-      const englishModule = await import('./lang/en.js');
-      return englishModule.default;
+      try {
+        const englishLoader = translations['en'];
+        if (englishLoader) {
+          return await englishLoader();
+        }
+        const englishModule = await import('./lang/en.js');
+        return englishModule.default;
+      } catch (fallbackError) {
+        console.error('Failed to load English fallback translations:', fallbackError);
+        throw fallbackError;
+      }
     }
     throw error;
   }
@@ -116,7 +139,20 @@ export {
   getNativeLanguageName,
   getEnglishLanguageName,
   hasComplexPluralization,
-  getPluralizationCategories
+  getPluralizationCategories,
+  // Advanced pluralization functions
+  getRussianPlural,
+  getArabicPlural,
+  getPolishPlural,
+  getSpanishPlural,
+  getTurkishPlural,
+  getCzechPlural,
+  getRomanianPlural,
+  getPortuguesePlural,
+  // Grammar helpers
+  getHungarianArticle,
+  getHungarianArticleForWord,
+  getHungarianSuffix
 } from './utils';
 
 export { 

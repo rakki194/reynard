@@ -5,7 +5,7 @@
  * speed, pause patterns, and restart capabilities.
  */
 
-import { createSignal, createEffect, onCleanup } from "solid-js";
+import { createSignal, onCleanup } from "solid-js";
 
 export interface StreamingTextOptions {
   /** Speed of character rendering in milliseconds */
@@ -57,99 +57,27 @@ const DEFAULT_OPTIONS: Required<StreamingTextOptions> = {
   wordPause: 50,
 };
 
+import { 
+  calculateCharacterDelay, 
+  createInitialState, 
+  createTimerManager 
+} from "./StreamingHelpers";
+import { createStreamingControls } from "./StreamingControls";
+
 export function createStreamingText(
   text: string,
   options: StreamingTextOptions = {},
 ) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-
-  const [state, setState] = createSignal<StreamingTextState>({
-    currentText: "",
-    isStreaming: false,
-    isPaused: false,
-    isComplete: false,
-    currentIndex: 0,
-    totalCharacters: text.length,
-    progress: 0,
-  });
-
-  let streamTimer: number | null = null;
-  let restartTimer: number | null = null;
-
-  const start = () => {
-    if (state().isStreaming) return;
-
-    setState((prev) => ({
-      ...prev,
-      isStreaming: true,
-      isPaused: false,
-      isComplete: false,
-      currentIndex: 0,
-      currentText: "",
-      progress: 0,
-    }));
-
-    streamNext();
-  };
-
-  const pause = () => {
-    if (streamTimer) {
-      clearTimeout(streamTimer);
-      streamTimer = null;
-    }
-    setState((prev) => ({ ...prev, isPaused: true }));
-  };
-
-  const resume = () => {
-    if (state().isPaused && !state().isComplete) {
-      setState((prev) => ({ ...prev, isPaused: false }));
-      streamNext();
-    }
-  };
-
-  const stop = () => {
-    if (streamTimer) {
-      clearTimeout(streamTimer);
-      streamTimer = null;
-    }
-    if (restartTimer) {
-      clearTimeout(restartTimer);
-      restartTimer = null;
-    }
-    setState((prev) => ({
-      ...prev,
-      isStreaming: false,
-      isPaused: false,
-      isComplete: false,
-      currentIndex: 0,
-      currentText: "",
-      progress: 0,
-    }));
-  };
-
-  const restart = () => {
-    stop();
-    setTimeout(() => start(), 100);
-  };
+  const [state, setState] = createSignal<StreamingTextState>(createInitialState(text));
+  const timers = createTimerManager();
 
   const streamNext = () => {
     const currentState = state();
     if (currentState.isPaused || currentState.isComplete) return;
 
     if (currentState.currentIndex >= text.length) {
-      // Streaming complete
-      setState((prev) => ({
-        ...prev,
-        isStreaming: false,
-        isComplete: true,
-        progress: 100,
-      }));
-
-      if (opts.autoRestart) {
-        restartTimer = window.setTimeout(() => {
-          restart();
-        }, opts.restartDelay);
-      }
+      handleStreamingComplete();
       return;
     }
 
@@ -165,129 +93,28 @@ export function createStreamingText(
       progress,
     }));
 
-    // Calculate delay for next character
-    let delay = opts.speed;
-
-    // Pause at punctuation
-    if (/[.!?;:]/.test(char)) {
-      delay += opts.pauseAtPunctuation;
-    }
-    // Pause at line breaks
-    else if (char === "\n") {
-      delay += opts.pauseAtLineBreak;
-    }
-    // Pause at word boundaries
-    else if (opts.pauseAtWords && char === " ") {
-      delay += opts.wordPause;
-    }
-
-    streamTimer = window.setTimeout(() => {
-      streamNext();
-    }, delay);
+    const delay = calculateCharacterDelay(char, opts);
+    timers.setStreamTimer(streamNext, delay);
   };
 
-  // Cleanup on unmount
-  onCleanup(() => {
-    if (streamTimer) clearTimeout(streamTimer);
-    if (restartTimer) clearTimeout(restartTimer);
-  });
+  const handleStreamingComplete = () => {
+    setState((prev) => ({
+      ...prev,
+      isStreaming: false,
+      isComplete: true,
+      progress: 100,
+    }));
 
-  return {
-    state,
-    start,
-    pause,
-    resume,
-    stop,
-    restart,
+    if (opts.autoRestart) {
+      timers.setRestartTimer(restart, opts.restartDelay);
+    }
   };
+
+  const controls = createStreamingControls(text, opts, state, setState, timers, streamNext);
+  const { restart } = controls;
+
+  onCleanup(timers.cleanup);
+
+  return { state, ...controls };
 }
 
-/**
- * Hook for streaming multiple text sequences with different configurations
- */
-export function createStreamingSequence(
-  sequences: Array<{ text: string; options?: StreamingTextOptions }>,
-) {
-  const [currentSequence, setCurrentSequence] = createSignal(0);
-  const [isActive, setIsActive] = createSignal(false);
-
-  const currentStream = createStreamingText(
-    sequences[currentSequence()]?.text || "",
-    sequences[currentSequence()]?.options || {},
-  );
-
-  const start = () => {
-    setIsActive(true);
-    currentStream.start();
-  };
-
-  const next = () => {
-    const nextIndex = currentSequence() + 1;
-    if (nextIndex < sequences.length) {
-      setCurrentSequence(nextIndex);
-      currentStream.restart();
-    } else {
-      setIsActive(false);
-    }
-  };
-
-  const previous = () => {
-    const prevIndex = currentSequence() - 1;
-    if (prevIndex >= 0) {
-      setCurrentSequence(prevIndex);
-      currentStream.restart();
-    }
-  };
-
-  const reset = () => {
-    setCurrentSequence(0);
-    setIsActive(false);
-    currentStream.stop();
-  };
-
-  return {
-    currentSequence,
-    isActive,
-    currentStream,
-    start,
-    next,
-    previous,
-    reset,
-  };
-}
-
-/**
- * Utility for creating markdown streaming with syntax highlighting
- */
-export function createMarkdownStreaming(
-  markdownText: string,
-  options: StreamingTextOptions = {},
-) {
-  const stream = createStreamingText(markdownText, options);
-
-  // Enhanced state that includes parsed markdown
-  const [parsedContent, setParsedContent] = createSignal("");
-
-  createEffect(() => {
-    const currentText = stream.state().currentText;
-    if (currentText) {
-      // Basic markdown parsing for streaming display
-      const parsed = currentText
-        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.*?)\*/g, "<em>$1</em>")
-        .replace(/`(.*?)`/g, "<code>$1</code>")
-        .replace(/^### (.*$)/gm, "<h3>$1</h3>")
-        .replace(/^## (.*$)/gm, "<h2>$1</h2>")
-        .replace(/^# (.*$)/gm, "<h1>$1</h1>")
-        .replace(/^- (.*$)/gm, "<li>$1</li>")
-        .replace(/\n/g, "<br>");
-
-      setParsedContent(parsed);
-    }
-  });
-
-  return {
-    ...stream,
-    parsedContent,
-  };
-}

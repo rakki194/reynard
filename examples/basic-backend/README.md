@@ -12,6 +12,7 @@ A modular FastAPI backend example demonstrating uvicorn reload best practices an
 - 🔐 **Authentication**: JWT-based authentication with session management
 - 👥 **User Management**: Full CRUD operations for user management
 - 🧪 **Development Ready**: Optimized for development workflows
+- 📝 **Professional Logging**: Comprehensive logging with YAML configuration and environment variable support
 
 ## Quick Start
 
@@ -63,8 +64,13 @@ Once the server is running, you can access:
 basic-backend/
 ├── main.py                 # FastAPI application entry point
 ├── config.py              # Configuration management
+├── logging_config.py      # Professional logging configuration
+├── log_conf.yaml          # YAML logging configuration
 ├── requirements.txt       # Python dependencies
 ├── README.md             # This file
+├── logs/                 # Log files directory (auto-created)
+│   ├── reynard-backend.log
+│   └── reynard-errors.log
 ├── services/             # Service layer
 │   ├── __init__.py
 │   ├── database.py       # Database service
@@ -118,6 +124,20 @@ The backend uses environment-based configuration. You can customize behavior usi
 | `CACHE_TTL` | `3600` | Default TTL in seconds |
 | `CACHE_MAX_CONNECTIONS` | `10` | Max cache connections |
 
+### Logging Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LOG_LEVEL` | `INFO` | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
+| `LOG_FORMAT` | `detailed` | Log format (default, access, detailed, json) |
+| `LOG_TO_FILE` | `true` | Enable file logging |
+| `LOG_FILE_PATH` | `logs/reynard-backend.log` | Main log file path |
+| `LOG_ERROR_FILE_PATH` | `logs/reynard-errors.log` | Error log file path |
+| `LOG_MAX_BYTES` | `10485760` | Max log file size (10MB) |
+| `LOG_BACKUP_COUNT` | `5` | Number of backup log files |
+| `USE_YAML_LOG_CONFIG` | `true` | Use YAML configuration file |
+| `YAML_LOG_CONFIG_PATH` | `log_conf.yaml` | Path to YAML config file |
+
 ## API Endpoints
 
 ### Health & System
@@ -149,6 +169,104 @@ The backend uses environment-based configuration. You can customize behavior usi
 - `DELETE /api/users/{user_id}` - Delete user
 - `GET /api/users/stats/overview` - User statistics
 - `GET /api/users/search/{query}` - Search users
+
+## Professional Logging
+
+This backend includes a comprehensive logging system that unifies FastAPI and Uvicorn logging with professional formatting and configuration options.
+
+### Logging Features
+
+- **Unified Logging**: FastAPI and Uvicorn logs use the same professional formatting
+- **Multiple Formats**: Support for default, access, detailed, and JSON log formats
+- **File Logging**: Automatic log rotation with configurable size and backup count
+- **Environment Configuration**: All logging settings configurable via environment variables
+- **YAML Configuration**: Professional YAML-based logging configuration
+- **Structured Logging**: JSON format support for log aggregation systems
+- **Error Separation**: Separate error logs for easier debugging
+
+### Log Output Examples
+
+**Before (default Uvicorn logging):**
+
+```
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [34318] using StatReload
+INFO:     127.0.0.1:50062 - "GET / HTTP/1.1" 200 OK
+```
+
+**After (professional logging):**
+
+```
+2023-03-08 15:40:41,170 - uvicorn.error - INFO - Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+2023-03-08 15:40:41,170 - uvicorn.error - INFO - Started reloader process [34322] using StatReload
+2023-03-08 15:40:41,432 - uvicorn.error - INFO - Application startup complete.
+2023-03-08 15:48:21,450 - main - INFO - Root endpoint accessed
+2023-03-08 15:48:21,450 - uvicorn.access - INFO - 127.0.0.1:59782 - "GET / HTTP/1.1" 200
+```
+
+### Using Loggers in Your Code
+
+```python
+from logging_config import get_app_logger, get_service_logger, get_route_logger
+
+# Get application logger
+logger = get_app_logger()
+logger.info("Application started")
+
+# Get service-specific logger
+service_logger = get_service_logger("database")
+service_logger.info("Database connection established")
+
+# Get route-specific logger
+route_logger = get_route_logger("users")
+route_logger.info("User endpoint accessed")
+```
+
+### Logging Configuration Options
+
+#### Using YAML Configuration (Recommended)
+
+The backend automatically uses `log_conf.yaml` if available. This provides the most comprehensive logging setup with file rotation and multiple formatters.
+
+#### Using Environment Variables
+
+Override any logging setting using environment variables:
+
+```bash
+# Set log level
+export LOG_LEVEL="DEBUG"
+
+# Disable file logging
+export LOG_TO_FILE="false"
+
+# Use JSON format for log aggregation
+export LOG_FORMAT="json"
+
+# Custom log file paths
+export LOG_FILE_PATH="/var/log/reynard/app.log"
+export LOG_ERROR_FILE_PATH="/var/log/reynard/errors.log"
+```
+
+#### Production Logging Setup
+
+For production environments:
+
+```bash
+# Production logging configuration
+export LOG_LEVEL="WARNING"
+export LOG_FORMAT="json"
+export LOG_TO_FILE="true"
+export LOG_FILE_PATH="/var/log/reynard/production.log"
+export LOG_MAX_BYTES="52428800"  # 50MB
+export LOG_BACKUP_COUNT="10"
+```
+
+### Log File Management
+
+- **Automatic Rotation**: Log files are automatically rotated when they reach the configured size
+- **Backup Files**: Old log files are kept as `.1`, `.2`, etc.
+- **Error Separation**: Critical errors are logged to a separate file for easier monitoring
+- **Directory Creation**: Log directories are created automatically if they don't exist
 
 ## Uvicorn Reload Features
 
@@ -192,6 +310,23 @@ export UVICORN_RELOAD_DELAY="0.5"
 export UVICORN_LOG_LEVEL="debug"
 ```
 
+### 5. Professional Logging Integration
+
+The reload system works seamlessly with the professional logging configuration:
+
+```bash
+# Start with custom logging configuration
+python main.py
+
+# Or use uvicorn directly with YAML config
+uvicorn main:app --reload --log-config=log_conf.yaml
+
+# Or with environment variable overrides
+export LOG_LEVEL="DEBUG"
+export LOG_FORMAT="detailed"
+python main.py
+```
+
 ## Development Workflow
 
 ### 1. Start Development Server
@@ -206,13 +341,13 @@ Edit any Python file in the project. Uvicorn will automatically detect changes a
 
 ### 3. Monitor Reload
 
-Watch the console output for reload messages:
+Watch the console output for reload messages with professional logging:
 
 ```text
-[INFO] Running in uvicorn reload mode - skipping heavy initialization
-[INFO] Skipping database initialization during reload
-[INFO] Skipping cache initialization during reload
-[INFO] Skipping background service during reload
+2023-03-08 15:40:41,170 - main - INFO - Running in uvicorn reload mode - skipping heavy initialization
+2023-03-08 15:40:41,170 - main - INFO - Skipping database initialization during reload
+2023-03-08 15:40:41,170 - main - INFO - Skipping cache initialization during reload
+2023-03-08 15:40:41,170 - main - INFO - Skipping background service during reload
 ```
 
 ### 4. Test Endpoints
@@ -228,6 +363,14 @@ export UVICORN_RELOAD="false"
 export ENVIRONMENT="production"
 export DEBUG="false"
 export SECRET_KEY="your-secure-secret-key"
+
+# Production logging configuration
+export LOG_LEVEL="WARNING"
+export LOG_FORMAT="json"
+export LOG_TO_FILE="true"
+export LOG_FILE_PATH="/var/log/reynard/production.log"
+export LOG_MAX_BYTES="52428800"  # 50MB
+export LOG_BACKUP_COUNT="10"
 ```
 
 ## Troubleshooting
@@ -238,6 +381,8 @@ export SECRET_KEY="your-secure-secret-key"
 2. **Slow Reloads**: Check `UVICORN_RELOAD_DELAY` and `UVICORN_RELOAD_DIRS`
 3. **Hanging Processes**: Use `pkill -f uvicorn` to kill hanging processes
 4. **Import Errors**: Ensure all dependencies are installed in the virtual environment
+5. **Logging Issues**: Check that `PyYAML` is installed and `log_conf.yaml` exists
+6. **Log File Permissions**: Ensure the application has write permissions to the log directory
 
 ### Debug Mode
 
@@ -246,6 +391,8 @@ Enable debug logging for more verbose output:
 ```bash
 export UVICORN_LOG_LEVEL="debug"
 export DEBUG="true"
+export LOG_LEVEL="DEBUG"
+export LOG_FORMAT="detailed"
 ```
 
 ## Contributing

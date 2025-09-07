@@ -1,0 +1,462 @@
+---
+globs: *.tex
+alwaysApply: false
+---
+
+# LaTeX Writing Rules for Reynard Research Papers
+
+Academic papers should be crafted with precision and clarity - every equation, every algorithm, every citation strategically placed for maximum impact and understanding. Based on analysis of your existing research papers, these guidelines capture the sophisticated patterns that make your work exceptional.
+
+## Core Principles
+
+### Academic Writing Philosophy
+
+Every research paper in the Reynard project should embody technical excellence, following the patterns established in your comprehensive refactor analysis, NEXUS collision detection system, and VECTOR engagement tracking papers:
+
+- **Mathematical Rigor**: Precise notation, clear proofs, and well-defined algorithms with complexity analysis
+- **Systematic Analysis**: Structured methodology with reproducible results and empirical validation
+- **Practical Impact**: Real-world applications with measurable performance improvements
+- **Clear Communication**: Accessible to both specialists and practitioners with strategic use of quotes and examples
+- **Innovation Focus**: Novel approaches to established problems with comprehensive benchmarking
+
+### Document Structure Standards
+
+Based on analysis of your research papers, follow this proven structure that mirrors your successful NEXUS and VECTOR papers:
+
+```latex
+\documentclass[10pt]{article}
+
+% Essential packages (from your papers)
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{geometry}
+
+% Page setup
+\geometry{margin=1.25in, includeheadfoot}
+
+% Float optimization
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.9}
+\renewcommand{\textfraction}{.1}
+\renewcommand{\floatpagefraction}{.8}
+
+% Code formatting
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    columns=flexible
+}
+
+\begin{document}
+\title{[SYSTEM_NAME]: [Descriptive Subtitle] \\
+\Large{[Problem Context] - [Solution Approach]} \\
+\large{[Key Innovation or Contribution]}}
+
+\author{Technical Documentation Team\\
+Reynard Project\\
+\includegraphics[width=0.5cm]{favicon.pdf}}
+\maketitle
+
+\begin{abstract}
+We present [SYSTEM_NAME], a [BRIEF_DESCRIPTION] that [PROBLEM_SOLVED]. 
+[SYSTEM_NAME] applies [METHODOLOGY] to provide [KEY_BENEFITS]. 
+Our system achieves [SPECIFIC_METRICS] through [KEY_TECHNIQUES], 
+making it particularly suitable for [TARGET_APPLICATION] requiring [SPECIFIC_REQUIREMENTS].
+\end{abstract}
+
+\section{Introduction}
+[Problem context, existing solutions, and your contribution with strategic quotes]
+
+\section{System Architecture}
+[High-level design and component overview with mathematical foundations]
+
+\section{Algorithmic Implementation}
+[Mathematical foundations, algorithms, and complexity analysis]
+
+\section{Performance Analysis}
+[Benchmarks, measurements, and comparisons with empirical validation]
+
+\section{Conclusion}
+[Summary of contributions and future work with impact assessment]
+\end{document}
+```
+
+## Mathematical Writing Standards
+
+### Equation Formatting
+
+```latex
+% Good: Clear, well-spaced equations with proper numbering
+\begin{equation}
+\begin{split}
+    \text{overlap}(A, B) = & (A.x_1 \leq B.x_2) \land \\
+    & (B.x_1 \leq A.x_2) \land \\
+    & (A.y_1 \leq B.y_2) \land \\
+    & (B.y_1 \leq A.y_2)
+\end{split}
+\end{equation}
+
+% Good: Inline math for simple expressions
+The time complexity is $O(\alpha(n))$ where $\alpha(n)$ is the inverse Ackermann function.
+
+% Good: Display math for important results
+\[
+\text{Performance Improvement} = \frac{T_{\text{original}} - T_{\text{optimized}}}{T_{\text{original}}} \times 100\%
+\]
+```
+
+### Algorithm Presentation
+
+```latex
+\begin{algorithm}
+\caption{Union-Find with Path Compression and Union by Rank}
+\begin{algorithmic}[1]
+\Function{Find}{x}
+    \If{parent[x] $\neq$ x}
+        \State parent[x] $\gets$ Find(parent[x]) \Comment{Path Compression}
+    \EndIf
+    \Return parent[x]
+\EndFunction
+\Statex
+\Function{Union}{x, y}
+    \State rootX $\gets$ Find(x)
+    \State rootY $\gets$ Find(y)
+    \If{rootX $\neq$ rootY}
+        \If{rank[rootX] $<$ rank[rootY]}
+            \State parent[rootX] $\gets$ rootY
+        \ElsIf{rank[rootX] $>$ rank[rootY]}
+            \State parent[rootY] $\gets$ rootX
+        \Else
+            \State parent[rootY] $\gets$ rootX
+            \State rank[rootX] $\gets$ rank[rootX] + 1
+        \EndIf
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+```
+
+## Code Integration Standards
+
+### Listings Configuration
+
+```latex
+% TypeScript/JavaScript code
+\lstdefinestyle{typescript}{
+  backgroundcolor=\color{backcolour},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{codegray},
+  numbersep=5pt,
+  tabsize=2,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{codegray},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{codepurple},
+  stringstyle=\color{codegreen},
+  morekeywords={export, import, interface, type, const, let, var, function, return, if, else, for, while, switch, case, default, class, extends, implements, public, private, protected, static, async, await, createSignal, createEffect, createMemo, Show, For, Index, Match, Switch, onMount, onCleanup},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+}
+
+% Python code
+\lstdefinestyle{python}{
+  backgroundcolor=\color{backcolour},
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{codegray},
+  numbersep=5pt,
+  tabsize=2,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{codegray},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{codepurple},
+  stringstyle=\color{codegreen},
+  morekeywords={def, class, import, from, as, if, elif, else, for, while, try, except, finally, with, return, yield, lambda, and, or, not, in, is, None, True, False},
+  morecomment=[l]{\#},
+  morecomment=[s]{"""}{"""},
+}
+
+% Color definitions
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+```
+
+### Code Examples
+
+```latex
+% Good: Contextual code with explanation
+\begin{lstlisting}[caption={Progressive Processor Configuration}, style=typescript]
+interface ProgressiveLoadingOptions {
+  batchSize?: number;        // Items per batch (default: 1000)
+  maxBatchTime?: number;     // Max time per batch (default: 16ms)
+  yieldInterval?: number;    // Yield frequency (default: 100ms)
+  onProgress?: (progress: number) => void;
+  onComplete?: (result: T[]) => void;
+  onError?: (error: Error) => void;
+}
+\end{lstlisting}
+
+% Good: Algorithm implementation
+\begin{lstlisting}[caption={CSS Performance Optimization}, style=typescript]
+function applyStylesStaggered(elements: HTMLElement[], styles: CSSStyleDeclaration) {
+  const batchSize = 50;
+  let index = 0;
+  
+  function processBatch() {
+    const endIndex = Math.min(index + batchSize, elements.length);
+    
+    for (let i = index; i < endIndex; i++) {
+      Object.assign(elements[i].style, styles);
+    }
+    
+    index = endIndex;
+    
+    if (index < elements.length) {
+      requestAnimationFrame(processBatch);
+    }
+  }
+  
+  requestAnimationFrame(processBatch);
+}
+\end{lstlisting}
+```
+
+## Performance Analysis Standards
+
+### Benchmark Presentation
+
+```latex
+% Good: Clear performance comparison table
+\begin{table}[h]
+\centering
+\caption{Performance Comparison: Original vs Optimized}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Metric} & \textbf{Original} & \textbf{Optimized} & \textbf{Improvement} \\
+\midrule
+Selection Time (216 items) & 1527ms & 100ms & 93.4\% \\
+Memory Usage & 45MB & 12MB & 73.3\% \\
+CPU Usage (peak) & 85\% & 15\% & 82.4\% \\
+Frame Rate (during selection) & 12fps & 60fps & 400\% \\
+\bottomrule
+\end{tabular}
+\label{tab:performance}
+\end{table}
+
+% Good: Performance improvement calculation
+The overall performance improvement is calculated as:
+\[
+\text{Improvement} = \frac{T_{\text{original}} - T_{\text{optimized}}}{T_{\text{original}}} \times 100\% = \frac{1527 - 100}{1527} \times 100\% = 93.4\%
+\]
+```
+
+### System Architecture Diagrams
+
+```latex
+% Use TikZ for system architecture
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  node distance=2cm,
+  component/.style={rectangle, draw, fill=blue!20, text width=3cm, text centered, minimum height=1cm},
+  arrow/.style={->, thick}
+]
+
+\node[component] (input) {Input Processing};
+\node[component, below of=input] (collision) {Collision Detection};
+\node[component, below of=collision] (union) {Union-Find Algorithm};
+\node[component, below of=union] (group) {Group Processing};
+\node[component, below of=group] (cycling) {Box Cycling};
+
+\draw[arrow] (input) -- (collision);
+\draw[arrow] (collision) -- (union);
+\draw[arrow] (union) -- (group);
+\draw[arrow] (group) -- (cycling);
+
+\end{tikzpicture}
+\caption{NEXUS System Architecture}
+\label{fig:architecture}
+\end{figure}
+```
+
+## Writing Style Guidelines
+
+### Abstract Writing
+
+```latex
+\begin{abstract}
+We present [SYSTEM_NAME], a [BRIEF_DESCRIPTION] that [PROBLEM_SOLVED]. 
+[SYSTEM_NAME] applies [METHODOLOGY] to provide [KEY_BENEFITS]. 
+Our system achieves [SPECIFIC_METRICS] through [KEY_TECHNIQUES], 
+making it particularly suitable for [TARGET_APPLICATION] requiring [SPECIFIC_REQUIREMENTS].
+\end{abstract}
+```
+
+### Section Organization
+
+1. **Introduction**: Problem context, existing solutions, your contribution
+2. **System Architecture**: High-level design, component overview
+3. **Algorithmic Implementation**: Mathematical foundations, algorithms
+4. **Performance Analysis**: Benchmarks, measurements, comparisons
+5. **Conclusion**: Summary of contributions and future work
+
+### Technical Writing Style
+
+- **Precise Language**: Use exact technical terms, avoid ambiguity
+- **Active Voice**: "We implemented" not "Implementation was done"
+- **Present Tense**: For established facts and current system behavior
+- **Past Tense**: For completed experiments and historical context
+- **Consistent Notation**: Define all variables and maintain consistent symbols
+
+## Quality Standards
+
+### Mathematical Rigor
+
+- **Define All Variables**: Every symbol must be clearly defined
+- **State Assumptions**: Explicitly state all assumptions and constraints
+- **Provide Proofs**: Include proofs for key theorems and lemmas
+- **Validate Results**: Show that results are mathematically sound
+
+### Experimental Validation
+
+- **Reproducible Results**: Provide enough detail to reproduce experiments
+- **Statistical Significance**: Include confidence intervals and significance tests
+- **Baseline Comparisons**: Compare against established benchmarks
+- **Real-world Testing**: Validate with actual use cases and data
+
+### Code Quality
+
+- **Working Examples**: All code examples must compile and run
+- **Performance Metrics**: Include actual performance measurements
+- **Error Handling**: Show how errors are handled and recovered
+- **Documentation**: Comment code thoroughly for clarity
+
+## Real-World Examples from Your Papers
+
+### NEXUS Collision Detection System Pattern
+
+Based on your NEXUS paper, here's the proven pattern for algorithm papers:
+
+```latex
+\section{Algorithmic Implementation}
+
+\subsection{Union-Find Data Structure}
+The core of NEXUS is a modified Union-Find data structure with path compression and union by rank optimizations. The time complexity for find and union operations is $O(\alpha(n))$, where $\alpha(n)$ is the inverse Ackermann function.
+
+\begin{algorithm}
+\caption{Union-Find with Path Compression and Union by Rank}
+\begin{algorithmic}[1]
+\Function{Find}{x}
+    \If{parent[x] $\neq$ x}
+        \State parent[x] $\gets$ Find(parent[x]) \Comment{Path Compression}
+    \EndIf
+    \Return parent[x]
+\EndFunction
+\Statex
+\Function{Union}{x, y}
+    \State rootX $\gets$ Find(x)
+    \State rootY $\gets$ Find(y)
+    \If{rootX $\neq$ rootY}
+        \If{rank[rootX] $<$ rank[rootY]}
+            \State parent[rootX] $\gets$ rootY
+        \ElsIf{rank[rootX] $>$ rank[rootY]}
+            \State parent[rootY] $\gets$ rootX
+        \Else
+            \State parent[rootY] $\gets$ rootX
+            \State rank[rootX] $\gets$ rank[rootX] + 1
+        \EndIf
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+```
+
+### VECTOR Engagement Tracking Pattern
+
+Based on your VECTOR paper, here's the pattern for mathematical systems:
+
+```latex
+\section{Mathematical Foundation}
+The core of VECTOR's analytical power lies in its application of linear algebra to model user behavior. User interactions are transformed into a dense, high-dimensional matrix, where rows represent users and columns represent various engagement metrics or features.
+
+Let $M$ be the user-feature matrix of size $U \times F$, where $U$ is the number of users and $F$ is the number of features/metrics.
+$M_{ij}$ represents the value of feature $j$ for user $i$.
+
+\subsubsection{Principal Component Analysis (PCA)}
+PCA is used for dimensionality reduction and to identify the most significant underlying engagement patterns.
+The covariance matrix $C = \frac{1}{U-1} M^T M$ is computed.
+Eigenvalues and eigenvectors of $C$ are then extracted. The principal components are linear combinations of the original features that capture the maximum variance in the data.
+\[
+    M_{reduced} = M W
+\]
+where $W$ is the transformation matrix composed of the top $k$ eigenvectors.
+```
+
+### Comprehensive Refactor Analysis Pattern
+
+Based on your modular refactoring paper, here's the pattern for system analysis:
+
+```latex
+\section{The Backend Leviathan Ecosystem}
+
+\subsection{The Python Monolith Landscape}
+Our analysis reveals a backend architecture that has grown into a collection of interconnected leviathans:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|r|r|p{4cm}|}
+\hline
+\textbf{File} & \textbf{Lines} & \textbf{Size} & \textbf{Architectural Violations} \\
+\hline
+app/utils/lazy\_loader.py & 7,330 & 244KB & Package management leviathan \\
+app/main.py & 4,412 & 147KB & API endpoint monolith \\
+app/caption\_generation/plugins/florence2/.../modeling\_florence2.py & 3,161 & 105KB & ML model implementation \\
+\hline
+\end{tabular}
+\caption{Backend Mega-Files (Table 1)}
+\end{table}
+
+\begin{quote}
+\emph{The lazy loader leviathan is not just large; it is omnipotent. It manages package registration, dependency resolution, memory optimization, progress tracking, caching systems, analytics, service integration, configuration management, error handling, priority-based loading, unloading strategies, reloading mechanisms, WebSocket communication, and performance optimization. This single file has become the digital equivalent of a medieval castle - massive, complex, and nearly impossible to modify without affecting the entire system.}
+\end{quote}
+```
+
+## Conclusion
+
+🦊> *Mastering academic writing requires precision, clarity, and systematic thinking - the cunning fox's approach to every research challenge.*
+
+Mastering academic writing requires precision, clarity, and systematic thinking. Your research papers demonstrate excellent technical writing with clear mathematical foundations, practical implementations, and rigorous performance analysis. By following these standards and maintaining the systematic approach evident in your existing work, you'll continue to produce high-quality academic documentation that advances both theory and practice.
+
+The patterns established in your existing research papers - from the comprehensive modular refactoring analysis to the sophisticated NEXUS collision detection system and VECTOR engagement tracking - demonstrate a level of academic writing excellence that should be the standard for all future research.
+
+Key principles for effective academic writing:
+
+- **Mathematical rigor with practical validation**: Every equation must be precise and every algorithm must be validated
+- **Clear algorithmic presentation with complexity analysis**: Algorithms should be well-formatted with complete complexity analysis
+- **Comprehensive performance measurement and comparison**: Empirical validation with measurable improvements
+- **Reproducible results with detailed implementation**: All experiments must be reproducible with clear methodology
+- **Professional presentation with consistent formatting**: Consistent LaTeX formatting and proper citation practices
+- **Strategic use of quotes and examples**: Enhance understanding with well-placed quotes and real-world examples
+- **Systematic analysis with empirical validation**: Combine theoretical foundations with practical measurements
+
+These guidelines ensure that your research contributions are accessible, credible, and impactful within the broader technical community. Your existing papers demonstrate these principles beautifully, and these enhanced guidelines will help maintain that standard of excellence.
+
+*Build research papers that outfox complexity and advance the state of the art.* 🦊

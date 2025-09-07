@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "reynard-core": ["../../packages/core/src"],
+      "reynard-components": ["../../packages/components/src"],
+      "reynard-gallery": ["../../packages/gallery/src"],
+      "reynard-annotating": ["../../packages/annotating/src"],
+      "reynard-caption": ["../../packages/caption/src"]
+    }
+  },
+  "include": ["src"]
+}

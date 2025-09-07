@@ -1,0 +1,45 @@
+[flake8]
+max-line-length = 88
+extend-ignore = 
+    E203,
+    E501,
+    W503,
+    E402,
+    F401,
+    F811
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    .mypy_cache,
+    .pytest_cache,
+    build,
+    dist,
+    node_modules,
+    *.egg-info,
+    .eggs,
+    migrations,
+    alembic
+per-file-ignores =
+    # Allow unused imports in __init__.py files
+    __init__.py:F401
+    # Allow longer lines in tests
+    test_*.py:E501
+    *_test.py:E501
+    # Allow some flexibility in examples
+    examples/*:E501,F401
+    # Allow some flexibility in scripts
+    scripts/*:E501,F401
+max-complexity = 10
+select = 
+    C,  # Complexity
+    E,  # pycodestyle errors
+    W,  # pycodestyle warnings
+    F,  # pyflakes
+    B,  # flake8-bugbear
+    N,  # pep8-naming
+    D,  # pydocstyle
+    S,  # flake8-bandit
+    T,  # flake8-builtins
+    I,  # isort

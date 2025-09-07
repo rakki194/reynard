@@ -66,7 +66,7 @@
 \lstset{style=mystyle, language=TypeScript, literate={\_}{{\_}}{1}}
 
 \title{The Whirling Valley of Crooked Fools}
-\author{YipYap Security Research Team \\ \includegraphics[width=0.5cm]{../docs/research/optimus/favicon.pdf}}
+\author{Reynard Security Research Team \\ \includegraphics[width=0.5cm]{../docs/research/optimus/favicon.pdf}}
 \date{\today}
 
 \begin{document}
@@ -74,10 +74,10 @@
 \maketitle
 
 \section*{Abstract}
-This paper details an automated security assessment conducted on the YipYap backend system. The objective is to identify and document potential security vulnerabilities through various attack simulations. The findings will be used to strengthen the backend's resilience against malicious activities.
+This paper details an automated security assessment conducted on the Reynard backend system. The objective is to identify and document potential security vulnerabilities through various attack simulations. The findings will be used to strengthen the backend's resilience against malicious activities.
 
 \section{Introduction}
-The YipYap application aims to provide a robust platform for image management and caption generation. As with any web application, the security of its backend infrastructure is paramount. This research paper outlines the methodology, tools, and findings of a penetration testing exercise performed on the YipYap backend. The primary goal is to proactively identify and address weaknesses before they can be exploited by external threats. Penetration testing is a crucial practice in identifying vulnerabilities and enhancing system security \cite{Phong2014, Altulaihan2023}, and its principles can be applied to various scales of systems, from individual applications to complex urban infrastructures \cite{Conti2015}.
+The Reynard application aims to provide a robust platform for image management and caption generation. As with any web application, the security of its backend infrastructure is paramount. This research paper outlines the methodology, tools, and findings of a penetration testing exercise performed on the Reynard backend. The primary goal is to proactively identify and address weaknesses before they can be exploited by external threats. Penetration testing is a crucial practice in identifying vulnerabilities and enhancing system security \cite{Phong2014, Altulaihan2023}, and its principles can be applied to various scales of systems, from individual applications to complex urban infrastructures \cite{Conti2015}.
 
 The backend is a Python-based application, serving various functionalities including file operations, metadata management, and caption generation. The frontend interacts with the backend via a well-defined API. This assessment focuses on potential vulnerabilities within this API and the underlying backend services.
 
@@ -85,7 +85,7 @@ The backend is a Python-based application, serving various functionalities inclu
 Our approach involves a series of automated tests designed to simulate common attack vectors. These include, but are not limited to, injection attacks, authentication bypasses, authorization flaws, and denial-of-service attempts. Python scripts will be developed to execute these tests, providing a systematic and reproducible way to probe for weaknesses. This methodology is inspired by established penetration testing frameworks \cite{Wai2001}, and aligns with principles discussed in broader security assessments \cite{Phong2014}.
 
 \section{Threat Model and Scope Definition}
-Our threat model focuses on unauthenticated and authenticated attackers attempting to compromise the YipYap backend system. The scope of this assessment is primarily limited to the backend API endpoints and their interactions with the database and file system. We specifically target vulnerabilities aligned with the OWASP Top 10 risks, including:
+Our threat model focuses on unauthenticated and authenticated attackers attempting to compromise the Reynard backend system. The scope of this assessment is primarily limited to the backend API endpoints and their interactions with the database and file system. We specifically target vulnerabilities aligned with the OWASP Top 10 risks, including:
 \begin{itemize}
     \item \textbf{Broken Access Control:} Ensuring proper authentication and authorization mechanisms are in place and cannot be bypassed.
     \item \textbf{Cryptographic Failures:} Assessing how sensitive data is handled, stored, and transmitted.
@@ -387,7 +387,7 @@ To address this frontend-backend interaction vulnerability, several changes were
     \end{lstlisting}
 
     \item \textbf{Corrected Component Rendering Order:}
-    During debugging, it was also identified that certain components, such as \texttt{YipYapAssistantWrapper} and \texttt{DebugOverlayWrapper}, were being rendered outside the scope of \texttt{GalleryProvider} in \texttt{src/main.tsx}, leading to "useGallery must be used within a GalleryProvider" errors. These components implicitly or explicitly rely on the \texttt{GalleryContext}. The \texttt{src/main.tsx} file was updated to ensure these components are nested within the \texttt{GalleryProvider}, guaranteeing that they have access to the necessary context.
+    During debugging, it was also identified that certain components, such as \texttt{ReynardAssistantWrapper} and \texttt{DebugOverlayWrapper}, were being rendered outside the scope of \texttt{GalleryProvider} in \texttt{src/main.tsx}, leading to "useGallery must be used within a GalleryProvider" errors. These components implicitly or explicitly rely on the \texttt{GalleryContext}. The \texttt{src/main.tsx} file was updated to ensure these components are nested within the \texttt{GalleryProvider}, guaranteeing that they have access to the necessary context.
 
     \begin{lstlisting}[language=TypeScript, caption=Updated Component Hierarchy in \texttt{src/main.tsx}]
     <AppProvider>
@@ -396,7 +396,7 @@ To address this frontend-backend interaction vulnerability, several changes were
                 <GalleryProvider>
                     <GlobalIndexingMonitor />
                     {props.children}
-                    <YipYapAssistantWrapper />
+                    <ReynardAssistantWrapper />
                     <DebugOverlayWrapper isVisible={isOverlayVisible()} />
                 </GalleryProvider>
             </AuthGuardWrapper>
@@ -498,7 +498,7 @@ Security is an ongoing process, and the threat landscape continuously evolves. F
 \end{itemize}
 
 \section{Recommendations and Mitigations}
-Based on the findings, this section will provide actionable recommendations for patching identified vulnerabilities and improving the overall security posture of the YipYap backend. For all implemented mitigations, it is crucial to add CI-gated security tests and ensure comprehensive test coverage for all protected routes to prevent regressions.
+Based on the findings, this section will provide actionable recommendations for patching identified vulnerabilities and improving the overall security posture of the Reynard backend. For all implemented mitigations, it is crucial to add CI-gated security tests and ensure comprehensive test coverage for all protected routes to prevent regressions.
 
 \subsection{\texorpdfstring{\textbf{Mitigation: Restricting Access to \texttt{/api/config}}}{Mitigation: Restricting Access to /api/config}}
 To address the "Unauthenticated Information Disclosure" vulnerability, the \url{/api/config} endpoint has been secured by enforcing administrator-level authentication. This was achieved by adding a dependency on the \texttt{is\_admin} function to the endpoint's route decorator.

@@ -1,9 +1,10 @@
+import argparse
+import json
 import os
 import sys
-import json
-import argparse
-import requests
 from pathlib import Path
+
+import requests
 
 BASE_URL = os.environ.get("YIPYAP_BASE_URL", "http://localhost:7000")
 USERNAME = os.environ.get("YIPYAP_USERNAME", "")
@@ -11,10 +12,41 @@ PASSWORD = os.environ.get("YIPYAP_PASSWORD", "")
 
 # Try a few endpoints that accept output_path
 ENDPOINTS = [
-    ("/api/audio/generate-waveform", {"audio_path": "nonexistent.wav", "output_path": "/home/kade/code/yipyap/blackhat/out_waveform.png", "width": 10, "height": 10}),
-    ("/api/audio/convert", {"source_path": "nonexistent.wav", "output_path": "/home/kade/code/yipyap/blackhat/out_audio.mp3", "target_format": "mp3"}),
-    ("/api/video/generate-thumbnail", {"video_path": "nonexistent.mp4", "output_path": "/home/kade/code/yipyap/blackhat/out_thumb.jpg", "time": 0.0, "width": 2, "height": 2}),
-    ("/api/text/convert", {"source_path": "nonexistent.txt", "output_path": "/home/kade/code/yipyap/blackhat/out_text.html", "target_format": "html"}),
+    (
+        "/api/audio/generate-waveform",
+        {
+            "audio_path": "nonexistent.wav",
+            "output_path": "/home/kade/code/yipyap/blackhat/out_waveform.png",
+            "width": 10,
+            "height": 10,
+        },
+    ),
+    (
+        "/api/audio/convert",
+        {
+            "source_path": "nonexistent.wav",
+            "output_path": "/home/kade/code/yipyap/blackhat/out_audio.mp3",
+            "target_format": "mp3",
+        },
+    ),
+    (
+        "/api/video/generate-thumbnail",
+        {
+            "video_path": "nonexistent.mp4",
+            "output_path": "/home/kade/code/yipyap/blackhat/out_thumb.jpg",
+            "time": 0.0,
+            "width": 2,
+            "height": 2,
+        },
+    ),
+    (
+        "/api/text/convert",
+        {
+            "source_path": "nonexistent.txt",
+            "output_path": "/home/kade/code/yipyap/blackhat/out_text.html",
+            "target_format": "html",
+        },
+    ),
 ]
 
 TARGETS = [
@@ -60,15 +92,21 @@ def probe_endpoint(token: str, path: str, payload: dict) -> None:
     finally:
         exists_after = Path(payload.get("output_path", "")).exists()
         if exists_after and not existed_before:
-            print("    [VULNERABLE] Endpoint wrote outside ROOT_DIR using absolute output_path.")
+            print(
+                "    [VULNERABLE] Endpoint wrote outside ROOT_DIR using absolute output_path."
+            )
         elif exists_after and existed_before:
-            print("    [POTENTIALLY VULNERABLE] Target file pre-existed; verify timestamps.")
+            print(
+                "    [POTENTIALLY VULNERABLE] Target file pre-existed; verify timestamps."
+            )
         else:
             print("    [OK] No file created outside ROOT_DIR.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Probe output_path writes outside ROOT_DIR")
+    parser = argparse.ArgumentParser(
+        description="Probe output_path writes outside ROOT_DIR"
+    )
     parser.add_argument("--username", default=USERNAME)
     parser.add_argument("--password", default=PASSWORD)
     args = parser.parse_args()

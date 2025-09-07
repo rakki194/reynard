@@ -76,7 +76,16 @@
     "docs:watch": "cd packages/docs-generator && npm run generate:watch",
     "docs:dev": "cd packages/docs-site && npm run dev",
     "docs:build": "cd packages/docs-site && npm run build",
-    "docs:serve": "cd packages/docs-site && npm run serve"
+    "docs:serve": "cd packages/docs-site && npm run serve",
+    "python:setup": "chmod +x scripts/setup-python-dev.sh && ./scripts/setup-python-dev.sh",
+    "python:format": "bash -c \"source ~/venv/bin/activate && black . && isort .\"",
+    "python:format:check": "bash -c \"source ~/venv/bin/activate && black --check . && isort --check-only .\"",
+    "python:lint": "bash -c \"source ~/venv/bin/activate && flake8 .\"",
+    "python:typecheck": "bash -c \"source ~/venv/bin/activate && mypy .\"",
+    "python:security": "bash -c \"source ~/venv/bin/activate && bandit -r .\"",
+    "python:check": "bash -c \"source ~/venv/bin/activate && black --check . && isort --check-only . && flake8 . && mypy .\"",
+    "python:test": "bash -c \"source ~/venv/bin/activate && pytest\"",
+    "python:test:coverage": "bash -c \"source ~/venv/bin/activate && pytest --cov=. --cov-report=html --cov-report=term-missing\""
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",

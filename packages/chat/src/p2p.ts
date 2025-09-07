@@ -32,7 +32,6 @@ export {
   createStreamingMarkdownParser,
   parseMarkdown,
   parseMarkdownStream,
-  parseMarkdownBatched,
 } from "./utils";
 
 // Re-export base types that are commonly used in P2P

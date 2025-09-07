@@ -1,6 +1,6 @@
 # 🦊 Reynard Research Archive
 
-Welcome to the comprehensive research archive for the Reynard project! This directory contains all the valuable research, documentation, and insights gathered during the development of the YipYap platform and related technologies.
+Welcome to the comprehensive research archive for the Reynard project! This directory contains all the valuable research, documentation, and insights gathered during the development of the Reynard platform and related technologies.
 
 ## 📚 Research Categories
 

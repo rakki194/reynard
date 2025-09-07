@@ -1,9 +1,17 @@
 /**
  * Pluralization rules for different languages
- * Based on yipyap's comprehensive pluralization system
+ * Enhanced with Yipyap's sophisticated language-specific pluralization system
  */
 
 import type { LanguageCode, PluralForms, TranslationParams } from './types';
+import {
+  getArabicPlural,
+  getCzechPlural,
+  getPolishPlural,
+  getRussianPlural,
+  getSpanishPlural,
+  getRomanianPlural,
+} from './utils';
 
 // Plural rule function type
 type PluralRule = (n: number, forms: PluralForms) => string;
@@ -157,54 +165,4 @@ export function createPluralTranslation(forms: PluralForms, lang: LanguageCode) 
   };
 }
 
-// Language-specific pluralization functions
-function getArabicPlural(n: number, forms: { singular: string; dual: string; plural: string; pluralLarge: string }): string {
-  if (n === 0) return forms.pluralLarge;
-  if (n === 1) return forms.singular;
-  if (n === 2) return forms.dual;
-  if (n % 100 >= 3 && n % 100 <= 10) return forms.plural;
-  return forms.pluralLarge;
-}
-
-function getRussianPlural(n: number, forms: string[]): string {
-  const lastDigit = n % 10;
-  const lastTwoDigits = n % 100;
-  
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-    return forms[2]; // many
-  }
-  
-  if (lastDigit === 1) {
-    return forms[0]; // one
-  }
-  
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    return forms[1]; // few
-  }
-  
-  return forms[2]; // many
-}
-
-function getPolishPlural(n: number, forms: { singular: string; plural2_4: string; plural5_: string }): string {
-  if (n === 1) return forms.singular;
-  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) {
-    return forms.plural2_4;
-  }
-  return forms.plural5_;
-}
-
-function getSpanishPlural(n: number, forms: { singular: string; plural: string }): string {
-  return n === 1 ? forms.singular : forms.plural;
-}
-
-function getCzechPlural(n: number, forms: { singular: string; plural2_4: string; plural5_: string }): string {
-  if (n === 1) return forms.singular;
-  if (n >= 2 && n <= 4) return forms.plural2_4;
-  return forms.plural5_;
-}
-
-function getRomanianPlural(count: number, forms: { one: string; few: string; many: string }): string {
-  if (count === 1) return forms.one;
-  if (count === 0 || (count % 100 >= 2 && count % 100 <= 19)) return forms.few;
-  return forms.many;
-}
+// Language-specific pluralization functions are now imported from utils.ts

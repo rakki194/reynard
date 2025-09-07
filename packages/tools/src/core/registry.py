@@ -6,7 +6,8 @@ discovery, and execution coordination.
 """
 
 import logging
-from typing import Dict, List, Optional, Set, Any
+from typing import Any, Dict, List, Optional, Set
+
 from .base import BaseTool, ToolExecutionContext, ToolResult
 from .exceptions import ToolNotFoundError, ToolPermissionError
 
@@ -266,8 +267,8 @@ class ToolRegistry:
         validation_context = {
             "user_id": context.user_id,
             "user_role": context.user_role,
-            "session_id": getattr(context, 'session_id', None),
-            "request_id": getattr(context, 'request_id', None)
+            "session_id": getattr(context, "session_id", None),
+            "request_id": getattr(context, "request_id", None),
         }
 
         # Use enhanced validator for comprehensive validation
@@ -280,9 +281,15 @@ class ToolRegistry:
             error_details = {
                 "validation_errors": validation_result.errors,
                 "validation_warnings": validation_result.warnings,
-                "security_risks": [risk.value for risk in validation_result.security_risks],
-                "provided_parameters": self._redact_sensitive_parameters(original_params),
-                "converted_parameters": self._redact_sensitive_parameters(validation_result.converted_parameters),
+                "security_risks": [
+                    risk.value for risk in validation_result.security_risks
+                ],
+                "provided_parameters": self._redact_sensitive_parameters(
+                    original_params
+                ),
+                "converted_parameters": self._redact_sensitive_parameters(
+                    validation_result.converted_parameters
+                ),
                 "tool_name": tool_name,
                 "user_id": context.user_id,
                 "user_role": context.user_role,
@@ -312,7 +319,7 @@ class ToolRegistry:
                     error_messages.append(f"{param_name}: {', '.join(error_list)}")
                 else:
                     error_messages.append(f"{param_name}: {error_list}")
-            
+
             return ToolResult.error_result(
                 error=f"Parameter validation failed: {'; '.join(error_messages)}",
                 metadata=error_details,
@@ -380,7 +387,12 @@ class ToolRegistry:
             },
         }
 
-    def validate_tool_parameters(self, tool_name: str, parameters: Dict[str, Any], context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def validate_tool_parameters(
+        self,
+        tool_name: str,
+        parameters: Dict[str, Any],
+        context: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         """
         Validate parameters for a tool without executing it using enhanced validation.
 
@@ -406,7 +418,7 @@ class ToolRegistry:
                 "tool_found": False,
                 "warnings": {},
                 "security_risks": [],
-                "converted_parameters": {}
+                "converted_parameters": {},
             }
 
         # Use enhanced validator
@@ -420,7 +432,9 @@ class ToolRegistry:
             "warnings": validation_result.warnings,
             "tool_found": True,
             "security_risks": [risk.value for risk in validation_result.security_risks],
-            "converted_parameters": self._redact_sensitive_parameters(validation_result.converted_parameters),
+            "converted_parameters": self._redact_sensitive_parameters(
+                validation_result.converted_parameters
+            ),
         }
 
     def to_dict(self, user_role: Optional[str] = None) -> Dict[str, Any]:
@@ -453,14 +467,19 @@ class ToolRegistry:
         """Get the validator with lazy loading."""
         if self._validator is None:
             from app.utils.tool_validator import ToolValidator, ValidationLevel
-            default_level = ValidationLevel.STANDARD if self._validation_level is None else self._validation_level
+
+            default_level = (
+                ValidationLevel.STANDARD
+                if self._validation_level is None
+                else self._validation_level
+            )
             self._validator = ToolValidator(default_level)
         return self._validator
 
     def set_validation_level(self, level) -> None:
         """
         Set the validation level for the registry.
-        
+
         Args:
             level: New validation level
         """
@@ -470,7 +489,7 @@ class ToolRegistry:
     def get_validation_level(self):
         """
         Get the current validation level.
-        
+
         Returns:
             Current validation level
         """

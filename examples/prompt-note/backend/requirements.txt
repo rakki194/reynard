@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic[email]
+python-multipart
+python-dotenv
+sqlalchemy
+aiosqlite
+asyncpg
+alembic
+# Gatekeeper auth library
+-e ../../third_party/libraries/gatekeeper

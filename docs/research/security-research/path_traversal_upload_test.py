@@ -1,8 +1,9 @@
+import argparse
 import io
+import json
 import os
 import sys
-import json
-import argparse
+
 import requests
 
 # Configuration
@@ -49,7 +50,9 @@ def test_path_traversal_upload(token: str) -> bool:
         "files": (TRAVERSAL_FILENAME, io.BytesIO(DUMMY_PNG), "image/png"),
     }
 
-    print(f"[+] POST {url} with filename='{TRAVERSAL_FILENAME}' → expecting rejection if safe")
+    print(
+        f"[+] POST {url} with filename='{TRAVERSAL_FILENAME}' → expecting rejection if safe"
+    )
     try:
         resp = requests.post(url, files=files, headers=headers, timeout=20)
         print(f"    Status: {resp.status_code}")
@@ -68,7 +71,7 @@ def test_path_traversal_upload(token: str) -> bool:
             return False
         elif exists_after and existed_before:
             print(
-                f"    [POTENTIALLY VULNERABLE] Target file exists; cannot confirm creation. Manually verify timestamps."
+                "    [POTENTIALLY VULNERABLE] Target file exists; cannot confirm creation. Manually verify timestamps."
             )
             return False
         else:
@@ -83,13 +86,17 @@ def test_path_traversal_upload(token: str) -> bool:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Test upload path traversal via crafted filename")
+    parser = argparse.ArgumentParser(
+        description="Test upload path traversal via crafted filename"
+    )
     parser.add_argument("--username", default=USERNAME)
     parser.add_argument("--password", default=PASSWORD)
     args = parser.parse_args()
 
     if not args.username or not args.password:
-        print("[!] Provide credentials via --username/--password or YIPYAP_USERNAME/YIPYAP_PASSWORD env vars")
+        print(
+            "[!] Provide credentials via --username/--password or YIPYAP_USERNAME/YIPYAP_PASSWORD env vars"
+        )
         sys.exit(2)
 
     token = login(args.username, args.password)

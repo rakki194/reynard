@@ -26,6 +26,32 @@ export {
   type ThumbnailGeneratorOptions,
 } from "./processors/thumbnail-generator";
 
+// Specialized generators (for advanced use cases)
+export {
+  ImageThumbnailGenerator,
+  type ImageThumbnailGeneratorOptions,
+} from "./processors/ImageThumbnailGenerator";
+
+export {
+  VideoThumbnailGenerator,
+  type VideoThumbnailGeneratorOptions,
+} from "./processors/VideoThumbnailGenerator";
+
+export {
+  AudioThumbnailGenerator,
+  type AudioThumbnailGeneratorOptions,
+} from "./processors/AudioThumbnailGenerator";
+
+export {
+  DocumentThumbnailGenerator,
+  type DocumentThumbnailGeneratorOptions,
+} from "./processors/DocumentThumbnailGenerator";
+
+export {
+  ThumbnailGeneratorFactory,
+  type ThumbnailGeneratorFactoryOptions,
+} from "./processors/ThumbnailGeneratorFactory";
+
 // Main pipeline
 export { FileProcessingPipeline } from "./processing-pipeline";
 

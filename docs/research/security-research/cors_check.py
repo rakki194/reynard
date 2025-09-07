@@ -1,6 +1,7 @@
+import argparse
 import os
 import sys
-import argparse
+
 import requests
 
 BASE_URL = os.environ.get("YIPYAP_BASE_URL", "http://localhost:7000")
@@ -27,7 +28,9 @@ def check_cors(url: str) -> None:
         if acao == "*" and acac == "true":
             print("    [VULNERABLE] Allow-Origin '*' with credentials true is unsafe.")
         elif acao == "*":
-            print("    [WARNING] Allow-Origin '*' is permissive; restrict in production.")
+            print(
+                "    [WARNING] Allow-Origin '*' is permissive; restrict in production."
+            )
         else:
             print("    [OK] Allow-Origin is restricted.")
     except requests.RequestException as e:
@@ -35,8 +38,12 @@ def check_cors(url: str) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Check CORS headers for permissiveness")
-    parser.add_argument("--path", default="/api/ready", help="Path to send OPTIONS preflight against")
+    parser = argparse.ArgumentParser(
+        description="Check CORS headers for permissiveness"
+    )
+    parser.add_argument(
+        "--path", default="/api/ready", help="Path to send OPTIONS preflight against"
+    )
     args = parser.parse_args()
 
     url = f"{BASE_URL}{args.path}"

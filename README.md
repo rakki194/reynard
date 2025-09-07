@@ -2298,6 +2298,29 @@ npm test
 - **Prettier** - Code formatting
 - **Husky** - Git hooks for quality assurance
 
+### Modularity Standards
+
+Reynard follows the **100-line axiom** for maintainable code:
+
+- **Source Files**: Maximum 100 lines (excluding blank lines and comments)
+- **Test Files**: Maximum 200 lines (excluding blank lines and comments)
+- **Functions**: Maximum 50 lines per function
+- **Enforcement**: ESLint rules and pre-commit hooks automatically check line counts
+
+**Why 100 lines?**
+
+- Easier to understand and maintain
+- Better testability and debugging
+- Clearer separation of concerns
+- Improved code review process
+
+**Refactoring Guidelines:**
+
+- Split large files into focused modules
+- Extract complex functions into smaller utilities
+- Use composition over large monolithic classes
+- Apply the Single Responsibility Principle
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.

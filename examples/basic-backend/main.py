@@ -21,7 +21,12 @@ from routes import users, health
 from gatekeeper_config import initialize_auth_manager, close_auth_manager, get_auth_manager
 from gatekeeper.api.dependencies import set_auth_manager
 from gatekeeper.api.routes import create_auth_router
+from logging_config import setup_logging, get_app_logger, get_service_logger, get_route_logger, get_database_logger
 
+
+# Setup professional logging first
+setup_logging()
+logger = get_app_logger()
 
 # Detect reload mode for optimization
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -38,60 +43,72 @@ async def lifespan(app: FastAPI):
     global database_service, cache_service, background_service
     
     if IS_RELOAD_MODE:
-        print("[INFO] Running in uvicorn reload mode - skipping heavy initialization")
+        logger.info("Running in uvicorn reload mode - skipping heavy initialization")
         yield
         return
     
     # Full initialization for normal startup
-    print("[INFO] Starting Reynard Basic Backend...")
+    logger.info("Starting Reynard Basic Backend...")
     start_time = time.time()
     
     try:
         # Initialize services
-        print("[INFO] Initializing database service...")
+        logger.info("Initializing database service...")
         database_service = DatabaseService()
         await database_service.initialize()
+        logger.info("Database service initialized successfully")
         
-        print("[INFO] Initializing cache service...")
+        logger.info("Initializing cache service...")
         cache_service = CacheService()
         await cache_service.initialize()
+        logger.info("Cache service initialized successfully")
         
-        print("[INFO] Starting background service...")
+        logger.info("Starting background service...")
         background_service = BackgroundService()
         await background_service.start()
+        logger.info("Background service started successfully")
         
         # Initialize Gatekeeper authentication
-        print("[INFO] Initializing Gatekeeper authentication...")
+        logger.info("Initializing Gatekeeper authentication...")
         auth_manager = initialize_auth_manager()
         set_auth_manager(auth_manager)
+        logger.info("Gatekeeper authentication initialized successfully")
         
         init_time = time.time() - start_time
-        print(f"[OK] Backend initialized successfully in {init_time:.2f}s")
+        logger.info(f"Backend initialized successfully in {init_time:.2f}s")
         
     except Exception as e:
-        print(f"[FAIL] Failed to initialize backend: {e}")
+        logger.error(f"Failed to initialize backend: {e}", exc_info=True)
         raise
     
     yield
     
     # Cleanup
-    print("[INFO] Cleaning up services...")
+    logger.info("Cleaning up services...")
     cleanup_start = time.time()
     
-    # Close Gatekeeper authentication
-    await close_auth_manager()
-    
-    if background_service:
-        await background_service.stop()
-    
-    if cache_service:
-        await cache_service.close()
-    
-    if database_service:
-        await database_service.close()
-    
-    cleanup_time = time.time() - cleanup_start
-    print(f"[OK] Cleanup completed in {cleanup_time:.2f}s")
+    try:
+        # Close Gatekeeper authentication
+        await close_auth_manager()
+        logger.info("Gatekeeper authentication closed")
+        
+        if background_service:
+            await background_service.stop()
+            logger.info("Background service stopped")
+        
+        if cache_service:
+            await cache_service.close()
+            logger.info("Cache service closed")
+        
+        if database_service:
+            await database_service.close()
+            logger.info("Database service closed")
+        
+        cleanup_time = time.time() - cleanup_start
+        logger.info(f"Cleanup completed in {cleanup_time:.2f}s")
+        
+    except Exception as e:
+        logger.error(f"Error during cleanup: {e}", exc_info=True)
 
 
 # Create FastAPI app
@@ -160,6 +177,7 @@ app.dependency_overrides[users_get_cache] = get_cache_service
 @app.get("/")
 async def root():
     """Root endpoint with system information"""
+    logger.info("Root endpoint accessed")
     return {
         "message": "Welcome to Reynard Basic Backend!",
         "version": "1.0.0",
@@ -176,6 +194,7 @@ async def root():
 @app.get("/api/system")
 async def system_info():
     """Get system information and status"""
+    logger.info("System info endpoint accessed")
     return {
         "reload_mode": IS_RELOAD_MODE,
         "services": {
@@ -206,13 +225,13 @@ if __name__ == "__main__":
     # Load configuration
     config = UvicornConfig()
     
-    print("[INFO] Starting Reynard Basic Backend Server...")
-    print(f"[INFO] Server will be available at: http://{config.host}:{config.port}")
-    print(f"[INFO] API documentation at: http://{config.host}:{config.port}/docs")
-    print(f"[INFO] Reload mode: {'enabled' if config.reload else 'disabled'}")
+    logger.info("Starting Reynard Basic Backend Server...")
+    logger.info(f"Server will be available at: http://{config.host}:{config.port}")
+    logger.info(f"API documentation at: http://{config.host}:{config.port}/docs")
+    logger.info(f"Reload mode: {'enabled' if config.reload else 'disabled'}")
     
     if IS_RELOAD_MODE:
-        print("[INFO] Running in uvicorn reload mode")
+        logger.info("Running in uvicorn reload mode")
     
     uvicorn.run(
         "main:app",
@@ -223,5 +242,6 @@ if __name__ == "__main__":
         reload_delay=config.reload_delay,
         log_level=config.log_level,
         access_log=config.access_log,
-        use_colors=config.use_colors
+        use_colors=config.use_colors,
+        log_config="log_conf.yaml" if os.path.exists("log_conf.yaml") else None
     )

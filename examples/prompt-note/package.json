@@ -1,0 +1,47 @@
+{
+  "name": "reynard-prompt-note",
+  "version": "0.1.0",
+  "description": "Prompt Note - OneNote-like note-taking application with gamification, built with Reynard framework",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "dev:backend": "cd backend && python main.py",
+    "setup:db": "cd backend && python setup_database.py",
+    "start:full": "concurrently \"npm run dev\" \"npm run dev:backend\""
+  },
+  "dependencies": {
+    "reynard-core": "0.1.1",
+    "reynard-themes": "0.1.1",
+    "reynard-components": "0.1.1",
+    "reynard-auth": "0.1.0",
+    "reynard-monaco": "0.1.1",
+    "reynard-chat": "0.1.0",
+    "reynard-composables": "0.1.0",
+    "reynard-connection": "0.1.0",
+    "reynard-service-manager": "0.1.0",
+    "reynard-file-processing": "0.1.0",
+    "reynard-settings": "0.1.0",
+    "reynard-features": "0.1.0",
+    "reynard-games": "0.1.0",
+    "reynard-fluent-icons": "0.1.1",
+    "reynard-i18n": "1.0.0",
+    "reynard-ui": "0.1.0",
+    "reynard-rag": "0.1.1",
+    "reynard-ai-shared": "0.1.0",
+    "solid-js": "1.9.9",
+    "@solidjs/router": "0.15.3",
+    "date-fns": "4.1.0",
+    "uuid": "12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "@types/uuid": "10.0.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.4",
+    "vite-plugin-solid": "2.11.8",
+    "concurrently": "9.2.1"
+  }
+}

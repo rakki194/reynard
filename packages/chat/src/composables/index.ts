@@ -1,9 +1,10 @@
 /**
- * Chat Composables Index
- *
- * Exports all chat composables for state management
+ * Chat Composables
+ * 
+ * Exports all chat composable functions
  */
 
 export { useChat } from "./useChat";
-export type { UseChatOptions } from "./useChat";
-export type { UseChatReturn } from "../types";
+export { useChatMessages } from "./useChatMessages";
+export { useChatStreaming } from "./useChatStreaming";
+export { useChatTools } from "./useChatTools";
