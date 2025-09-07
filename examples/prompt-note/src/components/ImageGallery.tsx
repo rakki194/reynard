@@ -6,7 +6,16 @@
 import { Component, For, Show } from "solid-js";
 import { Button, Card } from "reynard-components";
 import { useNotifications } from "reynard-core";
-import type { ImageItem } from "../App";
+// Define ImageItem interface locally
+interface ImageItem {
+  id: string;
+  name: string;
+  url: string;
+  caption?: string;
+  tags?: string[];
+  generatedAt?: Date;
+  model?: string;
+}
 
 interface ImageGalleryProps {
   images: ImageItem[];
@@ -165,7 +174,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
       </Show>
 
       <Show when={props.images.length === 0}>
-        <Card class="empty-state" padding="xl">
+        <Card class="empty-state" padding="lg">
           <div class="empty-content">
             <div class="empty-icon">🖼️</div>
             <h3>No Images Yet</h3>

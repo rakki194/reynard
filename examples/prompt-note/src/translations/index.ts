@@ -2,7 +2,10 @@
  * Translation loader for Basic Todo App
  */
 
-import type { Translations } from "reynard-core";
+// Define our own Translations type
+interface Translations {
+  [key: string]: any;
+}
 import { en } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";

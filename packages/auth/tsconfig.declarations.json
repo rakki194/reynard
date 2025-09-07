@@ -5,5 +5,12 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false
-  }
+  },
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/test-setup.ts"
+  ]
 }

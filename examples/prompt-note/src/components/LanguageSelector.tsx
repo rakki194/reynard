@@ -5,10 +5,10 @@
 
 import { Component, For } from "solid-js";
 import { Button } from "reynard-components";
-import { useI18n, type LanguageCode } from "reynard-themes";
+import { useI18n } from "reynard-themes";
 
 interface LanguageSelectorProps {
-  setLocale?: (locale: LanguageCode) => void;
+  setLocale?: (locale: string) => void;
 }
 
 export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
@@ -17,8 +17,8 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
 
   // For demo, show just a few languages
   const availableLanguages = i18nContext.languages.filter(
-    (lang: { code: LanguageCode; name: string }) =>
-      (["en", "es", "fr"] as LanguageCode[]).includes(lang.code),
+    (lang: { code: string; name: string }) =>
+      (["en", "es", "fr"] as string[]).includes(lang.code),
   );
 
   const nextLanguage = () => {

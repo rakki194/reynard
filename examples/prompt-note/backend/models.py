@@ -83,3 +83,76 @@ class BackgroundTask(Base):
     error_message = Column(Text, nullable=True)
     task_data = Column(Text, nullable=True)  # JSON data
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Notebook(Base):
+    """Notebook model for organizing notes"""
+
+    __tablename__ = "notebooks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    title = Column(String(200), nullable=False)
+    description = Column(Text, nullable=True)
+    color = Column(String(7), default="#0078D4")  # Hex color
+    is_public = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class Note(Base):
+    """Note model for individual notes within notebooks"""
+
+    __tablename__ = "notes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    notebook_id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    title = Column(String(200), nullable=False)
+    content = Column(Text, nullable=False)
+    content_type = Column(String(20), default="markdown")  # markdown, rich-text, code
+    is_favorite = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+
+class Collaboration(Base):
+    """Collaboration model for sharing notes and notebooks"""
+
+    __tablename__ = "collaborations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    resource_type = Column(String(20), nullable=False)  # notebook, note
+    resource_id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    permission = Column(String(20), default="read")  # read, write, admin
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class Achievement(Base):
+    """Achievement model for gamification"""
+
+    __tablename__ = "achievements"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    achievement_type = Column(String(50), nullable=False, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    icon = Column(String(10), nullable=True)
+    rarity = Column(String(20), default="common")  # common, rare, epic, legendary
+    unlocked_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class ActivityLog(Base):
+    """Activity log model for user analytics"""
+
+    __tablename__ = "activity_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    action = Column(String(50), nullable=False, index=True)
+    resource_type = Column(String(20), nullable=True)
+    resource_id = Column(Integer, nullable=True)
+    activity_metadata = Column(Text, nullable=True)  # JSON data
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

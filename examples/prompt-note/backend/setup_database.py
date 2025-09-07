@@ -142,17 +142,18 @@ def create_tables():
                 )
             )
 
-            # Create pages table
-            logger.info("Creating pages table...")
+            # Create notes table
+            logger.info("Creating notes table...")
             conn.execute(
                 text(
                     """
-                CREATE TABLE IF NOT EXISTS pages (
+                CREATE TABLE IF NOT EXISTS notes (
                     id SERIAL PRIMARY KEY,
                     notebook_id INTEGER REFERENCES notebooks(id) ON DELETE CASCADE,
+                    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                     title VARCHAR(200) NOT NULL,
-                    content TEXT,
-                    content_type VARCHAR(50) DEFAULT 'markdown',
+                    content TEXT NOT NULL,
+                    content_type VARCHAR(20) DEFAULT 'markdown',
                     is_favorite BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -168,34 +169,29 @@ def create_tables():
                     """
                 CREATE TABLE IF NOT EXISTS collaborations (
                     id SERIAL PRIMARY KEY,
-                    notebook_id INTEGER REFERENCES notebooks(id) ON DELETE CASCADE,
+                    resource_type VARCHAR(20) NOT NULL,
+                    resource_id INTEGER NOT NULL,
                     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                     permission VARCHAR(20) DEFAULT 'read',
-                    invited_by INTEGER REFERENCES users(id),
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(notebook_id, user_id)
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """
                 )
             )
 
-            # Create user_stats table for gamification
-            logger.info("Creating user_stats table...")
+            # Create activity_logs table for analytics
+            logger.info("Creating activity_logs table...")
             conn.execute(
                 text(
                     """
-                CREATE TABLE IF NOT EXISTS user_stats (
+                CREATE TABLE IF NOT EXISTS activity_logs (
                     id SERIAL PRIMARY KEY,
-                    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE UNIQUE,
-                    level INTEGER DEFAULT 1,
-                    experience_points INTEGER DEFAULT 0,
-                    notes_created INTEGER DEFAULT 0,
-                    notes_shared INTEGER DEFAULT 0,
-                    ai_features_used INTEGER DEFAULT 0,
-                    login_streak INTEGER DEFAULT 0,
-                    last_login DATE,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                    action VARCHAR(50) NOT NULL,
+                    resource_type VARCHAR(20),
+                    resource_id INTEGER,
+                    metadata TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """
                 )
@@ -210,10 +206,11 @@ def create_tables():
                     id SERIAL PRIMARY KEY,
                     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                     achievement_type VARCHAR(50) NOT NULL,
-                    achievement_name VARCHAR(100) NOT NULL,
+                    name VARCHAR(100) NOT NULL,
                     description TEXT,
-                    earned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(user_id, achievement_type)
+                    icon VARCHAR(10),
+                    rarity VARCHAR(20) DEFAULT 'common',
+                    unlocked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """
                 )
@@ -226,7 +223,7 @@ def create_tables():
                     """
                 CREATE TABLE IF NOT EXISTS file_attachments (
                     id SERIAL PRIMARY KEY,
-                    page_id INTEGER REFERENCES pages(id) ON DELETE CASCADE,
+                    note_id INTEGER REFERENCES notes(id) ON DELETE CASCADE,
                     filename VARCHAR(255) NOT NULL,
                     original_filename VARCHAR(255) NOT NULL,
                     file_size INTEGER,
@@ -247,12 +244,17 @@ def create_tables():
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_pages_notebook_id ON pages(notebook_id)"
+                    "CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON notes(notebook_id)"
                 )
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_collaborations_notebook_id ON collaborations(notebook_id)"
+                    "CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE INDEX IF NOT EXISTS idx_collaborations_resource_id ON collaborations(resource_id)"
                 )
             )
             conn.execute(
@@ -267,7 +269,17 @@ def create_tables():
             )
             conn.execute(
                 text(
-                    "CREATE INDEX IF NOT EXISTS idx_file_attachments_page_id ON file_attachments(page_id)"
+                    "CREATE INDEX IF NOT EXISTS idx_file_attachments_note_id ON file_attachments(note_id)"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_user_id ON activity_logs(user_id)"
+                )
+            )
+            conn.execute(
+                text(
+                    "CREATE INDEX IF NOT EXISTS idx_activity_logs_action ON activity_logs(action)"
                 )
             )
 

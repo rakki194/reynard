@@ -2,7 +2,7 @@
  * Gamification Panel - Shows achievements, progress, and leaderboards
  */
 
-import { Component, For } from "solid-js";
+import { Component, For, createSignal } from "solid-js";
 import { Card, Tabs, TabPanel } from "reynard-components";
 import "./GamificationPanel.css";
 
@@ -11,9 +11,9 @@ interface Achievement {
   type: string;
   name: string;
   description: string;
-  earnedAt: Date;
   icon: string;
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  unlockedAt?: Date;
 }
 
 interface User {
@@ -31,6 +31,8 @@ interface GamificationPanelProps {
 }
 
 const GamificationPanel: Component<GamificationPanelProps> = (props) => {
+  const [activeTab, setActiveTab] = createSignal("achievements");
+  
   // Mock achievements data
   const mockAchievements: Achievement[] = [
     {
@@ -38,7 +40,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       type: "first_note",
       name: "First Note",
       description: "Created your first note",
-      earnedAt: new Date("2024-01-15"),
+      unlockedAt: new Date("2024-01-15"),
       icon: "📝",
       rarity: "common"
     },
@@ -47,7 +49,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       type: "collaborator",
       name: "Collaborator",
       description: "Shared 5 notes with others",
-      earnedAt: new Date("2024-01-18"),
+      unlockedAt: new Date("2024-01-18"),
       icon: "🤝",
       rarity: "rare"
     },
@@ -56,7 +58,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       type: "ai_explorer",
       name: "AI Explorer",
       description: "Used AI features 20 times",
-      earnedAt: new Date("2024-01-20"),
+      unlockedAt: new Date("2024-01-20"),
       icon: "🤖",
       rarity: "epic"
     }
@@ -83,14 +85,15 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
   return (
     <div class="gamification-panel">
       <Tabs
-        activeTab="achievements"
+        activeTab={activeTab()}
+        onTabChange={setActiveTab}
         items={[
           { id: "achievements", label: "🏆 Achievements" },
           { id: "progress", label: "📈 Progress" },
           { id: "leaderboard", label: "🥇 Leaderboard" },
         ]}
       >
-        <TabPanel tabId="achievements" activeTab="achievements">
+        <TabPanel tabId="achievements" activeTab={activeTab()}>
           <div class="achievements-section">
             <h3>Your Achievements</h3>
             <div class="achievements-grid">
@@ -115,7 +118,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
                     </div>
                     <p class="achievement-description">{achievement.description}</p>
                     <div class="achievement-date">
-                      Earned {formatDate(achievement.earnedAt)}
+                      Earned {achievement.unlockedAt ? formatDate(achievement.unlockedAt) : 'Not earned yet'}
                     </div>
                   </Card>
                 )}
@@ -124,7 +127,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
           </div>
         </TabPanel>
         
-        <TabPanel tabId="progress" activeTab="progress">
+        <TabPanel tabId="progress" activeTab={activeTab()}>
           <div class="progress-section">
             <h3>Your Progress</h3>
             <div class="progress-stats">
@@ -153,7 +156,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
           </div>
         </TabPanel>
         
-        <TabPanel tabId="leaderboard" activeTab="leaderboard">
+        <TabPanel tabId="leaderboard" activeTab={activeTab()}>
           <div class="leaderboard-section">
             <h3>Weekly Leaderboard</h3>
             <div class="leaderboard-list">

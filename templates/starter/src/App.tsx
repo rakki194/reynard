@@ -145,7 +145,7 @@ npm run dev`}</code>
         <p>Built with ❤️ using Reynard framework</p>
         <p>
           <a
-            href="https://github.com/yourusername/reynard"
+            href="https://github.com/rakki194/reynard"
             target="_blank"
             rel="noopener noreferrer"
           >

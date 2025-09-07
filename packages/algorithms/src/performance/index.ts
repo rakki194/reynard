@@ -36,3 +36,7 @@ export { throttle, debounce } from './throttle';
 
 // Export budget utilities
 export { PerformanceBudgetChecker } from './budget';
+
+// Export memory pool optimizations
+export * from './memory-pool-core';
+export * from './memory-pool-utils';

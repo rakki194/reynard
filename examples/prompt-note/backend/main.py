@@ -27,7 +27,7 @@ from logging_config import (
     setup_logging,
 )
 from pydantic import BaseModel
-from routes import health, users
+from routes import health, users, notebooks, notes
 from services import BackgroundService, CacheService
 
 from gatekeeper.api.dependencies import set_auth_manager
@@ -141,6 +141,8 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api", tags=["health"])
 app.include_router(create_auth_router(), prefix="/api", tags=["authentication"])
 app.include_router(users.router, prefix="/api/users", tags=["users"])
+app.include_router(notebooks.router, prefix="/api/notebooks", tags=["notebooks"])
+app.include_router(notes.router, prefix="/api/notes", tags=["notes"])
 
 
 # Dependency to get services

@@ -7,7 +7,7 @@
  * @module algorithms/transformation-algorithms
  */
 
-import { Point, PointOps } from '../shapes/point-algorithms';
+import { Point } from '../shapes/point-algorithms';
 import { Rectangle } from '../shapes/shapes';
 import { RectangleOps } from '../shapes/rectangle-algorithms';
 

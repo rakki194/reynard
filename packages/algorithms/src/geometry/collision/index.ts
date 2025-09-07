@@ -37,3 +37,6 @@ export * from './aabb-index';
 
 // Export general collision algorithms
 export * from './collision-algorithms';
+
+// Export spatial collision optimizer
+export * from './spatial-collision-optimizer';

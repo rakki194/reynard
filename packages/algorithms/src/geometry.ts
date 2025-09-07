@@ -29,3 +29,16 @@ export { RectangleOps } from './geometry/shapes/rectangle-algorithms';
 export { CircleOps } from './geometry/shapes/circle-algorithms';
 export { PolygonOps } from './geometry/shapes/polygon-algorithms';
 export { TransformOps } from './geometry/transformations/transformation-algorithms';
+
+// Re-export collision detection functions (excluding SpatialHash to avoid conflicts)
+export { 
+  checkCollision, 
+  batchCollisionDetection,
+  pointInAABB,
+  areAABBsTouching,
+  expandAABB,
+  unionAABB,
+  intersectionAABB,
+  containsAABB,
+  SpatialCollisionOptimizer
+} from './geometry/collision';

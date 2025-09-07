@@ -2,7 +2,7 @@
  * Notebook Card - Displays notebook information in a card format
  */
 
-import { Component } from "solid-js";
+import { Component, Show } from "solid-js";
 import { Card } from "reynard-components";
 import "./NotebookCard.css";
 

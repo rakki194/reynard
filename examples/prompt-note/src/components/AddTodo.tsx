@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { useCustomTranslation } from "../App";
+// Remove useCustomTranslation import - not available
 
 interface AddTodoProps {
   onAdd: (text: string) => void;
@@ -12,7 +12,6 @@ interface AddTodoProps {
 
 export const AddTodo: Component<AddTodoProps> = (props) => {
   const [input, setInput] = createSignal("");
-  const t = useCustomTranslation();
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
@@ -28,12 +27,12 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
       <input
         type="text"
         class="todo-input"
-        placeholder={t("todo.placeholder")}
+        placeholder="Add a new todo..."
         value={input()}
         onInput={(e) => setInput(e.currentTarget.value)}
       />
       <button type="submit" class="add-button" disabled={!input().trim()}>
-        {t("todo.addButton")}
+        Add Todo
       </button>
     </form>
   );

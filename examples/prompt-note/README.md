@@ -1,29 +1,39 @@
-# 🦊 Image Caption App - Reynard Framework Example
+# 🦊 Prompt Note - OneNote-like Note-Taking Application
 
-A comprehensive AI-powered image caption generation application demonstrating the full capabilities of the Reynard framework, including AI/ML integration, file management, and advanced UI components.
+A comprehensive OneNote-like note-taking application built with the Reynard framework, featuring multi-user support, real-time collaboration, AI-powered features, and gamification elements to make note-taking engaging and productive.
 
 ## ✨ Features Demonstrated
 
-### 🤖 AI-Powered Caption Generation
+### 📝 Rich Note-Taking
 
-- **Multiple AI Models**: Support for Florence2, JTP2, JoyCaption, WDv3, and other caption generation models
-- **Model Management**: Dynamic model loading, preloading, and lifecycle management
-- **Batch Processing**: Efficient caption generation with progress tracking
-- **Confidence Scoring**: Configurable confidence thresholds for quality control
+- **Monaco Editor Integration**: Professional code and markdown editing with syntax highlighting
+- **Multiple Content Types**: Support for markdown, rich-text, and code notes
+- **Notebook Organization**: Hierarchical structure with notebooks, sections, and pages
+- **Real-time Editing**: Live collaboration with multiple users
 
-### 📁 Advanced File Management
+### 🎮 Gamification System
 
-- **Drag & Drop Upload**: Intuitive file upload with drag-and-drop support
-- **Image Gallery**: Responsive grid layout with image previews
-- **File Validation**: Automatic filtering for image files only
-- **Progress Tracking**: Real-time upload and processing progress
+- **Experience Points (XP)**: Gain XP for various note-taking activities
+- **Level System**: Progressive levels with unlockable features
+- **Achievement System**: Badges for milestones and accomplishments
+- **Leaderboards**: Weekly challenges and team competitions
+- **Visual Progression**: Unlockable avatars, themes, and accessories
 
-### ✏️ Caption Editing & Management
+### 🤖 AI-Powered Features
 
-- **Interactive Tag Editing**: TagBubble components with drag-and-drop reordering
-- **Multiple Caption Types**: Support for CAPTION, TAGS, E621, TOML formats
-- **Real-time Validation**: Live validation with error highlighting
-- **Modal Editing**: Full-screen caption editing with image preview
+- **Smart Summarization**: Auto-generate note summaries
+- **Content Suggestions**: AI-powered writing assistance
+- **Auto-categorization**: Smart tagging and organization
+- **Semantic Search**: AI-powered content discovery
+- **Voice-to-Text**: Speech recognition for notes
+
+### 🤝 Real-time Collaboration
+
+- **Live Editing**: Multiple users editing simultaneously
+- **Presence Indicators**: See who's online and where
+- **Comments & Suggestions**: Inline commenting system
+- **Version History**: Track changes and revert
+- **Conflict Resolution**: Smart merge for simultaneous edits
 
 ### 🎨 Comprehensive UI/UX
 
@@ -34,8 +44,9 @@ A comprehensive AI-powered image caption generation application demonstrating th
 
 ### 🔧 Advanced Features
 
-- **Tabbed Interface**: Organized workflow with Gallery, Models, and Editor tabs
-- **Model Configuration**: Detailed model information and status tracking
+- **Tabbed Interface**: Organized workflow with Notebooks, Recent, and Favorites tabs
+- **File Attachments**: Support for images, PDFs, and documents
+- **Search & Discovery**: Full-text and semantic search across all notes
 - **Notification System**: Toast notifications for user feedback
 - **State Management**: Comprehensive state management with SolidJS signals
 
@@ -52,53 +63,53 @@ npm run dev
 npm run build
 ```
 
-Visit `http://localhost:3001` to see the image caption app in action!
+Visit `http://localhost:5173` to see the prompt-note app in action!
 
 ## 📱 Usage Guide
 
-### 1. **Upload Images**
+### 1. **Create Notebooks**
 
-- Drag and drop images onto the upload area
-- Or click "Choose Files" to browse for images
-- Supports all common image formats (JPG, PNG, GIF, WebP, etc.)
+- Click "➕ New Notebook" to create a new notebook
+- Choose a title, description, and color for your notebook
+- Organize your notes into logical collections
 
-### 2. **Select AI Model**
+### 2. **Write Notes**
 
-- Navigate to the "🤖 AI Models" tab
-- Choose from available caption generation models
-- Preload models for faster generation
-- View model descriptions and capabilities
+- Click on any notebook to view its notes
+- Create new notes with rich text editing
+- Use markdown, code blocks, or rich text formatting
+- Add file attachments and images
 
-### 3. **Generate Captions**
+### 3. **Gamification & Progress**
 
-- Click on any image in the gallery
-- Click "🤖 Generate Caption" to create AI-powered captions
-- View generated captions and extracted tags
-- See generation metadata (model used, timestamp)
+- Click "🏆 Achievements" to view your progress
+- Earn XP for creating notes, collaborating, and using AI features
+- Unlock new levels and achievements
+- Compete on weekly leaderboards
 
-### 4. **Edit Captions**
+### 4. **Collaborate**
 
-- Navigate to the "✏️ Caption Editor" tab
-- Select an image to edit its caption
-- Use the modal editor for full-screen editing
-- Add, remove, and reorder tags
-- Save your changes
+- Share notebooks with other users
+- Edit notes together in real-time
+- Leave comments and suggestions
+- Track version history and changes
 
-### 5. **Manage Your Gallery**
+### 5. **AI-Powered Features**
 
-- View all uploaded images in a responsive grid
-- See caption previews and generation status
-- Delete images you no longer need
-- Switch between different themes and languages
+- Use AI to summarize your notes
+- Get content suggestions while writing
+- Auto-categorize and tag your notes
+- Search semantically across all content
 
 ## 🏗️ Architecture
 
 ### Core Components
 
 - **`App.tsx`** - Main application with state management and workflow orchestration
-- **`ImageGallery.tsx`** - File upload and image display with drag-and-drop
-- **`CaptionEditor.tsx`** - Caption editing interface with modal support
-- **`ModelSelector.tsx`** - AI model selection and configuration
+- **`DashboardPage.tsx`** - Main dashboard with notebooks overview
+- **`NotebookPage.tsx`** - Individual notebook view with notes list
+- **`NoteEditorPage.tsx`** - Rich text editor for note creation and editing
+- **`GamificationPanel.tsx`** - Achievements, progress, and leaderboards
 - **`ThemeToggle.tsx`** - Theme switching with emoji indicators
 - **`LanguageSelector.tsx`** - Language selection for internationalization
 
@@ -107,9 +118,11 @@ Visit `http://localhost:3001` to see the image caption app in action!
 - **`reynard-core`** - Notifications, state management, and core utilities
 - **`reynard-themes`** - Theme system and internationalization
 - **`reynard-components`** - UI components (Button, Card, Modal, Tabs)
-- **`reynard-gallery`** - File management and gallery functionality
-- **`reynard-annotating`** - AI/ML caption generation engine
-- **`reynard-caption`** - Caption editing UI components
+- **`reynard-auth`** - Authentication and user management
+- **`reynard-monaco`** - Rich text editor with Monaco integration
+- **`reynard-chat`** - Real-time collaboration features
+- **`reynard-games`** - Gamification system and achievements
+- **`reynard-rag`** - AI-powered search and content generation
 - **`reynard-fluent-icons`** - Icon system for visual elements
 
 ### State Management
@@ -117,24 +130,37 @@ Visit `http://localhost:3001` to see the image caption app in action!
 The app uses SolidJS signals for reactive state management:
 
 ```typescript
-interface ImageItem {
+interface User {
   id: string;
-  name: string;
-  url: string;
-  file: File;
-  caption?: string;
-  tags?: string[];
-  generatedAt?: Date;
-  model?: string;
+  username: string;
+  email: string;
+  avatar?: string;
+  level: number;
+  experiencePoints: number;
+  achievements: Achievement[];
 }
 
-interface CaptionWorkflow {
-  image: ImageItem;
-  generatedCaption: string;
-  editedCaption: string;
-  tags: string[];
-  isGenerating: boolean;
-  isEditing: boolean;
+interface Notebook {
+  id: string;
+  title: string;
+  description?: string;
+  color: string;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  pageCount: number;
+}
+
+interface Note {
+  id: string;
+  notebookId: string;
+  title: string;
+  content: string;
+  contentType: 'markdown' | 'rich-text' | 'code';
+  isFavorite: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  collaborators?: User[];
 }
 ```
 
@@ -164,52 +190,70 @@ Built-in support for multiple languages:
 
 Language selection persists across sessions and updates the entire interface.
 
-## 🤖 AI Models
+## 🎮 Gamification System
 
-### Available Models
+### Experience Points (XP)
 
-- **Florence2** - Best for general image descriptions and detailed captions
-- **JTP2** - Good for artistic and creative content
-- **JoyCaption** - Optimized for joyful and positive content
-- **WDv3** - Excellent for technical and detailed descriptions
+- **Creating notes**: +10 XP
+- **Completing todos**: +5 XP
+- **Collaborating**: +15 XP
+- **Using AI features**: +8 XP
+- **Daily login streak**: +20 XP
 
-### Model Management
+### Level System
 
-- **Preloading** - Load models in advance for faster generation
-- **Unloading** - Free up memory by unloading unused models
-- **Status Tracking** - See which models are available and loaded
-- **Configuration** - Adjust model parameters and thresholds
+- **Level 1-5**: Basic features
+- **Level 6-10**: Advanced editing tools
+- **Level 11-15**: AI features
+- **Level 16-20**: Collaboration features
+- **Level 21+**: Custom themes and advanced features
 
-## 📦 Bundle Size
+### Achievement System
 
-- **JavaScript**: ~45 kB (gzipped)
-- **CSS**: ~8 kB (gzipped)
-- **Total**: ~53 kB - Optimized for fast loading!
+- **📝 "First Note"**: Create your first note
+- **🎯 "Organized"**: Create 10 notebooks
+- **🤝 "Collaborator"**: Share 5 notes
+- **🧠 "AI Assistant"**: Use AI features 20 times
+- **📅 "Streak Master"**: 30-day login streak
+- **🎨 "Artist"**: Use 5 different themes
+
+## 🗄️ Database Schema
+
+The backend uses PostgreSQL with the following tables:
+
+- **users** - User authentication and profile data
+- **notebooks** - Notebook metadata and organization
+- **notes** - Individual note content and metadata
+- **collaborations** - Sharing and permissions
+- **achievements** - Gamification data
+- **activity_logs** - User actions for analytics
+- **file_attachments** - File metadata and storage
 
 ## 🎯 Learning Objectives
 
 This example teaches:
 
-1. **AI/ML Integration** - How to integrate AI models with SolidJS applications
-2. **File Management** - Advanced file upload and gallery management
-3. **State Management** - Complex state management with multiple signals
-4. **Component Architecture** - Building reusable, composable components
-5. **User Experience** - Creating intuitive workflows for complex operations
-6. **Performance** - Optimizing for large file collections and AI processing
-7. **Accessibility** - Building accessible interfaces for all users
+1. **Full-Stack Development** - Complete frontend and backend integration
+2. **Real-time Collaboration** - WebSocket-based live editing
+3. **Gamification Design** - Engaging user experience with progression systems
+4. **AI Integration** - Smart features and content generation
+5. **Database Design** - Complex relational data modeling
+6. **Authentication** - Secure user management and permissions
+7. **State Management** - Complex state management with multiple signals
+8. **Component Architecture** - Building reusable, composable components
 
 ## 🔄 Next Steps
 
 Try modifying the app to:
 
-- Add batch caption generation for multiple images
-- Implement caption export (JSON, CSV, etc.)
-- Add image filtering and search capabilities
-- Integrate with cloud storage services
-- Add caption templates and presets
-- Implement caption history and versioning
-- Add collaborative editing features
-- Create custom AI model configurations
+- Add voice notes and speech-to-text
+- Implement handwriting support with digital pen
+- Add mind mapping and visual note organization
+- Integrate with calendar and scheduling
+- Add third-party integrations (Slack, Google Drive, etc.)
+- Implement offline mode with sync
+- Add advanced AI features (personal assistant, content generation)
+- Create custom themes and layouts
 
 ## 🧪 Development
 
@@ -217,8 +261,17 @@ Try modifying the app to:
 # Install dependencies
 npm install
 
-# Start development server
+# Start frontend development server
 npm run dev
+
+# Start backend server (in separate terminal)
+npm run dev:backend
+
+# Start both frontend and backend
+npm run start:full
+
+# Setup database
+npm run setup:db
 
 # Build for production
 npm run build
@@ -234,11 +287,12 @@ Found a bug or have an improvement? This example is part of the Reynard framewor
 ## 📚 Related Documentation
 
 - [Reynard Framework Documentation](../../README.md)
-- [reynard-annotating Package](../../packages/annotating/README.md)
-- [reynard-caption Package](../../packages/caption/README.md)
-- [reynard-gallery Package](../../packages/gallery/README.md)
+- [reynard-auth Package](../../packages/auth/README.md)
+- [reynard-monaco Package](../../packages/monaco/README.md)
+- [reynard-chat Package](../../packages/chat/README.md)
+- [reynard-games Package](../../packages/games/README.md)
 - [reynard-components Package](../../packages/components/README.md)
 
 ---
 
-_Built with ❤️ using Reynard framework, SolidJS, and AI/ML technologies_ 🦊🤖
+_Built with ❤️ using Reynard framework, SolidJS, FastAPI, and gamification technologies_ 🦊📝

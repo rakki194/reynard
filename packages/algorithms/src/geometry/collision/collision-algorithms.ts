@@ -8,10 +8,10 @@
  */
 
 // Re-export all shape interfaces
-export type { Line, Rectangle, Circle, Polygon } from './shapes';
+export type { Line, Rectangle, Circle, Polygon } from '../shapes/shapes';
 
 // Re-export all algorithm classes
-export { LineOps } from './line-algorithms';
-export { RectangleOps } from './rectangle-algorithms';
-export { CircleOps } from './circle-algorithms';
-export { PolygonOps } from './polygon-algorithms';
+export { LineOps } from '../shapes/line-algorithms';
+export { RectangleOps } from '../shapes/rectangle-algorithms';
+export { CircleOps } from '../shapes/circle-algorithms';
+export { PolygonOps } from '../shapes/polygon-algorithms';

@@ -27,5 +27,8 @@ export * from './union-find-utils';
 // Re-export set operations
 export * from './union-find-set-operations';
 
+// Re-export batch operations
+export * from './union-find-batch-operations';
+
 // Re-export main class
 export { UnionFind as default } from './union-find';

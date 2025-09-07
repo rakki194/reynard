@@ -1,6 +1,7 @@
 # My junk
 third_party/
 css-validation-report.md
+coverage/
 
 # Python junk
 __pycache__/

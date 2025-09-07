@@ -17,7 +17,7 @@ const LoginPage: Component = () => {
         <div class="login-header">
           <h1>🦊 Prompt Note</h1>
           <p>OneNote-like note-taking with gamification and AI features</p>
-          <div class="theme-info">Current theme: {theme()}</div>
+          <div class="theme-info">Current theme: {theme}</div>
         </div>
 
         <div class="login-forms">
@@ -28,7 +28,7 @@ const LoginPage: Component = () => {
               onSuccess={() => {
                 console.log("Login successful");
               }}
-              onError={(error) => {
+              onError={(error: any) => {
                 console.error("Login error:", error);
               }}
             />
@@ -41,7 +41,7 @@ const LoginPage: Component = () => {
               onSuccess={() => {
                 console.log("Registration successful");
               }}
-              onError={(error) => {
+              onError={(error: any) => {
                 console.error("Registration error:", error);
               }}
             />

@@ -7,7 +7,16 @@ import { Component, Show, For } from "solid-js";
 import { Button, Card } from "reynard-components";
 import { TagBubble, CaptionInput } from "reynard-caption";
 import { CaptionType } from "reynard-annotating";
-import type { ImageItem } from "../App";
+// Define ImageItem interface locally
+interface ImageItem {
+  id: string;
+  name: string;
+  url: string;
+  caption?: string;
+  tags?: string[];
+  generatedAt?: Date;
+  model?: string;
+}
 
 interface CaptionEditorProps {
   image: ImageItem;
@@ -66,6 +75,8 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
                           index={index()}
                           editable={false}
                           removable={false}
+                          onRemove={() => {}}
+                          onEdit={() => {}}
                         />
                       )}
                     </For>

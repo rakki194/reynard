@@ -11,7 +11,7 @@ import {
   Show,
   createEffect,
 } from "solid-js";
-import { Router, Routes, Route, Navigate } from "@solidjs/router";
+import { Router, Route, Navigate } from "@solidjs/router";
 import {
   ReynardProvider,
   useTheme,
@@ -52,7 +52,9 @@ interface Achievement {
   type: string;
   name: string;
   description: string;
-  earnedAt: Date;
+  icon: string;
+  rarity: "common" | "rare" | "epic" | "legendary";
+  unlockedAt?: Date;
 }
 
 interface Notebook {
@@ -77,6 +79,9 @@ interface Note {
   updatedAt: Date;
   collaborators?: User[];
 }
+
+// Export types for use in other components
+export type { User, Achievement, Notebook, Note };
 
 
 const App: Component = () => {
@@ -196,13 +201,11 @@ const App: Component = () => {
           </header>
 
           <main class="app-main">
-            <Routes>
-              <Route path="/" component={() => <Navigate href="/dashboard" />} />
-              <Route path="/dashboard" component={DashboardPage} />
-              <Route path="/notebook/:id" component={NotebookPage} />
-              <Route path="/note/:id" component={NoteEditorPage} />
-              <Route path="/profile" component={ProfilePage} />
-            </Routes>
+            <Route path="/" component={() => <Navigate href="/dashboard" />} />
+            <Route path="/dashboard" component={DashboardPage} />
+            <Route path="/notebook/:id" component={NotebookPage} />
+            <Route path="/note/:id" component={NoteEditorPage} />
+            <Route path="/profile" component={ProfilePage} />
           </main>
 
           {/* Gamification Panel */}
