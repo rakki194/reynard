@@ -1,0 +1,30 @@
+{
+  "name": "reynard-ecs-simd-experiment",
+  "version": "0.1.0",
+  "description": "SIMD ECS performance experiment for Reynard",
+  "type": "module",
+  "scripts": {
+    "build": "./build-wasm.sh",
+    "test": "node test-runner.js",
+    "test:quick": "node -e \"import('./test-runner.js').then(m => m.runQuickTest())\"",
+    "benchmark": "node -e \"import('./test-runner.js').then(m => m.runExperiment())\"",
+    "dev": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "wasm-bindgen": "^0.2.87"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "ecs",
+    "simd",
+    "webassembly",
+    "performance",
+    "reynard",
+    "benchmark"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT"
+}

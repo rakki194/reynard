@@ -1,4 +1,4 @@
-# ADR-001: Modularity Standards and 100-Line Axiom
+# ADR-001: Modularity Standards and 140-Line Axiom
 
 ## Status
 
@@ -16,11 +16,11 @@ The Reynard codebase was experiencing significant maintainability issues due to 
 
 ## Decision
 
-We will adopt the **100-line axiom** as a core architectural principle:
+We will adopt the **140-line axiom** as a core architectural principle:
 
 ### File Size Limits
 
-- **Source Files**: Maximum 100 lines (excluding blank lines and comments)
+- **Source Files**: Maximum 140 lines (excluding blank lines and comments)
 - **Test Files**: Maximum 200 lines (excluding blank lines and comments)
 - **Functions**: Maximum 50 lines per function
 - **Configuration Files**: Maximum 50 lines
@@ -42,7 +42,7 @@ We will adopt the **100-line axiom** as a core architectural principle:
 
 ## Rationale
 
-### Benefits of the 100-Line Axiom
+### Benefits of the 140-Line Axiom
 
 1. **Improved Readability**: Files are small enough to understand at a glance
 2. **Better Maintainability**: Changes are localized and predictable

@@ -5,7 +5,7 @@ alwaysApply: false
 
 # LaTeX Writing Rules for Reynard Research Papers
 
-Academic papers should be crafted with precision and clarity - every equation, every algorithm, every citation strategically placed for maximum impact and understanding. Based on analysis of your existing research papers, these guidelines capture the sophisticated patterns that make your work exceptional.
+Academic papers should be crafted with precision and clarity - every equation, every algorithm, every citation strategically placed for maximum impact and understanding. These guidelines capture the sophisticated patterns that make your work exceptional.
 
 ## Core Principles
 
@@ -441,8 +441,6 @@ app/caption\_generation/plugins/florence2/.../modeling\_florence2.py & 3,161 & 1
 
 ## Conclusion
 
-🦊> *Mastering academic writing requires precision, clarity, and systematic thinking - the cunning fox's approach to every research challenge.*
-
 Mastering academic writing requires precision, clarity, and systematic thinking. Your research papers demonstrate excellent technical writing with clear mathematical foundations, practical implementations, and rigorous performance analysis. By following these standards and maintaining the systematic approach evident in your existing work, you'll continue to produce high-quality academic documentation that advances both theory and practice.
 
 The patterns established in your existing research papers - from the comprehensive modular refactoring analysis to the sophisticated NEXUS collision detection system and VECTOR engagement tracking - demonstrate a level of academic writing excellence that should be the standard for all future research.
@@ -459,4 +457,4 @@ Key principles for effective academic writing:
 
 These guidelines ensure that your research contributions are accessible, credible, and impactful within the broader technical community. Your existing papers demonstrate these principles beautifully, and these enhanced guidelines will help maintain that standard of excellence.
 
-*Build research papers that outfox complexity and advance the state of the art.* 🦊
+*Hunt down insights with the relentless curiosity of a wolf, and let your research leave a lasting mark on the field.* 🐺

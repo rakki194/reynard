@@ -7,11 +7,11 @@
 }
 
 .monaco-editor-wrapper--custom-height {
-  height: attr(data-height, 400px);
+  height: var(--editor-height, 400px);
 }
 
 .monaco-editor-wrapper--custom-width {
-  width: attr(data-width, 100%);
+  width: var(--editor-width, 100%);
 }
 
 .monaco-editor-loading {

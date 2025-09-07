@@ -26,6 +26,11 @@ out/
 # TypeScript build info
 *.tsbuildinfo
 
+# Compiled TypeScript files in source directories
+src/**/*.js
+src/**/*.d.ts
+src/**/*.d.ts.map
+
 # Coverage reports
 coverage/
 *.lcov

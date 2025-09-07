@@ -7,6 +7,12 @@ export { SpatialHashDemo } from './spatial-hash';
 export { GeometryDemo } from './geometry';
 export { PerformanceDemo } from './performance';
 
+// ECS System
+export * from './ecs';
+
+// ECS Examples
+export * from './ecs/examples';
+
 // Types
 export type {
   GameStats,
