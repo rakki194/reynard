@@ -30,10 +30,10 @@ class BackgroundService:
     async def start(self):
         """Start background service"""
         if IS_RELOAD_MODE:
-            print("🔄 Skipping background service during reload")
+            print("[INFO] Skipping background service during reload")
             return
         
-        print("🔧 Starting background service...")
+        print("[INFO] Starting background service...")
         
         self.is_running = True
         self.start_time = time.time()
@@ -43,20 +43,20 @@ class BackgroundService:
         await self._start_health_monitor_task()
         await self._start_stats_collector_task()
         
-        print("✅ Background service started")
+        print("[OK] Background service started")
     
     async def stop(self):
         """Stop background service and cancel all tasks"""
         if not self.is_running:
             return
         
-        print("🔧 Stopping background service...")
+        print("[INFO] Stopping background service...")
         
         self.is_running = False
         
         # Cancel all tasks
         if self.tasks:
-            print(f"🛑 Cancelling {len(self.tasks)} background tasks...")
+            print(f"[INFO] Cancelling {len(self.tasks)} background tasks...")
             for task in self.tasks:
                 task.cancel()
             
@@ -64,7 +64,7 @@ class BackgroundService:
             await asyncio.gather(*self.tasks, return_exceptions=True)
             self.tasks.clear()
         
-        print("✅ Background service stopped")
+        print("[OK] Background service stopped")
     
     async def _start_cleanup_task(self):
         """Start cleanup task"""
@@ -89,7 +89,7 @@ class BackgroundService:
     
     async def _cleanup_worker(self):
         """Background cleanup worker"""
-        print("🧹 Cleanup worker started")
+        print("[INFO] Cleanup worker started")
         
         while self.is_running:
             try:
@@ -97,24 +97,24 @@ class BackgroundService:
                 await asyncio.sleep(30)  # Run every 30 seconds
                 
                 if self.is_running:
-                    print("🧹 Performing background cleanup...")
+                    print("[INFO] Performing background cleanup...")
                     # Add actual cleanup logic here
                     await asyncio.sleep(1)  # Simulate cleanup time
                 
             except asyncio.CancelledError:
-                print("🛑 Cleanup worker cancelled")
+                print("[INFO] Cleanup worker cancelled")
                 break
             except Exception as e:
-                print(f"❌ Cleanup worker error: {e}")
+                print(f"[FAIL] Cleanup worker error: {e}")
                 self.stats["tasks_failed"] += 1
                 await asyncio.sleep(5)  # Wait before retrying
         
-        print("✅ Cleanup worker stopped")
+        print("[OK] Cleanup worker stopped")
         self.stats["tasks_completed"] += 1
     
     async def _health_monitor_worker(self):
         """Background health monitoring worker"""
-        print("🏥 Health monitor started")
+        print("[INFO] Health monitor started")
         
         while self.is_running:
             try:
@@ -122,24 +122,24 @@ class BackgroundService:
                 await asyncio.sleep(60)  # Run every minute
                 
                 if self.is_running:
-                    print("🏥 Performing health check...")
+                    print("[INFO] Performing health check...")
                     # Add actual health check logic here
                     await asyncio.sleep(0.5)  # Simulate health check time
                 
             except asyncio.CancelledError:
-                print("🛑 Health monitor cancelled")
+                print("[INFO] Health monitor cancelled")
                 break
             except Exception as e:
-                print(f"❌ Health monitor error: {e}")
+                print(f"[FAIL] Health monitor error: {e}")
                 self.stats["tasks_failed"] += 1
                 await asyncio.sleep(10)  # Wait before retrying
         
-        print("✅ Health monitor stopped")
+        print("[OK] Health monitor stopped")
         self.stats["tasks_completed"] += 1
     
     async def _stats_collector_worker(self):
         """Background statistics collection worker"""
-        print("📊 Stats collector started")
+        print("[INFO] Stats collector started")
         
         while self.is_running:
             try:
@@ -151,19 +151,19 @@ class BackgroundService:
                 await asyncio.sleep(120)  # Run every 2 minutes
                 
                 if self.is_running:
-                    print("📊 Collecting statistics...")
+                    print("[INFO] Collecting statistics...")
                     # Add actual stats collection logic here
                     await asyncio.sleep(0.2)  # Simulate stats collection time
                 
             except asyncio.CancelledError:
-                print("🛑 Stats collector cancelled")
+                print("[INFO] Stats collector cancelled")
                 break
             except Exception as e:
-                print(f"❌ Stats collector error: {e}")
+                print(f"[FAIL] Stats collector error: {e}")
                 self.stats["tasks_failed"] += 1
                 await asyncio.sleep(15)  # Wait before retrying
         
-        print("✅ Stats collector stopped")
+        print("[OK] Stats collector stopped")
         self.stats["tasks_completed"] += 1
     
     async def add_task(self, coro, name: str = "custom_task"):
@@ -176,7 +176,7 @@ class BackgroundService:
         task.add_done_callback(self.tasks.discard)
         self.stats["tasks_started"] += 1
         
-        print(f"📝 Added background task: {name}")
+        print(f"[INFO] Added background task: {name}")
         return task
     
     def get_stats(self) -> Dict[str, Any]:

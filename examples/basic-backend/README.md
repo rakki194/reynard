@@ -1,12 +1,12 @@
-# Reynard Basic Backend 🦊
+# Reynard Basic Backend
 
 A modular FastAPI backend example demonstrating uvicorn reload best practices and development patterns for the Reynard ecosystem.
 
 ## Features
 
-- 🔄 **Optimized Uvicorn Reload**: Smart reload detection and service management
+- **Optimized Uvicorn Reload**: Smart reload detection and service management
 - 🏗️ **Modular Architecture**: Clean separation of concerns with services and routes
-- 🔧 **Configuration Management**: Environment-based configuration with sensible defaults
+- **Configuration Management**: Environment-based configuration with sensible defaults
 - 🗄️ **Service Layer**: Database, cache, and background service abstractions
 - 📊 **Health Monitoring**: Comprehensive health checks and metrics
 - 🔐 **Authentication**: JWT-based authentication with session management
@@ -166,7 +166,7 @@ Services skip heavy initialization during reload to speed up the process:
 
 ```python
 if IS_RELOAD_MODE:
-    print("🔄 Skipping heavy initialization during reload")
+    print("[INFO] Skipping heavy initialization during reload")
     yield
     return
 ```
@@ -177,7 +177,7 @@ Background services are disabled during reload to prevent hanging:
 
 ```python
 if IS_RELOAD_MODE:
-    print("🔄 Skipping background service during reload")
+    print("[INFO] Skipping background service during reload")
     return
 ```
 
@@ -209,10 +209,10 @@ Edit any Python file in the project. Uvicorn will automatically detect changes a
 Watch the console output for reload messages:
 
 ```text
-🔄 Running in uvicorn reload mode - skipping heavy initialization
-🔄 Skipping database initialization during reload
-🔄 Skipping cache initialization during reload
-🔄 Skipping background service during reload
+[INFO] Running in uvicorn reload mode - skipping heavy initialization
+[INFO] Skipping database initialization during reload
+[INFO] Skipping cache initialization during reload
+[INFO] Skipping background service during reload
 ```
 
 ### 4. Test Endpoints

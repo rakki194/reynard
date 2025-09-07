@@ -52,19 +52,19 @@ class GatekeeperConfig:
     def get_backend(self) -> 'UserBackend':
         """Get the appropriate backend based on configuration"""
         if self.use_memory_backend:
-            print("🔧 Using MemoryBackend for authentication")
+            print("[INFO] Using MemoryBackend for authentication")
             return MemoryBackend()
         else:
             # Check database type and use appropriate backend
             if self.database_url.startswith("sqlite"):
-                print("🔧 Using SQLiteBackend for authentication")
+                print("[INFO] Using SQLiteBackend for authentication")
                 return SQLiteBackend(
                     database_url=self.database_url,
                     pool_size=self.backend_pool_size,
                     max_overflow=self.backend_max_overflow
                 )
             else:
-                print("🔧 Using PostgreSQLBackend for authentication")
+                print("[INFO] Using PostgreSQLBackend for authentication")
                 return PostgreSQLBackend(
                     database_url=self.database_url,
                     pool_size=self.backend_pool_size,
@@ -74,7 +74,7 @@ class GatekeeperConfig:
     def create_auth_manager(self) -> AuthManager:
         """Create and configure the authentication manager"""
         if IS_RELOAD_MODE:
-            print("🔄 Skipping auth manager initialization during reload")
+            print("[INFO] Skipping auth manager initialization during reload")
             # Return a minimal auth manager for reload mode
             return AuthManager(
                 backend=MemoryBackend(),
@@ -82,7 +82,7 @@ class GatekeeperConfig:
                 password_security_level=self.password_security_level
             )
         
-        print("🔧 Initializing Gatekeeper authentication manager...")
+        print("[INFO] Initializing Gatekeeper authentication manager...")
         
         auth_manager = AuthManager(
             backend=self.get_backend(),
@@ -90,7 +90,7 @@ class GatekeeperConfig:
             password_security_level=self.password_security_level
         )
         
-        print("✅ Gatekeeper authentication manager initialized")
+        print("[OK] Gatekeeper authentication manager initialized")
         return auth_manager
 
 
@@ -127,7 +127,7 @@ async def close_auth_manager():
     global _auth_manager
     
     if _auth_manager is not None:
-        print("🔧 Closing Gatekeeper authentication manager...")
+        print("[INFO] Closing Gatekeeper authentication manager...")
         await _auth_manager.close()
         _auth_manager = None
-        print("✅ Gatekeeper authentication manager closed")
+        print("[OK] Gatekeeper authentication manager closed")

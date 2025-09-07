@@ -23,10 +23,10 @@ class DatabaseService:
     async def initialize(self):
         """Initialize database connection pool"""
         if IS_RELOAD_MODE:
-            print("🔄 Skipping database initialization during reload")
+            print("[INFO] Skipping database initialization during reload")
             return
         
-        print("🔧 Initializing database service...")
+        print("[INFO] Initializing database service...")
         
         # Simulate database connection setup
         await asyncio.sleep(0.1)  # Simulate connection time
@@ -41,7 +41,7 @@ class DatabaseService:
         self.is_initialized = True
         self.connection_count = 0
         
-        print("✅ Database service initialized")
+        print("[OK] Database service initialized")
     
     async def get_connection(self):
         """Get a database connection from the pool"""
@@ -52,7 +52,7 @@ class DatabaseService:
         self.connection_count += 1
         connection_id = f"conn_{self.connection_count}"
         
-        print(f"🔗 Database connection acquired: {connection_id}")
+        print(f"[INFO] Database connection acquired: {connection_id}")
         return {
             "id": connection_id,
             "created_at": asyncio.get_event_loop().time()
@@ -64,7 +64,7 @@ class DatabaseService:
             return
         
         connection_id = connection.get("id", "unknown")
-        print(f"🔗 Database connection released: {connection_id}")
+        print(f"[INFO] Database connection released: {connection_id}")
     
     async def execute_query(self, query: str, params: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
         """Execute a database query"""
@@ -111,7 +111,7 @@ class DatabaseService:
         if not self.is_initialized:
             return
         
-        print("🔧 Closing database service...")
+        print("[INFO] Closing database service...")
         
         # Simulate cleanup
         await asyncio.sleep(0.05)
@@ -120,7 +120,7 @@ class DatabaseService:
         self.is_initialized = False
         self.connection_count = 0
         
-        print("✅ Database service closed")
+        print("[OK] Database service closed")
     
     @asynccontextmanager
     async def get_connection_context(self):

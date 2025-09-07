@@ -30,10 +30,10 @@ class CacheService:
     async def initialize(self):
         """Initialize cache service"""
         if IS_RELOAD_MODE:
-            print("🔄 Skipping cache initialization during reload")
+            print("[INFO] Skipping cache initialization during reload")
             return
         
-        print("🔧 Initializing cache service...")
+        print("[INFO] Initializing cache service...")
         
         # Simulate cache setup
         await asyncio.sleep(0.05)
@@ -41,7 +41,7 @@ class CacheService:
         self.cache_store = {}
         self.is_initialized = True
         
-        print("✅ Cache service initialized")
+        print("[OK] Cache service initialized")
     
     def _is_expired(self, item: Dict[str, Any]) -> bool:
         """Check if a cache item is expired"""
@@ -91,7 +91,7 @@ class CacheService:
             self.stats["sets"] += 1
             return True
         except Exception as e:
-            print(f"❌ Cache set error: {e}")
+            print(f"[FAIL] Cache set error: {e}")
             return False
     
     async def delete(self, key: str) -> bool:
@@ -112,7 +112,7 @@ class CacheService:
             return False
         
         self.cache_store.clear()
-        print("🧹 Cache cleared")
+        print("[INFO] Cache cleared")
         return True
     
     async def exists(self, key: str) -> bool:
@@ -176,7 +176,7 @@ class CacheService:
             del self.cache_store[key]
         
         if expired_keys:
-            print(f"🧹 Cleaned up {len(expired_keys)} expired cache entries")
+            print(f"[INFO] Cleaned up {len(expired_keys)} expired cache entries")
         
         return len(expired_keys)
     
@@ -185,7 +185,7 @@ class CacheService:
         if not self.is_initialized:
             return
         
-        print("🔧 Closing cache service...")
+        print("[INFO] Closing cache service...")
         
         # Cleanup expired entries
         await self.cleanup_expired()
@@ -193,7 +193,7 @@ class CacheService:
         self.cache_store.clear()
         self.is_initialized = False
         
-        print("✅ Cache service closed")
+        print("[OK] Cache service closed")
     
     def get_stats(self) -> Dict[str, Any]:
         """Get cache service statistics"""

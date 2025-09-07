@@ -109,7 +109,7 @@ async def simple_health_check():
     """Simple health check endpoint"""
     return {
         "status": "ok",
-        "message": "Reynard Basic Backend is running! 🦊",
+        "message": "Reynard Basic Backend is running!",
         "timestamp": time.time()
     }
 

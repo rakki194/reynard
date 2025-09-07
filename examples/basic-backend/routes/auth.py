@@ -96,9 +96,9 @@ async def load_users_from_cache(cache_service: CacheService):
         cached_users = await cache_service.get("users_db")
         if cached_users:
             users_db.update(cached_users)
-            print(f"🔐 Loaded {len(users_db)} users from cache")
+            print(f"[INFO] Loaded {len(users_db)} users from cache")
     except Exception as e:
-        print(f"⚠️  Could not load users from cache: {e}")
+        print(f"[WARN] Could not load users from cache: {e}")
 
 
 async def save_users_to_cache(cache_service: CacheService):
@@ -106,7 +106,7 @@ async def save_users_to_cache(cache_service: CacheService):
     try:
         await cache_service.set("users_db", users_db, ttl=86400)  # 24 hours
     except Exception as e:
-        print(f"⚠️  Could not save users to cache: {e}")
+        print(f"[WARN] Could not save users to cache: {e}")
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -117,12 +117,12 @@ async def login(
 ):
     """Authenticate user and return access token"""
     
-    print(f"🔐 Login attempt for user: {request.username}")
+    print(f"[INFO] Login attempt for user: {request.username}")
     
     # Get user from database
     user = await db_service.get_user_by_username(request.username)
     if not user:
-        print(f"❌ User {request.username} not found")
+        print(f"[FAIL] User {request.username} not found")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password"
@@ -130,7 +130,7 @@ async def login(
     
     # Verify password
     if not verify_password(request.password, user.password_hash):
-        print(f"❌ Invalid password for user {request.username}")
+        print(f"[FAIL] Invalid password for user {request.username}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password"
@@ -146,7 +146,7 @@ async def login(
     # Update user last login
     await db_service.update_user_last_login(user.id)
     
-    print(f"✅ User {request.username} logged in successfully")
+    print(f"[OK] User {request.username} logged in successfully")
     
     return TokenResponse(
         access_token=token,
@@ -185,7 +185,7 @@ async def register(
             full_name=request.full_name
         )
         
-        print(f"🔐 User registered: {request.username} (ID: {user.id})")
+        print(f"[OK] User registered: {request.username} (ID: {user.id})")
         
         return UserResponse(
             id=user.id,

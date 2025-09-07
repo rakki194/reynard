@@ -38,44 +38,44 @@ async def lifespan(app: FastAPI):
     global database_service, cache_service, background_service
     
     if IS_RELOAD_MODE:
-        print("🔄 Running in uvicorn reload mode - skipping heavy initialization")
+        print("[INFO] Running in uvicorn reload mode - skipping heavy initialization")
         yield
         return
     
     # Full initialization for normal startup
-    print("🚀 Starting Reynard Basic Backend...")
+    print("[INFO] Starting Reynard Basic Backend...")
     start_time = time.time()
     
     try:
         # Initialize services
-        print("🔧 Initializing database service...")
+        print("[INFO] Initializing database service...")
         database_service = DatabaseService()
         await database_service.initialize()
         
-        print("🔧 Initializing cache service...")
+        print("[INFO] Initializing cache service...")
         cache_service = CacheService()
         await cache_service.initialize()
         
-        print("🔧 Starting background service...")
+        print("[INFO] Starting background service...")
         background_service = BackgroundService()
         await background_service.start()
         
         # Initialize Gatekeeper authentication
-        print("🔧 Initializing Gatekeeper authentication...")
+        print("[INFO] Initializing Gatekeeper authentication...")
         auth_manager = initialize_auth_manager()
         set_auth_manager(auth_manager)
         
         init_time = time.time() - start_time
-        print(f"✅ Backend initialized successfully in {init_time:.2f}s")
+        print(f"[OK] Backend initialized successfully in {init_time:.2f}s")
         
     except Exception as e:
-        print(f"❌ Failed to initialize backend: {e}")
+        print(f"[FAIL] Failed to initialize backend: {e}")
         raise
     
     yield
     
     # Cleanup
-    print("🧹 Cleaning up services...")
+    print("[INFO] Cleaning up services...")
     cleanup_start = time.time()
     
     # Close Gatekeeper authentication
@@ -91,7 +91,7 @@ async def lifespan(app: FastAPI):
         await database_service.close()
     
     cleanup_time = time.time() - cleanup_start
-    print(f"✅ Cleanup completed in {cleanup_time:.2f}s")
+    print(f"[OK] Cleanup completed in {cleanup_time:.2f}s")
 
 
 # Create FastAPI app
@@ -161,7 +161,7 @@ app.dependency_overrides[users_get_cache] = get_cache_service
 async def root():
     """Root endpoint with system information"""
     return {
-        "message": "Welcome to Reynard Basic Backend! 🦊",
+        "message": "Welcome to Reynard Basic Backend!",
         "version": "1.0.0",
         "reload_mode": IS_RELOAD_MODE,
         "services": {
@@ -206,13 +206,13 @@ if __name__ == "__main__":
     # Load configuration
     config = UvicornConfig()
     
-    print("🦊 Starting Reynard Basic Backend Server...")
-    print(f"📡 Server will be available at: http://{config.host}:{config.port}")
-    print(f"📚 API documentation at: http://{config.host}:{config.port}/docs")
-    print(f"🔄 Reload mode: {'enabled' if config.reload else 'disabled'}")
+    print("[INFO] Starting Reynard Basic Backend Server...")
+    print(f"[INFO] Server will be available at: http://{config.host}:{config.port}")
+    print(f"[INFO] API documentation at: http://{config.host}:{config.port}/docs")
+    print(f"[INFO] Reload mode: {'enabled' if config.reload else 'disabled'}")
     
     if IS_RELOAD_MODE:
-        print("🔄 Running in uvicorn reload mode")
+        print("[INFO] Running in uvicorn reload mode")
     
     uvicorn.run(
         "main:app",

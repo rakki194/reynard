@@ -32,10 +32,10 @@ class DatabaseService:
     async def initialize(self):
         """Initialize database connection and create tables"""
         if IS_RELOAD_MODE:
-            print("🔄 Skipping database initialization during reload")
+            print("[INFO] Skipping database initialization during reload")
             return
         
-        print("🔧 Initializing SQLite database...")
+        print("[INFO] Initializing SQLite database...")
         
         # Create async engine
         database_url = database_config.url.replace("sqlite://", "sqlite+aiosqlite://")
@@ -59,7 +59,7 @@ class DatabaseService:
             await conn.run_sync(Base.metadata.create_all)
         
         self.is_initialized = True
-        print("✅ SQLite database initialized")
+        print("[OK] SQLite database initialized")
     
     async def get_session(self) -> AsyncSession:
         """Get a database session"""
@@ -300,7 +300,7 @@ class DatabaseService:
                 await session.execute(select(1))
                 return True
         except Exception as e:
-            print(f"❌ Database health check failed: {e}")
+            print(f"[FAIL] Database health check failed: {e}")
             return False
     
     async def get_stats(self) -> Dict[str, Any]:
@@ -336,10 +336,10 @@ class DatabaseService:
         if not self.is_initialized:
             return
         
-        print("🔧 Closing database service...")
+        print("[INFO] Closing database service...")
         
         if self.engine:
             await self.engine.dispose()
         
         self.is_initialized = False
-        print("✅ Database service closed")
+        print("[OK] Database service closed")
