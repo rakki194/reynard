@@ -192,6 +192,7 @@ export default [
       "**/vite.config.ts",
       "**/vitest.config.ts",
       "**/debug-scan.js",
+      "**/pkg/**/*.js", // Generated WebAssembly JavaScript files
     ],
   },
 ];

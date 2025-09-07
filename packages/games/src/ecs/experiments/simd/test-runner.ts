@@ -24,7 +24,7 @@ async function runExperiment(): Promise<void> {
 /**
  * Print a summary of the benchmark results
  */
-function printSummary(): void {
+function _printSummary(): void {
   console.log('\n🎯 EXPERIMENT SUMMARY');
   console.log('='.repeat(60));
   console.log('Check the detailed results above for performance comparisons.');

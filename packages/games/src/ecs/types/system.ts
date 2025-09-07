@@ -28,9 +28,7 @@
  * @since 1.0.0
  */
 
-import { Component, Resource } from './core';
-import { ComponentType, ResourceType } from './storage';
-import { QueryResult } from '../types';
+// Removed unused imports: Component, Resource, ComponentType, ResourceType, QueryResult
 import { World } from './world';
 
 /**

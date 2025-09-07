@@ -5,6 +5,9 @@ import { Position, Velocity, Acceleration, Mass } from './position-system.js';
 // Try to import WASM, fall back to mock if not available
 let init: any, initSync: any, WasmPositionSystemSIMD: any, simd_vector_add: any;
 
+// Type definition for the WASM class
+type WasmPositionSystemSIMDType = typeof WasmPositionSystemSIMD;
+
 try {
   const wasmModule = await import('./pkg/ecs_simd.js');
   init = wasmModule.default;
@@ -17,7 +20,7 @@ try {
 }
 
 export class PositionSystemSIMD {
-  private wasmSystem: WasmPositionSystemSIMD | null = null;
+  private wasmSystem: WasmPositionSystemSIMDType | null = null;
   private isInitialized: boolean = false;
   private useMock: boolean = false;
   

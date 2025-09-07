@@ -31,6 +31,9 @@ src/**/*.js
 src/**/*.d.ts
 src/**/*.d.ts.map
 
+# Vite generated type files
+**/vite-env.d.ts
+
 # Coverage reports
 coverage/
 *.lcov

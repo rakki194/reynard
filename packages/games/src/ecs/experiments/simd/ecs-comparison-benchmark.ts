@@ -3,10 +3,7 @@
 import { 
   createWorld, 
   createComponentType, 
-  createEntity,
   system,
-  schedule,
-  query,
   World
 } from '../../index.js';
 import { PositionSystemSIMD } from './position-system-simd.js';
@@ -18,6 +15,11 @@ const Position = createComponentType<{ x: number; y: number; readonly __componen
 const Velocity = createComponentType<{ vx: number; vy: number; readonly __component: true }>('Velocity');
 const Acceleration = createComponentType<{ ax: number; ay: number; readonly __component: true }>('Acceleration');
 const Mass = createComponentType<{ mass: number; readonly __component: true }>('Mass');
+
+// Type definitions for the component data
+type PositionData = { x: number; y: number; readonly __component: true };
+type VelocityData = { vx: number; vy: number; readonly __component: true };
+type AccelerationData = { ax: number; ay: number; readonly __component: true };
 
 export class ECSComparisonBenchmark {
   private simdSystem: PositionSystemSIMD;
@@ -43,10 +45,10 @@ export class ECSComparisonBenchmark {
     // Setup Reynard ECS systems
     const positionUpdateSystem = system('positionUpdateSystem', (world) => {
       const queryResult = world.query(Position, Velocity, Acceleration, Mass);
-      queryResult.forEach((entity, pos, vel, acc, mass) => {
-        const position = pos as any;
-        const velocity = vel as any;
-        const acceleration = acc as any;
+      queryResult.forEach((entity, pos, vel, acc, _mass) => {
+        const position = pos as PositionData;
+        const velocity = vel as VelocityData;
+        const acceleration = acc as AccelerationData;
         
         // Update velocity
         velocity.vx += acceleration.ax * 0.016; // Fixed delta time for now
@@ -62,7 +64,7 @@ export class ECSComparisonBenchmark {
       const queryResult = world.query(Position);
       const collisions: number[] = [];
       const entities = queryResult.entities;
-      const positions = queryResult.components as any[];
+      const positions = queryResult.components as PositionData[];
       
       for (let i = 0; i < entities.length; i++) {
         for (let j = i + 1; j < entities.length; j++) {
@@ -80,7 +82,7 @@ export class ECSComparisonBenchmark {
       const queryResult = world.query(Position);
       const results: number[] = [];
       const entities = queryResult.entities;
-      const positions = queryResult.components as any[];
+      const positions = queryResult.components as PositionData[];
       const queryX = 0;
       const queryY = 0;
       const radius = 100;
