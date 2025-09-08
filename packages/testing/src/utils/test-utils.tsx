@@ -193,7 +193,7 @@ export const useTestAppContext = () => {
 export function renderWithTestProviders(
   ui: () => JSX.Element,
   options?: Parameters<typeof render>[1]
-) {
+): ReturnType<typeof render> {
   return render(() => <TestAppProvider children={ui()} />, options);
 }
 

@@ -4,6 +4,7 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "allowJs": false,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -31,6 +32,7 @@
     "**/*.spec.ts",
     "**/*.spec.tsx",
     "**/test-setup.ts",
-    "dist"
+    "dist",
+    "node_modules/@types/three"
   ]
 }

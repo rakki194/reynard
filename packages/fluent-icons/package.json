@@ -1,6 +1,6 @@
 {
   "name": "reynard-fluent-icons",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fluent UI icons for Reynard design system",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@fluentui/svg-icons": "1.1.309",
-    "reynard-core": "file:../core",
+    "reynard-core": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

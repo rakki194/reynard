@@ -10,30 +10,15 @@ import {
   DEFAULT_THEME,
   DEFAULT_COLORS,
 } from "../types";
+import { generateColorsWithCache } from "reynard-color-media";
 
 /**
  * Generate a color palette for datasets
+ * @deprecated Use generateColorsWithCache from reynard-color-media instead
  */
 export function generateColors(count: number, opacity: number = 1): string[] {
-  const colors: string[] = [];
-
-  for (let i = 0; i < count; i++) {
-    if (i < DEFAULT_COLORS.length) {
-      // Use predefined colors with custom opacity
-      const color = DEFAULT_COLORS[i];
-      const rgba = color.replace(/rgba?\(([^)]+)\)/, (_, values) => {
-        const [r, g, b] = values.split(",").map((v: string) => v.trim());
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      });
-      colors.push(rgba);
-    } else {
-      // Generate additional colors using HSL
-      const hue = (i * 137.508) % 360; // Golden angle approximation
-      colors.push(`hsla(${hue}, 70%, 50%, ${opacity})`);
-    }
-  }
-
-  return colors;
+  // Use centralized color generation with default parameters
+  return generateColorsWithCache(count, 0, 0.3, 0.6, opacity, true);
 }
 
 /**

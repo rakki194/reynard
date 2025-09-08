@@ -2,6 +2,7 @@ import type { FeatureDefinition } from '../core/types';
 
 /**
  * Common feature definitions for typical applications
+ * Updated to align with actual Reynard service implementations
  */
 export const COMMON_FEATURES: FeatureDefinition[] = [
   // Core features
@@ -9,7 +10,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'file-management',
     name: 'File Management',
     description: 'Manage and organize files in the system',
-    dependencies: [{ services: ['DataSourceService'], required: true }],
+    dependencies: [{ services: ['FileProcessingService'], required: true }],
     category: 'core',
     priority: 'critical',
     tags: ['storage', 'filesystem'],
@@ -35,13 +36,23 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     tags: ['database', 'storage'],
     icon: 'database'
   },
+  {
+    id: 'service-management',
+    name: 'Service Management',
+    description: 'Manage application services and dependencies',
+    dependencies: [{ services: ['ServiceManager'], required: true }],
+    category: 'core',
+    priority: 'critical',
+    tags: ['services', 'management'],
+    icon: 'settings'
+  },
 
   // ML/AI features
   {
     id: 'image-processing',
     name: 'Image Processing',
     description: 'Process and manipulate images with various formats',
-    dependencies: [{ services: ['ImageProcessingService'], required: true }],
+    dependencies: [{ services: ['FileProcessingService'], required: true }],
     category: 'ml',
     priority: 'high',
     tags: ['computer-vision', 'image'],
@@ -52,8 +63,8 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     name: 'Caption Generation',
     description: 'Generate captions for images using AI models',
     dependencies: [
-      { services: ['CaptionGeneratorService'], required: true },
-      { services: ['ImageProcessingService'], required: true }
+      { services: ['AnnotationService'], required: true },
+      { services: ['FileProcessingService'], required: true }
     ],
     category: 'ml',
     priority: 'high',
@@ -65,8 +76,8 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     name: 'Object Detection',
     description: 'Detect objects in images using AI models',
     dependencies: [
-      { services: ['DetectionModelsService'], required: true },
-      { services: ['ImageProcessingService'], required: true }
+      { services: ['AnnotationService'], required: true },
+      { services: ['FileProcessingService'], required: true }
     ],
     category: 'ml',
     priority: 'high',
@@ -77,7 +88,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'text-analysis',
     name: 'Text Analysis',
     description: 'Analyze and process text content',
-    dependencies: [{ services: ['NLPService'], required: true }],
+    dependencies: [{ services: ['RAGService'], required: false }],
     category: 'ml',
     priority: 'medium',
     tags: ['nlp', 'text'],
@@ -87,7 +98,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'model-training',
     name: 'Model Training',
     description: 'Train and fine-tune AI models',
-    dependencies: [{ services: ['TrainingService'], required: false }],
+    dependencies: [{ services: ['AIService'], required: false }],
     category: 'ml',
     priority: 'medium',
     tags: ['training', 'ml'],
@@ -109,7 +120,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'api-integration',
     name: 'API Integration',
     description: 'Connect to external APIs and services',
-    dependencies: [{ services: ['APIGateway'], required: false }],
+    dependencies: [{ services: ['ConnectionService'], required: false }],
     category: 'integration',
     priority: 'medium',
     tags: ['api', 'external'],
@@ -119,7 +130,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'cloud-storage',
     name: 'Cloud Storage',
     description: 'Store and retrieve files from cloud providers',
-    dependencies: [{ services: ['CloudStorageService'], required: false }],
+    dependencies: [{ services: ['FileProcessingService'], required: false }],
     category: 'integration',
     priority: 'medium',
     tags: ['cloud', 'storage'],
@@ -129,7 +140,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'notification-service',
     name: 'Notification Service',
     description: 'Send notifications via email, SMS, or push',
-    dependencies: [{ services: ['NotificationService'], required: false }],
+    dependencies: [{ services: ['CoreService'], required: false }],
     category: 'integration',
     priority: 'low',
     tags: ['notifications', 'communication'],
@@ -141,7 +152,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'caching',
     name: 'Caching System',
     description: 'Cache data for improved performance',
-    dependencies: [{ services: ['CacheService'], required: false }],
+    dependencies: [{ services: ['CoreService'], required: false }],
     category: 'utility',
     priority: 'medium',
     tags: ['performance', 'cache'],
@@ -151,7 +162,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'logging',
     name: 'Logging System',
     description: 'Log application events and errors',
-    dependencies: [{ services: ['LoggingService'], required: false }],
+    dependencies: [{ services: ['CoreService'], required: false }],
     category: 'utility',
     priority: 'low',
     tags: ['logging', 'debugging'],
@@ -161,7 +172,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'monitoring',
     name: 'System Monitoring',
     description: 'Monitor system health and performance',
-    dependencies: [{ services: ['MonitoringService'], required: false }],
+    dependencies: [{ services: ['ServiceManager'], required: false }],
     category: 'utility',
     priority: 'low',
     tags: ['monitoring', 'health'],
@@ -171,11 +182,21 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'backup',
     name: 'Backup System',
     description: 'Backup and restore application data',
-    dependencies: [{ services: ['BackupService'], required: false }],
+    dependencies: [{ services: ['FileProcessingService'], required: false }],
     category: 'utility',
     priority: 'medium',
     tags: ['backup', 'recovery'],
     icon: 'save'
+  },
+  {
+    id: 'tools',
+    name: 'Development Tools',
+    description: 'Development and runtime tools for debugging and profiling',
+    dependencies: [{ services: ['ToolsService'], required: false }],
+    category: 'utility',
+    priority: 'low',
+    tags: ['tools', 'development'],
+    icon: 'wrench'
   },
 
   // UI features
@@ -183,7 +204,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'theme-system',
     name: 'Theme System',
     description: 'Customizable themes and styling',
-    dependencies: [],
+    dependencies: [{ services: ['ThemesService'], required: false }],
     category: 'ui',
     priority: 'low',
     tags: ['ui', 'styling'],
@@ -193,7 +214,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'responsive-design',
     name: 'Responsive Design',
     description: 'Adaptive UI for different screen sizes',
-    dependencies: [],
+    dependencies: [{ services: ['UIService'], required: false }],
     category: 'ui',
     priority: 'medium',
     tags: ['ui', 'responsive'],
@@ -203,11 +224,21 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'accessibility',
     name: 'Accessibility Features',
     description: 'Accessibility support for users with disabilities',
-    dependencies: [],
+    dependencies: [{ services: ['UIService'], required: false }],
     category: 'ui',
     priority: 'medium',
     tags: ['accessibility', 'a11y'],
     icon: 'eye'
+  },
+  {
+    id: 'components',
+    name: 'UI Components',
+    description: 'Reusable UI components and layouts',
+    dependencies: [{ services: ['ComponentsService'], required: false }],
+    category: 'ui',
+    priority: 'medium',
+    tags: ['ui', 'components'],
+    icon: 'puzzle-piece'
   },
 
   // Data features
@@ -215,7 +246,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'data-export',
     name: 'Data Export',
     description: 'Export data in various formats',
-    dependencies: [{ services: ['ExportService'], required: false }],
+    dependencies: [{ services: ['FileProcessingService'], required: false }],
     category: 'data',
     priority: 'medium',
     tags: ['export', 'data'],
@@ -225,7 +256,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'data-import',
     name: 'Data Import',
     description: 'Import data from various sources',
-    dependencies: [{ services: ['ImportService'], required: false }],
+    dependencies: [{ services: ['FileProcessingService'], required: false }],
     category: 'data',
     priority: 'medium',
     tags: ['import', 'data'],
@@ -235,7 +266,7 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'data-validation',
     name: 'Data Validation',
     description: 'Validate data integrity and format',
-    dependencies: [{ services: ['ValidationService'], required: false }],
+    dependencies: [{ services: ['CoreService'], required: false }],
     category: 'data',
     priority: 'high',
     tags: ['validation', 'data'],
@@ -245,11 +276,24 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
     id: 'search',
     name: 'Search System',
     description: 'Search and filter application data',
-    dependencies: [{ services: ['SearchService'], required: false }],
+    dependencies: [{ services: ['RAGService'], required: false }],
     category: 'data',
     priority: 'medium',
     tags: ['search', 'filter'],
     icon: 'search'
+  },
+  {
+    id: 'gallery',
+    name: 'Gallery System',
+    description: 'Image gallery and media management',
+    dependencies: [
+      { services: ['GalleryService'], required: false },
+      { services: ['FileProcessingService'], required: false }
+    ],
+    category: 'data',
+    priority: 'medium',
+    tags: ['gallery', 'media'],
+    icon: 'images'
   }
 ];
 

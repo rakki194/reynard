@@ -23,8 +23,8 @@ import { getInitialTheme } from "./themeInitialization";
 import { createThemeContext } from "./themeContext";
 import { setupThemeLifecycle } from "./themeLifecycle";
 
-// Create contexts
-export const ReynardContextInstance = createContext<ReynardContext | undefined>();
+// Create contexts with default value to prevent context not found errors
+export const ReynardContextInstance = createContext<ReynardContext | undefined>(undefined);
 
 // Theme Provider Component
 export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
@@ -65,6 +65,11 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
     // Initialize lifecycle only once, but track theme changes
     setupThemeLifecycle(() => currentTheme, setThemeState, i18nModule);
   });
+
+  // Debug logging to track context creation
+  console.log("ReynardProvider - context created:", context);
+  console.log("ReynardProvider - themeContext:", themeContext);
+  console.log("ReynardProvider - translationContext:", translationContext);
 
   return (
     <I18nProvider value={translationContext}>

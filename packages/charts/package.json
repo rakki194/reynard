@@ -1,6 +1,6 @@
 {
   "name": "reynard-charts",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Reynard Charts - Data visualization components for SolidJS",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -18,7 +18,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
@@ -38,7 +38,8 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "reynard-core": "file:../core",
+    "reynard-core": "workspace:*",
+    "reynard-color-media": "workspace:*",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^4.1.0",
     "solid-chartjs": "1.3.11"

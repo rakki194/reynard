@@ -39,6 +39,14 @@ export interface Dataset {
   pointRadius?: number;
   /** Point hover radius */
   pointHoverRadius?: number;
+  /** Point background color */
+  pointBackgroundColor?: string | string[];
+  /** Point border color */
+  pointBorderColor?: string | string[];
+  /** Point border width */
+  pointBorderWidth?: number;
+  /** Stepped line */
+  stepped?: boolean;
   /** Hidden state */
   hidden?: boolean;
 }
@@ -100,6 +108,10 @@ export interface ChartConfig extends ChartOptions {
   xAxis?: AxisOptions;
   /** Y-axis configuration */
   yAxis?: AxisOptions;
+  /** X-axis label */
+  xAxisLabel?: string;
+  /** Y-axis label */
+  yAxisLabel?: string;
   /** Color palette */
   colors?: string[];
   /** Tooltip configuration */

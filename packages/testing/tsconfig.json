@@ -16,7 +16,7 @@
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
-    "composite": true,
+    "composite": false,
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "preserve",
@@ -27,9 +27,11 @@
   },
   "include": ["src"],
   "exclude": [
-    "dist"
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.test.js",
+    "**/*.test.jsx"
   ],
-  "references": [
-    { "path": "./tsconfig.test.json" }
-  ]
+  "references": []
 }

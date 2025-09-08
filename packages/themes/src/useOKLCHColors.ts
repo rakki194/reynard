@@ -13,7 +13,7 @@ import {
   generateComplementaryColors,
   generateOKLCHGradient,
 } from "./oklchColors";
-import { oklchStringToRgb } from "./colorConversion";
+import { oklchStringToCSS } from "./colorConversion";
 import { createTagColorGenerator } from "reynard-color-media";
 
 /**
@@ -98,13 +98,13 @@ export function useTagColors() {
       textColor = `oklch(98% 0.01 ${baseColor.h})`;
     }
     
-    // Convert OKLCH to RGB for better browser support
-    const rgbBackground = oklchStringToRgb(backgroundColor);
-    const rgbText = oklchStringToRgb(textColor);
+    // Use native OKLCH CSS for modern browser support
+    const cssBackground = oklchStringToCSS(backgroundColor);
+    const cssText = oklchStringToCSS(textColor);
     
     const result = {
-      backgroundColor: rgbBackground,
-      color: rgbText,
+      backgroundColor: cssBackground,
+      color: cssText,
       '--tag-bg': backgroundColor,
       '--tag-color': textColor,
     };

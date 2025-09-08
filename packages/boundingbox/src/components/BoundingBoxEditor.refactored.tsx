@@ -9,9 +9,9 @@
 
 import type { Component } from 'solid-js';
 import { createSignal, For, Show, onMount, createEffect, onCleanup } from 'solid-js';
-import { useBoundingBoxes } from '../composables/useBoundingBoxes';
-import { useBoxResize } from '../composables/useBoxResize';
-import { useBoxMove } from '../composables/useBoxMove';
+import { useBoundingBoxes } from 'reynard-composables';
+import { useBoxResize } from 'reynard-composables';
+import { useBoxMove } from 'reynard-composables';
 import { LabelSelector } from './LabelSelector';
 import { setupCanvasEventHandlers } from '../handlers/canvasEventHandlers';
 import { createCanvas, addBoundingBoxesToCanvas, cleanupCanvas } from '../utils/canvasSetup';

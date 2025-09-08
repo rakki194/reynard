@@ -1,6 +1,6 @@
 {
     "name": "reynard-model-management",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "Model management system for Reynard - handles ML model loading, downloading, and lifecycle management",
     "type": "module",
     "main": "./dist/index.js",
@@ -46,8 +46,8 @@
         "lifecycle"
     ],
     "dependencies": {
-        "reynard-core": "file:../core",
-        "reynard-service-manager": "file:../service-manager"
+        "reynard-core": "workspace:*",
+        "reynard-service-manager": "workspace:*"
     },
     "devDependencies": {
         "@types/node": "24.3.1",

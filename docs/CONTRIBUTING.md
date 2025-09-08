@@ -47,7 +47,7 @@ npm run typecheck
 
 ### Project Structure
 
-```
+```plaintext
 reynard/
 ├── packages/           # Individual Reynard packages
 │   ├── core/          # Core utilities and modules
@@ -81,7 +81,7 @@ reynard/
 
 3. **Set Up Package Structure**
 
-   ```
+   ```plaintext
    my-new-package/
    ├── src/
    │   ├── index.ts
@@ -292,8 +292,6 @@ function App() {
 ### 0.1.0
 
 - Initial release
-
-```
 
 ## 🧪 Testing
 

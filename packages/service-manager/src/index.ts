@@ -10,3 +10,6 @@ export * from './types/index.js';
 // Re-export everything for convenience
 export * from './managers/index.js';
 export * from './services/index.js';
+
+// Integration exports
+export * from './integrations/index.js';

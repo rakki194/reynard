@@ -1,6 +1,6 @@
 {
   "name": "reynard-docs-generator",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Automated documentation generator for Reynard packages",
   "type": "module",
   "main": "./dist/index.js",
@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
@@ -49,7 +49,7 @@
     "gray-matter": "4.0.3",
     "marked": "16.2.1",
     "highlight.js": "11.11.1",
-    "reynard-docs-core": "0.1.0"
+    "reynard-docs-core": "workspace:*"
   },
   "devDependencies": {
     "@types/fs-extra": "11.0.4",

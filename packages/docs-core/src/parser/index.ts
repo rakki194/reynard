@@ -37,7 +37,7 @@ export class MarkdownParser {
   /**
    * Parse markdown content with frontmatter
    */
-  parse(content: string, type: DocContentType = 'markdown'): DocPage {
+  async parse(content: string, type: DocContentType = 'markdown'): Promise<DocPage> {
     const { data, content: markdownContent } = matter(content);
     
     const metadata: DocMetadata = {
@@ -52,7 +52,7 @@ export class MarkdownParser {
       ...data
     };
 
-    const html = this.parseMarkdown(markdownContent);
+    const html = await this.parseMarkdown(markdownContent);
     const slug = this.generateSlug(metadata.title);
 
     return {
@@ -70,8 +70,8 @@ export class MarkdownParser {
   /**
    * Parse markdown to HTML
    */
-  private parseMarkdown(content: string): string {
-    return marked(content, this.options);
+  private async parseMarkdown(content: string): Promise<string> {
+    return await marked(content, this.options);
   }
 
   /**
@@ -81,54 +81,54 @@ export class MarkdownParser {
     const renderer = new marked.Renderer();
 
     // Custom code block rendering
-    renderer.code = (code: string, language: string) => {
-      const highlighted = this.options.highlight?.(code, language) || code;
+    renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
+      const highlighted = this.options.highlight?.(text, lang || 'text') || text;
       return `
-        <div class="code-block" data-language="${language}">
+        <div class="code-block" data-language="${lang}">
           <div class="code-header">
-            <span class="language-label">${language || 'text'}</span>
+            <span class="language-label">${lang || 'text'}</span>
             <button class="copy-button" onclick="copyCode(this)">Copy</button>
           </div>
-          <pre><code class="hljs language-${language}">${highlighted}</code></pre>
+          <pre><code class="hljs language-${lang}">${highlighted}</code></pre>
         </div>
       `;
     };
 
     // Custom blockquote rendering
-    renderer.blockquote = (quote: string) => {
-      return `<blockquote class="doc-blockquote">${quote}</blockquote>`;
+    renderer.blockquote = ({ tokens }: { tokens: any[] }) => {
+      return `<blockquote class="doc-blockquote">${tokens}</blockquote>`;
     };
 
     // Custom table rendering
-    renderer.table = (header: string, body: string) => {
+    renderer.table = (token: any) => {
       return `
         <div class="table-wrapper">
           <table class="doc-table">
-            <thead>${header}</thead>
-            <tbody>${body}</tbody>
+            <thead>${token.header}</thead>
+            <tbody>${token.body}</tbody>
           </table>
         </div>
       `;
     };
 
     // Custom link rendering with external link detection
-    renderer.link = (href: string, title: string, text: string) => {
+    renderer.link = ({ href, title, tokens }: { href: string; title?: string | null; tokens: any[] }) => {
       const isExternal = href.startsWith('http') || href.startsWith('//');
       const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
       const titleAttr = title ? ` title="${title}"` : '';
       
-      return `<a href="${href}"${titleAttr}${target} class="doc-link ${isExternal ? 'external' : ''}">${text}</a>`;
+      return `<a href="${href}"${titleAttr}${target} class="doc-link ${isExternal ? 'external' : ''}">${tokens}</a>`;
     };
 
     // Custom heading rendering with anchor links
-    renderer.heading = (text: string, level: number) => {
-      const id = this.generateSlug(text);
+    renderer.heading = ({ tokens, depth }: { tokens: any[]; depth: number }) => {
+      const id = this.generateSlug(tokens.toString());
       return `
-        <h${level} id="${id}" class="doc-heading doc-heading--${level}">
-          <a href="#${id}" class="heading-anchor" aria-label="Link to ${text}">
-            ${text}
+        <h${depth} id="${id}" class="doc-heading doc-heading--${depth}">
+          <a href="#${id}" class="heading-anchor" aria-label="Link to ${tokens}">
+            ${tokens}
           </a>
-        </h${level}>
+        </h${depth}>
       `;
     };
 
@@ -184,10 +184,10 @@ export class MDXParser {
   /**
    * Parse MDX content with component support
    */
-  parse(content: string): DocPage {
+  async parse(content: string): Promise<DocPage> {
     // For now, we'll use the markdown parser
     // In a full implementation, you'd use @mdx-js/mdx
-    return this.markdownParser.parse(content, 'mdx');
+    return await this.markdownParser.parse(content, 'mdx');
   }
 
   /**
@@ -216,7 +216,7 @@ export class ApiParser {
   /**
    * Parse TypeScript/JavaScript source for API documentation
    */
-  parseSource(source: string, filename: string): any[] {
+  parseSource(_source: string, _filename: string): any[] {
     // This would integrate with TypeScript compiler API
     // to extract type information, JSDoc comments, etc.
     // For now, return empty array
@@ -226,7 +226,7 @@ export class ApiParser {
   /**
    * Parse JSDoc comments
    */
-  parseJSDoc(comment: string): any {
+  parseJSDoc(_comment: string): any {
     // Parse JSDoc comments into structured data
     return {};
   }
@@ -238,28 +238,28 @@ export class ApiParser {
 export class ContentParser {
   private markdownParser: MarkdownParser;
   private mdxParser: MDXParser;
-  private apiParser: ApiParser;
+  // private apiParser: ApiParser;
 
   constructor(options: MarkdownOptions = {}) {
     this.markdownParser = new MarkdownParser(options);
     this.mdxParser = new MDXParser(options);
-    this.apiParser = new ApiParser();
+    // this.apiParser = new ApiParser();
   }
 
   /**
    * Parse content based on type
    */
-  parse(content: string, type: DocContentType): DocPage {
+  async parse(content: string, type: DocContentType): Promise<DocPage> {
     switch (type) {
       case 'markdown':
-        return this.markdownParser.parse(content, type);
+        return await this.markdownParser.parse(content, type);
       case 'mdx':
-        return this.mdxParser.parse(content);
+        return await this.mdxParser.parse(content);
       case 'api':
         // Handle API documentation parsing
         return this.parseApiContent(content);
       default:
-        return this.markdownParser.parse(content, type);
+        return await this.markdownParser.parse(content, type);
     }
   }
 

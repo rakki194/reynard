@@ -11,14 +11,14 @@ export interface PooledObject {
   reset(): void;
 }
 
-export interface MemoryPoolConfig {
+export interface PerformanceMemoryPoolConfig {
   initialSize?: number;
   maxSize?: number;
   growthFactor?: number;
   enableStats?: boolean;
 }
 
-export interface MemoryPoolStats {
+export interface PerformanceMemoryPoolStats {
   created: number;
   acquired: number;
   released: number;
@@ -30,10 +30,10 @@ export interface MemoryPoolStats {
 export class MemoryPool<T extends PooledObject> {
   private pool: T[] = [];
   private createFn: () => T;
-  private config: Required<MemoryPoolConfig>;
-  private stats: MemoryPoolStats;
+  private config: Required<PerformanceMemoryPoolConfig>;
+  private stats: PerformanceMemoryPoolStats;
 
-  constructor(createFn: () => T, config: MemoryPoolConfig = {}) {
+  constructor(createFn: () => T, config: PerformanceMemoryPoolConfig = {}) {
     this.createFn = createFn;
     this.config = {
       initialSize: 10,
@@ -100,7 +100,7 @@ export class MemoryPool<T extends PooledObject> {
     }
   }
 
-  getStats(): MemoryPoolStats {
+  getStats(): PerformanceMemoryPoolStats {
     return { ...this.stats };
   }
 

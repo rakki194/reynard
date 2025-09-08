@@ -2,17 +2,29 @@
  * @fileoverview Template engine for generating documentation pages
  */
 
-import { DocPage } from 'reynard-docs-core';
+// import { DocPage } from 'reynard-docs-core';
+
+// Temporary local type definition
+interface DocPage {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  metadata: any;
+  type: string;
+  published?: boolean;
+  order?: number;
+}
 import { PackageInfo, ApiInfo, ExampleInfo } from '../config';
 
 /**
  * Template engine for generating documentation pages
  */
 export class TemplateEngine {
-  private config: any;
+  // private config: any;
 
-  constructor(config: any) {
-    this.config = config;
+  constructor(_config: any) {
+    // this.config = config;
   }
 
   /**

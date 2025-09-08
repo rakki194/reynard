@@ -1,6 +1,6 @@
 {
   "name": "reynard-error-boundaries",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Comprehensive error boundary system for Reynard framework",
   "type": "module",
   "main": "./dist/index.js",
@@ -49,10 +49,11 @@
   "author": "Reynard Team",
   "license": "MIT",
   "dependencies": {
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "reynard-composables": "workspace:*"
   },
   "devDependencies": {
-    "reynard-testing": "file:../testing",
+    "reynard-testing": "workspace:*",
     "@types/node": "24.3.1",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
@@ -62,8 +63,8 @@
     "vitest": "3.2.4"
   },
   "peerDependencies": {
-    "reynard-core": "file:../core",
-    "reynard-components": "file:../components",
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*",
     "solid-js": "1.9.9"
   },
   "publishConfig": {

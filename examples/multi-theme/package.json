@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "reynard-core": "0.1.1",
+    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

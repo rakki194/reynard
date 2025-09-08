@@ -2,7 +2,51 @@
  * @fileoverview Configuration types and utilities for documentation generator
  */
 
-import { DocTheme, DocNavigation, DocFooter, DocSearchConfig, DocAnalytics, DocSocial } from 'reynard-docs-core';
+// import { DocTheme, DocNavigation, DocFooter, DocSearchConfig, DocAnalytics, DocSocial } from 'reynard-docs-core';
+
+// Temporary local type definitions
+interface DocTheme {
+  name: string;
+  colors?: any;
+  fonts?: any;
+  primaryColor?: string;
+  [key: string]: any;
+}
+
+interface DocNavigation {
+  main?: any[];
+  footer?: any[];
+  breadcrumbs?: boolean;
+  [key: string]: any;
+}
+
+interface DocFooter {
+  links: any[];
+  copyright: string;
+  [key: string]: any;
+}
+
+interface DocSearchConfig {
+  enabled: boolean;
+  provider: string;
+  apiKey?: string;
+  placeholder?: string;
+  [key: string]: any;
+}
+
+interface DocAnalytics {
+  enabled: boolean;
+  provider: string;
+  trackingId?: string;
+  [key: string]: any;
+}
+
+interface DocSocial {
+  github?: string;
+  twitter?: string;
+  discord?: string;
+  [key: string]: any;
+}
 
 /**
  * Package configuration for documentation generation

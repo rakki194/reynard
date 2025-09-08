@@ -1,6 +1,6 @@
 {
   "name": "reynard-ui",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Reynard UI - Advanced layout and navigation components",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,8 +39,8 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "reynard-core": "file:../core",
-    "reynard-components": "file:../components"
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

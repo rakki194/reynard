@@ -19,6 +19,6 @@
     "declarationMap": true,
     "outDir": "dist"
   },
-  "include": ["src", "test"],
+  "include": ["src"],
   "exclude": ["dist", "node_modules"]
 }

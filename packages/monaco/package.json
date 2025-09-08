@@ -1,6 +1,6 @@
 {
   "name": "reynard-monaco",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Monaco code editor and text editing components for Reynard",
   "type": "module",
   "main": "./dist/index.js",
@@ -40,7 +40,8 @@
   "dependencies": {
     "monaco-editor": "0.52.2",
     "@monaco-editor/loader": "1.5.0",
-    "shiki": "3.12.2"
+    "shiki": "3.12.2",
+    "reynard-composables": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

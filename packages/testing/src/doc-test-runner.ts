@@ -7,7 +7,7 @@
 import { execSync } from 'child_process';
 import { writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import { createDocTestFile, validateDocExamples, generateDocTestReport } from './doc-tests';
+import { createDocTestFile, validateDocExamples, generateDocTestReport } from './doc-tests/index';
 
 export interface PackageConfig {
   name: string;

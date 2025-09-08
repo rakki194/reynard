@@ -1,6 +1,6 @@
 {
   "name": "reynard-annotating",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows",
   "type": "module",
   "main": "./dist/index.js",

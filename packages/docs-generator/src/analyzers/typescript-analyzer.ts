@@ -111,7 +111,7 @@ export class TypeScriptAnalyzer {
    */
   private isExportedDeclaration(node: ts.Node): boolean {
     // Check for export modifier
-    if (ts.getCombinedModifierFlags(node) & ts.ModifierFlags.Export) {
+    if (ts.canHaveModifiers(node) && ts.getCombinedModifierFlags(node as any) & ts.ModifierFlags.Export) {
       return true;
     }
 
@@ -138,7 +138,7 @@ export class TypeScriptAnalyzer {
     if (!symbol) return null;
 
     const name = symbol.getName();
-    const type = this.checker.getTypeOfSymbolAtLocation(symbol, node);
+    // const type = this.checker.getTypeOfSymbolAtLocation(symbol, node);
     const description = this.getJSDocDescription(symbol);
 
     let apiType: ApiInfo['type'];
@@ -157,7 +157,7 @@ export class TypeScriptAnalyzer {
       apiType = 'type';
     } else if (ts.isEnumDeclaration(node)) {
       apiType = 'enum';
-    } else if (ts.isNamespaceDeclaration(node)) {
+    } else if (ts.isModuleDeclaration(node)) {
       apiType = 'namespace';
     } else if (ts.isVariableDeclaration(node)) {
       apiType = 'variable';
@@ -192,7 +192,7 @@ export class TypeScriptAnalyzer {
     return node.parameters.map(param => {
       const name = param.name.getText();
       const type = param.type ? param.type.getText() : 'any';
-      const description = this.getJSDocDescription(param.symbol);
+      const description = this.getJSDocDescription((param as any).symbol);
       const required = !param.questionToken && !param.initializer;
       const rest = !!param.dotDotDotToken;
 
@@ -214,7 +214,7 @@ export class TypeScriptAnalyzer {
     if (!node.type) return undefined;
 
     const type = node.type.getText();
-    const description = this.getJSDocReturnDescription(node.symbol);
+    const description = this.getJSDocReturnDescription((node as any).symbol);
 
     return {
       type,

@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { useTheme } from "reynard-themes";
+import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 import { useCustomTranslation } from "../App";
 
 export const ThemeToggle: Component = () => {
@@ -14,10 +14,10 @@ export const ThemeToggle: Component = () => {
   const theme = () => themeContext.theme;
   
   const nextTheme = () => {
-    const themes = ["light", "dark", "gray", "banana", "strawberry", "peanut", "high-contrast-black", "high-contrast-inverse"];
+    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
     const currentIndex = themes.indexOf(theme());
     const nextIndex = (currentIndex + 1) % themes.length;
-    themeContext.setTheme(themes[nextIndex] as any);
+    themeContext.setTheme(themes[nextIndex]);
   };
 
   const getThemeEmoji = () => {

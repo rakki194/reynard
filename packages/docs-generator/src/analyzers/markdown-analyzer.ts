@@ -5,14 +5,26 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { DocPage } from 'reynard-docs-core';
+// import { DocPage } from 'reynard-docs-core';
+
+// Temporary local type definition
+interface DocPage {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  metadata: any;
+  type: string;
+  published: boolean;
+  order: number;
+}
 
 /**
  * Analyzes markdown files and extracts documentation pages
  */
 export class MarkdownAnalyzer {
   private rootPath: string;
-  private includePatterns: string[];
+  // private includePatterns: string[];
   private excludePatterns: string[];
 
   constructor(config: {
@@ -21,7 +33,7 @@ export class MarkdownAnalyzer {
     excludePatterns?: string[];
   }) {
     this.rootPath = config.rootPath;
-    this.includePatterns = config.includePatterns || ['**/*.md', '**/*.mdx'];
+    // this.includePatterns = config.includePatterns || ['**/*.md', '**/*.mdx'];
     this.excludePatterns = config.excludePatterns || ['**/node_modules/**', '**/dist/**', '**/build/**'];
   }
 

@@ -113,6 +113,7 @@ export class AlgorithmSelector {
     const performanceProfile = this.getPerformanceProfile(workload);
 
     return {
+      workload,
       complexity,
       memoryPressure,
       performanceProfile,

@@ -1,6 +1,6 @@
 {
   "name": "reynard-i18n",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Comprehensive internationalization system for Reynard framework with 37 language support",
   "type": "module",
   "main": "./dist/index.js",
@@ -30,13 +30,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "dev": "tsc --watch",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-        "lint": "eslint src",
+    "lint": "eslint src",
     "type-check": "tsc --noEmit"
   },
   "keywords": [

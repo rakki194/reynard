@@ -1,6 +1,6 @@
 {
   "name": "reynard-3d",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "3D graphics and visualization components for Reynard framework using Three.js",
   "type": "module",
   "main": "./dist/index.js",
@@ -52,7 +52,8 @@
     "@types/three": "0.180.0",
     "reynard-components": "0.1.1",
     "reynard-algorithms": "0.1.0",
-    "reynard-testing": "0.1.0"
+    "reynard-testing": "0.1.0",
+    "reynard-composables": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

@@ -1,6 +1,6 @@
 {
   "name": "reynard-gallery-ai",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "AI-enhanced gallery components for Reynard - integrates caption generation, batch annotation, and smart features with the gallery system",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -52,12 +52,12 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "reynard-gallery": "file:../gallery",
-    "reynard-annotating": "file:../annotating",
-    "reynard-caption": "file:../caption",
-    "reynard-ai-shared": "file:../ai-shared",
-    "reynard-core": "file:../core",
-    "reynard-components": "file:../components",
+    "reynard-gallery": "workspace:*",
+    "reynard-annotating": "workspace:*",
+    "reynard-caption": "workspace:*",
+    "reynard-ai-shared": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*",
     "@solid-primitives/intersection-observer": "2.2.2",
     "@solid-primitives/resize-observer": "2.1.3",
     "@solid-primitives/event-listener": "2.4.3"

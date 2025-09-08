@@ -1,6 +1,6 @@
 {
   "name": "reynard-ai-shared",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Shared AI/ML utilities and base classes for Reynard - provides common interfaces, types, and utilities for all AI/ML packages",
   "type": "module",
   "main": "./dist/index.js",
@@ -51,7 +51,7 @@
     "reynard"
   ],
   "dependencies": {
-    "reynard-core": "file:../core"
+    "reynard-core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

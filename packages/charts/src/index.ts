@@ -9,5 +9,8 @@ export * from "./components";
 // Export types
 export * from "./types";
 
+// Export core visualization engine
+export * from "./core/VisualizationEngine";
+
 // Export utilities
 export * from "./utils";

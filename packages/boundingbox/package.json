@@ -1,6 +1,6 @@
 {
     "name": "reynard-boundingbox",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "Reusable bounding box and annotation editing components for Reynard",
     "type": "module",
     "main": "./dist/index.js",
@@ -40,7 +40,8 @@
     "license": "MIT",
     "dependencies": {
         "solid-js": "1.9.9",
-        "fabric": "6.7.1"
+        "fabric": "6.7.1",
+        "reynard-composables": "workspace:*"
     },
     "devDependencies": {
         "@solidjs/testing-library": "0.8.10",
@@ -48,6 +49,7 @@
         "@types/fabric": "5.3.10",
         "@typescript-eslint/eslint-plugin": "8.42.0",
         "@typescript-eslint/parser": "8.42.0",
+        "canvas": "3.2.0",
         "eslint": "9.35.0",
         "jsdom": "26.1.0",
         "typescript": "5.9.2",

@@ -1,6 +1,6 @@
 {
   "name": "reynard-auth",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Reynard Auth - Authentication and user management for SolidJS",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -40,8 +40,9 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "reynard-core": "file:../core",
-    "reynard-components": "file:../components",
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*",
+    "reynard-composables": "workspace:*",
     "jwt-decode": "4.0.0",
     "@zxcvbn-ts/core": "3.0.4",
     "@zxcvbn-ts/language-common": "3.0.4",

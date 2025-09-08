@@ -37,5 +37,11 @@ export type { DependencyResolutionResult } from './dependencies';
 export {
   COMMON_FEATURES,
   FEATURE_CATEGORIES,
-  FEATURE_PRIORITIES
+  FEATURE_PRIORITIES,
+  SERVICE_MAPPINGS,
+  REVERSE_SERVICE_MAPPINGS,
+  getActualServiceName,
+  getFeatureServiceName,
+  getAllServiceMappings,
+  getAllReverseServiceMappings
 } from './presets';

@@ -1,0 +1,63 @@
+.color-selection {
+  margin-bottom: 1.5rem;
+}
+
+.color-selection h3 {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-option {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.color-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--dynamic-color);
+  opacity: 0.1;
+  transition: opacity 0.2s ease;
+}
+
+.color-option:hover {
+  border-color: var(--dynamic-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover::before {
+  opacity: 0.2;
+}
+
+.color-option.active {
+  border-color: var(--dynamic-color);
+  background: var(--dynamic-color);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-option.active::before {
+  opacity: 0;
+}

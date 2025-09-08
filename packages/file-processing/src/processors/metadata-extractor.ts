@@ -15,7 +15,7 @@ import {
 import { getFileTypeInfo, getFileCategory } from "../config/file-types";
 import { MetadataExtractorFactory, MetadataExtractionOptions } from "./extractors";
 
-export { MetadataExtractionOptions };
+export type { MetadataExtractionOptions };
 
 export class MetadataExtractor {
   constructor(private options: MetadataExtractionOptions = {}) {

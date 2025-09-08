@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+  - templates/*
+  - examples/*
+
+ignoredBuiltDependencies:
+  - canvas
+  - esbuild

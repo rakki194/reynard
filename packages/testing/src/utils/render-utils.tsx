@@ -13,7 +13,7 @@ export function renderWithTheme(
   ui: () => JSX.Element,
   theme: any = { name: 'light', colors: {} },
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const ThemeProvider: Component<{ children: JSX.Element }> = props => {
     return createComponent(() => props.children, { theme });
   };
@@ -28,7 +28,7 @@ export function renderWithRouter(
   ui: () => JSX.Element,
   initialUrl: string = '/',
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const RouterProvider: Component<{ children: JSX.Element }> = props => {
     // Mock router context
     const routerContext = {
@@ -61,7 +61,7 @@ export function renderWithRouter(
 export function renderWithNotifications(
   ui: () => JSX.Element,
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const NotificationsProvider: Component<{ children: JSX.Element }> = props => {
     const notificationsContext = {
       notifications: [],
@@ -87,7 +87,7 @@ export function renderWithAllProviders(
     notifications?: any;
   } = {},
   renderOptions?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const {
     theme = { name: 'light', colors: {} },
     initialUrl = '/',
@@ -137,7 +137,7 @@ export function renderWithWrapper<T extends Record<string, any>>(
   Wrapper: Component<{ children: JSX.Element } & T>,
   wrapperProps: T = {} as T,
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   return render(() => <Wrapper {...wrapperProps}>{ui()}</Wrapper>, options);
 }
 
@@ -148,7 +148,7 @@ export function renderWithProviders(
   ui: () => JSX.Element,
   providers: Component<{ children: JSX.Element }>[],
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const CombinedProviders: Component<{ children: JSX.Element }> = props => {
     let result = props.children;
     
@@ -171,7 +171,7 @@ export function renderWithErrorBoundary(
   ui: () => JSX.Element,
   onError: (error: Error) => void = vi.fn(),
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const ErrorBoundary: Component<{ children: JSX.Element }> = props => {
     try {
       return props.children;
@@ -191,7 +191,7 @@ export function renderWithSuspense(
   ui: () => JSX.Element,
   fallback: JSX.Element = <div>Loading...</div>,
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const SuspenseProvider: Component<{ children: JSX.Element }> = props => {
     // Mock suspense context
     const suspenseContext = {
@@ -214,7 +214,7 @@ export function renderWithPerformanceMonitoring(
   ui: () => JSX.Element,
   onRender: (renderTime: number) => void = vi.fn(),
   options?: Omit<Parameters<typeof render>[1], 'wrapper'>
-) {
+): ReturnType<typeof render> {
   const PerformanceProvider: Component<{ children: JSX.Element }> = props => {
     const startTime = performance.now();
     

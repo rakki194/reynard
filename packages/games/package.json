@@ -1,6 +1,6 @@
 {
   "name": "reynard-games",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Interactive games and visualizations for Reynard framework",
   "type": "module",
   "main": "./dist/index.js",
@@ -48,10 +48,10 @@
   },
   "dependencies": {
     "solid-js": "1.9.9",
-    "reynard-algorithms": "file:../algorithms",
-    "reynard-components": "file:../components",
-    "reynard-fluent-icons": "file:../fluent-icons",
-    "reynard-testing": "file:../testing"
+    "reynard-algorithms": "workspace:*",
+    "reynard-components": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-testing": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

@@ -8,7 +8,7 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'ReynardDocsCore',
       fileName: 'index',
-      formats: ['es']
+      formats: ['es', 'cjs']
     },
     rollupOptions: {
       external: ['solid-js', 'solid-js/web'],

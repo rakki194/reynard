@@ -1,6 +1,6 @@
 {
   "name": "reynard-themes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Comprehensive theming system for Reynard applications with translation support",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "solid-js": "1.9.9",
-    "reynard-i18n": "file:../i18n",
-    "reynard-color-media": "file:../color-media"
+    "reynard-i18n": "workspace:*",
+    "reynard-color-media": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

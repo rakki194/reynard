@@ -1,6 +1,6 @@
 {
   "name": "reynard-color-media",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Color generation utilities and media handling components using OKLCH color space",
   "type": "module",
   "main": "dist/index.js",

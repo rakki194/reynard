@@ -1,6 +1,9 @@
 /**
  * Color Conversion Utilities
- * Provides color format conversion functions for better browser support
+ * Provides color format conversion functions with native OKLCH CSS support
+ * 
+ * Note: For CSS usage, prefer native OKLCH functions as modern browsers support oklch() natively.
+ * RGB conversion functions are kept for non-CSS use cases (e.g., canvas, image processing).
  */
 
 /**
@@ -106,8 +109,29 @@ export function oklchToRgb(oklch: OKLCH): RGB {
 }
 
 /**
- * Convert OKLCH string to RGB string for better browser support
+ * Convert OKLCH string to native OKLCH CSS format
+ * This function validates and normalizes OKLCH strings for CSS usage
+ * 
+ * @param oklchColor - OKLCH color string (e.g., "oklch(70% 0.2 120)")
+ * @returns Validated OKLCH CSS string or fallback
+ */
+export function oklchStringToCSS(oklchColor: string): string {
+  const oklch = parseOKLCH(oklchColor);
+  if (!oklch) {
+    // Fallback to a default color if parsing fails
+    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    return "oklch(40% 0.02 0)"; // Neutral gray fallback
+  }
+  
+  // Return normalized OKLCH CSS format with proper rounding
+  return `oklch(${Math.round(oklch.l * 100)}% ${oklch.c} ${Math.round(oklch.h * 10) / 10})`;
+}
+
+/**
+ * Convert OKLCH string to RGB string for non-CSS use cases
  * This function parses OKLCH strings and converts them to RGB format
+ * 
+ * @deprecated For CSS usage, prefer oklchStringToCSS() as modern browsers support oklch() natively
  */
 export function oklchStringToRgb(oklchColor: string): string {
   const oklch = parseOKLCH(oklchColor);
@@ -122,7 +146,32 @@ export function oklchStringToRgb(oklchColor: string): string {
 }
 
 /**
+ * Convert OKLCH string to native OKLCH CSS format with alpha support
+ * This function validates and normalizes OKLCH strings for CSS usage with opacity
+ * 
+ * @param oklchColor - OKLCH color string (e.g., "oklch(70% 0.2 120)")
+ * @param alpha - Alpha value (0-1)
+ * @returns Validated OKLCH CSS string with alpha or fallback
+ */
+export function oklchStringToCSSWithAlpha(oklchColor: string, alpha: number = 1): string {
+  const oklch = parseOKLCH(oklchColor);
+  if (!oklch) {
+    // Fallback to a default color if parsing fails
+    console.warn(`Invalid OKLCH color format: ${oklchColor}`);
+    return `oklch(40% 0.02 0 / ${alpha})`;
+  }
+  
+  // Clamp alpha to valid range
+  const clampedAlpha = Math.max(0, Math.min(1, alpha));
+  
+  // Return normalized OKLCH CSS format with alpha and proper rounding
+  return `oklch(${Math.round(oklch.l * 100)}% ${oklch.c} ${Math.round(oklch.h * 10) / 10} / ${clampedAlpha})`;
+}
+
+/**
  * Convert OKLCH string to hex color for maximum browser compatibility
+ * 
+ * @deprecated For CSS usage, prefer oklchStringToCSS() as modern browsers support oklch() natively
  */
 export function oklchStringToHex(oklchColor: string): string {
   const oklch = parseOKLCH(oklchColor);

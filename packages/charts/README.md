@@ -1,443 +1,440 @@
-# reynard-charts
+# Reynard Charts
 
-Advanced data visualization components for SolidJS applications, built on Chart.js.
+*Professional data visualization components for SolidJS applications with OKLCH color integration and real-time capabilities.*
 
-## 🚀 Features
+## Overview
 
-- **📊 Multiple Chart Types**: Line, Bar, Pie/Doughnut, and Time Series charts
-- **⏱️ Real-time Updates**: Live data streaming with automatic management
-- **🎨 Theme Integration**: Seamlessly works with Reynard's theming system
-- **📱 Responsive Design**: Charts adapt to container size and mobile devices
-- **♿ Accessibility**: Screen reader friendly with proper ARIA labels
-- **⚡ Performance**: Optimized rendering with data aggregation and limits
-- **🎯 TypeScript**: Complete type safety with excellent IntelliSense
-- **🛠️ Configurable**: Extensive customization options for every chart type
+Reynard Charts provides a comprehensive suite of data visualization components built on Chart.js, enhanced with advanced features from yipyap's visualization system. The package features unified OKLCH color management, real-time data streaming, statistical analysis tools, and performance optimization.
 
-## 📦 Installation
+## Installation
 
 ```bash
-npm install reynard-charts reynard-core chart.js solid-chartjs solid-js
+npm install reynard-charts reynard-core reynard-color-media chart.js solid-chartjs solid-js
 ```
 
-## 🎯 Quick Start
+## Quick Start
+
+### Basic Chart
 
 ```tsx
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  TimeSeriesChart,
-} from "reynard-charts";
+import { Chart } from "reynard-charts";
 
 function Dashboard() {
-  const salesData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-    datasets: [
-      {
-        label: "Sales",
-        data: [12, 19, 3, 5, 2],
-      },
-    ],
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [{
+      label: 'Sales',
+      data: [12, 19, 3, 5, 2],
+    }]
   };
 
-  const performanceData = [
-    { timestamp: Date.now() - 300000, value: 45, label: "5 min ago" },
-    { timestamp: Date.now() - 240000, value: 52, label: "4 min ago" },
-    { timestamp: Date.now() - 180000, value: 38, label: "3 min ago" },
-    { timestamp: Date.now() - 120000, value: 67, label: "2 min ago" },
-    { timestamp: Date.now() - 60000, value: 74, label: "1 min ago" },
-    { timestamp: Date.now(), value: 82, label: "Now" },
-  ];
-
   return (
-    <div
-      style={{
-        display: "grid",
-        "grid-template-columns": "1fr 1fr",
-        gap: "2rem",
-      }}
-    >
-      <LineChart
-        title="Sales Trend"
-        labels={salesData.labels}
-        datasets={salesData.datasets}
-        yAxis={{ label: "Sales ($)" }}
-        responsive
-      />
-
-      <TimeSeriesChart
-        title="Real-time Performance"
-        data={performanceData}
-        autoScroll
-        maxDataPoints={50}
-        valueFormatter={(value) => `${value}%`}
-      />
-    </div>
+    <Chart
+      type="line"
+      labels={data.labels}
+      datasets={data.datasets}
+      title="Monthly Sales"
+      width={600}
+      height={400}
+      useOKLCH={true}
+      colorTheme="dark"
+    />
   );
 }
 ```
 
-## 📚 Components
-
-### LineChart
-
-Perfect for showing trends over time or continuous data.
+### Real-Time Chart
 
 ```tsx
-<LineChart
-  title="Website Traffic"
-  labels={["Mon", "Tue", "Wed", "Thu", "Fri"]}
-  datasets={[
-    {
-      label: "Visitors",
-      data: [1200, 1900, 3000, 5000, 2300],
-      tension: 0.4,
-      fill: false,
-    },
-    {
-      label: "Page Views",
-      data: [2400, 3800, 6000, 10000, 4600],
-      tension: 0.4,
-      fill: true,
-    },
-  ]}
-  xAxis={{ label: "Day of Week" }}
-  yAxis={{ label: "Count" }}
-  showGrid
-  responsive
-/>
-```
+import { RealTimeChart } from "reynard-charts";
 
-**Features:**
-
-- Multiple datasets support
-- Smooth line interpolation
-- Fill area under curves
-- Time scale support
-- Custom point styling
-
-### BarChart
-
-Ideal for comparing categories or showing discrete data.
-
-```tsx
-<BarChart
-  title="Revenue by Quarter"
-  labels={["Q1", "Q2", "Q3", "Q4"]}
-  datasets={[
-    {
-      label: "2023",
-      data: [45000, 52000, 48000, 61000],
-    },
-    {
-      label: "2024",
-      data: [51000, 58000, 55000, 67000],
-    },
-  ]}
-  horizontal={false}
-  stacked={false}
-  yAxis={{
-    label: "Revenue ($)",
-    ticks: {
-      callback: (value) => `$${value.toLocaleString()}`,
-    },
-  }}
-/>
-```
-
-**Features:**
-
-- Horizontal and vertical orientations
-- Stacked bar support
-- Custom bar colors
-- Grouped datasets
-- Value formatting
-
-### PieChart
-
-Great for showing proportions and percentages.
-
-```tsx
-<PieChart
-  title="Market Share"
-  labels={["Chrome", "Firefox", "Safari", "Edge", "Other"]}
-  data={[65, 15, 10, 7, 3]}
-  variant="doughnut"
-  cutout={0.6}
-  showValues
-  colors={["#4285f4", "#ff9500", "#00c851", "#0078d4", "#6c757d"]}
-/>
-```
-
-**Features:**
-
-- Pie and doughnut variants
-- Custom cutout percentage
-- Automatic percentage calculation
-- Legend with values
-- Custom color palettes
-
-### TimeSeriesChart
-
-Advanced real-time chart with automatic data management.
-
-```tsx
-<TimeSeriesChart
-  title="System Metrics"
-  data={realTimeMetrics}
-  maxDataPoints={100}
-  timeRange={5 * 60 * 1000} // 5 minutes
-  updateInterval={1000}
-  autoScroll
-  aggregationInterval={10000} // 10 seconds
-  pointColors={(value) => (value > 80 ? "#dc3545" : "#28a745")}
-  valueFormatter={(value) => `${value.toFixed(1)}%`}
-  onDataUpdate={(data) => console.log("Updated:", data.length, "points")}
-/>
-```
-
-**Features:**
-
-- Real-time data streaming
-- Automatic data point limiting
-- Time-based aggregation
-- Custom point coloring
-- Performance optimization
-- Data update callbacks
-
-## 🎨 Theming
-
-Charts automatically adapt to your application's theme using CSS custom properties:
-
-```css
-:root {
-  --text-primary: #1a1a1a;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
-  --accent: #3b82f6;
-}
-
-[data-theme="dark"] {
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --border-color: #374151;
-  --accent: #60a5fa;
-}
-```
-
-Charts will automatically use these colors for:
-
-- Text and labels
-- Grid lines
-- Default chart colors
-- Tooltips and legends
-
-## 📊 Data Formats
-
-### Basic Dataset Format
-
-```typescript
-const dataset = {
-  label: "Sales",
-  data: [10, 20, 30, 40, 50],
-  backgroundColor: "#3b82f6",
-  borderColor: "#1d4ed8",
-  borderWidth: 2,
-};
-```
-
-### Time Series Format
-
-```typescript
-const timeSeriesData = [
-  {
-    timestamp: 1640995200000, // Unix timestamp
-    value: 42.5,
-    label: "12:00 PM", // Optional display label
-  },
-  // ... more data points
-];
-```
-
-### Data Point Format (for scatter charts)
-
-```typescript
-const dataPoints = [
-  { x: 10, y: 20 },
-  { x: 15, y: 25 },
-  { x: 20, y: 30 },
-];
-```
-
-## ⚡ Performance
-
-### Data Management
-
-```tsx
-// Limit data points for performance
-<TimeSeriesChart
-  data={largeDataset}
-  maxDataPoints={100}
-  aggregationInterval={60000} // 1 minute
-/>
-
-// Use time ranges for large datasets
-<TimeSeriesChart
-  data={historicalData}
-  timeRange={24 * 60 * 60 * 1000} // 24 hours
-/>
-```
-
-### Optimized Updates
-
-```tsx
-// Debounced updates for real-time data
-const [chartData, setChartData] = createSignal([]);
-
-const updateData = debounce((newData) => {
-  setChartData(newData);
-}, 100);
-```
-
-## 🛠️ Advanced Configuration
-
-### Custom Tooltips
-
-```tsx
-<LineChart
-  data={data}
-  tooltip={{
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    titleColor: "#fff",
-    bodyColor: "#fff",
-    callbacks: {
-      label: (context) => `Value: ${context.parsed.y.toFixed(2)}`,
-    },
-  }}
-/>
-```
-
-### Custom Scales
-
-```tsx
-<BarChart
-  data={data}
-  yAxis={{
-    min: 0,
-    max: 100,
-    ticks: {
-      stepSize: 10,
-      callback: (value) => `${value}%`,
-    },
-  }}
-/>
-```
-
-### Animation Control
-
-```tsx
-<PieChart
-  data={data}
-  animation={{
-    duration: 1000,
-    easing: "easeOutBounce",
-  }}
-/>
-```
-
-## 📦 Bundle Size
-
-- **Core package**: ~27 kB (5.4 kB gzipped)
-- **Peer dependency**: Chart.js (~200 kB, but likely already in your app)
-- **Tree-shakable**: Import only the charts you need
-- **Optimized**: Efficient Chart.js registration and cleanup
-
-## 🤝 Integration Examples
-
-### With Data Fetching
-
-```tsx
-function DashboardChart() {
+function LiveDashboard() {
   const [data, setData] = createSignal([]);
-  const [loading, setLoading] = createSignal(true);
 
-  onMount(async () => {
-    try {
-      const response = await fetch("/api/metrics");
-      const metrics = await response.json();
-      setData(metrics);
-    } catch (error) {
-      console.error("Failed to load metrics:", error);
-    } finally {
-      setLoading(false);
+  // Simulate real-time data
+  onMount(() => {
+    const interval = setInterval(() => {
+      setData(prev => [...prev, {
+        timestamp: Date.now(),
+        value: Math.random() * 100,
+        label: new Date().toLocaleTimeString()
+      }].slice(-50)); // Keep last 50 points
+    }, 1000);
+
+    onCleanup(() => clearInterval(interval));
+  });
+
+  return (
+    <RealTimeChart
+      type="line"
+      data={data()}
+      title="Live Performance Metrics"
+      maxDataPoints={50}
+      updateInterval={1000}
+      autoScroll={true}
+      useOKLCH={true}
+    />
+  );
+}
+```
+
+### Statistical Chart
+
+```tsx
+import { StatisticalChart } from "reynard-charts";
+
+function AnalyticsDashboard() {
+  const histogramData = {
+    values: [1.2, 2.3, 1.8, 3.1, 2.7, 1.9, 2.4, 3.0, 2.1, 2.8],
+    statistics: {
+      min: 1.2,
+      q1: 1.9,
+      median: 2.35,
+      q3: 2.8,
+      max: 3.1,
+      mean: 2.33,
+      std: 0.58
+    }
+  };
+
+  return (
+    <StatisticalChart
+      type="histogram"
+      data={histogramData}
+      title="Data Distribution"
+      numBins={10}
+      showStatistics={true}
+      useOKLCH={true}
+    />
+  );
+}
+```
+
+## Core Features
+
+### 🎨 OKLCH Color Integration
+
+- **Perceptually Uniform Colors**: Uses OKLCH color space for consistent, accessible colors
+- **Theme-Aware Generation**: Automatically adapts to Reynard themes (dark, light, gray, banana, strawberry, peanut)
+- **Smart Color Palettes**: Generates harmonious color schemes for multiple datasets
+- **Accessibility**: Built-in contrast ratios and color-blind friendly palettes
+
+### ⚡ Real-Time Capabilities
+
+- **Live Data Streaming**: WebSocket and polling-based real-time updates
+- **Performance Optimization**: Automatic data aggregation and memory management
+- **Smooth Animations**: Hardware-accelerated transitions and updates
+- **Configurable Intervals**: Customizable update frequencies and data retention
+
+### 📊 Advanced Chart Types
+
+- **Standard Charts**: Line, Bar, Pie, Doughnut with enhanced styling
+- **Statistical Visualizations**: Histograms, box plots, quality metrics
+- **Real-Time Charts**: Live data streaming with performance monitoring
+- **Custom Visualizations**: Extensible architecture for specialized charts
+
+### 🔧 Performance Features
+
+- **Memory Management**: Automatic cleanup and memory limit monitoring
+- **Lazy Loading**: Dynamic imports for optimal bundle size
+- **Performance Monitoring**: Built-in FPS and memory usage tracking
+- **Optimized Rendering**: Efficient updates and minimal re-renders
+
+## API Reference
+
+### Chart Component
+
+The unified `Chart` component provides a consistent interface for all chart types.
+
+```tsx
+interface ChartProps {
+  type: 'line' | 'bar' | 'pie' | 'doughnut';
+  labels: string[];
+  datasets: Dataset[];
+  useOKLCH?: boolean;
+  colorTheme?: string;
+  realTime?: boolean;
+  updateInterval?: number;
+  loading?: boolean;
+  emptyMessage?: string;
+  enablePerformanceMonitoring?: boolean;
+  // ... standard chart props
+}
+```
+
+### RealTimeChart Component
+
+Specialized component for live data visualization.
+
+```tsx
+interface RealTimeChartProps {
+  type: ChartType;
+  data: RealTimeDataPoint[];
+  maxDataPoints?: number;
+  updateInterval?: number;
+  autoScroll?: boolean;
+  timeRange?: number;
+  aggregationInterval?: number;
+  streaming?: {
+    enabled: boolean;
+    url?: string;
+    websocket?: WebSocket;
+    parser?: (data: any) => RealTimeDataPoint;
+  };
+  // ... other props
+}
+```
+
+### StatisticalChart Component
+
+Advanced statistical visualization component.
+
+```tsx
+interface StatisticalChartProps {
+  type: 'histogram' | 'boxplot' | 'quality-bar' | 'quality-gauge';
+  data: StatisticalData | QualityData;
+  numBins?: number;
+  showStatistics?: boolean;
+  showAssessment?: boolean;
+  colorScheme?: 'default' | 'gradient' | 'status';
+  // ... other props
+}
+```
+
+## Visualization Engine
+
+The core `VisualizationEngine` provides centralized color management and performance monitoring.
+
+```tsx
+import { useVisualizationEngine } from "reynard-charts";
+
+function MyComponent() {
+  const visualization = useVisualizationEngine({
+    theme: "dark",
+    useOKLCH: true,
+    performance: {
+      lazyLoading: true,
+      memoryLimit: 512,
+      targetFPS: 60,
+    }
+  });
+
+  // Generate colors
+  const colors = visualization.generateColors(5);
+  const tagColors = visualization.generateTagColors(['tag1', 'tag2']);
+  const palette = visualization.generatePalette(3);
+
+  // Monitor performance
+  const stats = visualization.stats();
+  console.log(`FPS: ${stats.fps}, Memory: ${stats.memoryUsage}MB`);
+
+  return <div>...</div>;
+}
+```
+
+## Advanced Usage
+
+### Custom Color Generation
+
+```tsx
+import { useVisualizationEngine } from "reynard-charts";
+
+function CustomChart() {
+  const visualization = useVisualizationEngine({
+    theme: "strawberry",
+    baseHue: 120, // Green base
+    saturation: 0.4,
+    lightness: 0.7,
+  });
+
+  const customColors = visualization.generateColors(3, 0.8);
+  
+  return (
+    <Chart
+      type="bar"
+      labels={['A', 'B', 'C']}
+      datasets={[{
+        label: 'Custom Colors',
+        data: [10, 20, 30],
+        backgroundColor: customColors,
+      }]}
+    />
+  );
+}
+```
+
+### WebSocket Streaming
+
+```tsx
+function StreamingChart() {
+  const [ws, setWs] = createSignal<WebSocket | null>(null);
+  const [data, setData] = createSignal<RealTimeDataPoint[]>([]);
+
+  onMount(() => {
+    const websocket = new WebSocket('ws://localhost:8080/data');
+    websocket.onmessage = (event) => {
+      const point = JSON.parse(event.data);
+      setData(prev => [...prev, point].slice(-100));
+    };
+    setWs(websocket);
+  });
+
+  return (
+    <RealTimeChart
+      type="line"
+      data={data()}
+      streaming={{
+        enabled: true,
+        websocket: ws(),
+        parser: (data) => ({
+          timestamp: data.time,
+          value: data.value,
+          label: new Date(data.time).toLocaleTimeString(),
+        }),
+      }}
+    />
+  );
+}
+```
+
+### Performance Monitoring
+
+```tsx
+function MonitoredChart() {
+  const visualization = useVisualizationEngine();
+
+  createEffect(() => {
+    const stats = visualization.stats();
+    if (stats.memoryUsage > 400) {
+      console.warn('High memory usage detected');
+    }
+    if (stats.fps < 30) {
+      console.warn('Low FPS detected');
     }
   });
 
   return (
-    <LineChart
-      title="API Response Times"
-      timeSeriesData={data()}
-      loading={loading()}
-      emptyMessage="No metrics available"
+    <Chart
+      type="line"
+      labels={labels}
+      datasets={datasets}
+      enablePerformanceMonitoring={true}
     />
   );
 }
 ```
 
-### With Real-time Updates
+## Performance Considerations
+
+### Memory Management
+
+- **Automatic Cleanup**: Components automatically clean up resources on unmount
+- **Memory Limits**: Configurable memory limits with automatic cache clearing
+- **Data Aggregation**: Automatic data aggregation for large datasets
+- **Lazy Loading**: Dynamic imports reduce initial bundle size
+
+### Optimization Strategies
+
+- **Data Limiting**: Use `maxDataPoints` to limit displayed data
+- **Update Throttling**: Configure `updateInterval` to control update frequency
+- **Color Caching**: Colors are cached for performance
+- **Performance Monitoring**: Built-in monitoring helps identify bottlenecks
+
+### Best Practices
+
+1. **Use OKLCH Colors**: Enable `useOKLCH={true}` for better color consistency
+2. **Limit Real-Time Data**: Set appropriate `maxDataPoints` for real-time charts
+3. **Monitor Performance**: Enable performance monitoring in development
+4. **Clean Up Resources**: Components handle cleanup automatically
+5. **Optimize Updates**: Use appropriate update intervals for real-time data
+
+## Troubleshooting
+
+### Common Issues
+
+**Chart not rendering:**
+
+- Ensure Chart.js is properly registered
+- Check that data is in the correct format
+- Verify component is mounted
+
+**Performance issues:**
+
+- Reduce `maxDataPoints` for large datasets
+- Increase `updateInterval` for real-time charts
+- Enable performance monitoring to identify bottlenecks
+
+**Color issues:**
+
+- Verify `reynard-color-media` is installed
+- Check theme configuration
+- Ensure OKLCH support in target browsers
+
+### Debug Mode
+
+Enable debug mode for detailed logging:
 
 ```tsx
-function RealtimeChart() {
-  const [metrics, setMetrics] = createSignal([]);
+import { VisualizationEngine } from "reynard-charts";
 
-  onMount(() => {
-    const ws = new WebSocket("ws://localhost:8080/metrics");
+const engine = VisualizationEngine.getInstance({
+  performance: {
+    lazyLoading: true,
+    memoryLimit: 256,
+  }
+});
 
-    ws.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
-      setMetrics((prev) => [...prev, newData]);
-    };
-
-    onCleanup(() => ws.close());
-  });
-
-  return (
-    <TimeSeriesChart
-      title="Live System Metrics"
-      data={metrics()}
-      autoScroll
-      updateInterval={500}
-      maxDataPoints={200}
-    />
-  );
-}
+// Monitor performance
+setInterval(() => {
+  const stats = engine.getStats();
+  console.log('Performance Stats:', stats);
+}, 5000);
 ```
 
-### Responsive Grid Layout
+## Migration Guide
+
+### From Legacy Components
+
+The new unified components are backward compatible with existing code:
 
 ```tsx
-function ChartsGrid() {
-  return (
-    <div
-      style={{
-        display: "grid",
-        "grid-template-columns": "repeat(auto-fit, minmax(400px, 1fr))",
-        gap: "1rem",
-      }}
-    >
-      <LineChart title="Traffic" data={trafficData} responsive />
-      <BarChart title="Sales" data={salesData} responsive />
-      <PieChart title="Distribution" data={distributionData} responsive />
-      <TimeSeriesChart title="Performance" data={performanceData} responsive />
-    </div>
-  );
-}
+// Old way
+import { LineChart } from "reynard-charts";
+
+// New way (recommended)
+import { Chart } from "reynard-charts";
+
+// Both work the same way
+<Chart type="line" labels={labels} datasets={datasets} />
 ```
 
-## 🤝 Contributing
+### Adding OKLCH Support
 
-See the main [Reynard repository](../../README.md) for contribution guidelines.
+To enable OKLCH colors in existing charts:
 
----
+```tsx
+// Add these props to existing charts
+<Chart
+  type="line"
+  labels={labels}
+  datasets={datasets}
+  useOKLCH={true}
+  colorTheme="dark"
+/>
+```
 
-**Built with ❤️ for data-driven SolidJS applications** 📊🦊
+## Conclusion
+
+🦊> *Reynard Charts provides a professional, performant, and accessible data visualization solution that combines the best of Chart.js with advanced features from yipyap's visualization system. The unified OKLCH color management ensures consistent, accessible colors across all visualizations, while the real-time capabilities and performance monitoring make it suitable for production applications.*
+
+Reynard Charts delivers a comprehensive visualization solution that scales from simple dashboards to complex real-time analytics. The modular architecture, OKLCH color integration, and performance optimization make it the ideal choice for modern SolidJS applications.
+
+Key benefits:
+
+- **Professional Quality**: Production-ready components with comprehensive testing
+- **Accessibility**: OKLCH colors ensure consistent, accessible visualizations
+- **Performance**: Optimized for real-time data and large datasets
+- **Flexibility**: Extensible architecture supports custom visualizations
+- **Integration**: Seamless integration with Reynard's theming system
+
+*Build exceptional data visualizations that outfox complexity and deliver insights with style.* 🦊

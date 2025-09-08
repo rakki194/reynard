@@ -6,9 +6,48 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { glob } from 'glob';
 import chokidar from 'chokidar';
-import { DocEngineConfig, DocPage, DocSection } from 'reynard-docs-core';
+// import { DocEngineConfig, DocPage, DocSection } from 'reynard-docs-core';
+
+// Temporary local type definitions
+interface DocEngineConfig {
+  rootPath?: string;
+  outputPath?: string;
+  packages?: any[];
+  templates?: any[];
+  examples?: any[];
+  site?: any;
+  theme?: any;
+  navigation?: any;
+  footer?: any;
+  search?: any;
+  analytics?: any;
+  social?: any;
+  pages?: any[];
+  sections?: any[];
+  api?: any[];
+  [key: string]: any;
+}
+
+interface DocPage {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  metadata: any;
+  type: string;
+  published?: boolean;
+  order?: number;
+}
+
+interface DocSection {
+  id: string;
+  title: string;
+  description: string;
+  pages: DocPage[];
+  order: number;
+}
 import { PackageAnalyzer } from './analyzers/package-analyzer';
-import { TypeScriptAnalyzer } from './analyzers/typescript-analyzer';
+// import { TypeScriptAnalyzer } from './analyzers/typescript-analyzer';
 import { MarkdownAnalyzer } from './analyzers/markdown-analyzer';
 import { TemplateEngine } from './templates/template-engine';
 import { GeneratorConfig, PackageInfo } from './config';
@@ -19,15 +58,19 @@ import { GeneratorConfig, PackageInfo } from './config';
 export class ReynardDocGenerator {
   private config: GeneratorConfig;
   private packageAnalyzer: PackageAnalyzer;
-  private tsAnalyzer: TypeScriptAnalyzer;
+  // private tsAnalyzer: TypeScriptAnalyzer;
   private mdAnalyzer: MarkdownAnalyzer;
   private templateEngine: TemplateEngine;
   private isWatching: boolean = false;
 
   constructor(config: GeneratorConfig) {
     this.config = config;
-    this.packageAnalyzer = new PackageAnalyzer(config);
-    this.tsAnalyzer = new TypeScriptAnalyzer(config);
+    this.packageAnalyzer = new PackageAnalyzer({
+      name: 'reynard-docs',
+      path: config.outputPath,
+      ...config
+    });
+    // this.tsAnalyzer = new TypeScriptAnalyzer();
     this.mdAnalyzer = new MarkdownAnalyzer(config);
     this.templateEngine = new TemplateEngine(config);
   }
@@ -105,9 +148,9 @@ export class ReynardDocGenerator {
     console.log('👀 Watching for changes...');
 
     const watchPaths = [
-      ...this.config.packages.map(pkg => path.join(pkg.path, '**/*')),
-      ...this.config.templates.map(template => path.join(template, '**/*')),
-      ...this.config.examples.map(example => path.join(example, '**/*'))
+      ...(this.config.packages || []).map(pkg => path.join(pkg.path || '', '**/*')),
+      ...(this.config.templates || []).map(template => path.join(template.path, '**/*')),
+      ...(this.config.examples || []).map(example => path.join(example.path, '**/*'))
     ];
 
     const watcher = chokidar.watch(watchPaths, {
@@ -325,31 +368,39 @@ export class ReynardDocGenerator {
     await fs.writeFile(configPath, JSON.stringify(docConfig, null, 2));
 
     // Write individual page files
-    for (const page of docConfig.pages) {
-      const pagePath = path.join(outputPath, 'pages', `${page.slug}.json`);
-      await fs.mkdir(path.dirname(pagePath), { recursive: true });
-      await fs.writeFile(pagePath, JSON.stringify(page, null, 2));
+    if (docConfig.pages) {
+      for (const page of docConfig.pages) {
+        const pagePath = path.join(outputPath, 'pages', `${page.slug}.json`);
+        await fs.mkdir(path.dirname(pagePath), { recursive: true });
+        await fs.writeFile(pagePath, JSON.stringify(page, null, 2));
+      }
     }
 
     // Write section files
-    for (const section of docConfig.sections) {
-      const sectionPath = path.join(outputPath, 'sections', `${section.id}.json`);
-      await fs.mkdir(path.dirname(sectionPath), { recursive: true });
-      await fs.writeFile(sectionPath, JSON.stringify(section, null, 2));
+    if (docConfig.sections) {
+      for (const section of docConfig.sections) {
+        const sectionPath = path.join(outputPath, 'sections', `${section.id}.json`);
+        await fs.mkdir(path.dirname(sectionPath), { recursive: true });
+        await fs.writeFile(sectionPath, JSON.stringify(section, null, 2));
+      }
     }
 
     // Write example files
-    for (const example of docConfig.examples) {
-      const examplePath = path.join(outputPath, 'examples', `${example.id}.json`);
-      await fs.mkdir(path.dirname(examplePath), { recursive: true });
-      await fs.writeFile(examplePath, JSON.stringify(example, null, 2));
+    if (docConfig.examples) {
+      for (const example of docConfig.examples) {
+        const examplePath = path.join(outputPath, 'examples', `${example.id}.json`);
+        await fs.mkdir(path.dirname(examplePath), { recursive: true });
+        await fs.writeFile(examplePath, JSON.stringify(example, null, 2));
+      }
     }
 
     // Write API documentation files
-    for (const apiDoc of docConfig.api) {
-      const apiPath = path.join(outputPath, 'api', `${apiDoc.name}.json`);
-      await fs.mkdir(path.dirname(apiPath), { recursive: true });
-      await fs.writeFile(apiPath, JSON.stringify(apiDoc, null, 2));
+    if (docConfig.api) {
+      for (const apiDoc of docConfig.api) {
+        const apiPath = path.join(outputPath, 'api', `${apiDoc.name}.json`);
+        await fs.mkdir(path.dirname(apiPath), { recursive: true });
+        await fs.writeFile(apiPath, JSON.stringify(apiDoc, null, 2));
+      }
     }
 
     console.log(`📁 Output written to: ${outputPath}`);

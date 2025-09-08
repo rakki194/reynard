@@ -1,6 +1,6 @@
 {
   "name": "reynard-ecs-simd-experiment",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "SIMD ECS performance experiment for Reynard",
   "type": "module",
   "scripts": {

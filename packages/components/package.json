@@ -1,6 +1,6 @@
 {
   "name": "reynard-components",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Reynard UI Components - Production-ready SolidJS component library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -43,8 +43,11 @@
     "solid-js": "1.9.9"
   },
   "dependencies": {
-    "reynard-core": "file:../core",
-    "reynard-fluent-icons": "file:../fluent-icons"
+    "reynard-core": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-charts": "workspace:*",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

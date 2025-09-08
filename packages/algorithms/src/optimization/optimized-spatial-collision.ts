@@ -207,7 +207,7 @@ export class OptimizedSpatialCollisionDetector {
                        a.y + a.height <= b.y || b.y + b.height <= a.y);
     
     if (!colliding) {
-      return { colliding: false, distance: Infinity };
+      return { colliding: false, distance: Infinity, overlap: null, overlapArea: 0 };
     }
 
     // Calculate overlap area
@@ -225,9 +225,13 @@ export class OptimizedSpatialCollisionDetector {
     return {
       colliding: true,
       distance,
-      overlapArea,
-      overlapX,
-      overlapY,
+      overlap: {
+        x: Math.max(a.x, b.x),
+        y: Math.max(a.y, b.y),
+        width: overlapX,
+        height: overlapY
+      },
+      overlapArea: overlapX * overlapY,
     };
   }
 

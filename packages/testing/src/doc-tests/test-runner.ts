@@ -4,7 +4,7 @@
  * Executes tests from documentation examples
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, cleanup } from '@solidjs/testing-library';
 import { createSignal, createEffect, onCleanup } from 'solid-js';
 import { extractCodeExamples } from './code-parser';

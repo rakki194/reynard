@@ -1,6 +1,6 @@
 import { Component, createSignal, createEffect, onMount, Show } from 'solid-js';
 import { MonacoEditor } from '../solid-monaco/MonacoEditor';
-import { useLanguageDetection } from '../composables/useLanguageDetection';
+import { useLanguageDetection } from 'reynard-composables';
 import { useReynardMonaco } from '../composables/useReynardMonaco';
 import { getMonacoLanguageFromName, getDisplayNameFromLanguage } from '../utils/languageUtils';
 import './CodeEditor.css';

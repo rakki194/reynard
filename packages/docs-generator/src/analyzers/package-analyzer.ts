@@ -113,7 +113,7 @@ export class PackageAnalyzer {
   /**
    * Extract exports from package.json
    */
-  private async extractExports(packagePath: string, packageJson: any): Promise<Record<string, string>> {
+  private async extractExports(_packagePath: string, packageJson: any): Promise<Record<string, string>> {
     const exports: Record<string, string> = {};
 
     if (packageJson.exports) {
@@ -122,12 +122,13 @@ export class PackageAnalyzer {
           exports[key] = value;
         } else if (typeof value === 'object' && value !== null) {
           // Handle conditional exports
-          if (value.import) {
-            exports[key] = value.import;
-          } else if (value.require) {
-            exports[key] = value.require;
-          } else if (value.default) {
-            exports[key] = value.default;
+          const exportValue = value as any;
+          if (exportValue.import) {
+            exports[key] = exportValue.import;
+          } else if (exportValue.require) {
+            exports[key] = exportValue.require;
+          } else if (exportValue.default) {
+            exports[key] = exportValue.default;
           }
         }
       }
@@ -159,8 +160,8 @@ export class PackageAnalyzer {
 
     if (packageJson.exports) {
       for (const [key, value] of Object.entries(packageJson.exports)) {
-        if (typeof value === 'object' && value !== null && value.types) {
-          types[key] = value.types;
+        if (typeof value === 'object' && value !== null && (value as any).types) {
+          types[key] = (value as any).types;
         }
       }
     }

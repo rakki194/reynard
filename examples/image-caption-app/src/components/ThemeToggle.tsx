@@ -5,7 +5,7 @@
 
 import { Component } from "solid-js";
 import { Button } from "reynard-components";
-import { useTheme, type ThemeName } from "reynard-themes";
+import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export const ThemeToggle: Component = () => {
   const themeContext = useTheme();
@@ -34,7 +34,7 @@ export const ThemeToggle: Component = () => {
   };
 
   const nextTheme = () => {
-    const themes: ThemeName[] = ["light", "dark", "gray", "banana", "strawberry", "peanut", "high-contrast-black", "high-contrast-inverse"];
+    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
     const currentIndex = themes.indexOf(themeContext.theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     themeContext.setTheme(themes[nextIndex]);

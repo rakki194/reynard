@@ -5,7 +5,7 @@
  */
 
 import { promises as fs } from 'fs';
-import path from 'path';
+// import path from 'path';
 import { createDocGenerator, loadConfig, validateConfig } from '../index';
 
 /**
@@ -14,12 +14,12 @@ import { createDocGenerator, loadConfig, validateConfig } from '../index';
 class ReynardDocsCLI {
   private configPath: string;
   private watch: boolean;
-  private verbose: boolean;
+  // private verbose: boolean;
 
   constructor() {
     this.configPath = 'reynard-docs.config.js';
     this.watch = false;
-    this.verbose = false;
+    // this.verbose = false;
   }
 
   /**
@@ -40,7 +40,7 @@ class ReynardDocsCLI {
           break;
         case '--verbose':
         case '-v':
-          this.verbose = true;
+          // this.verbose = true;
           break;
         case '--help':
         case '-h':
@@ -236,11 +236,9 @@ For more information, visit: https://github.com/rakki194/reynard
 }
 
 // Run CLI if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const cli = new ReynardDocsCLI();
-  cli.parseArgs(process.argv.slice(2));
-  cli.run().catch(error => {
-    console.error('❌ Fatal error:', error);
-    process.exit(1);
-  });
-}
+const cli = new ReynardDocsCLI();
+cli.parseArgs(process.argv.slice(2));
+cli.run().catch(error => {
+  console.error('❌ Fatal error:', error);
+  process.exit(1);
+});

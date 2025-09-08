@@ -14,7 +14,7 @@ import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 const getIcon = (name: string) => {
   const icon = getIconFromRegistry(name);
   if (icon) {
-    return <div innerHTML={icon} />;
+    return <div innerHTML={icon as unknown as string} />;
   }
   return null;
 };

@@ -237,7 +237,7 @@ export interface DocPlugin {
 export interface DocEngine {
   config: DocEngineConfig;
   render: (page: DocPage) => Component<DocRendererProps>;
-  parse: (content: string, type: DocContentType) => DocPage;
+  parse: (content: string, type: DocContentType) => Promise<DocPage>;
   search: (query: string) => DocPage[];
   getPage: (id: string) => DocPage | undefined;
   getSection: (id: string) => DocSection | undefined;

@@ -1,0 +1,1 @@
+{"version":3,"file":"auth-headers.d.ts","sourceRoot":"","sources":["auth-headers.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,aAAa,CAAC;AAGpD,MAAM,WAAW,YAAY;IAC3B,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,OAAO,EAAE,gBAAgB,CAAC;CAC3B;AAED;;GAEG;AACH,eAAO,MAAM,gBAAgB,GAAI,QAAQ,YAAY,KAAG,MAAM,CAAC,MAAM,EAAE,MAAM,CAiB5E,CAAC"}

@@ -8,9 +8,11 @@ import {
   computeTagColor,
   computeHoverStyles,
   computeAnimation,
+} from "../themeUtils";
+import {
   getSystemThemePreference,
   supportsReducedMotion,
-} from "../themeUtils";
+} from "../systemThemeUtils";
 import type { ThemeName } from "../types";
 
 describe("Theme Utilities", () => {
@@ -41,12 +43,12 @@ describe("Theme Utilities", () => {
   describe("computeTagColor", () => {
     it("should return appropriate text colors for light theme", () => {
       const color = computeTagColor("light", "test-tag");
-      expect(color).toMatch(/rgb\(\d+, \d+, \d+\)/);
+      expect(color).toMatch(/^oklch\(\d+%\s+[\d.]+\s+-?\d+\)$/);
     });
 
     it("should return appropriate text colors for dark theme", () => {
       const color = computeTagColor("dark", "test-tag");
-      expect(color).toMatch(/rgb\(\d+, \d+, \d+\)/);
+      expect(color).toMatch(/^oklch\(\d+%\s+[\d.]+\s+-?\d+\)$/);
     });
   });
 

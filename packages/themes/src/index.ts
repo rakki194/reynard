@@ -100,6 +100,10 @@ export {
 
 // Export color conversion utilities
 export {
+  // Native OKLCH CSS functions (preferred for modern browsers)
+  oklchStringToCSS,
+  oklchStringToCSSWithAlpha,
+  // Legacy RGB conversion functions (for non-CSS use cases)
   oklchStringToRgb,
   oklchStringToHex,
   oklchToRgb,

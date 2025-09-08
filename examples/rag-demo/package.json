@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "solid-js": "1.9.9",
-    "reynard-core": "0.1.1",
-    "reynard-components": "0.1.1",
-    "reynard-rag": "0.1.1",
-    "reynard-fluent-icons": "0.1.1"
+    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
+    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
+    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
+    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

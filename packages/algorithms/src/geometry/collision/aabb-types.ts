@@ -21,6 +21,12 @@ export interface CollisionResult {
   distance: number;
 }
 
+export interface CollisionPair {
+  a: number;
+  b: number;
+  result: CollisionResult;
+}
+
 export interface CollisionStats {
   totalChecks: number;
   collisionsFound: number;

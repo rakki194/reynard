@@ -7,12 +7,12 @@
  * @module algorithms/performance/memoryPoolUtils
  */
 
-import { MemoryPool, MemoryPoolConfig, PooledObject } from './memory-pool-core';
+import { MemoryPool, PerformanceMemoryPoolConfig, PooledObject } from './memory-pool-core';
 
 /**
  * Create a memory pool for spatial objects
  */
-export function createSpatialObjectPool(config: MemoryPoolConfig = {}) {
+export function createSpatialObjectPool(config: PerformanceMemoryPoolConfig = {}) {
   class SpatialObject implements PooledObject {
     id: string | number = '';
     x: number = 0;
@@ -37,7 +37,7 @@ export function createSpatialObjectPool(config: MemoryPoolConfig = {}) {
 /**
  * Create a memory pool for AABB objects
  */
-export function createAABBPool(config: MemoryPoolConfig = {}) {
+export function createAABBPool(config: PerformanceMemoryPoolConfig = {}) {
   class AABBObject implements PooledObject {
     x: number = 0;
     y: number = 0;
@@ -58,7 +58,7 @@ export function createAABBPool(config: MemoryPoolConfig = {}) {
 /**
  * Create a memory pool for point objects
  */
-export function createPointPool(config: MemoryPoolConfig = {}) {
+export function createPointPool(config: PerformanceMemoryPoolConfig = {}) {
   class PointObject implements PooledObject {
     x: number = 0;
     y: number = 0;
@@ -75,7 +75,7 @@ export function createPointPool(config: MemoryPoolConfig = {}) {
 /**
  * Create a memory pool for vector objects
  */
-export function createVectorPool(config: MemoryPoolConfig = {}) {
+export function createVectorPool(config: PerformanceMemoryPoolConfig = {}) {
   class VectorObject implements PooledObject {
     x: number = 0;
     y: number = 0;
@@ -100,7 +100,7 @@ export class MemoryPoolManager {
   createPool<T extends PooledObject>(
     name: string,
     createFn: () => T,
-    config: MemoryPoolConfig = {}
+    config: PerformanceMemoryPoolConfig = {}
   ): MemoryPool<T> {
     const pool = new MemoryPool(createFn, config);
     this.pools.set(name, pool);

@@ -5,7 +5,7 @@
  * as executable tests, ensuring all examples in README files actually work.
  */
 
-export * from './doc-tests';
+export * from './doc-tests/index';
 
 // Legacy exports for backward compatibility
 export type { DocTestConfig } from './doc-tests/test-runner';

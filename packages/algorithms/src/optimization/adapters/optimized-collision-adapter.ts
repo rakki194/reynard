@@ -8,7 +8,7 @@
  */
 
 import { AlgorithmSelector, type WorkloadCharacteristics } from '../core/algorithm-selector';
-import { EnhancedMemoryPool } from '../core/enhanced-memory-pool';
+import { EnhancedMemoryPool, type MemoryPoolConfig, type MemoryPoolStats, type OptimizationRecommendation } from '../core/enhanced-memory-pool';
 import { SpatialHash } from '../../spatial-hash/spatial-hash-core';
 import { UnionFind } from '../../union-find/union-find-core';
 import type { AABB, CollisionPair, CollisionResult } from '../../geometry/collision/aabb-types';
@@ -329,7 +329,7 @@ export class OptimizedCollisionAdapter {
     const colliding = this.checkCollision(a, b);
     
     if (!colliding) {
-      return { colliding: false, distance: Infinity };
+      return { colliding: false, distance: Infinity, overlap: null, overlapArea: 0 };
     }
 
     // Calculate overlap area
@@ -347,9 +347,13 @@ export class OptimizedCollisionAdapter {
     return {
       colliding: true,
       distance,
-      overlapArea,
-      overlapX,
-      overlapY,
+      overlap: {
+        x: Math.max(a.x, b.x),
+        y: Math.max(a.y, b.y),
+        width: overlapX,
+        height: overlapY
+      },
+      overlapArea: overlapX * overlapY,
     };
   }
 

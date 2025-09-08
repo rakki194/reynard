@@ -3,7 +3,7 @@
  * Modern design system with comprehensive component showcase
  */
 
-@import "reynard-themes/dist/index.css";
+@import "../../packages/themes/dist/reynard-themes.css";
 @import "./components.css";
 @import "./modern-components.css";
 
@@ -537,6 +537,86 @@
   }
 }
 
+/* Charts Demo Styles */
+.charts-demo {
+  grid-column: span 2;
+}
+
+/* 3D Demo Styles */
+.threed-demo {
+  grid-column: span 2;
+}
+
+.threed-demo .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing);
+}
+
+.threed-preview {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: var(--half-spacing);
+  border: 1px solid var(--border-color);
+  margin-bottom: var(--spacing);
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.charts-demo .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing);
+}
+
+.showcase-button {
+  padding: var(--half-spacing) var(--spacing);
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.showcase-button:hover {
+  background: var(--color-accent-light, #0056b3);
+  transform: translateY(-1px);
+}
+
+.charts-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+}
+
+.chart-mini {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: var(--half-spacing);
+  border: 1px solid var(--border-color);
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.stats-row .stat {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) / 4);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-header h1 {
@@ -549,5 +629,21 @@
 
   .feature-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .charts-demo,
+  .threed-demo {
+    grid-column: span 1;
+  }
+  
+  .charts-preview {
+    grid-template-columns: 1fr;
+  }
+  
+  .charts-demo .card-header,
+  .threed-demo .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--half-spacing);
   }
 }

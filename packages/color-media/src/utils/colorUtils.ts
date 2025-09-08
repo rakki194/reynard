@@ -301,3 +301,114 @@ export function adjustSaturation(
     c: Math.max(0, Math.min(0.4, color.c * factor)),
   };
 }
+
+/**
+ * Convert OKLCH color string to CSS with alpha channel
+ * @param oklchColor - OKLCH color string like "oklch(60% 0.3 120)"
+ * @param opacity - Alpha value (0-1)
+ * @returns OKLCH CSS string with alpha
+ */
+export function oklchToCSSWithAlpha(oklchColor: string, opacity: number): string {
+  // Extract OKLCH values from string like "oklch(60% 0.3 120)"
+  const match = oklchColor.match(/oklch\(([^%]+)%\s+([^\s]+)\s+([^)]+)\)/);
+  if (!match) return oklchColor;
+
+  const [, l, c, h] = match;
+  const lightness = parseFloat(l);
+  const chroma = parseFloat(c);
+  const hue = parseFloat(h);
+
+  // Clamp opacity to valid range
+  const clampedOpacity = Math.max(0, Math.min(1, opacity));
+
+  // Return native OKLCH CSS with alpha
+  return `oklch(${lightness}% ${chroma} ${hue} / ${clampedOpacity})`;
+}
+
+/**
+ * Convert OKLCH values to RGB (simplified implementation)
+ * @param l - Lightness (0-1)
+ * @param c - Chroma (0-0.4)
+ * @param h - Hue (0-360)
+ * @returns RGB color object
+ */
+export function oklchToRgb(l: number, c: number, h: number): { r: number; g: number; b: number } {
+  // Simplified OKLCH to RGB conversion
+  // This is a basic implementation - for production use a proper color conversion library
+  const hRad = (h * Math.PI) / 180;
+  const a = c * Math.cos(hRad);
+  const b = c * Math.sin(hRad);
+
+  // Convert to RGB (simplified)
+  const r = Math.round(255 * Math.max(0, Math.min(1, l + 0.3963377774 * a + 0.2158037573 * b)));
+  const g = Math.round(255 * Math.max(0, Math.min(1, l - 0.1055613458 * a - 0.0638541728 * b)));
+  const bVal = Math.round(255 * Math.max(0, Math.min(1, l - 0.0894841775 * a - 1.2914855480 * b)));
+
+  return { r, g, b: bVal };
+}
+
+/**
+ * Generate HSL colors as fallback when OKLCH is not available
+ * @param count - Number of colors to generate
+ * @param baseHue - Base hue value (0-360)
+ * @param opacity - Alpha value (0-1)
+ * @returns Array of HSL color strings
+ */
+export function generateHSLColors(count: number, baseHue: number = 0, opacity: number = 1): string[] {
+  const colors: string[] = [];
+  const hueStep = 360 / count;
+
+  for (let i = 0; i < count; i++) {
+    const hue = (baseHue + i * hueStep) % 360;
+    colors.push(`hsla(${hue}, 70%, 50%, ${opacity})`);
+  }
+
+  return colors;
+}
+
+/**
+ * Generate colors with caching support for performance
+ * @param count - Number of colors to generate
+ * @param baseHue - Base hue value (0-360)
+ * @param saturation - Saturation value (0-1)
+ * @param lightness - Lightness value (0-1)
+ * @param opacity - Alpha value (0-1)
+ * @param useOKLCH - Whether to use OKLCH colors
+ * @param cache - Optional cache map for performance
+ * @returns Array of color strings
+ */
+export function generateColorsWithCache(
+  count: number,
+  baseHue: number = 0,
+  saturation: number = 0.3,
+  lightness: number = 0.6,
+  opacity: number = 1,
+  useOKLCH: boolean = true,
+  cache?: Map<string, string[]>
+): string[] {
+  const cacheKey = `${count}-${baseHue}-${saturation}-${lightness}-${opacity}-${useOKLCH}`;
+  
+  if (cache?.has(cacheKey)) {
+    return cache.get(cacheKey)!;
+  }
+
+  let colors: string[];
+
+  if (useOKLCH) {
+    // Generate OKLCH colors
+    const oklchColors = generateColorPalette(count, baseHue, saturation, lightness);
+    
+    colors = oklchColors.map(color => {
+      if (opacity < 1) {
+        return oklchToCSSWithAlpha(color, opacity);
+      }
+      return color;
+    });
+  } else {
+    // Fallback to HSL colors
+    colors = generateHSLColors(count, baseHue, opacity);
+  }
+
+  cache?.set(cacheKey, colors);
+  return colors;
+}

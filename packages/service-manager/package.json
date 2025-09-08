@@ -1,6 +1,6 @@
 {
   "name": "reynard-service-manager",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring",
   "type": "module",
   "main": "./dist/index.js",
@@ -46,7 +46,8 @@
     "monitoring"
   ],
   "dependencies": {
-    "reynard-core": "file:../core"
+    "reynard-core": "workspace:*",
+    "reynard-features": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",
