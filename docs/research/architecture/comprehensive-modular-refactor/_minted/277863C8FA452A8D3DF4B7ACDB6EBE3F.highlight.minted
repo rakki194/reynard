@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{p}{.}\PYG{n+nc}{image\PYGZhy{}view\PYGZhy{}thumbnail}\PYG{o}{,}
+\PYG{p}{.}\PYG{n+nc}{image\PYGZhy{}view\PYGZhy{}preview}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{position}\PYG{p}{:}\PYG{+w}{ }\PYG{k+kc}{absolute}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{inset}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{width}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{k+kt}{\PYGZpc{}}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{height}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{k+kt}{\PYGZpc{}}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{max\PYGZhy{}width}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{k+kt}{\PYGZpc{}}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{max\PYGZhy{}height}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{100}\PYG{k+kt}{\PYGZpc{}}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{object\PYGZhy{}fit}\PYG{p}{:}\PYG{+w}{ }\PYG{k+kc}{contain}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{display}\PYG{p}{:}\PYG{+w}{ }\PYG{k+kc}{block}\PYG{+w}{ }\PYG{c+cp}{!important}\PYG{p}{;}
+\PYG{+w}{  }\PYG{k}{opacity}\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{c}{/* fades to 1 via .loaded */}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

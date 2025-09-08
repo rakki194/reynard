@@ -140,7 +140,7 @@ const DemoContent: Component = () => {
                 title="Select theme"
               >
                 <For each={availableThemes}>
-                  {(theme) => <option value={theme.name}>{theme.displayName}</option>}
+                  {(themeOption) => <option value={themeOption.name}>{themeOption.displayName}</option>}
                 </For>
               </select>
             </div>
@@ -386,12 +386,11 @@ const DemoContent: Component = () => {
 
 const App: Component = () => {
   return (
-    <div style={{ padding: "2rem", color: "white", textAlign: "center" }}>
-      <h1>🦊 Reynard Error Demo - Fixed!</h1>
-      <p>Frontend is loading successfully!</p>
-      <p>Backend API calls are working.</p>
-      <p>Theme system is working.</p>
-    </div>
+    <ReynardProvider>
+      <NotificationsProvider>
+        <DemoContent />
+      </NotificationsProvider>
+    </ReynardProvider>
   );
 };
 

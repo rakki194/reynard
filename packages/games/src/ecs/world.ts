@@ -32,7 +32,7 @@ export class CommandsImpl implements Commands {
   spawn<T extends Component[]>(...components: T): Entity {
     const entity = this.world.spawnEmpty();
     this.world.insert(entity, ...components);
-    return entity;
+    return entity;  
   }
 
   spawnEmpty(): Entity {
@@ -44,7 +44,7 @@ export class CommandsImpl implements Commands {
   }
 
   insert<T extends Component[]>(entity: Entity, ...components: T): void {
-    this.commands.push(() => this.world.insert(entity, ...components));
+    this.world.insert(entity, ...components);
   }
 
   remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void {

@@ -111,7 +111,7 @@ export interface PostProcessingRules {
 export interface AnnotationService {
   generateCaption(task: CaptionTask): Promise<CaptionResult>;
   generateBatchCaptions(tasks: CaptionTask[], progressCallback?: (progress: AnnotationProgress) => void): Promise<CaptionResult[]>;
-  getAvailableGenerators(): CaptionGenerator[];
+  getAvailableGenerators(): Promise<CaptionGenerator[]>;
   getGenerator(name: string): CaptionGenerator | undefined;
   isGeneratorAvailable(name: string): boolean;
   isModelLoaded(name: string): boolean;
@@ -125,7 +125,7 @@ export interface AnnotationManager {
   registerGenerator(generator: any): void;
   unregisterGenerator(name: string): void;
   getService(): AnnotationService;
-  getAvailableGenerators(): CaptionGenerator[];
+  getAvailableGenerators(): Promise<CaptionGenerator[]>;
   getGenerator(name: string): CaptionGenerator | undefined;
   isGeneratorAvailable(name: string): boolean;
   updateGeneratorConfig(name: string, config: Record<string, any>): void;

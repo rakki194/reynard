@@ -1,0 +1,572 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url} % Added for \url command to handle line breaks in paths/URLs
+\usepackage{upquote} % Added to address font warning for curly braces in listings
+\usepackage[T1]{fontenc} % Added for better font encoding and to fix double quote issue in listings
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codesilver}{rgb}{0.96,0.96,0.96}
+\definecolor{codeblue}{rgb}{0.25,0.5,0.5}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{codesilver},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codeblue},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\lstdefinelanguage{text}{
+  literate={\_}{{\_}}{1}
+}
+
+\lstdefinelanguage{TypeScript}{
+  keywords={break, continue, delete, else, for, function, if, in, new, return, this, typeof, var, void, while, with,
+            interface, type, public, private, protected, readonly, override,
+            await, async, case, catch, class, const, default, do, enum, export, extends, finally, from, implements, import, instanceof, let, static, super, switch, throw, try},
+  morekeywords=[2]{false, null, true, boolean, number, undefined, Array, Boolean, Date, Math, Number, String, Object},
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape},
+  sensitive=true,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]{//},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]` % Interpolation strings.
+}[keywords, comments, strings]
+
+\lstdefinelanguage{Python}{
+  keywords={False, None, True, and, as, assert, async, await, break, class, continue, def, del, elif, else, except, finally, for, from, global, if, import, in, is, lambda, nonlocal, not, or, pass, raise, return, try, while, with, yield},
+  morekeywords=[2]{abs, all, any, ascii, bin, bool, breakpoint, bytearray, bytes, callable, chr, classmethod, compile, complex, delattr, dict, dir, divmod, enumerate, eval, exec, filter, float, format, frozenset, getattr, globals, hasattr, hash, help, hex, id, input, int, isinstance, issubclass, iter, len, list, locals, map, max, memoryview, min, next, object, oct, open, ord, pow, print, property, range, repr, reversed, round, set, setattr, slice, sorted, staticmethod, str, sum, super, tuple, type, vars, zip},
+  sensitive=true,
+  morecomment=[s]{"""}{"""},
+  morecomment=[s]{'''}{'''},
+  morecomment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]",
+  literate={\_}{{\_}}{1} % Handle underscores
+}[keywords, comments, strings]
+
+\lstset{style=mystyle, language=TypeScript, literate={\_}{{\_}}{1}}
+
+\title{The Whirling Valley of Crooked Fools}
+\author{Reynard Security Research Team \\ \includegraphics[width=0.5cm]{../shared-assets/favicon.pdf}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+This paper details an automated security assessment conducted on the Reynard backend system. The objective is to identify and document potential security vulnerabilities through various attack simulations. The findings will be used to strengthen the backend's resilience against malicious activities.
+
+\section{Introduction}
+The Reynard application aims to provide a robust platform for image management and caption generation. As with any web application, the security of its backend infrastructure is paramount. This research paper outlines the methodology, tools, and findings of a penetration testing exercise performed on the Reynard backend. The primary goal is to proactively identify and address weaknesses before they can be exploited by external threats. Penetration testing is a crucial practice in identifying vulnerabilities and enhancing system security \cite{Phong2014, Altulaihan2023}, and its principles can be applied to various scales of systems, from individual applications to complex urban infrastructures \cite{Conti2015}.
+
+The backend is a Python-based application, serving various functionalities including file operations, metadata management, and caption generation. The frontend interacts with the backend via a well-defined API. This assessment focuses on potential vulnerabilities within this API and the underlying backend services.
+
+\section{Methodology}
+Our approach involves a series of automated tests designed to simulate common attack vectors. These include, but are not limited to, injection attacks, authentication bypasses, authorization flaws, and denial-of-service attempts. Python scripts will be developed to execute these tests, providing a systematic and reproducible way to probe for weaknesses. This methodology is inspired by established penetration testing frameworks \cite{Wai2001}, and aligns with principles discussed in broader security assessments \cite{Phong2014}.
+
+\section{Threat Model and Scope Definition}
+Our threat model focuses on unauthenticated and authenticated attackers attempting to compromise the Reynard backend system. The scope of this assessment is primarily limited to the backend API endpoints and their interactions with the database and file system. We specifically target vulnerabilities aligned with the OWASP Top 10 risks, including:
+\begin{itemize}
+    \item \textbf{Broken Access Control:} Ensuring proper authentication and authorization mechanisms are in place and cannot be bypassed.
+    \item \textbf{Cryptographic Failures:} Assessing how sensitive data is handled, stored, and transmitted.
+    \item \textbf{Injection:} Probing for SQL Injection, Command Injection, and Path Traversal vulnerabilities.
+    \item \textbf{Insecure Design:} Identifying design flaws that could lead to vulnerabilities.
+    \item \textbf{Security Misconfiguration:} Checking for default configurations, unnecessary features, or improper permissions.
+    \item \textbf{Vulnerable and Outdated Components:} Identifying any known vulnerabilities in third-party libraries or frameworks.
+    \item \textbf{Identification and Authentication Failures:} Focusing on weaknesses in session management and authentication processes.
+    \item \textbf{Software and Data Integrity Failures:} Ensuring that data is not tampered with during transmission or storage.
+    \item \textbf{Security Logging and Monitoring Failures:} Assessing the effectiveness of logging and monitoring for security events.
+    \item \textbf{Server-Side Request Forgery (SSRF):} Testing if the server can be coerced into making unintended requests to internal or external resources.
+\end{itemize}
+Out of scope for this assessment are client-side vulnerabilities like DOM-based XSS (unless they stem from backend reflection), social engineering attacks, and physical security vulnerabilities.
+
+\subsection{Environment Setup}
+The target backend server is running locally with the following configuration:
+\begin{itemize}
+    \item \textbf{Development Port:} 7000
+    \item \textbf{Root Directory:} /home/kade/datasets
+    \item \textbf{Node Environment:} development
+\end{itemize}
+For improved documentation and reproducibility, we recommend providing containerized (e.g., Docker) or Infrastructure as Code (IaC) scripts to spin up consistent test environments. Additionally, a \texttt{requirements.txt} file with pinned dependencies and sample test data should be included to ensure consistent test execution across different environments.
+The backend process is initiated with the command:
+\begin{lstlisting}[language=bash, caption=Backend Startup Command]
+DEV_PORT=7000 ROOT_DIR=/home/kade/datasets NODE_ENV=development python -m app
+\end{lstlisting}
+
+\section{Initial Reconnaissance}
+Before launching any attacks, it is crucial to understand the backend's architecture and the API endpoints it exposes. This involves reviewing existing documentation, if any, and observing network traffic between the frontend and backend.
+
+\subsection{API Endpoint Discovery}
+We will begin by identifying the various API endpoints. This can be achieved by analyzing the frontend's source code to see how it interacts with the backend or by observing network requests made by the application during normal operation.
+
+\section{Vulnerability Assessment Categories}
+We will categorize potential vulnerabilities into the following areas:
+\subsection{Authentication and Authorization}
+\begin{itemize}
+    \item \textbf{Bypass Attacks:} Accessing protected resources without authentication.
+    \item \textbf{Privilege Escalation:} Gaining higher-privilege functionalities as a low-privilege user.
+    \item \textbf{Insecure Direct Object References (IDOR):} Manipulating user input to access unauthorized resources.
+\end{itemize}
+
+\subsection{Input Validation and Injection}
+\begin{itemize}
+    \item \textbf{SQL Injection:} Attempting to inject malicious SQL queries into input fields.
+    \item \textbf{Command Injection:} Testing for vulnerabilities that allow execution of arbitrary system commands.
+    \item \textbf{Cross-Site Scripting (XSS):} While primarily a frontend vulnerability, we will check if the backend sanitizes user-supplied data correctly before storage or reflection.
+    \item \textbf{Path Traversal:} Attempting to access files and directories outside of the intended directory.
+\end{itemize}
+
+\subsection{Error Handling and Information Disclosure}
+\begin{itemize}
+    \item \textbf{Verbose Error Messages:} Identifying if error messages reveal sensitive information about the backend infrastructure.
+    \item \textbf{Stack Traces:} Checking for exposed stack traces that could aid an attacker.
+\end{itemize}
+
+\subsection{Denial of Service (DoS)}
+\begin{itemize}
+    \item \textbf{Resource Exhaustion:} Testing if large or malformed requests can exhaust backend resources.
+    \item \textbf{Rate Limiting:} Assessing if the API is vulnerable to brute-force attacks due to missing or inadequate rate limiting.
+\end{itemize}
+
+\section{Python Scripting for Exploitation}
+This section will detail the Python scripts developed to carry out the automated security tests. Each script will target a specific vulnerability category and will be designed to be modular and reusable. To enhance the depth of automated testing, future iterations will incorporate dynamic fuzzers (e.g., OWASP ZAP) and develop tests for chained attacks (e.g., CSRF + IDOR) and complex business logic flaws.
+
+\subsection{The Hidden Flag}
+To facilitate the testing of information disclosure and unauthorized access, a hidden "flag" has been embedded within the backend. This flag is a string value intended to be accessible only through specific, potentially vulnerable API endpoints or misconfigurations. The objective of our security scripts will be to discover and retrieve this flag without authorized means, simulating a real-world scenario where sensitive information might be inadvertently exposed.
+
+Specifically, the flag \texttt{FLAG\{YOU\_FOUND\_THE\_CONFIG\_FLAG\}} has been added to the \url{/api/config} endpoint's response. This endpoint is typically used by the frontend to retrieve application configuration. Our tests will attempt to access this endpoint and extract the flag, assessing whether the flag is exposed without proper authentication or authorization, or if any other vulnerability allows its unintended disclosure.
+
+\subsection{Setup}
+All Python scripts will be located in the \texttt{./blackhat} directory. They will utilize standard Python libraries for making HTTP requests and parsing responses. To improve the rigor of Proof-of-Concept (PoC) scripts and ensure robust false-positive/negative handling, future enhancements will include:
+\begin{itemize}
+    \item \textbf{Modular Error Handling:} Implementing comprehensive try-except blocks and custom exception handling for unexpected response formats.
+    \item \textbf{Retry Logic and Exponential Backoff:} Incorporating retry mechanisms with exponential backoff for transient network issues or rate limiting scenarios.
+    \item \textbf{Parameterized Reporting:} Developing a consistent reporting mechanism that captures nuanced failure modes, including detailed status codes, response bodies, and custom flags for test outcomes.
+    \item \textbf{Result Validation Pipeline:} Establishing a clear pipeline for triaging false positives and negatives, potentially integrating with a central logging system for automated analysis.
+\end{itemize}
+
+\subsection{Authentication Bypass Testing}
+This section details the tests conducted against the \url{/api/login} endpoint to assess its resilience against various authentication bypass techniques, including common SQL injection patterns.
+
+Our \texttt{login\_test.py} script was extended to include the following scenarios:
+\begin{itemize}
+    \item \textbf{Invalid Credentials:} Testing with a non-existent username and incorrect password.
+    \item \textbf{Empty Credentials:} Attempting to log in with both username and password fields empty.
+    \item \textbf{SQL Injection in Username/Password:} Probing for vulnerabilities by injecting common SQL injection payloads into both username and password fields.
+    \item \textbf{Advanced SQL Injection Bypass:} Specifically attempting to bypass authentication using the \texttt{' OR 1=1 --} payload in the username field with an empty password.
+    \item \textbf{Access to Protected Endpoint After Failed Login:} Verifying that a protected endpoint (\url{/api/config}) remains inaccessible even after multiple failed login attempts.
+\end{itemize}
+
+\subsection{Results: Robust Authentication}
+Our \texttt{login\_test.py} script yielded the following results:
+\begin{lstlisting}[language=text, caption=Output from \texttt{login\_test.py}]
+--- Testing /api/login endpoint ---
+
+[+] Attempting login with invalid credentials...
+    Status Code: 401
+    Response: {'detail': 'Incorrect username or password'}
+    [OK] Login failed as expected for invalid credentials (Status 401 Unauthorized).
+
+[+] Attempting login with empty credentials...
+    Status Code: 401
+    Response: {'detail': 'Incorrect username or password'}
+    [WARNING] Unexpected status code for empty credentials. Expected 400.
+
+[+] Attempting SQL Injection in username field...
+    Status Code: 401
+    Response: {'detail': 'Incorrect username or password'}
+    [OK] SQL Injection attempt in username failed as expected.
+
+[+] Attempting SQL Injection in password field...
+    Status Code: 401
+    Response: {'detail': 'Incorrect username or password'}
+    [OK] SQL Injection attempt in password failed as expected.
+
+[+] Attempting SQL Injection with ' OR 1=1' in username and empty password...
+    Status Code: 401
+    Response: {'detail': 'Incorrect username or password'}
+    [OK] SQL Injection bypass attempt in username with empty password failed as expected.
+
+[+] Attempting to access \texttt{/api/config} without authentication after login attempts...
+    Status Code: 401
+    Response: {'detail': 'Not authenticated'}
+    [OK] Access to \texttt{/api/config} is restricted as expected (authentication/authorization required).
+
+--- /api/login endpoint testing complete ---
+\end{lstlisting}
+
+\textbf{Analysis:}
+All authentication bypass attempts, including basic invalid credentials, SQL injection payloads, and an advanced SQL injection bypass, were successfully thwarted by the backend's authentication mechanism, consistently returning a \texttt{401 Unauthorized} status. This indicates a strong defense against these common attack vectors. The \url{/api/config} endpoint also correctly returned \texttt{401 Unauthorized}, further confirming the effectiveness of the previously implemented access restrictions.
+
+\section{Results and Findings}
+During the penetration testing, a significant information disclosure vulnerability was identified related to the \url{/api/config} endpoint. Our \texttt{flag\_capture\_test.py} script successfully retrieved a hidden security flag without authentication.
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Unauthenticated Information Disclosure (\texttt{/api/config})}}{Vulnerability: Unauthenticated Information Disclosure (/api/config)}}
+\begin{itemize}
+    \item \textbf{Endpoint:} \url{/api/config}
+    \item \textbf{Method:} GET
+    \item \textbf{Description:}
+    The \url{/api/config} endpoint, previously found to expose sensitive information (the embedded \texttt{security\_flag}) to unauthenticated users, has been secured. The endpoint now correctly restricts access, requiring administrative privileges to view the \texttt{security\_flag}. This mitigation prevents unauthorized information disclosure.
+    \item \textbf{Proof of Concept (\texttt{flag\_capture\_test.py} output after mitigation):}
+\end{itemize}
+\begin{lstlisting}[language=text, caption=Output from \texttt{flag\_capture\_test.py} (after mitigation)]
+--- Testing /api/config for security flag ---
+
+[+] Attempting to retrieve flag from /api/config (unauthenticated)...
+    Status Code: 401
+    [OK] Access to /api/config is restricted as expected (authentication/authorization required).
+
+--- /api/config flag testing complete ---
+\end{lstlisting}
+\begin{itemize}
+    \item \textbf{Impact:}
+    This vulnerability could have led to the exposure of sensitive configuration details. With the implemented fix, the confidentiality of the \texttt{security\_flag} is preserved, demonstrating successful mitigation of the information disclosure risk.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Unauthenticated Assistant Information Access}}{Vulnerability: Unauthenticated Assistant Information Access}}
+\begin{itemize}
+    \item \textbf{Endpoints:} \url{/api/ollama/chat} (POST), \url{/api/ollama/assistant/tools} (GET), and
+    \url{/api/ollama/assistant/context/test\_path} (GET)
+    \item \textbf{Description:}
+    Initial reconnaissance indicated that several assistant-related API endpoints were intended to be protected by user authentication. Our security tests confirmed that these endpoints were indeed secure against unauthenticated access. This is crucial as these endpoints can expose sensitive information (e.g., user chat history, available tools for an authenticated user, or directory context) or allow actions (e.g., chatting with the assistant) that should be restricted to authenticated users.
+    \item \textbf{Proof of Concept (\texttt{exploit\_script.py} output):}
+\end{itemize}
+\begin{lstlisting}[language=text, caption=Output from \texttt{exploit\_script.py} (Assistant Endpoints)]
+--- Testing Unauthenticated Assistant Endpoints ---
+
+[+] Attempting POST request to http://localhost:7000/api/ollama/chat without authentication...
+    Status Code: 401
+    Response: {'detail': 'Not authenticated'}
+    [OK] Access to http://localhost:7000/api/ollama/chat is restricted as expected (Status 401 Unauthorized).
+
+[+] Attempting GET request to http://localhost:7000/api/ollama/assistant/tools without authentication...
+    Status Code: 401
+    Response: {'detail': 'Not authenticated'}
+    [OK] Access to http://localhost:7000/api/ollama/assistant/tools is restricted as expected (Status 401 Unauthorized).
+
+[+] Attempting GET request to http://localhost:7000/api/ollama/assistant/context/test\_path without authentication...
+    Status Code: 401
+    Response: {'detail': 'Not authenticated'}
+    [OK] Access to http://localhost:7000/api/ollama/assistant/context/test\_path is restricted as expected (Status 401 Unauthorized).
+
+--- Unauthenticated Assistant Endpoints Testing Complete ---
+\end{lstlisting}
+\begin{itemize}
+    \item \textbf{Impact:}
+    The successful restriction of access to these endpoints for unauthenticated users confirms the backend's robust implementation of authentication for assistant-related functionalities. No direct vulnerability was found in these specific endpoints, affirming their secure design.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Robustness: Login Rate Limiting}}{Robustness: Login Rate Limiting}}
+\begin{itemize}
+    \item \textbf{Endpoint:} \url{/api/login}
+    \item \textbf{Description:}
+    Our \texttt{rate\_limit\_test.py} script was used to assess the effectiveness of the login rate-limiting mechanism. The backend is configured to allow a maximum of 5 login attempts within a 10-minute window before blocking further attempts from the same source. The test script repeatedly sent invalid login requests to simulate a brute-force attack.
+    \item \textbf{Proof of Concept (\texttt{rate\_limit\_test.py} output):}
+\end{itemize}
+\begin{lstlisting}[language=text, caption=Output from \texttt{rate\_limit\_test.py} (Login Rate Limiting)]
+--- Testing rate limiting for /api/login ---
+Request 1: Status Code: 401, Response: {'detail': 'Incorrect username or password'}
+    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.
+Request 2: Status Code: 401, Response: {'detail': 'Incorrect username or password'}
+    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.
+Request 3: Status Code: 401, Response: {'detail': 'Incorrect username or password'}
+    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.
+Request 4: Status Code: 401, Response: {'detail': 'Incorrect username or password'}
+    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.
+Request 5: Status Code: 401, Response: {'detail': 'Incorrect username or password'}
+    [POSSIBLE BLOCK] Expected 401 for invalid credentials. If repeated for many requests, it might indicate a block.
+Request 6: Status Code: 429, Response: {'detail': 'Too many login attempts. Please try again later.'}
+    [BLOCKED] Rate limit hit at request 6 with 429 Too Many Requests.
+Request 7: Status Code: 429, Response: {'detail': 'Too many login attempts. Please try again later.'}
+    [BLOCKED] Rate limit hit at request 7 with 429 Too Many Requests.
+Request 8: Status Code: 429, Response: {'detail': 'Too many login attempts. Please try again later.'}
+    [BLOCKED] Rate limit hit at request 8 with 429 Too Many Requests.
+Request 9: Status Code: 429, Response: {'detail': 'Too many login attempts. Please try again later.'}
+    [BLOCKED] Rate limit hit at request 9 with 429 Too Many Requests.
+Request 10: Status Code: 429, Response: {'detail': 'Too many login attempts. Please try again later.'}
+    [BLOCKED] Rate limit hit at request 10 with 429 Too Many Requests.
+--- Rate limiting test complete. Total requests: 10, Blocked: 10 ---
+\end{lstlisting}
+\begin{itemize}
+    \item \textbf{Analysis:}
+    The test results confirm that the \url{/api/login} endpoint's rate-limiting mechanism is effectively implemented. After 5 invalid login attempts, subsequent requests from the same source were blocked with a \texttt{429 Too Many Requests} status code. This demonstrates strong protection against brute-force login attacks.
+\end{itemize}
+
+\subsection{\textbf{Vulnerability: Backend Configuration Initialization Failure}}
+\begin{itemize}
+    \item \textbf{Description:}
+    During application startup, a critical error was identified in the backend's configuration loading process, leading to subsequent failures in other services like Git. Initially, the error message \texttt{'Depends' object has no attribute 'role'} was observed. This occurred because the FastAPI endpoint function \texttt{get\_config}, which relies on dependency injection (\texttt{Depends(get\_current\_user)}), was being called directly during the application's \texttt{lifespan} function. In this context, the \texttt{Depends} object was not resolved to a \texttt{User} instance, causing the attempt to access its \texttt{role} attribute to fail.
+    \item \textbf{Mitigation - Step 1: Correcting Dependency Injection Context:}
+    To resolve this, the initialization of the \texttt{ConfigManager} was moved to occur earlier within the \texttt{lifespan} function in \texttt{app/main.py}. The application was then configured to load its initial configuration by calling \texttt{config\_manager.get\_config()} instead of the FastAPI endpoint. This ensured that configuration data was retrieved correctly from the initialized \texttt{ConfigManager} instance.
+
+    \begin{lstlisting}[language=Python, caption=Partial Fix for Config Loading in \texttt{app/main.py}]
+    global config_manager
+    config_manager = initialize_config_manager()
+    initial_config = config_manager.get_config()
+    \end{lstlisting}
+
+    \item \textbf{Subsequent Issue: \texttt{'AppConfig'} object is not subscriptable:}
+    After the initial mitigation, a new \texttt{TypeError: 'AppConfig' object is not subscriptable} emerged. This indicated that while \texttt{initial\_config} was now correctly an \texttt{AppConfig} object, subsequent code was still attempting to access its attributes using dictionary-style bracket notation (e.g., \texttt{initial\_config['thumbnail\_size']}) instead of dot notation (e.g., \texttt{initial\_config.thumbnail\_size}).
+    \item \textbf{Mitigation - Step 2: Adopting Correct Object Access:}
+    The final fix involved updating all instances where \texttt{initial\_config} attributes were accessed, particularly in the creation of \texttt{CachedFileSystemDataSource} and the setting of thumbnail sizes. All bracket-based accesses were replaced with dot notation, aligning with the \texttt{AppConfig} object's structure.
+
+    \begin{lstlisting}[language=Python, caption=Final Fix for AppConfig Access in \texttt{app/main.py}]
+    data_source = CachedFileSystemDataSource(
+        ROOT_DIR,
+        (initial_config.thumbnail_size, initial_config.thumbnail_size),
+        (initial_config.preview_size or initial_config.thumbnail_size, initial_config.preview_size or initial_config.thumbnail_size)
+    )
+    if initial_config.thumbnail_size:
+        data_source.set_thumbnail_size((initial_config.thumbnail_size, initial_config.thumbnail_size))
+    \end{lstlisting}
+
+    \item \textbf{Impact:}
+    The complete resolution of these configuration initialization issues ensures that the backend application starts up correctly, allowing dependent services like the Git manager to initialize without error. This stabilizes the backend and allows the frontend to access Git-related functionalities without encountering \texttt{'NoneType' object has no attribute 'get\_status'} errors.
+\end{itemize}
+
+\section{Frontend-Backend Interaction Vulnerabilities}
+During the development and testing phase, a significant frontend-backend interaction vulnerability was identified, leading to a \texttt{401 Unauthorized} error that disrupted the user login flow. This issue was not a direct backend vulnerability, but rather a timing and dependency problem on the frontend's side concerning a protected backend endpoint. To proactively catch these sequencing flaws and ensure robust frontend-backend interaction, we recommend incorporating end-to-end integration tests (e.g., using Playwright) and instrumenting performance metrics for request timing.
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Premature Unauthenticated \texttt{/api/config} Fetch}}{Vulnerability: Premature Unauthenticated /api/config Fetch}}
+\begin{itemize}
+    \item \textbf{Endpoint:} \url{/api/config}
+    \item \textbf{Description:}
+    The application's frontend was attempting to fetch configuration data from the \url{/api/config} endpoint before the user was fully authenticated. As \url{/api/config} is a protected endpoint (as confirmed by the backend security assessment in previous sections), this premature request resulted in a \texttt{401 Unauthorized} response, interrupting the login process and displaying an "Session expired. Please log in again." notification.
+    \item \textbf{Impact:}
+    This vulnerability directly prevented users from logging into the application, as the essential configuration data could not be retrieved before authentication was established. Although the backend correctly enforced authentication, the frontend's architectural flaw in fetching order created a denial-of-service for login.
+\end{itemize}
+
+\subsection{Mitigation: Conditional Resource Loading and Component Ordering}
+To address this frontend-backend interaction vulnerability, several changes were implemented on the frontend:
+
+\begin{itemize}
+    \item \textbf{Conditional \url{/api/config} Fetching in Gallery Context:}
+    The primary fix involved modifying \texttt{src/contexts/gallery.ts} to ensure that the configuration resource (which fetches from \url{/api/config}) is only created and fetched when the user's authentication state (\texttt{isLoggedIn}) is true. This was achieved by making the \texttt{createResource} call conditional on the \texttt{isLoggedIn} signal from \texttt{useAppContext}. This prevents the unauthenticated request from ever being made.
+
+    \begin{lstlisting}[language=TypeScript, caption=Conditional Config Resource Creation in \texttt{src/contexts/gallery.ts}]
+    const authFetch = useAuthFetch();
+    const { isLoggedIn } = useAppContext();
+
+    // Data sources and actions
+    const [config, { refetch: refetchConfig }] = createResource(
+      isLoggedIn,
+      async (loggedIn) => {
+        if (loggedIn) {
+          const fetcher = authFetch;
+          const response = await fetcher("/api/config");
+          const configData = await response.json();
+          console.debug("Config loaded:", configData);
+          return configData as ConfigResponse;
+        }
+        return undefined; // Return undefined when not logged in
+      },
+      {
+        initialValue: undefined,
+      }
+    );
+    \end{lstlisting}
+
+    \item \textbf{Corrected Component Rendering Order:}
+    During debugging, it was also identified that certain components, such as \texttt{ReynardAssistantWrapper} and \texttt{DebugOverlayWrapper}, were being rendered outside the scope of \texttt{GalleryProvider} in \texttt{src/main.tsx}, leading to "useGallery must be used within a GalleryProvider" errors. These components implicitly or explicitly rely on the \texttt{GalleryContext}. The \texttt{src/main.tsx} file was updated to ensure these components are nested within the \texttt{GalleryProvider}, guaranteeing that they have access to the necessary context.
+
+    \begin{lstlisting}[language=TypeScript, caption=Updated Component Hierarchy in \texttt{src/main.tsx}]
+    <AppProvider>
+        <CaptionerProvider>
+            <AuthGuardWrapper>
+                <GalleryProvider>
+                    <GlobalIndexingMonitor />
+                    {props.children}
+                    <ReynardAssistantWrapper />
+                    <DebugOverlayWrapper isVisible={isOverlayVisible()} />
+                </GalleryProvider>
+            </AuthGuardWrapper>
+            <NotificationContainer />
+            <ConnectionMonitor />
+        </CaptionerProvider>
+    </AppProvider>
+    \end{lstlisting}
+\end{itemize}
+\textbf{Analysis:}
+The implementation of conditional resource loading and corrected component rendering order successfully resolved the \texttt{401 Unauthorized} issue during login. The frontend now gracefully handles authentication states, fetching protected resources only when a user is authenticated. This ensures a smooth and secure login experience, highlighting the importance of securing backend endpoints and respecting frontend logic for authentication and component dependencies.
+
+\section{Vulnerability Severity and Prioritization}
+To effectively allocate resources and address identified vulnerabilities, future assessments will rank findings based on a severity matrix that considers both the technical impact and business impact. We will adopt a common vulnerability scoring system (e.g., CVSS) where applicable, and assign a remediation timeline based on severity:
+\begin{itemize}
+    \item \textbf{Critical:} Immediate remediation required (e.g., unauthenticated RCE, data breach).
+    \item \textbf{High:} Remediation within 1-7 days (e.g., authenticated RCE, significant data exposure).
+    \item \textbf{Medium:} Remediation within 1-4 weeks (e.g., privilege escalation, DoS vulnerability).
+    \item \textbf{Low:} Remediation within 1-3 months (e.g., information disclosure, minor misconfigurations).
+    \item \textbf{Informational:} No immediate remediation required, but recommendations for best practices.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Inadequate Input Validation for User Registration (\texttt{/api/register})}}{Vulnerability: Inadequate Input Validation for User Registration (/api/register)}}
+\begin{itemize}
+    \item \textbf{Endpoint:} \url{/api/register}
+    \item \textbf{Method:} POST
+    \item \textbf{Description:}
+    The fuzzer revealed that the \url{/api/register} endpoint, responsible for new user registrations, exhibited inconsistent error handling and acceptance of various malformed or invalid inputs for username and password fields. While some fuzzed inputs correctly resulted in \texttt{422 Unprocessable Content} due to Pydantic's \texttt{min\_length} and \texttt{max\_length} validations (e.g., empty strings, overly long strings, or very short strings), other inputs led to \texttt{400 Bad Request} or unexpected behavior. Specifically, inputs like \texttt{\x00} (null byte) or certain special characters, when passed as part of the username or password, could potentially bypass intended string validation or lead to unhandled exceptions downstream, indicating a lack of comprehensive input sanitization beyond basic length checks. The fuzzer output showed a mix of \texttt{422 Unprocessable Content} for validation errors and \texttt{400 Bad Request} potentially for issues like existing usernames or other data source constraints.
+    \item \textbf{Impact:}
+    Inadequate input validation can lead to several security risks, including: storing malformed or malicious data in the database, potentially enabling injection attacks (e.g., SQL injection if inputs are not properly escaped in database queries), denial-of-service by causing backend errors with specially crafted inputs, and account enumeration if error messages distinguish between non-existent and existing usernames. The inconsistent error codes also make it harder for the frontend to gracefully handle registration failures.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Mitigation: Enhancing Input Validation and Error Handling for User Registration}}{Mitigation: Enhancing Input Validation and Error Handling for User Registration}}
+To address the input validation issues in the \url{/api/register} endpoint, comprehensive validation will be implemented for both username and password fields, extending beyond simple length checks to include character set restrictions and more specific format validations where appropriate. Error responses will be standardized to provide clear and consistent feedback to the client. This will involve:
+\begin{itemize}
+    \item \textbf{Username Validation:}
+    Enforcing stricter regex patterns for usernames (e.g., allowing only alphanumeric characters, underscores, and hyphens) to prevent injection of special characters or control characters that could cause issues.
+    \item \textbf{Password Complexity:}
+    Implementing additional password complexity requirements (e.g., requiring a mix of uppercase, lowercase, numbers, and symbols) to enhance security.
+    \item \textbf{Standardized Error Responses:}
+    Ensuring that all validation failures return a consistent \texttt{422 Unprocessable Content} with clear detail messages, and that application-level errors (like username already exists) return \texttt{400 Bad Request} with specific error messages, avoiding generic \texttt{500 Internal Server Error} where possible.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Insufficient Input Validation for Engagement Record (\texttt{/api/engagement/record})}}{Vulnerability: Insufficient Input Validation for Engagement Record (/api/engagement/record)}}
+\begin{itemize}
+    \item \textbf{Endpoint:} \url{/api/engagement/record}
+    \item \textbf{Method:} POST
+    \item \textbf{Description:}
+    The fuzzer identified that the \url{/api/engagement/record} endpoint, which accepts user engagement data, is vulnerable to `422 Unprocessable Content` errors when receiving malformed inputs. This occurs because the `EngagementRecord` Pydantic model expects specific data types for its fields (`username: str`, `engagement_type: str`, `value: float`, `metadata: Optional[Dict[str, Any]]`). However, the fuzzer successfully sent non-conforming data, such as strings for the `value` field (which expects a float) or lists/strings for the `metadata` field (which expects a dictionary). While Pydantic handles basic type validation, the API's response to such malformed inputs indicates a lack of more granular validation or clear error handling for edge cases, potentially leading to unnecessary server-side processing before validation fails.
+    \item \textbf{Impact:}
+    This vulnerability primarily affects the robustness and reliability of the engagement tracking system. Malformed requests can lead to `422 Unprocessable Content` errors, which, while preventing incorrect data from being stored, indicate that the API is not gracefully handling unexpected input formats at an earlier stage or providing more specific feedback. Persistent malformed requests could contribute to server load or obscure more critical issues in logs. While not a direct security exploit in itself (as sensitive data is not exposed and the server doesn't crash), it highlights an area for hardening input validation to improve API stability and maintainability.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Mitigation: Enhancing Input Validation for Engagement Record}}{Mitigation: Enhancing Input Validation for Engagement Record}}
+To mitigate the input validation issues in the \url{/api/engagement/record} endpoint, the `EngagementRecord` Pydantic model will be enhanced with stricter validation rules, including:
+\begin{itemize}
+    \item \textbf{`engagement_type` Validation:}
+    If `engagement_type` is expected to be from a predefined set of values, it should be defined as a Pydantic `Enum` or have explicit validation to restrict its possible values.
+    \item \textbf{`username` Field:}
+    While currently a `str`, adding `min_length` and `max_length` constraints or a regex pattern to the `username` field in `EngagementRecord` would ensure that only valid usernames are accepted, preventing empty strings or excessively long inputs.
+    \item \textbf{Robust Error Handling:}
+    Ensuring that all validation errors consistently return `422 Unprocessable Content` with clear, detailed messages, guiding clients on how to correctly format their requests.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Vulnerability: Unauthenticated Captioning Service Access}}{Vulnerability: Unauthenticated Captioning Service Access}}
+\begin{itemize}
+    \item \textbf{Endpoints:} \url{/api/joycaption/download-status} (GET),
+    \url{/api/caption-types} (GET), \url{/api/caption-types} (POST),
+    \url{/api/generate-caption/{path}} (POST),
+    \url{/api/batch-transform-captions} (POST),
+    \url{/api/batch-generate-captions} (POST)
+    \item \textbf{Description:}
+    Several endpoints related to the captioning service, including checking JoyCaption model download status and managing caption types, were found to be accessible to unauthenticated users. This posed a security risk as it could lead to information disclosure (e.g., model download progress) or unauthorized configuration changes (e.g., updating caption types) by guest users. Additionally, the frontend was proactively attempting to fetch/sync these details even when logged out, leading to undesirable console messages and unnecessary backend requests.
+    \item \textbf{Impact:}
+    This vulnerability could allow unauthenticated users to gather sensitive operational information about the backend's captioning capabilities and model download status. More critically, it could allow for unauthorized modification of caption type configurations, potentially disrupting legitimate application functionality or leading to data integrity issues. The continuous frontend calls also generated distracting console warnings for guest users.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Mitigation: Backend Authentication and Frontend Conditional Logic}}{Mitigation: Backend Authentication and Frontend Conditional Logic}}
+To mitigate the unauthenticated access to the captioning service and associated frontend issues, the following measures were implemented:
+\begin{itemize}
+    \item \textbf{Backend Endpoint Protection:}
+    The \url{/api/joycaption/download-status} (GET), \url{/api/caption-types} (GET), and \url{/api/caption-types} (POST) endpoints in \texttt{app/main.py} were updated to require authentication via the \texttt{Depends(get\_current\_user)} dependency. This ensures that only authenticated users can access or modify these resources.
+    \item \textbf{Frontend Conditional Fetching (JoyCaption Download Status):}
+    The \texttt{checkJoyCaptionDownload} function and its associated \texttt{createEffect} polling mechanism in \texttt{src/contexts/app.tsx} were modified. The check for JoyCaption download status now includes a condition to only proceed if \texttt{store.isLoggedIn} is true. This prevents unnecessary API calls when the user is logged out.
+    \item \textbf{Frontend Conditional Sync (Caption Types):}
+    The \texttt{syncCaptionTypesToBackend} function in \texttt{src/contexts/captionTypes.tsx} was updated. It now checks the \texttt{isLoggedIn} state (passed as a boolean parameter) and will skip the synchronization process if the user is not logged in. This prevents the frontend from attempting to update backend caption types without authentication.
+\end{itemize}
+\textbf{Analysis:}
+By implementing authentication on the backend endpoints and introducing conditional logic in the frontend for relevant data fetches and synchronizations, the captioning service is now protected from unauthenticated access. This not only enhances security by preventing unauthorized information disclosure and configuration changes but also improves the user experience by eliminating misleading console messages for guest users. The system now gracefully handles authentication states, ensuring that sensitive operations are only performed when appropriate user privileges are established.
+
+\section{Future Work and Threat Model Evolution}
+Security is an ongoing process, and the threat landscape continuously evolves. Future work will include a living-document approach to periodically reassess the threat model and incorporate new attack techniques and vulnerabilities as they emerge. This will involve:
+\begin{itemize}
+    \item \textbf{Regular Threat Intelligence Review:} Staying updated with the latest attack vectors, exploits, and security trends relevant to web applications and Python-based backends.
+    \item \textbf{Supply Chain Security:} Assessing the security of third-party dependencies and libraries to mitigate risks associated with vulnerable components.
+    \item \textbf{Server-Side Template Injection (SSTI):} Investigating potential SSTI vulnerabilities, especially if templating engines are introduced or modified.
+    \item \textbf{Regular Penetration Testing:} Conducting periodic manual and automated penetration tests to ensure continued security posture.
+    \item \textbf{Integration with Security Tools:} Exploring integration with advanced security tools for static application security testing (SAST) and dynamic application security testing (DAST).
+\end{itemize}
+
+\section{Recommendations and Mitigations}
+Based on the findings, this section will provide actionable recommendations for patching identified vulnerabilities and improving the overall security posture of the Reynard backend. For all implemented mitigations, it is crucial to add CI-gated security tests and ensure comprehensive test coverage for all protected routes to prevent regressions.
+
+\subsection{\texorpdfstring{\textbf{Mitigation: Restricting Access to \texttt{/api/config}}}{Mitigation: Restricting Access to /api/config}}
+To address the "Unauthenticated Information Disclosure" vulnerability, the \url{/api/config} endpoint has been secured by enforcing administrator-level authentication. This was achieved by adding a dependency on the \texttt{is\_admin} function to the endpoint's route decorator.
+
+\begin{lstlisting}[language=Python, caption=Security Fix in \texttt{app/main.py}]
+@app.get("/api/config")
+async def get_config(current_user: User = Depends(is_admin)):
+    response = {
+        # Basic config from file
+        **config.to_dict(),
+        "security_flag": "FLAG{YOU_FOUND_THE_CONFIG_FLAG}", # Our secret flag
+        # Runtime information
+        "tags_file_path": CUSTOM_TAGS_FILE_PATH,
+        "root_dir": str(ROOT_DIR),
+    }
+\end{lstlisting}
+
+This change ensures that only users with the 'admin' role can successfully access the \texttt{security\_flag} within the the \url{/api/config} response, thereby preventing unauthenticated information disclosure.
+
+\bibliography{references}
+\bibliographystyle{plain}
+
+\section{Presentation Polishing}
+To enhance the readability and impact of this report, future revisions will incorporate:
+\begin{itemize}
+    \item \textbf{Updated Bibliography:} Including more recent references on automated penetration testing frameworks and security in Python-based microservices.
+    \item \textbf{Visual Aids:} Integrating figures (e.g., architecture diagrams, attack flows) and tables (e.g., summarizing endpoints tested vs. outcomes, vulnerability matrices) to improve clarity and provide quick insights into complex information.
+\end{itemize}
+
+\section{New Automated Audit Scripts}
+To complement prior tests, we added three non-destructive audit scripts under \texttt{blackhat/} and executed them against the running backend.
+
+\subsection{Upload Path Traversal Probe}
+\textbf{Script:} \texttt{path\_traversal\_upload\_test.py}
+
+This script authenticates and attempts to upload a valid image with a crafted filename containing parent directory segments (e.g., \texttt{"../code/yipyap/blackhat/traversal\_poc.png"}). It then verifies whether a file was written outside \texttt{ROOT\_DIR}.
+
+\textbf{Result:} No file was created outside \texttt{ROOT\_DIR}. The server constructs the destination using a resolved target directory and does not interpret path separators embedded in the uploaded filename as a directory path. This suggests traversal via filename is mitigated for the upload path.
+
+\textbf{Recommendation:} Optionally normalize per-file \texttt{filename} by applying a basename and sanitization (e.g., \texttt{Path(file.filename).name}, combined with a whitelist) before write to further harden against path separator edge-cases in certain server/proxy stacks.
+
+\subsection{Arbitrary Output Path Write Probe}
+\textbf{Script:} \texttt{arbitrary\_write\_output\_path\_test.py}
+
+This script authenticates and posts to endpoints that accept an \texttt{output\_path} (audio/video/text operations) using absolute paths outside \texttt{ROOT\_DIR} under the repository tree, then checks if files were created.
+
+\textbf{Result:} No files were created at the absolute paths during our test runs. Endpoints generally fail earlier due to nonexistent source inputs, and they do not proceed to write outputs. However, several endpoints take raw paths and only check existence of sources using \texttt{Path(...)} rather than \texttt{resolve\_path(...)}, which indicates a potential trust boundary mismatch if future flows create outputs unconditionally.
+
+\textbf{Recommendation:}
+\begin{itemize}
+  \item Enforce path resolution with \texttt{resolve\_path} for both source and output paths across \texttt{/api/audio}, \texttt{/api/video}, and \texttt{/api/text} modules.
+  \item Gate writes by validating intended destinations are \emph{within} \texttt{ROOT\_DIR} before any \texttt{mkdir} or file creation.
+\end{itemize}
+
+\subsection{CORS Configuration Probe}
+\textbf{Script:} \texttt{cors\_check.py}
+
+Sends an OPTIONS preflight with a foreign \texttt{Origin} and inspects \textit{Access-Control-Allow-*} headers.
+
+\textbf{Observation:} The backend currently configures CORS with \texttt{allow\_origins=["*"]}, \texttt{allow\_methods=["*"]}, \texttt{allow\_headers=["*"]}. While convenient for development, this is overly permissive for production. If credentials are ever enabled, combining \texttt{*} with credentials would be unsafe.
+
+\textbf{Recommendation (Production):}
+\begin{itemize}
+  \item Restrict \texttt{allow\_origins} to the exact frontend domain(s).
+  \item Maintain credentials policy consistent with token storage (avoid cookies across origins unless strictly necessary with explicit origins).
+\end{itemize}
+
+\subsection{Summary}
+These scripted probes confirm that filename-based traversal in uploads appears mitigated, detected no out-of-root writes via \texttt{output\_path} in current flows, and highlight the need to lock down CORS in production. We recommend standardizing path validation with \texttt{resolve\_path} across all endpoints that read or write files and tightening CORS configuration for deployment.
+
+\end{document}

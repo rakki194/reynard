@@ -51,7 +51,7 @@ export const ExamplePage: Component = () => {
     return (
       <DocsPage>
         <div class="docs-loading">
-          <div class="docs-loading-spinner"></div>
+          <div class="docs-loading-spinner" />
           <p>Loading examples...</p>
         </div>
       </DocsPage>

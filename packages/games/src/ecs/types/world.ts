@@ -261,4 +261,16 @@ export interface World {
    * @returns Number of entities with this component
    */
   getComponentCount<T extends Component>(componentType: ComponentType<T>): number;
+  
+  /**
+   * Gets the component registry for registering component types.
+   * @returns ComponentRegistry instance
+   */
+  getComponentRegistry(): any; // Will be properly typed later
+  
+  /**
+   * Gets the resource registry for registering resource types.
+   * @returns ResourceRegistry instance
+   */
+  getResourceRegistry(): any; // Will be properly typed later
 }

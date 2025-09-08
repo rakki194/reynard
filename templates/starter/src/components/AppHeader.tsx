@@ -1,28 +1,103 @@
 /**
  * AppHeader Component
- * Displays the main application header with logo and theme selector
+ * Modern header with navigation and theme selector
  */
 
-import { Component } from "solid-js";
+import { Component, createSignal, For } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { ThemeSelector } from "./ThemeSelector";
+import { useTheme, getAvailableThemes } from "reynard-themes";
+import { useNotifications } from "reynard-core";
+import type { ThemeName } from "reynard-themes";
 
 export const AppHeader: Component = () => {
+  const { theme, setTheme } = useTheme();
+  const { notify } = useNotifications();
+  const [isMenuOpen, setIsMenuOpen] = createSignal(false);
+  
+  const availableThemes = getAvailableThemes();
+
+  const handleThemeChange = (themeName: string) => {
+    setTheme(themeName as ThemeName);
+    notify(`Switched to ${themeName} theme!`, "info");
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <header class="app-header">
-      <h1>
-        <span class="reynard-logo">
-          {fluentIconsPackage.getIcon("yipyap") && (
-            <div
-              // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("yipyap")?.outerHTML}
-            />
-          )}
-        </span>
-        Reynard Starter
-      </h1>
-      <p>A cunning SolidJS framework for modern web applications</p>
-      <ThemeSelector />
+      <div class="header-content">
+        <div class="header-brand">
+          <div class="brand-logo">
+            {fluentIconsPackage.getIcon("fox") && (
+              <div
+                class="logo-icon"
+                // eslint-disable-next-line solid/no-innerhtml
+                innerHTML={fluentIconsPackage.getIcon("fox")?.outerHTML}
+              />
+            )}
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">Reynard</h1>
+            <span class="brand-subtitle">Starter Template</span>
+          </div>
+        </div>
+
+        <nav class="header-nav">
+          <button 
+            class="nav-toggle"
+            onClick={() => setIsMenuOpen(!isMenuOpen())}
+            aria-label="Toggle navigation menu"
+          >
+            {fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu") && (
+              <span
+                // eslint-disable-next-line solid/no-innerhtml
+                innerHTML={fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")?.outerHTML}
+              />
+            )}
+          </button>
+          
+          <div class={`nav-menu ${isMenuOpen() ? 'open' : ''}`}>
+            <button class="nav-link" onClick={() => scrollToSection("hero")}>
+              Home
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("dashboard")}>
+              Dashboard
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("icons")}>
+              Icons
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("themes")}>
+              Themes
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("playground")}>
+              Playground
+            </button>
+          </div>
+        </nav>
+
+        <div class="header-actions">
+          <div class="theme-quick-select">
+            <select
+              value={theme}
+              onChange={(e) => handleThemeChange(e.target.value)}
+              class="theme-select"
+              title="Quick theme switch"
+            >
+              <For each={availableThemes}>
+                {(themeConfig) => (
+                  <option value={themeConfig.name}>{themeConfig.displayName}</option>
+                )}
+              </For>
+            </select>
+          </div>
+        </div>
+      </div>
     </header>
   );
 };

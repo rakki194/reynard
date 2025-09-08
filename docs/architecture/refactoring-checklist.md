@@ -52,7 +52,7 @@
 - [ ] **Re-export Imports**: Import and re-export from specialized modules
 - [ ] **Backward Compatibility**: Maintain existing public API
 - [ ] **Documentation**: Update module documentation
-- [ ] **Line Limits**: Keep orchestrator under 100 lines
+- [ ] **Line Limits**: Keep orchestrator under 140 lines
 - [ ] **Clean Structure**: Clear, organized export statements
 
 ### Update Tests

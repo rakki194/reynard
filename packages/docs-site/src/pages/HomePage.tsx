@@ -2,7 +2,7 @@
  * @fileoverview Home page for the documentation site
  */
 
-import { Component, createSignal, onMount } from 'solid-js';
+import { Component, createSignal, onMount, For } from 'solid-js';
 import { 
   DocsHero, 
   DocsCardGrid, 
@@ -156,7 +156,7 @@ import { useTheme } from 'reynard-themes';`
 
       <DocsSection title="Quick Start">
         <div class="docs-quick-start">
-          {quickStartSteps.map(step => (
+          <For each={quickStartSteps}>{step => (
             <div class="docs-quick-start-step">
               <div class="docs-quick-start-step-number">{step.step}</div>
               <div class="docs-quick-start-step-content">
@@ -167,7 +167,7 @@ import { useTheme } from 'reynard-themes';`
                 </pre>
               </div>
             </div>
-          ))}
+          )}</For>
         </div>
       </DocsSection>
 

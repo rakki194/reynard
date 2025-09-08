@@ -1,0 +1,646 @@
+\documentclass[10pt]{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{fancyvrb}
+\usepackage{geometry}
+
+% Set page margins to reduce overfull boxes
+\geometry{
+  margin=1.25in,
+  includeheadfoot
+}
+
+% Adjust float parameters to allow larger floats
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.9}
+\renewcommand{\textfraction}{.1}
+\renewcommand{\floatpagefraction}{.8}
+
+% Configure listings for better code formatting
+\lstset{
+    basicstyle=\small\ttfamily,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    columns=flexible,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    breakindent=0pt
+}
+
+% Adjust paragraph spacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+% Adjust line spacing
+\linespread{1.1}
+
+% Adjust code block margins
+\fvset{
+    xleftmargin=1em,
+    xrightmargin=1em
+}
+
+\begin{document}
+
+\title{CONDUCT: Coordinated Orchestration of Navigation Dynamics for Unified Control and Tracking}
+
+\author{Technical Documentation Team\\
+Reynard Project\\
+\includegraphics[width=0.5cm]{../../shared-assets/favicon.pdf}}
+
+\maketitle
+
+\begin{abstract}
+This paper details the design and implementation of YipYap\'s CONDUCT system, 
+a comprehensive architecture developed to ensure responsive and fluid navigation 
+within the application\'s image gallery. We describe the interplay of key composables: 
+\texttt{ScrollManager} for direct DOM interaction, \texttt{useScrollCoordinator} 
+for centralized request orchestration and conflict resolution, and 
+\texttt{useScrollPerformanceMonitor} for real-time performance analytics. 
+The system prioritizes user experience through passive event listeners, 
+debounced scroll handling, and an intelligent conflict resolution mechanism 
+for various scroll sources. By integrating these components, the CONDUCT system 
+achieves high performance, prevents UI jank, and provides robust diagnostics 
+for complex scroll interactions in a SolidJS environment.
+\end{abstract}
+
+\section{Introduction}
+
+Modern web applications, especially those handling rich media like image galleries, demand highly responsive and jank-free scrolling experiences. In the YipYap project, the image gallery serves as a central component, necessitating a sophisticated scroll management system that can gracefully handle diverse user inputs, programmatic scrolls, and ensure seamless visual feedback. This paper outlines the architectural decisions and technical implementation of the YipYap CONDUCT system, focusing on its modular design, performance optimizations, and comprehensive monitoring capabilities.
+
+Traditional scrolling implementations often suffer from race conditions, UI freezes, and inconsistent behavior when multiple sources attempt to control the scroll position simultaneously. The YipYap CONDUCT system addresses these challenges through a layered approach, centralizing scroll requests and providing robust mechanisms for conflict resolution and performance observation.
+
+\section{CONDUCT System Architecture}
+
+The YipYap CONDUCT system is built upon a foundation of interconnected SolidJS composables, each responsible for a specific aspect of scroll management. This modularity enhances maintainability, testability, and allows for fine-grained control over the scrolling behavior.
+
+\subsection{ScrollManager: The Direct DOM Interface}
+
+At the lowest level of the CONDUCT architecture is the \texttt{ScrollManager} 
+class (defined in \linebreak[4] \texttt{src/components/Gallery/ScrollManager.tsx}). 
+This class is responsible for direct interaction with the DOM\'s scrollable element. 
+Its primary functions include:
+\begin{itemize}
+    \item Maintaining the current scroll position (\texttt{currentScrollY}).
+    \item Providing scroll bounds (minimum and maximum scroll positions) via \texttt{getScrollBounds()}.
+    \item Implementing a \texttt{smoothScrollTo} method for animating scroll transitions, incorporating an ease-in-out quad easing function for natural motion and utilizing \texttt{requestAnimationFrame} for smooth rendering. The \texttt{scrollTimeout} parameter, provided during initialization, determines the duration of this animation.
+    \item Handling cleanup of animation frames to prevent memory leaks and ensure smooth transitions with \texttt{cleanup()}.
+    \item Exposing \texttt{isActive} to indicate if a smooth scroll animation is in progress.
+\end{itemize}
+\texttt{ScrollManager} acts as the singular source of truth for the raw scroll position and the direct manipulator of the scrollable DOM element.
+
+\subsection{useScrollCoordinator: The Orchestration Layer}
+
+The \texttt{useScrollCoordinator} composable (defined in \texttt{src/composables/useScrollCoordinator.ts}) serves as the central orchestration layer for all scroll requests within the application. It receives scroll requests from various sources (e.g., keyboard navigation, mouse wheel, auto-scrolling) and manages their execution based on defined priorities.
+
+Key responsibilities of the \texttt{useScrollCoordinator} include:
+\begin{itemize}
+    \item \textbf{Request Queuing:} Maintains a queue of pending scroll operations (\texttt{queuedOperations}), ensuring that requests are processed in an orderly fashion, with a configurable \texttt{maxQueueSize} (default: 10).
+    \item \textbf{Priority-Based Conflict Resolution:} Assigns numerical priorities to different scroll types (defined in \texttt{SCROLL\_PRIORITIES}) to prevent race conditions and ensure the most relevant scroll operation is executed. Higher-priority requests can cancel lower-priority ones.
+    \item \textbf{Debouncing and Throttling:} The \texttt{debounceMs} parameter (default: 16ms) primarily controls the processing frequency of the scroll operation queue, rather than directly debouncing raw scroll events. This ensures that scroll operations are processed at a consistent rate, preventing excessive updates. Additionally, a \texttt{userScrollTimeout} (managed by \texttt{userScrollTimeoutId}) is used to accurately detect the cessation of user-initiated scrolling, distinguishing it from programmatic scrolls. The \texttt{debounceTimeoutId} manages general debouncing for internal operations to ensure smooth UI responsiveness.
+    \item \textbf{User Scroll Detection:} Differentiates between user-initiated scrolls (\texttt{userScrolling} signal) and programmatic scrolls to enable intelligent conflict resolution and maintain user control. It uses a \texttt{scrollTimeout} to determine the end of a user scroll.
+    \item \textbf{Integration with ScrollManager:} Utilizes the \texttt{ScrollManager} to perform the actual DOM scroll operations via an \texttt{internalScrollCallback} passed to \texttt{requestScroll}.
+    \item \textbf{Integration with Performance Monitor:} Feeds detailed scroll operation data to the \texttt{useScrollPerformanceMonitor} via methods like \texttt{startScrollOperation}, \texttt{endScrollOperation}, and \texttt{cancelScrollOperation} for real-time analysis.
+    \item \textbf{Initialization:} The \texttt{init(element)} method is crucial for attaching scroll listeners to the gallery element. This method, along with internal helper functions like \texttt{initializeGalleryElement} and \texttt{setupScrollListeners}, ensures that the \texttt{useScrollCoordinator} is properly connected to the DOM and responsive to scroll events.
+    \item \textbf{Request Parameters:} Each scroll request can include \texttt{force} (to bypass active animation checks), \texttt{onCompletion} (a callback executed upon the operation\'s success or failure), and \texttt{timeout} (a configurable duration after which the operation is considered failed if not completed).
+\end{itemize}
+All scroll requests from application components are routed through this coordinator, providing a single control point for scroll behavior.
+
+\subsection{useScrollPerformanceMonitor: Tracking and Diagnostics}
+
+The \texttt{useScrollPerformanceMonitor} composable (defined in \linebreak[4] 
+\texttt{src/composables/useScrollPerformanceMonitor.ts}) is dedicated to 
+real-time performance analytics and debugging of scroll interactions. It integrates 
+with the \texttt{ScrollManager} to observe scroll events and track various metrics, 
+and leverages \texttt{usePerformanceMonitor} for broader performance insights.
+
+Its features include:
+\begin{itemize}
+    \item \textbf{Operation Tracking:} Records the \texttt{id}, \texttt{type} 
+    (e.g., keyboard, wheel, auto-scroll, manual), \texttt{source}, \texttt{startTime}, 
+    \texttt{endTime}, \texttt{duration}, \texttt{actualY}, \texttt{cancelled}, 
+    and \texttt{conflictedWith} of each scroll operation.
+    
+    \item \textbf{Performance Metrics:} Calculates and reports key indicators such as 
+    \texttt{totalScrollOperations}, \texttt{averageScrollDuration}, \linebreak[4] 
+    \texttt{longestScrollDuration}, \texttt{scrollsPerSecond}, \texttt{totalConflicts}, 
+    \texttt{conflictRate}, \linebreak[4] 
+    \texttt{criticalConflicts}, \linebreak[4] 
+    \texttt{interruptedUserScrolls}, \texttt{scrollJankEvents}, and 
+    \texttt{frameDropsDuringScroll}.
+    
+    \item \textbf{Conflict Detection:} Employs \texttt{detectConflicts()} to identify instances where multiple scroll operations overlap in time, target, or type, indicating potential race conditions. Conflicts are categorized by \texttt{severity} (low, medium, high, critical).
+    \item \textbf{Performance Metrics (\\texttt{ScrollPerformanceMetrics}):} Calculates and reports key performance indicators such as \texttt{totalScrollOperations}, \texttt{averageScrollDuration}, \texttt{longestScrollDuration}, \texttt{scrollsPerSecond}, \texttt{totalConflicts}, \texttt{conflictRate}, \texttt{criticalConflicts}, \texttt{interruptedUserScrolls}, \texttt{scrollJankEvents}, and \texttt{frameDropsDuringScroll}.
+    \item \textbf{Warning System (\\texttt{ScrollWarning}):} Generates warnings for various issues like slow scrolls, jank events, and memory spikes, with different \texttt{severity} levels.
+    \item \textbf{Memory Usage Tracking:} Monitors JavaScript heap memory usage during active scrolling periods using a \texttt{createEffect} and \texttt{performanceMonitor.measureMemoryUsage()} (an asynchronous call), updating the \texttt{memoryUsage} signal periodically.
+    \item \textbf{Thresholds (\\texttt{THRESHOLDS}):} Defines configurable thresholds for scroll duration, conflict rates, and frame drops to categorize and warn about performance issues. These include \texttt{SCROLL\_DURATION\_WARNING} (100ms) and \texttt{CRITICAL} (300ms), \texttt{CONFLICT\_RATE\_WARNING} (10\%) and \texttt{CRITICAL} (30\%), and \texttt{FRAME\_DROP\_WARNING} (3 dropped frames) and \texttt{CRITICAL} (10 dropped frames), along with \texttt{OPERATIONS\_PER\_SECOND\_WARNING} (10 ops/sec) and \texttt{CRITICAL} (20 ops/sec).
+    \item \textbf{Debugging Utilities:} Provides \texttt{exportData()} for detailed JSON output of metrics, operations, conflicts, and warnings, and \texttt{getScrollStatus()} for a high-level overview of monitoring activity.
+\end{itemize}
+This proactive monitoring approach is critical for maintaining a high-quality user experience as the application evolves and scales.
+
+\subsection{useGalleryScroll: The Gallery Interface}
+
+The \texttt{useGalleryScroll} composable (defined in \texttt{src/composables/useGalleryScroll.tsx}) acts as the primary interface for gallery-specific scrolling functionalities. It ties together the \texttt{ScrollManager}, \texttt{useScrollCoordinator}, and \texttt{useScrollPerformanceMonitor} to provide a cohesive scrolling experience within the image gallery, integrating with the \texttt{useGallery} context.
+
+Key features provided by \texttt{useGalleryScroll} include:
+\begin{itemize}
+    \item \textbf{Scroll to Selected Item (\\texttt{scrollToSelected}):} Automatically scrolls the gallery to ensure the currently selected image is within the viewport. It calculates the \texttt{targetY} considering a 15\% margin buffer zone at the top and bottom of the viewport. It also includes a sophisticated post-scroll position verification mechanism: after an automatic scroll, a \texttt{setTimeout} is initiated, followed by a \texttt{debouncedRAF} re-request if misalignment is detected, to correct any lingering discrepancies and ensure the selected item is perfectly in view. This uses the \texttt{autoScrolling} signal for status.
+    \item \textbf{Smooth Scroll Animations (\\texttt{smoothScroll}):} Exposes a method that wraps \texttt{scrollCoordinator.requestScroll} to animate scrolls to specific target positions.
+    \item \textbf{Wheel Event Handling (\\texttt{setupWheelHandler}):} Manages mouse wheel events for navigation. It prevents default browser scrolling (using \texttt{\{ passive: false \}} to allow \texttt{preventDefault}) and enables custom image navigation by changing the selected image index based on \texttt{e.deltaY}. It then requests a \texttt{wheel} type scroll through the \texttt{scrollCoordinator}, triggering a \texttt{smoothScrollTo} on the \texttt{ScrollManager} and a \texttt{gallery.select} call. The system currently uses \texttt{e.deltaY} directly for both mouse wheel and touchpad input, without specific separate handling for \texttt{touchpadDelta}.
+    \item \textbf{Position Checking (\\texttt{startPositionChecking}):} Initiates a \texttt{window.setInterval} (default: 500ms) to periodically verify the position of selected items within the viewport. It requests \texttt{position-check} scroll operations via the coordinator, which may lead to corrective \texttt{scrollToSelected} calls if misalignment is detected.
+    \item \textbf{RAF-Throttled UI Updates (\\texttt{debouncedRAF}):} This helper function acts as a throttling mechanism, utilizing \texttt{requestAnimationFrame} to ensure that computationally intensive UI updates and animation frame requests are batched and executed optimally. This prevents excessive calls and ensures smooth rendering by synchronizing updates with the browser\'s rendering cycle, rather than simply debouncing them.
+\end{itemize}
+This composable abstracts away the complexities of the underlying scroll system, providing a clean API for gallery interactions and ensuring selected items are always in view.
+
+\subsubsection{ImageViewer Core: Zoom and Pan}
+
+Beyond the main gallery scroll, the \texttt{ImageView} component (\texttt{src/components/ImageViewer/ImageView.tsx}) provides granular control over image display through sophisticated zooming and panning capabilities. This is especially crucial for high-resolution images where users need to inspect details. Key mechanisms include:
+\begin{itemize}
+    \item \textbf{Smooth Zooming:} Implemented via the \texttt{onWheel} event, it adjusts the \texttt{scale} of the image. A reduced \texttt{deltaY} factor (\texttt{-0.001}) ensures gradual transitions, and cursor-relative calculations maintain the focal point during zooming. Scale limits (1x to 5x) are enforced.
+    \item \textbf{Advanced Panning:} Achieved by tracking \texttt{onMouseDown}, \texttt{onMouseMove}, and \texttt{onMouseUp} events to update the \texttt{position} of the image via CSS \texttt{transform}. When zoomed in, users can drag the image to pan, with the cursor changing to \texttt{grab}/\texttt{grabbing} states for visual feedback.
+    \item \textbf{Minimap Navigation:} A minimap, whose viewport is updated via \texttt{updateMinimapViewport} and \texttt{createEffect} hooks, provides real-time tracking of the visible area. Users can interact with the minimap via \texttt{handleMinimapClick} to quickly navigate large images.
+    \item \textbf{Double-Click Reset:} A \texttt{onDblClick} handler (\texttt{handleDoubleClick}) allows users to quickly reset the zoom and position to their default (1x zoom, centered).
+\end{itemize}
+
+This core image viewer interacts with the broader scroll system indirectly. While \texttt{ImageView} handles the internal navigation of a single image, the \texttt{useImageViewerState} composable (\texttt{src/composables/useImageViewerState.ts}) manages the modes (e.g., \texttt{labelling}, \texttt{captionFocused}) that can influence or restrict zooming and panning. For instance, during a labeling session, direct image manipulation might be temporarily paused or altered to avoid conflicts, ensuring a coordinated user experience.
+
+\subsubsection{Image Loading and Progressive Processing}
+
+Efficient image loading is paramount for a smooth gallery scrolling experience, preventing jank and ensuring images are displayed as quickly as possible. YipYap employs a progressive loading strategy, significantly enhanced by the \texttt{useProgressiveLoading} composable (\texttt{src/composables/useProgressiveLoading.ts}). This composable is not directly responsible for image fetching but provides a robust mechanism for processing large datasets and performing time-sliced operations without blocking the UI thread.
+\begin{itemize}
+    \item \textbf{Time-Sliced Processing:} \texttt{useProgressiveLoading} enables the application to break down large tasks (such as image data processing or \texttt{localStorage} operations) into smaller, manageable chunks. This allows the browser to yield control back to the UI thread between processing batches, maintaining responsiveness.
+    \item \textbf{Jank Prevention:} By preventing long-running JavaScript tasks, this composable directly contributes to a jank-free scrolling experience, as image data can be processed in the background without causing UI freezes.
+    \item \textbf{Optimized LocalStorage Operations:} It also provides utilities for saving and loading data from \texttt{localStorage} progressively, ensuring that even large cached datasets do not impede UI performance during critical operations like scrolling.
+\end{itemize}
+This progressive processing, in conjunction with the image prioritization (as briefly mentioned in \texttt{ImageView.tsx} for \texttt{thumbnail\_img} and \texttt{preview\_img}), ensures that image assets are loaded and prepared efficiently, contributing to the overall fluidity of the gallery\'s scrolling and navigation.
+
+\subsubsection{GalleryContext: Global State and Scroll Influence}
+
+The \texttt{GalleryContext} (\texttt{src/contexts/gallery.ts} and \texttt{src/contexts/GalleryContext.tsx}) serves as the central hub for the application\'s global gallery-related state. This context is crucial for scrolling behavior, as changes in its state directly influence what is displayed and how the \texttt{useGalleryScroll} composable reacts.
+\begin{itemize}
+    \item \textbf{Selected Item Tracking:} The \texttt{selected} signal within \texttt{GalleryContext} tracks the currently active image in the gallery. Any change to this \texttt{selected} index immediately triggers the \texttt{scrollToSelected} function in \texttt{useGalleryScroll}, ensuring the newly selected image is brought into view.
+    \item \textbf{Data Management:} \texttt{GalleryContext} manages the overall \texttt{items} data, which dictates the size and content of the scrollable area. As items are loaded, filtered, or reordered, the scrollable bounds and targets for automatic scrolling are dynamically updated.
+    \item \textbf{Path and Pagination:} The \texttt{path} and \texttt{page} states within the context define the current directory and pagination, respectively. Navigating through different paths or pages can necessitate significant scroll adjustments, coordinated by the \texttt{useScrollCoordinator}.
+\end{itemize}
+Thus, \texttt{GalleryContext} acts as the data backbone, providing the necessary information and reactive triggers for the entire CONDUCT scrolling system to maintain a coherent and responsive user experience.
+
+\subsubsection{Keyboard Navigation and Selection Integration}
+
+User experience is significantly enhanced by robust keyboard navigation, especially in a gallery setting where quick traversal through items is essential. The \texttt{useSelection} composable (\texttt{src/contexts/selection.ts}) plays a pivotal role in enabling keyboard-driven scrolling and item selection.
+\begin{itemize}
+    \item \textbf{Grid-Based Navigation:} \texttt{useSelection} manages the logic for navigating through gallery items using arrow keys (up, down, left, right). It intelligently calculates the next selected item based on a virtual grid layout, even if items are not perfectly aligned visually.
+    \item \textbf{Automatic Scrolling on Selection:} When a new item is selected via keyboard, \texttt{useSelection} triggers the \texttt{scrollToSelected} function from \texttt{useGalleryScroll}. This ensures that the newly focused item is always brought into the viewport, providing a seamless browsing experience without manual scrolling.
+    \item \textbf{Multi-Selection Shortcuts:} It supports advanced keyboard shortcuts like \texttt{Ctrl+A} for selecting all items and \texttt{Shift+Arrow} for extending a multi-selection. While these don\'t directly trigger scrolls, they interact with the selection state, which in turn can influence the scroll position if the selected area moves outside the viewport.
+    \item \textbf{Pagination and Virtualization Awareness:} \texttt{useSelection} is designed to work with paginated data and the virtual selection system. It ensures that keyboard navigation correctly accounts for loaded and visible items, and that selections persist across different pages or viewports.
+\end{itemize}
+This tight integration of keyboard controls with the core scrolling and selection mechanisms ensures that users can efficiently and comfortably navigate large galleries without relying solely on mouse or touch input.
+
+\subsubsection{Responsive Design and Dynamic Layout Adjustments}
+
+In a dynamic application like YipYap, layouts frequently adjust due to various factors, including window resizing, panel toggling, or changes in content. Ensuring that the scrolling system adapts seamlessly to these changes is critical for a consistent user experience. The \texttt{ResizeObserver} API is strategically utilized across the application to facilitate responsive design and prevent layout-induced scrolling issues.
+\begin{itemize}
+    \item \textbf{Dynamic Column Measurement:} The \texttt{measure\_columns} directive (\texttt{src/directives.tsx}) employs \texttt{ResizeObserver} to detect changes in the number of CSS grid columns within the gallery. This allows the application to dynamically adjust its grid-based navigation logic (managed by \texttt{useSelection}) and ensure that keyboard navigation accurately reflects the current layout, implicitly affecting scroll targets.
+    \item \textbf{Image Viewer Adaptation:} Within the \texttt{ImageView} component (\texttt{src/components/ImageViewer/ImageView.tsx}), \texttt{ResizeObserver} is used to update the minimap\'s viewport and image display parameters when the container size changes. This ensures that zooming and panning calculations remain accurate and the displayed image scales correctly, preventing visual anomalies that could lead to incorrect scroll perceptions.
+    \item \textbf{Bounding Box Editor Responsiveness:} The \texttt{BoundingBoxEditor} component (\texttt{src/components/ImageViewer/BoundingBoxEditor.tsx}) also leverages \texttt{ResizeObserver} to dynamically adjust the canvas size for drawing bounding boxes. This ensures that the editing area remains synchronized with the image viewer\'s dimensions, preventing misalignment and ensuring a smooth editing experience, which can indirectly impact perceived scroll consistency during interactive operations.
+\end{itemize}
+By actively monitoring element dimensions and reacting to changes, \texttt{ResizeObserver} helps maintain the integrity of the UI layout, which in turn supports the accuracy and fluidity of the scrolling system across various screen sizes and dynamic content configurations.
+
+\subsubsection{Error Handling and Notification System Integration}
+
+The YipYap application incorporates a comprehensive error handling and notification system to provide users with timely feedback on critical events, including those related to scrolling performance. While the \texttt{useScrollPerformanceMonitor} primarily focuses on internal diagnostics and logging, its generated \texttt{ScrollWarning}s are consumed by other parts of the application, particularly for debugging and, implicitly, for user awareness through a broader notification mechanism.
+\begin{itemize}
+    \item \textbf{ScrollWarning Generation:} The \texttt{useScrollPerformanceMonitor} actively detects and generates \texttt{ScrollWarning} objects for issues such as slow scrolls (\texttt{SCROLL\_DURATION\_WARNING}/\texttt{CRITICAL}), high conflict rates (\texttt{CONFLICT\_RATE\_WARNING}/\texttt{CRITICAL}), and frame drops (\texttt{FRAME\_DROP\_WARNING}/\texttt{CRITICAL}). These warnings include details about their type, severity, and a descriptive message.
+    \item \textbf{Debugging and Monitoring Overlay:} The \texttt{DebugOverlay} component (\texttt{src/components/Debug/DebugOverlay.tsx}) directly subscribes to the \texttt{scrollCoordinator.getScrollWarnings()} to display real-time performance warnings and metrics. This provides developers with immediate visual feedback during development and testing.
+    \item \textbf{Implicit User Notification:} Although \texttt{useScrollPerformanceMonitor} does not directly call \texttt{appContext.notify} (the primary user-facing notification system), the presence of these warnings in the debug overlay and their severity levels align with the application\'s general philosophy of providing clear feedback. Critical scroll performance issues, if severe enough to impact user experience, would implicitly be surfaced through other UI elements or, if a direct integration were implemented, via \texttt{appContext.notify} to inform the user.
+\end{itemize}
+This layered approach ensures that while granular performance data is available for debugging, the groundwork is laid for potential user-facing notifications should scroll-related issues reach a critical threshold, maintaining the application\'s commitment to a high-quality user experience.
+
+\section{Key Mechanisms and Performance Deep Dive}
+
+\subsection{Priority-Based Conflict Resolution}
+
+One of the most critical aspects of the CONDUCT system is its ability to manage and resolve conflicts between concurrent scroll requests. The \texttt{useScrollCoordinator} assigns numerical priorities to different scroll operation types:
+\begin{itemize}
+    \item \textbf{Manual (1000):} Highest priority, typically from direct user interaction (e.g., dragging the scrollbar or direct touch input).
+    \item \textbf{Keyboard (800):} High priority, for keyboard-driven navigation (e.g., arrow keys).
+    \item \textbf{Wheel (700):} High priority, for mouse wheel events for navigation.
+    \item \textbf{Auto-Scroll (500):} Medium priority, for programmatic scrolls initiated to keep selected items in view.
+    \item \textbf{Smooth-Scroll (400):} Medium priority, for general smooth animation requests initiated by the application.
+    \item \textbf{Position-Check (200):} Lowest priority, for background checks and minor corrections to item visibility.
+\end{itemize}
+When a new scroll request is made, the coordinator compares its priority with any currently active operation. Higher-priority requests can cancel lower-priority ones, ensuring that user intent is always respected and preventing janky transitions. This mechanism is crucial for a smooth and predictable user experience, especially when automated scrolls might conflict with manual user input.
+
+\subsubsection{Conflict Resolution Strategies}
+
+Beyond simple priority comparison, the \texttt{useScrollPerformanceMonitor} (specifically the \texttt{determineResolutionStrategy} function) employs specific rules to resolve conflicts, ensuring a logical and user-centric behavior:\n\begin{itemize}
+    \item \textbf{Manual Scroll Precedence:} If a new operation is a \texttt{manual} scroll, it will always attempt to cancel any conflicting \texttt{auto-scroll} operations, prioritizing direct user input.
+    \item \textbf{Preserving Manual Scrolls:} If an existing active operation is a \texttt{manual} scroll, any new conflicting operation (except other manual scrolls of even higher priority, which is rare) will be cancelled to preserve the user\'s ongoing interaction.
+    \item \textbf{Keyboard Over Auto-Scroll:} Keyboard navigation (\texttt{keyboard} type) takes precedence over \texttt{auto-scroll} operations. A new keyboard scroll will cancel conflicting auto-scrolls, and an active keyboard scroll will cause new auto-scrolls to be cancelled.
+    \item \textbf{Position Check De-prioritization:} \texttt{position-check} operations are generally cancelled if they conflict with any other scroll type, as they are background tasks with the lowest priority.
+    \item \textbf{Default Resolution:} For other conflicts where no specific rule applies, the general strategy is to cancel older conflicting operations in favor of the newest request.
+\end{itemize}
+This detailed approach to conflict resolution ensures that the system remains responsive and predictable even under complex, concurrent scroll scenarios.
+
+\subsection{Passive Event Listeners for Jank Prevention}
+
+To optimize performance, particularly for high-frequency events like \texttt{scroll} and \texttt{wheel}, the CONDUCT system strategically leverages passive event listeners. By adding \texttt{\{ passive: true \}} to event listeners (e.g., on the gallery element for general scrolling), the browser is informed that the event handler will not call \texttt{preventDefault()}. This allows the browser to perform its default scrolling behavior immediately, without waiting for the JavaScript handler to complete, thereby significantly reducing jank and improving responsiveness, especially on mobile devices.
+
+However, it\'s important to note the exception in \texttt{setupWheelHandler}. Here, \texttt{\{ passive: false \}} is explicitly used because the handler \textit{does} call \texttt{e.preventDefault()} to prevent the default page scrolling behavior, allowing for custom image navigation via the wheel. This demonstrates a careful balance between performance optimization and desired user interaction.
+
+\subsection{Real-time Performance Monitoring and Debugging}
+
+The deep integration of \texttt{useScrollPerformanceMonitor} provides unprecedented insights into the scroll system\'s behavior. The \texttt{PerformanceDashboard} component, in conjunction with this monitor, can display real-time metrics, active operations, and a detailed log of conflicts and warnings. This powerful combination allows developers to:
+\begin{itemize}
+    \item \textbf{Identify Bottlenecks:} Pinpoint specific scroll operations that are causing performance issues or exceeding defined thresholds.
+    \item \textbf{Debug Race Conditions:} Understand precisely when and why scroll conflicts occur, providing the necessary data to refine priority rules or execution logic.
+    \item \textbf{Optimize Transitions:} Analyze \texttt{averageScrollDuration}, \texttt{longestScrollDuration}, \texttt{scrollJankEvents}, and \texttt{frameDropsDuringScroll} to refine animation timings, easing functions, and overall scroll fluidity.
+    \item \textbf{Monitor Memory Usage:} Detect potential memory leaks or excessive memory consumption related to active scrolling periods, which is vital for long-running applications.
+    \item \textbf{Proactive Issue Detection:} The warning system (\texttt{ScrollWarning}) provides early alerts for potential performance degradations before they impact the user significantly.
+\end{itemize}
+This proactive monitoring approach is critical for maintaining a high-quality user experience as the application evolves and scales.
+
+\subsection{Leveraging SolidJS Reactivity}
+
+SolidJS\'s fine-grained reactivity plays a crucial role in the high-performance nature of CONDUCT. Unlike frameworks that rely on virtual DOM diffing, SolidJS directly updates the DOM based on reactive state changes. This means:
+\begin{itemize}
+    \item \textbf{Minimal Re-renders:} Only the specific parts of the DOM affected by a scroll-related state change are re-rendered, reducing unnecessary computation.
+    \item \textbf{Efficient DOM Updates:} Direct manipulation of DOM properties (like \texttt{scrollTop} by \texttt{ScrollManager}) combined with SolidJS\'s reactivity ensures updates are applied efficiently.
+    \item \textbf{Optimized Effects:} \texttt{createEffect} in \texttt{useScrollPerformanceMonitor} for memory tracking, and \texttt{createMemo} for \texttt{getScrollMetrics}, ensure that computations are only performed when their dependencies change, further optimizing performance.
+\end{itemize}
+This inherent efficiency of SolidJS complements the CONDUCT architecture, contributing to a jank-free user experience.
+
+\subsubsection{Virtual Selection for Performance Optimization}
+
+For galleries containing a large number of items, directly applying styles to every selected item can lead to significant performance degradation. The \texttt{useVirtualSelection} composable (\texttt{src/composables/useVirtualSelection.ts}) addresses this by implementing a virtual selection mechanism. This system optimizes rendering performance by:
+\begin{itemize}
+    \item \textbf{Intersection Observer-Based Visibility:} It uses the \texttt{Intersection Observer API} to detect which gallery items are currently visible within the viewport. Selection styles are only applied to these visible items.
+    \item \textbf{Deferred Style Application:} Style updates for selected items are deferred and applied in batches, preventing the blocking of the main thread and ensuring smooth scrolling, especially when many items become visible or invisible simultaneously.
+    \item \textbf{Configurable Thresholds:} Virtual selection is enabled only when the total number of items exceeds a configurable \texttt{enableThreshold} (default: 50), balancing performance optimization with simpler rendering for smaller datasets.
+    \item \textbf{Automatic Cleanup:} Resources associated with off-screen items are automatically cleaned up, further reducing memory footprint and improving responsiveness.
+\end{itemize}
+By dynamically applying selection styles only to elements that are actively in view, \texttt{useVirtualSelection} significantly reduces the rendering load, contributing to a smoother and more performant scrolling experience, particularly in large galleries.
+
+\subsection{Animation and Timing Precision}
+
+Smooth animations are paramount for a good scrolling experience. CONDUCT achieves this through:
+\begin{itemize}
+    \item \textbf{\texttt{requestAnimationFrame}:} Utilized by \texttt{ScrollManager.smoothScrollTo} and \texttt{debouncedRAF} to ensure that animations are synchronized with the browser\'s rendering cycle, preventing visual tearing and maximizing smoothness.
+    \item \textbf{Cubic-Bezier Easing:} The \texttt{smoothScrollTo} method employs a \texttt{easeInOutQuad} easing function, providing a natural acceleration and deceleration profile to scroll animations, enhancing perceived smoothness.
+    \item \textbf{Debounced UI Updates:} The \texttt{debouncedRAF} helper ensures that computationally intensive UI updates (like position corrections) are batched and executed optimally, preventing them from blocking the main thread.
+\end{itemize}
+These precise timing and animation controls contribute significantly to the perceived responsiveness and fluidity of the gallery\'s scrolling.
+
+\subsection{Comparison with Other Scroll Management Systems}
+
+YipYap's CONDUCT system exhibits a sophisticated, multi-layered approach to scroll management, distinguishing itself from many common implementations by emphasizing coordinated control, priority-based conflict resolution, and extensive performance monitoring.
+
+\subsubsection{Similarities and Differences with General Web Scrolling Practices}
+\begin{itemize}
+    \item \textbf{Asynchronous vs. Synchronous Scrolling:} Many traditional web applications, especially those relying heavily on \texttt{scroll} event listeners, can suffer from "Blank Spots" or jank due to the asynchronous nature of browser scrolling \cite{monday}. CONDUCT, like advanced systems, aims for a more controlled, synchronous-like experience by managing scroll operations centrally. While CONDUCT uses \texttt{passive: false} for the wheel handler to allow \texttt{preventDefault()}, indicating a degree of synchronous control over that specific input, it also leverages \texttt{requestAnimationFrame} for smooth animations, aligning with modern best practices for jank prevention \cite{chrome, joji}.
+    \item \textbf{Debouncing and Throttling:} The use of \texttt{debounceMs} in \texttt{useScrollCoordinator} for processing the scroll queue and \texttt{userScrollTimeout} for detecting user-initiated scrolling aligns with common patterns for optimizing scroll performance \cite{qbit, joji}. This prevents excessive event firing and ensures that heavy computations don't block the main thread.
+    \item \textbf{\texttt{requestAnimationFrame} for Animations:} CONDUCT's reliance on \texttt{requestAnimationFrame} for its \texttt{smoothScrollTo} method is a standard and highly recommended practice for achieving smooth animations synchronized with the browser's rendering cycle \cite{joji}.
+    \item \textbf{Passive Event Listeners:} CONDUCT's strategic use of passive event listeners for general scrolling events (\texttt{passive: true}) where \texttt{preventDefault()} is not called, and \texttt{passive: false} for specific cases like wheel events where \texttt{preventDefault()} is necessary, demonstrates a nuanced understanding of performance optimization \cite{monday, msedge}. This is a critical aspect highlighted in modern web development for avoiding scroll-blocking.
+    \item \textbf{Virtualization:} While the search results highlight libraries like \texttt{hyperlist} \cite{hyperlist} and \texttt{fastgrid} \cite{fastgrid} that offer virtual scrolling for rendering millions of rows, YipYap's \texttt{useVirtualSelection} composable provides a similar benefit by only applying selection styles to visible items based on \texttt{Intersection Observer API} to optimize rendering performance for large galleries. This is a common pattern in high-performance UIs.
+\end{itemize}
+
+\subsubsection{Unique Strengths of YipYap's CONDUCT}
+\begin{itemize}
+    \item \textbf{Multi-layered Architecture:} CONDUCT's clear separation of concerns into \texttt{ScrollManager} (DOM interface), \texttt{useScrollCoordinator} (orchestration), \texttt{useScrollPerformanceMonitor} (diagnostics), and \texttt{useGalleryScroll} (gallery-specific interface) provides a highly modular and maintainable system. This level of architectural detail and dedicated components for each aspect of scrolling is more comprehensive than many general-purpose scroll utilities.
+    \item \textbf{Priority-Based Conflict Resolution:} The detailed priority system (Manual > Keyboard > Wheel > Auto-Scroll > Smooth-Scroll > Position-Check) and specific conflict resolution strategies in \texttt{useScrollCoordinator} and \texttt{useScrollPerformanceMonitor} are a significant differentiator. This sophisticated handling of concurrent scroll requests ensures user intent is prioritized and prevents erratic behavior often seen in simpler implementations.
+    \item \textbf{Comprehensive Performance Monitoring:} The \texttt{useScrollPerformanceMonitor} with its detailed operation tracking, metrics calculation (total operations, average duration, conflicts, jank events, frame drops, memory usage), and warning system (\texttt{ScrollWarning}) provides exceptionally deep insights for debugging and optimizing scroll performance. This level of built-in diagnostics is not typically found in generic scroll libraries.
+    \item \textbf{SolidJS Fine-Grained Reactivity:} CONDUCT leverages SolidJS's unique fine-grained reactivity, which directly updates the DOM without a virtual DOM, leading to minimal re-renders and efficient DOM updates. This framework-specific optimization contributes significantly to CONDUCT's high-performance nature, distinguishing it from React-based solutions that still contend with virtual DOM diffing \cite{monday}. Libraries like Hydroxide \cite{hydroxide} and Starbeam \cite{starbeam} also focus on fine-grained reactivity for performance, aligning with SolidJS's approach.
+\end{itemize}
+
+\subsubsection{Comparison with Specific Libraries/Tools}
+\begin{itemize}
+    \item \textbf{Solid Primitives \texttt{@solid-primitives/scroll} \cite{solidprimitives}:} This library provides basic reactive primitives for scroll position tracking (\texttt{createScrollPosition}, \texttt{useWindowScrollPosition}). CONDUCT builds upon these fundamental concepts by adding orchestration, conflict resolution, and performance monitoring layers, making it a much more complete and application-specific scroll management system.
+    \item \textbf{\texttt{Lenis} \cite{lenis}:} Lenis is a smooth scroll library that aims to create immersive interfaces and normalize user inputs. It addresses issues with scroll-linked animations caused by multi-threading. While \texttt{Lenis} focuses on the \textit{smoothness} and \textit{feel} of scrolling, CONDUCT provides a more comprehensive \textit{management} system that includes prioritization, conflict resolution, and detailed performance diagnostics, in addition to smooth animations.
+    \item \textbf{\texttt{HyperList} \cite{hyperlist} and \texttt{fast-grid} \cite{fastgrid}:} These are virtual scrolling libraries designed for rendering millions of rows efficiently. While CONDUCT incorporates virtual selection (\texttt{useVirtualSelection}), its scope is broader, encompassing various scroll inputs, conflict resolution, and performance monitoring, rather than solely focusing on large list rendering. \texttt{fast-grid} also mentions a custom event loop to prioritize tasks and never drop a frame, which resonates with CONDUCT's \texttt{useScrollCoordinator}'s request queuing and priority management.
+    \item \textbf{\texttt{scrollen} \cite{scrollen} (React Hook):} This is a performant utility scroll hook for React that provides scroll position, direction, and programmatic scrolling functions. It's similar in concept to some of CONDUCT's individual composables, but CONDUCT's integrated system with conflict resolution, performance monitoring, and SolidJS-specific optimizations goes beyond a simple utility hook.
+    \item \textbf{\texttt{solid-custom-scrollbars} \cite{solidcustomscrollbars} and \texttt{solid-virtual-scroll} \cite{solidvirtualscroll}:} These are SolidJS-specific libraries for custom scrollbars and virtual scrolling, respectively. They address specific aspects of scroll UI and performance within the SolidJS ecosystem. CONDUCT, however, is a higher-level architectural system that \textit{might} leverage such libraries for specific UI/performance needs, but its core functionality is about managing the overall scroll behavior of the application.
+\end{itemize}
+
+\section{Algorithms}
+
+\subsection{Priority-Based Scroll Operation Management}
+
+The core algorithm for managing scroll operations is based on a priority queue system:
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Priority-Based Scroll Operation Management
+Input: ScrollRequest (type, source, targetY, callback)
+Output: Operation success/failure
+
+1. Generate unique operation ID
+2. Determine priority level based on type:
+   - Manual scroll: 1000
+   - Keyboard navigation: 800
+   - Wheel navigation: 700
+   - Auto-scroll: 500
+   - Smooth scroll: 400
+   - Position check: 200
+
+3. Check for conflicts:
+   For each active operation A:
+     If abs(A.startTime - newOp.startTime) < 50ms:
+       If abs(A.targetY - newOp.targetY) > 100px OR
+          (A.type is manual AND newOp.type is auto) OR
+          (A.type is auto AND newOp.type is manual):
+         Record conflict
+         If A.priority > newOp.priority:
+           Cancel newOp
+           Return failure
+         Else:
+           Cancel A
+           Continue
+
+4. If queue.length >= maxQueueSize:
+   Remove lowest priority operation
+
+5. Add operation to queue
+6. If no current operation:
+   Execute next operation
+7. Return operation ID
+\end{Verbatim}
+
+\subsection{Smooth Scroll Animation}
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Smooth Scroll Animation
+Input: targetY, currentY, duration
+Output: Continuous scroll position updates
+
+1. Initialize:
+   startTime = performance.now()
+   startY = currentY
+   distance = targetY - startY
+   currentVelocity = 0
+   dampingFactor = 0.85
+
+2. Animation loop:
+   While not completed:
+     currentTime = performance.now()
+     elapsed = currentTime - startTime
+     progress = Math.min(elapsed / duration, 1)
+     
+     // Cubic bezier easing
+     t = progress
+     easedProgress = t * t * (3 - 2 * t)
+     
+     // Calculate new position with momentum
+     targetPosition = startY + (distance * easedProgress)
+     currentPosition = currentY
+     
+     // Apply velocity with damping
+     velocity = (targetPosition - currentPosition) * dampingFactor
+     currentVelocity = currentVelocity * 0.9 + velocity * 0.1
+     
+     // Update position
+     newY = currentPosition + currentVelocity
+     
+     // Apply bounds
+     newY = Math.max(0, Math.min(newY, maxScroll))
+     
+     // Update scroll position
+     element.scrollTop = newY
+     
+     // Check completion
+     if progress >= 1 and abs(newY - targetY) <= tolerance:
+       break
+     
+     requestAnimationFrame(loop)
+\end{Verbatim}
+
+\subsection{Scroll Conflict Detection}
+
+The algorithm for detecting and resolving scroll conflicts:
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Scroll Conflict Detection
+Input: newOperation, activeOperations
+Output: Conflict information or null
+
+1. Initialize:
+   conflictingOps = []
+   timeThreshold = 50ms
+   distanceThreshold = 100px
+
+2. For each activeOp in activeOperations:
+   If activeOp.id !== newOperation.id:
+     // Check timing overlap
+     timeOverlap = abs(activeOp.startTime - newOperation.startTime) < timeThreshold
+     
+     // Check target position conflict
+     targetConflict = false
+     If activeOp.targetY exists and newOperation.targetY exists:
+       targetConflict = abs(activeOp.targetY - newOperation.targetY) > 100px
+     
+     // Check type conflicts
+     typeConflict = (
+       (activeOp.type === "manual" && newOperation.type === "auto-scroll") ||
+       (activeOp.type === "auto-scroll" && activeOp.type === "manual") ||
+       (activeOp.type === "position-check" && newOperation.type !== "position-check")
+     )
+     
+     If timeOverlap && (targetConflict || typeConflict):
+       Add activeOp to conflictingOps
+
+3. If conflictingOps is not empty:
+   Create conflict = {
+     id: generate\_unique\_id(),
+     timestamp: performance.now(),
+     operations: [newOperation, ...conflictingOps],
+     severity: calculate\_severity(conflictingOps),
+     description: generate\_description(newOperation, conflictingOps),
+     resolutionStrategy: determine\_resolution\_strategy(newOperation, conflictingOps)
+   }
+   Return conflict
+
+4. Return null
+\end{Verbatim}
+
+\subsection{Selected Item Position Tracking}
+
+Algorithm for maintaining selected item visibility:
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Selected Item Position Tracking
+Input: selectedElement, galleryElement
+Output: Scroll adjustment if needed
+
+1. Initialize:
+   galleryRect = galleryElement.getBoundingClientRect()
+   selectedRect = selectedElement.getBoundingClientRect()
+   
+   // Calculate visible area with margins
+   marginRatio = 0.15
+   visibleTop = galleryRect.top + (galleryRect.height * marginRatio)
+   visibleBottom = galleryRect.bottom - (galleryRect.height * marginRatio)
+
+2. Check visibility:
+   elementMostlyVisible = (
+     selectedRect.top >= visibleTop - selectedRect.height * 0.5 &&
+     selectedRect.bottom <= visibleBottom + selectedRect.height * 0.5
+   )
+
+3. If not elementMostlyVisible:
+   needsScroll = (
+     selectedRect.top < visibleTop ||
+     selectedRect.bottom > visibleBottom ||
+     selectedRect.top > visibleBottom ||
+     selectedRect.bottom < visibleTop
+   )
+
+4. If needsScroll:
+   targetY = Math.max(0,
+     galleryElement.scrollTop +
+     (selectedRect.top - galleryRect.top) -
+     (galleryRect.height / 2) +
+     (selectedRect.height / 2)
+   )
+   
+   Return { needsScroll: true, targetY }
+Else:
+   Return { needsScroll: false }
+\end{Verbatim}
+
+\subsection{Scroll Completion Detection}
+
+Algorithm for determining when a scroll operation has completed:
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Scroll Completion Detection
+Input: scrollOperation, element
+Output: Completion status
+
+1. Initialize:
+   checkCount = 0
+   maxChecks = 100  // Max 1 second of checking
+   lastScrollTop = element.scrollTop
+   lastCheckTime = performance.now()
+   tolerance = 10  // 10px tolerance
+   minSpeed = 0.1  // pixels per millisecond
+
+2. While checkCount < maxChecks:
+   currentY = element.scrollTop
+   currentTime = performance.now()
+   
+   // Calculate scroll speed
+   scrollDelta = abs(currentY - lastScrollTop)
+   timeDelta = currentTime - lastCheckTime
+   scrollSpeed = timeDelta > 0 ? scrollDelta / timeDelta : 0
+   
+   // Check completion conditions
+   hasReachedTarget = abs(currentY - targetY) <= tolerance
+   hasStoppedMoving = scrollSpeed < minSpeed
+   
+   If hasReachedTarget && hasStoppedMoving:
+     Return { completed: true, success: true }
+   
+   // Update tracking variables
+   lastScrollTop = currentY
+   lastCheckTime = currentTime
+   checkCount++
+   
+   Await nextFrame()
+
+3. Return { completed: true, success: false, reason: "timeout" }
+\end{Verbatim}
+
+\subsection{Wheel Event Processing}
+
+Algorithm for processing wheel events and determining scroll behavior:
+
+\begin{Verbatim}[frame=lines, numbers=left, tabsize=2, fontsize=\small, xleftmargin=1em, xrightmargin=1em, breaklines=true]
+Algorithm: Wheel Event Processing
+Input: WheelEvent, currentSelectedIndex
+Output: New selected index and scroll behavior
+
+1. Initialize:
+   preventDefault()
+   items = gallery.data()?.items
+   If !items: Return
+
+2. Calculate new index:
+   newSelectedIdx = currentSelected
+   If event.deltaY > 0:  // Scroll down
+     newSelectedIdx = min(currentSelected + 1, items.length - 1)
+   Else:  // Scroll up
+     newSelectedIdx = max(currentSelected - 1, 0)
+
+3. Request scroll operation:
+   scrollCoordinator.requestScroll({
+     type: "wheel",
+     source: deltaY > 0 ? "mouse-wheel-next" : "mouse-wheel-prev",
+     callback: () => {
+       // Calculate target scroll position
+       element = querySelector(`#gallery .item:nth-child(${newSelectedIdx + 1})`)
+       If !element: Return
+       
+       galleryRect = galleryElement.getBoundingClientRect()
+       elementRect = element.getBoundingClientRect()
+       
+       targetY = max(0,
+         galleryElement.scrollTop +
+         (elementRect.top - galleryRect.top) -
+         (galleryRect.height / 2) +
+         (elementRect.height / 2)
+       )
+       
+       // Perform scroll
+       scrollManager.smoothScrollTo(targetY, true)
+       gallery.select(newSelectedIdx)
+     }
+   })
+\end{Verbatim}
+
+These algorithms work together to create a cohesive scrolling system that handles various user interactions while maintaining performance and providing a smooth user experience. Each algorithm is designed to handle specific aspects of the scrolling system, from high-level coordination to low-level animation details.
+
+\section{Conclusion}
+
+The YipYap CONDUCT system represents a robust, highly performant, and observable solution for managing complex scroll interactions within a demanding image gallery application. By meticulously separating concerns among \texttt{ScrollManager}, \texttt{useScrollCoordinator}, \texttt{useScrollPerformanceMonitor}, and \texttt{useGalleryScroll}, the architecture achieves unparalleled modularity, maintainability, and debuggability.
+
+The implementation of priority-based conflict resolution, strategic use of passive event listeners, and comprehensive real-time performance monitoring collectively ensure a smooth, responsive, and truly jank-free scrolling experience. The CONDUCT system sets a high standard for UI performance in SolidJS applications, demonstrating how a well-designed architectural approach can tackle complex interaction challenges while delivering an exceptional user experience.
+
+\section{References}
+\begin{thebibliography}{99}
+
+\bibitem{monday} Doron, O. (2020). \textit{Our journey to understand scrolling across different browsers}. monday Engineering. \url{https://engineering.monday.com/our-journey-to-understand-scrolling-across-different-browsers/}
+
+\bibitem{qbit} Quante, T. (2024). \textit{Master Efficient Window Scroll Event Handling in JavaScript: Best Practices and Tips}. Tobi's Blog - qbit.me. \url{https://blog.q-bit.me/master-efficient-window-scroll-event-handling-in-javascript-best-practices-and-tips/}
+
+\bibitem{chrome} Hirota, Y. (2023). \textit{A case study on scroll-driven animations performance}. Chrome for Developers. \url{https://developer.chrome.com/blog/scroll-animation-performance-case-study/}
+
+\bibitem{joji} Jiang, S. (2015). \textit{How to develop high performance onScroll event?}. joji.me. \url{https://joji.me/en-us/blog/how-to-develop-high-performance-onscroll-event/}
+
+\bibitem{msedge} Lawson, N. (2017). \textit{Scrolling on the web: A primer}. Windows Blogs - Microsoft Edge Blog. \url{https://blogs.windows.com/msedgedev/2017/03/08/scrolling-on-the-web/}
+
+\bibitem{fastgrid} Petersson, G. (n.d.). \textit{fast-grid: World's most performant DOM-based web table}. GitHub. \url{https://github.com/gabrielpetersson/fast-grid}
+
+\bibitem{hyperlist} Branyen, T. (n.d.). \textit{hyperlist: A performant virtual scrolling list utility capable of rendering millions of rows}. GitHub. \url{https://github.com/tbranyen/hyperlist}
+
+\bibitem{starbeam} Katz, Y. (n.d.). \textit{Starbeam | Simple and Fun Reactivity}. StarbeamJS. \url{https://www.starbeamjs.com/}
+
+\bibitem{hydroxide} Hydroxide-js. (n.d.). \textit{hydroxide: Next Generation Reactive JavaScript Framework}. GitHub. \url{https://github.com/hydroxide-js/hydroxide}
+
+\bibitem{solidprimitives} Solid Primitives. (n.d.). \textit{Scroll}. Solid Primitives Community. \url{https://primitives.solidjs.community/package/scroll/}
+
+\bibitem{lenis} Studio Freight. (n.d.). \textit{Lenis – Get smooth or die trying}. \url{https://lenis.studiofreight.com/}
+
+\bibitem{scrollen} Moureira, J. (n.d.). \textit{scrollen: A performant utility scroll hook for React}. GitHub. \url{https://github.com/joaom00/scrollen}
+
+\bibitem{solidcustomscrollbars} Diragb. (n.d.). \textit{solid-custom-scrollbars: Custom Scrollbars for Solid}. GitHub. \url{https://github.com/diragb/solid-custom-scrollbars}
+
+\bibitem{solidvirtualscroll} SupertigerDev. (n.d.). \textit{solid-virtual-scroll}. GitHub. \url{https://github.com/SupertigerDev/solid-virtual-scroll}
+
+\end{thebibliography}
+\end{document}

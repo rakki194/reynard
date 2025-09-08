@@ -73,7 +73,7 @@ export const SearchPage: Component = () => {
             onSearch={handleSearch}
             onClear={() => handleSearch('')}
             placeholder="Search documentation..."
-            className="docs-search-input-large"
+            class="docs-search-input-large"
           />
         </div>
       </DocsSection>
@@ -81,7 +81,7 @@ export const SearchPage: Component = () => {
       <DocsSection>
         {isSearching() && (
           <div class="docs-search-loading">
-            <div class="docs-loading-spinner"></div>
+            <div class="docs-loading-spinner" />
             <p>Searching...</p>
           </div>
         )}

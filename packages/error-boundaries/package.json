@@ -30,7 +30,7 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc --build",
+    "build": "vite build && tsc --build --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",

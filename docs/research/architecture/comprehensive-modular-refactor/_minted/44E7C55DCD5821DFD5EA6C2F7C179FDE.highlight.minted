@@ -1,0 +1,13 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c}{/* Before: applied to all imgs inside the container */}
+\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n+nt}{img}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{object\PYGZhy{}fit}\PYG{p}{:}\PYG{+w}{ }\PYG{k+kc}{contain}\PYG{p}{;}
+\PYG{+w}{  }\PYG{c}{/* ... */}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c}{/* After: exclude the viewer\PYGZsq{}s layered images */}
+\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n+nt}{img}\PYG{p}{:}\PYG{n+nd}{not}\PYG{o}{(}\PYG{p}{.}\PYG{n+nc}{image\PYGZhy{}view\PYGZhy{}thumbnail}\PYG{o}{)}\PYG{p}{:}\PYG{n+nd}{not}\PYG{o}{(}\PYG{p}{.}\PYG{n+nc}{image\PYGZhy{}view\PYGZhy{}preview}\PYG{o}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{object\PYGZhy{}fit}\PYG{p}{:}\PYG{+w}{ }\PYG{k+kc}{contain}\PYG{p}{;}
+\PYG{+w}{  }\PYG{c}{/* ... */}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

@@ -60,8 +60,8 @@ export class AnnotationManager implements IAnnotationManager {
   }
 
   // Generator information
-  getAvailableGenerators(): CaptionGenerator[] {
-    return this._service.getAvailableGenerators();
+  async getAvailableGenerators(): Promise<CaptionGenerator[]> {
+    return await this._service.getAvailableGenerators();
   }
 
   getGenerator(name: string): CaptionGenerator | undefined {

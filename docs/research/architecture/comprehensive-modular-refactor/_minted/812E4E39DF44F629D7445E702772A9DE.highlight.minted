@@ -1,0 +1,26 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/**}
+\PYG{c+cm}{ * MODULAR MODULE: Scroll Detection}
+\PYG{c+cm}{ *}
+\PYG{c+cm}{ * Reusable scroll detection for any project.}
+\PYG{c+cm}{ * Zero dependencies, self\PYGZhy{}contained, framework agnostic.}
+\PYG{c+cm}{ *}
+\PYG{c+cm}{ * Usage:}
+\PYG{c+cm}{ *   const detector = createScrollDetector(element)}
+\PYG{c+cm}{ *   detector.isScrolling() // reactive signal}
+\PYG{c+cm}{ *}
+\PYG{c+cm}{ * Energy cost: 40 lines}
+\PYG{c+cm}{ */}
+
+\PYG{c+c1}{// Self\PYGZhy{}contained with all types}
+\PYG{k+kd}{interface}\PYG{+w}{ }\PYG{n+nx}{ScrollDetectorReturn}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{readonly}\PYG{+w}{ }\PYG{n+nx}{isScrolling}\PYG{o}{:}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{boolean}
+\PYG{+w}{  }\PYG{k}{readonly}\PYG{+w}{ }\PYG{n+nx}{dispose}\PYG{o}{:}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{o+ow}{void}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{createScrollDetector}\PYG{p}{(}
+\PYG{+w}{  }\PYG{n+nx}{element}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{HTMLElement}
+\PYG{p}{)}\PYG{o}{:}\PYG{+w}{ }\PYG{n+nx}{ScrollDetectorReturn}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{c+c1}{// Implementation here \PYGZhy{} 40 lines max}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

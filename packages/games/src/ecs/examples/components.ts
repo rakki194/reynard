@@ -1,3 +1,3 @@
 // Example components for ECS games - Barrel exports
 
-export * from './components';
+export * from './components/index';

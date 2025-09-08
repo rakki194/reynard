@@ -1,1199 +1,191 @@
 # 🦊 Reynard
 
-> _A cunning SolidJS framework for building modern web applications_
+> _From dataset editor to multi-modal CMS: The evolution of a cunning framework_
 
-Reynard is a comprehensive SolidJS framework and UI library extracted from battle-tested patterns in production applications. It provides a complete toolkit for building modern, performant, and accessible web applications with elegant theming, modular architecture, and exceptional developer experience.
-
-## 📔 Table of Contents
-
-- [🦊 Reynard](#-reynard)
-  - [📔 Table of Contents](#-table-of-contents)
-  - [✨ Features](#-features)
-  - [🎯 Philosophy](#-philosophy)
-  - [📦 Packages](#-packages)
-  - [🚀 Quick Start](#-quick-start)
-    - [Installation](#installation)
-    - [Basic Usage](#basic-usage)
-  - [📚 Complete Tutorial: Building Your First Reynard App](#-complete-tutorial-building-your-first-reynard-app)
-    - [Step 1: Project Setup](#step-1-project-setup)
-      - [Option A: Using the Test App Template](#option-a-using-the-test-app-template)
-      - [Option B: Create a New Project](#option-b-create-a-new-project)
-    - [Step 2: Basic Project Structure](#step-2-basic-project-structure)
-    - [Step 3: Configuration Files](#step-3-configuration-files)
-      - [`vite.config.ts`](#viteconfigts)
-      - [`tsconfig.json`](#tsconfigjson)
-      - [`index.html`](#indexhtml)
-    - [Step 4: Theme Setup](#step-4-theme-setup)
-      - [`src/themes.css`](#srcthemescss)
-    - [Step 5: Application Entry Point](#step-5-application-entry-point)
-      - [`src/main.tsx`](#srcmaintsx)
-    - [Step 6: Main Application Component](#step-6-main-application-component)
-      - [`src/App.tsx`](#srcapptsx)
-    - [Step 7: Creating Your First Component](#step-7-creating-your-first-component)
-      - [`src/components/ThemeDemo.tsx`](#srccomponentsthemedemotsx)
-    - [Step 8: Building a Complete Todo App](#step-8-building-a-complete-todo-app)
-      - [Enhanced `src/App.tsx` for Todo App](#enhanced-srcapptsx-for-todo-app)
-      - [`src/components/TodoItem.tsx`](#srccomponentstodoitemtsx)
-      - [`src/components/AddTodo.tsx`](#srccomponentsaddtodotsx)
-      - [`src/components/ThemeToggle.tsx`](#srccomponentsthemetoggletsx)
-    - [Step 9: Adding Styles](#step-9-adding-styles)
-      - [Enhanced `src/themes.css` with Todo App Styles](#enhanced-srcthemescss-with-todo-app-styles)
-    - [Step 10: Running Your Application](#step-10-running-your-application)
-    - [Step 11: Advanced Features](#step-11-advanced-features)
-      - [Adding Internationalization](#adding-internationalization)
-      - [Adding Local Storage Persistence](#adding-local-storage-persistence)
-    - [Step 12: Deployment](#step-12-deployment)
-      - [Build for Production](#build-for-production)
-      - [Deploy to Vercel](#deploy-to-vercel)
-      - [Deploy to Netlify](#deploy-to-netlify)
-    - [🎯 What You've Learned](#-what-youve-learned)
-    - [🚀 Next Steps](#-next-steps)
-  - [📚 Package Documentation](#-package-documentation)
-    - [reynard-core](#reynard-core)
-      - [Modules](#modules)
-      - [Core Composables](#core-composables)
-      - [Utilities](#utilities)
-      - [Core Example Usage](#core-example-usage)
-    - [reynard-themes](#reynard-themes)
-      - [Features](#features)
-      - [Usage](#usage)
-    - [reynard-components](#reynard-components)
-      - [Primitives](#primitives)
-      - [Composite Components](#composite-components)
-      - [Components Example Usage](#components-example-usage)
-    - [reynard-chat](#reynard-chat)
-      - [Chat Features](#chat-features)
-      - [Chat Components](#chat-components)
-      - [Chat Composables](#chat-composables)
-      - [Chat Example Usage](#chat-example-usage)
-    - [reynard-rag](#reynard-rag)
-      - [RAG Features](#rag-features)
-      - [RAG Components](#rag-components)
-      - [RAG Example Usage](#rag-example-usage)
-    - [reynard-auth](#reynard-auth)
-      - [Auth Features](#auth-features)
-      - [Auth Components](#auth-components)
-      - [Auth Composables](#auth-composables)
-      - [Auth Example Usage](#auth-example-usage)
-    - [reynard-charts](#reynard-charts)
-      - [Chart Types](#chart-types)
-      - [Charts Features](#charts-features)
-      - [Charts Example Usage](#charts-example-usage)
-    - [reynard-gallery](#reynard-gallery)
-      - [Gallery Features](#gallery-features)
-      - [Gallery Components](#gallery-components)
-      - [Gallery Composables](#gallery-composables)
-      - [Gallery Example Usage](#gallery-example-usage)
-    - [reynard-settings](#reynard-settings)
-      - [Settings Features](#settings-features)
-      - [Setting Types](#setting-types)
-      - [Settings Components](#settings-components)
-      - [Settings Composables](#settings-composables)
-      - [Settings Example Usage](#settings-example-usage)
-    - [reynard-algorithms](#reynard-algorithms)
-      - [Algorithm Types](#algorithm-types)
-      - [Core Features](#core-features)
-      - [Algorithms Example Usage](#algorithms-example-usage)
-    - [reynard-file-processing](#reynard-file-processing)
-      - [Supported File Types](#supported-file-types)
-      - [Core Components](#core-components)
-      - [File Processing Example Usage](#file-processing-example-usage)
-    - [reynard-annotating](#reynard-annotating)
-      - [Annotating Features](#annotating-features)
-      - [Annotating Components](#annotating-components)
-      - [Annotating Example Usage](#annotating-example-usage)
-    - [reynard-caption](#reynard-caption)
-      - [Caption Features](#caption-features)
-      - [Caption Components](#caption-components)
-      - [Caption Example Usage](#caption-example-usage)
-      - [Complete Caption Workflow Example](#complete-caption-workflow-example)
-    - [reynard-testing](#reynard-testing)
-      - [Testing Features](#testing-features)
-      - [Testing Utilities](#testing-utilities)
-      - [Testing Example Usage](#testing-example-usage)
-  - [🎨 Theming System](#-theming-system)
-    - [Custom Themes](#custom-themes)
-  - [📱 Examples and Templates](#-examples-and-templates)
-    - [Examples](#examples)
-    - [Templates](#templates)
-    - [Running Examples](#running-examples)
-  - [🧪 Testing](#-testing)
-    - [Test Coverage](#test-coverage)
-  - [🚀 Performance](#-performance)
-    - [Bundle Sizes](#bundle-sizes)
-  - [♿ Accessibility](#-accessibility)
-  - [🌍 Internationalization](#-internationalization)
-  - [🛠️ Development Tools](#️-development-tools)
-    - [CLI Tools](#cli-tools)
-    - [VS Code Extension](#vs-code-extension)
-  - [📖 API Reference](#-api-reference)
-    - [Core API](#core-api)
-    - [Component API](#component-api)
-  - [🧪 Development](#-development)
-  - [🤝 Contributing](#-contributing)
-    - [Development Setup](#development-setup)
-    - [Code Style](#code-style)
-  - [📄 License](#-license)
-  - [🙏 Acknowledgments](#-acknowledgments)
-  - [📞 Support](#-support)
-
-## ✨ Features
-
-Reynard offers a modular architecture, with each module designed to be slim with dependencies and concise—typically under 100 lines—making the framework both approachable and maintainable. The theming system is comprehensive, providing eight built-in themes and full support for custom themes, so you can tailor your application's look and feel with ease. Testing is a first-class citizen, with Vitest and Playwright integration ensuring 95%+ coverage out of the box. Accessibility is prioritized, with WCAG compliance and a robust set of a11y features. Performance is optimized through bundle splitting and lazy loading, while responsive design is achieved using a mobile-first approach and container queries. Internationalization (i18n) is built in, enabling multi-language support from the start. For developers, Reynard includes a CLI, a VS Code extension, and a suite of debugging utilities to streamline your workflow.
-
-## 🎯 Philosophy
-
-Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while maximizing functionality, and maintains a professional standard with high expectations for code quality and naming conventions.
-
-## 📦 Packages
-
-All Reynard packages are published to npm and ready for production use! Each package is independently versioned and can be installed as needed.
-
-| Package                    | Description                        | Version |
-| -------------------------- | ---------------------------------- | ------- |
-| `reynard-core`             | Core utilities and modules for Reynard framework | `0.1.1` |
-| `reynard-components`       | Production-ready SolidJS component library | `0.1.1` |
-| `reynard-chat`             | Production-ready chat messaging system for SolidJS | `0.1.0` |
-| `reynard-rag`              | Retrieval-Augmented Generation components for SolidJS | `0.1.1` |
-| `reynard-auth`             | Authentication and user management for SolidJS | `0.1.0` |
-| `reynard-charts`           | Data visualization components for SolidJS | `0.1.0` |
-| `reynard-gallery`          | File and media management components for SolidJS | `0.1.0` |
-| `reynard-settings`         | Comprehensive settings and preferences management for SolidJS | `0.1.0` |
-| `reynard-file-processing`  | Advanced file processing, thumbnail generation, and media analysis for SolidJS applications | `0.1.0` |
-| `reynard-algorithms`       | Algorithm primitives and data structures for Reynard applications | `0.1.0` |
-| `reynard-color-media`      | Color generation utilities and media handling components using OKLCH color space | `1.0.0` |
-| `reynard-ui`               | Advanced layout and navigation components | `0.1.0` |
-| `reynard-themes`           | Comprehensive theming system for Reynard applications with translation support | `0.1.1` |
-| `reynard-monaco`           | Monaco code editor and text editing components for Reynard | `0.1.1` |
-| `reynard-annotating`       | Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows | `0.1.0` |
-| `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard | `0.1.0` |
-| `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing | `0.1.0` |
-| `reynard-composables`      | Reusable reactive logic for Reynard applications | `0.1.0` |
-| `reynard-connection`       | Enterprise-grade networking for Reynard applications | `0.1.0` |
-| `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities | `0.1.0` |
-| `reynard-fluent-icons`     | Fluent UI icons for Reynard design system | `0.1.1` |
-| `reynard-games`            | Interactive games and visualizations for Reynard framework | `0.1.0` |
-| `reynard-model-management` | Model management system for Reynard - handles ML model loading, downloading, and lifecycle management | `0.1.0` |
-| `reynard-service-manager`  | Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring | `0.1.0` |
-| `reynard-tools`            | Development and runtime tools for Reynard applications | `0.1.0` |
-| `reynard-testing`          | Unified testing framework for Reynard packages | `0.1.0` |
-| `reynard-3d`               | 3D graphics and visualization components for Reynard framework using Three.js | `0.1.0` |
-| `reynard-error-boundaries` | Comprehensive error boundary system for Reynard framework | `0.1.1` |
-| `reynard-i18n`             | Comprehensive internationalization system for Reynard framework with 37 language support | `1.0.0` |
-| `reynard-docs-components`  | Beautiful UI components for Reynard documentation sites | `0.1.0` |
-| `reynard-docs-core`        | Core documentation rendering engine for Reynard framework | `0.1.0` |
-| `reynard-docs-generator`   | Automated documentation generator for Reynard packages | `0.1.0` |
-| `reynard-docs-site`        | Beautiful documentation site application for Reynard framework | `0.1.0` |
-| `reynard-basic-app`        | Basic Todo App - Minimal Reynard framework example | `0.1.0` |
-| `reynard-clock-app`        | A comprehensive clock, timer, alarm, and countdown application built with Reynard framework | `1.0.0` |
-| `reynard-test-app`         | Comprehensive test application showcasing Reynard framework features | `1.0.0` |
+Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content management system. The framework extracts and modularizes YipYap's proven architectural patterns into reusable packages for modern web development.
 
 ## 🚀 Quick Start
-
-### Installation
 
 ```bash
 # Install core package
 npm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
+npm install reynard-components reynard-chat reynard-rag reynard-auth
 
-# For caption generation workflows
-npm install reynard-annotating reynard-caption
+# Start building
+npm create reynard-app my-app
 ```
-
-### Basic Usage
 
 ```tsx
 import { createSignal } from "solid-js";
 import { useNotifications } from "reynard-core";
-import { useTheme } from "reynard-themes";
 import { Button, Card } from "reynard-components";
 
 function App() {
-  const { theme, setTheme } = useTheme();
   const { notify } = useNotifications();
-
-  const handleClick = () => {
-    notify("Hello from Reynard!", "success");
-    setTheme(theme() === "light" ? "dark" : "light");
-  };
 
   return (
     <Card padding="lg">
       <h1>Welcome to Reynard!</h1>
-      <Button variant="primary" onClick={handleClick}>
-        Toggle Theme
+      <Button onClick={() => notify("Hello from Reynard!", "success")}>
+        Get Started
       </Button>
     </Card>
   );
 }
 ```
 
-## 📚 Complete Tutorial: Building Your First Reynard App
+## 📚 Documentation
 
-This comprehensive tutorial will guide you through creating a complete application with Reynard, from setup to deployment.
+- **[📖 Overview](./docs/OVERVIEW.md)** - Framework introduction and philosophy
+- **[🚀 Quick Start](./docs/QUICKSTART.md)** - Get up and running in minutes
+- **[📚 Complete Tutorial](./docs/TUTORIAL.md)** - Build your first Reynard app
+- **[📦 Package Documentation](./docs/PACKAGES.md)** - Detailed package documentation
+- **[📱 Examples & Templates](./docs/EXAMPLES.md)** - Real-world applications
+- **[📖 API Reference](./docs/API.md)** - Complete API documentation
+- **[🚀 Performance Guide](./docs/PERFORMANCE.md)** - Optimization and performance tips
+- **[🏗️ Architecture Patterns](./docs/architecture/modularity-patterns.md)** - Modularity patterns and refactoring strategies
+- **[🤝 Contributing](./docs/CONTRIBUTING.md)** - How to contribute to Reynard
 
-### Step 1: Project Setup
+## ✨ Key Features
 
-#### Option A: Using the Test App Template
+- **🎯 Multi-Modal Content Management** - Images, videos, audio, documents, and specialized formats
+- **🤖 AI/ML Integration** - Caption generation, RAG system, object detection, and TTS
+- **🎨 8 Built-in Themes** - Light, dark, and custom themes with CSS custom properties
+- **🌍 37 Languages** - Internationalization with RTL support and locale-aware formatting
+- **♿ WCAG 2.1 Compliance** - Full accessibility with ARIA labels and keyboard navigation
+- **⚡ Performance Optimized** - Bundle splitting, lazy loading, and intelligent caching
+- **🔧 TypeScript First** - Full type safety with comprehensive type definitions
 
-The easiest way to get started is with the included test app:
+## 📦 Package Ecosystem
+
+Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be independently useful while working seamlessly together. All packages are published to npm and ready for production use!
+
+### Core Packages
+
+- **`reynard-core`** - Foundation utilities, notifications, localStorage, validation
+- **`reynard-components`** - UI components, modals, tooltips, forms
+- **`reynard-themes`** - Theming system with 8 built-in themes and i18n support
+- **`reynard-i18n`** - Internationalization with 37 language support
+
+### Specialized Packages
+
+- **`reynard-chat`** - Real-time chat system with streaming and tool integration
+- **`reynard-rag`** - RAG system with EmbeddingGemma integration
+- **`reynard-auth`** - Complete authentication system with JWT and security features
+- **`reynard-charts`** - Data visualization components built on Chart.js
+- **`reynard-gallery`** - Advanced file management with drag-and-drop
+- **`reynard-annotating`** - AI-powered caption generation with multiple models
+- **`reynard-caption`** - Caption editing UI with tag management
+- **`reynard-3d`** - Three.js integration for 3D graphics
+- **`reynard-monaco`** - Code editor integration
+- **`reynard-games`** - Game development utilities
+
+_[View complete package list and documentation →](./docs/PACKAGES.md)_
+
+## 🎯 Philosophy
+
+Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while maximizing functionality, and maintains a professional standard with high expectations for code quality and naming conventions.
+
+## 🧪 Testing
+
+Reynard includes comprehensive testing with Vitest and Playwright:
 
 ```bash
-# Navigate to the test app directory
-cd reynard-test-app
+# Run all tests
+npm test
 
-# Install dependencies
-npm install
+# Run tests with coverage
+npm test:coverage
 
-# Start development server
-npm run dev
+# Run tests in UI mode
+npm test:ui
+
+# Run Playwright tests
+npm run test:e2e
 ```
 
-Visit `http://localhost:3001` to see the basic Reynard setup in action.
+_[View complete testing guide →](./docs/CONTRIBUTING.md#testing)_
 
-#### Option B: Create a New Project
+## 🚀 Performance
 
-```bash
-# Create a new directory
-mkdir my-reynard-app
-cd my-reynard-app
+Reynard is optimized for performance with bundle splitting, lazy loading, and intelligent caching. All packages are designed with minimal dependencies and maximum functionality.
 
-# Initialize package.json
-npm init -y
+### Bundle Sizes
 
-# Install dependencies
-npm install reynard-core reynard-components reynard-chat reynard-rag solid-js
-npm install -D vite vite-plugin-solid typescript @types/node
-```
+| Package | Size | Gzipped | Description |
+|---------|------|---------|-------------|
+| `reynard-core` | ~16 kB | 3.7 kB | Core utilities and modules |
+| `reynard-components` | ~46 kB | 11.8 kB | UI component library |
+| `reynard-chat` | ~110 kB | 25.1 kB | Chat messaging system |
+| `reynard-rag` | ~21 kB | 6.7 kB | RAG system components |
+| `reynard-auth` | ~46 kB | 11.8 kB | Authentication system |
+| `reynard-charts` | ~28 kB | 8.4 kB | Data visualization |
+| `reynard-gallery` | ~87 kB | 21.3 kB | File management |
+| `reynard-monaco` | ~232 kB | 62.0 kB | Code editor |
 
-### Step 2: Basic Project Structure
-
-Create the following file structure:
-
-```plaintext
-my-reynard-app/
-├── index.html
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-└── src/
-    ├── main.tsx
-    ├── App.tsx
-    ├── themes.css
-    └── components/
-        └── (your components)
-```
-
-### Step 3: Configuration Files
-
-#### `vite.config.ts`
-
-```typescript
-import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
-
-export default defineConfig({
-  plugins: [solid()],
-  server: {
-    port: 3001,
-  },
-});
-```
-
-#### `tsconfig.json`
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src"]
-}
-```
-
-#### `index.html`
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Reynard App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-```
-
-### Step 4: Theme Setup
-
-#### `src/themes.css`
-
-```css
-/* Light Theme (Default) */
-:root {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(220deg 20% 95%);
-  --secondary-bg: hsl(220deg 15% 90%);
-  --card-bg: hsl(220deg 15% 85%);
-  --text-primary: hsl(240deg 15% 12%);
-  --text-secondary: hsl(240deg 10% 45%);
-  --border-color: hsl(220deg 15% 75%);
-  --success: hsl(140deg 60% 45%);
-  --warning: hsl(45deg 70% 50%);
-  --danger: hsl(0deg 70% 50%);
-  --info: hsl(200deg 60% 50%);
-}
-
-/* Dark Theme */
-:root[data-theme="dark"] {
-  --accent: hsl(270deg 60% 70%);
-  --bg-color: hsl(220deg 15% 8%);
-  --secondary-bg: hsl(220deg 15% 12%);
-  --card-bg: hsl(220deg 15% 16%);
-  --text-primary: hsl(220deg 20% 95%);
-  --text-secondary: hsl(220deg 15% 70%);
-  --border-color: hsl(220deg 15% 24%);
-}
-
-/* Additional themes... */
-:root[data-theme="banana"] {
-  --accent: hsl(45deg 100% 45%);
-  --bg-color: hsl(50deg 40% 95%);
-  --text-primary: hsl(30deg 15% 15%);
-  /* ... more theme variables */
-}
-```
-
-### Step 5: Application Entry Point
-
-#### `src/main.tsx`
-
-```tsx
-import { render } from "solid-js/web";
-import "./themes.css";
-import App from "./App";
-
-render(() => <App />, document.getElementById("root")!);
-```
-
-### Step 6: Main Application Component
-
-#### `src/App.tsx`
-
-```tsx
-import { ReynardProvider } from "reynard-themes";
-import "reynard-themes/themes.css";
-import { ThemeDemo } from "./components/ThemeDemo";
-
-function App() {
-  return (
-    <ReynardProvider>
-      <div style="min-height: 100vh; background-color: var(--bg-color); color: var(--text-primary); transition: all 0.2s ease;">
-        <div style="padding: 2rem; max-width: 800px; margin: 0 auto;">
-          <h1 style="margin-bottom: 1rem; color: var(--text-primary);">
-            Welcome to Reynard
-          </h1>
-          <p style="margin-bottom: 2rem; color: var(--text-secondary);">
-            This is your first Reynard application!
-          </p>
-          <ThemeDemo />
-        </div>
-      </div>
-    </ReynardProvider>
-  );
-}
-
-export default App;
-```
-
-### Step 7: Creating Your First Component
-
-#### `src/components/ThemeDemo.tsx`
-
-```tsx
-import { Button, Card } from "reynard-components";
-import { useTheme } from "reynard-themes";
-
-export function ThemeDemo() {
-  const { theme, setTheme, nextTheme } = useTheme();
-
-  return (
-    <Card style="padding: 1.5rem;">
-      <h3 style="margin: 0 0 1rem 0; color: var(--text-primary);">
-        Theme Demo Component
-      </h3>
-      <p style="margin: 0 0 1.5rem 0; color: var(--text-secondary);">
-        Current theme: <strong style="color: var(--accent);">{theme()}</strong>
-      </p>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-        <Button onClick={() => setTheme("light")}>Light</Button>
-        <Button onClick={() => setTheme("dark")}>Dark</Button>
-        <Button onClick={() => setTheme("banana")}>Banana</Button>
-        <Button onClick={() => setTheme("strawberry")}>Strawberry</Button>
-      </div>
-      <Button onClick={nextTheme} style="width: 100%;">
-        Next Theme
-      </Button>
-    </Card>
-  );
-}
-```
-
-### Step 8: Building a Complete Todo App
-
-Let's build a more comprehensive example - a todo application that demonstrates multiple Reynard features.
-
-#### Enhanced `src/App.tsx` for Todo App
-
-```tsx
-import { Component, createSignal, For, createEffect } from "solid-js";
-import {
-  ThemeProvider,
-  NotificationsProvider,
-  createTheme,
-  createNotifications,
-  useTheme,
-  useNotifications,
-} from "reynard-core";
-import { Button, Card } from "reynard-components";
-import { TodoItem } from "./components/TodoItem";
-import { AddTodo } from "./components/AddTodo";
-import { ThemeToggle } from "./components/ThemeToggle";
-import "./themes.css";
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-const TodoApp: Component = () => {
-  const [todos, setTodos] = createSignal<Todo[]>([
-    { id: 1, text: "Learn SolidJS", completed: true },
-    { id: 2, text: "Try Reynard framework", completed: false },
-    { id: 3, text: "Build something awesome", completed: false },
-  ]);
-  const [nextId, setNextId] = createSignal(4);
-  const { theme } = useTheme();
-  const { notify } = useNotifications();
-
-  const addTodo = (text: string) => {
-    const newTodo: Todo = {
-      id: nextId(),
-      text,
-      completed: false,
-    };
-    setTodos((prev) => [...prev, newTodo]);
-    setNextId((prev) => prev + 1);
-    notify(`Added: ${text}`, "success");
-  };
-
-  const toggleTodo = (id: number) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
-  };
-
-  const deleteTodo = (id: number) => {
-    const todo = todos().find((t) => t.id === id);
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
-    if (todo) {
-      notify(`Deleted: ${todo.text}`, "info");
-    }
-  };
-
-  const completedCount = () => todos().filter((todo) => todo.completed).length;
-  const totalCount = () => todos().length;
-
-  return (
-    <div class="app">
-      <header class="app-header">
-        <h1>🦊 Reynard Todo App</h1>
-        <p>Built with SolidJS and Reynard framework</p>
-        <div class="header-controls">
-          <div class="theme-info">Current theme: {theme()}</div>
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <main class="app-main">
-        <Card style="padding: 1.5rem;">
-          <div class="todo-stats">
-            <span class="stat">
-              {completedCount()} / {totalCount()} completed
-            </span>
-          </div>
-
-          <AddTodo onAdd={addTodo} />
-
-          <div class="todo-list">
-            <For each={todos()}>
-              {(todo) => (
-                <TodoItem
-                  todo={todo}
-                  onToggle={() => toggleTodo(todo.id)}
-                  onDelete={() => deleteTodo(todo.id)}
-                />
-              )}
-            </For>
-            {todos().length === 0 && (
-              <div class="empty-state">
-                <p>No todos yet. Add one above!</p>
-              </div>
-            )}
-          </div>
-        </Card>
-      </main>
-    </div>
-  );
-};
-
-const App: Component = () => {
-  const themeModule = createTheme();
-  const notificationsModule = createNotifications();
-
-  return (
-    <ThemeProvider value={themeModule}>
-      <NotificationsProvider value={notificationsModule}>
-        <TodoApp />
-      </NotificationsProvider>
-    </ThemeProvider>
-  );
-};
-
-export default App;
-```
-
-#### `src/components/TodoItem.tsx`
-
-```tsx
-import { Component } from "solid-js";
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-interface TodoItemProps {
-  todo: Todo;
-  onToggle: () => void;
-  onDelete: () => void;
-}
-
-export const TodoItem: Component<TodoItemProps> = (props) => {
-  return (
-    <div class={`todo-item ${props.todo.completed ? "completed" : ""}`}>
-      <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
-        <input
-          id={`todo-${props.todo.id}`}
-          type="checkbox"
-          checked={props.todo.completed}
-          onChange={props.onToggle}
-          aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
-        />
-        <span class="checkmark"></span>
-      </label>
-
-      <span class="todo-text">{props.todo.text}</span>
-
-      <button class="todo-delete" onClick={props.onDelete} title="Delete todo">
-        ×
-      </button>
-    </div>
-  );
-};
-```
-
-#### `src/components/AddTodo.tsx`
-
-```tsx
-import { Component, createSignal } from "solid-js";
-
-interface AddTodoProps {
-  onAdd: (text: string) => void;
-}
-
-export const AddTodo: Component<AddTodoProps> = (props) => {
-  const [input, setInput] = createSignal("");
-
-  const handleSubmit = (e: Event) => {
-    e.preventDefault();
-    const text = input().trim();
-    if (text) {
-      props.onAdd(text);
-      setInput("");
-    }
-  };
-
-  return (
-    <form class="add-todo" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        class="todo-input"
-        placeholder="Add a new todo..."
-        value={input()}
-        onInput={(e) => setInput(e.currentTarget.value)}
-      />
-      <Button type="submit" disabled={!input().trim()}>
-        Add Todo
-      </Button>
-    </form>
-  );
-};
-```
-
-#### `src/components/ThemeToggle.tsx`
-
-```tsx
-import { Component } from "solid-js";
-import { Button } from "reynard-components";
-import { useTheme } from "reynard-themes";
-
-export const ThemeToggle: Component = () => {
-  const { theme, nextTheme } = useTheme();
-
-  const getThemeEmoji = (theme: string) => {
-    switch (theme) {
-      case "light":
-        return "☀️";
-      case "dark":
-        return "🌙";
-      case "banana":
-        return "🍌";
-      case "strawberry":
-        return "🍓";
-      case "peanut":
-        return "🥜";
-      default:
-        return "🎨";
-    }
-  };
-
-  return (
-    <Button
-      onClick={nextTheme}
-      style="display: flex; align-items: center; gap: 0.5rem;"
-    >
-      {getThemeEmoji(theme())} {theme()}
-    </Button>
-  );
-};
-```
-
-### Step 9: Adding Styles
-
-#### Enhanced `src/themes.css` with Todo App Styles
-
-```css
-/* ... existing theme variables ... */
-
-/* App Layout */
-.app {
-  min-height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  transition: all 0.2s ease;
-}
-
-.app-header {
-  text-align: center;
-  padding: 2rem;
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.app-header h1 {
-  margin: 0 0 0.5rem 0;
-  color: var(--text-primary);
-}
-
-.app-header p {
-  margin: 0 0 1rem 0;
-  color: var(--text-secondary);
-}
-
-.header-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.theme-info {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.app-main {
-  padding: 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Todo Styles */
-.todo-stats {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.stat {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.add-todo {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.todo-input {
-  flex: 1;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius, 6px);
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  font-size: 1rem;
-}
-
-.todo-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent) 20;
-}
-
-.todo-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.todo-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius, 6px);
-  transition: all 0.2s ease;
-}
-
-.todo-item:hover {
-  background-color: var(--secondary-bg);
-}
-
-.todo-item.completed {
-  opacity: 0.6;
-}
-
-.todo-item.completed .todo-text {
-  text-decoration: line-through;
-}
-
-.todo-checkbox {
-  position: relative;
-  cursor: pointer;
-}
-
-.todo-checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkmark {
-  display: block;
-  width: 20px;
-  height: 20px;
-  background-color: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 3px;
-  transition: all 0.2s ease;
-}
-
-.todo-checkbox input:checked ~ .checkmark {
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.todo-checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.todo-text {
-  flex: 1;
-  color: var(--text-primary);
-}
-
-.todo-delete {
-  background: none;
-  border: none;
-  color: var(--danger);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 3px;
-  transition: all 0.2s ease;
-}
-
-.todo-delete:hover {
-  background-color: var(--danger);
-  color: white;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .app-header {
-    padding: 1rem;
-  }
-
-  .app-main {
-    padding: 1rem;
-  }
-
-  .header-controls {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .add-todo {
-    flex-direction: column;
-  }
-}
-```
-
-### Step 10: Running Your Application
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-### Step 11: Advanced Features
-
-#### Adding Internationalization
-
-```tsx
-import { I18nProvider, createI18nModule, useI18n } from "reynard-core";
-
-// In your App component
-const i18nModule = createI18nModule({
-  locale: "en",
-  translations: {
-    en: {
-      "app.title": "Todo App",
-      "todo.add": "Add Todo",
-      "todo.placeholder": "What needs to be done?",
-    },
-    es: {
-      "app.title": "Aplicación de Tareas",
-      "todo.add": "Agregar Tarea",
-      "todo.placeholder": "¿Qué necesita hacerse?",
-    },
-  },
-});
-
-// Wrap your app
-<I18nProvider value={i18nModule}>
-  <TodoApp />
-</I18nProvider>;
-```
-
-#### Adding Local Storage Persistence
-
-```tsx
-import { useLocalStorage } from "reynard-core";
-
-const TodoApp: Component = () => {
-  const [todos, setTodos] = useLocalStorage("todos", [
-    { id: 1, text: "Learn SolidJS", completed: true },
-    { id: 2, text: "Try Reynard framework", completed: false },
-  ]);
-
-  // Todos will automatically persist to localStorage
-  // and restore on page reload
-};
-```
-
-### Step 12: Deployment
-
-#### Build for Production
-
-```bash
-npm run build
-```
-
-#### Deploy to Vercel
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-#### Deploy to Netlify
-
-```bash
-# Install Netlify CLI
-npm i -g netlify-cli
-
-# Deploy
-netlify deploy --prod --dir=dist
-```
-
-### 🎯 What You've Learned
-
-This tutorial covered:
-
-1. **Project Setup** - Creating a new Reynard application
-2. **Theme System** - Setting up and using Reynard's theming
-3. **Component Architecture** - Building reusable components
-4. **State Management** - Using SolidJS signals for reactive state
-5. **Event Handling** - Form submission and user interactions
-6. **Styling** - CSS custom properties and responsive design
-7. **Notifications** - User feedback with toast notifications
-8. **Internationalization** - Multi-language support
-9. **Persistence** - Local storage integration
-10. **Deployment** - Building and deploying your app
-
-### 🚀 Next Steps
-
-Now that you have a solid foundation, try:
-
-- **Adding Chat Features** - Use `reynard-chat` for messaging and real-time communication
-- **Implementing RAG Search** - Add intelligent search with `reynard-rag`
-- **Adding Authentication** - Use `reynard-auth` for user management
-- **Data Visualization** - Add charts with `reynard-charts`
-- **File Management** - Implement file uploads with `reynard-gallery`
-- **Caption Generation** - Add AI-powered caption generation with `reynard-annotating` and `reynard-caption`
-- **Advanced Settings** - Add configuration with `reynard-settings`
-- **Real-time Features** - WebSocket integration for live updates
-- **Progressive Web App** - Add PWA capabilities
-- **Testing** - Write unit and integration tests
-- **Performance** - Optimize bundle size and loading
+_[View complete performance guide →](./docs/PERFORMANCE.md)_
 
 ## 📚 Package Documentation
 
-### reynard-core
+### Core Packages
 
-The foundation of the Reynard framework, providing essential utilities, composables, and modules.
+- **`reynard-core`** - Foundation utilities, notifications, localStorage, validation
+- **`reynard-components`** - UI components, modals, tooltips, forms
+- **`reynard-themes`** - Theming system with 8 built-in themes and i18n support
+- **`reynard-i18n`** - Internationalization with 37 language support
 
-#### Modules
+### Specialized Packages
 
-- **Notifications** - Toast notification system with auto-dismiss and multiple types
-- **Internationalization** - Built-in i18n support with translation management
+- **`reynard-chat`** - Real-time chat system with streaming and tool integration
+- **`reynard-rag`** - RAG system with EmbeddingGemma integration
+- **`reynard-auth`** - Complete authentication system with JWT and security features
+- **`reynard-charts`** - Data visualization components built on Chart.js
+- **`reynard-gallery`** - Advanced file management with drag-and-drop
+- **`reynard-annotating`** - AI-powered caption generation with multiple models
+- **`reynard-caption`** - Caption editing UI with tag management
+- **`reynard-3d`** - Three.js integration for 3D graphics
+- **`reynard-monaco`** - Code editor integration
+- **`reynard-games`** - Game development utilities
 
-#### Core Composables
+_[View complete package documentation →](./docs/PACKAGES.md)_
 
-- **`useNotifications()`** - Toast notification system with queue management
-- **`useLocalStorage()`** - Reactive local storage with type safety
-- **`useDebounce()`** - Debounced values for performance optimization
-- **`useMediaQuery()`** - Responsive breakpoint detection
-- **`useI18n()`** - Internationalization with reactive translations
+## 🎨 Theming System
 
-#### Utilities
+Reynard includes a comprehensive theming system with 8 built-in themes:
 
-- **Date Utilities** - Comprehensive date formatting and manipulation
-- **Formatters** - Text, number, and currency formatting functions
-- **Validation** - Input validation and sanitization utilities
+- **Light** - Clean and bright
+- **Dark** - Easy on the eyes
+- **Gray** - Professional neutral
+- **Banana** - Warm and cheerful
+- **Strawberry** - Vibrant and energetic
+- **Peanut** - Earthy and cozy
+- **High Contrast Black** - Maximum accessibility
+- **High Contrast Inverse** - Alternative high contrast
 
-#### Core Example Usage
+_[View complete theming guide →](./docs/PACKAGES.md#reynard-themes)_
 
-```tsx
-import {
-  useNotifications,
-  useLocalStorage,
-  useDebounce,
-} from "reynard-core";
+## 📱 Examples and Templates
 
-function MyComponent() {
-  const { notify } = useNotifications();
-  const [count, setCount] = useLocalStorage("counter", 0);
-  const [searchTerm, setSearchTerm] = useDebounce("", 300);
+### Real-World Applications
 
-  return (
-    <div>
-      <button onClick={() => notify("Success!", "success")}>
-        Show Notification
-      </button>
-      <p>Count: {count()}</p>
-      <input 
-        value={searchTerm()} 
-        onInput={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search..."
-      />
-    </div>
-  );
-}
-```
+- **🖼️ Image Caption App** - Complete AI-powered image caption generation
+- **🔍 RAG Demo** - Retrieval-Augmented Generation system with semantic search
+- **💬 Chat Demo** - Real-time chat with streaming, P2P, and tool integration
+- **📊 Comprehensive Dashboard** - Full-featured dashboard with charts and analytics
+- **🎨 Multi-Theme Gallery** - Advanced theming showcase with component library
+- **⏰ Clock App** - Clock, timer, and alarm application with advanced features
+- **🌍 i18n Demo** - Internationalization showcase with 37 languages and RTL support
+- **🎮 3D Demo** - Three.js integration for 3D graphics and visualizations
 
-### reynard-themes
+### Templates
 
-Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities.
+- **Starter Template** - Basic application template with essential features
+- **Dashboard Template** - Dashboard-focused template with charts and analytics
+- **Portfolio Template** - Portfolio website template with gallery and contact forms
 
-#### Features
-
-- **8 Built-in Themes** - Light, Dark, Gray, Banana, Strawberry, Peanut, High Contrast Black, High Contrast Inverse
-- **Custom Themes** - Create your own theme configurations
-- **Internationalization** - 30+ languages with RTL support
-- **CSS Custom Properties** - Dynamic theme switching with CSS variables
-- **System Theme Detection** - Automatic light/dark mode based on user preferences
-
-#### Usage
-
-```tsx
-import { ReynardProvider, useTheme } from "reynard-themes";
-import "reynard-themes/themes.css";
-
-function App() {
-  return (
-    <ReynardProvider defaultTheme="light" defaultLocale="en">
-      <MyApp />
-    </ReynardProvider>
-  );
-}
-
-function MyComponent() {
-  const { theme, setTheme } = useTheme();
-  
-  return (
-    <div>
-      <p>Current theme: {theme}</p>
-      <button onClick={() => setTheme("dark")}>Switch to Dark</button>
-    </div>
-  );
-}
-```
-
-### reynard-components
-
-Production-ready SolidJS component library with comprehensive theming and accessibility support.
-
-#### Primitives
-
-- **Button** - Versatile button with multiple variants, sizes, and states
-- **Card** - Flexible container with consistent styling and variants
-- **TextField** - Text input with validation, icons, and error states
-- **Select** - Dropdown select with options and search support
-
-#### Composite Components
-
-- **Modal** - Flexible modal dialog with backdrop and animations
-- **Tabs** - Tab navigation with keyboard support and accessibility
-
-#### Components Example Usage
-
-```tsx
-import {
-  Button,
-  Card,
-  TextField,
-  Modal,
-  Tabs,
-} from "reynard-components";
-import { ChatContainer } from "reynard-chat";
-
-function MyApp() {
-  const [isModalOpen, setIsModalOpen] = createSignal(false);
-  const [activeTab, setActiveTab] = createSignal("tab1");
-
-  return (
-    <div>
-      <Card padding="lg">
-        <TextField label="Email" type="email" placeholder="Enter your email" />
-        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
-          Open Modal
-        </Button>
-      </Card>
-
-      <Modal
-        open={isModalOpen()}
-        onClose={() => setIsModalOpen(false)}
-        title="Example Modal"
-      >
-        <p>Modal content goes here</p>
-      </Modal>
-
-      <Tabs
-        activeTab={activeTab()}
-        onTabChange={setActiveTab}
-        tabs={[
-          { id: "tab1", label: "Overview" },
-          { id: "tab2", label: "Details" },
-        ]}
-      >
-        <div slot="tab1">Overview content</div>
-        <div slot="tab2">Details content</div>
-      </Tabs>
-
-      <ChatContainer
-        endpoint="/api/chat"
-        height="600px"
-        config={{
-          enableThinking: true,
-          enableTools: true,
-          showTimestamps: true,
-        }}
-      />
-    </div>
-  );
-}
-```
+_[View complete examples and templates →](./docs/EXAMPLES.md)_
 
 ### reynard-chat
 
@@ -2041,14 +1033,23 @@ const customTheme = createTheme({
 
 ## 📱 Examples and Templates
 
-### Examples
+### **🎯 Real-World Applications**
 
-- **Basic App** - Minimal todo application demonstrating core features (`reynard-basic-app`)
-- **Clock App** - Clock, timer, and alarm application (`reynard-clock-app`)
-- **Multi-Theme Gallery** - Advanced theming showcase with component library
-- **Chat Demo** - Complete chat application with streaming, P2P, and tool integration
-- **Comprehensive Dashboard** - Full-featured dashboard with charts and settings
-- **Full-Stack App** - Complete application with backend integration _(Coming Soon)_
+Reynard examples showcase the full spectrum of capabilities, from simple demos to complex multi-modal applications:
+
+- **🖼️ Image Caption App** - Complete AI-powered image caption generation with multiple models
+- **🔍 RAG Demo** - Retrieval-Augmented Generation system with semantic search
+- **💬 Chat Demo** - Real-time chat with streaming, P2P, and tool integration
+- **📊 Comprehensive Dashboard** - Full-featured dashboard with charts, settings, and analytics
+- **🎨 Multi-Theme Gallery** - Advanced theming showcase with component library
+- **⏰ Clock App** - Clock, timer, and alarm application with advanced features
+- **🌍 i18n Demo** - Internationalization showcase with 37 languages and RTL support
+- **🎮 3D Demo** - Three.js integration for 3D graphics and visualizations
+- **🧪 Algorithm Bench** - Performance testing and algorithm demonstrations
+- **🔧 Features App** - Feature management system with service dependencies
+- **📁 File Test** - Advanced file processing and management capabilities
+- **🎯 Error Demo** - Comprehensive error handling and boundary demonstrations
+- **🔐 Auth App** - Complete authentication system with JWT and security features
 
 ### Templates
 
@@ -2253,6 +1254,8 @@ const { t, locale, setLocale } = useI18n();
 
 ## 🧪 Development
 
+### **🦊 Getting Started with Reynard**
+
 ```bash
 # Install dependencies
 npm install
@@ -2298,34 +1301,13 @@ npm test
 - **Prettier** - Code formatting
 - **Husky** - Git hooks for quality assurance
 
-### Modularity Standards
-
-Reynard follows the **100-line axiom** for maintainable code:
-
-- **Source Files**: Maximum 100 lines (excluding blank lines and comments)
-- **Test Files**: Maximum 200 lines (excluding blank lines and comments)
-- **Functions**: Maximum 50 lines per function
-- **Enforcement**: ESLint rules and pre-commit hooks automatically check line counts
-
-**Why 100 lines?**
-
-- Easier to understand and maintain
-- Better testability and debugging
-- Clearer separation of concerns
-- Improved code review process
-
-**Refactoring Guidelines:**
-
-- Split large files into focused modules
-- Extract complex functions into smaller utilities
-- Use composition over large monolithic classes
-- Apply the Single Responsibility Principle
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
+
+### **🦊 Core Framework**
 
 - **SolidJS** - The reactive framework that powers Reynard
 - **Chart.js** - Data visualization library for charts
@@ -2333,12 +1315,46 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Vitest** - Testing framework
 - **Playwright** - End-to-end testing
 
+### **🦦 YipYap Foundation**
+
+Reynard builds upon the sophisticated architecture and AI/ML capabilities of YipYap:
+
+- **AI/ML Models**: JTP2, WDv3, Florence-2, JoyCaption, YOLO, OWLv2, and custom model implementations
+- **Multi-Modal Processing**: Advanced image, video, audio, and document processing capabilities
+- **Enterprise Architecture**: Production-ready service architecture with comprehensive error handling
+- **RAG System**: Retrieval-Augmented Generation with vector databases and semantic search
+- **Integration Services**: NLWeb, TTS, Diffusion LLM, and web crawling capabilities
+
+### **🎯 Research and Development**
+
+- **Academic Papers**: Comprehensive research documentation in `docs/research/academic-papers/`
+- **Architecture Decisions**: Detailed architectural patterns and design decisions
+- **Implementation Studies**: Performance analysis and optimization strategies
+
 ## 📞 Support
 
 - **Documentation** - [docs.reynard.dev](https://docs.reynard.dev)
 - **Issues** - [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions** - [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord** - [Join our Discord](https://discord.gg/reynard)
+
+---
+
+## 🚀 The Future of Reynard
+
+Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and refine the framework, we're building toward a future where:
+
+- **🤖 AI-First Development**: Every component is designed with AI integration in mind
+- **🌐 Universal Content**: Seamless handling of any content type, from images to 3D models
+- **⚡ Real-Time Collaboration**: Live editing and collaboration across all content types
+- **🔮 Predictive Interfaces**: AI-powered UI that adapts to user behavior and content
+- **🌍 Global Scale**: Built for worldwide deployment with edge computing support
+
+### **🦊 Join the Evolution**
+
+Reynard is more than a framework - it's a movement toward smarter, more intuitive web development. Whether you're building the next generation of content management systems, AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects, Reynard provides the foundation you need.
+
+**From dataset editor to multi-modal CMS to universal framework - the journey continues!**
 
 ---
 

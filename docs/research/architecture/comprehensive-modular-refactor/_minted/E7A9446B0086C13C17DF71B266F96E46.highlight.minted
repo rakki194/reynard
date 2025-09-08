@@ -1,0 +1,26 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// modules/auth.ts \PYGZhy{} 80 lines max}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{createAuthModule}\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{p}{[}\PYG{n+nx}{token}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{setToken}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createSignal}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{p}{[}\PYG{n+nx}{role}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{setRole}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createSignal}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kc}{null}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{login}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nx}{authToken}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{string}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{userRole}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{string}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n+nx}{localStorage}\PYG{p}{.}\PYG{n+nx}{setItem}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}auth\PYGZus{}token\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{authToken}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{localStorage}\PYG{p}{.}\PYG{n+nx}{setItem}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}user\PYGZus{}role\PYGZsq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{userRole}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{setToken}\PYG{p}{(}\PYG{n+nx}{authToken}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{setRole}\PYG{p}{(}\PYG{n+nx}{userRole}\PYG{p}{)}
+\PYG{+w}{  }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{logout}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n+nx}{localStorage}\PYG{p}{.}\PYG{n+nx}{removeItem}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}auth\PYGZus{}token\PYGZsq{}}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{localStorage}\PYG{p}{.}\PYG{n+nx}{removeItem}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}user\PYGZus{}role\PYGZsq{}}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{setToken}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{setRole}\PYG{p}{(}\PYG{k+kc}{null}\PYG{p}{)}
+\PYG{+w}{  }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{isLoggedIn}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n+nx}{token}\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{!==}\PYG{+w}{ }\PYG{k+kc}{null}
+
+\PYG{+w}{  }\PYG{c+c1}{// Pure, reusable auth logic}
+\PYG{+w}{  }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{token}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{role}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{login}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{logout}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{isLoggedIn}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

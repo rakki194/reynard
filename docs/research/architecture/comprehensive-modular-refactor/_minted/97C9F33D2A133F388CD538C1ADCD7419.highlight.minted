@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// modules/theme.ts \PYGZhy{} 50 lines max}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{createThemeModule}\PYG{p}{(}\PYG{n+nx}{initialTheme}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}dark\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{p}{[}\PYG{n+nx}{theme}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{setTheme}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createSignal}\PYG{p}{(}\PYG{n+nx}{initialTheme}\PYG{p}{)}
+
+\PYG{+w}{  }\PYG{c+c1}{// Self\PYGZhy{}contained theme logic with no external deps}
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{toggleTheme}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n+nx}{setTheme}\PYG{p}{(}\PYG{n+nx}{prev}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}
+\PYG{+w}{    }\PYG{n+nx}{prev}\PYG{+w}{ }\PYG{o}{===}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}dark\PYGZsq{}}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}light\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+s+s1}{\PYGZsq{}dark\PYGZsq{}}\PYG{p}{)}
+
+\PYG{+w}{  }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{applyTheme}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nx}{element}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{HTMLElement}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n+nx}{element}\PYG{p}{.}\PYG{n+nx}{dataset}\PYG{p}{.}\PYG{n+nx}{theme}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{theme}\PYG{p}{(}\PYG{p}{)}
+\PYG{+w}{  }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{  }\PYG{c+c1}{// Modular export \PYGZhy{} zero dependencies}
+\PYG{+w}{  }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{theme}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{setTheme}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{toggleTheme}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{applyTheme}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

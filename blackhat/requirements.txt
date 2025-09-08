@@ -1,0 +1,43 @@
+# 🐺 BLACKHAT EXPLOIT TESTING DEPENDENCIES
+# *snarls with predatory glee* Tools for tearing apart your precious codebase
+
+# Core exploit framework
+requests
+urllib3
+cryptography
+pyjwt
+
+# Network and protocol manipulation
+scapy
+dnspython
+paramiko
+
+# File and data manipulation
+python-magic
+Pillow
+lxml
+
+# Encoding and obfuscation
+base64
+urllib.parse
+html.parser
+json
+
+# Timing and performance testing
+time
+asyncio
+concurrent.futures
+
+# Logging and monitoring
+logging
+colorama
+rich
+
+# Development and testing
+pytest
+pytest-asyncio
+pytest-mock
+
+# Security testing utilities
+bandit
+safety

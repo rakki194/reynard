@@ -15,6 +15,7 @@ This directory contains comprehensive architecture documentation for the Reynard
 
 ### Design Patterns
 
+- **`modularity-patterns.md`** - 140-line axiom and refactoring strategies
 - **`tool-registry.md`** - Tool registry pattern
 - **`package-exports.md`** - Package export patterns
 - **`transformations.md`** - Data transformation patterns
@@ -25,6 +26,7 @@ This directory contains comprehensive architecture documentation for the Reynard
 
 ### Modularity
 
+- **140-Line Axiom**: [Strategic file size limits and refactoring patterns](./modularity-patterns.md)
 - **Service Isolation**: Clear service boundaries and responsibilities
 - **Dependency Management**: Loose coupling and high cohesion
 - **Package Organization**: Logical grouping of related functionality

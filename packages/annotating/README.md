@@ -23,14 +23,14 @@ npm install reynard-annotating
 ```typescript
 import { AnnotationManager, CaptionType, CaptionTask } from 'reynard-annotating';
 
-// Create annotation manager
+// Create annotation manager with backend integration
 const annotationManager = new AnnotationManager();
 
 // Start the manager
 await annotationManager.start();
 
-// Get available generators
-const generators = annotationManager.getAvailableGenerators();
+// Get available generators (now async)
+const generators = await annotationManager.getAvailableGenerators();
 console.log('Available generators:', generators);
 
 // Generate a caption

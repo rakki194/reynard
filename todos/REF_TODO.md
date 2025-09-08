@@ -4,7 +4,7 @@
 
 ## 🎯 Mission Overview
 
-**Objective**: Transform our Reynard codebase from a collection of monolithic files into a cunning, modular architecture that follows our 100-line axiom.
+**Objective**: Transform our Reynard codebase from a collection of monolithic files into a cunning, modular architecture that follows our 140-line axiom.
 
 **Current Status**: 🚨 **CRITICAL VIOLATIONS DETECTED** - 200+ files exceed our modularity standards!
 
@@ -471,7 +471,7 @@ The wolf has successfully hunted down the systematic cleanup targets! Ready to t
 
 ### 🎯 Ready for Production
 
-The cunning fox has successfully completed the Great Modularity Refactoring Quest! The codebase now follows the 100-line axiom with automated enforcement and comprehensive documentation. 🦊✨
+The cunning fox has successfully completed the Great Modularity Refactoring Quest! The codebase now follows the 140-line axiom with automated enforcement and comprehensive documentation. 🦊✨
 
 ---
 
@@ -506,7 +506,7 @@ The cunning fox has successfully completed the Great Modularity Refactoring Ques
 
 ### 🦊 Fox Success Metrics
 
-- [ ] All files under 100 lines (except tests under 200)
+- [ ] All files under 140 lines (except tests under 200)
 - [ ] Clear separation of concerns
 - [ ] Maintainable architecture
 - [ ] No breaking changes to public APIs

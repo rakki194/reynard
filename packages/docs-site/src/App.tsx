@@ -106,7 +106,7 @@ const App: Component = () => {
         onSearch={handleSearch}
         onClear={() => handleSearch('')}
         placeholder="Search documentation..."
-        className="docs-header-search"
+        class="docs-header-search"
       />
       <button 
         class="docs-theme-toggle"
@@ -121,7 +121,7 @@ const App: Component = () => {
   if (isLoading()) {
     return (
       <div class="docs-loading">
-        <div class="docs-loading-spinner"></div>
+        <div class="docs-loading-spinner" />
         <p>Loading documentation...</p>
       </div>
     );

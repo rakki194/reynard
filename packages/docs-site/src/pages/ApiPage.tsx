@@ -62,7 +62,7 @@ export const ApiPage: Component = () => {
     return (
       <DocsPage>
         <div class="docs-loading">
-          <div class="docs-loading-spinner"></div>
+          <div class="docs-loading-spinner" />
           <p>Loading API documentation...</p>
         </div>
       </DocsPage>

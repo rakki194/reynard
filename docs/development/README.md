@@ -63,7 +63,7 @@ This directory contains comprehensive development documentation for the Reynard 
 
 ## Best Practices
 
-- Follow the modular architecture patterns outlined in the architecture documentation
+- Follow the [140-line axiom and modularity patterns](../architecture/modularity-patterns.md) for code organization
 - Use the established composable patterns for frontend development
 - Maintain consistent theming and styling across components
 - Implement proper testing strategies for all new features

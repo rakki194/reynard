@@ -2,7 +2,7 @@
  * @fileoverview Package documentation page
  */
 
-import { Component, createSignal, onMount } from 'solid-js';
+import { Component, createSignal, onMount, For } from 'solid-js';
 import { useParams } from 'solid-router';
 import { 
   DocsPage, 
@@ -51,7 +51,7 @@ export const PackagePage: Component = () => {
     return (
       <DocsPage>
         <div class="docs-loading">
-          <div class="docs-loading-spinner"></div>
+          <div class="docs-loading-spinner" />
           <p>Loading package documentation...</p>
         </div>
       </DocsPage>
@@ -120,9 +120,9 @@ export const PackagePage: Component = () => {
 
       <DocsSection title="Features">
         <div class="docs-package-features">
-          {packageInfo.metadata.tags?.map((tag: string) => (
+          {<For each={packageInfo.metadata.tags}>{(tag: string) => (
             <span class="docs-package-feature">{tag}</span>
-          ))}
+          )}</For>}
         </div>
       </DocsSection>
 

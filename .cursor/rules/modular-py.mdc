@@ -825,7 +825,7 @@ class MemoryManager:
 
 ### 1. File Organization
 
-```
+```plaintext
 backend/
 ├── main.py                 # FastAPI application entry point (90 lines)
 ├── config.py              # Configuration management (50 lines)

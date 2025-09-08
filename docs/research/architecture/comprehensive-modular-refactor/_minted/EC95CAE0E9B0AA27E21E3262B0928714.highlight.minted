@@ -1,0 +1,15 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} app/api/services.py (extract)}
+\PYG{n}{metrics}\PYG{p}{[}\PYG{n}{name}\PYG{p}{]} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{startup\PYGZus{}time}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{startup\PYGZus{}time}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health\PYGZus{}check\PYGZus{}interval}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health\PYGZus{}check\PYGZus{}interval}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health\PYGZus{}check\PYGZus{}count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health\PYGZus{}check\PYGZus{}count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{status}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{status}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{health}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{c+c1}{\PYGZsh{} Enrich with reconnection metrics when present}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{connection\PYGZus{}state}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{connection\PYGZus{}state}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{connection\PYGZus{}attempts}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{connection\PYGZus{}attempts}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{last\PYGZus{}ok\PYGZus{}iso}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{n}{service\PYGZus{}info}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{last\PYGZus{}ok\PYGZus{}iso}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

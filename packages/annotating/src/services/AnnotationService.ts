@@ -13,19 +13,49 @@ import {
   CaptionGeneratorConfig
 } from '../types/index.js';
 import { BaseCaptionGenerator } from '../generators/BaseCaptionGenerator.js';
+import { BackendIntegrationService } from './BackendIntegrationService.js';
 
 export class AnnotationService implements IAnnotationService {
   private _generators: Map<string, BaseCaptionGenerator> = new Map();
   private _activeTasks: Set<string> = new Set();
   private _totalProcessed: number = 0;
   private _totalProcessingTime: number = 0;
+  private _backendService: BackendIntegrationService;
+  private _useBackend: boolean = true;
 
-  constructor() {
+  constructor(backendUrl?: string, apiKey?: string) {
+    this._backendService = new BackendIntegrationService(backendUrl, apiKey);
     // Initialize with default generators
     this._initializeDefaultGenerators();
   }
 
   async generateCaption(task: CaptionTask): Promise<CaptionResult> {
+    if (this._useBackend) {
+      try {
+        // Use backend service for caption generation
+        const backendRequest = this._backendService.convertToBackendRequest(task);
+        const backendResponse = await this._backendService.generateCaption(backendRequest);
+        const result = this._backendService.convertToFrontendResult(backendResponse);
+        
+        // Update statistics
+        this._totalProcessed++;
+        this._totalProcessingTime += result.processingTime;
+        
+        return result;
+      } catch (error) {
+        return {
+          imagePath: task.imagePath,
+          generatorName: task.generatorName,
+          success: false,
+          caption: '',
+          processingTime: 0,
+          captionType: 'caption' as any,
+          error: `Backend generation failed: ${error instanceof Error ? error.message : String(error)}`
+        };
+      }
+    }
+
+    // Fallback to local generators
     const generator = this._generators.get(task.generatorName);
     if (!generator) {
       return {
@@ -147,7 +177,17 @@ export class AnnotationService implements IAnnotationService {
     return results;
   }
 
-  getAvailableGenerators(): CaptionGenerator[] {
+  async getAvailableGenerators(): Promise<CaptionGenerator[]> {
+    if (this._useBackend) {
+      try {
+        const backendGenerators = await this._backendService.getAvailableGenerators();
+        return backendGenerators.map(gen => this._backendService.convertToFrontendGenerator(gen));
+      } catch (error) {
+        console.warn('Failed to get generators from backend, falling back to local:', error);
+        // Fallback to local generators
+      }
+    }
+    
     return Array.from(this._generators.values()).map(generator => generator.getInfo());
   }
 

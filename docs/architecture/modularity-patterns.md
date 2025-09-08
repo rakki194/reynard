@@ -4,13 +4,13 @@
 
 ## Overview
 
-Reynard follows the **100-line axiom** - a strategic approach to code organization that emphasizes modularity, maintainability, and clarity. This document outlines the proven patterns and refactoring strategies used throughout the Reynard codebase.
+Reynard follows the **140-line axiom** - a strategic approach to code organization that emphasizes modularity, maintainability, and clarity. This document outlines the proven patterns and refactoring strategies used throughout the Reynard codebase.
 
 ## Core Principles
 
-### The 100-Line Axiom
+### The 140-Line Axiom
 
-Every source file should be under 100 lines (excluding blank lines and comments). This constraint forces:
+Every source file should be under 140 lines (excluding blank lines and comments). This constraint forces:
 
 - **Clear Separation of Concerns**: Each file has a single, well-defined responsibility
 - **Improved Readability**: Files are small enough to understand at a glance
@@ -21,7 +21,7 @@ Every source file should be under 100 lines (excluding blank lines and comments)
 
 | File Type | Max Lines | Max Function Lines | Purpose |
 |-----------|-----------|-------------------|---------|
-| Source Files | 100 | 50 | Core business logic |
+| Source Files | 140 | 50 | Core business logic |
 | Test Files | 200 | 100 | Comprehensive testing |
 | Configuration | 50 | 25 | Setup and configuration |
 | Documentation | 200 | N/A | Guides and references |
@@ -245,7 +245,7 @@ export { VIDEO_TYPES } from './video-types';
 4. **Create the Orchestrator**
    - Re-export from specialized modules
    - Maintain backward compatibility
-   - Keep orchestrator under 100 lines
+   - Keep orchestrator under 140 lines
 
 5. **Update Tests**
    - Split test files accordingly
@@ -321,7 +321,7 @@ const CONFIG = {
 // eslint.config.js
 rules: {
   "max-lines": ["error", { 
-    max: 100, 
+    max: 140, 
     skipBlankLines: true, 
     skipComments: true 
   }],
@@ -407,7 +407,7 @@ echo "📏 Checking file line counts..."
 
 ## Conclusion
 
-The 100-line axiom and modularity patterns in Reynard create a codebase that is:
+The 140-line axiom and modularity patterns in Reynard create a codebase that is:
 
 - **Maintainable**: Easy to understand and modify
 - **Scalable**: Can grow without becoming unwieldy

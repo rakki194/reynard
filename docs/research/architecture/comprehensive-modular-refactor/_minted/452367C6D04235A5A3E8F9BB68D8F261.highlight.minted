@@ -1,0 +1,24 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} app/services/integration/vector\PYGZus{}db\PYGZus{}service.py (extract)}
+\PYG{k}{except} \PYG{n}{OperationalError} \PYG{k}{as} \PYG{n}{oe}\PYG{p}{:}
+    \PYG{n}{logger}\PYG{o}{.}\PYG{n}{warning}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{VectorDBService operational error: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{oe}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} Bounded retry with jitter around engine rebuild to ride out brief restarts}
+    \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}reconnect\PYGZus{}on\PYGZus{}error} \PYG{o+ow}{and} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}dsn}\PYG{p}{:}
+        \PYG{n}{delays} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.5}\PYG{p}{,} \PYG{l+m+mf}{1.0}\PYG{p}{,} \PYG{l+m+mf}{2.0}\PYG{p}{]}
+        \PYG{k}{for} \PYG{n}{d} \PYG{o+ow}{in} \PYG{n}{delays}\PYG{p}{:}
+            \PYG{k}{try}\PYG{p}{:}
+                \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}rebuild\PYGZus{}engine}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+                    \PYG{k}{with} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}engine}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{p}{)} \PYG{k}{as} \PYG{n}{conn}\PYG{p}{:}
+                        \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+                        \PYG{n}{res} \PYG{o}{=} \PYG{n}{conn}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{text}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{SELECT 1 FROM pg\PYGZus{}extension WHERE extname = }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{vector}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}
+                        \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{res}\PYG{o}{.}\PYG{n}{scalar}\PYG{p}{(}\PYG{p}{)}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{\PYGZus{}last\PYGZus{}ok\PYGZus{}ts} \PYG{o}{=} \PYG{n}{time}\PYG{o}{.}\PYG{n}{time}\PYG{p}{(}\PYG{p}{)}
+                    \PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{HEALTHY}
+            \PYG{k}{except} \PYG{n+ne}{Exception} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+                \PYG{c+c1}{\PYGZsh{} Sleep with jitter before next attempt}
+                \PYG{n}{effective\PYGZus{}delay} \PYG{o}{=} \PYG{n}{jittered\PYGZus{}delay}\PYG{p}{(}\PYG{n}{d}\PYG{p}{,} \PYG{n}{jitter}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mf}{0.8}\PYG{p}{,} \PYG{l+m+mf}{1.2}\PYG{p}{)}\PYG{p}{,} \PYG{n}{floor\PYGZus{}seconds}\PYG{o}{=}\PYG{l+m+mf}{0.05}\PYG{p}{)}
+                \PYG{c+c1}{\PYGZsh{} Record reconnection delay for metrics}
+                \PYG{n}{record\PYGZus{}reconnect\PYGZus{}delay}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{vector\PYGZus{}db}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{effective\PYGZus{}delay}\PYG{p}{)}
+                \PYG{k}{await} \PYG{n}{asyncio}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{(}\PYG{n}{effective\PYGZus{}delay}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{ServiceHealth}\PYG{o}{.}\PYG{n}{UNHEALTHY}
+\end{MintedVerbatim}

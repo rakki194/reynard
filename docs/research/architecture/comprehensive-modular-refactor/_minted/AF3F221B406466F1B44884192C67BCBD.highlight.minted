@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{api}\PYG{o}{/}\PYG{n+nx}{browse}\PYG{p}{.}\PYG{n+nx}{py}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mf}{120}\PYG{+w}{ }\PYG{n+nx}{lines}\PYG{+w}{ }\PYG{n+nx}{max}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{n+nx}{fastapi}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{APIRouter}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{HTTPException}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{models}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{BrowseRequest}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{BrowseResponse}
+
+\PYG{n+nx}{router}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{APIRouter}\PYG{p}{(}\PYG{n+nx}{prefix}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}/api/browse\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k+kd}{@router}\PYG{p}{.}\PYG{n+nx}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}/\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{async}\PYG{+w}{ }\PYG{n+nx}{def}\PYG{+w}{ }\PYG{n+nx}{browse\PYGZus{}directory}\PYG{p}{(}\PYG{n+nx}{request}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{BrowseRequest}\PYG{p}{)}\PYG{o}{:}
+\PYG{+w}{    }\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Pure}\PYG{+w}{ }\PYG{n+nx}{directory}\PYG{+w}{ }\PYG{n+nx}{browsing}\PYG{+w}{ }\PYG{n+nx}{logic}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nx}{zero}\PYG{+w}{ }\PYG{n+nx}{dependencies}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nx}{BrowseResponse}\PYG{p}{(}\PYG{p}{...}\PYG{p}{)}
+
+\PYG{k+kd}{@router}\PYG{p}{.}\PYG{n+nx}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}/all\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{async}\PYG{+w}{ }\PYG{n+nx}{def}\PYG{+w}{ }\PYG{n+nx}{browse\PYGZus{}all}\PYG{p}{(}\PYG{n+nx}{request}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{BrowseRequest}\PYG{p}{)}\PYG{o}{:}
+\PYG{+w}{    }\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Modular}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{single}\PYG{+w}{ }\PYG{n+nx}{responsibility}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{reusable}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{k}{await}\PYG{+w}{ }\PYG{n+nx}{directory\PYGZus{}scanner}\PYG{p}{.}\PYG{n+nx}{scan\PYGZus{}all}\PYG{p}{(}\PYG{n+nx}{request}\PYG{p}{.}\PYG{n+nx}{path}\PYG{p}{)}
+\end{MintedVerbatim}

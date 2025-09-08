@@ -1,0 +1,31 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// components/MetricsDisplay.tsx \PYGZhy{} 60 lines}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{MetricsDisplay}\PYG{p}{(}\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{metrics}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{o}{:}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{metrics}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Metrics}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{div}\PYG{+w}{ }\PYG{k+kd}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}metrics\PYGZhy{}grid\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{      }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{For}\PYG{+w}{ }\PYG{n+nx}{each}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nb}{Object}\PYG{p}{.}\PYG{n+nx}{entries}\PYG{p}{(}\PYG{n+nx}{metrics}\PYG{p}{)}\PYG{p}{\PYGZcb{}}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}\PYG{p}{(}\PYG{p}{[}\PYG{n+nx}{key}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{value}\PYG{p}{]}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{(}
+\PYG{+w}{          }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{MetricItem}\PYG{+w}{ }\PYG{n+nx}{label}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nx}{key}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{n+nx}{value}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nx}{value}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{/}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{        }\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{o}{\PYGZlt{}}\PYG{err}{/}\PYG{err}{F}\PYG{err}{o}\PYG{err}{r}\PYG{err}{\PYGZgt{}}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}}\PYG{err}{/}\PYG{err}{d}\PYG{err}{i}\PYG{err}{v}\PYG{err}{\PYGZgt{}}
+\PYG{+w}{  }\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// components/WarningsPanel.tsx \PYGZhy{} 40 lines}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{WarningsPanel}\PYG{p}{(}\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{warnings}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{o}{:}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{warnings}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{Warning}\PYG{p}{[}\PYG{p}{]}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{div}\PYG{+w}{ }\PYG{k+kd}{class}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}warnings\PYGZhy{}list\PYGZdq{}}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{      }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{For}\PYG{+w}{ }\PYG{n+nx}{each}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nx}{warnings}\PYG{p}{\PYGZcb{}}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}\PYG{p}{(}\PYG{n+nx}{warning}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{WarningItem}\PYG{+w}{ }\PYG{n+nx}{warning}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nx}{warning}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{/}\PYG{o}{\PYGZgt{}}\PYG{p}{\PYGZcb{}}
+\PYG{+w}{      }\PYG{o}{\PYGZlt{}}\PYG{err}{/}\PYG{err}{F}\PYG{err}{o}\PYG{err}{r}\PYG{err}{\PYGZgt{}}
+\PYG{+w}{    }\PYG{o}{\PYGZlt{}}\PYG{err}{/}\PYG{err}{d}\PYG{err}{i}\PYG{err}{v}\PYG{err}{\PYGZgt{}}
+\PYG{+w}{  }\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// components/PerformanceChart.tsx \PYGZhy{} 80 lines}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{function}\PYG{+w}{ }\PYG{n+nx}{PerformanceChart}\PYG{p}{(}\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{data}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{o}{:}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n+nx}{data}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{ChartData}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{  }\PYG{c+c1}{// Modular chart component \PYGZhy{} no external dependencies}
+\PYG{+w}{  }\PYG{k}{return}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{n+nx}{canvas}\PYG{+w}{ }\PYG{n+nx}{ref}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{n+nx}{setupChart}\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{/}\PYG{o}{\PYGZgt{}}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

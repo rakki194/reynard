@@ -1,0 +1,19 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{api}\PYG{o}{/}\PYG{n+nx}{auth}\PYG{p}{.}\PYG{n+nx}{py}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mf}{80}\PYG{+w}{ }\PYG{n+nx}{lines}\PYG{+w}{ }\PYG{n+nx}{max}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{n+nx}{fastapi}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{APIRouter}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{Depends}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{primitives}\PYG{p}{.}\PYG{n+nx}{jwt\PYGZus{}handler}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{JWTHandler}
+\PYG{k+kr}{from}\PYG{+w}{ }\PYG{p}{.}\PYG{n+nx}{primitives}\PYG{p}{.}\PYG{n+nx}{password\PYGZus{}hasher}\PYG{+w}{ }\PYG{k}{import}\PYG{+w}{ }\PYG{n+nx}{PasswordHasher}
+
+\PYG{n+nx}{router}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{APIRouter}\PYG{p}{(}\PYG{n+nx}{prefix}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}/api/auth\PYGZdq{}}\PYG{p}{)}
+
+\PYG{k+kd}{@router}\PYG{p}{.}\PYG{n+nx}{post}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}/login\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{async}\PYG{+w}{ }\PYG{n+nx}{def}\PYG{+w}{ }\PYG{n+nx}{login}\PYG{p}{(}\PYG{n+nx}{credentials}\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{LoginRequest}\PYG{p}{)}\PYG{o}{:}
+\PYG{+w}{    }\PYG{err}{\PYGZsh{}}\PYG{+w}{ }\PYG{n+nx}{Self}\PYG{o}{\PYGZhy{}}\PYG{n+nx}{contained}\PYG{+w}{ }\PYG{n+nx}{auth}\PYG{+w}{ }\PYG{n+nx}{logic}\PYG{+w}{ }\PYG{k+kd}{with}\PYG{+w}{ }\PYG{n+nx}{modular}\PYG{+w}{ }\PYG{n+nx}{primitives}
+\PYG{+w}{    }\PYG{n+nx}{jwt}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{JWTHandler}\PYG{p}{(}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n+nx}{hasher}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{PasswordHasher}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{n+nx}{hasher}\PYG{p}{.}\PYG{n+nx}{verify}\PYG{p}{(}\PYG{n+nx}{credentials}\PYG{p}{.}\PYG{n+nx}{password}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{stored\PYGZus{}hash}\PYG{p}{)}\PYG{o}{:}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nx}{jwt}\PYG{p}{.}\PYG{n+nx}{create\PYGZus{}token}\PYG{p}{(}\PYG{n+nx}{user\PYGZus{}id}\PYG{p}{)}
+
+\PYG{+w}{    }\PYG{n+nx}{raise}\PYG{+w}{ }\PYG{n+nx}{HTTPException}\PYG{p}{(}\PYG{l+m+mf}{401}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}Invalid credentials\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}

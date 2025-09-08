@@ -19,6 +19,9 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel, EmailStr
 
+# Import caption generation API
+from app.api.caption import router as caption_router
+
 # Load environment variables
 load_dotenv()
 
@@ -61,6 +64,9 @@ app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=["localhost", "127.0.0.1", "*.yourdomain.com"],  # Add your domains
 )
+
+# Include caption generation API
+app.include_router(caption_router, prefix="/api")
 
 
 # Pydantic models

@@ -1,10 +1,11 @@
 /**
  * Reynard Starter Template Styles
- * Extracted and simplified from yipyap's proven CSS system
+ * Modern design system with comprehensive component showcase
  */
 
 @import "reynard-themes/dist/index.css";
 @import "./components.css";
+@import "./modern-components.css";
 
 /* CSS Layer System */
 @layer reset, base, components, utilities;
@@ -33,9 +34,14 @@
   --transition-timing: ease;
 
   /* Shadows */
-  --shadow-color: rgb(0 0 0 / 30%);;
+  --shadow-color: rgb(0 0 0 / 30%);
   --shadow-default: 0 2px 4px var(--shadow-color);
-  --shadow-hover: 0 4px 6px var(--shadow-accent);;
+  --shadow-hover: 0 4px 6px var(--shadow-color);
+  --shadow-large: 0 8px 25px var(--shadow-color);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--accent), var(--color-accent-light, #0056b3));
+  --gradient-surface: linear-gradient(135deg, var(--card-bg), var(--secondary-bg));
 }
 
 /* CSS Reset */
@@ -104,34 +110,120 @@
   }
 
   .app-header {
-    background: var(--secondary-bg);
-    padding: var(--double-spacing);
-    text-align: center;
+    background: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: rgba(var(--color-surface-rgb, 255, 255, 255), 0.9);
   }
 
-  .app-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: var(--half-spacing);
-    color: var(--accent);
+  .header-content {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--spacing) var(--double-spacing);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--double-spacing);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+  }
+
+  .brand-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    color: white;
   }
 
-  .reynard-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-  }
-
-  .reynard-logo svg {
-    width: 48px;
-    height: 48px;
+  .logo-icon svg {
+    width: 24px;
+    height: 24px;
     fill: currentColor;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .brand-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: var(--half-spacing);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .nav-toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+  }
+
+  .nav-link {
+    background: none;
+    border: none;
+    padding: var(--half-spacing) var(--spacing);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing);
+  }
+
+  .nav-link:hover {
+    background: var(--secondary-bg);
+    color: var(--accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+  }
+
+  .theme-quick-select {
+    display: flex;
+    align-items: center;
   }
 
   .feature-icon {
@@ -156,10 +248,47 @@
 
   .app-main {
     flex: 1;
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding: var(--double-spacing);
     width: 100%;
+  }
+
+  /* Section Styles */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--triple-spacing);
+  }
+
+  .section-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing);
+  }
+
+  .section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    color: white;
+  }
+
+  .section-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  .section-header p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .app-footer {
@@ -171,13 +300,195 @@
     font-size: 0.9rem;
   }
 
-  .demo-section {
-    margin-bottom: var(--triple-spacing);
+  /* Hero Section */
+  .hero-section {
+    background: var(--gradient-surface);
+    padding: var(--triple-spacing) var(--double-spacing);
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
-  .demo-section h2 {
-    font-size: 1.8rem;
+  .hero-content {
+    max-width: var(--container-max-width);
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--triple-spacing);
+    align-items: center;
+  }
+
+  .hero-text {
+    text-align: left;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+    line-height: 1.1;
+  }
+
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    color: white;
+  }
+
+  .hero-logo svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
     margin-bottom: var(--double-spacing);
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--spacing);
+    flex-wrap: wrap;
+  }
+
+  .hero-demo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .demo-preview {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-large);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .demo-header {
+    background: var(--secondary-bg);
+    padding: var(--spacing);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .demo-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+  }
+
+  .dot:nth-child(1) { background: #ff5f57; }
+  .dot:nth-child(2) { background: #ffbd2e; }
+  .dot:nth-child(3) { background: #28ca42; }
+
+  .demo-title {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .demo-content {
+    padding: var(--double-spacing);
+    text-align: center;
+  }
+
+  .demo-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing);
+  }
+
+  .demo-icon svg {
+    width: 48px;
+    height: 48px;
+    fill: var(--accent);
+  }
+
+  .demo-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .hero-themes {
+    margin-top: var(--triple-spacing);
+    max-width: var(--container-max-width);
+    width: 100%;
+  }
+
+  .hero-themes h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing);
+    color: var(--text-primary);
+  }
+
+  .theme-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .theme-preview {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    cursor: pointer;
+    transition: all var(--transition-duration) var(--transition-timing);
+    text-align: center;
+  }
+
+  .theme-preview:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .theme-preview.active {
+    border-color: var(--accent);
+    background: var(--secondary-bg);
+  }
+
+  .theme-preview-colors {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-bottom: var(--half-spacing);
+  }
+
+  .color-swatch {
+    height: 20px;
+    border-radius: 2px;
+  }
+
+  .theme-preview-name {
+    font-size: 0.75rem;
+    font-weight: 500;
     color: var(--text-primary);
   }
 

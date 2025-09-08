@@ -1,0 +1,29 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// src/modules/composition.ts \PYGZhy{} The Ritual Circle}
+\PYG{k}{export}\PYG{+w}{ }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{createAppModules}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{p}{)}\PYG{o}{:}\PYG{+w}{ }\PYG{n+nx}{AppModules}\PYG{+w}{ }\PYG{p}{=\PYGZgt{}}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{registry}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createModuleRegistry}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{c+c1}{// Create individual modules}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{theme}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createThemeModule}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{auth}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createAuthModule}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{notifications}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createNotificationsModule}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{settings}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createSettingsModule}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kd}{const}\PYG{+w}{ }\PYG{n+nx}{localization}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nx}{createLocalizationModule}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{c+c1}{// Register modules in registry}
+\PYG{+w}{    }\PYG{n+nx}{registry}\PYG{p}{.}\PYG{n+nx}{registerModule}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}theme\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{theme}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n+nx}{registry}\PYG{p}{.}\PYG{n+nx}{registerModule}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}auth\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{auth}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n+nx}{registry}\PYG{p}{.}\PYG{n+nx}{registerModule}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}notifications\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{notifications}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n+nx}{registry}\PYG{p}{.}\PYG{n+nx}{registerModule}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}settings\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{settings}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n+nx}{registry}\PYG{p}{.}\PYG{n+nx}{registerModule}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}localization\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n+nx}{localization}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n+nx}{registry}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n+nx}{theme}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n+nx}{auth}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n+nx}{notifications}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n+nx}{settings}\PYG{p}{,}
+\PYG{+w}{        }\PYG{n+nx}{localization}\PYG{p}{,}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{p}{;}
+\end{MintedVerbatim}

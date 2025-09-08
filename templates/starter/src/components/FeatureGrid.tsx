@@ -42,7 +42,7 @@ export const FeatureGrid: Component = () => {
       <FeatureCard
         icon="puzzle-piece"
         title="Modular Architecture"
-        description="Zero-dependency modules under 100 lines each"
+        description="Zero-dependency modules under 140 lines each"
       >
         <Counter count={count()} setCount={setCount} />
       </FeatureCard>

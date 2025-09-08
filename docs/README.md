@@ -24,6 +24,7 @@ System architecture, component design, and architectural patterns.
 - **System Architecture**: Reynard package architecture, authentication, security
 - **Component Architecture**: SolidJS patterns, notification systems, state management
 - **Design Patterns**: Package exports, composables, reactive patterns
+- **Modularity Patterns**: [140-line axiom and refactoring strategies](./architecture/modularity-patterns.md)
 
 ### 🔗 [Integrations](./integrations/)
 

@@ -24,7 +24,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
-    "lint": "eslint src --ext .ts,.tsx",
+        "lint": "eslint src",
     "type-check": "tsc --noEmit"
   },
   "keywords": [

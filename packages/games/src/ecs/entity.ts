@@ -72,16 +72,16 @@ export function entityToString(entity: Entity): string {
  */
 export function entityToBits(entity: Entity): number {
   // Pack index and generation into a single number
-  // Using 32 bits for index and 32 bits for generation
-  return (entity.generation << 32) | entity.index;
+  // Using 16 bits for index and 16 bits for generation to avoid overflow
+  return (entity.generation << 16) | entity.index;
 }
 
 /**
  * Reconstructs entity from bits.
  */
 export function entityFromBits(bits: number): Entity {
-  const index = bits & 0xFFFFFFFF;
-  const generation = (bits >>> 32) & 0xFFFFFFFF;
+  const index = bits & 0xFFFF;
+  const generation = (bits >>> 16) & 0xFFFF;
   return { index, generation };
 }
 

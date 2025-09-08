@@ -1,0 +1,68 @@
+\contentsline {section}{\numberline {1}Introduction: The Modular Manifesto}{4}{section.1}%
+\contentsline {section}{\numberline {2}Current Codebase Analysis}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The Monolithic Architecture}{4}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}The app.tsx God Object}{4}{subsubsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.2}Heavy Coupling Patterns}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Oversized Composables}{5}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Modular Refactor Strategy}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Phase 1: Context Decomposition}{5}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Breaking Down the app.tsx Monolith}{5}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Proposed Modular Units}{5}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Phase 2: Composable Decomposition}{6}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Breaking Down Large Composables}{6}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Drag and Drop Decomposition}{6}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}Phase 3: Component Purification}{6}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Making Components Modular}{6}{subsubsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.4}Phase 4: Cross-Project Integration Enablement}{6}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Creating Reusable Modules}{6}{subsubsection.3.4.1}%
+\contentsline {section}{\numberline {4}Implementation Roadmap}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Phase 1: Extract Core Modules (Week 1-2)}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Phase 2: Decompose Large Composables (Week 3-4)}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Phase 3: Component Purification (Week 5-6)}{7}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Phase 4: Community Enablement (Week 7-8)}{7}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Benefits of Modular Architecture}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Community Growth}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Maintenance Benefits}{7}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Developer Experience}{8}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Risks and Mitigation}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Coordination Complexity}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Performance Overhead}{8}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Over-Atomization}{8}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Additional Anti-Modular Patterns Discovered}{8}{section.7}%
+\contentsline {subsection}{\numberline {7.1}The Python Backend Leviathan}{8}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Frontend Mega-Components}{9}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}The PerformanceDashboard Mega-Component}{9}{subsubsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.3}Composable Complexity Explosions}{10}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Extended Modular Refactor Strategy}{10}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Phase 1: Backend Decomposition (Immediate Priority)}{10}{subsection.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Breaking the Python Leviathan}{10}{subsubsection.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}Proposed Backend Module Structure}{10}{subsubsection.8.1.2}%
+\contentsline {subsection}{\numberline {8.2}Phase 2: Component Purification}{11}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Decomposing PerformanceDashboard}{11}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}Gallery Component Modular Transformation}{11}{subsubsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.3}Phase 3: Algorithm Decomposition}{11}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}Breaking Down Complex Algorithms}{11}{subsubsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.4}Phase 4: Dependency Injection Elimination}{11}{subsection.8.4}%
+\contentsline {subsubsection}{\numberline {8.4.1}Removing Deep Import Chains}{11}{subsubsection.8.4.1}%
+\contentsline {section}{\numberline {9}Implementation Roadmap Extension}{11}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Phase 1: Backend Modular Surgery (Week 1-3)}{11}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Phase 2: Frontend Component Decomposition (Week 4-6)}{11}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Phase 3: Algorithm Extraction (Week 7-8)}{12}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Phase 4: Cross-Project Integration Testing (Week 9-10)}{12}{subsection.9.4}%
+\contentsline {section}{\numberline {10}Advanced Modular Metrics}{12}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Complexity Reduction Targets}{12}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Modular Health Score}{12}{subsection.10.2}%
+\contentsline {section}{\numberline {11}Community Growth Strategy}{13}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Modular Module Marketplace}{13}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Adoption Metrics}{13}{subsection.11.2}%
+\contentsline {section}{\numberline {12}Progress Update}{13}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Frontend: Image Viewer and Modal Encapsulation}{13}{subsection.12.1}%
+\contentsline {paragraph}{Restrict modal's generic img rule}{14}{subsection.12.1}%
+\contentsline {paragraph}{Enforce layered image sizing in the viewer}{14}{subsection.12.1}%
+\contentsline {paragraph}{Stabilize rendering order in the viewer}{14}{subsection.12.1}%
+\contentsline {paragraph}{Explicit modal viewport sizing}{14}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Gallery Pipeline: Thumbnail Batching Integration}{14}{subsection.12.2}%
+\contentsline {section}{\numberline {13}Risk Mitigation Extensions}{14}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Performance Regression Prevention}{14}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Coordination Complexity Management}{15}{subsection.13.2}%
+\contentsline {section}{\numberline {14}Conclusion Extension}{15}{section.14}%

@@ -1,6 +1,6 @@
 /**
  * Reynard Starter App
- * Demonstrates the core features of the Reynard framework
+ * Modern showcase of the Reynard framework's capabilities
  */
 
 import { Component } from "solid-js";
@@ -11,8 +11,11 @@ import {
 import { ReynardProvider } from "reynard-themes";
 import "reynard-themes/themes.css";
 import { AppHeader } from "./components/AppHeader";
-import { FeatureGrid } from "./components/FeatureGrid";
-import { GettingStarted } from "./components/GettingStarted";
+import { HeroSection } from "./components/HeroSection";
+import { InteractiveDashboard } from "./components/InteractiveDashboard";
+import { IconGallery } from "./components/IconGallery";
+import { ThemeShowcase } from "./components/ThemeShowcase";
+import { ComponentPlayground } from "./components/ComponentPlayground";
 import { AppFooter } from "./components/AppFooter";
 import { NotificationToast } from "./components/NotificationToast";
 import "./styles/app.css";
@@ -22,11 +25,21 @@ const AppContent: Component = () => {
     <div class="app">
       <AppHeader />
       <main class="app-main">
-        <section class="demo-section">
-          <h2>Framework Features</h2>
-          <FeatureGrid />
+        <section id="hero">
+          <HeroSection />
         </section>
-        <GettingStarted />
+        <section id="dashboard">
+          <InteractiveDashboard />
+        </section>
+        <section id="icons">
+          <IconGallery />
+        </section>
+        <section id="themes">
+          <ThemeShowcase />
+        </section>
+        <section id="playground">
+          <ComponentPlayground />
+        </section>
       </main>
       <AppFooter />
     </div>
@@ -35,7 +48,6 @@ const AppContent: Component = () => {
 
 const App: Component = () => {
   const notificationsModule = createNotifications();
-  console.log("App - Creating ReynardProvider");
 
   return (
     <ReynardProvider>
