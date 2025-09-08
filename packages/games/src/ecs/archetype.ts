@@ -1,7 +1,6 @@
 // Archetype system implementation - groups entities with same component layout
 
 import { Entity, Component, ComponentType } from './types';
-import { EntityLocation } from './entity';
 
 /**
  * An opaque location within an archetype.

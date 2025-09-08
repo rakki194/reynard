@@ -26,6 +26,7 @@
 import { Entity, Component } from './core';
 import { ComponentType } from './storage';
 
+
 /**
  * Query filter types for component access patterns.
  * 

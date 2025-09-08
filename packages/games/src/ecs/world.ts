@@ -15,6 +15,7 @@ import {
   World as IWorld
 } from './types';
 
+
 import { EntityManager } from './entity';
 import { ComponentRegistry, ComponentStorage } from './component';
 import { ResourceRegistry, ResourceStorage } from './resource';

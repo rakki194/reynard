@@ -4,19 +4,29 @@ import { Entity, Component, ComponentType, QueryFilter, QueryResult } from './ty
 import { ComponentStorage } from './component';
 
 /**
+ * Helper type to extract component types from ComponentType array.
+ * This maps ComponentType<T>[] to T[] for proper type inference.
+ */
+export type ExtractComponentTypes<T extends ComponentType<Component>[]> = {
+  [K in keyof T]: T[K] extends ComponentType<infer U> ? U : never;
+};
+
+/**
  * Query result implementation.
  */
 export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
   constructor(
     public readonly entities: Entity[],
     public readonly components: T,
-    public readonly length: number
+    public readonly length: number,
+    private readonly componentTypes: ComponentType<Component>[] = [],
+    private readonly entityComponents: Map<number, Component[]> = new Map()
   ) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
     for (let i = 0; i < this.length; i++) {
       const entity = this.entities[i];
-      const componentValues = this.getComponentValues() as T;
+      const componentValues = this.getComponentValuesForEntity(i) as T;
       callback(entity, ...componentValues);
     }
   }
@@ -25,7 +35,7 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     const results: U[] = [];
     for (let i = 0; i < this.length; i++) {
       const entity = this.entities[i];
-      const componentValues = this.getComponentValues() as T;
+      const componentValues = this.getComponentValuesForEntity(i) as T;
       results.push(callback(entity, ...componentValues));
     }
     return results;
@@ -33,19 +43,40 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
 
   filter(predicate: (entity: Entity, ...components: T) => boolean): QueryResult<T> {
     const filteredEntities: Entity[] = [];
-    const filteredComponents: Component[] = [];
+    const filteredEntityComponents = new Map<number, Component[]>();
     
     for (let i = 0; i < this.length; i++) {
       const entity = this.entities[i];
-      const componentValues = this.getComponentValues() as T;
+      const componentValues = this.getComponentValuesForEntity(i) as T;
       
       if (predicate(entity, ...componentValues)) {
         filteredEntities.push(entity);
-        filteredComponents.push(...componentValues);
+        filteredEntityComponents.set(entity.index, componentValues);
       }
     }
     
-    return new QueryResultImpl(filteredEntities, filteredComponents as T, filteredEntities.length);
+    // Create a flat array of all components for backward compatibility
+    const allComponents: Component[] = [];
+    for (const components of filteredEntityComponents.values()) {
+      allComponents.push(...components);
+    }
+    
+    return new QueryResultImpl(
+      filteredEntities, 
+      allComponents as T, 
+      filteredEntities.length,
+      this.componentTypes,
+      filteredEntityComponents
+    );
+  }
+
+  private getComponentValuesForEntity(entityIndex: number): Component[] {
+    const entity = this.entities[entityIndex];
+    const components = this.entityComponents.get(entity.index);
+    if (!components) {
+      throw new Error(`No components found for entity ${entity.index}`);
+    }
+    return components;
   }
 
   private getComponentValues(): Component[] {
@@ -90,17 +121,30 @@ export class QueryImpl<T extends Component[]> {
     changeDetection?: { isAdded(entity: Entity, type: ComponentType<Component>): boolean; isChanged(entity: Entity, type: ComponentType<Component>): boolean }
   ): QueryResult<T> {
     const matchingEntities: Entity[] = [];
-    const componentValues: Component[] = [];
+    const entityComponents = new Map<number, Component[]>();
     const allEntities = entityManager.getAllEntities();
     
     for (const entity of allEntities) {
       if (this.hasAllComponents(entity, componentStorage) && this.passesFilters(entity, componentStorage, changeDetection)) {
         matchingEntities.push(entity);
-        componentValues.push(...this.getEntityComponents(entity, componentStorage));
+        const components = this.getEntityComponents(entity, componentStorage);
+        entityComponents.set(entity.index, components);
       }
     }
 
-    return new QueryResultImpl(matchingEntities, componentValues as T, matchingEntities.length);
+    // Create a flat array of all components for backward compatibility
+    const allComponents: Component[] = [];
+    for (const components of entityComponents.values()) {
+      allComponents.push(...components);
+    }
+
+    return new QueryResultImpl(
+      matchingEntities, 
+      allComponents as T, 
+      matchingEntities.length,
+      this.componentTypes,
+      entityComponents
+    );
   }
 
   private hasAllComponents(entity: Entity, storage: ComponentStorage): boolean {
@@ -163,3 +207,4 @@ export interface Query<T extends Component[]> {
 export function query<T extends Component[] = []>(): QueryBuilder<T> {
   return new QueryBuilder<T>();
 }
+

@@ -9,7 +9,7 @@ Thank you for your interest in contributing to Reynard! This guide will help you
 - Node.js 18+ and npm
 - Git
 - Basic knowledge of TypeScript and SolidJS
-- Understanding of the 100-line axiom (see [Modularity Standards](#modularity-standards))
+- Understanding of the 140-line axiom (see [Modularity Standards](#-modularity-standards))
 
 ### Development Setup
 
@@ -81,16 +81,18 @@ git push origin feature/your-feature-name
 
 ## 🦊 Modularity Standards
 
-Reynard follows the **100-line axiom** for maintainable code. This is enforced automatically through ESLint rules and pre-commit hooks.
+Reynard follows the **140-line axiom** for maintainable code. This is enforced automatically through ESLint rules and pre-commit hooks.
 
 ### File Size Limits
 
-| File Type | Max Lines | Max Function Lines | Purpose |
-|-----------|-----------|-------------------|---------|
-| Source Files | 100 | 50 | Core business logic |
-| Test Files | 200 | 100 | Comprehensive testing |
-| Configuration | 50 | 25 | Setup and configuration |
-| Documentation | 200 | N/A | Guides and references |
+| File Type | Max Lines | Max Function Lines | Purpose | ESLint Pattern |
+|-----------|-----------|-------------------|---------|----------------|
+| **TypeScript (.ts)** | 140 | 50 | Core business logic | `**/*.{ts,tsx}` |
+| **SolidJS (.tsx)** | 140 | 50 | React components | `**/*.{tsx,jsx}` |
+| **Test Files** | 200 | 100 | Comprehensive testing | `**/*.test.{ts,tsx}`, `**/__tests__/**/*.{ts,tsx}`, `**/test/**/*.{ts,tsx}` |
+| **JavaScript (.js)** | None | None | Legacy/config files | Base config only |
+| **Config Files** | None | None | Setup and configuration | `**/*.config.js`, `**/*.config.mjs` |
+| **Documentation** | 200 | N/A | Guides and references | Not enforced by ESLint |
 
 ### Refactoring Patterns
 
@@ -146,12 +148,59 @@ export function useChat() {
 }
 ```
 
+### ESLint Configuration Details
+
+The max-lines rules are configured differently for each file type:
+
+**TypeScript/SolidJS Files**:
+
+```javascript
+"max-lines": ["error", { 
+  max: 140, 
+  skipBlankLines: true, 
+  skipComments: true 
+}],
+"max-lines-per-function": ["error", { 
+  max: 50, 
+  skipBlankLines: true, 
+  skipComments: true 
+}]
+```
+
+**Test Files**:
+
+```javascript
+"max-lines": ["error", { 
+  max: 200, 
+  skipBlankLines: true, 
+  skipComments: true 
+}],
+"max-lines-per-function": ["error", { 
+  max: 100, 
+  skipBlankLines: true, 
+  skipComments: true 
+}]
+```
+
+**JavaScript Files**: No max-lines enforcement (legacy support)
+
+**Config Files**: No max-lines enforcement (Node.js environment)
+
 ### Enforcement
 
 - **ESLint Rules**: Automatic linting with `max-lines` and `max-lines-per-function`
-- **Pre-commit Hooks**: Line count validation before commits
+- **Pre-commit Hooks**: Line count validation before commits (100 lines for source, 200 for tests)
 - **CI/CD**: Build failures on violations
 - **Code Reviews**: Manual verification during reviews
+
+### Line Counting Logic
+
+ESLint counts lines using this logic:
+
+- ✅ **Counts**: Actual code lines
+- ❌ **Excludes**: Blank lines (`^\s*$`)
+- ❌ **Excludes**: Single-line comments (`^\s*//`)
+- ❌ **Excludes**: Multi-line comments (`^\s*/\*`, `^\s*\*`)
 
 For detailed refactoring guidelines, see [Modularity Patterns](../docs/architecture/modularity-patterns.md).
 
@@ -163,6 +212,7 @@ For detailed refactoring guidelines, see [Modularity Patterns](../docs/architect
 - Prefer interfaces over types for object shapes
 - Use meaningful variable and function names
 - Add JSDoc comments for public APIs
+- Use underscore prefix for unused variables (`_unusedVar`)
 
 ### SolidJS
 
@@ -170,6 +220,33 @@ For detailed refactoring guidelines, see [Modularity Patterns](../docs/architect
 - Use proper component patterns
 - Implement proper cleanup in effects
 - Follow accessibility guidelines
+- Use array destructuring for signals: `const [count, setCount] = createSignal(0)`
+- Avoid destructuring reactive objects (triggers `solid/no-destructure` warning)
+- Wrap event handlers in functions for reactivity
+
+### ESLint Rules
+
+**TypeScript Rules**:
+
+- `@typescript-eslint/no-unused-vars`: Error (with underscore prefix pattern)
+- `@typescript-eslint/no-explicit-any`: Warning
+- `@typescript-eslint/no-require-imports`: Off (allows require() in some cases)
+
+**SolidJS Rules**:
+
+- `solid/reactivity`: Warning (reactive variable usage)
+- `solid/no-destructure`: Warning (destructuring reactive objects)
+- `solid/jsx-no-undef`: Error (undefined JSX elements)
+- `solid/no-innerhtml`: Warning (innerHTML usage)
+- `solid/self-closing-comp`: Warning (self-closing components)
+
+**Accessibility Rules**:
+
+- `jsx-a11y/aria-role`: Error (valid ARIA roles)
+- `jsx-a11y/aria-props`: Error (valid ARIA properties)
+- `jsx-a11y/aria-proptypes`: Error (valid ARIA prop types)
+- `jsx-a11y/role-has-required-aria-props`: Error (required ARIA props)
+- `jsx-a11y/role-supports-aria-props`: Error (ARIA prop compatibility)
 
 ### Formatting
 
@@ -185,7 +262,25 @@ For detailed refactoring guidelines, see [Modularity Patterns](../docs/architect
 - Write tests for all new functionality
 - Use descriptive test names
 - Follow the AAA pattern (Arrange, Act, Assert)
-- Keep test files under 200 lines
+- Keep test files under 200 lines (ESLint enforced)
+- Keep test functions under 100 lines (ESLint enforced)
+
+### Test File Patterns
+
+ESLint recognizes these test file patterns:
+
+- `**/*.test.{ts,tsx}` - Standard test files
+- `**/__tests__/**/*.{ts,tsx}` - Jest-style test directories
+- `**/test/**/*.{ts,tsx}` - Custom test directories
+
+### Test-Specific ESLint Rules
+
+Test files have relaxed rules:
+
+- `@typescript-eslint/no-unused-vars`: Off (allows unused variables)
+- `@typescript-eslint/no-explicit-any`: Off (allows `any` type)
+- `max-lines`: 200 (vs 140 for source files)
+- `max-lines-per-function`: 100 (vs 50 for source files)
 
 ### Test Types
 
@@ -229,9 +324,9 @@ describe('MyComponent', () => {
 
 ### Before Submitting
 
-- [ ] Code follows modularity standards (100-line axiom)
+- [ ] Code follows modularity standards (140-line axiom)
 - [ ] All tests pass
-- [ ] Linting passes
+- [ ] Linting passes (ESLint with max-lines rules)
 - [ ] Type checking passes
 - [ ] Documentation is updated
 - [ ] No breaking changes (or properly documented)
@@ -254,10 +349,19 @@ Brief description of changes
 - [ ] Manual testing completed
 
 ## Modularity Compliance
-- [ ] All files under 100 lines (source) / 200 lines (tests)
-- [ ] Functions under 50 lines
+- [ ] All TypeScript/SolidJS files under 140 lines
+- [ ] All test files under 200 lines
+- [ ] All functions under 50 lines (100 for tests)
 - [ ] Proper separation of concerns
 - [ ] No circular dependencies
+- [ ] ESLint max-lines rules pass
+
+## ESLint Compliance
+- [ ] TypeScript rules pass
+- [ ] SolidJS rules pass
+- [ ] Accessibility rules pass
+- [ ] No unused variables (or prefixed with `_`)
+- [ ] No explicit `any` types (or justified)
 
 ## Checklist
 - [ ] Code follows style guidelines
@@ -343,6 +447,78 @@ Contributors are recognized in:
 - Release notes
 - Documentation acknowledgments
 - Community highlights
+
+## 🔧 ESLint Configuration
+
+### Understanding ESLint Rules
+
+Reynard uses a sophisticated ESLint configuration that applies different rules based on file patterns:
+
+**File Pattern Matching**:
+
+- `**/*.{ts,tsx}` - TypeScript and SolidJS files
+- `**/*.{tsx,jsx}` - SolidJS component files (additional rules)
+- `**/*.test.{ts,tsx}` - Test files (relaxed rules)
+- `**/__tests__/**/*.{ts,tsx}` - Jest-style test directories
+- `**/test/**/*.{ts,tsx}` - Custom test directories
+- `**/*.config.js`, `**/*.config.mjs` - Configuration files (Node.js environment)
+
+### Common ESLint Issues
+
+**Max-Lines Violations**:
+
+```bash
+# Check line count manually
+grep -v '^\s*$' your-file.ts | grep -v '^\s*//' | grep -v '^\s*/\*' | grep -v '^\s*\*' | wc -l
+```
+
+**SolidJS Reactivity Warnings**:
+
+```typescript
+// ❌ Bad: Destructuring reactive object
+const { value } = props;
+
+// ✅ Good: Access directly
+props.value
+```
+
+**Unused Variable Errors**:
+
+```typescript
+// ❌ Bad: Unused variable
+const unusedVar = 'test';
+
+// ✅ Good: Prefix with underscore
+const _unusedVar = 'test';
+```
+
+### ESLint Commands
+
+```bash
+# Check specific file
+npx eslint your-file.ts
+
+# Check with specific format
+npx eslint your-file.ts --format=compact
+
+# Check configuration for file
+npx eslint --print-config your-file.ts
+
+# Fix auto-fixable issues
+npx eslint your-file.ts --fix
+```
+
+### Ignore Patterns
+
+ESLint automatically ignores:
+
+- `**/node_modules/**` - Dependencies
+- `**/dist/**`, `**/build/**` - Build outputs
+- `**/coverage/**` - Test coverage
+- `**/*.min.js` - Minified files
+- `**/vite.config.ts`, `**/vitest.config.ts` - Config files
+- `**/debug-scan.js` - Debug scripts
+- `**/pkg/**/*.js` - Generated WebAssembly files
 
 ## 📞 Getting Help
 
