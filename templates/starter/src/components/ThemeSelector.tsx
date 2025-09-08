@@ -3,22 +3,16 @@
  * Demonstrates theme switching functionality
  */
 
-import { Component, For, createEffect, createSignal } from "solid-js";
+import { Component, For, createEffect } from "solid-js";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export const ThemeSelector: Component = () => {
-  const { theme, setTheme } = useTheme();
+  const themeContext = useTheme();
   const availableThemes = getAvailableThemes();
 
-  // Create a local signal that syncs with the theme
-  const [localTheme, setLocalTheme] = createSignal(theme);
-
-  // Sync local theme with global theme
+  // Debug logging to track theme changes
   createEffect(() => {
-    setLocalTheme(theme);
-    // Debug logging inside effect to avoid linter warnings
-    console.log("ThemeSelector - Current theme:", theme);
-    console.log("ThemeSelector - Local theme:", localTheme());
+    console.log("ThemeSelector - Current theme:", themeContext.theme);
     console.log("ThemeSelector - Available themes:", availableThemes);
     console.log("ThemeSelector - localStorage theme:", localStorage.getItem("reynard-theme"));
   });
@@ -29,10 +23,10 @@ export const ThemeSelector: Component = () => {
         Theme:
         <select
           class="theme-select"
-          value={localTheme()}
+          value={themeContext.theme}
           onChange={(e) => {
             console.log("Theme changed to:", e.target.value);
-            setTheme(e.target.value as ThemeName);
+            themeContext.setTheme(e.target.value as ThemeName);
           }}
         >
           <For each={availableThemes}>

@@ -60,12 +60,12 @@ export const IconGallery: Component = () => {
     ];
 
     iconNames.forEach(name => {
-      const svg = fluentIconsPackage.getIcon(name);
+      const svgElement = fluentIconsPackage.getIcon(name);
       const metadata = fluentIconsPackage.getIconMetadata?.(name);
-      if (svg) {
+      if (svgElement) {
         icons.push({
           name,
-          svg,
+          svg: svgElement.outerHTML, // Convert SVGElement to HTML string
           category: metadata?.category || "interface",
           metadata
         });
@@ -101,9 +101,9 @@ export const IconGallery: Component = () => {
 
   const handleCopyIcon = (iconName: string, event: MouseEvent) => {
     event.stopPropagation();
-    const iconSvg = fluentIconsPackage.getIcon(iconName);
-    if (iconSvg) {
-      navigator.clipboard.writeText(iconSvg);
+    const iconSvgElement = fluentIconsPackage.getIcon(iconName);
+    if (iconSvgElement) {
+      navigator.clipboard.writeText(iconSvgElement.outerHTML);
       notify(`Icon "${iconName}" copied to clipboard!`, "success");
     }
   };

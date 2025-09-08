@@ -9,16 +9,17 @@ import {
   createNotifications,
 } from "reynard-core";
 import { ReynardProvider } from "reynard-themes";
-import "reynard-themes/themes.css";
 import { AppHeader } from "./components/AppHeader";
 import { HeroSection } from "./components/HeroSection";
 import { InteractiveDashboard } from "./components/InteractiveDashboard";
 import { IconGallery } from "./components/IconGallery";
-import { ThemeShowcase } from "./components/ThemeShowcase";
+import { ThemeShowcase } from "./components/theme-showcase/ThemeShowcase";
+import { OKLCHColorDemo } from "./components/OKLCHColorDemo";
 import { ComponentPlayground } from "./components/ComponentPlayground";
 import { AppFooter } from "./components/AppFooter";
 import { NotificationToast } from "./components/NotificationToast";
 import "./styles/app.css";
+import "./styles/oklch-demo.css";
 
 const AppContent: Component = () => {
   return (
@@ -36,6 +37,9 @@ const AppContent: Component = () => {
         </section>
         <section id="themes">
           <ThemeShowcase />
+        </section>
+        <section id="oklch-demo">
+          <OKLCHColorDemo />
         </section>
         <section id="playground">
           <ComponentPlayground />

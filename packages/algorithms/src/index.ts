@@ -2,8 +2,15 @@
  * reynard-algorithms
  * 
  * Algorithm primitives and data structures for Reynard applications.
- * A comprehensive collection of reusable algorithmic building blocks.
+ * A comprehensive collection of reusable algorithmic building blocks with
+ * automatic optimization and performance monitoring.
  */
+
+// Optimized algorithms with automatic selection and memory pooling
+export * from './optimized';
+
+// PAW optimization framework
+export * from './optimization';
 
 // Union-Find algorithm for efficient set operations and cycle detection
 export * from './union-find';

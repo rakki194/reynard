@@ -185,7 +185,7 @@ export function createTagColorGenerator() {
             // Strawberry theme: Red/pink with green accents
             const strawberryHues = [350, 335, 15, 120, 150]; // Red, pink, coral, green hues
             const selectedStrawberryHue =
-              strawberryHues[hash % strawberryHues.length];
+              strawberryHues[((hash % strawberryHues.length) + strawberryHues.length) % strawberryHues.length];
             const isGreen = selectedStrawberryHue >= 120;
 
             return isGreen

@@ -16,13 +16,15 @@ separation between backend Python services and frontend TypeScript/SolidJS
 integration.
 """
 
-from .caption_service import get_caption_service, CaptionService
+from .caption_service import get_caption_service, CaptionService, CaptionTask, CaptionResult
 from .plugin_loader import discover_plugins, CaptionerPlugin
 from .base import CaptionGenerator
 
 __all__ = [
     'get_caption_service',
-    'CaptionService', 
+    'CaptionService',
+    'CaptionTask',
+    'CaptionResult', 
     'discover_plugins',
     'CaptionerPlugin',
     'CaptionGenerator'

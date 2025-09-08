@@ -38,11 +38,25 @@ export {
   computeAnimation,
   generateThemeCSS,
   applyTheme,
+} from "./themeUtils";
+
+// Export system theme utilities
+export {
   getThemeIcon,
   supportsReducedMotion,
   getSystemThemePreference,
   onSystemThemeChange,
-} from "./themeUtils";
+} from "./systemThemeUtils";
+
+// Re-export OKLCH utilities from color-media for advanced color manipulation
+export {
+  createTagColorGenerator,
+  formatOKLCH,
+  generateColorPalette,
+  adjustLightness,
+  adjustSaturation,
+  type OKLCHColor,
+} from "reynard-color-media";
 
 // Re-export i18n system from reynard-i18n
 export {
@@ -62,5 +76,37 @@ export {
   useI18n,
 } from "./ThemeProvider";
 
+// Export OKLCH color system
+export {
+  getOKLCHColor,
+  getOKLCHCSSColor,
+  generateColorVariant,
+  generateThemeColorPalette,
+  generateTagColor,
+  generateComplementaryColors,
+  generateOKLCHGradient,
+} from "./oklchColors";
+
+// Export OKLCH palettes
+export { themeOKLCHPalettes } from "./oklchPalettes";
+
+// Export OKLCH hooks
+export {
+  useOKLCHColors,
+  useTagColors,
+  useColorPalette,
+  useThemeColors,
+} from "./useOKLCHColors";
+
+// Export color conversion utilities
+export {
+  oklchStringToRgb,
+  oklchStringToHex,
+  oklchToRgb,
+  type OKLCH,
+  type RGB,
+} from "./colorConversion";
+
 // Export CSS
 import "./themes.css";
+import "./oklch-themes.css";

@@ -374,9 +374,9 @@
 
   /* Text Colors */
   --color-text: hsl(0deg 0% 10%);
-  --color-text-secondary: #6c757d;
-  --color-text-tertiary: #adb5bd;
-  --color-text-disabled: #6c757d;
+  --color-text-secondary: #b85a7a;
+  --color-text-tertiary: #d4a5b8;
+  --color-text-disabled: #d4a5b8;
   --color-text-inverse: #ffffff;
 
   /* Border Colors */

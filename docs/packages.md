@@ -1039,9 +1039,9 @@ npm install reynard-3d reynard-games reynard-monaco reynard-boundingbox
 
 ## Next Steps
 
-- **[Examples and Templates](./EXAMPLES.md)** - See real-world applications using these packages
-- **[API Reference](./API.md)** - Detailed API documentation for all packages
-- **[Performance Guide](./PERFORMANCE.md)** - Optimization tips and bundle size information
+- **[Examples and Templates](./examples.md)** - See real-world applications using these packages
+- **[API Reference](./api.md)** - Detailed API documentation for all packages
+- **[Performance Guide](./performance.md)** - Optimization tips and bundle size information
 
 ---
 

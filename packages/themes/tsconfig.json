@@ -20,6 +20,7 @@
     "jsxImportSource": "solid-js",
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     }
@@ -32,5 +33,9 @@
     "**/*.spec.tsx",
     "**/test-setup.ts",
     "dist"
+  ],
+  "references": [
+    { "path": "../color-media" },
+    { "path": "../i18n" }
   ]
 }

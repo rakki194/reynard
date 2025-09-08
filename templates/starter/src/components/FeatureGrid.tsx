@@ -11,12 +11,12 @@ import { NotificationDemo } from "./NotificationDemo";
 import { Counter } from "./Counter";
 
 export const FeatureGrid: Component = () => {
-  const { theme } = useTheme();
+  const themeContext = useTheme();
   const { notify } = useNotifications();
   const [count, setCount] = createSignal(0);
 
   const handleWelcome = () => {
-    notify(`Welcome to Reynard! Current theme: ${theme}`, "success");
+    notify(`Welcome to Reynard! Current theme: ${themeContext.theme}`, "success");
   };
 
   return (
@@ -27,7 +27,7 @@ export const FeatureGrid: Component = () => {
         description="8 built-in themes with reactive state management"
       >
         <p>
-          Current theme: <strong>{theme}</strong>
+          Current theme: <strong>{themeContext.theme}</strong>
         </p>
       </FeatureCard>
 

@@ -132,11 +132,11 @@
 }
 
 .status-value.online {
-  color: #28a745;
+  color: var(--color-success);
 }
 
 .status-value.offline {
-  color: #dc3545;
+  color: var(--color-error);
 }
 
 /* Color Picker */
@@ -696,7 +696,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  color: #28a745;
+  color: var(--color-success);
 }
 
 .feature-icon svg {

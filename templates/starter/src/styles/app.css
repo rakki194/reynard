@@ -402,9 +402,9 @@
     background: var(--text-secondary);
   }
 
-  .dot:nth-child(1) { background: #ff5f57; }
-  .dot:nth-child(2) { background: #ffbd2e; }
-  .dot:nth-child(3) { background: #28ca42; }
+  .dot:nth-child(1) { background: var(--color-error); }
+  .dot:nth-child(2) { background: var(--color-warning); }
+  .dot:nth-child(3) { background: var(--color-success); }
 
   .demo-title {
     font-weight: 600;
@@ -447,9 +447,9 @@
 
   .theme-preview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: var(--spacing);
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
   }
 
@@ -477,13 +477,13 @@
   .theme-preview-colors {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
+    gap: 3px;
     margin-bottom: var(--half-spacing);
   }
 
   .color-swatch {
-    height: 20px;
-    border-radius: 2px;
+    height: 24px;
+    border-radius: 3px;
   }
 
   .theme-preview-name {

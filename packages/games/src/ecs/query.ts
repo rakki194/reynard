@@ -70,6 +70,16 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     );
   }
 
+  first(): { entity: Entity; components: T } | undefined {
+    if (this.length === 0) {
+      return undefined;
+    }
+    
+    const entity = this.entities[0];
+    const components = this.getComponentValuesForEntity(0) as T;
+    return { entity, components };
+  }
+
   private getComponentValuesForEntity(entityIndex: number): Component[] {
     const entity = this.entities[entityIndex];
     const components = this.entityComponents.get(entity.index);

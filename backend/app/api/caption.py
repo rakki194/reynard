@@ -64,6 +64,8 @@ class CaptionResponse(BaseModel):
 class GeneratorInfo(BaseModel):
     """Information about a caption generator."""
     
+    model_config = {"protected_namespaces": ()}
+    
     name: str
     description: str
     version: str

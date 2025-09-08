@@ -24,7 +24,10 @@
     { "path": "./packages/components" },
     { "path": "./packages/auth" },
     { "path": "./packages/settings" },
-    { "path": "./packages/gallery" }
+    { "path": "./packages/gallery" },
+    { "path": "./packages/themes" },
+    { "path": "./packages/color-media" },
+    { "path": "./packages/i18n" }
   ],
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]

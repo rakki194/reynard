@@ -1,56 +1,57 @@
 /**
  * Theme utilities for the Reynard theming system
  * Based on yipyap's theme utility functions
+ * Now using OKLCH color space from reynard-color-media for better perceptual uniformity
  */
 
 import type { ThemeName } from "./types";
 import { themes } from "./themes";
+import { 
+  createTagColorGenerator, 
+  formatOKLCH, 
+  type OKLCHColor 
+} from "reynard-color-media";
 
-// LCH color space utilities for consistent color generation
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash = hash & hash;
-  }
-  return hash;
-}
-
-function getLCHColor(tag: string): { l: number; c: number; h: number } {
-  const hash = hashString(tag);
-  return {
-    l: 65 + (hash % 20), // Lightness: 65-85
-    c: 40 + (hash % 40), // Chroma: 40-80
-    h: hash % 360, // Hue: 0-360
-  };
-}
+// Create a cached tag color generator for performance
+const tagColorGenerator = createTagColorGenerator();
 
 /**
  * Compute tag background color based on theme and tag name
+ * Uses OKLCH color space for better perceptual uniformity
  */
 export function computeTagBackground(theme: ThemeName, tag: string): string {
-  const { l, c, h } = getLCHColor(tag);
+  // Get the base OKLCH color from the cached generator
+  const baseColor = tagColorGenerator.getTagColor(theme, tag);
 
-  // Adjust lightness based on theme
-  const lightness =
-    theme === "dark" || theme === "high-contrast-black" ? l * 0.7 : l;
+  // Adjust lightness based on theme for better contrast
+  const adjustedColor: OKLCHColor = {
+    ...baseColor,
+    l: theme === "dark" || theme === "high-contrast-black" 
+      ? baseColor.l * 0.7  // Darker for dark themes
+      : baseColor.l * 1.1  // Slightly lighter for light themes
+  };
 
-  return `lch(${lightness}% ${c} ${h})`;
+  return formatOKLCH(adjustedColor);
 }
 
 /**
  * Compute tag text color based on theme and tag name
+ * Uses OKLCH color space for better perceptual uniformity
  */
 export function computeTagColor(theme: ThemeName, tag: string): string {
-  const { l } = getLCHColor(tag);
+  // Get the base OKLCH color from the cached generator
+  const baseColor = tagColorGenerator.getTagColor(theme, tag);
 
-  // For dark themes, use lighter text
-  if (theme === "dark" || theme === "high-contrast-black") {
-    return l < 60 ? "rgb(240, 240, 240)" : "rgb(20, 20, 20)";
-  }
+  // Generate high-contrast text color based on background lightness
+  const textColor: OKLCHColor = {
+    l: baseColor.l > 50 
+      ? 20  // Dark text for light backgrounds
+      : 90, // Light text for dark backgrounds
+    c: 0.02, // Very low chroma for text readability
+    h: baseColor.h // Keep the same hue for color harmony
+  };
 
-  // For light themes, ensure contrast
-  return l > 65 ? "rgb(20, 20, 20)" : "rgb(240, 240, 240)";
+  return formatOKLCH(textColor);
 }
 
 /**
@@ -200,46 +201,3 @@ export function applyTheme(themeName: ThemeName): void {
   }
 }
 
-/**
- * Get theme icon name for a given theme
- */
-export function getThemeIcon(themeName: ThemeName): string {
-  return computeAnimation(themeName);
-}
-
-/**
- * Check if theme supports reduced motion
- */
-export function supportsReducedMotion(): boolean {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-/**
- * Get system theme preference
- */
-export function getSystemThemePreference(): "light" | "dark" {
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    return "dark";
-  }
-  return "light";
-}
-
-/**
- * Listen for system theme changes
- */
-export function onSystemThemeChange(
-  callback: (theme: "light" | "dark") => void,
-): () => void {
-  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-  const handleChange = (e: MediaQueryListEvent) => {
-    callback(e.matches ? "dark" : "light");
-  };
-
-  mediaQuery.addEventListener("change", handleChange);
-
-  // Return cleanup function
-  return () => {
-    mediaQuery.removeEventListener("change", handleChange);
-  };
-}

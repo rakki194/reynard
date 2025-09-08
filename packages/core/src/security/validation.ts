@@ -60,39 +60,132 @@ export function validateURL(url: string): { isValid: boolean; sanitized?: string
 }
 
 /**
- * Validate file name for security
+ * 🐺 FIXED: Enhanced file name validation with comprehensive path traversal prevention
+ * *snarls with predatory glee* No more escaping my security!
  */
 export function validateFileName(filename: string): { isValid: boolean; sanitized?: string } {
   if (!filename || typeof filename !== 'string') {
     return { isValid: false };
   }
 
-  // Check for dangerous patterns
+  // Decode URL encoding to check for hidden traversal attempts
+  let decoded = filename;
+  try {
+    decoded = decodeURIComponent(filename);
+  } catch {
+    // If decoding fails, use original
+  }
+
+  // Check for dangerous patterns - comprehensive list
   const dangerousPatterns = [
-    /\.\./,           // Directory traversal
-    /[<>:"|?*]/,      // Invalid characters
-    /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i, // Windows reserved names
-    /^\./,            // Hidden files
-    /\.(exe|bat|cmd|com|scr|pif|msi)$/i, // Executable files
-    // Null bytes - using string method instead of regex
+    // Basic directory traversal
+    /\.\./,
+    /\.\.\//,
+    /\.\.\\/,
+    
+    // Encoded directory traversal
+    /%2e%2e/,
+    /%2E%2E/,
+    /%2e\./,
+    /\.%2e/,
+    
+    // Unicode encoded traversal
+    /%c0%ae%c0%ae/,
+    /%c1%9c/,
+    
+    // Double encoded
+    /%252e%252e/,
+    /%252E%252E/,
+    
+    // Windows path separators
+    /\\/,
+    /%5c/,
+    /%5C/,
+    
+    // Invalid characters
+    /[<>:"|?*]/,
+    
+    // Windows reserved names
+    /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i,
+    
+    // Hidden files
+    /^\./,
+    
+    // Executable files
+    /\.(exe|bat|cmd|com|scr|pif|msi|sh|ps1|vbs|js)$/i,
+    
+    // Script files
+    /\.(php|asp|aspx|jsp|py|rb|pl)$/i,
+    
+    // Configuration files
+    /\.(conf|config|ini|cfg|xml|json|yaml|yml)$/i,
+    
+    // System files
+    /\.(sys|dll|so|dylib)$/i,
+    
+    // Archive files that could contain malicious content
+    /\.(zip|rar|7z|tar|gz|bz2)$/i,
+    
+    // Long paths (potential buffer overflow)
+    /.{256,}/,
+    
+    // Multiple consecutive dots
+    /\.{3,}/,
+    
+    // Mixed separators
+    /[\/\\]/,
+    
+    // Absolute paths
+    /^[\/\\]/,
+    
+    // Drive letters (Windows)
+    /^[a-zA-Z]:/,
+    
+    // UNC paths
+    /^\\\\/,
+    
+    // Environment variables
+    /%[a-zA-Z_][a-zA-Z0-9_]*%/,
+    
+    // Home directory references
+    /~\/?/,
+    /%7e/,
+    /%7E/,
   ];
 
-  for (const pattern of dangerousPatterns) {
-    if (pattern.test(filename)) {
-      return { isValid: false };
+  // Check both original and decoded filename
+  const testStrings = [filename, decoded];
+  
+  for (const testString of testStrings) {
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(testString)) {
+        return { isValid: false };
+      }
     }
   }
 
   // Check for null bytes using string method
-  if (filename.includes('\0')) {
+  if (filename.includes('\0') || decoded.includes('\0')) {
     return { isValid: false };
   }
 
-  // Sanitize filename
+  // Check for control characters
+  if (/[\x00-\x1f\x7f-\x9f]/.test(filename) || /[\x00-\x1f\x7f-\x9f]/.test(decoded)) {
+    return { isValid: false };
+  }
+
+  // Sanitize filename - more restrictive
   const sanitized = filename
-    .replace(/[^a-zA-Z0-9._-]/g, '_')
-    .replace(/_{2,}/g, '_')
-    .replace(/^_|_$/g, '');
+    .replace(/[^a-zA-Z0-9._-]/g, '_')  // Only allow alphanumeric, dots, underscores, hyphens
+    .replace(/_{2,}/g, '_')            // Replace multiple underscores with single
+    .replace(/^_|_$/g, '')             // Remove leading/trailing underscores
+    .replace(/^\.|\.$/g, '')           // Remove leading/trailing dots
+    .substring(0, 100);                // Limit length
+
+  // Final validation of sanitized name
+  if (!sanitized || sanitized.length === 0) {
+    return { isValid: false };
+  }
 
   return { isValid: true, sanitized };
 }
@@ -122,31 +215,289 @@ export function validateJSON(input: string): { isValid: boolean; parsed?: unknow
 }
 
 /**
- * Validate SQL injection patterns
+ * 🐺 FIXED: Comprehensive SQL injection prevention
+ * *snarls with predatory glee* No more bypassing my security!
  */
 export function validateSQLInput(input: string): boolean {
   if (!input || typeof input !== 'string') {
     return true;
   }
 
+  // Normalize input for analysis
+  const normalized = input
+    .replace(/\s+/g, ' ')  // Normalize whitespace
+    .replace(/\/\*.*?\*\//g, '')  // Remove block comments
+    .replace(/--.*$/gm, '')  // Remove line comments
+    .replace(/#.*$/gm, '')  // Remove hash comments
+    .toLowerCase();
+
+  // Comprehensive SQL injection patterns
   const sqlPatterns = [
-    /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/i,
+    // Basic SQL keywords
+    /\b(select|insert|update|delete|drop|create|alter|exec|execute|union|script)\b/,
+    
+    // Comment patterns (already normalized but check anyway)
     /(--|#|\/\*|\*\/)/,
-    /(\b(OR|AND)\b.*=.*\b(OR|AND)\b)/i,
-    /(\b(OR|AND)\b.*\d+\s*=\s*\d+)/i,
-    /(UNION.*SELECT)/i,
-    /(SCRIPT.*>)/i,
-    /(<\s*SCRIPT)/i,
-    /(\b(OR|AND)\b\s+\d+\s*=\s*\d+)/i,
-    /(\b(OR|AND)\b\s+['"]\s*=\s*['"])/i,
-    /(\b(OR|AND)\b\s+['"]\d+['"]\s*=\s*['"]\d+['"])/i,
-    /(\b(OR|AND)\b\s+['"]\d+['"]\s*=\s*\d+)/i,
-    /(\b(OR|AND)\b\s+\d+\s*=\s*['"]\d+['"])/i,
-    /(\b(OR|AND)\b.*1.*=.*1)/i,
-    /(\b(OR|AND)\b.*'1'.*=.*'1')/i,
+    
+    // Logic operators
+    /\b(or|and)\b.*=.*\b(or|and)\b/,
+    /\b(or|and)\b.*\d+\s*=\s*\d+/,
+    /\b(or|and)\b\s+\d+\s*=\s*\d+/,
+    /\b(or|and)\b\s+['"]\s*=\s*['"]/,
+    /\b(or|and)\b\s+['"]\d+['"]\s*=\s*['"]\d+['"]/,
+    /\b(or|and)\b\s+['"]\d+['"]\s*=\s*\d+/,
+    /\b(or|and)\b\s+\d+\s*=\s*['"]\d+['"]/,
+    /\b(or|and)\b.*1.*=.*1/,
+    /\b(or|and)\b.*'1'.*=.*'1'/,
+    
+    // UNION attacks
+    /union.*select/,
+    /union.*all.*select/,
+    
+    // Script injection
+    /script.*>/,
+    /<\s*script/,
+    
+    // Function calls
+    /\b(char|ascii|substring|concat|version|database|user|schema)\s*\(/,
+    /\b(sleep|waitfor|benchmark|pg_sleep)\s*\(/,
+    /\b(load_file|into\s+outfile|into\s+dumpfile)\b/,
+    
+    // Information schema
+    /\binformation_schema\b/,
+    /\bsys\./,
+    /\bmysql\./,
+    
+    // Time-based attacks
+    /\bwaitfor\s+delay\b/,
+    /\bsleep\s*\(/,
+    /\bbenchmark\s*\(/,
+    
+    // Error-based attacks
+    /\bextractvalue\s*\(/,
+    /\bupdatexml\s*\(/,
+    /\bexp\s*\(/,
+    
+    // Boolean-based attacks
+    /\bif\s*\(/,
+    /\bcase\s+when/,
+    
+    // Stacked queries
+    /;\s*(select|insert|update|delete|drop|create|alter)/,
+    
+    // Hex encoding attempts
+    /0x[0-9a-f]+/,
+    
+    // String concatenation
+    /['"]\s*\+\s*['"]/,
+    /\bconcat\s*\(/,
+    
+    // Subqueries
+    /\(\s*select\s+/,
+    
+    // Privilege escalation
+    /\bgrant\b/,
+    /\brevoke\b/,
+    /\bprivileges\b/,
+    
+    // 🐺 ENHANCED: Advanced obfuscation patterns
+    // Function obfuscation
+    /\bchr\s*\(/i,
+    /\bascii\s*\(/i,
+    /\bord\s*\(/i,
+    /\bhex\s*\(/i,
+    /\bunhex\s*\(/i,
+    /\bbin\s*\(/i,
+    /\bunbin\s*\(/i,
+    
+    // Database-specific functions
+    /\buser\s*\(/i,
+    /\bdatabase\s*\(/i,
+    /\bversion\s*\(/i,
+    /\bconnection_id\s*\(/i,
+    /\blast_insert_id\s*\(/i,
+    
+    // Advanced injection patterns
+    /\bhaving\s+.*\s*=\s*\d+/i,
+    /\bgroup\s+by\s+.*\s*having/i,
+    /\border\s+by\s+.*\s*--/i,
+    /\blimit\s+.*\s*--/i,
+    
+    // Blind injection patterns
+    /\bexists\s*\(/i,
+    /\bnot\s+exists\s*\(/i,
+    /\bin\s*\(/i,
+    /\bnot\s+in\s*\(/i,
+    
+    // Time-based blind patterns
+    /\bif\s*\(.*,\s*sleep\s*\(/i,
+    /\bcase\s+when.*\s+then\s+sleep\s*\(/i,
+    
+    // Error-based blind patterns
+    /\bif\s*\(.*,\s*extractvalue\s*\(/i,
+    /\bif\s*\(.*,\s*updatexml\s*\(/i,
+    
+    // Stacked query patterns
+    /\b;\s*drop\s+table/i,
+    /\b;\s*truncate\s+table/i,
+    /\b;\s*alter\s+table/i,
+    /\b;\s*create\s+table/i,
+    
+    // Advanced comment patterns
+    /\*.*\*/i,
+    /--.*$/i,
+    /#.*$/i,
+    
+    // Whitespace obfuscation
+    /\s+select\s+/i,
+    /\s+union\s+/i,
+    /\s+from\s+/i,
+    /\s+where\s+/i,
+    
+    // Function obfuscation
+    /\bchar\s*\(\s*\d+\s*\)/i,
+    /\bascii\s*\(\s*['"]\w+['"]\s*\)/i,
+    
+    // String manipulation
+    /\bsubstr\s*\(/i,
+    /\bsubstring\s*\(/i,
+    /\bmid\s*\(/i,
+    /\bleft\s*\(/i,
+    /\bright\s*\(/i,
+    
+    // Mathematical functions
+    /\bfloor\s*\(/i,
+    /\bceil\s*\(/i,
+    /\bround\s*\(/i,
+    /\babs\s*\(/i,
+    /\bmod\s*\(/i,
+    
+    // Date/time functions
+    /\bnow\s*\(/i,
+    /\bcurrent_date\s*\(/i,
+    /\bcurrent_time\s*\(/i,
+    /\bcurrent_timestamp\s*\(/i,
+    
+    // System functions
+    /\b@@version/i,
+    /\b@@datadir/i,
+    /\b@@hostname/i,
+    /\b@@port/i,
+    /\b@@socket/i,
+    
+    // Advanced injection techniques
+    /\bprocedure\s+analyse\s*\(/i,
+    /\binto\s+outfile/i,
+    /\binto\s+dumpfile/i,
+    /\bload\s+file\s*\(/i,
+    
+    // Boolean-based blind injection
+    /\bif\s*\(\s*length\s*\(/i,
+    /\bif\s*\(\s*ascii\s*\(/i,
+    /\bif\s*\(\s*substr\s*\(/i,
+    
+    // Time-based blind injection
+    /\bif\s*\(\s*.*\s*,\s*sleep\s*\(\s*\d+\s*\)/i,
+    /\bcase\s+when\s+.*\s+then\s+sleep\s*\(\s*\d+\s*\)/i,
+    
+    // Error-based blind injection
+    /\bif\s*\(\s*.*\s*,\s*extractvalue\s*\(\s*1\s*,\s*concat\s*\(/i,
+    /\bif\s*\(\s*.*\s*,\s*updatexml\s*\(\s*1\s*,\s*concat\s*\(/i,
   ];
 
-  return !sqlPatterns.some(pattern => pattern.test(input));
+  // Check for any SQL injection patterns
+  const hasSQLInjection = sqlPatterns.some(pattern => pattern.test(normalized));
+  
+  // 🐺 ENHANCED: Advanced obfuscation detection
+  const hasObfuscation = [
+    // Comment obfuscation
+    /\/\*.*?\*\//,
+    /--.*$/,
+    /#.*$/,
+    
+    // String splitting and concatenation
+    /['"]\s*\+\s*['"]/,
+    /\bconcat\s*\(/i,
+    /\bconcat_ws\s*\(/i,
+    
+    // Function obfuscation
+    /\bchar\s*\(/i,
+    /\bchr\s*\(/i,
+    /\bascii\s*\(/i,
+    /\bord\s*\(/i,
+    
+    // Hex obfuscation
+    /0x[0-9a-f]+/i,
+    /0X[0-9A-F]+/i,
+    
+    // Unicode obfuscation
+    /\\u[0-9a-f]{4}/i,
+    /\\x[0-9a-f]{2}/i,
+    
+    // Whitespace obfuscation
+    /\s+select\s+/i,
+    /\s+union\s+/i,
+    /\s+from\s+/i,
+    /\s+where\s+/i,
+    /\s+and\s+/i,
+    /\s+or\s+/i,
+    
+    // Case obfuscation (mixed case in suspicious contexts)
+    /[a-z][A-Z][a-z]/,
+    /[A-Z][a-z][A-Z]/,
+    
+    // Tab and newline obfuscation
+    /\t/,
+    /\n/,
+    /\r/,
+    
+    // Multiple consecutive spaces
+    /\s{3,}/,
+    
+    // Null byte injection
+    /\0/,
+    
+    // Control characters
+    /[\x00-\x1f\x7f-\x9f]/,
+    
+    // Advanced encoding
+    /%[0-9a-f]{2}/i,
+    /&[a-z]+;/i,
+    
+    // SQL function obfuscation
+    /\bif\s*\(/i,
+    /\bcase\s+when/i,
+    /\bwhen\s+.*\s+then/i,
+    
+    // Mathematical obfuscation
+    /\bfloor\s*\(/i,
+    /\bceil\s*\(/i,
+    /\bround\s*\(/i,
+    /\babs\s*\(/i,
+    /\bmod\s*\(/i,
+    
+    // String manipulation obfuscation
+    /\bsubstr\s*\(/i,
+    /\bsubstring\s*\(/i,
+    /\bmid\s*\(/i,
+    /\bleft\s*\(/i,
+    /\bright\s*\(/i,
+    
+    // Date/time obfuscation
+    /\bnow\s*\(/i,
+    /\bcurrent_date\s*\(/i,
+    /\bcurrent_time\s*\(/i,
+    /\bcurrent_timestamp\s*\(/i,
+    
+    // System variable obfuscation
+    /\b@@version/i,
+    /\b@@datadir/i,
+    /\b@@hostname/i,
+    /\b@@port/i,
+    /\b@@socket/i,
+  ].some(pattern => pattern.test(input));
+
+  return !hasSQLInjection && !hasObfuscation;
 }
 
 /**

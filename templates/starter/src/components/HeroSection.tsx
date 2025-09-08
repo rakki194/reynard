@@ -9,7 +9,7 @@ import { useNotifications } from "reynard-core";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const HeroSection: Component = () => {
-  const { theme, setTheme } = useTheme();
+  const themeContext = useTheme();
   const { notify } = useNotifications();
   const [currentDemo, setCurrentDemo] = createSignal(0);
   
@@ -36,8 +36,22 @@ export const HeroSection: Component = () => {
   };
 
   const handleThemePreview = (themeName: string) => {
-    setTheme(themeName as ThemeName);
+    console.log("HeroSection - Switching theme from", themeContext.theme, "to", themeName);
+    themeContext.setTheme(themeName as ThemeName);
     notify(`Switched to ${themeName} theme!`, "info");
+  };
+
+  // Debug logging to track theme changes
+  createEffect(() => {
+    console.log("HeroSection - Current theme:", themeContext.theme);
+    console.log("HeroSection - Available themes:", availableThemes);
+  });
+
+  // Helper function to check if a theme is active
+  const isActiveTheme = (themeName: string) => {
+    const isActive = themeContext.theme === themeName;
+    console.log(`HeroSection - isActiveTheme(${themeName}):`, isActive, "current theme:", themeContext.theme);
+    return isActive;
   };
 
   return (
@@ -109,9 +123,9 @@ export const HeroSection: Component = () => {
       <div class="hero-themes">
         <h3>Try Different Themes</h3>
         <div class="theme-preview-grid">
-          <For each={availableThemes.slice(0, 4)}>{(themeConfig) => (
+          <For each={availableThemes}>{(themeConfig) => (
             <button
-              class={`theme-preview ${theme === themeConfig.name ? 'active' : ''}`}
+              class={`theme-preview ${isActiveTheme(themeConfig.name) ? 'active' : ''}`}
               onClick={() => handleThemePreview(themeConfig.name)}
               title={`Switch to ${themeConfig.displayName}`}
             >

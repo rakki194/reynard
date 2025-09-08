@@ -8,16 +8,21 @@ import hmac
 import os
 import secrets
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import uvicorn
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from jose import JWTError, jwt
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
+import re
 
 # Import caption generation API
 from app.api.caption import router as caption_router
@@ -26,7 +31,29 @@ from app.api.caption import router as caption_router
 load_dotenv()
 
 # Configuration
-SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(32))
+# 🐺 FIXED: Persistent JWT secret key management
+def get_persistent_secret_key() -> str:
+    """Get persistent JWT secret key with fallback to environment variable"""
+    # First try environment variable
+    env_secret = os.getenv("SECRET_KEY")
+    if env_secret:
+        return env_secret
+    
+    # Create persistent secret file
+    secret_file = Path("./secrets/jwt_secret.key")
+    secret_file.parent.mkdir(exist_ok=True, mode=0o700)
+    
+    if secret_file.exists():
+        # Load existing secret
+        return secret_file.read_text().strip()
+    else:
+        # Generate new persistent secret
+        new_secret = secrets.token_urlsafe(64)  # 64 bytes for strong entropy
+        secret_file.write_text(new_secret)
+        secret_file.chmod(0o600)  # Secure file permissions
+        return new_secret
+
+SECRET_KEY = get_persistent_secret_key()
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
@@ -39,6 +66,9 @@ PASSWORD_ITERATIONS = 100000
 security = HTTPBearer()
 
 # FastAPI app
+# 🐺 FIXED: Initialize rate limiter
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(
     title="Reynard API",
     description="Secure API backend for Reynard applications",
@@ -47,7 +77,11 @@ app = FastAPI(
     redoc_url="/api/redoc",
 )
 
-# CORS middleware
+# Add rate limiter to app
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# 🐺 FIXED: Secure CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -56,7 +90,16 @@ app.add_middleware(
     ],  # Add your frontend URLs
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=[
+        "Accept",
+        "Accept-Language",
+        "Content-Language",
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+    ],  # Specific headers instead of wildcard
+    expose_headers=["X-Total-Count"],
+    max_age=3600,  # Cache preflight requests for 1 hour
 )
 
 # Trusted host middleware
@@ -65,20 +108,395 @@ app.add_middleware(
     allowed_hosts=["localhost", "127.0.0.1", "*.yourdomain.com"],  # Add your domains
 )
 
+# 🐺 FIXED: Add comprehensive security headers middleware
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Add comprehensive security headers to all responses"""
+    response = await call_next(request)
+    
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    
+    # Content Security Policy
+    csp = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "img-src 'self' data: https:; "
+        "font-src 'self' https://cdn.jsdelivr.net; "
+        "connect-src 'self'; "
+        "frame-ancestors 'none';"
+    )
+    response.headers["Content-Security-Policy"] = csp
+    
+    # Strict Transport Security (only in production)
+    if os.getenv("ENVIRONMENT") == "production":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    
+    return response
+
 # Include caption generation API
 app.include_router(caption_router, prefix="/api")
 
 
-# Pydantic models
+# 🐺 FIXED: Enhanced input validation and SQL injection prevention
+def validate_input_security(input_string: str, field_name: str) -> str:
+    """Validate input for security threats including SQL injection"""
+    if not isinstance(input_string, str):
+        raise ValueError(f"{field_name} must be a string")
+    
+    # 🐺 ENHANCED: Comprehensive SQL injection patterns with advanced detection
+    sql_patterns = [
+        # Basic SQL keywords (case-insensitive)
+        r'\b(select|insert|update|delete|drop|create|alter|exec|execute|union|script)\b',
+        
+        # Comment patterns (all variations)
+        r'(--|#|/\*|\*/)',
+        
+        # Logic operators (enhanced patterns)
+        r'\b(or|and)\b.*=.*\b(or|and)\b',
+        r'\b(or|and)\b.*\d+\s*=\s*\d+',
+        r'\b(or|and)\b\s+\d+\s*=\s*\d+',
+        r'\b(or|and)\b\s+[\'"]\s*=\s*[\'"]',
+        r'\b(or|and)\b\s+[\'"]\d+[\'"]\s*=\s*[\'"]\d+[\'"]',
+        r'\b(or|and)\b\s+[\'"]\d+[\'"]\s*=\s*\d+',
+        r'\b(or|and)\b\s+\d+\s*=\s*[\'"]\d+[\'"]',
+        r'\b(or|and)\b.*1.*=.*1',
+        r'\b(or|and)\b.*\'1\'.*=.*\'1\'',
+        
+        # UNION attacks (all variations)
+        r'union.*select',
+        r'union.*all.*select',
+        r'union\s+select',
+        r'union\s+all\s+select',
+        
+        # Script injection
+        r'script.*>',
+        r'<\s*script',
+        
+        # Function calls (enhanced detection)
+        r'\b(char|ascii|substring|concat|version|database|user|schema|length|count|sum|avg|max|min)\s*\(',
+        r'\b(sleep|waitfor|benchmark|pg_sleep|delay)\s*\(',
+        r'\b(load_file|into\s+outfile|into\s+dumpfile|load\s+data)\b',
+        
+        # Information schema (all variations)
+        r'\binformation_schema\b',
+        r'\bsys\.',
+        r'\bmysql\.',
+        r'\bpg_',
+        r'\bsqlite_',
+        
+        # Time-based attacks (enhanced)
+        r'\bwaitfor\s+delay\b',
+        r'\bsleep\s*\(',
+        r'\bbenchmark\s*\(',
+        r'\bdelay\s*\(',
+        
+        # Error-based attacks (enhanced)
+        r'\bextractvalue\s*\(',
+        r'\bupdatexml\s*\(',
+        r'\bexp\s*\(',
+        r'\bfloor\s*\(',
+        r'\brand\s*\(',
+        
+        # Boolean-based attacks
+        r'\bif\s*\(',
+        r'\bcase\s+when',
+        r'\bwhen\s+.*\s+then',
+        
+        # Stacked queries (enhanced)
+        r';\s*(select|insert|update|delete|drop|create|alter|exec|execute)',
+        
+        # Hex encoding attempts (enhanced)
+        r'0x[0-9a-f]+',
+        r'0X[0-9A-F]+',
+        
+        # String concatenation (enhanced)
+        r'[\'"]\s*\+\s*[\'"]',
+        r'\bconcat\s*\(',
+        r'\bconcat_ws\s*\(',
+        
+        # Subqueries (enhanced)
+        r'\(\s*select\s+',
+        r'\(\s*insert\s+',
+        r'\(\s*update\s+',
+        r'\(\s*delete\s+',
+        
+        # Privilege escalation
+        r'\bgrant\b',
+        r'\brevoke\b',
+        r'\bprivileges\b',
+        r'\badmin\b',
+        r'\broot\b',
+        
+        # Advanced obfuscation patterns
+        r'\bchr\s*\(',
+        r'\bascii\s*\(',
+        r'\bord\s*\(',
+        r'\bhex\s*\(',
+        r'\bunhex\s*\(',
+        r'\bbin\s*\(',
+        r'\bunbin\s*\(',
+        
+        # Database-specific functions
+        r'\buser\s*\(',
+        r'\bdatabase\s*\(',
+        r'\bversion\s*\(',
+        r'\bconnection_id\s*\(',
+        r'\blast_insert_id\s*\(',
+        
+        # Advanced injection patterns
+        r'\bhaving\s+.*\s*=\s*\d+',
+        r'\bgroup\s+by\s+.*\s*having',
+        r'\border\s+by\s+.*\s*--',
+        r'\blimit\s+.*\s*--',
+        
+        # Blind injection patterns
+        r'\bexists\s*\(',
+        r'\bnot\s+exists\s*\(',
+        r'\bin\s*\(',
+        r'\bnot\s+in\s*\(',
+        
+        # Time-based blind patterns
+        r'\bif\s*\(.*,\s*sleep\s*\(',
+        r'\bcase\s+when.*\s+then\s+sleep\s*\(',
+        
+        # Error-based blind patterns
+        r'\bif\s*\(.*,\s*extractvalue\s*\(',
+        r'\bif\s*\(.*,\s*updatexml\s*\(',
+        
+        # Stacked query patterns
+        r';\s*drop\s+table',
+        r';\s*truncate\s+table',
+        r';\s*alter\s+table',
+        r';\s*create\s+table',
+        
+        # Advanced comment patterns
+        r'\*.*\*',
+        r'--.*$',
+        r'#.*$',
+        
+        # Whitespace obfuscation
+        r'\s+select\s+',
+        r'\s+union\s+',
+        r'\s+from\s+',
+        r'\s+where\s+',
+        
+        # Function obfuscation
+        r'\bchar\s*\(\s*\d+\s*\)',
+        r'\bascii\s*\(\s*[\'"]\w+[\'"]\s*\)',
+        
+        # String manipulation
+        r'\bsubstr\s*\(',
+        r'\bsubstring\s*\(',
+        r'\bmid\s*\(',
+        r'\bleft\s*\(',
+        r'\bright\s*\(',
+        
+        # Mathematical functions
+        r'\bfloor\s*\(',
+        r'\bceil\s*\(',
+        r'\bround\s*\(',
+        r'\babs\s*\(',
+        r'\bmod\s*\(',
+        
+        # Date/time functions
+        r'\bnow\s*\(',
+        r'\bcurrent_date\s*\(',
+        r'\bcurrent_time\s*\(',
+        r'\bcurrent_timestamp\s*\(',
+        
+        # System functions
+        r'@@version',
+        r'@@datadir',
+        r'@@hostname',
+        r'@@port',
+        r'@@socket',
+        
+        # Advanced injection techniques
+        r'\bprocedure\s+analyse\s*\(',
+        r'\binto\s+outfile',
+        r'\binto\s+dumpfile',
+        r'\bload\s+file\s*\(',
+        
+        # Boolean-based blind injection
+        r'\bif\s*\(\s*length\s*\(',
+        r'\bif\s*\(\s*ascii\s*\(',
+        r'\bif\s*\(\s*substr\s*\(',
+        
+        # Time-based blind injection
+        r'\bif\s*\(\s*.*\s*,\s*sleep\s*\(\s*\d+\s*\)',
+        r'\bcase\s+when\s+.*\s+then\s+sleep\s*\(\s*\d+\s*\)',
+        
+        # Error-based blind injection
+        r'\bif\s*\(\s*.*\s*,\s*extractvalue\s*\(\s*1\s*,\s*concat\s*\(',
+        r'\bif\s*\(\s*.*\s*,\s*updatexml\s*\(\s*1\s*,\s*concat\s*\(',
+    ]
+    
+    for pattern in sql_patterns:
+        if re.search(pattern, input_string, re.IGNORECASE):
+            raise ValueError(f"Invalid characters detected in {field_name}")
+    
+    # 🐺 ENHANCED: Advanced obfuscation detection
+    obfuscation_patterns = [
+        # Comment obfuscation
+        r'/\*.*?\*/',
+        r'--.*$',
+        r'#.*$',
+        
+        # String splitting and concatenation
+        r'[\'"]\s*\+\s*[\'"]',
+        r'\bconcat\s*\(',
+        r'\bconcat_ws\s*\(',
+        
+        # Function obfuscation
+        r'\bchar\s*\(',
+        r'\bchr\s*\(',
+        r'\bascii\s*\(',
+        r'\bord\s*\(',
+        
+        # Hex obfuscation
+        r'0x[0-9a-f]+',
+        r'0X[0-9A-F]+',
+        
+        # Unicode obfuscation
+        r'\\u[0-9a-f]{4}',
+        r'\\x[0-9a-f]{2}',
+        
+        # Whitespace obfuscation
+        r'\s+select\s+',
+        r'\s+union\s+',
+        r'\s+from\s+',
+        r'\s+where\s+',
+        r'\s+and\s+',
+        r'\s+or\s+',
+        
+        # Tab and newline obfuscation
+        r'\t',
+        r'\n',
+        r'\r',
+        
+        # Multiple consecutive spaces
+        r'\s{3,}',
+        
+        # Null byte injection
+        r'\0',
+        
+        # Control characters
+        r'[\x00-\x1f\x7f-\x9f]',
+        
+        # Advanced encoding
+        r'%[0-9a-f]{2}',
+        r'&[a-z]+;',
+        
+        # SQL function obfuscation
+        r'\bif\s*\(',
+        r'\bcase\s+when',
+        r'\bwhen\s+.*\s+then',
+        
+        # Mathematical obfuscation
+        r'\bfloor\s*\(',
+        r'\bceil\s*\(',
+        r'\bround\s*\(',
+        r'\babs\s*\(',
+        r'\bmod\s*\(',
+        
+        # String manipulation obfuscation
+        r'\bsubstr\s*\(',
+        r'\bsubstring\s*\(',
+        r'\bmid\s*\(',
+        r'\bleft\s*\(',
+        r'\bright\s*\(',
+        
+        # Date/time obfuscation
+        r'\bnow\s*\(',
+        r'\bcurrent_date\s*\(',
+        r'\bcurrent_time\s*\(',
+        r'\bcurrent_timestamp\s*\(',
+        
+        # System variable obfuscation
+        r'@@version',
+        r'@@datadir',
+        r'@@hostname',
+        r'@@port',
+        r'@@socket',
+    ]
+    
+    for pattern in obfuscation_patterns:
+        if re.search(pattern, input_string, re.IGNORECASE):
+            raise ValueError(f"Invalid characters detected in {field_name}")
+    
+    # XSS patterns
+    xss_patterns = [
+        r'<script[^>]*>.*?</script>',
+        r'javascript:',
+        r'on\w+\s*=',
+        r'<iframe[^>]*>',
+        r'<object[^>]*>',
+        r'<embed[^>]*>',
+    ]
+    
+    for pattern in xss_patterns:
+        if re.search(pattern, input_string, re.IGNORECASE):
+            raise ValueError(f"Invalid characters detected in {field_name}")
+    
+    # Path traversal patterns
+    if '..' in input_string or '~' in input_string:
+        raise ValueError(f"Invalid characters detected in {field_name}")
+    
+    # Length validation
+    if len(input_string) > 1000:
+        raise ValueError(f"{field_name} is too long")
+    
+    return input_string.strip()
+
+# Pydantic models with enhanced validation
 class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, v):
+        if not v or len(v) < 3 or len(v) > 50:
+            raise ValueError('Username must be between 3 and 50 characters')
+        if not re.match(r'^[a-zA-Z0-9_-]+$', v):
+            raise ValueError('Username can only contain letters, numbers, underscores, and hyphens')
+        return validate_input_security(v, 'username')
+    
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v):
+        if not v or len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        if len(v) > 128:
+            raise ValueError('Password is too long')
+        return validate_input_security(v, 'password')
+    
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, v):
+        return validate_input_security(str(v), 'email')
 
 
 class UserLogin(BaseModel):
     username: str
     password: str
+    
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, v):
+        return validate_input_security(v, 'username')
+    
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v):
+        return validate_input_security(v, 'password')
 
 
 class UserResponse(BaseModel):
@@ -228,21 +646,32 @@ async def health_check():
 
 
 @app.post("/api/auth/register", response_model=UserResponse)
-async def register(user: UserCreate):
+@limiter.limit("5/minute")  # 🐺 FIXED: Rate limit registration attempts
+async def register(request: Request, user: UserCreate):
     """Register a new user"""
-    if user.username in users_db:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered",
-        )
-
-    # Check if email is already registered
-    for existing_user in users_db.values():
-        if existing_user["email"] == user.email:
+    try:
+        if user.username in users_db:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email already registered",
+                detail="Registration failed",  # Generic error message
             )
+
+        # Check if email is already registered
+        for existing_user in users_db.values():
+            if existing_user["email"] == user.email:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Registration failed",  # Generic error message
+                )
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Log the actual error for debugging but don't expose it
+        print(f"Registration error: {e}")  # In production, use proper logging
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Registration failed"
+        )
 
     # Create user
     user_id = len(users_db) + 1
@@ -267,7 +696,8 @@ async def register(user: UserCreate):
 
 
 @app.post("/api/auth/login", response_model=Token)
-async def login(user_credentials: UserLogin):
+@limiter.limit("10/minute")  # 🐺 FIXED: Rate limit login attempts
+async def login(request: Request, user_credentials: UserLogin):
     """Login and get access token"""
     user = users_db.get(user_credentials.username)
 
@@ -305,9 +735,10 @@ async def login(user_credentials: UserLogin):
 
 
 @app.post("/api/auth/refresh", response_model=Token)
-async def refresh_token(request: RefreshTokenRequest):
+@limiter.limit("20/minute")  # 🐺 FIXED: Rate limit token refresh
+async def refresh_token(request: Request, refresh_request: RefreshTokenRequest):
     """Refresh access token using refresh token"""
-    token_data = verify_token(request.refresh_token, "refresh")
+    token_data = verify_token(refresh_request.refresh_token, "refresh")
 
     if token_data is None:
         raise HTTPException(

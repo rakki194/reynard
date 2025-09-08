@@ -38,11 +38,22 @@
     transform: none;
   }
 
+  /* Ensure SVG icons inherit button colors */
+  .button svg {
+    fill: currentColor;
+    color: inherit;
+  }
+
   /* Button Variants */
   .button--primary {
     background: var(--gradient-primary);
     color: white;
     font-weight: 600;
+  }
+
+  .button--primary svg {
+    fill: currentColor;
+    color: inherit;
   }
 
   .button--primary:hover {
@@ -56,20 +67,28 @@
     border: 1px solid var(--border-color);
   }
 
+  .button--secondary svg {
+    fill: currentColor;
+    color: inherit;
+  }
+
   .button--success {
-    background: hsl(140deg 60% 45%);
+    background: var(--color-success);
+    color: white;
   }
 
   .button--error {
-    background: hsl(0deg 70% 50%);
+    background: var(--color-error);
+    color: white;
   }
 
   .button--info {
-    background: hsl(200deg 70% 45%);
+    background: var(--color-info);
+    color: white;
   }
 
   .button--warning {
-    background: hsl(45deg 100% 55%);
+    background: var(--color-warning);
     color: var(--text-primary);
   }
 
@@ -154,4 +173,14 @@
       min-width: 100px;
     }
   }
+}
+
+/* Color Picker Styles */
+.color-preview {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  background-color: var(--preview-color, #007bff);
 }

@@ -10,7 +10,7 @@ import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const ComponentPlayground: Component = () => {
   const { notify } = useNotifications();
-  const { theme } = useTheme();
+  const themeContext = useTheme();
   
   const [activeTab, setActiveTab] = createSignal("notifications");
   const [notificationMessage, setNotificationMessage] = createSignal("Hello from Reynard!");
@@ -218,7 +218,7 @@ remove();`;
               <h3>Theme System</h3>
               <div class="theme-demo">
                 <div class="current-theme">
-                  <h4>Current Theme: {theme}</h4>
+                  <h4>Current Theme: {themeContext.theme}</h4>
                   <div class="theme-preview-box">
                     <div class="preview-content">
                       <div class="preview-header">Sample Component</div>
@@ -241,7 +241,7 @@ remove();`;
                 <p>Try changing themes or other settings - they'll persist across page reloads!</p>
                 <div class="storage-info">
                   <div class="info-item">
-                    <strong>Current Theme:</strong> {theme} (stored in localStorage)
+                    <strong>Current Theme:</strong> {themeContext.theme} (stored in localStorage)
                   </div>
                 </div>
               </div>

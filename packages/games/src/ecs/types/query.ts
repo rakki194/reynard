@@ -132,4 +132,10 @@ export interface QueryResult<T extends Component[]> {
    * @returns New QueryResult containing only matching entities
    */
   filter(predicate: (entity: Entity, ...components: T) => boolean): QueryResult<T>;
+  
+  /**
+   * Gets the first entity and its components, or undefined if empty.
+   * @returns Object with entity and components, or undefined if no entities
+   */
+  first(): { entity: Entity; components: T } | undefined;
 }

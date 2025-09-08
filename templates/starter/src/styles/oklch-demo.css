@@ -1,0 +1,369 @@
+/**
+ * OKLCH Color Demo Styles
+ * Styles for the OKLCH color system demonstration
+ */
+
+.oklch-demo-section {
+  padding: var(--triple-spacing) var(--double-spacing);
+  background: var(--color-background);
+}
+
+.oklch-demo-content {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--triple-spacing);
+}
+
+/* Color Selection */
+.color-selection h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.color-options {
+  display: flex;
+  gap: var(--spacing);
+  flex-wrap: wrap;
+}
+
+.color-option {
+  padding: var(--spacing) var(--double-spacing);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--transition-timing);
+}
+
+.color-option:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.color-option.active {
+  border-color: currentColor;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Color Palette Display */
+.color-palette-display h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--double-spacing);
+}
+
+.palette-group h4 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.color-swatches {
+  display: flex;
+  gap: var(--spacing);
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: transform var(--transition-duration) var(--transition-timing);
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Color Variants */
+.color-variants h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing);
+}
+
+.variant-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--half-spacing);
+}
+
+.variant-swatch {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--color-border);
+  transition: transform var(--transition-duration) var(--transition-timing);
+}
+
+.variant-swatch:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
+
+.variant-item span {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Tag Colors Demo */
+.tag-colors-demo h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.tag-input-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  margin-bottom: var(--double-spacing);
+  flex-wrap: wrap;
+}
+
+.tag-input-section input[type="text"] {
+  padding: var(--half-spacing) var(--spacing);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.tag-input-section input[type="range"] {
+  width: 120px;
+}
+
+.tag-input-section span {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.tag-display {
+  margin-bottom: var(--double-spacing);
+}
+
+.tag {
+  display: inline-block;
+  padding: var(--half-spacing) var(--spacing);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: var(--half-spacing);
+  cursor: pointer;
+  transition: transform var(--transition-duration) var(--transition-timing);
+  /* Use custom properties for dynamic colors */
+  background-color: var(--tag-bg, transparent);
+  color: var(--tag-color, inherit);
+}
+
+.tag:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
+
+.sample-tags h4 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.tag-list {
+  display: flex;
+  gap: var(--spacing);
+  flex-wrap: wrap;
+}
+
+/* Gradient Demo */
+.gradient-demo h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.gradient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing);
+}
+
+.gradient-sample {
+  height: 100px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform var(--transition-duration) var(--transition-timing);
+}
+
+.gradient-sample:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Theme Information */
+.theme-info h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing);
+}
+
+.info-item {
+  padding: var(--spacing);
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+}
+
+.info-item strong {
+  color: var(--color-accent);
+  margin-right: var(--half-spacing);
+}
+
+/* OKLCH Button Styles */
+.oklch-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--transition-timing);
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  box-shadow: var(--shadow-default);
+}
+
+.oklch-button:hover:not(:disabled) {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.oklch-button:active:not(:disabled) {
+  background-color: var(--button-active);
+  transform: translateY(0);
+}
+
+.oklch-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants */
+.oklch-button--primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.oklch-button--secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+}
+
+.oklch-button--accent {
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+.oklch-button--success {
+  background-color: var(--color-success);
+  color: var(--color-text-inverse);
+}
+
+.oklch-button--warning {
+  background-color: var(--color-warning);
+  color: var(--color-text);
+}
+
+.oklch-button--error {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+}
+
+.oklch-button--info {
+  background-color: var(--color-info);
+  color: var(--color-text-inverse);
+}
+
+/* OKLCH Buttons Demo */
+.oklch-buttons-demo h3 {
+  margin-bottom: var(--spacing);
+  color: var(--color-text);
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing);
+  align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .oklch-demo-section {
+    padding: var(--double-spacing) var(--spacing);
+  }
+  
+  .color-options {
+    justify-content: center;
+  }
+  
+  .color-option {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+  
+  .palette-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .variant-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tag-input-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .gradient-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

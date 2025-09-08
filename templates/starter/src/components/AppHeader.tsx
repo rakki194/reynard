@@ -3,21 +3,27 @@
  * Modern header with navigation and theme selector
  */
 
-import { Component, createSignal, For } from "solid-js";
+import { Component, createSignal, For, createEffect } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { useTheme, getAvailableThemes } from "reynard-themes";
 import { useNotifications } from "reynard-core";
 import type { ThemeName } from "reynard-themes";
 
 export const AppHeader: Component = () => {
-  const { theme, setTheme } = useTheme();
+  const themeContext = useTheme();
   const { notify } = useNotifications();
   const [isMenuOpen, setIsMenuOpen] = createSignal(false);
   
   const availableThemes = getAvailableThemes();
 
+  // Debug logging to track theme changes
+  createEffect(() => {
+    console.log("AppHeader - Current theme:", themeContext.theme);
+    console.log("AppHeader - Available themes:", availableThemes);
+  });
+
   const handleThemeChange = (themeName: string) => {
-    setTheme(themeName as ThemeName);
+    themeContext.setTheme(themeName as ThemeName);
     notify(`Switched to ${themeName} theme!`, "info");
   };
 
@@ -75,6 +81,9 @@ export const AppHeader: Component = () => {
             <button class="nav-link" onClick={() => scrollToSection("themes")}>
               Themes
             </button>
+            <button class="nav-link" onClick={() => scrollToSection("oklch-demo")}>
+              OKLCH Colors
+            </button>
             <button class="nav-link" onClick={() => scrollToSection("playground")}>
               Playground
             </button>
@@ -84,7 +93,7 @@ export const AppHeader: Component = () => {
         <div class="header-actions">
           <div class="theme-quick-select">
             <select
-              value={theme}
+              value={themeContext.theme}
               onChange={(e) => handleThemeChange(e.target.value)}
               class="theme-select"
               title="Quick theme switch"
