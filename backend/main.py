@@ -29,6 +29,7 @@ from app.api.tts import router as tts_router
 from app.api.ollama import router as ollama_router
 from app.api.comfy import router as comfy_router
 from app.api.summarization import router as summarization_router
+from app.api.nlweb import router as nlweb_router
 
 # Load environment variables
 load_dotenv()
@@ -46,6 +47,36 @@ try:
     initialize_comfy_service(comfy_config)
 except Exception as e:
     print(f"Warning: Failed to initialize ComfyUI service: {e}")
+
+# Initialize NLWeb service
+from app.services.nlweb.service_initializer import initialize_nlweb_service
+try:
+    # Initialize with default configuration
+    nlweb_config = {
+        "nlweb": {
+            "enabled": True,
+            "base_url": None,  # No external NLWeb service by default
+            "suggest_timeout_s": 1.5,
+            "cache_ttl_s": 10.0,
+            "cache_max_entries": 64,
+            "allow_stale_on_error": True,
+            "warm_timeout_s": 2.0,
+            "rate_limit_window_s": 60.0,
+            "rate_limit_max_requests": 30,
+            "canary_enabled": False,
+            "canary_percentage": 5.0,
+            "rollback_enabled": False,
+            "performance_monitoring_enabled": True,
+            "proxy_max_retries": 2,
+            "proxy_backoff_ms": 200,
+            "proxy_connect_timeout_ms": 2000,
+            "proxy_read_timeout_ms": 10000,
+            "proxy_sse_idle_timeout_ms": 15000
+        }
+    }
+    initialize_nlweb_service(nlweb_config)
+except Exception as e:
+    print(f"Warning: Failed to initialize NLWeb service: {e}")
 
 
 def create_app() -> FastAPI:
@@ -84,6 +115,7 @@ def create_app() -> FastAPI:
     app.include_router(ollama_router)
     app.include_router(comfy_router)
     app.include_router(summarization_router)
+    app.include_router(nlweb_router)
     
     # Define core routes
     @app.get("/")
@@ -115,4 +147,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    uvicorn.run("main_refactored:app", host="0.0.0.0", port=8000, reload=True, log_level="info")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, log_level="info")

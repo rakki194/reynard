@@ -5,7 +5,7 @@
  * following Reynard composable conventions.
  */
 
-import { createSignal, createStore } from "solid-js";
+import { createSignal } from "solid-js";
 import { useRAG } from "./useRAG";
 import type { RAGQueryHit, RAGQueryParams } from "./rag-types";
 import { RAGApiService } from "./api-service";
@@ -27,9 +27,10 @@ export interface RAGSearchStateConfig {
 export function useRAGSearchState(config: RAGSearchStateConfig) {
   // Use RAG composable
   const rag = useRAG({
-    authFetch: async (url: string, options?: RequestInit) => {
+    authFetch: async (input: string | URL, init?: RequestInit) => {
+      const url = typeof input === 'string' ? input : input.toString();
       const fullUrl = url.startsWith('http') ? url : `${config.apiService.getBasePath()}${url}`;
-      return fetch(fullUrl, options);
+      return fetch(fullUrl, init);
     },
     queryUrl: "/api/rag/query",
     configUrl: "/api/rag/config",
@@ -39,7 +40,7 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   });
 
   // State management
-  const [documents, setDocuments] = createStore<RAGDocument[]>([]);
+  const [documents, setDocuments] = createSignal<RAGDocument[]>([]);
   const [stats, setStats] = createSignal<RAGStats | null>(null);
   const [error, setError] = createSignal<string | null>(null);
   
@@ -155,17 +156,16 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   });
 
   // Computed values
-  const legacyResults = () => rag.results().map(convertToLegacyResult);
+  const legacyResults = () => results();
   const queryResponse = (): RAGQueryResponse | null => {
-    const results = rag.results();
-    const total = rag.total();
-    const queryTime = rag.queryTime();
-    if (results.length > 0 && queryTime) {
+    const currentResults = results();
+    const currentQueryTime = queryTime();
+    if (currentResults.length > 0 && currentQueryTime) {
       return {
-        query_time: queryTime * 1000, // Convert to ms
+        query_time: currentQueryTime * 1000, // Convert to ms
         embedding_time: 0, // Not available in generated client yet
         search_time: 0, // Not available in generated client yet
-        total_results: total
+        total_results: currentResults.length
       };
     }
     return null;

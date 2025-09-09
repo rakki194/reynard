@@ -23,3 +23,40 @@ export {
   type QualityData,
   type QualityMetric,
 } from "./StatisticalChart";
+
+// Advanced charting components
+export {
+  ModelUsageChart,
+  type ModelUsageChartProps,
+  type ModelUsageData,
+} from "./ModelUsageChart";
+export {
+  EmbeddingDistributionChart,
+  type EmbeddingDistributionChartProps,
+  type EmbeddingDistributionData,
+} from "./EmbeddingDistributionChart";
+export {
+  PCAVarianceChart,
+  type PCAVarianceChartProps,
+  type PCAVarianceData,
+} from "./PCAVarianceChart";
+export {
+  AdvancedChartingDashboard,
+  type AdvancedChartingDashboardProps,
+} from "./AdvancedChartingDashboard";
+
+// Embedding visualization components
+export {
+  EmbeddingQualityChart,
+  type EmbeddingQualityChartProps,
+  type EmbeddingQualityData,
+  type QualityMetric as EmbeddingQualityMetric,
+} from "./EmbeddingQualityChart";
+export {
+  EmbeddingVisualizationDashboard,
+  type EmbeddingVisualizationDashboardProps,
+} from "./EmbeddingVisualizationDashboard";
+export {
+  Embedding3DVisualization,
+  type Embedding3DVisualizationProps,
+} from "./Embedding3DVisualization";

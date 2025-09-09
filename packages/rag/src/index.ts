@@ -14,6 +14,12 @@ export { DocumentsTab } from "./DocumentsTab";
 export { UploadTab } from "./UploadTab";
 export { SettingsTab } from "./SettingsTab";
 
+// Advanced components
+export { RAG3DVisualizationModal } from "./components/RAG3DVisualizationModal";
+export { RAGFileModal } from "./components/RAGFileModal";
+export { RAGImageModal } from "./components/RAGImageModal";
+export { RAGSearchHistory } from "./components/RAGSearchHistory";
+
 // API service
 export { RAGApiService } from "./api-service";
 
@@ -29,6 +35,14 @@ export type {
   RAGSearchProps,
   RAGQueryResponse,
   TabItem,
+  // Advanced types
+  RAGModality,
+  RAGQueryHit,
+  FileModalState,
+  ImageModalState,
+  ThreeDModalState,
+  EmbeddingPoint,
+  SearchHistoryItem,
 } from "./types";
 
 // RAG Composables

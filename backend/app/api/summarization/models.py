@@ -165,6 +165,7 @@ class SummarizationConfigResponse(BaseModel):
 
 class SummarizationStatsResponse(BaseModel):
     """Response model for summarization statistics."""
+    model_config = ConfigDict(protected_namespaces=())
     
     total_requests: int = Field(..., description="Total number of requests processed")
     cache_hits: int = Field(..., description="Number of cache hits")

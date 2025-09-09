@@ -16,7 +16,7 @@ export interface RAGResult {
     chunk_length?: number;
     document_source?: string;
     embedding_model?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -28,7 +28,7 @@ export interface RAGDocument {
   created_at: string;
   updated_at: string;
   chunk_count: number;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 }
 
 export interface RAGStats {
@@ -51,6 +51,14 @@ export interface RAGSearchProps {
   onResultClick?: (result: RAGResult) => void;
   onDocumentUpload?: (document: RAGDocument) => void;
   className?: string;
+  // Advanced features
+  show3DVisualization?: boolean;
+  showFileModals?: boolean;
+  showImageModals?: boolean;
+  showSearchHistory?: boolean;
+  showFilters?: boolean;
+  showPagination?: boolean;
+  enableMultiModal?: boolean;
 }
 
 export interface RAGQueryResponse {
@@ -63,5 +71,70 @@ export interface RAGQueryResponse {
 export interface TabItem {
   id: string;
   label: string;
-  icon: any; // JSX.Element | null;
+  icon: JSX.Element | null;
+}
+
+// Advanced RAG types for 3D visualization and modals
+export type RAGModality = 'docs' | 'images' | 'code' | 'captions';
+
+export interface RAGQueryHit {
+  id?: number | string;
+  score: number;
+  embedding_vector?: number[];
+  image_path?: string;
+  image_id?: string;
+  file_path?: string;
+  file_content?: string;
+  chunk_text?: string;
+  chunk_index?: number;
+  metadata?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+export interface FileModalState {
+  isOpen: boolean;
+  filePath: string;
+  fileName: string;
+  fileContent: string;
+  chunkIndex?: number;
+  chunkText?: string;
+}
+
+export interface ImageModalState {
+  isOpen: boolean;
+  imagePath: string;
+  imageId: string;
+  thumbnailPath?: string;
+  previewPath?: string;
+  imageMetadata?: Record<string, unknown>;
+  imageDimensions?: { width: number; height: number };
+  imageSize?: number;
+  imageFormat?: string;
+  embeddingVector?: number[];
+  score: number;
+}
+
+export interface ThreeDModalState {
+  isOpen: boolean;
+  searchQuery: string;
+  searchResults: RAGQueryHit[];
+  queryEmbedding?: number[];
+}
+
+export interface EmbeddingPoint {
+  id: string;
+  position: [number, number, number];
+  color: [number, number, number];
+  size: number;
+  metadata: Record<string, unknown>;
+  originalIndex: number;
+}
+
+export interface SearchHistoryItem {
+  id: string;
+  query: string;
+  modality: RAGModality;
+  timestamp: Date;
+  resultCount: number;
+  topScore: number;
 }

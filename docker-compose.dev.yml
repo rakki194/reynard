@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # Reynard Backend API
   reynard-backend:

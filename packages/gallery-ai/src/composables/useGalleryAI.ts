@@ -13,65 +13,23 @@ import {
   createContext,
   useContext,
 } from "solid-js";
-// Note: These imports will be available when the packages are built
-// For now, we'll define the types locally to avoid build errors
-
-interface CaptionTask {
-  imagePath: string;
-  generatorName: string;
-  config: any;
-  postProcess: boolean;
-  force: boolean;
-}
-
-class AnnotationManager {
-  async start(): Promise<void> {
-    // Mock implementation
-  }
-
-  async stop(): Promise<void> {
-    // Mock implementation
-  }
-
-  getAvailableGenerators(): any[] {
-    // Mock implementation
-    return [];
-  }
-
-  getService(): any {
-    // Mock implementation
-    return {
-      generateCaption: async (task: CaptionTask) => ({
-        success: true,
-        caption: "Mock caption",
-        processingTime: 1000,
-        captionType: "caption",
-        generator: task.generatorName,
-      }),
-      generateBatchCaptions: async (
-        tasks: CaptionTask[],
-        _progressCallback: (progress: any) => void,
-      ) => {
-        // Mock batch processing
-        return tasks.map((task) => ({
-          success: true,
-          caption: "Mock caption",
-          processingTime: 1000,
-          captionType: "caption",
-          generator: task.generatorName,
-        }));
-      },
-    };
-  }
-}
+import {
+  CaptionTask,
+  CaptionType,
+} from "reynard-ai-shared";
+import {
+  getAnnotationServiceRegistry,
+  createDefaultAnnotationService,
+  AISharedBackendAnnotationService,
+} from "reynard-annotating-core";
 import type {
   AIGalleryState,
   AIGalleryConfig,
   UseGalleryAIOptions,
   UseGalleryAIReturn,
-  CaptionResult,
+  GalleryCaptionResult,
 } from "../types";
-import { AIOperationStatus, CaptionType } from "../types";
+import { AIOperationStatus } from "../types";
 
 // Default AI configuration
 const DEFAULT_AI_CONFIG: AIGalleryConfig = {
@@ -84,7 +42,7 @@ const DEFAULT_AI_CONFIG: AIGalleryConfig = {
     progressInterval: 1000,
   },
   captionSettings: {
-    defaultCaptionType: CaptionType.CAPTION,
+    defaultCaptionType: CaptionType.CAPTION as CaptionType,
     postProcessing: true,
     forceRegeneration: false,
     generatorConfigs: {},
@@ -164,10 +122,8 @@ export function useGalleryAI(
     },
   });
 
-  // Annotation manager instance
-  const [annotationManager] = createSignal<AnnotationManager>(
-    new AnnotationManager(),
-  );
+  // Annotation service instance
+  const [annotationService, setAnnotationService] = createSignal<AISharedBackendAnnotationService | null>(null);
 
   // Persist configuration changes
   createEffect(() => {
@@ -176,30 +132,46 @@ export function useGalleryAI(
     saveState("aiEnabled", state.aiEnabled);
   });
 
-  // Initialize annotation manager
+  // Initialize annotation service
   createEffect(() => {
     if (autoInitialize) {
-      initializeAnnotationManager();
+      initializeAnnotationService();
     }
   });
 
   // Cleanup on unmount
   onCleanup(() => {
-    const manager = annotationManager();
-    if (manager) {
-      manager.stop().catch(console.error);
+    const service = annotationService();
+    if (service) {
+      service.stop().catch(console.error);
     }
   });
 
   /**
-   * Initialize the annotation manager and load available generators
+   * Initialize the annotation service and load available generators
    */
-  const initializeAnnotationManager = async (): Promise<void> => {
+  const initializeAnnotationService = async (): Promise<void> => {
     try {
-      const manager = annotationManager();
-      await manager.start();
+      const registry = getAnnotationServiceRegistry();
+      let service = registry.getAnnotationService("gallery-ai-service");
+      
+      if (!service) {
+        // Create a default service if none exists
+        service = createDefaultAnnotationService(
+          "http://localhost:8000", // Default backend URL
+          "gallery-ai-service"
+        );
+      }
 
-      const generators = manager.getAvailableGenerators();
+      // Start the service if not already running
+      if (!service.isInitialized) {
+        await service.start();
+      }
+
+      // Update the signal
+      setAnnotationService(service);
+
+      const generators = await service.getAvailableGenerators();
       const generatorNames = generators.map((g: any) => g.name);
 
       setAIState((prev) => ({
@@ -208,7 +180,7 @@ export function useGalleryAI(
         operationStatus: AIOperationStatus.IDLE,
       }));
     } catch (error) {
-      console.error("Failed to initialize annotation manager:", error);
+      console.error("Failed to initialize annotation service:", error);
       setAIState((prev) => ({
         ...prev,
         operationStatus: AIOperationStatus.ERROR,
@@ -226,10 +198,15 @@ export function useGalleryAI(
   const generateCaption = async (
     item: any,
     generator: string,
-  ): Promise<CaptionResult> => {
+  ): Promise<GalleryCaptionResult> => {
     const state = aiState();
     if (!state.aiEnabled) {
       throw new Error("AI features are disabled");
+    }
+
+    const service = annotationService();
+    if (!service) {
+      throw new Error("Annotation service is not initialized");
     }
 
     setAIState((prev) => ({
@@ -240,21 +217,31 @@ export function useGalleryAI(
     }));
 
     try {
-      const manager = annotationManager();
-      const service = manager.getService();
-
       const task: CaptionTask = {
         imagePath: item.path || item.name,
         generatorName: generator,
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
         force: state.config.captionSettings.forceRegeneration,
+        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
       };
 
       // Call callback
       callbacks.onCaptionGenerationStart?.(item, generator);
 
       const result = await service.generateCaption(task);
+
+      // Convert ai-shared CaptionResult to GalleryCaptionResult
+      const galleryResult: GalleryCaptionResult = {
+        success: result.success,
+        caption: result.caption,
+        processingTime: result.processingTime,
+        captionType: result.captionType,
+        generator: result.generatorName,
+        imagePath: result.imagePath,
+        error: result.error,
+        metadata: result.metadata,
+      };
 
       setAIState((prev) => ({
         ...prev,
@@ -263,9 +250,9 @@ export function useGalleryAI(
       }));
 
       // Call success callback
-      callbacks.onCaptionGenerationComplete?.(item, result);
+      callbacks.onCaptionGenerationComplete?.(item, galleryResult);
 
-      return result;
+      return galleryResult;
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Caption generation failed";
@@ -290,10 +277,15 @@ export function useGalleryAI(
   const batchAnnotate = async (
     items: any[],
     generator: string,
-  ): Promise<CaptionResult[]> => {
+  ): Promise<GalleryCaptionResult[]> => {
     const state = aiState();
     if (!state.aiEnabled) {
       throw new Error("AI features are disabled");
+    }
+
+    const service = annotationService();
+    if (!service) {
+      throw new Error("Annotation service is not initialized");
     }
 
     setAIState((prev) => ({
@@ -304,15 +296,13 @@ export function useGalleryAI(
     }));
 
     try {
-      const manager = annotationManager();
-      const service = manager.getService();
-
       const tasks: CaptionTask[] = items.map((item) => ({
         imagePath: item.path || item.name,
         generatorName: generator,
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
         force: state.config.captionSettings.forceRegeneration,
+        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
       }));
 
       // Call callback
@@ -331,6 +321,18 @@ export function useGalleryAI(
         },
       );
 
+      // Convert ai-shared CaptionResult[] to GalleryCaptionResult[]
+      const galleryResults: GalleryCaptionResult[] = results.map((result: any) => ({
+        success: result.success,
+        caption: result.caption,
+        processingTime: result.processingTime,
+        captionType: result.captionType,
+        generator: result.generatorName,
+        imagePath: result.imagePath,
+        error: result.error,
+        metadata: result.metadata,
+      }));
+
       setAIState((prev) => ({
         ...prev,
         isGenerating: false,
@@ -339,9 +341,9 @@ export function useGalleryAI(
       }));
 
       // Call success callback
-      callbacks.onBatchProcessingComplete?.(results);
+      callbacks.onBatchProcessingComplete?.(galleryResults);
 
-      return results;
+      return galleryResults;
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Batch processing failed";
@@ -388,14 +390,15 @@ export function useGalleryAI(
    * Check if generator is available
    */
   const isGeneratorAvailable = (generator: string): boolean => {
-    return aiState().availableGenerators.includes(generator);
+    const service = annotationService();
+    return service ? service.isGeneratorAvailable(generator) : false;
   };
 
   /**
-   * Get annotation manager
+   * Get annotation service
    */
-  const getAnnotationManager = (): AnnotationManager => {
-    return annotationManager();
+  const getAnnotationService = (): AISharedBackendAnnotationService | null => {
+    return annotationService();
   };
 
   /**
@@ -434,7 +437,7 @@ export function useGalleryAI(
     updateAIConfig,
     getAvailableGenerators,
     isGeneratorAvailable,
-    getAnnotationManager,
+    getAnnotationService,
     clearAIState,
     setAIEnabled,
   };

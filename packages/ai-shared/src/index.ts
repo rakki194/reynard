@@ -34,6 +34,7 @@ export {
 export {
   // Base classes
   BaseModel,
+  BaseCaptionModel,
 
   // Registries
   ModelRegistry,

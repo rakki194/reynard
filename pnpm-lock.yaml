@@ -35,6 +35,9 @@ importers:
       reynard-chat:
         specifier: workspace:*
         version: link:packages/chat
+      reynard-colors:
+        specifier: workspace:*
+        version: link:packages/colors
       reynard-components:
         specifier: workspace:*
         version: link:packages/components
@@ -403,6 +406,34 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(jsdom@26.1.0)
+
+  examples/embedding-visualization-demo:
+    dependencies:
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../../packages/charts
+      reynard-core:
+        specifier: workspace:*
+        version: link:../../packages/core
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+      three:
+        specifier: 0.180.0
+        version: 0.180.0
+    devDependencies:
+      '@types/three':
+        specifier: 0.180.0
+        version: 0.180.0
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.5
+        version: 7.1.5(@types/node@24.3.1)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(@testing-library/jest-dom@6.6.4)(solid-js@1.9.9)(vite@7.1.5)
 
   examples/error-demo:
     dependencies:
@@ -1508,6 +1539,9 @@ importers:
       reynard-charts:
         specifier: workspace:*
         version: link:../charts
+      reynard-colors:
+        specifier: workspace:*
+        version: link:../colors
       reynard-core:
         specifier: workspace:*
         version: link:../core

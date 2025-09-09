@@ -420,3 +420,15 @@ class SummarizationService:
 
         except Exception as e:
             logger.error(f"Failed to cleanup SummarizationService: {e}")
+
+
+# Global service instance
+_summarization_service: Optional[SummarizationService] = None
+
+
+def get_summarization_service() -> SummarizationService:
+    """Get the global summarization service instance."""
+    global _summarization_service
+    if _summarization_service is None:
+        _summarization_service = SummarizationService()
+    return _summarization_service

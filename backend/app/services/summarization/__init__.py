@@ -19,7 +19,6 @@ from .article_summarizer import ArticleSummarizer
 from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
 from .technical_summarizer import TechnicalSummarizer
-from .pawprint_summarizer import PawprintSummarizer
 
 __all__ = [
     "BaseSummarizer",
@@ -33,5 +32,4 @@ __all__ = [
     "CodeSummarizer", 
     "DocumentSummarizer",
     "TechnicalSummarizer",
-    "PawprintSummarizer",
 ]

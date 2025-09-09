@@ -3,7 +3,7 @@
  */
 
 import { createSignal } from 'solid-js';
-import type { RAGQueryRequest, RAGQueryResponse, RAGDocument, RAGStats } from '../generated/index.js';
+import type { RAGQueryRequest, RAGQueryResponse, RAGStatsResponse } from '../generated/index.js';
 
 export interface UseRAGOptions {
   basePath?: string;
@@ -18,16 +18,17 @@ export function useRAG(options: UseRAGOptions = {}) {
       // Stub implementation
       console.log('RAG query:', request);
       return {
-        results: [
-          { document: 'Sample document content', score: 0.95, metadata: {} }
-        ]
+        hits: [
+          { chunkText: 'Sample document content', score: 0.95, extra: {} }
+        ],
+        total: 1
       };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getDocuments = async (): Promise<RAGDocument[]> => {
+  const getDocuments = async (): Promise<any[]> => {
     // Stub implementation
     return [
       {
@@ -40,12 +41,16 @@ export function useRAG(options: UseRAGOptions = {}) {
     ];
   };
 
-  const getStats = async (): Promise<RAGStats> => {
+  const getStats = async (): Promise<RAGStatsResponse> => {
     // Stub implementation
     return {
-      total_documents: 1,
-      total_chunks: 5,
-      last_updated: new Date().toISOString()
+      totalDocuments: 1,
+      totalChunks: 5,
+      chunksWithEmbeddings: 5,
+      embeddingCoverage: 100.0,
+      defaultModel: 'test-model',
+      vectorDbEnabled: true,
+      cacheSize: 1024
     };
   };
 

@@ -94,7 +94,7 @@ class OllamaStats(BaseModel):
     failed_requests: int = Field(..., description="Failed chat requests")
     average_processing_time: float = Field(..., description="Average processing time in seconds")
     total_tokens_generated: int = Field(..., description="Total tokens generated")
-    model_usage: Dict[str, int] = Field(..., description="Model usage statistics")
+    usage_stats: Dict[str, int] = Field(..., description="Model usage statistics", alias="model_usage")
     assistant_usage: Dict[str, int] = Field(..., description="Assistant usage statistics")
     tools_usage: Dict[str, int] = Field(..., description="Tools usage statistics")
     error_rate: float = Field(..., description="Error rate percentage")

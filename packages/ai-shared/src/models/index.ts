@@ -12,8 +12,8 @@ import {
   ModelType,
   ModelInfo,
   ModelConfig,
-  ModelError,
-} from "../types/index.js";
+} from "../types/model-management.js";
+import { ModelError } from "../types/error-validation.js";
 
 // ============================================================================
 // Base Model Class
@@ -616,4 +616,10 @@ export function resetModelRegistry(): void {
 // Export all models
 // ============================================================================
 
-export * from "./index";
+export * from "./BaseCaptionModel.js";
+
+// ============================================================================
+// Re-export types for convenience
+// ============================================================================
+
+// Types are imported directly where needed to avoid circular dependency issues

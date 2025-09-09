@@ -80,6 +80,8 @@ class DiffusionConfig(BaseModel):
 
 class DiffusionStats(BaseModel):
     """Statistics for diffusion service."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     total_requests: int = Field(..., description="Total generation requests")
     successful_requests: int = Field(..., description="Successful generation requests")
     failed_requests: int = Field(..., description="Failed generation requests")

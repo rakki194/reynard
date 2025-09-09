@@ -17,7 +17,12 @@ export function useChat(options: UseChatOptions = {}) {
     try {
       // Stub implementation
       console.log('Sending chat message:', request);
-      return { response: 'This is a stub response', context: {} };
+      return { 
+        success: true, 
+        response: 'This is a stub response', 
+        model: request.model || 'llama3.1',
+        processingTime: 1.0
+      };
     } finally {
       setIsLoading(false);
     }

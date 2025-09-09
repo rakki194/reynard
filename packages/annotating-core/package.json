@@ -53,7 +53,8 @@
   ],
   "dependencies": {
     "reynard-core": "workspace:*",
-    "reynard-service-manager": "workspace:*"
+    "reynard-service-manager": "workspace:*",
+    "reynard-ai-shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

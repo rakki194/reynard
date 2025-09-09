@@ -5,21 +5,26 @@
  * Extends the base gallery types with AI-specific functionality.
  */
 
-// Note: These imports will be available when the packages are built
-// For now, we'll define the types locally to avoid build errors
+// Import types from ai-shared for consistency
+import type {
+  CaptionType,
+  CaptionResult,
+} from "reynard-ai-shared";
 
-export enum CaptionType {
-  CAPTION = "caption",
-  TAG = "tag",
-  DESCRIPTION = "description",
-}
+// Re-export for convenience
+export type { CaptionType, CaptionResult } from "reynard-ai-shared";
+export { CaptionType } from "reynard-ai-shared";
 
-export interface CaptionResult {
+// Create a compatible CaptionResult interface for gallery-ai
+export interface GalleryCaptionResult {
   success: boolean;
-  caption: string;
-  processingTime: number;
-  captionType: string;
+  caption?: string;
+  processingTime?: number;
+  captionType?: CaptionType;
   generator: string;
+  imagePath: string;
+  error?: string;
+  metadata?: Record<string, any>;
 }
 
 export interface AnnotationProgress {
@@ -215,7 +220,7 @@ export interface AIGalleryCallbacks {
   onCaptionGenerationStart?: (item: FileItem, generator: string) => void;
 
   /** Called when caption generation completes */
-  onCaptionGenerationComplete?: (item: FileItem, result: CaptionResult) => void;
+  onCaptionGenerationComplete?: (item: FileItem, result: GalleryCaptionResult) => void;
 
   /** Called when caption generation fails */
   onCaptionGenerationError?: (item: FileItem, error: string) => void;
@@ -227,7 +232,7 @@ export interface AIGalleryCallbacks {
   onBatchProcessingProgress?: (progress: AnnotationProgress) => void;
 
   /** Called when batch processing completes */
-  onBatchProcessingComplete?: (results: CaptionResult[]) => void;
+  onBatchProcessingComplete?: (results: GalleryCaptionResult[]) => void;
 
   /** Called when batch processing fails */
   onBatchProcessingError?: (error: string) => void;
@@ -397,13 +402,13 @@ export interface UseGalleryAIReturn {
   generateCaption: (
     item: FileItem,
     generator: string,
-  ) => Promise<CaptionResult>;
+  ) => Promise<GalleryCaptionResult>;
 
   /** Batch annotate multiple items */
   batchAnnotate: (
     items: FileItem[],
     generator: string,
-  ) => Promise<CaptionResult[]>;
+  ) => Promise<GalleryCaptionResult[]>;
 
   /** Update AI configuration */
   updateAIConfig: (config: Partial<AIGalleryConfig>) => void;
@@ -414,8 +419,8 @@ export interface UseGalleryAIReturn {
   /** Check if generator is available */
   isGeneratorAvailable: (generator: string) => boolean;
 
-  /** Get annotation manager */
-  getAnnotationManager: () => any;
+  /** Get annotation service */
+  getAnnotationService: () => any;
 
   /** Clear AI state */
   clearAIState: () => void;

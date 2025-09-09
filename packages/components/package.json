@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "reynard-charts": "workspace:*",
+    "reynard-colors": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-themes": "workspace:*",

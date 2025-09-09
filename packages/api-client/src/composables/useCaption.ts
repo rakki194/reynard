@@ -17,7 +17,12 @@ export function useCaption(options: UseCaptionOptions = {}) {
     try {
       // Stub implementation
       console.log('Generating caption for:', request);
-      return { caption: 'Generated caption', confidence: 0.95 };
+      return { 
+        success: true, 
+        imagePath: request.imagePath, 
+        generatorName: request.generatorName, 
+        caption: 'Generated caption' 
+      };
     } finally {
       setIsGenerating(false);
     }
@@ -26,8 +31,8 @@ export function useCaption(options: UseCaptionOptions = {}) {
   const getGenerators = async (): Promise<GeneratorInfo[]> => {
     // Stub implementation
     return [
-      { name: 'florence2', description: 'Microsoft Florence2', supported_formats: ['jpg', 'png'] },
-      { name: 'blip2', description: 'BLIP-2', supported_formats: ['jpg', 'png'] }
+      { name: 'florence2', description: 'Microsoft Florence2', version: '1.0', captionType: 'image', isAvailable: true, isLoaded: true, configSchema: {}, features: [], modelCategory: 'vision' },
+      { name: 'blip2', description: 'BLIP-2', version: '1.0', captionType: 'image', isAvailable: true, isLoaded: true, configSchema: {}, features: [], modelCategory: 'vision' }
     ];
   };
 

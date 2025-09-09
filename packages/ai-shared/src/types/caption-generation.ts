@@ -21,6 +21,8 @@ export interface CaptionTask {
   config?: ModelConfig;
   postProcess?: boolean;
   force?: boolean;
+  priority?: number; // Higher numbers = higher priority
+  captionType?: CaptionType; // Specific caption type to generate
   metadata?: Record<string, any>;
 }
 
@@ -28,12 +30,15 @@ export interface CaptionResult {
   imagePath: string;
   generatorName: string;
   success: boolean;
-  caption: string;
-  captionType: CaptionType;
-  processingTime: number;
+  caption?: string; // Optional for failed results
+  captionType?: CaptionType;
+  processingTime?: number;
   confidence?: number;
   error?: string;
+  errorType?: string; // Error classification
+  retryable?: boolean; // Whether the error is retryable
   metadata?: Record<string, any>;
+  timestamp?: Date;
 }
 
 export interface PostProcessingRules {

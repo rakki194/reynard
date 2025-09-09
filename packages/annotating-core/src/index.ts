@@ -14,6 +14,16 @@ export {
   BackendAnnotationService,
   createBackendAnnotationService,
 } from "./services/BackendAnnotationService.js";
+export {
+  AISharedBackendAnnotationService,
+  type AISharedBackendAnnotationServiceConfig,
+} from "./services/AISharedBackendAnnotationService.js";
+export {
+  AnnotationServiceRegistry,
+  getAnnotationServiceRegistry,
+  resetAnnotationServiceRegistry,
+  createDefaultAnnotationService,
+} from "./services/AnnotationServiceRegistry.js";
 
 // API clients
 export {

@@ -1,32 +1,16 @@
 /**
  * Task and result interfaces for Reynard annotation system
  *
- * This module defines the core interfaces for caption generation
- * tasks and their results.
+ * This module re-exports the core interfaces for caption generation
+ * tasks and their results from ai-shared to ensure consistency.
  */
 
-import { CaptionType, ErrorType } from "./enums";
+// Re-export types from ai-shared to maintain consistency
+export type {
+  CaptionTask,
+  CaptionResult,
+  CaptionType,
+} from "reynard-ai-shared";
 
-export interface CaptionTask {
-  imagePath: string;
-  generatorName: string;
-  config?: Record<string, any>;
-  postProcess?: boolean;
-  force?: boolean;
-  priority?: number; // Higher numbers = higher priority
-  metadata?: Record<string, any>;
-}
-
-export interface CaptionResult {
-  imagePath: string;
-  generatorName: string;
-  success: boolean;
-  caption?: string;
-  error?: string;
-  errorType?: ErrorType;
-  retryable?: boolean;
-  processingTime?: number;
-  captionType?: CaptionType;
-  metadata?: Record<string, any>;
-  timestamp?: Date;
-}
+// Re-export the enum for backward compatibility
+export { CaptionType } from "reynard-ai-shared";

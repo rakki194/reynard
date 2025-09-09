@@ -3,6 +3,9 @@
  * Using Reynard's CSS conventions and design system
  */
 
+/* Import advanced styles */
+@import './components/RAGAdvancedStyles.css';
+
 /* ==========================================================================
    RAG Search Container
    ========================================================================== */

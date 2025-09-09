@@ -3,7 +3,7 @@ Data models for Ollama service.
 """
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class OllamaConfig(BaseModel):
@@ -55,12 +55,14 @@ class OllamaModelInfo(BaseModel):
 
 class OllamaStats(BaseModel):
     """Statistics for Ollama service."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     total_requests: int = Field(..., description="Total chat requests")
     successful_requests: int = Field(..., description="Successful chat requests")
     failed_requests: int = Field(..., description="Failed chat requests")
     average_processing_time: float = Field(..., description="Average processing time in seconds")
     total_tokens_generated: int = Field(..., description="Total tokens generated")
-    model_usage: Dict[str, int] = Field(..., description="Model usage statistics")
+    usage_stats: Dict[str, int] = Field(..., description="Model usage statistics", alias="model_usage")
     assistant_usage: Dict[str, int] = Field(..., description="Assistant usage statistics")
     tools_usage: Dict[str, int] = Field(..., description="Tools usage statistics")
     error_rate: float = Field(..., description="Error rate percentage")

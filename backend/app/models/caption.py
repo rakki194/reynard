@@ -66,6 +66,7 @@ class GeneratorInfo(BaseModel):
 
 class ModelStatus(BaseModel):
     """Status information for a model."""
+    model_config = ConfigDict(protected_namespaces=())
     
     model_id: str = Field(..., description="Model identifier")
     name: str = Field(..., description="Model name")
@@ -79,6 +80,7 @@ class ModelStatus(BaseModel):
 
 class ModelManagementRequest(BaseModel):
     """Request model for model management operations."""
+    model_config = ConfigDict(protected_namespaces=())
     
     model_id: str = Field(..., description="Model identifier")
     action: str = Field(..., description="Action to perform (load, unload, download)")
@@ -87,6 +89,7 @@ class ModelManagementRequest(BaseModel):
 
 class ModelManagementResponse(BaseModel):
     """Response model for model management operations."""
+    model_config = ConfigDict(protected_namespaces=())
     
     success: bool = Field(..., description="Whether operation was successful")
     message: str = Field(..., description="Operation result message")
