@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sage - ML Analysis Core - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Sage - ML Analysis Core</h1>
+      <div class="markdown-content"><h1>Sage - ML Analysis Core</h1>
+<p>A comprehensive machine learning analysis toolkit for sentiment analysis, data processing, and model training.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Sentiment Analysis</strong>: Multiple backends (TextBlob, NLTK, BERT) with confidence scoring</li>
+<li><strong>Data Analysis</strong>: Comprehensive data analysis and reporting tools</li>
+<li><strong>Model Training</strong>: Utilities for training and managing ML models</li>
+<li><strong>Data Validation</strong>: Quality assessment and validation tools</li>
+<li><strong>Report Generation</strong>: Markdown and JSON report generation</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">pip install sage</code></pre><h2>Quick Start</h2>
+<h3>Sentiment Analysis</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> SentimentAnalyzer, EnhancedSentimentAnalyzer
+
+<span class="hljs-comment"># Basic sentiment analysis</span>
+analyzer = SentimentAnalyzer()
+result = analyzer.analyze_text(<span class="hljs-string">&quot;I love this product! It&#x27;s amazing.&quot;</span>)
+
+<span class="hljs-built_in">print</span>(result)
+<span class="hljs-comment"># Output: {</span>
+<span class="hljs-comment">#     &#x27;sentiment&#x27;: &#x27;positive&#x27;,</span>
+<span class="hljs-comment">#     &#x27;scores&#x27;: {&#x27;positive&#x27;: 0.8, &#x27;negative&#x27;: 0.0, &#x27;neutral&#x27;: 0.2, &#x27;compound&#x27;: 0.8},</span>
+<span class="hljs-comment">#     &#x27;confidence&#x27;: 1.0,</span>
+<span class="hljs-comment">#     &#x27;methods_used&#x27;: [&#x27;textblob&#x27;, &#x27;nltk&#x27;]</span>
+<span class="hljs-comment"># }</span>
+
+<span class="hljs-comment"># Enhanced analysis with additional features</span>
+enhanced_analyzer = EnhancedSentimentAnalyzer()
+enhanced_result = enhanced_analyzer.analyze_text(<span class="hljs-string">&quot;This is a great product!&quot;</span>)
+
+<span class="hljs-built_in">print</span>(enhanced_result)
+<span class="hljs-comment"># Output includes additional features like text statistics and confidence scoring</span></code></pre><h3>Data Analysis and Reporting</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> AnalysisReporter, MarkdownGenerator
+
+<span class="hljs-comment"># Generate reports from sentiment analysis results</span>
+reporter = AnalysisReporter()
+markdown_content = reporter.generate_markdown_report(
+    data=articles_with_sentiment,
+    output_file=<span class="hljs-string">&quot;sentiment_report.md&quot;</span>,
+    title=<span class="hljs-string">&quot;Sentiment Analysis Report&quot;</span>
+)
+
+<span class="hljs-comment"># Generate comprehensive markdown reports</span>
+generator = MarkdownGenerator()
+generator.generate_articles_summary(
+    articles=articles,
+    output_file=<span class="hljs-string">&quot;articles_summary.md&quot;</span>
+)</code></pre><h3>Model Training</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> TrainingDataManager, ModelTrainer, ModelEvaluator
+
+<span class="hljs-comment"># Organize and manage training data</span>
+data_manager = TrainingDataManager(<span class="hljs-string">&quot;training_data&quot;</span>)
+organized_data = data_manager.load_and_organize_data()
+
+<span class="hljs-comment"># Train models</span>
+trainer = ModelTrainer(<span class="hljs-string">&quot;models&quot;</span>)
+results = trainer.train_from_directory(
+    data_dir=<span class="hljs-string">&quot;training_data&quot;</span>,
+    model_name=<span class="hljs-string">&quot;sentiment_classifier&quot;</span>
+)
+
+<span class="hljs-comment"># Evaluate models</span>
+evaluator = ModelEvaluator()
+evaluation = evaluator.evaluate_model(
+    model_path=<span class="hljs-string">&quot;models/sentiment_classifier&quot;</span>,
+    test_data=test_data
+)</code></pre><h2>Components</h2>
+<h3>Sentiment Analysis</h3>
+<ul>
+<li><strong>SentimentAnalyzer</strong>: Main sentiment analyzer with multiple backends</li>
+<li><strong>TextBlobAnalyzer</strong>: TextBlob-based sentiment analysis</li>
+<li><strong>NLTKAnalyzer</strong>: NLTK VADER sentiment analysis</li>
+<li><strong>BertAnalyzer</strong>: BERT-based sentiment analysis (placeholder)</li>
+<li><strong>EnhancedSentimentAnalyzer</strong>: Advanced features and confidence scoring</li>
+</ul>
+<h3>Analysis &amp; Reporting</h3>
+<ul>
+<li><strong>AnalysisReporter</strong>: Generate reports from sentiment analysis results</li>
+<li><strong>MarkdownGenerator</strong>: Create comprehensive markdown reports</li>
+<li><strong>SentimentStatistics</strong>: Calculate statistics from sentiment data</li>
+<li><strong>DataAnalyzer</strong>: Analyze various data types</li>
+<li><strong>StructuralAnalyzer</strong>: Analyze data structure and patterns</li>
+<li><strong>TrendAnalyzer</strong>: Analyze trends in data over time</li>
+<li><strong>SimilarityNetwork</strong>: Analyze similarity between data points</li>
+<li><strong>TopicModeling</strong>: Discover topics in text data</li>
+<li><strong>Summarizer</strong>: Generate text summaries</li>
+</ul>
+<h3>Training</h3>
+<ul>
+<li><strong>TrainingDataManager</strong>: Organize and manage training datasets</li>
+<li><strong>ModelTrainer</strong>: Train machine learning models</li>
+<li><strong>ModelEvaluator</strong>: Evaluate trained models</li>
+<li><strong>ModelManager</strong>: Manage trained models</li>
+</ul>
+<h3>Utilities</h3>
+<ul>
+<li><strong>SageConfig</strong>: Configuration management with Pydantic</li>
+<li><strong>DataValidator</strong>: Validate data for processing</li>
+<li><strong>QualityValidator</strong>: Assess data quality</li>
+<li><strong>Logging</strong>: Comprehensive logging utilities</li>
+</ul>
+<h2>Configuration</h2>
+<p>Sage uses Pydantic for configuration management. You can configure it through environment variables or programmatically:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> SageConfig
+
+<span class="hljs-comment"># Use default configuration</span>
+config = SageConfig()
+
+<span class="hljs-comment"># Customize configuration</span>
+config = SageConfig(
+    sentiment_min_text_length=<span class="hljs-number">20</span>,
+    training_batch_size=<span class="hljs-number">64</span>,
+    log_level=<span class="hljs-string">&quot;DEBUG&quot;</span>
+)
+
+<span class="hljs-comment"># Environment variables (prefixed with SAGE_)</span>
+<span class="hljs-comment"># SAGE_SENTIMENT_MIN_TEXT_LENGTH=20</span>
+<span class="hljs-comment"># SAGE_TRAINING_BATCH_SIZE=64</span>
+<span class="hljs-comment"># SAGE_LOG_LEVEL=DEBUG</span></code></pre><h2>Examples</h2>
+<h3>Batch Sentiment Analysis</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> SentimentAnalyzer
+
+analyzer = SentimentAnalyzer()
+
+<span class="hljs-comment"># Analyze multiple comments</span>
+comments = [
+    {<span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Great product!&quot;</span>, <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;user1&quot;</span>},
+    {<span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Not satisfied with the quality.&quot;</span>, <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;user2&quot;</span>},
+    {<span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;Amazing service and fast delivery.&quot;</span>, <span class="hljs-string">&quot;author&quot;</span>: <span class="hljs-string">&quot;user3&quot;</span>}
+]
+
+analyzed_comments = analyzer.analyze_comments(comments)
+
+<span class="hljs-comment"># Save results</span>
+analyzer.save_results(analyzed_comments, <span class="hljs-string">&quot;sentiment_results.json&quot;</span>)</code></pre><h3>Comprehensive Analysis</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> sage <span class="hljs-keyword">import</span> (
+    SentimentAnalyzer, 
+    AnalysisReporter, 
+    MarkdownGenerator,
+    SentimentStatistics
+)
+
+<span class="hljs-comment"># Perform sentiment analysis</span>
+analyzer = SentimentAnalyzer()
+articles_with_sentiment = analyzer.analyze_articles(articles)
+
+<span class="hljs-comment"># Generate statistics</span>
+stats = SentimentStatistics()
+overall_stats = stats.calculate_overall_statistics(articles_with_sentiment)
+
+<span class="hljs-comment"># Create reports</span>
+reporter = AnalysisReporter()
+reporter.generate_markdown_report(
+    articles_with_sentiment,
+    <span class="hljs-string">&quot;comprehensive_report.md&quot;</span>,
+    <span class="hljs-string">&quot;Comprehensive Sentiment Analysis Report&quot;</span>
+)
+
+<span class="hljs-comment"># Generate markdown summary</span>
+generator = MarkdownGenerator()
+generator.generate_articles_summary(
+    articles,
+    <span class="hljs-string">&quot;articles_summary.md&quot;</span>
+)</code></pre><h2>Development</h2>
+<h3>Installation for Development</h3>
+<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> &lt;repository-url&gt;
+<span class="hljs-built_in">cd</span> sage
+pip install -e <span class="hljs-string">&quot;.[dev]&quot;</span></code></pre><h3>Running Tests</h3>
+<pre><code class="hljs language-bash">pytest tests/</code></pre><h3>Code Formatting</h3>
+<pre><code class="hljs language-bash">black sage/
+isort sage/</code></pre><h2>Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Make your changes</li>
+<li>Add tests</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<h2>Roadmap</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Implement BERT sentiment analysis</li>
+<li><input disabled="" type="checkbox"> Add more sophisticated topic modeling</li>
+<li><input disabled="" type="checkbox"> Implement advanced trend analysis</li>
+<li><input disabled="" type="checkbox"> Add support for more ML frameworks</li>
+<li><input disabled="" type="checkbox"> Create web interface for analysis</li>
+<li><input disabled="" type="checkbox"> Add real-time analysis capabilities</li>
+<li><input disabled="" type="checkbox"> Implement model versioning</li>
+<li><input disabled="" type="checkbox"> Add distributed training support</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

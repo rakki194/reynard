@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊> Corrected Modular Yipyap Rewrite Plan - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊> Corrected Modular Yipyap Rewrite Plan</h1>
+      <div class="markdown-content"><h1>🦊&gt; Corrected Modular Yipyap Rewrite Plan</h1>
+<h2><strong>Strategic Overview</strong></h2>
+<p>After rescanning the codebase, I now understand that <strong>Reynard already has a sophisticated backend system with complete caption generation capabilities</strong>. The real work is creating <strong>UI components</strong> that provide user interfaces for these existing backend capabilities, not rewriting the entire system.</p>
+<hr>
+<h2><strong>🎯 Corrected Strategy: UI Components for Existing Backend</strong></h2>
+<p><strong>Key Insight</strong>: Reynard&#39;s backend is complete and sophisticated. The frontend architecture is correct. <strong>What&#39;s missing are UI components</strong> that make the backend capabilities accessible to users.</p>
+<h3><strong>Why This Approach Works</strong></h3>
+<ol>
+<li><strong>Leverage Existing Backend</strong>: Use Reynard&#39;s complete caption generation system</li>
+<li><strong>Build UI Components</strong>: Create user interfaces for existing backend capabilities</li>
+<li><strong>Enhance Existing Packages</strong>: Add multi-modal support to existing gallery</li>
+<li><strong>Maintain Architecture</strong>: Keep Reynard&#39;s superior modular design</li>
+</ol>
+<hr>
+<h2><strong>📦 Phase 1: Caption Generation UI Components (Weeks 1-2)</strong></h2>
+<h3><strong>1.1 Caption Generation Interface</strong> 🚨 <strong>CRITICAL</strong></h3>
+<p><strong>Target</strong>: Create UI components for caption generation</p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>✅ Backend caption generation system complete</li>
+<li>✅ Frontend backend integration complete</li>
+<li>❌ No UI components for caption generation</li>
+</ul>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/caption-ui/src/components/CaptionGenerator.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">CaptionGenerator</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">CaptionGeneratorProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [selectedModel, setSelectedModel] = createSignal&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;jtp2&quot;</span>);
+  <span class="hljs-keyword">const</span> [imageFile, setImageFile] = createSignal&lt;<span class="hljs-title class_">File</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [isGenerating, setIsGenerating] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [result, setResult] = createSignal&lt;<span class="hljs-title class_">CaptionResult</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  
+  <span class="hljs-keyword">const</span> manager = <span class="hljs-title function_">useBackendAnnotationManager</span>();
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateCaption</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">imageFile</span>()) <span class="hljs-keyword">return</span>;
+    
+    <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> <span class="hljs-attr">task</span>: <span class="hljs-title class_">CaptionTask</span> = {
+        <span class="hljs-attr">imagePath</span>: <span class="hljs-title function_">imageFile</span>()!.<span class="hljs-property">name</span>,
+        <span class="hljs-attr">generatorName</span>: <span class="hljs-title function_">selectedModel</span>(),
+        <span class="hljs-attr">config</span>: { <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.2</span> },
+        <span class="hljs-attr">postProcess</span>: <span class="hljs-literal">true</span>
+      };
+      
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">generateCaption</span>(task);
+      <span class="hljs-title function_">setResult</span>(result);
+    } <span class="hljs-keyword">finally</span> {
+      <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">false</span>);
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;caption-generator&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ModelSelector</span> 
+        <span class="hljs-attr">selected</span>=<span class="hljs-string">{selectedModel()}</span> 
+        <span class="hljs-attr">onSelect</span>=<span class="hljs-string">{setSelectedModel}</span>
+        <span class="hljs-attr">available</span>=<span class="hljs-string">{manager.getAvailableGenerators()}</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ImageUpload</span> 
+        <span class="hljs-attr">file</span>=<span class="hljs-string">{imageFile()}</span> 
+        <span class="hljs-attr">onFileChange</span>=<span class="hljs-string">{setImageFile}</span>
+        <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/*&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">GenerateButton</span> 
+        <span class="hljs-attr">onClick</span>=<span class="hljs-string">{generateCaption}</span>
+        <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!imageFile()</span> || <span class="hljs-attr">isGenerating</span>()}
+        <span class="hljs-attr">loading</span>=<span class="hljs-string">{isGenerating()}</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{result()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">CaptionResult</span> <span class="hljs-attr">result</span>=<span class="hljs-string">{result()!}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Interactive caption generation interface</li>
+<li><input disabled="" type="checkbox"> Model selection component</li>
+<li><input disabled="" type="checkbox"> Image upload and preview</li>
+<li><input disabled="" type="checkbox"> Progress tracking and results display</li>
+<li><input disabled="" type="checkbox"> Error handling and retry logic</li>
+</ul>
+<h3><strong>1.2 Model Management Dashboard</strong> 🚨 <strong>CRITICAL</strong></h3>
+<p><strong>Target</strong>: Create UI for model management</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/caption-ui/src/components/ModelManager.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">ModelManager</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">ModelManagerProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [models, setModels] = createSignal&lt;<span class="hljs-title class_">GeneratorInfo</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [loadedModels, setLoadedModels] = createSignal&lt;<span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>());
+  <span class="hljs-keyword">const</span> [healthStatus, setHealthStatus] = createSignal&lt;<span class="hljs-title class_">HealthStatus</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  
+  <span class="hljs-keyword">const</span> manager = <span class="hljs-title function_">useBackendAnnotationManager</span>();
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadModel</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">modelName</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">loadModel</span>(modelName);
+      <span class="hljs-title function_">setLoadedModels</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([...prev, modelName]));
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Failed to load model:&quot;</span>, error);
+    }
+  };
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">unloadModel</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">modelName</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">unloadModel</span>(modelName);
+      <span class="hljs-title function_">setLoadedModels</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> newSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(prev);
+        newSet.<span class="hljs-title function_">delete</span>(modelName);
+        <span class="hljs-keyword">return</span> newSet;
+      });
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Failed to unload model:&quot;</span>, error);
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;model-manager&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;models-grid&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{models()}</span>&gt;</span>
+          {(model) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">ModelCard</span> 
+              <span class="hljs-attr">model</span>=<span class="hljs-string">{model}</span>
+              <span class="hljs-attr">isLoaded</span>=<span class="hljs-string">{loadedModels().has(model.name)}</span>
+              <span class="hljs-attr">onLoad</span>=<span class="hljs-string">{()</span> =&gt;</span> loadModel(model.name)}
+              onUnload={() =&gt; unloadModel(model.name)}
+            /&gt;
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">HealthStatus</span> <span class="hljs-attr">health</span>=<span class="hljs-string">{healthStatus()}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Model status dashboard</li>
+<li><input disabled="" type="checkbox"> Load/unload controls</li>
+<li><input disabled="" type="checkbox"> Model information display</li>
+<li><input disabled="" type="checkbox"> Health monitoring interface</li>
+<li><input disabled="" type="checkbox"> Usage statistics visualization</li>
+</ul>
+<h3><strong>1.3 Batch Processing Interface</strong> 🚨 <strong>CRITICAL</strong></h3>
+<p><strong>Target</strong>: Create UI for batch caption generation</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/caption-ui/src/components/BatchProcessor.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">BatchProcessor</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">BatchProcessorProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [files, setFiles] = createSignal&lt;<span class="hljs-title class_">File</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [selectedModel, setSelectedModel] = createSignal&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;jtp2&quot;</span>);
+  <span class="hljs-keyword">const</span> [progress, setProgress] = createSignal&lt;<span class="hljs-title class_">BatchProgress</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [results, setResults] = createSignal&lt;<span class="hljs-title class_">CaptionResult</span>[]&gt;([]);
+  
+  <span class="hljs-keyword">const</span> manager = <span class="hljs-title function_">useBackendAnnotationManager</span>();
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">processBatch</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">tasks</span>: <span class="hljs-title class_">CaptionTask</span>[] = <span class="hljs-title function_">files</span>().<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">file</span> =&gt;</span> ({
+      <span class="hljs-attr">imagePath</span>: file.<span class="hljs-property">name</span>,
+      <span class="hljs-attr">generatorName</span>: <span class="hljs-title function_">selectedModel</span>(),
+      <span class="hljs-attr">config</span>: { <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.2</span> },
+      <span class="hljs-attr">postProcess</span>: <span class="hljs-literal">true</span>
+    }));
+    
+    <span class="hljs-title function_">setProgress</span>({ <span class="hljs-attr">completed</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">total</span>: tasks.<span class="hljs-property">length</span>, <span class="hljs-attr">percentage</span>: <span class="hljs-number">0</span> });
+    
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">generateBatchCaptions</span>(tasks, <span class="hljs-function">(<span class="hljs-params">progress</span>) =&gt;</span> {
+        <span class="hljs-title function_">setProgress</span>(progress);
+      });
+      <span class="hljs-title function_">setResults</span>(results);
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Batch processing failed:&quot;</span>, error);
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;batch-processor&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">FileUploadZone</span> 
+        <span class="hljs-attr">files</span>=<span class="hljs-string">{files()}</span>
+        <span class="hljs-attr">onFilesChange</span>=<span class="hljs-string">{setFiles}</span>
+        <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/*&quot;</span>
+        <span class="hljs-attr">multiple</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ModelSelector</span> 
+        <span class="hljs-attr">selected</span>=<span class="hljs-string">{selectedModel()}</span>
+        <span class="hljs-attr">onSelect</span>=<span class="hljs-string">{setSelectedModel}</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{progress()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ProgressBar</span> <span class="hljs-attr">progress</span>=<span class="hljs-string">{progress()!}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">BatchResults</span> <span class="hljs-attr">results</span>=<span class="hljs-string">{results()}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Batch upload interface</li>
+<li><input disabled="" type="checkbox"> Progress tracking</li>
+<li><input disabled="" type="checkbox"> Result management</li>
+<li><input disabled="" type="checkbox"> Error handling display</li>
+<li><input disabled="" type="checkbox"> Export functionality</li>
+</ul>
+<hr>
+<h2><strong>📦 Phase 2: Enhanced Gallery System (Weeks 3-4)</strong></h2>
+<h3><strong>2.1 Multi-Modal Gallery Enhancement</strong> 🔥 <strong>HIGH PRIORITY</strong></h3>
+<p><strong>Target</strong>: Add multi-modal support to existing <code>reynard-gallery</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>✅ Basic gallery system complete</li>
+<li>❌ No audio, video, text support</li>
+<li>❌ No semantic search</li>
+</ul>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/gallery/src/components/MultiModalGrid.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">MultiModalGrid</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">MultiModalGridProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [items, setItems] = createSignal&lt;(<span class="hljs-title class_">ImageItem</span> | <span class="hljs-title class_">AudioItem</span> | <span class="hljs-title class_">VideoItem</span> | <span class="hljs-title class_">TextItem</span>)[]&gt;([]);
+  <span class="hljs-keyword">const</span> [searchQuery, setSearchQuery] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [selectedItems, setSelectedItems] = createSignal&lt;<span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>());
+  
+  <span class="hljs-keyword">const</span> filteredItems = <span class="hljs-title function_">createMemo</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> query = <span class="hljs-title function_">searchQuery</span>().<span class="hljs-title function_">toLowerCase</span>();
+    <span class="hljs-keyword">if</span> (!query) <span class="hljs-keyword">return</span> <span class="hljs-title function_">items</span>();
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">items</span>().<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> 
+      item.<span class="hljs-property">name</span>.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">includes</span>(query) ||
+      item.<span class="hljs-property">metadata</span>?.<span class="hljs-property">tags</span>?.<span class="hljs-title function_">some</span>(<span class="hljs-function"><span class="hljs-params">tag</span> =&gt;</span> tag.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">includes</span>(query))
+    );
+  });
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;multi-modal-grid&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">SemanticSearch</span> 
+        <span class="hljs-attr">query</span>=<span class="hljs-string">{searchQuery()}</span>
+        <span class="hljs-attr">onQueryChange</span>=<span class="hljs-string">{setSearchQuery}</span>
+        <span class="hljs-attr">onResults</span>=<span class="hljs-string">{setItems}</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;grid-container&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{filteredItems()}</span>&gt;</span>
+          {(item) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> 
+              <span class="hljs-attr">when</span>=<span class="hljs-string">{item.type</span> === <span class="hljs-string">&quot;image&quot;</span>}
+              <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>
+                &lt;<span class="hljs-attr">Show</span> 
+                  <span class="hljs-attr">when</span>=<span class="hljs-string">{item.type</span> === <span class="hljs-string">&quot;audio&quot;</span>}
+                  <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>
+                    &lt;<span class="hljs-attr">Show</span> 
+                      <span class="hljs-attr">when</span>=<span class="hljs-string">{item.type</span> === <span class="hljs-string">&quot;video&quot;</span>}
+                      <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">TextItem</span> <span class="hljs-attr">item</span>=<span class="hljs-string">{item</span> <span class="hljs-attr">as</span> <span class="hljs-attr">TextItem</span>} /&gt;</span>}
+                    &gt;
+                      <span class="hljs-tag">&lt;<span class="hljs-name">VideoItem</span> <span class="hljs-attr">item</span>=<span class="hljs-string">{item</span> <span class="hljs-attr">as</span> <span class="hljs-attr">VideoItem</span>} /&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+                  }
+                &gt;
+                  <span class="hljs-tag">&lt;<span class="hljs-name">AudioItem</span> <span class="hljs-attr">item</span>=<span class="hljs-string">{item</span> <span class="hljs-attr">as</span> <span class="hljs-attr">AudioItem</span>} /&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+              }
+            &gt;
+              <span class="hljs-tag">&lt;<span class="hljs-name">ImageItem</span> <span class="hljs-attr">item</span>=<span class="hljs-string">{item</span> <span class="hljs-attr">as</span> <span class="hljs-attr">ImageItem</span>} /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Multi-modal grid component</li>
+<li><input disabled="" type="checkbox"> Audio, video, text item components</li>
+<li><input disabled="" type="checkbox"> Semantic search interface</li>
+<li><input disabled="" type="checkbox"> Advanced filtering</li>
+<li><input disabled="" type="checkbox"> Multi-select functionality</li>
+</ul>
+<h3><strong>2.2 Advanced Image Viewer</strong> 🔥 <strong>HIGH PRIORITY</strong></h3>
+<p><strong>Target</strong>: Enhance existing image viewer with advanced features</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/gallery/src/components/AdvancedImageViewer.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">AdvancedImageViewer</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">ImageViewerProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [zoom, setZoom] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-number">1</span>);
+  <span class="hljs-keyword">const</span> [pan, setPan] = <span class="hljs-title function_">createSignal</span>({ <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span> });
+  <span class="hljs-keyword">const</span> [isFullscreen, setIsFullscreen] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [showMetadata, setShowMetadata] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleZoom</span> = (<span class="hljs-params"><span class="hljs-attr">delta</span>: <span class="hljs-built_in">number</span></span>) =&gt; {
+    <span class="hljs-title function_">setZoom</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0.1</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-number">5</span>, prev + delta)));
+  };
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handlePan</span> = (<span class="hljs-params"><span class="hljs-attr">deltaX</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">deltaY</span>: <span class="hljs-built_in">number</span></span>) =&gt; {
+    <span class="hljs-title function_">setPan</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> ({
+      <span class="hljs-attr">x</span>: prev.<span class="hljs-property">x</span> + deltaX,
+      <span class="hljs-attr">y</span>: prev.<span class="hljs-property">y</span> + deltaY
+    }));
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;advanced-image-viewer&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;viewer-controls&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ZoomControls</span> <span class="hljs-attr">zoom</span>=<span class="hljs-string">{zoom()}</span> <span class="hljs-attr">onZoom</span>=<span class="hljs-string">{handleZoom}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PanControls</span> <span class="hljs-attr">onPan</span>=<span class="hljs-string">{handlePan}</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">FullscreenButton</span> 
+          <span class="hljs-attr">isFullscreen</span>=<span class="hljs-string">{isFullscreen()}</span>
+          <span class="hljs-attr">onToggle</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsFullscreen(!isFullscreen())}
+        /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">MetadataButton</span> 
+          <span class="hljs-attr">show</span>=<span class="hljs-string">{showMetadata()}</span>
+          <span class="hljs-attr">onToggle</span>=<span class="hljs-string">{()</span> =&gt;</span> setShowMetadata(!showMetadata())}
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;image-container&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">img</span> 
+          <span class="hljs-attr">src</span>=<span class="hljs-string">{props.imageUrl}</span>
+          <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span>
+            <span class="hljs-attr">transform:</span> `<span class="hljs-attr">scale</span>(${<span class="hljs-attr">zoom</span>()}) <span class="hljs-attr">translate</span>(${<span class="hljs-attr">pan</span>()<span class="hljs-attr">.x</span>}<span class="hljs-attr">px</span>, ${<span class="hljs-attr">pan</span>()<span class="hljs-attr">.y</span>}<span class="hljs-attr">px</span>)`,
+            <span class="hljs-attr">cursor:</span> <span class="hljs-attr">zoom</span>() &gt;</span> 1 ? &quot;grab&quot; : &quot;default&quot;
+          }}
+          onWheel={(e) =&gt; handleZoom(-e.deltaY * 0.001)}
+          onMouseDown={(e) =&gt; {
+            if (zoom() &gt; 1) {
+              // Implement pan logic
+            }
+          }}
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{showMetadata()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ImageMetadata</span> <span class="hljs-attr">metadata</span>=<span class="hljs-string">{props.metadata}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Zoom controls with mouse wheel</li>
+<li><input disabled="" type="checkbox"> Pan navigation with momentum</li>
+<li><input disabled="" type="checkbox"> Fullscreen mode</li>
+<li><input disabled="" type="checkbox"> Metadata display</li>
+<li><input disabled="" type="checkbox"> Keyboard shortcuts</li>
+</ul>
+<h3><strong>2.3 Dataset Cleaning Tools</strong> 🔥 <strong>HIGH PRIORITY</strong></h3>
+<p><strong>Target</strong>: Add AI-powered dataset cleaning to gallery</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/gallery/src/components/DatasetCleaningModal.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">DatasetCleaningModal</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">DatasetCleaningProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [duplicates, setDuplicates] = createSignal&lt;<span class="hljs-title class_">DuplicateGroup</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [selectedDuplicates, setSelectedDuplicates] = createSignal&lt;<span class="hljs-title class_">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>());
+  <span class="hljs-keyword">const</span> [isScanning, setIsScanning] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">scanForDuplicates</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-title function_">setIsScanning</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> duplicates = <span class="hljs-keyword">await</span> props.<span class="hljs-title function_">onScanDuplicates</span>();
+      <span class="hljs-title function_">setDuplicates</span>(duplicates);
+    } <span class="hljs-keyword">finally</span> {
+      <span class="hljs-title function_">setIsScanning</span>(<span class="hljs-literal">false</span>);
+    }
+  };
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">removeDuplicates</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> toRemove = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-title function_">selectedDuplicates</span>());
+    <span class="hljs-keyword">await</span> props.<span class="hljs-title function_">onRemoveDuplicates</span>(toRemove);
+    <span class="hljs-title function_">setDuplicates</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> prev.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">group</span> =&gt;</span> 
+      !group.<span class="hljs-property">items</span>.<span class="hljs-title function_">some</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> toRemove.<span class="hljs-title function_">includes</span>(item.<span class="hljs-property">id</span>))
+    ));
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;dataset-cleaning-modal&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;scan-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> 
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{scanForDuplicates}</span>
+          <span class="hljs-attr">loading</span>=<span class="hljs-string">{isScanning()}</span>
+          <span class="hljs-attr">disabled</span>=<span class="hljs-string">{isScanning()}</span>
+        &gt;</span>
+          Scan for Duplicates
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;duplicates-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{duplicates()}</span>&gt;</span>
+          {(group) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">DuplicateGroup</span> 
+              <span class="hljs-attr">group</span>=<span class="hljs-string">{group}</span>
+              <span class="hljs-attr">selected</span>=<span class="hljs-string">{selectedDuplicates()}</span>
+              <span class="hljs-attr">onSelectionChange</span>=<span class="hljs-string">{setSelectedDuplicates}</span>
+            /&gt;</span>
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;actions-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> 
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{removeDuplicates}</span>
+          <span class="hljs-attr">disabled</span>=<span class="hljs-string">{selectedDuplicates().size</span> === <span class="hljs-string">0}</span>
+          <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;danger&quot;</span>
+        &gt;</span>
+          Remove Selected ({selectedDuplicates().size})
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Duplicate detection interface</li>
+<li><input disabled="" type="checkbox"> Similarity analysis</li>
+<li><input disabled="" type="checkbox"> Bulk removal tools</li>
+<li><input disabled="" type="checkbox"> Preview and confirmation</li>
+<li><input disabled="" type="checkbox"> Progress tracking</li>
+</ul>
+<hr>
+<h2><strong>📦 Phase 3: Specialized UI Components (Weeks 5-6)</strong></h2>
+<h3><strong>3.1 Audio Processing Components</strong> ⚡ <strong>MEDIUM PRIORITY</strong></h3>
+<p><strong>Target</strong>: Create new <code>reynard-audio-ui</code> package</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/audio-ui/src/components/AudioGrid.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">AudioGrid</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">AudioGridProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [audioFiles, setAudioFiles] = createSignal&lt;<span class="hljs-title class_">AudioFile</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [selectedFile, setSelectedFile] = createSignal&lt;<span class="hljs-title class_">AudioFile</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [isPlaying, setIsPlaying] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;audio-grid&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;files-grid&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{audioFiles()}</span>&gt;</span>
+          {(file) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">AudioFileCard</span> 
+              <span class="hljs-attr">file</span>=<span class="hljs-string">{file}</span>
+              <span class="hljs-attr">isSelected</span>=<span class="hljs-string">{selectedFile()?.id</span> === <span class="hljs-string">file.id}</span>
+              <span class="hljs-attr">onSelect</span>=<span class="hljs-string">{()</span> =&gt;</span> setSelectedFile(file)}
+              onPlay={() =&gt; {
+                setSelectedFile(file);
+                setIsPlaying(true);
+              }}
+            /&gt;
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{selectedFile()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">AudioPlayer</span> 
+          <span class="hljs-attr">file</span>=<span class="hljs-string">{selectedFile()!}</span>
+          <span class="hljs-attr">isPlaying</span>=<span class="hljs-string">{isPlaying()}</span>
+          <span class="hljs-attr">onPlay</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsPlaying(true)}
+          onPause={() =&gt; setIsPlaying(false)}
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Audio grid component</li>
+<li><input disabled="" type="checkbox"> Audio player with controls</li>
+<li><input disabled="" type="checkbox"> Waveform visualization</li>
+<li><input disabled="" type="checkbox"> Audio processing tools</li>
+<li><input disabled="" type="checkbox"> Voice conversion interface</li>
+</ul>
+<h3><strong>3.2 LLM Text Generation Interface</strong> ⚡ <strong>MEDIUM PRIORITY</strong></h3>
+<p><strong>Target</strong>: Create new <code>reynard-llm-ui</code> package</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/llm-ui/src/components/TextGenerator.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">TextGenerator</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">TextGeneratorProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [prompt, setPrompt] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [selectedModel, setSelectedModel] = createSignal&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;gpt-4&quot;</span>);
+  <span class="hljs-keyword">const</span> [isGenerating, setIsGenerating] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [result, setResult] = createSignal&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;&quot;</span>);
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateText</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> props.<span class="hljs-title function_">onGenerate</span>({
+        <span class="hljs-attr">prompt</span>: <span class="hljs-title function_">prompt</span>(),
+        <span class="hljs-attr">model</span>: <span class="hljs-title function_">selectedModel</span>(),
+        <span class="hljs-attr">maxTokens</span>: <span class="hljs-number">1000</span>
+      });
+      <span class="hljs-title function_">setResult</span>(response.<span class="hljs-property">text</span>);
+    } <span class="hljs-keyword">finally</span> {
+      <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">false</span>);
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-generator&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;input-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ModelSelector</span> 
+          <span class="hljs-attr">selected</span>=<span class="hljs-string">{selectedModel()}</span>
+          <span class="hljs-attr">onSelect</span>=<span class="hljs-string">{setSelectedModel}</span>
+          <span class="hljs-attr">available</span>=<span class="hljs-string">{props.availableModels}</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TextArea</span> 
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{prompt()}</span>
+          <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setPrompt(e.target.value)}
+          placeholder=&quot;Enter your prompt...&quot;
+          rows={4}
+        /&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> 
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{generateText}</span>
+          <span class="hljs-attr">loading</span>=<span class="hljs-string">{isGenerating()}</span>
+          <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!prompt()</span> || <span class="hljs-attr">isGenerating</span>()}
+        &gt;</span>
+          Generate Text
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{result()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;result-section&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">TextArea</span> 
+            <span class="hljs-attr">value</span>=<span class="hljs-string">{result()}</span>
+            <span class="hljs-attr">readOnly</span>
+            <span class="hljs-attr">rows</span>=<span class="hljs-string">{8}</span>
+          /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;result-actions&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> navigator.clipboard.writeText(result())}&gt;
+              Copy
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setPrompt(result())}&gt;
+              Use as Prompt
+            <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Text generation interface</li>
+<li><input disabled="" type="checkbox"> Model selection</li>
+<li><input disabled="" type="checkbox"> Prompt engineering tools</li>
+<li><input disabled="" type="checkbox"> Text completion interface</li>
+<li><input disabled="" type="checkbox"> Result management</li>
+</ul>
+<h3><strong>3.3 Training Script Editor</strong> ⚡ <strong>MEDIUM PRIORITY</strong></h3>
+<p><strong>Target</strong>: Create new <code>reynard-development-ui</code> package</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/development-ui/src/components/TrainingEditor.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">TrainingEditor</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">TrainingEditorProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [code, setCode] = <span class="hljs-title function_">createSignal</span>(props.<span class="hljs-property">initialCode</span> || <span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [isRunning, setIsRunning] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [output, setOutput] = createSignal&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;&quot;</span>);
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">runScript</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-title function_">setIsRunning</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-title function_">setOutput</span>(<span class="hljs-string">&quot;&quot;</span>);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> props.<span class="hljs-title function_">onRunScript</span>(<span class="hljs-title function_">code</span>());
+      <span class="hljs-title function_">setOutput</span>(result.<span class="hljs-property">output</span>);
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-title function_">setOutput</span>(<span class="hljs-string">`Error: <span class="hljs-subst">${error.message}</span>`</span>);
+    } <span class="hljs-keyword">finally</span> {
+      <span class="hljs-title function_">setIsRunning</span>(<span class="hljs-literal">false</span>);
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;training-editor&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;editor-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MonacoEditor</span> 
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{code()}</span>
+          <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setCode}</span>
+          <span class="hljs-attr">language</span>=<span class="hljs-string">&quot;python&quot;</span>
+          <span class="hljs-attr">theme</span>=<span class="hljs-string">&quot;vs-dark&quot;</span>
+          <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;400px&quot;</span>
+        /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;controls-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> 
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{runScript}</span>
+          <span class="hljs-attr">loading</span>=<span class="hljs-string">{isRunning()}</span>
+          <span class="hljs-attr">disabled</span>=<span class="hljs-string">{isRunning()}</span>
+        &gt;</span>
+          Run Script
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setCode(&quot;&quot;)}&gt;
+          Clear
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{output()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;output-section&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{output()}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Code editor with syntax highlighting</li>
+<li><input disabled="" type="checkbox"> Script execution interface</li>
+<li><input disabled="" type="checkbox"> Output display</li>
+<li><input disabled="" type="checkbox"> File management</li>
+<li><input disabled="" type="checkbox"> Template system</li>
+</ul>
+<hr>
+<h2><strong>📦 Phase 4: Advanced Analytics (Weeks 7-8)</strong></h2>
+<h3><strong>4.1 ML-Specific Visualizations</strong> 🌟 <strong>LOW PRIORITY</strong></h3>
+<p><strong>Target</strong>: Enhance existing <code>reynard-charts</code> with ML components</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/charts/src/components/MLCharts.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">MLCharts</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">MLChartsProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ml-charts&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">EmbeddingDistributionChart</span> 
+        <span class="hljs-attr">data</span>=<span class="hljs-string">{props.embeddingData}</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Embedding Distribution&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ModelPerformanceChart</span> 
+        <span class="hljs-attr">data</span>=<span class="hljs-string">{props.performanceData}</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Model Performance&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PCAVarianceChart</span> 
+        <span class="hljs-attr">data</span>=<span class="hljs-string">{props.pcaData}</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;PCA Variance Analysis&quot;</span>
+      /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MultiDatasetChart</span> 
+        <span class="hljs-attr">data</span>=<span class="hljs-string">{props.datasetData}</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Multi-Dataset Comparison&quot;</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Embedding distribution charts</li>
+<li><input disabled="" type="checkbox"> Model performance visualization</li>
+<li><input disabled="" type="checkbox"> PCA analysis charts</li>
+<li><input disabled="" type="checkbox"> Multi-dataset comparison</li>
+<li><input disabled="" type="checkbox"> Quality assessment tools</li>
+</ul>
+<h3><strong>4.2 Performance Monitoring Dashboard</strong> 🌟 <strong>LOW PRIORITY</strong></h3>
+<p><strong>Target</strong>: Create new <code>reynard-monitoring-ui</code> package</p>
+<p><strong>Implementation Plan</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/monitoring-ui/src/components/PerformanceDashboard.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">PerformanceDashboard</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">PerformanceProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [metrics, setMetrics] = createSignal&lt;<span class="hljs-title class_">PerformanceMetrics</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [services, setServices] = createSignal&lt;<span class="hljs-title class_">ServiceStatus</span>[]&gt;([]);
+  
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;performance-dashboard&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;metrics-grid&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MetricCard</span> 
+          <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;CPU Usage&quot;</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{metrics()?.cpuUsage}</span>
+          <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;%&quot;</span>
+          <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;blue&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MetricCard</span> 
+          <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Memory Usage&quot;</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{metrics()?.memoryUsage}</span>
+          <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;MB&quot;</span>
+          <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;green&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MetricCard</span> 
+          <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;GPU Usage&quot;</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{metrics()?.gpuUsage}</span>
+          <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;%&quot;</span>
+          <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;purple&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MetricCard</span> 
+          <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Active Models&quot;</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{metrics()?.activeModels}</span>
+          <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;&quot;</span>
+          <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;orange&quot;</span>
+        /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;services-section&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{services()}</span>&gt;</span>
+          {(service) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">ServiceCard</span> 
+              <span class="hljs-attr">service</span>=<span class="hljs-string">{service}</span>
+              <span class="hljs-attr">onRestart</span>=<span class="hljs-string">{()</span> =&gt;</span> props.onRestartService(service.name)}
+            /&gt;
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><p><strong>Deliverables</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Performance metrics dashboard</li>
+<li><input disabled="" type="checkbox"> Service status monitoring</li>
+<li><input disabled="" type="checkbox"> Resource usage tracking</li>
+<li><input disabled="" type="checkbox"> Alert system</li>
+<li><input disabled="" type="checkbox"> System diagnostics</li>
+</ul>
+<hr>
+<h2><strong>🏗️ Implementation Architecture</strong></h2>
+<h3><strong>Package Structure</strong></h3>
+<p>Each new UI package follows Reynard&#39;s modular pattern:</p>
+<pre><code class="hljs">packages<span class="hljs-operator">/</span>[feature]-ui<span class="hljs-symbol">/</span>
+├── src<span class="hljs-symbol">/</span>
+│   ├── components<span class="hljs-symbol">/</span>          <span class="hljs-comment"># React/SolidJS components</span>
+│   ├── composables<span class="hljs-symbol">/</span>         <span class="hljs-comment"># Reusable logic modules</span>
+│   ├── types<span class="hljs-symbol">/</span>              <span class="hljs-comment"># TypeScript definitions</span>
+│   ├── utils<span class="hljs-symbol">/</span>              <span class="hljs-comment"># Utility functions</span>
+│   └── index.ts            <span class="hljs-comment"># Main exports</span>
+├── package.json
+├── tsconfig.json
+├── README.md
+└── tests<span class="hljs-symbol">/</span>
+    └── components<span class="hljs-operator">/</span></code></pre><h3><strong>Integration with Existing Backend</strong></h3>
+<p>All UI components connect to Reynard&#39;s existing backend:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/caption-ui/src/composables/useCaptionGeneration.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useCaptionGeneration</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> manager = <span class="hljs-title function_">useBackendAnnotationManager</span>();
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateCaption</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">task</span>: <span class="hljs-title class_">CaptionTask</span></span>) =&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">generateCaption</span>(task);
+  };
+  
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateBatch</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">tasks</span>: <span class="hljs-title class_">CaptionTask</span>[]</span>) =&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">generateBatchCaptions</span>(tasks);
+  };
+  
+  <span class="hljs-keyword">return</span> {
+    generateCaption,
+    generateBatch,
+    <span class="hljs-attr">availableGenerators</span>: manager.<span class="hljs-title function_">getAvailableGenerators</span>(),
+    <span class="hljs-attr">healthStatus</span>: manager.<span class="hljs-title function_">getHealthStatus</span>()
+  };
+}</code></pre><hr>
+<h2><strong>📊 Corrected Effort Estimation</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Work</th>
+<th>Effort</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Phase 1</strong></td>
+<td>Caption generation UI components</td>
+<td>8-10 days</td>
+<td>🚨 Critical</td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong></td>
+<td>Enhanced gallery with multi-modal</td>
+<td>10-12 days</td>
+<td>🔥 High</td>
+</tr>
+<tr>
+<td><strong>Phase 3</strong></td>
+<td>Specialized UI components</td>
+<td>12-15 days</td>
+<td>⚡ Medium</td>
+</tr>
+<tr>
+<td><strong>Phase 4</strong></td>
+<td>Advanced analytics and monitoring</td>
+<td>8-10 days</td>
+<td>🌟 Low</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>UI Components for existing backend</strong></td>
+<td><strong>38-47 days</strong></td>
+<td><strong>All phases</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2><strong>🎯 Success Criteria</strong></h2>
+<h3><strong>Phase 1 Success</strong></h3>
+<ul>
+<li><input disabled="" type="checkbox"> Interactive caption generation working</li>
+<li><input disabled="" type="checkbox"> Model management interface functional</li>
+<li><input disabled="" type="checkbox"> Batch processing UI complete</li>
+<li><input disabled="" type="checkbox"> Health monitoring dashboard active</li>
+</ul>
+<h3><strong>Phase 2 Success</strong></h3>
+<ul>
+<li><input disabled="" type="checkbox"> Multi-modal gallery working</li>
+<li><input disabled="" type="checkbox"> Advanced image viewer functional</li>
+<li><input disabled="" type="checkbox"> Semantic search operational</li>
+<li><input disabled="" type="checkbox"> Dataset cleaning tools working</li>
+</ul>
+<h3><strong>Phase 3 Success</strong></h3>
+<ul>
+<li><input disabled="" type="checkbox"> Audio processing components complete</li>
+<li><input disabled="" type="checkbox"> LLM text generation interface working</li>
+<li><input disabled="" type="checkbox"> Training script editor functional</li>
+<li><input disabled="" type="checkbox"> Service monitoring active</li>
+</ul>
+<h3><strong>Phase 4 Success</strong></h3>
+<ul>
+<li><input disabled="" type="checkbox"> ML visualizations working</li>
+<li><input disabled="" type="checkbox"> Performance monitoring complete</li>
+<li><input disabled="" type="checkbox"> Advanced analytics functional</li>
+<li><input disabled="" type="checkbox"> Full feature parity with Yipyap UI</li>
+</ul>
+<hr>
+<h2><strong>🚀 Next Steps</strong></h2>
+<ol>
+<li><strong>Start with Caption UI</strong> - Create the missing caption generation interface</li>
+<li><strong>Enhance Gallery</strong> - Add multi-modal support to existing gallery</li>
+<li><strong>Build Specialized Components</strong> - Create audio, LLM, and development tools</li>
+<li><strong>Add Advanced Analytics</strong> - Enhance charts with ML visualizations</li>
+<li><strong>Connect to Backend</strong> - Use existing backend integration throughout</li>
+</ol>
+<p>This corrected approach leverages Reynard&#39;s existing sophisticated backend system and focuses on creating the missing UI components that make these capabilities accessible to users.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

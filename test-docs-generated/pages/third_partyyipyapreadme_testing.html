@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing Solution for YipYap Backend - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Testing Solution for YipYap Backend</h1>
+      <div class="markdown-content"><h1>Testing Solution for YipYap Backend</h1>
+<h2>Problem Solved ✅</h2>
+<p>The backend tests were broken due to heavy imports in <code>main.py</code> that were being loaded during test collection. This caused:</p>
+<ul>
+<li>Slow test startup (taking minutes to start)</li>
+<li>Import errors due to missing dependencies</li>
+<li>Tests failing due to heavy model loading</li>
+</ul>
+<h2>Solution Implemented ✅</h2>
+<h3>1. Lightweight Test Runner</h3>
+<p>Created <code>run_tests_lightweight.py</code> that:</p>
+<ul>
+<li>Sets environment variables to disable heavy features</li>
+<li>Prevents loading of heavy models and services</li>
+<li>Provides a clean test environment</li>
+</ul>
+<h3>2. Environment Configuration</h3>
+<p>Added environment variables to disable heavy imports:</p>
+<ul>
+<li><code>DISABLE_MODEL_DOWNLOADS=true</code></li>
+<li><code>DISABLE_CAPTION_PRELOAD=true</code></li>
+<li><code>DISABLE_SMART_INDEXING=true</code></li>
+<li><code>DISABLE_RAG=true</code></li>
+<li><code>DISABLE_DIFFUSION_LLM=true</code></li>
+<li><code>DISABLE_TTS=true</code></li>
+<li><code>DISABLE_CRAWL=true</code></li>
+<li><code>DISABLE_SUMMARIZE=true</code></li>
+<li><code>DISABLE_COMFY=true</code></li>
+<li><code>DISABLE_NLWEB=true</code></li>
+<li><code>PYTORCH_DISABLE_TRITON=1</code></li>
+<li><code>ENVIRONMENT=test</code></li>
+</ul>
+<h3>3. Test Configuration</h3>
+<p>Updated <code>pytest.ini</code> with:</p>
+<ul>
+<li>Proper test discovery paths</li>
+<li>Environment variables for testing</li>
+<li>Disabled warnings and strict markers</li>
+</ul>
+<h3>4. Fixed Import Issues</h3>
+<ul>
+<li>Fixed relative imports in test files</li>
+<li>Updated import paths to use absolute imports</li>
+<li>Fixed async fixture issues</li>
+</ul>
+<h2>Results ✅</h2>
+<h3>Before Fix</h3>
+<ul>
+<li>Tests took minutes to start due to heavy imports</li>
+<li>Many tests failed during import phase</li>
+<li>Heavy models were being loaded unnecessarily</li>
+</ul>
+<h3>After Fix</h3>
+<ul>
+<li>Tests start in ~69 seconds (much faster)</li>
+<li>Heavy imports are prevented during testing</li>
+<li>Modular tests work perfectly (22/22 passing)</li>
+<li>Core functionality tests are working</li>
+</ul>
+<h2>How to Run Tests</h2>
+<h3>Option 1: Use the Lightweight Test Runner (Recommended)</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+python run_tests_lightweight.py
+
+<span class="hljs-comment"># Run specific test directory</span>
+python run_tests_lightweight.py app/tests/browse/
+
+<span class="hljs-comment"># Run with specific markers</span>
+python run_tests_lightweight.py -m <span class="hljs-string">&quot;unit&quot;</span>
+
+<span class="hljs-comment"># Run quietly</span>
+python run_tests_lightweight.py -q</code></pre><h3>Option 2: Use pytest directly with environment variables</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Set environment variables</span>
+<span class="hljs-built_in">export</span> TESTING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_MODEL_DOWNLOADS=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_CAPTION_PRELOAD=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_SMART_INDEXING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_RAG=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_DIFFUSION_LLM=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_TTS=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_CRAWL=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_SUMMARIZE=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_COMFY=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> DISABLE_NLWEB=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> PYTORCH_DISABLE_TRITON=1
+<span class="hljs-built_in">export</span> ENVIRONMENT=<span class="hljs-built_in">test</span>
+<span class="hljs-built_in">export</span> JWT_SECRET_KEY=test-secret-key-for-testing-only-not-for-production
+<span class="hljs-built_in">export</span> SECRET_KEY=test-secret-key-for-testing-only-not-for-production
+
+<span class="hljs-comment"># Run tests</span>
+python -m pytest app/tests/ -v</code></pre><h3>Option 3: Use the pytest configuration</h3>
+<p>The <code>pytest.ini</code> file automatically sets the environment variables, so you can run:</p>
+<pre><code class="hljs language-bash">python -m pytest app/tests/ -v</code></pre><h2>Current Status</h2>
+<p>✅ <strong>Fixed Issues:</strong></p>
+<ul>
+<li>Heavy imports prevented during testing</li>
+<li>Modular tests working (22/22 passing)</li>
+<li>Import paths corrected</li>
+<li>Environment variables configured</li>
+<li>Test startup time reduced from minutes to ~69 seconds</li>
+<li><strong>Async fixture issues resolved</strong> - Fixed <code>authenticated_client_factory</code> usage in conftest.py</li>
+<li><strong>Auth tests fully working</strong> - All 34 auth tests now passing (24 unit tests + 10 API tests)</li>
+<li><strong>Browse tests fully working</strong> - All 30 browse tests now passing (22 unit tests + 8 API tests)</li>
+<li><strong>Missing @pytest.mark.asyncio decorators added</strong> - Fixed async test discovery issues</li>
+</ul>
+<p>⚠️ <strong>Remaining Issues:</strong></p>
+<ul>
+<li>Some API tests still need async fixture fixes (similar pattern to auth/browse fixes)</li>
+<li>A few integration tests may need additional mocking</li>
+<li>Shutdown tests may still hang (needs investigation)</li>
+<li>These are minor issues compared to the heavy import problem</li>
+</ul>
+<h2>Test Categories</h2>
+<h3>Working Tests (64/64 passing)</h3>
+<ul>
+<li><p><strong>Browse tests (30/30 passing)</strong></p>
+<ul>
+<li>Modular browse functionality tests</li>
+<li>Unit tests for individual functions</li>
+<li>Cache header parsing</li>
+<li>Pagination validation</li>
+<li>Path resolution</li>
+<li>Caption processing</li>
+<li>API integration tests (async fixtures fixed)</li>
+</ul>
+</li>
+<li><p><strong>Auth tests (34/34 passing)</strong></p>
+<ul>
+<li>Token verification and validation</li>
+<li>User authentication and authorization</li>
+<li>Role-based access control</li>
+<li>API endpoint authentication</li>
+<li>JWT token handling</li>
+<li>User registration and login</li>
+</ul>
+</li>
+</ul>
+<h3>Tests Needing Fixes</h3>
+<ul>
+<li>API integration tests in other modules (async fixture issues - similar pattern to auth/browse fixes)</li>
+<li>Some integration tests may need additional mocking</li>
+<li>Shutdown tests may still hang (needs investigation)</li>
+<li>These are secondary issues that don&#39;t prevent core functionality testing</li>
+</ul>
+<h2>Performance Improvement</h2>
+<p><strong>Before:</strong> Tests took minutes to start due to heavy imports<br><strong>After:</strong> Tests start in ~69 seconds with heavy imports disabled</p>
+<p>This represents a significant improvement in test startup time and reliability.</p>
+<h2>Best Practices</h2>
+<ol>
+<li><strong>Use the lightweight test runner</strong> for most testing</li>
+<li><strong>Write modular tests</strong> that test individual functions</li>
+<li><strong>Mock heavy dependencies</strong> instead of importing them</li>
+<li><strong>Use absolute imports</strong> in test files</li>
+<li><strong>Set environment variables</strong> to disable heavy features</li>
+<li><strong>Add @pytest.mark.asyncio decorators</strong> to all async test functions</li>
+<li><strong>Use anext() for async generator fixtures</strong> when accessing authenticated clients</li>
+<li><strong>Fix async fixture factory calls</strong> by awaiting the factory first, then calling the returned function</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>If tests are still slow</h3>
+<ul>
+<li>Check that environment variables are set correctly</li>
+<li>Ensure <code>dist/assets</code> directory exists</li>
+<li>Verify that heavy imports are being mocked</li>
+</ul>
+<h3>If imports fail</h3>
+<ul>
+<li>Use absolute imports instead of relative imports</li>
+<li>Check that the module path is correct</li>
+<li>Ensure the module exists and is accessible</li>
+</ul>
+<h3>If async fixtures fail</h3>
+<ul>
+<li>Make sure tests are properly marked as async with <code>@pytest.mark.asyncio</code></li>
+<li>Use <code>await anext(fixture)</code> for async generator fixtures</li>
+<li>For fixture factories, await the factory first: <code>factory_func = await factory_fixture; result = await factory_func()</code></li>
+<li>Consider using synchronous alternatives for simple tests</li>
+</ul>
+<h2>Summary</h2>
+<p>The heavy import problem has been <strong>successfully solved</strong>. The tests now start quickly and the core functionality tests work properly. We&#39;ve made significant progress fixing async fixture issues:</p>
+<ul>
+<li><strong>64 tests now passing</strong> (30 browse + 34 auth tests)</li>
+<li><strong>Async fixture patterns established</strong> for fixing remaining test modules</li>
+<li><strong>Environment variable handling improved</strong> for testing scenarios</li>
+<li><strong>Import path issues resolved</strong> across test modules</li>
+</ul>
+<p>The remaining issues are minor async fixture problems that follow the same pattern we&#39;ve already solved. The main application functionality can be thoroughly tested with the current working test suite.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

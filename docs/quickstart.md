@@ -8,20 +8,20 @@ Get up and running with Reynard in minutes! This guide will help you install the
 
 ```bash
 # Install core package
-npm install reynard-core solid-js
+pnpm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
+pnpm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
 
 # For caption generation workflows
-npm install reynard-annotating reynard-caption
+pnpm install reynard-annotating reynard-caption
 ```
 
 ### Development Dependencies
 
 ```bash
 # Install development dependencies
-npm install -D vite vite-plugin-solid typescript @types/node
+pnpm install -D vite vite-plugin-solid typescript @types/node
 ```
 
 ## Basic Usage
@@ -167,13 +167,13 @@ Create `src/themes.css`:
 
 ```bash
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 
 # Preview production build
-npm run preview
+pnpm run preview
 ```
 
 ## Common Patterns

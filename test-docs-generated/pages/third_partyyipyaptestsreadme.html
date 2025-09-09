@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yipyap-Annotator Integration Tests - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Yipyap-Annotator Integration Tests</h1>
+      <div class="markdown-content"><h1>Yipyap-Annotator Integration Tests</h1>
+<p>This directory contains comprehensive integration tests for the yipyap-annotator<br>library integration.</p>
+<h2>📋 Test Overview</h2>
+<p>The integration tests verify that yipyap correctly integrates with the annotator<br>library and that all functionality works as expected.</p>
+<h2>🧪 Test Categories</h2>
+<h3>1. Annotator Library Integration (<code>TestAnnotatorLibraryIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test basic annotator library functionality</li>
+<li><strong>Tests</strong>:<ul>
+<li>Library imports</li>
+<li>Instance creation</li>
+<li>Available models</li>
+<li>CaptionerManager backward compatibility</li>
+<li>Configuration methods</li>
+</ul>
+</li>
+</ul>
+<h3>2. Yipyap Service Integration (<code>TestYipyapServiceIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test yipyap service integration with annotator</li>
+<li><strong>Tests</strong>:<ul>
+<li>CaptionGeneratorService imports and creation</li>
+<li>Service initialization and shutdown</li>
+<li>Health checks</li>
+<li>Public method delegation</li>
+</ul>
+</li>
+</ul>
+<h3>3. Caption Generation Module Integration (<code>TestCaptionGenerationModuleIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test caption generation module integration</li>
+<li><strong>Tests</strong>:<ul>
+<li>Module imports</li>
+<li>Global captioner manager instance</li>
+<li>Helper functions</li>
+</ul>
+</li>
+</ul>
+<h3>4. API Endpoints Integration (<code>TestAPIEndpointsIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test API endpoints integration</li>
+<li><strong>Tests</strong>:<ul>
+<li>Caption models API imports</li>
+<li>Captions API imports</li>
+<li>Mock authentication to avoid import issues</li>
+</ul>
+</li>
+</ul>
+<h3>5. Manager Integration (<code>TestManagerIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test manager integration</li>
+<li><strong>Tests</strong>:<ul>
+<li>Model usage tracker imports</li>
+<li>Caption request queue imports</li>
+</ul>
+</li>
+</ul>
+<h3>6. End-to-End Integration (<code>TestEndToEndIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test complete integration workflows</li>
+<li><strong>Tests</strong>:<ul>
+<li>Full integration workflow</li>
+<li>CaptionTask creation and usage</li>
+<li>Error handling</li>
+</ul>
+</li>
+</ul>
+<h3>7. Performance Integration (<code>TestPerformanceIntegration</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Test performance aspects</li>
+<li><strong>Tests</strong>:<ul>
+<li>Service creation performance</li>
+<li>Annotator creation performance</li>
+<li>Model loading performance</li>
+</ul>
+</li>
+</ul>
+<h2>🚀 Running the Tests</h2>
+<h3>Option 1: Using the Test Runner Script (Recommended)</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># From the yipyap directory</span>
+python run_integration_tests.py</code></pre><p>This script provides:</p>
+<ul>
+<li>Quick smoke test</li>
+<li>Choice between pytest and unittest</li>
+<li>Detailed output and timing</li>
+<li>Error reporting</li>
+</ul>
+<h3>Option 2: Using pytest directly</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all integration tests</span>
+pytest tests/test_annotator_integration.py -v
+
+<span class="hljs-comment"># Run specific test class</span>
+pytest tests/test_annotator_integration.py::TestAnnotatorLibraryIntegration -v
+
+<span class="hljs-comment"># Run specific test method</span>
+pytest tests/test_annotator_integration.py::TestAnnotatorLibraryIntegration::test_annotator_library_import -v</code></pre><h3>Option 3: Using unittest directly</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+python -m unittest tests.test_annotator_integration -v
+
+<span class="hljs-comment"># Run specific test class</span>
+python -m unittest tests.test_annotator_integration.TestAnnotatorLibraryIntegration -v
+
+<span class="hljs-comment"># Run specific test method</span>
+python -m unittest tests.test_annotator_integration.TestAnnotatorLibraryIntegration.test_annotator_library_import -v</code></pre><h2>📊 Test Results Interpretation</h2>
+<h3>✅ Successful Test Results</h3>
+<pre><code class="hljs">✅ Annotator library imported successfully
+✅ Annotator<span class="hljs-built_in"> instance </span>created successfully
+✅ Available models: [&#x27;caption&#x27;, &#x27;tag&#x27;]
+✅ Caption service created successfully
+✅ Available captioners: [&#x27;caption&#x27;, &#x27;tag&#x27;]
+✅ AnnotatorService created successfully
+✅ CaptionGeneratorService imported successfully
+✅ CaptionGeneratorService<span class="hljs-built_in"> instance </span>created successfully
+✅ Service name: caption_generator
+✅ Service dependencies: [&#x27;image_processing&#x27;]
+✅ Caption generation module imported successfully
+✅ Available captioners: [&#x27;caption&#x27;, &#x27;tag&#x27;]
+🎉 All tests passed! Migration is complete<span class="hljs-built_in"> and </span>working.</code></pre><h3>❌ Failed Test Results</h3>
+<p>If tests fail, check:</p>
+<ol>
+<li><strong>Import Errors</strong>: Ensure annotator library is installed</li>
+<li><strong>Path Issues</strong>: Ensure you&#39;re running from the yipyap directory</li>
+<li><strong>Dependency Issues</strong>: Check that all required packages are installed</li>
+<li><strong>Mock Issues</strong>: Some tests use mocks to avoid external dependencies</li>
+</ol>
+<h2>🔧 Test Configuration</h2>
+<h3>Pytest Configuration (<code>pytest.ini</code>)</h3>
+<ul>
+<li>Test discovery: <code>tests/</code> directory</li>
+<li>Test patterns: <code>test_*.py</code>, <code>*_test.py</code></li>
+<li>Verbose output with colors</li>
+<li>Warning filters for cleaner output</li>
+</ul>
+<h3>Test Dependencies</h3>
+<ul>
+<li><code>pytest</code>: Test framework</li>
+<li><code>PIL</code>: Image processing for test images</li>
+<li><code>unittest.mock</code>: Mocking capabilities</li>
+<li><code>tempfile</code>: Temporary file/directory creation</li>
+</ul>
+<h2>🛠️ Test Development</h2>
+<h3>Adding New Tests</h3>
+<ol>
+<li><strong>Create test method</strong> in appropriate test class:</li>
+</ol>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_new_functionality</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Test description.&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Test implementation</span>
+    <span class="hljs-variable language_">self</span>.assertTrue(condition)</code></pre><ol start="2">
+<li><strong>Use appropriate assertions</strong>:</li>
+</ol>
+<pre><code class="hljs language-python"><span class="hljs-variable language_">self</span>.assertIsNotNone(obj)
+<span class="hljs-variable language_">self</span>.assertEqual(actual, expected)
+<span class="hljs-variable language_">self</span>.assertIn(item, collection)
+<span class="hljs-variable language_">self</span>.assertIsInstance(obj, <span class="hljs-built_in">type</span>)</code></pre><ol start="3">
+<li><strong>Handle async tests</strong>:</li>
+</ol>
+<pre><code class="hljs language-python"><span class="hljs-meta">@pytest.mark.asyncio</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_async_functionality</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Test async functionality.&quot;&quot;&quot;</span>
+    result = <span class="hljs-keyword">await</span> async_function()
+    <span class="hljs-variable language_">self</span>.assertTrue(result)</code></pre><h3>Mocking External Dependencies</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Mock external service</span>
+<span class="hljs-keyword">with</span> patch.<span class="hljs-built_in">object</span>(service, <span class="hljs-string">&#x27;_annotator_service&#x27;</span>) <span class="hljs-keyword">as</span> mock_service:
+    mock_service.initialize.return_value = <span class="hljs-literal">True</span>
+    result = <span class="hljs-keyword">await</span> service.initialize()
+    <span class="hljs-variable language_">self</span>.assertTrue(result)</code></pre><h3>Creating Test Fixtures</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">setUp</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Set up test fixtures.&quot;&quot;&quot;</span>
+    <span class="hljs-variable language_">self</span>.temp_dir = tempfile.mkdtemp()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">tearDown</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Clean up test fixtures.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">import</span> shutil
+    shutil.rmtree(<span class="hljs-variable language_">self</span>.temp_dir, ignore_errors=<span class="hljs-literal">True</span>)</code></pre><h2>🐛 Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>Import Errors</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Ensure annotator library is installed</span>
+pip install -e ../libraries/annotator</code></pre></li>
+<li><p><strong>Path Issues</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Ensure you&#x27;re in the yipyap directory</span>
+<span class="hljs-built_in">cd</span> /path/to/yipyap</code></pre></li>
+<li><p><strong>Dependency Issues</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install test dependencies</span>
+pip install pytest pillow</code></pre></li>
+<li><p><strong>Mock Issues</strong>:</p>
+<ul>
+<li>Some tests mock external dependencies</li>
+<li>Check that mocks are properly configured</li>
+<li>Ensure mock return values are appropriate</li>
+</ul>
+</li>
+</ol>
+<h3>Debug Mode</h3>
+<p>Run tests with debug output:</p>
+<pre><code class="hljs language-bash">pytest tests/test_annotator_integration.py -v -s --tb=long</code></pre><h3>Isolated Test Runs</h3>
+<p>Run specific test categories:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Only library integration tests</span>
+pytest tests/test_annotator_integration.py::TestAnnotatorLibraryIntegration -v
+
+<span class="hljs-comment"># Only service integration tests</span>
+pytest tests/test_annotator_integration.py::TestYipyapServiceIntegration -v</code></pre><h2>📈 Performance Benchmarks</h2>
+<p>The performance tests ensure:</p>
+<ul>
+<li>Service creation: &lt; 1 second</li>
+<li>Annotator creation: &lt; 1 second</li>
+<li>Model loading: &lt; 0.1 seconds</li>
+</ul>
+<h2>🔄 Continuous Integration</h2>
+<p>These tests can be integrated into CI/CD pipelines:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># Example GitHub Actions workflow</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">Integration</span> <span class="hljs-string">Tests</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">|
+    cd yipyap
+    python run_integration_tests.py</span></code></pre><h2>📝 Test Maintenance</h2>
+<h3>Regular Maintenance Tasks</h3>
+<ol>
+<li><strong>Update test dependencies</strong> when annotator library changes</li>
+<li><strong>Review mock configurations</strong> when external APIs change</li>
+<li><strong>Update performance benchmarks</strong> when performance requirements change</li>
+<li><strong>Add new test cases</strong> when new functionality is added</li>
+</ol>
+<h3>Test Coverage</h3>
+<ul>
+<li><strong>Import tests</strong>: Verify all components can be imported</li>
+<li><strong>Creation tests</strong>: Verify instances can be created</li>
+<li><strong>Functionality tests</strong>: Verify methods work correctly</li>
+<li><strong>Integration tests</strong>: Verify components work together</li>
+<li><strong>Performance tests</strong>: Verify performance requirements</li>
+<li><strong>Error handling tests</strong>: Verify error scenarios</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: 2024-12-19 <strong>Test Status</strong>: ✅ All tests passing <strong>Coverage</strong>:<br>Comprehensive integration testing</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

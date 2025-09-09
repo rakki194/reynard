@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Reynard Auth Demo App - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Reynard Auth Demo App</h1>
+      <div class="markdown-content"><h1>🦊 Reynard Auth Demo App</h1>
+<p>A comprehensive authentication demonstration app built with the Reynard framework, featuring PostgreSQL backend integration with the Gatekeeper authentication library.</p>
+<h2>🚀 Features</h2>
+<ul>
+<li><strong>🔐 Complete Authentication</strong>: Login, registration, and session management</li>
+<li><strong>🗄️ PostgreSQL Backend</strong>: Persistent user storage with Gatekeeper library</li>
+<li><strong>🎨 Reynard UI</strong>: Beautiful, responsive interface with Reynard components</li>
+<li><strong>🛡️ JWT Security</strong>: Secure token-based authentication with refresh tokens</li>
+<li><strong>📱 Responsive Design</strong>: Mobile-first design with modern UI/UX</li>
+<li><strong>⚡ Real-time Updates</strong>: Live authentication state management</li>
+</ul>
+<h2>🏗️ Architecture</h2>
+<h3>Frontend (SolidJS + Reynard)</h3>
+<ul>
+<li><strong>reynard-auth</strong>: Authentication components and hooks</li>
+<li><strong>reynard-core</strong>: Theme and notification system</li>
+<li><strong>reynard-components</strong>: UI components</li>
+<li><strong>Vite</strong>: Fast development server with hot reload</li>
+</ul>
+<h3>Backend (FastAPI + Gatekeeper)</h3>
+<ul>
+<li><strong>FastAPI</strong>: Modern Python web framework</li>
+<li><strong>Gatekeeper</strong>: Authentication and authorization library</li>
+<li><strong>PostgreSQL</strong>: Persistent database storage</li>
+<li><strong>JWT</strong>: Secure token management</li>
+</ul>
+<h2>📋 Prerequisites</h2>
+<ul>
+<li><strong>Node.js</strong> 18+ and npm</li>
+<li><strong>Python</strong> 3.8+ with pip</li>
+<li><strong>PostgreSQL</strong> 12+ (running locally)</li>
+</ul>
+<h2>🛠️ Installation</h2>
+<h3>1. Clone and Setup</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /home/kade/runeset/reynard-auth-app
+npm install</code></pre><h3>2. Database Setup</h3>
+<h4>Install PostgreSQL (Arch Linux)</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> pacman -S postgresql
+<span class="hljs-built_in">sudo</span> systemctl start postgresql
+<span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> postgresql</code></pre><h4>Create Database and User</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Create database</span>
+<span class="hljs-built_in">sudo</span> -u postgres createdb yipyap
+
+<span class="hljs-comment"># Create user</span>
+<span class="hljs-built_in">sudo</span> -u postgres psql -c <span class="hljs-string">&quot;CREATE USER yipyap WITH PASSWORD &#x27;yipyap&#x27;;&quot;</span>
+
+<span class="hljs-comment"># Grant privileges</span>
+<span class="hljs-built_in">sudo</span> -u postgres psql -c <span class="hljs-string">&quot;GRANT ALL PRIVILEGES ON DATABASE yipyap TO yipyap;&quot;</span></code></pre><h4>Initialize Database Schema</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install Python dependencies</span>
+pip install -r backend/requirements.txt
+
+<span class="hljs-comment"># Setup database and create initial users</span>
+python setup_database.py</code></pre><h3>3. Environment Configuration</h3>
+<p>Create a <code>.env</code> file (optional):</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Database</span>
+DATABASE_URL=postgresql://yipyap:yipyap@localhost:5432/yipyap
+
+<span class="hljs-comment"># Security</span>
+SECRET_KEY=your-secret-key-here-change-in-production</code></pre><h2>🚀 Running the Application</h2>
+<h3>Development Mode (Recommended)</h3>
+<p>Run both frontend and backend simultaneously:</p>
+<pre><code class="hljs language-bash">npm run dev:full</code></pre><p>This will start:</p>
+<ul>
+<li><strong>Frontend</strong>: <a href="http://localhost:3001">http://localhost:3001</a></li>
+<li><strong>Backend</strong>: <a href="http://localhost:8000">http://localhost:8000</a></li>
+<li><strong>API Docs</strong>: <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></li>
+</ul>
+<h3>Individual Services</h3>
+<h4>Frontend Only</h4>
+<pre><code class="hljs language-bash">npm run dev</code></pre><h4>Backend Only</h4>
+<pre><code class="hljs language-bash">npm run backend</code></pre><h2>🧪 Testing the App</h2>
+<h3>Default Test Accounts</h3>
+<p>After running the database setup, you can use these accounts:</p>
+<p><strong>Admin User:</strong></p>
+<ul>
+<li>Username: <code>admin</code></li>
+<li>Password: <code>Admin123!</code></li>
+<li>Role: Administrator</li>
+</ul>
+<p><strong>Demo User:</strong></p>
+<ul>
+<li>Username: <code>demo</code></li>
+<li>Password: <code>Demo123!</code></li>
+<li>Role: Regular User</li>
+</ul>
+<h3>Test Scenarios</h3>
+<ol>
+<li><strong>Registration</strong>: Create a new account</li>
+<li><strong>Login</strong>: Authenticate with existing credentials</li>
+<li><strong>Dashboard</strong>: View user information and session details</li>
+<li><strong>Logout</strong>: End the current session</li>
+<li><strong>Token Refresh</strong>: Automatic token renewal</li>
+</ol>
+<h2>📁 Project Structure</h2>
+<pre><code class="hljs">reynard-auth-app<span class="hljs-symbol">/</span>
+├── src<span class="hljs-symbol">/</span>                    <span class="hljs-comment"># Frontend source code</span>
+│   ├── App.tsx            <span class="hljs-comment"># Main application component</span>
+│   ├── main.tsx           <span class="hljs-comment"># Application entry point</span>
+│   └── index.css          <span class="hljs-comment"># Global styles</span>
+├── backend<span class="hljs-symbol">/</span>               <span class="hljs-comment"># Backend server</span>
+│   ├── main.py           <span class="hljs-comment"># FastAPI application</span>
+│   └── requirements.txt  <span class="hljs-comment"># Python dependencies</span>
+├── setup_database.py     <span class="hljs-comment"># Database initialization script</span>
+├── package.json          <span class="hljs-comment"># Node.js dependencies</span>
+├── vite.config.ts        <span class="hljs-comment"># Vite configuration</span>
+└── README.md            <span class="hljs-comment"># This file</span></code></pre><h2>🔧 Configuration</h2>
+<h3>Frontend Configuration</h3>
+<p>The app uses Reynard&#39;s AuthProvider with the following configuration:</p>
+<pre><code class="hljs language-typescript">&lt;<span class="hljs-title class_">AuthProvider</span>
+  config={{
+    <span class="hljs-attr">apiBaseUrl</span>: <span class="hljs-string">&quot;/api&quot;</span>,
+    <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">loginRedirectPath</span>: <span class="hljs-string">&quot;/dashboard&quot;</span>,
+  }}
+  callbacks={{
+    <span class="hljs-attr">onLoginSuccess</span>: <span class="hljs-function">(<span class="hljs-params">user</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Welcome:&quot;</span>, user.<span class="hljs-property">username</span>),
+    <span class="hljs-attr">onLogout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Goodbye!&quot;</span>),
+    <span class="hljs-attr">onSessionExpired</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Session expired&quot;</span>),
+  }}
+&gt;</code></pre><h3>Backend Configuration</h3>
+<p>The FastAPI server is configured with:</p>
+<ul>
+<li>CORS enabled for localhost:3001</li>
+<li>PostgreSQL backend with Gatekeeper</li>
+<li>JWT token management</li>
+<li>Automatic database health checks</li>
+</ul>
+<h2>🛡️ Security Features</h2>
+<ul>
+<li><strong>Password Hashing</strong>: Argon2-based password security</li>
+<li><strong>JWT Tokens</strong>: Secure access and refresh token system</li>
+<li><strong>CORS Protection</strong>: Configured for specific origins</li>
+<li><strong>Input Validation</strong>: Pydantic models for request validation</li>
+<li><strong>Error Handling</strong>: Comprehensive error management</li>
+</ul>
+<h2>🎨 UI/UX Features</h2>
+<ul>
+<li><strong>Modern Design</strong>: Glassmorphism and gradient backgrounds</li>
+<li><strong>Responsive Layout</strong>: Mobile-first design approach</li>
+<li><strong>Theme Integration</strong>: Reynard theme system</li>
+<li><strong>Loading States</strong>: User feedback during operations</li>
+<li><strong>Error Handling</strong>: Clear error messages and success notifications</li>
+</ul>
+<h2>🔍 API Endpoints</h2>
+<h3>Authentication</h3>
+<ul>
+<li><code>POST /api/auth/login</code> - User login</li>
+<li><code>POST /api/auth/register</code> - User registration</li>
+<li><code>POST /api/auth/logout</code> - User logout</li>
+<li><code>POST /api/auth/refresh</code> - Token refresh</li>
+<li><code>GET /api/auth/me</code> - Current user info</li>
+</ul>
+<h3>Administration</h3>
+<ul>
+<li><code>GET /api/auth/users</code> - List all users (admin only)</li>
+</ul>
+<h3>System</h3>
+<ul>
+<li><code>GET /health</code> - Health check</li>
+</ul>
+<h2>🐛 Troubleshooting</h2>
+<h3>Database Connection Issues</h3>
+<ol>
+<li><p><strong>Check PostgreSQL Status</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl status postgresql</code></pre></li>
+<li><p><strong>Verify Database Exists</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u postgres psql -l | grep yipyap</code></pre></li>
+<li><p><strong>Test Connection</strong>:</p>
+<pre><code class="hljs language-bash">psql -h localhost -U yipyap -d yipyap</code></pre></li>
+</ol>
+<h3>Frontend Issues</h3>
+<ol>
+<li><p><strong>Clear Node Modules</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">rm</span> -rf node_modules package-lock.json
+npm install</code></pre></li>
+<li><p><strong>Check Port Availability</strong>:</p>
+<pre><code class="hljs language-bash">lsof -i :3001</code></pre></li>
+</ol>
+<h3>Backend Issues</h3>
+<ol>
+<li><p><strong>Install Dependencies</strong>:</p>
+<pre><code class="hljs language-bash">pip install -r backend/requirements.txt</code></pre></li>
+<li><p><strong>Check Python Path</strong>:</p>
+<pre><code class="hljs language-bash">python -c <span class="hljs-string">&quot;import sys; print(sys.path)&quot;</span></code></pre></li>
+</ol>
+<h2>🤝 Contributing</h2>
+<p>This is a demonstration app showcasing Reynard framework capabilities. For contributions to the main Reynard framework, see the main repository.</p>
+<h2>📄 License</h2>
+<p>MIT License - see the main Reynard repository for details.</p>
+<hr>
+<p><strong>Built with 🔐 for secure SolidJS applications</strong> 🛡️🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

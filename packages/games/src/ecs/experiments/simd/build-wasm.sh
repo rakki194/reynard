@@ -47,7 +47,7 @@ fi
 echo ""
 echo "🎯 Next steps:"
 echo "1. Update position-system-simd.ts to load the real WASM module"
-echo "2. Run the benchmark: npm run test:simd"
+echo "2. Run the benchmark: pnpm run test:simd"
 echo "3. Compare performance results"
 echo ""
 echo "📁 Generated files are in: pkg/"

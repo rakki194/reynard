@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-model-management - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-model-management</h1>
+      <div class="markdown-content"><h1>reynard-model-management</h1>
+<p>A comprehensive model management system for Reynard applications that handles ML model registration, downloading, loading, and lifecycle management.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Model Registry</strong>: Centralized registration and discovery of ML models</li>
+<li><strong>Download Management</strong>: Concurrent model downloading with progress tracking</li>
+<li><strong>Model Loading</strong>: Lifecycle management for loaded models</li>
+<li><strong>Health Monitoring</strong>: Built-in health checks for loaded models</li>
+<li><strong>Event System</strong>: Comprehensive event system for model lifecycle events</li>
+<li><strong>TypeScript Support</strong>: Full TypeScript support with comprehensive type definitions</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-model-management</code></pre><h2>Quick Start</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ModelManager</span>,
+  <span class="hljs-title class_">ModelType</span>,
+  <span class="hljs-title class_">ModelStatus</span>,
+  <span class="hljs-title class_">ModelHealth</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-model-management&quot;</span>;
+
+<span class="hljs-comment">// Create model manager</span>
+<span class="hljs-keyword">const</span> modelManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelManager</span>({
+  <span class="hljs-attr">maxConcurrentDownloads</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">maxConcurrentLoads</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">downloadTimeout</span>: <span class="hljs-number">300000</span>,
+  <span class="hljs-attr">loadTimeout</span>: <span class="hljs-number">120000</span>,
+});
+
+<span class="hljs-comment">// Register a model</span>
+modelManager.<span class="hljs-title function_">registerModel</span>({
+  <span class="hljs-attr">modelId</span>: <span class="hljs-string">&quot;my-caption-model&quot;</span>,
+  <span class="hljs-attr">modelType</span>: <span class="hljs-title class_">ModelType</span>.<span class="hljs-property">CAPTION_GENERATOR</span>,
+  <span class="hljs-attr">repoId</span>: <span class="hljs-string">&quot;my-org/my-caption-model&quot;</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;A caption generation model&quot;</span>,
+  <span class="hljs-attr">totalSizeEstimate</span>: <span class="hljs-number">500_000_000</span>, <span class="hljs-comment">// 500MB</span>
+  <span class="hljs-attr">fileCountEstimate</span>: <span class="hljs-number">3</span>,
+});
+
+<span class="hljs-comment">// Download the model</span>
+<span class="hljs-keyword">await</span> modelManager.<span class="hljs-title function_">downloadModel</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>, <span class="hljs-function">(<span class="hljs-params">progress</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Download progress: <span class="hljs-subst">${progress.progress}</span>%`</span>);
+});
+
+<span class="hljs-comment">// Load the model</span>
+<span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">await</span> modelManager.<span class="hljs-title function_">loadModel</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>, {
+  <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.2</span>,
+  <span class="hljs-attr">forceCpu</span>: <span class="hljs-literal">false</span>,
+});
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Model loaded:&quot;</span>, instance);
+
+<span class="hljs-comment">// Check model health</span>
+<span class="hljs-keyword">const</span> health = modelManager.<span class="hljs-title function_">getModelHealth</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Model health:&quot;</span>, health);
+
+<span class="hljs-comment">// Unload the model</span>
+<span class="hljs-keyword">await</span> modelManager.<span class="hljs-title function_">unloadModel</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>);</code></pre><h2>API Reference</h2>
+<h3>ModelManager</h3>
+<p>The main orchestrator for model management.</p>
+<h4>ModelManager Constructor</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelManager</span>(<span class="hljs-attr">config</span>?: <span class="hljs-title class_">ModelManagerConfig</span>)</code></pre><h4>Methods</h4>
+<ul>
+<li><code>registerModel(modelInfo: ModelInfo): void</code> - Register a model</li>
+<li><code>downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) =&gt; void): Promise&lt;void&gt;</code> - Download a model</li>
+<li><code>loadModel(modelId: string, config?: Record&lt;string, any&gt;): Promise&lt;ModelInstance&gt;</code> - Load a model</li>
+<li><code>unloadModel(modelId: string): Promise&lt;void&gt;</code> - Unload a model</li>
+<li><code>getModelInfo(modelId: string): ModelInfo | undefined</code> - Get model information</li>
+<li><code>getModelInstance(modelId: string): ModelInstance | undefined</code> - Get loaded model instance</li>
+<li><code>isModelAvailable(modelId: string): boolean</code> - Check if model is available</li>
+<li><code>isModelLoaded(modelId: string): boolean</code> - Check if model is loaded</li>
+<li><code>getModelStatus(modelId: string): ModelStatus</code> - Get model status</li>
+<li><code>getModelHealth(modelId: string): ModelHealth</code> - Get model health</li>
+</ul>
+<h3>BaseModel</h3>
+<p>Abstract base class that all model implementations must extend.</p>
+<h4>BaseModel Constructor</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">modelId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">modelType</span>: <span class="hljs-title class_">ModelType</span>, <span class="hljs-attr">config</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt; = {}</span>)</code></pre><h4>Abstract Methods</h4>
+<ul>
+<li><code>download(): Promise&lt;void&gt;</code> - Download the model</li>
+<li><code>load(config?: Record&lt;string, any&gt;): Promise&lt;void&gt;</code> - Load the model</li>
+<li><code>unload(): Promise&lt;void&gt;</code> - Unload the model</li>
+<li><code>healthCheck(): Promise&lt;ModelHealth&gt;</code> - Perform health check</li>
+<li><code>isAvailable(): Promise&lt;boolean&gt;</code> - Check if model is available</li>
+</ul>
+<h4>Properties</h4>
+<ul>
+<li><code>modelId: string</code> - Model identifier</li>
+<li><code>modelType: ModelType</code> - Model type</li>
+<li><code>status: ModelStatus</code> - Current model status</li>
+<li><code>health: ModelHealth</code> - Current model health</li>
+<li><code>config: Record&lt;string, any&gt;</code> - Model configuration</li>
+</ul>
+<h3>Types</h3>
+<h4>ModelType</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ModelType</span> {
+  <span class="hljs-variable constant_">CAPTION_GENERATOR</span> = <span class="hljs-string">&quot;caption_generator&quot;</span>,
+  <span class="hljs-variable constant_">DETECTION_MODEL</span> = <span class="hljs-string">&quot;detection_model&quot;</span>,
+  <span class="hljs-variable constant_">EMBEDDING_MODEL</span> = <span class="hljs-string">&quot;embedding_model&quot;</span>,
+  <span class="hljs-variable constant_">DIFFUSION_LM</span> = <span class="hljs-string">&quot;diffusion_lm&quot;</span>,
+  <span class="hljs-variable constant_">CLASSIFICATION_MODEL</span> = <span class="hljs-string">&quot;classification_model&quot;</span>,
+}</code></pre><h4>ModelStatus</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ModelStatus</span> {
+  <span class="hljs-variable constant_">NOT_DOWNLOADED</span> = <span class="hljs-string">&quot;not_downloaded&quot;</span>,
+  <span class="hljs-variable constant_">DOWNLOADING</span> = <span class="hljs-string">&quot;downloading&quot;</span>,
+  <span class="hljs-variable constant_">DOWNLOADED</span> = <span class="hljs-string">&quot;downloaded&quot;</span>,
+  <span class="hljs-variable constant_">LOADING</span> = <span class="hljs-string">&quot;loading&quot;</span>,
+  <span class="hljs-variable constant_">LOADED</span> = <span class="hljs-string">&quot;loaded&quot;</span>,
+  <span class="hljs-variable constant_">ERROR</span> = <span class="hljs-string">&quot;error&quot;</span>,
+}</code></pre><h4>ModelHealth</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ModelHealth</span> {
+  <span class="hljs-variable constant_">HEALTHY</span> = <span class="hljs-string">&quot;healthy&quot;</span>,
+  <span class="hljs-variable constant_">DEGRADED</span> = <span class="hljs-string">&quot;degraded&quot;</span>,
+  <span class="hljs-variable constant_">UNHEALTHY</span> = <span class="hljs-string">&quot;unhealthy&quot;</span>,
+  <span class="hljs-variable constant_">UNKNOWN</span> = <span class="hljs-string">&quot;unknown&quot;</span>,
+}</code></pre><h2>Advanced Usage</h2>
+<h3>Event Handling</h3>
+<pre><code class="hljs language-typescript">modelManager.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Model event:&quot;</span>, event);
+});</code></pre><h3>Custom Model Implementation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">BaseModel</span>, <span class="hljs-title class_">ModelType</span>, <span class="hljs-title class_">ModelHealth</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-model-management&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCaptionModel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseModel</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>, <span class="hljs-title class_">ModelType</span>.<span class="hljs-property">CAPTION_GENERATOR</span>, {
+      <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.2</span>,
+      <span class="hljs-attr">forceCpu</span>: <span class="hljs-literal">false</span>,
+    });
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">download</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Implement model download logic</span>
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">load</span>(<span class="hljs-attr">config</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Implement model loading logic</span>
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">unload</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Implement model unloading logic</span>
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">healthCheck</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ModelHealth</span>&gt; {
+    <span class="hljs-comment">// Implement health check logic</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">ModelHealth</span>.<span class="hljs-property">HEALTHY</span>;
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">isAvailable</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">boolean</span>&gt; {
+    <span class="hljs-comment">// Check if model files exist</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }
+}</code></pre><h3>Model Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Update model configuration</span>
+modelManager.<span class="hljs-title function_">updateModelConfig</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>, {
+  <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.3</span>,
+  <span class="hljs-attr">batchSize</span>: <span class="hljs-number">8</span>,
+});
+
+<span class="hljs-comment">// Get model configuration</span>
+<span class="hljs-keyword">const</span> instance = modelManager.<span class="hljs-title function_">getModelInstance</span>(<span class="hljs-string">&quot;my-caption-model&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Model config:&quot;</span>, instance?.<span class="hljs-property">config</span>);</code></pre><h3>Statistics and Monitoring</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Get model manager statistics</span>
+<span class="hljs-keyword">const</span> stats = modelManager.<span class="hljs-title function_">getStatistics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Total models:&quot;</span>, stats.<span class="hljs-property">totalModels</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Loaded models:&quot;</span>, stats.<span class="hljs-property">loadedModels</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Active downloads:&quot;</span>, stats.<span class="hljs-property">activeDownloads</span>);
+
+<span class="hljs-comment">// Get model manager state</span>
+<span class="hljs-keyword">const</span> state = modelManager.<span class="hljs-title function_">getState</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Manager state:&quot;</span>, state);</code></pre><h2>License</h2>
+<p>MIT</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

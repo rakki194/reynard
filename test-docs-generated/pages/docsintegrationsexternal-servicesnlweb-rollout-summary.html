@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NLWeb Rollout Implementation Summary - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>NLWeb Rollout Implementation Summary</h1>
+      <div class="markdown-content"><h1>NLWeb Rollout Implementation Summary</h1>
+<p>This document summarizes the implementation of Phase 9: Rollout &amp; Performance for the NLWeb integration.</p>
+<h2>Completed Tasks</h2>
+<h3>1. Default off in all environments; enable locally with env flag [+150]</h3>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Added comprehensive NLWeb configuration options to <code>AppConfig</code></li>
+<li>Enhanced <code>ConfigManagerService</code> to support all new environment variables</li>
+<li>Updated <code>config.json</code> with default values for all rollout settings</li>
+<li>All NLWeb features are disabled by default and require explicit enablement</li>
+</ul>
+<p><strong>Environment Variables Added:</strong></p>
+<ul>
+<li><code>NLWEB_ENABLED</code>: Master toggle for NLWeb integration</li>
+<li><code>NLWEB_CANARY_ENABLED</code>: Enable canary rollout</li>
+<li><code>NLWEB_CANARY_PERCENTAGE</code>: Percentage of users for canary (default: 5.0)</li>
+<li><code>NLWEB_SUGGESTION_TIMEOUT_MS</code>: Suggestion timeout (default: 1500ms)</li>
+<li><code>NLWEB_CACHE_TTL_SECONDS</code>: Cache TTL (default: 10s)</li>
+<li><code>NLWEB_MAX_CACHE_ENTRIES</code>: Maximum cache entries (default: 64)</li>
+<li><code>NLWEB_RATE_LIMIT_REQUESTS_PER_MINUTE</code>: Rate limiting (default: 30)</li>
+<li><code>NLWEB_ROLLBACK_ENABLED</code>: Emergency rollback flag</li>
+<li><code>NLWEB_PERFORMANCE_MONITORING_ENABLED</code>: Performance monitoring toggle</li>
+</ul>
+<h3>2. Canary enablement path; fall back silently on errors [+250]</h3>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Enhanced <code>NLWebRouterService</code> with canary rollout logic</li>
+<li>User-based selection using deterministic hash-based distribution</li>
+<li>Silent fallback for users not in canary (empty suggestions)</li>
+<li>Configurable canary percentage with environment variable support</li>
+<li>Comprehensive logging for canary selection and monitoring</li>
+</ul>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Deterministic user selection based on user ID hash</li>
+<li>Configurable canary percentage (5% default for production, 10% for staging)</li>
+<li>Silent fallback ensures no user experience disruption</li>
+<li>Canary status logged for monitoring and debugging</li>
+</ul>
+<h3>3. Latency budgets and execution budgets per tool [+300]</h3>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Performance monitoring system with latency tracking</li>
+<li>Tool-specific execution budgets and monitoring</li>
+<li>P95/P99 latency tracking for suggestions</li>
+<li>Health check integration with performance thresholds</li>
+<li>Configurable timeout budgets for different operations</li>
+</ul>
+<p><strong>Performance Budgets:</strong></p>
+<ul>
+<li><strong>Suggestion Latency</strong>: &lt; 1.5s P95 (cold), &lt; 300ms P95 (warm)</li>
+<li><strong>Tool Execution Budgets</strong>:<ul>
+<li><code>git_status</code>: 5 seconds</li>
+<li><code>list_files</code>: 3 seconds</li>
+<li><code>read_file</code>: 2 seconds</li>
+<li><code>generate_captions</code>: 30 seconds</li>
+<li>Default: 10 seconds</li>
+</ul>
+</li>
+</ul>
+<p><strong>Monitoring Features:</strong></p>
+<ul>
+<li>Real-time latency tracking with rolling window</li>
+<li>Performance statistics API endpoint</li>
+<li>Health check degradation on budget violations</li>
+<li>Tool execution time tracking and alerting</li>
+</ul>
+<h3>4. Add lightweight caching for repeated queries [+250]</h3>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Enhanced caching system with hit/miss tracking</li>
+<li>Cache warming with common queries during startup</li>
+<li>Configurable cache TTL and size limits</li>
+<li>Cache statistics and performance monitoring</li>
+<li>Stale cache fallback for error resilience</li>
+</ul>
+<p><strong>Cache Features:</strong></p>
+<ul>
+<li>LRU cache with configurable size (64 entries default)</li>
+<li>10-second TTL for suggestion cache</li>
+<li>Cache warming with common queries (&quot;git status&quot;, &quot;list files&quot;, etc.)</li>
+<li>Cache hit rate monitoring and reporting</li>
+<li>Stale cache fallback for timeout/error scenarios</li>
+</ul>
+<p><strong>Cache Statistics:</strong></p>
+<ul>
+<li>Cache hits and misses tracking</li>
+<li>Cache hit rate calculation</li>
+<li>Cache size and TTL monitoring</li>
+<li>Performance impact measurement</li>
+</ul>
+<h3>5. Post-enablement verification checklist and rollback switch [+250]</h3>
+<p><strong>Implementation:</strong></p>
+<ul>
+<li>Comprehensive verification API endpoint</li>
+<li>Emergency rollback system with multiple activation methods</li>
+<li>Rollout management script for different environments</li>
+<li>Performance monitoring and alerting system</li>
+<li>Automated health checks and status reporting</li>
+</ul>
+<p><strong>Verification Features:</strong></p>
+<ul>
+<li>Automated checklist for rollout readiness</li>
+<li>Performance threshold validation</li>
+<li>Configuration verification</li>
+<li>Health status monitoring</li>
+</ul>
+<p><strong>Rollback System:</strong></p>
+<ul>
+<li>Environment variable-based rollback (<code>NLWEB_ROLLBACK_ENABLED=true</code>)</li>
+<li>API endpoint for admin-initiated rollback</li>
+<li>Command-line script for rollout management</li>
+<li>Immediate disablement of all NLWeb suggestions</li>
+<li>Continued monitoring during rollback</li>
+</ul>
+<h2>Additional Components</h2>
+<h3>Rollout Script (<code>scripts/nlweb_rollout.sh</code>)</h3>
+<p>A comprehensive command-line tool for managing NLWeb deployment:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check status</span>
+./scripts/nlweb_rollout.sh -e <span class="hljs-built_in">local</span> -a status
+
+<span class="hljs-comment"># Enable canary rollout</span>
+./scripts/nlweb_rollout.sh -e staging -a canary
+
+<span class="hljs-comment"># Emergency rollback</span>
+./scripts/nlweb_rollout.sh -e production -a rollback</code></pre><p><strong>Features:</strong></p>
+<ul>
+<li>Environment-specific configurations (local, staging, production)</li>
+<li>Status checking and verification</li>
+<li>Canary rollout management</li>
+<li>Emergency rollback functionality</li>
+<li>Performance monitoring integration</li>
+</ul>
+<h3>API Endpoints</h3>
+<p><strong>New endpoints added to <code>/api/nlweb/</code>:</strong></p>
+<ul>
+<li><code>GET /status</code> - Integration status and performance metrics</li>
+<li><code>GET /verification</code> - Rollout verification checklist</li>
+<li><code>POST /rollback</code> - Emergency rollback control (admin only)</li>
+</ul>
+<h3>Test Suite (<code>scripts/test_nlweb_rollout.py</code>)</h3>
+<p>Comprehensive test suite covering:</p>
+<ul>
+<li>Canary rollout functionality</li>
+<li>Emergency rollback system</li>
+<li>Performance monitoring</li>
+<li>Environment configurations</li>
+<li>Cache behavior</li>
+</ul>
+<h2>Environment Configurations</h2>
+<h3>Local Development</h3>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">false</span> NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">false</span> python -m app</code></pre><h3>Staging Environment</h3>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_PERCENTAGE=10 NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">true</span> python -m app</code></pre><h3>Production Environment</h3>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_PERCENTAGE=5 NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">true</span> python -m app</code></pre><h2>Performance Targets</h2>
+<h3>Latency Budgets</h3>
+<ul>
+<li><strong>Cold Start</strong>: &lt; 1.5s P95</li>
+<li><strong>Warm Cache</strong>: &lt; 300ms P95</li>
+<li><strong>Timeout</strong>: 1.5s maximum per suggestion</li>
+</ul>
+<h3>Cache Performance</h3>
+<ul>
+<li><strong>Hit Rate</strong>: &gt; 20% for production</li>
+<li><strong>TTL</strong>: 10 seconds (configurable)</li>
+<li><strong>Size</strong>: 64 entries maximum</li>
+</ul>
+<h3>Tool Execution</h3>
+<ul>
+<li>Individual tool budgets with monitoring</li>
+<li>Automatic alerting on budget violations</li>
+<li>Performance degradation detection</li>
+</ul>
+<h2>Monitoring and Observability</h2>
+<h3>Performance Metrics</h3>
+<ul>
+<li>Suggestion latency (P95, P99)</li>
+<li>Cache hit rates and efficiency</li>
+<li>Tool execution times</li>
+<li>Rate limiting statistics</li>
+</ul>
+<h3>Health Checks</h3>
+<ul>
+<li>Service availability monitoring</li>
+<li>Performance threshold validation</li>
+<li>Rollback status tracking</li>
+<li>Configuration verification</li>
+</ul>
+<h3>Logging</h3>
+<ul>
+<li>Canary selection logging</li>
+<li>Performance monitoring logs</li>
+<li>Rollback activation tracking</li>
+<li>Error and timeout logging</li>
+</ul>
+<h2>Success Criteria Met</h2>
+<p>✅ <strong>Default off</strong>: All NLWeb features disabled by default<br>✅ <strong>Canary rollout</strong>: User-based selective enablement with silent fallback<br>✅ <strong>Latency budgets</strong>: Comprehensive performance monitoring and budgets<br>✅ <strong>Caching</strong>: Enhanced caching with warming and monitoring<br>✅ <strong>Verification</strong>: Automated checklist and rollback system</p>
+<h2>Next Steps</h2>
+<p>The rollout system is now ready for production deployment. The remaining tasks in the TODO focus on:</p>
+<ol>
+<li><strong>Testing Matrix</strong>: Backend and frontend unit tests</li>
+<li><strong>Success Metrics</strong>: Production validation and monitoring</li>
+<li><strong>Risk Mitigation</strong>: Additional safety measures and monitoring</li>
+</ol>
+<p>The implementation provides a robust, production-ready rollout system with comprehensive monitoring, canary deployment, and emergency rollback capabilities.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

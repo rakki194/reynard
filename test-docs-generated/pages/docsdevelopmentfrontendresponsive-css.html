@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive and Modern CSS Patterns - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Responsive and Modern CSS Patterns</h1>
+      <div class="markdown-content"><h1>Responsive and Modern CSS Patterns</h1>
+<h2>Overview</h2>
+<p>This document outlines modern CSS patterns for responsive design, performance optimization, and accessibility in YipYap. We focus on container queries, reduced motion support, and avoiding expensive animations outside of overlays.</p>
+<h2>Container Queries</h2>
+<h3>Introduction</h3>
+<p>Container queries allow components to adapt their layout based on their container&#39;s size rather than the viewport size. This provides more granular control and better component reusability.</p>
+<h3>Basic Container Query Setup</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Define a container */</span>
+<span class="hljs-selector-class">.card-container</span> {
+  <span class="hljs-attribute">container-type</span>: inline-size;
+  <span class="hljs-attribute">container-name</span>: card;
+}
+
+<span class="hljs-comment">/* Query the container */</span>
+<span class="hljs-keyword">@container</span> card (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">400px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">display</span>: grid;
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-number">200px</span> <span class="hljs-number">1</span>fr;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  }
+}
+
+<span class="hljs-keyword">@container</span> card (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">399px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">flex-direction</span>: column;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--half-spacing);
+  }
+}</code></pre><h3>Container Query Utilities</h3>
+<p>We provide utility classes for common container patterns:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Container setup utilities */</span>
+<span class="hljs-selector-class">.container</span> {
+  <span class="hljs-attribute">container-type</span>: inline-size;
+}
+
+<span class="hljs-selector-class">.container-name-layout</span> {
+  <span class="hljs-attribute">container-name</span>: layout;
+}
+
+<span class="hljs-selector-class">.container-name-card</span> {
+  <span class="hljs-attribute">container-name</span>: card;
+}
+
+<span class="hljs-selector-class">.container-name-sidebar</span> {
+  <span class="hljs-attribute">container-name</span>: sidebar;
+}</code></pre><h3>Component Examples</h3>
+<h4>Responsive Card Layout</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component</span>
+&lt;div <span class="hljs-keyword">class</span>={<span class="hljs-string">`<span class="hljs-subst">${styles.cardContainer}</span> container container-name-card`</span>}&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.card}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{image}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;Card image&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.content}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Description<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+&lt;/div&gt;</code></pre><pre><code class="hljs language-css"><span class="hljs-comment">/* Card.module.css */</span>
+<span class="hljs-selector-class">.cardContainer</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}
+
+<span class="hljs-selector-class">.card</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--half-spacing);
+}
+
+<span class="hljs-selector-class">.card</span> <span class="hljs-selector-tag">img</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">200px</span>;
+  <span class="hljs-attribute">object-fit</span>: cover;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-built_in">var</span>(--border-radius);
+}
+
+<span class="hljs-comment">/* Container query for wider cards */</span>
+<span class="hljs-keyword">@container</span> card (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">400px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">display</span>: grid;
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-number">200px</span> <span class="hljs-number">1</span>fr;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  }
+
+  <span class="hljs-selector-class">.card</span> <span class="hljs-selector-tag">img</span> {
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+    <span class="hljs-attribute">min-height</span>: <span class="hljs-number">150px</span>;
+  }
+}
+
+<span class="hljs-comment">/* Container query for very wide cards */</span>
+<span class="hljs-keyword">@container</span> card (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">600px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-number">250px</span> <span class="hljs-number">1</span>fr;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+  }
+}</code></pre><h4>Responsive Gallery Grid</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component</span>
+&lt;div <span class="hljs-keyword">class</span>={<span class="hljs-string">`<span class="hljs-subst">${styles.galleryContainer}</span> container container-name-layout`</span>}&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.gallery}</span>&gt;</span>
+    {items.map((item) =&gt; (
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.item}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{item.id}</span>&gt;</span>
+        {item.content}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    ))}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+&lt;/div&gt;</code></pre><pre><code class="hljs language-css"><span class="hljs-comment">/* Gallery.module.css */</span>
+<span class="hljs-selector-class">.galleryContainer</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}
+
+<span class="hljs-selector-class">.gallery</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">200px</span>, <span class="hljs-number">1</span>fr));
+}
+
+<span class="hljs-comment">/* Adjust grid for different container sizes */</span>
+<span class="hljs-keyword">@container</span> layout (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">800px</span>) {
+  <span class="hljs-selector-class">.gallery</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">250px</span>, <span class="hljs-number">1</span>fr));
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+  }
+}
+
+<span class="hljs-keyword">@container</span> layout (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">1200px</span>) {
+  <span class="hljs-selector-class">.gallery</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">300px</span>, <span class="hljs-number">1</span>fr));
+  }
+}</code></pre><h2>Reduced Motion Support</h2>
+<h3>Core Principles</h3>
+<ol>
+<li><strong>Respect user preferences</strong>: Always check <code>prefers-reduced-motion</code></li>
+<li><strong>Avoid expensive animations</strong>: Don&#39;t animate layout/paint properties outside overlays</li>
+<li><strong>Provide alternatives</strong>: Offer reduced or no-motion alternatives</li>
+</ol>
+<h3>Implementation Patterns</h3>
+<h4>Basic Reduced Motion Support</h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Default animation */</span>
+<span class="hljs-selector-class">.button</span> {
+  <span class="hljs-attribute">transition</span>: transform <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">2px</span>);
+}
+
+<span class="hljs-comment">/* Reduced motion alternative */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.button</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+
+  <span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">transform</span>: none;
+  }
+}</code></pre><h4>Utility Classes for Reduced Motion</h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Transition utilities with reduced motion support */</span>
+<span class="hljs-selector-class">.transition</span> {
+  <span class="hljs-attribute">transition</span>: all <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.transition-colors</span> {
+  <span class="hljs-attribute">transition</span>:
+    color <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing),
+    background-color <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing),
+    border-color <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.transition-transform</span> {
+  <span class="hljs-attribute">transition</span>: transform <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.transition-opacity</span> {
+  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-comment">/* Reduced motion overrides */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.transition</span>,
+  <span class="hljs-selector-class">.transition-colors</span>,
+  <span class="hljs-selector-class">.transition-transform</span>,
+  <span class="hljs-selector-class">.transition-opacity</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+
+  <span class="hljs-selector-class">.animate-spin</span> {
+    <span class="hljs-attribute">animation</span>: none;
+  }
+}</code></pre><h4>Component-Level Reduced Motion</h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Card hover effects */</span>
+<span class="hljs-selector-class">.card</span> {
+  <span class="hljs-attribute">transition</span>: box-shadow <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.card</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">box-shadow</span>: <span class="hljs-built_in">var</span>(--shadow-hover);
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">2px</span>);
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+
+  <span class="hljs-selector-class">.card</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">transform</span>: none;
+    <span class="hljs-comment">/* Keep shadow change for visual feedback */</span>
+    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-built_in">var</span>(--shadow-hover);
+  }
+}</code></pre><h2>Performance Considerations</h2>
+<h3>Expensive Properties</h3>
+<p>Avoid animating these properties outside of overlays:</p>
+<ul>
+<li><code>width</code>, <code>height</code></li>
+<li><code>padding</code>, <code>margin</code></li>
+<li><code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code></li>
+<li><code>font-size</code></li>
+<li><code>line-height</code></li>
+</ul>
+<h3>Safe Animation Properties</h3>
+<p>These properties are safe to animate:</p>
+<ul>
+<li><code>transform</code> (translate, scale, rotate)</li>
+<li><code>opacity</code></li>
+<li><code>color</code>, <code>background-color</code></li>
+<li><code>border-color</code></li>
+<li><code>box-shadow</code> (with caution)</li>
+</ul>
+<h3>Will-Change Optimization</h3>
+<h4>When to Use <code>will-change</code></h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ✅ Good: Performance-critical animations */</span>
+<span class="hljs-selector-class">.image-viewer</span> {
+  <span class="hljs-attribute">will-change</span>: transform;
+}
+
+<span class="hljs-selector-class">.modal-overlay</span> {
+  <span class="hljs-attribute">will-change</span>: opacity;
+}
+
+<span class="hljs-comment">/* ❌ Avoid: Non-critical animations */</span>
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">will-change</span>: transform; <span class="hljs-comment">/* Unnecessary */</span>
+}</code></pre><h4>Will-Change Audit</h4>
+<p>We audit <code>will-change</code> usage to ensure it&#39;s only used where necessary:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ImageViewer - Performance critical */</span>
+<span class="hljs-selector-class">.image-viewer</span> {
+  <span class="hljs-attribute">will-change</span>: transform; <span class="hljs-comment">/* ✅ Justified for smooth pan/zoom */</span>
+}
+
+<span class="hljs-comment">/* Notification - Performance critical */</span>
+<span class="hljs-selector-class">.notification</span> {
+  <span class="hljs-attribute">will-change</span>: transform, opacity; <span class="hljs-comment">/* ✅ Justified for smooth entrance */</span>
+}
+
+<span class="hljs-comment">/* Button hover - Not performance critical */</span>
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-comment">/* ❌ Remove will-change if present */</span>
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">1px</span>);
+}</code></pre><h3>Layout Hacks Avoidance</h3>
+<h4>Before: Layout Hacks</h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ❌ Avoid: Layout hacks */</span>
+<span class="hljs-selector-class">.gallery</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-wrap</span>: wrap;
+}
+
+<span class="hljs-selector-class">.gallery-item</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">33.333%</span> - <span class="hljs-number">20px</span>); <span class="hljs-comment">/* Brittle hack */</span>
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span>;
+}</code></pre><h4>After: Modern CSS</h4>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ✅ Good: Modern CSS Grid */</span>
+<span class="hljs-selector-class">.gallery</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fit, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">250px</span>, <span class="hljs-number">1</span>fr));
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+}</code></pre><h2>Responsive Design Patterns</h2>
+<h3>Mobile-First Approach</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Base styles (mobile) */</span>
+<span class="hljs-selector-class">.card</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
+}
+
+<span class="hljs-comment">/* Tablet and up */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">768px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
+  }
+}
+
+<span class="hljs-comment">/* Desktop and up */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">1024px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--triple-spacing);
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">18px</span>;
+  }
+}</code></pre><h3>Container Query Alternative</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Container-based responsive design */</span>
+<span class="hljs-selector-class">.card-container</span> {
+  <span class="hljs-attribute">container-type</span>: inline-size;
+}
+
+<span class="hljs-selector-class">.card</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
+}
+
+<span class="hljs-keyword">@container</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">400px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
+  }
+}
+
+<span class="hljs-keyword">@container</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">600px</span>) {
+  <span class="hljs-selector-class">.card</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--triple-spacing);
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">18px</span>;
+  }
+}</code></pre><h3>Responsive Utilities</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Responsive utility classes */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">768px</span>) {
+  <span class="hljs-selector-class">.sm</span>\:flex-col {
+    <span class="hljs-attribute">flex-direction</span>: column;
+  }
+
+  <span class="hljs-selector-class">.sm</span>\:p-<span class="hljs-number">0</span> {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-selector-class">.sm</span>\:gap-sm {
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--half-spacing);
+  }
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">480px</span>) {
+  <span class="hljs-selector-class">.xs</span>\:flex-col {
+    <span class="hljs-attribute">flex-direction</span>: column;
+  }
+
+  <span class="hljs-selector-class">.xs</span>\:p-xs {
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--quarter-spacing);
+  }
+
+  <span class="hljs-selector-class">.xs</span>\:gap-xs {
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--quarter-spacing);
+  }
+}</code></pre><h2>Accessibility Considerations</h2>
+<h3>Focus Management</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Ensure focus indicators work with reduced motion */</span>
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:focus-visible</span> {
+  <span class="hljs-attribute">outline</span>: <span class="hljs-built_in">var</span>(--focus-ring-width) solid <span class="hljs-built_in">var</span>(--focus-ring-color);
+  <span class="hljs-attribute">outline-offset</span>: <span class="hljs-built_in">var</span>(--focus-ring-offset);
+}
+
+<span class="hljs-comment">/* Don&#x27;t rely on animations for focus indication */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:focus-visible</span> {
+    <span class="hljs-attribute">outline</span>: <span class="hljs-built_in">var</span>(--focus-ring-width) solid <span class="hljs-built_in">var</span>(--focus-ring-color);
+    <span class="hljs-attribute">outline-offset</span>: <span class="hljs-built_in">var</span>(--focus-ring-offset);
+  }
+}</code></pre><h3>Screen Reader Support</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Ensure content is accessible regardless of animations */</span>
+<span class="hljs-selector-class">.content</span> {
+  <span class="hljs-comment">/* Content remains accessible */</span>
+}
+
+<span class="hljs-selector-class">.content</span><span class="hljs-selector-attr">[aria-hidden=<span class="hljs-string">&quot;true&quot;</span>]</span> {
+  <span class="hljs-attribute">display</span>: none;
+}
+
+<span class="hljs-comment">/* Don&#x27;t hide content with opacity/transform for screen readers */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.content</span> {
+    <span class="hljs-comment">/* Ensure content is still visible */</span>
+  }
+}</code></pre><h2>Implementation Examples</h2>
+<h3>Gallery Component</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// ResponsiveGallery.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ResponsiveGallery</span>(<span class="hljs-params">{ items }: { items: Item[] }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>`${<span class="hljs-attr">styles.container</span>} <span class="hljs-attr">container</span> <span class="hljs-attr">container-name-gallery</span>`}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.grid}</span>&gt;</span>
+        {items.map((item) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.item}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{item.id}</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">{item.image}</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">{item.title}</span> /&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.content}</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{item.title}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{item.description}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><pre><code class="hljs language-css"><span class="hljs-comment">/* ResponsiveGallery.module.css */</span>
+<span class="hljs-selector-class">.container</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}
+
+<span class="hljs-selector-class">.grid</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">200px</span>, <span class="hljs-number">1</span>fr));
+}
+
+<span class="hljs-selector-class">.item</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--half-spacing);
+  <span class="hljs-attribute">transition</span>: transform <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+}
+
+<span class="hljs-selector-class">.item</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">2px</span>);
+}
+
+<span class="hljs-comment">/* Container query for wider layouts */</span>
+<span class="hljs-keyword">@container</span> gallery (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">600px</span>) {
+  <span class="hljs-selector-class">.grid</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">250px</span>, <span class="hljs-number">1</span>fr));
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+  }
+}
+
+<span class="hljs-keyword">@container</span> gallery (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">900px</span>) {
+  <span class="hljs-selector-class">.grid</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">300px</span>, <span class="hljs-number">1</span>fr));
+  }
+}
+
+<span class="hljs-comment">/* Reduced motion support */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.item</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+
+  <span class="hljs-selector-class">.item</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">transform</span>: none;
+  }
+}</code></pre><h3>Settings Panel</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// SettingsPanel.tsx</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">SettingsPanel</span>(<span class="hljs-params">{ children }: { children: JSX.Element }</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>`${<span class="hljs-attr">styles.container</span>} <span class="hljs-attr">container</span> <span class="hljs-attr">container-name-settings</span>`}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{styles.panel}</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><pre><code class="hljs language-css"><span class="hljs-comment">/* SettingsPanel.module.css */</span>
+<span class="hljs-selector-class">.container</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}
+
+<span class="hljs-selector-class">.panel</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--spacing);
+}
+
+<span class="hljs-comment">/* Container query for wider panels */</span>
+<span class="hljs-keyword">@container</span> settings (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">500px</span>) {
+  <span class="hljs-selector-class">.panel</span> {
+    <span class="hljs-attribute">display</span>: grid;
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-number">200px</span> <span class="hljs-number">1</span>fr;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+    <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--double-spacing);
+  }
+}
+
+<span class="hljs-keyword">@container</span> settings (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">800px</span>) {
+  <span class="hljs-selector-class">.panel</span> {
+    <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-number">250px</span> <span class="hljs-number">1</span>fr;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--triple-spacing);
+  }
+}</code></pre><h2>Testing Responsive Patterns</h2>
+<h3>Container Query Testing</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Test container queries</span>
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;adapts layout based on container size&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ResponsiveGallery</span> <span class="hljs-attr">items</span>=<span class="hljs-string">{mockItems}</span> /&gt;</span></span>);
+  <span class="hljs-keyword">const</span> container = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&quot;main&quot;</span>);
+
+  <span class="hljs-comment">// Test mobile layout</span>
+  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(container, <span class="hljs-string">&quot;offsetWidth&quot;</span>, { <span class="hljs-attr">value</span>: <span class="hljs-number">300</span> });
+  <span class="hljs-title function_">expect</span>(container).<span class="hljs-title function_">toHaveClass</span>(<span class="hljs-string">&quot;flex-col&quot;</span>);
+
+  <span class="hljs-comment">// Test desktop layout</span>
+  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(container, <span class="hljs-string">&quot;offsetWidth&quot;</span>, { <span class="hljs-attr">value</span>: <span class="hljs-number">800</span> });
+  <span class="hljs-title function_">expect</span>(container).<span class="hljs-title function_">toHaveClass</span>(<span class="hljs-string">&quot;grid&quot;</span>);
+});</code></pre><h3>Reduced Motion Testing</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Test reduced motion support</span>
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;respects reduced motion preference&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// Mock reduced motion preference</span>
+  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(<span class="hljs-variable language_">window</span>, <span class="hljs-string">&quot;matchMedia&quot;</span>, {
+    <span class="hljs-attr">value</span>: jest.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockImplementation</span>(<span class="hljs-function">(<span class="hljs-params">query</span>) =&gt;</span> ({
+      <span class="hljs-attr">matches</span>: query === <span class="hljs-string">&quot;(prefers-reduced-motion: reduce)&quot;</span>,
+      <span class="hljs-attr">media</span>: query,
+    })),
+  });
+
+  <span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AnimatedButton</span> /&gt;</span></span>);
+  <span class="hljs-keyword">const</span> button = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&quot;button&quot;</span>);
+
+  <span class="hljs-comment">// Should not have transition styles</span>
+  <span class="hljs-title function_">expect</span>(button).<span class="hljs-property">not</span>.<span class="hljs-title function_">toHaveStyle</span>({ <span class="hljs-attr">transition</span>: expect.<span class="hljs-title function_">any</span>(<span class="hljs-title class_">String</span>) });
+});</code></pre><h2>Best Practices Summary</h2>
+<h3>Do&#39;s</h3>
+<ul>
+<li>✅ Use container queries for component-level responsiveness</li>
+<li>✅ Provide reduced motion alternatives</li>
+<li>✅ Animate only safe properties outside overlays</li>
+<li>✅ Use <code>will-change</code> only for performance-critical animations</li>
+<li>✅ Test responsive behavior across different container sizes</li>
+<li>✅ Ensure accessibility with reduced motion</li>
+</ul>
+<h3>Don&#39;ts</h3>
+<ul>
+<li>❌ Don&#39;t use layout hacks or brittle calculations</li>
+<li>❌ Don&#39;t animate expensive properties outside overlays</li>
+<li>❌ Don&#39;t use <code>will-change</code> unnecessarily</li>
+<li>❌ Don&#39;t rely on animations for critical functionality</li>
+<li>❌ Don&#39;t forget to test with reduced motion preferences</li>
+<li>❌ Don&#39;t create inaccessible animations</li>
+</ul>
+<h2>Migration Guidelines</h2>
+<h3>From Media Query Hacks</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Before: Brittle media query hack */</span>
+<span class="hljs-selector-class">.gallery</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-wrap</span>: wrap;
+}
+
+<span class="hljs-selector-class">.gallery-item</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">33.333%</span> - <span class="hljs-number">20px</span>);
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span>;
+}
+
+<span class="hljs-comment">/* After: Container query approach */</span>
+<span class="hljs-selector-class">.gallery-container</span> {
+  <span class="hljs-attribute">container-type</span>: inline-size;
+}
+
+<span class="hljs-selector-class">.gallery</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fit, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">250px</span>, <span class="hljs-number">1</span>fr));
+}</code></pre><h3>From Expensive Animations</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Before: Expensive animation */</span>
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">120px</span>; <span class="hljs-comment">/* ❌ Triggers layout */</span>
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">40px</span>; <span class="hljs-comment">/* ❌ Triggers layout */</span>
+}
+
+<span class="hljs-comment">/* After: Safe animation */</span>
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">1.05</span>); <span class="hljs-comment">/* ✅ GPU-accelerated */</span>
+}</code></pre><p>This approach ensures modern, performant, and accessible responsive design patterns throughout the application.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

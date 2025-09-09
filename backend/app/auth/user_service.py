@@ -5,7 +5,7 @@ This module provides user management functionality including
 authentication, user creation, and user data management.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -36,7 +36,15 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = users_db.get(token_data["username"])
+    username = token_data.get("sub") or token_data.get("username")
+    if not username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    user = users_db.get(username)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -63,7 +71,7 @@ def create_user(user: UserCreate) -> UserResponse:
     if user.username in users_db:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Registration failed",  # Generic error message
+            detail="Username already registered",
         )
 
     # Check if email is already registered
@@ -71,7 +79,7 @@ def create_user(user: UserCreate) -> UserResponse:
         if existing_user["email"] == user.email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Registration failed",  # Generic error message
+                detail="Email already registered",
             )
 
     # Create user
@@ -82,15 +90,17 @@ def create_user(user: UserCreate) -> UserResponse:
         "id": user_id,
         "username": user.username,
         "email": user.email,
+        "full_name": getattr(user, 'full_name', None),
         "hashed_password": hashed_password,
         "is_active": True,
-        "created_at": datetime.utcnow(),
+        "created_at": datetime.now(timezone.utc),
     }
 
     return UserResponse(
         id=user_id,
         username=user.username,
         email=user.email,
+        full_name=getattr(user, 'full_name', None),
         is_active=True,
         created_at=users_db[user.username]["created_at"],
     )
@@ -144,7 +154,15 @@ def refresh_user_token(refresh_token: str) -> Token:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = users_db.get(token_data["username"])
+    username = token_data.get("sub") or token_data.get("username")
+    if not username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    user = users_db.get(username)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -153,7 +171,7 @@ def refresh_user_token(refresh_token: str) -> Token:
         )
 
     # Check if refresh token matches stored one
-    stored_refresh_token = refresh_tokens_db.get(token_data["username"])
+    stored_refresh_token = refresh_tokens_db.get(username)
     if stored_refresh_token != refresh_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -173,17 +191,42 @@ def refresh_user_token(refresh_token: str) -> Token:
     )
 
     # Update stored refresh token
-    refresh_tokens_db[user["username"]] = new_refresh_token
+    refresh_tokens_db[username] = new_refresh_token
 
     return Token(
         access_token=access_token, refresh_token=new_refresh_token, token_type="bearer"
     )
 
 
-def logout_user(username: str) -> Dict[str, str]:
+def logout_user(refresh_token: str) -> Dict[str, str]:
     """Logout user and invalidate refresh token"""
+    # Verify the refresh token and get username
+    token_data = verify_token(refresh_token, "refresh")
+    
+    if token_data is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    username = token_data.get("sub") or token_data.get("username")
+    if not username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token payload",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Check if user has an active refresh token
+    if username not in refresh_tokens_db:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
     # Remove refresh token
-    if username in refresh_tokens_db:
-        del refresh_tokens_db[username]
+    del refresh_tokens_db[username]
 
     return {"message": "Successfully logged out"}

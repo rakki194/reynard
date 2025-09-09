@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colors - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Colors</h1>
+      <div class="markdown-content"><h1>Colors</h1>
+<p>Charts support three color options:</p>
+<ul>
+<li>for geometric elements, you can change <em>background</em> and <em>border</em> colors;</li>
+<li>for textual elements, you can change the <em>font</em> color.</li>
+</ul>
+<p>Also, you can change the whole <a href="../configuration/canvas-background.md">canvas background</a>.</p>
+<h2>Default colors</h2>
+<p>If a color is not specified, a global default color from <code>Chart.defaults</code> is used:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backgroundColor</code></td>
+<td><a href="../api/#color"><code>Color</code></a></td>
+<td>Background color</td>
+<td><code>rgba(0, 0, 0, 0.1)</code></td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="../api/#color"><code>Color</code></a></td>
+<td>Border color</td>
+<td><code>rgba(0, 0, 0, 0.1)</code></td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><a href="../api/#color"><code>Color</code></a></td>
+<td>Font color</td>
+<td><code>#666</code></td>
+</tr>
+</tbody></table>
+<p>You can reset default colors by updating these properties of <code>Chart.defaults</code>:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title class_">Chart</span>.<span class="hljs-property">defaults</span>.<span class="hljs-property">backgroundColor</span> = <span class="hljs-string">&#x27;#9BD0F5&#x27;</span>;
+<span class="hljs-title class_">Chart</span>.<span class="hljs-property">defaults</span>.<span class="hljs-property">borderColor</span> = <span class="hljs-string">&#x27;#36A2EB&#x27;</span>;
+<span class="hljs-title class_">Chart</span>.<span class="hljs-property">defaults</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&#x27;#000&#x27;</span>;</code></pre><h3>Per-dataset color settings</h3>
+<p>If your chart has multiple datasets, using default colors would make individual datasets indistinguishable. In that case, you can set <code>backgroundColor</code> and <code>borderColor</code> for each dataset:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>],
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-string">&#x27;#36A2EB&#x27;</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;#9BD0F5&#x27;</span>,
+    },
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 2&#x27;</span>,
+      <span class="hljs-attr">data</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>],
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-string">&#x27;#FF6384&#x27;</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;#FFB1C1&#x27;</span>,
+    }
+  ]
+};</code></pre><p>However, setting colors for each dataset might require additional work that you&#39;d rather not do. In that case, consider using the following plugins with pre-defined or generated palettes.</p>
+<h3>Default color palette</h3>
+<p>If you don&#39;t have any preference for colors, you can use the built-in <code>Colors</code> plugin. It will cycle through a palette of seven Chart.js brand colors:</p>
+<div style="max-width: 500px;">
+
+<p><img src="./colors-plugin-palette.png" alt="Colors plugin palette"></p>
+</div>
+
+<p>All you need is to import and register the plugin:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Colors</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;chart.js&#x27;</span>;
+
+<span class="hljs-title class_">Chart</span>.<span class="hljs-title function_">register</span>(<span class="hljs-title class_">Colors</span>);</code></pre><p>:::tip Note</p>
+<p>If you are using the UMD version of Chart.js, this plugin will be enabled by default. You can disable it by setting the <code>enabled</code> option to <code>false</code>:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">plugins</span>: {
+    <span class="hljs-attr">colors</span>: {
+      <span class="hljs-attr">enabled</span>: <span class="hljs-literal">false</span>
+    }
+  }
+};</code></pre><p>:::</p>
+<h3>Dynamic datasets at runtime</h3>
+<p>By default, the colors plugin only works when you initialize the chart without any colors for the border or background specified.<br>If you want to force the colors plugin to always color your datasets, for example, when using dynamic datasets at runtime you will need to set the <code>forceOverride</code> option to true:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">plugins</span>: {
+    <span class="hljs-attr">colors</span>: {
+      <span class="hljs-attr">forceOverride</span>: <span class="hljs-literal">true</span>
+    }
+  }
+};</code></pre><h3>Advanced color palettes</h3>
+<p>See the <a href="https://github.com/chartjs/awesome#plugins">awesome list</a> for plugins that would give you more flexibility defining color palettes.</p>
+<h2>Color formats</h2>
+<p>You can specify the color as a string in either of the following notations:</p>
+<table>
+<thead>
+<tr>
+<th>Notation</th>
+<th>Example</th>
+<th>Example with transparency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color">Hexadecimal</a></td>
+<td><code>#36A2EB</code></td>
+<td><code>#36A2EB80</code></td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/rgb">RGB</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/rgba">RGBA</a></td>
+<td><code>rgb(54, 162, 235)</code></td>
+<td><code>rgba(54, 162, 235, 0.5)</code></td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl">HSL</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsla">HSLA</a></td>
+<td><code>hsl(204, 82%, 57%)</code></td>
+<td><code>hsla(204, 82%, 57%, 0.5)</code></td>
+</tr>
+</tbody></table>
+<p>Alternatively, you can pass a <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern">CanvasPattern</a> or <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasGradient">CanvasGradient</a> object instead of a string color to achieve some interesting effects.</p>
+<h2>Patterns and Gradients</h2>
+<p>For example, you can fill a dataset with a pattern from an image.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> img = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>();
+img.<span class="hljs-property">src</span> = <span class="hljs-string">&#x27;https://example.com/my_image.png&#x27;</span>;
+img.<span class="hljs-property">onload</span> = <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> ctx = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;canvas&#x27;</span>).<span class="hljs-title function_">getContext</span>(<span class="hljs-string">&#x27;2d&#x27;</span>);
+  <span class="hljs-keyword">const</span> fillPattern = ctx.<span class="hljs-title function_">createPattern</span>(img, <span class="hljs-string">&#x27;repeat&#x27;</span>);
+
+  <span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">data</span>: {
+      <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;Item 1&#x27;</span>, <span class="hljs-string">&#x27;Item 2&#x27;</span>, <span class="hljs-string">&#x27;Item 3&#x27;</span>],
+      <span class="hljs-attr">datasets</span>: [{
+        <span class="hljs-attr">data</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>],
+        <span class="hljs-attr">backgroundColor</span>: fillPattern
+      }]
+    }
+  });
+};</code></pre><p>Pattern fills can help viewers with vision deficiencies (e.g., color-blindness or partial sight) <a href="http://betweentwobrackets.com/data-graphics-and-colour-vision/">more easily understand your data</a>.</p>
+<p>You can use the <a href="https://github.com/ashiguruma/patternomaly">Patternomaly</a> library to generate patterns to fill datasets:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chartData = {
+  <span class="hljs-attr">datasets</span>: [{
+    <span class="hljs-attr">data</span>: [<span class="hljs-number">45</span>, <span class="hljs-number">25</span>, <span class="hljs-number">20</span>, <span class="hljs-number">10</span>],
+    <span class="hljs-attr">backgroundColor</span>: [
+      pattern.<span class="hljs-title function_">draw</span>(<span class="hljs-string">&#x27;square&#x27;</span>, <span class="hljs-string">&#x27;#ff6384&#x27;</span>),
+      pattern.<span class="hljs-title function_">draw</span>(<span class="hljs-string">&#x27;circle&#x27;</span>, <span class="hljs-string">&#x27;#36a2eb&#x27;</span>),
+      pattern.<span class="hljs-title function_">draw</span>(<span class="hljs-string">&#x27;diamond&#x27;</span>, <span class="hljs-string">&#x27;#cc65fe&#x27;</span>),
+      pattern.<span class="hljs-title function_">draw</span>(<span class="hljs-string">&#x27;triangle&#x27;</span>, <span class="hljs-string">&#x27;#ffce56&#x27;</span>)
+    ]
+  }],
+  <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;Red&#x27;</span>, <span class="hljs-string">&#x27;Blue&#x27;</span>, <span class="hljs-string">&#x27;Purple&#x27;</span>, <span class="hljs-string">&#x27;Yellow&#x27;</span>]
+};</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

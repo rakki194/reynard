@@ -8,6 +8,7 @@ registration, login, logout, and token refresh.
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from slowapi import Limiter
+from slowapi.util import get_remote_address
 from app.auth.user_models import UserCreate, UserLogin, UserResponse, Token, RefreshTokenRequest
 from app.auth.user_service import (
     create_user, 
@@ -22,7 +23,7 @@ router = APIRouter(prefix="/api/auth", tags=["authentication"])
 
 
 @router.post("/register", response_model=UserResponse)
-async def register(request: Request, user: UserCreate, limiter: Limiter = Depends()):
+async def register(request: Request, user: UserCreate):
     """Register a new user"""
     try:
         return create_user(user)
@@ -38,21 +39,21 @@ async def register(request: Request, user: UserCreate, limiter: Limiter = Depend
 
 
 @router.post("/login", response_model=Token)
-async def login(request: Request, user_credentials: UserLogin, limiter: Limiter = Depends()):
+async def login(request: Request, user_credentials: UserLogin):
     """Login and get access token"""
     return authenticate_user(user_credentials)
 
 
 @router.post("/refresh", response_model=Token)
-async def refresh_token(request: Request, refresh_request: RefreshTokenRequest, limiter: Limiter = Depends()):
+async def refresh_token(request: Request, refresh_request: RefreshTokenRequest):
     """Refresh access token using refresh token"""
     return refresh_user_token(refresh_request.refresh_token)
 
 
 @router.post("/logout")
-async def logout(current_user: dict = Depends(get_current_active_user)):
+async def logout(refresh_request: RefreshTokenRequest):
     """Logout and invalidate refresh token"""
-    return logout_user(current_user["username"])
+    return logout_user(refresh_request.refresh_token)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -62,6 +63,7 @@ async def get_current_user_info(current_user: dict = Depends(get_current_active_
         id=current_user["id"],
         username=current_user["username"],
         email=current_user["email"],
+        full_name=current_user.get("full_name"),
         is_active=current_user["is_active"],
         created_at=current_user["created_at"],
     )

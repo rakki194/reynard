@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTS Integration - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>TTS Integration</h1>
+      <div class="markdown-content"><h1>TTS Integration</h1>
+<p>Text-to-speech endpoints allow synthesis, summary reading, backend/voice discovery, and RVC conversion (when enabled). A minimal fallback TTS also exists under the audio API when TTS is disabled.</p>
+<h2>Configuration</h2>
+<p>Enable via <code>AppConfig</code>:</p>
+<ul>
+<li><code>tts_enabled: bool</code></li>
+<li><code>tts_default_backend: &quot;kokoro&quot; | &quot;coqui&quot; | &quot;xtts&quot;</code></li>
+<li><code>tts_audio_dir: string</code></li>
+<li><code>tts_kokoro_mode: &quot;performance&quot; | &quot;normal&quot; | &quot;powersave&quot;</code></li>
+<li>Optional: <code>tts_rvc_enabled: bool</code></li>
+</ul>
+<h2>API Endpoints</h2>
+<h3>Text-to-Speech Synthesis</h3>
+<ul>
+<li><p><code>POST /api/tts/speak</code></p>
+<ul>
+<li>Body: <code>{ text, backend?, voice?, speed?, lang?, to_ogg? }</code></li>
+<li>Returns provider result (path/bytes/metadata, depending on service adapter).</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/speak-summary</code></p>
+<ul>
+<li>Body: <code>{ summary_id, backend?, voice? }</code></li>
+<li>Loads a summary from the summarize service and synthesizes its abstract.</li>
+</ul>
+</li>
+<li><p><code>GET /api/tts/voices</code></p>
+<ul>
+<li>Returns <code>{ backends, voices }</code> as reported by the service adapter.</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/set-backend</code></p>
+<ul>
+<li>Body: <code>{ backend? }</code> to switch runtime backend when supported by the adapter.</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/set-kokoro-mode</code></p>
+<ul>
+<li>Body: <code>{ mode? }</code> to adjust Kokoro runtime mode when supported.</li>
+</ul>
+</li>
+</ul>
+<h3>RVC Voice Conversion</h3>
+<p>RVC (Retrieval-based Voice Conversion) allows converting audio to different voices using trained models.</p>
+<h4>Voice Conversion</h4>
+<ul>
+<li><code>POST /api/tts/rvc-convert</code><ul>
+<li>Body: <code>{ source_path, voice, output_name?, f0_up_key?, f0_method?, index_rate?, filter_radius?, resample_sr?, rms_mix_rate?, protect? }</code> (requires <code>tts_rvc_enabled</code>)</li>
+<li>Converts source audio to a target voice using an RVC adapter.</li>
+<li>Parameters:<ul>
+<li><code>source_path</code>: Path to input audio file</li>
+<li><code>voice</code>: Name of the RVC model to use</li>
+<li><code>output_name</code>: Optional custom output filename</li>
+<li><code>f0_up_key</code>: Pitch shift in semitones (default: 0)</li>
+<li><code>f0_method</code>: F0 extraction method: &quot;harvest&quot;, &quot;pm&quot;, &quot;dio&quot;, &quot;crepe&quot; (default: &quot;harvest&quot;)</li>
+<li><code>index_rate</code>: Index rate for voice conversion (default: 0.66)</li>
+<li><code>filter_radius</code>: Filter radius for processing (default: 3)</li>
+<li><code>resample_sr</code>: Resample sample rate (default: 0, no resampling)</li>
+<li><code>rms_mix_rate</code>: RMS mixing rate (default: 1.0)</li>
+<li><code>protect</code>: Voice protection rate (default: 0.33)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Model Management</h4>
+<ul>
+<li><p><code>GET /api/tts/rvc-voices</code></p>
+<ul>
+<li>Returns <code>{ rvc_voices }</code> list of available RVC models.</li>
+</ul>
+</li>
+<li><p><code>GET /api/tts/rvc-model-info/{model_name}</code></p>
+<ul>
+<li>Returns detailed information about a specific RVC model.</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/rvc-model-management</code></p>
+<ul>
+<li>Body: <code>{ action, model_name? }</code></li>
+<li>Actions: &quot;preload&quot;, &quot;unload&quot;, &quot;unload_all&quot;</li>
+<li>Manages RVC model loading/unloading for memory optimization.</li>
+</ul>
+</li>
+</ul>
+<h4>RVC Model Training</h4>
+<ul>
+<li><p><code>POST /api/tts/rvc-prepare-training-data</code></p>
+<ul>
+<li>Body: <code>{ audio_dir, speaker_name, language?, min_duration?, max_duration?, target_sample_rate? }</code></li>
+<li>Prepares and preprocesses audio data for RVC model training.</li>
+<li>Parameters:<ul>
+<li><code>audio_dir</code>: Directory containing training audio files</li>
+<li><code>speaker_name</code>: Name for the speaker/voice</li>
+<li><code>language</code>: Language code (default: &quot;en&quot;)</li>
+<li><code>min_duration</code>: Minimum audio duration in seconds (default: 1.0)</li>
+<li><code>max_duration</code>: Maximum audio duration in seconds (default: 30.0)</li>
+<li><code>target_sample_rate</code>: Target sample rate (default: 44100)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/rvc-start-training</code></p>
+<ul>
+<li>Body: <code>{ model_name, training_data_dir, sample_rate?, hop_length?, win_length?, n_fft?, mel_channels?, mel_fmin?, mel_fmax?, batch_size?, learning_rate?, epochs?, save_interval?, log_interval?, fp16?, cache_in_gpu?, use_amp? }</code></li>
+<li>Starts RVC model training with specified configuration.</li>
+<li>Returns training job ID for monitoring.</li>
+</ul>
+</li>
+<li><p><code>GET /api/tts/rvc-training-status/{training_id}</code></p>
+<ul>
+<li>Returns detailed status of a training job including logs and progress.</li>
+</ul>
+</li>
+<li><p><code>GET /api/tts/rvc-training-jobs</code></p>
+<ul>
+<li>Returns list of all training jobs and their status.</li>
+</ul>
+</li>
+<li><p><code>POST /api/tts/rvc-stop-training/{training_id}</code></p>
+<ul>
+<li>Stops a running training job.</li>
+</ul>
+</li>
+<li><p><code>DELETE /api/tts/rvc-cleanup-training/{training_id}</code></p>
+<ul>
+<li>Cleans up training artifacts and removes the training job.</li>
+</ul>
+</li>
+</ul>
+<h2>RVC Training Workflow</h2>
+<h3>1. Data Preparation</h3>
+<ol>
+<li>Collect high-quality audio recordings of the target voice</li>
+<li>Organize audio files in a directory</li>
+<li>Call <code>/api/tts/rvc-prepare-training-data</code> to preprocess the data</li>
+<li>The system will:<ul>
+<li>Validate audio files (duration, format)</li>
+<li>Convert to target sample rate (44.1kHz)</li>
+<li>Generate training metadata</li>
+<li>Create organized training dataset</li>
+</ul>
+</li>
+</ol>
+<h3>2. Model Training</h3>
+<ol>
+<li>Configure training parameters based on your requirements</li>
+<li>Call <code>/api/tts/rvc-start-training</code> with the prepared data directory</li>
+<li>Monitor training progress via <code>/api/tts/rvc-training-status/{training_id}</code></li>
+<li>Training will create:<ul>
+<li>Model weights (<code>model.pth</code>)</li>
+<li>Index file for fast inference</li>
+<li>Configuration metadata</li>
+</ul>
+</li>
+</ol>
+<h3>3. Model Usage</h3>
+<ol>
+<li>Once training completes, the model becomes available for conversion</li>
+<li>Use <code>/api/tts/rvc-convert</code> to convert audio to the trained voice</li>
+<li>Adjust conversion parameters for optimal results</li>
+</ol>
+<h2>RVC Model Requirements</h2>
+<h3>Training Data Requirements</h3>
+<ul>
+<li><strong>Audio Quality</strong>: High-quality recordings with minimal background noise</li>
+<li><strong>Duration</strong>: 1-30 seconds per file (configurable)</li>
+<li><strong>Format</strong>: WAV, MP3, FLAC, M4A, OGG (automatically converted)</li>
+<li><strong>Sample Rate</strong>: Automatically converted to 44.1kHz</li>
+<li><strong>Channels</strong>: Automatically converted to mono</li>
+<li><strong>Quantity</strong>: Minimum 10-20 minutes of speech for good results</li>
+</ul>
+<h3>Hardware Requirements</h3>
+<ul>
+<li><strong>Training</strong>: GPU recommended (CUDA-compatible)</li>
+<li><strong>Inference</strong>: CPU or GPU (GPU recommended for real-time)</li>
+<li><strong>Memory</strong>: 4GB+ RAM for training, 2GB+ for inference</li>
+<li><strong>Storage</strong>: 1-5GB per model depending on complexity</li>
+</ul>
+<h2>Error Handling</h2>
+<p>All endpoints require an active user. If <code>tts_enabled</code> is false or the service is unavailable, endpoints return 404/500 accordingly.</p>
+<h3>Common RVC Errors</h3>
+<ul>
+<li><strong>&quot;RVC is disabled&quot;</strong>: Enable <code>tts_rvc_enabled</code> in configuration</li>
+<li><strong>&quot;RVC library not installed&quot;</strong>: Install RVC dependencies: <code>pip install rvc-python</code></li>
+<li><strong>&quot;Model not found&quot;</strong>: Ensure RVC model exists in <code>models/rvc/{model_name}/</code></li>
+<li><strong>&quot;Training data not found&quot;</strong>: Verify audio directory path and permissions</li>
+<li><strong>&quot;Insufficient training data&quot;</strong>: Ensure minimum audio duration requirements</li>
+</ul>
+<h2>Performance Optimization</h2>
+<h3>Runtime Model Management</h3>
+<ul>
+<li>Use <code>/api/tts/rvc-model-management</code> to preload frequently used models</li>
+<li>Unload unused models to free GPU memory</li>
+<li>Monitor memory usage during training and inference</li>
+</ul>
+<h3>Training Optimization</h3>
+<ul>
+<li>Use appropriate batch sizes for your hardware</li>
+<li>Enable FP16 training for faster training on compatible GPUs</li>
+<li>Adjust learning rate based on training stability</li>
+<li>Use appropriate epoch counts (typically 1000-2000)</li>
+</ul>
+<h3>Inference Optimization</h3>
+<ul>
+<li>Use appropriate F0 extraction methods:<ul>
+<li>&quot;harvest&quot;: Good quality, slower</li>
+<li>&quot;pm&quot;: Fast, lower quality</li>
+<li>&quot;dio&quot;: Balanced speed/quality</li>
+<li>&quot;crepe&quot;: High quality, requires additional dependencies</li>
+</ul>
+</li>
+<li>Adjust index rate for quality vs. speed trade-off</li>
+<li>Use voice protection to maintain original voice characteristics</li>
+</ul>
+<h2>Files</h2>
+<ul>
+<li><code>app/api/tts.py</code> - API endpoints</li>
+<li><code>app/api/audio.py</code> - Fallback audio API</li>
+<li><code>app/integration/tts/rvc_converter.py</code> - RVC voice conversion backend</li>
+<li><code>app/integration/tts/rvc_trainer.py</code> - RVC training system</li>
+<li><code>app/services/integration/tts_service.py</code> - TTS service with RVC integration</li>
+<li><code>app/tests/integration/test_rvc_integration.py</code> - RVC integration tests</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

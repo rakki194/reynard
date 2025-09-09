@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Manager & Feature System Integration - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Service Manager & Feature System Integration</h1>
+      <div class="markdown-content"><h1>Service Manager &amp; Feature System Integration</h1>
+<p>This document describes the integration between the <code>reynard-service-manager</code> and <code>reynard-features</code> packages, providing a seamless bridge between service lifecycle management and feature availability.</p>
+<h2>🎯 Overview</h2>
+<p>The integration allows you to:</p>
+<ul>
+<li><strong>Automatically sync</strong> service status with feature availability</li>
+<li><strong>Real-time updates</strong> when services start, stop, or fail</li>
+<li><strong>Feature-aware UI</strong> that adapts based on service availability</li>
+<li><strong>Health monitoring</strong> with feature degradation support</li>
+<li><strong>Service name mapping</strong> between different naming conventions</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<h3>Basic Integration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ServiceManager</span>, <span class="hljs-title class_">BaseService</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-service-manager&quot;</span>;
+<span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">FeatureManager</span>,
+  <span class="hljs-title class_">FeatureProvider</span>,
+  <span class="hljs-variable constant_">COMMON_FEATURES</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-features&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">FeatureServiceBridge</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-service-manager/integrations&quot;</span>;
+
+<span class="hljs-comment">// Create service manager</span>
+<span class="hljs-keyword">const</span> serviceManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServiceManager</span>({
+  <span class="hljs-attr">maxConcurrentStartup</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">healthCheckInterval</span>: <span class="hljs-number">30000</span>,
+  <span class="hljs-attr">enableHealthMonitoring</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Create feature manager</span>
+<span class="hljs-keyword">const</span> featureManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureManager</span>({
+  <span class="hljs-attr">features</span>: <span class="hljs-variable constant_">COMMON_FEATURES</span>,
+  <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">refreshInterval</span>: <span class="hljs-number">30000</span>,
+});
+
+<span class="hljs-comment">// Create the bridge</span>
+<span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">autoSync</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">serviceNameMapping</span>: {
+    <span class="hljs-title class_">FileProcessingService</span>: <span class="hljs-string">&quot;file-processing&quot;</span>,
+    <span class="hljs-title class_">AuthService</span>: <span class="hljs-string">&quot;auth&quot;</span>,
+    <span class="hljs-title class_">AnnotationService</span>: <span class="hljs-string">&quot;annotation&quot;</span>,
+  },
+});
+
+<span class="hljs-comment">// Start services</span>
+<span class="hljs-keyword">await</span> serviceManager.<span class="hljs-title function_">startServices</span>();</code></pre><h3>React/SolidJS Integration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">FeatureProvider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-features&quot;</span>;
+<span class="hljs-keyword">import</span> { useFeatureAvailable, useFeatureStatus } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-features&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FeatureProvider</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">features:</span> <span class="hljs-attr">COMMON_FEATURES</span>,
+        <span class="hljs-attr">serviceChecker:</span> (<span class="hljs-attr">serviceName</span>) =&gt;</span> {
+          // This will be automatically updated by the bridge
+          return bridge.getServiceStatus(serviceName).available;
+        },
+        autoRefresh: true,
+      }}
+    &gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">MyApp</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">FeatureProvider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> isCaptionAvailable = <span class="hljs-title function_">useFeatureAvailable</span>(<span class="hljs-string">&quot;caption-generation&quot;</span>);
+  <span class="hljs-keyword">const</span> captionStatus = <span class="hljs-title function_">useFeatureStatus</span>(<span class="hljs-string">&quot;caption-generation&quot;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {isCaptionAvailable() ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">CaptionGenerationPanel</span> /&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;feature-unavailable&quot;</span>&gt;</span>
+          Caption generation is unavailable: {captionStatus()?.message}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🔧 Configuration</h2>
+<h3>Service Name Mapping</h3>
+<p>The bridge supports mapping between feature system service names and actual service names:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> serviceMappings = {
+  <span class="hljs-comment">// Feature system name -&gt; Actual service name</span>
+  <span class="hljs-title class_">FileProcessingService</span>: <span class="hljs-string">&quot;file-processing&quot;</span>,
+  <span class="hljs-title class_">AuthService</span>: <span class="hljs-string">&quot;auth&quot;</span>,
+  <span class="hljs-title class_">AnnotationService</span>: <span class="hljs-string">&quot;annotation&quot;</span>,
+  <span class="hljs-title class_">ServiceManager</span>: <span class="hljs-string">&quot;service-manager&quot;</span>,
+};
+
+<span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">serviceNameMapping</span>: serviceMappings,
+});</code></pre><h3>Predefined Mappings</h3>
+<p>The <code>reynard-features</code> package includes predefined service mappings:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-variable constant_">SERVICE_MAPPINGS</span>,
+  getActualServiceName,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-features/presets&quot;</span>;
+
+<span class="hljs-comment">// Use predefined mappings</span>
+<span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">serviceNameMapping</span>: <span class="hljs-variable constant_">SERVICE_MAPPINGS</span>,
+});
+
+<span class="hljs-comment">// Or get individual mappings</span>
+<span class="hljs-keyword">const</span> actualName = <span class="hljs-title function_">getActualServiceName</span>(<span class="hljs-string">&quot;FileProcessingService&quot;</span>); <span class="hljs-comment">// &#x27;file-processing&#x27;</span></code></pre><h2>📊 Service Status Tracking</h2>
+<h3>Real-time Updates</h3>
+<p>The bridge automatically tracks service status changes:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Service status changes are automatically synced</span>
+serviceManager.<span class="hljs-title function_">onServiceStatusChange</span>(<span class="hljs-function">(<span class="hljs-params">serviceName, status</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Service <span class="hljs-subst">${serviceName}</span> status changed to <span class="hljs-subst">${status}</span>`</span>);
+  <span class="hljs-comment">// Feature availability is automatically updated</span>
+});
+
+<span class="hljs-comment">// Check feature status</span>
+<span class="hljs-keyword">const</span> featureStatus = featureManager.<span class="hljs-title function_">getFeatureStatus</span>(<span class="hljs-string">&quot;caption-generation&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Available:&quot;</span>, featureStatus?.<span class="hljs-property">available</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Health Score:&quot;</span>, featureStatus?.<span class="hljs-property">healthScore</span>);</code></pre><h3>Health Monitoring</h3>
+<p>Services can be in different health states:</p>
+<ul>
+<li><strong>HEALTHY</strong>: Service is running normally</li>
+<li><strong>DEGRADED</strong>: Service is running but with reduced functionality</li>
+<li><strong>UNHEALTHY</strong>: Service is running but experiencing errors</li>
+<li><strong>UNKNOWN</strong>: Service health is unknown</li>
+</ul>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> status = bridge.<span class="hljs-title function_">getServiceStatus</span>(<span class="hljs-string">&quot;AnnotationService&quot;</span>);
+<span class="hljs-keyword">if</span> (status.<span class="hljs-property">health</span> === <span class="hljs-title class_">ServiceHealth</span>.<span class="hljs-property">DEGRADED</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Service is degraded but still available&quot;</span>);
+}</code></pre><h2>🎨 Feature-Aware UI Patterns</h2>
+<h3>Conditional Rendering</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">FeatureAwareComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> isAvailable = <span class="hljs-title function_">useFeatureAvailable</span>(<span class="hljs-string">&quot;image-processing&quot;</span>);
+  <span class="hljs-keyword">const</span> isDegraded = <span class="hljs-title function_">useFeatureDegraded</span>(<span class="hljs-string">&quot;image-processing&quot;</span>);
+  <span class="hljs-keyword">const</span> status = <span class="hljs-title function_">useFeatureStatus</span>(<span class="hljs-string">&quot;image-processing&quot;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {isAvailable() ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">ImageProcessingPanel</span> /&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">FeatureUnavailable</span>
+          <span class="hljs-attr">feature</span>=<span class="hljs-string">&quot;image-processing&quot;</span>
+          <span class="hljs-attr">message</span>=<span class="hljs-string">{status()?.message}</span>
+        /&gt;</span>
+      )}
+
+      {isDegraded() &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;warning&quot;</span>&gt;</span>
+          Image processing is degraded: {status()?.message}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>Feature Status Dashboard</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">FeatureDashboard</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { featureSummary } = <span class="hljs-title function_">useFeatures</span>();
+  <span class="hljs-keyword">const</span> criticalFeatures = <span class="hljs-title function_">useCriticalFeatures</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;dashboard&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;summary&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Feature Status<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Available: {featureSummary().available}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Degraded: {featureSummary().degraded}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Unavailable: {featureSummary().unavailable}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Success Rate: {featureSummary().successRate.toFixed(1)}%<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;critical-features&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Critical Features<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        {criticalFeatures().unavailable.map((feature) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{feature.id}</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;critical-unavailable&quot;</span>&gt;</span>
+            ⚠️ {feature.name} is unavailable
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🔍 Advanced Usage</h2>
+<h3>Custom Service Checker</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">autoSync</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">serviceNameMapping</span>: {
+    <span class="hljs-title class_">CustomService</span>: <span class="hljs-string">&quot;my-custom-service&quot;</span>,
+  },
+});
+
+<span class="hljs-comment">// Add custom service mapping at runtime</span>
+bridge.<span class="hljs-title function_">addServiceMapping</span>(<span class="hljs-string">&quot;new-service&quot;</span>, <span class="hljs-string">&quot;NewService&quot;</span>);
+
+<span class="hljs-comment">// Remove service mapping</span>
+bridge.<span class="hljs-title function_">removeServiceMapping</span>(<span class="hljs-string">&quot;old-service&quot;</span>);</code></pre><h3>Manual Sync</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Force sync all service statuses</span>
+bridge.<span class="hljs-title function_">forceSync</span>();
+
+<span class="hljs-comment">// Get all service statuses</span>
+<span class="hljs-keyword">const</span> allStatuses = bridge.<span class="hljs-title function_">getAllServiceStatuses</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;All service statuses:&quot;</span>, allStatuses);</code></pre><h3>Event Handling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Listen to service manager events</span>
+serviceManager.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">switch</span> (event.<span class="hljs-property">type</span>) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;startup&quot;</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Service <span class="hljs-subst">${event.serviceName}</span> started`</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;shutdown&quot;</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Service <span class="hljs-subst">${event.serviceName}</span> stopped`</span>);
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;health_change&quot;</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Service <span class="hljs-subst">${event.serviceName}</span> health changed`</span>);
+      <span class="hljs-keyword">break</span>;
+  }
+});</code></pre><h2>🧪 Testing</h2>
+<h3>Unit Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { describe, it, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vitest&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">FeatureServiceBridge</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-service-manager/integrations&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;FeatureServiceBridge&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should sync service status with features&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+      serviceManager,
+      featureManager,
+      <span class="hljs-attr">autoSync</span>: <span class="hljs-literal">true</span>,
+    });
+
+    <span class="hljs-comment">// Test service registration</span>
+    serviceManager.<span class="hljs-title function_">registerService</span>(mockService);
+    <span class="hljs-keyword">await</span> serviceManager.<span class="hljs-title function_">startServices</span>();
+
+    <span class="hljs-comment">// Verify feature availability</span>
+    <span class="hljs-keyword">const</span> status = bridge.<span class="hljs-title function_">getServiceStatus</span>(<span class="hljs-string">&quot;TestService&quot;</span>);
+    <span class="hljs-title function_">expect</span>(status.<span class="hljs-property">available</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+  });
+});</code></pre><h3>Integration Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createIntegratedSystem } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-service-manager/integrations&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Service-Feature Integration&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should handle service failures gracefully&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> system = <span class="hljs-title function_">createIntegratedSystem</span>();
+
+    <span class="hljs-comment">// Start services</span>
+    <span class="hljs-keyword">await</span> system.<span class="hljs-property">serviceManager</span>.<span class="hljs-title function_">startServices</span>();
+
+    <span class="hljs-comment">// Simulate service failure</span>
+    <span class="hljs-keyword">const</span> service = system.<span class="hljs-property">services</span>.<span class="hljs-property">auth</span>;
+    <span class="hljs-keyword">await</span> service.<span class="hljs-title function_">shutdown</span>();
+
+    <span class="hljs-comment">// Verify feature status updates</span>
+    <span class="hljs-keyword">const</span> authFeature = system.<span class="hljs-property">featureManager</span>.<span class="hljs-title function_">getFeatureStatus</span>(
+      <span class="hljs-string">&quot;user-authentication&quot;</span>,
+    );
+    <span class="hljs-title function_">expect</span>(authFeature?.<span class="hljs-property">available</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">false</span>);
+  });
+});</code></pre><h2>📚 API Reference</h2>
+<h3>FeatureServiceBridge</h3>
+<h4>Constructor Options</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">FeatureServiceBridgeConfig</span> {
+  <span class="hljs-attr">serviceManager</span>: <span class="hljs-title class_">ServiceManager</span>;
+  <span class="hljs-attr">featureManager</span>: <span class="hljs-title class_">FeatureManager</span>;
+  <span class="hljs-attr">autoSync</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">serviceNameMapping</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;;
+}</code></pre><h4>Methods</h4>
+<ul>
+<li><code>initialize()</code>: Initialize the bridge and start syncing</li>
+<li><code>destroy()</code>: Cleanup and stop syncing</li>
+<li><code>getServiceStatus(serviceName: string)</code>: Get status for a specific service</li>
+<li><code>getAllServiceStatuses()</code>: Get status for all services</li>
+<li><code>forceSync()</code>: Force sync of all service statuses</li>
+<li><code>addServiceMapping(original: string, mapped: string)</code>: Add service name mapping</li>
+<li><code>removeServiceMapping(original: string)</code>: Remove service name mapping</li>
+</ul>
+<h3>Service Status</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ServiceStatus</span> {
+  <span class="hljs-attr">available</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">status</span>: <span class="hljs-title class_">ServiceStatus</span>;
+  <span class="hljs-attr">health</span>: <span class="hljs-title class_">ServiceHealth</span>;
+  <span class="hljs-attr">lastError</span>?: <span class="hljs-built_in">string</span>;
+}</code></pre><h2>🚨 Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Services not syncing</strong>: Ensure <code>autoSync</code> is enabled and services are properly registered</li>
+<li><strong>Feature status not updating</strong>: Check that the bridge is initialized and service mappings are correct</li>
+<li><strong>Memory leaks</strong>: Always call <code>bridge.destroy()</code> when cleaning up</li>
+</ol>
+<h3>Debug Mode</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">autoSync</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Enable debug logging</span>
+bridge.<span class="hljs-title function_">forceSync</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;All service statuses:&quot;</span>, bridge.<span class="hljs-title function_">getAllServiceStatuses</span>());</code></pre><h2>🔄 Migration Guide</h2>
+<h3>From Manual Service Checking</h3>
+<p><strong>Before:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">isServiceAvailable</span> = (<span class="hljs-params"><span class="hljs-attr">serviceName</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+  <span class="hljs-keyword">const</span> service = serviceManager.<span class="hljs-title function_">getService</span>(serviceName);
+  <span class="hljs-keyword">return</span> service?.<span class="hljs-property">status</span> === <span class="hljs-title class_">ServiceStatus</span>.<span class="hljs-property">RUNNING</span>;
+};</code></pre><p><strong>After:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">autoSync</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">isServiceAvailable</span> = (<span class="hljs-params"><span class="hljs-attr">serviceName</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> bridge.<span class="hljs-title function_">getServiceStatus</span>(serviceName).<span class="hljs-property">available</span>;
+};</code></pre><h3>From Static Feature Definitions</h3>
+<p><strong>Before:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> features = [
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;caption-generation&quot;</span>,
+    <span class="hljs-attr">dependencies</span>: [{ <span class="hljs-attr">services</span>: [<span class="hljs-string">&quot;CaptionService&quot;</span>], <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> }],
+  },
+];</code></pre><p><strong>After:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">COMMON_FEATURES</span>, <span class="hljs-variable constant_">SERVICE_MAPPINGS</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-features/presets&quot;</span>;
+
+<span class="hljs-keyword">const</span> bridge = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureServiceBridge</span>({
+  serviceManager,
+  featureManager,
+  <span class="hljs-attr">serviceNameMapping</span>: <span class="hljs-variable constant_">SERVICE_MAPPINGS</span>,
+});</code></pre><h2>🎉 Benefits</h2>
+<ul>
+<li><strong>Automatic Sync</strong>: No manual service status checking required</li>
+<li><strong>Real-time Updates</strong>: Features update immediately when services change</li>
+<li><strong>Type Safety</strong>: Full TypeScript support with comprehensive types</li>
+<li><strong>Flexible Mapping</strong>: Support for different service naming conventions</li>
+<li><strong>Health Monitoring</strong>: Granular health status tracking</li>
+<li><strong>Easy Testing</strong>: Comprehensive test utilities and examples</li>
+<li><strong>Performance</strong>: Efficient event-driven updates with minimal overhead</li>
+</ul>
+<p>This integration provides a robust foundation for building feature-aware applications that gracefully handle service dependencies and failures.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

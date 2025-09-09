@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Viewer - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Image Viewer</h1>
+      <div class="markdown-content"><h1>Image Viewer</h1>
+<p>Iteractive viewer with progressive loading, cursor-relative zoom, panning, and a minimap for navigation.</p>
+<h2>Zoom and Pan</h2>
+<ul>
+<li>Wheel zoom uses an exponential factor with <code>deltaY * -0.001</code> and clamps scale to <code>[1, 5]</code>.</li>
+<li>Zoom centers on the cursor by adjusting translation based on container-relative coordinates.</li>
+<li>Panning activates when zoomed: mousedown captures start offset; mousemove updates position; mouseup ends drag.</li>
+<li>Transforms are applied via <code>transform: scale(...) translate(...)</code> for smooth, GPU-accelerated updates.</li>
+</ul>
+<h2>Minimap</h2>
+<ul>
+<li>Shows when zoomed (<code>scale &gt; 1</code>) and if enabled in the app context.</li>
+<li>A <code>ResizeObserver</code> updates the minimap viewport on container resize and on scale/position changes.</li>
+<li>Clicking the minimap sets the viewport center by mapping click coordinates to image space.</li>
+</ul>
+<h2>Progressive Loading</h2>
+<ul>
+<li><p>Thumbnail image renders first; preview fades in when loaded and hides the thumbnail.</p>
+</li>
+<li><p>Animated images show a loading indicator until the preview is ready and display an animation badge with frame count and duration.</p>
+</li>
+<li><p>Files:</p>
+<ul>
+<li><code>src/components/ImageViewer/*</code></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

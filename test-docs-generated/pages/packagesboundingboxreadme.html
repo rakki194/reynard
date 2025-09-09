@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-boundingbox - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-boundingbox</h1>
+      <div class="markdown-content"><h1>reynard-boundingbox</h1>
+<blockquote>
+<p>Reusable bounding box and annotation editing components for Reynard</p>
+</blockquote>
+<p>A comprehensive set of tools for creating, editing, and managing bounding box annotations in web applications. Built with SolidJS and designed to be extensible for future annotation types like polygon segmentation.</p>
+<h2>✨ Features</h2>
+<ul>
+<li><strong>🎯 Bounding Box Editing</strong>: Create, resize, move, and delete bounding boxes with intuitive interactions</li>
+<li><strong>🎨 Interactive Canvas</strong>: Fabric.js integration for smooth, responsive editing experience</li>
+<li><strong>🔄 Coordinate Transformation</strong>: Automatic conversion between image and display coordinates</li>
+<li><strong>✅ Validation</strong>: Built-in validation for annotation data integrity and constraints</li>
+<li><strong>🏗️ Extensible Architecture</strong>: Designed to support future annotation types (polygons, segmentation masks)</li>
+<li><strong>📘 TypeScript Support</strong>: Full type safety and IntelliSense support</li>
+<li><strong>♿ Accessibility</strong>: WCAG compliant with keyboard navigation and screen reader support</li>
+<li><strong>📱 Responsive Design</strong>: Mobile-first design that works across all device sizes</li>
+<li><strong>🎨 Theme Support</strong>: Built-in support for light/dark themes and high contrast mode</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash">npm install reynard-boundingbox solid-js fabric</code></pre><h3>Basic Usage</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">BoundingBoxEditor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BoundingBox</span>, <span class="hljs-title class_">ImageInfo</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">imageInfo</span>: <span class="hljs-title class_">ImageInfo</span> = {
+    <span class="hljs-attr">width</span>: <span class="hljs-number">1920</span>,
+    <span class="hljs-attr">height</span>: <span class="hljs-number">1080</span>,
+    <span class="hljs-attr">src</span>: <span class="hljs-string">&quot;/path/to/image.jpg&quot;</span>,
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAnnotationCreate</span> = (<span class="hljs-params"><span class="hljs-attr">box</span>: <span class="hljs-title class_">BoundingBox</span></span>) =&gt; {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Created bounding box:&quot;</span>, box);
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAnnotationUpdate</span> = (<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">box</span>: <span class="hljs-title class_">BoundingBox</span></span>) =&gt; {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Updated bounding box:&quot;</span>, id, box);
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleAnnotationDelete</span> = (<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Deleted bounding box:&quot;</span>, id);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">BoundingBoxEditor</span>
+      <span class="hljs-attr">imageInfo</span>=<span class="hljs-string">{imageInfo}</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableCreation:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableEditing:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableDeletion:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">labelClasses:</span> [&quot;<span class="hljs-attr">person</span>&quot;, &quot;<span class="hljs-attr">vehicle</span>&quot;, &quot;<span class="hljs-attr">animal</span>&quot;, &quot;<span class="hljs-attr">object</span>&quot;],
+        <span class="hljs-attr">defaultLabelClass:</span> &quot;<span class="hljs-attr">object</span>&quot;,
+      }}
+      <span class="hljs-attr">eventHandlers</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">onAnnotationCreate:</span> <span class="hljs-attr">handleAnnotationCreate</span>,
+        <span class="hljs-attr">onAnnotationUpdate:</span> <span class="hljs-attr">handleAnnotationUpdate</span>,
+        <span class="hljs-attr">onAnnotationDelete:</span> <span class="hljs-attr">handleAnnotationDelete</span>,
+      }}
+      <span class="hljs-attr">containerWidth</span>=<span class="hljs-string">{800}</span>
+      <span class="hljs-attr">containerHeight</span>=<span class="hljs-string">{600}</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h2>📚 API Reference</h2>
+<h3>Components</h3>
+<h4><code>BoundingBoxEditor</code></h4>
+<p>The main component for bounding box editing.</p>
+<p><strong>Props:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>imageInfo</code></td>
+<td><code>ImageInfo</code></td>
+<td>-</td>
+<td><strong>Required.</strong> Image information including dimensions</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td><code>EditorConfig</code></td>
+<td><code>{}</code></td>
+<td>Configuration options for the editor</td>
+</tr>
+<tr>
+<td><code>eventHandlers</code></td>
+<td><code>AnnotationEventHandlers</code></td>
+<td><code>{}</code></td>
+<td>Event handlers for annotation operations</td>
+</tr>
+<tr>
+<td><code>initialBoxes</code></td>
+<td><code>BoundingBox[]</code></td>
+<td><code>[]</code></td>
+<td>Initial bounding boxes to display</td>
+</tr>
+<tr>
+<td><code>containerWidth</code></td>
+<td><code>number</code></td>
+<td><code>800</code></td>
+<td>Width of the editor container</td>
+</tr>
+<tr>
+<td><code>containerHeight</code></td>
+<td><code>number</code></td>
+<td><code>600</code></td>
+<td>Height of the editor container</td>
+</tr>
+<tr>
+<td><code>className</code></td>
+<td><code>string</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Additional CSS class names</td>
+</tr>
+</tbody></table>
+<h3>Types</h3>
+<h4><code>BoundingBox</code></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">BoundingBox</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Unique identifier</span>
+  <span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Class/category name</span>
+  <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Top-left x coordinate (pixels)</span>
+  <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Top-left y coordinate (pixels)</span>
+  <span class="hljs-attr">width</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Width in pixels</span>
+  <span class="hljs-attr">height</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Height in pixels</span>
+  <span class="hljs-attr">color</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Optional color for UI</span>
+  <span class="hljs-attr">attributes</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;; <span class="hljs-comment">// Extensible metadata</span>
+}</code></pre><h4><code>ImageInfo</code></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ImageInfo</span> {
+  <span class="hljs-attr">width</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Image width in pixels</span>
+  <span class="hljs-attr">height</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Image height in pixels</span>
+  <span class="hljs-attr">src</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Optional image source URL</span>
+  <span class="hljs-attr">alt</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Optional alt text</span>
+}</code></pre><h4><code>EditorConfig</code></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">EditorConfig</span> {
+  <span class="hljs-attr">enableCreation</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable creating new boxes</span>
+  <span class="hljs-attr">enableEditing</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable editing existing boxes</span>
+  <span class="hljs-attr">enableDeletion</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable deleting boxes</span>
+  <span class="hljs-attr">enableSelection</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable box selection</span>
+  <span class="hljs-attr">enableSnapping</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable snap-to-grid</span>
+  <span class="hljs-attr">enableConstraints</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable size constraints</span>
+  <span class="hljs-attr">showLabels</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Show box labels</span>
+  <span class="hljs-attr">showHandles</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Show resize handles</span>
+  <span class="hljs-attr">handleSize</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Size of resize handles</span>
+  <span class="hljs-attr">handleColor</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Color of resize handles</span>
+  <span class="hljs-attr">handleBorderColor</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Border color of handles</span>
+  <span class="hljs-attr">labelClasses</span>?: <span class="hljs-built_in">string</span>[]; <span class="hljs-comment">// Available label classes</span>
+  <span class="hljs-attr">defaultLabelClass</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Default label class</span>
+}</code></pre><h3>Composables</h3>
+<h4><code>useBoundingBoxes</code></h4>
+<p>Manages a collection of bounding boxes with reactive state.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useBoundingBoxes } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-keyword">const</span> {
+  boxes, <span class="hljs-comment">// Signal&lt;BoundingBox[]&gt;</span>
+  addBox, <span class="hljs-comment">// (box: BoundingBox) =&gt; boolean</span>
+  updateBox, <span class="hljs-comment">// (id: string, updates: Partial&lt;BoundingBox&gt;) =&gt; boolean</span>
+  deleteBox, <span class="hljs-comment">// (id: string) =&gt; boolean</span>
+  selectBox, <span class="hljs-comment">// (id: string | null) =&gt; void</span>
+  selectedBoxId, <span class="hljs-comment">// Signal&lt;string | null&gt;</span>
+  clearBoxes, <span class="hljs-comment">// () =&gt; void</span>
+  getBox, <span class="hljs-comment">// (id: string) =&gt; BoundingBox | undefined</span>
+  hasBox, <span class="hljs-comment">// (id: string) =&gt; boolean</span>
+  boxCount, <span class="hljs-comment">// Signal&lt;number&gt;</span>
+  selectedBox, <span class="hljs-comment">// Signal&lt;BoundingBox | undefined&gt;</span>
+  validationErrors, <span class="hljs-comment">// Signal&lt;Record&lt;string, string[]&gt;&gt;</span>
+} = <span class="hljs-title function_">useBoundingBoxes</span>({
+  <span class="hljs-attr">initialBoxes</span>: [],
+  <span class="hljs-attr">imageInfo</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">1920</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">1080</span> },
+  <span class="hljs-attr">enableValidation</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h4><code>useBoxResize</code></h4>
+<p>Provides resize functionality for bounding boxes.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useBoxResize } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-keyword">const</span> {
+  resizeState, <span class="hljs-comment">// Signal&lt;ResizeState&gt;</span>
+  handles, <span class="hljs-comment">// Signal&lt;ResizeHandle[]&gt;</span>
+  startResize, <span class="hljs-comment">// (boxId, handle, dimensions) =&gt; void</span>
+  updateResize, <span class="hljs-comment">// (dimensions) =&gt; void</span>
+  endResize, <span class="hljs-comment">// () =&gt; void</span>
+  cancelResize, <span class="hljs-comment">// () =&gt; void</span>
+  isResizing, <span class="hljs-comment">// () =&gt; boolean</span>
+  getActiveHandle, <span class="hljs-comment">// () =&gt; ResizeHandle | null</span>
+} = <span class="hljs-title function_">useBoxResize</span>({
+  <span class="hljs-attr">minWidth</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">minHeight</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">enableProportionalResizing</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">onResizeStart</span>: <span class="hljs-function">(<span class="hljs-params">boxId, handle</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Resize started&quot;</span>),
+  <span class="hljs-attr">onResizeMove</span>: <span class="hljs-function">(<span class="hljs-params">boxId, dimensions</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Resize move&quot;</span>),
+  <span class="hljs-attr">onResizeEnd</span>: <span class="hljs-function">(<span class="hljs-params">boxId, dimensions</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Resize ended&quot;</span>),
+});</code></pre><h4><code>useBoxMove</code></h4>
+<p>Provides move functionality for bounding boxes.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useBoxMove } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-keyword">const</span> {
+  moveState, <span class="hljs-comment">// Signal&lt;MoveState | null&gt;</span>
+  isMoving, <span class="hljs-comment">// Signal&lt;boolean&gt;</span>
+  movingBoxId, <span class="hljs-comment">// Signal&lt;string | null&gt;</span>
+  startBoxMove, <span class="hljs-comment">// (boxId, box, startX, startY) =&gt; void</span>
+  updateBoxMove, <span class="hljs-comment">// (currentX, currentY) =&gt; void</span>
+  endBoxMove, <span class="hljs-comment">// () =&gt; void</span>
+  cancelBoxMove, <span class="hljs-comment">// () =&gt; void</span>
+} = <span class="hljs-title function_">useBoxMove</span>({
+  <span class="hljs-attr">imageInfo</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">1920</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">1080</span> },
+  <span class="hljs-attr">isEnabled</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableSnapping</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableAlignment</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">onBoxMoved</span>: <span class="hljs-function">(<span class="hljs-params">boxId, newBox</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Box moved&quot;</span>),
+  <span class="hljs-attr">onBoxMoveEnd</span>: <span class="hljs-function">(<span class="hljs-params">boxId</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Move ended&quot;</span>),
+});</code></pre><h3>Utilities</h3>
+<h4>Coordinate Transformation</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  imageToDisplayCoords,
+  displayToImageCoords,
+  boundingBoxToDisplayCoords,
+  boundingBoxToImageCoords,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-comment">// Convert between coordinate systems</span>
+<span class="hljs-keyword">const</span> displayCoords = <span class="hljs-title function_">imageToDisplayCoords</span>(
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">150</span> },
+  imageInfo,
+  containerWidth,
+  containerHeight,
+);
+
+<span class="hljs-keyword">const</span> imageCoords = <span class="hljs-title function_">displayToImageCoords</span>(
+  displayCoords,
+  imageInfo,
+  containerWidth,
+  containerHeight,
+);</code></pre><h4>Validation</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  validateBoundingBox,
+  checkBoundingBoxConstraints,
+  boundingBoxesOverlap,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-boundingbox&quot;</span>;
+
+<span class="hljs-comment">// Validate bounding box</span>
+<span class="hljs-keyword">const</span> validation = <span class="hljs-title function_">validateBoundingBox</span>(box, imageInfo);
+<span class="hljs-keyword">if</span> (!validation.<span class="hljs-property">isValid</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Validation errors:&quot;</span>, validation.<span class="hljs-property">errors</span>);
+}
+
+<span class="hljs-comment">// Check constraints</span>
+<span class="hljs-keyword">const</span> constraints = <span class="hljs-title function_">checkBoundingBoxConstraints</span>(box, {
+  <span class="hljs-attr">minWidth</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">minHeight</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">maxWidth</span>: <span class="hljs-number">1000</span>,
+  <span class="hljs-attr">maxHeight</span>: <span class="hljs-number">1000</span>,
+});
+
+<span class="hljs-comment">// Check overlap</span>
+<span class="hljs-keyword">const</span> overlap = <span class="hljs-title function_">boundingBoxesOverlap</span>(box1, box2);</code></pre><h2>🏗️ Architecture</h2>
+<p>The package is organized into several layers for maximum reusability and extensibility:</p>
+<h3>Core Types (<code>types.ts</code>)</h3>
+<ul>
+<li>Defines foundational interfaces that can be shared between bounding boxes and future polygon annotations</li>
+<li>Includes <code>BaseAnnotation</code>, <code>BoundingBox</code>, <code>PolygonAnnotation</code>, and utility types</li>
+</ul>
+<h3>Utilities (<code>utils/</code>)</h3>
+<ul>
+<li><strong>Coordinate Transformation</strong>: Convert between image and display coordinate systems</li>
+<li><strong>Validation</strong>: Ensure data integrity and constraint compliance</li>
+</ul>
+<h3>Composables (<code>composables/</code>)</h3>
+<ul>
+<li><strong>State Management</strong>: Reactive state for bounding box collections</li>
+<li><strong>Resize Logic</strong>: Handle resize operations with constraints and proportional scaling</li>
+<li><strong>Move Logic</strong>: Handle drag-to-move with snapping and alignment</li>
+</ul>
+<h3>Components (<code>components/</code>)</h3>
+<ul>
+<li><strong>UI Components</strong>: React components for the editing interface</li>
+<li><strong>Styling</strong>: CSS modules with theme support and accessibility features</li>
+</ul>
+<h2>🔮 Future Extensions</h2>
+<p>This architecture is designed to support future annotation types:</p>
+<h3>Polygon Segmentation (<code>reynard-segmentation</code>)</h3>
+<ul>
+<li>Extend <code>BaseAnnotation</code> for polygon points</li>
+<li>Reuse coordinate transformation utilities</li>
+<li>Add polygon-specific validation</li>
+<li>Create polygon editing components</li>
+</ul>
+<h3>Additional Annotation Types</h3>
+<ul>
+<li><strong>Keypoints</strong>: Point-based annotations</li>
+<li><strong>Polylines</strong>: Line-based annotations</li>
+<li><strong>3D Bounding Boxes</strong>: Extend to 3D coordinate systems</li>
+</ul>
+<h2>🎨 Theming</h2>
+<p>The package includes built-in support for themes:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Light theme (default) */</span>
+<span class="hljs-selector-class">.bounding-box-editor</span> {
+  <span class="hljs-attr">--bbox-bg</span>: <span class="hljs-number">#ffffff</span>;
+  <span class="hljs-attr">--bbox-border</span>: <span class="hljs-number">#e1e5e9</span>;
+  <span class="hljs-attr">--bbox-text</span>: <span class="hljs-number">#374151</span>;
+}
+
+<span class="hljs-comment">/* Dark theme */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-color-scheme</span>: dark) {
+  <span class="hljs-selector-class">.bounding-box-editor</span> {
+    <span class="hljs-attr">--bbox-bg</span>: <span class="hljs-number">#1f2937</span>;
+    <span class="hljs-attr">--bbox-border</span>: <span class="hljs-number">#374151</span>;
+    <span class="hljs-attr">--bbox-text</span>: <span class="hljs-number">#f9fafb</span>;
+  }
+}
+
+<span class="hljs-comment">/* High contrast */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-contrast</span>: high) {
+  <span class="hljs-selector-class">.bounding-box-editor</span> {
+    <span class="hljs-attr">--bbox-border-width</span>: <span class="hljs-number">2px</span>;
+  }
+}</code></pre><h2>♿ Accessibility</h2>
+<p>The package is built with accessibility in mind:</p>
+<ul>
+<li><strong>Keyboard Navigation</strong>: Full keyboard support for all operations</li>
+<li><strong>Screen Reader Support</strong>: ARIA labels and descriptions</li>
+<li><strong>High Contrast Mode</strong>: Support for high contrast display preferences</li>
+<li><strong>Reduced Motion</strong>: Respects user&#39;s motion preferences</li>
+<li><strong>Focus Management</strong>: Proper focus handling during operations</li>
+</ul>
+<h2>🧪 Testing</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run <span class="hljs-built_in">test</span>:run -- --coverage
+
+<span class="hljs-comment"># Run tests in watch mode</span>
+npm run <span class="hljs-built_in">test</span></code></pre><h2>📦 Bundle Size</h2>
+<p>The package is optimized for minimal bundle size:</p>
+<ul>
+<li><strong>Core</strong>: ~15KB gzipped</li>
+<li><strong>With Fabric.js</strong>: ~45KB gzipped</li>
+<li><strong>Tree-shakeable</strong>: Only import what you use</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>We welcome contributions! Please see our <a href="../../CONTRIBUTING.md">Contributing Guide</a> for details.</p>
+<h2>📄 License</h2>
+<p>MIT License - see <a href="../../LICENSE">LICENSE</a> for details.</p>
+<h2>🙏 Acknowledgments</h2>
+<ul>
+<li>Built with <a href="https://www.solidjs.com/">SolidJS</a> for reactive UI</li>
+<li>Uses <a href="http://fabricjs.com/">Fabric.js</a> for canvas interactions</li>
+<li>Inspired by modern annotation tools and accessibility best practices</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

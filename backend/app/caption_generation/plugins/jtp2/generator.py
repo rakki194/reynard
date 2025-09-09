@@ -26,7 +26,7 @@ import safetensors
 from PIL import Image
 from huggingface_hub import hf_hub_download, try_to_load_from_cache
 
-from ...base import CaptionGenerator, CaptionType, ModelCategory
+from ...base import CaptionGeneratorBase, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
@@ -34,7 +34,7 @@ logger = logging.getLogger("uvicorn")
 JTP2_AVAILABLE = True
 
 
-class JTP2Generator(CaptionGenerator):
+class JTP2Generator(CaptionGeneratorBase):
     """
     JTP2 (Joint Tagger Project PILOT2) caption generator.
 

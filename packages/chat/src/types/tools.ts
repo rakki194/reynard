@@ -1,7 +1,11 @@
 /**
  * Tool and message types for the Reynard Chat System
+ * 
+ * Note: These types will be replaced with generated types from the API client
+ * once the backend tool system is fully integrated.
  */
 
+// Legacy types - will be removed after full migration to generated types
 export interface ToolParameter {
   type: "string" | "number" | "boolean" | "object" | "array";
   description: string;

@@ -19,7 +19,7 @@ import {
   PackageOverviewGenerator,
   ApiDocumentationGenerator,
   ExampleDocumentationGenerator,
-} from "./content-generators";
+} from "./content-generators/index";
 
 /**
  * Template engine for generating documentation pages

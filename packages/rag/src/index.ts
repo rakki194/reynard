@@ -8,13 +8,36 @@
 // Core components
 export { RAGSearch } from "./RAGSearch";
 
+// Tab components
+export { SearchTab } from "./SearchTab";
+export { DocumentsTab } from "./DocumentsTab";
+export { UploadTab } from "./UploadTab";
+export { SettingsTab } from "./SettingsTab";
+
+// API service
+export { RAGApiService } from "./api-service";
+
+// Composables
+export { useRAGSearchState } from "./useRAGSearchState";
+export { useRAGSearchHandlers } from "./useRAGSearchHandlers";
+
+// Types and interfaces
+export type {
+  RAGResult,
+  RAGDocument,
+  RAGStats,
+  RAGSearchProps,
+  RAGQueryResponse,
+  TabItem,
+} from "./types";
+
 // RAG Composables
 export { useRAG, createRAGClient } from "./useRAG";
 export type {
   RAGModality,
   RAGQueryParams,
   RAGQueryHit,
-  RAGQueryResponse,
+  RAGQueryResponse as RAGQueryResponseGenerated,
   RAGIngestItem,
   RAGStreamEvent,
   RAGConfig,

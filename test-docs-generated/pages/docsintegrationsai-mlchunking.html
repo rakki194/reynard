@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chunking Utilities - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Chunking Utilities</h1>
+      <div class="markdown-content"><h1>Chunking Utilities</h1>
+<p>This module provides content chunkers for RAG ingestion across documents, code, and captions. The design emphasizes semantic boundaries, approximate but stable token sizing, lightweight heuristics that avoid heavyweight tokenizer dependencies, and pragmatic fallbacks when ideal splits are not possible. Chunks carry metadata for downstream retrieval and highlighting.</p>
+<h2>Document Chunking</h2>
+<p>The function <code>chunk_document(text, target_tokens=1000, min_tokens=800, max_tokens=1200, overlap_ratio=0.12)</code> splits text using markdown‑style headings first and then sentences within each block. It estimates token count using a blended heuristic that averages a whitespace word count with a character‑based approximation at roughly one token per four characters. Windows are built to target the specified token size, with overlap computed as a fraction of the target and clamped to approximately 10–15% of the window. If semantic grouping cannot reach the minimum or would exceed the maximum, the algorithm allows a small overshoot when the following unit is compact; otherwise, it falls back to a recursive character windowing strategy with a window size near <code>max_tokens * 4</code> characters and proportional overlap. Each chunk includes <code>text</code>, an approximate <code>tokens</code> count, <code>metadata</code> describing whether it was produced semantically or via character fallback, and a <code>chunk_index</code> for stable ordering.</p>
+<p>In addition to splitting, <code>split_into_headings_and_sentences(text)</code> is used internally to segment content by markdown headings and then sentence punctuation boundaries. This preserves semantic coherence for retrieval while avoiding overly small fragments. For result presentation, <code>build_highlights_for_document(chunk_text, query_terms, max_snippets=3)</code> can extract sentence‑level highlights that contain query terms.</p>
+<h2>Code Chunking</h2>
+<p>The function <code>chunk_code(code, language=None, min_loc=150, max_loc=400, overlap_loc=4)</code> returns a tuple <code>(chunks, symbol_map)</code>. It accepts an optional <code>language</code> parameter for future language‑aware parsing, but when tree‑sitter is unavailable the implementation falls back to a robust regex strategy that identifies <code>def</code>, <code>class</code>, and <code>import</code> boundaries. Source is flattened to lines and windowed up to <code>max_loc</code> lines of code with <code>overlap_loc</code> lines of overlap. Very small trailing windows are skipped except for the final segment when necessary. Each chunk includes metadata with <code>start_line</code> and <code>end_line</code> to support accurate mapping in viewers and tools. The returned <code>symbol_map</code> records approximate locations of functions, classes, and imports, enabling code‑aware highlighting and targeted retrieval. For small, symbol‑centric previews, <code>build_symbol_aware_snippets(code_text, symbol_map, symbol_names, context_lines=2)</code> can create compact snippets around selected symbols.</p>
+<h2>Caption Chunking</h2>
+<p>The function <code>chunk_captions(captions, include_summary=True)</code> produces one chunk per caption, each with a token estimate and <code>metadata</code> set to <code>{ &quot;method&quot;: &quot;caption&quot; }</code>, and assigns a <code>chunk_index</code> that matches the caption position. When <code>include_summary</code> is enabled and the input is non‑empty, an additional grouped summary chunk is appended by concatenating the first N captions with <code>metadata</code> set to <code>{ &quot;method&quot;: &quot;caption_summary&quot;, &quot;count&quot;: &lt;num&gt; }</code>. This summary chunk can improve early recall for overview‑style queries.</p>
+<h2>Utilities and Supporting Routines</h2>
+<p>The function <code>estimate_token_count(text)</code> provides a lightweight token count estimate by averaging a whitespace word count with a character‑based approximation at roughly one token per four characters. This blended approach improves robustness across languages and writing styles without incurring the cost of heavyweight tokenizer dependencies. The helper <code>window_slices(total, size, overlap)</code> computes index pairs that cover a sequence with the requested overlap, clamping overlap to ensure forward progress and making sure the final slice reaches the end. The function <code>make_idempotency_key(*parts)</code> computes a SHA‑256 hash over the provided parts with a null byte separator, suitable for deduplication and idempotent upserts.</p>
+<h2>Integration and Ingestion Flow</h2>
+<p>The ingestion orchestrator invokes the document chunker and streams batches to embeddings and storage. For documents, the service splits text via <code>chunk_document</code>, persists the document and its chunks with stable indices, and then batches embeddings for the chunk texts before inserting vector rows. Integration follows this pattern: chunk the content, upsert document and chunk metadata to the database, compute vectors using the configured embedding model, and perform batched insert of embeddings. Similar patterns are used for image caption or code ingestion pipelines as they evolve, with symbol maps and metadata enabling code‑aware viewers and targeted retrieval.</p>
+<h2>Defaults, Tuning, and Trade‑offs</h2>
+<p>Default parameters balance semantic coherence, retrieval recall, and embedding cost for common LLM context windows. For prose, targeting around one thousand tokens with roughly a tenth overlap preserves continuity across sections while avoiding unnecessary duplication. For source code, windows of roughly one to four hundred lines with a few lines of overlap perform well across many repositories, keeping symbol maps aligned and metadata stable. Increase overlap to improve cross‑chunk recall at the cost of more storage and slightly higher embedding compute. Decrease window sizes for smaller context models, latency‑sensitive applications, or when documents contain many short sections; increase sizes when queries require broader context or when using long‑context embedding models. The token estimator is intentionally approximate to maintain speed and portability.</p>
+<h2>Notes on Best Practices</h2>
+<p>Use semantic‑first chunking for documents to preserve headings and sentence boundaries, falling back to character windows only when necessary. Include comments and docstrings within code chunks to retain explanatory context for retrieval. Carry structured metadata such as chunk indices, line ranges, and generation method for robust downstream processing and diagnostics. Prefer small, stable overlaps that reflect the structure of your data; excessive overlap can degrade retrieval precision and increase cost without proportional recall gains. The approach here aligns with common patterns such as recursive character or markdown splitting and language‑aware (or symbol‑aware) code segmentation widely used in RAG systems.</p>
+<h2>Parameter Guidance and Sizing Rationale</h2>
+<p>Chunk sizes and overlap are chosen to balance semantic cohesion, retrieval recall, and embedding cost. For prose, targeting around one thousand tokens generally preserves paragraph continuity and section context while avoiding excessive duplication. The overlap is computed as a fraction of the target window and clamped to roughly a tenth to a seventh of the window to maintain continuity across adjacent chunks without degrading precision. For code, windows of one to four hundred lines work well across mixed repositories because they keep functions, classes, and related imports within the same view while remaining small enough for relevance scoring and paging in the UI. The small fixed overlap in lines helps preserve context across function boundaries without significantly inflating index size.</p>
+<p>Token estimation is approximate by design to avoid heavyweight tokenizer dependencies, using a blended measure of whitespace word count and an approximately four‑characters‑per‑token ratio. This heuristic is stable enough for windowing logic across varied writing styles and languages and is intentionally conservative to prevent frequent oscillations between minimum and maximum thresholds.</p>
+<p>For multilingual content, the blended estimator mitigates cases where character‑based heuristics alone would over‑ or under‑estimate tokens for scripts with different word boundary behavior. If highly precise budgeting is required for a specific model, the estimator can be swapped for a model‑aware tokenizer while preserving the same external function signatures described here.</p>
+<p>For long‑context embedding models, increasing the window bounds and keeping a similar proportional overlap can improve early recall for queries that reference multi‑section narratives. For latency‑sensitive applications or smaller index budgets, trimming the target and tightening overlap reduces storage and compute at a modest cost to cross‑chunk recall.</p>
+<h2>Code Chunking Details</h2>
+<p>The code path prefers language‑aware parsing when available but falls back to a robust regular‑expression strategy that identifies functions, classes, and import statements. Source is flattened into a single list of lines and windowed by line count. Very small trailing windows are skipped unless needed to include the final lines of a file to avoid low‑signal tail fragments. The symbol map is intentionally simple, recording naive names and line numbers so higher‑level systems can produce lightweight, context‑aware highlights or navigate to approximate definitions. When a tree‑sitter parser is available, the splitting function is designed to be swapped in without changing the public interface or downstream integrations.</p>
+<h2>Caption Chunking and Summaries</h2>
+<p>Captions are chunked per item to retain their per‑image semantics. An optional summary chunk concatenates the first set of captions to improve early recall for overview queries such as “what’s in this album.” This grouped summary is marked distinctly in metadata so retrieval layers can prefer or down‑rank it depending on the use case. The summary position at the end preserves stable indices for per‑caption chunks.</p>
+<h2>Integration Notes</h2>
+<p>The ingestion pipeline uses these chunkers directly. Documents are split via the document chunker and stored with stable indices, after which texts are embedded in batches and inserted with associated model identifiers and vector dimensions. The background indexing service streams progress and handles retries with exponential backoff, keeping an internal queue and dead‑letter path for failures. For synchronous ingestion, the RAG service accepts precomputed chunks, embeds them in order to preserve alignment with chunk indices, and upserts vectors with the recorded model and metric. These flows ensure determinism, idempotency via stable keys, and ordered embedding to match chunk ordering.</p>
+<h2>Examples</h2>
+<p>Basic document usage creates semantically coherent chunks that target the configured token range and include a small overlap. Code usage returns chunks and a symbol map suitable for simple highlight generation.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.managers <span class="hljs-keyword">import</span> chunking <span class="hljs-keyword">as</span> ch
+
+text = <span class="hljs-string">&quot;&quot;&quot;
+# Title
+
+This is an example document. It has multiple sentences. It also has headings.
+
+## Section
+
+More content here. Another sentence follows. And one more to reach the window.
+&quot;&quot;&quot;</span>
+
+chunks = ch.chunk_document(text)
+<span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> chunks:
+    <span class="hljs-built_in">print</span>(c[<span class="hljs-string">&quot;metadata&quot;</span>], c[<span class="hljs-string">&quot;tokens&quot;</span>], <span class="hljs-built_in">len</span>(c[<span class="hljs-string">&quot;text&quot;</span>]))
+
+code = <span class="hljs-string">&quot;&quot;&quot;
+import os
+
+def foo(x):
+    return x + 1
+
+class Bar:
+    def baz(self, y):
+        return y * 2
+&quot;&quot;&quot;</span>
+
+code_chunks, symbol_map = ch.chunk_code(code, language=<span class="hljs-string">&quot;python&quot;</span>)
+<span class="hljs-built_in">print</span>(symbol_map)</code></pre><p>To construct small, context‑aware previews around selected symbols, use the symbol‑aware snippet builder. This yields narrow windows around target names with a few lines of context.</p>
+<pre><code class="hljs language-python">snips = ch.build_symbol_aware_snippets(code, symbol_map, [<span class="hljs-string">&quot;foo&quot;</span>, <span class="hljs-string">&quot;baz&quot;</span>], context_lines=<span class="hljs-number">1</span>)
+<span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> snips:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;---\n&quot;</span> + s)</code></pre><p>For caption collections, enable the grouped summary when overview queries are common; disable it for strict per‑item indexing when summaries would skew retrieval toward aggregated content.</p>
+<pre><code class="hljs language-python">caps = [<span class="hljs-string">&quot;a cat on a mat&quot;</span>, <span class="hljs-string">&quot;a dog in a fog&quot;</span>, <span class="hljs-string">&quot;a bird on a wire&quot;</span>]
+cap_chunks = ch.chunk_captions(caps, include_summary=<span class="hljs-literal">True</span>)</code></pre><h2>Evaluation and Tuning</h2>
+<p>Evaluate chunking quality by measuring retrieval recall and result coherence for representative queries. Increasing overlap can improve cross‑chunk recall at the expense of larger indexes and slightly higher embedding compute. Decreasing window sizes may reduce latency and storage but can fragment context if taken too far. For code, prefer preserving complete function or class bodies within individual windows where feasible; when not possible, ensure the overlap straddles boundaries where definitions span windows. For multilingual documents, validate that sentence segmentation remains coherent for your languages of interest and consider refining the sentence regex if specific punctuation rules dominate your corpus.</p>
+<h2>References and Background</h2>
+<p>Common patterns in retrieval‑augmented systems include recursive character and markdown splitting and symbol‑aware code segmentation. Practical guidance on chunk sizes and overlaps is available in community resources and vector database vendor material such as Pinecone’s discussion of chunking strategies, and frameworks like LangChain document the RecursiveCharacterTextSplitter and Markdown‑aware splitters. Heuristics for token budgeting using approximately four characters per token are widely cited in tokenizer discussions and provide a portable baseline when model‑specific tokenizers are not available.</p>
+<p>Files:</p>
+<ul>
+<li><code>app/managers/chunking.py</code></li>
+<li><code>app/tests/test_chunking.py</code></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

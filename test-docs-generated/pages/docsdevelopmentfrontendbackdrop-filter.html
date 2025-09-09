@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backdrop Filter Usage Guidelines - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Backdrop Filter Usage Guidelines</h1>
+      <div class="markdown-content"><h1>Backdrop Filter Usage Guidelines</h1>
+<p>The <code>backdrop-filter</code> CSS property is used throughout yipyap to create depth and visual hierarchy through blurring and other filter effects on elements&#39; backgrounds. This document outlines the standard practices for using backdrop filters in the application.</p>
+<h2>Table of Contents</h2>
+<hr>
+<ul>
+<li><a href="#backdrop-filter-usage-guidelines">Backdrop Filter Usage Guidelines</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#global-variables">Global Variables</a></li>
+<li><a href="#usage-patterns">Usage Patterns</a><ul>
+<li><a href="#standard-overlays">Standard Overlays</a></li>
+<li><a href="#blur-effects">Blur Effects</a></li>
+<li><a href="#theme-specific-effects">Theme-Specific Effects</a></li>
+</ul>
+</li>
+<li><a href="#performance-considerations">Performance Considerations</a></li>
+<li><a href="#browser-support">Browser Support</a></li>
+</ul>
+</li>
+</ul>
+<h2>Global Variables</h2>
+<hr>
+<p>The application defines tokens for consistent backdrop effects:</p>
+<pre><code class="hljs language-css"><span class="hljs-attr">--backdrop-blur</span>: <span class="hljs-number">10px</span>;
+<span class="hljs-attr">--backdrop-opacity</span>: <span class="hljs-number">0.2</span>;
+<span class="hljs-attr">--backdrop-saturation</span>: <span class="hljs-number">0.5</span>;</code></pre><p>And <code>src/styles.css</code> derives overlay variables used by components:</p>
+<pre><code class="hljs language-css"><span class="hljs-attr">--overlay-bg</span>: <span class="hljs-built_in">rgb</span>(<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> / <span class="hljs-built_in">var</span>(--backdrop-opacity));
+<span class="hljs-attr">--overlay-backdrop</span>: <span class="hljs-built_in">brightness</span>(<span class="hljs-number">0.5</span>) <span class="hljs-built_in">saturate</span>(<span class="hljs-built_in">var</span>(--backdrop-saturation));</code></pre><h2>Usage Patterns</h2>
+<hr>
+<h3>Standard Overlays</h3>
+<p>For standard overlays (modals, dialogs, etc.), use the global variable:</p>
+<pre><code class="hljs language-css"><span class="hljs-attribute">backdrop-filter</span>: <span class="hljs-built_in">var</span>(--overlay-backdrop);</code></pre><h3>Blur Effects</h3>
+<p>When applying blur effects, use these standard values (override via tokens when needed):</p>
+<ul>
+<li>Light blur (UI elements): <code>blur(2px)</code></li>
+<li>Medium blur (modal backgrounds): <code>blur(4px)</code></li>
+<li>Heavy blur (full overlays): <code>blur(8px-10px)</code></li>
+</ul>
+<h3>Theme-Specific Effects</h3>
+<p>Theme-specific backdrop filters should be defined in the theme&#39;s scope and should enhance the theme&#39;s visual identity. For example:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span><span class="hljs-selector-attr">[data-theme=<span class="hljs-string">&quot;christmas&quot;</span>]</span> {
+  <span class="hljs-selector-class">.modal-header</span> {
+    <span class="hljs-attribute">backdrop-filter</span>: <span class="hljs-built_in">blur</span>(<span class="hljs-number">10px</span>);
+  }
+}</code></pre><h2>Performance Considerations</h2>
+<hr>
+<p>Always check for support using <code>@supports</code> and provide graceful fallbacks:</p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@supports</span> (<span class="hljs-attribute">backdrop-filter</span>: blur(<span class="hljs-number">10px</span>)) {
+  <span class="hljs-comment">/* backdrop-filter styles */</span>
+}</code></pre><p>When implementing backdrop filters, be mindful of performance implications. Each additional filter increases processing overhead, so combine them judiciously. For elements with animated backdrop filters, enable hardware acceleration by adding <code>will-change: backdrop-filter</code> to improve performance. Avoid creating unintended stacking contexts; prefer using z-index tokens such as <code>var(--z-modal)</code> when necessary. Always implement appropriate fallback styles where <code>backdrop-filter</code> is unsupported.</p>
+<h2>Browser Support</h2>
+<hr>
+<p>The <code>backdrop-filter</code> property is widely supported in modern browsers but may require vendor prefixes in some cases. Always test across different browsers when implementing new backdrop filter effects.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

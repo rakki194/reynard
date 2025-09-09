@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Prompt Note - OneNote-like Note-Taking Application - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Prompt Note - OneNote-like Note-Taking Application</h1>
+      <div class="markdown-content"><h1>🦊 Prompt Note - OneNote-like Note-Taking Application</h1>
+<p>A comprehensive OneNote-like note-taking application built with the Reynard framework, featuring multi-user support, real-time collaboration, AI-powered features, and gamification elements to make note-taking engaging and productive.</p>
+<h2>✨ Features Demonstrated</h2>
+<h3>📝 Rich Note-Taking</h3>
+<ul>
+<li><strong>Monaco Editor Integration</strong>: Professional code and markdown editing with syntax highlighting</li>
+<li><strong>Multiple Content Types</strong>: Support for markdown, rich-text, and code notes</li>
+<li><strong>Notebook Organization</strong>: Hierarchical structure with notebooks, sections, and pages</li>
+<li><strong>Real-time Editing</strong>: Live collaboration with multiple users</li>
+</ul>
+<h3>🎮 Gamification System</h3>
+<ul>
+<li><strong>Experience Points (XP)</strong>: Gain XP for various note-taking activities</li>
+<li><strong>Level System</strong>: Progressive levels with unlockable features</li>
+<li><strong>Achievement System</strong>: Badges for milestones and accomplishments</li>
+<li><strong>Leaderboards</strong>: Weekly challenges and team competitions</li>
+<li><strong>Visual Progression</strong>: Unlockable avatars, themes, and accessories</li>
+</ul>
+<h3>🤖 AI-Powered Features</h3>
+<ul>
+<li><strong>Smart Summarization</strong>: Auto-generate note summaries</li>
+<li><strong>Content Suggestions</strong>: AI-powered writing assistance</li>
+<li><strong>Auto-categorization</strong>: Smart tagging and organization</li>
+<li><strong>Semantic Search</strong>: AI-powered content discovery</li>
+<li><strong>Voice-to-Text</strong>: Speech recognition for notes</li>
+</ul>
+<h3>🤝 Real-time Collaboration</h3>
+<ul>
+<li><strong>Live Editing</strong>: Multiple users editing simultaneously</li>
+<li><strong>Presence Indicators</strong>: See who&#39;s online and where</li>
+<li><strong>Comments &amp; Suggestions</strong>: Inline commenting system</li>
+<li><strong>Version History</strong>: Track changes and revert</li>
+<li><strong>Conflict Resolution</strong>: Smart merge for simultaneous edits</li>
+</ul>
+<h3>🎨 Comprehensive UI/UX</h3>
+<ul>
+<li><strong>Theme System</strong>: 8 built-in themes with live switching</li>
+<li><strong>Internationalization</strong>: Multi-language support with RTL capabilities</li>
+<li><strong>Responsive Design</strong>: Mobile-first layout that works on all devices</li>
+<li><strong>Accessibility</strong>: WCAG 2.1 compliance with keyboard navigation</li>
+</ul>
+<h3>🔧 Advanced Features</h3>
+<ul>
+<li><strong>Tabbed Interface</strong>: Organized workflow with Notebooks, Recent, and Favorites tabs</li>
+<li><strong>File Attachments</strong>: Support for images, PDFs, and documents</li>
+<li><strong>Search &amp; Discovery</strong>: Full-text and semantic search across all notes</li>
+<li><strong>Notification System</strong>: Toast notifications for user feedback</li>
+<li><strong>State Management</strong>: Comprehensive state management with SolidJS signals</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build</code></pre><p>Visit <code>http://localhost:5173</code> to see the prompt-note app in action!</p>
+<h2>📱 Usage Guide</h2>
+<h3>1. <strong>Create Notebooks</strong></h3>
+<ul>
+<li>Click &quot;➕ New Notebook&quot; to create a new notebook</li>
+<li>Choose a title, description, and color for your notebook</li>
+<li>Organize your notes into logical collections</li>
+</ul>
+<h3>2. <strong>Write Notes</strong></h3>
+<ul>
+<li>Click on any notebook to view its notes</li>
+<li>Create new notes with rich text editing</li>
+<li>Use markdown, code blocks, or rich text formatting</li>
+<li>Add file attachments and images</li>
+</ul>
+<h3>3. <strong>Gamification &amp; Progress</strong></h3>
+<ul>
+<li>Click &quot;🏆 Achievements&quot; to view your progress</li>
+<li>Earn XP for creating notes, collaborating, and using AI features</li>
+<li>Unlock new levels and achievements</li>
+<li>Compete on weekly leaderboards</li>
+</ul>
+<h3>4. <strong>Collaborate</strong></h3>
+<ul>
+<li>Share notebooks with other users</li>
+<li>Edit notes together in real-time</li>
+<li>Leave comments and suggestions</li>
+<li>Track version history and changes</li>
+</ul>
+<h3>5. <strong>AI-Powered Features</strong></h3>
+<ul>
+<li>Use AI to summarize your notes</li>
+<li>Get content suggestions while writing</li>
+<li>Auto-categorize and tag your notes</li>
+<li>Search semantically across all content</li>
+</ul>
+<h2>🏗️ Architecture</h2>
+<h3>Core Components</h3>
+<ul>
+<li><strong><code>App.tsx</code></strong> - Main application with state management and workflow orchestration</li>
+<li><strong><code>DashboardPage.tsx</code></strong> - Main dashboard with notebooks overview</li>
+<li><strong><code>NotebookPage.tsx</code></strong> - Individual notebook view with notes list</li>
+<li><strong><code>NoteEditorPage.tsx</code></strong> - Rich text editor for note creation and editing</li>
+<li><strong><code>GamificationPanel.tsx</code></strong> - Achievements, progress, and leaderboards</li>
+<li><strong><code>ThemeToggle.tsx</code></strong> - Theme switching with emoji indicators</li>
+<li><strong><code>LanguageSelector.tsx</code></strong> - Language selection for internationalization</li>
+</ul>
+<h3>Reynard Packages Used</h3>
+<ul>
+<li><strong><code>reynard-core</code></strong> - Notifications, state management, and core utilities</li>
+<li><strong><code>reynard-themes</code></strong> - Theme system and internationalization</li>
+<li><strong><code>reynard-components</code></strong> - UI components (Button, Card, Modal, Tabs)</li>
+<li><strong><code>reynard-auth</code></strong> - Authentication and user management</li>
+<li><strong><code>reynard-monaco</code></strong> - Rich text editor with Monaco integration</li>
+<li><strong><code>reynard-chat</code></strong> - Real-time collaboration features</li>
+<li><strong><code>reynard-games</code></strong> - Gamification system and achievements</li>
+<li><strong><code>reynard-rag</code></strong> - AI-powered search and content generation</li>
+<li><strong><code>reynard-fluent-icons</code></strong> - Icon system for visual elements</li>
+</ul>
+<h3>State Management</h3>
+<p>The app uses SolidJS signals for reactive state management:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">username</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">avatar</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">level</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">experiencePoints</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">achievements</span>: <span class="hljs-title class_">Achievement</span>[];
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Notebook</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">color</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">isPublic</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">createdAt</span>: <span class="hljs-title class_">Date</span>;
+  <span class="hljs-attr">updatedAt</span>: <span class="hljs-title class_">Date</span>;
+  <span class="hljs-attr">pageCount</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Note</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">notebookId</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">content</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">contentType</span>: <span class="hljs-string">&quot;markdown&quot;</span> | <span class="hljs-string">&quot;rich-text&quot;</span> | <span class="hljs-string">&quot;code&quot;</span>;
+  <span class="hljs-attr">isFavorite</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">createdAt</span>: <span class="hljs-title class_">Date</span>;
+  <span class="hljs-attr">updatedAt</span>: <span class="hljs-title class_">Date</span>;
+  <span class="hljs-attr">collaborators</span>?: <span class="hljs-title class_">User</span>[];
+}</code></pre><h2>🎨 Themes</h2>
+<p>The app includes 8 beautiful themes:</p>
+<ul>
+<li><strong>☀️ Light</strong> - Clean and bright</li>
+<li><strong>🌙 Dark</strong> - Easy on the eyes</li>
+<li><strong>☁️ Gray</strong> - Professional neutral</li>
+<li><strong>🍌 Banana</strong> - Warm and cheerful</li>
+<li><strong>🍓 Strawberry</strong> - Vibrant and energetic</li>
+<li><strong>🥜 Peanut</strong> - Earthy and cozy</li>
+<li><strong>⚫ High Contrast Black</strong> - Maximum accessibility</li>
+<li><strong>⚪ High Contrast Inverse</strong> - Alternative high contrast</li>
+</ul>
+<p>Themes persist across browser sessions and update in real-time.</p>
+<h2>🌍 Internationalization</h2>
+<p>Built-in support for multiple languages:</p>
+<ul>
+<li><strong>English</strong> - Default language</li>
+<li><strong>Spanish</strong> - Español</li>
+<li><strong>French</strong> - Français</li>
+<li><strong>And more</strong> - Extensible language system</li>
+</ul>
+<p>Language selection persists across sessions and updates the entire interface.</p>
+<h2>🎮 Gamification System</h2>
+<h3>Experience Points (XP)</h3>
+<ul>
+<li><strong>Creating notes</strong>: +10 XP</li>
+<li><strong>Completing todos</strong>: +5 XP</li>
+<li><strong>Collaborating</strong>: +15 XP</li>
+<li><strong>Using AI features</strong>: +8 XP</li>
+<li><strong>Daily login streak</strong>: +20 XP</li>
+</ul>
+<h3>Level System</h3>
+<ul>
+<li><strong>Level 1-5</strong>: Basic features</li>
+<li><strong>Level 6-10</strong>: Advanced editing tools</li>
+<li><strong>Level 11-15</strong>: AI features</li>
+<li><strong>Level 16-20</strong>: Collaboration features</li>
+<li><strong>Level 21+</strong>: Custom themes and advanced features</li>
+</ul>
+<h3>Achievement System</h3>
+<ul>
+<li><strong>📝 &quot;First Note&quot;</strong>: Create your first note</li>
+<li><strong>🎯 &quot;Organized&quot;</strong>: Create 10 notebooks</li>
+<li><strong>🤝 &quot;Collaborator&quot;</strong>: Share 5 notes</li>
+<li><strong>🧠 &quot;AI Assistant&quot;</strong>: Use AI features 20 times</li>
+<li><strong>📅 &quot;Streak Master&quot;</strong>: 30-day login streak</li>
+<li><strong>🎨 &quot;Artist&quot;</strong>: Use 5 different themes</li>
+</ul>
+<h2>🗄️ Database Schema</h2>
+<p>The backend uses PostgreSQL with the following tables:</p>
+<ul>
+<li><strong>users</strong> - User authentication and profile data</li>
+<li><strong>notebooks</strong> - Notebook metadata and organization</li>
+<li><strong>notes</strong> - Individual note content and metadata</li>
+<li><strong>collaborations</strong> - Sharing and permissions</li>
+<li><strong>achievements</strong> - Gamification data</li>
+<li><strong>activity_logs</strong> - User actions for analytics</li>
+<li><strong>file_attachments</strong> - File metadata and storage</li>
+</ul>
+<h2>🎯 Learning Objectives</h2>
+<p>This example teaches:</p>
+<ol>
+<li><strong>Full-Stack Development</strong> - Complete frontend and backend integration</li>
+<li><strong>Real-time Collaboration</strong> - WebSocket-based live editing</li>
+<li><strong>Gamification Design</strong> - Engaging user experience with progression systems</li>
+<li><strong>AI Integration</strong> - Smart features and content generation</li>
+<li><strong>Database Design</strong> - Complex relational data modeling</li>
+<li><strong>Authentication</strong> - Secure user management and permissions</li>
+<li><strong>State Management</strong> - Complex state management with multiple signals</li>
+<li><strong>Component Architecture</strong> - Building reusable, composable components</li>
+</ol>
+<h2>🔄 Next Steps</h2>
+<p>Try modifying the app to:</p>
+<ul>
+<li>Add voice notes and speech-to-text</li>
+<li>Implement handwriting support with digital pen</li>
+<li>Add mind mapping and visual note organization</li>
+<li>Integrate with calendar and scheduling</li>
+<li>Add third-party integrations (Slack, Google Drive, etc.)</li>
+<li>Implement offline mode with sync</li>
+<li>Add advanced AI features (personal assistant, content generation)</li>
+<li>Create custom themes and layouts</li>
+</ul>
+<h2>🧪 Development</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start frontend development server</span>
+npm run dev
+
+<span class="hljs-comment"># Start backend server (in separate terminal)</span>
+npm run dev:backend
+
+<span class="hljs-comment"># Start both frontend and backend</span>
+npm run start:full
+
+<span class="hljs-comment"># Setup database</span>
+npm run setup:db
+
+<span class="hljs-comment"># Build for production</span>
+npm run build
+
+<span class="hljs-comment"># Type check</span>
+npm run typecheck</code></pre><h2>🤝 Contributing</h2>
+<p>Found a bug or have an improvement? This example is part of the Reynard framework!</p>
+<h2>📚 Related Documentation</h2>
+<ul>
+<li><a href="../../README.md">Reynard Framework Documentation</a></li>
+<li><a href="../../packages/auth/README.md">reynard-auth Package</a></li>
+<li><a href="../../packages/monaco/README.md">reynard-monaco Package</a></li>
+<li><a href="../../packages/chat/README.md">reynard-chat Package</a></li>
+<li><a href="../../packages/games/README.md">reynard-games Package</a></li>
+<li><a href="../../packages/components/README.md">reynard-components Package</a></li>
+</ul>
+<hr>
+<p><em>Built with ❤️ using Reynard framework, SolidJS, FastAPI, and gamification technologies</em> 🦊📝</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

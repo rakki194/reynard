@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progressive Line - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Progressive Line</h1>
+      <div class="markdown-content"><h1>Progressive Line</h1>
+<pre><code class="hljs">
+<span class="hljs-comment">// &lt;block:data:2&gt;</span>
+<span class="hljs-keyword">const</span> data = [];
+<span class="hljs-keyword">const</span> data2 = [];
+<span class="hljs-keyword">let</span> prev = <span class="hljs-number">100</span>;
+<span class="hljs-keyword">let</span> prev2 = <span class="hljs-number">80</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) {
+  prev += <span class="hljs-number">5</span> - <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">10</span>;
+  data.<span class="hljs-title function_">push</span>({<span class="hljs-attr">x</span>: i, <span class="hljs-attr">y</span>: prev});
+  prev2 += <span class="hljs-number">5</span> - <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">10</span>;
+  data2.<span class="hljs-title function_">push</span>({<span class="hljs-attr">x</span>: i, <span class="hljs-attr">y</span>: prev2});
+}
+<span class="hljs-comment">// &lt;/block:data&gt;</span>
+
+<span class="hljs-comment">// &lt;block:animation:1&gt;</span>
+<span class="hljs-keyword">const</span> totalDuration = <span class="hljs-number">10000</span>;
+<span class="hljs-keyword">const</span> delayBetweenPoints = totalDuration / data.<span class="hljs-property">length</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">previousY</span> = (<span class="hljs-params">ctx</span>) =&gt; ctx.<span class="hljs-property">index</span> === <span class="hljs-number">0</span> ? ctx.<span class="hljs-property">chart</span>.<span class="hljs-property">scales</span>.<span class="hljs-property">y</span>.<span class="hljs-title function_">getPixelForValue</span>(<span class="hljs-number">100</span>) : ctx.<span class="hljs-property">chart</span>.<span class="hljs-title function_">getDatasetMeta</span>(ctx.<span class="hljs-property">datasetIndex</span>).<span class="hljs-property">data</span>[ctx.<span class="hljs-property">index</span> - <span class="hljs-number">1</span>].<span class="hljs-title function_">getProps</span>([<span class="hljs-string">&#x27;y&#x27;</span>], <span class="hljs-literal">true</span>).<span class="hljs-property">y</span>;
+<span class="hljs-keyword">const</span> animation = {
+  <span class="hljs-attr">x</span>: {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;number&#x27;</span>,
+    <span class="hljs-attr">easing</span>: <span class="hljs-string">&#x27;linear&#x27;</span>,
+    <span class="hljs-attr">duration</span>: delayBetweenPoints,
+    <span class="hljs-attr">from</span>: <span class="hljs-title class_">NaN</span>, <span class="hljs-comment">// the point is initially skipped</span>
+    <span class="hljs-title function_">delay</span>(<span class="hljs-params">ctx</span>) {
+      <span class="hljs-keyword">if</span> (ctx.<span class="hljs-property">type</span> !== <span class="hljs-string">&#x27;data&#x27;</span> || ctx.<span class="hljs-property">xStarted</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+      }
+      ctx.<span class="hljs-property">xStarted</span> = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">return</span> ctx.<span class="hljs-property">index</span> * delayBetweenPoints;
+    }
+  },
+  <span class="hljs-attr">y</span>: {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;number&#x27;</span>,
+    <span class="hljs-attr">easing</span>: <span class="hljs-string">&#x27;linear&#x27;</span>,
+    <span class="hljs-attr">duration</span>: delayBetweenPoints,
+    <span class="hljs-attr">from</span>: previousY,
+    <span class="hljs-title function_">delay</span>(<span class="hljs-params">ctx</span>) {
+      <span class="hljs-keyword">if</span> (ctx.<span class="hljs-property">type</span> !== <span class="hljs-string">&#x27;data&#x27;</span> || ctx.<span class="hljs-property">yStarted</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+      }
+      ctx.<span class="hljs-property">yStarted</span> = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">return</span> ctx.<span class="hljs-property">index</span> * delayBetweenPoints;
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:animation&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: {
+    <span class="hljs-attr">datasets</span>: [{
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>,
+      <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">radius</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">data</span>: data,
+    },
+    {
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>,
+      <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">radius</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">data</span>: data2,
+    }]
+  },
+  <span class="hljs-attr">options</span>: {
+    animation,
+    <span class="hljs-attr">interaction</span>: {
+      <span class="hljs-attr">intersect</span>: <span class="hljs-literal">false</span>
+    },
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">legend</span>: <span class="hljs-literal">false</span>
+    },
+    <span class="hljs-attr">scales</span>: {
+      <span class="hljs-attr">x</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;linear&#x27;</span>
+      }
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  config
+};
+</code></pre><h2>Api</h2>
+<ul>
+<li><a href="../../api/classes/Chart.md">Chart</a><ul>
+<li><a href="../../api/classes/Chart.md#getdatasetmeta"><code>getDatasetMeta</code></a></li>
+</ul>
+</li>
+<li><a href="../../api/classes/Scale.md">Scale</a><ul>
+<li><a href="../../api/classes/Scale.md#getpixelforvalue"><code>getPixelForValue</code></a></li>
+</ul>
+</li>
+</ul>
+<h2>Docs</h2>
+<ul>
+<li><a href="../../configuration/animations.md">Animations</a><ul>
+<li><a href="../../configuration/animations.md#animation">animation</a><ul>
+<li><code>delay</code></li>
+<li><code>duration</code></li>
+<li><code>easing</code></li>
+<li><code>loop</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../general/options.md">Options</a><ul>
+<li><a href="../../general/options.md#scriptable-options">Scriptable Options</a><ul>
+<li><a href="../../general/options.md#data">Data Context</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

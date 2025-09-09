@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adding New Settings - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Adding New Settings</h1>
+      <div class="markdown-content"><h1>Adding New Settings</h1>
+<p>This document outlines the process of adding new settings to the yipyap<br>application.</p>
+<h2>Table of Contents</h2>
+<hr>
+<ul>
+<li><a href="#adding-new-settings">Adding New Settings</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#step-by-step-guide">Step-by-Step Guide</a><ul>
+<li><a href="#1-update-app-context">1. Update App Context</a></li>
+<li><a href="#2-add-to-store">2. Add to Store</a></li>
+<li><a href="#3-add-persistence">3. Add Persistence</a></li>
+<li><a href="#4-add-getter-and-setter">4. Add Getter and Setter</a></li>
+<li><a href="#5-add-translation-types">5. Add Translation Types</a></li>
+<li><a href="#6-add-ui-component">6. Add UI Component</a></li>
+<li><a href="#7-add-translations">7. Add Translations</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">Best Practices</a><ul>
+<li><a href="#type-safety">Type Safety</a></li>
+<li><a href="#state-management">State Management</a></li>
+<li><a href="#persistence">Persistence</a></li>
+<li><a href="#uiux">UI/UX</a></li>
+<li><a href="#translations">Translations</a></li>
+</ul>
+</li>
+<li><a href="#testing">Testing</a><ul>
+<li><a href="#1-state-tests">1. State Tests</a></li>
+<li><a href="#2-ui-tests">2. UI Tests</a></li>
+<li><a href="#3-translation-tests">3. Translation Tests</a></li>
+</ul>
+</li>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#local-versus-serverbacked-settings">Local versus Server‑Backed Settings</a></li>
+<li><a href="#storage-keys-and-type-conventions">Storage Keys and Type Conventions</a></li>
+<li><a href="#ui-control-patterns">UI Control Patterns</a></li>
+<li><a href="#translations-and-types">Translations and Types</a></li>
+<li><a href="#accessibility-and-rtl">Accessibility and RTL</a></li>
+<li><a href="#testing-guidance">Testing Guidance</a></li>
+<li><a href="#common-pitfalls">Common Pitfalls</a></li>
+</ul>
+</li>
+</ul>
+<h2>Step-by-Step Guide</h2>
+<h3>1. Update App Context</h3>
+<p>Add the setting to the <code>AppContext</code> interface in <code>/src/contexts/app.tsx</code>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AppContext</span> {
+  <span class="hljs-comment">// ... existing settings ...</span>
+  <span class="hljs-attr">newSetting</span>: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// or appropriate type</span>
+  <span class="hljs-attr">setNewSetting</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">boolean</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}</code></pre><h3>2. Add to Store</h3>
+<p>Add the setting to the store type and initial state in <code>createAppContext</code>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> [store, setStore] = createStaticStore&lt;{
+  <span class="hljs-comment">// ... existing store properties ...</span>
+  <span class="hljs-attr">newSetting</span>: <span class="hljs-built_in">boolean</span>;
+}&gt;({
+  <span class="hljs-comment">// ... existing initial values ...</span>
+  <span class="hljs-attr">newSetting</span>: <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&quot;newSetting&quot;</span>) === <span class="hljs-string">&quot;true&quot;</span>,
+});</code></pre><h3>3. Add Persistence</h3>
+<p>Add a persistence effect to save the setting to localStorage:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">createRenderEffect</span>(<span class="hljs-function">() =&gt;</span>
+  <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&quot;newSetting&quot;</span>, store.<span class="hljs-property">newSetting</span>.<span class="hljs-title function_">toString</span>()),
+);</code></pre><h3>4. Add Getter and Setter</h3>
+<p>Add the getter and setter to the returned app context:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> appContext = {
+  <span class="hljs-comment">// ... existing context properties ...</span>
+  <span class="hljs-keyword">get</span> <span class="hljs-title function_">newSetting</span>() {
+    <span class="hljs-keyword">return</span> store.<span class="hljs-property">newSetting</span>;
+  },
+  <span class="hljs-attr">setNewSetting</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-built_in">boolean</span></span>) =&gt;</span> <span class="hljs-title function_">setStore</span>(<span class="hljs-string">&quot;newSetting&quot;</span>, value),
+};</code></pre><h3>5. Add Translation Types</h3>
+<p>Add the setting to the <code>SettingsTranslations</code> interface in <code>/src/i18n/types.ts</code>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SettingsTranslations</span> {
+  <span class="hljs-comment">// ... existing translations ...</span>
+  <span class="hljs-attr">newSetting</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">newSettingTooltip</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// if tooltip is needed</span>
+}</code></pre><h3>6. Add UI Component</h3>
+<p>Add the setting UI to the Settings component in<br><code>/src/components/Settings/Settings.tsx</code>:</p>
+<pre><code class="hljs language-typescript">&lt;div <span class="hljs-keyword">class</span>=<span class="hljs-string">&quot;setting-item&quot;</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tooltip-container&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>
+      <span class="hljs-attr">checked</span>=<span class="hljs-string">{app.newSetting}</span>
+      <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> app.setNewSetting(e.currentTarget.checked)}
+    /&gt;
+    {t(&#x27;settings.newSetting&#x27;)}
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tooltip&quot;</span>&gt;</span>{t(&#x27;settings.newSettingTooltip&#x27;)}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></span>
+&lt;/div&gt;</code></pre><h3>7. Add Translations</h3>
+<p>Add translations for the setting in each language file in <code>/src/i18n/lang/</code>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-attr">settings</span>: {
+  <span class="hljs-comment">// ... existing translations ...</span>
+  <span class="hljs-attr">newSetting</span>: <span class="hljs-string">&quot;New Setting Name&quot;</span>,
+  <span class="hljs-attr">newSettingTooltip</span>: <span class="hljs-string">&quot;Description of what the setting does&quot;</span>,
+}</code></pre><h2>Best Practices</h2>
+<h3>Type Safety</h3>
+<p>Type safety is crucial when implementing settings. All settings should have<br>properly defined TypeScript types that accurately represent their possible<br>values and constraints. Interfaces need to be kept up to date as settings<br>evolve, with any changes properly documented. Type constraints should be clearly<br>documented to help other developers understand the valid ranges and formats for<br>setting values.</p>
+<h3>State Management</h3>
+<p>When managing settings state, use consistent naming patterns that align with the<br>existing codebase. The store structure should be followed to maintain<br>consistency and predictability. State updates should be handled atomically to<br>prevent race conditions or invalid intermediate states. Consider any side<br>effects that may occur when settings change and handle them appropriately.</p>
+<h3>Persistence</h3>
+<p>Settings persistence requires careful handling of localStorage. Missing or<br>invalid values should be gracefully handled with appropriate fallbacks. As<br>settings evolve, consider migration strategies for handling outdated stored<br>values. Regularly clean up old or deprecated settings to prevent localStorage<br>bloat. The persistence layer should be robust and handle edge cases gracefully.</p>
+<h3>UI/UX</h3>
+<p>The settings interface should be thoughtfully designed with related settings<br>grouped together logically. Each setting needs a clear, descriptive label that<br>helps users understand its purpose. Tooltips should be added to provide<br>additional context and explanation where needed. Keyboard accessibility must be<br>considered to ensure all users can effectively navigate and modify settings.</p>
+<h3>Translations</h3>
+<p>All settings must include translations for every supported language in the<br>application. Translation keys should be clear and descriptive to help maintain<br>the codebase. Include tooltip translations when additional context is needed.<br>Special consideration should be given to RTL languages to ensure proper display<br>and functionality of the settings interface in those language contexts.</p>
+<h2>Testing</h2>
+<h3>1. State Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Settings State&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should persist setting value&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> app = <span class="hljs-title function_">useAppContext</span>();
+    app.<span class="hljs-title function_">setNewSetting</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-title function_">expect</span>(<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&quot;newSetting&quot;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;true&quot;</span>);
+  });
+});</code></pre><h3>2. UI Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Settings UI&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should update on change&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> { getByLabelText } = <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Settings</span> /&gt;</span></span>);
+    <span class="hljs-keyword">const</span> checkbox = <span class="hljs-title function_">getByLabelText</span>(<span class="hljs-string">&quot;New Setting Name&quot;</span>);
+    fireEvent.<span class="hljs-title function_">click</span>(checkbox);
+    <span class="hljs-title function_">expect</span>(checkbox).<span class="hljs-title function_">toBeChecked</span>();
+  });
+});</code></pre><h3>3. Translation Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Settings Translations&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should have all required keys&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> keys = [<span class="hljs-string">&quot;newSetting&quot;</span>, <span class="hljs-string">&quot;newSettingTooltip&quot;</span>];
+    keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(translations.<span class="hljs-property">settings</span>[key]).<span class="hljs-title function_">toBeDefined</span>();
+    });
+  });
+});</code></pre><p>When adding new settings to the application, it&#39;s crucial to maintain<br>comprehensive documentation that reflects all changes. Every aspect of new<br>settings should be thoroughly tested to ensure reliability and proper<br>functionality. Backward compatibility must be carefully considered to prevent<br>disruption for existing users.</p>
+<p>Always follow the established patterns in the codebase to maintain consistency<br>and make the code easier to understand for other developers. Settings should be<br>organized in a logical manner that makes sense to both developers and users.<br>Finally, consider the performance implications of any new settings, especially<br>those that might affect the application&#39;s responsiveness or resource usage.</p>
+<h2>Architecture Overview</h2>
+<p>Settings in yipyap are managed in the global app context and, for some domains,<br>in dedicated modules. The primary source of truth for app-wide, theme, gallery,<br>and performance preferences is the app context in <code>src/contexts/app.tsx</code>. It<br>uses a static store created via <code>createStaticStore</code> and persists values to<br><code>localStorage</code> using effects and targeted setter paths. For focused domains or<br>when you want to reuse a cohesive settings set independently of the app context,<br>implement them as a module in <code>src/modules</code>, as done in<br><code>src/modules/settings.ts</code>. Modules encapsulate signals, provide typed getters<br>and setters, and persist values via <code>localStorage</code> inside setters for immediate<br>consistency.</p>
+<p>In the UI, most settings are surfaced through<br><code>src/components/Settings/Settings.tsx</code> and specialized panels in<br><code>src/components/Settings/*Settings.tsx</code>. These panels read from the app context<br>or a module and call typed setters. Translations for labels and tooltips come<br>from <code>src/i18n</code>, with keys typed by <code>src/i18n/types.ts</code>.</p>
+<h2>Local versus Server‑Backed Settings</h2>
+<p>Prefer local persistence in <code>localStorage</code> for device-specific UX preferences<br>such as toggles for animations, zoom, minimap, or visual thresholds. Use<br>server-backed persistence for user profile preferences that must follow a<br>signed-in user across devices or sessions. The codebase demonstrates<br>server-backed user settings in<br><code>src/components/Settings/TTSAndCrawlSettings.tsx</code>, which interacts with<br><code>/api/users/me/settings</code> using <code>useAuthFetch</code>.</p>
+<p>When adding server-backed settings, read on initialization, optimistically<br>update UI state on change, and synchronize to the backend. Fall back gracefully<br>if the network fails and inform the user via the notification system. For<br>security and privacy, do not store secrets in <code>localStorage</code> and avoid<br>persisting tokens or sensitive configuration as a &quot;setting&quot;.</p>
+<h2>Storage Keys and Type Conventions</h2>
+<p>Use stable, descriptive camelCase keys for <code>localStorage</code>. Booleans must be<br>stored as the strings &quot;true&quot; or &quot;false&quot; to simplify strict equality checks.<br>Numbers should be converted with <code>parseInt</code> or <code>parseFloat</code> with sane defaults<br>if the key is missing. For structured settings, serialize with <code>JSON.stringify</code><br>and deserialize with <code>JSON.parse</code>, guarding with try/catch and fallbacks.</p>
+<p>If you change the representation of a setting, implement non-breaking reads with<br>a migration path. The app already includes a compatibility pattern for <code>locale</code><br>that accepts either a plain string or a JSON payload and then writes back a<br>normalized value. Use a similar approach when evolving your settings.</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Example: tolerant read with fallback and normalization</span>
+<span class="hljs-keyword">const</span> stored = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&quot;myNewSetting&quot;</span>);
+<span class="hljs-keyword">const</span> value = (<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">if</span> (!stored) <span class="hljs-keyword">return</span> <span class="hljs-number">0.5</span>; <span class="hljs-comment">// default</span>
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">return</span> stored.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&quot;{&quot;</span>)
+      ? (<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(stored).<span class="hljs-property">value</span> ?? <span class="hljs-number">0.5</span>)
+      : <span class="hljs-built_in">parseFloat</span>(stored);
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.5</span>;
+  }
+})();
+<span class="hljs-comment">// ... later, persist normalized representation</span>
+<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&quot;myNewSetting&quot;</span>, value.<span class="hljs-title function_">toString</span>());</code></pre><h2>UI Control Patterns</h2>
+<p>Use the shared UI components and patterns already employed in<br><code>src/components/Settings/Settings.tsx</code> and its subpanels. For binary settings,<br>prefer the <code>Toggle</code> component with a translated label and optional tooltip. For<br>numeric ranges, use the <code>Slider</code> component with a clear label, units when<br>applicable, and live value feedback. For enumerations, use a select control<br>bound to a typed union value or an enum, with explicit mapping to human-readable<br>translation keys.</p>
+<p>Bind controls directly to app context getters and setters for immediate<br>reactivity and persistence. Keep event handlers concise and only set the<br>specific setting being modified. Provide tooltips for non-obvious behaviors,<br>using translation keys typed by <code>SettingsTranslations</code>.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Example: boolean toggle</span>
+&lt;<span class="hljs-title class_">Toggle</span>
+  checked={app.<span class="hljs-property">enableMinimap</span>}
+  onChange={<span class="hljs-function">(<span class="hljs-params">checked</span>) =&gt;</span> app.<span class="hljs-title function_">setEnableMinimap</span>(checked)}
+  title={<span class="hljs-title function_">t</span>(<span class="hljs-string">&#x27;settings.enableMinimap&#x27;</span>)}
+/&gt;
+{<span class="hljs-title function_">t</span>(<span class="hljs-string">&#x27;settings.enableMinimap&#x27;</span>)}
+
+<span class="hljs-comment">// Example: numeric slider</span>
+&lt;<span class="hljs-title class_">Slider</span>
+  value={app.<span class="hljs-property">thumbnailSize</span>}
+  min={<span class="hljs-number">64</span>}
+  max={<span class="hljs-number">512</span>}
+  step={<span class="hljs-number">16</span>}
+  onInput={<span class="hljs-function">(<span class="hljs-params">size</span>) =&gt;</span> app.<span class="hljs-title function_">setThumbnailSize</span>(size)}
+/&gt;
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{t(&#x27;settings.thumbnailSize&#x27;)}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span></code></pre><p>Follow accessibility practices described below. Do not rely on CSS <code>!important</code>,<br>and respect theme variables defined in <code>src/themes.css</code> and global styles in<br><code>src/styles.css</code> for consistent theming.</p>
+<h2>Translations and Types</h2>
+<p>All settings labels and tooltips must be represented in <code>SettingsTranslations</code><br>in <code>src/i18n/types.ts</code> so that language files remain type-safe. Add your new<br>keys there first, then add corresponding entries to each language file in<br><code>src/i18n/lang/*.ts</code> under the <code>settings</code> section. For grouped settings, prefer<br>nested objects (as used for <code>tagSuggestions</code>) to keep related translations<br>together and discoverable. Access translations via the <code>useTranslations</code><br>composable or the app context&#39;s translator, and avoid hard-coded strings in UI.</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// types.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SettingsTranslations</span> {
+  <span class="hljs-comment">// existing keys</span>
+  <span class="hljs-attr">myNewSetting</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">myNewSettingTooltip</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-comment">// en.ts (and other languages)</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">settings</span>: {
+    <span class="hljs-attr">myNewSetting</span>: <span class="hljs-string">&quot;My new setting&quot;</span>,
+    <span class="hljs-attr">myNewSettingTooltip</span>: <span class="hljs-string">&quot;Explains what this setting does.&quot;</span>,
+  },
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">Translations</span>;</code></pre><h2>Accessibility and RTL</h2>
+<p>The settings UI must be navigable with a keyboard and screen readers. Associate<br>controls with labels using <code>&lt;label&gt;</code> and ensure <code>Toggle</code>, <code>Slider</code>, and selects<br>expose appropriate roles and states. Provide ARIA labels only when a visible<br>label is not sufficient. Respect right-to-left languages by leveraging the<br>existing <code>rtl</code> class logic in <code>Settings.tsx</code>, which derives from the active<br>locale. Ensure focus states are visible with theme-aware styling, and avoid<br>capturing scroll or keyboard events in ways that impede navigation.</p>
+<h2>Testing Guidance</h2>
+<p>Unit test state persistence by setting a value through the setter and verifying<br><code>localStorage</code> writes. Test UI behavior by rendering the relevant settings<br>panel, interacting with controls, and asserting reactive updates. Validate<br>translations by asserting the presence of required keys in<br><code>translations.settings</code> across languages. For server-backed settings, mock<br><code>useAuthFetch</code> and test optimistic UI updates and error paths, verifying that<br>failure surfaces a notification and state is rolled back or reconciled on the<br>next fetch.</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// Example: UI test for a toggle</span>
+<span class="hljs-keyword">const</span> { getByLabelText } = <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Settings</span> <span class="hljs-attr">onClose</span>=<span class="hljs-string">{()</span> =&gt;</span> {}} /&gt;</span>);
+<span class="hljs-keyword">const</span> toggle = <span class="hljs-title function_">getByLabelText</span>(<span class="hljs-string">&#x27;My new setting&#x27;</span>);
+fireEvent.<span class="hljs-title function_">click</span>(toggle);
+<span class="hljs-title function_">expect</span>(toggle).<span class="hljs-title function_">toBeChecked</span>();
+<span class="hljs-title function_">expect</span>(<span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;myNewSetting&#x27;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&#x27;true&#x27;</span>);</code></pre><h2>Common Pitfalls</h2>
+<p>Do not treat authentication tokens or secrets as settings; never persist them<br>alongside UI preferences. Always provide defaults when reading from<br><code>localStorage</code>, and avoid throwing during JSON parsing. When evolving a<br>setting&#39;s schema, read old formats and normalize to the new representation<br>before writing. Ensure enumeration values map to stable storage strings to avoid<br>breaking changes. Consider server synchronization only when the preference must<br>follow the user across devices; otherwise, prefer local-only storage to reduce<br>backend coupling and complexity.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

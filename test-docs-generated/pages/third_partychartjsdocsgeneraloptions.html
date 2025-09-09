@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Options - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Options</h1>
+      <div class="markdown-content"><h1>Options</h1>
+<h2>Option resolution</h2>
+<p>Options are resolved from top to bottom, using a context dependent route.</p>
+<h3>Chart level options</h3>
+<ul>
+<li>options</li>
+<li>overrides[<code>config.type</code>]</li>
+<li>defaults</li>
+</ul>
+<h3>Dataset level options</h3>
+<p><code>dataset.type</code> defaults to <code>config.type</code>, if not specified.</p>
+<ul>
+<li>dataset</li>
+<li>options.datasets[<code>dataset.type</code>]</li>
+<li>options</li>
+<li>overrides[<code>config.type</code>].datasets[<code>dataset.type</code>]</li>
+<li>defaults.datasets[<code>dataset.type</code>]</li>
+<li>defaults</li>
+</ul>
+<h3>Dataset animation options</h3>
+<ul>
+<li>dataset.animation</li>
+<li>options.datasets[<code>dataset.type</code>].animation</li>
+<li>options.animation</li>
+<li>overrides[<code>config.type</code>].datasets[<code>dataset.type</code>].animation</li>
+<li>defaults.datasets[<code>dataset.type</code>].animation</li>
+<li>defaults.animation</li>
+</ul>
+<h3>Dataset element level options</h3>
+<p>Each scope is looked up with <code>elementType</code> prefix in the option name first, then without the prefix. For example, <code>radius</code> for <code>point</code> element is looked up using <code>pointRadius</code> and if that does not hit, then <code>radius</code>.</p>
+<ul>
+<li>dataset</li>
+<li>options.datasets[<code>dataset.type</code>]</li>
+<li>options.datasets[<code>dataset.type</code>].elements[<code>elementType</code>]</li>
+<li>options.elements[<code>elementType</code>]</li>
+<li>options</li>
+<li>overrides[<code>config.type</code>].datasets[<code>dataset.type</code>]</li>
+<li>overrides[<code>config.type</code>].datasets[<code>dataset.type</code>].elements[<code>elementType</code>]</li>
+<li>defaults.datasets[<code>dataset.type</code>]</li>
+<li>defaults.datasets[<code>dataset.type</code>].elements[<code>elementType</code>]</li>
+<li>defaults.elements[<code>elementType</code>]</li>
+<li>defaults</li>
+</ul>
+<h3>Scale options</h3>
+<ul>
+<li>options.scales</li>
+<li>overrides[<code>config.type</code>].scales</li>
+<li>defaults.scales</li>
+<li>defaults.scale</li>
+</ul>
+<h3>Plugin options</h3>
+<p>A plugin can provide <code>additionalOptionScopes</code> array of paths to additionally look for its options in. For root scope, use empty string: <code>&#39;&#39;</code>. Most core plugins also take options from root scope.</p>
+<ul>
+<li>options.plugins[<code>plugin.id</code>]</li>
+<li>(options.[<code>...plugin.additionalOptionScopes</code>])</li>
+<li>overrides[<code>config.type</code>].plugins[<code>plugin.id</code>]</li>
+<li>defaults.plugins[<code>plugin.id</code>]</li>
+<li>(defaults.[<code>...plugin.additionalOptionScopes</code>])</li>
+</ul>
+<h2>Scriptable Options</h2>
+<p>Scriptable options also accept a function which is called for each of the underlying data values and that takes the unique argument <code>context</code> representing contextual information (see <a href="options.md#option-context">option context</a>).<br>A resolver is passed as second parameter, that can be used to access other options in the same context.</p>
+<p>:::tip Note</p>
+<p>The <code>context</code> argument should be validated in the scriptable function, because the function can be invoked in different contexts. The <code>type</code> field is a good candidate for this validation.</p>
+<p>:::</p>
+<p>Example:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-attr">color</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+    <span class="hljs-keyword">const</span> index = context.<span class="hljs-property">dataIndex</span>;
+    <span class="hljs-keyword">const</span> value = context.<span class="hljs-property">dataset</span>.<span class="hljs-property">data</span>[index];
+    <span class="hljs-keyword">return</span> value &lt; <span class="hljs-number">0</span> ? <span class="hljs-string">&#x27;red&#x27;</span> :  <span class="hljs-comment">// draw negative values in red</span>
+        index % <span class="hljs-number">2</span> ? <span class="hljs-string">&#x27;blue&#x27;</span> :    <span class="hljs-comment">// else, alternate values in blue and green</span>
+        <span class="hljs-string">&#x27;green&#x27;</span>;
+},
+<span class="hljs-attr">borderColor</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) {
+    <span class="hljs-keyword">const</span> color = options.<span class="hljs-property">color</span>; <span class="hljs-comment">// resolve the value of another scriptable option: &#x27;red&#x27;, &#x27;blue&#x27; or &#x27;green&#x27;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Chart</span>.<span class="hljs-property">helpers</span>.<span class="hljs-title function_">color</span>(color).<span class="hljs-title function_">lighten</span>(<span class="hljs-number">0.2</span>);
+}</code></pre><h2>Indexable Options</h2>
+<p>Indexable options also accept an array in which each item corresponds to the element at the same index. Note that if there are less items than data, the items are looped over. In many cases, using a <a href="#scriptable-options">function</a> is more appropriate if supported.</p>
+<p>Example:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-attr">color</span>: [
+    <span class="hljs-string">&#x27;red&#x27;</span>,    <span class="hljs-comment">// color for data at index 0</span>
+    <span class="hljs-string">&#x27;blue&#x27;</span>,   <span class="hljs-comment">// color for data at index 1</span>
+    <span class="hljs-string">&#x27;green&#x27;</span>,  <span class="hljs-comment">// color for data at index 2</span>
+    <span class="hljs-string">&#x27;black&#x27;</span>,  <span class="hljs-comment">// color for data at index 3</span>
+    <span class="hljs-comment">//...</span>
+]</code></pre><h2>Option Context</h2>
+<p>The option context is used to give contextual information when resolving options and currently only applies to <a href="#scriptable-options">scriptable options</a>.<br>The object is preserved, so it can be used to store and pass information between calls.</p>
+<p>There are multiple levels of context objects:</p>
+<ul>
+<li><code>chart</code><ul>
+<li><code>dataset</code><ul>
+<li><code>data</code></li>
+</ul>
+</li>
+<li><code>scale</code><ul>
+<li><code>tick</code></li>
+<li><code>pointLabel</code> (only used in the radial linear scale)</li>
+</ul>
+</li>
+<li><code>tooltip</code></li>
+</ul>
+</li>
+</ul>
+<p>Each level inherits its parent(s) and any contextual information stored in the parent is available through the child.</p>
+<p>The context object contains the following properties:</p>
+<h3>chart</h3>
+<ul>
+<li><code>chart</code>: the associated chart</li>
+<li><code>type</code>: <code>&#39;chart&#39;</code></li>
+</ul>
+<h3>dataset</h3>
+<p>In addition to <a href="#chart">chart</a></p>
+<ul>
+<li><code>active</code>: true if an element is active (hovered)</li>
+<li><code>dataset</code>: dataset at index <code>datasetIndex</code></li>
+<li><code>datasetIndex</code>: index of the current dataset</li>
+<li><code>index</code>: same as <code>datasetIndex</code></li>
+<li><code>mode</code>: the update mode</li>
+<li><code>type</code>: <code>&#39;dataset&#39;</code></li>
+</ul>
+<h3>data</h3>
+<p>In addition to <a href="#dataset">dataset</a></p>
+<ul>
+<li><code>active</code>: true if an element is active (hovered)</li>
+<li><code>dataIndex</code>: index of the current data</li>
+<li><code>parsed</code>: the parsed data values for the given <code>dataIndex</code> and <code>datasetIndex</code></li>
+<li><code>raw</code>: the raw data values for the given <code>dataIndex</code> and <code>datasetIndex</code></li>
+<li><code>element</code>: the element (point, arc, bar, etc.) for this data</li>
+<li><code>index</code>: same as <code>dataIndex</code></li>
+<li><code>type</code>: <code>&#39;data&#39;</code></li>
+</ul>
+<h3>scale</h3>
+<p>In addition to <a href="#chart">chart</a></p>
+<ul>
+<li><code>scale</code>: the associated scale</li>
+<li><code>type</code>: <code>&#39;scale&#39;</code></li>
+</ul>
+<h3>tick</h3>
+<p>In addition to <a href="#scale">scale</a></p>
+<ul>
+<li><code>tick</code>: the associated tick object</li>
+<li><code>index</code>: tick index</li>
+<li><code>type</code>: <code>&#39;tick&#39;</code></li>
+</ul>
+<h3>pointLabel</h3>
+<p>In addition to <a href="#scale">scale</a></p>
+<ul>
+<li><code>label</code>: the associated label value</li>
+<li><code>index</code>: label index</li>
+<li><code>type</code>: <code>&#39;pointLabel&#39;</code></li>
+</ul>
+<h3>tooltip</h3>
+<p>In addition to <a href="#chart">chart</a></p>
+<ul>
+<li><code>tooltip</code>: the tooltip object</li>
+<li><code>tooltipItems</code>: the items the tooltip is displaying</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

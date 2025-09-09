@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoRA Analysis - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>LoRA Analysis</h1>
+      <div class="markdown-content"><h1>LoRA Analysis</h1>
+<p>Utilities for extracting metadata from LoRA model files and performing PCA analysis of weight matrices with optional visualizations.</p>
+<h2>Metadata Extraction</h2>
+<p><code>LoraMetadataExtractor.extract_metadata(lora_path)</code> returns cohesive metadata blocks: <code>file_info</code>, <code>model_info</code>, <code>training_info</code>, <code>architecture_info</code>, and <code>validation_info</code>. SafeTensors is read via <code>safetensors.safe_open(...).metadata()</code>. PyTorch checkpoints load via <code>torch.load</code>, scanning for LoRA keys to infer rank and target modules. A validator checks for basic consistency and reports warnings/errors. Export helpers write JSON, plain text, or Markdown.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/lora_analysis/metadata.py</code></li>
+</ul>
+</li>
+</ul>
+<p>The SafeTensors metadata supports common keys such as <code>ss_model_name</code>, <code>ss_base_model_name</code>, <code>ss_network_rank</code>, <code>ss_network_alpha</code>, and <code>ss_network_module</code> among many others. When reading PyTorch checkpoints, rank is inferred from the first occurrence of a <code>lora_A</code> or <code>lora_B</code> tensor, and target modules are derived from key prefixes. The extractor also provides helpers to format results for display and to export metadata to JSON, text, or Markdown. Validation currently checks for a positive rank and emits warnings when alpha or target modules are missing.</p>
+<p>Example (programmatic):</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> app.lora_analysis.metadata <span class="hljs-keyword">import</span> LoraMetadataExtractor
+
+extractor = LoraMetadataExtractor()
+metadata = <span class="hljs-keyword">await</span> extractor.extract_metadata(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>))
+<span class="hljs-built_in">print</span>(<span class="hljs-keyword">await</span> extractor.format_metadata_for_printing(metadata))</code></pre><p>Returned shape (abbreviated):</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;file_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;filename&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;model.safetensors&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;file_size_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">123.45</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;file_extension&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;.safetensors&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;modified_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;safetensors&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;model_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;base_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;network_rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">16</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;network_alpha&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">32.0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;network_module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;q_proj,v_proj&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;all_metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;ss_model_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;ss_network_rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;16&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;...&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;training_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;training_method&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;learning_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;batch_size&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;epochs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;steps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;architecture_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;target_modules&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;alpha&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;validation_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;is_valid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;warnings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;errors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;extraction_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>PCA Analysis</h2>
+<p><code>LoraPcaAnalyzer.analyze_lora_pca(lora_path, n_components)</code> extracts weight matrices for LoRA layers (keys containing <code>lora_A</code>/<code>lora_B</code>), standardizes them, and runs PCA. Results include explained variance, components, singular values, and transformed data. Visualization helpers generate multi-plot figures and heatmaps when Matplotlib/Seaborn are available.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/lora_analysis/pca.py</code></li>
+</ul>
+</li>
+</ul>
+<p>Analysis runs per layer that contains LoRA weights, flattens weights appropriately, uses <code>StandardScaler</code> and <code>sklearn.decomposition.PCA</code>, and returns a success flag plus per-layer results. A convenience method can generate figures showing explained variance curves, cumulative variance, singular values, and a heatmap of principal components when plotting backends are present.</p>
+<p>Example (programmatic):</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> app.lora_analysis.pca <span class="hljs-keyword">import</span> LoraPcaAnalyzer
+
+pca = LoraPcaAnalyzer()
+result = <span class="hljs-keyword">await</span> pca.analyze_lora_pca(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>), n_components=<span class="hljs-number">8</span>)
+<span class="hljs-keyword">if</span> result.get(<span class="hljs-string">&quot;success&quot;</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Layers analyzed:&quot;</span>, result.get(<span class="hljs-string">&quot;total_layers&quot;</span>))</code></pre><p>Returned shape (abbreviated):</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;pca_results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;some.layer.lora_A&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;explained_variance_ratio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.21</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.13</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;singular_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">1.23</span><span class="hljs-punctuation">,</span> <span class="hljs-number">1.01</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;components&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;transformed_data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;n_components&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;total_variance&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.62</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;cumulative_variance&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.21</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.34</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;some.layer.lora_B&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;...&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;n_components&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_layers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12</span>
+<span class="hljs-punctuation">}</span></code></pre><p>When the required dependencies are not available, the analyzer returns a structured error (for example when <code>scikit-learn</code> is not installed). All heavy imports, including NumPy, PyTorch, Matplotlib, and SafeTensors, are loaded lazily to minimize baseline overhead.</p>
+<p>Optional visualization and export:</p>
+<pre><code class="hljs language-python">ok = <span class="hljs-keyword">await</span> pca.generate_pca_visualization(result, Path(<span class="hljs-string">&quot;/tmp/pca.png&quot;</span>))
+ok = <span class="hljs-keyword">await</span> pca.export_pca_results(result, Path(<span class="hljs-string">&quot;/tmp/pca.json&quot;</span>))</code></pre><p>Interpreting PCA for LoRA: principal components can surface dominant adaptation directions per module. Cumulative explained variance indicates how compactly the adaptation is represented; for small ranks, a few components often explain most of the variance.</p>
+<h2>Notes</h2>
+<ul>
+<li>All heavy imports are lazily loaded to avoid runtime penalties.</li>
+<li>Errors are logged; callers receive structured results and can display summaries.</li>
+</ul>
+<h2>Resizing and Merging</h2>
+<p>The resizer supports changing the effective rank by padding or truncating <code>lora_A</code> and <code>lora_B</code> matrices and can merge multiple LoRA adapters with weighted averaging. The resize validator checks file presence, size, rank validity, and extracts the current rank from the first <code>lora_A</code>/<code>lora_B</code> occurrence. Resizing pads with zeros when increasing rank and truncates when decreasing rank. Merging normalizes provided weights and combines per-layer tensors across models.</p>
+<p>Example (programmatic):</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> app.lora_analysis.resizer <span class="hljs-keyword">import</span> LoraResizer
+
+resizer = LoraResizer()
+valid = <span class="hljs-keyword">await</span> resizer.validate_resize_operation(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>), new_rank=<span class="hljs-number">32</span>)
+<span class="hljs-keyword">if</span> valid.get(<span class="hljs-string">&quot;is_valid&quot;</span>):
+    <span class="hljs-keyword">await</span> resizer.resize_lora_rank(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>), <span class="hljs-number">32</span>, Path(<span class="hljs-string">&quot;/tmp/out.safetensors&quot;</span>))</code></pre><p>The saver writes SafeTensors or PyTorch checkpoints, attaching minimal metadata such as <code>ss_network_rank</code> and an operation tag (e.g., <code>resize</code> or <code>weighted_sum</code>). Consider that zero-padding or truncation is a simplistic approach; fine-tuning at the new rank typically yields better quality.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/lora_analysis/resizer.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Visualization</h2>
+<p>Visualization helpers render per-layer heatmaps, distribution histograms, rank analysis summaries (including singular-value spectra and cumulative explained variance), and model-to-model comparisons. They reuse the same lazy-loaded plotting backends and write figures to disk.</p>
+<p>Example (programmatic):</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> app.lora_analysis.visualizer <span class="hljs-keyword">import</span> LoraVisualizer
+
+viz = LoraVisualizer()
+<span class="hljs-keyword">await</span> viz.generate_weight_distribution_plot(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>), Path(<span class="hljs-string">&quot;/tmp/dist.png&quot;</span>))
+<span class="hljs-keyword">await</span> viz.generate_rank_analysis_plot(Path(<span class="hljs-string">&quot;/path/to/model.safetensors&quot;</span>), Path(<span class="hljs-string">&quot;/tmp/rank.png&quot;</span>))</code></pre><ul>
+<li>Files:<ul>
+<li><code>app/lora_analysis/visualizer.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Frontend Integration</h2>
+<p>The UI includes a PCA panel and a LoRA resizer that call corresponding backend endpoints. The PCA panel runs server-side analysis and presents explained-variance summaries and component plots; the resizer validates a model, then issues resize or merge operations, and reports outputs. Both use authenticated fetches and display notifications on success or failure.</p>
+<ul>
+<li>Files:<ul>
+<li><code>src/components/LoraAnalysis/PcaAnalysis.tsx</code></li>
+<li><code>src/components/LoraAnalysis/LoraResizer.tsx</code></li>
+</ul>
+</li>
+</ul>
+<h2>Background and Best Practices</h2>
+<p>LoRA (Low-Rank Adaptation) injects low-rank matrices into existing weights so that an adapted weight is effectively ( W&#39; = W + \alpha BA ) with rank ( r \ll \min(d, k) ). Practical implications for analysis include focusing on the <code>lora_A</code> and <code>lora_B</code> matrices per target module, inspecting singular values to understand effective dimensionality, and monitoring how much variance is captured by the first few components. SafeTensors is preferred for robustness and faster metadata access. When changing ranks mechanically, treat the result as a structural transformation and consider further fine-tuning. For merging adapters, weight normalization avoids scale drift across models.</p>
+<p>Key references include the original LoRA paper for conceptual grounding and community conventions around SafeTensors metadata keys. See the LoRA paper “LoRA: Low-Rank Adaptation of Large Language Models” and common SafeTensors metadata practices in diffusion model tooling for additional context.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

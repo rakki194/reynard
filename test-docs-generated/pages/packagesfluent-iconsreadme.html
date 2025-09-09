@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-fluent-icons - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-fluent-icons</h1>
+      <div class="markdown-content"><h1>reynard-fluent-icons</h1>
+<p>A comprehensive icon system for Reynard applications, featuring Fluent UI icons and custom SVG assets with a powerful registry system.</p>
+<h2>Features</h2>
+<h3>🎯 Icon System</h3>
+<ul>
+<li><strong>Fluent UI Icons</strong>: 150+ professionally designed icons from Microsoft&#39;s Fluent Design System</li>
+<li><strong>Custom Icons</strong>: Reynard-specific icons including the official favicon</li>
+<li><strong>Modular Categories</strong>: Icons organized by purpose (actions, navigation, files, etc.)</li>
+<li><strong>Dynamic Loading</strong>: Icons loaded on-demand for optimal performance</li>
+<li><strong>TypeScript Support</strong>: Full type safety with autocomplete for icon names</li>
+</ul>
+<h3>🔧 Registry System</h3>
+<ul>
+<li><strong>Icon Registry</strong>: Centralized management of icon packages</li>
+<li><strong>Metadata Support</strong>: Rich metadata for each icon (categories, tags, descriptions)</li>
+<li><strong>Package System</strong>: Support for multiple icon packages</li>
+<li><strong>Dynamic Registration</strong>: Register new icon packages at runtime</li>
+</ul>
+<h3>🤖 AI/LLM Integration</h3>
+<ul>
+<li><strong>Natural Language Captions</strong>: Every icon includes a descriptive caption for AI understanding</li>
+<li><strong>Semantic Search</strong>: Search icons using natural language queries</li>
+<li><strong>Caption Utilities</strong>: Tools for generating, validating, and managing icon captions</li>
+<li><strong>LLM-Friendly Export</strong>: Export captions in formats optimized for language models</li>
+</ul>
+<h3>📦 Categories</h3>
+<ul>
+<li><strong>Actions</strong>: Common actions (save, delete, edit, etc.)</li>
+<li><strong>Navigation</strong>: UI navigation (home, back, forward, etc.)</li>
+<li><strong>Files</strong>: File operations (upload, download, folder, etc.)</li>
+<li><strong>Status</strong>: Status indicators (success, error, warning, etc.)</li>
+<li><strong>Media</strong>: Media controls (play, pause, volume, etc.)</li>
+<li><strong>Interface</strong>: UI elements (menu, settings, search, etc.)</li>
+<li><strong>Development</strong>: Developer tools (code, debug, build, etc.)</li>
+<li><strong>Theme</strong>: Theme-related icons (light, dark, color, etc.)</li>
+<li><strong>Animals</strong>: Animal icons (including Reynard&#39;s fox)</li>
+<li><strong>Security</strong>: Security-related icons (lock, shield, key, etc.)</li>
+<li><strong>Custom</strong>: Reynard-specific custom icons</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-fluent-icons</code></pre><h2>Quick Start</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { fluentIconsPackage, getIcon } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> saveIcon = <span class="hljs-title function_">getIcon</span>(<span class="hljs-string">&quot;save&quot;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{saveIcon}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      Save
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h3>Using Icon Categories</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { actionsIcons, navigationIcons } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ActionButtons</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{actionsIcons.save}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{actionsIcons.delete}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{navigationIcons.home}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>Dynamic Icon Rendering</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { fluentIconsPackage, getIconMetadata } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">IconButton</span>(<span class="hljs-params">{ iconName }: { iconName: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> iconSvg = <span class="hljs-title function_">getIcon</span>(iconName);
+  <span class="hljs-keyword">const</span> metadata = <span class="hljs-title function_">getIconMetadata</span>(iconName);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">title</span>=<span class="hljs-string">{metadata?.description}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{iconSvg}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h2>API Reference</h2>
+<h3>Core Functions</h3>
+<h4>getIcon(name: string): string</h4>
+<p>Retrieves the SVG content for an icon by name.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> saveIcon = <span class="hljs-title function_">getIcon</span>(<span class="hljs-string">&quot;save&quot;</span>);
+<span class="hljs-comment">// Returns: &#x27;&lt;svg&gt;...&lt;/svg&gt;&#x27;</span></code></pre><h4>getIconMetadata(name: string): IconMetadata | undefined</h4>
+<p>Retrieves metadata for an icon.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> metadata = <span class="hljs-title function_">getIconMetadata</span>(<span class="hljs-string">&quot;save&quot;</span>);
+<span class="hljs-comment">// Returns: { name: &#x27;save&#x27;, category: &#x27;actions&#x27;, description: &#x27;Save document&#x27; }</span></code></pre><h4>registerIconPackage(pkg: IconPackage): void</h4>
+<p>Registers a new icon package.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { registerIconPackage } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-title function_">registerIconPackage</span>({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;custom-icons&quot;</span>,
+  <span class="hljs-attr">getIcon</span>: <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> customIcons[name],
+  <span class="hljs-attr">getIconMetadata</span>: <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> customMetadata[name],
+  <span class="hljs-attr">getAllIcons</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(customIcons),
+});</code></pre><h3>Icon Categories</h3>
+<p>Each category exports an object with icon names as keys and SVG content as values:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  actionsIcons,
+  navigationIcons,
+  filesIcons,
+  statusIcons,
+  mediaIcons,
+  interfaceIcons,
+  developmentIcons,
+  themeIcons,
+  animalsIcons,
+  securityIcons,
+  customIcons,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;</code></pre><h3>Icon Registry</h3>
+<h4>IconPackage Interface</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconPackage</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">getIcon</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">string</span> | <span class="hljs-literal">undefined</span>;
+  <span class="hljs-attr">getIconMetadata</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title class_">IconMetadata</span> | <span class="hljs-literal">undefined</span>;
+  <span class="hljs-attr">getAllIcons</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">string</span>[];
+}</code></pre><h4>IconMetadata Interface</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconMetadata</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">category</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">description</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">caption</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Natural language caption for AI/LLM understanding</span>
+  <span class="hljs-attr">tags</span>?: <span class="hljs-built_in">string</span>[];
+  <span class="hljs-attr">keywords</span>?: <span class="hljs-built_in">string</span>[];
+}</code></pre><h2>Natural Language Captions</h2>
+<p>Every icon in the Reynard icon system includes a natural language caption designed to help AI and language models understand the icon&#39;s purpose and appearance. This makes it easier for AI systems to select appropriate icons for user interfaces.</p>
+<h3>Using Captions</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  getIcon,
+  getAllCaptions,
+  searchIconsByCaption,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-comment">// Get an icon&#x27;s caption</span>
+<span class="hljs-keyword">const</span> saveIcon = <span class="hljs-title function_">getIcon</span>(<span class="hljs-string">&quot;save&quot;</span>);
+<span class="hljs-keyword">const</span> metadata = fluentIconsPackage.<span class="hljs-title function_">getIconMetadata</span>(<span class="hljs-string">&quot;save&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(metadata?.<span class="hljs-property">caption</span>); <span class="hljs-comment">// &quot;A floppy disk icon for saving documents or data to storage&quot;</span>
+
+<span class="hljs-comment">// Get all captions</span>
+<span class="hljs-keyword">const</span> allCaptions = <span class="hljs-title function_">getAllCaptions</span>(allIcons);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(allCaptions[<span class="hljs-string">&quot;delete&quot;</span>]); <span class="hljs-comment">// &quot;A trash can icon for deleting or removing items permanently&quot;</span>
+
+<span class="hljs-comment">// Search icons by natural language</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-title function_">searchIconsByCaption</span>(allIcons, <span class="hljs-string">&quot;save file&quot;</span>);
+<span class="hljs-comment">// Returns icons with captions matching &quot;save file&quot; with relevance scores</span></code></pre><h3>Caption Utilities</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  generateCaption,
+  validateCaption,
+  suggestCaptionImprovements,
+  exportCaptions,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-comment">// Generate a caption for an icon without one</span>
+<span class="hljs-keyword">const</span> caption = <span class="hljs-title function_">generateCaption</span>(iconMetadata);
+
+<span class="hljs-comment">// Validate caption quality</span>
+<span class="hljs-keyword">const</span> isValid = <span class="hljs-title function_">validateCaption</span>(iconMetadata);
+
+<span class="hljs-comment">// Get suggestions for improving a caption</span>
+<span class="hljs-keyword">const</span> suggestions = <span class="hljs-title function_">suggestCaptionImprovements</span>(iconMetadata);
+
+<span class="hljs-comment">// Export all captions for AI training</span>
+<span class="hljs-keyword">const</span> captionsJson = <span class="hljs-title function_">exportCaptions</span>(allIcons, <span class="hljs-string">&quot;json&quot;</span>);
+<span class="hljs-keyword">const</span> captionsMarkdown = <span class="hljs-title function_">exportCaptions</span>(allIcons, <span class="hljs-string">&quot;markdown&quot;</span>);</code></pre><h3>Example Captions</h3>
+<ul>
+<li><strong>save</strong>: &quot;A floppy disk icon for saving documents or data to storage&quot;</li>
+<li><strong>delete</strong>: &quot;A trash can icon for deleting or removing items permanently&quot;</li>
+<li><strong>search</strong>: &quot;A magnifying glass icon for searching, finding, or looking up content&quot;</li>
+<li><strong>heart</strong>: &quot;A heart icon for love, favorites, emotional reactions, or affection&quot;</li>
+<li><strong>brain</strong>: &quot;A brain icon representing artificial intelligence, machine learning, or cognitive computing&quot;</li>
+</ul>
+<h2>Available Icons</h2>
+<h3>Actions (25 icons)</h3>
+<ul>
+<li><code>save</code>, <code>delete</code>, <code>edit</code>, <code>copy</code>, <code>cut</code>, <code>paste</code></li>
+<li><code>undo</code>, <code>redo</code>, <code>refresh</code>, <code>reload</code></li>
+<li><code>add</code>, <code>remove</code>, <code>clear</code>, <code>reset</code></li>
+<li><code>submit</code>, <code>cancel</code>, <code>confirm</code>, <code>approve</code></li>
+<li><code>reject</code>, <code>archive</code>, <code>unarchive</code>, <code>restore</code></li>
+<li><code>duplicate</code>, <code>move</code>, <code>sort</code>, <code>filter</code>, <code>search</code></li>
+</ul>
+<h3>Navigation (20 icons)</h3>
+<ul>
+<li><code>home</code>, <code>back</code>, <code>forward</code>, <code>up</code>, <code>down</code></li>
+<li><code>left</code>, <code>right</code>, <code>menu</code>, <code>hamburger</code></li>
+<li><code>breadcrumb</code>, <code>pagination</code>, <code>tabs</code></li>
+<li><code>sidebar</code>, <code>panel</code>, <code>drawer</code></li>
+<li><code>modal</code>, <code>popup</code>, <code>tooltip</code>, <code>dropdown</code></li>
+<li><code>accordion</code>, <code>carousel</code></li>
+</ul>
+<h3>Files (18 icons)</h3>
+<ul>
+<li><code>file</code>, <code>folder</code>, <code>document</code>, <code>image</code></li>
+<li><code>video</code>, <code>audio</code>, <code>archive</code>, <code>pdf</code></li>
+<li><code>upload</code>, <code>download</code>, <code>share</code>, <code>link</code></li>
+<li><code>attachment</code>, <code>bookmark</code>, <code>favorite</code></li>
+<li><code>recent</code>, <code>history</code>, <code>trash</code></li>
+</ul>
+<h3>Status (15 icons)</h3>
+<ul>
+<li><code>success</code>, <code>error</code>, <code>warning</code>, <code>info</code></li>
+<li><code>loading</code>, <code>spinner</code>, <code>progress</code></li>
+<li><code>checkmark</code>, <code>cross</code>, <code>question</code></li>
+<li><code>alert</code>, <code>notification</code>, <code>badge</code></li>
+<li><code>indicator</code>, <code>status</code>, <code>health</code></li>
+</ul>
+<h3>Media (12 icons)</h3>
+<ul>
+<li><code>play</code>, <code>pause</code>, <code>stop</code>, <code>record</code></li>
+<li><code>volume</code>, <code>mute</code>, <code>fullscreen</code></li>
+<li><code>camera</code>, <code>microphone</code>, <code>speaker</code></li>
+<li><code>headphones</code>, <code>video-camera</code></li>
+</ul>
+<h3>Interface (20 icons)</h3>
+<ul>
+<li><code>settings</code>, <code>preferences</code>, <code>configuration</code></li>
+<li><code>user</code>, <code>profile</code>, <code>account</code>, <code>avatar</code></li>
+<li><code>login</code>, <code>logout</code>, <code>signin</code>, <code>signout</code></li>
+<li><code>help</code>, <code>support</code>, <code>documentation</code></li>
+<li><code>feedback</code>, <code>rating</code>, <code>review</code></li>
+<li><code>calendar</code>, <code>clock</code>, <code>timer</code></li>
+</ul>
+<h3>Development (10 icons)</h3>
+<ul>
+<li><code>code</code>, <code>debug</code>, <code>build</code>, <code>deploy</code></li>
+<li><code>git</code>, <code>github</code>, <code>terminal</code>, <code>console</code></li>
+<li><code>database</code>, <code>server</code></li>
+</ul>
+<h3>Theme (8 icons)</h3>
+<ul>
+<li><code>light</code>, <code>dark</code>, <code>color</code>, <code>palette</code></li>
+<li><code>contrast</code>, <code>accessibility</code>, <code>eye</code>, <code>visibility</code></li>
+</ul>
+<h3>Animals (5 icons)</h3>
+<ul>
+<li><code>fox</code> (Reynard&#39;s mascot), <code>cat</code>, <code>dog</code>, <code>bird</code>, <code>fish</code></li>
+</ul>
+<h3>Security (8 icons)</h3>
+<ul>
+<li><code>lock</code>, <code>unlock</code>, <code>shield</code>, <code>key</code></li>
+<li><code>password</code>, <code>security</code>, <code>privacy</code>, <code>encryption</code></li>
+</ul>
+<h3>Custom (3 icons)</h3>
+<ul>
+<li><code>yipyap</code> (Reynard&#39;s predecessor), <code>favicon</code> (Reynard logo), <code>reynard-logo</code></li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Icon Button Component</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { getIcon, getIconMetadata } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">IconButtonProps</span> {
+  <span class="hljs-attr">icon</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">onClick</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">disabled</span>?: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">IconButton</span>(<span class="hljs-params">{ icon, onClick, disabled }: <span class="hljs-title class_">IconButtonProps</span></span>) {
+  <span class="hljs-keyword">const</span> iconSvg = <span class="hljs-title function_">getIcon</span>(icon);
+  <span class="hljs-keyword">const</span> metadata = <span class="hljs-title function_">getIconMetadata</span>(icon);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>
+      <span class="hljs-attr">disabled</span>=<span class="hljs-string">{disabled}</span>
+      <span class="hljs-attr">title</span>=<span class="hljs-string">{metadata?.description}</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-button&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{iconSvg}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h3>Icon Grid Component</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { allIcons, iconCategories } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">IconGrid</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-grid&quot;</span>&gt;</span>
+      {Object.entries(iconCategories).map(([category, icons]) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;category&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{category}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icons&quot;</span>&gt;</span>
+            {Object.entries(icons).map(([name, svg]) =&gt; (
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-item&quot;</span> <span class="hljs-attr">title</span>=<span class="hljs-string">{name}</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{svg}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-name&quot;</span>&gt;</span>{name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            ))}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ))}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>Searchable Icon Picker</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { allIcons, getIconMetadata } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+<span class="hljs-keyword">import</span> { createSignal, createMemo } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;solid-js&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">IconPicker</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [searchTerm, setSearchTerm] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+  <span class="hljs-keyword">const</span> filteredIcons = <span class="hljs-title function_">createMemo</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> term = <span class="hljs-title function_">searchTerm</span>().<span class="hljs-title function_">toLowerCase</span>();
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(allIcons).<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">[name, svg]</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> metadata = <span class="hljs-title function_">getIconMetadata</span>(name);
+      <span class="hljs-keyword">return</span> (
+        name.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">includes</span>(term) ||
+        metadata?.<span class="hljs-property">description</span>?.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">includes</span>(term) ||
+        metadata?.<span class="hljs-property">tags</span>?.<span class="hljs-title function_">some</span>(<span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> tag.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">includes</span>(term))
+      );
+    });
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-picker&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search icons...&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{searchTerm()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setSearchTerm(e.target.value)}
+      /&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-list&quot;</span>&gt;</span>
+        {filteredIcons().map(([name, svg]) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-option&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> selectIcon(name)}&gt;
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{svg}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{name}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>Styling Icons</h2>
+<h3>CSS Classes</h3>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.icon</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">1em</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">1em</span>;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">vertical-align</span>: middle;
+}
+
+<span class="hljs-selector-class">.icon</span> <span class="hljs-selector-tag">svg</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">fill</span>: currentColor;
+}
+
+<span class="hljs-selector-class">.icon-button</span> {
+  <span class="hljs-attribute">display</span>: inline-flex;
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">border</span>: none;
+  <span class="hljs-attribute">background</span>: transparent;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+
+<span class="hljs-selector-class">.icon-button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-surface-hover);
+}
+
+<span class="hljs-selector-class">.icon-grid</span> {
+  <span class="hljs-attribute">display</span>: grid;
+  <span class="hljs-attribute">grid-template-columns</span>: <span class="hljs-built_in">repeat</span>(auto-fill, <span class="hljs-built_in">minmax</span>(<span class="hljs-number">200px</span>, <span class="hljs-number">1</span>fr));
+  <span class="hljs-attribute">gap</span>: <span class="hljs-number">1rem</span>;
+}
+
+<span class="hljs-selector-class">.icon-item</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">flex-direction</span>: column;
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-built_in">var</span>(--color-border);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+
+<span class="hljs-selector-class">.icon-item</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-surface-hover);
+}</code></pre><h3>Theme Integration</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Icons automatically inherit theme colors */</span>
+<span class="hljs-selector-class">.icon</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--color-text);
+}
+
+<span class="hljs-selector-class">.icon-button</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.icon</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--color-primary);
+}
+
+<span class="hljs-comment">/* High contrast support */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-contrast</span>: high) {
+  <span class="hljs-selector-class">.icon</span> {
+    <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">contrast</span>(<span class="hljs-number">1.5</span>);
+  }
+}
+
+<span class="hljs-comment">/* Reduced motion support */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.icon-button</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+}</code></pre><h2>Performance Optimization</h2>
+<h3>Lazy Loading</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { createMemo } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;solid-js&quot;</span>;
+<span class="hljs-keyword">import</span> { getIcon } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">LazyIcon</span>(<span class="hljs-params">{ name }: { name: <span class="hljs-built_in">string</span> }</span>) {
+  <span class="hljs-keyword">const</span> iconSvg = <span class="hljs-title function_">createMemo</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-comment">// Only load icon when component is rendered</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">getIcon</span>(name);
+  });
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{iconSvg()}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;
+}</code></pre><h3>Icon Caching</h3>
+<p>The registry system automatically caches loaded icons for optimal performance.</p>
+<h3>Bundle Optimization</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Import only specific categories</span>
+<span class="hljs-keyword">import</span> { actionsIcons } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-comment">// Or import individual icons</span>
+<span class="hljs-keyword">import</span> { getIcon } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+<span class="hljs-keyword">const</span> saveIcon = <span class="hljs-title function_">getIcon</span>(<span class="hljs-string">&quot;save&quot;</span>);</code></pre><h2>Custom Icon Development</h2>
+<h3>Adding Custom Icons</h3>
+<ol>
+<li>Create SVG files in the <code>src/custom-icons/</code> directory</li>
+<li>Add icon definitions to <code>src/categories/custom.ts</code></li>
+<li>Update the icon metadata</li>
+</ol>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// src/categories/custom.ts</span>
+<span class="hljs-keyword">import</span> customIconSvg <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../custom-icons/my-icon.svg?raw&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> customIcons = {
+  <span class="hljs-string">&quot;my-icon&quot;</span>: customIconSvg,
+  <span class="hljs-comment">// ... other custom icons</span>
+};</code></pre><h3>Creating Icon Packages</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { registerIconPackage } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">const</span> myIconPackage = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;my-package&quot;</span>,
+  <span class="hljs-attr">getIcon</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> myIcons[name],
+  <span class="hljs-attr">getIconMetadata</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> myMetadata[name],
+  <span class="hljs-attr">getAllIcons</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(myIcons),
+};
+
+<span class="hljs-title function_">registerIconPackage</span>(myIconPackage);</code></pre><h2>Testing</h2>
+<p>The package includes comprehensive tests:</p>
+<pre><code class="hljs language-bash">npm <span class="hljs-built_in">test</span>              <span class="hljs-comment"># Run all tests</span>
+npm run <span class="hljs-built_in">test</span>:coverage <span class="hljs-comment"># Run with coverage</span>
+npm run <span class="hljs-built_in">test</span>:run      <span class="hljs-comment"># Run once (CI mode)</span></code></pre><h3>Test Categories</h3>
+<ul>
+<li><strong>Registry Tests</strong>: Icon package registration and management</li>
+<li><strong>Category Tests</strong>: Icon categorization and organization</li>
+<li><strong>Integration Tests</strong>: End-to-end functionality</li>
+</ul>
+<h2>Browser Support</h2>
+<ul>
+<li><strong>Modern Browsers</strong>: Chrome 88+, Firefox 78+, Safari 14+, Edge 88+</li>
+<li><strong>SVG Support</strong>: Required for icon rendering</li>
+<li><strong>ES2022</strong>: Modern JavaScript features</li>
+</ul>
+<h2>Migration from yipyap</h2>
+<p>If you&#39;re migrating from yipyap&#39;s icon system:</p>
+<ol>
+<li>Replace <code>yipyap/icons</code> imports with <code>reynard-fluent-icons</code></li>
+<li>Update icon names to match Fluent UI naming conventions</li>
+<li>Use the new registry system for custom icons</li>
+<li>Update CSS classes for icon styling</li>
+</ol>
+<h2>Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Add tests for new functionality</li>
+<li>Ensure all tests pass</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

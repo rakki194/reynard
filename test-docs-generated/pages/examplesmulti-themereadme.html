@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎨 Multi-Theme Gallery - Reynard Example - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🎨 Multi-Theme Gallery - Reynard Example</h1>
+      <div class="markdown-content"><h1>🎨 Multi-Theme Gallery - Reynard Example</h1>
+<p>An advanced demonstration of the Reynard framework&#39;s theming capabilities with comprehensive component showcases and side-by-side theme comparisons.</p>
+<h2>✨ Features Demonstrated</h2>
+<ul>
+<li><strong>Theme Gallery</strong>: Visual preview of all 5 built-in themes with color swatches</li>
+<li><strong>Component Showcase</strong>: Complete UI component library across all themes</li>
+<li><strong>Theme Comparison</strong>: Side-by-side comparison of up to 3 themes simultaneously</li>
+<li><strong>Live Theme Switching</strong>: Instant theme changes with notifications</li>
+<li><strong>Comprehensive Styling</strong>: Full implementation of theme-aware CSS system</li>
+<li><strong>Responsive Design</strong>: Adaptive layout for desktop, tablet, and mobile</li>
+</ul>
+<h2>🎨 Available Themes</h2>
+<h3>☀️ Light Theme</h3>
+<p>Clean and bright design perfect for daytime productivity work.</p>
+<h3>🌙 Dark Theme</h3>
+<p>Easy on the eyes with a sophisticated dark color palette for focused work.</p>
+<h3>🍌 Banana Theme</h3>
+<p>Warm and cheerful yellow tones that bring sunshine to your interface.</p>
+<h3>🍓 Strawberry Theme</h3>
+<p>Vibrant pink and red colors that add energy and personality.</p>
+<h3>🥜 Peanut Theme</h3>
+<p>Earthy brown and orange tones creating a cozy, autumn-inspired feel.</p>
+<h2>🚀 Quick Start</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server (runs on port 3002)</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build</code></pre><h2>📱 App Sections</h2>
+<h3>🖼️ Gallery View</h3>
+<ul>
+<li>Interactive theme cards with color previews</li>
+<li>Theme descriptions and characteristics</li>
+<li>One-click theme switching</li>
+<li>Active theme highlighting</li>
+</ul>
+<h3>🧩 Component Showcase</h3>
+<p>Comprehensive demonstration of UI components including:</p>
+<ul>
+<li><strong>Buttons</strong>: Primary, secondary, success, danger, disabled states</li>
+<li><strong>Form Elements</strong>: Inputs, textareas, selects with focus states</li>
+<li><strong>Checkboxes &amp; Radio Buttons</strong>: Custom styled form controls</li>
+<li><strong>Cards &amp; Content</strong>: Containers, headers, actions</li>
+<li><strong>Alerts</strong>: Info, success, warning, error notifications</li>
+<li><strong>Typography</strong>: Headings, paragraphs, code, blockquotes, lists</li>
+</ul>
+<h3>⚖️ Theme Comparison</h3>
+<ul>
+<li>Select up to 3 themes for side-by-side comparison</li>
+<li>Color palette visualization for each theme</li>
+<li>Component rendering comparison</li>
+<li>Typography and contrast analysis</li>
+<li>Helpful comparison tips and guidelines</li>
+</ul>
+<h2>🏗️ Architecture</h2>
+<h3>Components</h3>
+<ul>
+<li><strong><code>App.tsx</code></strong> - Main application with view switching and theme management</li>
+<li><strong><code>ThemeCard.tsx</code></strong> - Individual theme preview cards with color swatches</li>
+<li><strong><code>ComponentShowcase.tsx</code></strong> - Comprehensive component library demonstration</li>
+<li><strong><code>ThemeComparison.tsx</code></strong> - Side-by-side theme comparison interface</li>
+</ul>
+<h3>Styling System</h3>
+<ul>
+<li><strong>CSS Custom Properties</strong>: Theme-aware variables for all styling</li>
+<li><strong>BEM Methodology</strong>: Consistent class naming for components</li>
+<li><strong>Responsive Design</strong>: Mobile-first approach with breakpoints</li>
+<li><strong>Color System</strong>: Semantic color variables (accent, text, background, etc.)</li>
+<li><strong>Component Theming</strong>: All components adapt automatically to theme changes</li>
+</ul>
+<h3>Reynard Integration</h3>
+<ul>
+<li><strong>Theme Management</strong>: Full integration with <code>useTheme()</code> composable</li>
+<li><strong>Notifications</strong>: User feedback for theme changes</li>
+<li><strong>Modular CSS</strong>: Demonstrates proper theme variable usage</li>
+<li><strong>Component Architecture</strong>: Shows best practices for theme-aware components</li>
+</ul>
+<h2>🎯 Learning Objectives</h2>
+<p>This example teaches:</p>
+<ol>
+<li><strong>Advanced Theming</strong>: How to create comprehensive theme systems</li>
+<li><strong>Component Design</strong>: Building theme-aware, reusable components</li>
+<li><strong>CSS Architecture</strong>: Organizing styles with custom properties</li>
+<li><strong>User Experience</strong>: Smooth transitions and interactive feedback</li>
+<li><strong>Comparison Tools</strong>: Building interfaces for design system evaluation</li>
+<li><strong>Accessibility</strong>: Maintaining readability and contrast across themes</li>
+</ol>
+<h2>🔧 Customization</h2>
+<h3>Adding New Themes</h3>
+<ol>
+<li>Add theme variables to <code>styles.css</code>:</li>
+</ol>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span><span class="hljs-selector-attr">[data-theme=<span class="hljs-string">&quot;mytheme&quot;</span>]</span> {
+  <span class="hljs-attr">--accent</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">120deg</span> <span class="hljs-number">60%</span> <span class="hljs-number">50%</span>);
+  <span class="hljs-attr">--bg-color</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">120deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+  <span class="hljs-comment">/* ... other variables */</span>
+}</code></pre><ol start="2">
+<li>Update the theme descriptions in <code>App.tsx</code></li>
+<li>Add emoji and colors to <code>ThemeCard.tsx</code></li>
+</ol>
+<h3>Extending Components</h3>
+<p>Add new components to <code>ComponentShowcase.tsx</code> to demonstrate how they adapt to different themes.</p>
+<h2>📊 Performance</h2>
+<ul>
+<li><strong>Bundle Size</strong>: ~15 kB JavaScript (gzipped)</li>
+<li><strong>CSS Size</strong>: ~8 kB (gzipped)</li>
+<li><strong>Theme Switching</strong>: &lt; 100ms transition time</li>
+<li><strong>Lighthouse Score</strong>: 95+ on all metrics</li>
+</ul>
+<h2>🔄 Next Steps</h2>
+<p>Extend this example by:</p>
+<ul>
+<li>Adding custom theme creation tools</li>
+<li>Implementing theme export/import functionality</li>
+<li>Adding animation and motion preferences</li>
+<li>Creating theme accessibility evaluation tools</li>
+<li>Building a theme marketplace or sharing system</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>This example is part of the Reynard framework. Found an issue or have improvements?</p>
+<hr>
+<p><em>Built with ❤️ using Reynard framework, SolidJS, and modern CSS</em> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

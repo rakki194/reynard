@@ -15,7 +15,7 @@ Production-ready SolidJS component library with comprehensive theming and access
 ## 📦 Installation
 
 ```bash
-npm install reynard-components reynard-core solid-js
+pnpm install reynard-components reynard-core solid-js
 ```
 
 ## 🎯 Quick Start
@@ -263,9 +263,9 @@ All components follow WCAG 2.1 guidelines:
 ## 🧪 Testing
 
 ```bash
-npm run test        # Run tests
-npm run test:coverage  # Coverage report
-npm run test:ui     # Visual test runner
+pnpm test        # Run tests
+pnpm test:coverage  # Coverage report
+pnpm test:ui     # Visual test runner
 ```
 
 ### Chat System

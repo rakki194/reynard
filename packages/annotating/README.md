@@ -210,6 +210,8 @@ if (jtp2Generator) {
 
 ### Batch Processing
 
+#### Programmatic Batch Processing
+
 ```typescript
 const tasks = [
   { imagePath: "/path/to/image1.jpg", generatorName: "jtp2" },
@@ -223,6 +225,34 @@ const results = await service.generateBatchCaptions(tasks, (progress) => {
   );
 });
 ```
+
+#### Interactive Batch Processing UI
+
+```typescript
+import { BatchCaptionProcessor, createAnnotationManager } from "reynard-annotating";
+
+const manager = createAnnotationManager({
+  baseUrl: "http://localhost:8000"
+});
+
+await manager.initialize();
+
+<BatchCaptionProcessor
+  manager={manager}
+  onComplete={(results) => console.log("Batch completed!", results)}
+  onError={(error) => console.error("Batch failed:", error)}
+/>
+```
+
+**Batch Processing Features:**
+
+- **Drag & Drop Upload**: Intuitive file selection with visual feedback
+- **Real-time Progress**: Live updates during batch processing with progress bars
+- **Multiple Generators**: Support for all available caption generators
+- **Configuration Options**: Concurrency control, force regeneration, post-processing
+- **Error Handling**: Comprehensive error tracking and recovery
+- **Results Export**: JSON export of all generated captions
+- **Responsive Design**: Works on desktop and mobile devices
 
 ### Model Management
 

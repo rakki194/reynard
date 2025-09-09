@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chart.js Components for SolidJS - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Chart.js Components for SolidJS</h1>
+      <div class="markdown-content"><h1>Chart.js Components for SolidJS</h1>
+<p>This directory contains Chart.js components built with <code>solid-chartjs</code> for<br>creating interactive charts in your SolidJS application.</p>
+<h2>Components</h2>
+<h3>PerformanceChart</h3>
+<p>A simple chart component for displaying single-dataset performance metrics over<br>time.</p>
+<p><strong>Props:</strong></p>
+<ul>
+<li><code>title: string</code> - Chart title</li>
+<li><code>type: &quot;line&quot; | &quot;bar&quot;</code> - Chart type</li>
+<li><code>data: PerformanceDataPoint[]</code> - Array of data points</li>
+<li><code>width?: number</code> - Chart width (default: 400)</li>
+<li><code>height?: number</code> - Chart height (default: 300)</li>
+<li><code>yAxisLabel?: string</code> - Y-axis label</li>
+<li><code>showGrid?: boolean</code> - Whether to show grid lines (default: true)</li>
+<li><code>color?: string</code> - Custom color for the chart</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">PerformanceChart</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/components/Charts&#x27;</span>;
+
+<span class="hljs-keyword">const</span> data = [
+  { <span class="hljs-attr">timestamp</span>: <span class="hljs-number">1000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;10:00&#x27;</span> },
+  { <span class="hljs-attr">timestamp</span>: <span class="hljs-number">2000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">75</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;10:01&#x27;</span> },
+  { <span class="hljs-attr">timestamp</span>: <span class="hljs-number">3000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">60</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;10:02&#x27;</span> },
+];
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">PerformanceChart</span>
+  <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Memory Usage Over Time&quot;</span>
+  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;line&quot;</span>
+  <span class="hljs-attr">data</span>=<span class="hljs-string">{data}</span>
+  <span class="hljs-attr">width</span>=<span class="hljs-string">{600}</span>
+  <span class="hljs-attr">height</span>=<span class="hljs-string">{300}</span>
+  <span class="hljs-attr">yAxisLabel</span>=<span class="hljs-string">&quot;Memory (bytes)&quot;</span>
+  <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;rgba(255, 99, 132, 1)&quot;</span>
+/&gt;</span></span>;</code></pre><h3>MultiDatasetChart</h3>
+<p>A more advanced chart component for displaying multiple datasets with different<br>chart types.</p>
+<p><strong>Props:</strong></p>
+<ul>
+<li><code>title: string</code> - Chart title</li>
+<li><code>type: &quot;line&quot; | &quot;bar&quot; | &quot;doughnut&quot; | &quot;pie&quot;</code> - Chart type</li>
+<li><code>labels: string[]</code> - X-axis labels</li>
+<li><code>datasets: Dataset[]</code> - Array of datasets</li>
+<li><code>width?: number</code> - Chart width (default: 400)</li>
+<li><code>height?: number</code> - Chart height (default: 300)</li>
+<li><code>xAxisLabel?: string</code> - X-axis label</li>
+<li><code>yAxisLabel?: string</code> - Y-axis label</li>
+<li><code>showGrid?: boolean</code> - Whether to show grid lines (default: true)</li>
+<li><code>showLegend?: boolean</code> - Whether to show legend (default: true)</li>
+<li><code>colors?: string[]</code> - Custom colors for datasets</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">MultiDatasetChart</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/components/Charts&#x27;</span>;
+
+<span class="hljs-keyword">const</span> labels = [<span class="hljs-string">&#x27;Jan&#x27;</span>, <span class="hljs-string">&#x27;Feb&#x27;</span>, <span class="hljs-string">&#x27;Mar&#x27;</span>, <span class="hljs-string">&#x27;Apr&#x27;</span>];
+<span class="hljs-keyword">const</span> datasets = [
+  {
+    <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Sales&#x27;</span>,
+    <span class="hljs-attr">data</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>],
+  },
+  {
+    <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Revenue&#x27;</span>,
+    <span class="hljs-attr">data</span>: [<span class="hljs-number">15</span>, <span class="hljs-number">25</span>, <span class="hljs-number">35</span>, <span class="hljs-number">45</span>],
+  },
+];
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MultiDatasetChart</span>
+  <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Sales vs Revenue&quot;</span>
+  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;bar&quot;</span>
+  <span class="hljs-attr">labels</span>=<span class="hljs-string">{labels}</span>
+  <span class="hljs-attr">datasets</span>=<span class="hljs-string">{datasets}</span>
+  <span class="hljs-attr">width</span>=<span class="hljs-string">{600}</span>
+  <span class="hljs-attr">height</span>=<span class="hljs-string">{300}</span>
+  <span class="hljs-attr">xAxisLabel</span>=<span class="hljs-string">&quot;Month&quot;</span>
+  <span class="hljs-attr">yAxisLabel</span>=<span class="hljs-string">&quot;Amount&quot;</span>
+  <span class="hljs-attr">showLegend</span>=<span class="hljs-string">{true}</span>
+  <span class="hljs-attr">colors</span>=<span class="hljs-string">{[</span>&#x27;<span class="hljs-attr">rgba</span>(<span class="hljs-attr">255</span>, <span class="hljs-attr">99</span>, <span class="hljs-attr">132</span>, <span class="hljs-attr">1</span>)&#x27;, &#x27;<span class="hljs-attr">rgba</span>(<span class="hljs-attr">75</span>, <span class="hljs-attr">192</span>, <span class="hljs-attr">192</span>, <span class="hljs-attr">1</span>)&#x27;]}
+/&gt;</span></span>;</code></pre><h2>Installation</h2>
+<p>The required dependencies are already installed in your project:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;chart.js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.5.0&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;solid-chartjs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.3.11&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Usage in PerformanceDashboard</h2>
+<p>The PerformanceDashboard component now includes real-time charts that display:</p>
+<ol>
+<li><strong>Memory Usage Over Time</strong> - Shows memory consumption trends</li>
+<li><strong>Browser Responsiveness</strong> - Displays browser response times</li>
+<li><strong>Frame Rate</strong> - Shows FPS over time</li>
+<li><strong>Selection Duration</strong> - Displays selection operation performance</li>
+</ol>
+<p>The charts automatically update every second when the dashboard is visible and<br>recording is active.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Real-time Updates</strong>: Charts automatically update with new data</li>
+<li><strong>Responsive Design</strong>: Charts adapt to different screen sizes</li>
+<li><strong>Theme Integration</strong>: Charts use CSS custom properties for theming</li>
+<li><strong>Interactive Tooltips</strong>: Hover over data points to see detailed information</li>
+<li><strong>Multiple Chart Types</strong>: Support for line, bar, doughnut, and pie charts</li>
+<li><strong>Customizable Colors</strong>: Apply custom colors to match your design</li>
+<li><strong>Grid Lines</strong>: Optional grid lines for better readability</li>
+<li><strong>Legends</strong>: Configurable legends for multi-dataset charts</li>
+</ul>
+<h2>Best Practices</h2>
+<ol>
+<li><strong>Register Chart.js Components</strong>: The components automatically register<br>required Chart.js elements on mount</li>
+<li><strong>Data Format</strong>: Ensure your data follows the expected format with timestamps<br>and labels</li>
+<li><strong>Performance</strong>: For real-time charts, consider limiting the number of data<br>points to prevent memory issues</li>
+<li><strong>Responsive Design</strong>: Use appropriate width and height values for different<br>screen sizes</li>
+<li><strong>Color Consistency</strong>: Use consistent colors across related charts for better<br>UX</li>
+</ol>
+<h2>Testing</h2>
+<p>Both components include comprehensive test suites:</p>
+<pre><code class="hljs language-bash">npm <span class="hljs-built_in">test</span> -- --run src/components/Charts/</code></pre><p>The tests cover:</p>
+<ul>
+<li>Component rendering with different props</li>
+<li>Chart type switching</li>
+<li>Custom color application</li>
+<li>Empty data handling</li>
+<li>Multiple dataset support</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

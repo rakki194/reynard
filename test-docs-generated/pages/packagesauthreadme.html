@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-auth - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-auth</h1>
+      <div class="markdown-content"><h1>reynard-auth</h1>
+<p>Complete authentication and user management system for SolidJS applications with JWT tokens, password strength analysis, and comprehensive security features.</p>
+<h2>🚀 Features</h2>
+<ul>
+<li><strong>🔐 JWT Authentication</strong>: Complete token-based authentication with refresh tokens</li>
+<li><strong>📝 Login &amp; Registration</strong>: Ready-to-use forms with validation and error handling</li>
+<li><strong>🔑 Password Security</strong>: Advanced password strength analysis using zxcvbn</li>
+<li><strong>👤 User Management</strong>: Profile management, password changes, and user preferences</li>
+<li><strong>🛡️ Security</strong>: Automatic token refresh, secure storage, and CSRF protection</li>
+<li><strong>🎨 Theming</strong>: Seamless integration with Reynard&#39;s design system</li>
+<li><strong>♿ Accessibility</strong>: Screen reader friendly with proper ARIA labels</li>
+<li><strong>📱 Responsive</strong>: Mobile-first design with touch-friendly interactions</li>
+<li><strong>⚡ Performance</strong>: Optimized with automatic token management and caching</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-auth reynard-core reynard-components jwt-decode @zxcvbn-ts/core solid-js</code></pre><h2>🎯 Quick Start</h2>
+<h3>Basic Setup</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">AuthProvider</span>, <span class="hljs-title class_">LoginForm</span>, <span class="hljs-title class_">RegisterForm</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createSignal, <span class="hljs-title class_">Show</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;solid-js&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [showLogin, setShowLogin] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">true</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">apiBaseUrl:</span> &quot;/<span class="hljs-attr">api</span>&quot;,
+        <span class="hljs-attr">autoRefresh:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">loginRedirectPath:</span> &quot;/<span class="hljs-attr">dashboard</span>&quot;,
+      }}
+      <span class="hljs-attr">callbacks</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">onLoginSuccess:</span> (<span class="hljs-attr">user</span>) =&gt;</span> console.log(&quot;Welcome:&quot;, user.username),
+        onLogout: () =&gt; console.log(&quot;Goodbye!&quot;),
+        onSessionExpired: () =&gt; console.log(&quot;Session expired&quot;),
+      }}
+    &gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{showLogin()}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">LoginForm</span>
+            <span class="hljs-attr">onLogin</span>=<span class="hljs-string">{async</span> (<span class="hljs-attr">credentials</span>) =&gt;</span> {
+              // Handle login with your API
+              console.log(&quot;Login attempt:&quot;, credentials);
+            }}
+            onRegisterClick={() =&gt; setShowLogin(false)}
+          /&gt;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{!showLogin()}</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">RegisterForm</span>
+            <span class="hljs-attr">onRegister</span>=<span class="hljs-string">{async</span> (<span class="hljs-attr">data</span>) =&gt;</span> {
+              // Handle registration with your API
+              console.log(&quot;Register attempt:&quot;, data);
+            }}
+            onLoginClick={() =&gt; setShowLogin(true)}
+          /&gt;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span></span>
+  );
+}</code></pre><h3>Using the Auth Hook</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Dashboard</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuth</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome, {auth.user()?.username}!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{auth.logout}</span>&gt;</span>Sign Out<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>📚 Components</h2>
+<h3>AuthProvider</h3>
+<p>Context provider that manages authentication state and provides auth methods.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">AuthProvider</span>
+  config={{
+    <span class="hljs-attr">apiBaseUrl</span>: <span class="hljs-string">&quot;/api&quot;</span>,
+    <span class="hljs-attr">loginEndpoint</span>: <span class="hljs-string">&quot;/auth/login&quot;</span>,
+    <span class="hljs-attr">refreshEndpoint</span>: <span class="hljs-string">&quot;/auth/refresh&quot;</span>,
+    <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">refreshThresholdMinutes</span>: <span class="hljs-number">10</span>,
+  }}
+  callbacks={{
+    <span class="hljs-attr">onLoginSuccess</span>: <span class="hljs-function">(<span class="hljs-params">user, tokens</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Login successful:&quot;</span>, user);
+      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(
+        <span class="hljs-string">&quot;user_preferences&quot;</span>,
+        <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(user.<span class="hljs-property">preferences</span>),
+      );
+    },
+    <span class="hljs-attr">onLogout</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">removeItem</span>(<span class="hljs-string">&quot;user_preferences&quot;</span>);
+      <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">href</span> = <span class="hljs-string">&quot;/&quot;</span>;
+    },
+    <span class="hljs-attr">onSessionExpired</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Your session has expired. Please log in again.&quot;</span>, <span class="hljs-string">&quot;warning&quot;</span>);
+    },
+  }}
+  requireAuth={<span class="hljs-literal">false</span>}
+  loginPath=<span class="hljs-string">&quot;/login&quot;</span>
+  fallback={<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading authentication...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>}
+&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span></span>
+&lt;/<span class="hljs-title class_">AuthProvider</span>&gt;</code></pre><h3>LoginForm</h3>
+<p>Complete login form with validation and error handling.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">LoginForm</span>
+  loading={loginMutation.<span class="hljs-property">pending</span>}
+  error={<span class="hljs-title function_">loginError</span>()}
+  showRememberMe={<span class="hljs-literal">true</span>}
+  showForgotPassword={<span class="hljs-literal">true</span>}
+  onLogin={<span class="hljs-title function_">async</span> (credentials) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/auth/login&quot;</span>, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+        <span class="hljs-attr">headers</span>: { <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span> },
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(credentials),
+      });
+
+      <span class="hljs-keyword">if</span> (response.<span class="hljs-property">ok</span>) {
+        <span class="hljs-keyword">const</span> { user, accessToken, refreshToken } = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+        auth.<span class="hljs-title function_">login</span>({ user, accessToken, refreshToken });
+        <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/dashboard&quot;</span>);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">const</span> error = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+        <span class="hljs-title function_">setLoginError</span>(error.<span class="hljs-property">message</span>);
+      }
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-title function_">setLoginError</span>(<span class="hljs-string">&quot;Network error. Please try again.&quot;</span>);
+    }
+  }}
+  onForgotPassword={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/forgot-password&quot;</span>)}
+  onRegisterClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/register&quot;</span>)}
+/&gt;</code></pre><h3>RegisterForm</h3>
+<p>Registration form with password strength checking and validation.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">RegisterForm</span>
+  loading={registerMutation.<span class="hljs-property">pending</span>}
+  error={<span class="hljs-title function_">registerError</span>()}
+  requireEmail={<span class="hljs-literal">true</span>}
+  requireFullName={<span class="hljs-literal">true</span>}
+  showTermsAcceptance={<span class="hljs-literal">true</span>}
+  onRegister={<span class="hljs-title function_">async</span> (data) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/auth/register&quot;</span>, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+        <span class="hljs-attr">headers</span>: { <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span> },
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data),
+      });
+
+      <span class="hljs-keyword">if</span> (response.<span class="hljs-property">ok</span>) {
+        <span class="hljs-title function_">setSuccessMessage</span>(<span class="hljs-string">&quot;Account created successfully! Please log in.&quot;</span>);
+        <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/login&quot;</span>);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">const</span> error = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+        <span class="hljs-title function_">setRegisterError</span>(error.<span class="hljs-property">message</span>);
+      }
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-title function_">setRegisterError</span>(<span class="hljs-string">&quot;Registration failed. Please try again.&quot;</span>);
+    }
+  }}
+  onLoginClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/login&quot;</span>)}
+  onTermsClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/terms&quot;</span>)}
+  onPrivacyClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/privacy&quot;</span>)}
+/&gt;</code></pre><h3>PasswordStrengthMeter</h3>
+<p>Advanced password strength indicator with detailed feedback.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">PasswordField</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [password, setPassword] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{password()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setPassword(e.target.value)}
+        placeholder=&quot;Enter password&quot;
+      /&gt;
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">PasswordStrengthMeter</span>
+        <span class="hljs-attr">password</span>=<span class="hljs-string">{password()}</span>
+        <span class="hljs-attr">userInputs</span>=<span class="hljs-string">{[</span>&quot;<span class="hljs-attr">john</span>@<span class="hljs-attr">example.com</span>&quot;, &quot;<span class="hljs-attr">john_doe</span>&quot;]} // <span class="hljs-attr">Don</span>&#x27;<span class="hljs-attr">t</span> <span class="hljs-attr">use</span> <span class="hljs-attr">these</span> <span class="hljs-attr">in</span> <span class="hljs-attr">password</span>
+        <span class="hljs-attr">showRequirements</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">showSuggestions</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">showCrackTime</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">useAdvanced</span>=<span class="hljs-string">{true}</span> // <span class="hljs-attr">Use</span> <span class="hljs-attr">zxcvbn</span> <span class="hljs-attr">for</span> <span class="hljs-attr">advanced</span> <span class="hljs-attr">analysis</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🎛️ Composables</h2>
+<h3>useAuth</h3>
+<p>Main authentication hook with complete state management.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuth</span>({
+    <span class="hljs-attr">config</span>: {
+      <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">refreshThresholdMinutes</span>: <span class="hljs-number">5</span>,
+    },
+    <span class="hljs-attr">callbacks</span>: {
+      <span class="hljs-attr">onTokenRefresh</span>: <span class="hljs-function">(<span class="hljs-params">tokens</span>) =&gt;</span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Tokens refreshed&quot;</span>);
+      },
+    },
+  });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleUpdateProfile</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> auth.<span class="hljs-title function_">updateProfile</span>({
+        <span class="hljs-attr">fullName</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
+        <span class="hljs-attr">email</span>: <span class="hljs-string">&quot;john@example.com&quot;</span>,
+      });
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Profile updated successfully!&quot;</span>, <span class="hljs-string">&quot;success&quot;</span>);
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Failed to update profile&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>);
+    }
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{auth.isAuthenticated()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Welcome, {auth.user()?.username}!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Role: {auth.user()?.role}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleUpdateProfile}</span>&gt;</span>Update Profile<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{auth.logout}</span>&gt;</span>Sign Out<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{auth.isLoading()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{auth.error()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;error&quot;</span>&gt;</span>{auth.error()}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>usePasswordStrength</h3>
+<p>Advanced password strength analysis with zxcvbn.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">PasswordInput</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [password, setPassword] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+  <span class="hljs-keyword">const</span> strength = <span class="hljs-title function_">usePasswordStrength</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">password</span>(), {
+    <span class="hljs-attr">useAdvanced</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">minScore</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">userInputs</span>: [<span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;email@domain.com&quot;</span>],
+    <span class="hljs-attr">customDictionary</span>: [<span class="hljs-string">&quot;company&quot;</span>, <span class="hljs-string">&quot;product&quot;</span>],
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{password()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setPassword(e.target.value)}
+      /&gt;
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;strength-indicator&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;strength-bar&quot;</span>
+          <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span>
+            <span class="hljs-attr">width:</span> `${<span class="hljs-attr">strength.strengthProgress</span>()}%`,
+            &quot;<span class="hljs-attr">background-color</span>&quot;<span class="hljs-attr">:</span> <span class="hljs-attr">strength.strengthColor</span>(),
+          }}
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">color:</span> <span class="hljs-attr">strength.strengthColor</span>() }}&gt;</span>
+          {strength.strengthLabel()}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Show</span> <span class="hljs-attr">when</span>=<span class="hljs-string">{!strength.isAcceptable()}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;strength-feedback&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{strength.feedback()}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{strength.strength().suggestions}</span>&gt;</span>
+              {(suggestion) =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{suggestion}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Show</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;requirements&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{strength.requirements()}</span>&gt;</span>
+          {(req) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{req.met</span> ? &quot;<span class="hljs-attr">met</span>&quot; <span class="hljs-attr">:</span> &quot;<span class="hljs-attr">unmet</span>&quot;}&gt;</span>
+              {req.met ? &quot;✓&quot; : &quot;○&quot;} {req.label}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🔧 Configuration</h2>
+<h3>Authentication Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-attr">authConfig</span>: <span class="hljs-title class_">AuthConfiguration</span> = {
+  <span class="hljs-comment">// API endpoints</span>
+  <span class="hljs-attr">apiBaseUrl</span>: <span class="hljs-string">&quot;/api&quot;</span>,
+  <span class="hljs-attr">loginEndpoint</span>: <span class="hljs-string">&quot;/auth/login&quot;</span>,
+  <span class="hljs-attr">registerEndpoint</span>: <span class="hljs-string">&quot;/auth/register&quot;</span>,
+  <span class="hljs-attr">refreshEndpoint</span>: <span class="hljs-string">&quot;/auth/refresh&quot;</span>,
+  <span class="hljs-attr">profileEndpoint</span>: <span class="hljs-string">&quot;/auth/profile&quot;</span>,
+
+  <span class="hljs-comment">// Token management</span>
+  <span class="hljs-attr">tokenStorageKey</span>: <span class="hljs-string">&quot;auth_token&quot;</span>,
+  <span class="hljs-attr">refreshTokenStorageKey</span>: <span class="hljs-string">&quot;refresh_token&quot;</span>,
+  <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">refreshThresholdMinutes</span>: <span class="hljs-number">10</span>,
+
+  <span class="hljs-comment">// Navigation</span>
+  <span class="hljs-attr">loginRedirectPath</span>: <span class="hljs-string">&quot;/dashboard&quot;</span>,
+  <span class="hljs-attr">logoutRedirectPath</span>: <span class="hljs-string">&quot;/login&quot;</span>,
+
+  <span class="hljs-comment">// Features</span>
+  <span class="hljs-attr">enableRememberMe</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">sessionTimeoutMinutes</span>: <span class="hljs-number">30</span>,
+};</code></pre><h3>Validation Rules</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-attr">customValidation</span>: <span class="hljs-title class_">ValidationRules</span> = {
+  <span class="hljs-attr">minLength</span>: <span class="hljs-number">12</span>,
+  <span class="hljs-attr">requireUppercase</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireLowercase</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireNumber</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireSpecialChar</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">customPattern</span>:
+    <span class="hljs-regexp">/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&amp;])[A-Za-z\d@$!%*?&amp;]{12,}$/</span>,
+  <span class="hljs-attr">usernamePattern</span>: <span class="hljs-regexp">/^[a-zA-Z0-9_-]{3,20}$/</span>,
+  <span class="hljs-attr">emailPattern</span>: <span class="hljs-regexp">/^[^\s@]+@[^\s@]+\.[^\s@]+$/</span>,
+};</code></pre><h2>🛡️ Security Features</h2>
+<h3>Automatic Token Refresh</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Tokens are automatically refreshed when they&#x27;re close to expiring</span>
+<span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuth</span>({
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">refreshThresholdMinutes</span>: <span class="hljs-number">10</span>, <span class="hljs-comment">// Refresh 10 minutes before expiry</span>
+  },
+  <span class="hljs-attr">callbacks</span>: {
+    <span class="hljs-attr">onTokenRefresh</span>: <span class="hljs-function">(<span class="hljs-params">tokens</span>) =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Tokens refreshed automatically&quot;</span>);
+    },
+    <span class="hljs-attr">onSessionExpired</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Session expired. Please log in again.&quot;</span>, <span class="hljs-string">&quot;warning&quot;</span>);
+      <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/login&quot;</span>);
+    },
+  },
+});</code></pre><h3>Security Best Practices</h3>
+<h4>1. <strong>Token Validation &amp; Sanitization</strong></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { validateToken, sanitizeUserInput } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Always validate tokens before use</span>
+<span class="hljs-keyword">const</span> isValidToken = <span class="hljs-title function_">validateToken</span>(token, {
+  <span class="hljs-attr">verifySignature</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">checkExpiration</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">allowedIssuers</span>: [<span class="hljs-string">&quot;your-app.com&quot;</span>],
+});
+
+<span class="hljs-comment">// Sanitize all user inputs</span>
+<span class="hljs-keyword">const</span> cleanUsername = <span class="hljs-title function_">sanitizeUserInput</span>(username, {
+  <span class="hljs-attr">maxLength</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">allowedChars</span>: <span class="hljs-regexp">/^[a-zA-Z0-9_-]+$/</span>,
+  <span class="hljs-attr">trimWhitespace</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h4>2. <strong>Rate Limiting &amp; Brute Force Protection</strong></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">RateLimiter</span>, <span class="hljs-title class_">BruteForceProtection</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Implement rate limiting for login attempts</span>
+<span class="hljs-keyword">const</span> rateLimiter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RateLimiter</span>({
+  <span class="hljs-attr">maxAttempts</span>: <span class="hljs-number">5</span>,
+  <span class="hljs-attr">windowMs</span>: <span class="hljs-number">15</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>, <span class="hljs-comment">// 15 minutes</span>
+  <span class="hljs-attr">blockDurationMs</span>: <span class="hljs-number">30</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>, <span class="hljs-comment">// 30 minutes</span>
+});
+
+<span class="hljs-comment">// Brute force protection</span>
+<span class="hljs-keyword">const</span> bruteForceProtection = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BruteForceProtection</span>({
+  <span class="hljs-attr">maxFailedAttempts</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">lockoutDurationMs</span>: <span class="hljs-number">10</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>, <span class="hljs-comment">// 10 minutes</span>
+  <span class="hljs-attr">progressiveDelay</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Usage in login handler</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">handleLogin</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">credentials</span>) =&gt; {
+  <span class="hljs-keyword">const</span> clientId = <span class="hljs-title function_">getClientIdentifier</span>(); <span class="hljs-comment">// IP + User-Agent hash</span>
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">await</span> rateLimiter.<span class="hljs-title function_">isBlocked</span>(clientId)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Too many login attempts. Please try again later.&quot;</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">await</span> bruteForceProtection.<span class="hljs-title function_">isLocked</span>(credentials.<span class="hljs-property">identifier</span>)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Account temporarily locked due to failed attempts.&quot;</span>);
+  }
+
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">authenticate</span>(credentials);
+    <span class="hljs-keyword">await</span> rateLimiter.<span class="hljs-title function_">reset</span>(clientId);
+    <span class="hljs-keyword">await</span> bruteForceProtection.<span class="hljs-title function_">reset</span>(credentials.<span class="hljs-property">identifier</span>);
+    <span class="hljs-keyword">return</span> result;
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-keyword">await</span> rateLimiter.<span class="hljs-title function_">recordAttempt</span>(clientId);
+    <span class="hljs-keyword">await</span> bruteForceProtection.<span class="hljs-title function_">recordFailedAttempt</span>(credentials.<span class="hljs-property">identifier</span>);
+    <span class="hljs-keyword">throw</span> error;
+  }
+};</code></pre><h4>3. <strong>CSRF Protection</strong></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">CSRFProtection</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Generate CSRF token</span>
+<span class="hljs-keyword">const</span> csrfToken = <span class="hljs-title class_">CSRFProtection</span>.<span class="hljs-title function_">generateToken</span>();
+
+<span class="hljs-comment">// Include in forms</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{handleSubmit}</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;csrf_token&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{csrfToken}</span> /&gt;</span>
+  {/* form fields */}
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>;
+
+<span class="hljs-comment">// Validate in API calls</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">validateCSRF</span> = (<span class="hljs-params"><span class="hljs-attr">token</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">CSRFProtection</span>.<span class="hljs-title function_">validateToken</span>(token, {
+    <span class="hljs-attr">maxAge</span>: <span class="hljs-number">3600000</span>, <span class="hljs-comment">// 1 hour</span>
+    <span class="hljs-attr">requireSecure</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// HTTPS only</span>
+  });
+};</code></pre><h4>4. <strong>Secure Session Management</strong></h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SecureSessionManager</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> sessionManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SecureSessionManager</span>({
+  <span class="hljs-attr">sessionTimeout</span>: <span class="hljs-number">30</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>, <span class="hljs-comment">// 30 minutes</span>
+  <span class="hljs-attr">slidingExpiration</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">secureCookies</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">httpOnly</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">sameSite</span>: <span class="hljs-string">&quot;strict&quot;</span>,
+});
+
+<span class="hljs-comment">// Track user activity</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">trackActivity</span> = (<span class="hljs-params"></span>) =&gt; {
+  sessionManager.<span class="hljs-title function_">updateLastActivity</span>();
+};
+
+<span class="hljs-comment">// Check session validity</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">isSessionValid</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">return</span> sessionManager.<span class="hljs-title function_">isValid</span>() &amp;&amp; !sessionManager.<span class="hljs-title function_">isExpired</span>();
+};</code></pre><h3>Secure Token Storage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">TokenManager</span>, <span class="hljs-title class_">SecureStorage</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Secure token management</span>
+<span class="hljs-keyword">const</span> tokenManager = <span class="hljs-title class_">TokenManager</span>.<span class="hljs-title function_">getInstance</span>(<span class="hljs-string">&quot;app_token&quot;</span>, <span class="hljs-string">&quot;app_refresh&quot;</span>);
+
+<span class="hljs-comment">// Store tokens securely</span>
+tokenManager.<span class="hljs-title function_">setTokens</span>(accessToken, refreshToken);
+
+<span class="hljs-comment">// Check token validity</span>
+<span class="hljs-keyword">if</span> (
+  tokenManager.<span class="hljs-title function_">hasAccessToken</span>() &amp;&amp;
+  !<span class="hljs-title function_">isTokenExpired</span>(tokenManager.<span class="hljs-title function_">getAccessToken</span>()!)
+) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Valid token available&quot;</span>);
+}
+
+<span class="hljs-comment">// Secure storage for sensitive data</span>
+<span class="hljs-keyword">const</span> storage = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SecureStorage</span>(<span class="hljs-string">&quot;app_&quot;</span>);
+storage.<span class="hljs-title function_">set</span>(<span class="hljs-string">&quot;user_preferences&quot;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(preferences));</code></pre><h3>Password Security</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  validatePassword,
+  calculatePasswordStrength,
+  hashPassword,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Validate password against rules</span>
+<span class="hljs-keyword">const</span> validation = <span class="hljs-title function_">validatePassword</span>(password, {
+  <span class="hljs-attr">minLength</span>: <span class="hljs-number">12</span>,
+  <span class="hljs-attr">requireUppercase</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireLowercase</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireNumber</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">requireSpecialChar</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-keyword">if</span> (!validation.<span class="hljs-property">isValid</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Password errors:&quot;</span>, validation.<span class="hljs-property">errors</span>);
+}
+
+<span class="hljs-comment">// Calculate strength</span>
+<span class="hljs-keyword">const</span> strength = <span class="hljs-title function_">calculatePasswordStrength</span>(password);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Password strength: <span class="hljs-subst">${strength.feedback}</span> (<span class="hljs-subst">${strength.score}</span>/4)`</span>);
+
+<span class="hljs-comment">// Hash password before transmission (optional)</span>
+<span class="hljs-keyword">const</span> hashedPassword = <span class="hljs-keyword">await</span> <span class="hljs-title function_">hashPassword</span>(password);</code></pre><h2>🔐 Advanced Usage</h2>
+<h3>Custom Auth Provider</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">CustomAuthProvider</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: { children: <span class="hljs-built_in">any</span> }</span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuth</span>({
+    <span class="hljs-attr">config</span>: {
+      <span class="hljs-attr">apiBaseUrl</span>: <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">VITE_API_URL</span>,
+      <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+    },
+    <span class="hljs-attr">callbacks</span>: {
+      <span class="hljs-attr">onLoginSuccess</span>: <span class="hljs-function">(<span class="hljs-params">user, tokens</span>) =&gt;</span> {
+        <span class="hljs-comment">// Track login event</span>
+        analytics.<span class="hljs-title function_">track</span>(<span class="hljs-string">&quot;user_login&quot;</span>, { <span class="hljs-attr">userId</span>: user.<span class="hljs-property">id</span> });
+
+        <span class="hljs-comment">// Set user context for error reporting</span>
+        errorReporting.<span class="hljs-title function_">setUser</span>(user);
+
+        <span class="hljs-comment">// Update last login time</span>
+        <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&quot;last_login&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">toISOString</span>());
+      },
+
+      <span class="hljs-attr">onLogout</span>: <span class="hljs-function">() =&gt;</span> {
+        <span class="hljs-comment">// Clear analytics</span>
+        analytics.<span class="hljs-title function_">reset</span>();
+        errorReporting.<span class="hljs-title function_">clearUser</span>();
+
+        <span class="hljs-comment">// Clear app data</span>
+        <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">clear</span>();
+
+        <span class="hljs-comment">// Redirect to landing page</span>
+        <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">href</span> = <span class="hljs-string">&quot;/&quot;</span>;
+      },
+
+      <span class="hljs-attr">onSessionExpired</span>: <span class="hljs-function">() =&gt;</span> {
+        toast.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Your session has expired. Please log in again.&quot;</span>);
+
+        <span class="hljs-comment">// Track session expiry</span>
+        analytics.<span class="hljs-title function_">track</span>(<span class="hljs-string">&quot;session_expired&quot;</span>);
+      },
+
+      <span class="hljs-attr">onUnauthorized</span>: <span class="hljs-function">() =&gt;</span> {
+        toast.<span class="hljs-title function_">warning</span>(<span class="hljs-string">&quot;Access denied. Please check your permissions.&quot;</span>);
+      },
+    },
+  });
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{auth}</span>&gt;</span>{props.children}<span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span></span>;
+}</code></pre><h3>Protected Routes</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { withAuth, useAuthContext } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Higher-order component approach</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ProtectedDashboard</span> = <span class="hljs-title function_">withAuth</span>(<span class="hljs-title class_">Dashboard</span>, {
+  <span class="hljs-attr">redirectTo</span>: <span class="hljs-string">&quot;/login&quot;</span>,
+  <span class="hljs-attr">fallback</span>: <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Checking authentication...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>,
+});
+
+<span class="hljs-comment">// Hook approach</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AdminPanel</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuthContext</span>();
+
+  <span class="hljs-comment">// Check role-based access</span>
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">hasPermission</span>(auth.<span class="hljs-title function_">user</span>()?.<span class="hljs-property">role</span> || <span class="hljs-string">&quot;guest&quot;</span>, <span class="hljs-string">&quot;admin&quot;</span>)) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Access denied. Admin privileges required.<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Admin panel content<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Route guard approach (with your router)</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AuthGuard</span>(<span class="hljs-params"><span class="hljs-attr">props</span>: { children: <span class="hljs-built_in">any</span>; requireRole?: UserRole }</span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuthContext</span>();
+
+  <span class="hljs-title function_">createEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!auth.<span class="hljs-title function_">isLoading</span>() &amp;&amp; !auth.<span class="hljs-title function_">isAuthenticated</span>()) {
+      <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/login&quot;</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (
+      props.<span class="hljs-property">requireRole</span> &amp;&amp;
+      !<span class="hljs-title function_">hasPermission</span>(auth.<span class="hljs-title function_">user</span>()?.<span class="hljs-property">role</span> || <span class="hljs-string">&quot;guest&quot;</span>, props.<span class="hljs-property">requireRole</span>)
+    ) {
+      <span class="hljs-title function_">navigate</span>(<span class="hljs-string">&quot;/unauthorized&quot;</span>);
+    }
+  });
+
+  <span class="hljs-keyword">if</span> (auth.<span class="hljs-title function_">isLoading</span>()) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">if</span> (!auth.<span class="hljs-title function_">isAuthenticated</span>()) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// Will redirect</span>
+  }
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>{props.children}<span class="hljs-tag">&lt;/&gt;</span></span>;
+}</code></pre><h3>API Integration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Custom auth fetch wrapper</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useAuthenticatedApi</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">useAuthContext</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">apiCall</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">options</span>: <span class="hljs-title class_">RequestInit</span> = {}</span>) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> auth.<span class="hljs-title function_">authFetch</span>(endpoint, options);
+
+      <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`API error: <span class="hljs-subst">${response.status}</span>`</span>);
+      }
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;API call failed:&quot;</span>, error);
+      <span class="hljs-keyword">throw</span> error;
+    }
+  };
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">get</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-title function_">apiCall</span>(endpoint),
+    <span class="hljs-attr">post</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span>
+      <span class="hljs-title function_">apiCall</span>(endpoint, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data),
+      }),
+    <span class="hljs-attr">put</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span>
+      <span class="hljs-title function_">apiCall</span>(endpoint, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;PUT&quot;</span>,
+        <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data),
+      }),
+    <span class="hljs-attr">delete</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span>
+      <span class="hljs-title function_">apiCall</span>(endpoint, {
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;DELETE&quot;</span>,
+      }),
+  };
+}
+
+<span class="hljs-comment">// Usage in components</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">UsersList</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> api = <span class="hljs-title function_">useAuthenticatedApi</span>();
+  <span class="hljs-keyword">const</span> [users] = <span class="hljs-title function_">createResource</span>(<span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> api.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/users&quot;</span>);
+  });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">deleteUser</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">await</span> api.<span class="hljs-title function_">delete</span>(<span class="hljs-string">`/users/<span class="hljs-subst">${userId}</span>`</span>);
+      toast.<span class="hljs-title function_">success</span>(<span class="hljs-string">&quot;User deleted successfully&quot;</span>);
+      <span class="hljs-comment">// Refetch users list</span>
+    } <span class="hljs-keyword">catch</span> (error) {
+      toast.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Failed to delete user&quot;</span>);
+    }
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{users()}</span>&gt;</span>
+        {(user) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+            {user.username}
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> deleteUser(user.id)}&gt;Delete<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        )}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>📊 TypeScript Support</h2>
+<p>Full TypeScript support with comprehensive type definitions:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> {
+  <span class="hljs-title class_">User</span>,
+  <span class="hljs-title class_">UserRole</span>,
+  <span class="hljs-title class_">AuthState</span>,
+  <span class="hljs-title class_">LoginCredentials</span>,
+  <span class="hljs-title class_">RegisterData</span>,
+  <span class="hljs-title class_">AuthConfiguration</span>,
+  <span class="hljs-title class_">PasswordStrength</span>,
+  <span class="hljs-title class_">ValidationRules</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-comment">// Type-safe user management</span>
+<span class="hljs-keyword">const</span> updateUser = (<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">updates</span>: <span class="hljs-title class_">Partial</span>&lt;<span class="hljs-title class_">User</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">User</span>&gt; =&gt; {
+  <span class="hljs-keyword">return</span> api.<span class="hljs-title function_">put</span>(<span class="hljs-string">`/users/<span class="hljs-subst">${userId}</span>`</span>, updates);
+};
+
+<span class="hljs-comment">// Role-based access control</span>
+<span class="hljs-keyword">const</span> hasAdminAccess = (<span class="hljs-attr">user</span>: <span class="hljs-title class_">User</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">hasPermission</span>(user.<span class="hljs-property">role</span>, <span class="hljs-string">&quot;admin&quot;</span>);
+};
+
+<span class="hljs-comment">// Custom validation</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">customValidation</span>: <span class="hljs-title class_">ValidationRules</span> = {
+  <span class="hljs-attr">minLength</span>: <span class="hljs-number">8</span>,
+  <span class="hljs-attr">customPattern</span>: <span class="hljs-regexp">/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/</span>,
+};</code></pre><h2>🧪 Testing</h2>
+<p>Testing utilities and examples:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { render, screen, fireEvent, waitFor } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@solidjs/testing-library&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">AuthProvider</span>, <span class="hljs-title class_">LoginForm</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;LoginForm&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;handles login submission&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> mockLogin = vi.<span class="hljs-title function_">fn</span>();
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LoginForm</span> <span class="hljs-attr">onLogin</span>=<span class="hljs-string">{mockLogin}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span></span>
+    ));
+
+    <span class="hljs-comment">// Fill in the form</span>
+    fireEvent.<span class="hljs-title function_">input</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/username/i</span>), {
+      <span class="hljs-attr">target</span>: { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;testuser&quot;</span> },
+    });
+    fireEvent.<span class="hljs-title function_">input</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/password/i</span>), {
+      <span class="hljs-attr">target</span>: { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;password123&quot;</span> },
+    });
+
+    <span class="hljs-comment">// Submit the form</span>
+    fireEvent.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&quot;button&quot;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/sign in/i</span> }));
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(mockLogin).<span class="hljs-title function_">toHaveBeenCalledWith</span>({
+        <span class="hljs-attr">identifier</span>: <span class="hljs-string">&quot;testuser&quot;</span>,
+        <span class="hljs-attr">password</span>: <span class="hljs-string">&quot;password123&quot;</span>,
+        <span class="hljs-attr">rememberMe</span>: <span class="hljs-literal">false</span>,
+      });
+    });
+  });
+});</code></pre><h2>🤝 Contributing</h2>
+<p>See the main <a href="../../README.md">Reynard repository</a> for contribution guidelines.</p>
+<hr>
+<p><strong>Built with 🔐 for secure SolidJS applications</strong> 🛡️🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊🦦🐺 Reynard Documentation Testing System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊🦦🐺 Reynard Documentation Testing System</h1>
+      <div class="markdown-content"><h1>🦊🦦🐺 Reynard Documentation Testing System</h1>
+<blockquote>
+<p><strong>Executable Documentation</strong> - Every code example in our documentation is automatically tested to ensure it actually works!</p>
+</blockquote>
+<h2>🎯 Overview</h2>
+<p>The Reynard Documentation Testing System ensures that all code examples in our documentation are not just syntactically correct, but actually executable and working. This system embodies all three aspects of the Reynard philosophy:</p>
+<ul>
+<li><strong>🦊 Strategic</strong>: Automatically validates documentation quality</li>
+<li><strong>🦦 Playful</strong>: Makes testing documentation examples fun and interactive</li>
+<li><strong>🐺 Adversarial</strong>: Catches broken examples before they reach users</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<h3>Run All Documentation Tests</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run the complete documentation testing pipeline</span>
+npm run doc-tests
+
+<span class="hljs-comment"># Or run individual steps</span>
+npm run doc-tests:generate  <span class="hljs-comment"># Generate test files</span>
+npm run doc-tests:validate  <span class="hljs-comment"># Validate examples</span>
+npm run doc-tests:<span class="hljs-built_in">test</span>      <span class="hljs-comment"># Run tests</span></code></pre><h3>Test Specific Package</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Test documentation for a specific package</span>
+<span class="hljs-built_in">cd</span> packages/core
+npm run <span class="hljs-built_in">test</span>:docs</code></pre><h2>🏗️ How It Works</h2>
+<h3>1. <strong>Code Extraction</strong> 🦊</h3>
+<p>The system automatically extracts code examples from markdown documentation:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Extracts from ```tsx, ```ts, ```js blocks</span>
+<span class="hljs-keyword">const</span> examples = <span class="hljs-title function_">extractCodeExamples</span>(<span class="hljs-string">&quot;README.md&quot;</span>);</code></pre><h3>2. <strong>Test Generation</strong> 🦦</h3>
+<p>Each code example is wrapped in a proper test structure:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Component examples become render tests</span>
+<span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;should render component example&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ExampleComponent</span> /&gt;</span></span>);
+  <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+});
+
+<span class="hljs-comment">// Utility examples become function tests</span>
+<span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;should execute utility example&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// Example executed successfully</span>
+  <span class="hljs-title function_">expect</span>(<span class="hljs-literal">true</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+});</code></pre><h3>3. <strong>Validation &amp; Execution</strong> 🐺</h3>
+<p>Examples are validated for syntax and then executed as tests:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Validates syntax and imports</span>
+<span class="hljs-keyword">const</span> validation = <span class="hljs-title function_">validateDocExamples</span>(<span class="hljs-string">&quot;README.md&quot;</span>);
+
+<span class="hljs-comment">// Runs as actual tests</span>
+<span class="hljs-title function_">runDocTests</span>({
+  <span class="hljs-attr">docPath</span>: <span class="hljs-string">&quot;README.md&quot;</span>,
+  <span class="hljs-attr">packageName</span>: <span class="hljs-string">&quot;reynard-core&quot;</span>,
+});</code></pre><h2>📁 File Structure</h2>
+<pre><code class="hljs language-plaintext">packages/
+├── testing/
+│   ├── src/
+│   │   ├── doc-tests.ts          # Core testing utilities
+│   │   └── doc-test-runner.ts    # CLI runner
+│   └── vitest.docs.config.ts     # Test configuration
+├── core/
+│   ├── src/
+│   │   └── doc-tests.test.ts     # Auto-generated tests
+│   └── vitest.docs.config.ts     # Package-specific config
+└── [other packages]/
+    ├── src/
+    │   └── doc-tests.test.ts     # Auto-generated tests
+    └── vitest.docs.config.ts     # Package-specific config</code></pre><h2>🛠️ Configuration</h2>
+<h3>Package Configuration</h3>
+<p>Each package can customize its documentation testing:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/core/vitest.docs.config.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">solid</span>()],
+  <span class="hljs-attr">test</span>: {
+    <span class="hljs-attr">environment</span>: <span class="hljs-string">&quot;jsdom&quot;</span>,
+    <span class="hljs-attr">include</span>: [<span class="hljs-string">&quot;src/**/*.doc-tests.test.ts&quot;</span>],
+    <span class="hljs-attr">setupFiles</span>: [<span class="hljs-string">&quot;./src/test-setup.ts&quot;</span>],
+  },
+  <span class="hljs-attr">resolve</span>: {
+    <span class="hljs-attr">alias</span>: {
+      <span class="hljs-string">&quot;reynard-core&quot;</span>: <span class="hljs-keyword">new</span> <span class="hljs-title function_">URL</span>(<span class="hljs-string">&quot;./src&quot;</span>, <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">url</span>).<span class="hljs-property">pathname</span>,
+    },
+  },
+});</code></pre><h3>Test Setup</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/core/src/test-setup.ts</span>
+<span class="hljs-keyword">import</span> { cleanup } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@solidjs/testing-library&quot;</span>;
+<span class="hljs-keyword">import</span> { afterEach } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vitest&quot;</span>;
+
+<span class="hljs-title function_">afterEach</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">cleanup</span>();
+});</code></pre><h2>📝 Writing Testable Examples</h2>
+<h3>✅ Good Examples</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component with testable elements</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ThemeDemo</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { theme, setTheme } = <span class="hljs-title function_">useTheme</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">data-testid</span>=<span class="hljs-string">&quot;theme-demo&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">data-testid</span>=<span class="hljs-string">&quot;current-theme&quot;</span>&gt;</span>{theme()}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">data-testid</span>=<span class="hljs-string">&quot;theme-button&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setTheme(&quot;dark&quot;)}&gt;
+        Switch to Dark
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><pre><code class="hljs language-typescript"><span class="hljs-comment">// Utility function example</span>
+<span class="hljs-keyword">import</span> { validateEmail } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-core&quot;</span>;
+
+<span class="hljs-keyword">const</span> email = <span class="hljs-string">&quot;user@example.com&quot;</span>;
+<span class="hljs-keyword">const</span> isValid = <span class="hljs-title function_">validateEmail</span>(email);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(isValid); <span class="hljs-comment">// true</span></code></pre><h3>❌ Avoid These Patterns</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Don&#x27;t use incomplete examples</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">IncompleteExample</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// ... missing implementation</span>
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}
+
+<span class="hljs-comment">// Don&#x27;t use placeholder code</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">someFunction</span>(<span class="hljs-comment">/* ... */</span>);</code></pre><h2>🔧 Advanced Usage</h2>
+<h3>Custom Test Setup</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// packages/auth/src/doc-tests.test.ts</span>
+<span class="hljs-keyword">import</span> { runDocTests } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/doc-tests&quot;</span>;
+
+<span class="hljs-title function_">runDocTests</span>({
+  <span class="hljs-attr">docPath</span>: <span class="hljs-string">&quot;packages/auth/README.md&quot;</span>,
+  <span class="hljs-attr">packageName</span>: <span class="hljs-string">&quot;reynard-auth&quot;</span>,
+  <span class="hljs-attr">setup</span>: <span class="hljs-string">`
+    import { AuthProvider, useAuth } from &#x27;reynard-auth&#x27;;
+    import { mockFetch } from &#x27;reynard-testing/mocks&#x27;;
+    
+    // Mock authentication responses
+    mockFetch(&#x27;/api/auth/login&#x27;, { token: &#x27;mock-token&#x27; });
+  `</span>,
+});</code></pre><h3>Validation Rules</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Custom validation for specific packages</span>
+<span class="hljs-keyword">const</span> validation = <span class="hljs-title function_">validateDocExamples</span>(<span class="hljs-string">&quot;README.md&quot;</span>, {
+  <span class="hljs-attr">allowUndefined</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">requireImports</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">checkSyntax</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h2>📊 Test Reports</h2>
+<p>The system generates comprehensive reports:</p>
+<pre><code class="hljs language-markdown"><span class="hljs-section"># Documentation Test Report</span>
+
+<span class="hljs-section">## Summary</span>
+
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**Total Examples**</span>: 45
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**Valid Examples**</span>: 43
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**Invalid Examples**</span>: 2
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**Success Rate**</span>: 95.6%
+
+<span class="hljs-section">## Examples by Type</span>
+
+<span class="hljs-bullet">-</span> Component: 25
+<span class="hljs-bullet">-</span> TypeScript: 15
+<span class="hljs-bullet">-</span> JavaScript: 5
+
+<span class="hljs-section">## Issues Found</span>
+
+<span class="hljs-bullet">-</span> Example 12: Contains undefined reference
+<span class="hljs-bullet">-</span> Example 23: Invalid import statement
+
+<span class="hljs-section">## Recommendations</span>
+
+<span class="hljs-bullet">-</span> Review and fix invalid examples
+<span class="hljs-bullet">-</span> Add proper error handling
+<span class="hljs-bullet">-</span> Ensure all imports are correct</code></pre><h2>🚀 CI Integration</h2>
+<h3>GitHub Actions</h3>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># .github/workflows/doc-tests.yml</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">Documentation</span> <span class="hljs-string">Tests</span>
+
+<span class="hljs-attr">on:</span> [<span class="hljs-string">push</span>, <span class="hljs-string">pull_request</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">doc-tests:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">&quot;18&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">install</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">doc-tests</span></code></pre><h3>Pre-commit Hooks</h3>
+<pre><code class="hljs language-json"><span class="hljs-comment">// .husky/pre-commit</span>
+#!/usr/bin/env sh
+. <span class="hljs-string">&quot;$(dirname -- &quot;</span>$<span class="hljs-number">0</span><span class="hljs-string">&quot;)/_/husky.sh&quot;</span>
+
+npm run doc-tests<span class="hljs-punctuation">:</span>validate</code></pre><h2>🎯 Best Practices</h2>
+<h3>1. <strong>Write Complete Examples</strong> 🦊</h3>
+<ul>
+<li>Include all necessary imports</li>
+<li>Provide complete function implementations</li>
+<li>Use realistic data and scenarios</li>
+</ul>
+<h3>2. <strong>Make Examples Testable</strong> 🦦</h3>
+<ul>
+<li>Add <code>data-testid</code> attributes for components</li>
+<li>Use specific, testable assertions</li>
+<li>Avoid side effects in examples</li>
+</ul>
+<h3>3. <strong>Handle Edge Cases</strong> 🐺</h3>
+<ul>
+<li>Test error conditions</li>
+<li>Validate input parameters</li>
+<li>Include cleanup code</li>
+</ul>
+<h2>🔍 Troubleshooting</h2>
+<h3>Common Issues</h3>
+<p><strong>Import Errors</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Fix: Ensure package is built</span>
+npm run build
+npm run <span class="hljs-built_in">test</span>:docs</code></pre><p><strong>Test Environment Issues</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Fix: Check vitest configuration</span>
+npm run <span class="hljs-built_in">test</span>:docs -- --reporter=verbose</code></pre><p><strong>Missing Dependencies</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Fix: Install missing packages</span>
+npm install @solidjs/testing-library</code></pre><h3>Debug Mode</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run with debug output</span>
+DEBUG=doc-tests npm run doc-tests</code></pre><h2>🎉 Benefits</h2>
+<h3>For Developers</h3>
+<ul>
+<li><strong>Confidence</strong>: Know that all examples work</li>
+<li><strong>Quality</strong>: Catch broken examples early</li>
+<li><strong>Maintenance</strong>: Automatic validation on changes</li>
+</ul>
+<h3>For Users</h3>
+<ul>
+<li><strong>Reliability</strong>: Examples that actually work</li>
+<li><strong>Learning</strong>: Copy-paste ready code</li>
+<li><strong>Trust</strong>: Documentation you can depend on</li>
+</ul>
+<h3>For the Project</h3>
+<ul>
+<li><strong>Professional</strong>: High-quality documentation</li>
+<li><strong>Maintainable</strong>: Automated testing reduces manual work</li>
+<li><strong>Scalable</strong>: System grows with the project</li>
+</ul>
+<h2>🚀 Future Enhancements</h2>
+<ul>
+<li><strong>Interactive Examples</strong>: Live code playgrounds</li>
+<li><strong>Visual Testing</strong>: Screenshot comparison for UI examples</li>
+<li><strong>Performance Testing</strong>: Benchmark examples</li>
+<li><strong>Accessibility Testing</strong>: A11y validation for component examples</li>
+</ul>
+<hr>
+<p><strong>🦊🦦🐺 The Reynard Documentation Testing System ensures that every code example in our documentation is not just correct, but actually works. This is the cunning fox&#39;s strategic approach to quality, the otter&#39;s playful exploration of testing, and the wolf&#39;s adversarial validation of reliability.</strong></p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

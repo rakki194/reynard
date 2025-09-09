@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Environment-Based Configuration System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Environment-Based Configuration System</h1>
+      <div class="markdown-content"><h1>Environment-Based Configuration System</h1>
+<p>The Environment-Based Configuration System provides comprehensive configuration management for the lazy loading system, allowing you to create environment-specific configurations with inheritance, templates, and migration capabilities.</p>
+<h2>Overview</h2>
+<p>The system supports multiple environments (development, staging, production, testing, demo) with the ability to:</p>
+<ul>
+<li>Create custom environments with specific configurations</li>
+<li>Use configuration templates for common settings</li>
+<li>Inherit configurations from parent environments</li>
+<li>Migrate configurations between environments</li>
+<li>Validate configurations for correctness</li>
+<li>Export and import environment configurations</li>
+</ul>
+<h2>Environment Types</h2>
+<p>The system supports the following environment types:</p>
+<ul>
+<li><strong>development</strong>: Development environment with debugging enabled</li>
+<li><strong>staging</strong>: Staging environment for testing</li>
+<li><strong>production</strong>: Production environment with optimized settings</li>
+<li><strong>testing</strong>: Testing environment with minimal resource usage</li>
+<li><strong>demo</strong>: Demo environment with showcase features</li>
+<li><strong>custom</strong>: Custom environment for specific use cases</li>
+</ul>
+<h2>Default Environments</h2>
+<p>The system comes with pre-configured environments:</p>
+<h3>Development</h3>
+<ul>
+<li>Aggressive unloading strategy (5-minute timeout)</li>
+<li>Debug mode enabled</li>
+<li>Detailed logging</li>
+<li>Performance monitoring enabled</li>
+</ul>
+<h3>Staging</h3>
+<ul>
+<li>Balanced unloading strategy (15-minute timeout)</li>
+<li>Inherits from development</li>
+<li>Debug mode disabled</li>
+<li>Info-level logging</li>
+</ul>
+<h3>Production</h3>
+<ul>
+<li>Conservative unloading strategy (30-minute timeout)</li>
+<li>Inherits from staging</li>
+<li>Optimized for performance</li>
+<li>Warning-level logging</li>
+<li>Increased cache size (200MB)</li>
+</ul>
+<h3>Testing</h3>
+<ul>
+<li>Unloading disabled</li>
+<li>Minimal resource usage</li>
+<li>Debug mode enabled</li>
+<li>No analytics or monitoring</li>
+</ul>
+<h3>Demo</h3>
+<ul>
+<li>Balanced unloading strategy</li>
+<li>Inherits from development</li>
+<li>Analytics and monitoring enabled</li>
+<li>Showcase features enabled</li>
+</ul>
+<h2>Configuration Templates</h2>
+<p>The system includes several configuration templates:</p>
+<h3>High Performance</h3>
+<ul>
+<li>Conservative unloading strategy</li>
+<li>8 concurrent loads</li>
+<li>500MB cache size</li>
+<li>High memory pressure threshold</li>
+</ul>
+<h3>Memory Efficient</h3>
+<ul>
+<li>Aggressive unloading strategy</li>
+<li>2 concurrent loads</li>
+<li>50MB cache size</li>
+<li>Low memory pressure threshold</li>
+</ul>
+<h3>Debug Mode</h3>
+<ul>
+<li>Debug mode enabled</li>
+<li>Detailed logging</li>
+<li>Short check intervals</li>
+<li>Performance monitoring</li>
+</ul>
+<h3>Minimal</h3>
+<ul>
+<li>Unloading disabled</li>
+<li>No analytics or monitoring</li>
+<li>Minimal features enabled</li>
+</ul>
+<h2>Environment Detection</h2>
+<p>The system automatically detects the current environment based on environment variables:</p>
+<ol>
+<li><strong>YIPYAP_ENVIRONMENT</strong>: Explicit environment setting</li>
+<li><strong>NODE_ENV</strong>: Node.js environment variable</li>
+<li><strong>PRODUCTION</strong>: Production flag</li>
+<li><strong>STAGING</strong>: Staging flag</li>
+<li><strong>TESTING</strong>: Testing flag</li>
+<li><strong>Default</strong>: Falls back to &quot;development&quot;</li>
+</ol>
+<h2>API Usage</h2>
+<h3>Environment Management</h3>
+<h4>Get All Environments</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/environments</code></pre><h4>Get Current Environment</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/environments/current</code></pre><h4>Get Specific Environment</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/environments/{environment_name}</code></pre><h4>Create Environment</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/environments
+{
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;custom_env&quot;</span>,
+  <span class="hljs-string">&quot;environment_type&quot;</span>: <span class="hljs-string">&quot;custom&quot;</span>,
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Custom environment&quot;</span>,
+  <span class="hljs-string">&quot;parent_environment&quot;</span>: <span class="hljs-string">&quot;development&quot;</span>,
+  <span class="hljs-string">&quot;inheritance_level&quot;</span>: <span class="hljs-string">&quot;full&quot;</span>,
+  <span class="hljs-string">&quot;overrides&quot;</span>: {
+    <span class="hljs-string">&quot;lazy_loading_unloading_strategy&quot;</span>: <span class="hljs-string">&quot;AGGRESSIVE&quot;</span>,
+    <span class="hljs-string">&quot;cache_size_limit&quot;</span>: 100000000
+  },
+  <span class="hljs-string">&quot;templates&quot;</span>: [<span class="hljs-string">&quot;high_performance&quot;</span>]
+}</code></pre><h4>Update Environment</h4>
+<pre><code class="hljs language-bash">PUT /api/environment-config/environments/{environment_name}
+{
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Updated description&quot;</span>,
+  <span class="hljs-string">&quot;overrides&quot;</span>: {
+    <span class="hljs-string">&quot;new_setting&quot;</span>: <span class="hljs-string">&quot;new_value&quot;</span>
+  }
+}</code></pre><h4>Delete Environment</h4>
+<pre><code class="hljs language-bash">DELETE /api/environment-config/environments/{environment_name}</code></pre><h3>Template Management</h3>
+<h4>Get All Templates</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/templates</code></pre><h4>Get Specific Template</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/templates/{template_name}</code></pre><h4>Create Template</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/templates
+{
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;custom_template&quot;</span>,
+  <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Custom template&quot;</span>,
+  <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;performance&quot;</span>,
+  <span class="hljs-string">&quot;configuration&quot;</span>: {
+    <span class="hljs-string">&quot;custom_setting&quot;</span>: <span class="hljs-string">&quot;custom_value&quot;</span>
+  },
+  <span class="hljs-string">&quot;validation_rules&quot;</span>: {
+    <span class="hljs-string">&quot;custom_setting&quot;</span>: {
+      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;str&quot;</span>,
+      <span class="hljs-string">&quot;allowed_values&quot;</span>: [<span class="hljs-string">&quot;value1&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>]
+    }
+  }
+}</code></pre><h3>Migration</h3>
+<h4>Migrate Configuration</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/migrations
+{
+  <span class="hljs-string">&quot;from_environment&quot;</span>: <span class="hljs-string">&quot;development&quot;</span>,
+  <span class="hljs-string">&quot;to_environment&quot;</span>: <span class="hljs-string">&quot;staging&quot;</span>,
+  <span class="hljs-string">&quot;migration_type&quot;</span>: <span class="hljs-string">&quot;copy&quot;</span>
+}</code></pre><p>Migration types:</p>
+<ul>
+<li><strong>copy</strong>: Copy all configuration from source to target</li>
+<li><strong>merge</strong>: Merge source configuration with target configuration</li>
+<li><strong>transform</strong>: Transform configuration using rules</li>
+</ul>
+<h4>Transform Migration Example</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/migrations
+{
+  <span class="hljs-string">&quot;from_environment&quot;</span>: <span class="hljs-string">&quot;development&quot;</span>,
+  <span class="hljs-string">&quot;to_environment&quot;</span>: <span class="hljs-string">&quot;production&quot;</span>,
+  <span class="hljs-string">&quot;migration_type&quot;</span>: <span class="hljs-string">&quot;transform&quot;</span>,
+  <span class="hljs-string">&quot;transform_rules&quot;</span>: {
+    <span class="hljs-string">&quot;timeout&quot;</span>: {
+      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;multiply&quot;</span>,
+      <span class="hljs-string">&quot;factor&quot;</span>: 2.0
+    },
+    <span class="hljs-string">&quot;cache_size&quot;</span>: {
+      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;add&quot;</span>,
+      <span class="hljs-string">&quot;offset&quot;</span>: 100000000
+    }
+  }
+}</code></pre><h3>Import/Export</h3>
+<h4>Export Environment</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/environments/{environment_name}/export?format=json</code></pre><h4>Import Environment</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/environments/import
+Content-Type: multipart/form-data
+file: environment_config.json
+overwrite: <span class="hljs-literal">false</span></code></pre><h3>Validation</h3>
+<h4>Validate Environment</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/environments/{environment_name}/validate</code></pre><h3>Utility Endpoints</h3>
+<h4>Reload Configuration</h4>
+<pre><code class="hljs language-bash">POST /api/environment-config/reload</code></pre><h4>Get Status</h4>
+<pre><code class="hljs language-bash">GET /api/environment-config/status</code></pre><h2>Configuration Inheritance</h2>
+<p>Environments can inherit configurations from parent environments:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;staging&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;environment_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;staging&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;parent_environment&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;development&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;inheritance_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;full&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;overrides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;lazy_loading_unloading_strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;BALANCED&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><p>Inheritance levels:</p>
+<ul>
+<li><strong>none</strong>: No inheritance</li>
+<li><strong>partial</strong>: Inherit only specific sections</li>
+<li><strong>full</strong>: Full inheritance with overrides</li>
+</ul>
+<h2>Configuration Resolution</h2>
+<p>The system resolves configurations in the following order:</p>
+<ol>
+<li>Parent environment configuration (if inheritance is enabled)</li>
+<li>Template configurations (in order specified)</li>
+<li>Environment-specific overrides</li>
+</ol>
+<p>This allows for flexible configuration management while maintaining consistency across environments.</p>
+<h2>Validation Rules</h2>
+<p>Templates can include validation rules for configuration values:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;validation_rules&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;max_concurrent_loads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;int&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;min&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;max&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">16</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_size_limit&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;int&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;min&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1048576</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;max&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2147483648</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lazy_loading_unloading_strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;str&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;allowed_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;AGGRESSIVE&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;BALANCED&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;CONSERVATIVE&quot;</span><span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>File Structure</h2>
+<p>The system stores configurations in the following structure:</p>
+<pre><code class="hljs">config/environments/
+├── environments/
+│   ├── development.json
+│   ├── staging.json
+│   ├── production.json
+│   └── custom_env.json
+├── templates/
+│   ├── high_performance.json
+│   ├── memory_efficient.json
+│   └── custom_template.json
+├── migrations/
+│   └── migration_records.json
+└── exports/
+    └── exported_configs/</code></pre><h2>Integration with Configuration Engine</h2>
+<p>The environment-based configuration system integrates with the existing configuration engine:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.configuration_engine <span class="hljs-keyword">import</span> get_configuration_engine
+
+<span class="hljs-comment"># Get configuration engine</span>
+config_engine = get_configuration_engine()
+
+<span class="hljs-comment"># Get current environment</span>
+current_env = config_engine.get_current_environment()
+
+<span class="hljs-comment"># Get environment configuration</span>
+env_config = config_engine.get_current_environment_config()
+
+<span class="hljs-comment"># Get resolved configuration</span>
+resolved_config = config_engine.resolve_environment_configuration(<span class="hljs-string">&quot;production&quot;</span>)
+
+<span class="hljs-comment"># Create new environment</span>
+config_engine.create_environment(
+    name=<span class="hljs-string">&quot;custom_env&quot;</span>,
+    environment_type=<span class="hljs-string">&quot;custom&quot;</span>,
+    parent_environment=<span class="hljs-string">&quot;development&quot;</span>
+)</code></pre><h2>Best Practices</h2>
+<ol>
+<li><strong>Use Templates</strong>: Create templates for common configuration patterns</li>
+<li><strong>Inheritance</strong>: Use inheritance to maintain consistency across environments</li>
+<li><strong>Validation</strong>: Include validation rules in templates to ensure configuration correctness</li>
+<li><strong>Migration</strong>: Use migration tools to propagate configuration changes</li>
+<li><strong>Documentation</strong>: Document custom environments and templates</li>
+<li><strong>Testing</strong>: Test configurations in lower environments before applying to production</li>
+</ol>
+<h2>Examples</h2>
+<h3>Creating a High-Performance Development Environment</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Create environment with high-performance template</span>
+config_engine.create_environment(
+    name=<span class="hljs-string">&quot;dev_high_perf&quot;</span>,
+    environment_type=<span class="hljs-string">&quot;custom&quot;</span>,
+    description=<span class="hljs-string">&quot;High-performance development environment&quot;</span>,
+    parent_environment=<span class="hljs-string">&quot;development&quot;</span>,
+    templates=[<span class="hljs-string">&quot;high_performance&quot;</span>],
+    overrides={
+        <span class="hljs-string">&quot;debug_mode&quot;</span>: <span class="hljs-literal">True</span>,
+        <span class="hljs-string">&quot;log_level&quot;</span>: <span class="hljs-string">&quot;DEBUG&quot;</span>
+    }
+)</code></pre><h3>Migrating Development Settings to Production</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Migrate with transformations for production</span>
+config_engine.migrate_configuration(
+    from_environment=<span class="hljs-string">&quot;development&quot;</span>,
+    to_environment=<span class="hljs-string">&quot;production&quot;</span>,
+    migration_type=<span class="hljs-string">&quot;transform&quot;</span>,
+    transform_rules={
+        <span class="hljs-string">&quot;timeout&quot;</span>: {<span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;multiply&quot;</span>, <span class="hljs-string">&quot;factor&quot;</span>: <span class="hljs-number">3.0</span>},
+        <span class="hljs-string">&quot;cache_size&quot;</span>: {<span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;multiply&quot;</span>, <span class="hljs-string">&quot;factor&quot;</span>: <span class="hljs-number">2.0</span>},
+        <span class="hljs-string">&quot;debug_mode&quot;</span>: {<span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;replace&quot;</span>, <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-literal">False</span>}
+    }
+)</code></pre><h3>Creating a Custom Template</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Create template for GPU-optimized environments</span>
+config_engine.create_template(
+    name=<span class="hljs-string">&quot;gpu_optimized&quot;</span>,
+    description=<span class="hljs-string">&quot;GPU-optimized configuration&quot;</span>,
+    category=<span class="hljs-string">&quot;performance&quot;</span>,
+    configuration={
+        <span class="hljs-string">&quot;max_concurrent_loads&quot;</span>: <span class="hljs-number">16</span>,
+        <span class="hljs-string">&quot;memory_pressure_threshold&quot;</span>: <span class="hljs-number">0.95</span>,
+        <span class="hljs-string">&quot;gpu_memory_fraction&quot;</span>: <span class="hljs-number">0.8</span>
+    },
+    validation_rules={
+        <span class="hljs-string">&quot;max_concurrent_loads&quot;</span>: {<span class="hljs-string">&quot;min&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">32</span>},
+        <span class="hljs-string">&quot;gpu_memory_fraction&quot;</span>: {<span class="hljs-string">&quot;min&quot;</span>: <span class="hljs-number">0.1</span>, <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1.0</span>}
+    }
+)</code></pre><p>This environment-based configuration system provides a powerful and flexible way to manage configurations across different environments while maintaining consistency and enabling easy migration between environments.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

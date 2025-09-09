@@ -948,9 +948,9 @@ const handleOperation = async () => {
 
 ## Next Steps
 
-- **[Package Documentation](./PACKAGES.md)** - Detailed package documentation
-- **[Examples and Templates](./EXAMPLES.md)** - Real-world applications
-- **[Performance Guide](./PERFORMANCE.md)** - Optimization tips
+- **[Package Documentation](./packages.md)** - Detailed package documentation
+- **[Examples and Templates](./examples.md)** - Real-world applications
+- **[Performance Guide](./performance.md)** - Optimization tips
 
 ---
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diffusion LLM Demo Walkthrough - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Diffusion LLM Demo Walkthrough</h1>
+      <div class="markdown-content"><h1>Diffusion LLM Demo Walkthrough</h1>
+<p>This short script demonstrates generating text with Diffusion LLM and inserting it into a caption/text file, with accessibility tips.</p>
+<h2>Prerequisites</h2>
+<ul>
+<li>Ensure <code>DIFFUSION_LLM_ENABLED=true</code> and a model is loaded (DreamOn or LLaDA)</li>
+<li>Frontend running; open YipYap</li>
+</ul>
+<h2>Steps</h2>
+<ol>
+<li>Open the sidebar and select the Text LLM functionality</li>
+<li>In the Generator panel:<ul>
+<li>Choose a model (e.g., LLaDA)</li>
+<li>Enter your prompt</li>
+<li>Press Ctrl/Cmd+Enter or click Generate</li>
+<li>The output will stream; on completion it’s auto-copied to the clipboard</li>
+</ul>
+</li>
+<li>Insert the result:<ul>
+<li>In Image Caption Editor: use “Send to Diffusion LLM” to generate, then insert into caption</li>
+<li>In Text modality: use “New from LLM” to create a Draft, then Save as .txt to persist</li>
+</ul>
+</li>
+<li>Infilling (non-destructive preview):<ul>
+<li>In Text modality, select a single file</li>
+<li>Click “Infill selection (preview)” to stream a Draft based on the file content</li>
+</ul>
+</li>
+</ol>
+<h2>Accessibility Checklist</h2>
+<ul>
+<li>All controls have descriptive labels</li>
+<li>Keyboard shortcuts: Ctrl/Cmd+Enter triggers generation</li>
+<li>Focus moves to output after streaming completes</li>
+<li>Notifications include clear status, success, and error messages</li>
+</ul>
+<h2>Troubleshooting</h2>
+<ul>
+<li>If generation is slow or fails, try switching device to CPU in Settings</li>
+<li>If text spacing looks odd, enable Fix punctuation in Settings</li>
+<li>If draft doesn’t save, confirm you’re browsing a writable path and check <code>/api/text/create</code> response</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

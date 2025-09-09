@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tooltip - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Tooltip</h1>
+      <div class="markdown-content"><h1>Tooltip</h1>
+<h2>Tooltip Configuration</h2>
+<p>Namespace: <code>options.plugins.tooltip</code>, the global options for the chart tooltips is defined in <code>Chart.defaults.plugins.tooltip</code>.</p>
+<p>:::warning<br>The <code>titleFont</code>, <code>bodyFont</code> and <code>footerFont</code> options default to the <code>Chart.defaults.font</code> options. To change the overrides for those options, you will need to pass a function that returns a font object. See section about <a href="#default-font-overrides">overriding default fonts</a> for extra information below.<br>:::</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>enabled</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Are on-canvas tooltips enabled?</td>
+</tr>
+<tr>
+<td><code>external</code></td>
+<td><code>function</code></td>
+<td><code>null</code></td>
+<td>See <a href="#external-custom-tooltips">external tooltip</a> section.</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>string</code></td>
+<td><code>interaction.mode</code></td>
+<td>Sets which elements appear in the tooltip. <a href="interactions.md#modes">more...</a>.</td>
+</tr>
+<tr>
+<td><code>intersect</code></td>
+<td><code>boolean</code></td>
+<td><code>interaction.intersect</code></td>
+<td>If true, the tooltip mode applies only when the mouse position intersects with an element. If false, the mode will be applied at all times.</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td><code>string</code></td>
+<td><code>&#39;average&#39;</code></td>
+<td>The mode for positioning the tooltip. <a href="#position-modes">more...</a></td>
+</tr>
+<tr>
+<td><code>callbacks</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>See the <a href="#tooltip-callbacks">callbacks section</a>.</td>
+</tr>
+<tr>
+<td><code>itemSort</code></td>
+<td><code>function</code></td>
+<td></td>
+<td>Sort tooltip items. <a href="#sort-callback">more...</a></td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td><code>function</code></td>
+<td></td>
+<td>Filter tooltip items. <a href="#filter-callback">more...</a></td>
+</tr>
+<tr>
+<td><code>backgroundColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;rgba(0, 0, 0, 0.8)&#39;</code></td>
+<td>Background color of the tooltip.</td>
+</tr>
+<tr>
+<td><code>titleColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;#fff&#39;</code></td>
+<td>Color of title text.</td>
+</tr>
+<tr>
+<td><code>titleFont</code></td>
+<td><code>Font</code></td>
+<td><code>{weight: &#39;bold&#39;}</code></td>
+<td>See <a href="../general/fonts.md">Fonts</a>.</td>
+</tr>
+<tr>
+<td><code>titleAlign</code></td>
+<td><code>string</code></td>
+<td><code>&#39;left&#39;</code></td>
+<td>Horizontal alignment of the title text lines. <a href="#text-alignment">more...</a></td>
+</tr>
+<tr>
+<td><code>titleSpacing</code></td>
+<td><code>number</code></td>
+<td><code>2</code></td>
+<td>Spacing to add to top and bottom of each title line.</td>
+</tr>
+<tr>
+<td><code>titleMarginBottom</code></td>
+<td><code>number</code></td>
+<td><code>6</code></td>
+<td>Margin to add on bottom of title section.</td>
+</tr>
+<tr>
+<td><code>bodyColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;#fff&#39;</code></td>
+<td>Color of body text.</td>
+</tr>
+<tr>
+<td><code>bodyFont</code></td>
+<td><code>Font</code></td>
+<td><code>{}</code></td>
+<td>See <a href="../general/fonts.md">Fonts</a>.</td>
+</tr>
+<tr>
+<td><code>bodyAlign</code></td>
+<td><code>string</code></td>
+<td><code>&#39;left&#39;</code></td>
+<td>Horizontal alignment of the body text lines. <a href="#text-alignment">more...</a></td>
+</tr>
+<tr>
+<td><code>bodySpacing</code></td>
+<td><code>number</code></td>
+<td><code>2</code></td>
+<td>Spacing to add to top and bottom of each tooltip item.</td>
+</tr>
+<tr>
+<td><code>footerColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;#fff&#39;</code></td>
+<td>Color of footer text.</td>
+</tr>
+<tr>
+<td><code>footerFont</code></td>
+<td><code>Font</code></td>
+<td><code>{weight: &#39;bold&#39;}</code></td>
+<td>See <a href="../general/fonts.md">Fonts</a>.</td>
+</tr>
+<tr>
+<td><code>footerAlign</code></td>
+<td><code>string</code></td>
+<td><code>&#39;left&#39;</code></td>
+<td>Horizontal alignment of the footer text lines. <a href="#text-alignment">more...</a></td>
+</tr>
+<tr>
+<td><code>footerSpacing</code></td>
+<td><code>number</code></td>
+<td><code>2</code></td>
+<td>Spacing to add to top and bottom of each footer line.</td>
+</tr>
+<tr>
+<td><code>footerMarginTop</code></td>
+<td><code>number</code></td>
+<td><code>6</code></td>
+<td>Margin to add before drawing the footer.</td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td><a href="../general/padding.md"><code>Padding</code></a></td>
+<td><code>6</code></td>
+<td>Padding inside the tooltip.</td>
+</tr>
+<tr>
+<td><code>caretPadding</code></td>
+<td><code>number</code></td>
+<td><code>2</code></td>
+<td>Extra distance to move the end of the tooltip arrow away from the tooltip point.</td>
+</tr>
+<tr>
+<td><code>caretSize</code></td>
+<td><code>number</code></td>
+<td><code>5</code></td>
+<td>Size, in px, of the tooltip arrow.</td>
+</tr>
+<tr>
+<td><code>cornerRadius</code></td>
+<td><code>number</code>|<code>object</code></td>
+<td><code>6</code></td>
+<td>Radius of tooltip corner curves.</td>
+</tr>
+<tr>
+<td><code>multiKeyBackground</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;#fff&#39;</code></td>
+<td>Color to draw behind the colored boxes when multiple items are in the tooltip.</td>
+</tr>
+<tr>
+<td><code>displayColors</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If true, color boxes are shown in the tooltip.</td>
+</tr>
+<tr>
+<td><code>boxWidth</code></td>
+<td><code>number</code></td>
+<td><code>bodyFont.size</code></td>
+<td>Width of the color box if displayColors is true.</td>
+</tr>
+<tr>
+<td><code>boxHeight</code></td>
+<td><code>number</code></td>
+<td><code>bodyFont.size</code></td>
+<td>Height of the color box if displayColors is true.</td>
+</tr>
+<tr>
+<td><code>boxPadding</code></td>
+<td><code>number</code></td>
+<td><code>1</code></td>
+<td>Padding between the color box and the text.</td>
+</tr>
+<tr>
+<td><code>usePointStyle</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Use the corresponding point style (from dataset options) instead of color boxes, ex: star, triangle etc. (size is based on the minimum value between boxWidth and boxHeight).</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;rgba(0, 0, 0, 0)&#39;</code></td>
+<td>Color of the border.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Size of the border.</td>
+</tr>
+<tr>
+<td><code>rtl</code></td>
+<td><code>boolean</code></td>
+<td></td>
+<td><code>true</code> for rendering the tooltip from right to left.</td>
+</tr>
+<tr>
+<td><code>textDirection</code></td>
+<td><code>string</code></td>
+<td>canvas&#39; default</td>
+<td>This will force the text direction <code>&#39;rtl&#39;</code> or <code>&#39;ltr&#39;</code> on the canvas for rendering the tooltips, regardless of the css specified on the canvas</td>
+</tr>
+<tr>
+<td><code>xAlign</code></td>
+<td><code>string</code></td>
+<td><code>undefined</code></td>
+<td>Position of the tooltip caret in the X direction. <a href="#tooltip-alignment">more</a></td>
+</tr>
+<tr>
+<td><code>yAlign</code></td>
+<td><code>string</code></td>
+<td><code>undefined</code></td>
+<td>Position of the tooltip caret in the Y direction. <a href="#tooltip-alignment">more</a></td>
+</tr>
+</tbody></table>
+<p>:::tip Note<br>If you need more visual customizations, please use an <a href="../samples/tooltip/html.md">HTML tooltip</a>.<br>:::</p>
+<h3>Position Modes</h3>
+<p>Possible modes are:</p>
+<ul>
+<li><code>&#39;average&#39;</code></li>
+<li><code>&#39;nearest&#39;</code></li>
+</ul>
+<p><code>&#39;average&#39;</code> mode will place the tooltip at the average position of the items displayed in the tooltip. <code>&#39;nearest&#39;</code> will place the tooltip at the position of the element closest to the event position.</p>
+<p>You can also define <a href="#custom-position-modes">custom position modes</a>.</p>
+<h3>Tooltip Alignment</h3>
+<p>The <code>xAlign</code> and <code>yAlign</code> options define the position of the tooltip caret. If these parameters are unset, the optimal caret position is determined.</p>
+<p>The following values for the <code>xAlign</code> setting are supported.</p>
+<ul>
+<li><code>&#39;left&#39;</code></li>
+<li><code>&#39;center&#39;</code></li>
+<li><code>&#39;right&#39;</code></li>
+</ul>
+<p>The following values for the <code>yAlign</code> setting are supported.</p>
+<ul>
+<li><code>&#39;top&#39;</code></li>
+<li><code>&#39;center&#39;</code></li>
+<li><code>&#39;bottom&#39;</code></li>
+</ul>
+<h3>Text Alignment</h3>
+<p>The <code>titleAlign</code>, <code>bodyAlign</code> and <code>footerAlign</code> options define the horizontal position of the text lines with respect to the tooltip box. The following values are supported.</p>
+<ul>
+<li><code>&#39;left&#39;</code> (default)</li>
+<li><code>&#39;right&#39;</code></li>
+<li><code>&#39;center&#39;</code></li>
+</ul>
+<p>These options are only applied to text lines. Color boxes are always aligned to the left edge.</p>
+<h3>Sort Callback</h3>
+<p>Allows sorting of <a href="#tooltip-item-context">tooltip items</a>. Must implement at minimum a function that can be passed to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">Array.prototype.sort</a>. This function can also accept a third parameter that is the data object passed to the chart.</p>
+<h3>Filter Callback</h3>
+<p>Allows filtering of <a href="#tooltip-item-context">tooltip items</a>. Must implement at minimum a function that can be passed to <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">Array.prototype.filter</a>. This function can also accept a fourth parameter that is the data object passed to the chart.</p>
+<h2>Tooltip Callbacks</h2>
+<p>Namespace: <code>options.plugins.tooltip.callbacks</code>, the tooltip has the following callbacks for providing text. For all functions, <code>this</code> will be the tooltip object created from the <code>Tooltip</code> constructor. If the callback returns <code>undefined</code>, then the default callback will be used. To remove things from the tooltip callback should return an empty string.</p>
+<p>Namespace: <code>data.datasets[].tooltip.callbacks</code>, items marked with <code>Yes</code> in the column <code>Dataset override</code> can be overridden per dataset.</p>
+<p>A <a href="#tooltip-item-context">tooltip item context</a> is generated for each item that appears in the tooltip. This is the primary model that the callback methods interact with. For functions that return text, arrays of strings are treated as multiple lines of text.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Arguments</th>
+<th>Return Type</th>
+<th>Dataset override</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>beforeTitle</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>afterTitle</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>beforeBody</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>beforeLabel</code></td>
+<td><code>TooltipItem</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>TooltipItem</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>labelColor</code></td>
+<td><code>TooltipItem</code></td>
+<td>`object</td>
+<td>undefined`</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>labelTextColor</code></td>
+<td><code>TooltipItem</code></td>
+<td>`Color</td>
+<td>undefined`</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>labelPointStyle</code></td>
+<td><code>TooltipItem</code></td>
+<td>`object</td>
+<td>undefined`</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>afterLabel</code></td>
+<td><code>TooltipItem</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>afterBody</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>beforeFooter</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>footer</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+<tr>
+<td><code>afterFooter</code></td>
+<td><code>TooltipItem[]</code></td>
+<td>`string</td>
+<td>string[]</td>
+<td>undefined`</td>
+</tr>
+</tbody></table>
+<h3>Label Callback</h3>
+<p>The <code>label</code> callback can change the text that displays for a given data point. A common example to show a unit. The example below puts a <code>&#39;$&#39;</code> before every row.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">tooltip</span>: {
+                <span class="hljs-attr">callbacks</span>: {
+                    <span class="hljs-attr">label</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+                        <span class="hljs-keyword">let</span> label = context.<span class="hljs-property">dataset</span>.<span class="hljs-property">label</span> || <span class="hljs-string">&#x27;&#x27;</span>;
+
+                        <span class="hljs-keyword">if</span> (label) {
+                            label += <span class="hljs-string">&#x27;: &#x27;</span>;
+                        }
+                        <span class="hljs-keyword">if</span> (context.<span class="hljs-property">parsed</span>.<span class="hljs-property">y</span> !== <span class="hljs-literal">null</span>) {
+                            label += <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intl</span>.<span class="hljs-title class_">NumberFormat</span>(<span class="hljs-string">&#x27;en-US&#x27;</span>, { <span class="hljs-attr">style</span>: <span class="hljs-string">&#x27;currency&#x27;</span>, <span class="hljs-attr">currency</span>: <span class="hljs-string">&#x27;USD&#x27;</span> }).<span class="hljs-title function_">format</span>(context.<span class="hljs-property">parsed</span>.<span class="hljs-property">y</span>);
+                        }
+                        <span class="hljs-keyword">return</span> label;
+                    }
+                }
+            }
+        }
+    }
+});</code></pre><h3>Label Color Callback</h3>
+<p>For example, to return a red box with a blue dashed border that has a border radius for each item in the tooltip you could do:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">tooltip</span>: {
+                <span class="hljs-attr">callbacks</span>: {
+                    <span class="hljs-attr">labelColor</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+                        <span class="hljs-keyword">return</span> {
+                            <span class="hljs-attr">borderColor</span>: <span class="hljs-string">&#x27;rgb(0, 0, 255)&#x27;</span>,
+                            <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;rgb(255, 0, 0)&#x27;</span>,
+                            <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">2</span>,
+                            <span class="hljs-attr">borderDash</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+                            <span class="hljs-attr">borderRadius</span>: <span class="hljs-number">2</span>,
+                        };
+                    },
+                    <span class="hljs-attr">labelTextColor</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+                        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;#543453&#x27;</span>;
+                    }
+                }
+            }
+        }
+    }
+});</code></pre><h3>Label Point Style Callback</h3>
+<p>For example, to draw triangles instead of the regular color box for each item in the tooltip, you could do:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">tooltip</span>: {
+                <span class="hljs-attr">usePointStyle</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">callbacks</span>: {
+                    <span class="hljs-attr">labelPointStyle</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+                        <span class="hljs-keyword">return</span> {
+                            <span class="hljs-attr">pointStyle</span>: <span class="hljs-string">&#x27;triangle&#x27;</span>,
+                            <span class="hljs-attr">rotation</span>: <span class="hljs-number">0</span>
+                        };
+                    }
+                }
+            }
+        }
+    }
+});</code></pre><h3>Tooltip Item Context</h3>
+<p>The tooltip items passed to the tooltip callbacks implement the following interface.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-comment">// The chart the tooltip is being shown on</span>
+    <span class="hljs-attr">chart</span>: <span class="hljs-title class_">Chart</span>
+
+    <span class="hljs-comment">// Label for the tooltip</span>
+    <span class="hljs-attr">label</span>: string,
+
+    <span class="hljs-comment">// Parsed data values for the given `dataIndex` and `datasetIndex`</span>
+    <span class="hljs-attr">parsed</span>: object,
+
+    <span class="hljs-comment">// Raw data values for the given `dataIndex` and `datasetIndex`</span>
+    <span class="hljs-attr">raw</span>: object,
+
+    <span class="hljs-comment">// Formatted value for the tooltip</span>
+    <span class="hljs-attr">formattedValue</span>: string,
+
+    <span class="hljs-comment">// The dataset the item comes from</span>
+    <span class="hljs-attr">dataset</span>: object
+
+    <span class="hljs-comment">// Index of the dataset the item comes from</span>
+    <span class="hljs-attr">datasetIndex</span>: number,
+
+    <span class="hljs-comment">// Index of this data item in the dataset</span>
+    <span class="hljs-attr">dataIndex</span>: number,
+
+    <span class="hljs-comment">// The chart element (point, arc, bar, etc.) for this tooltip item</span>
+    <span class="hljs-attr">element</span>: <span class="hljs-title class_">Element</span>,
+}</code></pre><h2>External (Custom) Tooltips</h2>
+<p>External tooltips allow you to hook into the tooltip rendering process so that you can render the tooltip in your own custom way. Generally this is used to create an HTML tooltip instead of an on-canvas tooltip. The <code>external</code> option takes a function which is passed a context parameter containing the <code>chart</code> and <code>tooltip</code>. You can enable external tooltips in the global or chart configuration like so:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> myPieChart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;pie&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">tooltip</span>: {
+                <span class="hljs-comment">// Disable the on-canvas tooltip</span>
+                <span class="hljs-attr">enabled</span>: <span class="hljs-literal">false</span>,
+
+                <span class="hljs-attr">external</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+                    <span class="hljs-comment">// Tooltip Element</span>
+                    <span class="hljs-keyword">let</span> tooltipEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;chartjs-tooltip&#x27;</span>);
+
+                    <span class="hljs-comment">// Create element on first render</span>
+                    <span class="hljs-keyword">if</span> (!tooltipEl) {
+                        tooltipEl = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
+                        tooltipEl.<span class="hljs-property">id</span> = <span class="hljs-string">&#x27;chartjs-tooltip&#x27;</span>;
+                        tooltipEl.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">&#x27;&lt;table&gt;&lt;/table&gt;&#x27;</span>;
+                        <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(tooltipEl);
+                    }
+
+                    <span class="hljs-comment">// Hide if no tooltip</span>
+                    <span class="hljs-keyword">const</span> tooltipModel = context.<span class="hljs-property">tooltip</span>;
+                    <span class="hljs-keyword">if</span> (tooltipModel.<span class="hljs-property">opacity</span> === <span class="hljs-number">0</span>) {
+                        tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">opacity</span> = <span class="hljs-number">0</span>;
+                        <span class="hljs-keyword">return</span>;
+                    }
+
+                    <span class="hljs-comment">// Set caret Position</span>
+                    tooltipEl.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">&#x27;above&#x27;</span>, <span class="hljs-string">&#x27;below&#x27;</span>, <span class="hljs-string">&#x27;no-transform&#x27;</span>);
+                    <span class="hljs-keyword">if</span> (tooltipModel.<span class="hljs-property">yAlign</span>) {
+                        tooltipEl.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(tooltipModel.<span class="hljs-property">yAlign</span>);
+                    } <span class="hljs-keyword">else</span> {
+                        tooltipEl.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">&#x27;no-transform&#x27;</span>);
+                    }
+
+                    <span class="hljs-keyword">function</span> <span class="hljs-title function_">getBody</span>(<span class="hljs-params">bodyItem</span>) {
+                        <span class="hljs-keyword">return</span> bodyItem.<span class="hljs-property">lines</span>;
+                    }
+
+                    <span class="hljs-comment">// Set Text</span>
+                    <span class="hljs-keyword">if</span> (tooltipModel.<span class="hljs-property">body</span>) {
+                        <span class="hljs-keyword">const</span> titleLines = tooltipModel.<span class="hljs-property">title</span> || [];
+                        <span class="hljs-keyword">const</span> bodyLines = tooltipModel.<span class="hljs-property">body</span>.<span class="hljs-title function_">map</span>(getBody);
+
+                        <span class="hljs-keyword">let</span> innerHtml = <span class="hljs-string">&#x27;&lt;thead&gt;&#x27;</span>;
+
+                        titleLines.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">title</span>) {
+                            innerHtml += <span class="hljs-string">&#x27;&lt;tr&gt;&lt;th&gt;&#x27;</span> + title + <span class="hljs-string">&#x27;&lt;/th&gt;&lt;/tr&gt;&#x27;</span>;
+                        });
+                        innerHtml += <span class="hljs-string">&#x27;&lt;/thead&gt;&lt;tbody&gt;&#x27;</span>;
+
+                        bodyLines.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">body, i</span>) {
+                            <span class="hljs-keyword">const</span> colors = tooltipModel.<span class="hljs-property">labelColors</span>[i];
+                            <span class="hljs-keyword">let</span> style = <span class="hljs-string">&#x27;background:&#x27;</span> + colors.<span class="hljs-property">backgroundColor</span>;
+                            style += <span class="hljs-string">&#x27;; border-color:&#x27;</span> + colors.<span class="hljs-property">borderColor</span>;
+                            style += <span class="hljs-string">&#x27;; border-width: 2px&#x27;</span>;
+                            <span class="hljs-keyword">const</span> span = <span class="hljs-string">&#x27;&lt;span style=&quot;&#x27;</span> + style + <span class="hljs-string">&#x27;&quot;&gt;&#x27;</span> + body + <span class="hljs-string">&#x27;&lt;/span&gt;&#x27;</span>;
+                            innerHtml += <span class="hljs-string">&#x27;&lt;tr&gt;&lt;td&gt;&#x27;</span> + span + <span class="hljs-string">&#x27;&lt;/td&gt;&lt;/tr&gt;&#x27;</span>;
+                        });
+                        innerHtml += <span class="hljs-string">&#x27;&lt;/tbody&gt;&#x27;</span>;
+
+                        <span class="hljs-keyword">let</span> tableRoot = tooltipEl.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;table&#x27;</span>);
+                        tableRoot.<span class="hljs-property">innerHTML</span> = innerHtml;
+                    }
+
+                    <span class="hljs-keyword">const</span> position = context.<span class="hljs-property">chart</span>.<span class="hljs-property">canvas</span>.<span class="hljs-title function_">getBoundingClientRect</span>();
+                    <span class="hljs-keyword">const</span> bodyFont = <span class="hljs-title class_">Chart</span>.<span class="hljs-property">helpers</span>.<span class="hljs-title function_">toFont</span>(tooltipModel.<span class="hljs-property">options</span>.<span class="hljs-property">bodyFont</span>);
+
+                    <span class="hljs-comment">// Display, position, and set styles for font</span>
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">opacity</span> = <span class="hljs-number">1</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&#x27;absolute&#x27;</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = position.<span class="hljs-property">left</span> + <span class="hljs-variable language_">window</span>.<span class="hljs-property">pageXOffset</span> + tooltipModel.<span class="hljs-property">caretX</span> + <span class="hljs-string">&#x27;px&#x27;</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = position.<span class="hljs-property">top</span> + <span class="hljs-variable language_">window</span>.<span class="hljs-property">pageYOffset</span> + tooltipModel.<span class="hljs-property">caretY</span> + <span class="hljs-string">&#x27;px&#x27;</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">font</span> = bodyFont.<span class="hljs-property">string</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">padding</span> = tooltipModel.<span class="hljs-property">padding</span> + <span class="hljs-string">&#x27;px &#x27;</span> + tooltipModel.<span class="hljs-property">padding</span> + <span class="hljs-string">&#x27;px&#x27;</span>;
+                    tooltipEl.<span class="hljs-property">style</span>.<span class="hljs-property">pointerEvents</span> = <span class="hljs-string">&#x27;none&#x27;</span>;
+                }
+            }
+        }
+    }
+});</code></pre><p>See <a href="/samples/tooltip/html.md">samples</a> for examples on how to get started with external tooltips.</p>
+<h2>Tooltip Model</h2>
+<p>The tooltip model contains parameters that can be used to render the tooltip.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-attr">chart</span>: <span class="hljs-title class_">Chart</span>,
+
+    <span class="hljs-comment">// The items that we are rendering in the tooltip. See Tooltip Item Interface section</span>
+    <span class="hljs-attr">dataPoints</span>: <span class="hljs-title class_">TooltipItem</span>[],
+
+    <span class="hljs-comment">// Positioning</span>
+    <span class="hljs-attr">xAlign</span>: string,
+    <span class="hljs-attr">yAlign</span>: string,
+
+    <span class="hljs-comment">// X and Y properties are the top left of the tooltip</span>
+    <span class="hljs-attr">x</span>: number,
+    <span class="hljs-attr">y</span>: number,
+    <span class="hljs-attr">width</span>: number,
+    <span class="hljs-attr">height</span>: number,
+    <span class="hljs-comment">// Where the tooltip points to</span>
+    <span class="hljs-attr">caretX</span>: number,
+    <span class="hljs-attr">caretY</span>: number,
+
+    <span class="hljs-comment">// Body</span>
+    <span class="hljs-comment">// The body lines that need to be rendered</span>
+    <span class="hljs-comment">// Each object contains 3 parameters</span>
+    <span class="hljs-comment">// before: string[] // lines of text before the line with the color square</span>
+    <span class="hljs-comment">// lines: string[], // lines of text to render as the main item with color square</span>
+    <span class="hljs-comment">// after: string[], // lines of text to render after the main lines</span>
+    <span class="hljs-attr">body</span>: object[],
+    <span class="hljs-comment">// lines of text that appear after the title but before the body</span>
+    <span class="hljs-attr">beforeBody</span>: string[],
+    <span class="hljs-comment">// line of text that appear after the body and before the footer</span>
+    <span class="hljs-attr">afterBody</span>: string[],
+
+    <span class="hljs-comment">// Title</span>
+    <span class="hljs-comment">// lines of text that form the title</span>
+    <span class="hljs-attr">title</span>: string[],
+
+    <span class="hljs-comment">// Footer</span>
+    <span class="hljs-comment">// lines of text that form the footer</span>
+    <span class="hljs-attr">footer</span>: string[],
+
+    <span class="hljs-comment">// style to render for each item in body[]. This is the style of the squares in the tooltip</span>
+    <span class="hljs-attr">labelColors</span>: <span class="hljs-title class_">TooltipLabelStyle</span>[],
+    <span class="hljs-attr">labelTextColors</span>: <span class="hljs-title class_">Color</span>[],
+    <span class="hljs-attr">labelPointStyles</span>: { <span class="hljs-attr">pointStyle</span>: <span class="hljs-title class_">PointStyle</span>; <span class="hljs-attr">rotation</span>: number }[],
+
+    <span class="hljs-comment">// 0 opacity is a hidden tooltip</span>
+    <span class="hljs-attr">opacity</span>: number,
+
+    <span class="hljs-comment">// tooltip options</span>
+    <span class="hljs-attr">options</span>: <span class="hljs-title class_">Object</span>
+}</code></pre><h2>Custom Position Modes</h2>
+<p>New modes can be defined by adding functions to the <code>Chart.Tooltip.positioners</code> map.</p>
+<p>Example:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Tooltip</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;chart.js&#x27;</span>;
+
+<span class="hljs-comment">/**
+ * Custom positioner
+ * <span class="hljs-doctag">@function</span> Tooltip.positioners.myCustomPositioner
+ * <span class="hljs-doctag">@param</span> elements {Chart.Element[]} the tooltip elements
+ * <span class="hljs-doctag">@param</span> eventPosition {Point} the position of the event in canvas coordinates
+ * <span class="hljs-doctag">@returns</span> {<span class="hljs-type">TooltipPosition</span>} the tooltip position
+ */</span>
+<span class="hljs-title class_">Tooltip</span>.<span class="hljs-property">positioners</span>.<span class="hljs-property">myCustomPositioner</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">elements, eventPosition</span>) {
+    <span class="hljs-comment">// A reference to the tooltip model</span>
+    <span class="hljs-keyword">const</span> tooltip = <span class="hljs-variable language_">this</span>;
+
+    <span class="hljs-comment">/* ... */</span>
+
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>
+        <span class="hljs-comment">// You may also include xAlign and yAlign to override those tooltip options.</span>
+    };
+};
+
+<span class="hljs-comment">// Then, to use it...</span>
+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">tooltip</span>: {
+                <span class="hljs-attr">position</span>: <span class="hljs-string">&#x27;myCustomPositioner&#x27;</span>
+            }
+        }
+    }
+})</code></pre><p>See <a href="/samples/tooltip/position.md">samples</a> for a more detailed example.</p>
+<p>If you&#39;re using TypeScript, you&#39;ll also need to register the new mode:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&#x27;chart.js&#x27;</span> {
+  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">TooltipPositionerMap</span> {
+    <span class="hljs-attr">myCustomPositioner</span>: <span class="hljs-title class_">TooltipPositionerFunction</span>&lt;<span class="hljs-title class_">ChartType</span>&gt;;
+  }
+}</code></pre><h2>Default font overrides</h2>
+<p>By default, the <code>titleFont</code>, <code>bodyFont</code> and <code>footerFont</code> listen to the <code>Chart.defaults.font</code> options for setting its values.<br>Overriding these normally by accessing the object won&#39;t work because it is backed by a get function that looks to the default <code>font</code> namespace.<br>So you will need to override this get function with your own function that returns the desired config.</p>
+<p>Example:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title class_">Chart</span>.<span class="hljs-property">defaults</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">tooltip</span>.<span class="hljs-property">titleFont</span> = <span class="hljs-function">() =&gt;</span> ({ <span class="hljs-attr">size</span>: <span class="hljs-number">20</span>, <span class="hljs-attr">lineHeight</span>: <span class="hljs-number">1.2</span>, <span class="hljs-attr">weight</span>: <span class="hljs-number">800</span> });</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

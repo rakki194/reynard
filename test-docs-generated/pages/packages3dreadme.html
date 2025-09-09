@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard 3D - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard 3D</h1>
+      <div class="markdown-content"><h1>Reynard 3D</h1>
+<p>🦊&gt; A cunning 3D graphics and visualization package for the Reynard framework, powered by Three.js and optimized for SolidJS.</p>
+<h2>Features</h2>
+<h3>🎯 Core 3D Capabilities</h3>
+<ul>
+<li><strong>Three.js Integration</strong>: Full Three.js support with lazy loading for optimal performance</li>
+<li><strong>Point Cloud Visualization</strong>: Advanced point cloud rendering with clustering and search integration</li>
+<li><strong>Camera Controls</strong>: Smooth OrbitControls with damping and animation support</li>
+<li><strong>Lighting System</strong>: Enhanced lighting with ambient, directional, and point lights</li>
+<li><strong>Responsive Canvas</strong>: Automatic resizing with device pixel ratio optimization</li>
+</ul>
+<h3>🎨 Visualization Components</h3>
+<ul>
+<li><strong>ThreeJSVisualization</strong>: Base 3D scene component with full camera and lighting control</li>
+<li><strong>PointCloudVisualization</strong>: Advanced point cloud rendering with interaction support</li>
+<li><strong>ThreeJSVisualizationDemo</strong>: Comprehensive demo showcasing all features</li>
+</ul>
+<h3>⚡ Performance Optimizations</h3>
+<ul>
+<li><strong>Level of Detail (LOD)</strong>: Automatic detail reduction based on distance</li>
+<li><strong>Frustum Culling</strong>: Only render objects visible in camera frustum</li>
+<li><strong>Occlusion Culling</strong>: Skip rendering of occluded objects</li>
+<li><strong>Instancing</strong>: Efficient rendering of multiple similar objects</li>
+<li><strong>Memory Management</strong>: Smart memory allocation and cleanup</li>
+</ul>
+<h3>🎭 Animation System</h3>
+<ul>
+<li><strong>Smooth Transitions</strong>: Easing functions for natural animations</li>
+<li><strong>Point Animations</strong>: Animated transitions between point cloud states</li>
+<li><strong>Camera Animations</strong>: Smooth camera movements and fly-to effects</li>
+<li><strong>Cluster Animations</strong>: Dynamic cluster expansion and contraction</li>
+</ul>
+<h3>🔍 Advanced Features</h3>
+<ul>
+<li><strong>Cluster Detection</strong>: K-means, DBSCAN, and hierarchical clustering algorithms</li>
+<li><strong>Search Integration</strong>: Visual search result highlighting and similarity paths</li>
+<li><strong>Interactive Selection</strong>: Multi-select points with visual feedback</li>
+<li><strong>Tooltip System</strong>: Rich hover information with metadata display</li>
+<li><strong>Color Mapping</strong>: Multiple color schemes based on similarity, clusters, importance, etc.</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-3d</code></pre><h2>Quick Start</h2>
+<h3>Basic 3D Scene</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ThreeJSVisualization</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-3d&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">My3DScene</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">setupScene</span> = (<span class="hljs-params">scene, camera, renderer, controls</span>) =&gt; {
+    <span class="hljs-comment">// Add your 3D objects here</span>
+    <span class="hljs-keyword">const</span> geometry = <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">BoxGeometry</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">MeshStandardMaterial</span>({ <span class="hljs-attr">color</span>: <span class="hljs-number">0x00ff00</span> });
+    <span class="hljs-keyword">const</span> cube = <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">Mesh</span>(geometry, material);
+    scene.<span class="hljs-title function_">add</span>(cube);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ThreeJSVisualization</span>
+      <span class="hljs-attr">width</span>=<span class="hljs-string">{800}</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">{600}</span>
+      <span class="hljs-attr">onSceneReady</span>=<span class="hljs-string">{setupScene}</span>
+      <span class="hljs-attr">enableDamping</span>=<span class="hljs-string">{true}</span>
+      <span class="hljs-attr">autoRotate</span>=<span class="hljs-string">{true}</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h3>Point Cloud Visualization</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">PointCloudVisualization</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-3d&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyPointCloud</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> points = [
+    {
+      <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>,
+      <span class="hljs-attr">position</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>],
+      <span class="hljs-attr">color</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>],
+      <span class="hljs-attr">size</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-attr">metadata</span>: { <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Point 1&quot;</span> },
+    },
+    <span class="hljs-comment">// ... more points</span>
+  ];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">PointCloudVisualization</span>
+      <span class="hljs-attr">points</span>=<span class="hljs-string">{points}</span>
+      <span class="hljs-attr">width</span>=<span class="hljs-string">{800}</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">{600}</span>
+      <span class="hljs-attr">settings</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">colorMapping:</span> &quot;<span class="hljs-attr">similarity</span>&quot;,
+        <span class="hljs-attr">sizeMapping:</span> &quot;<span class="hljs-attr">importance</span>&quot;,
+        <span class="hljs-attr">enableHighlighting:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">maxPoints:</span> <span class="hljs-attr">10000</span>,
+      }}
+      <span class="hljs-attr">onPointClick</span>=<span class="hljs-string">{(point,</span> <span class="hljs-attr">event</span>) =&gt;</span> {
+        console.log(&quot;Clicked point:&quot;, point);
+      }}
+      onSelectionChange={(selected) =&gt; {
+        console.log(&quot;Selected points:&quot;, selected);
+      }}
+    /&gt;</span>
+  );
+}</code></pre><h3>Using Composables</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useThreeJSVisualization, usePointCloud } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-3d&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Custom3DComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> visualization = <span class="hljs-title function_">useThreeJSVisualization</span>({
+    <span class="hljs-attr">width</span>: <span class="hljs-number">800</span>,
+    <span class="hljs-attr">height</span>: <span class="hljs-number">600</span>,
+    <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;#1a1a1a&quot;</span>,
+  });
+
+  <span class="hljs-keyword">const</span> pointCloud = <span class="hljs-title function_">usePointCloud</span>(
+    <span class="hljs-function">() =&gt;</span> myPoints,
+    <span class="hljs-function">() =&gt;</span> ({ <span class="hljs-attr">colorMapping</span>: <span class="hljs-string">&quot;cluster&quot;</span> }),
+    <span class="hljs-function">() =&gt;</span> ({ <span class="hljs-attr">enableSearchIntegration</span>: <span class="hljs-literal">true</span> }),
+  );
+
+  <span class="hljs-comment">// Use the composables to build custom 3D experiences</span>
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Custom 3D implementation<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}</code></pre><h2>API Reference</h2>
+<h3>Components</h3>
+<h4>ThreeJSVisualization</h4>
+<p>Base 3D scene component with camera controls and lighting.</p>
+<p><strong>Props:</strong></p>
+<ul>
+<li><code>width?: number</code> - Canvas width (default: 800)</li>
+<li><code>height?: number</code> - Canvas height (default: 600)</li>
+<li><code>backgroundColor?: string</code> - Scene background color</li>
+<li><code>enableDamping?: boolean</code> - Enable camera damping</li>
+<li><code>autoRotate?: boolean</code> - Enable auto-rotation</li>
+<li><code>onSceneReady?: (scene, camera, renderer, controls) =&gt; void</code> - Scene setup callback</li>
+<li><code>onRender?: (scene, camera, renderer, controls) =&gt; void</code> - Render callback</li>
+</ul>
+<h4>PointCloudVisualization</h4>
+<p>Advanced point cloud rendering with interaction support.</p>
+<p><strong>Props:</strong></p>
+<ul>
+<li><code>points: Point3D[]</code> - Array of 3D points to render</li>
+<li><code>settings?: PointCloudSettings</code> - Visualization settings</li>
+<li><code>animationSettings?: AnimationSettings</code> - Animation configuration</li>
+<li><code>searchIntegration?: SearchIntegrationSettings</code> - Search integration options</li>
+<li><code>onPointClick?: (point, event) =&gt; void</code> - Point click handler</li>
+<li><code>onPointHover?: (point, event) =&gt; void</code> - Point hover handler</li>
+<li><code>onSelectionChange?: (selected) =&gt; void</code> - Selection change handler</li>
+</ul>
+<h3>Composables</h3>
+<h4>useThreeJSVisualization</h4>
+<p>Composable for managing Three.js scenes and rendering.</p>
+<h4>usePointCloud</h4>
+<p>Composable for point cloud visualization and interaction.</p>
+<h4>useThreeJSAnimations</h4>
+<p>Composable for 3D animations and transitions.</p>
+<h3>Utilities</h3>
+<h4>Geometry Utilities</h4>
+<ul>
+<li><code>createVector3(x, y, z)</code> - Create 3D vector</li>
+<li><code>distanceVector3(a, b)</code> - Calculate distance between vectors</li>
+<li><code>createBoundingBox(points)</code> - Create bounding box from points</li>
+<li><code>generateSpherePoints(center, radius, count)</code> - Generate sphere point distribution</li>
+</ul>
+<h4>Animation Utilities</h4>
+<ul>
+<li><code>Easing</code> - Collection of easing functions</li>
+<li><code>interpolate(start, end, t, easing)</code> - Interpolate between values</li>
+<li><code>interpolateVector3(start, end, t, easing)</code> - Interpolate 3D vectors</li>
+</ul>
+<h4>Performance Utilities</h4>
+<ul>
+<li><code>PerformanceMonitor</code> - Track rendering performance</li>
+<li><code>LODManager</code> - Level of detail management</li>
+<li><code>FrustumCuller</code> - Frustum culling optimization</li>
+<li><code>MemoryManager</code> - Memory allocation tracking</li>
+</ul>
+<h4>Cluster Detection</h4>
+<ul>
+<li><code>detectClusters(points, options)</code> - Detect clusters in point data</li>
+<li><code>kmeansClustering(points, k)</code> - K-means clustering algorithm</li>
+<li><code>dbscanClustering(points, minPoints, maxDistance)</code> - DBSCAN clustering</li>
+</ul>
+<h2>Examples</h2>
+<h3>Demo Components</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ThreeJSVisualizationDemo</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-3d/demos&quot;</span>;
+
+<span class="hljs-comment">// Complete demo showcasing all features</span>
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ThreeJSVisualizationDemo</span> <span class="hljs-attr">width</span>=<span class="hljs-string">{800}</span> <span class="hljs-attr">height</span>=<span class="hljs-string">{600}</span> /&gt;</span></span>;</code></pre><h3>Custom Point Cloud with Clustering</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">PointCloudVisualization</span>, detectClusters } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-3d&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ClusteredPointCloud</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [points, setPoints] = <span class="hljs-title function_">createSignal</span>([]);
+  <span class="hljs-keyword">const</span> [clusters, setClusters] = <span class="hljs-title function_">createSignal</span>([]);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">analyzeClusters</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> detectedClusters = <span class="hljs-title function_">detectClusters</span>(<span class="hljs-title function_">points</span>(), {
+      <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&quot;kmeans&quot;</span>,
+      <span class="hljs-attr">maxClusters</span>: <span class="hljs-number">5</span>,
+    });
+    <span class="hljs-title function_">setClusters</span>(detectedClusters);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{analyzeClusters}</span>&gt;</span>Analyze Clusters<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">PointCloudVisualization</span>
+        <span class="hljs-attr">points</span>=<span class="hljs-string">{points()}</span>
+        <span class="hljs-attr">settings</span>=<span class="hljs-string">{{</span>
+          <span class="hljs-attr">colorMapping:</span> &quot;<span class="hljs-attr">cluster</span>&quot;,
+          <span class="hljs-attr">enableHighlighting:</span> <span class="hljs-attr">true</span>,
+        }}
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>Performance Tips</h2>
+<ol>
+<li><strong>Limit Point Count</strong>: Use <code>maxPoints</code> setting to limit rendered points</li>
+<li><strong>Enable LOD</strong>: Use level of detail for distant objects</li>
+<li><strong>Use Instancing</strong>: Enable instancing for similar objects</li>
+<li><strong>Optimize Materials</strong>: Use appropriate material types for your use case</li>
+<li><strong>Monitor Performance</strong>: Use <code>PerformanceMonitor</code> to track rendering stats</li>
+</ol>
+<h2>Browser Support</h2>
+<ul>
+<li>Chrome 60+</li>
+<li>Firefox 55+</li>
+<li>Safari 12+</li>
+<li>Edge 79+</li>
+</ul>
+<p>Requires WebGL 2.0 support for optimal performance.</p>
+<h2>Contributing</h2>
+<p>🦦&gt; We welcome contributions! Please see our contributing guidelines and remember to add tests for new features.</p>
+<h2>License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<h2>Acknowledgments</h2>
+<ul>
+<li>Built on the excellent <a href="https://threejs.org/">Three.js</a> library</li>
+<li>Inspired by the yipyap 3D visualization system</li>
+<li>Part of the Reynard framework ecosystem</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

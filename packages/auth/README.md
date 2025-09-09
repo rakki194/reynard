@@ -17,7 +17,7 @@ Complete authentication and user management system for SolidJS applications with
 ## 📦 Installation
 
 ```bash
-npm install reynard-auth reynard-core reynard-components jwt-decode @zxcvbn-ts/core solid-js
+pnpm install reynard-auth reynard-core reynard-components jwt-decode @zxcvbn-ts/core solid-js
 ```
 
 ## 🎯 Quick Start

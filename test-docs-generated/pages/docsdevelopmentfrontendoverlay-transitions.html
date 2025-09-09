@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overlay Transitions - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Overlay Transitions</h1>
+      <div class="markdown-content"><h1>Overlay Transitions</h1>
+<p>The overlay CSS property is used in yipyap to create smooth transitions for elements that appear in the top layer, such as modals, popovers, and dialogs. This document outlines best practices and implementation details for using overlay transitions in the application.</p>
+<h2>Table of Contents</h2>
+<hr>
+<ul>
+<li><a href="#overlay-transitions">Overlay Transitions</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#implementation">Implementation</a><ul>
+<li><a href="#basic-structure">Basic Structure</a></li>
+<li><a href="#required-components">Required Components</a></li>
+<li><a href="#example-implementation">Example Implementation</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#browser-support">Browser Support</a></li>
+<li><a href="#common-issues">Common Issues</a><ul>
+<li><a href="#missing-entry-animation">Missing Entry Animation</a></li>
+<li><a href="#flickering-during-exit">Flickering During Exit</a></li>
+</ul>
+</li>
+<li><a href="#related-documentation">Related Documentation</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+<h2>Overview</h2>
+<hr>
+<p>The <code>overlay</code> property specifies whether an element appearing in the top layer is rendered in that layer. While this property cannot be directly set through CSS (it&#39;s controlled by the browser), it can be included in transition properties to create smooth animations when elements enter or exit the top layer.</p>
+<h2>Implementation</h2>
+<hr>
+<h3>Basic Structure</h3>
+<p>To implement an overlay transition, include both <code>overlay</code> and <code>display</code> in your transition properties with <code>allow-discrete</code>:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.modal</span> {
+  <span class="hljs-attribute">transition</span>:
+    opacity <span class="hljs-number">0.3s</span>,
+    transform <span class="hljs-number">0.3s</span>,
+    overlay <span class="hljs-number">0.3s</span> allow-discrete,
+    display <span class="hljs-number">0.3s</span> allow-discrete;
+}</code></pre><h3>Required Components</h3>
+<p>For a complete overlay transition, you need:</p>
+<ol>
+<li>Initial state properties</li>
+<li>Final state properties</li>
+<li>Starting styles for entry animation</li>
+<li>Transition properties with <code>allow-discrete</code></li>
+</ol>
+<h3>Example Implementation</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Initial state */</span>
+<span class="hljs-selector-class">.modal</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">0.9</span>);
+  <span class="hljs-attribute">transition</span>:
+    opacity <span class="hljs-number">0.3s</span>,
+    transform <span class="hljs-number">0.3s</span>,
+    overlay <span class="hljs-number">0.3s</span> allow-discrete,
+    display <span class="hljs-number">0.3s</span> allow-discrete;
+}
+
+<span class="hljs-comment">/* Final state */</span>
+<span class="hljs-selector-class">.modal</span><span class="hljs-selector-attr">[data-show]</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">1</span>);
+}
+
+<span class="hljs-comment">/* Starting styles for entry animation */</span>
+<span class="hljs-keyword">@starting-style</span> {
+  <span class="hljs-selector-class">.modal</span><span class="hljs-selector-attr">[data-show]</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">0.9</span>);
+  }
+}</code></pre><h2>Best Practices</h2>
+<hr>
+<p>When implementing overlay transitions, it&#39;s essential to include both <code>overlay</code> and <code>display</code> properties in transitions for top-layer elements, and utilize <code>@starting-style</code> rules to ensure smooth entry animations. The transitions should be kept under 400ms to maintain an optimal user experience that feels responsive and natural.</p>
+<p>Use motion tokens for timings/easings and z-index tokens for stacking:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.modal</span> {
+  <span class="hljs-attribute">transition</span>:
+    opacity <span class="hljs-built_in">var</span>(--duration-base) <span class="hljs-built_in">var</span>(--easing-standard),
+    transform <span class="hljs-built_in">var</span>(--duration-base) <span class="hljs-built_in">var</span>(--easing-standard),
+    overlay <span class="hljs-built_in">var</span>(--duration-base) allow-discrete,
+    display <span class="hljs-built_in">var</span>(--duration-base) allow-discrete;
+  <span class="hljs-attribute">z-index</span>: <span class="hljs-built_in">var</span>(--z-modal);
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.modal</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+}</code></pre><p>For modal elements specifically, consider implementing backdrop transitions to enhance the visual hierarchy, and always test transitions across different browsers since overlay support is still experimental. Proper testing across browsers will help ensure a consistent experience for all users regardless of their browser choice.</p>
+<h2>Browser Support</h2>
+<hr>
+<p>The overlay property is currently experimental and supported in:</p>
+<ul>
+<li>Chrome 117+</li>
+<li>Edge 117+</li>
+<li>Opera 103+</li>
+<li>Chrome Android 117+</li>
+<li>Samsung Internet 24.0+</li>
+</ul>
+<p>For browsers without support, ensure graceful fallbacks are in place.</p>
+<h2>Common Issues</h2>
+<hr>
+<h3>Missing Entry Animation</h3>
+<p>If your entry animation isn&#39;t functioning properly, there are several key things to verify. Make sure you&#39;ve included the <code>@starting-style</code> rule in your CSS, as this is essential for smooth entry animations. Additionally, check that you&#39;ve added the <code>allow-discrete</code> keyword to your transition declaration, which enables proper handling of discrete property animations. Finally, confirm that both the <code>overlay</code> and <code>display</code> properties are included in your transition list, as these are required for proper top-layer animations.</p>
+<h3>Flickering During Exit</h3>
+<p>Elements flickering during exit animations can be resolved by taking a few key steps. First, make sure that the <code>display</code> property is included in your transition declaration, as this is essential for smooth exit animations. Next, carefully check that all properties in the transition have matching durations to ensure synchronized timing. Finally, verify that the <code>allow-discrete</code> keyword is properly set in your transition, as this enables proper handling of discrete property animations.</p>
+<h2>Related Documentation</h2>
+<hr>
+<ul>
+<li><a href="backdrop-filter.md">Backdrop Filter Documentation</a></li>
+<li><a href="theming.md">Theming Documentation</a></li>
+</ul>
+<h2>References</h2>
+<hr>
+<p>For more detailed information about overlay transitions, refer to:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overlay">MDN Web Docs - overlay</a></li>
+<li><a href="https://developer.chrome.com/blog/entry-exit-animations/">Chrome Developers - Entry/Exit Animations</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

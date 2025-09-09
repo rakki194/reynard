@@ -108,13 +108,13 @@ A comprehensive example with frontend, backend, and database integration.
 cd basic-app  # or multi-theme
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 ```
 
 ### Development Ports

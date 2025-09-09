@@ -11,5 +11,10 @@ from .types import CaptionType, ModelCategory
 from .interfaces import CaptionGenerator
 from .base_mixin import CaptionGeneratorMixin
 
+# Create a combined base class that includes both the interface and mixin
+class CaptionGeneratorBase(CaptionGenerator, CaptionGeneratorMixin):
+    """Base class combining the abstract interface with the mixin functionality."""
+    pass
+
 # Re-export for backward compatibility
-__all__ = ['CaptionType', 'ModelCategory', 'CaptionGenerator', 'CaptionGeneratorMixin']
+__all__ = ['CaptionType', 'ModelCategory', 'CaptionGenerator', 'CaptionGeneratorMixin', 'CaptionGeneratorBase']

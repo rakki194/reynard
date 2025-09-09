@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard Chat System 🦊💬 - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard Chat System 🦊💬</h1>
+      <div class="markdown-content"><h1>Reynard Chat System 🦊💬</h1>
+<p>A comprehensive, production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.</p>
+<h2>✨ Features</h2>
+<h3>🚀 <strong>Core Capabilities</strong></h3>
+<ul>
+<li><strong>Real-time Streaming</strong>: Advanced streaming text processing with real-time markdown rendering</li>
+<li><strong>Thinking Sections</strong>: Support for AI assistant thinking process visualization</li>
+<li><strong>Tool Integration</strong>: Complete tool calling system with progress tracking</li>
+<li><strong>Markdown Parsing</strong>: Full markdown support including tables, code blocks, and math</li>
+<li><strong>TypeScript First</strong>: Complete type safety with excellent IntelliSense</li>
+</ul>
+<h3>🎨 <strong>UI/UX Excellence</strong></h3>
+<ul>
+<li><strong>Responsive Design</strong>: Mobile-first with adaptive layouts</li>
+<li><strong>Accessibility</strong>: Full WCAG 2.1 compliance with keyboard navigation</li>
+<li><strong>Theming</strong>: Seamless integration with Reynard&#39;s theming system</li>
+<li><strong>Animations</strong>: Smooth transitions and engaging micro-interactions</li>
+<li><strong>Dark Mode</strong>: Built-in dark mode support</li>
+</ul>
+<h3>⚡ <strong>Performance</strong></h3>
+<ul>
+<li><strong>Optimized Streaming</strong>: Efficient chunk processing and buffering</li>
+<li><strong>Memory Management</strong>: Smart history limiting and cleanup</li>
+<li><strong>Lazy Loading</strong>: Progressive content loading</li>
+<li><strong>Tree Shakable</strong>: Import only what you need</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-components solid-js</code></pre><h2>🎯 Quick Start</h2>
+<h3>Basic Chat Implementation</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ChatContainer</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-components/styles&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ChatContainer</span>
+      <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;600px&quot;</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableThinking:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableTools:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">showTimestamps:</span> <span class="hljs-attr">true</span>,
+      }}
+      <span class="hljs-attr">onMessageSent</span>=<span class="hljs-string">{(message)</span> =&gt;</span> console.log(&quot;Sent:&quot;, message)}
+      onMessageReceived={(message) =&gt; console.log(&quot;Received:&quot;, message)}
+    /&gt;</span>
+  );
+}</code></pre><h3>Advanced Usage with Custom Components</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ChatContainer</span>,
+  <span class="hljs-title class_">ChatMessage</span>,
+  <span class="hljs-title class_">MessageInput</span>,
+  useChat,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CustomChatApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> chat = <span class="hljs-title function_">useChat</span>({
+    <span class="hljs-attr">endpoint</span>: <span class="hljs-string">&quot;/api/chat&quot;</span>,
+    <span class="hljs-attr">authHeaders</span>: { <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">&quot;Bearer token&quot;</span> },
+    <span class="hljs-attr">tools</span>: [
+      {
+        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;calculator&quot;</span>,
+        <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Perform mathematical calculations&quot;</span>,
+        <span class="hljs-attr">parameters</span>: {
+          <span class="hljs-attr">expression</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Math expression&quot;</span> },
+        },
+      },
+    ],
+    <span class="hljs-attr">config</span>: {
+      <span class="hljs-attr">enableThinking</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">maxHistoryLength</span>: <span class="hljs-number">50</span>,
+      <span class="hljs-attr">autoScroll</span>: <span class="hljs-literal">true</span>,
+    },
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;custom-chat&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;messages&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{chat.messages()}</span>&gt;</span>
+          {(message) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">ChatMessage</span>
+              <span class="hljs-attr">message</span>=<span class="hljs-string">{message}</span>
+              <span class="hljs-attr">showTimestamp</span>=<span class="hljs-string">{true}</span>
+              <span class="hljs-attr">showTokenCount</span>=<span class="hljs-string">{true}</span>
+              <span class="hljs-attr">onToolAction</span>=<span class="hljs-string">{(action,</span> <span class="hljs-attr">toolCall</span>) =&gt;</span> {
+                console.log(&quot;Tool action:&quot;, action, toolCall);
+              }}
+            /&gt;
+          )}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">MessageInput</span>
+        <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{chat.actions.sendMessage}</span>
+        <span class="hljs-attr">disabled</span>=<span class="hljs-string">{chat.isStreaming()}</span>
+        <span class="hljs-attr">multiline</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Ask me anything...&quot;</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🧩 Core Components</h2>
+<h3>ChatContainer</h3>
+<p>The main orchestrator component that provides a complete chat experience.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">ChatContainer</span>
+  endpoint=<span class="hljs-string">&quot;/api/chat&quot;</span>
+  authHeaders={{ <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">&quot;Bearer token&quot;</span> }}
+  height=<span class="hljs-string">&quot;100vh&quot;</span>
+  variant=<span class="hljs-string">&quot;default&quot;</span> <span class="hljs-comment">// &#x27;default&#x27; | &#x27;compact&#x27; | &#x27;detailed&#x27;</span>
+  config={{
+    <span class="hljs-attr">enableThinking</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">enableTools</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">autoScroll</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">showTimestamps</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">showTokenCounts</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">maxHistoryLength</span>: <span class="hljs-number">100</span>,
+  }}
+  tools={[
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;search&quot;</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Search the web&quot;</span>,
+      <span class="hljs-attr">parameters</span>: {
+        <span class="hljs-attr">query</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Search query&quot;</span> },
+      },
+    },
+  ]}
+  onMessageSent={<span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Sent:&quot;</span>, message)}
+  onMessageReceived={<span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Received:&quot;</span>, message)}
+  onError={<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Chat error:&quot;</span>, error)}
+  onStreamingStart={<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Streaming started&quot;</span>)}
+  onStreamingEnd={<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Streaming ended&quot;</span>)}
+/&gt;</code></pre><h3>ChatMessage</h3>
+<p>Individual message display with rich formatting and interactivity.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">ChatMessage</span>
+  message={message}
+  isLatest={<span class="hljs-literal">true</span>}
+  showTimestamp={<span class="hljs-literal">true</span>}
+  showTokenCount={<span class="hljs-literal">true</span>}
+  avatar={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CustomAvatar</span> /&gt;</span></span>}
+  customRenderer={<span class="hljs-function">(<span class="hljs-params">content, message</span>) =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CustomContent</span> <span class="hljs-attr">content</span>=<span class="hljs-string">{content}</span> /&gt;</span></span>}
+  onToolAction={<span class="hljs-function">(<span class="hljs-params">action, toolCall</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (action === <span class="hljs-string">&quot;retry&quot;</span>) {
+      <span class="hljs-title function_">retryTool</span>(toolCall);
+    }
+  }}
+/&gt;</code></pre><h3>MessageInput</h3>
+<p>Advanced input component with smart features.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">MessageInput</span>
+  placeholder=<span class="hljs-string">&quot;Type your message...&quot;</span>
+  multiline={<span class="hljs-literal">true</span>}
+  autoResize={<span class="hljs-literal">true</span>}
+  maxLength={<span class="hljs-number">4000</span>}
+  showCounter={<span class="hljs-literal">true</span>}
+  variant=<span class="hljs-string">&quot;default&quot;</span> <span class="hljs-comment">// &#x27;default&#x27; | &#x27;compact&#x27;</span>
+  onSubmit={<span class="hljs-function">(<span class="hljs-params">content</span>) =&gt;</span> <span class="hljs-title function_">sendMessage</span>(content)}
+  onChange={<span class="hljs-function">(<span class="hljs-params">content</span>) =&gt;</span> <span class="hljs-title function_">setDraft</span>(content)}
+  submitButton={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CustomButton</span> /&gt;</span></span>}
+/&gt;</code></pre><h3>MarkdownRenderer</h3>
+<p>Powerful markdown rendering with streaming support.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">MarkdownRenderer</span>
+  content={markdownContent}
+  streaming={isStreaming}
+  enableMath={<span class="hljs-literal">true</span>}
+  enableDiagrams={<span class="hljs-literal">true</span>}
+  codeTheme=<span class="hljs-string">&quot;github-dark&quot;</span>
+  onLinkClick={<span class="hljs-function">(<span class="hljs-params">url, event</span>) =&gt;</span> {
+    event.<span class="hljs-title function_">preventDefault</span>();
+    <span class="hljs-title function_">openExternalLink</span>(url);
+  }}
+  imageConfig={{
+    <span class="hljs-attr">lazy</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">placeholder</span>: <span class="hljs-string">&quot;/loading.gif&quot;</span>,
+    <span class="hljs-attr">errorFallback</span>: <span class="hljs-string">&quot;/error.png&quot;</span>,
+  }}
+/&gt;</code></pre><h3>ThinkingIndicator</h3>
+<p>Visualize AI thinking process with smooth animations.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">ThinkingIndicator</span>
+  content=<span class="hljs-string">&quot;Let me think about this carefully...&quot;</span>
+  isActive={isThinking}
+  showContent={showThinkingDetails}
+  variant=<span class="hljs-string">&quot;pulse&quot;</span> <span class="hljs-comment">// &#x27;dots&#x27; | &#x27;pulse&#x27; | &#x27;typing&#x27;</span>
+  label=<span class="hljs-string">&quot;Analyzing...&quot;</span>
+/&gt;</code></pre><h2>🔧 Composables</h2>
+<h3>useChat</h3>
+<p>Complete state management for chat functionality.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> chat = <span class="hljs-title function_">useChat</span>({
+  <span class="hljs-attr">endpoint</span>: <span class="hljs-string">&quot;/api/chat&quot;</span>,
+  <span class="hljs-attr">authHeaders</span>: { <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">&quot;Bearer token&quot;</span> },
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">enableThinking</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">enableTools</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">autoScroll</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">showTimestamps</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">maxHistoryLength</span>: <span class="hljs-number">100</span>,
+  },
+  <span class="hljs-attr">tools</span>: [], <span class="hljs-comment">// Available tools</span>
+  <span class="hljs-attr">initialMessages</span>: [], <span class="hljs-comment">// Pre-populate conversation</span>
+  <span class="hljs-attr">autoConnect</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">reconnection</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">maxAttempts</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">delay</span>: <span class="hljs-number">1000</span>,
+    <span class="hljs-attr">backoff</span>: <span class="hljs-number">2</span>,
+  },
+});
+
+<span class="hljs-comment">// State</span>
+chat.<span class="hljs-title function_">messages</span>(); <span class="hljs-comment">// Current conversation</span>
+chat.<span class="hljs-title function_">isStreaming</span>(); <span class="hljs-comment">// Streaming status</span>
+chat.<span class="hljs-title function_">isThinking</span>(); <span class="hljs-comment">// Thinking status</span>
+chat.<span class="hljs-title function_">connectionState</span>(); <span class="hljs-comment">// &#x27;connected&#x27; | &#x27;connecting&#x27; | &#x27;disconnected&#x27; | &#x27;error&#x27;</span>
+chat.<span class="hljs-title function_">error</span>(); <span class="hljs-comment">// Current error if any</span>
+
+<span class="hljs-comment">// Actions</span>
+<span class="hljs-keyword">await</span> chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">sendMessage</span>(<span class="hljs-string">&quot;Hello!&quot;</span>);
+chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">cancelStreaming</span>();
+chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">clearConversation</span>();
+<span class="hljs-keyword">await</span> chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">retryLastMessage</span>();
+chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">updateConfig</span>({ <span class="hljs-attr">enableThinking</span>: <span class="hljs-literal">false</span> });
+<span class="hljs-keyword">await</span> chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">connect</span>();
+chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">disconnect</span>();
+
+<span class="hljs-comment">// Export/Import</span>
+<span class="hljs-keyword">const</span> json = chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">exportConversation</span>(<span class="hljs-string">&quot;json&quot;</span>);
+<span class="hljs-keyword">const</span> markdown = chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">exportConversation</span>(<span class="hljs-string">&quot;markdown&quot;</span>);
+<span class="hljs-keyword">const</span> text = chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">exportConversation</span>(<span class="hljs-string">&quot;txt&quot;</span>);
+chat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">importConversation</span>(jsonData, <span class="hljs-string">&quot;json&quot;</span>);</code></pre><h2>🎨 Theming &amp; Styling</h2>
+<p>The chat system integrates seamlessly with Reynard&#39;s theming system:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-comment">/* Chat-specific theme variables */</span>
+  <span class="hljs-attr">--reynard-chat-bg</span>: <span class="hljs-built_in">var</span>(--bg-color);
+  <span class="hljs-attr">--reynard-chat-surface</span>: <span class="hljs-built_in">var</span>(--card-bg);
+  <span class="hljs-attr">--reynard-chat-border</span>: <span class="hljs-built_in">var</span>(--border-color);
+
+  <span class="hljs-comment">/* Message role colors */</span>
+  <span class="hljs-attr">--reynard-chat-user-bg</span>: <span class="hljs-built_in">var</span>(--accent);
+  <span class="hljs-attr">--reynard-chat-assistant-bg</span>: <span class="hljs-built_in">var</span>(--card-bg);
+  <span class="hljs-attr">--reynard-chat-system-bg</span>: <span class="hljs-number">#fef3c7</span>;
+  <span class="hljs-attr">--reynard-chat-tool-bg</span>: <span class="hljs-number">#ecfdf5</span>;
+
+  <span class="hljs-comment">/* State colors */</span>
+  <span class="hljs-attr">--reynard-chat-error</span>: <span class="hljs-number">#ef4444</span>;
+  <span class="hljs-attr">--reynard-chat-success</span>: <span class="hljs-number">#10b981</span>;
+  <span class="hljs-attr">--reynard-chat-warning</span>: <span class="hljs-number">#f59e0b</span>;
+}</code></pre><h3>Custom Styling</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Override specific components */</span>
+<span class="hljs-selector-class">.reynard-chat-message--user</span> {
+  <span class="hljs-attr">--reynard-chat-user-bg</span>: #your-brand-color;
+}
+
+<span class="hljs-selector-class">.reynard-chat-container--compact</span> {
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.875rem</span>;
+}
+
+<span class="hljs-comment">/* Custom animations */</span>
+<span class="hljs-selector-class">.reynard-chat-message</span> {
+  <span class="hljs-attribute">animation</span>: custom-slide-in <span class="hljs-number">0.3s</span> ease-out;
+}</code></pre><h2>🔌 API Integration</h2>
+<h3>Backend Requirements</h3>
+<p>Your chat endpoint should support streaming responses:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// Express.js example</span>
+app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&quot;/api/chat&quot;</span>, <span class="hljs-title function_">async</span> (req, res) =&gt; {
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/plain&quot;</span>);
+  res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Transfer-Encoding&quot;</span>, <span class="hljs-string">&quot;chunked&quot;</span>);
+
+  <span class="hljs-keyword">const</span> { message, conversationHistory, tools } = req.<span class="hljs-property">body</span>;
+
+  <span class="hljs-comment">// Send start chunk</span>
+  res.<span class="hljs-title function_">write</span>(<span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({ type: <span class="hljs-string">&quot;start&quot;</span> })}</span>\n\n`</span>);
+
+  <span class="hljs-comment">// Send thinking chunks</span>
+  res.<span class="hljs-title function_">write</span>(
+    <span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+      type: <span class="hljs-string">&quot;thinking&quot;</span>,
+      content: <span class="hljs-string">&quot;Let me think about this...&quot;</span>,
+    })}</span>\n\n`</span>,
+  );
+
+  <span class="hljs-comment">// Send content chunks</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> chunk <span class="hljs-keyword">of</span> responseChunks) {
+    res.<span class="hljs-title function_">write</span>(
+      <span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+        type: <span class="hljs-string">&quot;content&quot;</span>,
+        content: chunk,
+      })}</span>\n\n`</span>,
+    );
+  }
+
+  <span class="hljs-comment">// Send completion</span>
+  res.<span class="hljs-title function_">write</span>(
+    <span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+      type: <span class="hljs-string">&quot;complete&quot;</span>,
+      done: <span class="hljs-literal">true</span>,
+    })}</span>\n\n`</span>,
+  );
+
+  res.<span class="hljs-title function_">end</span>();
+});</code></pre><h3>Tool Integration</h3>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// Tool execution example</span>
+<span class="hljs-keyword">const</span> tools = {
+  <span class="hljs-attr">calculator</span>: <span class="hljs-title function_">async</span> (args) =&gt; {
+    <span class="hljs-keyword">const</span> result = <span class="hljs-built_in">eval</span>(args.<span class="hljs-property">expression</span>); <span class="hljs-comment">// Don&#x27;t use eval in production!</span>
+    <span class="hljs-keyword">return</span> { result, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;number&quot;</span> };
+  },
+
+  <span class="hljs-attr">search</span>: <span class="hljs-title function_">async</span> (args) =&gt; {
+    <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title function_">searchAPI</span>(args.<span class="hljs-property">query</span>);
+    <span class="hljs-keyword">return</span> { results, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;search_results&quot;</span> };
+  },
+};
+
+<span class="hljs-comment">// During streaming</span>
+res.<span class="hljs-title function_">write</span>(
+  <span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+    type: <span class="hljs-string">&quot;tool_call&quot;</span>,
+    toolExecution: {
+      toolName: <span class="hljs-string">&quot;calculator&quot;</span>,
+      callId: <span class="hljs-string">&quot;tool-123&quot;</span>,
+      parameters: { expression: <span class="hljs-string">&quot;2 + 2&quot;</span> },
+      status: <span class="hljs-string">&quot;running&quot;</span>,
+    },
+  })}</span>\n\n`</span>,
+);
+
+<span class="hljs-comment">// After execution</span>
+res.<span class="hljs-title function_">write</span>(
+  <span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({
+    type: <span class="hljs-string">&quot;tool_result&quot;</span>,
+    toolExecution: {
+      toolName: <span class="hljs-string">&quot;calculator&quot;</span>,
+      callId: <span class="hljs-string">&quot;tool-123&quot;</span>,
+      status: <span class="hljs-string">&quot;completed&quot;</span>,
+      result: <span class="hljs-number">4</span>,
+    },
+  })}</span>\n\n`</span>,
+);</code></pre><h2>🧪 Testing</h2>
+<p>The chat system includes comprehensive tests:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run specific test suites</span>
+npm <span class="hljs-built_in">test</span> StreamingMarkdownParser
+npm <span class="hljs-built_in">test</span> useChat
+npm <span class="hljs-built_in">test</span> ChatMessage</code></pre><h3>Testing Your Implementation</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { render, screen, fireEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@solidjs/testing-library&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ChatContainer</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;sends message correctly&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> onMessageSent = vi.<span class="hljs-title function_">fn</span>();
+
+  <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ChatContainer</span> <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span> <span class="hljs-attr">onMessageSent</span>=<span class="hljs-string">{onMessageSent}</span> /&gt;</span></span>
+  ));
+
+  <span class="hljs-keyword">const</span> input = screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-string">&quot;Message input&quot;</span>);
+  <span class="hljs-keyword">const</span> sendButton = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&quot;button&quot;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/send/i</span> });
+
+  fireEvent.<span class="hljs-title function_">input</span>(input, { <span class="hljs-attr">target</span>: { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;Hello!&quot;</span> } });
+  fireEvent.<span class="hljs-title function_">click</span>(sendButton);
+
+  <span class="hljs-title function_">expect</span>(onMessageSent).<span class="hljs-title function_">toHaveBeenCalledWith</span>(
+    expect.<span class="hljs-title function_">objectContaining</span>({
+      <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Hello!&quot;</span>,
+      <span class="hljs-attr">role</span>: <span class="hljs-string">&quot;user&quot;</span>,
+    }),
+  );
+});</code></pre><h2>🚀 Performance Optimization</h2>
+<h3>Streaming Optimization</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Use batched parsing for large content</span>
+<span class="hljs-keyword">import</span> { parseMarkdownBatched } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">parseMarkdownBatched</span>(largeContent, <span class="hljs-number">1024</span>); <span class="hljs-comment">// 1KB chunks</span></code></pre><h3>Memory Management</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> chat = <span class="hljs-title function_">useChat</span>({
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">maxHistoryLength</span>: <span class="hljs-number">50</span>, <span class="hljs-comment">// Limit conversation history</span>
+    <span class="hljs-attr">autoScroll</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Reduce DOM queries</span>
+  },
+});</code></pre><h3>Code Splitting</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Lazy load chat components</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">ChatContainer</span> = <span class="hljs-title function_">lazy</span>(<span class="hljs-function">() =&gt;</span>
+  <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;reynard-components&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">m</span>) =&gt;</span> ({
+    <span class="hljs-attr">default</span>: m.<span class="hljs-property">ChatContainer</span>,
+  })),
+);
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">ChatSkeleton</span> /&gt;</span>}&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">ChatContainer</span> <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span></span>
+  );
+}</code></pre><h2>🔧 Advanced Customization</h2>
+<h3>Custom Message Types</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Extend message types</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">CustomMessage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ChatMessage</span> {
+  <span class="hljs-attr">customData</span>?: {
+    <span class="hljs-attr">priority</span>: <span class="hljs-string">&quot;high&quot;</span> | <span class="hljs-string">&quot;normal&quot;</span> | <span class="hljs-string">&quot;low&quot;</span>;
+    <span class="hljs-attr">tags</span>: <span class="hljs-built_in">string</span>[];
+  };
+}
+
+<span class="hljs-comment">// Custom renderer</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">CustomMessageRenderer</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: { message: CustomMessage }</span>) =&gt; {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">message</span> <span class="hljs-attr">priority-</span>${<span class="hljs-attr">props.message.customData</span>?<span class="hljs-attr">.priority</span>}`}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ChatMessage</span> <span class="hljs-attr">message</span>=<span class="hljs-string">{props.message}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tags&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">For</span> <span class="hljs-attr">each</span>=<span class="hljs-string">{props.message.customData?.tags}</span>&gt;</span>
+          {(tag) =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tag&quot;</span>&gt;</span>{tag}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">For</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><h3>Custom Streaming Parser</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">StreamingMarkdownParser</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomParser</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">StreamingMarkdownParser</span> {
+  <span class="hljs-keyword">protected</span> <span class="hljs-title function_">processCustomBlock</span>(<span class="hljs-attr">line</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">boolean</span> {
+    <span class="hljs-comment">// Add custom block processing</span>
+    <span class="hljs-keyword">if</span> (line.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">&quot;:::&quot;</span>)) {
+      <span class="hljs-comment">// Handle custom callout blocks</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+}</code></pre><h2>📱 Mobile Considerations</h2>
+<p>The chat system is fully responsive and mobile-optimized:</p>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">768px</span>) {
+  <span class="hljs-selector-class">.reynard-chat-container</span> {
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">100vh</span>; <span class="hljs-comment">/* Full viewport on mobile */</span>
+    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0</span>; <span class="hljs-comment">/* Remove border radius */</span>
+  }
+
+  <span class="hljs-selector-class">.reynard-message-input</span> {
+    <span class="hljs-comment">/* Optimize input for mobile keyboards */</span>
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>; <span class="hljs-comment">/* Prevent zoom on iOS */</span>
+  }
+}</code></pre><h2>🔐 Security Considerations</h2>
+<h3>Content Sanitization</h3>
+<p>The markdown renderer automatically sanitizes HTML:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Content is automatically escaped</span>
+&lt;<span class="hljs-title class_">MarkdownRenderer</span> content=<span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;&quot;</span> /&gt;
+<span class="hljs-comment">// Renders as: &amp;lt;script&amp;gt;alert(&#x27;xss&#x27;)&amp;lt;/script&amp;gt;</span></code></pre><h3>Authentication</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> chat = <span class="hljs-title function_">useChat</span>({
+  <span class="hljs-attr">authHeaders</span>: {
+    <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${getAuthToken()}</span>`</span>,
+    <span class="hljs-string">&quot;X-CSRF-Token&quot;</span>: <span class="hljs-title function_">getCsrfToken</span>(),
+  },
+});</code></pre><h2>🤝 Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch: <code>git checkout -b feature/amazing-feature</code></li>
+<li>Make your changes with tests</li>
+<li>Run the test suite: <code>npm test</code></li>
+<li>Submit a pull request</li>
+</ol>
+<h2>📄 License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<h2>🆘 Support</h2>
+<ul>
+<li>📖 <a href="https://reynard-docs.example.com">Documentation</a></li>
+<li>🐛 <a href="https://github.com/reynard/issues">Issue Tracker</a></li>
+<li>💬 <a href="https://discord.gg/reynard">Community Discord</a></li>
+<li>📧 <a href="mailto:support@reynard.dev">Email Support</a></li>
+</ul>
+<hr>
+<p><strong>Built with ❤️ using SolidJS and modern web standards</strong> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

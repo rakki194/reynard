@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Derived Chart Type - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Derived Chart Type</h1>
+      <div class="markdown-content"><h1>Derived Chart Type</h1>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+const DATA_COUNT <span class="hljs-operator">=</span> <span class="hljs-number">7</span>;
+const NUMBER_CFG <span class="hljs-operator">=</span> {<span class="hljs-params">count:</span> DATA_COUNT, <span class="hljs-params">min:</span> <span class="hljs-operator">-</span><span class="hljs-number">100</span>, <span class="hljs-params">max:</span> <span class="hljs-number">100</span>, <span class="hljs-params">rmin:</span> <span class="hljs-number">1</span>, <span class="hljs-params">rmax:</span> <span class="hljs-number">20</span>};
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;My First dataset&#x27;,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.blue, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.blue,
+      <span class="hljs-params">borderWidth:</span> <span class="hljs-number">1</span>,
+      <span class="hljs-params">boxStrokeStyle:</span> &#x27;red&#x27;,
+      <span class="hljs-params">data:</span> Utils.bubbles(NUMBER_CFG)
+    }
+  ],
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;derivedBubble&#x27;,
+  <span class="hljs-params">data:</span> data,
+  <span class="hljs-params">options:</span> {
+    <span class="hljs-params">responsive:</span> <span class="hljs-literal">true</span>,
+    <span class="hljs-params">plugins:</span> {
+      <span class="hljs-params">title:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+        <span class="hljs-params">text:</span> &#x27;Derived Chart Type&#x27;
+      },
+    }
+  }
+};
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">actions:</span> [],
+  <span class="hljs-params">config:</span> config,
+};</code></pre><h2>DerivedBubble Implementation</h2>
+<p>&lt;&lt;&lt; @/scripts/derived-bubble.js</p>
+<h2>Docs</h2>
+<ul>
+<li><a href="../../charts/bubble.md">Bubble Chart</a></li>
+<li><a href="../../developers/charts.md">New Charts</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

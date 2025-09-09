@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified WebSocket Configuration System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Unified WebSocket Configuration System</h1>
+      <div class="markdown-content"><h1>Unified WebSocket Configuration System</h1>
+<p>The Unified WebSocket Configuration System provides comprehensive configuration management for all WebSocket implementations in yipyap. It offers environment-based configuration with defaults, runtime configuration updates with hot-reloading, and extensive validation capabilities.</p>
+<h2>Overview</h2>
+<p>The system consolidates configuration management across all WebSocket components:</p>
+<ul>
+<li><strong>WebSocketManager</strong> - Main WebSocket management hub</li>
+<li><strong>WebSocketEngine</strong> - Lazy loader communication engine</li>
+<li><strong>WebSocketAnalytics</strong> - Performance monitoring and analytics</li>
+<li><strong>WebSocketEndpoint</strong> - Standardized API endpoint patterns</li>
+</ul>
+<h2>Features</h2>
+<h3>✅ Environment-Based Configuration</h3>
+<ul>
+<li>Automatic loading from environment variables</li>
+<li>Comprehensive default values</li>
+<li>Type conversion and validation</li>
+<li>Source tracking and metadata</li>
+</ul>
+<h3>✅ Runtime Configuration Updates</h3>
+<ul>
+<li>Hot-reloading without application restart</li>
+<li>Real-time configuration changes</li>
+<li>Thread-safe operations</li>
+<li>Change notifications and webhooks</li>
+</ul>
+<h3>✅ Configuration Validation</h3>
+<ul>
+<li>Built-in validation rules for all settings</li>
+<li>Range validation for numeric values</li>
+<li>Type validation for complex types</li>
+<li>Custom validation support</li>
+</ul>
+<h3>✅ Configuration Management</h3>
+<ul>
+<li>Snapshot creation and rollback</li>
+<li>Import/export in JSON and YAML formats</li>
+<li>Configuration history and audit trail</li>
+<li>Health monitoring and alerts</li>
+</ul>
+<h2>Architecture</h2>
+<h3>Core Components</h3>
+<h4>WebSocketConfigurationManager</h4>
+<p>The central configuration management class that handles:</p>
+<ul>
+<li>Configuration storage and retrieval</li>
+<li>Environment variable loading</li>
+<li>File-based configuration</li>
+<li>Runtime updates and hot-reloading</li>
+<li>Validation and error tracking</li>
+<li>Snapshot management</li>
+</ul>
+<h4>UnifiedWebSocketConfig</h4>
+<p>A comprehensive dataclass containing all WebSocket configuration settings:</p>
+<ul>
+<li>Core WebSocket settings (connections, timeouts, etc.)</li>
+<li>Authentication and security settings</li>
+<li>Analytics and monitoring settings</li>
+<li>Performance optimization settings</li>
+<li>Development and debugging settings</li>
+</ul>
+<h4>Configuration API</h4>
+<p>REST API endpoints for configuration management:</p>
+<ul>
+<li>Configuration retrieval and updates</li>
+<li>Snapshot management</li>
+<li>Import/export functionality</li>
+<li>Health monitoring</li>
+<li>Validation status</li>
+</ul>
+<h2>Configuration Settings</h2>
+<h3>Core WebSocket Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Connection management</span>
+max_connections: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>                    <span class="hljs-comment"># Maximum concurrent connections</span>
+max_message_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>          <span class="hljs-comment"># Maximum message size (1MB)</span>
+heartbeat_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">30.0</span>              <span class="hljs-comment"># Heartbeat interval in seconds</span>
+connection_timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">60.0</span>              <span class="hljs-comment"># Connection timeout in seconds</span>
+retry_attempts: <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>                       <span class="hljs-comment"># Number of retry attempts</span>
+retry_delay: <span class="hljs-built_in">float</span> = <span class="hljs-number">1.0</span>                      <span class="hljs-comment"># Delay between retries</span>
+
+<span class="hljs-comment"># Performance settings</span>
+enable_compression: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>               <span class="hljs-comment"># Enable message compression</span>
+enable_heartbeat: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                 <span class="hljs-comment"># Enable heartbeat mechanism</span>
+enable_metrics: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                   <span class="hljs-comment"># Enable performance metrics</span>
+enable_error_recovery: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Enable error recovery</span>
+enable_rate_limiting: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>             <span class="hljs-comment"># Enable rate limiting</span>
+rate_limit_messages_per_second: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span>     <span class="hljs-comment"># Rate limit per second</span>
+rate_limit_burst_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>               <span class="hljs-comment"># Burst size for rate limiting</span></code></pre><h3>Authentication Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Authentication configuration</span>
+enable_authentication: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Enable authentication</span>
+authentication_timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">30.0</span>          <span class="hljs-comment"># Authentication timeout</span>
+require_authentication: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>          <span class="hljs-comment"># Require authentication for all connections</span></code></pre><h3>Connection Pooling Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Connection pooling</span>
+enable_connection_pooling: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>        <span class="hljs-comment"># Enable connection pooling</span>
+pool_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">50</span>                           <span class="hljs-comment"># Pool size</span>
+pool_cleanup_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">300.0</span>          <span class="hljs-comment"># Cleanup interval in seconds</span></code></pre><h3>Circuit Breaker Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Circuit breaker configuration</span>
+enable_circuit_breaker: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>           <span class="hljs-comment"># Enable circuit breaker</span>
+circuit_breaker_threshold: <span class="hljs-built_in">int</span> = <span class="hljs-number">5</span>            <span class="hljs-comment"># Failure threshold</span>
+circuit_breaker_timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">60.0</span>         <span class="hljs-comment"># Open timeout in seconds</span>
+circuit_breaker_reset_timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">300.0</span>  <span class="hljs-comment"># Reset timeout in seconds</span></code></pre><h3>Message Routing Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Message routing and filtering</span>
+enable_message_routing: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>           <span class="hljs-comment"># Enable message routing</span>
+enable_message_filtering: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>         <span class="hljs-comment"># Enable message filtering</span>
+max_message_queue_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">1000</span>            <span class="hljs-comment"># Maximum queue size</span>
+message_processing_workers: <span class="hljs-built_in">int</span> = <span class="hljs-number">4</span>           <span class="hljs-comment"># Number of processing workers</span></code></pre><h3>Analytics Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Analytics and monitoring</span>
+enable_analytics: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                 <span class="hljs-comment"># Enable analytics</span>
+analytics_retention_hours: <span class="hljs-built_in">int</span> = <span class="hljs-number">24</span>           <span class="hljs-comment"># Data retention in hours</span>
+analytics_health_check_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">60.0</span> <span class="hljs-comment"># Health check interval</span>
+analytics_metrics_update_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">30.0</span> <span class="hljs-comment"># Metrics update interval</span>
+analytics_optimization_check_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">300.0</span> <span class="hljs-comment"># Optimization check interval</span>
+analytics_max_event_history: <span class="hljs-built_in">int</span> = <span class="hljs-number">10000</span>      <span class="hljs-comment"># Maximum event history</span>
+analytics_max_health_history: <span class="hljs-built_in">int</span> = <span class="hljs-number">1000</span>      <span class="hljs-comment"># Maximum health history</span>
+analytics_max_optimization_suggestions: <span class="hljs-built_in">int</span> = <span class="hljs-number">100</span> <span class="hljs-comment"># Maximum optimization suggestions</span></code></pre><h3>Security Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Security configuration</span>
+enable_security: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                  <span class="hljs-comment"># Enable security features</span>
+enable_cors: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                      <span class="hljs-comment"># Enable CORS</span>
+allowed_origins: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>] = [<span class="hljs-string">&quot;*&quot;</span>]            <span class="hljs-comment"># Allowed origins</span>
+enable_ip_filtering: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>             <span class="hljs-comment"># Enable IP filtering</span>
+allowed_ips: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>] = []                   <span class="hljs-comment"># Allowed IP addresses</span>
+enable_ddos_protection: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>           <span class="hljs-comment"># Enable DDoS protection</span>
+ddos_threshold: <span class="hljs-built_in">int</span> = <span class="hljs-number">1000</span>                    <span class="hljs-comment"># DDoS threshold</span></code></pre><h3>Performance Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Performance optimization</span>
+enable_performance_optimization: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>  <span class="hljs-comment"># Enable performance optimization</span>
+enable_message_batching: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>          <span class="hljs-comment"># Enable message batching</span>
+batch_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>                          <span class="hljs-comment"># Batch size</span>
+batch_timeout: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.1</span>                    <span class="hljs-comment"># Batch timeout in seconds</span>
+enable_connection_multiplexing: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>   <span class="hljs-comment"># Enable connection multiplexing</span>
+max_multiplexed_connections: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span>         <span class="hljs-comment"># Maximum multiplexed connections</span></code></pre><h3>Monitoring Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Monitoring and alerting</span>
+enable_monitoring: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                <span class="hljs-comment"># Enable monitoring</span>
+monitoring_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">30.0</span>             <span class="hljs-comment"># Monitoring interval</span>
+enable_health_checks: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>             <span class="hljs-comment"># Enable health checks</span>
+health_check_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">60.0</span>           <span class="hljs-comment"># Health check interval</span>
+enable_alerting: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>                  <span class="hljs-comment"># Enable alerting</span>
+alert_threshold_error_rate: <span class="hljs-built_in">float</span> = <span class="hljs-number">5.0</span>       <span class="hljs-comment"># Error rate threshold</span>
+alert_threshold_response_time: <span class="hljs-built_in">float</span> = <span class="hljs-number">1.0</span>    <span class="hljs-comment"># Response time threshold</span></code></pre><h3>Development Settings</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Development and debugging</span>
+enable_debug_mode: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>               <span class="hljs-comment"># Enable debug mode</span>
+enable_detailed_logging: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>         <span class="hljs-comment"># Enable detailed logging</span>
+log_level: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;INFO&quot;</span>                       <span class="hljs-comment"># Log level</span>
+enable_profiling: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>                <span class="hljs-comment"># Enable profiling</span>
+profiling_interval: <span class="hljs-built_in">float</span> = <span class="hljs-number">300.0</span>             <span class="hljs-comment"># Profiling interval</span></code></pre><h2>Environment Variables</h2>
+<p>The system automatically loads configuration from environment variables with the <code>WEBSOCKET_</code> prefix:</p>
+<h3>Core Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Connection management</span>
+WEBSOCKET_MAX_CONNECTIONS=200
+WEBSOCKET_MAX_MESSAGE_SIZE=2097152
+WEBSOCKET_HEARTBEAT_INTERVAL=45.0
+WEBSOCKET_CONNECTION_TIMEOUT=120.0
+WEBSOCKET_RETRY_ATTEMPTS=5
+WEBSOCKET_RETRY_DELAY=2.0
+
+<span class="hljs-comment"># Performance settings</span>
+WEBSOCKET_ENABLE_COMPRESSION=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_HEARTBEAT=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_METRICS=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_ERROR_RECOVERY=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_RATE_LIMITING=<span class="hljs-literal">true</span>
+WEBSOCKET_RATE_LIMIT_MESSAGES_PER_SECOND=200
+WEBSOCKET_RATE_LIMIT_BURST_SIZE=20</code></pre><h3>Authentication Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Authentication</span>
+WEBSOCKET_ENABLE_AUTHENTICATION=<span class="hljs-literal">true</span>
+WEBSOCKET_AUTHENTICATION_TIMEOUT=60.0
+WEBSOCKET_REQUIRE_AUTHENTICATION=<span class="hljs-literal">false</span></code></pre><h3>Connection Pooling Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Connection pooling</span>
+WEBSOCKET_ENABLE_CONNECTION_POOLING=<span class="hljs-literal">true</span>
+WEBSOCKET_POOL_SIZE=100
+WEBSOCKET_POOL_CLEANUP_INTERVAL=600.0</code></pre><h3>Circuit Breaker Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Circuit breaker</span>
+WEBSOCKET_ENABLE_CIRCUIT_BREAKER=<span class="hljs-literal">true</span>
+WEBSOCKET_CIRCUIT_BREAKER_THRESHOLD=10
+WEBSOCKET_CIRCUIT_BREAKER_TIMEOUT=120.0
+WEBSOCKET_CIRCUIT_BREAKER_RESET_TIMEOUT=600.0</code></pre><h3>Message Routing Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Message routing</span>
+WEBSOCKET_ENABLE_MESSAGE_ROUTING=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_MESSAGE_FILTERING=<span class="hljs-literal">true</span>
+WEBSOCKET_MAX_MESSAGE_QUEUE_SIZE=2000
+WEBSOCKET_MESSAGE_PROCESSING_WORKERS=8</code></pre><h3>Analytics Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Analytics</span>
+WEBSOCKET_ENABLE_ANALYTICS=<span class="hljs-literal">true</span>
+WEBSOCKET_ANALYTICS_RETENTION_HOURS=48
+WEBSOCKET_ANALYTICS_HEALTH_CHECK_INTERVAL=120.0
+WEBSOCKET_ANALYTICS_METRICS_UPDATE_INTERVAL=60.0
+WEBSOCKET_ANALYTICS_OPTIMIZATION_CHECK_INTERVAL=600.0
+WEBSOCKET_ANALYTICS_MAX_EVENT_HISTORY=20000
+WEBSOCKET_ANALYTICS_MAX_HEALTH_HISTORY=2000
+WEBSOCKET_ANALYTICS_MAX_OPTIMIZATION_SUGGESTIONS=200</code></pre><h3>Security Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Security</span>
+WEBSOCKET_ENABLE_SECURITY=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_CORS=<span class="hljs-literal">true</span>
+WEBSOCKET_ALLOWED_ORIGINS=http://localhost:3000,https://example.com
+WEBSOCKET_ENABLE_IP_FILTERING=<span class="hljs-literal">false</span>
+WEBSOCKET_ALLOWED_IPS=127.0.0.1,192.168.1.1
+WEBSOCKET_ENABLE_DDOS_PROTECTION=<span class="hljs-literal">true</span>
+WEBSOCKET_DDOS_THRESHOLD=2000</code></pre><h3>Performance Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Performance</span>
+WEBSOCKET_ENABLE_PERFORMANCE_OPTIMIZATION=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_MESSAGE_BATCHING=<span class="hljs-literal">true</span>
+WEBSOCKET_BATCH_SIZE=20
+WEBSOCKET_BATCH_TIMEOUT=0.2
+WEBSOCKET_ENABLE_CONNECTION_MULTIPLEXING=<span class="hljs-literal">true</span>
+WEBSOCKET_MAX_MULTIPLEXED_CONNECTIONS=20</code></pre><h3>Monitoring Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Monitoring</span>
+WEBSOCKET_ENABLE_MONITORING=<span class="hljs-literal">true</span>
+WEBSOCKET_MONITORING_INTERVAL=60.0
+WEBSOCKET_ENABLE_HEALTH_CHECKS=<span class="hljs-literal">true</span>
+WEBSOCKET_HEALTH_CHECK_INTERVAL=120.0
+WEBSOCKET_ENABLE_ALERTING=<span class="hljs-literal">true</span>
+WEBSOCKET_ALERT_THRESHOLD_ERROR_RATE=10.0
+WEBSOCKET_ALERT_THRESHOLD_RESPONSE_TIME=2.0</code></pre><h3>Development Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Development</span>
+WEBSOCKET_ENABLE_DEBUG_MODE=<span class="hljs-literal">false</span>
+WEBSOCKET_ENABLE_DETAILED_LOGGING=<span class="hljs-literal">false</span>
+WEBSOCKET_LOG_LEVEL=INFO
+WEBSOCKET_ENABLE_PROFILING=<span class="hljs-literal">false</span>
+WEBSOCKET_PROFILING_INTERVAL=600.0</code></pre><h2>Usage Examples</h2>
+<h3>Basic Configuration Management</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> (
+    get_websocket_config_manager,
+    get_websocket_config,
+    update_websocket_config
+)
+
+<span class="hljs-comment"># Get the configuration manager</span>
+manager = get_websocket_config_manager()
+
+<span class="hljs-comment"># Get current configuration</span>
+config = get_websocket_config()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Max connections: <span class="hljs-subst">{config.max_connections}</span>&quot;</span>)
+
+<span class="hljs-comment"># Update configuration</span>
+success = update_websocket_config(
+    max_connections=<span class="hljs-number">200</span>,
+    heartbeat_interval=<span class="hljs-number">45.0</span>,
+    enable_analytics=<span class="hljs-literal">True</span>
+)
+
+<span class="hljs-comment"># Get specific configuration value</span>
+max_conn = manager.get(<span class="hljs-string">&quot;max_connections&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Max connections: <span class="hljs-subst">{max_conn}</span>&quot;</span>)</code></pre><h3>WebSocket Manager Integration</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.websocket_manager <span class="hljs-keyword">import</span> WebSocketManager
+<span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> get_websocket_config
+
+<span class="hljs-comment"># Create WebSocket manager with unified configuration</span>
+manager = WebSocketManager()  <span class="hljs-comment"># Uses unified config automatically</span>
+
+<span class="hljs-comment"># Get current configuration</span>
+config = manager.get_configuration()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Current max connections: <span class="hljs-subst">{config.max_connections}</span>&quot;</span>)
+
+<span class="hljs-comment"># Update configuration at runtime</span>
+new_config = get_websocket_config()
+new_config.max_connections = <span class="hljs-number">300</span>
+success = <span class="hljs-keyword">await</span> manager.update_configuration(new_config)
+
+<span class="hljs-comment"># Reload configuration from file</span>
+manager.reload_configuration()</code></pre><h3>Configuration Validation</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> get_websocket_config_manager
+
+manager = get_websocket_config_manager()
+
+<span class="hljs-comment"># Set valid configuration</span>
+success = manager.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;max_connections&quot;</span>, <span class="hljs-number">500</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Valid configuration: <span class="hljs-subst">{success}</span>&quot;</span>)  <span class="hljs-comment"># True</span>
+
+<span class="hljs-comment"># Set invalid configuration</span>
+success = manager.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;max_connections&quot;</span>, <span class="hljs-number">20000</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Invalid configuration: <span class="hljs-subst">{success}</span>&quot;</span>)  <span class="hljs-comment"># False</span>
+
+<span class="hljs-comment"># Get validation status</span>
+config_with_metadata = manager.get_with_metadata()
+<span class="hljs-keyword">for</span> key, metadata <span class="hljs-keyword">in</span> config_with_metadata.items():
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> metadata[<span class="hljs-string">&quot;validated&quot;</span>]:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Invalid <span class="hljs-subst">{key}</span>: <span class="hljs-subst">{metadata[<span class="hljs-string">&#x27;validation_errors&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Snapshot Management</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> get_websocket_config_manager
+
+manager = get_websocket_config_manager()
+
+<span class="hljs-comment"># Create snapshot</span>
+snapshot_id = manager.create_snapshot(<span class="hljs-string">&quot;Production configuration&quot;</span>)
+
+<span class="hljs-comment"># Make changes</span>
+manager.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;max_connections&quot;</span>, <span class="hljs-number">500</span>)
+manager.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;heartbeat_interval&quot;</span>, <span class="hljs-number">60.0</span>)
+
+<span class="hljs-comment"># Rollback to snapshot</span>
+success = manager.rollback_to_snapshot(snapshot_id)
+
+<span class="hljs-comment"># Get all snapshots</span>
+snapshots = manager.get_snapshots()
+<span class="hljs-keyword">for</span> snapshot <span class="hljs-keyword">in</span> snapshots:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Snapshot <span class="hljs-subst">{snapshot[<span class="hljs-string">&#x27;snapshot_id&#x27;</span>]}</span>: <span class="hljs-subst">{snapshot[<span class="hljs-string">&#x27;description&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Configuration Import/Export</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> get_websocket_config_manager
+
+manager = get_websocket_config_manager()
+
+<span class="hljs-comment"># Export configuration</span>
+json_config = manager.export_configuration(<span class="hljs-string">&quot;json&quot;</span>)
+yaml_config = manager.export_configuration(<span class="hljs-string">&quot;yaml&quot;</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;JSON Configuration:&quot;</span>)
+<span class="hljs-built_in">print</span>(json_config)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;YAML Configuration:&quot;</span>)
+<span class="hljs-built_in">print</span>(yaml_config)
+
+<span class="hljs-comment"># Import configuration</span>
+success = manager.import_configuration(json_config, <span class="hljs-string">&quot;json&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Import successful: <span class="hljs-subst">{success}</span>&quot;</span>)</code></pre><h2>API Reference</h2>
+<h3>WebSocketConfigurationManager</h3>
+<h4>Constructor</h4>
+<pre><code class="hljs language-python">WebSocketConfigurationManager(config_file: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>)</code></pre><p>Creates a new configuration manager instance.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>config_file</code>: Optional path to configuration file (default: &quot;websocket_config.json&quot;)</li>
+</ul>
+<h4>Methods</h4>
+<h5>get(key: str, default: Any = None) -&gt; Any</h5>
+<p>Get a configuration value.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>key</code>: Configuration key</li>
+<li><code>default</code>: Default value if key not found</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Configuration value or default</li>
+</ul>
+<h5>set(key: str, value: Any, source: WebSocketConfigSource = WebSocketConfigSource.RUNTIME) -&gt; bool</h5>
+<p>Set a configuration value.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>key</code>: Configuration key</li>
+<li><code>value</code>: Configuration value</li>
+<li><code>source</code>: Source of the configuration value</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>True if successful, False otherwise</li>
+</ul>
+<h5>get_all() -&gt; Dict[str, Any]</h5>
+<p>Get all configuration values.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Dictionary of all configuration values</li>
+</ul>
+<h5>get_with_metadata() -&gt; Dict[str, Dict[str, Any]]</h5>
+<p>Get all configuration values with metadata.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Dictionary of configuration values with metadata</li>
+</ul>
+<h5>create_snapshot(description: str = &quot;&quot;) -&gt; str</h5>
+<p>Create a configuration snapshot.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>description</code>: Snapshot description</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Snapshot ID</li>
+</ul>
+<h5>rollback_to_snapshot(snapshot_id: str) -&gt; bool</h5>
+<p>Rollback to a configuration snapshot.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>snapshot_id</code>: Snapshot ID</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>True if successful, False otherwise</li>
+</ul>
+<h5>get_snapshots() -&gt; List[Dict[str, Any]]</h5>
+<p>Get all configuration snapshots.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>List of snapshot metadata</li>
+</ul>
+<h5>add_config_watcher(watcher: Callable) -&gt; None</h5>
+<p>Add a configuration watcher.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>watcher</code>: Callback function to call when configuration changes</li>
+</ul>
+<h5>remove_config_watcher(watcher: Callable) -&gt; None</h5>
+<p>Remove a configuration watcher.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>watcher</code>: Callback function to remove</li>
+</ul>
+<h5>export_configuration(format: str = &quot;json&quot;) -&gt; str</h5>
+<p>Export configuration in specified format.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>format</code>: Export format (&quot;json&quot; or &quot;yaml&quot;)</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Exported configuration string</li>
+</ul>
+<h5>import_configuration(config_data: str, format: str = &quot;json&quot;) -&gt; bool</h5>
+<p>Import configuration from string.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>config_data</code>: Configuration data string</li>
+<li><code>format</code>: Import format (&quot;json&quot; or &quot;yaml&quot;)</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>True if successful, False otherwise</li>
+</ul>
+<h5>get_configuration_summary() -&gt; Dict[str, Any]</h5>
+<p>Get configuration summary statistics.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Configuration summary dictionary</li>
+</ul>
+<h3>Global Functions</h3>
+<h4>get_websocket_config_manager() -&gt; WebSocketConfigurationManager</h4>
+<p>Get the global WebSocket configuration manager instance.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Global configuration manager</li>
+</ul>
+<h4>get_websocket_config() -&gt; UnifiedWebSocketConfig</h4>
+<p>Get the current WebSocket configuration.</p>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>Current configuration object</li>
+</ul>
+<h4>update_websocket_config(**kwargs) -&gt; bool</h4>
+<p>Update WebSocket configuration values.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>**kwargs</code>: Configuration key-value pairs</li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul>
+<li>True if all updates successful, False otherwise</li>
+</ul>
+<h2>REST API Endpoints</h2>
+<h3>Configuration Status</h3>
+<pre><code class="hljs language-http">GET /api/websocket-config/status</code></pre><p>Get the current status of the WebSocket configuration system.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;total_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;validated_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">48</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;invalid_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;source_distribution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;default&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;environment&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;runtime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;snapshots_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;config_file&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/websocket_config.json&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;last_modified&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Values</h3>
+<pre><code class="hljs language-http">GET /api/websocket-config/values
+GET /api/websocket-config/values?include_metadata=true</code></pre><p>Get all configuration values.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Configuration values retrieved successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;max_connections&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;heartbeat_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30.0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;enable_authentication&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Update Configuration Value</h3>
+<pre><code class="hljs language-http">PUT /api/websocket-config/values/{key}</code></pre><p>Update a specific configuration value.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Increased max connections for high load&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Configuration key &#x27;max_connections&#x27; updated successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;max_connections&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;old_value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;new_value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;notification&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;max_connections&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;old_value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;new_value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;user_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user123&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Increased max connections for high load&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Batch Update Configuration</h3>
+<pre><code class="hljs language-http">POST /api/websocket-config/values/batch</code></pre><p>Update multiple configuration values in a batch.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;updates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;max_connections&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;heartbeat_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45.0</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;enable_analytics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Performance optimization batch update&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Snapshots</h3>
+<pre><code class="hljs language-http">POST /api/websocket-config/snapshots</code></pre><p>Create a configuration snapshot.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Production configuration before update&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><pre><code class="hljs language-http">GET /api/websocket-config/snapshots</code></pre><p>Get all configuration snapshots.</p>
+<pre><code class="hljs language-http">POST /api/websocket-config/snapshots/rollback</code></pre><p>Rollback to a configuration snapshot.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;snapshot_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;snapshot_1640995200&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Emergency rollback due to performance issues&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Import/Export</h3>
+<pre><code class="hljs language-http">POST /api/websocket-config/export</code></pre><p>Export configuration in specified format.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;json&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><pre><code class="hljs language-http">POST /api/websocket-config/import</code></pre><p>Import configuration from string.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;config_data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{\&quot;max_connections\&quot;: 200, \&quot;heartbeat_interval\&quot;: 45.0}&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;json&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Validation</h3>
+<pre><code class="hljs language-http">GET /api/websocket-config/validation</code></pre><p>Get configuration validation status.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Configuration validation status retrieved successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;validation_status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;max_connections&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;validated&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;validation_errors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;heartbeat_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;validated&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;validation_errors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Value 400.0 is above maximum 300.0&quot;</span><span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;invalid_keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;heartbeat_interval&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;valid_keys&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">49</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;invalid_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Reset</h3>
+<pre><code class="hljs language-http">POST /api/websocket-config/reset</code></pre><p>Reset configuration to default values.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Configuration reset to defaults successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;reset_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;snapshot_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;snapshot_1640995200&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;previous_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;max_connections&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">200</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;heartbeat_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45.0</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Configuration Health</h3>
+<pre><code class="hljs language-http">GET /api/websocket-config/health</code></pre><p>Get configuration system health status.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Configuration health check completed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;health_status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;healthy&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;issues&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;total_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;validated_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;invalid_values&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;source_distribution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;default&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;environment&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;runtime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;snapshots_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;config_file&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/websocket_config.json&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_modified&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Best Practices</h2>
+<h3>Configuration Management</h3>
+<ol>
+<li><p><strong>Use Environment Variables for Deployment</strong>: Set configuration values through environment variables for different deployment environments.</p>
+</li>
+<li><p><strong>Create Snapshots Before Changes</strong>: Always create snapshots before making significant configuration changes.</p>
+</li>
+<li><p><strong>Validate Configuration</strong>: Use the validation endpoints to ensure configuration is correct before applying changes.</p>
+</li>
+<li><p><strong>Monitor Configuration Health</strong>: Regularly check configuration health to identify issues.</p>
+</li>
+</ol>
+<h3>Performance Optimization</h3>
+<ol>
+<li><p><strong>Tune Connection Limits</strong>: Adjust <code>max_connections</code> based on server capacity and expected load.</p>
+</li>
+<li><p><strong>Optimize Heartbeat Intervals</strong>: Set appropriate heartbeat intervals to balance responsiveness and overhead.</p>
+</li>
+<li><p><strong>Enable Compression</strong>: Use compression for large messages to reduce bandwidth usage.</p>
+</li>
+<li><p><strong>Configure Rate Limiting</strong>: Set appropriate rate limits to prevent abuse while allowing legitimate traffic.</p>
+</li>
+</ol>
+<h3>Security Configuration</h3>
+<ol>
+<li><p><strong>Enable Authentication</strong>: Use authentication for sensitive WebSocket endpoints.</p>
+</li>
+<li><p><strong>Configure CORS</strong>: Set appropriate CORS policies for your deployment environment.</p>
+</li>
+<li><p><strong>Use IP Filtering</strong>: Enable IP filtering for additional security in production environments.</p>
+</li>
+<li><p><strong>Enable DDoS Protection</strong>: Configure DDoS protection thresholds based on expected traffic patterns.</p>
+</li>
+</ol>
+<h3>Monitoring and Analytics</h3>
+<ol>
+<li><p><strong>Enable Analytics</strong>: Use analytics to monitor WebSocket performance and usage patterns.</p>
+</li>
+<li><p><strong>Set Alert Thresholds</strong>: Configure alert thresholds to get notified of performance issues.</p>
+</li>
+<li><p><strong>Monitor Error Rates</strong>: Track error rates and response times to identify problems.</p>
+</li>
+<li><p><strong>Use Health Checks</strong>: Enable health checks to monitor system status.</p>
+</li>
+</ol>
+<h3>Development and Debugging</h3>
+<ol>
+<li><p><strong>Use Debug Mode</strong>: Enable debug mode during development for detailed logging.</p>
+</li>
+<li><p><strong>Profile Performance</strong>: Use profiling to identify performance bottlenecks.</p>
+</li>
+<li><p><strong>Test Configuration Changes</strong>: Always test configuration changes in a development environment first.</p>
+</li>
+<li><p><strong>Document Configuration</strong>: Document configuration changes and their rationale.</p>
+</li>
+</ol>
+<h2>Migration Guide</h2>
+<h3>From Legacy Configuration</h3>
+<p>The unified configuration system is backward compatible with existing WebSocket configurations:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Legacy configuration</span>
+<span class="hljs-keyword">from</span> app.utils.websocket_manager <span class="hljs-keyword">import</span> WebSocketConfig
+
+legacy_config = WebSocketConfig(
+    max_connections=<span class="hljs-number">100</span>,
+    heartbeat_interval=<span class="hljs-number">30.0</span>
+)
+
+<span class="hljs-comment"># Automatically converted to unified configuration</span>
+<span class="hljs-keyword">from</span> app.utils.websocket_manager <span class="hljs-keyword">import</span> WebSocketManager
+
+manager = WebSocketManager(legacy_config)  <span class="hljs-comment"># Automatic conversion</span></code></pre><h3>Environment Variable Migration</h3>
+<p>Existing environment variables are automatically supported:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Legacy environment variables (still supported)</span>
+WEBSOCKET_MAX_CONNECTIONS=100
+WEBSOCKET_HEARTBEAT_INTERVAL=30.0
+
+<span class="hljs-comment"># New unified environment variables (recommended)</span>
+WEBSOCKET_MAX_CONNECTIONS=200
+WEBSOCKET_HEARTBEAT_INTERVAL=45.0
+WEBSOCKET_ENABLE_ANALYTICS=<span class="hljs-literal">true</span>
+WEBSOCKET_ENABLE_SECURITY=<span class="hljs-literal">true</span></code></pre><h3>API Migration</h3>
+<p>The configuration API provides a unified interface for all WebSocket configuration:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Legacy approach (still supported)</span>
+manager = WebSocketManager(config=legacy_config)
+
+<span class="hljs-comment"># New unified approach (recommended)</span>
+<span class="hljs-keyword">from</span> app.utils.websocket_configuration <span class="hljs-keyword">import</span> get_websocket_config
+
+config = get_websocket_config()
+manager = WebSocketManager(config=config)</code></pre><h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<h4>Configuration Not Loading</h4>
+<p><strong>Problem</strong>: Configuration values are not being loaded from environment variables.</p>
+<p><strong>Solution</strong>: Ensure environment variables have the correct <code>WEBSOCKET_</code> prefix and are set before the application starts.</p>
+<h4>Validation Errors</h4>
+<p><strong>Problem</strong>: Configuration validation is failing.</p>
+<p><strong>Solution</strong>: Check the validation endpoint to see specific error messages and adjust values accordingly.</p>
+<h4>Hot-Reloading Not Working</h4>
+<p><strong>Problem</strong>: Configuration changes are not being detected automatically.</p>
+<p><strong>Solution</strong>: Ensure the configuration file exists and has proper permissions. Check that the file watcher is running.</p>
+<h4>Performance Issues</h4>
+<p><strong>Problem</strong>: WebSocket performance is degraded after configuration changes.</p>
+<p><strong>Solution</strong>: Use snapshots to rollback to a known good configuration. Monitor performance metrics to identify the cause.</p>
+<h3>Debug Mode</h3>
+<p>Enable debug mode for detailed logging:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> WEBSOCKET_ENABLE_DEBUG_MODE=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> WEBSOCKET_ENABLE_DETAILED_LOGGING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> WEBSOCKET_LOG_LEVEL=DEBUG</code></pre><h3>Health Monitoring</h3>
+<p>Use the health endpoint to monitor configuration system status:</p>
+<pre><code class="hljs language-bash">curl http://localhost:7000/api/websocket-config/health</code></pre><h3>Configuration Validation</h3>
+<p>Validate configuration before applying changes:</p>
+<pre><code class="hljs language-bash">curl http://localhost:7000/api/websocket-config/validation</code></pre><h2>Conclusion</h2>
+<p>The Unified WebSocket Configuration System provides a comprehensive, flexible, and robust solution for managing WebSocket configuration across all components of the yipyap application. With its environment-based configuration, runtime updates, validation, and monitoring capabilities, it ensures that WebSocket communication is optimized, secure, and maintainable.</p>
+<p>For more information about specific WebSocket components, see:</p>
+<ul>
+<li><a href="websocket-manager.md">WebSocket Manager Documentation</a></li>
+<li><a href="websocket-analytics.md">WebSocket Analytics Documentation</a></li>
+<li><a href="websocket-endpoint.md">WebSocket Endpoint Documentation</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

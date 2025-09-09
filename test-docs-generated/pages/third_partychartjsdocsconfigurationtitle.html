@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Title</h1>
+      <div class="markdown-content"><h1>Title</h1>
+<p>The chart title defines text to draw at the top of the chart.</p>
+<h2>Title Configuration</h2>
+<p>Namespace: <code>options.plugins.title</code>, the global options for the chart title is defined in <code>Chart.defaults.plugins.title</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th align="center"><a href="../general/options.md#scriptable-options">Scriptable</a></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>align</code></td>
+<td><code>string</code></td>
+<td><code>&#39;center&#39;</code></td>
+<td align="center">Yes</td>
+<td>Alignment of the title. <a href="#align">more...</a></td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.color</code></td>
+<td align="center">Yes</td>
+<td>Color of text.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td align="center">Yes</td>
+<td>Is the title shown?</td>
+</tr>
+<tr>
+<td><code>fullSize</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td align="center">Yes</td>
+<td>Marks that this box should take the full width/height of the canvas. If <code>false</code>, the box is sized and placed above/beside the chart area.</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td><code>string</code></td>
+<td><code>&#39;top&#39;</code></td>
+<td align="center">Yes</td>
+<td>Position of title. <a href="#position">more...</a></td>
+</tr>
+<tr>
+<td><code>font</code></td>
+<td><code>Font</code></td>
+<td><code>{weight: &#39;bold&#39;}</code></td>
+<td align="center">Yes</td>
+<td>See <a href="../general/fonts.md">Fonts</a></td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td><a href="../general/padding.md"><code>Padding</code></a></td>
+<td><code>10</code></td>
+<td align="center">Yes</td>
+<td>Padding to apply around the title. Only <code>top</code> and <code>bottom</code> are implemented.</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>string</code>|<code>string[]</code></td>
+<td><code>&#39;&#39;</code></td>
+<td align="center">Yes</td>
+<td>Title text to display. If specified as an array, text is rendered on multiple lines.</td>
+</tr>
+</tbody></table>
+<p>:::tip Note<br>If you need more visual customizations, you can implement the title with HTML and CSS.<br>:::</p>
+<h3>Position</h3>
+<p>Possible title position values are:</p>
+<ul>
+<li><code>&#39;top&#39;</code></li>
+<li><code>&#39;left&#39;</code></li>
+<li><code>&#39;bottom&#39;</code></li>
+<li><code>&#39;right&#39;</code></li>
+</ul>
+<h2>Align</h2>
+<p>Alignment of the title. Options are:</p>
+<ul>
+<li><code>&#39;start&#39;</code></li>
+<li><code>&#39;center&#39;</code></li>
+<li><code>&#39;end&#39;</code></li>
+</ul>
+<h2>Example Usage</h2>
+<p>The example below would enable a title of &#39;Custom Chart Title&#39; on the chart that is created.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">title</span>: {
+                <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Custom Chart Title&#x27;</span>
+            }
+        }
+    }
+});</code></pre><p>This example shows how to specify separate top and bottom title text padding:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">title</span>: {
+                <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Custom Chart Title&#x27;</span>,
+                <span class="hljs-attr">padding</span>: {
+                    <span class="hljs-attr">top</span>: <span class="hljs-number">10</span>,
+                    <span class="hljs-attr">bottom</span>: <span class="hljs-number">30</span>
+                }
+            }
+        }
+    }
+});</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

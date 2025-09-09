@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Gradient - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Linear Gradient</h1>
+      <div class="markdown-content"><h1>Linear Gradient</h1>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:actions:3&gt;</span>
+<span class="hljs-keyword">const</span> actions = [
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Randomize&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">data</span>.<span class="hljs-property">datasets</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.<span class="hljs-property">data</span> = <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>({<span class="hljs-attr">count</span>: chart.<span class="hljs-property">data</span>.<span class="hljs-property">labels</span>.<span class="hljs-property">length</span>, <span class="hljs-attr">min</span>: -<span class="hljs-number">100</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>});
+      });
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Add Data&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      <span class="hljs-keyword">const</span> data = chart.<span class="hljs-property">data</span>;
+      <span class="hljs-keyword">if</span> (data.<span class="hljs-property">datasets</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+        data.<span class="hljs-property">labels</span> = <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">months</span>({<span class="hljs-attr">count</span>: data.<span class="hljs-property">labels</span>.<span class="hljs-property">length</span> + <span class="hljs-number">1</span>});
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; data.<span class="hljs-property">datasets</span>.<span class="hljs-property">length</span>; ++index) {
+          data.<span class="hljs-property">datasets</span>[index].<span class="hljs-property">data</span>.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">rand</span>(-<span class="hljs-number">100</span>, <span class="hljs-number">100</span>));
+        }
+
+        chart.<span class="hljs-title function_">update</span>();
+      }
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Remove Data&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">data</span>.<span class="hljs-property">labels</span>.<span class="hljs-title function_">splice</span>(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// remove the label first</span>
+
+      chart.<span class="hljs-property">data</span>.<span class="hljs-property">datasets</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.<span class="hljs-property">data</span>.<span class="hljs-title function_">pop</span>();
+      });
+
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  }
+];
+<span class="hljs-comment">// &lt;/block:actions&gt;</span>
+
+<span class="hljs-comment">// &lt;block:getGradient:0&gt;</span>
+<span class="hljs-keyword">let</span> width, height, gradient;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">getGradient</span>(<span class="hljs-params">ctx, chartArea</span>) {
+  <span class="hljs-keyword">const</span> chartWidth = chartArea.<span class="hljs-property">right</span> - chartArea.<span class="hljs-property">left</span>;
+  <span class="hljs-keyword">const</span> chartHeight = chartArea.<span class="hljs-property">bottom</span> - chartArea.<span class="hljs-property">top</span>;
+  <span class="hljs-keyword">if</span> (!gradient || width !== chartWidth || height !== chartHeight) {
+    <span class="hljs-comment">// Create the gradient because this is either the first render</span>
+    <span class="hljs-comment">// or the size of the chart has changed</span>
+    width = chartWidth;
+    height = chartHeight;
+    gradient = ctx.<span class="hljs-title function_">createLinearGradient</span>(<span class="hljs-number">0</span>, chartArea.<span class="hljs-property">bottom</span>, <span class="hljs-number">0</span>, chartArea.<span class="hljs-property">top</span>);
+    gradient.<span class="hljs-title function_">addColorStop</span>(<span class="hljs-number">0</span>, <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>);
+    gradient.<span class="hljs-title function_">addColorStop</span>(<span class="hljs-number">0.5</span>, <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">yellow</span>);
+    gradient.<span class="hljs-title function_">addColorStop</span>(<span class="hljs-number">1</span>, <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>);
+  }
+
+  <span class="hljs-keyword">return</span> gradient;
+}
+<span class="hljs-comment">// &lt;/block:getGradient&gt;</span>
+
+<span class="hljs-comment">// &lt;block:setup:2&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DATA_COUNT</span> = <span class="hljs-number">7</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">NUMBER_CFG</span> = {<span class="hljs-attr">count</span>: <span class="hljs-variable constant_">DATA_COUNT</span>, <span class="hljs-attr">min</span>: -<span class="hljs-number">100</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>};
+<span class="hljs-keyword">const</span> labels = <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">months</span>({<span class="hljs-attr">count</span>: <span class="hljs-number">7</span>});
+
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">labels</span>: labels,
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>(<span class="hljs-variable constant_">NUMBER_CFG</span>),
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) {
+        <span class="hljs-keyword">const</span> chart = context.<span class="hljs-property">chart</span>;
+        <span class="hljs-keyword">const</span> {ctx, chartArea} = chart;
+
+        <span class="hljs-keyword">if</span> (!chartArea) {
+          <span class="hljs-comment">// This case happens on initial chart load</span>
+          <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_">getGradient</span>(ctx, chartArea);
+      },
+    },
+  ]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:1&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">responsive</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">legend</span>: {
+        <span class="hljs-attr">position</span>: <span class="hljs-string">&#x27;top&#x27;</span>,
+      },
+    }
+  },
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">actions</span>: actions,
+  <span class="hljs-attr">config</span>: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/colors.md">Colors</a><ul>
+<li><a href="../../general/colors.md#patterns-and-gradients">Patterns and Gradients</a></li>
+</ul>
+</li>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../general/options.md">Options</a><ul>
+<li><a href="../../general/options.md#scriptable-options">Scriptable Options</a></li>
+</ul>
+</li>
+<li><a href="../../charts/line.md">Line</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

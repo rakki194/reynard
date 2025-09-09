@@ -1,7 +1,7 @@
-import { PackageAnalyzer } from "./analyzers/package-analyzer.js";
-import { TypeScriptAnalyzer } from "./analyzers/typescript-analyzer.js";
-import { MarkdownAnalyzer } from "./analyzers/markdown-analyzer.js";
-import { TemplateEngine } from "./templates/template-engine.js";
+import { PackageAnalyzer } from "./analyzers/package-analyzer";
+import { TypeScriptAnalyzer } from "./analyzers/typescript-analyzer";
+import { MarkdownAnalyzer } from "./analyzers/markdown-analyzer";
+import { TemplateEngine } from "./templates/template-engine";
 import type { GeneratorConfig } from "./config/types/core";
 import type { PackageInfo } from "./config/types/package";
 import { DocPage, DocSection } from "./types.js";

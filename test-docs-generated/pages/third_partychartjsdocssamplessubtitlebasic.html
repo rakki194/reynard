@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Basic</h1>
+      <div class="markdown-content"><h1>Basic</h1>
+<p>This sample shows basic usage of subtitle.</p>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+const DATA_COUNT <span class="hljs-operator">=</span> <span class="hljs-number">7</span>;
+const NUMBER_CFG <span class="hljs-operator">=</span> {<span class="hljs-params">count:</span> DATA_COUNT, <span class="hljs-params">min:</span> <span class="hljs-operator">-</span><span class="hljs-number">100</span>, <span class="hljs-params">max:</span> <span class="hljs-number">100</span>};
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">labels:</span> Utils.months({<span class="hljs-params">count:</span> DATA_COUNT}),
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;Dataset <span class="hljs-number">1</span>&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>,
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red, <span class="hljs-number">0.5</span>),
+    },
+  ]
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;line&#x27;,
+  <span class="hljs-params">data:</span> data,
+  <span class="hljs-params">options:</span> {
+    <span class="hljs-params">plugins:</span> {
+      <span class="hljs-params">title:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+        <span class="hljs-params">text:</span> &#x27;Chart Title&#x27;,
+      },
+      <span class="hljs-params">subtitle:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+        <span class="hljs-params">text:</span> &#x27;Chart Subtitle&#x27;,
+        <span class="hljs-params">color:</span> &#x27;blue&#x27;,
+        <span class="hljs-params">font:</span> {
+          <span class="hljs-params">size:</span> <span class="hljs-number">12</span>,
+          <span class="hljs-params">family:</span> &#x27;tahoma&#x27;,
+          <span class="hljs-params">weight:</span> &#x27;normal&#x27;,
+          <span class="hljs-params">style:</span> &#x27;italic&#x27;
+        },
+        <span class="hljs-params">padding:</span> {
+          <span class="hljs-params">bottom:</span> <span class="hljs-number">10</span>
+        }
+      }
+    }
+  }
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">config:</span> config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../configuration/title.md">Title</a></li>
+<li><a href="../../configuration/subtitle.md">Subtitle</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

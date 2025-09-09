@@ -127,12 +127,12 @@ Reynard is more than a framework - it's a movement toward smarter, more intuitiv
 
 ## 📚 Next Steps
 
-- **[Quick Start Guide](./QUICKSTART.md)** - Get up and running with Reynard
-- **[Complete Tutorial](./TUTORIAL.md)** - Build your first Reynard application
-- **[Package Documentation](./PACKAGES.md)** - Detailed package documentation
-- **[Examples and Templates](./EXAMPLES.md)** - Real-world applications and templates
-- **[API Reference](./API.md)** - Complete API documentation
-- **[Performance Guide](./PERFORMANCE.md)** - Optimization and performance tips
+- **[Quick Start Guide](./quickstart.md)** - Get up and running with Reynard
+- **[Complete Tutorial](./tutorial.md)** - Build your first Reynard application
+- **[Package Documentation](./packages.md)** - Detailed package documentation
+- **[Examples and Templates](./examples.md)** - Real-world applications and templates
+- **[API Reference](./api.md)** - Complete API documentation
+- **[Performance Guide](./performance.md)** - Optimization and performance tips
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to Reynard
 
 ---

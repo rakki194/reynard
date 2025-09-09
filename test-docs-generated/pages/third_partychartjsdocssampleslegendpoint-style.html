@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Point Style - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Point Style</h1>
+      <div class="markdown-content"><h1>Point Style</h1>
+<p>This sample show how to use the dataset point style in the legend instead of a rectangle to identify each dataset..</p>
+<pre><code class="hljs"><span class="hljs-string">//</span> <span class="hljs-string">&lt;block:actions:2&gt;</span>
+<span class="hljs-string">const</span> <span class="hljs-string">actions</span> <span class="hljs-string">=</span> [
+  {
+    <span class="hljs-attr">name:</span> <span class="hljs-string">&#x27;Toggle Point Style&#x27;</span>,
+    <span class="hljs-string">handler(chart)</span> {
+      <span class="hljs-string">chart.options.plugins.legend.labels.usePointStyle</span> <span class="hljs-string">=</span> <span class="hljs-type">!chart.options.plugins.legend.labels.usePointStyle;</span>
+      <span class="hljs-string">chart.update();</span>
+    }
+  },
+]<span class="hljs-string">;</span>
+<span class="hljs-string">//</span> <span class="hljs-string">&lt;/block:actions&gt;</span>
+
+<span class="hljs-string">//</span> <span class="hljs-string">&lt;block:setup:1&gt;</span>
+<span class="hljs-string">const</span> <span class="hljs-string">DATA_COUNT</span> <span class="hljs-string">=</span> <span class="hljs-number">7</span><span class="hljs-string">;</span>
+<span class="hljs-string">const</span> <span class="hljs-string">NUMBER_CFG</span> <span class="hljs-string">=</span> {<span class="hljs-attr">count:</span> <span class="hljs-string">DATA_COUNT</span>, <span class="hljs-attr">min:</span> <span class="hljs-number">-100</span>, <span class="hljs-attr">max:</span> <span class="hljs-number">100</span>}<span class="hljs-string">;</span>
+<span class="hljs-string">const</span> <span class="hljs-string">data</span> <span class="hljs-string">=</span> {
+  <span class="hljs-attr">labels:</span> <span class="hljs-string">Utils.months(</span>{<span class="hljs-attr">count:</span> <span class="hljs-string">DATA_COUNT</span>}<span class="hljs-string">)</span>,
+  <span class="hljs-attr">datasets:</span> [
+    {
+      <span class="hljs-attr">label:</span> <span class="hljs-string">&#x27;Dataset 1&#x27;</span>,
+      <span class="hljs-attr">data:</span> <span class="hljs-string">Utils.numbers(NUMBER_CFG)</span>,
+      <span class="hljs-attr">fill:</span> <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">borderColor:</span> <span class="hljs-string">Utils.CHART_COLORS.red</span>,
+      <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">Utils.transparentize(Utils.CHART_COLORS.red</span>, <span class="hljs-number">0.5</span><span class="hljs-string">)</span>,
+      <span class="hljs-attr">borderWidth:</span> <span class="hljs-number">1</span>,
+      <span class="hljs-attr">pointStyle:</span> <span class="hljs-string">&#x27;rectRot&#x27;</span>,
+      <span class="hljs-attr">pointRadius:</span> <span class="hljs-number">5</span>,
+      <span class="hljs-attr">pointBorderColor:</span> <span class="hljs-string">&#x27;rgb(0, 0, 0)&#x27;</span>
+    },
+  ]
+}<span class="hljs-string">;</span>
+<span class="hljs-string">//</span> <span class="hljs-string">&lt;/block:setup&gt;</span>
+
+<span class="hljs-string">//</span> <span class="hljs-string">&lt;block:config:0&gt;</span>
+<span class="hljs-string">const</span> <span class="hljs-string">config</span> <span class="hljs-string">=</span> {
+  <span class="hljs-attr">type:</span> <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data:</span> <span class="hljs-string">data</span>,
+  <span class="hljs-attr">options:</span> {
+    <span class="hljs-attr">plugins:</span> {
+      <span class="hljs-attr">legend:</span> {
+        <span class="hljs-attr">labels:</span> {
+          <span class="hljs-attr">usePointStyle:</span> <span class="hljs-literal">true</span>,
+        },
+      }
+    }
+  }
+}<span class="hljs-string">;</span>
+<span class="hljs-string">//</span> <span class="hljs-string">&lt;/block:config&gt;</span>
+
+<span class="hljs-string">module.exports</span> <span class="hljs-string">=</span> {
+  <span class="hljs-attr">actions:</span> <span class="hljs-string">actions</span>,
+  <span class="hljs-attr">config:</span> <span class="hljs-string">config</span>,
+}<span class="hljs-string">;</span></code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../configuration/legend.md">Legend</a><ul>
+<li><a href="../../configuration/legend.md#legend-label-configuration">Legend Label Configuration</a><ul>
+<li><code>usePointStyle</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../../configuration/elements.md">Elements</a><ul>
+<li><a href="../../configuration/elements.md#point-configuration">Point Configuration</a></li>
+<li><a href="../../configuration/elements.md#point-styles">Point Styles</a></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

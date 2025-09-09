@@ -1,0 +1,403 @@
+/**
+ * Caption Generator Styles
+ * 
+ * Styles for the interactive caption generation interface with modern design
+ * and smooth animations. Integrates with Reynard's OKLCH color system.
+ */
+
+.caption-generator {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header */
+.generator-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.generator-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.generator-description {
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Model Selection */
+.model-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.model-label {
+  font-weight: 500;
+  color: var(--color-text, #111827);
+  font-size: 0.875rem;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.model-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--color-surface, #ffffff);
+  border: 2px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.model-card:hover:not(:disabled) {
+  border-color: var(--color-primary, #3b82f6);
+  background: var(--color-surface-hover, #f9fafb);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.model-card--selected {
+  border-color: var(--color-primary, #3b82f6);
+  background: var(--color-primary-hover, #eff6ff);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.model-card--unavailable {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-surface, #f3f4f6);
+}
+
+.model-name {
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  font-size: 0.875rem;
+}
+
+.model-description {
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.model-status {
+  color: var(--color-error, #dc2626);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Image Upload */
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.upload-label {
+  font-weight: 500;
+  color: var(--color-text, #111827);
+  font-size: 0.875rem;
+}
+
+.upload-area {
+  border: 2px dashed var(--color-border, #d1d5db);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--color-surface, #ffffff);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area:hover {
+  border-color: var(--color-primary, #3b82f6);
+  background: var(--color-surface-hover, #f9fafb);
+}
+
+.upload-area--drag-over {
+  border-color: var(--color-primary, #3b82f6);
+  background: var(--color-primary-hover, #eff6ff);
+  transform: scale(1.02);
+}
+
+.upload-area--has-file {
+  border-style: solid;
+  border-color: var(--color-success, #10b981);
+  background: var(--color-success-hover, #ecfdf5);
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.upload-icon {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.upload-text {
+  color: var(--color-text, #111827);
+  font-weight: 500;
+}
+
+.upload-hint {
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.image-name {
+  font-weight: 500;
+  color: var(--color-text, #111827);
+  font-size: 0.875rem;
+}
+
+.image-size {
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+}
+
+/* Generation Controls */
+.generation-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.generate-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.generate-button:hover:not(:disabled) {
+  background: var(--color-primary-hover, #2563eb);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.generate-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.generate-button--loading {
+  background: var(--color-primary-active, #1d4ed8);
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--color-surface-dark, #e5e7eb);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary, #3b82f6), var(--color-accent, #8b5cf6));
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+  animation: progress-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes progress-shimmer {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error Display */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-error-hover, #fef2f2);
+  border: 1px solid var(--color-error, #dc2626);
+  border-radius: 0.5rem;
+  color: var(--color-error, #dc2626);
+}
+
+.error-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.error-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Results */
+.generation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-success-hover, #ecfdf5);
+  border: 1px solid var(--color-success, #10b981);
+  border-radius: 0.75rem;
+}
+
+.results-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.results-content {
+  background: var(--color-surface, #ffffff);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.result-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.result-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.result-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .caption-generator {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .model-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .upload-area {
+    padding: 1.5rem;
+    min-height: 150px;
+  }
+  
+  .result-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Theme Support */
+@media (prefers-color-scheme: dark) {
+  .caption-generator {
+    background: var(--color-surface-dark, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .model-card {
+    background: var(--color-surface-dark, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .upload-area {
+    background: var(--color-surface-dark, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .results-content {
+    background: var(--color-surface-dark, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+}

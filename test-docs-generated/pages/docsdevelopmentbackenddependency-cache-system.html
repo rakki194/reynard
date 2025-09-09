@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dependency Cache System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Dependency Cache System</h1>
+      <div class="markdown-content"><h1>Dependency Cache System</h1>
+<h2>Overview</h2>
+<p>The Dependency Cache System is a comprehensive caching solution for dependency resolution results, dependency graph snapshots, and performance metrics. It provides advanced features like cache invalidation strategies, performance monitoring, and intelligent cache management to improve system performance while maintaining data consistency.</p>
+<h2>Architecture</h2>
+<h3>Core Components</h3>
+<h4>DependencyCacheManager</h4>
+<p>The main cache manager that orchestrates all caching operations. It provides:</p>
+<ul>
+<li>Thread-safe cache operations</li>
+<li>Intelligent cache eviction</li>
+<li>Performance metrics tracking</li>
+<li>Cache invalidation rules</li>
+<li>Graph snapshot persistence</li>
+</ul>
+<h4>DependencyCacheEntry</h4>
+<p>Represents a single cache entry with:</p>
+<ul>
+<li>Unique cache key</li>
+<li>Cached result data</li>
+<li>Timestamp and TTL information</li>
+<li>Access statistics</li>
+<li>Entry status tracking</li>
+<li>Metadata support</li>
+</ul>
+<h4>DependencyCacheMetrics</h4>
+<p>Comprehensive performance metrics including:</p>
+<ul>
+<li>Cache hit/miss rates</li>
+<li>Memory usage statistics</li>
+<li>Access time measurements</li>
+<li>Age distribution analysis</li>
+<li>Performance trends tracking</li>
+</ul>
+<h4>CacheInvalidationRule</h4>
+<p>Configurable rules for automatic cache invalidation:</p>
+<ul>
+<li>Time-based invalidation</li>
+<li>Dependency change detection</li>
+<li>Memory pressure triggers</li>
+<li>Custom event-based rules</li>
+</ul>
+<h2>Features</h2>
+<h3>1. Advanced Caching</h3>
+<ul>
+<li><strong>TTL-based expiration</strong>: Automatic expiration of cache entries</li>
+<li><strong>LRU-like eviction</strong>: Intelligent cache eviction based on access patterns</li>
+<li><strong>Size-based management</strong>: Memory-aware cache size management</li>
+<li><strong>Type-based indexing</strong>: Efficient cache key indexing by type</li>
+</ul>
+<h3>2. Cache Invalidation Strategies</h3>
+<ul>
+<li><strong>Dependency change detection</strong>: Automatically invalidate cache when dependencies change</li>
+<li><strong>Time-based invalidation</strong>: Remove old cache entries based on age</li>
+<li><strong>Memory pressure triggers</strong>: Intelligent invalidation under memory pressure</li>
+<li><strong>Custom rules</strong>: User-defined invalidation rules with priority ordering</li>
+</ul>
+<h3>3. Performance Monitoring</h3>
+<ul>
+<li><strong>Real-time metrics</strong>: Live performance tracking</li>
+<li><strong>Access pattern analysis</strong>: Track cache access patterns for optimization</li>
+<li><strong>Memory usage monitoring</strong>: Monitor cache memory consumption</li>
+<li><strong>Performance trends</strong>: Historical performance data analysis</li>
+</ul>
+<h3>4. Graph Snapshot Persistence</h3>
+<ul>
+<li><strong>Dependency graph snapshots</strong>: Save and restore dependency graph states</li>
+<li><strong>Checksum validation</strong>: Data integrity verification</li>
+<li><strong>Version management</strong>: Snapshot versioning and compatibility</li>
+<li><strong>Compression support</strong>: Optional data compression</li>
+</ul>
+<h3>5. Cache Optimization</h3>
+<ul>
+<li><strong>Access pattern analysis</strong>: Analyze usage patterns for optimization</li>
+<li><strong>Automatic optimization</strong>: Intelligent cache entry eviction</li>
+<li><strong>Performance recommendations</strong>: Suggest optimization strategies</li>
+<li><strong>Memory management</strong>: Efficient memory usage optimization</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Basic Cache Operations</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.dependency_cache_system <span class="hljs-keyword">import</span> DependencyCacheManager
+
+<span class="hljs-comment"># Initialize cache manager</span>
+cache_manager = DependencyCacheManager(max_size_bytes=<span class="hljs-number">100</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>)  <span class="hljs-comment"># 100MB</span>
+
+<span class="hljs-comment"># Store a cache entry</span>
+cache_key = cache_manager.<span class="hljs-built_in">set</span>(
+    <span class="hljs-string">&quot;topological_sort&quot;</span>,
+    result_data,
+    ttl=<span class="hljs-number">3600.0</span>,  <span class="hljs-comment"># 1 hour TTL</span>
+    packages=[<span class="hljs-string">&quot;pkg1&quot;</span>, <span class="hljs-string">&quot;pkg2&quot;</span>, <span class="hljs-string">&quot;pkg3&quot;</span>],
+    algorithm=<span class="hljs-string">&quot;kahn&quot;</span>
+)
+
+<span class="hljs-comment"># Retrieve cached result</span>
+result = cache_manager.get(
+    <span class="hljs-string">&quot;topological_sort&quot;</span>,
+    packages=[<span class="hljs-string">&quot;pkg1&quot;</span>, <span class="hljs-string">&quot;pkg2&quot;</span>, <span class="hljs-string">&quot;pkg3&quot;</span>],
+    algorithm=<span class="hljs-string">&quot;kahn&quot;</span>
+)</code></pre><h3>Cache Invalidation</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Invalidate specific cache type</span>
+invalidated_count = cache_manager.invalidate(<span class="hljs-string">&quot;topological_sort&quot;</span>)
+
+<span class="hljs-comment"># Invalidate all cache entries</span>
+cache_manager.invalidate(<span class="hljs-string">&quot;all&quot;</span>)
+
+<span class="hljs-comment"># Add custom invalidation rule</span>
+<span class="hljs-keyword">from</span> app.utils.dependency_cache_system <span class="hljs-keyword">import</span> CacheInvalidationRule
+
+rule = CacheInvalidationRule(
+    rule_type=<span class="hljs-string">&quot;custom_rule&quot;</span>,
+    trigger_conditions={<span class="hljs-string">&quot;event&quot;</span>: <span class="hljs-string">&quot;package_updated&quot;</span>},
+    affected_cache_types=[<span class="hljs-string">&quot;topological_sort&quot;</span>, <span class="hljs-string">&quot;dependency_resolution&quot;</span>],
+    priority=<span class="hljs-number">1</span>,
+    description=<span class="hljs-string">&quot;Invalidate cache when packages are updated&quot;</span>
+)
+cache_manager.add_invalidation_rule(rule)</code></pre><h3>Performance Monitoring</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get comprehensive metrics</span>
+metrics = cache_manager.get_metrics()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Cache hit rate: <span class="hljs-subst">{metrics.cache_hit_rate:<span class="hljs-number">.2</span>%}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total entries: <span class="hljs-subst">{metrics.total_cache_entries}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory usage: <span class="hljs-subst">{metrics.memory_usage_bytes / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>:<span class="hljs-number">.2</span>f}</span> MB&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Average access time: <span class="hljs-subst">{metrics.average_cache_access_time:<span class="hljs-number">.4</span>f}</span> seconds&quot;</span>)</code></pre><h3>Graph Snapshot Management</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Save dependency graph snapshot</span>
+graph_data = {
+    <span class="hljs-string">&quot;nodes&quot;</span>: {<span class="hljs-string">&quot;pkg1&quot;</span>: {}, <span class="hljs-string">&quot;pkg2&quot;</span>: {}},
+    <span class="hljs-string">&quot;edges&quot;</span>: [(<span class="hljs-string">&quot;pkg1&quot;</span>, <span class="hljs-string">&quot;pkg2&quot;</span>, {})],
+    <span class="hljs-string">&quot;cycles&quot;</span>: [],
+    <span class="hljs-string">&quot;max_depth&quot;</span>: <span class="hljs-number">2</span>
+}
+checksum = cache_manager.save_graph_snapshot(graph_data)
+
+<span class="hljs-comment"># Restore snapshot</span>
+restored_data = cache_manager.restore_graph_snapshot(checksum)
+
+<span class="hljs-comment"># Get all snapshots</span>
+snapshots = cache_manager.get_graph_snapshots()</code></pre><h3>Cache Optimization</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Perform cache optimization</span>
+optimization_results = cache_manager.optimize_cache()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Entries optimized: <span class="hljs-subst">{optimization_results[<span class="hljs-string">&#x27;entries_optimized&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory freed: <span class="hljs-subst">{optimization_results[<span class="hljs-string">&#x27;memory_freed&#x27;</span>]}</span> bytes&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Recommendations: <span class="hljs-subst">{<span class="hljs-built_in">len</span>(optimization_results[<span class="hljs-string">&#x27;recommendations&#x27;</span>])}</span>&quot;</span>)</code></pre><h2>Configuration</h2>
+<h3>Default Settings</h3>
+<ul>
+<li><strong>Max cache size</strong>: 100MB</li>
+<li><strong>Default TTL</strong>: 1 hour</li>
+<li><strong>Cleanup interval</strong>: 5 minutes</li>
+<li><strong>Max snapshots</strong>: 10</li>
+<li><strong>Access pattern limit</strong>: 100 entries per key</li>
+</ul>
+<h3>Customization</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Custom cache manager with specific settings</span>
+cache_manager = DependencyCacheManager(
+    max_size_bytes=<span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>,  <span class="hljs-comment"># 50MB</span>
+)
+
+<span class="hljs-comment"># The cache manager automatically sets up default invalidation rules:</span>
+<span class="hljs-comment"># 1. Dependency change detection (priority 1)</span>
+<span class="hljs-comment"># 2. Time-based invalidation (priority 2)</span>
+<span class="hljs-comment"># 3. Memory pressure triggers (priority 3)</span>
+<span class="hljs-comment"># 4. Cache size limits (priority 4)</span></code></pre><h2>Performance Characteristics</h2>
+<h3>Memory Usage</h3>
+<ul>
+<li><strong>Efficient storage</strong>: Minimal overhead per cache entry</li>
+<li><strong>Size tracking</strong>: Accurate memory usage monitoring</li>
+<li><strong>Automatic cleanup</strong>: Expired entry removal</li>
+<li><strong>Eviction strategies</strong>: LRU-like eviction under memory pressure</li>
+</ul>
+<h3>Access Performance</h3>
+<ul>
+<li><strong>O(1) average case</strong>: Hash-based cache key lookup</li>
+<li><strong>Fast invalidation</strong>: Type-based indexing for efficient invalidation</li>
+<li><strong>Minimal locking</strong>: Thread-safe operations with minimal contention</li>
+<li><strong>Optimized serialization</strong>: Efficient cache key generation</li>
+</ul>
+<h3>Scalability</h3>
+<ul>
+<li><strong>Linear scaling</strong>: Performance scales linearly with cache size</li>
+<li><strong>Memory efficient</strong>: Intelligent memory management</li>
+<li><strong>Concurrent access</strong>: Thread-safe operations</li>
+<li><strong>Configurable limits</strong>: Adjustable size and performance limits</li>
+</ul>
+<h2>Integration</h2>
+<h3>With Lazy Loader</h3>
+<p>The dependency cache system integrates seamlessly with the lazy loader:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># The lazy loader automatically uses the cache for:</span>
+<span class="hljs-comment"># - Topological sort results</span>
+<span class="hljs-comment"># - Dependency resolution results</span>
+<span class="hljs-comment"># - Performance impact analysis</span>
+<span class="hljs-comment"># - Bottleneck detection</span>
+
+<span class="hljs-comment"># Cache invalidation is triggered automatically when:</span>
+<span class="hljs-comment"># - New packages are registered</span>
+<span class="hljs-comment"># - Dependencies are modified</span>
+<span class="hljs-comment"># - System memory pressure is detected</span></code></pre><h3>With Other Systems</h3>
+<p>The cache system can be used independently or integrated with other systems:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Standalone usage</span>
+cache_manager = DependencyCacheManager()
+
+<span class="hljs-comment"># Integration with service management</span>
+cache_manager.check_invalidation_rules(<span class="hljs-string">&quot;service_restart&quot;</span>)
+
+<span class="hljs-comment"># Integration with monitoring systems</span>
+metrics = cache_manager.get_metrics()
+<span class="hljs-comment"># Send metrics to monitoring system</span></code></pre><h2>Testing</h2>
+<p>The dependency cache system includes comprehensive tests covering:</p>
+<ul>
+<li><strong>Basic operations</strong>: Set, get, invalidate</li>
+<li><strong>TTL expiration</strong>: Time-based expiration</li>
+<li><strong>Cache eviction</strong>: Memory pressure handling</li>
+<li><strong>Invalidation rules</strong>: Rule-based invalidation</li>
+<li><strong>Performance metrics</strong>: Accuracy and consistency</li>
+<li><strong>Graph snapshots</strong>: Persistence and restoration</li>
+<li><strong>Error handling</strong>: Graceful error recovery</li>
+<li><strong>Concurrent access</strong>: Thread safety</li>
+<li><strong>Memory management</strong>: Efficient memory usage</li>
+</ul>
+<h3>Test Coverage</h3>
+<ul>
+<li><strong>87% code coverage</strong>: Comprehensive test coverage</li>
+<li><strong>29 test cases</strong>: Extensive test scenarios</li>
+<li><strong>Error scenarios</strong>: Exception handling validation</li>
+<li><strong>Performance tests</strong>: Performance characteristic validation</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>1. Cache Key Design</h3>
+<ul>
+<li>Use descriptive cache types</li>
+<li>Include all relevant parameters in cache keys</li>
+<li>Avoid overly complex cache key structures</li>
+<li>Use consistent parameter ordering</li>
+</ul>
+<h3>2. TTL Configuration</h3>
+<ul>
+<li>Set appropriate TTL values based on data volatility</li>
+<li>Use shorter TTL for frequently changing data</li>
+<li>Use longer TTL for stable dependency information</li>
+<li>Monitor cache hit rates to optimize TTL</li>
+</ul>
+<h3>3. Memory Management</h3>
+<ul>
+<li>Monitor cache memory usage</li>
+<li>Set appropriate max cache size limits</li>
+<li>Use cache optimization features</li>
+<li>Implement custom invalidation rules for memory pressure</li>
+</ul>
+<h3>4. Performance Monitoring</h3>
+<ul>
+<li>Regularly check cache metrics</li>
+<li>Monitor cache hit rates</li>
+<li>Track memory usage trends</li>
+<li>Use performance trends for optimization</li>
+</ul>
+<h3>5. Error Handling</h3>
+<ul>
+<li>Handle cache misses gracefully</li>
+<li>Implement fallback mechanisms</li>
+<li>Monitor cache error rates</li>
+<li>Use cache optimization for error recovery</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ul>
+<li><strong>Distributed caching</strong>: Multi-node cache support</li>
+<li><strong>Persistent storage</strong>: Disk-based cache persistence</li>
+<li><strong>Advanced analytics</strong>: Machine learning-based optimization</li>
+<li><strong>Real-time monitoring</strong>: WebSocket-based metrics streaming</li>
+<li><strong>Cache warming</strong>: Predictive cache population</li>
+<li><strong>Compression</strong>: Advanced data compression algorithms</li>
+</ul>
+<h3>Performance Improvements</h3>
+<ul>
+<li><strong>Lock-free operations</strong>: Non-blocking cache operations</li>
+<li><strong>Memory pooling</strong>: Efficient memory allocation</li>
+<li><strong>Batch operations</strong>: Bulk cache operations</li>
+<li><strong>Async support</strong>: Asynchronous cache operations</li>
+</ul>
+<h2>Conclusion</h2>
+<p>The Dependency Cache System provides a robust, efficient, and feature-rich caching solution for dependency management. With its comprehensive feature set, excellent performance characteristics, and extensive testing, it serves as a critical component in the lazy loader architecture, significantly improving system performance while maintaining data consistency and reliability.</p>
+<p>The system&#39;s modular design, comprehensive documentation, and extensive test coverage make it easy to understand, maintain, and extend. Its integration with the lazy loader provides seamless caching capabilities while its standalone nature allows for use in other contexts as needed.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

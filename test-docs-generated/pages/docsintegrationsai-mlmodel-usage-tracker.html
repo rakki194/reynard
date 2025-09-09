@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Usage Tracker - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Model Usage Tracker</h1>
+      <div class="markdown-content"><h1>Model Usage Tracker</h1>
+<p>Tracks usage and auto‑unloads models after inactivity, with configurable timeouts per model type and admin/user APIs to inspect/update settings.</p>
+<h2>Overview</h2>
+<p>The tracker records when a model is loaded/used, preserves per‑model metrics, and runs a background cleanup loop to unload inactive models from VRAM/RAM based on timeouts. Timeouts can be tuned globally per model type and individually per model.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/managers/model_usage_tracker.py</code></li>
+<li><code>app/api/model_usage_tracker_config.py</code></li>
+<li><code>app/services/core/app_config.py</code> (timeouts and flags)</li>
+</ul>
+</li>
+</ul>
+<h2>Configuration</h2>
+<p>AppConfig keys (with env/file overrides):</p>
+<ul>
+<li><code>model_usage_tracker_enabled</code></li>
+<li><code>model_usage_tracker_cleanup_interval</code></li>
+<li>Per‑type timeouts:<ul>
+<li>Caption: <code>model_usage_tracker_caption_generator_vram_timeout</code>, <code>..._ram_timeout</code></li>
+<li>Detection: <code>model_usage_tracker_detection_model_vram_timeout</code>, <code>..._ram_timeout</code></li>
+<li>Ollama/TTS: <code>model_usage_tracker_ollama_model_vram_timeout</code>, <code>..._ram_timeout</code></li>
+</ul>
+</li>
+<li>Advanced: <code>model_usage_tracker_enable_priority_unloading</code>, <code>model_usage_tracker_enable_time_based_unloading</code>, <code>model_usage_tracker_night_hours_start/end</code>, <code>model_usage_tracker_night_timeout_multiplier</code></li>
+</ul>
+<h2>Internals</h2>
+<ul>
+<li>Model types: <code>caption_generator</code>, <code>detection_model</code>, <code>ollama_model</code>, <code>tts_model</code></li>
+<li>Registration: <code>register_model(model_id, model_type, vram_timeout?, ram_timeout?)</code></li>
+<li>Usage: <code>record_usage(model_id, user_id?)</code> (updates <code>last_used</code>, <code>usage_count</code>, and sets <code>is_loaded = True</code>)</li>
+<li>Performance: <code>record_load_time</code>, <code>record_caption_time</code>, <code>record_detection_time</code></li>
+<li>Cleanup loop: periodically checks <code>time_since_use</code> and calls unload handlers per model type</li>
+<li>Unloading: captioners via <code>caption_service.unload_model</code>, detection via detection manager, TTS via adapter hook, Ollama is a placeholder</li>
+</ul>
+<h2>API Endpoints</h2>
+<p>Prefix: <code>/api/model-usage-tracker-config</code></p>
+<ul>
+<li><code>GET /</code> (admin): returns enabled flag, cleanup interval, per‑type timeouts, individual model overrides, advanced settings</li>
+<li><code>GET /basic</code>: available to all users; returns enabled/interval and basic stats</li>
+<li><code>PUT /basic</code>: allow users to toggle enabled and change cleanup interval</li>
+<li><code>PUT /</code> (admin): update enabled, interval, per‑type timeouts, advanced settings (with validation ranges)</li>
+<li><code>POST /restart</code> (admin): applies current config to the running tracker and restarts the loop</li>
+<li><code>PUT /model/{model_id}/timeout</code> (admin): set per‑model VRAM/RAM timeouts</li>
+<li><code>POST /model/{model_id}/unload</code> (admin): manually unload a tracked model (VRAM/RAM)</li>
+<li><code>GET /analytics</code> (admin): summary and per‑model stats (loaded, usage counts, timeouts, time since last use)</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>Tracker persists metrics and usage in the metrics database. On startup it verifies actual load state (e.g., via unified caption service) and corrects stale entries.</li>
+<li>When toggled off, start() is a no‑op; when toggled on, the cleanup loop runs at <code>cleanup_interval</code> seconds.</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

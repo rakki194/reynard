@@ -29,7 +29,7 @@ Core utilities, composables, and modules that power the entire Reynard ecosystem
 ## 📦 Installation
 
 ```bash
-npm install reynard-core solid-js
+pnpm install reynard-core solid-js
 ```
 
 ## 🚀 Quick Start
@@ -409,7 +409,7 @@ function App() {
 Run the test suite:
 
 ```bash
-npm run test
+pnpm test
 ```
 
 ### Test Status

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Common Linting Errors and Solutions - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Common Linting Errors and Solutions</h1>
+      <div class="markdown-content"><h1>Common Linting Errors and Solutions</h1>
+<h2>Table of Contents</h2>
+<hr>
+<ul>
+<li><a href="#common-linting-errors-and-solutions">Common Linting Errors and Solutions</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#required-props-errors">Required Props Errors</a><ul>
+<li><a href="#missing-required-props">Missing Required Props</a></li>
+</ul>
+</li>
+<li><a href="#transformation-type-errors">Transformation Type Errors</a><ul>
+<li><a href="#object-type-mismatch">Object Type Mismatch</a></li>
+<li><a href="#unknown-properties">Unknown Properties</a></li>
+<li><a href="#discriminated-union-type-issues">Discriminated Union Type Issues</a></li>
+</ul>
+</li>
+<li><a href="#context-provider-errors">Context Provider Errors</a><ul>
+<li><a href="#hook-usage-error">Hook Usage Error</a></li>
+</ul>
+</li>
+<li><a href="#best-practices-to-avoid-linting-errors">Best Practices to Avoid Linting Errors</a></li>
+</ul>
+</li>
+</ul>
+<h2>Required Props Errors</h2>
+<hr>
+<h3>Missing Required Props</h3>
+<p><strong>Error:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-title class_">Type</span> <span class="hljs-string">&#x27;{}&#x27;</span> is not assignable to <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;IntrinsicAttributes &amp; { onClose: () =&gt; void; }&#x27;</span>.
+  <span class="hljs-title class_">Property</span> <span class="hljs-string">&#x27;onClose&#x27;</span> is missing <span class="hljs-keyword">in</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;{}&#x27;</span> but required <span class="hljs-keyword">in</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;{ onClose: () =&gt; void; }&#x27;</span>.</code></pre><p><strong>Solution:</strong><br>Always provide required props when rendering components in tests:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Incorrect</span>
+<span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Settings</span> /&gt;</span></span>);
+
+<span class="hljs-comment">// Correct</span>
+<span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Settings</span> <span class="hljs-attr">onClose</span>=<span class="hljs-string">{()</span> =&gt;</span> {}} /&gt;</span>);</code></pre><p>When working with components, always check the prop types before usage to ensure type safety. In test scenarios, provide mock functions for any event handler props that are required. For callback props where the specific implementation is not important for the test, you can use empty arrow functions to satisfy the type requirements.</p>
+<h2>Transformation Type Errors</h2>
+<hr>
+<h3>Object Type Mismatch</h3>
+<p><strong>Error:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-title class_">Argument</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;{ type: &quot;searchReplace&quot;; pattern: string; replacement: string; }&#x27;</span> is not assignable to parameter <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;Omit&lt;Transformation, &quot;id&quot; | &quot;enabled&quot; | &quot;isCustom&quot;&gt;&#x27;</span>.</code></pre><p><strong>Solution:</strong><br>Use proper type assertions for specific transformation types:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> transformation = {
+  ...baseTransformation,
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;searchReplace&quot;</span>,
+  <span class="hljs-attr">pattern</span>: <span class="hljs-title function_">pattern</span>(),
+  <span class="hljs-attr">replacement</span>: <span class="hljs-title function_">replacement</span>(),
+} <span class="hljs-keyword">as</span> <span class="hljs-title class_">Omit</span>&lt;<span class="hljs-title class_">SearchReplaceTransformation</span>, <span class="hljs-string">&quot;id&quot;</span> | <span class="hljs-string">&quot;enabled&quot;</span> | <span class="hljs-string">&quot;isCustom&quot;</span>&gt;;</code></pre><h3>Unknown Properties</h3>
+<p><strong>Error:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-title class_">Object</span> literal may only specify known properties, and <span class="hljs-string">&#x27;pattern&#x27;</span> does not exist <span class="hljs-keyword">in</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;Omit&lt;Transformation, &quot;id&quot; | &quot;enabled&quot; | &quot;isCustom&quot;&gt;&#x27;</span></code></pre><p><strong>Solution:</strong><br>Import and use specific transformation type interfaces:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SearchReplaceTransformation</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/contexts/transformations&quot;</span>;</code></pre><h3>Discriminated Union Type Issues</h3>
+<p><strong>Error:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-title class_">Type</span> <span class="hljs-string">&#x27;{ type: string; ... }&#x27;</span> is not assignable to <span class="hljs-keyword">type</span> <span class="hljs-string">&#x27;Transformation&#x27;</span>.</code></pre><p><strong>Solution:</strong><br>Use const assertions or explicit type annotations:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-attr">type</span>: <span class="hljs-string">&quot;searchReplace&quot;</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;</code></pre><h2>Context Provider Errors</h2>
+<hr>
+<h3>Hook Usage Error</h3>
+<p><strong>Error:</strong></p>
+<pre><code class="hljs language-typescript"><span class="hljs-title class_">Error</span>: useTransformations must be used within a <span class="hljs-title class_">TransformationsProvider</span></code></pre><p><strong>Solution:</strong><br>Wrap your app with the TransformationsProvider:</p>
+<pre><code class="hljs language-typescript">&lt;<span class="hljs-title class_">TransformationsProvider</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AppContext.Provider</span>&gt;</span>
+    {/* Your app content */}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">AppContext.Provider</span>&gt;</span></span>
+&lt;/<span class="hljs-title class_">TransformationsProvider</span>&gt;</code></pre><h2>Best Practices to Avoid Linting Errors</h2>
+<hr>
+<p><strong>Type Imports</strong><br>When working with transformations, it&#39;s important to always import specific transformation types from their source files. Type assertions should be used consistently throughout the codebase to maintain type safety. Type definitions should be kept centralized in dedicated type files to avoid duplication and make maintenance easier.</p>
+<p><strong>Context Usage</strong><br>Proper nesting of providers is crucial for context to work correctly. Always verify that hooks are used within the appropriate provider components in the component hierarchy. The order of providers matters, so maintain a consistent and logical provider ordering based on dependencies.</p>
+<p><strong>Type Safety</strong><br>Discriminated unions should be used for transformation types to enable proper type narrowing. Take full advantage of TypeScript&#39;s type system for validation by defining strict types. Keep transformation type definitions synchronized across the codebase to prevent type mismatches.</p>
+<p><strong>Code Organization</strong><br>Type definitions should be centralized in dedicated files rather than scattered throughout the codebase. Use type assertions consistently to maintain predictable typing behavior. Establish and maintain clear type hierarchies that reflect the logical structure of the data.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

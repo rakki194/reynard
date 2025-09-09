@@ -13,10 +13,10 @@ The easiest way to get started is with the included test app:
 cd reynard-test-app
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 ```
 
 Visit `http://localhost:3001` to see the basic Reynard setup in action.
@@ -29,11 +29,11 @@ mkdir my-reynard-app
 cd my-reynard-app
 
 # Initialize package.json
-npm init -y
+pnpm init
 
 # Install dependencies
-npm install reynard-core reynard-components reynard-chat reynard-rag solid-js
-npm install -D vite vite-plugin-solid typescript @types/node
+pnpm install reynard-core reynard-components reynard-chat reynard-rag solid-js
+pnpm install -D vite vite-plugin-solid typescript @types/node
 ```
 
 ## Step 2: Basic Project Structure
@@ -680,13 +680,13 @@ export const ThemeToggle: Component = () => {
 
 ```bash
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 
 # Preview production build
-npm run preview
+pnpm run preview
 ```
 
 ## Step 11: Advanced Features
@@ -740,7 +740,7 @@ const TodoApp: Component = () => {
 ### Build for Production
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ### Deploy to Vercel

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JTP2 Model Files - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>JTP2 Model Files</h1>
+      <div class="markdown-content"><h1>JTP2 Model Files</h1>
+<p>This directory must contain the following files for the JTP2 captioner to work:</p>
+<ol>
+<li><code>JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors</code> - The model weights file</li>
+<li><code>tags.json</code> - The tags dictionary file</li>
+</ol>
+<h2>Option 1: Use a Local JTP2 Repository</h2>
+<p>If you already have the JTP2 model files locally, you can update the plugin configuration to use those files directly.</p>
+<ol>
+<li>Edit <code>app/caption_generation/plugins/jtp2/__init__.py</code> and update the <code>register_plugin</code> function to point to your local files:</li>
+</ol>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">register_plugin</span>():
+    <span class="hljs-string">&quot;&quot;&quot;
+    Register the JTP2 plugin with the system.
+    
+    Returns:
+        dict: Plugin registration information
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Use the local JTP2 repository - replace with your path</span>
+    local_jtp2_dir = Path(<span class="hljs-string">&quot;/path/to/your/JTP2/repository&quot;</span>)
+    
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;jtp2&quot;</span>,
+        <span class="hljs-string">&quot;module_path&quot;</span>: <span class="hljs-string">&quot;app.caption_generation.plugins.jtp2.generator&quot;</span>,
+        <span class="hljs-string">&quot;default_config&quot;</span>: {
+            <span class="hljs-string">&quot;model_path&quot;</span>: <span class="hljs-built_in">str</span>(local_jtp2_dir / <span class="hljs-string">&quot;JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors&quot;</span>),
+            <span class="hljs-string">&quot;tags_path&quot;</span>: <span class="hljs-built_in">str</span>(local_jtp2_dir / <span class="hljs-string">&quot;tags.json&quot;</span>),
+            <span class="hljs-string">&quot;threshold&quot;</span>: <span class="hljs-number">0.2</span>,
+            <span class="hljs-string">&quot;force_cpu&quot;</span>: <span class="hljs-literal">False</span>
+        }
+    }</code></pre><h2>Option 2: Download Model Files</h2>
+<p>If you don&#39;t have the model files locally, you can download them from Hugging Face:</p>
+<p>The JTP2 (Joint Tagger Project PILOT2) model files can be downloaded from the following sources:</p>
+<ul>
+<li><a href="https://huggingface.co/RedRocket/JointTaggerProject/tree/main/JTP_PILOT2">PILOT2 Model on Hugging Face</a></li>
+</ul>
+<p><strong>Direct Download Links:</strong></p>
+<ul>
+<li>Model: <a href="https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors">https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors</a></li>
+<li>Tags: <a href="https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/tags.json">https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/tags.json</a></li>
+</ul>
+<p>You can download these files using:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Create the directory if it doesn&#x27;t exist</span>
+<span class="hljs-built_in">mkdir</span> -p app/caption_generation/plugins/jtp2/models
+
+<span class="hljs-comment"># Download the model files</span>
+wget -O app/caption_generation/plugins/jtp2/models/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors
+wget -O app/caption_generation/plugins/jtp2/models/tags.json https://huggingface.co/RedRocket/JointTaggerProject/resolve/main/JTP_PILOT2/tags.json</code></pre><p>After configuring or downloading, restart the server to make the JTP2 captioner available.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIMD ECS Experiment - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>SIMD ECS Experiment</h1>
+      <div class="markdown-content"><h1>SIMD ECS Experiment</h1>
+<p>This experiment compares SIMD-accelerated ECS operations against their non-SIMD counterparts.</p>
+<h2>Experiment: Position Update System</h2>
+<p>We&#39;re testing SIMD acceleration on the most computationally intensive ECS operation: position updates with velocity integration.</p>
+<h3>Components Tested</h3>
+<ul>
+<li><strong>Position</strong>: 2D position (x, y) as Float32Array</li>
+<li><strong>Velocity</strong>: 2D velocity (vx, vy) as Float32Array</li>
+<li><strong>Mass</strong>: Scalar mass values as Float32Array</li>
+</ul>
+<h3>Operations</h3>
+<ol>
+<li><strong>Position Integration</strong>: <code>position += velocity * deltaTime</code></li>
+<li><strong>Velocity Integration</strong>: <code>velocity += acceleration * deltaTime</code></li>
+<li><strong>Collision Detection</strong>: Simple AABB collision detection</li>
+<li><strong>Spatial Queries</strong>: Find entities within radius</li>
+</ol>
+<h3>Implementations</h3>
+<ul>
+<li><strong>Non-SIMD</strong>: Pure TypeScript with TypedArrays</li>
+<li><strong>SIMD</strong>: WebAssembly with SIMD instructions</li>
+<li><strong>Parallel</strong>: Web Workers with SharedArrayBuffer</li>
+</ul>
+<h3>Benchmark Results</h3>
+<p>See <code>benchmark-results.md</code> for detailed performance comparisons.</p>
+<h2>Files</h2>
+<ul>
+<li><code>position-system.ts</code> - Non-SIMD implementation</li>
+<li><code>position-system-simd.ts</code> - SIMD WebAssembly wrapper</li>
+<li><code>position-system-parallel.ts</code> - Web Worker parallel implementation</li>
+<li><code>benchmark.ts</code> - Performance testing suite</li>
+<li><code>rust-src/</code> - Rust source code for WebAssembly compilation</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

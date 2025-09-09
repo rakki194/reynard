@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-algorithms - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-algorithms</h1>
+      <div class="markdown-content"><h1>reynard-algorithms</h1>
+<blockquote>
+<p>Algorithm primitives and data structures for Reynard applications</p>
+</blockquote>
+<p>A comprehensive collection of reusable algorithmic building blocks including Union-Find, collision detection, spatial hashing, performance utilities, and geometry operations.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Union-Find Algorithm</strong> - Efficient set operations and cycle detection</li>
+<li><strong>AABB Collision Detection</strong> - Spatial queries and overlap detection</li>
+<li><strong>Spatial Hashing</strong> - Efficient spatial partitioning and nearest neighbor queries</li>
+<li><strong>Performance Utilities</strong> - Benchmarking, profiling, and monitoring tools</li>
+<li><strong>Geometry Operations</strong> - 2D geometric calculations and transformations</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-algorithms</code></pre><h2>Quick Start</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">UnionFind</span>,
+  detectCycle,
+  checkCollision,
+  <span class="hljs-title class_">SpatialHash</span>,
+  <span class="hljs-title class_">PerformanceTimer</span>,
+  <span class="hljs-title class_">PointOps</span>,
+  <span class="hljs-title class_">VectorOps</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Union-Find for connected components</span>
+<span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">10</span>);
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">connected</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// true</span>
+
+<span class="hljs-comment">// Collision detection</span>
+<span class="hljs-keyword">const</span> aabb1 = { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+<span class="hljs-keyword">const</span> aabb2 = { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+<span class="hljs-keyword">const</span> collision = <span class="hljs-title function_">checkCollision</span>(aabb1, aabb2);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(collision.<span class="hljs-property">colliding</span>); <span class="hljs-comment">// true</span>
+
+<span class="hljs-comment">// Spatial hashing</span>
+<span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>({ <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span> });
+spatialHash.<span class="hljs-title function_">insert</span>({ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;object1&quot;</span> } });
+<span class="hljs-keyword">const</span> nearby = spatialHash.<span class="hljs-title function_">queryRadius</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);
+
+<span class="hljs-comment">// Performance monitoring</span>
+<span class="hljs-keyword">const</span> timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceTimer</span>();
+timer.<span class="hljs-title function_">start</span>();
+<span class="hljs-comment">// ... perform operation</span>
+<span class="hljs-keyword">const</span> duration = timer.<span class="hljs-title function_">stop</span>();
+
+<span class="hljs-comment">// Geometry operations</span>
+<span class="hljs-keyword">const</span> point1 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> point2 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+<span class="hljs-keyword">const</span> distance = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">distance</span>(point1, point2); <span class="hljs-comment">// 5</span></code></pre><h2>API Reference</h2>
+<h3>Union-Find Algorithm</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">UnionFind</span>,
+  detectCycle,
+  findConnectedComponents,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">10</span>);
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+uf.<span class="hljs-title function_">connected</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// true</span>
+uf.<span class="hljs-title function_">getSetSize</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 2</span>
+uf.<span class="hljs-title function_">getStats</span>(); <span class="hljs-comment">// Performance statistics</span>
+
+<span class="hljs-comment">// Utility functions</span>
+<span class="hljs-keyword">const</span> hasCycle = <span class="hljs-title function_">detectCycle</span>([
+  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+  [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>],
+]); <span class="hljs-comment">// true</span>
+<span class="hljs-keyword">const</span> components = <span class="hljs-title function_">findConnectedComponents</span>([
+  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+  [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+]); <span class="hljs-comment">// [[0, 1], [2, 3]]</span></code></pre><h3>AABB Collision Detection</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  checkCollision,
+  batchCollisionDetection,
+  <span class="hljs-variable constant_">AABB</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">aabb1</span>: <span class="hljs-variable constant_">AABB</span> = { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+<span class="hljs-keyword">const</span> <span class="hljs-attr">aabb2</span>: <span class="hljs-variable constant_">AABB</span> = { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">checkCollision</span>(aabb1, aabb2);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">colliding</span>); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">overlapArea</span>); <span class="hljs-comment">// 2500</span>
+
+<span class="hljs-comment">// Batch collision detection</span>
+<span class="hljs-keyword">const</span> aabbs = [aabb1, aabb2, { <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">50</span> }];
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">batchCollisionDetection</span>(aabbs);</code></pre><h3>Spatial Hashing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SpatialHash</span>, createOptimizedSpatialHash } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>&lt;{ <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> }&gt;({
+  <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">maxObjectsPerCell</span>: <span class="hljs-number">50</span>,
+});
+
+spatialHash.<span class="hljs-title function_">insert</span>({
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>,
+  <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;object1&quot;</span> },
+});
+
+<span class="hljs-keyword">const</span> objectsInRect = spatialHash.<span class="hljs-title function_">queryRect</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>);
+<span class="hljs-keyword">const</span> objectsInRadius = spatialHash.<span class="hljs-title function_">queryRadius</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);
+<span class="hljs-keyword">const</span> nearest = spatialHash.<span class="hljs-title function_">findNearest</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);</code></pre><h3>Performance Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">PerformanceTimer</span>,
+  <span class="hljs-title class_">MemoryMonitor</span>,
+  throttle,
+  debounce,
+  <span class="hljs-title class_">PerformanceBenchmark</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Performance timing</span>
+<span class="hljs-keyword">const</span> timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceTimer</span>();
+timer.<span class="hljs-title function_">start</span>();
+<span class="hljs-comment">// ... perform operation</span>
+<span class="hljs-keyword">const</span> duration = timer.<span class="hljs-title function_">stop</span>();
+
+<span class="hljs-comment">// Memory monitoring</span>
+<span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MemoryMonitor</span>();
+<span class="hljs-keyword">const</span> usage = monitor.<span class="hljs-title function_">measure</span>();
+
+<span class="hljs-comment">// Throttling and debouncing</span>
+<span class="hljs-keyword">const</span> throttledFn = <span class="hljs-title function_">throttle</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;throttled&quot;</span>), <span class="hljs-number">1000</span>);
+<span class="hljs-keyword">const</span> debouncedFn = <span class="hljs-title function_">debounce</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;debounced&quot;</span>), <span class="hljs-number">500</span>);
+
+<span class="hljs-comment">// Performance benchmarking</span>
+<span class="hljs-keyword">const</span> benchmark = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceBenchmark</span>();
+<span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">run</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// Function to benchmark</span>
+}, <span class="hljs-number">10</span>);</code></pre><h3>Geometry Operations</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">PointOps</span>,
+  <span class="hljs-title class_">VectorOps</span>,
+  <span class="hljs-title class_">LineOps</span>,
+  <span class="hljs-title class_">RectangleOps</span>,
+  <span class="hljs-title class_">CircleOps</span>,
+  <span class="hljs-title class_">PolygonOps</span>,
+  <span class="hljs-title class_">TransformOps</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Point operations</span>
+<span class="hljs-keyword">const</span> point1 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> point2 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+<span class="hljs-keyword">const</span> distance = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">distance</span>(point1, point2); <span class="hljs-comment">// 5</span>
+<span class="hljs-keyword">const</span> midpoint = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">midpoint</span>(point1, point2); <span class="hljs-comment">// { x: 1.5, y: 2 }</span>
+
+<span class="hljs-comment">// Vector operations</span>
+<span class="hljs-keyword">const</span> vector1 = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> vector2 = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">const</span> dot = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">dot</span>(vector1, vector2); <span class="hljs-comment">// 0</span>
+<span class="hljs-keyword">const</span> magnitude = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">magnitude</span>(vector1); <span class="hljs-comment">// 1</span>
+
+<span class="hljs-comment">// Rectangle operations</span>
+<span class="hljs-keyword">const</span> rect = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>);
+<span class="hljs-keyword">const</span> area = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">area</span>(rect); <span class="hljs-comment">// 5000</span>
+<span class="hljs-keyword">const</span> center = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">center</span>(rect); <span class="hljs-comment">// { x: 50, y: 25 }</span>
+
+<span class="hljs-comment">// Transform operations</span>
+<span class="hljs-keyword">const</span> transform = <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">combine</span>(
+  <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">translate</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>),
+  <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">scale</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>),
+);
+<span class="hljs-keyword">const</span> transformedPoint = <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">applyToPoint</span>(transform, point1);</code></pre><h2>Performance Considerations</h2>
+<h3>Union-Find Algorithm</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(α(n)) for union and find operations (where α is the inverse Ackermann function)</li>
+<li><strong>Space Complexity</strong>: O(n) where n is the number of elements</li>
+<li><strong>Optimizations</strong>: Path compression and union by rank</li>
+</ul>
+<h3>AABB Collision Detection</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) for single collision check, O(n²) for naive batch detection</li>
+<li><strong>Space Complexity</strong>: O(n) for batch detection</li>
+<li><strong>Optimizations</strong>: Spatial hashing for batch operations</li>
+</ul>
+<h3>Spatial Hashing</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) average case for queries, O(n) worst case</li>
+<li><strong>Space Complexity</strong>: O(n) where n is the number of objects</li>
+<li><strong>Optimizations</strong>: Dynamic cell sizing, automatic cleanup</li>
+</ul>
+<h3>Performance Utilities</h3>
+<ul>
+<li><strong>Memory Overhead</strong>: Minimal for basic operations</li>
+<li><strong>Accuracy</strong>: High-precision timing using <code>performance.now()</code></li>
+<li><strong>Optimizations</strong>: Efficient memory monitoring, throttling, and debouncing</li>
+</ul>
+<h3>Geometry Operations</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) for most operations, O(n) for polygon operations</li>
+<li><strong>Space Complexity</strong>: O(1) for most operations, O(n) for polygon operations</li>
+<li><strong>Optimizations</strong>: Efficient mathematical calculations, minimal object creation</li>
+</ul>
+<h2>Testing</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run <span class="hljs-built_in">test</span>:coverage
+
+<span class="hljs-comment"># Run tests in UI mode</span>
+npm run <span class="hljs-built_in">test</span>:ui</code></pre><h2>License</h2>
+<p>MIT License - see <a href="../../LICENSE">LICENSE</a> for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

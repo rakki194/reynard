@@ -16,24 +16,12 @@
     "reynard-3d": "workspace:*",
     "reynard-algorithms": "workspace:*",
     "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*",
-    "reynard-themes": "workspace:*",
-    "reynard-fluent-icons": "workspace:*",
-    "reynard-3d": "workspace:*",
-    "reynard-algorithms": "workspace:*",
-    "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*",
-    "reynard-themes": "workspace:*",
-    "reynard-fluent-icons": "workspace:*",
-    "reynard-3d": "workspace:*",
-    "reynard-algorithms": "workspace:*",
-    "reynard-components": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {
     "@types/node": "24.3.1",
     "typescript": "5.9.2",
-    "vite": "7.1.4",
+    "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8"
   }
 }

@@ -12,19 +12,20 @@ The backend consists of modular Python services that reimplement Yipyap's captio
 
 #### Core Components
 
-1. **Base Caption Generator** (`backend/app/caption_generation/base.py`)
+1. **Base Caption Generator** (`backend/app/caption_generation/interfaces.py`)
    - Abstract base class for all caption generators
    - Defines common interface and lifecycle methods
-   - Supports different caption types (caption, tags, e621, toml)
+   - Supports different caption types (caption, tags, json (old name e621), toml)
    - Model category management (lightweight vs heavy)
 
 2. **Plugin Loader System** (`backend/app/caption_generation/plugin_loader.py`)
-   - Dynamic plugin discovery and loading
-   - Lazy initialization for performance
-   - Model lifecycle coordination
+   - Facade module that imports from modular components
+   - Dynamic plugin discovery and loading via `plugin_discovery.py`
+   - Plugin management via `plugin_manager.py`
+   - Global manager singleton via `global_manager.py`
    - Thread-safe model loading/unloading
 
-3. **Caption Service** (`backend/app/caption_generation/caption_service.py`)
+3. **Caption Service** (`backend/app/caption_generation/services/caption_service.py`)
    - Main service interface for caption generation
    - Smart model loading based on task requirements
    - Batch processing with progress tracking
@@ -49,39 +50,52 @@ The backend consists of modular Python services that reimplement Yipyap's captio
      - Multilingual support
      - Configurable generation parameters
 
-5. **FastAPI Endpoints** (`backend/app/api/caption.py`)
-   - RESTful API for caption generation
-   - Single and batch caption generation
-   - Model management endpoints
-   - File upload support
-   - Comprehensive error handling
+5. **FastAPI Endpoints** (Modular API Structure)
+   - **Core Endpoints** (`backend/app/api/caption/endpoints.py`)
+     - RESTful API for caption generation
+     - Single and batch caption generation
+     - Model management endpoints
+   - **Upload Endpoints** (`backend/app/api/caption/upload.py`)
+     - File upload support
+   - **Monitoring Endpoints** (`backend/app/api/caption/monitoring.py`)
+     - System statistics and health monitoring
+   - **Service Layer** (`backend/app/api/caption/service.py`)
+     - Business logic for API operations
+   - **Data Models** (`backend/app/api/caption/models.py`)
+     - Request/response models
+   - Comprehensive error handling across all modules
 
 ### Frontend (TypeScript/SolidJS)
 
 The frontend provides seamless integration with the backend services:
 
-#### Core Components
+#### Frontend Components
 
-1. **Backend Integration Service** (`packages/annotating/src/services/BackendIntegrationService.ts`)
+1. **Backend Annotation Service** (`packages/annotating-core/src/services/BackendAnnotationService.ts`)
    - HTTP client for backend API communication
    - Request/response format conversion
    - Error handling and retry logic
    - File upload support
+   - Event management and batch processing
 
-2. **Enhanced Annotation Service** (`packages/annotating/src/services/AnnotationService.ts`)
-   - Integrated with backend services
-   - Fallback to local generators
-   - Async generator discovery
-   - Unified interface for caption generation
-
-3. **Updated Annotation Manager** (`packages/annotating/src/services/AnnotationManager.ts`)
+2. **Backend Annotation Manager** (`packages/annotating/src/BackendAnnotationManager.ts`)
+   - Main frontend interface for backend services
    - Async generator management
    - Backend service coordination
    - Event handling and lifecycle management
+   - Convenience methods for common operations
+
+3. **Caption Generators** (`packages/annotating/src/caption-generators.ts`)
+   - Specialized caption generation functions
+   - Furry tags (JTP2), detailed captions (JoyCaption)
+   - Anime tags (WDv3), general captions (Florence2)
+   - Unified interface for different model types
 
 4. **Caption UI Components** (`packages/caption/`)
    - TagBubble component for tag editing
    - CaptionInput component for caption editing
+   - JsonEditor component for JSON editing
+   - TOMLEditor component for TOML editing
    - Support for different caption types
    - Accessibility and keyboard navigation
 
@@ -147,26 +161,36 @@ results = await service.generate_batch_captions(tasks)
 ### Frontend Usage
 
 ```typescript
-import { AnnotationManager, CaptionTask } from "reynard-annotating";
+import { BackendAnnotationManager } from "reynard-annotating";
+import { CaptionTask } from "reynard-annotating-core";
 
 // Create annotation manager with backend integration
-const annotationManager = new AnnotationManager();
+const annotationManager = new BackendAnnotationManager({
+  baseUrl: "http://localhost:8000/api",
+  timeout: 30000,
+  retries: 3
+});
 
-// Start the manager
-await annotationManager.start();
+// Initialize the manager
+await annotationManager.initialize();
 
 // Get available generators
 const generators = await annotationManager.getAvailableGenerators();
 
-// Generate a caption
+// Generate a caption using convenience method
+const result = await annotationManager.generateFurryTags(
+  "/path/to/image.jpg",
+  { threshold: 0.2 }
+);
+
+// Or use the service directly
+const service = annotationManager.getService();
 const task: CaptionTask = {
   imagePath: "/path/to/image.jpg",
   generatorName: "jtp2",
   config: { threshold: 0.2 },
 };
-
-const service = annotationManager.getService();
-const result = await service.generateCaption(task);
+const result2 = await service.generateCaption(task);
 ```
 
 ### API Usage
@@ -175,20 +199,56 @@ const result = await service.generateCaption(task);
 # Get available generators
 curl http://localhost:8000/api/caption/generators
 
+# Get specific generator info
+curl http://localhost:8000/api/caption/generators/jtp2
+
 # Generate a caption
 curl -X POST http://localhost:8000/api/caption/generate \
   -H "Content-Type: application/json" \
   -d '{
     "image_path": "/path/to/image.jpg",
     "generator_name": "jtp2",
-    "config": {"threshold": 0.2}
+    "config": {"threshold": 0.2},
+    "force": false,
+    "post_process": true
+  }'
+
+# Generate batch captions
+curl -X POST http://localhost:8000/api/caption/batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tasks": [
+      {
+        "image_path": "/path/to/image1.jpg",
+        "generator_name": "jtp2",
+        "config": {"threshold": 0.2}
+      },
+      {
+        "image_path": "/path/to/image2.jpg",
+        "generator_name": "florence2",
+        "config": {"max_length": 256}
+      }
+    ]
   }'
 
 # Upload and generate caption
 curl -X POST http://localhost:8000/api/caption/upload \
   -F "file=@image.jpg" \
   -F "generator_name=jtp2" \
-  -F "config={\"threshold\": 0.2}"
+  -F "config={\"threshold\": 0.2}" \
+  -F "force=false" \
+  -F "post_process=true"
+
+# Load a model
+curl -X POST http://localhost:8000/api/caption/models/jtp2/load \
+  -H "Content-Type: application/json" \
+  -d '{"config": {}}'
+
+# Get loaded models
+curl http://localhost:8000/api/caption/models/loaded
+
+# Get system statistics
+curl http://localhost:8000/api/caption/stats
 ```
 
 ## Installation and Setup
@@ -202,7 +262,7 @@ cd backend
 pip install -r requirements.txt
 ```
 
-2. Start the backend server:
+1. Start the backend server:
 
 ```bash
 python main.py
@@ -216,7 +276,7 @@ python main.py
 npm install
 ```
 
-2. Build the packages:
+1. Build the packages:
 
 ```bash
 npm run build
@@ -243,13 +303,15 @@ The backend can be configured through environment variables:
 
 ### Frontend Configuration
 
-The frontend can be configured when creating the AnnotationManager:
+The frontend can be configured when creating the BackendAnnotationManager:
 
 ```typescript
-const annotationManager = new AnnotationManager(
-  "http://localhost:8000/api", // Backend URL
-  "your-api-key", // Optional API key
-);
+const annotationManager = new BackendAnnotationManager({
+  baseUrl: "http://localhost:8000/api", // Backend URL
+  timeout: 30000, // Request timeout in milliseconds
+  retries: 3, // Number of retry attempts
+  apiKey: "your-api-key" // Optional API key for authentication
+});
 ```
 
 ## Model Management
@@ -284,6 +346,61 @@ The system provides comprehensive error handling:
 - **Input Validation**: Comprehensive input validation
 - **Error Sanitization**: Safe error messages
 - **CORS Support**: Configurable CORS policies
+
+## Package Structure
+
+### Backend Packages
+
+```text
+backend/app/caption_generation/
+├── __init__.py                    # Main module exports
+├── interfaces.py                  # Abstract base classes
+├── base.py                       # Re-export module
+├── base_mixin.py                 # Mixin classes
+├── plugin_loader.py              # Plugin facade
+├── plugin_manager.py             # Plugin management
+├── plugin_discovery.py           # Plugin discovery
+├── global_manager.py             # Global manager singleton
+├── coordination.py               # Model coordination
+├── errors.py                     # Error handling
+├── retry_utils.py                # Retry logic
+├── post_processing.py            # Post-processing pipeline
+├── stats.py                      # Statistics tracking
+├── types.py                      # Type definitions
+├── services/                     # Service layer
+│   ├── caption_service.py        # Main service
+│   ├── model_coordinator.py      # Model coordination
+│   └── batch_processor.py        # Batch processing
+└── plugins/                      # Plugin implementations
+    ├── jtp2/                     # JTP2 plugin
+    ├── florence2/                # Florence2 plugin
+    ├── wdv3/                     # WDv3 plugin
+    └── joycaption/               # JoyCaption plugin
+```
+
+### Frontend Packages
+
+```text
+packages/
+├── annotating-core/              # Core backend integration
+│   ├── clients/                  # HTTP clients
+│   ├── services/                 # Backend services
+│   ├── types/                    # TypeScript definitions
+│   └── utils/                    # Shared utilities
+├── annotating/                   # Main frontend package
+│   ├── BackendAnnotationManager.ts
+│   ├── caption-generators.ts
+│   └── config/
+├── annotating-jtp2/              # JTP2 configuration
+├── annotating-joy/               # JoyCaption configuration
+├── annotating-florence2/         # Florence2 configuration
+├── annotating-wdv3/              # WDv3 configuration
+└── caption/                      # UI components
+    ├── TagBubble.tsx
+    ├── CaptionInput.tsx
+    ├── JsonEditor.tsx
+    └── TOMLEditor.tsx
+```
 
 ## Future Enhancements
 

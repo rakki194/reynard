@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polar Area Chart - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Polar Area Chart</h1>
+      <div class="markdown-content"><h1>Polar Area Chart</h1>
+<p>Polar area charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value.</p>
+<p>This type of chart is often useful when we want to show a comparison data similar to a pie chart, but also show a scale of values for context.</p>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:setup:1&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">data</span> = {
+  labels: [
+    <span class="hljs-string">&#x27;Red&#x27;</span>,
+    <span class="hljs-string">&#x27;Green&#x27;</span>,
+    <span class="hljs-string">&#x27;Yellow&#x27;</span>,
+    <span class="hljs-string">&#x27;Grey&#x27;</span>,
+    <span class="hljs-string">&#x27;Blue&#x27;</span>
+  ],
+  datasets: [{
+    label: <span class="hljs-string">&#x27;My First Dataset&#x27;</span>,
+    <span class="hljs-keyword">data</span>: [<span class="hljs-number">11</span>, <span class="hljs-number">16</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">14</span>],
+    backgroundColor: [
+      <span class="hljs-string">&#x27;rgb(255, 99, 132)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(75, 192, 192)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(255, 205, 86)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(201, 203, 207)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(54, 162, 235)&#x27;</span>
+    ]
+  }]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  type: <span class="hljs-string">&#x27;polarArea&#x27;</span>,
+  <span class="hljs-keyword">data</span>: <span class="hljs-keyword">data</span>,
+  options: {}
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+module.exports = {
+  actions: [],
+  config: config,
+};</code></pre><h2>Dataset Properties</h2>
+<p>Namespaces:</p>
+<ul>
+<li><code>data.datasets[index]</code> - options for this dataset only</li>
+<li><code>options.datasets.polarArea</code> - options for all polarArea datasets</li>
+<li><code>options.elements.arc</code> - options for all <a href="../configuration/elements.md#arc-configuration">arc elements</a></li>
+<li><code>options</code> - options for the whole chart</li>
+</ul>
+<p>The following options can be included in a polar area chart dataset to configure options for that specific dataset.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th align="center"><a href="../general/options.md#scriptable-options">Scriptable</a></th>
+<th align="center"><a href="../general/options.md#indexable-options">Indexable</a></th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#styling"><code>backgroundColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;rgba(0, 0, 0, 0.1)&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#border-alignment"><code>borderAlign</code></a></td>
+<td><code>&#39;center&#39;</code>|<code>&#39;inner&#39;</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;center&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;#fff&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderDash</code></a></td>
+<td><code>number[]</code></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderDashOffset</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td><code>0.0</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderJoinStyle</code></a></td>
+<td><code>&#39;round&#39;</code>|<code>&#39;bevel&#39;</code>|<code>&#39;miter&#39;</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderWidth</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><a href="#general"><code>clip</code></a></td>
+<td><code>number</code>|<code>object</code>|<code>false</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#data-structure"><code>data</code></a></td>
+<td><code>number[]</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><strong>required</strong></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBackgroundColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderDash</code></a></td>
+<td><code>number[]</code></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderDashOffset</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderJoinStyle</code></a></td>
+<td><code>&#39;round&#39;</code>|<code>&#39;bevel&#39;</code>|<code>&#39;miter&#39;</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderWidth</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>circular</code></a></td>
+<td><code>boolean</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>true</code></td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the scopes described in <a href="../general/options">option resolution</a></p>
+<h3>General</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>clip</code></td>
+<td>How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. <code>0</code> = clip at chartArea. Clipping can also be configured per side: <code>clip: {left: 5, top: false, right: -2, bottom: 0}</code></td>
+</tr>
+</tbody></table>
+<h3>Styling</h3>
+<p>The style of each arc can be controlled with the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backgroundColor</code></td>
+<td>arc background color.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td>arc border color.</td>
+</tr>
+<tr>
+<td><code>borderDash</code></td>
+<td>arc border length and spacing of dashes. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDashOffset</code></td>
+<td>arc border offset for line dashes. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderJoinStyle</code></td>
+<td>arc border join style. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td>arc border width (in pixels).</td>
+</tr>
+<tr>
+<td><code>circular</code></td>
+<td>By default the Arc is curved. If <code>circular: false</code> the Arc will be flat.</td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the associated <a href="../configuration/elements.md#arc-configuration"><code>elements.arc.*</code></a> options.</p>
+<h3>Border Alignment</h3>
+<p>The following values are supported for <code>borderAlign</code>.</p>
+<ul>
+<li><code>&#39;center&#39;</code> (default)</li>
+<li><code>&#39;inner&#39;</code></li>
+</ul>
+<p>When <code>&#39;center&#39;</code> is set, the borders of arcs next to each other will overlap. When <code>&#39;inner&#39;</code> is set, it is guaranteed that all the borders do not overlap.</p>
+<h3>Interactions</h3>
+<p>The interaction with each arc can be controlled with the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hoverBackgroundColor</code></td>
+<td>arc background color when hovered.</td>
+</tr>
+<tr>
+<td><code>hoverBorderColor</code></td>
+<td>arc border color when hovered.</td>
+</tr>
+<tr>
+<td><code>hoverBorderDash</code></td>
+<td>arc border length and spacing of dashes when hovered. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>hoverBorderDashOffset</code></td>
+<td>arc border offset for line dashes when hovered. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>hoverBorderJoinStyle</code></td>
+<td>arc border join style when hovered. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>hoverBorderWidth</code></td>
+<td>arc border width when hovered (in pixels).</td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the associated <a href="../configuration/elements.md#arc-configuration"><code>elements.arc.*</code></a> options.</p>
+<h2>Config Options</h2>
+<p>These are the customisation options specific to Polar Area charts. These options are looked up on access, and form together with the <a href="#default-options">global chart default options</a> the options of the chart.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>animation.animateRotate</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If true, the chart will animate in with a rotation animation. This property is in the <code>options.animation</code> object.</td>
+</tr>
+<tr>
+<td><code>animation.animateScale</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If true, will animate scaling the chart from the center outwards.</td>
+</tr>
+</tbody></table>
+<p>The polar area chart uses the <a href="../axes/radial/linear.md">radialLinear</a> scale. Additional configuration is provided via the scale.</p>
+<h2>Default Options</h2>
+<p>We can also change these default values for each PolarArea type that is created, this object is available at <code>Chart.overrides.polarArea</code>. Changing the global options only affects charts created after the change. Existing charts are not changed.</p>
+<p>For example, to configure all new polar area charts with <code>animateScale = false</code> you would do:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title class_">Chart</span>.<span class="hljs-property">overrides</span>.<span class="hljs-property">polarArea</span>.<span class="hljs-property">animation</span>.<span class="hljs-property">animateScale</span> = <span class="hljs-literal">false</span>;</code></pre><h2>Data Structure</h2>
+<p>For a polar area chart, datasets need to contain an array of data points. The data points should be a number, Chart.js will total all of the numbers and calculate the relative proportion of each.</p>
+<p>You also need to specify an array of labels so that tooltips appear correctly for each slice.</p>
+<pre><code class="hljs language-javascript">data = {
+    <span class="hljs-attr">datasets</span>: [{
+        <span class="hljs-attr">data</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>]
+    }],
+
+    <span class="hljs-comment">// These labels appear in the legend and in the tooltips when hovering different arcs</span>
+    <span class="hljs-attr">labels</span>: [
+        <span class="hljs-string">&#x27;Red&#x27;</span>,
+        <span class="hljs-string">&#x27;Yellow&#x27;</span>,
+        <span class="hljs-string">&#x27;Blue&#x27;</span>
+    ]
+};</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annotator Library Migration Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Annotator Library Migration Guide</h1>
+      <div class="markdown-content"><h1>Annotator Library Migration Guide</h1>
+<p>This guide explains how to migrate from the existing caption generation systems in yipyap and pawprint to use the unified annotator library.</p>
+<h2>Overview</h2>
+<p>The annotator library provides a unified API for image captioning and tagging, consolidating functionality from:</p>
+<ul>
+<li><code>yipyap/app/caption_generation/</code></li>
+<li><code>yipyap/app/services/caption_generator.py</code></li>
+<li><code>utils/caption/</code> (already extracted)</li>
+</ul>
+<h2>Migration Steps</h2>
+<h3>1. Install the Annotator Library</h3>
+<p>First, install the annotator library in your project:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># From the libraries/annotator directory</span>
+pip install -e .
+
+<span class="hljs-comment"># Or add to requirements.txt</span>
+annotator @ file:///path/to/libraries/annotator</code></pre><h3>2. Update Yipyap Integration</h3>
+<h4>Replace Caption Generator Service</h4>
+<p>Replace <code>yipyap/app/services/caption_generator.py</code> with:</p>
+<pre><code class="hljs language-python"><span class="hljs-string">&quot;&quot;&quot;
+Caption Generator Service using Annotator Library
+
+This module provides the CaptionGeneratorService that manages the Annotator
+library and provides caption generation functionality through the service management system.
+&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Optional</span>, <span class="hljs-type">Dict</span>, <span class="hljs-type">Any</span>, <span class="hljs-type">List</span>
+
+<span class="hljs-keyword">from</span> .base <span class="hljs-keyword">import</span> BaseService
+<span class="hljs-keyword">from</span> .health <span class="hljs-keyword">import</span> ServiceHealth
+
+<span class="hljs-comment"># Import from annotator library</span>
+<span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> AnnotatorService
+
+logger = logging.getLogger(<span class="hljs-string">&quot;uvicorn&quot;</span>)
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CaptionGeneratorService</span>(<span class="hljs-title class_ inherited__">BaseService</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Service for managing the Annotator library.
+
+    This service handles the initialization and lifecycle management of the
+    caption generation system using the unified annotator library.
+    &quot;&quot;&quot;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize the caption generator service.&quot;&quot;&quot;</span>
+        <span class="hljs-built_in">super</span>().__init__(
+            name=<span class="hljs-string">&quot;caption_generator&quot;</span>,
+            dependencies=[<span class="hljs-string">&quot;image_processing&quot;</span>],  <span class="hljs-comment"># Depends on image processing service</span>
+            required_packages=[<span class="hljs-string">&quot;annotator&quot;</span>],  <span class="hljs-comment"># Require annotator library</span>
+            startup_priority=<span class="hljs-number">6</span>,  <span class="hljs-comment"># After model registry and image processing</span>
+            health_check_interval=<span class="hljs-number">60</span>,  <span class="hljs-comment"># Check every minute</span>
+        )
+        <span class="hljs-variable language_">self</span>._annotator_service = <span class="hljs-literal">None</span>
+        <span class="hljs-variable language_">self</span>._available_captioners: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]] = {}
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">initialize</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Initialize the caption generator service.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">try</span>:
+            logger.info(<span class="hljs-string">&quot;Initializing caption generator service with annotator library&quot;</span>)
+
+            <span class="hljs-comment"># Initialize annotator service</span>
+            <span class="hljs-variable language_">self</span>._annotator_service = AnnotatorService()
+            success = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._annotator_service.initialize()
+
+            <span class="hljs-keyword">if</span> success:
+                <span class="hljs-comment"># Get available captioners</span>
+                <span class="hljs-variable language_">self</span>._available_captioners = (
+                    <span class="hljs-variable language_">self</span>._annotator_service.get_available_captioners()
+                )
+
+                logger.info(
+                    <span class="hljs-string">f&quot;Caption generator service initialized with <span class="hljs-subst">{<span class="hljs-built_in">len</span>(self._available_captioners)}</span> available captioners&quot;</span>
+                )
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">else</span>:
+                logger.error(<span class="hljs-string">&quot;Failed to initialize annotator service&quot;</span>)
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            logger.error(<span class="hljs-string">f&quot;Failed to initialize caption generator service: <span class="hljs-subst">{e}</span>&quot;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Shutdown the caption generator service.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">try</span>:
+            logger.info(<span class="hljs-string">&quot;Shutting down caption generator service&quot;</span>)
+
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._annotator_service:
+                <span class="hljs-keyword">await</span> <span class="hljs-variable language_">self</span>._annotator_service.shutdown()
+                <span class="hljs-variable language_">self</span>._annotator_service = <span class="hljs-literal">None</span>
+
+            <span class="hljs-variable language_">self</span>._available_captioners.clear()
+
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            logger.error(<span class="hljs-string">f&quot;Error shutting down caption generator service: <span class="hljs-subst">{e}</span>&quot;</span>)
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">_health_check</span>(<span class="hljs-params">self</span>) -&gt; ServiceHealth:
+        <span class="hljs-string">&quot;&quot;&quot;Perform health check on the caption generator service.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._annotator_service:
+                <span class="hljs-keyword">return</span> ServiceHealth.UNHEALTHY
+
+            <span class="hljs-comment"># Check if any captioners are available</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._available_captioners:
+                <span class="hljs-keyword">return</span> ServiceHealth.DEGRADED
+
+            <span class="hljs-comment"># Check if at least one captioner is ready</span>
+            ready_captioners = [
+                name
+                <span class="hljs-keyword">for</span> name, info <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>._available_captioners.items()
+                <span class="hljs-keyword">if</span> info.get(<span class="hljs-string">&quot;available&quot;</span>, <span class="hljs-literal">False</span>)
+            ]
+
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ready_captioners:
+                <span class="hljs-keyword">return</span> ServiceHealth.DEGRADED
+
+            <span class="hljs-keyword">return</span> ServiceHealth.HEALTHY
+
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            logger.error(<span class="hljs-string">f&quot;Caption generator health check failed: <span class="hljs-subst">{e}</span>&quot;</span>)
+            <span class="hljs-keyword">return</span> ServiceHealth.UNHEALTHY
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_captioner_manager</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get the captioner manager instance.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._annotator_service.get_captioner_manager() <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._annotator_service <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_caption_service</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get the caption service instance.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._annotator_service.get_caption_service() <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._annotator_service <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_available_captioners</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]:
+        <span class="hljs-string">&quot;&quot;&quot;Get information about available caption generators.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._available_captioners.copy()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_captioner_info</span>(<span class="hljs-params">self, captioner_name: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">Optional</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]:
+        <span class="hljs-string">&quot;&quot;&quot;Get information about a specific caption generator.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._available_captioners.get(captioner_name)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">list_available_captioners</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;Get a list of available caption generator names.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(<span class="hljs-variable language_">self</span>._available_captioners.keys())
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_ready_captioners</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;Get a list of ready-to-use caption generator names.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> [
+            name
+            <span class="hljs-keyword">for</span> name, info <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>._available_captioners.items()
+            <span class="hljs-keyword">if</span> info.get(<span class="hljs-string">&quot;available&quot;</span>, <span class="hljs-literal">False</span>)
+        ]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_info</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;Get service information.&quot;&quot;&quot;</span>
+        info = <span class="hljs-built_in">super</span>().get_info()
+        info.update(
+            {
+                <span class="hljs-string">&quot;available_captioners_count&quot;</span>: <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>._available_captioners),
+                <span class="hljs-string">&quot;ready_captioners_count&quot;</span>: <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.get_ready_captioners()),
+                <span class="hljs-string">&quot;available_captioners&quot;</span>: <span class="hljs-built_in">list</span>(<span class="hljs-variable language_">self</span>._available_captioners.keys()),
+                <span class="hljs-string">&quot;ready_captioners&quot;</span>: <span class="hljs-variable language_">self</span>.get_ready_captioners(),
+                <span class="hljs-string">&quot;library&quot;</span>: <span class="hljs-string">&quot;annotator&quot;</span>,
+            }
+        )
+        <span class="hljs-keyword">return</span> info</code></pre><h4>Update Caption Generation Module</h4>
+<p>Replace <code>yipyap/app/caption_generation/__init__.py</code> with:</p>
+<pre><code class="hljs language-python"><span class="hljs-string">&quot;&quot;&quot;
+Caption Generation Module using Annotator Library
+
+This module provides backward compatibility for existing code while using
+the unified annotator library under the hood.
+&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Dict</span>, <span class="hljs-type">Any</span>, <span class="hljs-type">Optional</span>
+
+<span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> Annotator, CaptionService, get_caption_service
+
+logger = logging.getLogger(__name__)
+
+<span class="hljs-comment"># Global instances</span>
+_annotator: <span class="hljs-type">Optional</span>[Annotator] = <span class="hljs-literal">None</span>
+_caption_service: <span class="hljs-type">Optional</span>[CaptionService] = <span class="hljs-literal">None</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_annotator</span>() -&gt; Annotator:
+    <span class="hljs-string">&quot;&quot;&quot;Get the global annotator instance.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">global</span> _annotator
+    <span class="hljs-keyword">if</span> _annotator <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        _annotator = Annotator()
+    <span class="hljs-keyword">return</span> _annotator
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_caption_service_instance</span>() -&gt; CaptionService:
+    <span class="hljs-string">&quot;&quot;&quot;Get the global caption service instance.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">global</span> _caption_service
+    <span class="hljs-keyword">if</span> _caption_service <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        _caption_service = get_caption_service()
+    <span class="hljs-keyword">return</span> _caption_service
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CaptionerManager</span>:
+    <span class="hljs-string">&quot;&quot;&quot;
+    Backward compatibility wrapper for CaptionerManager.
+    
+    This class provides the same interface as the original CaptionerManager
+    but uses the annotator library internally.
+    &quot;&quot;&quot;</span>
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize the captioner manager.&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>._annotator = get_annotator()
+        <span class="hljs-variable language_">self</span>._caption_service = get_caption_service_instance()
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_available_captioners</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]:
+        <span class="hljs-string">&quot;&quot;&quot;Get available captioners.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._annotator.get_available_models()
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_captioner</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get a specific captioner.&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._annotator._load_caption_model(name)
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            logger.error(<span class="hljs-string">f&quot;Failed to load captioner <span class="hljs-subst">{name}</span>: <span class="hljs-subst">{e}</span>&quot;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+<span class="hljs-comment"># Global instance for backward compatibility</span>
+captioner_manager = CaptionerManager()
+
+
+<span class="hljs-comment"># Export for backward compatibility</span>
+__all__ = [
+    <span class="hljs-string">&quot;CaptionerManager&quot;</span>,
+    <span class="hljs-string">&quot;captioner_manager&quot;</span>,
+    <span class="hljs-string">&quot;get_annotator&quot;</span>,
+    <span class="hljs-string">&quot;get_caption_service_instance&quot;</span>,
+]</code></pre><h3>3. Update Pawprint Integration</h3>
+<p>For pawprint, you can directly use the annotator library:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># In pawprint code</span>
+<span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> Annotator, CaptionService
+
+<span class="hljs-comment"># Initialize annotator</span>
+annotator = Annotator()
+
+<span class="hljs-comment"># Generate captions</span>
+caption = <span class="hljs-keyword">await</span> annotator.generate_caption(<span class="hljs-string">&quot;path/to/image.jpg&quot;</span>, <span class="hljs-string">&quot;florence2&quot;</span>)
+
+<span class="hljs-comment"># Or use the service layer</span>
+service = CaptionService()
+result = <span class="hljs-keyword">await</span> service.generate_single_caption(
+    <span class="hljs-string">&quot;path/to/image.jpg&quot;</span>, 
+    <span class="hljs-string">&quot;florence2&quot;</span>
+)</code></pre><h3>4. Update Requirements</h3>
+<p>Add the annotator library to your project&#39;s requirements:</p>
+<pre><code class="hljs language-txt"># requirements.txt
+annotator @ file:///path/to/libraries/annotator
+
+# Or if published to PyPI
+annotator&gt;=0.1.0</code></pre><h3>5. Update Imports</h3>
+<p>Replace existing imports with annotator library imports:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Old imports</span>
+<span class="hljs-keyword">from</span> app.caption_generation <span class="hljs-keyword">import</span> CaptionerManager
+<span class="hljs-keyword">from</span> app.caption_generation.caption_service <span class="hljs-keyword">import</span> CaptionService
+
+<span class="hljs-comment"># New imports</span>
+<span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> Annotator, CaptionService, CaptionerManager</code></pre><h2>Testing the Migration</h2>
+<h3>1. Test Basic Functionality</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> Annotator
+
+<span class="hljs-comment"># Test basic functionality</span>
+annotator = Annotator()
+
+<span class="hljs-comment"># Check available models</span>
+models = annotator.get_available_models()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Available models: <span class="hljs-subst">{<span class="hljs-built_in">list</span>(models.keys())}</span>&quot;</span>)
+
+<span class="hljs-comment"># Test caption generation (if models are available)</span>
+<span class="hljs-keyword">try</span>:
+    caption = <span class="hljs-keyword">await</span> annotator.generate_caption(<span class="hljs-string">&quot;test.jpg&quot;</span>, <span class="hljs-string">&quot;jtp2&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Generated caption: <span class="hljs-subst">{caption}</span>&quot;</span>)
+<span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error: <span class="hljs-subst">{e}</span>&quot;</span>)</code></pre><h3>2. Test Service Integration</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> annotator <span class="hljs-keyword">import</span> CaptionService
+
+<span class="hljs-comment"># Test service functionality</span>
+service = CaptionService()
+
+<span class="hljs-comment"># Check available generators</span>
+generators = service.get_available_generators()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Available generators: <span class="hljs-subst">{<span class="hljs-built_in">list</span>(generators.keys())}</span>&quot;</span>)
+
+<span class="hljs-comment"># Test single caption generation</span>
+result = <span class="hljs-keyword">await</span> service.generate_single_caption(
+    <span class="hljs-string">&quot;test.jpg&quot;</span>, 
+    <span class="hljs-string">&quot;jtp2&quot;</span>
+)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Result: <span class="hljs-subst">{result}</span>&quot;</span>)</code></pre><h2>Rollback Plan</h2>
+<p>If issues arise during migration:</p>
+<ol>
+<li><strong>Keep old code</strong>: Don&#39;t delete the original caption generation code immediately</li>
+<li><strong>Feature flags</strong>: Use environment variables to switch between old and new systems</li>
+<li><strong>Gradual rollout</strong>: Migrate one component at a time</li>
+<li><strong>Monitoring</strong>: Add logging to track usage and errors</li>
+</ol>
+<h2>Benefits of Migration</h2>
+<ol>
+<li><strong>Unified API</strong>: Single interface for all captioning and tagging models</li>
+<li><strong>Better error handling</strong>: Comprehensive exception system</li>
+<li><strong>Improved performance</strong>: Smart model loading and caching</li>
+<li><strong>Easier maintenance</strong>: Centralized codebase</li>
+<li><strong>Better testing</strong>: Comprehensive test suite</li>
+<li><strong>Type safety</strong>: Full type hints throughout</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Import errors</strong>: Ensure annotator library is properly installed</li>
+<li><strong>Model loading failures</strong>: Check model paths and dependencies</li>
+<li><strong>Performance issues</strong>: Verify model caching is working</li>
+<li><strong>Service initialization failures</strong>: Check service dependencies</li>
+</ol>
+<h3>Debug Mode</h3>
+<p>Enable debug logging:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> logging
+logging.getLogger(<span class="hljs-string">&quot;annotator&quot;</span>).setLevel(logging.DEBUG)</code></pre><h2>Support</h2>
+<p>For issues with the migration:</p>
+<ol>
+<li>Check the annotator library documentation</li>
+<li>Review the test suite for usage examples</li>
+<li>Check the library&#39;s issue tracker</li>
+<li>Contact the development team</li>
+</ol>
+<hr>
+<p><strong>Note</strong>: This migration guide assumes you&#39;re using the latest version of the annotator library. Always check the library&#39;s documentation for the most up-to-date information.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

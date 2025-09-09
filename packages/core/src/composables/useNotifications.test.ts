@@ -129,5 +129,72 @@ describe("useNotifications Composable", () => {
         dispose();
       });
     });
+
+    it("should return empty array initially", () => {
+      const notificationsModule = createNotifications();
+      expect(notificationsModule.notifications).toEqual([]);
+    });
+
+    it("should return notifications after adding them", () => {
+      const notificationsModule = createNotifications();
+      notificationsModule.notify("Test notification", "info");
+      
+      expect(notificationsModule.notifications).toHaveLength(1);
+      expect(notificationsModule.notifications[0].message).toBe("Test notification");
+      expect(notificationsModule.notifications[0].type).toBe("info");
+    });
+  });
+
+  describe("Error Handling", () => {
+    it("should throw error when useNotify is used outside provider", () => {
+      createRoot(() => {
+        expect(() => useNotify()).toThrow(
+          "useNotifications must be used within a NotificationsProvider",
+        );
+      });
+    });
+
+    it("should throw error when useNotificationValues is used outside provider", () => {
+      createRoot(() => {
+        expect(() => useNotificationValues()).toThrow(
+          "useNotifications must be used within a NotificationsProvider",
+        );
+      });
+    });
+  });
+
+  describe("Context Integration", () => {
+    it("should work with custom provider", () => {
+      const customModule = createNotifications();
+      
+      createRoot((dispose) => {
+        // Test that the custom module works
+        expect(customModule).toBeDefined();
+        expect(typeof customModule.notify).toBe("function");
+        expect(Array.isArray(customModule.notifications)).toBe(true);
+        dispose();
+      });
+    });
+
+    it("should share state across multiple operations", () => {
+      const notificationsModule = createNotifications();
+      
+      // Add notifications
+      notificationsModule.notify("First notification", "info");
+      notificationsModule.notify("Second notification", "success");
+      
+      expect(notificationsModule.notifications).toHaveLength(2);
+      
+      // Remove one notification
+      const firstId = notificationsModule.notifications[0].id;
+      notificationsModule.removeNotification(firstId);
+      
+      expect(notificationsModule.notifications).toHaveLength(1);
+      expect(notificationsModule.notifications[0].message).toBe("Second notification");
+      
+      // Clear all notifications
+      notificationsModule.clearNotifications();
+      expect(notificationsModule.notifications).toHaveLength(0);
+    });
   });
 });

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedding Token Limits and Chunking - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Embedding Token Limits and Chunking</h1>
+      <div class="markdown-content"><h1>Embedding Token Limits and Chunking</h1>
+<p>This document explains the fixes implemented to resolve Ollama embedding warnings related to token limits and chunking.</p>
+<h2>Problem</h2>
+<p>When using RAG embeddings with Ollama, you may encounter these warnings:</p>
+<pre><code class="hljs language-plaintext">decode: cannot decode batches with this context (use llama_encode() instead)
+time=2025-08-11T11:23:56.313+02:00 level=WARN source=runner.go:128 msg=&quot;truncating input prompt&quot; limit=512 prompt=514 keep=1 new=512</code></pre><p>These warnings occur because:</p>
+<ol>
+<li>The chunking system was creating chunks that exceeded the embedding model&#39;s token limit (typically 512 tokens)</li>
+<li>Ollama was truncating the input, which could lead to information loss</li>
+<li>The &quot;decode&quot; warnings indicate that the input format was incompatible with the model&#39;s expectations</li>
+</ol>
+<h2>Solution</h2>
+<h3>1. New Embedding-Optimized Chunking</h3>
+<p>A new chunking function <code>chunk_document_for_embeddings()</code> has been added that:</p>
+<ul>
+<li>Respects strict token limits (default 512 tokens)</li>
+<li>Provides configurable minimum token counts and overlap ratios</li>
+<li>Includes intelligent chunking logic to ensure chunks never exceed the limit</li>
+<li>Adds metadata to track when chunking occurs</li>
+</ul>
+<h3>2. Model-Specific Token Limits</h3>
+<p>The embedding service now includes a registry of models with their token limits:</p>
+<pre><code class="hljs language-python"><span class="hljs-variable language_">self</span>._registry = {
+    <span class="hljs-string">&quot;mxbai-embed-large&quot;</span>: {<span class="hljs-string">&quot;dim&quot;</span>: <span class="hljs-number">1024</span>, <span class="hljs-string">&quot;metric&quot;</span>: <span class="hljs-string">&quot;cosine&quot;</span>, <span class="hljs-string">&quot;max_tokens&quot;</span>: <span class="hljs-number">512</span>},
+    <span class="hljs-string">&quot;nomic-embed-text&quot;</span>: {<span class="hljs-string">&quot;dim&quot;</span>: <span class="hljs-number">768</span>, <span class="hljs-string">&quot;metric&quot;</span>: <span class="hljs-string">&quot;cosine&quot;</span>, <span class="hljs-string">&quot;max_tokens&quot;</span>: <span class="hljs-number">512</span>},
+    <span class="hljs-string">&quot;bge-m3&quot;</span>: {<span class="hljs-string">&quot;dim&quot;</span>: <span class="hljs-number">1024</span>, <span class="hljs-string">&quot;metric&quot;</span>: <span class="hljs-string">&quot;cosine&quot;</span>, <span class="hljs-string">&quot;max_tokens&quot;</span>: <span class="hljs-number">512</span>},
+    <span class="hljs-comment"># ... more models</span>
+}</code></pre><h3>3. Configurable Chunking Parameters</h3>
+<p>New configuration options have been added to <code>AppConfig</code>:</p>
+<ul>
+<li><code>rag_chunk_max_tokens</code>: Maximum tokens per chunk (default: 512)</li>
+<li><code>rag_chunk_min_tokens</code>: Minimum tokens per chunk (default: 100)</li>
+<li><code>rag_chunk_overlap_ratio</code>: Overlap ratio between chunks (default: 0.15)</li>
+</ul>
+<h3>4. Model-Specific Token Limits</h3>
+<p>You can configure different token limits for each model type:</p>
+<ul>
+<li><code>rag_text_model_max_tokens</code>: Token limit for text embedding model (default: 512)</li>
+<li><code>rag_code_model_max_tokens</code>: Token limit for code embedding model (default: 512)</li>
+<li><code>rag_caption_model_max_tokens</code>: Token limit for caption embedding model (default: 512)</li>
+</ul>
+<p>These settings override the general <code>rag_chunk_max_tokens</code> setting for their respective model types.</p>
+<h3>5. Input Validation and Intelligent Chunking</h3>
+<p>The embedding service now validates input texts before sending them to Ollama:</p>
+<ul>
+<li>Estimates token count for each text</li>
+<li><strong>Chunks texts that exceed the model&#39;s limit</strong> (instead of truncating)</li>
+<li>Logs warnings when chunking occurs</li>
+<li>Attempts to break at word boundaries when possible</li>
+<li>Preserves all information by creating multiple chunks</li>
+</ul>
+<h3>6. Text Cleaning and Format Compatibility</h3>
+<p>The embedding service also cleans and normalizes text to prevent format-related issues:</p>
+<ul>
+<li>Removes null bytes and control characters that can cause decode errors</li>
+<li>Normalizes whitespace while preserving intentional line breaks</li>
+<li>Removes Unicode control characters (BOM, zero-width spaces, etc.)</li>
+<li>Limits text length to prevent extremely long inputs</li>
+</ul>
+<h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<p>You can configure the chunking parameters via environment variables:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> RAG_CHUNK_MAX_TOKENS=512
+<span class="hljs-built_in">export</span> RAG_CHUNK_MIN_TOKENS=100
+<span class="hljs-built_in">export</span> RAG_CHUNK_OVERLAP_RATIO=0.15
+<span class="hljs-built_in">export</span> RAG_TEXT_MODEL_MAX_TOKENS=512
+<span class="hljs-built_in">export</span> RAG_CODE_MODEL_MAX_TOKENS=512
+<span class="hljs-built_in">export</span> RAG_CAPTION_MODEL_MAX_TOKENS=512</code></pre><h3>Configuration File</h3>
+<p>Add these settings to your <code>config.json</code>:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;rag_chunk_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rag_chunk_min_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rag_chunk_overlap_ratio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rag_text_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rag_code_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rag_caption_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Frontend Settings</h3>
+<p>The RAG settings page now includes controls for:</p>
+<ul>
+<li>Max Tokens per Chunk</li>
+<li>Min Tokens per Chunk</li>
+<li>Chunk Overlap Ratio</li>
+<li>Text Model Token Limit</li>
+<li>Code Model Token Limit</li>
+<li>Caption Model Token Limit</li>
+</ul>
+<h2>Model-Specific Token Limits</h2>
+<h3>How It Works</h3>
+<p>The system supports model-specific token limits that override the general <code>rag_chunk_max_tokens</code> setting:</p>
+<ol>
+<li><p><strong>Model Detection</strong>: The system automatically detects the model type based on:</p>
+<ul>
+<li>The model name (e.g., &quot;mxbai-embed-large&quot; → text model)</li>
+<li>Configuration mapping (e.g., <code>rag_text_model</code> setting)</li>
+<li>Explicit model type parameter</li>
+</ul>
+</li>
+<li><p><strong>Limit Precedence</strong>: Token limits are determined in this order:</p>
+<ul>
+<li>Model-specific config limit (e.g., <code>rag_text_model_max_tokens</code>)</li>
+<li>Model registry limit (hardcoded in the service)</li>
+<li>General config limit (<code>rag_chunk_max_tokens</code>)</li>
+<li>Default fallback (512 tokens)</li>
+</ul>
+</li>
+<li><p><strong>Safety</strong>: The system always uses the most restrictive limit to prevent truncation warnings.</p>
+</li>
+</ol>
+<h3>Model Type Detection</h3>
+<p>The system automatically detects model types:</p>
+<ul>
+<li><strong>Text Models</strong>: Models containing &quot;text&quot;, &quot;nomic&quot;, or &quot;mxbai&quot; in the name</li>
+<li><strong>Code Models</strong>: Models containing &quot;code&quot; or &quot;bge&quot; in the name</li>
+<li><strong>Caption Models</strong>: Models containing &quot;caption&quot; or &quot;clip&quot; in the name</li>
+</ul>
+<p>You can also explicitly specify the model type when calling embedding functions.</p>
+<h3>Configuration Examples</h3>
+<p><strong>Different limits for different model types:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;rag_text_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// Text documents</span>
+  <span class="hljs-attr">&quot;rag_code_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1024</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// Code files (longer context)</span>
+  <span class="hljs-attr">&quot;rag_caption_model_max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">256</span> <span class="hljs-comment">// Captions (shorter context)</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Environment variables:</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> RAG_TEXT_MODEL_MAX_TOKENS=512
+<span class="hljs-built_in">export</span> RAG_CODE_MODEL_MAX_TOKENS=1024
+<span class="hljs-built_in">export</span> RAG_CAPTION_MODEL_MAX_TOKENS=256</code></pre><h2>Usage</h2>
+<h3>Automatic Usage</h3>
+<p>The new chunking is automatically used by:</p>
+<ul>
+<li><code>EmbeddingIndexService</code> for background ingestion</li>
+<li><code>RAGService</code> for document ingestion</li>
+<li>All embedding operations that create chunks</li>
+</ul>
+<h3>Manual Usage</h3>
+<p>You can use the new chunking function directly:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.managers.chunking <span class="hljs-keyword">import</span> chunk_document_for_embeddings
+
+chunks = chunk_document_for_embeddings(
+    text=<span class="hljs-string">&quot;Your document text here&quot;</span>,
+    max_tokens=<span class="hljs-number">512</span>,
+    min_tokens=<span class="hljs-number">100</span>,
+    overlap_ratio=<span class="hljs-number">0.15</span>
+)</code></pre><h2>Model Compatibility</h2>
+<p>The system now supports various embedding models with their specific token limits:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Dimension</th>
+<th>Token Limit</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mxbai-embed-large</td>
+<td>1024</td>
+<td>512</td>
+<td>Default text model</td>
+</tr>
+<tr>
+<td>nomic-embed-text</td>
+<td>768</td>
+<td>512</td>
+<td>Default caption model</td>
+</tr>
+<tr>
+<td>bge-m3</td>
+<td>1024</td>
+<td>512</td>
+<td>Default code model</td>
+</tr>
+<tr>
+<td>all-MiniLM-L6-v2</td>
+<td>384</td>
+<td>256</td>
+<td>Compact model</td>
+</tr>
+<tr>
+<td>text-embedding-ada-002</td>
+<td>1536</td>
+<td>8191</td>
+<td>OpenAI model</td>
+</tr>
+<tr>
+<td>text-embedding-3-small</td>
+<td>1536</td>
+<td>8191</td>
+<td>OpenAI model</td>
+</tr>
+</tbody></table>
+<h2>Monitoring</h2>
+<h3>Logs</h3>
+<p>The system logs warnings when chunking occurs:</p>
+<pre><code class="hljs language-plaintext">Text chunked from 514 to 2 chunks for model mxbai-embed-large</code></pre><h3>Metrics</h3>
+<p>The embedding service tracks:</p>
+<ul>
+<li>Number of requests</li>
+<li>Number of errors</li>
+<li>Processing time per request</li>
+<li>Number of texts chunked</li>
+</ul>
+<h3>Validation</h3>
+<p>You can verify that chunks respect token limits by checking the chunk metadata:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">for</span> chunk <span class="hljs-keyword">in</span> chunks:
+    <span class="hljs-keyword">assert</span> chunk[<span class="hljs-string">&quot;tokens&quot;</span>] &lt;= max_tokens
+    <span class="hljs-keyword">if</span> chunk[<span class="hljs-string">&quot;metadata&quot;</span>].get(<span class="hljs-string">&quot;chunked&quot;</span>):
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Text was chunked into <span class="hljs-subst">{<span class="hljs-built_in">len</span>(chunks)}</span> pieces&quot;</span>)</code></pre><h2>Migration</h2>
+<h3>Existing Data</h3>
+<p>Existing embeddings will continue to work, but new ingestions will use the optimized chunking.</p>
+<h3>Reindexing</h3>
+<p>To reindex existing documents with the new chunking:</p>
+<ol>
+<li>Use the <code>/api/rag/reindex</code> endpoint</li>
+<li>Or delete and re-ingest documents</li>
+</ol>
+<h3>Configuration Changes</h3>
+<p>When changing chunking parameters:</p>
+<ul>
+<li>New ingestions will use the new settings</li>
+<li>Existing embeddings remain unchanged</li>
+<li>Consider reindexing for consistency</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Still Seeing Warnings</h3>
+<p>If you still see truncation warnings:</p>
+<ol>
+<li>Check that <code>rag_chunk_max_tokens</code> is set to 512 or lower</li>
+<li>Verify the model in use has the correct token limit</li>
+<li>Check logs for chunking warnings</li>
+</ol>
+<h3>Performance Issues</h3>
+<p>If chunking is too aggressive:</p>
+<ol>
+<li>Increase <code>rag_chunk_min_tokens</code> for larger chunks</li>
+<li>Decrease <code>rag_chunk_overlap_ratio</code> for less overlap</li>
+<li>Monitor embedding service metrics</li>
+</ol>
+<h3>Quality Issues</h3>
+<p>If retrieval quality decreases:</p>
+<ol>
+<li>Increase <code>rag_chunk_overlap_ratio</code> for better context</li>
+<li>Adjust <code>rag_chunk_min_tokens</code> for more meaningful chunks</li>
+<li>Consider using a model with higher token limits</li>
+</ol>
+<h2>Key Benefits</h2>
+<h3>Information Preservation</h3>
+<p>Unlike truncation, chunking preserves all information by creating multiple chunks:</p>
+<ul>
+<li><strong>No data loss</strong>: All text content is preserved across chunks</li>
+<li><strong>Context continuity</strong>: Overlap between chunks maintains context</li>
+<li><strong>Better retrieval</strong>: More granular embeddings improve search quality</li>
+</ul>
+<h3>Format Compatibility</h3>
+<p>Text cleaning prevents format-related issues:</p>
+<ul>
+<li><strong>No decode errors</strong>: Removes problematic characters</li>
+<li><strong>Consistent formatting</strong>: Normalizes whitespace and control characters</li>
+<li><strong>Robust processing</strong>: Handles edge cases gracefully</li>
+</ul>
+<h3>Performance Optimization</h3>
+<p>Intelligent chunking optimizes performance:</p>
+<ul>
+<li><strong>Efficient processing</strong>: Only chunks when necessary</li>
+<li><strong>Balanced chunks</strong>: Maintains reasonable chunk sizes</li>
+<li><strong>Overlap management</strong>: Configurable overlap for context continuity</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

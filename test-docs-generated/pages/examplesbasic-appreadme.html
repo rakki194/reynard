@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Basic Todo App - Reynard Example - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Basic Todo App - Reynard Example</h1>
+      <div class="markdown-content"><h1>🦊 Basic Todo App - Reynard Example</h1>
+<p>A minimal todo application demonstrating the core features of the Reynard framework.</p>
+<h2>✨ Features Demonstrated</h2>
+<ul>
+<li><strong>Core Functionality</strong>: Todo CRUD operations with SolidJS reactivity</li>
+<li><strong>Theme System</strong>: 5 themes with live switching (light, dark, banana, strawberry, peanut)</li>
+<li><strong>Notifications</strong>: Success and info notifications for user actions</li>
+<li><strong>Responsive Design</strong>: Mobile-first layout that works on all devices</li>
+<li><strong>Accessibility</strong>: Proper ARIA labels, keyboard navigation, focus management</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build</code></pre><h2>📱 Usage</h2>
+<ol>
+<li><strong>Add Todos</strong>: Type in the input field and click &quot;Add Todo&quot; or press Enter</li>
+<li><strong>Toggle Completion</strong>: Click the checkbox to mark todos as complete/incomplete</li>
+<li><strong>Delete Todos</strong>: Click the red × button to remove todos</li>
+<li><strong>Switch Themes</strong>: Click the theme button to cycle through available themes</li>
+<li><strong>View Progress</strong>: See completion count at the top</li>
+</ol>
+<h2>🎨 Themes</h2>
+<p>The app includes 5 beautiful themes:</p>
+<ul>
+<li><strong>☀️ Light</strong> - Clean and bright</li>
+<li><strong>🌙 Dark</strong> - Easy on the eyes</li>
+<li><strong>🍌 Banana</strong> - Warm and cheerful</li>
+<li><strong>🍓 Strawberry</strong> - Vibrant and energetic</li>
+<li><strong>🥜 Peanut</strong> - Earthy and cozy</li>
+</ul>
+<p>Themes persist across browser sessions and update in real-time.</p>
+<h2>🏗️ Architecture</h2>
+<h3>Components</h3>
+<ul>
+<li><strong><code>App.tsx</code></strong> - Main application with todo state management</li>
+<li><strong><code>TodoItem.tsx</code></strong> - Individual todo with toggle and delete actions</li>
+<li><strong><code>AddTodo.tsx</code></strong> - Form for creating new todos</li>
+<li><strong><code>ThemeToggle.tsx</code></strong> - Theme switching button with emoji indicators</li>
+</ul>
+<h3>Reynard Features Used</h3>
+<ul>
+<li><strong>Theme Management</strong>: <code>useTheme()</code> for reactive theme switching</li>
+<li><strong>Notifications</strong>: <code>useNotifications()</code> for user feedback</li>
+<li><strong>Modular CSS</strong>: Theme-aware CSS custom properties</li>
+<li><strong>Zero Dependencies</strong>: Self-contained Reynard modules</li>
+</ul>
+<h2>📦 Bundle Size</h2>
+<ul>
+<li><strong>JavaScript</strong>: ~8 kB (gzipped)</li>
+<li><strong>CSS</strong>: ~3 kB (gzipped)</li>
+<li><strong>Total</strong>: ~11 kB - Perfect for fast loading!</li>
+</ul>
+<h2>🎯 Learning Objectives</h2>
+<p>This example teaches:</p>
+<ol>
+<li><strong>SolidJS Basics</strong>: Signals, effects, components, and reactivity</li>
+<li><strong>Reynard Integration</strong>: Theme and notification system usage</li>
+<li><strong>State Management</strong>: Local component state with signals</li>
+<li><strong>Event Handling</strong>: Form submission, button clicks, keyboard input</li>
+<li><strong>Responsive Design</strong>: Mobile-first CSS with theme support</li>
+</ol>
+<h2>🔄 Next Steps</h2>
+<p>Try modifying the app to:</p>
+<ul>
+<li>Add todo categories or tags</li>
+<li>Implement todo filtering (all, active, completed)</li>
+<li>Add due dates and priority levels</li>
+<li>Persist todos to localStorage</li>
+<li>Add animations and transitions</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>Found a bug or have an improvement? This example is part of the Reynard framework!</p>
+<hr>
+<p><em>Built with ❤️ using Reynard framework and SolidJS</em> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

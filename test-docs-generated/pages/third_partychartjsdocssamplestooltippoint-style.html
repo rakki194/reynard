@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Point Style - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Point Style</h1>
+      <div class="markdown-content"><h1>Point Style</h1>
+<p>This sample shows how to use the dataset point style in the tooltip instead of a rectangle to identify each dataset.</p>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:actions:<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>
+const actions <span class="hljs-operator">=</span> [
+  {
+    <span class="hljs-params">name:</span> &#x27;Toggle Tooltip Point Style&#x27;,
+    handler(chart) {
+      <span class="hljs-attr">chart.options.plugins.tooltip.usePointStyle</span> <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>chart.options.plugins.tooltip.usePointStyle;
+      chart.update();
+    }
+  },
+];
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:actions<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+const DATA_COUNT <span class="hljs-operator">=</span> <span class="hljs-number">7</span>;
+const NUMBER_CFG <span class="hljs-operator">=</span> {<span class="hljs-params">count:</span> DATA_COUNT, <span class="hljs-params">min:</span> <span class="hljs-operator">-</span><span class="hljs-number">100</span>, <span class="hljs-params">max:</span> <span class="hljs-number">100</span>};
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">labels:</span> Utils.months({<span class="hljs-params">count:</span> DATA_COUNT}),
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;Triangles&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>,
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">pointStyle:</span> &#x27;triangle&#x27;,
+      <span class="hljs-params">pointRadius:</span> <span class="hljs-number">6</span>,
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;Circles&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>,
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.blue,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.blue, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">pointStyle:</span> &#x27;circle&#x27;,
+      <span class="hljs-params">pointRadius:</span> <span class="hljs-number">6</span>,
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;Stars&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>,
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.green,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.green, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">pointStyle:</span> &#x27;star&#x27;,
+      <span class="hljs-params">pointRadius:</span> <span class="hljs-number">6</span>,
+    }
+  ]
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;line&#x27;,
+  <span class="hljs-params">data:</span> data,
+  <span class="hljs-params">options:</span> {
+    <span class="hljs-params">interaction:</span> {
+      <span class="hljs-params">mode:</span> &#x27;index&#x27;,
+    },
+    <span class="hljs-params">plugins:</span> {
+      <span class="hljs-params">title:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+        <span class="hljs-params">text:</span> (ctx) <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> &#x27;Tooltip point <span class="hljs-params">style:</span> &#x27; <span class="hljs-operator">+</span> ctx.chart.options.plugins.tooltip.usePointStyle,
+      },
+      <span class="hljs-params">tooltip:</span> {
+        <span class="hljs-params">usePointStyle:</span> <span class="hljs-literal">true</span>,
+      }
+    }
+  }
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">actions:</span> actions,
+  <span class="hljs-params">config:</span> config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../configuration/tooltip.md">Tooltip</a><ul>
+<li><code>usePointStyle</code></li>
+</ul>
+</li>
+<li><a href="../../configuration/elements.md">Elements</a><ul>
+<li><a href="../../configuration/elements.md#point-styles">Point Styles</a></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connection module - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Connection module</h1>
+      <div class="markdown-content"><h1>Connection module</h1>
+<p>This folder provides a typed, browser-friendly connection layer for the<br>frontend. It standardizes how different transports (HTTP, WebSocket, SSE) are<br>configured, connected, monitored, and recovered, and it exposes utilities for<br>pooling, retries, health checks, metrics, and security headers. Everything is<br>written in TypeScript and designed to be light-weight for the browser (SolidJS +<br>Vite).</p>
+<h2>File map</h2>
+<ul>
+<li><code>types.ts</code>: Core enums and interfaces for connections, health, metrics,<br>pooling, and security.</li>
+<li><code>base.ts</code>: Abstract <code>BaseConnection</code> with lifecycle, events, metrics, and<br>circuit breaker.</li>
+<li><code>config.ts</code>: <code>ConnectionConfigManager</code> with Vite env-driven configuration.</li>
+<li><code>health.ts</code>: <code>HealthChecker</code> helpers to run periodic health tasks and shape<br>results.</li>
+<li><code>http.ts</code>: <code>HTTPConnection</code> implementation over <code>fetch</code> (stateless).</li>
+<li><code>websocket.ts</code>: <code>WebSocketConnection</code> implementation over browser <code>WebSocket</code>.</li>
+<li><code>sse.ts</code>: <code>SSEConnection</code> implementation over <code>EventSource</code>.</li>
+<li><code>pool.ts</code>: Generic <code>ConnectionPool&lt;T&gt;</code> with acquire/release and basic<br>lifecycle.</li>
+<li><code>websocket-pool.ts</code>: <code>WebSocketConnectionPool</code> preconfigured <code>ConnectionPool</code><br>for WebSockets.</li>
+<li><code>retry.ts</code>: Retry strategies (<code>ExponentialBackoffRetry</code>, <code>LinearBackoffRetry</code>,<br><code>JitterRetry</code>).</li>
+<li><code>metrics.ts</code>: <code>ConnectionMetricsTracker</code> for rolling metrics/analytics.</li>
+<li><code>manager.ts</code>: <code>ConnectionManager</code> to track connections, do health checks,<br>analytics, and recovery.</li>
+<li><code>security.ts</code>: <code>ConnectionSecurity</code> to build authorization headers and expose<br>security info.</li>
+<li><code>index.ts</code>: Barrel file exporting the public API of this module.</li>
+</ul>
+<h2>Concepts and types</h2>
+<p><code>types.ts</code> defines the public surface for the module. Connection lifecycle is<br>modeled with <code>ConnectionState</code> and <code>ConnectionHealth</code>, capturing the state and<br>health consistently across implementations. Transport kinds are identified by<br><code>ConnectionType</code>, which enumerates categories such as <code>HTTP</code>, <code>WEBSOCKET</code>, and<br><code>SSE</code>. Configuration is expressed via <code>ConnectionConfig</code>, covering timeouts,<br>retries, circuit breaker behavior, rate limiting flags, headers, and more.<br>Observability is represented by <code>ConnectionMetrics</code>, <code>ConnectionStatus</code>, and<br><code>ConnectionEvent</code>, which together provide runtime statistics and a stream of<br>structured events. Health checks return a normalized <code>HealthCheckResult</code>.<br>Pooling and security concepts are described with <code>PoolConfig</code>, <code>SecurityLevel</code>,<br>and <code>SecurityContext</code>. Recovery behavior is guided by <code>RecoveryStrategy</code>,<br>indicating how to respond to failed health checks, including reconnect, backoff,<br>or graceful degradation strategies.</p>
+<h2>BaseConnection</h2>
+<p><code>BaseConnection</code> is the abstract foundation for all connection types. It<br>provides:</p>
+<p>Lifecycle/state</p>
+<p>The class tracks <code>ConnectionState</code>, <code>ConnectionHealth</code>, timestamps,<br>active/secure/authenticated flags, and exposes <code>getStatus()</code> for a typed<br>snapshot suitable for UI.</p>
+<p>Events</p>
+<p>Connections emit typed events via <code>onEvent</code>, <code>onStateChange</code>, and<br><code>onHealthChange</code> handlers. Consumers can subscribe for analytics and UI updates.<br>Emitted events include a generated <code>eventId</code>, typed <code>eventType</code>, severity,<br>timestamp, and optional data/message.</p>
+<p>Metrics</p>
+<p><code>updateMetrics</code> tracks request counts, error rate, throughput, and response<br>times. These feed into analytics via <code>ConnectionManager</code>.</p>
+<p>Errors and circuit breaker</p>
+<p><code>handleError</code> captures the last error and emits an <code>error</code> event. A built-in<br>circuit breaker (configurable via <code>ConnectionConfig</code>) accumulates failures and<br>prevents further send/receive until a timeout elapses, transitioning to<br>half‑open before closing again on success.</p>
+<p>Abstract methods</p>
+<p>Subclasses implement <code>connect()</code>, <code>disconnect()</code>, and <code>isConnected()</code> for<br>lifecycle; <code>healthCheck()</code> returning<br><code>{ isHealthy, responseTime, details?, errorMessage? }</code> for health; and<br><code>sendImpl(data)</code> and <code>receiveImpl()</code> for transport-specific I/O.</p>
+<p><code>send(data)</code> and <code>receive()</code> are concrete wrappers around those implementations<br>that add metrics, circuit‑breaker checks, and error handling.</p>
+<h2>Health utilities</h2>
+<p><code>health.ts</code> provides <code>HealthChecker</code> to periodically run a set of async checks<br>with a timeout guard, and a helper <code>result(...)</code> to shape a <code>HealthCheckResult</code>.<br>It is intentionally minimal on the frontend and defers transport specifics to<br>each connection’s own <code>healthCheck()</code> implementation.</p>
+<h2>Configuration and environment variables</h2>
+<p><code>ConnectionConfigManager</code> (<code>config.ts</code>) constructs a default config and<br>auto-loads additional configs from environment variables. In Vite, values are<br>read from <code>import.meta.env.*</code> and fall back to <code>process.env.*</code> if needed.</p>
+<p>Default config keys (prefixed for clarity):</p>
+<pre><code class="hljs language-bash">VITE_CONNECTION_TIMEOUT
+VITE_CONNECTION_RETRY_COUNT
+VITE_CONNECTION_RETRY_DELAY
+VITE_CONNECTION_BACKOFF_MULTIPLIER
+VITE_CONNECTION_MAX_POOL_SIZE
+VITE_CONNECTION_KEEP_ALIVE
+VITE_CONNECTION_COMPRESSION
+VITE_CONNECTION_ENCRYPTION
+VITE_CONNECTION_SECURITY_LEVEL        <span class="hljs-comment"># one of: none | basic | enhanced | maximum</span>
+VITE_CONNECTION_HEALTH_CHECK_INTERVAL
+VITE_CONNECTION_HEALTH_CHECK_TIMEOUT
+VITE_CONNECTION_AUTO_RECONNECT
+VITE_CONNECTION_AUTO_RETRY
+VITE_CONNECTION_CIRCUIT_BREAKER
+VITE_CONNECTION_CIRCUIT_BREAKER_THRESHOLD
+VITE_CONNECTION_CIRCUIT_BREAKER_TIMEOUT
+VITE_CONNECTION_RATE_LIMIT
+VITE_CONNECTION_RATE_LIMIT_REQUESTS
+VITE_CONNECTION_RATE_LIMIT_WINDOW
+VITE_CONNECTION_AUDIT_LOGGING
+VITE_CONNECTION_MONITORING
+VITE_CONNECTION_FALLBACK_URL</code></pre><p>Additionally, transport-specific named configs are loaded when a URL is<br>provided. Supported prefixes (the suffixes mirror the defaults above unless<br>noted):</p>
+<pre><code class="hljs language-bash">VITE_HTTP_URL
+VITE_WEBSOCKET_URL
+VITE_SSE_URL
+VITE_DATABASE_URL
+VITE_EXTERNAL_URL</code></pre><p>For each prefix, the manager also reads keys like <code>TIMEOUT</code>, <code>RETRY_COUNT</code>,<br><code>RETRY_DELAY</code>, <code>COMPRESSION</code>, <code>ENCRYPTION</code>, <code>HEALTH_CHECK_INTERVAL</code>, etc.<br>Example:</p>
+<pre><code class="hljs language-bash">VITE_WEBSOCKET_URL=wss://example.com/ws
+VITE_WEBSOCKET_RETRY_COUNT=5
+VITE_WEBSOCKET_RETRY_DELAY=1
+VITE_WEBSOCKET_BACKOFF_MULTIPLIER=2</code></pre><p>Use <code>configManager.get(name)</code> to retrieve a <code>ConnectionConfig</code>; if a named<br>config wasn’t defined, you get the default config with <code>name</code> applied.</p>
+<h2>ConnectionManager</h2>
+<p><code>ConnectionManager</code> manages a set of <code>BaseConnection</code> instances. It supports<br>grouping and bulk operations through <code>connectAll</code> and <code>disconnectAll</code>. It<br>performs periodic, interval-based health checks via <code>healthCheckAll()</code> and can<br>apply automatic recovery according to configured strategies. Events can be<br>routed and aggregated using <code>addEventHandler</code> and <code>addGlobalHandler</code>, enabling<br>analytics and logging. Each connection is paired with a<br><code>ConnectionMetricsTracker</code>, and the manager exposes <code>getStatistics()</code> and<br><code>getInfo()</code> for UI or telemetry. Recovery behavior can be overridden per<br>connection with <code>setRecoveryStrategy</code>, otherwise it falls back to the<br>connection’s own configuration.</p>
+<p>Automatic tasks</p>
+<p><code>start()</code> begins periodic health checks and a (currently minimal) cleanup loop.<br><code>stop()</code> clears timers (callers should disconnect connections as needed).</p>
+<h2>Protocol implementations</h2>
+<p>HTTP (<code>http.ts</code>)</p>
+<p>Stateless transport built on <code>fetch</code>. <code>connect()</code> marks the connection as active<br>(there is no persistent socket). <code>sendImpl()</code> POSTs JSON by default and<br><code>receiveImpl()</code> does a GET and attempts to JSON-parse the response, falling back<br>to text. <code>healthCheck()</code> uses a HEAD request.</p>
+<p>WebSocket (<code>websocket.ts</code>)</p>
+<p>Persistent transport built on the browser <code>WebSocket</code>. <code>connect()</code> awaits the<br>open event, updates health, and marks active. <code>sendImpl()</code> serializes non-string<br>payloads as JSON. <code>receiveImpl()</code> waits for the next message and JSON-parses<br>when possible.</p>
+<p>SSE (<code>sse.ts</code>)</p>
+<p>Server-Sent Events transport built on <code>EventSource</code>. It is one-way (server →<br>client), so <code>sendImpl()</code> always returns <code>false</code>. <code>receiveImpl()</code> awaits the next<br>message and JSON-parses when possible.</p>
+<h2>Pooling</h2>
+<p><code>ConnectionPool&lt;T&gt;</code> provides a simple browser-side pool with configurable<br>minimum and maximum size, along with periodic cleanup and health timers.<br>Consumers acquire connections using <code>acquire(timeout)</code> and return them with<br><code>release(conn)</code>; when the pool is saturated, connections are closed<br>automatically on release to respect capacity. <code>WebSocketConnectionPool</code> is a<br>convenience wrapper that wires a <code>ConnectionPool&lt;WebSocketConnection&gt;</code> to a<br>factory which creates and opens WebSockets on demand using a supplied<br><code>ConnectionConfig</code>.</p>
+<h2>Retry strategies</h2>
+<p><code>retry.ts</code> defines composable retry strategies that can wrap any async function.<br>Use <code>ExponentialBackoffRetry(maxAttempts, baseDelaySec, multiplier)</code> for<br>exponential delays,<br><code>LinearBackoffRetry(maxAttempts, baseDelaySec, incrementSec)</code> for linear delays,<br>or <code>JitterRetry(maxAttempts, baseDelaySec, jitterFactor)</code> to add randomness that<br>reduces load spikes. Execute an operation with<br><code>strategy.execute(() =&gt; doThing())</code> to automatically apply the computed delays<br>between attempts.</p>
+<h2>Metrics and analytics</h2>
+<p><code>ConnectionMetricsTracker</code> collects rolling response times, success/failure<br>counts, and error type breakdowns, exposing <code>summary()</code> with average response<br>time, error rate, throughput, uptime, and timestamps. <code>ConnectionManager</code><br>consumes emitted <code>metrics</code> and <code>error</code> events to feed these trackers.</p>
+<h2>Security</h2>
+<p><code>ConnectionSecurity</code> helps build authorization headers for token/API key<br>scenarios and surfaces basic security info for display. Transport-level TLS is<br>handled by the browser.</p>
+<h2>Public API</h2>
+<p><code>index.ts</code> re-exports all of the above so consumers can import from<br><code>src/connection</code> directly.</p>
+<h2>Usage examples</h2>
+<p>Create a WebSocket connection and manage it</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ConnectionManager</span>,
+  <span class="hljs-title class_">ConnectionConfigManager</span>,
+  <span class="hljs-title class_">ConnectionType</span>,
+  <span class="hljs-title class_">WebSocketConnection</span>,
+  <span class="hljs-title class_">RecoveryStrategy</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/src/connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> configManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionConfigManager</span>();
+<span class="hljs-comment">// Either define VITE_WEBSOCKET_URL in env, or set one explicitly:</span>
+<span class="hljs-keyword">const</span> wsConfig = {
+  ...configManager.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;websocket&quot;</span>),
+  <span class="hljs-attr">connectionType</span>: <span class="hljs-title class_">ConnectionType</span>.<span class="hljs-property">WEBSOCKET</span>,
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;wss://example.com/ws&quot;</span>,
+  <span class="hljs-attr">recoveryStrategy</span>: <span class="hljs-title class_">RecoveryStrategy</span>.<span class="hljs-property">RECONNECT_BACKOFF</span>,
+};
+
+<span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionManager</span>();
+<span class="hljs-keyword">const</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnection</span>(wsConfig);
+
+manager.<span class="hljs-title function_">addEventHandler</span>(<span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> {
+  <span class="hljs-comment">// route to telemetry/console/notification system</span>
+  <span class="hljs-keyword">if</span> (evt.<span class="hljs-property">severity</span> === <span class="hljs-string">&quot;error&quot;</span>) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">&quot;connection error&quot;</span>, evt);
+});
+
+manager.<span class="hljs-title function_">addConnection</span>(ws, <span class="hljs-string">&quot;realtime&quot;</span>);
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">start</span>();
+<span class="hljs-keyword">await</span> ws.<span class="hljs-title function_">connect</span>();
+
+<span class="hljs-keyword">await</span> ws.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">hello</span>: <span class="hljs-string">&quot;world&quot;</span> });
+<span class="hljs-keyword">const</span> msg = <span class="hljs-keyword">await</span> ws.<span class="hljs-title function_">receive</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;received&quot;</span>, msg);
+
+<span class="hljs-keyword">const</span> health = <span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">healthCheckAll</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(health);</code></pre><p>Pool WebSockets</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">WebSocketConnectionPool</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/src/connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnectionPool</span>(
+  {
+    <span class="hljs-attr">maxSize</span>: <span class="hljs-number">8</span>,
+    <span class="hljs-attr">minSize</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">maxIdleTime</span>: <span class="hljs-number">60</span>,
+    <span class="hljs-attr">acquireTimeout</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">releaseTimeout</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">healthCheckInterval</span>: <span class="hljs-number">30</span>,
+    <span class="hljs-attr">cleanupInterval</span>: <span class="hljs-number">60</span>,
+  },
+  wsConfig,
+);
+
+<span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">start</span>();
+<span class="hljs-keyword">const</span> conn = <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">acquire</span>();
+<span class="hljs-keyword">if</span> (conn) {
+  <span class="hljs-keyword">await</span> conn.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;ping&quot;</span> });
+  <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">release</span>(conn);
+}</code></pre><p>Retry an arbitrary operation</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ExponentialBackoffRetry</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/src/connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> retry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExponentialBackoffRetry</span>(<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// up to 4 attempts: 1s, 2s, 4s, 8s</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> retry.<span class="hljs-title function_">execute</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/fragile&quot;</span>);
+  <span class="hljs-keyword">if</span> (!res.<span class="hljs-property">ok</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;request failed&quot;</span>);
+  <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">json</span>();
+});</code></pre><p>Build authorization headers</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ConnectionSecurity</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/src/connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> security = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionSecurity</span>();
+<span class="hljs-keyword">const</span> headers = security.<span class="hljs-title function_">createAuthorizationHeaders</span>(<span class="hljs-string">&quot;token-123&quot;</span>, <span class="hljs-literal">undefined</span>);
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/secure&quot;</span>, { headers });</code></pre><h2>Notes</h2>
+<p>This module is oriented toward the browser. Node-specific features such as<br>low-level TLS are intentionally omitted because TLS is handled by the browser;<br><code>randomUUID()</code> falls back to Node’s <code>crypto</code> in development or SSR environments.<br><code>HTTPConnection</code> is stateless and its <code>connect()</code> simply marks the connection as<br>ready without creating a persistent socket. <code>SSEConnection</code> is receive‑only by<br>design. Circuit breaker thresholds, recovery strategies, and retry behavior are<br>intentionally conservative by default and should be tuned via environment<br>variables or per‑connection configuration to suit your application’s needs.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

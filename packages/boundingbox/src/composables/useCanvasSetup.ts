@@ -6,6 +6,7 @@
 
 import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
 import type { BoundingBox, ImageInfo, EditorConfig } from "../types";
+import type { Setter } from "solid-js";
 import {
   createCanvas,
   addBoundingBoxesToCanvas,
@@ -27,11 +28,11 @@ export interface CanvasSetupConfig {
   eventHandlers: any;
   selectedLabelClass: () => string;
   isDrawing: () => boolean;
-  setIsDrawing: (value: boolean) => void;
+  setIsDrawing: Setter<boolean>;
   newBox: () => Partial<BoundingBox> | null;
-  setNewBox: (value: Partial<BoundingBox> | null) => void;
+  setNewBox: Setter<Partial<BoundingBox> | null>;
   startPoint: () => { x: number; y: number } | null;
-  setStartPoint: (value: { x: number; y: number } | null) => void;
+  setStartPoint: Setter<{ x: number; y: number } | null>;
   boundingBoxActions: {
     selectBox: (id: string) => void;
     addBox: (box: BoundingBox) => void;

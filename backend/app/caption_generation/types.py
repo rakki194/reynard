@@ -38,8 +38,17 @@ class CaptionTask:
 class CaptionResult:
     """Represents the result of a caption generation task."""
     
-    def __init__(self, task: CaptionTask, caption: str = None, error: str = None):
-        self.task = task
+    def __init__(self, image_path: str, generator_name: str, success: bool = True, 
+                 caption: str = None, error: str = None, error_type: str = None, 
+                 retryable: bool = False, processing_time: float = None, 
+                 caption_type: str = None, confidence: float = None):
+        self.image_path = image_path
+        self.generator_name = generator_name
+        self.success = success
         self.caption = caption
         self.error = error
-        self.success = error is None
+        self.error_type = error_type
+        self.retryable = retryable
+        self.processing_time = processing_time
+        self.caption_type = caption_type
+        self.confidence = confidence

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Updating Charts - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Updating Charts</h1>
+      <div class="markdown-content"><h1>Updating Charts</h1>
+<p>It&#39;s pretty common to want to update charts after they&#39;ve been created. When the chart data or options are changed, Chart.js will animate to the new data values and options.</p>
+<h2>Adding or Removing Data</h2>
+<p>Adding and removing data is supported by changing the data array. To add data, just add data into the data array as seen in this example, to remove it you can pop it again.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">addData</span>(<span class="hljs-params">chart, label, newData</span>) {
+    chart.<span class="hljs-property">data</span>.<span class="hljs-property">labels</span>.<span class="hljs-title function_">push</span>(label);
+    chart.<span class="hljs-property">data</span>.<span class="hljs-property">datasets</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">dataset</span>) =&gt;</span> {
+        dataset.<span class="hljs-property">data</span>.<span class="hljs-title function_">push</span>(newData);
+    });
+    chart.<span class="hljs-title function_">update</span>();
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">removeData</span>(<span class="hljs-params">chart</span>) {
+    chart.<span class="hljs-property">data</span>.<span class="hljs-property">labels</span>.<span class="hljs-title function_">pop</span>();
+    chart.<span class="hljs-property">data</span>.<span class="hljs-property">datasets</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">dataset</span>) =&gt;</span> {
+        dataset.<span class="hljs-property">data</span>.<span class="hljs-title function_">pop</span>();
+    });
+    chart.<span class="hljs-title function_">update</span>();
+}</code></pre><h2>Updating Options</h2>
+<p>To update the options, mutating the <code>options</code> property in place or passing in a new options object are supported.</p>
+<ul>
+<li>If the options are mutated in place, other option properties would be preserved, including those calculated by Chart.js.</li>
+<li>If created as a new object, it would be like creating a new chart with the options - old options would be discarded.</li>
+</ul>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateConfigByMutating</span>(<span class="hljs-params">chart</span>) {
+    chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">title</span>.<span class="hljs-property">text</span> = <span class="hljs-string">&#x27;new title&#x27;</span>;
+    chart.<span class="hljs-title function_">update</span>();
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">updateConfigAsNewObject</span>(<span class="hljs-params">chart</span>) {
+    chart.<span class="hljs-property">options</span> = {
+        <span class="hljs-attr">responsive</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">plugins</span>: {
+            <span class="hljs-attr">title</span>: {
+                <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;Chart.js&#x27;</span>
+            }
+        },
+        <span class="hljs-attr">scales</span>: {
+            <span class="hljs-attr">x</span>: {
+                <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>
+            },
+            <span class="hljs-attr">y</span>: {
+                <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>
+            }
+        }
+    };
+    chart.<span class="hljs-title function_">update</span>();
+}</code></pre><p>Scales can be updated separately without changing other options.<br>To update the scales, pass in an object containing all the customization including those unchanged ones.</p>
+<p>Variables referencing any one from <code>chart.scales</code> would be lost after updating scales with a new <code>id</code> or the changed <code>type</code>.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateScales</span>(<span class="hljs-params">chart</span>) {
+    <span class="hljs-keyword">let</span> xScale = chart.<span class="hljs-property">scales</span>.<span class="hljs-property">x</span>;
+    <span class="hljs-keyword">let</span> yScale = chart.<span class="hljs-property">scales</span>.<span class="hljs-property">y</span>;
+    chart.<span class="hljs-property">options</span>.<span class="hljs-property">scales</span> = {
+        <span class="hljs-attr">newId</span>: {
+            <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>
+        },
+        <span class="hljs-attr">y</span>: {
+            <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;logarithmic&#x27;</span>
+        }
+    };
+    chart.<span class="hljs-title function_">update</span>();
+    <span class="hljs-comment">// need to update the reference</span>
+    xScale = chart.<span class="hljs-property">scales</span>.<span class="hljs-property">newId</span>;
+    yScale = chart.<span class="hljs-property">scales</span>.<span class="hljs-property">y</span>;
+}</code></pre><p>You can update a specific scale by its id as well.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateScale</span>(<span class="hljs-params">chart</span>) {
+    chart.<span class="hljs-property">options</span>.<span class="hljs-property">scales</span>.<span class="hljs-property">y</span> = {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;logarithmic&#x27;</span>
+    };
+    chart.<span class="hljs-title function_">update</span>();
+}</code></pre><p>Code sample for updating options can be found in <a href="https://www.chartjs.org/docs/latest/samples/area/line-datasets.html">line-datasets.html</a>.</p>
+<h2>Preventing Animations</h2>
+<p>Sometimes when a chart updates, you may not want an animation. To achieve this you can call <code>update</code> with <code>&#39;none&#39;</code> as mode.</p>
+<pre><code class="hljs language-javascript">myChart.<span class="hljs-title function_">update</span>(<span class="hljs-string">&#x27;none&#x27;</span>);</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padding - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Padding</h1>
+      <div class="markdown-content"><h1>Padding</h1>
+<p>Padding values in Chart options can be supplied in a couple of different formats.</p>
+<h2>Number</h2>
+<p>If this value is a number, it is applied to all sides (left, top, right, bottom).</p>
+<p>For example, defining a 20px padding to all sides of the chart:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">layout</span>: {
+            <span class="hljs-attr">padding</span>: <span class="hljs-number">20</span>
+        }
+    }
+});</code></pre><h2>{top, left, bottom, right} object</h2>
+<p>If this value is an object, the <code>left</code> property defines the left padding. Similarly, the <code>right</code>, <code>top</code> and <code>bottom</code> properties can also be specified.<br>Omitted properties default to <code>0</code>.</p>
+<p>Let&#39;s say you wanted to add 50px of padding to the left side of the chart canvas, you would do:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">layout</span>: {
+            <span class="hljs-attr">padding</span>: {
+                <span class="hljs-attr">left</span>: <span class="hljs-number">50</span>
+            }
+        }
+    }
+});</code></pre><h2>{x, y} object</h2>
+<p>This is a shorthand for defining left/right and top/bottom to the same values.</p>
+<p>For example, 10px left / right and 4px top / bottom padding on a Radial Linear Axis <a href="../axes/radial/linear.md#linear-radial-axis-specific-tick-options">tick backdropPadding</a>:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;radar&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">scales</span>: {
+          <span class="hljs-attr">r</span>: {
+            <span class="hljs-attr">ticks</span>: {
+              <span class="hljs-attr">backdropPadding</span>: {
+                  <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>,
+                  <span class="hljs-attr">y</span>: <span class="hljs-number">4</span>
+              }
+            }
+        }
+    }
+});</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Using from Node.js - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Using from Node.js</h1>
+      <div class="markdown-content"><h1>Using from Node.js</h1>
+<p>You can use Chart.js in Node.js for server-side generation of plots with help from an NPM package such as <a href="https://github.com/Automattic/node-canvas">node-canvas</a> or <a href="https://skia-canvas.org/">skia-canvas</a>.</p>
+<p>Sample usage:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> {<span class="hljs-title class_">CategoryScale</span>, <span class="hljs-title class_">Chart</span>, <span class="hljs-title class_">LinearScale</span>, <span class="hljs-title class_">LineController</span>, <span class="hljs-title class_">LineElement</span>, <span class="hljs-title class_">PointElement</span>} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;chart.js&#x27;</span>;
+<span class="hljs-keyword">import</span> {<span class="hljs-title class_">Canvas</span>} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;skia-canvas&#x27;</span>;
+<span class="hljs-keyword">import</span> fsp <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;node:fs/promises&#x27;</span>;
+
+<span class="hljs-title class_">Chart</span>.<span class="hljs-title function_">register</span>([
+  <span class="hljs-title class_">CategoryScale</span>,
+  <span class="hljs-title class_">LineController</span>,
+  <span class="hljs-title class_">LineElement</span>,
+  <span class="hljs-title class_">LinearScale</span>,
+  <span class="hljs-title class_">PointElement</span>
+]);
+
+<span class="hljs-keyword">const</span> canvas = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Canvas</span>(<span class="hljs-number">400</span>, <span class="hljs-number">300</span>);
+<span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(
+  canvas, <span class="hljs-comment">// TypeScript needs &quot;as any&quot; here</span>
+  {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: {
+      <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;Red&#x27;</span>, <span class="hljs-string">&#x27;Blue&#x27;</span>, <span class="hljs-string">&#x27;Yellow&#x27;</span>, <span class="hljs-string">&#x27;Green&#x27;</span>, <span class="hljs-string">&#x27;Purple&#x27;</span>, <span class="hljs-string">&#x27;Orange&#x27;</span>],
+      <span class="hljs-attr">datasets</span>: [{
+        <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;# of Votes&#x27;</span>,
+        <span class="hljs-attr">data</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">19</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+        <span class="hljs-attr">borderColor</span>: <span class="hljs-string">&#x27;red&#x27;</span>
+      }]
+    }
+  }
+);
+<span class="hljs-keyword">const</span> pngBuffer = <span class="hljs-keyword">await</span> canvas.<span class="hljs-title function_">toBuffer</span>(<span class="hljs-string">&#x27;png&#x27;</span>, {<span class="hljs-attr">matte</span>: <span class="hljs-string">&#x27;white&#x27;</span>});
+<span class="hljs-keyword">await</span> fsp.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string">&#x27;output.png&#x27;</span>, pngBuffer);
+chart.<span class="hljs-title function_">destroy</span>();</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

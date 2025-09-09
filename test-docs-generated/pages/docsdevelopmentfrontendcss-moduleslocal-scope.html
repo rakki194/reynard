@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Modules — Local Scope - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>CSS Modules — Local Scope</h1>
+      <div class="markdown-content"><h1>CSS Modules — Local Scope</h1>
+<p>CSS Modules have class selectors scoped locally by default. For example, the<br>following classes <code>backdrop</code>, <code>prompt</code> &amp; <code>pullquote</code> are <em>local to that file</em>.</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.backdrop</span> {
+}
+<span class="hljs-selector-class">.prompt</span> {
+}
+<span class="hljs-selector-class">.pullquote</span> {
+}</code></pre><p>They do not pollute the global namespace, so you&#39;re free to use any name you<br>like. You compile them by importing or requiring them in your JavaScript file.</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./style.css&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Component</span>(<span class="hljs-params">props</span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{styles.backdrop}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{styles.prompt}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{styles.pullquote}</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><blockquote>
+<p><strong>Note:</strong> These examples use React syntax, but of course it&#39;s not tied to<br>React in any particular way.</p>
+</blockquote>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

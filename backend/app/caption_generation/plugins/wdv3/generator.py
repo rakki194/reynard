@@ -25,7 +25,7 @@ import safetensors
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-from ...base import CaptionGenerator, CaptionType, ModelCategory
+from ...base import CaptionGeneratorBase, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
@@ -40,7 +40,7 @@ MODEL_REPO_MAP = {
 }
 
 
-class WDv3Generator(CaptionGenerator):
+class WDv3Generator(CaptionGeneratorBase):
     """
     WDv3 caption generator.
 

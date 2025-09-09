@@ -8,13 +8,13 @@ Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content ma
 
 ```bash
 # Install core package
-npm install reynard-core solid-js
+pnpm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install reynard-components reynard-chat reynard-rag reynard-auth
+pnpm install reynard-components reynard-chat reynard-rag reynard-auth
 
 # Start building
-npm create reynard-app my-app
+pnpm create reynard-app my-app
 ```
 
 ```tsx
@@ -94,16 +94,16 @@ Reynard includes comprehensive testing with Vitest and Playwright:
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Run tests with coverage
-npm test:coverage
+pnpm test:coverage
 
 # Run tests in UI mode
-npm test:ui
+pnpm test:ui
 
 # Run Playwright tests
-npm run test:e2e
+pnpm run test:e2e
 ```
 
 _[View complete testing guide →](./docs/CONTRIBUTING.md#testing)_
@@ -1053,13 +1053,13 @@ Reynard examples showcase the full spectrum of capabilities, from simple demos t
 cd examples/basic-app
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 ```
 
 ## 🧪 Testing
@@ -1068,16 +1068,16 @@ Reynard includes comprehensive testing with Vitest and Playwright:
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Run tests with coverage
-npm test:coverage
+pnpm test:coverage
 
 # Run tests in UI mode
-npm test:ui
+pnpm test:ui
 
 # Run Playwright tests
-npm run test:e2e
+pnpm run test:e2e
 ```
 
 ### Test Coverage
@@ -1199,19 +1199,19 @@ const { t, locale, setLocale } = useI18n();
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development
-npm run dev
+pnpm run dev
 
 # Run tests
-npm test
+pnpm test
 
 # Build all packages
-npm run build
+pnpm run build
 
 # Type check
-npm run typecheck
+pnpm run typecheck
 ```
 
 ## 🤝 Contributing
@@ -1226,13 +1226,13 @@ git clone https://github.com/rakki194/reynard.git
 cd reynard
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development
-npm run dev
+pnpm run dev
 
 # Run tests
-npm test
+pnpm test
 ```
 
 ### Code Style

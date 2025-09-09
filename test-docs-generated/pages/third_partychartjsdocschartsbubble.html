@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Chart - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Bubble Chart</h1>
+      <div class="markdown-content"><h1>Bubble Chart</h1>
+<p>A bubble chart is used to display three dimensions of data at the same time. The location of the bubble is determined by the first two dimensions and the corresponding horizontal and vertical axes. The third dimension is represented by the size of the individual bubbles.</p>
+<pre><code class="hljs">// &lt;block:setup:<span class="hljs-number">1</span>&gt;
+const data = {
+  datasets: [{
+    <span class="hljs-selector-tag">label</span>: <span class="hljs-string">&#x27;First Dataset&#x27;</span>,
+    data: [{
+      <span class="hljs-attribute">x</span>: <span class="hljs-number">20</span>,
+      y: <span class="hljs-number">30</span>,
+      r: <span class="hljs-number">15</span>
+    }, {
+      <span class="hljs-attribute">x</span>: <span class="hljs-number">40</span>,
+      y: <span class="hljs-number">10</span>,
+      r: <span class="hljs-number">10</span>
+    }],
+    backgroundColor: <span class="hljs-string">&#x27;rgb(255, 99, 132)&#x27;</span>
+  }]
+};
+// &lt;/block:setup&gt;
+
+// &lt;block:config:<span class="hljs-number">0</span>&gt;
+const config = {
+  type: <span class="hljs-string">&#x27;bubble&#x27;</span>,
+  data: data,
+  options: {}
+};
+// &lt;/block:config&gt;
+
+module.exports = {
+  actions: [],
+  config: config,
+};</code></pre><h2>Dataset Properties</h2>
+<p>Namespaces:</p>
+<ul>
+<li><code>data.datasets[index]</code> - options for this dataset only</li>
+<li><code>options.datasets.bubble</code> - options for all bubble datasets</li>
+<li><code>options.elements.point</code> - options for all <a href="../configuration/elements.md#point-configuration">point elements</a></li>
+<li><code>options</code> - options for the whole chart</li>
+</ul>
+<p>The bubble chart allows a number of properties to be specified for each dataset. These are used to set display properties for a specific dataset. For example, the colour of the bubbles is generally set this way.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th align="center"><a href="../general/options.md#scriptable-options">Scriptable</a></th>
+<th align="center"><a href="../general/options.md#indexable-options">Indexable</a></th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#styling"><code>backgroundColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;rgba(0, 0, 0, 0.1)&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;rgba(0, 0, 0, 0.1)&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>borderWidth</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><a href="#general"><code>clip</code></a></td>
+<td><code>number</code>|<code>object</code>|<code>false</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#data-structure"><code>data</code></a></td>
+<td><code>object[]</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><strong>required</strong></td>
+</tr>
+<tr>
+<td><a href="#general"><code>drawActiveElementsOnTop</code></a></td>
+<td><code>boolean</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBackgroundColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderColor</code></a></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverBorderWidth</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hoverRadius</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><a href="#interactions"><code>hitRadius</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><a href="#general"><code>label</code></a></td>
+<td><code>string</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><code>undefined</code></td>
+</tr>
+<tr>
+<td><a href="#general"><code>order</code></a></td>
+<td><code>number</code></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>pointStyle</code></a></td>
+<td><a href="../configuration/elements.md#types"><code>pointStyle</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>&#39;circle&#39;</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>rotation</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><a href="#styling"><code>radius</code></a></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>3</code></td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the scopes described in <a href="../general/options">option resolution</a></p>
+<h3>General</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>clip</code></td>
+<td>How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. <code>0</code> = clip at chartArea. Clipping can also be configured per side: <code>clip: {left: 5, top: false, right: -2, bottom: 0}</code></td>
+</tr>
+<tr>
+<td><code>drawActiveElementsOnTop</code></td>
+<td>Draw the active bubbles of a dataset over the other bubbles of the dataset</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>The label for the dataset which appears in the legend and tooltips.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>The drawing order of dataset. Also affects order for tooltip and legend. <a href="mixed.md#drawing-order">more</a></td>
+</tr>
+</tbody></table>
+<h3>Styling</h3>
+<p>The style of each bubble can be controlled with the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backgroundColor</code></td>
+<td>bubble background color.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td>bubble border color.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td>bubble border width (in pixels).</td>
+</tr>
+<tr>
+<td><code>pointStyle</code></td>
+<td>bubble <a href="../configuration/elements.md#point-styles">shape style</a>.</td>
+</tr>
+<tr>
+<td><code>rotation</code></td>
+<td>bubble rotation (in degrees).</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>bubble radius (in pixels).</td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the associated <a href="../configuration/elements.md#point-configuration"><code>elements.point.*</code></a> options.</p>
+<h3>Interactions</h3>
+<p>The interaction with each bubble can be controlled with the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hitRadius</code></td>
+<td>bubble <strong>additional</strong> radius for hit detection (in pixels).</td>
+</tr>
+<tr>
+<td><code>hoverBackgroundColor</code></td>
+<td>bubble background color when hovered.</td>
+</tr>
+<tr>
+<td><code>hoverBorderColor</code></td>
+<td>bubble border color when hovered.</td>
+</tr>
+<tr>
+<td><code>hoverBorderWidth</code></td>
+<td>bubble border width when hovered (in pixels).</td>
+</tr>
+<tr>
+<td><code>hoverRadius</code></td>
+<td>bubble <strong>additional</strong> radius when hovered (in pixels).</td>
+</tr>
+</tbody></table>
+<p>All these values, if <code>undefined</code>, fallback to the associated <a href="../configuration/elements.md#point-configuration"><code>elements.point.*</code></a> options.</p>
+<h2>Default Options</h2>
+<p>We can also change the default values for the Bubble chart type. Doing so will give all bubble charts created after this point the new defaults. The default configuration for the bubble chart can be accessed at <code>Chart.overrides.bubble</code>.</p>
+<h2>Data Structure</h2>
+<p>Bubble chart datasets need to contain a <code>data</code> array of points, each point represented by an object containing the following properties:</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-comment">// X Value</span>
+    <span class="hljs-attr">x</span>: number,
+
+    <span class="hljs-comment">// Y Value</span>
+    <span class="hljs-attr">y</span>: number,
+
+    <span class="hljs-comment">// Bubble radius in pixels (not scaled).</span>
+    <span class="hljs-attr">r</span>: number
+}</code></pre><p><strong>Important:</strong> the radius property, <code>r</code> is <strong>not</strong> scaled by the chart, it is the raw radius in pixels of the bubble that is drawn on the canvas.</p>
+<h2>Internal data format</h2>
+<p><code>{x, y, _custom}</code> where <code>_custom</code> is the radius.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

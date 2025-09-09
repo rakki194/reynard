@@ -1,50 +1,31 @@
 /**
- * Reynard Annotating - Unified Annotation System
- *
- * This package provides a unified interface for all Reynard caption generators
- * with production features including usage tracking, health monitoring, and
- * comprehensive model management.
+ * Barrel exports for the annotating package
  */
 
-// Main exports (Backend service - recommended)
+// Main manager class and factory
+export { BackendAnnotationManager, createAnnotationManager } from "./BackendAnnotationManager";
+
+// Configuration types and constants
+export type { BackendAnnotationManagerConfig } from "./config";
+export { DEFAULT_BACKEND_CONFIG } from "./config";
+
+// Caption generation utilities
 export {
-  BackendAnnotationManager,
-  createAnnotationManager as createBackendAnnotationManager,
-  DEFAULT_BACKEND_CONFIG,
-} from "./BackendAnnotationManager.js";
+  generateFurryTags,
+  generateDetailedCaption,
+  generateAnimeTags,
+  generateGeneralCaption,
+} from "./caption-generators";
 
-// Re-export core functionality
-export {
-  BackendAnnotationManager as CoreBackendManager,
-  BackendAnnotationService as CoreBackendService,
-  createBackendAnnotationManager as createCoreBackendManager,
-  createBackendAnnotationService as createCoreBackendService,
-  CaptionApiClient,
-  createCaptionApiClient,
-  createCaptionApiClientWithHealth,
-  DEFAULT_CAPTION_CONFIG,
-} from "reynard-annotating-core";
-
-// Re-export generator configurations for advanced usage
-export * from "reynard-annotating-jtp2";
-export * from "reynard-annotating-joy";
-export * from "reynard-annotating-florence2";
-export * from "reynard-annotating-wdv3";
-
-// Re-export types for convenience
-export type {
-  CaptionTask,
-  CaptionResult,
-  CaptionGenerator,
-  AnnotationProgress,
-  CaptionGeneratorConfig,
-  ModelManagerConfig,
-  ModelUsageStats,
-  HealthStatus,
-  AnyAnnotationEvent,
-  CaptionType,
-  ModelCategory,
-  ModelStatus,
-  OperationStatus,
-  ErrorType,
-} from "reynard-annotating-core";
+// Batch processing components
+export { BatchCaptionProcessor } from "./components/BatchCaptionProcessor";
+export { BatchFileUpload } from "./components/BatchFileUpload";
+export { BatchConfiguration } from "./components/BatchConfiguration";
+export { BatchProgress } from "./components/BatchProgress";
+export { BatchFileList } from "./components/BatchFileList";
+export { BatchResults } from "./components/BatchResults";
+export type { 
+  BatchCaptionProcessorProps, 
+  BatchFile, 
+  BatchProgress 
+} from "./components/BatchCaptionProcessor";

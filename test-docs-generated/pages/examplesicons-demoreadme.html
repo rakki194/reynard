@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard Icons Demo - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard Icons Demo</h1>
+      <div class="markdown-content"><h1>Reynard Icons Demo</h1>
+<p>A comprehensive demonstration application showcasing the <code>reynard-fluent-icons</code> package with modern UI components and interactive features.</p>
+<h2>Features</h2>
+<h3>🎯 Icon Showcase</h3>
+<ul>
+<li><strong>Browse All Icons</strong>: View all 150+ Fluent UI icons organized by category</li>
+<li><strong>Search Functionality</strong>: Find icons by name, description, or tags</li>
+<li><strong>Category Navigation</strong>: Filter icons by purpose (actions, navigation, files, etc.)</li>
+<li><strong>Statistics Dashboard</strong>: View icon counts and package information</li>
+</ul>
+<h3>🎨 Modern UI</h3>
+<ul>
+<li><strong>Tab Navigation</strong>: Clean tab-based interface with Fluent UI icons</li>
+<li><strong>Theme Toggle</strong>: Switch between light and dark themes</li>
+<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
+<li><strong>Reynard Branding</strong>: Features the official Reynard logo and favicon</li>
+</ul>
+<h3>🔧 Interactive Components</h3>
+<ul>
+<li><strong>Icon Grid</strong>: Visual grid display of all icons</li>
+<li><strong>Search Bar</strong>: Real-time icon filtering</li>
+<li><strong>Category Filters</strong>: Quick access to icon categories</li>
+<li><strong>Statistics Panel</strong>: Package information and icon counts</li>
+</ul>
+<h2>Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 18+</li>
+<li>npm 9+</li>
+</ul>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build
+
+<span class="hljs-comment"># Preview production build</span>
+npm run preview</code></pre><h2>Project Structure</h2>
+<pre><code class="hljs">reynard-icons-demo<span class="hljs-symbol">/</span>
+├── public<span class="hljs-symbol">/</span>
+│   └── favicon.svg          <span class="hljs-comment"># Reynard favicon</span>
+├── src<span class="hljs-symbol">/</span>
+│   ├── components<span class="hljs-symbol">/</span>
+│   │   ├── BrowseSection.tsx    <span class="hljs-comment"># Icon browsing interface</span>
+│   │   ├── CategoryStats.tsx    <span class="hljs-comment"># Statistics display</span>
+│   │   ├── SearchSection.tsx    <span class="hljs-comment"># Search functionality</span>
+│   │   └── ThemeToggle.tsx      <span class="hljs-comment"># Theme switching</span>
+│   ├── App.tsx              <span class="hljs-comment"># Main application component</span>
+│   ├── styles.css           <span class="hljs-comment"># Application styles</span>
+│   └── main.tsx             <span class="hljs-comment"># Application entry point</span>
+├── index.html               <span class="hljs-comment"># HTML template</span>
+├── package.json             <span class="hljs-comment"># Dependencies and scripts</span>
+├── tsconfig.json            <span class="hljs-comment"># TypeScript configuration</span>
+├── vite.config.ts           <span class="hljs-comment"># Vite build configuration</span>
+└── README.md                <span class="hljs-comment"># This file</span></code></pre><h2>Key Components</h2>
+<h3>App.tsx</h3>
+<p>The main application component featuring:</p>
+<ul>
+<li><strong>Tab Navigation</strong>: Browse, Search, Categories, and Stats tabs</li>
+<li><strong>Dynamic Icon Rendering</strong>: Uses Fluent UI icons for all UI elements</li>
+<li><strong>State Management</strong>: SolidJS signals for reactive updates</li>
+<li><strong>Reynard Branding</strong>: Official logo and favicon integration</li>
+</ul>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { createSignal } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;solid-js&quot;</span>;
+<span class="hljs-keyword">import</span> {
+  fluentIconsPackage,
+  iconCategories,
+  allIcons,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [activeTab, setActiveTab] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;browse&quot;</span>);
+
+  <span class="hljs-keyword">const</span> tabs = [
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;browse&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Browse&quot;</span>, <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;grid&quot;</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;search&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Search&quot;</span>, <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;search&quot;</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;categories&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Categories&quot;</span>, <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;folder&quot;</span> },
+    { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;stats&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Statistics&quot;</span>, <span class="hljs-attr">icon</span>: <span class="hljs-string">&quot;chart&quot;</span> },
+  ];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;reynard-logo&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          Reynard Icons Demo
+        <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ThemeToggle</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tabs&quot;</span>&gt;</span>
+        {tabs.map((tab) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+            <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">tab-button</span> ${<span class="hljs-attr">activeTab</span>() === <span class="hljs-string">tab.id</span> ? &quot;<span class="hljs-attr">active</span>&quot; <span class="hljs-attr">:</span> &quot;&quot;}`}
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setActiveTab(tab.id)}
+          &gt;
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon&quot;</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{getIcon(tab.icon)}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            {tab.label}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span>{/* Tab content */}<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>ThemeToggle.tsx</h3>
+<p>A theme switching component featuring:</p>
+<ul>
+<li><strong>Fluent UI Icons</strong>: Sun and moon icons for light/dark themes</li>
+<li><strong>Dynamic Rendering</strong>: Icons change based on current theme</li>
+<li><strong>Accessibility</strong>: Proper ARIA labels and keyboard support</li>
+</ul>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useTheme } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-themes&quot;</span>;
+<span class="hljs-keyword">import</span> { fluentIconsPackage } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-fluent-icons&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ThemeToggle</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { theme, setTheme, isDark } = <span class="hljs-title function_">useTheme</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">toggleTheme</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-title function_">setTheme</span>(<span class="hljs-title function_">isDark</span>() ? <span class="hljs-string">&quot;light&quot;</span> : <span class="hljs-string">&quot;dark&quot;</span>);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;theme-toggle&quot;</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{toggleTheme}</span>
+      <span class="hljs-attr">title</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">Switch</span> <span class="hljs-attr">to</span> ${<span class="hljs-attr">isDark</span>() ? &quot;<span class="hljs-attr">light</span>&quot; <span class="hljs-attr">:</span> &quot;<span class="hljs-attr">dark</span>&quot;} <span class="hljs-attr">theme</span>`}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">innerHTML</span>=<span class="hljs-string">{getIcon(isDark()</span> ? &quot;<span class="hljs-attr">sun</span>&quot; <span class="hljs-attr">:</span> &quot;<span class="hljs-attr">moon</span>&quot;)}&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h3>BrowseSection.tsx</h3>
+<p>The main icon browsing interface featuring:</p>
+<ul>
+<li><strong>Icon Grid</strong>: Visual display of all icons</li>
+<li><strong>Category Filtering</strong>: Filter icons by category</li>
+<li><strong>Icon Information</strong>: Display icon names and metadata</li>
+<li><strong>Responsive Layout</strong>: Adapts to different screen sizes</li>
+</ul>
+<h3>SearchSection.tsx</h3>
+<p>Advanced search functionality featuring:</p>
+<ul>
+<li><strong>Real-time Search</strong>: Instant filtering as you type</li>
+<li><strong>Multiple Search Types</strong>: Search by name, description, or tags</li>
+<li><strong>Search Suggestions</strong>: Autocomplete for icon names</li>
+<li><strong>Search History</strong>: Remember recent searches</li>
+</ul>
+<h3>CategoryStats.tsx</h3>
+<p>Statistics and information display featuring:</p>
+<ul>
+<li><strong>Icon Counts</strong>: Total icons per category</li>
+<li><strong>Package Information</strong>: Version and metadata</li>
+<li><strong>Usage Statistics</strong>: Most popular icons</li>
+<li><strong>Performance Metrics</strong>: Load times and bundle sizes</li>
+</ul>
+<h2>Styling</h2>
+<h3>CSS Architecture</h3>
+<p>The application uses a modern CSS architecture with:</p>
+<ul>
+<li><strong>CSS Custom Properties</strong>: Theme-aware styling</li>
+<li><strong>Component-based Styles</strong>: Scoped styles for each component</li>
+<li><strong>Responsive Design</strong>: Mobile-first approach</li>
+<li><strong>Accessibility</strong>: High contrast and reduced motion support</li>
+</ul>
+<h3>Key Styles</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Reynard Logo */</span>
+<span class="hljs-selector-class">.reynard-logo</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">2rem</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">2rem</span>;
+  <span class="hljs-attribute">background-image</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">&quot;/favicon.svg&quot;</span>);
+  <span class="hljs-attribute">background-size</span>: contain;
+  <span class="hljs-attribute">background-repeat</span>: no-repeat;
+  <span class="hljs-attribute">background-position</span>: center;
+  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">vertical-align</span>: middle;
+}
+
+<span class="hljs-comment">/* Tab Navigation */</span>
+<span class="hljs-selector-class">.tab-button</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.75rem</span> <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">border</span>: none;
+  <span class="hljs-attribute">background</span>: transparent;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0.5rem</span>;
+  <span class="hljs-attribute">transition</span>: background-color <span class="hljs-number">0.2s</span> ease;
+}
+
+<span class="hljs-selector-class">.tab-button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-surface-hover);
+}
+
+<span class="hljs-selector-class">.tab-button</span><span class="hljs-selector-class">.active</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-primary);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--color-primary-text);
+}
+
+<span class="hljs-comment">/* Icon Display */</span>
+<span class="hljs-selector-class">.icon</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">1.5rem</span>;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">vertical-align</span>: middle;
+}
+
+<span class="hljs-selector-class">.icon</span> <span class="hljs-selector-tag">svg</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">fill</span>: currentColor;
+}
+
+<span class="hljs-comment">/* Theme Toggle */</span>
+<span class="hljs-selector-class">.theme-toggle</span> {
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">justify-content</span>: center;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">2.5rem</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">2.5rem</span>;
+  <span class="hljs-attribute">border</span>: none;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-surface);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">transition</span>: all <span class="hljs-number">0.2s</span> ease;
+}
+
+<span class="hljs-selector-class">.theme-toggle</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--color-surface-hover);
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">1.05</span>);
+}</code></pre><h2>Dependencies</h2>
+<h3>Core Dependencies</h3>
+<ul>
+<li><strong>reynard-fluent-icons</strong>: Icon system and registry</li>
+<li><strong>reynard-themes</strong>: Theming and internationalization</li>
+<li><strong>reynard-components</strong>: UI components and primitives</li>
+<li><strong>reynard-core</strong>: Core utilities and modules</li>
+<li><strong>solid-js</strong>: Reactive framework</li>
+</ul>
+<h3>Development Dependencies</h3>
+<ul>
+<li><strong>vite</strong>: Build tool and dev server</li>
+<li><strong>typescript</strong>: Type safety and development</li>
+<li><strong>vite-plugin-solid</strong>: SolidJS integration</li>
+</ul>
+<h2>Scripts</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Development</span>
+npm run dev          <span class="hljs-comment"># Start development server</span>
+npm run build        <span class="hljs-comment"># Build for production</span>
+npm run preview      <span class="hljs-comment"># Preview production build</span>
+
+<span class="hljs-comment"># Code Quality</span>
+npm run typecheck    <span class="hljs-comment"># TypeScript type checking</span>
+npm run lint         <span class="hljs-comment"># ESLint code linting</span>
+npm run format       <span class="hljs-comment"># Prettier code formatting</span></code></pre><h2>Configuration</h2>
+<h3>Vite Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// vite.config.ts</span>
+<span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite&quot;</span>;
+<span class="hljs-keyword">import</span> solid <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite-plugin-solid&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">solid</span>()],
+  <span class="hljs-attr">server</span>: {
+    <span class="hljs-attr">port</span>: <span class="hljs-number">3001</span>,
+    <span class="hljs-attr">open</span>: <span class="hljs-literal">true</span>,
+  },
+  <span class="hljs-attr">build</span>: {
+    <span class="hljs-attr">target</span>: <span class="hljs-string">&quot;esnext&quot;</span>,
+    <span class="hljs-attr">sourcemap</span>: <span class="hljs-literal">true</span>,
+  },
+});</code></pre><h3>TypeScript Configuration</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;target&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ES2022&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lib&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;ES2022&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;DOM&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;DOM.Iterable&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ESNext&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;moduleResolution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bundler&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;jsx&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;preserve&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;jsxImportSource&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;solid-js&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;strict&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;forceConsistentCasingInFileNames&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Features in Detail</h2>
+<h3>Icon Browsing</h3>
+<ul>
+<li><strong>Grid Layout</strong>: Icons displayed in a responsive grid</li>
+<li><strong>Category Filtering</strong>: Filter by icon category</li>
+<li><strong>Icon Information</strong>: Display icon names and descriptions</li>
+<li><strong>Copy to Clipboard</strong>: Click to copy icon name or SVG</li>
+</ul>
+<h3>Search Functionality</h3>
+<ul>
+<li><strong>Real-time Search</strong>: Instant results as you type</li>
+<li><strong>Fuzzy Matching</strong>: Find icons even with typos</li>
+<li><strong>Search History</strong>: Remember recent searches</li>
+<li><strong>Search Suggestions</strong>: Autocomplete for better UX</li>
+</ul>
+<h3>Statistics Dashboard</h3>
+<ul>
+<li><strong>Icon Counts</strong>: Total icons per category</li>
+<li><strong>Package Info</strong>: Version and build information</li>
+<li><strong>Usage Analytics</strong>: Most popular icons</li>
+<li><strong>Performance Metrics</strong>: Load times and bundle sizes</li>
+</ul>
+<h3>Theme Integration</h3>
+<ul>
+<li><strong>Light/Dark Modes</strong>: Toggle between themes</li>
+<li><strong>System Preference</strong>: Respects user&#39;s system theme</li>
+<li><strong>Smooth Transitions</strong>: Animated theme changes</li>
+<li><strong>Accessibility</strong>: High contrast and reduced motion support</li>
+</ul>
+<h2>Performance</h2>
+<h3>Optimization Features</h3>
+<ul>
+<li><strong>Lazy Loading</strong>: Icons loaded on demand</li>
+<li><strong>Tree Shaking</strong>: Only import used icons</li>
+<li><strong>Caching</strong>: Icon registry caches loaded icons</li>
+<li><strong>Bundle Splitting</strong>: Separate chunks for better loading</li>
+</ul>
+<h3>Performance Metrics</h3>
+<ul>
+<li><strong>Initial Load</strong>: &lt; 100ms</li>
+<li><strong>Icon Rendering</strong>: &lt; 10ms per icon</li>
+<li><strong>Search Response</strong>: &lt; 50ms</li>
+<li><strong>Theme Switching</strong>: &lt; 100ms</li>
+</ul>
+<h2>Browser Support</h2>
+<ul>
+<li><strong>Modern Browsers</strong>: Chrome 88+, Firefox 78+, Safari 14+, Edge 88+</li>
+<li><strong>Mobile Browsers</strong>: iOS Safari 14+, Chrome Mobile 88+</li>
+<li><strong>Features</strong>: CSS Custom Properties, ES2022, SVG</li>
+</ul>
+<h2>Accessibility</h2>
+<h3>WCAG Compliance</h3>
+<ul>
+<li><strong>Keyboard Navigation</strong>: Full keyboard support</li>
+<li><strong>Screen Readers</strong>: Proper ARIA labels</li>
+<li><strong>High Contrast</strong>: Support for high contrast themes</li>
+<li><strong>Reduced Motion</strong>: Respects user preferences</li>
+</ul>
+<h3>Accessibility Features</h3>
+<ul>
+<li><strong>Focus Management</strong>: Clear focus indicators</li>
+<li><strong>Color Contrast</strong>: Meets WCAG AA standards</li>
+<li><strong>Text Alternatives</strong>: Alt text for all icons</li>
+<li><strong>Semantic HTML</strong>: Proper heading structure</li>
+</ul>
+<h2>Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Make your changes</li>
+<li>Add tests if applicable</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

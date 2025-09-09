@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Caption Generation – User Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Unified Caption Generation – User Guide</h1>
+      <div class="markdown-content"><h1>Unified Caption Generation – User Guide</h1>
+<p>This guide explains how to generate captions and tags in yipyap using the unified caption system, how to adjust post‑processing, and how to resolve common issues.</p>
+<h2>What it does</h2>
+<p>The unified caption system provides a single, consistent workflow to generate captions or tags using multiple models (e.g., JTP2, WDv3, JoyCaption, Florence2). It automatically handles model loading, download coordination, retries, and optional text cleanup so you can focus on results.</p>
+<h2>Quick start</h2>
+<ol>
+<li>Open an image in the gallery and use the caption action to generate a caption. By default, the system uses a fast model (e.g., <code>jtp2</code>) and applies post‑processing for readability.</li>
+<li>For multiple images, use the batch transform dialog and select a generator. Progress updates appear in real time.</li>
+<li>Saved captions use a sidecar file based on the model’s type (for example, <code>.tags</code> for taggers, <code>.caption</code> for sentence captions).</li>
+</ol>
+<h2>Choosing a caption model</h2>
+<ul>
+<li><strong>JTP2, WDv3 (Lightweight)</strong>: Fast taggers best for quick keywords. Output type is typically <code>tags</code>.</li>
+<li><strong>JoyCaption, Florence2 (Heavy)</strong>: Descriptive captions. Heavier load and download times; recommended for batch runs.</li>
+</ul>
+<p>You can switch the model per request. If a heavy model needs to download or load, the UI will notify you and may queue the request until ready.</p>
+<h2>Post‑processing</h2>
+<p>Post‑processing cleans up results for readability. Typical rules include:</p>
+<ul>
+<li>Replace underscores with spaces</li>
+<li>Normalize spacing and punctuation</li>
+<li>Ensure terminal punctuation for long sentences</li>
+</ul>
+<p>You can enable/disable post‑processing per request (e.g., a toggle in dialogs) and configure global rules from Settings → Model Management → Caption Models → Post‑Processing (admin). Generator‑specific overrides allow fine control (e.g., keep underscores for certain models).</p>
+<h2>Preloading and unloading (admins)</h2>
+<p>To reduce first‑use latency, admins can preload models and optionally run a warmup pass:</p>
+<ul>
+<li>Go to Settings → Model Management → Preloading</li>
+<li>Choose default generators (defaults to <code>jtp2</code>), enable “Preload on Startup,” set concurrency, and run “Preload Selected Now”</li>
+<li>Use “Unload Selected” or “Unload All” to reclaim resources</li>
+</ul>
+<p>These controls map to the API described in <code>docs/caption-models-api.md</code> and respect admin‑only access.</p>
+<h2>Tips</h2>
+<ul>
+<li>For quick tags, prefer <code>jtp2</code>. For descriptive captions, use <code>joy</code> or <code>florence2</code>.</li>
+<li>Enable preloading on servers with enough RAM/VRAM to minimize cold starts.</li>
+<li>Keep post‑processing enabled for cleaner results; disable if you need raw outputs for downstream scripts.</li>
+</ul>
+<h2>Troubleshooting</h2>
+<ul>
+<li><strong>Model is downloading</strong>: The request may be queued. Wait for the download to complete; progress is visible in Model Management → Downloads. You can switch to a lightweight model to proceed immediately.</li>
+<li><strong>Caption already exists</strong>: Enable “Force” to overwrite, or delete the existing sidecar from the file actions.</li>
+<li><strong>GPU memory errors</strong>: Unload heavy models from the Preloading tab or reduce concurrency in batch operations.</li>
+<li><strong>Slow generation</strong>: Preload the chosen model or switch to a lighter generator. Confirm HF cache is configured (<code>docs/hf-cache-configuration.md</code>).</li>
+<li><strong>Post‑processing not applied</strong>: Ensure the per‑request toggle is enabled and verify admin settings for the post‑processing pipeline.</li>
+</ul>
+<h2>Where to learn more</h2>
+<ul>
+<li>API reference and examples: <code>docs/caption-generation.md</code></li>
+<li>Preloading API: <code>docs/caption-models-api.md</code></li>
+<li>Model management: <code>docs/model-management.md</code></li>
+<li>Notifications and error handling: <code>docs/notifications.md</code></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

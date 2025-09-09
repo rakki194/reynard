@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard Algorithms - Optimized API - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard Algorithms - Optimized API</h1>
+      <div class="markdown-content"><h1>Reynard Algorithms - Optimized API</h1>
+<blockquote>
+<p>High-performance algorithmic building blocks with automatic optimization and memory pooling</p>
+</blockquote>
+<p>The Reynard Algorithms package now includes a comprehensive optimization framework based on PAW (Perfect Algorithmic World) research findings. This provides automatic algorithm selection, memory pooling, and performance monitoring for maximum efficiency.</p>
+<h2>🦊&gt; <strong>Key Features</strong></h2>
+<ul>
+<li><strong>Automatic Algorithm Selection</strong>: Intelligently chooses optimal algorithms based on workload characteristics</li>
+<li><strong>Memory Pooling</strong>: 99.91% reduction in allocation overhead through object reuse</li>
+<li><strong>Performance Monitoring</strong>: Real-time performance tracking and optimization recommendations</li>
+<li><strong>Backward Compatibility</strong>: Existing APIs continue to work while new optimized APIs provide enhanced performance</li>
+</ul>
+<h2>🦦&gt; <strong>Quick Start</strong></h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { detectCollisions, <span class="hljs-title class_">PerformanceMonitor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Automatic algorithm selection and optimization</span>
+<span class="hljs-keyword">const</span> aabbs = [
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> },
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> },
+];
+
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">detectCollisions</span>(aabbs);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Found <span class="hljs-subst">${collisions.length}</span> collisions`</span>);
+
+<span class="hljs-comment">// Performance monitoring</span>
+<span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceMonitor</span>();
+<span class="hljs-keyword">const</span> report = monitor.<span class="hljs-title function_">getPerformanceReport</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hit rate: <span class="hljs-subst">${report.summary.hitRate}</span>%`</span>);</code></pre><h3>Advanced Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">OptimizationConfig</span>,
+  configureOptimization,
+  detectCollisions,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Configure global optimization settings</span>
+<span class="hljs-title function_">configureOptimization</span>({
+  <span class="hljs-attr">enableMemoryPooling</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableAlgorithmSelection</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">algorithmSelectionStrategy</span>: <span class="hljs-string">&quot;adaptive&quot;</span>,
+  <span class="hljs-attr">performanceThresholds</span>: {
+    <span class="hljs-attr">maxExecutionTime</span>: <span class="hljs-number">16</span>, <span class="hljs-comment">// 16ms for 60fps</span>
+    <span class="hljs-attr">maxMemoryUsage</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 50MB</span>
+    <span class="hljs-attr">minHitRate</span>: <span class="hljs-number">90</span>,
+  },
+});
+
+<span class="hljs-comment">// Use optimized algorithms</span>
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">detectCollisions</span>(aabbs);</code></pre><h2>🐺&gt; <strong>API Reference</strong></h2>
+<h3>Core Functions</h3>
+<h4><code>detectCollisions(aabbs: AABB[]): CollisionPair[]</code></h4>
+<p>Automatically detects collisions between AABB objects using the optimal algorithm.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-attr">aabbs</span>: <span class="hljs-variable constant_">AABB</span>[] = [
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> },
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> },
+];
+
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">detectCollisions</span>(aabbs);
+<span class="hljs-comment">// Returns: [{ a: 0, b: 1, result: { colliding: true, distance: 35.36, ... } }]</span></code></pre><p><strong>Features:</strong></p>
+<ul>
+<li>Automatic algorithm selection (naive, spatial, or optimized)</li>
+<li>Memory pooling for zero-allocation performance</li>
+<li>Performance monitoring and adaptation</li>
+</ul>
+<h4><code>performSpatialQuery(queryAABB: AABB, spatialObjects: SpatialObject[]): SpatialObject[]</code></h4>
+<p>Performs optimized spatial queries to find objects within a specified area.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> spatialObjects = [
+  { <span class="hljs-attr">aabb</span>: { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">50</span> }, <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;object1&quot;</span> },
+  { <span class="hljs-attr">aabb</span>: { <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">50</span> }, <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;object2&quot;</span> },
+];
+
+<span class="hljs-keyword">const</span> queryAABB = { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+<span class="hljs-keyword">const</span> nearby = <span class="hljs-title function_">performSpatialQuery</span>(queryAABB, spatialObjects);
+<span class="hljs-comment">// Returns: [{ aabb: {...}, data: &#x27;object1&#x27; }]</span></code></pre><h4><code>findConnectedComponents(collisionPairs: CollisionPair[], objectCount: number): number[][]</code></h4>
+<p>Finds connected components using optimized Union-Find algorithms.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> collisionPairs = [
+  { <span class="hljs-attr">a</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">result</span>: { <span class="hljs-attr">colliding</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-number">0</span> } },
+  { <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">result</span>: { <span class="hljs-attr">colliding</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-number">0</span> } },
+];
+
+<span class="hljs-keyword">const</span> components = <span class="hljs-title function_">findConnectedComponents</span>(collisionPairs, <span class="hljs-number">4</span>);
+<span class="hljs-comment">// Returns: [[0, 1, 2], [3]]</span></code></pre><h3>Performance Monitoring</h3>
+<h4><code>PerformanceMonitor</code></h4>
+<p>Provides comprehensive performance monitoring and optimization recommendations.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceMonitor</span>();
+
+<span class="hljs-comment">// Get performance statistics</span>
+<span class="hljs-keyword">const</span> stats = monitor.<span class="hljs-title function_">getPerformanceStats</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Total queries: <span class="hljs-subst">${stats.totalQueries}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Average execution time: <span class="hljs-subst">${stats.averageExecutionTime}</span>ms`</span>);
+
+<span class="hljs-comment">// Get memory pool statistics</span>
+<span class="hljs-keyword">const</span> poolStats = monitor.<span class="hljs-title function_">getMemoryPoolStats</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Pool hit rate: <span class="hljs-subst">${poolStats.hitRate}</span>%`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Allocations avoided: <span class="hljs-subst">${poolStats.poolHits}</span>`</span>);
+
+<span class="hljs-comment">// Get optimization recommendations</span>
+<span class="hljs-keyword">const</span> recommendations = monitor.<span class="hljs-title function_">getOptimizationRecommendations</span>();
+recommendations.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">rec</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">${rec.<span class="hljs-keyword">type</span>}</span>: <span class="hljs-subst">${rec.description}</span>`</span>);
+});
+
+<span class="hljs-comment">// Check for performance degradation</span>
+<span class="hljs-keyword">if</span> (monitor.<span class="hljs-title function_">isPerformanceDegraded</span>()) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Performance degradation detected!&quot;</span>);
+}
+
+<span class="hljs-comment">// Get comprehensive report</span>
+<span class="hljs-keyword">const</span> report = monitor.<span class="hljs-title function_">getPerformanceReport</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Performance Report:&quot;</span>, report);</code></pre><h3>Configuration Management</h3>
+<h4><code>OptimizationConfig</code></h4>
+<p>Manages optimization settings and provides convenience methods.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> config = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimizationConfig</span>();
+
+<span class="hljs-comment">// Update configuration</span>
+config.<span class="hljs-title function_">update</span>({
+  <span class="hljs-attr">algorithmSelectionStrategy</span>: <span class="hljs-string">&quot;spatial&quot;</span>,
+  <span class="hljs-attr">enableMemoryPooling</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Convenience methods</span>
+config.<span class="hljs-title function_">enableMemoryPooling</span>();
+config.<span class="hljs-title function_">setAlgorithmStrategy</span>(<span class="hljs-string">&quot;optimized&quot;</span>);
+config.<span class="hljs-title function_">setPerformanceThresholds</span>({
+  <span class="hljs-attr">maxExecutionTime</span>: <span class="hljs-number">8</span>,
+  <span class="hljs-attr">minHitRate</span>: <span class="hljs-number">95</span>,
+});
+
+<span class="hljs-comment">// Get current configuration</span>
+<span class="hljs-keyword">const</span> currentConfig = config.<span class="hljs-title function_">getConfig</span>();</code></pre><h4><code>configureOptimization(config: Partial&lt;OptimizedCollisionConfig&gt;): void</code></h4>
+<p>Updates global optimization configuration.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">configureOptimization</span>({
+  <span class="hljs-attr">enableMemoryPooling</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableAlgorithmSelection</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">algorithmSelectionStrategy</span>: <span class="hljs-string">&quot;adaptive&quot;</span>,
+  <span class="hljs-attr">performanceThresholds</span>: {
+    <span class="hljs-attr">maxExecutionTime</span>: <span class="hljs-number">16</span>,
+    <span class="hljs-attr">maxMemoryUsage</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>,
+    <span class="hljs-attr">minHitRate</span>: <span class="hljs-number">90</span>,
+  },
+});</code></pre><h3>Algorithm Selection</h3>
+<h4><code>AlgorithmSelector</code></h4>
+<p>Provides intelligent algorithm selection based on workload characteristics.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> selector = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AlgorithmSelector</span>();
+
+<span class="hljs-keyword">const</span> workload = {
+  <span class="hljs-attr">objectCount</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">spatialDensity</span>: <span class="hljs-number">0.5</span>,
+  <span class="hljs-attr">overlapRatio</span>: <span class="hljs-number">0.3</span>,
+  <span class="hljs-attr">updateFrequency</span>: <span class="hljs-number">5</span>,
+  <span class="hljs-attr">queryPattern</span>: <span class="hljs-string">&quot;random&quot;</span>,
+};
+
+<span class="hljs-comment">// Select optimal collision detection algorithm</span>
+<span class="hljs-keyword">const</span> selection = selector.<span class="hljs-title function_">selectCollisionAlgorithm</span>(workload);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Selected algorithm: <span class="hljs-subst">${selection.algorithm}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Confidence: <span class="hljs-subst">${selection.confidence}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Reasoning: <span class="hljs-subst">${selection.reasoning.join(<span class="hljs-string">&quot;, &quot;</span>)}</span>`</span>);
+
+<span class="hljs-comment">// Get selection statistics</span>
+<span class="hljs-keyword">const</span> stats = selector.<span class="hljs-title function_">getSelectionStats</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Total selections: <span class="hljs-subst">${stats.totalSelections}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Average confidence: <span class="hljs-subst">${stats.averageConfidence}</span>`</span>);</code></pre><h3>Memory Pool Management</h3>
+<h4><code>MemoryPool</code></h4>
+<p>Manages memory pooling for optimal performance.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MemoryPool</span>({
+  <span class="hljs-attr">spatialHashPoolSize</span>: <span class="hljs-number">20</span>,
+  <span class="hljs-attr">unionFindPoolSize</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">collisionArrayPoolSize</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">enableAutoResize</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Get pool statistics</span>
+<span class="hljs-keyword">const</span> stats = pool.<span class="hljs-title function_">getStatistics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Pool hit rate: <span class="hljs-subst">${stats.hitRate}</span>%`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Memory saved: <span class="hljs-subst">${stats.memorySaved}</span> bytes`</span>);
+
+<span class="hljs-comment">// Get pool information</span>
+<span class="hljs-keyword">const</span> info = pool.<span class="hljs-title function_">getPoolInfo</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+  <span class="hljs-string">`Spatial hash pool: <span class="hljs-subst">${info.spatialHashPool.inUse}</span>/<span class="hljs-subst">${info.spatialHashPool.total}</span> in use`</span>,
+);
+
+<span class="hljs-comment">// Optimize for specific workload</span>
+pool.<span class="hljs-title function_">optimizeForWorkload</span>({
+  <span class="hljs-attr">objectCount</span>: <span class="hljs-number">200</span>,
+  <span class="hljs-attr">spatialDensity</span>: <span class="hljs-number">0.8</span>,
+  <span class="hljs-attr">updateFrequency</span>: <span class="hljs-number">15</span>,
+});
+
+<span class="hljs-comment">// Clean up resources</span>
+pool.<span class="hljs-title function_">destroy</span>();</code></pre><h2>🦊&gt; <strong>Performance Characteristics</strong></h2>
+<h3>Algorithm Selection Strategy</h3>
+<p>The optimization framework automatically selects algorithms based on workload characteristics:</p>
+<ul>
+<li><strong>Small datasets (10-25 objects)</strong>: Naive algorithm for optimal performance</li>
+<li><strong>Medium datasets (25-100 objects)</strong>: Spatial algorithm with memory pooling</li>
+<li><strong>Large datasets (100+ objects)</strong>: Optimized algorithm with full memory pooling</li>
+</ul>
+<h3>Memory Pool Effectiveness</h3>
+<p>Based on PAW research findings:</p>
+<ul>
+<li><strong>99.91% allocation overhead reduction</strong> through object pooling</li>
+<li><strong>95%+ pool hit rates</strong> for typical workloads</li>
+<li><strong>5-15% overall performance improvement</strong> in execution time</li>
+<li><strong>60-70% reduction</strong> in peak memory usage</li>
+</ul>
+<h3>Performance Monitoring</h3>
+<p>Real-time performance tracking provides:</p>
+<ul>
+<li><strong>Execution time monitoring</strong> with automatic threshold detection</li>
+<li><strong>Memory usage tracking</strong> with optimization recommendations</li>
+<li><strong>Algorithm selection statistics</strong> with confidence metrics</li>
+<li><strong>Performance degradation detection</strong> with automatic alerts</li>
+</ul>
+<h2>🦦&gt; <strong>Migration Guide</strong></h2>
+<h3>From Legacy API</h3>
+<p>The optimized API maintains backward compatibility while providing enhanced performance:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Legacy API (still supported)</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">UnionFind</span>, <span class="hljs-title class_">SpatialHash</span>, checkCollision } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">100</span>);
+<span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>({ <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span> });
+<span class="hljs-keyword">const</span> collision = <span class="hljs-title function_">checkCollision</span>(aabb1, aabb2);
+
+<span class="hljs-comment">// New Optimized API (recommended)</span>
+<span class="hljs-keyword">import</span> { detectCollisions, findConnectedComponents } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">detectCollisions</span>(aabbs);
+<span class="hljs-keyword">const</span> components = <span class="hljs-title function_">findConnectedComponents</span>(collisionPairs, objectCount);</code></pre><h3>Performance Benefits</h3>
+<p>Migration to the optimized API provides:</p>
+<ul>
+<li><strong>Automatic algorithm selection</strong> - no manual algorithm choice required</li>
+<li><strong>Memory pooling</strong> - eliminates allocation overhead</li>
+<li><strong>Performance monitoring</strong> - built-in optimization tracking</li>
+<li><strong>Simplified API</strong> - single entry point for all operations</li>
+</ul>
+<h2>🐺&gt; <strong>Advanced Usage</strong></h2>
+<h3>Custom Optimization Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">OptimizationConfig</span>,
+  <span class="hljs-title class_">PerformanceMonitor</span>,
+  detectCollisions,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Create custom configuration</span>
+<span class="hljs-keyword">const</span> config = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimizationConfig</span>({
+  <span class="hljs-attr">enableMemoryPooling</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableAlgorithmSelection</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">algorithmSelectionStrategy</span>: <span class="hljs-string">&quot;adaptive&quot;</span>,
+  <span class="hljs-attr">performanceThresholds</span>: {
+    <span class="hljs-attr">maxExecutionTime</span>: <span class="hljs-number">8</span>, <span class="hljs-comment">// 8ms for 120fps</span>
+    <span class="hljs-attr">maxMemoryUsage</span>: <span class="hljs-number">25</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 25MB</span>
+    <span class="hljs-attr">minHitRate</span>: <span class="hljs-number">95</span>,
+  },
+});
+
+<span class="hljs-comment">// Monitor performance</span>
+<span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceMonitor</span>();
+
+<span class="hljs-comment">// Perform operations</span>
+<span class="hljs-keyword">const</span> aabbs = <span class="hljs-title function_">generateTestData</span>(<span class="hljs-number">1000</span>);
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">detectCollisions</span>(aabbs);
+
+<span class="hljs-comment">// Check performance</span>
+<span class="hljs-keyword">if</span> (monitor.<span class="hljs-title function_">isPerformanceDegraded</span>()) {
+  <span class="hljs-keyword">const</span> recommendations = monitor.<span class="hljs-title function_">getOptimizationRecommendations</span>();
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Optimization recommendations:&quot;</span>, recommendations);
+}</code></pre><h3>Workload-Specific Optimization</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">MemoryPool</span>, <span class="hljs-title class_">AlgorithmSelector</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-comment">// Analyze workload characteristics</span>
+<span class="hljs-keyword">const</span> workload = {
+  <span class="hljs-attr">objectCount</span>: <span class="hljs-number">500</span>,
+  <span class="hljs-attr">spatialDensity</span>: <span class="hljs-number">0.8</span>,
+  <span class="hljs-attr">overlapRatio</span>: <span class="hljs-number">0.6</span>,
+  <span class="hljs-attr">updateFrequency</span>: <span class="hljs-number">30</span>,
+  <span class="hljs-attr">queryPattern</span>: <span class="hljs-string">&quot;clustered&quot;</span>,
+};
+
+<span class="hljs-comment">// Get algorithm selection</span>
+<span class="hljs-keyword">const</span> selector = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AlgorithmSelector</span>();
+<span class="hljs-keyword">const</span> selection = selector.<span class="hljs-title function_">selectCollisionAlgorithm</span>(workload);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Optimal algorithm: <span class="hljs-subst">${selection.algorithm}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+  <span class="hljs-string">`Expected performance: <span class="hljs-subst">${selection.expectedPerformance.executionTime}</span>ms`</span>,
+);
+
+<span class="hljs-comment">// Optimize memory pool for workload</span>
+<span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MemoryPool</span>();
+pool.<span class="hljs-title function_">optimizeForWorkload</span>(workload);</code></pre><h2>🦊&gt; <strong>Best Practices</strong></h2>
+<h3>Performance Optimization</h3>
+<ol>
+<li><strong>Use the optimized API</strong> for new code</li>
+<li><strong>Enable memory pooling</strong> for frequent operations</li>
+<li><strong>Monitor performance</strong> with PerformanceMonitor</li>
+<li><strong>Configure thresholds</strong> based on your requirements</li>
+<li><strong>Use adaptive algorithm selection</strong> for varying workloads</li>
+</ol>
+<h3>Memory Management</h3>
+<ol>
+<li><strong>Let the system manage memory pools</strong> automatically</li>
+<li><strong>Monitor pool hit rates</strong> for optimization opportunities</li>
+<li><strong>Use cleanup()</strong> when shutting down applications</li>
+<li><strong>Configure pool sizes</strong> based on expected workloads</li>
+</ol>
+<h3>Algorithm Selection</h3>
+<ol>
+<li><strong>Trust automatic selection</strong> for most use cases</li>
+<li><strong>Monitor selection statistics</strong> for insights</li>
+<li><strong>Use custom selection</strong> only for specific requirements</li>
+<li><strong>Update performance models</strong> with real-world data</li>
+</ol>
+<h2>🦦&gt; <strong>Troubleshooting</strong></h2>
+<h3>Performance Issues</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceMonitor</span>();
+
+<span class="hljs-comment">// Check if performance is degraded</span>
+<span class="hljs-keyword">if</span> (monitor.<span class="hljs-title function_">isPerformanceDegraded</span>()) {
+  <span class="hljs-keyword">const</span> report = monitor.<span class="hljs-title function_">getPerformanceReport</span>();
+
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Performance Issues:&quot;</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`- Execution time: <span class="hljs-subst">${report.summary.averageExecutionTime}</span>ms`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`- Memory usage: <span class="hljs-subst">${report.summary.averageMemoryUsage}</span> bytes`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`- Hit rate: <span class="hljs-subst">${report.summary.hitRate}</span>%`</span>);
+
+  <span class="hljs-comment">// Get optimization recommendations</span>
+  report.<span class="hljs-property">recommendations</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">rec</span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`- <span class="hljs-subst">${rec.description}</span> (<span class="hljs-subst">${rec.impact}</span> impact)`</span>);
+  });
+}</code></pre><h3>Memory Pool Issues</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MemoryPool</span>();
+<span class="hljs-keyword">const</span> stats = pool.<span class="hljs-title function_">getStatistics</span>();
+
+<span class="hljs-keyword">if</span> (stats.<span class="hljs-property">hitRate</span> &lt; <span class="hljs-number">90</span>) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Low pool hit rate detected&quot;</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Current hit rate: <span class="hljs-subst">${stats.hitRate}</span>%`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Pool hits: <span class="hljs-subst">${stats.poolHits}</span>`</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Pool misses: <span class="hljs-subst">${stats.poolMisses}</span>`</span>);
+
+  <span class="hljs-comment">// Get optimization recommendations</span>
+  <span class="hljs-keyword">const</span> recommendations = pool.<span class="hljs-title function_">getOptimizationRecommendations</span>();
+  recommendations.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">rec</span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Recommendation: <span class="hljs-subst">${rec.description}</span>`</span>);
+  });
+}</code></pre><h2>🐺&gt; <strong>Conclusion</strong></h2>
+<p>The optimized Reynard Algorithms package provides a comprehensive solution for high-performance spatial algorithms with automatic optimization and memory pooling. The PAW optimization framework ensures optimal performance across all workload scenarios while maintaining ease of use and backward compatibility.</p>
+<p>Key benefits:</p>
+<ul>
+<li><strong>99.91% allocation overhead reduction</strong> through memory pooling</li>
+<li><strong>Automatic algorithm selection</strong> based on workload characteristics</li>
+<li><strong>Real-time performance monitoring</strong> with optimization recommendations</li>
+<li><strong>Simplified API</strong> with comprehensive functionality</li>
+<li><strong>Production-ready</strong> with extensive testing and validation</li>
+</ul>
+<p>For more information, see the <a href="../docs/research/algorithms/paw-algorithms/">PAW Optimization Research</a> documentation.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

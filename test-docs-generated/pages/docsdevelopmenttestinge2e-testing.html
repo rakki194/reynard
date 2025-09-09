@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E2E Testing with Docker Playwright - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>E2E Testing with Docker Playwright</h1>
+      <div class="markdown-content"><h1>E2E Testing with Docker Playwright</h1>
+<p>This document describes how to set up and run end-to-end (E2E) tests for yipyap using Docker and Playwright.</p>
+<h2>Overview</h2>
+<p>The E2E testing setup uses Docker Compose to orchestrate three main services:</p>
+<ol>
+<li><strong>Backend Service</strong> (<code>yipyap-backend</code>) - Runs the Python Flask backend</li>
+<li><strong>Frontend Service</strong> (<code>yipyap-frontend</code>) - Runs the SolidJS development server</li>
+<li><strong>Playwright Tests</strong> (<code>playwright-tests</code>) - Runs the E2E tests against the running services</li>
+</ol>
+<h2>Available Versions</h2>
+<h3>GPU Version (Default)</h3>
+<ul>
+<li>Uses NVIDIA CUDA base image</li>
+<li>Optimized for GPU-accelerated machine learning models</li>
+<li>Requires CUDA-compatible hardware and drivers</li>
+<li>Files: <code>docker-compose.e2e.yml</code>, <code>Dockerfile</code>, <code>scripts/e2e.sh</code></li>
+</ul>
+<h3>CPU-Only Version</h3>
+<ul>
+<li>Uses standard Ubuntu base image</li>
+<li>Runs all models on CPU only</li>
+<li>Works on any machine without GPU requirements</li>
+<li>Files: <code>docker-compose.e2e.cpu.yml</code>, <code>Dockerfile.cpu</code>, <code>scripts/e2e-cpu.sh</code></li>
+</ul>
+<h2>Prerequisites</h2>
+<ul>
+<li>Docker and Docker Compose installed</li>
+<li>At least 4GB of available RAM</li>
+<li>Sufficient disk space for Docker images (~2GB)</li>
+<li>For GPU version: NVIDIA GPU with CUDA drivers</li>
+<li>For CPU version: Any machine (no GPU required)</li>
+</ul>
+<h2>Quick Start</h2>
+<h3>GPU Version (Default)</h3>
+<h4>1. Build the E2E Images</h4>
+<pre><code class="hljs language-bash">./scripts/e2e.sh build
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:build</code></pre><h4>2. Run All E2E Tests</h4>
+<pre><code class="hljs language-bash">./scripts/e2e.sh <span class="hljs-built_in">test</span>
+<span class="hljs-comment"># or</span>
+npm run e2e:docker</code></pre><h3>CPU-Only Version</h3>
+<h4>1. Build the E2E Images</h4>
+<pre><code class="hljs language-bash">./scripts/e2e-cpu.sh build
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:cpu:build</code></pre><h4>2. Run All E2E Tests</h4>
+<pre><code class="hljs language-bash">./scripts/e2e-cpu.sh <span class="hljs-built_in">test</span>
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:cpu</code></pre><h3>3. View Test Reports</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+./scripts/e2e.sh report
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:report
+
+<span class="hljs-comment"># CPU version</span>
+./scripts/e2e-cpu.sh report
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:cpu:report</code></pre><h3>4. Clean Up</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+./scripts/e2e.sh cleanup
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:cleanup
+
+<span class="hljs-comment"># CPU version</span>
+./scripts/e2e-cpu.sh cleanup
+<span class="hljs-comment"># or</span>
+npm run e2e:docker:cpu:cleanup</code></pre><h2>Available Commands</h2>
+<h3>GPU Version Commands</h3>
+<p>The <code>scripts/e2e.sh</code> script provides several convenient commands:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>build</code></td>
+<td>Build all E2E Docker images</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Run all E2E tests</td>
+</tr>
+<tr>
+<td><code>test-headed</code></td>
+<td>Run E2E tests with headed browsers (for debugging)</td>
+</tr>
+<tr>
+<td><code>test-filter &lt;pattern&gt;</code></td>
+<td>Run tests matching a specific pattern</td>
+</tr>
+<tr>
+<td><code>test-browser &lt;browser&gt;</code></td>
+<td>Run tests for a specific browser (chromium, firefox, webkit)</td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>Show test reports in browser</td>
+</tr>
+<tr>
+<td><code>cleanup</code></td>
+<td>Clean up E2E environment and Docker resources</td>
+</tr>
+</tbody></table>
+<h3>CPU-Only Version Commands</h3>
+<p>The <code>scripts/e2e-cpu.sh</code> script provides the same commands but for CPU-only testing:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>build</code></td>
+<td>Build all E2E Docker images (CPU-only)</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Run all E2E tests (CPU-only)</td>
+</tr>
+<tr>
+<td><code>test-headed</code></td>
+<td>Run E2E tests with headed browsers (for debugging)</td>
+</tr>
+<tr>
+<td><code>test-filter &lt;pattern&gt;</code></td>
+<td>Run tests matching a specific pattern</td>
+</tr>
+<tr>
+<td><code>test-browser &lt;browser&gt;</code></td>
+<td>Run tests for a specific browser (chromium, firefox, webkit)</td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>Show test reports in browser</td>
+</tr>
+<tr>
+<td><code>cleanup</code></td>
+<td>Clean up E2E environment and Docker resources</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<h3>Run Tests for Authentication Only</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+./scripts/e2e.sh test-filter <span class="hljs-string">&quot;auth&quot;</span>
+
+<span class="hljs-comment"># CPU version</span>
+./scripts/e2e-cpu.sh test-filter <span class="hljs-string">&quot;auth&quot;</span></code></pre><h3>Run Tests in Chrome Only</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+./scripts/e2e.sh test-browser chromium
+
+<span class="hljs-comment"># CPU version</span>
+./scripts/e2e-cpu.sh test-browser chromium</code></pre><h3>Debug Tests with Headed Browsers</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+./scripts/e2e.sh test-headed
+
+<span class="hljs-comment"># CPU version</span>
+./scripts/e2e-cpu.sh test-headed</code></pre><h2>Manual Docker Compose Usage</h2>
+<h3>GPU Version</h3>
+<h4>Start the Test Environment</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Start backend and frontend services</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e up -d yipyap-backend yipyap-frontend
+
+<span class="hljs-comment"># Wait for services to be ready (check logs if needed)</span>
+docker-compose -f docker-compose.e2e.yml logs -f yipyap-backend yipyap-frontend</code></pre><h4>Run Tests</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests
+
+<span class="hljs-comment"># Run specific test file</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> auth.spec.ts
+
+<span class="hljs-comment"># Run tests with specific browser</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --project=chromium</code></pre><h3>CPU-Only Version</h3>
+<h4>Start the Test Environment</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Start backend and frontend services</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu up -d yipyap-backend yipyap-frontend
+
+<span class="hljs-comment"># Wait for services to be ready (check logs if needed)</span>
+docker-compose -f docker-compose.e2e.cpu.yml logs -f yipyap-backend yipyap-frontend</code></pre><h4>Run Tests</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests
+
+<span class="hljs-comment"># Run specific test file</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> auth.spec.ts
+
+<span class="hljs-comment"># Run tests with specific browser</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --project=chromium</code></pre><h3>View Reports</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e-ui up playwright-ui
+
+<span class="hljs-comment"># CPU version</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu-ui up playwright-ui
+
+<span class="hljs-comment"># Access reports at http://localhost:9323</span></code></pre><h3>Clean Up</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># GPU version</span>
+docker-compose -f docker-compose.e2e.yml down
+docker-compose -f docker-compose.e2e.yml down -v
+docker system prune -f
+
+<span class="hljs-comment"># CPU version</span>
+docker-compose -f docker-compose.e2e.cpu.yml down
+docker-compose -f docker-compose.e2e.cpu.yml down -v
+docker system prune -f</code></pre><h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<p>The following environment variables can be set to customize the E2E testing environment:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PLAYWRIGHT_BASE_URL</code></td>
+<td><code>http://yipyap-frontend:5173</code></td>
+<td>Base URL for the frontend application</td>
+</tr>
+<tr>
+<td><code>PLAYWRIGHT_API_BASE_URL</code></td>
+<td><code>http://yipyap-backend:7000</code></td>
+<td>Base URL for the backend API</td>
+</tr>
+<tr>
+<td><code>CI</code></td>
+<td><code>true</code></td>
+<td>Set to true in CI environment</td>
+</tr>
+<tr>
+<td><code>UID</code></td>
+<td><code>1000</code></td>
+<td>User ID for Docker containers</td>
+</tr>
+<tr>
+<td><code>GID</code></td>
+<td><code>1000</code></td>
+<td>Group ID for Docker containers</td>
+</tr>
+<tr>
+<td><code>CUDA_VISIBLE_DEVICES</code></td>
+<td><code>&quot;&quot;</code></td>
+<td>Disables CUDA in CPU-only version</td>
+</tr>
+</tbody></table>
+<h3>Playwright Configuration</h3>
+<p>The Playwright configuration is in <code>playwright.config.ts</code> and includes:</p>
+<ul>
+<li><strong>Browsers</strong>: Chromium, Firefox, and WebKit</li>
+<li><strong>Reporters</strong>: HTML and line reporters</li>
+<li><strong>Screenshots</strong>: Taken on test failure</li>
+<li><strong>Videos</strong>: Recorded on test failure</li>
+<li><strong>Traces</strong>: Collected on first retry</li>
+</ul>
+<h3>Test Structure</h3>
+<p>E2E tests are located in the <code>e2e/</code> directory and follow this structure:</p>
+<pre><code class="hljs">e2e/
+├── auth.<span class="hljs-keyword">spec</span>.ts          <span class="hljs-comment"># Authentication tests</span>
+├── gallery.<span class="hljs-keyword">spec</span>.ts       <span class="hljs-comment"># Gallery functionality tests</span>
+├── upload.<span class="hljs-keyword">spec</span>.ts        <span class="hljs-comment"># File upload tests</span>
+├── setup.<span class="hljs-keyword">spec</span>.ts         <span class="hljs-comment"># Setup verification tests</span>
+└── utils/                <span class="hljs-comment"># Test utilities and helpers</span></code></pre><h2>Writing E2E Tests</h2>
+<h3>Basic Test Structure</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { test, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@playwright/test&quot;</span>;
+
+test.<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Feature Name&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;should perform expected action&quot;</span>, <span class="hljs-title function_">async</span> ({ page }) =&gt; {
+    <span class="hljs-comment">// Navigate to the page</span>
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">goto</span>(<span class="hljs-string">&quot;/&quot;</span>);
+
+    <span class="hljs-comment">// Perform actions</span>
+    <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">click</span>(<span class="hljs-string">&quot;button&quot;</span>);
+
+    <span class="hljs-comment">// Assert results</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(page.<span class="hljs-title function_">locator</span>(<span class="hljs-string">&quot;.result&quot;</span>)).<span class="hljs-title function_">toContainText</span>(<span class="hljs-string">&quot;Expected text&quot;</span>);
+  });
+});</code></pre><h3>Best Practices</h3>
+<ol>
+<li><strong>Use descriptive test names</strong> that explain what the test is verifying</li>
+<li><strong>Keep tests independent</strong> - each test should be able to run in isolation</li>
+<li><strong>Use page objects</strong> for complex interactions</li>
+<li><strong>Add proper waits</strong> for dynamic content</li>
+<li><strong>Use data attributes</strong> for selectors when possible</li>
+<li><strong>Clean up test data</strong> in <code>afterEach</code> or <code>afterAll</code> hooks</li>
+</ol>
+<h3>Test Utilities</h3>
+<p>The E2E setup includes several utilities:</p>
+<ul>
+<li><strong>Authentication helpers</strong> for login/logout</li>
+<li><strong>File upload helpers</strong> for testing file operations</li>
+<li><strong>Database reset helpers</strong> for clean test state</li>
+<li><strong>API helpers</strong> for direct backend testing</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<h4>Services Not Starting</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check service logs</span>
+docker-compose -f docker-compose.e2e.yml logs yipyap-backend
+docker-compose -f docker-compose.e2e.yml logs yipyap-frontend
+
+<span class="hljs-comment"># CPU version</span>
+docker-compose -f docker-compose.e2e.cpu.yml logs yipyap-backend
+docker-compose -f docker-compose.e2e.cpu.yml logs yipyap-frontend
+
+<span class="hljs-comment"># Check if ports are available</span>
+netstat -tulpn | grep :7000
+netstat -tulpn | grep :5173</code></pre><h4>Tests Failing</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run tests with debug output</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --debug
+
+<span class="hljs-comment"># CPU version</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --debug
+
+<span class="hljs-comment"># Run tests with headed browsers</span>
+./scripts/e2e.sh test-headed
+<span class="hljs-comment"># or</span>
+./scripts/e2e-cpu.sh test-headed</code></pre><h4>Performance Issues</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Increase Docker resources in Docker Desktop</span>
+<span class="hljs-comment"># Recommended: 4GB RAM, 2 CPUs</span>
+
+<span class="hljs-comment"># Clean up Docker resources</span>
+./scripts/e2e.sh cleanup
+<span class="hljs-comment"># or</span>
+./scripts/e2e-cpu.sh cleanup</code></pre><h4>CUDA/GPU Issues (GPU Version Only)</h4>
+<p>If you encounter CUDA-related errors with the GPU version:</p>
+<ol>
+<li><strong>Check NVIDIA drivers</strong>: Ensure you have compatible NVIDIA drivers installed</li>
+<li><strong>Verify Docker GPU support</strong>: Run <code>docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi</code></li>
+<li><strong>Use CPU version</strong>: Switch to the CPU-only version if GPU support is problematic</li>
+</ol>
+<h3>Debug Mode</h3>
+<p>To debug tests interactively:</p>
+<ol>
+<li><p>Run tests in headed mode:</p>
+<pre><code class="hljs language-bash">./scripts/e2e.sh test-headed
+<span class="hljs-comment"># or</span>
+./scripts/e2e-cpu.sh test-headed</code></pre></li>
+<li><p>Use Playwright&#39;s debug mode:</p>
+<pre><code class="hljs language-bash">docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --debug
+<span class="hljs-comment"># or</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --debug</code></pre></li>
+<li><p>Use Playwright Inspector:</p>
+<pre><code class="hljs language-bash">docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> -p 9323:9323 playwright-tests npx playwright <span class="hljs-built_in">test</span> --ui
+<span class="hljs-comment"># or</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> -p 9323:9323 playwright-tests npx playwright <span class="hljs-built_in">test</span> --ui</code></pre></li>
+</ol>
+<h2>CI/CD Integration</h2>
+<h3>GitHub Actions Example</h3>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">E2E</span> <span class="hljs-string">Tests</span>
+<span class="hljs-attr">on:</span> [<span class="hljs-string">push</span>, <span class="hljs-string">pull_request</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">e2e-gpu:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">and</span> <span class="hljs-string">run</span> <span class="hljs-string">E2E</span> <span class="hljs-string">tests</span> <span class="hljs-string">(GPU)</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
+          ./scripts/e2e.sh build
+          ./scripts/e2e.sh test
+</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">test</span> <span class="hljs-string">results</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/upload-artifact@v3</span>
+        <span class="hljs-attr">if:</span> <span class="hljs-string">always()</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">playwright-report-gpu</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">playwright-report/</span>
+
+  <span class="hljs-attr">e2e-cpu:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">and</span> <span class="hljs-string">run</span> <span class="hljs-string">E2E</span> <span class="hljs-string">tests</span> <span class="hljs-string">(CPU)</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
+          ./scripts/e2e-cpu.sh build
+          ./scripts/e2e-cpu.sh test
+</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">test</span> <span class="hljs-string">results</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/upload-artifact@v3</span>
+        <span class="hljs-attr">if:</span> <span class="hljs-string">always()</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">playwright-report-cpu</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">playwright-report/</span></code></pre><h3>GitLab CI Example</h3>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">e2e-gpu:</span>
+  <span class="hljs-attr">stage:</span> <span class="hljs-string">test</span>
+  <span class="hljs-attr">image:</span> <span class="hljs-string">docker:latest</span>
+  <span class="hljs-attr">services:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">docker:dind</span>
+  <span class="hljs-attr">before_script:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">docker-compose</span> <span class="hljs-string">-f</span> <span class="hljs-string">docker-compose.e2e.yml</span> <span class="hljs-string">build</span>
+  <span class="hljs-attr">script:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./scripts/e2e.sh</span> <span class="hljs-string">test</span>
+  <span class="hljs-attr">artifacts:</span>
+    <span class="hljs-attr">when:</span> <span class="hljs-string">always</span>
+    <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">playwright-report/</span>
+
+<span class="hljs-attr">e2e-cpu:</span>
+  <span class="hljs-attr">stage:</span> <span class="hljs-string">test</span>
+  <span class="hljs-attr">image:</span> <span class="hljs-string">docker:latest</span>
+  <span class="hljs-attr">services:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">docker:dind</span>
+  <span class="hljs-attr">before_script:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">docker-compose</span> <span class="hljs-string">-f</span> <span class="hljs-string">docker-compose.e2e.cpu.yml</span> <span class="hljs-string">build</span>
+  <span class="hljs-attr">script:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">./scripts/e2e-cpu.sh</span> <span class="hljs-string">test</span>
+  <span class="hljs-attr">artifacts:</span>
+    <span class="hljs-attr">when:</span> <span class="hljs-string">always</span>
+    <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">playwright-report/</span></code></pre><h2>Performance Optimization</h2>
+<h3>Parallel Execution</h3>
+<p>Tests run in parallel by default. To control parallelism:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run with specific number of workers</span>
+docker-compose -f docker-compose.e2e.yml --profile e2e run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --workers=2
+<span class="hljs-comment"># or</span>
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu run --<span class="hljs-built_in">rm</span> playwright-tests npx playwright <span class="hljs-built_in">test</span> --workers=2</code></pre><h3>Resource Management</h3>
+<ul>
+<li><strong>Memory</strong>: Each browser instance uses ~100-200MB RAM</li>
+<li><strong>CPU</strong>: Tests are CPU-intensive, especially video recording</li>
+<li><strong>Disk</strong>: Test artifacts (screenshots, videos, traces) can be large</li>
+<li><strong>GPU</strong>: GPU version requires additional VRAM for machine learning models</li>
+</ul>
+<h3>Caching</h3>
+<p>Docker layers are cached for faster builds:</p>
+<ul>
+<li><code>package.json</code> changes invalidate npm install cache</li>
+<li>Source code changes don&#39;t invalidate dependency cache</li>
+<li>Browser installations are cached separately</li>
+</ul>
+<h2>Monitoring and Reporting</h2>
+<h3>Test Reports</h3>
+<p>After running tests, reports are available in:</p>
+<ul>
+<li><code>playwright-report/</code> - HTML report with detailed test results</li>
+<li><code>test-results/</code> - Screenshots, videos, and traces</li>
+</ul>
+<h3>Metrics</h3>
+<p>Track these metrics for test health:</p>
+<ul>
+<li><strong>Test duration</strong> - Should be consistent</li>
+<li><strong>Failure rate</strong> - Should be low (&lt;5%)</li>
+<li><strong>Flaky tests</strong> - Should be identified and fixed</li>
+<li><strong>Coverage</strong> - Should increase over time</li>
+</ul>
+<h3>Alerts</h3>
+<p>Set up alerts for:</p>
+<ul>
+<li>Test failures in CI</li>
+<li>Performance regressions</li>
+<li>Coverage decreases</li>
+<li>Flaky test detection</li>
+</ul>
+<h2>Version Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>GPU Version</th>
+<th>CPU-Only Version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Base Image</td>
+<td>NVIDIA CUDA</td>
+<td>Ubuntu 24.04</td>
+</tr>
+<tr>
+<td>Machine Learning</td>
+<td>GPU-accelerated</td>
+<td>CPU-only</td>
+</tr>
+<tr>
+<td>Hardware Requirements</td>
+<td>NVIDIA GPU + CUDA</td>
+<td>Any machine</td>
+</tr>
+<tr>
+<td>Build Time</td>
+<td>Longer (larger base image)</td>
+<td>Faster (smaller base image)</td>
+</tr>
+<tr>
+<td>Model Performance</td>
+<td>Faster inference</td>
+<td>Slower inference</td>
+</tr>
+<tr>
+<td>Compatibility</td>
+<td>Limited to CUDA systems</td>
+<td>Universal</td>
+</tr>
+<tr>
+<td>Docker Image Size</td>
+<td>Larger (~4-6GB)</td>
+<td>Smaller (~2-3GB)</td>
+</tr>
+</tbody></table>
+<p>Choose the version that best fits your testing environment and requirements.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

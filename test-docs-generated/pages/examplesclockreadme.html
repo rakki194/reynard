@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Reynard Clock App - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Reynard Clock App</h1>
+      <div class="markdown-content"><h1>🦊 Reynard Clock App</h1>
+<p>A comprehensive clock, timer, alarm, and countdown application built with the Reynard framework and SolidJS.</p>
+<h2>✨ Features</h2>
+<h3>🕐 Clock</h3>
+<ul>
+<li><strong>Digital Clock</strong> - Real-time digital display with date</li>
+<li><strong>Analog Clock</strong> - Beautiful analog clock with animated hands</li>
+<li><strong>Theme Integration</strong> - Seamlessly adapts to all Reynard themes</li>
+<li><strong>Real-time Updates</strong> - Updates every second with smooth animations</li>
+</ul>
+<h3>⏱️ Timer</h3>
+<ul>
+<li><strong>Custom Duration</strong> - Set hours, minutes, and seconds</li>
+<li><strong>Start/Pause/Stop</strong> - Full timer control</li>
+<li><strong>Visual Feedback</strong> - Color-coded status indicators</li>
+<li><strong>Notifications</strong> - Toast notifications for timer events</li>
+<li><strong>Reset Functionality</strong> - Quick reset to original time</li>
+</ul>
+<h3>⏰ Alarm</h3>
+<ul>
+<li><strong>Multiple Alarms</strong> - Set and manage multiple alarms</li>
+<li><strong>Custom Labels</strong> - Name your alarms (Wake up, Meeting, etc.)</li>
+<li><strong>Enable/Disable</strong> - Toggle alarms on and off</li>
+<li><strong>Persistent Storage</strong> - Alarms saved to localStorage</li>
+<li><strong>Real-time Checking</strong> - Automatic alarm triggering</li>
+<li><strong>12/24 Hour Format</strong> - Flexible time display</li>
+</ul>
+<h3>⏳ Countdown</h3>
+<ul>
+<li><strong>Target Date/Time</strong> - Count down to any future date and time</li>
+<li><strong>Event Labels</strong> - Name your countdown events</li>
+<li><strong>Live Updates</strong> - Real-time countdown display</li>
+<li><strong>Days/Hours/Minutes/Seconds</strong> - Detailed time breakdown</li>
+<li><strong>Completion Notifications</strong> - Alert when countdown finishes</li>
+<li><strong>Start/Stop/Reset</strong> - Full countdown control</li>
+</ul>
+<h2>🎨 Theming</h2>
+<p>The app includes 6 beautiful themes:</p>
+<ul>
+<li><strong>☀️ Light</strong> - Clean and bright</li>
+<li><strong>🌙 Dark</strong> - Easy on the eyes</li>
+<li><strong>🍌 Banana</strong> - Warm and cheerful</li>
+<li><strong>🍓 Strawberry</strong> - Vibrant and energetic</li>
+<li><strong>🥜 Peanut</strong> - Earthy and cozy</li>
+<li><strong>🌫️ Gray</strong> - Professional neutral</li>
+</ul>
+<h2>🚀 Quick Start</h2>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Navigate to the clock app directory</span>
+<span class="hljs-built_in">cd</span> reynard-clock-app
+
+<span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev</code></pre><p>Visit <code>http://localhost:3002</code> to see the application in action.</p>
+<h3>Build for Production</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build the application</span>
+npm run build
+
+<span class="hljs-comment"># Preview production build</span>
+npm run preview</code></pre><h2>🏗️ Architecture</h2>
+<h3>Components</h3>
+<ul>
+<li><strong><code>App.tsx</code></strong> - Main application with tab navigation</li>
+<li><strong><code>Clock.tsx</code></strong> - Digital and analog clock display</li>
+<li><strong><code>Timer.tsx</code></strong> - Countdown timer functionality</li>
+<li><strong><code>Alarm.tsx</code></strong> - Alarm management system</li>
+<li><strong><code>Countdown.tsx</code></strong> - Event countdown timer</li>
+<li><strong><code>ThemeToggle.tsx</code></strong> - Theme switching component</li>
+</ul>
+<h3>Reynard Features Used</h3>
+<ul>
+<li><strong>Theme System</strong> - <code>useTheme()</code> for reactive theme switching</li>
+<li><strong>Notifications</strong> - <code>useNotifications()</code> for user feedback</li>
+<li><strong>Components</strong> - <code>Button</code>, <code>Card</code> from Reynard components</li>
+<li><strong>CSS Custom Properties</strong> - Theme-aware styling</li>
+<li><strong>Local Storage</strong> - Alarm persistence</li>
+</ul>
+<h2>📱 Usage</h2>
+<h3>Clock Tab</h3>
+<ul>
+<li>View current time in digital format</li>
+<li>Toggle between digital and analog display</li>
+<li>See current date and day of week</li>
+<li>Watch smooth second hand animation</li>
+</ul>
+<h3>Timer Tab</h3>
+<ul>
+<li>Set custom timer duration (hours, minutes, seconds)</li>
+<li>Start timer with play button</li>
+<li>Pause and resume as needed</li>
+<li>Stop timer to reset to original time</li>
+<li>Visual status indicators (running/paused/stopped)</li>
+</ul>
+<h3>Alarm Tab</h3>
+<ul>
+<li>Add new alarms with custom time and label</li>
+<li>Enable/disable alarms with toggle button</li>
+<li>Delete unwanted alarms</li>
+<li>Alarms persist between browser sessions</li>
+<li>Automatic notifications when alarms trigger</li>
+</ul>
+<h3>Countdown Tab</h3>
+<ul>
+<li>Set target date and time for any future event</li>
+<li>Add descriptive labels for your countdowns</li>
+<li>Start countdown to begin live updates</li>
+<li>Stop or reset countdown as needed</li>
+<li>Completion notifications when target is reached</li>
+</ul>
+<h2>🎯 Key Features</h2>
+<h3>Real-time Updates</h3>
+<p>All time displays update in real-time with smooth animations and transitions.</p>
+<h3>Responsive Design</h3>
+<p>The app works perfectly on desktop, tablet, and mobile devices with adaptive layouts.</p>
+<h3>Accessibility</h3>
+<ul>
+<li>Proper ARIA labels and keyboard navigation</li>
+<li>High contrast themes for better visibility</li>
+<li>Screen reader friendly components</li>
+</ul>
+<h3>Performance</h3>
+<ul>
+<li>Optimized rendering with SolidJS fine-grained reactivity</li>
+<li>Efficient timer intervals with proper cleanup</li>
+<li>Minimal bundle size with tree-shaking</li>
+</ul>
+<h3>Persistence</h3>
+<ul>
+<li>Alarms saved to localStorage</li>
+<li>Theme preferences remembered</li>
+<li>Settings persist between sessions</li>
+</ul>
+<h2>🧪 Technical Details</h2>
+<h3>State Management</h3>
+<ul>
+<li>SolidJS signals for reactive state</li>
+<li>Proper cleanup of intervals and timers</li>
+<li>Efficient re-rendering with fine-grained reactivity</li>
+</ul>
+<h3>Styling</h3>
+<ul>
+<li>CSS custom properties for theming</li>
+<li>Responsive design with mobile-first approach</li>
+<li>Smooth transitions and animations</li>
+<li>Theme-aware color schemes</li>
+</ul>
+<h3>Browser APIs</h3>
+<ul>
+<li><code>setInterval</code> for real-time updates</li>
+<li><code>localStorage</code> for data persistence</li>
+<li><code>Date</code> API for time calculations</li>
+<li>Web Notifications for alerts</li>
+</ul>
+<h2>📦 Bundle Size</h2>
+<ul>
+<li><strong>JavaScript</strong>: ~12 kB (gzipped)</li>
+<li><strong>CSS</strong>: ~8 kB (gzipped)</li>
+<li><strong>Total</strong>: ~20 kB - Fast loading and efficient!</li>
+</ul>
+<h2>🔄 Next Steps</h2>
+<p>Try extending the app with:</p>
+<ul>
+<li><strong>Stopwatch</strong> - Add a stopwatch feature</li>
+<li><strong>World Clock</strong> - Multiple timezone support</li>
+<li><strong>Pomodoro Timer</strong> - Work/break timer cycles</li>
+<li><strong>Sound Alarms</strong> - Audio notifications</li>
+<li><strong>Custom Themes</strong> - User-defined color schemes</li>
+<li><strong>Export/Import</strong> - Backup and restore alarms</li>
+<li><strong>PWA Features</strong> - Offline support and app installation</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>This app demonstrates the power and flexibility of the Reynard framework. Feel free to use it as a starting point for your own time-related applications!</p>
+<h2>📄 License</h2>
+<p>MIT License - Built with ❤️ using the Reynard framework 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

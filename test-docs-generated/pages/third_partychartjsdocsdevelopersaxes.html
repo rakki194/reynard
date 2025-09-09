@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Axes - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>New Axes</h1>
+      <div class="markdown-content"><h1>New Axes</h1>
+<p>Axes in Chart.js can be individually extended. Axes should always derive from <code>Chart.Scale</code> but this is not a mandatory requirement.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyScale</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Chart.Scale</span> {
+    <span class="hljs-comment">/* extensions ... */</span>
+}
+<span class="hljs-title class_">MyScale</span>.<span class="hljs-property">id</span> = <span class="hljs-string">&#x27;myScale&#x27;</span>;
+<span class="hljs-title class_">MyScale</span>.<span class="hljs-property">defaults</span> = defaultConfigObject;
+
+<span class="hljs-comment">// MyScale is now derived from Chart.Scale</span></code></pre><p>Once you have created your scale class, you need to register it with the global chart object so that it can be used.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title class_">Chart</span>.<span class="hljs-title function_">register</span>(<span class="hljs-title class_">MyScale</span>);
+
+<span class="hljs-comment">// If the new scale is not extending Chart.Scale, the prototype can not be used to detect what</span>
+<span class="hljs-comment">// you are trying to register - so you need to be explicit:</span>
+
+<span class="hljs-comment">// Chart.registry.addScales(MyScale);</span></code></pre><p>To use the new scale, simply pass in the string key to the config when creating a chart.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> lineChart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">scales</span>: {
+            <span class="hljs-attr">y</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;myScale&#x27;</span> <span class="hljs-comment">// this is the same id that was set on the scale</span>
+            }
+        }
+    }
+});</code></pre><h2>Scale Properties</h2>
+<p>Scale instances are given the following properties during the fitting process.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-attr">left</span>: number, <span class="hljs-comment">// left edge of the scale bounding box</span>
+    <span class="hljs-attr">right</span>: number, <span class="hljs-comment">// right edge of the bounding box</span>
+    <span class="hljs-attr">top</span>: number,
+    <span class="hljs-attr">bottom</span>: number,
+    <span class="hljs-attr">width</span>: number, <span class="hljs-comment">// the same as right - left</span>
+    <span class="hljs-attr">height</span>: number, <span class="hljs-comment">// the same as bottom - top</span>
+
+    <span class="hljs-comment">// Margin on each side. Like css, this is outside the bounding box.</span>
+    <span class="hljs-attr">margins</span>: {
+        <span class="hljs-attr">left</span>: number,
+        <span class="hljs-attr">right</span>: number,
+        <span class="hljs-attr">top</span>: number,
+        <span class="hljs-attr">bottom</span>: number
+    },
+
+    <span class="hljs-comment">// Amount of padding on the inside of the bounding box (like CSS)</span>
+    <span class="hljs-attr">paddingLeft</span>: number,
+    <span class="hljs-attr">paddingRight</span>: number,
+    <span class="hljs-attr">paddingTop</span>: number,
+    <span class="hljs-attr">paddingBottom</span>: number
+}</code></pre><h2>Scale Interface</h2>
+<p>To work with Chart.js, custom scale types must implement the following interface.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-comment">// Determines the data limits. Should set this.min and this.max to be the data max/min</span>
+    <span class="hljs-attr">determineDataLimits</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Generate tick marks. this.chart is the chart instance. The data object can be accessed as this.chart.data</span>
+    <span class="hljs-comment">// buildTicks() should create a ticks array on the axis instance, if you intend to use any of the implementations from the base class</span>
+    <span class="hljs-attr">buildTicks</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Get the label to show for the given value</span>
+    <span class="hljs-attr">getLabelForValue</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>) {},
+
+    <span class="hljs-comment">// Get the pixel (x coordinate for horizontal axis, y coordinate for vertical axis) for a given value</span>
+    <span class="hljs-comment">// @param index: index into the ticks array</span>
+    <span class="hljs-attr">getPixelForTick</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">index</span>) {},
+
+    <span class="hljs-comment">// Get the pixel (x coordinate for horizontal axis, y coordinate for vertical axis) for a given value</span>
+    <span class="hljs-comment">// @param value : the value to get the pixel for</span>
+    <span class="hljs-comment">// @param [index] : index into the data array of the value</span>
+    <span class="hljs-attr">getPixelForValue</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">value, index</span>) {},
+
+    <span class="hljs-comment">// Get the value for a given pixel (x coordinate for horizontal axis, y coordinate for vertical axis)</span>
+    <span class="hljs-comment">// @param pixel : pixel value</span>
+    <span class="hljs-attr">getValueForPixel</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">pixel</span>) {}
+}</code></pre><p>Optionally, the following methods may also be overwritten, but an implementation is already provided by the <code>Chart.Scale</code> base class.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-comment">// Adds labels to objects in the ticks array. The default implementation simply calls this.options.ticks.callback(numericalTick, index, ticks);</span>
+    <span class="hljs-attr">generateTickLabels</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Determine how much the labels will rotate by. The default implementation will only rotate labels if the scale is horizontal.</span>
+    <span class="hljs-attr">calculateLabelRotation</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Fits the scale into the canvas.</span>
+    <span class="hljs-comment">// this.maxWidth and this.maxHeight will tell you the maximum dimensions the scale instance can be. Scales should endeavour to be as efficient as possible with canvas space.</span>
+    <span class="hljs-comment">// this.margins is the amount of space you have on either side of your scale that you may expand in to. This is used already for calculating the best label rotation</span>
+    <span class="hljs-comment">// You must set this.minSize to be the size of your scale. It must be an object containing 2 properties: width and height.</span>
+    <span class="hljs-comment">// You must set this.width to be the width and this.height to be the height of the scale</span>
+    <span class="hljs-attr">fit</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Draws the scale onto the canvas. this.(left|right|top|bottom) will have been populated to tell you the area on the canvas to draw in</span>
+    <span class="hljs-comment">// @param chartArea : an object containing four properties: left, right, top, bottom. This is the rectangle that lines, bars, etc will be drawn in. It may be used, for example, to draw grid lines.</span>
+    <span class="hljs-attr">draw</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">chartArea</span>) {}
+}</code></pre><p>The Core.Scale base class also has some utility functions that you may find useful.</p>
+<pre><code class="hljs language-javascript">{
+    <span class="hljs-comment">// Returns true if the scale instance is horizontal</span>
+    <span class="hljs-attr">isHorizontal</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {},
+
+    <span class="hljs-comment">// Returns the scale tick objects ({label, major})</span>
+    <span class="hljs-attr">getTicks</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) {}
+}</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

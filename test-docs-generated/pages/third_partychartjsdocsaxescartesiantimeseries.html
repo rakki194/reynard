@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Series Axis - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Time Series Axis</h1>
+      <div class="markdown-content"><h1>Time Series Axis</h1>
+<p>The time series scale extends from the time scale and supports all the same options. However, for the time series scale, each data point is spread equidistant.</p>
+<h2>Example</h2>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">scales</span>: {
+            <span class="hljs-attr">x</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;timeseries&#x27;</span>,
+            }
+        }
+    }
+});</code></pre><h2>More details</h2>
+<p>Please see <a href="./time.md">the time scale documentation</a> for all other details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

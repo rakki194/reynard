@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Argon2-CFFI Password Hashing Implementation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Argon2-CFFI Password Hashing Implementation</h1>
+      <div class="markdown-content"><h1>Argon2-CFFI Password Hashing Implementation</h1>
+<h2>Overview</h2>
+<p>YipYap now uses <code>argon2-cffi</code> as the primary password hashing library, replacing the previous <code>pwdlib</code> implementation. This upgrade provides superior performance, enhanced security features, and better control over hashing parameters.</p>
+<h2>Why Argon2-CFFI?</h2>
+<h3>Advantages over pwdlib</h3>
+<ol>
+<li><p><strong>Direct Implementation</strong>: <code>argon2-cffi</code> is a direct Python binding to the official Argon2 reference implementation, providing better performance and reliability.</p>
+</li>
+<li><p><strong>Fine-grained Control</strong>: Offers precise control over all Argon2 parameters (time_cost, memory_cost, parallelism, hash_len, salt_len).</p>
+</li>
+<li><p><strong>Better Error Handling</strong>: More specific exception types and better error messages for debugging.</p>
+</li>
+<li><p><strong>Active Development</strong>: More actively maintained with regular security updates and performance improvements.</p>
+</li>
+<li><p><strong>Memory Efficiency</strong>: Optimized memory usage and better handling of large memory costs.</p>
+</li>
+<li><p><strong>Thread Safety</strong>: Excellent thread safety for concurrent password hashing operations.</p>
+</li>
+</ol>
+<h3>Security Benefits</h3>
+<ul>
+<li><strong>Memory-Hard</strong>: Argon2 is designed to be memory-hard, making it resistant to hardware-based attacks (ASICs, FPGAs).</li>
+<li><strong>Configurable Security</strong>: Multiple security levels allow tuning based on deployment environment and security requirements.</li>
+<li><strong>Future-Proof</strong>: Easy parameter updates as hardware capabilities evolve.</li>
+</ul>
+<h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<p>The system supports the following environment variables for configuration:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Security level (low, medium, high, paranoid)</span>
+ARGON2_SECURITY_LEVEL=medium
+
+<span class="hljs-comment"># JWT configuration (existing)</span>
+JWT_SECRET_KEY=your-secret-key
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7</code></pre><h3>Security Levels</h3>
+<p>The implementation provides four predefined security levels:</p>
+<h4>Low Security (Development/Testing)</h4>
+<pre><code class="hljs language-python">{
+    <span class="hljs-string">&quot;time_cost&quot;</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-string">&quot;memory_cost&quot;</span>: <span class="hljs-number">2</span>**<span class="hljs-number">16</span>,  <span class="hljs-comment"># 64 MiB</span>
+    <span class="hljs-string">&quot;parallelism&quot;</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-string">&quot;hash_len&quot;</span>: <span class="hljs-number">32</span>,
+    <span class="hljs-string">&quot;salt_len&quot;</span>: <span class="hljs-number">16</span>
+}</code></pre><ul>
+<li><strong>Use Case</strong>: Development environments, testing, CI/CD</li>
+<li><strong>Hash Time</strong>: ~50-100ms</li>
+<li><strong>Memory Usage</strong>: 64 MiB</li>
+</ul>
+<h4>Medium Security (General Use)</h4>
+<pre><code class="hljs language-python">{
+    <span class="hljs-string">&quot;time_cost&quot;</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-string">&quot;memory_cost&quot;</span>: <span class="hljs-number">2</span>**<span class="hljs-number">17</span>,  <span class="hljs-comment"># 128 MiB</span>
+    <span class="hljs-string">&quot;parallelism&quot;</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-string">&quot;hash_len&quot;</span>: <span class="hljs-number">32</span>,
+    <span class="hljs-string">&quot;salt_len&quot;</span>: <span class="hljs-number">16</span>
+}</code></pre><ul>
+<li><strong>Use Case</strong>: Production applications, general web services</li>
+<li><strong>Hash Time</strong>: ~100-200ms</li>
+<li><strong>Memory Usage</strong>: 128 MiB</li>
+</ul>
+<h4>High Security (Sensitive Applications)</h4>
+<pre><code class="hljs language-python">{
+    <span class="hljs-string">&quot;time_cost&quot;</span>: <span class="hljs-number">4</span>,
+    <span class="hljs-string">&quot;memory_cost&quot;</span>: <span class="hljs-number">2</span>**<span class="hljs-number">18</span>,  <span class="hljs-comment"># 256 MiB</span>
+    <span class="hljs-string">&quot;parallelism&quot;</span>: <span class="hljs-number">4</span>,
+    <span class="hljs-string">&quot;hash_len&quot;</span>: <span class="hljs-number">32</span>,
+    <span class="hljs-string">&quot;salt_len&quot;</span>: <span class="hljs-number">16</span>
+}</code></pre><ul>
+<li><strong>Use Case</strong>: Financial applications, healthcare systems, government systems</li>
+<li><strong>Hash Time</strong>: ~200-400ms</li>
+<li><strong>Memory Usage</strong>: 256 MiB</li>
+</ul>
+<h4>Paranoid Security (Maximum Security)</h4>
+<pre><code class="hljs language-python">{
+    <span class="hljs-string">&quot;time_cost&quot;</span>: <span class="hljs-number">6</span>,
+    <span class="hljs-string">&quot;memory_cost&quot;</span>: <span class="hljs-number">2</span>**<span class="hljs-number">19</span>,  <span class="hljs-comment"># 512 MiB</span>
+    <span class="hljs-string">&quot;parallelism&quot;</span>: <span class="hljs-number">8</span>,
+    <span class="hljs-string">&quot;hash_len&quot;</span>: <span class="hljs-number">32</span>,
+    <span class="hljs-string">&quot;salt_len&quot;</span>: <span class="hljs-number">16</span>
+}</code></pre><ul>
+<li><strong>Use Case</strong>: High-value targets, military systems, critical infrastructure</li>
+<li><strong>Hash Time</strong>: ~400-800ms</li>
+<li><strong>Memory Usage</strong>: 512 MiB</li>
+</ul>
+<h2>Implementation Details</h2>
+<h3>Core Functions</h3>
+<h4>Password Hashing</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> hash_password
+
+<span class="hljs-comment"># Hash a password with current security level</span>
+hashed = hash_password(<span class="hljs-string">&quot;user_password&quot;</span>)</code></pre><h4>Password Verification</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> verify_password
+
+<span class="hljs-comment"># Verify a password against stored hash</span>
+is_valid = verify_password(<span class="hljs-string">&quot;user_password&quot;</span>, stored_hash)</code></pre><h4>Hash Migration</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> verify_and_update_password
+
+<span class="hljs-comment"># Verify and get updated hash if needed</span>
+is_valid, updated_hash = verify_and_update_password(<span class="hljs-string">&quot;user_password&quot;</span>, stored_hash)
+<span class="hljs-keyword">if</span> updated_hash:
+    <span class="hljs-comment"># Store the updated hash in database</span>
+    <span class="hljs-keyword">await</span> update_user_password(username, updated_hash)</code></pre><h3>Advanced Features</h3>
+<h4>Password Strength Validation</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> validate_password_strength
+
+is_strong, reason = validate_password_strength(<span class="hljs-string">&quot;user_password&quot;</span>)
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_strong:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Password is weak: <span class="hljs-subst">{reason}</span>&quot;</span>)</code></pre><h4>Hash Analysis</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> get_hash_info
+
+info = get_hash_info(stored_hash)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Algorithm: <span class="hljs-subst">{info[<span class="hljs-string">&#x27;algorithm&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Variant: <span class="hljs-subst">{info[<span class="hljs-string">&#x27;variant&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Parameters: <span class="hljs-subst">{info[<span class="hljs-string">&#x27;parameters&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Needs Update: <span class="hljs-subst">{info[<span class="hljs-string">&#x27;needs_update&#x27;</span>]}</span>&quot;</span>)</code></pre><h4>Performance Benchmarking</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> benchmark_hash_time
+
+results = benchmark_hash_time(<span class="hljs-string">&quot;test_password&quot;</span>, iterations=<span class="hljs-number">10</span>)
+<span class="hljs-keyword">for</span> level, time_taken <span class="hljs-keyword">in</span> results.items():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{level}</span>: <span class="hljs-subst">{time_taken:<span class="hljs-number">.3</span>f}</span>s average&quot;</span>)</code></pre><h2>Migration from pwdlib</h2>
+<h3>Automatic Migration</h3>
+<p>The system automatically migrates existing hashes:</p>
+<ol>
+<li><strong>Legacy bcrypt hashes</strong>: Automatically converted to Argon2 during user login</li>
+<li><strong>Outdated Argon2 parameters</strong>: Updated to current security level parameters</li>
+<li><strong>Seamless user experience</strong>: No user intervention required</li>
+</ol>
+<h3>Manual Migration</h3>
+<p>For bulk migration of existing hashes:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> verify_and_update_password
+<span class="hljs-keyword">from</span> app.data_access <span class="hljs-keyword">import</span> get_data_source
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">migrate_all_passwords</span>():
+    data_source = get_data_source()
+    users = <span class="hljs-keyword">await</span> data_source.get_all_users()
+
+    <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users:
+        <span class="hljs-comment"># This will trigger migration if needed</span>
+        is_valid, updated_hash = verify_and_update_password(
+            user.password, user.password_hash
+        )
+        <span class="hljs-keyword">if</span> updated_hash:
+            <span class="hljs-keyword">await</span> data_source.update_user_password(user.username, updated_hash)</code></pre><h2>Security Considerations</h2>
+<h3>Parameter Selection</h3>
+<ul>
+<li><strong>Time Cost</strong>: Higher values increase computation time</li>
+<li><strong>Memory Cost</strong>: Higher values increase memory usage (must be power of 2)</li>
+<li><strong>Parallelism</strong>: Higher values increase CPU usage</li>
+<li><strong>Hash Length</strong>: 32 bytes (256 bits) is recommended</li>
+<li><strong>Salt Length</strong>: 16 bytes (128 bits) is recommended</li>
+</ul>
+<h3>Best Practices</h3>
+<ol>
+<li><strong>Environment-Specific Configuration</strong>: Use different security levels for development, staging, and production</li>
+<li><strong>Regular Parameter Updates</strong>: Review and update parameters as hardware capabilities improve</li>
+<li><strong>Monitoring</strong>: Monitor hash performance and adjust parameters as needed</li>
+<li><strong>Backup Strategy</strong>: Ensure secure backup of password hashes</li>
+<li><strong>Rate Limiting</strong>: Implement rate limiting for login attempts</li>
+</ol>
+<h3>Threat Model</h3>
+<p>Argon2 protects against:</p>
+<ul>
+<li><strong>Brute Force Attacks</strong>: High computational cost</li>
+<li><strong>Rainbow Table Attacks</strong>: Unique salts for each password</li>
+<li><strong>Hardware Attacks</strong>: Memory-hard design resists ASIC/FPGA attacks</li>
+<li><strong>Timing Attacks</strong>: Constant-time verification</li>
+<li><strong>Side-Channel Attacks</strong>: Memory access patterns are data-independent</li>
+</ul>
+<h2>Performance Optimization</h2>
+<h3>Thread Safety</h3>
+<p>The implementation is fully thread-safe and can handle concurrent password hashing operations efficiently.</p>
+<h3>Memory Management</h3>
+<ul>
+<li>Automatic cleanup of temporary memory</li>
+<li>Efficient memory allocation for large memory costs</li>
+<li>No memory leaks in long-running applications</li>
+</ul>
+<h3>Caching</h3>
+<p>The password hasher instance is cached as a singleton to avoid repeated initialization overhead.</p>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>Import Error</strong>: Ensure <code>argon2-cffi</code> is installed</p>
+<pre><code class="hljs language-bash">pip install argon2-cffi</code></pre></li>
+<li><p><strong>Memory Issues</strong>: Reduce memory_cost for resource-constrained environments</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> ARGON2_SECURITY_LEVEL=low</code></pre></li>
+<li><p><strong>Performance Issues</strong>: Adjust security level based on server capabilities</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> ARGON2_SECURITY_LEVEL=medium</code></pre></li>
+<li><p><strong>Migration Failures</strong>: Check logs for specific error messages and ensure bcrypt is available for legacy hash verification</p>
+</li>
+</ol>
+<h3>Debugging</h3>
+<p>Enable debug logging to troubleshoot issues:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> logging
+logging.getLogger(<span class="hljs-string">&#x27;app.utils.password_utils&#x27;</span>).setLevel(logging.DEBUG)</code></pre><h3>Performance Monitoring</h3>
+<p>Monitor hash performance in production:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.password_utils <span class="hljs-keyword">import</span> benchmark_hash_time
+
+<span class="hljs-comment"># Run benchmark periodically</span>
+results = benchmark_hash_time(<span class="hljs-string">&quot;test_password&quot;</span>)
+logger.info(<span class="hljs-string">f&quot;Hash performance: <span class="hljs-subst">{results}</span>&quot;</span>)</code></pre><h2>API Reference</h2>
+<h3>Core Functions</h3>
+<h4><code>hash_password(password: str) -&gt; str</code></h4>
+<p>Hash a password using Argon2 with current security parameters.</p>
+<h4><code>verify_password(password: str, hashed_password: str) -&gt; bool</code></h4>
+<p>Verify a password against a stored hash.</p>
+<h4><code>verify_and_update_password(password: str, hashed_password: str) -&gt; Tuple[bool, Optional[str]]</code></h4>
+<p>Verify a password and return updated hash if needed.</p>
+<h4><code>validate_password_strength(password: str) -&gt; Tuple[bool, str]</code></h4>
+<p>Validate password strength according to security standards.</p>
+<h4><code>get_hash_info(hashed_password: str) -&gt; Dict[str, Any]</code></h4>
+<p>Get detailed information about a password hash.</p>
+<h4><code>benchmark_hash_time(password: str, iterations: int = 10) -&gt; Dict[str, float]</code></h4>
+<p>Benchmark hash performance for different security levels.</p>
+<h3>Utility Functions</h3>
+<h4><code>is_argon2_hash(hashed_password: str) -&gt; bool</code></h4>
+<p>Check if a hash is in Argon2 format.</p>
+<h4><code>is_bcrypt_hash(hashed_password: str) -&gt; bool</code></h4>
+<p>Check if a hash is in bcrypt format.</p>
+<h4><code>get_hash_algorithm(hashed_password: str) -&gt; str</code></h4>
+<p>Determine the algorithm used for a password hash.</p>
+<h4><code>get_hash_variant(hashed_password: str) -&gt; Optional[str]</code></h4>
+<p>Get the specific Argon2 variant used in a hash.</p>
+<h4><code>generate_secure_salt(length: int = 16) -&gt; bytes</code></h4>
+<p>Generate a cryptographically secure salt.</p>
+<h3>Configuration Functions</h3>
+<h4><code>get_security_level() -&gt; SecurityLevel</code></h4>
+<p>Get the current security level from environment variable.</p>
+<h4><code>get_argon2_params() -&gt; Dict[str, Any]</code></h4>
+<p>Get Argon2 parameters based on the current security level.</p>
+<h2>Dependencies</h2>
+<h3>Required Packages</h3>
+<pre><code class="hljs language-bash">pip install argon2-cffi bcrypt</code></pre><h3>Package Versions</h3>
+<ul>
+<li><code>argon2-cffi&gt;=23.0.0</code>: Modern Argon2 implementation</li>
+<li><code>bcrypt&gt;=4.0.0</code>: Legacy bcrypt support for migration</li>
+</ul>
+<h3>Optional Dependencies</h3>
+<ul>
+<li><code>cffi&gt;=1.0.1</code>: Required by argon2-cffi</li>
+<li><code>pycparser</code>: Required by cffi</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ol>
+<li><strong>Adaptive Parameters</strong>: Automatic parameter adjustment based on server performance</li>
+<li><strong>Hash Rotation</strong>: Periodic hash re-computation for enhanced security</li>
+<li><strong>Multi-Factor Authentication</strong>: Integration with TOTP/HOTP systems</li>
+<li><strong>Password History</strong>: Prevention of password reuse</li>
+<li><strong>Breach Detection</strong>: Integration with breach databases</li>
+</ol>
+<h3>Security Improvements</h3>
+<ol>
+<li><strong>Quantum Resistance</strong>: Preparation for post-quantum cryptography</li>
+<li><strong>Hardware Security</strong>: Integration with TPM/HSM modules</li>
+<li><strong>Zero-Knowledge Proofs</strong>: Enhanced privacy-preserving authentication</li>
+</ol>
+<h2>Conclusion</h2>
+<p>The argon2-cffi implementation provides a robust, secure, and performant password hashing solution for YipYap. With configurable security levels, automatic migration, and comprehensive error handling, it offers significant improvements over the previous pwdlib implementation while maintaining backward compatibility.</p>
+<p>The system is designed to be future-proof, allowing easy parameter updates as security requirements evolve and hardware capabilities improve.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

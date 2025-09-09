@@ -37,10 +37,10 @@ if [ ! -f "package.json" ]; then
 fi
 
 print_status "Installing Node.js dependencies..."
-npm install
+pnpm install
 
 print_status "Installing all package dependencies..."
-npm run install:all
+pnpm install
 
 print_status "Setting up Python backend environment..."
 cd backend
@@ -93,7 +93,7 @@ EOF
 fi
 
 print_status "Building packages..."
-npm run build:all
+pnpm run build:all
 
 print_success "Development environment setup complete!"
 
@@ -103,21 +103,21 @@ echo ""
 echo "📋 Available commands:"
 echo ""
 echo "🚀 Start development servers:"
-echo "   npm run dev:backend    # Start backend API server"
-echo "   npm run dev:frontend   # Start frontend dev server"
-echo "   npm run dev            # Start both servers"
+echo "   pnpm run dev:backend    # Start backend API server"
+echo "   pnpm run dev:frontend   # Start frontend dev server"
+echo "   pnpm run dev            # Start both servers"
 echo ""
 echo "🐳 Docker development:"
 echo "   docker-compose -f docker-compose.dev.yml up"
 echo ""
 echo "🔧 Testing:"
-echo "   npm test               # Run all tests"
-echo "   npm run test:security  # Run security tests"
-echo "   npm run test:backend   # Run backend tests"
+echo "   pnpm test               # Run all tests"
+echo "   pnpm run test:security  # Run security tests"
+echo "   pnpm run test:backend   # Run backend tests"
 echo ""
 echo "🏗️ Building:"
-echo "   npm run build          # Build all packages"
-echo "   npm run build:backend  # Build backend only"
+echo "   pnpm run build          # Build all packages"
+echo "   pnpm run build:backend  # Build backend only"
 echo ""
 echo "🔐 Default credentials:"
 echo "   - Admin: admin / admin123"
@@ -129,7 +129,7 @@ echo "   - Backend API: http://localhost:8000"
 echo "   - API Docs: http://localhost:8000/docs"
 echo ""
 echo "📝 Next steps:"
-echo "1. Run 'npm run dev' to start both servers"
+echo "1. Run 'pnpm run dev' to start both servers"
 echo "2. Open http://localhost:5173 in your browser"
 echo "3. Check http://localhost:8000/docs for API documentation"
 echo ""

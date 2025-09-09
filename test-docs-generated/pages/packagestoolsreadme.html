@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-tools - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-tools</h1>
+      <div class="markdown-content"><h1>reynard-tools</h1>
+<p>Development and runtime tools for Reynard applications with a comprehensive tool calling system, validation, and execution management.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Tool Calling Framework</strong>: BaseTool, ToolRegistry, and ToolExecutor</li>
+<li><strong>Development Tools</strong>: File operations, system utilities, and debugging tools</li>
+<li><strong>Runtime Tools</strong>: Performance monitoring, debugging, and profiling</li>
+<li><strong>AI Integration</strong>: Tool calling for AI systems and NLWeb integration</li>
+<li><strong>Validation</strong>: Comprehensive parameter validation and error handling</li>
+<li><strong>Security</strong>: Permission-based tool execution and audit logging</li>
+<li><strong>Extensibility</strong>: Decorator-based tool creation and plugin system</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-tools</code></pre><h2>Quick Start</h2>
+<h3>Basic Tool Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ToolRegistry</span>,
+  <span class="hljs-title class_">ToolExecutor</span>,
+  <span class="hljs-title class_">BaseTool</span>,
+  <span class="hljs-title class_">ToolDefinition</span>,
+  <span class="hljs-title class_">ParameterType</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-tools&quot;</span>;
+
+<span class="hljs-comment">// Create a custom tool</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GreetTool</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseTool</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;greet&quot;</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Greet a person&quot;</span>,
+      <span class="hljs-attr">parameters</span>: [
+        {
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;name&quot;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">STRING</span>,
+          <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Name of the person to greet&quot;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+        },
+        {
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;language&quot;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">STRING</span>,
+          <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Language for the greeting&quot;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">default</span>: <span class="hljs-string">&quot;en&quot;</span>,
+          <span class="hljs-attr">enum</span>: [<span class="hljs-string">&quot;en&quot;</span>, <span class="hljs-string">&quot;es&quot;</span>, <span class="hljs-string">&quot;fr&quot;</span>, <span class="hljs-string">&quot;de&quot;</span>],
+        },
+      ],
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;utility&quot;</span>,
+      <span class="hljs-attr">tags</span>: [<span class="hljs-string">&quot;greeting&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>],
+    };
+    <span class="hljs-variable language_">super</span>(definition);
+  }
+
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">executeImpl</span>(<span class="hljs-attr">parameters</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt; {
+    <span class="hljs-keyword">const</span> { name, language = <span class="hljs-string">&quot;en&quot;</span> } = parameters;
+
+    <span class="hljs-keyword">const</span> greetings = {
+      <span class="hljs-attr">en</span>: <span class="hljs-string">`Hello, <span class="hljs-subst">${name}</span>!`</span>,
+      <span class="hljs-attr">es</span>: <span class="hljs-string">`¡Hola, <span class="hljs-subst">${name}</span>!`</span>,
+      <span class="hljs-attr">fr</span>: <span class="hljs-string">`Bonjour, <span class="hljs-subst">${name}</span>!`</span>,
+      <span class="hljs-attr">de</span>: <span class="hljs-string">`Hallo, <span class="hljs-subst">${name}</span>!`</span>,
+    };
+
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">greeting</span>: greetings[language <span class="hljs-keyword">as</span> keyof <span class="hljs-keyword">typeof</span> greetings],
+      name,
+      language,
+    };
+  }
+}
+
+<span class="hljs-comment">// Register and use the tool</span>
+<span class="hljs-keyword">const</span> registry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolRegistry</span>();
+<span class="hljs-keyword">const</span> executor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolExecutor</span>();
+
+<span class="hljs-keyword">const</span> greetTool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">GreetTool</span>();
+registry.<span class="hljs-title function_">registerTool</span>(greetTool);
+executor.<span class="hljs-title function_">addTool</span>(greetTool);
+
+<span class="hljs-comment">// Execute the tool</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;greet&quot;</span>,
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Alice&quot;</span>,
+    <span class="hljs-attr">language</span>: <span class="hljs-string">&quot;en&quot;</span>,
+  },
+  {
+    <span class="hljs-attr">permissions</span>: [],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">data</span>.<span class="hljs-property">greeting</span>); <span class="hljs-comment">// &quot;Hello, Alice!&quot;</span></code></pre><h3>Development Tools</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ReadFileTool</span>, <span class="hljs-title class_">WriteFileTool</span>, <span class="hljs-title class_">ListDirectoryTool</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-tools&quot;</span>;
+
+<span class="hljs-keyword">const</span> registry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolRegistry</span>();
+<span class="hljs-keyword">const</span> executor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolExecutor</span>();
+
+<span class="hljs-comment">// Register development tools</span>
+registry.<span class="hljs-title function_">registerTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ReadFileTool</span>());
+registry.<span class="hljs-title function_">registerTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">WriteFileTool</span>());
+registry.<span class="hljs-title function_">registerTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ListDirectoryTool</span>());
+
+<span class="hljs-comment">// Read a file</span>
+<span class="hljs-keyword">const</span> fileResult = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;read_file&quot;</span>,
+  {
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/path/to/file.txt&quot;</span>,
+    <span class="hljs-attr">encoding</span>: <span class="hljs-string">&quot;utf8&quot;</span>,
+  },
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.read&quot;</span>],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);
+
+<span class="hljs-comment">// Write a file</span>
+<span class="hljs-keyword">const</span> writeResult = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;write_file&quot;</span>,
+  {
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/path/to/output.txt&quot;</span>,
+    <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Hello, World!&quot;</span>,
+    <span class="hljs-attr">createDirectories</span>: <span class="hljs-literal">true</span>,
+  },
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.write&quot;</span>],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);
+
+<span class="hljs-comment">// List directory contents</span>
+<span class="hljs-keyword">const</span> listResult = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;list_directory&quot;</span>,
+  {
+    <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/path/to/directory&quot;</span>,
+    <span class="hljs-attr">recursive</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">includeHidden</span>: <span class="hljs-literal">false</span>,
+  },
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.read&quot;</span>],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);</code></pre><h3>Parallel Tool Execution</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Execute multiple tools in parallel</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeToolsParallel</span>(
+  [
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;read_file&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/file1.txt&quot;</span> },
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;read_file&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/file2.txt&quot;</span> },
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;list_directory&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/directory&quot;</span> },
+    },
+  ],
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.read&quot;</span>],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+  <span class="hljs-string">&quot;All tools completed:&quot;</span>,
+  results.<span class="hljs-title function_">every</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-property">success</span>),
+);</code></pre><h3>Sequential Tool Execution</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Execute tools sequentially (useful when output of one tool is input to another)</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeToolsSequential</span>(
+  [
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;list_directory&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/source&quot;</span> },
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;read_file&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/source/config.json&quot;</span> },
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;write_file&quot;</span>,
+      <span class="hljs-attr">parameters</span>: {
+        <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/destination/config.json&quot;</span>,
+        <span class="hljs-attr">content</span>: <span class="hljs-string">&#x27;{&quot;processed&quot;: true}&#x27;</span>,
+      },
+    },
+  ],
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.read&quot;</span>, <span class="hljs-string">&quot;file.write&quot;</span>],
+    <span class="hljs-attr">metadata</span>: { <span class="hljs-attr">continueOnFailure</span>: <span class="hljs-literal">false</span> },
+  },
+);</code></pre><h3>Tool Execution with Dependencies</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Execute tools with dependency resolution</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeToolsWithDependencies</span>(
+  [
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;read_config&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/config.json&quot;</span> },
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;process_data&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;data.txt&quot;</span> },
+      <span class="hljs-attr">dependsOn</span>: [<span class="hljs-string">&quot;read_config&quot;</span>],
+    },
+    {
+      <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;write_output&quot;</span>,
+      <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/output.txt&quot;</span> },
+      <span class="hljs-attr">dependsOn</span>: [<span class="hljs-string">&quot;process_data&quot;</span>],
+    },
+  ],
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;file.read&quot;</span>, <span class="hljs-string">&quot;file.write&quot;</span>],
+    <span class="hljs-attr">metadata</span>: {},
+  },
+);
+
+<span class="hljs-comment">// Results are returned as a Map with tool names as keys</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Config:&quot;</span>, results.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;read_config&quot;</span>)?.<span class="hljs-property">data</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Processed:&quot;</span>, results.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;process_data&quot;</span>)?.<span class="hljs-property">data</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Output:&quot;</span>, results.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;write_output&quot;</span>)?.<span class="hljs-property">data</span>);</code></pre><h2>Tool Definition</h2>
+<h3>Parameter Types</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ParameterType</span> {
+  <span class="hljs-variable constant_">STRING</span> = <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-variable constant_">INTEGER</span> = <span class="hljs-string">&quot;integer&quot;</span>,
+  <span class="hljs-variable constant_">NUMBER</span> = <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-variable constant_">BOOLEAN</span> = <span class="hljs-string">&quot;boolean&quot;</span>,
+  <span class="hljs-variable constant_">ARRAY</span> = <span class="hljs-string">&quot;array&quot;</span>,
+  <span class="hljs-variable constant_">OBJECT</span> = <span class="hljs-string">&quot;object&quot;</span>,
+}</code></pre><h3>Parameter Validation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;validate_example&quot;</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Example with various parameter validations&quot;</span>,
+  <span class="hljs-attr">parameters</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;username&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">STRING</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Username&quot;</span>,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">minLength</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-attr">maxLength</span>: <span class="hljs-number">20</span>,
+      <span class="hljs-attr">pattern</span>: <span class="hljs-string">&quot;^[a-zA-Z0-9_]+$&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;age&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">INTEGER</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Age in years&quot;</span>,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">minimum</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-attr">maximum</span>: <span class="hljs-number">150</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;role&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">STRING</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;User role&quot;</span>,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">default</span>: <span class="hljs-string">&quot;user&quot;</span>,
+      <span class="hljs-attr">enum</span>: [<span class="hljs-string">&quot;admin&quot;</span>, <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;guest&quot;</span>],
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;preferences&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">OBJECT</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;User preferences&quot;</span>,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">properties</span>: {
+        <span class="hljs-attr">theme</span>: {
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;theme&quot;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">STRING</span>,
+          <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;UI theme&quot;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">default</span>: <span class="hljs-string">&quot;light&quot;</span>,
+          <span class="hljs-attr">enum</span>: [<span class="hljs-string">&quot;light&quot;</span>, <span class="hljs-string">&quot;dark&quot;</span>],
+        },
+        <span class="hljs-attr">notifications</span>: {
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;notifications&quot;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">BOOLEAN</span>,
+          <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Enable notifications&quot;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">default</span>: <span class="hljs-literal">true</span>,
+        },
+      },
+    },
+  ],
+  <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;user&quot;</span>,
+  <span class="hljs-attr">tags</span>: [<span class="hljs-string">&quot;validation&quot;</span>, <span class="hljs-string">&quot;user&quot;</span>],
+};</code></pre><h2>Security and Permissions</h2>
+<h3>Permission-Based Execution</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Tools can require specific permissions</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;admin_tool&quot;</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Admin-only tool&quot;</span>,
+  <span class="hljs-attr">parameters</span>: [],
+  <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;admin&quot;</span>,
+  <span class="hljs-attr">tags</span>: [<span class="hljs-string">&quot;admin&quot;</span>],
+  <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;admin.access&quot;</span>, <span class="hljs-string">&quot;system.modify&quot;</span>],
+};
+
+<span class="hljs-comment">// Execution context must include required permissions</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;admin_tool&quot;</span>,
+  {},
+  {
+    <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&quot;admin.access&quot;</span>, <span class="hljs-string">&quot;system.modify&quot;</span>, <span class="hljs-string">&quot;user.read&quot;</span>],
+    <span class="hljs-attr">metadata</span>: { <span class="hljs-attr">userId</span>: <span class="hljs-string">&quot;admin123&quot;</span> },
+  },
+);</code></pre><h3>Audit Logging</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// All tool executions are automatically logged</span>
+<span class="hljs-keyword">const</span> history = executor.<span class="hljs-title function_">getExecutionHistory</span>(<span class="hljs-string">&quot;admin_tool&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Execution history:&quot;</span>, history);
+
+<span class="hljs-comment">// Get all execution history</span>
+<span class="hljs-keyword">const</span> allHistory = executor.<span class="hljs-title function_">getAllExecutionHistory</span>();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [toolName, executions] <span class="hljs-keyword">of</span> allHistory) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">${toolName}</span>: <span class="hljs-subst">${executions.length}</span> executions`</span>);
+}</code></pre><h2>Error Handling</h2>
+<h3>Tool Errors</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+    <span class="hljs-string">&quot;invalid_tool&quot;</span>,
+    {},
+    {
+      <span class="hljs-attr">permissions</span>: [],
+      <span class="hljs-attr">metadata</span>: {},
+    },
+  );
+} <span class="hljs-keyword">catch</span> (error) {
+  <span class="hljs-keyword">if</span> (error.<span class="hljs-property">message</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&quot;not found&quot;</span>)) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Tool not found&quot;</span>);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (error.<span class="hljs-property">message</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&quot;Permission&quot;</span>)) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Insufficient permissions&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Execution error:&quot;</span>, error.<span class="hljs-property">message</span>);
+  }
+}</code></pre><h3>Retry and Timeout</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Tools can specify retry and timeout behavior</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;network_tool&quot;</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Tool that makes network requests&quot;</span>,
+  <span class="hljs-attr">parameters</span>: [],
+  <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;network&quot;</span>,
+  <span class="hljs-attr">tags</span>: [<span class="hljs-string">&quot;network&quot;</span>],
+  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>, <span class="hljs-comment">// 10 seconds</span>
+  <span class="hljs-attr">retryCount</span>: <span class="hljs-number">3</span>, <span class="hljs-comment">// Retry up to 3 times</span>
+};
+
+<span class="hljs-comment">// Execution context can override defaults</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeTool</span>(
+  <span class="hljs-string">&quot;network_tool&quot;</span>,
+  {},
+  {
+    <span class="hljs-attr">permissions</span>: [],
+    <span class="hljs-attr">metadata</span>: {},
+    <span class="hljs-attr">timeout</span>: <span class="hljs-number">5000</span>, <span class="hljs-comment">// Override to 5 seconds</span>
+    <span class="hljs-attr">retryCount</span>: <span class="hljs-number">5</span>, <span class="hljs-comment">// Override to 5 retries</span>
+  },
+);</code></pre><h2>Tool Registry Management</h2>
+<h3>Registry Operations</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> registry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolRegistry</span>();
+
+<span class="hljs-comment">// Register tools</span>
+registry.<span class="hljs-title function_">registerTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">GreetTool</span>());
+registry.<span class="hljs-title function_">registerTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ReadFileTool</span>());
+
+<span class="hljs-comment">// Get tools by category</span>
+<span class="hljs-keyword">const</span> devTools = registry.<span class="hljs-title function_">getToolsByCategory</span>(<span class="hljs-string">&quot;development&quot;</span>);
+
+<span class="hljs-comment">// Get tools by tag</span>
+<span class="hljs-keyword">const</span> fileTools = registry.<span class="hljs-title function_">getToolsByTag</span>(<span class="hljs-string">&quot;file&quot;</span>);
+
+<span class="hljs-comment">// Search tools</span>
+<span class="hljs-keyword">const</span> searchResults = registry.<span class="hljs-title function_">searchTools</span>(<span class="hljs-string">&quot;file&quot;</span>);
+
+<span class="hljs-comment">// Get registry statistics</span>
+<span class="hljs-keyword">const</span> stats = registry.<span class="hljs-title function_">getStats</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Total tools:&quot;</span>, stats.<span class="hljs-property">totalTools</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Total calls:&quot;</span>, stats.<span class="hljs-property">totalCalls</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Error rate:&quot;</span>, stats.<span class="hljs-property">errorRate</span>);</code></pre><h3>Tool Discovery</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Get all available tools</span>
+<span class="hljs-keyword">const</span> allTools = registry.<span class="hljs-title function_">getAllTools</span>();
+
+<span class="hljs-comment">// Get tools as JSON schema for AI integration</span>
+<span class="hljs-keyword">const</span> toolsSchema = registry.<span class="hljs-title function_">getToolsAsJSONSchema</span>();
+
+<span class="hljs-comment">// Check if tool exists</span>
+<span class="hljs-keyword">if</span> (registry.<span class="hljs-title function_">hasTool</span>(<span class="hljs-string">&quot;greet&quot;</span>)) {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Greet tool is available&quot;</span>);
+}</code></pre><h2>Best Practices</h2>
+<h3>1. Tool Design</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Clear, focused tool with proper validation</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GoodTool</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseTool</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;calculate_total&quot;</span>,
+      <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Calculate total from array of numbers&quot;</span>,
+      <span class="hljs-attr">parameters</span>: [
+        {
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;numbers&quot;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">ARRAY</span>,
+          <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Array of numbers to sum&quot;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-attr">items</span>: {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;number&quot;</span>,
+            <span class="hljs-attr">type</span>: <span class="hljs-title class_">ParameterType</span>.<span class="hljs-property">NUMBER</span>,
+            <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;A number&quot;</span>,
+            <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+          },
+        },
+      ],
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;math&quot;</span>,
+      <span class="hljs-attr">tags</span>: [<span class="hljs-string">&quot;calculation&quot;</span>, <span class="hljs-string">&quot;sum&quot;</span>],
+    };
+    <span class="hljs-variable language_">super</span>(definition);
+  }
+
+  <span class="hljs-keyword">protected</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">executeImpl</span>(<span class="hljs-attr">parameters</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt; {
+    <span class="hljs-keyword">const</span> { numbers } = parameters;
+    <span class="hljs-keyword">const</span> total = numbers.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">sum</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">num</span>: <span class="hljs-built_in">number</span></span>) =&gt;</span> sum + num, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> { total, <span class="hljs-attr">count</span>: numbers.<span class="hljs-property">length</span> };
+  }
+}</code></pre><h3>2. Error Handling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Proper error handling in tool implementation</span>
+<span class="hljs-keyword">protected</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">executeImpl</span>(<span class="hljs-attr">parameters</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt; {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">const</span> { path } = parameters;
+
+    <span class="hljs-comment">// Validate file exists</span>
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">fileExists</span>(path)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`File not found: <span class="hljs-subst">${path}</span>`</span>);
+    }
+
+    <span class="hljs-comment">// Perform operation</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">performOperation</span>(path);
+  } <span class="hljs-keyword">catch</span> (error) {
+    <span class="hljs-comment">// Log error for debugging</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`Tool execution failed:`</span>, error);
+    <span class="hljs-keyword">throw</span> error;
+  }
+}</code></pre><h3>3. Performance Considerations</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Use parallel execution for independent operations</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeToolsParallel</span>(
+  [
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;tool1&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;tool2&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;tool3&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+  ],
+  context,
+);
+
+<span class="hljs-comment">// Good: Use sequential execution for dependent operations</span>
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> executor.<span class="hljs-title function_">executeToolsSequential</span>(
+  [
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;read_data&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;process_data&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+    { <span class="hljs-attr">toolName</span>: <span class="hljs-string">&quot;write_result&quot;</span>, <span class="hljs-attr">parameters</span>: {} },
+  ],
+  context,
+);</code></pre><h3>4. Security</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Always check permissions</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">definition</span>: <span class="hljs-title class_">ToolDefinition</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;sensitive_operation&#x27;</span>,
+  <span class="hljs-attr">description</span>: <span class="hljs-string">&#x27;Operation requiring special permissions&#x27;</span>,
+  <span class="hljs-attr">parameters</span>: [],
+  <span class="hljs-attr">category</span>: <span class="hljs-string">&#x27;security&#x27;</span>,
+  <span class="hljs-attr">tags</span>: [<span class="hljs-string">&#x27;sensitive&#x27;</span>],
+  <span class="hljs-attr">permissions</span>: [<span class="hljs-string">&#x27;admin.access&#x27;</span>, <span class="hljs-string">&#x27;sensitive.operation&#x27;</span>],
+};
+
+<span class="hljs-comment">// Good: Validate user context</span>
+<span class="hljs-keyword">protected</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">executeImpl</span>(<span class="hljs-attr">parameters</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;, <span class="hljs-attr">context</span>: <span class="hljs-title class_">ToolExecutionContext</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">any</span>&gt; {
+  <span class="hljs-comment">// Additional security checks</span>
+  <span class="hljs-keyword">if</span> (!context.<span class="hljs-property">userId</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;User ID is required&#x27;</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (!context.<span class="hljs-property">metadata</span>.<span class="hljs-property">allowedOperations</span>?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;sensitive_operation&#x27;</span>)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Operation not allowed for this user&#x27;</span>);
+  }
+
+  <span class="hljs-comment">// Perform operation</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">performSensitiveOperation</span>(parameters, context);
+}</code></pre><h2>API Reference</h2>
+<h3>BaseTool</h3>
+<p>Abstract base class for all tools.</p>
+<ul>
+<li><code>name</code>: Tool name</li>
+<li><code>description</code>: Tool description</li>
+<li><code>category</code>: Tool category</li>
+<li><code>tags</code>: Tool tags</li>
+<li><code>parameters</code>: Tool parameters</li>
+<li><code>permissions</code>: Required permissions</li>
+<li><code>timeout</code>: Execution timeout</li>
+<li><code>retryCount</code>: Retry count</li>
+<li><code>metrics</code>: Tool execution metrics</li>
+<li><code>execute(parameters, context)</code>: Execute the tool</li>
+<li><code>toJSONSchema()</code>: Get tool as JSON schema</li>
+</ul>
+<h3>ToolRegistry</h3>
+<p>Central registry for managing tools.</p>
+<ul>
+<li><code>registerTool(tool)</code>: Register a tool</li>
+<li><code>unregisterTool(name)</code>: Unregister a tool</li>
+<li><code>getTool(name)</code>: Get tool by name</li>
+<li><code>getAllTools()</code>: Get all tools</li>
+<li><code>getToolsByCategory(category)</code>: Get tools by category</li>
+<li><code>getToolsByTag(tag)</code>: Get tools by tag</li>
+<li><code>searchTools(query)</code>: Search tools</li>
+<li><code>executeTool(name, parameters, context)</code>: Execute tool</li>
+<li><code>getStats()</code>: Get registry statistics</li>
+</ul>
+<h3>ToolExecutor</h3>
+<p>Advanced tool executor with retry, timeout, and parallel execution.</p>
+<ul>
+<li><code>addTool(tool)</code>: Add tool to executor</li>
+<li><code>removeTool(name)</code>: Remove tool from executor</li>
+<li><code>executeTool(name, parameters, context)</code>: Execute single tool</li>
+<li><code>executeToolsParallel(executions, context)</code>: Execute tools in parallel</li>
+<li><code>executeToolsSequential(executions, context)</code>: Execute tools sequentially</li>
+<li><code>executeToolsWithDependencies(executions, context)</code>: Execute with dependencies</li>
+<li><code>getExecutionHistory(name)</code>: Get execution history</li>
+<li><code>getActiveExecutionsCount()</code>: Get active executions count</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Tool not found</strong>: Ensure tool is registered before execution</li>
+<li><strong>Permission denied</strong>: Check user permissions match tool requirements</li>
+<li><strong>Parameter validation failed</strong>: Verify parameter types and constraints</li>
+<li><strong>Timeout errors</strong>: Increase timeout or optimize tool performance</li>
+<li><strong>Circular dependencies</strong>: Check tool dependency chains</li>
+</ol>
+<h3>Debug Mode</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Enable debug logging</span>
+<span class="hljs-keyword">const</span> executor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ToolExecutor</span>();
+executor.<span class="hljs-title function_">addTool</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyTool</span>());
+
+<span class="hljs-comment">// Check execution history</span>
+<span class="hljs-keyword">const</span> history = executor.<span class="hljs-title function_">getExecutionHistory</span>(<span class="hljs-string">&quot;my_tool&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Execution history:&quot;</span>, history);
+
+<span class="hljs-comment">// Monitor active executions</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Active executions:&quot;</span>, executor.<span class="hljs-title function_">getActiveExecutionsCount</span>());</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

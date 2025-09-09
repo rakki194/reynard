@@ -14,13 +14,13 @@ A minimal todo application demonstrating the core features of the Reynard framew
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 ```
 
 ## 📱 Usage

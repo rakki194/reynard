@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contributing - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Contributing</h1>
+      <div class="markdown-content"><h1>Contributing</h1>
+<p>New contributions to the library are welcome, but we ask that you please follow these guidelines:</p>
+<ul>
+<li>Before opening a PR for major additions or changes, please discuss the expected API and/or implementation by <a href="https://github.com/chartjs/Chart.js/issues">filing an issue</a> or asking about it in the <a href="https://discord.gg/HxEguTK6av">Chart.js Discord</a> #dev channel. This will save you development time by getting feedback upfront and make reviews faster by giving the maintainers more context and details.</li>
+<li>Consider whether your changes are useful for all users, or if creating a Chart.js <a href="plugins.md">plugin</a> would be more appropriate.</li>
+<li>Check that your code will pass tests and <code>eslint</code> code standards. <code>pnpm test</code> will run both the linter and tests for you.</li>
+<li>Add unit tests and document new functionality (in the <code>test/</code> and <code>docs/</code> directories respectively).</li>
+<li>Avoid breaking changes unless there is an upcoming major release, which is infrequent. We encourage people to write plugins for the most new advanced features, and care a lot about backward compatibility.</li>
+<li>We strongly prefer new methods to be added as private whenever possible. A method can be made private either by making a top-level <code>function</code> outside of a class or by prefixing it with <code>_</code> and adding <code>@private</code> JSDoc if inside a class. Public APIs take considerable time to review and become locked once implemented as we have limited ability to change them without breaking backward compatibility. Private APIs allow the flexibility to address unforeseen cases.</li>
+</ul>
+<h2>Joining the project</h2>
+<p>Active committers and contributors are invited to introduce themselves and request commit access to this project. We have a very active Discord community that you can join <a href="https://discord.gg/HxEguTK6av">here</a>. If you think you can help, we&#39;d love to have you!</p>
+<h2>Building and Testing</h2>
+<p>Firstly, we need to ensure development dependencies are installed. With node and pnpm installed, after cloning the Chart.js repo to a local directory, and navigating to that directory in the command line, we can run the following:</p>
+<pre><code class="hljs language-bash">&gt; pnpm install</code></pre><p>This will install the local development dependencies for Chart.js.</p>
+<p>The following commands are now available from the repository root:</p>
+<pre><code class="hljs language-bash">&gt; pnpm run build             // build dist files <span class="hljs-keyword">in</span> ./dist
+&gt; pnpm run autobuild         // build and watch <span class="hljs-keyword">for</span> <span class="hljs-built_in">source</span> changes
+&gt; pnpm run dev               // run tests and watch <span class="hljs-keyword">for</span> <span class="hljs-built_in">source</span> and <span class="hljs-built_in">test</span> changes
+&gt; pnpm run lint              // perform code linting (ESLint, tsc)
+&gt; pnpm <span class="hljs-built_in">test</span>                  // perform code linting and run unit tests with coverage</code></pre><p><code>pnpm run dev</code> and <code>pnpm test</code> can be appended with a string that is used to match the spec filenames. For example: <code>pnpm run dev plugins</code> will start karma in watch mode for <code>test/specs/**/*plugin*.js</code>.</p>
+<h3>Documentation</h3>
+<p>We use <a href="https://vuepress.vuejs.org/">Vuepress</a> to manage the docs which are contained as Markdown files in the docs directory. You can run the doc server locally using these commands:</p>
+<pre><code class="hljs language-bash">&gt; pnpm run docs:dev</code></pre><h3>Image-Based Tests</h3>
+<p>Some display-related functionality is difficult to test via typical Jasmine units. For this reason, we introduced image-based tests (<a href="https://github.com/chartjs/Chart.js/pull/3988">#3988</a> and <a href="https://github.com/chartjs/Chart.js/pull/5777">#5777</a>) to assert that a chart is drawn pixel-for-pixel matching an expected image.</p>
+<p>Generated charts in image-based tests should be <strong>as minimal as possible</strong> and focus only on the tested feature to prevent failure if another feature breaks (e.g. disable the title and legend when testing scales).</p>
+<p>You can create a new image-based test by following the steps below:</p>
+<ul>
+<li>Create a JS file (<a href="https://github.com/chartjs/Chart.js/blob/f7b671006a86201808402c3b6fe2054fe834fd4a/test/fixtures/controller.bubble/radius-scriptable.js">example</a>) or JSON file (<a href="https://github.com/chartjs/Chart.js/blob/4b421a50bfa17f73ac7aa8db7d077e674dbc148d/test/fixtures/plugin.filler/fill-line-dataset.json">example</a>) that defines chart config and generation options.</li>
+<li>Add this file in <code>test/fixtures/{spec.name}/{feature-name}.json</code>.</li>
+<li>Add a <a href="https://github.com/chartjs/Chart.js/blob/4b421a50bfa17f73ac7aa8db7d077e674dbc148d/test/specs/plugin.filler.tests.js#L10">describe line</a> to the beginning of <code>test/specs/{spec.name}.tests.js</code> if it doesn&#39;t exist yet.</li>
+<li>Run <code>pnpm run dev</code>.</li>
+<li>Click the <em>&quot;Debug&quot;</em> button (top/right): a test should fail with the associated canvas visible.</li>
+<li>Right-click on the chart and <em>&quot;Save image as...&quot;</em> <code>test/fixtures/{spec.name}/{feature-name}.png</code> making sure not to activate the tooltip or any hover functionality</li>
+<li>Refresh the browser page (<code>CTRL+R</code>): test should now pass</li>
+<li>Verify test relevancy by changing the feature values <em>slightly</em> in the JSON file.</li>
+</ul>
+<p>Tests should pass in both browsers. In general, we&#39;ve hidden all text in image tests since it&#39;s quite difficult to get them to pass between different browsers. As a result, it is recommended to hide all scales in image-based tests. It is also recommended to disable animations. If tests still do not pass, adjust <a href="https://github.com/chartjs/Chart.js/blob/1ca0ffb5d5b6c2072176fd36fa85a58c483aa434/test/jasmine.matchers.js"><code>tolerance</code> and/or <code>threshold</code></a> at the beginning of the JSON file keeping them <strong>as low as possible</strong>.</p>
+<p>When a test fails, the expected and actual images are shown. If you&#39;d like to see the images even when the tests pass, set <code>&quot;debug&quot;: true</code> in the JSON file.</p>
+<h2>Bugs and Issues</h2>
+<p>Please report these on the GitHub page - at <a href="https://github.com/chartjs/Chart.js" target="_blank">github.com/chartjs/Chart.js</a>. Please do not use issues for support requests. For help using Chart.js, please take a look at the <a href="https://stackoverflow.com/questions/tagged/chart.js"><code>chart.js</code></a> tag on Stack Overflow.</p>
+<p>Well-structured, detailed bug reports are hugely valuable for the project.</p>
+<p>Guidelines for reporting bugs:</p>
+<ul>
+<li>Check the issue search to see if it has already been reported</li>
+<li>Isolate the problem to a simple test case</li>
+<li>Please include a demonstration of the bug on a website such as <a href="https://jsbin.com/">JS Bin</a>, <a href="https://jsfiddle.net/">JS Fiddle</a>, or <a href="https://codepen.io/pen/">Codepen</a>. (<a href="https://codepen.io/pen?template=wvezeOq">Template</a>). If filing a bug against <code>master</code>, you may reference the latest code via <a href="https://www.chartjs.org/dist/master/chart.umd.min.js">https://www.chartjs.org/dist/master/chart.umd.min.js</a> (changing the filename to point at the file you need as appropriate). Do not rely on these files for production purposes as they may be removed at any time.</li>
+</ul>
+<p>Please provide any additional details associated with the bug, if it&#39;s browser or screen density specific, or only happens with a certain configuration or data.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

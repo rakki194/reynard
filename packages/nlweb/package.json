@@ -1,0 +1,55 @@
+{
+  "name": "reynard-nlweb",
+  "version": "0.1.0",
+  "description": "NLWeb assistant tooling and routing system for Reynard",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./service": {
+      "import": "./dist/service/index.js",
+      "types": "./dist/service/index.d.ts"
+    },
+    "./router": {
+      "import": "./dist/router/index.js",
+      "types": "./dist/router/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "reynard-core": "workspace:*",
+    "reynard-tools": "workspace:*",
+    "reynard-service-manager": "workspace:*",
+    "reynard-connection": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0"
+  },
+  "keywords": [
+    "nlweb",
+    "assistant",
+    "tooling",
+    "routing",
+    "ai",
+    "reynard"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT"
+}

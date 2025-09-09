@@ -301,7 +301,7 @@ export function expectElementToBePartiallyChecked(element: Element) {
  * Assert that a DOM element has a specific role
  */
 export function expectElementToHaveRole(element: Element, role: string) {
-  expect(element).toHaveAccessibleRole(role);
+  expect(element).toHaveRole(role);
 }
 
 /**

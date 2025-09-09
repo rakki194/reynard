@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crucible - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Crucible</h1>
+      <div class="markdown-content"><h1>Crucible</h1>
+<p>A powerful batch processing framework for transforming raw data into refined results.</p>
+<h2>Overview</h2>
+<p>Crucible is a comprehensive Python framework designed for efficient batch processing operations. It provides a robust foundation for processing large datasets with features like device management (CPU/GPU), parallel processing, progress tracking, error handling, and performance monitoring.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Abstract Batch Processing</strong>: Extensible framework with plugin system support</li>
+<li><strong>Device Management</strong>: Automatic CPU/GPU detection and management</li>
+<li><strong>Parallel Processing</strong>: Thread and process pool support for efficient processing</li>
+<li><strong>Progress Tracking</strong>: Real-time progress bars and detailed statistics</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling with retry mechanisms</li>
+<li><strong>Signal Handling</strong>: Graceful shutdown and cleanup on system signals</li>
+<li><strong>Performance Monitoring</strong>: Detailed performance metrics and analysis</li>
+<li><strong>File Processing</strong>: Specialized file-based batch processing capabilities</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">pip install crucible</code></pre><h3>Optional Dependencies</h3>
+<p>For GPU support:</p>
+<pre><code class="hljs language-bash">pip install crucible[gpu]</code></pre><p>For distributed processing:</p>
+<pre><code class="hljs language-bash">pip install crucible[distributed]</code></pre><p>For monitoring and metrics:</p>
+<pre><code class="hljs language-bash">pip install crucible[monitoring]</code></pre><h2>Quick Start</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> BatchProcessor, BatchOptions
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Iterator, <span class="hljs-type">List</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyProcessor</span>(BatchProcessor[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+        <span class="hljs-comment"># Your processing logic here</span>
+        <span class="hljs-keyword">return</span> item.upper()
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_input_items</span>(<span class="hljs-params">self</span>) -&gt; Iterator[<span class="hljs-built_in">str</span>]:
+        <span class="hljs-comment"># Your input data source here</span>
+        <span class="hljs-keyword">return</span> [<span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;world&quot;</span>, <span class="hljs-string">&quot;crucible&quot;</span>]
+
+<span class="hljs-comment"># Configure options</span>
+options = BatchOptions(
+    batch_size=<span class="hljs-number">100</span>,
+    processing_mode=<span class="hljs-string">&quot;parallel&quot;</span>,
+    max_workers=<span class="hljs-number">4</span>,
+    show_progress=<span class="hljs-literal">True</span>
+)
+
+<span class="hljs-comment"># Create and run processor</span>
+processor = MyProcessor(options)
+results = processor.process()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Processed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(results)}</span> items&quot;</span>)</code></pre><h3>File Processing</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> FileProcessor, BatchOptions
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageProcessor</span>(<span class="hljs-title class_ inherited__">FileProcessor</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, file_path: Path</span>) -&gt; <span class="hljs-built_in">dict</span>:
+        <span class="hljs-comment"># Process image file</span>
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">&#x27;file&#x27;</span>: <span class="hljs-built_in">str</span>(file_path),
+            <span class="hljs-string">&#x27;size&#x27;</span>: file_path.stat().st_size,
+            <span class="hljs-string">&#x27;processed&#x27;</span>: <span class="hljs-literal">True</span>
+        }
+
+<span class="hljs-comment"># Configure file processing</span>
+options = BatchOptions(
+    input_directory=<span class="hljs-string">&quot;images/&quot;</span>,
+    output_directory=<span class="hljs-string">&quot;processed/&quot;</span>,
+    file_patterns=[<span class="hljs-string">&quot;*.jpg&quot;</span>, <span class="hljs-string">&quot;*.png&quot;</span>],
+    recursive=<span class="hljs-literal">True</span>,
+    batch_size=<span class="hljs-number">50</span>
+)
+
+<span class="hljs-comment"># Process files</span>
+processor = ImageProcessor(options)
+results = processor.process()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Processed <span class="hljs-subst">{<span class="hljs-built_in">len</span>(results)}</span> files&quot;</span>)</code></pre><h3>Advanced Configuration</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> BatchOptions, ProcessingMode, DeviceType, ErrorHandling
+
+options = BatchOptions(
+    <span class="hljs-comment"># Basic configuration</span>
+    batch_size=<span class="hljs-number">200</span>,
+    processing_mode=ProcessingMode.PARALLEL,
+    max_workers=<span class="hljs-number">8</span>,
+    
+    <span class="hljs-comment"># Device configuration</span>
+    device_type=DeviceType.AUTO,
+    memory_limit=<span class="hljs-number">4096</span>,  <span class="hljs-comment"># 4GB limit</span>
+    
+    <span class="hljs-comment"># Error handling</span>
+    error_handling=ErrorHandling.RETRY_ON_ERROR,
+    max_retries=<span class="hljs-number">3</span>,
+    retry_delay=<span class="hljs-number">1.0</span>,
+    
+    <span class="hljs-comment"># Progress tracking</span>
+    show_progress=<span class="hljs-literal">True</span>,
+    save_progress=<span class="hljs-literal">True</span>,
+    progress_file=<span class="hljs-string">&quot;progress.json&quot;</span>,
+    
+    <span class="hljs-comment"># Performance monitoring</span>
+    enable_monitoring=<span class="hljs-literal">True</span>,
+    monitor_interval=<span class="hljs-number">5.0</span>,
+    
+    <span class="hljs-comment"># Signal handling</span>
+    enable_signal_handling=<span class="hljs-literal">True</span>,
+    cleanup_on_signal=<span class="hljs-literal">True</span>
+)</code></pre><h2>Core Components</h2>
+<h3>BatchProcessor</h3>
+<p>The abstract base class for all batch processing operations.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> BatchProcessor
+<span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Iterator, TypeVar
+
+InputType = TypeVar(<span class="hljs-string">&quot;InputType&quot;</span>)
+OutputType = TypeVar(<span class="hljs-string">&quot;OutputType&quot;</span>)
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyProcessor</span>(BatchProcessor[InputType, OutputType]):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, item: InputType</span>) -&gt; OutputType:
+        <span class="hljs-comment"># Implement your processing logic</span>
+        <span class="hljs-keyword">pass</span>
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_input_items</span>(<span class="hljs-params">self</span>) -&gt; Iterator[InputType]:
+        <span class="hljs-comment"># Implement your input source</span>
+        <span class="hljs-keyword">pass</span></code></pre><h3>FileProcessor</h3>
+<p>Specialized processor for file-based operations.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> FileProcessor
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyFileProcessor</span>(<span class="hljs-title class_ inherited__">FileProcessor</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, file_path: Path</span>) -&gt; <span class="hljs-built_in">dict</span>:
+        <span class="hljs-comment"># Process individual files</span>
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;file&quot;</span>: <span class="hljs-built_in">str</span>(file_path), <span class="hljs-string">&quot;processed&quot;</span>: <span class="hljs-literal">True</span>}</code></pre><h3>Device Management</h3>
+<p>Automatic device detection and management.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> DeviceManager, BatchOptions
+
+options = BatchOptions(device_type=<span class="hljs-string">&quot;auto&quot;</span>)
+device_manager = DeviceManager(options)
+
+<span class="hljs-comment"># Get device information</span>
+device_info = device_manager.get_device_info()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Using device: <span class="hljs-subst">{device_info[<span class="hljs-string">&#x27;name&#x27;</span>]}</span>&quot;</span>)
+
+<span class="hljs-comment"># Check memory usage</span>
+memory_usage = device_manager.get_memory_usage()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory usage: <span class="hljs-subst">{memory_usage[<span class="hljs-string">&#x27;percent_used&#x27;</span>]:<span class="hljs-number">.1</span>f}</span>%&quot;</span>)</code></pre><h3>Progress Tracking</h3>
+<p>Real-time progress monitoring.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> ProgressTracker, BatchOptions
+
+options = BatchOptions(show_progress=<span class="hljs-literal">True</span>)
+tracker = ProgressTracker(options)
+
+tracker.start(total_items=<span class="hljs-number">1000</span>)
+
+<span class="hljs-comment"># Update progress</span>
+tracker.update(processed=<span class="hljs-number">100</span>)
+
+<span class="hljs-comment"># Get statistics</span>
+stats = tracker.get_stats()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Progress: <span class="hljs-subst">{stats[<span class="hljs-string">&#x27;progress_percentage&#x27;</span>]:<span class="hljs-number">.1</span>f}</span>%&quot;</span>)</code></pre><h3>Error Handling</h3>
+<p>Comprehensive error handling with retry mechanisms.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> ErrorHandler, BatchOptions, ErrorHandling
+
+options = BatchOptions(
+    error_handling=ErrorHandling.RETRY_ON_ERROR,
+    max_retries=<span class="hljs-number">3</span>
+)
+error_handler = ErrorHandler(options)
+
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-comment"># Your processing code</span>
+    result = process_item(item)
+<span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+    <span class="hljs-comment"># Handle error</span>
+    handled = error_handler.handle_error(e, item)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> handled:
+        <span class="hljs-keyword">raise</span></code></pre><h3>Parallel Processing</h3>
+<p>Efficient parallel processing utilities.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> ParallelProcessor, BatchOptions, ProcessingMode
+
+options = BatchOptions(
+    processing_mode=ProcessingMode.PARALLEL,
+    max_workers=<span class="hljs-number">4</span>
+)
+parallel_processor = ParallelProcessor(options)
+
+<span class="hljs-comment"># Process items in parallel</span>
+results = parallel_processor.process_parallel(
+    items=[<span class="hljs-string">&quot;item1&quot;</span>, <span class="hljs-string">&quot;item2&quot;</span>, <span class="hljs-string">&quot;item3&quot;</span>],
+    processor_func=<span class="hljs-keyword">lambda</span> x: x.upper()
+)</code></pre><h2>Configuration Options</h2>
+<h3>BatchOptions</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>batch_size</code></td>
+<td>int</td>
+<td>100</td>
+<td>Number of items per batch</td>
+</tr>
+<tr>
+<td><code>max_workers</code></td>
+<td>int</td>
+<td>None</td>
+<td>Maximum worker threads/processes</td>
+</tr>
+<tr>
+<td><code>processing_mode</code></td>
+<td>ProcessingMode</td>
+<td>SEQUENTIAL</td>
+<td>Processing mode (sequential/parallel/distributed)</td>
+</tr>
+<tr>
+<td><code>device_type</code></td>
+<td>DeviceType</td>
+<td>AUTO</td>
+<td>Device type (cpu/gpu/auto)</td>
+</tr>
+<tr>
+<td><code>device_id</code></td>
+<td>int</td>
+<td>None</td>
+<td>Specific device ID</td>
+</tr>
+<tr>
+<td><code>memory_limit</code></td>
+<td>int</td>
+<td>None</td>
+<td>Memory limit in MB</td>
+</tr>
+<tr>
+<td><code>error_handling</code></td>
+<td>ErrorHandling</td>
+<td>CONTINUE_ON_ERROR</td>
+<td>Error handling strategy</td>
+</tr>
+<tr>
+<td><code>max_retries</code></td>
+<td>int</td>
+<td>3</td>
+<td>Maximum retry attempts</td>
+</tr>
+<tr>
+<td><code>retry_delay</code></td>
+<td>float</td>
+<td>1.0</td>
+<td>Delay between retries</td>
+</tr>
+<tr>
+<td><code>enable_monitoring</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Enable performance monitoring</td>
+</tr>
+<tr>
+<td><code>show_progress</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Show progress bar</td>
+</tr>
+<tr>
+<td><code>save_progress</code></td>
+<td>bool</td>
+<td>False</td>
+<td>Save progress to file</td>
+</tr>
+<tr>
+<td><code>enable_signal_handling</code></td>
+<td>bool</td>
+<td>True</td>
+<td>Enable signal handling</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<h3>Image Processing Pipeline</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> FileProcessor, BatchOptions
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">import</span> cv2
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageResizer</span>(<span class="hljs-title class_ inherited__">FileProcessor</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, file_path: Path</span>) -&gt; <span class="hljs-built_in">dict</span>:
+        <span class="hljs-comment"># Read image</span>
+        image = cv2.imread(<span class="hljs-built_in">str</span>(file_path))
+        
+        <span class="hljs-comment"># Resize image</span>
+        resized = cv2.resize(image, (<span class="hljs-number">224</span>, <span class="hljs-number">224</span>))
+        
+        <span class="hljs-comment"># Save resized image</span>
+        output_path = <span class="hljs-variable language_">self</span>.get_output_path(file_path)
+        output_path.parent.mkdir(parents=<span class="hljs-literal">True</span>, exist_ok=<span class="hljs-literal">True</span>)
+        cv2.imwrite(<span class="hljs-built_in">str</span>(output_path), resized)
+        
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">&#x27;input&#x27;</span>: <span class="hljs-built_in">str</span>(file_path),
+            <span class="hljs-string">&#x27;output&#x27;</span>: <span class="hljs-built_in">str</span>(output_path),
+            <span class="hljs-string">&#x27;size&#x27;</span>: output_path.stat().st_size
+        }
+
+<span class="hljs-comment"># Configure and run</span>
+options = BatchOptions(
+    input_directory=<span class="hljs-string">&quot;raw_images/&quot;</span>,
+    output_directory=<span class="hljs-string">&quot;resized_images/&quot;</span>,
+    file_patterns=[<span class="hljs-string">&quot;*.jpg&quot;</span>, <span class="hljs-string">&quot;*.png&quot;</span>],
+    batch_size=<span class="hljs-number">50</span>,
+    processing_mode=<span class="hljs-string">&quot;parallel&quot;</span>,
+    max_workers=<span class="hljs-number">4</span>
+)
+
+processor = ImageResizer(options)
+results = processor.process()</code></pre><h3>Data Processing Pipeline</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> BatchProcessor, BatchOptions
+<span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DataProcessor</span>(BatchProcessor[pd.DataFrame, pd.DataFrame]):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, df: pd.DataFrame</span>) -&gt; pd.DataFrame:
+        <span class="hljs-comment"># Clean data</span>
+        df = df.dropna()
+        
+        <span class="hljs-comment"># Transform data</span>
+        df[<span class="hljs-string">&#x27;processed&#x27;</span>] = df[<span class="hljs-string">&#x27;value&#x27;</span>] * <span class="hljs-number">2</span>
+        
+        <span class="hljs-keyword">return</span> df
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_input_items</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># Load data in chunks</span>
+        <span class="hljs-keyword">for</span> chunk <span class="hljs-keyword">in</span> pd.read_csv(<span class="hljs-string">&#x27;large_file.csv&#x27;</span>, chunksize=<span class="hljs-number">1000</span>):
+            <span class="hljs-keyword">yield</span> chunk
+
+<span class="hljs-comment"># Configure and run</span>
+options = BatchOptions(
+    batch_size=<span class="hljs-number">10</span>,
+    processing_mode=<span class="hljs-string">&quot;parallel&quot;</span>,
+    max_workers=<span class="hljs-number">4</span>,
+    error_handling=<span class="hljs-string">&quot;retry_on_error&quot;</span>
+)
+
+processor = DataProcessor(options)
+results = processor.process()
+
+<span class="hljs-comment"># Combine results</span>
+final_df = pd.concat(results, ignore_index=<span class="hljs-literal">True</span>)</code></pre><h2>Performance Monitoring</h2>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> crucible <span class="hljs-keyword">import</span> PerformanceMonitor, BatchOptions
+
+options = BatchOptions(enable_monitoring=<span class="hljs-literal">True</span>)
+monitor = PerformanceMonitor(options)
+
+monitor.start()
+
+<span class="hljs-comment"># Your processing code here</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000</span>):
+    <span class="hljs-comment"># Process item</span>
+    monitor.record_processing_time(<span class="hljs-number">0.1</span>)  <span class="hljs-comment"># Record processing time</span>
+
+monitor.stop()
+
+<span class="hljs-comment"># Get performance statistics</span>
+stats = monitor.get_stats()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total duration: <span class="hljs-subst">{stats[<span class="hljs-string">&#x27;total_duration&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>s&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Processing rate: <span class="hljs-subst">{stats[<span class="hljs-string">&#x27;processing_stats&#x27;</span>][<span class="hljs-string">&#x27;processing_rate&#x27;</span>]:<span class="hljs-number">.2</span>f}</span> items/s&quot;</span>)</code></pre><h2>Error Handling Strategies</h2>
+<h3>Stop on Error</h3>
+<pre><code class="hljs language-python">options = BatchOptions(error_handling=ErrorHandling.STOP_ON_ERROR)</code></pre><h3>Continue on Error</h3>
+<pre><code class="hljs language-python">options = BatchOptions(error_handling=ErrorHandling.CONTINUE_ON_ERROR)</code></pre><h3>Retry on Error</h3>
+<pre><code class="hljs language-python">options = BatchOptions(
+    error_handling=ErrorHandling.RETRY_ON_ERROR,
+    max_retries=<span class="hljs-number">3</span>,
+    retry_delay=<span class="hljs-number">1.0</span>
+)</code></pre><h3>Skip on Error</h3>
+<pre><code class="hljs language-python">options = BatchOptions(error_handling=ErrorHandling.SKIP_ON_ERROR)</code></pre><h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2>Support</h2>
+<p>For support and questions, please open an issue on GitHub or contact the maintainers.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

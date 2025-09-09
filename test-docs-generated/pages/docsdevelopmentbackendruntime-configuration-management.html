@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runtime Configuration Management - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Runtime Configuration Management</h1>
+      <div class="markdown-content"><h1>Runtime Configuration Management</h1>
+<p>The Runtime Configuration Management system provides comprehensive dynamic configuration management for the lazy loading system, including real-time updates, validation, rollback mechanisms, and change notifications.</p>
+<h2>Overview</h2>
+<p>The system consists of two main components:</p>
+<ol>
+<li><strong>Configuration Engine</strong> (<code>app/utils/configuration_engine.py</code>) - Core configuration management logic</li>
+<li><strong>Configuration API</strong> (<code>app/api/lazy_loading_config.py</code>) - REST API endpoints for configuration management</li>
+</ol>
+<h2>Features</h2>
+<h3>✅ Dynamic Configuration Updates</h3>
+<ul>
+<li>Real-time configuration value updates without application restart</li>
+<li>Support for multiple configuration sources (default, environment, config file, runtime, service)</li>
+<li>Thread-safe configuration operations</li>
+<li>Batch configuration updates</li>
+</ul>
+<h3>✅ Configuration Validation and Testing</h3>
+<ul>
+<li>Built-in validation rules for common configuration types</li>
+<li>Custom validation rule support</li>
+<li>Validation error reporting and handling</li>
+<li>Pre-validation testing without applying changes</li>
+</ul>
+<h3>✅ Configuration Rollback Mechanisms</h3>
+<ul>
+<li>Snapshot-based rollback system</li>
+<li>Automatic snapshot cleanup</li>
+<li>Snapshot metadata and tagging</li>
+<li>Rollback to any previous configuration state</li>
+</ul>
+<h3>✅ Configuration Change Notifications</h3>
+<ul>
+<li>Real-time change tracking</li>
+<li>User attribution for changes</li>
+<li>Change history and audit trail</li>
+<li>Notification system for configuration events</li>
+</ul>
+<h2>API Endpoints</h2>
+<h3>Configuration Status</h3>
+<pre><code class="hljs language-http">GET /api/lazy-loading-config/status</code></pre><p>Returns the current status of the configuration system including summary statistics.</p>
+<h3>Configuration Values</h3>
+<pre><code class="hljs language-http">GET /api/lazy-loading-config/values
+GET /api/lazy-loading-config/values/{key}</code></pre><p>Retrieve configuration values (all or specific key).</p>
+<h3>Update Configuration</h3>
+<pre><code class="hljs language-http">PUT /api/lazy-loading-config/values/{key}</code></pre><p>Update a single configuration value.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Reduced check interval for faster response&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Batch Updates</h3>
+<pre><code class="hljs language-http">POST /api/lazy-loading-config/values/batch</code></pre><p>Update multiple configuration values in a single operation.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;updates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lazy_loading_unloading_enabled&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Enable unloading system&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lazy_loading_unloading_strategy&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;BALANCED&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;runtime&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Set balanced unloading strategy&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;create_snapshot&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;snapshot_description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Batch configuration update&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Validation</h3>
+<pre><code class="hljs language-http">POST /api/lazy-loading-config/validate</code></pre><p>Validate a configuration value without applying it.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lazy_loading_unloading_memory_pressure_threshold&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.8</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Snapshots</h3>
+<pre><code class="hljs language-http">POST /api/lazy-loading-config/snapshots
+GET /api/lazy-loading-config/snapshots
+POST /api/lazy-loading-config/snapshots/{snapshot_id}/rollback
+DELETE /api/lazy-loading-config/snapshots/{snapshot_id}</code></pre><p>Manage configuration snapshots for rollback functionality.</p>
+<h3>Notifications</h3>
+<pre><code class="hljs language-http">GET /api/lazy-loading-config/notifications</code></pre><p>Retrieve configuration change notifications.</p>
+<h3>Reset and Import/Export</h3>
+<pre><code class="hljs language-http">POST /api/lazy-loading-config/reset
+POST /api/lazy-loading-config/export
+POST /api/lazy-loading-config/import</code></pre><p>Reset configuration to defaults, export configuration, or import configuration.</p>
+<h2>Configuration Keys</h2>
+<h3>Unloading Configuration</h3>
+<ul>
+<li><code>lazy_loading_unloading_enabled</code> - Enable/disable the unloading system</li>
+<li><code>lazy_loading_unloading_check_interval</code> - Interval between unloading checks (seconds)</li>
+<li><code>lazy_loading_unloading_strategy</code> - Unloading strategy (AGGRESSIVE, BALANCED, CONSERVATIVE)</li>
+<li><code>lazy_loading_unloading_aggressive_timeout</code> - Timeout for aggressive strategy (seconds)</li>
+<li><code>lazy_loading_unloading_balanced_timeout</code> - Timeout for balanced strategy (seconds)</li>
+<li><code>lazy_loading_unloading_conservative_timeout</code> - Timeout for conservative strategy (seconds)</li>
+<li><code>lazy_loading_unloading_memory_pressure_threshold</code> - Memory pressure threshold (0.0-1.0)</li>
+<li><code>lazy_loading_unloading_memory_pressure_timeout</code> - Memory pressure timeout (seconds)</li>
+<li><code>lazy_loading_unloading_max_unloads_per_cycle</code> - Maximum packages to unload per cycle</li>
+<li><code>lazy_loading_unloading_min_memory_savings_threshold</code> - Minimum memory savings threshold (bytes)</li>
+</ul>
+<h3>Reloading Configuration</h3>
+<ul>
+<li><code>package_reloading_enabled</code> - Enable/disable package reloading</li>
+<li><code>smart_reloading_enabled</code> - Enable/disable smart reloading</li>
+<li><code>reloading_check_interval</code> - Interval between reloading checks (seconds)</li>
+<li><code>max_reloads_per_cycle</code> - Maximum packages to reload per cycle</li>
+<li><code>reloading_performance_threshold</code> - Performance threshold for reloading</li>
+</ul>
+<h3>Memory Management</h3>
+<ul>
+<li><code>memory_pressure_threshold</code> - Global memory pressure threshold (0.0-1.0)</li>
+<li><code>memory_optimization_enabled</code> - Enable/disable memory optimization</li>
+<li><code>memory_cleanup_interval</code> - Memory cleanup interval (seconds)</li>
+</ul>
+<h3>Performance Settings</h3>
+<ul>
+<li><code>max_concurrent_loads</code> - Maximum concurrent package loads</li>
+<li><code>load_timeout</code> - Package load timeout (seconds)</li>
+<li><code>cache_enabled</code> - Enable/disable caching</li>
+<li><code>cache_size_limit</code> - Cache size limit (bytes)</li>
+</ul>
+<h3>Analytics and Monitoring</h3>
+<ul>
+<li><code>analytics_enabled</code> - Enable/disable analytics</li>
+<li><code>performance_monitoring_enabled</code> - Enable/disable performance monitoring</li>
+<li><code>metrics_collection_interval</code> - Metrics collection interval (seconds)</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Python API Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.configuration_engine <span class="hljs-keyword">import</span> get_configuration_engine
+
+<span class="hljs-comment"># Get the configuration engine</span>
+engine = get_configuration_engine()
+
+<span class="hljs-comment"># Set a configuration value</span>
+success = engine.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span>, <span class="hljs-number">30.0</span>)
+<span class="hljs-keyword">if</span> success:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Configuration updated successfully&quot;</span>)
+
+<span class="hljs-comment"># Get a configuration value</span>
+value = engine.get(<span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Check interval: <span class="hljs-subst">{value}</span>&quot;</span>)
+
+<span class="hljs-comment"># Create a snapshot</span>
+snapshot_id = engine.create_snapshot(<span class="hljs-string">&quot;Before performance tuning&quot;</span>)
+
+<span class="hljs-comment"># Update multiple values</span>
+updates = {
+    <span class="hljs-string">&quot;lazy_loading_unloading_strategy&quot;</span>: <span class="hljs-string">&quot;AGGRESSIVE&quot;</span>,
+    <span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span>: <span class="hljs-number">15.0</span>
+}
+results = engine.update(updates)
+
+<span class="hljs-comment"># Rollback if needed</span>
+engine.rollback_to_snapshot(snapshot_id)</code></pre><h3>REST API Usage</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Get configuration status</span>
+curl -X GET <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/status&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer YOUR_TOKEN&quot;</span>
+
+<span class="hljs-comment"># Update configuration</span>
+curl -X PUT <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/values/lazy_loading_unloading_check_interval&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer YOUR_TOKEN&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;key&quot;: &quot;lazy_loading_unloading_check_interval&quot;,
+    &quot;value&quot;: 30.0,
+    &quot;source&quot;: &quot;runtime&quot;,
+    &quot;description&quot;: &quot;Optimized check interval&quot;
+  }&#x27;</span>
+
+<span class="hljs-comment"># Create snapshot</span>
+curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/snapshots&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer YOUR_TOKEN&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;description&quot;: &quot;Before major configuration changes&quot;,
+    &quot;tags&quot;: [&quot;backup&quot;, &quot;major-changes&quot;]
+  }&#x27;</span>
+
+<span class="hljs-comment"># Get notifications</span>
+curl -X GET <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/notifications?limit=10&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer YOUR_TOKEN&quot;</span></code></pre><h2>Validation Rules</h2>
+<p>The system includes built-in validation rules for common configuration types:</p>
+<h3>Numeric Validation</h3>
+<ul>
+<li>Positive integers for counts and limits</li>
+<li>Positive floats for intervals and thresholds</li>
+<li>Range validation for percentages (0.0-1.0)</li>
+</ul>
+<h3>String Validation</h3>
+<ul>
+<li>Non-empty strings for required text fields</li>
+<li>Enum validation for strategy selections</li>
+</ul>
+<h3>Custom Validation</h3>
+<p>You can add custom validation rules:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.configuration_engine <span class="hljs-keyword">import</span> ConfigurationValidationRule
+
+<span class="hljs-comment"># Create custom validation rule</span>
+rule = ConfigurationValidationRule(
+    key=<span class="hljs-string">&quot;custom_setting&quot;</span>,
+    validator=<span class="hljs-keyword">lambda</span> x: <span class="hljs-built_in">isinstance</span>(x, <span class="hljs-built_in">str</span>) <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(x) &gt; <span class="hljs-number">0</span>,
+    error_message=<span class="hljs-string">&quot;Custom setting must be a non-empty string&quot;</span>,
+    required=<span class="hljs-literal">True</span>,
+    default_value=<span class="hljs-string">&quot;default&quot;</span>
+)
+
+<span class="hljs-comment"># Add the rule</span>
+engine.add_validation_rule(rule)</code></pre><h2>Best Practices</h2>
+<h3>1. Always Create Snapshots Before Major Changes</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Create snapshot before making changes</span>
+snapshot_id = engine.create_snapshot(<span class="hljs-string">&quot;Before performance optimization&quot;</span>)
+
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-comment"># Make configuration changes</span>
+    engine.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;lazy_loading_unloading_strategy&quot;</span>, <span class="hljs-string">&quot;AGGRESSIVE&quot;</span>)
+    engine.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span>, <span class="hljs-number">15.0</span>)
+
+    <span class="hljs-comment"># Test the changes</span>
+    <span class="hljs-comment"># ... perform testing ...</span>
+
+<span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+    <span class="hljs-comment"># Rollback on error</span>
+    engine.rollback_to_snapshot(snapshot_id)
+    <span class="hljs-keyword">raise</span> e</code></pre><h3>2. Use Batch Updates for Multiple Changes</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Use batch updates for multiple related changes</span>
+updates = {
+    <span class="hljs-string">&quot;lazy_loading_unloading_enabled&quot;</span>: <span class="hljs-literal">True</span>,
+    <span class="hljs-string">&quot;lazy_loading_unloading_strategy&quot;</span>: <span class="hljs-string">&quot;BALANCED&quot;</span>,
+    <span class="hljs-string">&quot;lazy_loading_unloading_check_interval&quot;</span>: <span class="hljs-number">60.0</span>
+}
+
+<span class="hljs-comment"># Create snapshot and apply updates</span>
+snapshot_id = engine.create_snapshot(<span class="hljs-string">&quot;Enable unloading system&quot;</span>)
+results = engine.update(updates)
+
+<span class="hljs-comment"># Check results</span>
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">all</span>(results.values()):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;All updates successful&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-comment"># Rollback on failure</span>
+    engine.rollback_to_snapshot(snapshot_id)</code></pre><h3>3. Validate Configuration Before Applying</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Validate configuration before applying</span>
+validation_data = {
+    <span class="hljs-string">&quot;key&quot;</span>: <span class="hljs-string">&quot;lazy_loading_unloading_memory_pressure_threshold&quot;</span>,
+    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.9</span>
+}
+
+<span class="hljs-comment"># Use the validation endpoint</span>
+response = requests.post(
+    <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/validate&quot;</span>,
+    json=validation_data,
+    headers={<span class="hljs-string">&quot;Authorization&quot;</span>: <span class="hljs-string">f&quot;Bearer <span class="hljs-subst">{token}</span>&quot;</span>}
+)
+
+<span class="hljs-keyword">if</span> response.json()[<span class="hljs-string">&quot;is_valid&quot;</span>]:
+    <span class="hljs-comment"># Apply the configuration</span>
+    engine.<span class="hljs-built_in">set</span>(validation_data[<span class="hljs-string">&quot;key&quot;</span>], validation_data[<span class="hljs-string">&quot;value&quot;</span>])
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Validation failed:&quot;</span>, response.json()[<span class="hljs-string">&quot;validation_errors&quot;</span>])</code></pre><h3>4. Monitor Configuration Changes</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get recent configuration changes</span>
+response = requests.get(
+    <span class="hljs-string">&quot;http://localhost:7000/api/lazy-loading-config/notifications?limit=20&quot;</span>,
+    headers={<span class="hljs-string">&quot;Authorization&quot;</span>: <span class="hljs-string">f&quot;Bearer <span class="hljs-subst">{token}</span>&quot;</span>}
+)
+
+notifications = response.json()[<span class="hljs-string">&quot;notifications&quot;</span>]
+<span class="hljs-keyword">for</span> notification <span class="hljs-keyword">in</span> notifications:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{notification[<span class="hljs-string">&#x27;timestamp&#x27;</span>]}</span>: <span class="hljs-subst">{notification[<span class="hljs-string">&#x27;key&#x27;</span>]}</span> = <span class="hljs-subst">{notification[<span class="hljs-string">&#x27;new_value&#x27;</span>]}</span>&quot;</span>)</code></pre><h2>Error Handling</h2>
+<p>The system provides comprehensive error handling:</p>
+<h3>Validation Errors</h3>
+<ul>
+<li>Invalid values are rejected with detailed error messages</li>
+<li>Default values are applied when validation fails</li>
+<li>Validation errors are logged and tracked</li>
+</ul>
+<h3>Rollback Errors</h3>
+<ul>
+<li>Invalid snapshot IDs return appropriate error responses</li>
+<li>Rollback failures are logged with details</li>
+<li>Automatic cleanup of invalid snapshots</li>
+</ul>
+<h3>API Errors</h3>
+<ul>
+<li>Authentication and authorization errors (401/403)</li>
+<li>Not found errors for invalid keys or snapshots (404)</li>
+<li>Validation errors with detailed messages (400)</li>
+<li>Internal server errors with logging (500)</li>
+</ul>
+<h2>Monitoring and Debugging</h2>
+<h3>Configuration Summary</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get comprehensive configuration summary</span>
+summary = engine.get_configuration_summary()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total values: <span class="hljs-subst">{summary[<span class="hljs-string">&#x27;total_values&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Sources: <span class="hljs-subst">{summary[<span class="hljs-string">&#x27;sources&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Validation status: <span class="hljs-subst">{summary[<span class="hljs-string">&#x27;validation_status&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Validation Status</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Check for validation errors</span>
+errors = engine.validate_configuration()
+<span class="hljs-keyword">if</span> errors:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Configuration validation errors:&quot;</span>)
+    <span class="hljs-keyword">for</span> key, error_list <span class="hljs-keyword">in</span> errors.items():
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  <span class="hljs-subst">{key}</span>: <span class="hljs-subst">{error_list}</span>&quot;</span>)</code></pre><h3>Snapshot Management</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># List all snapshots</span>
+snapshots = engine.list_snapshots()
+<span class="hljs-keyword">for</span> snapshot <span class="hljs-keyword">in</span> snapshots:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{snapshot[<span class="hljs-string">&#x27;id&#x27;</span>]}</span>: <span class="hljs-subst">{snapshot[<span class="hljs-string">&#x27;description&#x27;</span>]}</span> (<span class="hljs-subst">{snapshot[<span class="hljs-string">&#x27;timestamp&#x27;</span>]}</span>)&quot;</span>)</code></pre><h2>Integration with Service Management</h2>
+<p>The configuration engine integrates with the service management system:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Integrate with service manager</span>
+engine.integrate_with_service_manager()
+
+<span class="hljs-comment"># Configuration values from services are automatically loaded</span>
+<span class="hljs-comment"># and synchronized with the configuration engine</span></code></pre><h2>Performance Considerations</h2>
+<ul>
+<li>Configuration operations are thread-safe using RLock</li>
+<li>Snapshots are automatically cleaned up to prevent memory leaks</li>
+<li>Validation is performed efficiently with cached rules</li>
+<li>API responses are optimized for minimal latency</li>
+</ul>
+<h2>Security</h2>
+<ul>
+<li>All API endpoints require authentication</li>
+<li>Configuration changes are attributed to users</li>
+<li>Sensitive configuration values are not exposed in summaries</li>
+<li>Validation prevents malicious configuration values</li>
+</ul>
+<h2>Future Enhancements</h2>
+<p>Planned enhancements for the runtime configuration management system:</p>
+<ol>
+<li><strong>WebSocket Notifications</strong> - Real-time configuration change notifications</li>
+<li><strong>Configuration Templates</strong> - Predefined configuration templates for common scenarios</li>
+<li><strong>A/B Testing</strong> - Configuration A/B testing capabilities</li>
+<li><strong>Configuration Analytics</strong> - Usage analytics for configuration changes</li>
+<li><strong>Configuration Migration</strong> - Automated configuration migration tools</li>
+<li><strong>Configuration Backup/Restore</strong> - Automated backup and restore functionality</li>
+</ol>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

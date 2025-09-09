@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-service-manager - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-service-manager</h1>
+      <div class="markdown-content"><h1>reynard-service-manager</h1>
+<p>A comprehensive service management system for Reynard applications that handles service lifecycle, dependencies, health monitoring, and parallel initialization.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Service Lifecycle Management</strong>: Start, stop, and monitor services with proper state transitions</li>
+<li><strong>Dependency Resolution</strong>: Automatic dependency resolution and startup ordering</li>
+<li><strong>Parallel Initialization</strong>: Services can start in parallel when dependencies allow</li>
+<li><strong>Health Monitoring</strong>: Built-in health checks and monitoring for all services</li>
+<li><strong>Event System</strong>: Comprehensive event system for service lifecycle events</li>
+<li><strong>TypeScript Support</strong>: Full TypeScript support with comprehensive type definitions</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-service-manager</code></pre><h2>Quick Start</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ServiceManager</span>,
+  <span class="hljs-title class_">BaseService</span>,
+  <span class="hljs-title class_">ServiceStatus</span>,
+  <span class="hljs-title class_">ServiceHealth</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-service-manager&quot;</span>;
+
+<span class="hljs-comment">// Create a custom service</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseService</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;my-service&quot;</span>,
+      <span class="hljs-attr">dependencies</span>: [<span class="hljs-string">&quot;database&quot;</span>],
+      <span class="hljs-attr">startupPriority</span>: <span class="hljs-number">50</span>,
+      <span class="hljs-attr">autoStart</span>: <span class="hljs-literal">true</span>,
+    });
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">initialize</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Initialize your service</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;MyService initialized&quot;</span>);
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">shutdown</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Cleanup your service</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;MyService shutdown&quot;</span>);
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">healthCheck</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ServiceHealth</span>&gt; {
+    <span class="hljs-comment">// Perform health check</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">ServiceHealth</span>.<span class="hljs-property">HEALTHY</span>;
+  }
+}
+
+<span class="hljs-comment">// Create and configure service manager</span>
+<span class="hljs-keyword">const</span> serviceManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServiceManager</span>({
+  <span class="hljs-attr">maxConcurrentStartup</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">healthCheckInterval</span>: <span class="hljs-number">30000</span>,
+  <span class="hljs-attr">startupTimeout</span>: <span class="hljs-number">300000</span>,
+  <span class="hljs-attr">shutdownTimeout</span>: <span class="hljs-number">60000</span>,
+  <span class="hljs-attr">enableHealthMonitoring</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Register services</span>
+<span class="hljs-keyword">const</span> myService = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyService</span>();
+serviceManager.<span class="hljs-title function_">registerService</span>(myService);
+
+<span class="hljs-comment">// Start all services</span>
+<span class="hljs-keyword">await</span> serviceManager.<span class="hljs-title function_">startServices</span>();
+
+<span class="hljs-comment">// Get service status</span>
+<span class="hljs-keyword">const</span> status = serviceManager.<span class="hljs-title function_">getServiceInfo</span>(<span class="hljs-string">&quot;my-service&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Service status:&quot;</span>, status);
+
+<span class="hljs-comment">// Stop all services</span>
+<span class="hljs-keyword">await</span> serviceManager.<span class="hljs-title function_">stopServices</span>();</code></pre><h2>API Reference</h2>
+<h3>ServiceManager</h3>
+<p>The main orchestrator for service lifecycle management.</p>
+<h4>Constructor</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">ServiceManager</span>(<span class="hljs-attr">config</span>?: <span class="hljs-title class_">ServiceManagerConfig</span>)</code></pre><h4>Methods</h4>
+<ul>
+<li><code>registerService(service: BaseService): void</code> - Register a service</li>
+<li><code>registerServices(services: BaseService[]): void</code> - Register multiple services</li>
+<li><code>startServices(): Promise&lt;void&gt;</code> - Start all registered services</li>
+<li><code>stopServices(): Promise&lt;void&gt;</code> - Stop all registered services</li>
+<li><code>getService(name: string): BaseService | undefined</code> - Get a service by name</li>
+<li><code>getServiceInfo(name: string): ServiceInfo | undefined</code> - Get service information</li>
+<li><code>getState(): ServiceManagerState</code> - Get current manager state</li>
+</ul>
+<h3>BaseService</h3>
+<p>Abstract base class that all services must extend.</p>
+<h4>Constructor</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">config</span>: <span class="hljs-title class_">ServiceConfig</span></span>)</code></pre><h4>Abstract Methods</h4>
+<ul>
+<li><code>initialize(): Promise&lt;void&gt;</code> - Initialize the service</li>
+<li><code>shutdown(): Promise&lt;void&gt;</code> - Shutdown the service</li>
+<li><code>healthCheck(): Promise&lt;ServiceHealth&gt;</code> - Perform health check</li>
+</ul>
+<h4>Properties</h4>
+<ul>
+<li><code>name: string</code> - Service name</li>
+<li><code>status: ServiceStatus</code> - Current service status</li>
+<li><code>health: ServiceHealth</code> - Current service health</li>
+<li><code>dependencies: string[]</code> - Service dependencies</li>
+<li><code>startupPriority: number</code> - Startup priority (lower starts earlier)</li>
+</ul>
+<h3>Types</h3>
+<h4>ServiceStatus</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ServiceStatus</span> {
+  <span class="hljs-variable constant_">STOPPED</span> = <span class="hljs-string">&quot;stopped&quot;</span>,
+  <span class="hljs-variable constant_">STARTING</span> = <span class="hljs-string">&quot;starting&quot;</span>,
+  <span class="hljs-variable constant_">RUNNING</span> = <span class="hljs-string">&quot;running&quot;</span>,
+  <span class="hljs-variable constant_">STOPPING</span> = <span class="hljs-string">&quot;stopping&quot;</span>,
+  <span class="hljs-variable constant_">ERROR</span> = <span class="hljs-string">&quot;error&quot;</span>,
+}</code></pre><h4>ServiceHealth</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">ServiceHealth</span> {
+  <span class="hljs-variable constant_">HEALTHY</span> = <span class="hljs-string">&quot;healthy&quot;</span>,
+  <span class="hljs-variable constant_">DEGRADED</span> = <span class="hljs-string">&quot;degraded&quot;</span>,
+  <span class="hljs-variable constant_">UNHEALTHY</span> = <span class="hljs-string">&quot;unhealthy&quot;</span>,
+  <span class="hljs-variable constant_">UNKNOWN</span> = <span class="hljs-string">&quot;unknown&quot;</span>,
+}</code></pre><h2>Advanced Usage</h2>
+<h3>Event Handling</h3>
+<pre><code class="hljs language-typescript">serviceManager.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Service event:&quot;</span>, event);
+});</code></pre><h3>Custom Service Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DatabaseService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseService</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;database&quot;</span>,
+      <span class="hljs-attr">dependencies</span>: [],
+      <span class="hljs-attr">startupPriority</span>: <span class="hljs-number">10</span>, <span class="hljs-comment">// Start early</span>
+      <span class="hljs-attr">requiredPackages</span>: [<span class="hljs-string">&quot;pg&quot;</span>, <span class="hljs-string">&quot;redis&quot;</span>],
+      <span class="hljs-attr">autoStart</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">config</span>: {
+        <span class="hljs-attr">host</span>: <span class="hljs-string">&quot;localhost&quot;</span>,
+        <span class="hljs-attr">port</span>: <span class="hljs-number">5432</span>,
+      },
+    });
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">initialize</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Initialize database connection</span>
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">shutdown</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; {
+    <span class="hljs-comment">// Close database connection</span>
+  }
+
+  <span class="hljs-keyword">async</span> <span class="hljs-title function_">healthCheck</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ServiceHealth</span>&gt; {
+    <span class="hljs-comment">// Check database connectivity</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">ServiceHealth</span>.<span class="hljs-property">HEALTHY</span>;
+  }
+}</code></pre><h3>Dependency Management</h3>
+<p>Services can declare dependencies on other services. The service manager will automatically:</p>
+<ol>
+<li>Validate that all dependencies exist</li>
+<li>Calculate the correct startup order</li>
+<li>Start services in parallel when possible</li>
+<li>Handle circular dependency detection</li>
+</ol>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseService</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;api&quot;</span>,
+      <span class="hljs-attr">dependencies</span>: [<span class="hljs-string">&quot;database&quot;</span>, <span class="hljs-string">&quot;cache&quot;</span>], <span class="hljs-comment">// Depends on database and cache</span>
+      <span class="hljs-attr">startupPriority</span>: <span class="hljs-number">100</span>,
+    });
+  }
+}</code></pre><h2>License</h2>
+<p>MIT</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

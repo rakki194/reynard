@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLIP Embeddings - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>CLIP Embeddings</h1>
+      <div class="markdown-content"><h1>CLIP Embeddings</h1>
+<p>This service provides OpenCLIP image and text embeddings with lazy model loading, device auto‑selection, configurable preprocessing, optional multi‑crop, and memory‑aware batching. Embeddings are L2‑normalized and intended to be used with cosine similarity in the vector database.</p>
+<p><code>ClipEmbeddingService</code> initializes the OpenCLIP model via <code>create_model_and_transforms</code> using the configured model and pretrained weights. The default is <code>ViT-L-14/openai</code>. The service selects <code>cuda</code> when available, otherwise <code>cpu</code>, and loads the matching tokenizer for text encoding. The embed dimension is detected from the model visual tower (typically 768 for ViT‑L/14) and is exposed through the service info. Health reports DEGRADED until the model is loaded and HEALTHY afterward.</p>
+<p>The service offers three main APIs. Image embedding is available via <code>embed_images(image_paths, batch_size=8, variant=&quot;default&quot;)</code>, which returns a list of normalized vectors. A detailed variant, <code>embed_images_detailed(image_paths, batch_size=8)</code>, yields per‑image results including the crop variant name or an error. Text embedding for CLIP is available via <code>embed_texts_clip(texts)</code>, which returns normalized CLIP text‑tower vectors suitable for text‑to‑image search. The <code>variant</code> argument in <code>embed_images</code> is currently reserved and not used; multi‑crop behavior is driven by configuration.</p>
+<p>Preprocessing uses the OpenCLIP transform returned by <code>create_model_and_transforms</code>. The service infers the resize size from this transform (commonly 224 or 336 depending on the model) to estimate per‑tensor memory usage and determine safe sub‑batch sizes during encoding. When multi‑crop is disabled, each image is processed once. When enabled, the service generates a set of square crops (center and four corners); in <code>embed_images</code> the crop size is inferred from the transform, while <code>embed_images_detailed</code> currently uses a 224‑pixel crop size. The detailed API returns the associated <code>variant</code> labels.</p>
+<p>Batching is adaptive to avoid out‑of‑memory errors. The service estimates bytes per tensor as approximately <code>3 * size * size * 4</code> and caps sub‑batches to about 512 MB on GPU or 256 MB on CPU. The <code>batch_size</code> parameter serves as an upper bound; the encoder may further split into sub‑batches based on these caps. Runtime metrics include total images processed, errors, last batch duration, and effective images per second.</p>
+<p>The service integrates with the RAG pipeline for image ingestion and text‑to‑image retrieval. Image embeddings can be persisted through the <code>POST /api/rag/clip/ingest_images</code> endpoint, which accepts an <code>items</code> array of objects containing <code>image_id</code> and <code>path</code>. Paths are validated against the optional allowed‑roots configuration before processing. Embeddings are stored in the vector database with <code>model_id</code> set to <code>openclip</code>, <code>metric</code> set to <code>cosine</code>, and the embedding dimension taken from the service. For queries with modality set to <code>images</code>, the RAG query path embeds the input text via the CLIP text tower and performs a similarity search in the image index.</p>
+<p>Configuration is centralized in <code>AppConfig</code>. The <code>rag_clip_model</code> setting selects the OpenCLIP model and pretrained weights using the <code>MODEL/PRETRAINED</code> format, with <code>ViT-L-14/openai</code> as the default. The <code>rag_clip_preprocess</code> setting selects the preprocess size, typically 224 or 336, which influences crop generation and memory estimates. The <code>rag_clip_multicrop</code> flag enables center and corner crops for robustness at the cost of throughput. Environment variables <code>RAG_CLIP_MODEL</code>, <code>RAG_CLIP_PREPROCESS</code>, and <code>RAG_CLIP_MULTICROP</code> are supported and override config values when present. Operational clamps include <code>rag_clip_max_items_per_request</code> for ingestion size, <code>rag_ingest_allowed_roots</code> to sandbox filesystem access, and standard RAG rate limits.</p>
+<p>Operationally, the service depends on <code>torch</code> and uses OpenCLIP if available. It initializes lazily and stays DEGRADED if OpenCLIP cannot be imported, allowing the rest of the system to operate. Device selection prefers CUDA when available. All outputs are L2‑normalized, and downstream components should use cosine similarity. Do not mix embeddings from different CLIP model variants in the same index.</p>
+<p>Practical guidance and best practices derived from OpenCLIP and CLIP usage in the community include the following. Always normalize embeddings and use cosine similarity for scoring. Prefer <code>ViT‑L/14</code> with <code>openai</code> weights for strong baseline performance and 768‑dimensional outputs; consider the 336‑pixel preprocess variants for higher‑resolution images when supported by the chosen model. Multi‑crop can improve robustness for challenging images but increases compute linearly with the number of crops; enable it selectively for ingestion pipelines where quality is preferred over speed. Choose <code>batch_size</code> conservatively and rely on the service’s memory caps to avoid OOMs, especially on CPU or smaller GPUs. For text‑to‑image search, use the model‑matched tokenizer and maintain the same model for both image and text encoders to ensure embedding compatibility.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/clip_embedding_service.py</code></li>
+<li><code>app/api/rag.py</code></li>
+<li><code>app/services/core/app_config.py</code></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

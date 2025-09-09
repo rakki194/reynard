@@ -4,48 +4,17 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
+import { defaultSerializer, type Serializer } from "./localStorageSerializer";
+import { createStorageEventHandler } from "./storageEventHandler";
 
 export interface UseLocalStorageOptions<T> {
   /** Default value if key doesn't exist */
   defaultValue: T;
   /** Custom serializer */
-  serializer?: {
-    read: (value: string) => T;
-    write: (value: T) => string;
-  };
+  serializer?: Serializer<T>;
   /** Storage event listener */
   syncAcrossTabs?: boolean;
 }
-
-// Safe JSON parser that prevents XSS attacks
-const safeJsonParse = (value: string): any => {
-  try {
-    // Basic validation to prevent prototype pollution and XSS
-    if (typeof value !== "string" || value.length > 1000000) {
-      // 1MB limit
-      throw new Error("Invalid JSON input");
-    }
-
-    // Check for dangerous patterns
-    if (
-      value.includes("__proto__") ||
-      value.includes("constructor") ||
-      value.includes("prototype")
-    ) {
-      throw new Error("Potentially dangerous JSON detected");
-    }
-
-    return JSON.parse(value);
-  } catch (error) {
-    console.warn("Failed to parse JSON from localStorage:", error);
-    throw error;
-  }
-};
-
-const defaultSerializer = {
-  read: safeJsonParse,
-  write: JSON.stringify,
-};
 
 /**
  * Reactive localStorage hook
@@ -56,7 +25,7 @@ export const useLocalStorage = <T>(
 ) => {
   const {
     defaultValue,
-    serializer = defaultSerializer,
+    serializer = defaultSerializer as Serializer<T>,
     syncAcrossTabs = true,
   } = options;
 
@@ -72,7 +41,7 @@ export const useLocalStorage = <T>(
     try {
       const item = localStorage.getItem(key);
       if (item === null) return defaultValue;
-      return serializer.read(item);
+      return serializer.read(item) as T;
     } catch (error) {
       console.warn(`Error reading localStorage key "${key}":`, error);
       return defaultValue;
@@ -84,7 +53,6 @@ export const useLocalStorage = <T>(
   // Update localStorage when value changes
   createEffect(() => {
     const currentValue = value();
-
     if (typeof window === "undefined") return;
 
     try {
@@ -94,33 +62,12 @@ export const useLocalStorage = <T>(
     }
   });
 
-  // Storage event handler with proper cleanup
-  let handleStorageChange: ((e: StorageEvent) => void) | null = null;
+  // Setup cross-tab synchronization
+  const storageHandler = syncAcrossTabs 
+    ? createStorageEventHandler(key, setValue, serializer)
+    : { cleanup: () => {} };
 
-  if (typeof window !== "undefined" && syncAcrossTabs) {
-    handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) {
-        try {
-          setValue(serializer.read(e.newValue));
-        } catch (error) {
-          console.warn(`Error parsing storage event for key "${key}":`, error);
-        }
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-  }
-
-  // Cleanup function
-  const cleanup = () => {
-    if (handleStorageChange && typeof window !== "undefined") {
-      window.removeEventListener("storage", handleStorageChange);
-      handleStorageChange = null;
-    }
-  };
-
-  // Register cleanup
-  onCleanup(cleanup);
+  onCleanup(storageHandler.cleanup);
 
   const remove = () => {
     if (typeof window === "undefined") return;
@@ -128,5 +75,5 @@ export const useLocalStorage = <T>(
     setValue(() => defaultValue);
   };
 
-  return [value, setValue, remove, cleanup] as const;
+  return [value, setValue, remove, storageHandler.cleanup] as const;
 };

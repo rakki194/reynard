@@ -107,61 +107,7 @@ export type ModalityId = (typeof MODALITY_IDS)[keyof typeof MODALITY_IDS];
 export type FunctionalityId =
   (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
 
-/**
- * Audio item interface
- */
-export interface AudioItem {
-  id: string;
-  name: string;
-  path: string;
-  size: number;
-  duration?: number;
-  sampleRate?: number;
-  channels?: number;
-  bitrate?: number;
-  codec?: string;
-  waveform?: string;
-  metadata?: {
-    artist?: string;
-    album?: string;
-    title?: string;
-    genre?: string;
-    year?: number;
-  };
-}
-
-/**
- * Video item interface
- */
-export interface VideoItem {
-  id: string;
-  name: string;
-  path: string;
-  size: number;
-  duration?: number;
-  thumbnail?: string;
-  metadata?: {
-    width?: number;
-    height?: number;
-    fps?: number;
-    codec?: string;
-  };
-}
-
-/**
- * Image item interface
- */
-export interface ImageItem {
-  id: string;
-  name: string;
-  path: string;
-  size: number;
-  width?: number;
-  height?: number;
-  thumbnail?: string;
-  metadata?: {
-    format?: string;
-    colorSpace?: string;
-    exif?: Record<string, any>;
-  };
-}
+// Media item interfaces have been moved to their respective packages:
+// - AudioItem -> reynard-audio
+// - VideoItem -> reynard-video  
+// - ImageItem -> reynard-image

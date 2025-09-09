@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caption Models Preloading API - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Caption Models Preloading API</h1>
+      <div class="markdown-content"><h1>Caption Models Preloading API</h1>
+<p>This document describes the caption model preloading and unloading endpoints that complement the unified caption generation system. These endpoints allow administrators to proactively load caption generators into memory, optionally run a warmup pass, unload them to reclaim resources, and query which models are currently resident.</p>
+<p>All endpoints require authentication. Mutating actions are restricted to administrators. Configuration defaults for preloading are managed by the global configuration service and can be updated at runtime from the Settings panel.</p>
+<h2>Endpoints</h2>
+<h3>GET /api/caption-models/loaded</h3>
+<p>Returns the set of currently loaded caption model names. Use this to drive UI indicators for availability and to confirm the effect of manual preload or unload actions.</p>
+<p>Successful responses contain a JSON object with a <code>loaded</code> array.</p>
+<pre><code class="hljs language-bash">curl -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  http://localhost:7000/api/caption-models/loaded</code></pre><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;jtp2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;joy&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span></code></pre><h3>POST /api/caption-models/preload</h3>
+<p>Loads one or more caption models into memory with optional warmup and bounded concurrency. When no explicit list of generators is provided, the service uses the configured defaults from the global configuration. The request body supports a <code>generators</code> array of names, a <code>warmup</code> flag, and a <code>max_concurrent</code> integer to bound simultaneous loads. The response reports per‑generator status.</p>
+<pre><code class="hljs language-bash">curl -X POST -H <span class="hljs-string">&#x27;Content-Type: application/json&#x27;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  -d <span class="hljs-string">&#x27;{ &quot;generators&quot;: [&quot;jtp2&quot;, &quot;wdv3&quot;], &quot;warmup&quot;: false, &quot;max_concurrent&quot;: 2 }&#x27;</span> \
+  http://localhost:7000/api/caption-models/preload</code></pre><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;jtp2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;wdv3&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><p>When a generator exposes a <code>warmup()</code> method, warmup will be executed best‑effort after the model loads. Load times are recorded into the model usage tracker for performance analysis.</p>
+<h3>POST /api/caption-models/unload/{name}</h3>
+<p>Unloads a specific caption model from memory. This updates the model usage tracker and frees resources when the model supports explicit unloading. The response confirms the model name and unload status.</p>
+<pre><code class="hljs language-bash">curl -X POST -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  http://localhost:7000/api/caption-models/unload/jtp2</code></pre><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;jtp2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;unloaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span> <span class="hljs-punctuation">}</span></code></pre><p>If the model was not loaded, the endpoint returns a 404 with a concise error message.</p>
+<h3>POST /api/caption-models/unload-all</h3>
+<p>Unloads all resident caption models. The response lists the models that were unloaded during this operation. Use this to quickly reclaim memory on shared systems or after batch workloads.</p>
+<pre><code class="hljs language-bash">curl -X POST -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  http://localhost:7000/api/caption-models/unload-all</code></pre><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;unloaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;jtp2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;joy&quot;</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span></code></pre><h2>Startup Preloading</h2>
+<p>The application can preload caption models automatically during startup based on the global configuration. When preloading is enabled and <code>on_startup</code> is true, the service loads the configured default generators using the specified concurrency and optional warmup. This improves first‑use latency for common actions while keeping overall startup time bounded.</p>
+<p>Configuration keys are managed by the configuration manager and exposed at <code>/api/config</code> for admin users:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;caption_preload_enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;caption_preload_default_generators&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;jtp2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;caption_preload_on_startup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;caption_preload_warmup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;caption_preload_max_concurrent_preloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Access Control and Behavior</h2>
+<p>Only administrators may call mutating endpoints to preload or unload models. Read‑only queries for loaded status are available to authenticated users. The unified caption service coordinates model loads and avoids duplicate downloads by using per‑model async locks. The model usage tracker records load events and marks models as unloaded when requested or when automatic timeouts elapse.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

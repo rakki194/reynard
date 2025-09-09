@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Drag and Drop System</h1>
+      <div class="markdown-content"><h1>Drag and Drop System</h1>
+<p>The drag and drop system in yipyap provides a powerful and flexible way to handle both external file uploads and internal gallery item movements. This document covers the implementation details, usage patterns, and best practices for working with the drag and drop functionality.</p>
+<h2>Table of Contents</h2>
+<hr>
+<ul>
+<li><a href="#drag-and-drop-system">Drag and Drop System</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#basic-implementation">Basic Implementation</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+<li><a href="#features">Features</a><ul>
+<li><a href="#external-file-upload">External File Upload</a></li>
+<li><a href="#gallery-item-movement">Gallery Item Movement</a></li>
+<li><a href="#multi-selection-support">Multi-Selection Support</a></li>
+</ul>
+</li>
+<li><a href="#events-and-states">Events and States</a><ul>
+<li><a href="#drag-state-changes">Drag State Changes</a></li>
+<li><a href="#visual-feedback">Visual Feedback</a></li>
+</ul>
+</li>
+<li><a href="#error-handling">Error Handling</a><ul>
+<li><a href="#move-operations">Move Operations</a></li>
+<li><a href="#upload-operations">Upload Operations</a></li>
+</ul>
+</li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#api-reference">API Reference</a><ul>
+<li><a href="#usedraganddrop"><code>useDragAndDrop</code></a><ul>
+<li><a href="#props">Props</a></li>
+<li><a href="#returns">Returns</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#css-classes">CSS Classes</a></li>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#implementing-a-drop-zone">Implementing a Drop Zone</a></li>
+<li><a href="#handling-directory-drops">Handling Directory Drops</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Overview</h2>
+<hr>
+<p>The drag and drop system is implemented through the <code>useDragAndDrop</code> composable, which serves as a unified interface for managing drag and drop interactions in the application. This composable handles both external file uploads and internal gallery item movements, ensuring a consistent and intuitive user experience.</p>
+<p>The system provides comprehensive functionality for uploading files via drag and drop, moving items between directories within the gallery, managing multi-item selections, and delivering visual feedback during drag operations. Through careful state management and event handling, it creates a seamless drag and drop experience that feels natural and responsive.</p>
+<h2>Usage</h2>
+<hr>
+<h3>Basic Implementation</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useDragAndDrop } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/composables/useDragAndDrop&#x27;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">MyComponent</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleDragStateChange</span> = (<span class="hljs-params"><span class="hljs-attr">isDragging</span>: <span class="hljs-built_in">boolean</span></span>) =&gt; {
+    <span class="hljs-comment">// Update UI state based on drag status</span>
+    <span class="hljs-title function_">setShowDropOverlay</span>(isDragging);
+  };
+
+  <span class="hljs-keyword">const</span> { uploadFiles } = <span class="hljs-title function_">useDragAndDrop</span>({
+    <span class="hljs-attr">onDragStateChange</span>: handleDragStateChange
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-comment">// Your component JSX</span>
+  );
+};</code></pre><h3>Prerequisites</h3>
+<p>The drag and drop system requires the following contexts to be available in your component tree:</p>
+<ul>
+<li><code>GalleryContext</code> - For managing gallery state and operations</li>
+<li><code>AppContext</code> - For notifications and global settings</li>
+</ul>
+<h2>Features</h2>
+<hr>
+<h3>External File Upload</h3>
+<p>The system provides robust handling of files dragged from external sources into the application. It automatically validates each file against a 100MB size limit to ensure system stability and prevent memory issues during upload.</p>
+<p>During the upload process, the system delivers a smooth user experience by showing real-time progress through the notification system, providing clear visual feedback as files are processed, and efficiently handling multiple files simultaneously. This comprehensive approach ensures users stay informed while maintaining responsive performance even with large batch uploads.</p>
+<h3>Gallery Item Movement</h3>
+<p>The gallery item movement system enables seamless dragging of items between directories, with clear visual indicators highlighting valid drop targets as users drag items around. This creates an intuitive interface for organizing content within the gallery structure.</p>
+<p>The system fully supports moving multiple selected items at once and intelligently preserves associated files like latents and txt files based on the user&#39;s configured app settings. This ensures that related assets stay together when moving items between locations, maintaining proper organization of gallery content.</p>
+<h3>Multi-Selection Support</h3>
+<p>The system seamlessly integrates with the gallery&#39;s multi-selection feature, allowing users to drag multiple selected items simultaneously while providing visual feedback for all selected items during the drag operation. This creates an intuitive and responsive experience for managing multiple gallery items at once.</p>
+<p>The multi-selection integration maintains proper selection state throughout drag and drop operations, ensuring that the selected items remain highlighted and grouped together as they are moved between locations. This consistent selection behavior helps users keep track of their selected items during reorganization tasks.</p>
+<h2>Events and States</h2>
+<hr>
+<h3>Drag State Changes</h3>
+<p>The <code>onDragStateChange</code> callback is triggered in the following scenarios:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Drag Enter</td>
+<td><code>true</code></td>
+<td>Files are dragged over the application</td>
+</tr>
+<tr>
+<td>Drag Leave</td>
+<td><code>false</code></td>
+<td>Files leave the drop zone</td>
+</tr>
+<tr>
+<td>Drop</td>
+<td><code>false</code></td>
+<td>Files are dropped</td>
+</tr>
+</tbody></table>
+<h3>Visual Feedback</h3>
+<p>The system provides several visual indicators:</p>
+<ul>
+<li><code>.being-dragged</code> class on items being dragged</li>
+<li><code>.drag-target</code> class on valid drop targets</li>
+<li><code>.move-failed</code> class for failed operations (automatically removed after animation)</li>
+</ul>
+<h2>Error Handling</h2>
+<hr>
+<p>The system includes comprehensive error handling:</p>
+<h3>Move Operations</h3>
+<p>The system reports any failed move operations through the notification system, ensuring users are immediately aware when an operation cannot be completed successfully. This provides clear feedback and helps users understand what went wrong.</p>
+<p>For common error scenarios, the system provides specific and helpful error messages that explain the exact nature of the failure, such as when a target file already exists, when a source file is missing, or when other types of operation failures occur. These detailed messages help users quickly identify and resolve issues during file operations.</p>
+<h3>Upload Operations</h3>
+<p>The system performs thorough validation of file sizes prior to initiating any uploads, ensuring compliance with size limits. Throughout the upload process, it provides continuous progress updates and clear failure notifications through the notification system. Network errors are handled gracefully with appropriate error messages and recovery options, maintaining a smooth user experience even when connectivity issues occur.</p>
+<h2>Best Practices</h2>
+<hr>
+<p>When implementing drag and drop functionality, proper state management is essential - always clean up drag state when components unmount and handle both success and error states in the UI feedback. Visual feedback should be clear and intuitive, with obvious indicators for valid drop targets, progress indicators for long-running operations, and smooth animations for state changes to enhance the user experience. Error handling must be comprehensive, with graceful handling of potential failures, clear feedback for validation errors, and detailed error logging for debugging purposes. Performance considerations are also critical - event listeners should be properly cleaned up on component unmount, appropriate file size validation should be implemented, and large selections must be handled efficiently to maintain smooth operation.</p>
+<h2>API Reference</h2>
+<hr>
+<h3><code>useDragAndDrop</code></h3>
+<h4>Props</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">DragAndDropProps</span> {
+  <span class="hljs-attr">onDragStateChange</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">isDragging</span>: <span class="hljs-built_in">boolean</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}</code></pre><h4>Returns</h4>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">uploadFiles</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">files</span>: <span class="hljs-title class_">FileList</span></span>) =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;;
+}</code></pre><h2>CSS Classes</h2>
+<hr>
+<p>The system uses several CSS classes for visual feedback:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.being-dragged</code></td>
+<td>Applied to items currently being dragged</td>
+</tr>
+<tr>
+<td><code>.drag-target</code></td>
+<td>Applied to valid drop targets</td>
+</tr>
+<tr>
+<td><code>.move-failed</code></td>
+<td>Applied briefly to items that failed to move</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<hr>
+<h3>Implementing a Drop Zone</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">DropZone</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> [isDropTarget, setIsDropTarget] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-keyword">const</span> { uploadFiles } = <span class="hljs-title function_">useDragAndDrop</span>({
+    <span class="hljs-attr">onDragStateChange</span>: <span class="hljs-function">(<span class="hljs-params">isDragging</span>) =&gt;</span> <span class="hljs-title function_">setIsDropTarget</span>(isDragging),
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{isDropTarget()</span> ? &quot;<span class="hljs-attr">drop-zone</span> <span class="hljs-attr">active</span>&quot; <span class="hljs-attr">:</span> &quot;<span class="hljs-attr">drop-zone</span>&quot;}&gt;</span>
+      {isDropTarget() ? &quot;Drop files here&quot; : &quot;Drag files here&quot;}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><h3>Handling Directory Drops</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> <span class="hljs-title function_">DirectoryItem</span> = (<span class="hljs-params"><span class="hljs-attr">props</span>: { path: <span class="hljs-built_in">string</span> }</span>) =&gt; {
+  <span class="hljs-keyword">const</span> { uploadFiles } = <span class="hljs-title function_">useDragAndDrop</span>({
+    <span class="hljs-attr">onDragStateChange</span>: <span class="hljs-function">(<span class="hljs-params">isDragging</span>) =&gt;</span> {
+      <span class="hljs-comment">// Update directory visual state</span>
+    },
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;directory&quot;</span> <span class="hljs-attr">data-path</span>=<span class="hljs-string">{props.path}</span>&gt;</span>
+      {/* Directory contents */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doughnut Empty State - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Doughnut Empty State</h1>
+      <div class="markdown-content"><h1>Doughnut Empty State</h1>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:data:2&gt;</span>
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">labels</span>: [],
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: []
+    }
+  ]
+};
+<span class="hljs-comment">// &lt;/block:data&gt;</span>
+
+<span class="hljs-comment">// &lt;block:plugin:1&gt;</span>
+<span class="hljs-keyword">const</span> plugin = {
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;emptyDoughnut&#x27;</span>,
+  <span class="hljs-title function_">afterDraw</span>(<span class="hljs-params">chart, args, options</span>) {
+    <span class="hljs-keyword">const</span> {datasets} = chart.<span class="hljs-property">data</span>;
+    <span class="hljs-keyword">const</span> {color, width, radiusDecrease} = options;
+    <span class="hljs-keyword">let</span> hasData = <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; datasets.<span class="hljs-property">length</span>; i += <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">const</span> dataset = datasets[i];
+      hasData |= dataset.<span class="hljs-property">data</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (!hasData) {
+      <span class="hljs-keyword">const</span> {<span class="hljs-attr">chartArea</span>: {left, top, right, bottom}, ctx} = chart;
+      <span class="hljs-keyword">const</span> centerX = (left + right) / <span class="hljs-number">2</span>;
+      <span class="hljs-keyword">const</span> centerY = (top + bottom) / <span class="hljs-number">2</span>;
+      <span class="hljs-keyword">const</span> r = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(right - left, bottom - top) / <span class="hljs-number">2</span>;
+
+      ctx.<span class="hljs-title function_">beginPath</span>();
+      ctx.<span class="hljs-property">lineWidth</span> = width || <span class="hljs-number">2</span>;
+      ctx.<span class="hljs-property">strokeStyle</span> = color || <span class="hljs-string">&#x27;rgba(255, 128, 0, 0.5)&#x27;</span>;
+      ctx.<span class="hljs-title function_">arc</span>(centerX, centerY, (r - radiusDecrease || <span class="hljs-number">0</span>), <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>);
+      ctx.<span class="hljs-title function_">stroke</span>();
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:plugin&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;doughnut&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">emptyDoughnut</span>: {
+        <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;rgba(255, 128, 0, 0.5)&#x27;</span>,
+        <span class="hljs-attr">width</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-attr">radiusDecrease</span>: <span class="hljs-number">20</span>
+      }
+    }
+  },
+  <span class="hljs-attr">plugins</span>: [plugin]
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+<span class="hljs-keyword">const</span> actions = [
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Randomize&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">data</span>.<span class="hljs-property">datasets</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.<span class="hljs-property">data</span> = <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">points</span>(<span class="hljs-variable constant_">NUMBER_CFG</span>);
+      });
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+];
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  actions,
+  config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../developers/plugins.md">Plugins</a></li>
+<li><a href="../../charts/doughnut.md">Doughnut and Pie Charts</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

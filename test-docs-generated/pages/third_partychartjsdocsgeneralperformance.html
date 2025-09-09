@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Performance</h1>
+      <div class="markdown-content"><h1>Performance</h1>
+<p>Chart.js charts are rendered on <code>canvas</code> elements, which makes rendering quite fast. For large datasets or performance sensitive applications, you may wish to consider the tips below.</p>
+<h2>Data structure and format</h2>
+<h3>Parsing</h3>
+<p>Provide prepared data in the internal format accepted by the dataset and scales, and set <code>parsing: false</code>. See <a href="data-structures.md">Data structures</a> for more information.</p>
+<h3>Data normalization</h3>
+<p>Chart.js is fastest if you provide data with indices that are unique, sorted, and consistent across datasets and provide the <code>normalized: true</code> option to let Chart.js know that you have done so. Even without this option, it can sometimes still be faster to provide sorted data.</p>
+<h3>Decimation</h3>
+<p>Decimating your data will achieve the best results. When there is a lot of data to display on the graph, it doesn&#39;t make sense to show tens of thousands of data points on a graph that is only a few hundred pixels wide.</p>
+<p>The <a href="../configuration/decimation.md">decimation plugin</a> can be used with line charts to decimate data before the chart is rendered. This will provide the best performance since it will reduce the memory needed to render the chart.</p>
+<p>Line charts are able to do <a href="#automatic-data-decimation-during-draw">automatic data decimation during draw</a>, when certain conditions are met. You should still consider decimating data yourself before passing it in for maximum performance since the automatic decimation occurs late in the chart life cycle.</p>
+<h2>Tick Calculation</h2>
+<h3>Rotation</h3>
+<p><a href="../axes/cartesian/index.md#tick-configuration">Specify a rotation value</a> by setting <code>minRotation</code> and <code>maxRotation</code> to the same value, which avoids the chart from having to automatically determine a value to use.</p>
+<h3>Sampling</h3>
+<p>Set the <a href="../axes/cartesian/index.md#tick-configuration"><code>ticks.sampleSize</code></a> option. This will determine how large your labels are by looking at only a subset of them in order to render axes more quickly. This works best if there is not a large variance in the size of your labels.</p>
+<h2>Disable Animations</h2>
+<p>If your charts have long render times, it is a good idea to disable animations. Doing so will mean that the chart needs to only be rendered once during an update instead of multiple times. This will have the effect of reducing CPU usage and improving general page performance.<br>Line charts use Path2D caching when animations are disabled and Path2D is available.</p>
+<p>To disable animations</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">animation</span>: <span class="hljs-literal">false</span>
+    }
+});</code></pre><h2>Specify <code>min</code> and <code>max</code> for scales</h2>
+<p>If you specify the <code>min</code> and <code>max</code>, the scale does not have to compute the range from the data.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">scales</span>: {
+            <span class="hljs-attr">x</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;time&#x27;</span>,
+                <span class="hljs-attr">min</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">&#x27;2019-01-01&#x27;</span>).<span class="hljs-title function_">valueOf</span>(),
+                <span class="hljs-attr">max</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">&#x27;2019-12-31&#x27;</span>).<span class="hljs-title function_">valueOf</span>()
+            },
+            <span class="hljs-attr">y</span>: {
+                <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;linear&#x27;</span>,
+                <span class="hljs-attr">min</span>: <span class="hljs-number">0</span>,
+                <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>
+            }
+        }
+    }
+});</code></pre><h2>Parallel rendering with web workers</h2>
+<p>As of 2023, modern browser have the ability to <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/transferControlToOffscreen">transfer rendering control of a canvas</a> to a web worker. Web workers can use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas">OffscreenCanvas API</a> to render from a web worker onto canvases in the DOM. Chart.js is a canvas-based library and supports rendering in a web worker - just pass an OffscreenCanvas into the Chart constructor instead of a Canvas element.</p>
+<p>By moving all Chart.js calculations onto a separate thread, the main thread can be freed up for other uses. Some tips and tricks when using Chart.js in a web worker:</p>
+<ul>
+<li>Transferring data between threads can be expensive, so ensure that your config and data objects are as small as possible. Try generating them on the worker side if you can (workers can make HTTP requests!) or passing them to your worker as ArrayBuffers, which can be transferred quickly from one thread to another.</li>
+<li>You can&#39;t transfer functions between threads, so if your config object includes functions you&#39;ll have to strip them out before transferring and then add them back later.</li>
+<li>You can&#39;t access the DOM from worker threads, so Chart.js plugins that use the DOM (including any mouse interactions) will likely not work.</li>
+<li>Ensure that you have a fallback if you support older browsers.</li>
+<li>Resizing the chart must be done manually. See an example in the worker code below.</li>
+</ul>
+<p>Example main thread code:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> config = {};
+<span class="hljs-keyword">const</span> canvas = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HTMLCanvasElement</span>();
+<span class="hljs-keyword">const</span> offscreenCanvas = canvas.<span class="hljs-title function_">transferControlToOffscreen</span>();
+
+<span class="hljs-keyword">const</span> worker = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Worker</span>(<span class="hljs-string">&#x27;worker.js&#x27;</span>);
+worker.<span class="hljs-title function_">postMessage</span>({<span class="hljs-attr">canvas</span>: offscreenCanvas, config}, [offscreenCanvas]);</code></pre><p>Example worker code, in <code>worker.js</code>:</p>
+<pre><code class="hljs language-javascript">onmessage = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) {
+    <span class="hljs-keyword">const</span> {canvas, config} = event.<span class="hljs-property">data</span>;
+    <span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(canvas, config);
+
+    <span class="hljs-comment">// Resizing the chart must be done manually, since OffscreenCanvas does not include event listeners.</span>
+    canvas.<span class="hljs-property">width</span> = <span class="hljs-number">100</span>;
+    canvas.<span class="hljs-property">height</span> = <span class="hljs-number">100</span>;
+    chart.<span class="hljs-title function_">resize</span>();
+};</code></pre><h2>Line Charts</h2>
+<h3>Leave Bézier curves disabled</h3>
+<p>If you are drawing lines on your chart, disabling Bézier curves will improve render times since drawing a straight line is more performant than a Bézier curve. Bézier curves are disabled by default.</p>
+<h3>Automatic data decimation during draw</h3>
+<p>Line element will automatically decimate data, when <code>tension</code>, <code>stepped</code>, and <code>borderDash</code> are left set to their default values (<code>false</code>, <code>0</code>, and <code>[]</code> respectively). This improves rendering speed by skipping drawing of invisible line segments.</p>
+<h3>Enable spanGaps</h3>
+<p>If you have a lot of data points, it can be more performant to enable <code>spanGaps</code>. This disables segmentation of the line, which can be an unneeded step.</p>
+<p>To enable <code>spanGaps</code>:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">datasets</span>: [{
+            <span class="hljs-attr">spanGaps</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// enable for a single dataset</span>
+        }]
+    },
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">spanGaps</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// enable for all datasets</span>
+    }
+});</code></pre><h3>Disable Line Drawing</h3>
+<p>If you have a lot of data points, it can be more performant to disable rendering of the line for a dataset and only draw points. Doing this means that there is less to draw on the canvas which will improve render performance.</p>
+<p>To disable lines:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">datasets</span>: [{
+            <span class="hljs-attr">showLine</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">// disable for a single dataset</span>
+        }]
+    },
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">showLine</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">// disable for all datasets</span>
+    }
+});</code></pre><h3>Disable Point Drawing</h3>
+<p>If you have a lot of data points, it can be more performant to disable rendering of the points for a dataset and only draw lines. Doing this means that there is less to draw on the canvas which will improve render performance.</p>
+<p>To disable point drawing:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">datasets</span>: [{
+            <span class="hljs-attr">pointRadius</span>: <span class="hljs-number">0</span> <span class="hljs-comment">// disable for a single dataset</span>
+        }]
+    },
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">datasets</span>: {
+            <span class="hljs-attr">line</span>: {
+                <span class="hljs-attr">pointRadius</span>: <span class="hljs-number">0</span> <span class="hljs-comment">// disable for all `&#x27;line&#x27;` datasets</span>
+            }
+        },
+        <span class="hljs-attr">elements</span>: {
+            <span class="hljs-attr">point</span>: {
+                <span class="hljs-attr">radius</span>: <span class="hljs-number">0</span> <span class="hljs-comment">// default to disabled in all datasets</span>
+            }
+        }
+    }
+});</code></pre><h2>When transpiling with Babel, consider using <code>loose</code> mode</h2>
+<p>Babel 7.9 changed the way classes are constructed. It is slow, unless used with <code>loose</code> mode.<br><a href="https://github.com/babel/babel/issues/11356">More information</a></p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

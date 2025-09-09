@@ -37,15 +37,9 @@ export {
   getAllThemes,
 } from "./utils/themeUtils";
 
-export {
-  BaseModality,
-  createModality,
-  ModalityRegistry,
-  formatFileSize,
-  formatDuration,
-  getFileExtension,
-  isImageFile,
-  isAudioFile,
-  isVideoFile,
-  isTextFile,
-} from "./utils/modalityUtils";
+// Modality utilities have been moved to reynard-multimodal package
+// File utilities have been distributed to their respective packages:
+// - Audio utilities -> reynard-audio
+// - Video utilities -> reynard-video
+// - Image utilities -> reynard-image
+// - Modality utilities -> reynard-multimodal

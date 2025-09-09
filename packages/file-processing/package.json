@@ -14,12 +14,11 @@
     }
   },
   "files": [
-    "dist/**/*",
-    "README.md"
+    "dist"
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && tsc -p tsconfig.json --declaration --declarationMap --emitDeclarationOnly",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -54,7 +53,7 @@
     "jsdom": "26.1.0",
     "solid-js": "1.9.9",
     "typescript": "5.9.2",
-    "vite": "7.1.4",
+    "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4"
   }

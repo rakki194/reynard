@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unified Model Downloads - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Unified Model Downloads</h1>
+      <div class="markdown-content"><h1>Unified Model Downloads</h1>
+<p>A single system orchestrates downloads for captioners, detection models, diffusion LLMs, and generic artifacts. It provides a queue, progress reporting, cache integration with Hugging Face, retry/backoff, and admin APIs.</p>
+<h2>Overview</h2>
+<ul>
+<li><p>Manager: <code>UnifiedModelDownloadManager</code> registers <code>ModelInfo</code> entries and provides queueing, duplicate suppression, and global locking to ensure one active download at a time.</p>
+</li>
+<li><p>Templates: Download templates handle common model families (caption, detection) by fetching only needed files (e.g., <code>wdv3</code> ONNX + labels; <code>jtp2</code> <code>JTP_PILOT2/*</code>) with progress estimation via cache size.</p>
+</li>
+<li><p>Cache: Integrates with HF cache (<code>get_hf_hub_dir</code>, <code>try_to_load_from_cache</code>), marks models completed if files already exist.</p>
+</li>
+<li><p>Retry: Retries transient failures (<code>timeout</code>, <code>network</code>, <code>rate limit</code>) with capped backoff.</p>
+</li>
+<li><p>Files:</p>
+<ul>
+<li><code>app/managers/unified_model_download.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Registration</h2>
+<p>Register models for the queue:</p>
+<ul>
+<li><code>register_caption_generator(model_id, repo_id, description?, total_size_estimate?, file_count_estimate?)</code></li>
+<li><code>register_detection_model(model_id, repo_id, description?, ...)</code></li>
+<li><code>register_generic_model(model_id, download_func, description?, model_path?)</code></li>
+</ul>
+<h2>Queue and Status</h2>
+<ul>
+<li>Queue methods: <code>start_download(model_id)</code>, <code>cancel_download(model_id)</code>, <code>is_downloading(model_id)</code>, <code>is_completed(model_id)</code>, <code>get_download_status(model_id)</code>, <code>get_queue_status()</code></li>
+<li>Status includes current file, files downloaded/total, bytes downloaded/total, speed, percent, and timestamps.</li>
+</ul>
+<h2>API Endpoints</h2>
+<ul>
+<li><p><code>POST /api/model-download/{model_id}/start</code>: start background download for any registered model (respects <code>DISABLE_MODEL_DOWNLOADS</code>)</p>
+</li>
+<li><p><code>GET  /api/model-download-status/{model_id}</code>: return status (completed/downloading/not_started) and HF cache existence, plus queue summary</p>
+</li>
+<li><p><code>GET  /api/model-download-queue-status</code>: queue size/running/currently_downloading summary</p>
+</li>
+<li><p><code>POST /api/model-download/{model_id}/clear</code> (admin): clear stuck status/queue entries for a model</p>
+</li>
+<li><p>Files:</p>
+<ul>
+<li><code>app/api/model_download.py</code></li>
+<li><code>app/api/model_download_status.py</code></li>
+<li><code>app/api/model_download_queue_status.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>The manager promotes already‑cached models to completed status to avoid redundant downloads.</li>
+<li>For large repos, only required files are fetched for certain models to reduce bandwidth/time.</li>
+<li><code>HF_HUB_DOWNLOAD_TIMEOUT</code> and <code>HF_DOWNLOAD_MAX_RETRIES</code> influence robustness.</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

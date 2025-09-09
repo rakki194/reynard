@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery Performance Validation System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Gallery Performance Validation System</h1>
+      <div class="markdown-content"><h1>Gallery Performance Validation System</h1>
+<h2>Overview</h2>
+<p>The Gallery Performance Validation System is a comprehensive suite of tools designed to benchmark, analyze, and optimize the performance of the modular gallery system. It provides detailed metrics, performance warnings, and actionable optimization recommendations to ensure the gallery maintains optimal performance across all operations.</p>
+<h2>Architecture</h2>
+<p>The performance validation system consists of three main components:</p>
+<h3>1. Performance Benchmark (<code>useGalleryPerformanceBenchmark</code>)</h3>
+<p>A comprehensive benchmarking tool that measures performance across all gallery operations:</p>
+<ul>
+<li><strong>Navigation Performance</strong>: Path changes, breadcrumb generation</li>
+<li><strong>Selection Performance</strong>: Multi-select operations, selection clearing</li>
+<li><strong>View Performance</strong>: View mode switching, sorting, searching</li>
+<li><strong>Operations Performance</strong>: File operations, batch processing</li>
+<li><strong>Caption Performance</strong>: Caption generation and editing</li>
+<li><strong>Memory Performance</strong>: Memory usage tracking and analysis</li>
+<li><strong>Rendering Performance</strong>: DOM updates, style applications</li>
+</ul>
+<h3>2. Performance Optimizer (<code>useGalleryPerformanceOptimizer</code>)</h3>
+<p>An intelligent optimization system that analyzes benchmark results and provides:</p>
+<ul>
+<li><strong>Performance Analysis</strong>: Automatic detection of performance bottlenecks</li>
+<li><strong>Optimization Recommendations</strong>: Actionable suggestions with implementation code</li>
+<li><strong>Priority Classification</strong>: Critical, high, medium, and low priority issues</li>
+<li><strong>Impact Assessment</strong>: Estimated performance improvements</li>
+<li><strong>Implementation Plans</strong>: Step-by-step optimization guides</li>
+</ul>
+<h3>3. Performance Dashboard (<code>GalleryPerformanceDashboard</code>)</h3>
+<p>A comprehensive UI component that provides:</p>
+<ul>
+<li><strong>Real-time Metrics</strong>: Live performance monitoring</li>
+<li><strong>Visual Reports</strong>: Charts and graphs for performance analysis</li>
+<li><strong>Optimization Management</strong>: Apply and track optimization implementations</li>
+<li><strong>Export Capabilities</strong>: JSON reports for external analysis</li>
+</ul>
+<h2>Usage</h2>
+<h3>Basic Benchmarking</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { useGalleryPerformanceBenchmark } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/composables/useGalleryPerformanceBenchmark&#x27;</span>;
+<span class="hljs-keyword">import</span> { useGallery } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/contexts/gallery&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> gallery = <span class="hljs-title function_">useGallery</span>();
+  <span class="hljs-keyword">const</span> benchmark = <span class="hljs-title function_">useGalleryPerformanceBenchmark</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">runPerformanceTest</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> report = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">runBenchmark</span>(gallery);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Performance Score:&#x27;</span>, report.<span class="hljs-property">metrics</span>.<span class="hljs-property">performanceScore</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Warnings:&#x27;</span>, report.<span class="hljs-property">warnings</span>);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Recommendations:&#x27;</span>, report.<span class="hljs-property">recommendations</span>);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{runPerformanceTest}</span>&gt;</span>
+      Run Performance Benchmark
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h3>Custom Benchmark Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> benchmark = <span class="hljs-title function_">useGalleryPerformanceBenchmark</span>({
+  <span class="hljs-comment">// Operation counts</span>
+  <span class="hljs-attr">navigationOperations</span>: <span class="hljs-number">20</span>,
+  <span class="hljs-attr">selectionOperations</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">viewOperations</span>: <span class="hljs-number">30</span>,
+  <span class="hljs-attr">operationOperations</span>: <span class="hljs-number">15</span>,
+  <span class="hljs-attr">captionOperations</span>: <span class="hljs-number">10</span>,
+
+  <span class="hljs-comment">// Performance thresholds</span>
+  <span class="hljs-attr">maxNavigationTime</span>: <span class="hljs-number">50</span>, <span class="hljs-comment">// 50ms</span>
+  <span class="hljs-attr">maxSelectionTime</span>: <span class="hljs-number">100</span>, <span class="hljs-comment">// 100ms</span>
+  <span class="hljs-attr">maxViewTime</span>: <span class="hljs-number">75</span>, <span class="hljs-comment">// 75ms</span>
+  <span class="hljs-attr">maxOperationTime</span>: <span class="hljs-number">250</span>, <span class="hljs-comment">// 250ms</span>
+  <span class="hljs-attr">maxCaptionTime</span>: <span class="hljs-number">500</span>, <span class="hljs-comment">// 500ms</span>
+  <span class="hljs-attr">maxMemoryUsage</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-comment">// 50MB</span>
+  <span class="hljs-attr">maxRenderTime</span>: <span class="hljs-number">12</span>, <span class="hljs-comment">// 12ms (83fps)</span>
+
+  <span class="hljs-comment">// Monitoring options</span>
+  <span class="hljs-attr">enableMemoryMonitoring</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableRenderingMonitoring</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableCacheMonitoring</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableDetailedLogging</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h3>Performance Optimization</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { useGalleryPerformanceOptimizer } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/composables/useGalleryPerformanceOptimizer&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">PerformanceOptimizer</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> optimizer = <span class="hljs-title function_">useGalleryPerformanceOptimizer</span>();
+  <span class="hljs-keyword">const</span> benchmark = <span class="hljs-title function_">useGalleryPerformanceBenchmark</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">analyzeAndOptimize</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-comment">// Run benchmark</span>
+    <span class="hljs-keyword">const</span> report = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">runBenchmark</span>(gallery);
+
+    <span class="hljs-comment">// Analyze performance</span>
+    <span class="hljs-keyword">const</span> result = optimizer.<span class="hljs-title function_">analyzePerformance</span>(report);
+
+    <span class="hljs-comment">// Apply optimizations</span>
+    result.<span class="hljs-property">optimizations</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">optimization</span> =&gt;</span> {
+      <span class="hljs-keyword">if</span> (optimization.<span class="hljs-property">priority</span> === <span class="hljs-string">&#x27;critical&#x27;</span>) {
+        optimizer.<span class="hljs-title function_">applyOptimization</span>(optimization.<span class="hljs-property">id</span>);
+      }
+    });
+
+    <span class="hljs-comment">// Export optimization report</span>
+    <span class="hljs-keyword">const</span> optimizationReport = optimizer.<span class="hljs-title function_">exportOptimizationReport</span>(result);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Optimization Report:&#x27;</span>, optimizationReport);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{analyzeAndOptimize}</span>&gt;</span>
+      Analyze and Optimize
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+}</code></pre><h3>Performance Dashboard Integration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">GalleryPerformanceDashboard</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;~/components/Gallery/GalleryPerformanceDashboard&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">GalleryPage</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> gallery = <span class="hljs-title function_">useGallery</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">GalleryPerformanceDashboard</span> <span class="hljs-attr">gallery</span>=<span class="hljs-string">{gallery}</span> /&gt;</span>
+      {/* Other gallery components */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>Performance Metrics</h2>
+<h3>Navigation Metrics</h3>
+<ul>
+<li><strong>navigationTime</strong>: Total time for navigation operations</li>
+<li><strong>pathChangeTime</strong>: Time for path changes</li>
+<li><strong>breadcrumbGenerationTime</strong>: Time for breadcrumb generation</li>
+</ul>
+<h3>Selection Metrics</h3>
+<ul>
+<li><strong>selectionTime</strong>: Total time for selection operations</li>
+<li><strong>multiSelectTime</strong>: Time for multi-select operations</li>
+<li><strong>selectionClearTime</strong>: Time for clearing selections</li>
+<li><strong>itemsSelected</strong>: Number of items selected</li>
+</ul>
+<h3>View Metrics</h3>
+<ul>
+<li><strong>viewTime</strong>: Total time for view operations</li>
+<li><strong>sortTime</strong>: Time for sorting operations</li>
+<li><strong>searchTime</strong>: Time for search operations</li>
+<li><strong>itemsProcessed</strong>: Number of items processed</li>
+</ul>
+<h3>Memory Metrics</h3>
+<ul>
+<li><strong>memoryBefore</strong>: Memory usage before operations</li>
+<li><strong>memoryAfter</strong>: Memory usage after operations</li>
+<li><strong>memoryDelta</strong>: Change in memory usage</li>
+<li><strong>memoryPeak</strong>: Peak memory usage during operations</li>
+</ul>
+<h3>Rendering Metrics</h3>
+<ul>
+<li><strong>renderTime</strong>: Total render time</li>
+<li><strong>domUpdateTime</strong>: DOM update time</li>
+<li><strong>styleApplicationTime</strong>: Style application time</li>
+<li><strong>frameDropCount</strong>: Number of dropped frames</li>
+</ul>
+<h2>Performance Thresholds</h2>
+<h3>Default Thresholds</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Warning</th>
+<th>Critical</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Navigation Time</td>
+<td>100ms</td>
+<td>200ms</td>
+</tr>
+<tr>
+<td>Selection Time</td>
+<td>200ms</td>
+<td>400ms</td>
+</tr>
+<tr>
+<td>View Time</td>
+<td>150ms</td>
+<td>300ms</td>
+</tr>
+<tr>
+<td>Operation Time</td>
+<td>500ms</td>
+<td>1000ms</td>
+</tr>
+<tr>
+<td>Caption Time</td>
+<td>1000ms</td>
+<td>2000ms</td>
+</tr>
+<tr>
+<td>Memory Usage</td>
+<td>100MB</td>
+<td>200MB</td>
+</tr>
+<tr>
+<td>Render Time</td>
+<td>16.67ms</td>
+<td>33.33ms</td>
+</tr>
+</tbody></table>
+<h3>Customizing Thresholds</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> optimizer = <span class="hljs-title function_">useGalleryPerformanceOptimizer</span>();
+
+optimizer.<span class="hljs-title function_">updateThresholds</span>({
+  <span class="hljs-attr">navigation</span>: { <span class="hljs-attr">warning</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">critical</span>: <span class="hljs-number">100</span> },
+  <span class="hljs-attr">selection</span>: { <span class="hljs-attr">warning</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">critical</span>: <span class="hljs-number">200</span> },
+  <span class="hljs-attr">memory</span>: { <span class="hljs-attr">warning</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-attr">critical</span>: <span class="hljs-number">100</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span> },
+});</code></pre><h2>Optimization Types</h2>
+<h3>Navigation Optimizations</h3>
+<ul>
+<li><strong>Path Caching</strong>: Implement path caching to reduce navigation time</li>
+<li><strong>Breadcrumb Memoization</strong>: Optimize breadcrumb generation with memoization</li>
+<li><strong>Route Preloading</strong>: Preload common routes for faster navigation</li>
+</ul>
+<h3>Selection Optimizations</h3>
+<ul>
+<li><strong>Virtual Scrolling</strong>: Implement virtual scrolling for large item lists</li>
+<li><strong>Batch Selection</strong>: Use batch selection operations instead of individual toggles</li>
+<li><strong>Selection State Optimization</strong>: Optimize selection state management</li>
+</ul>
+<h3>View Optimizations</h3>
+<ul>
+<li><strong>CSS Transitions</strong>: Use CSS transitions for view mode switching</li>
+<li><strong>Web Workers</strong>: Implement sorting with Web Workers for large datasets</li>
+<li><strong>Lazy Loading</strong>: Implement lazy loading for view components</li>
+</ul>
+<h3>Operations Optimizations</h3>
+<ul>
+<li><strong>Background Processing</strong>: Use background processing for file operations</li>
+<li><strong>Operation Queuing</strong>: Implement operation queuing to prevent UI blocking</li>
+<li><strong>Batch Operations</strong>: Use batch operations for multiple file operations</li>
+</ul>
+<h3>Caption Optimizations</h3>
+<ul>
+<li><strong>Caption Caching</strong>: Implement caption caching to avoid regeneration</li>
+<li><strong>Streaming Generation</strong>: Use streaming caption generation for better UX</li>
+<li><strong>Background Processing</strong>: Process captions in background threads</li>
+</ul>
+<h3>Memory Optimizations</h3>
+<ul>
+<li><strong>Image Lazy Loading</strong>: Implement image lazy loading to reduce memory usage</li>
+<li><strong>Memory Cleanup</strong>: Add memory cleanup for unused gallery items</li>
+<li><strong>Object Pooling</strong>: Use object pooling for frequently created objects</li>
+</ul>
+<h3>Rendering Optimizations</h3>
+<ul>
+<li><strong>CSS Transforms</strong>: Use CSS transforms instead of layout changes</li>
+<li><strong>Batched Updates</strong>: Implement batched DOM updates</li>
+<li><strong>Virtual DOM Optimization</strong>: Optimize virtual DOM diffing</li>
+</ul>
+<h2>Performance Score Calculation</h2>
+<p>The performance score is calculated based on how well each metric performs against its threshold:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">calculateScore</span> = (<span class="hljs-params">metrics</span>) =&gt; {
+  <span class="hljs-keyword">const</span> scores = {
+    <span class="hljs-attr">navigation</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, <span class="hljs-number">100</span> - (metrics.<span class="hljs-property">navigationTime</span> / threshold) * <span class="hljs-number">100</span>),
+    <span class="hljs-attr">selection</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, <span class="hljs-number">100</span> - (metrics.<span class="hljs-property">selectionTime</span> / threshold) * <span class="hljs-number">100</span>),
+    <span class="hljs-comment">// ... other metrics</span>
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(scores).<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">sum, score</span>) =&gt;</span> sum + score, <span class="hljs-number">0</span>) /
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(scores).<span class="hljs-property">length</span>
+  );
+};</code></pre><h3>Score Interpretation</h3>
+<ul>
+<li><strong>90-100</strong>: Excellent performance</li>
+<li><strong>80-89</strong>: Good performance</li>
+<li><strong>70-79</strong>: Fair performance</li>
+<li><strong>60-69</strong>: Poor performance</li>
+<li><strong>Below 60</strong>: Critical performance issues</li>
+</ul>
+<h2>Warning System</h2>
+<h3>Warning Types</h3>
+<ul>
+<li><strong>Navigation Warnings</strong>: Slow navigation operations</li>
+<li><strong>Selection Warnings</strong>: Slow selection operations</li>
+<li><strong>View Warnings</strong>: Slow view operations</li>
+<li><strong>Operations Warnings</strong>: Slow file operations</li>
+<li><strong>Caption Warnings</strong>: Slow caption generation</li>
+<li><strong>Memory Warnings</strong>: High memory usage</li>
+<li><strong>Rendering Warnings</strong>: Slow rendering performance</li>
+</ul>
+<h3>Warning Severity</h3>
+<ul>
+<li><strong>Critical</strong>: Performance issues that severely impact user experience</li>
+<li><strong>High</strong>: Performance issues that significantly impact user experience</li>
+<li><strong>Medium</strong>: Performance issues that moderately impact user experience</li>
+<li><strong>Low</strong>: Minor performance issues</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>Benchmarking</h3>
+<ol>
+<li><strong>Run benchmarks regularly</strong>: Schedule regular performance tests</li>
+<li><strong>Test with realistic data</strong>: Use datasets that match production usage</li>
+<li><strong>Monitor trends</strong>: Track performance over time to identify regressions</li>
+<li><strong>Test on different devices</strong>: Ensure performance across various hardware</li>
+</ol>
+<h3>Optimization</h3>
+<ol>
+<li><strong>Prioritize critical issues</strong>: Address critical performance issues first</li>
+<li><strong>Measure impact</strong>: Verify that optimizations actually improve performance</li>
+<li><strong>Test thoroughly</strong>: Ensure optimizations don&#39;t introduce new issues</li>
+<li><strong>Document changes</strong>: Keep track of optimization implementations</li>
+</ol>
+<h3>Monitoring</h3>
+<ol>
+<li><strong>Set up alerts</strong>: Configure alerts for performance threshold violations</li>
+<li><strong>Track metrics</strong>: Monitor key performance indicators</li>
+<li><strong>Analyze patterns</strong>: Identify performance patterns and trends</li>
+<li><strong>Plan capacity</strong>: Use performance data for capacity planning</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<h4>High Memory Usage</h4>
+<p><strong>Symptoms</strong>: Memory warnings, slow performance, browser crashes</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Implement image lazy loading</li>
+<li>Add memory cleanup for unused items</li>
+<li>Use object pooling for frequently created objects</li>
+<li>Optimize data structures</li>
+</ul>
+<h4>Slow Navigation</h4>
+<p><strong>Symptoms</strong>: Navigation warnings, delayed path changes</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Implement path caching</li>
+<li>Optimize breadcrumb generation</li>
+<li>Use route preloading</li>
+<li>Reduce navigation complexity</li>
+</ul>
+<h4>Slow Selection</h4>
+<p><strong>Symptoms</strong>: Selection warnings, delayed multi-select</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Implement virtual scrolling</li>
+<li>Use batch selection operations</li>
+<li>Optimize selection state management</li>
+<li>Reduce selection complexity</li>
+</ul>
+<h4>Slow Rendering</h4>
+<p><strong>Symptoms</strong>: Rendering warnings, frame drops</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Use CSS transforms instead of layout changes</li>
+<li>Implement batched DOM updates</li>
+<li>Optimize virtual DOM diffing</li>
+<li>Reduce component complexity</li>
+</ul>
+<h3>Debugging</h3>
+<h4>Enable Detailed Logging</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> benchmark = <span class="hljs-title function_">useGalleryPerformanceBenchmark</span>({
+  <span class="hljs-attr">enableDetailedLogging</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h4>Export Performance Reports</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> report = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">runBenchmark</span>(gallery);
+<span class="hljs-keyword">const</span> reportData = benchmark.<span class="hljs-title function_">exportReport</span>(report);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Performance Report:&quot;</span>, reportData);</code></pre><h4>Monitor Memory Usage</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> optimizer = <span class="hljs-title function_">useGalleryPerformanceOptimizer</span>();
+optimizer.<span class="hljs-title function_">updateThresholds</span>({
+  <span class="hljs-attr">memory</span>: { <span class="hljs-attr">warning</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>, <span class="hljs-attr">critical</span>: <span class="hljs-number">100</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span> },
+});</code></pre><h2>Integration with CI/CD</h2>
+<h3>Automated Performance Testing</h3>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># .github/workflows/performance.yml</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">Performance</span> <span class="hljs-string">Tests</span>
+
+<span class="hljs-attr">on:</span> [<span class="hljs-string">push</span>, <span class="hljs-string">pull_request</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">performance:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">&quot;18&quot;</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">install</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">build</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">Performance</span> <span class="hljs-string">Tests</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
+          npm run test:performance
+</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">Performance</span> <span class="hljs-string">Report</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/upload-artifact@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">performance-report</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">performance-report.json</span></code></pre><h3>Performance Regression Detection</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// scripts/performance-regression.js</span>
+<span class="hljs-keyword">import</span> { useGalleryPerformanceBenchmark } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./src/composables/useGalleryPerformanceBenchmark&quot;</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">detectRegressions</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> benchmark = <span class="hljs-title function_">useGalleryPerformanceBenchmark</span>();
+  <span class="hljs-keyword">const</span> report = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">runBenchmark</span>(gallery);
+
+  <span class="hljs-keyword">const</span> criticalIssues = report.<span class="hljs-property">warnings</span>.<span class="hljs-title function_">filter</span>(
+    <span class="hljs-function">(<span class="hljs-params">w</span>) =&gt;</span> w.<span class="hljs-property">severity</span> === <span class="hljs-string">&quot;critical&quot;</span>,
+  );
+
+  <span class="hljs-keyword">if</span> (criticalIssues.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Performance regression detected:&quot;</span>, criticalIssues);
+    process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (report.<span class="hljs-property">metrics</span>.<span class="hljs-property">performanceScore</span> &lt; <span class="hljs-number">80</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(
+      <span class="hljs-string">&quot;Performance score below threshold:&quot;</span>,
+      report.<span class="hljs-property">metrics</span>.<span class="hljs-property">performanceScore</span>,
+    );
+  }
+}
+
+<span class="hljs-title function_">detectRegressions</span>();</code></pre><h2>Conclusion</h2>
+<p>The Gallery Performance Validation System provides comprehensive tools for monitoring, analyzing, and optimizing gallery performance. By following the best practices outlined in this documentation, you can ensure that your gallery maintains optimal performance and provides a smooth user experience.</p>
+<p>For more information about specific optimizations or troubleshooting, refer to the individual component documentation or contact the development team.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

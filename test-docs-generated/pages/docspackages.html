@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📦 Reynard Package Documentation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>📦 Reynard Package Documentation</h1>
+      <div class="markdown-content"><h1>📦 Reynard Package Documentation</h1>
+<p>Comprehensive documentation for all Reynard packages with detailed examples and usage patterns.</p>
+<h2>Core Packages</h2>
+<h3>reynard-core</h3>
+<p>The foundation of the Reynard framework, providing essential utilities, composables, and modules.</p>
+<h4>Modules</h4>
+<ul>
+<li><strong>Notifications</strong> - Toast notification system with auto-dismiss and multiple types</li>
+<li><strong>Internationalization</strong> - Built-in i18n support with translation management</li>
+</ul>
+<h4>Core Composables</h4>
+<ul>
+<li><strong><code>useNotifications()</code></strong> - Toast notification system with queue management</li>
+<li><strong><code>useLocalStorage()</code></strong> - Reactive local storage with type safety</li>
+<li><strong><code>useDebounce()</code></strong> - Debounced values for performance optimization</li>
+<li><strong><code>useMediaQuery()</code></strong> - Responsive breakpoint detection</li>
+<li><strong><code>useI18n()</code></strong> - Internationalization with reactive translations</li>
+</ul>
+<h4>Utilities</h4>
+<ul>
+<li><strong>Date Utilities</strong> - Comprehensive date formatting and manipulation</li>
+<li><strong>Formatters</strong> - Text, number, and currency formatting functions</li>
+<li><strong>Validation</strong> - Input validation and sanitization utilities</li>
+</ul>
+<h4>Core Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useNotifications, useLocalStorage, useDebounce } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-core&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { notify } = <span class="hljs-title function_">useNotifications</span>();
+  <span class="hljs-keyword">const</span> [count, setCount] = <span class="hljs-title function_">useLocalStorage</span>(<span class="hljs-string">&quot;counter&quot;</span>, <span class="hljs-number">0</span>);
+  <span class="hljs-keyword">const</span> [searchTerm, setSearchTerm] = <span class="hljs-title function_">useDebounce</span>(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">300</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> notify(&quot;Success!&quot;, &quot;success&quot;)}&gt;
+        Show Notification
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Count: {count()}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{searchTerm()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setSearchTerm(e.target.value)}
+        placeholder=&quot;Search...&quot;
+      /&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-themes</h3>
+<p>Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities.</p>
+<h4>Features</h4>
+<ul>
+<li><strong>8 Built-in Themes</strong> - Light, Dark, Gray, Banana, Strawberry, Peanut, High Contrast Black, High Contrast Inverse</li>
+<li><strong>Custom Themes</strong> - Create your own theme configurations</li>
+<li><strong>Internationalization</strong> - 30+ languages with RTL support</li>
+<li><strong>CSS Custom Properties</strong> - Dynamic theme switching with CSS variables</li>
+<li><strong>System Theme Detection</strong> - Automatic light/dark mode based on user preferences</li>
+</ul>
+<h4>Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ReynardProvider</span>, useTheme } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-themes&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-themes/themes.css&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ReynardProvider</span> <span class="hljs-attr">defaultTheme</span>=<span class="hljs-string">&quot;light&quot;</span> <span class="hljs-attr">defaultLocale</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MyApp</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ReynardProvider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { theme, setTheme } = <span class="hljs-title function_">useTheme</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Current theme: {theme}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setTheme(&quot;dark&quot;)}&gt;Switch to Dark<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-components</h3>
+<p>Production-ready SolidJS component library with comprehensive theming and accessibility support.</p>
+<h4>Primitives</h4>
+<ul>
+<li><strong>Button</strong> - Versatile button with multiple variants, sizes, and states</li>
+<li><strong>Card</strong> - Flexible container with consistent styling and variants</li>
+<li><strong>TextField</strong> - Text input with validation, icons, and error states</li>
+<li><strong>Select</strong> - Dropdown select with options and search support</li>
+</ul>
+<h4>Composite Components</h4>
+<ul>
+<li><strong>Modal</strong> - Flexible modal dialog with backdrop and animations</li>
+<li><strong>Tabs</strong> - Tab navigation with keyboard support and accessibility</li>
+</ul>
+<h4>Components Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span>, <span class="hljs-title class_">Card</span>, <span class="hljs-title class_">TextField</span>, <span class="hljs-title class_">Modal</span>, <span class="hljs-title class_">Tabs</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [isModalOpen, setIsModalOpen] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [activeTab, setActiveTab] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;tab1&quot;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Card</span> <span class="hljs-attr">padding</span>=<span class="hljs-string">&quot;lg&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TextField</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Email&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your email&quot;</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;primary&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsModalOpen(true)}&gt;
+          Open Modal
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Card</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Modal</span>
+        <span class="hljs-attr">open</span>=<span class="hljs-string">{isModalOpen()}</span>
+        <span class="hljs-attr">onClose</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsModalOpen(false)}
+        title=&quot;Example Modal&quot;
+      &gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Modal content goes here<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Modal</span>&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">Tabs</span>
+        <span class="hljs-attr">activeTab</span>=<span class="hljs-string">{activeTab()}</span>
+        <span class="hljs-attr">onTabChange</span>=<span class="hljs-string">{setActiveTab}</span>
+        <span class="hljs-attr">tabs</span>=<span class="hljs-string">{[</span>
+          { <span class="hljs-attr">id:</span> &quot;<span class="hljs-attr">tab1</span>&quot;, <span class="hljs-attr">label:</span> &quot;<span class="hljs-attr">Overview</span>&quot; },
+          { <span class="hljs-attr">id:</span> &quot;<span class="hljs-attr">tab2</span>&quot;, <span class="hljs-attr">label:</span> &quot;<span class="hljs-attr">Details</span>&quot; },
+        ]}
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;tab1&quot;</span>&gt;</span>Overview content<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;tab2&quot;</span>&gt;</span>Details content<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Tabs</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>Specialized Packages</h2>
+<h3>reynard-chat</h3>
+<p>Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.</p>
+<h4>Chat Features</h4>
+<ul>
+<li><strong>Real-time Streaming</strong> - Advanced streaming text processing with real-time markdown rendering</li>
+<li><strong>Thinking Sections</strong> - Support for AI assistant thinking process visualization</li>
+<li><strong>Tool Integration</strong> - Complete tool calling system with progress tracking</li>
+<li><strong>Markdown Parsing</strong> - Full markdown support including tables, code blocks, and math</li>
+<li><strong>P2P Support</strong> - Peer-to-peer chat capabilities with WebRTC</li>
+<li><strong>TypeScript First</strong> - Complete type safety with excellent IntelliSense</li>
+</ul>
+<h4>Chat Components</h4>
+<ul>
+<li><strong>ChatContainer</strong> - Main chat interface with message display and input handling</li>
+<li><strong>ChatMessage</strong> - Individual message component with markdown rendering</li>
+<li><strong>MessageInput</strong> - Text input with send functionality and keyboard shortcuts</li>
+<li><strong>P2PChatContainer</strong> - Peer-to-peer chat interface with user management</li>
+<li><strong>ThinkingIndicator</strong> - Visual indicator for AI thinking processes</li>
+<li><strong>ToolCallDisplay</strong> - Display component for tool call results and progress</li>
+</ul>
+<h4>Chat Composables</h4>
+<ul>
+<li><strong><code>useChat()</code></strong> - Main chat state management with streaming support</li>
+<li><strong><code>useP2PChat()</code></strong> - Peer-to-peer chat functionality with WebRTC</li>
+</ul>
+<h4>Chat Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ChatContainer</span>, P2PChatContainer } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-chat&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ChatApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ChatContainer</span>
+        <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span>
+        <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;600px&quot;</span>
+        <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+          <span class="hljs-attr">enableThinking:</span> <span class="hljs-attr">true</span>,
+          <span class="hljs-attr">enableTools:</span> <span class="hljs-attr">true</span>,
+          <span class="hljs-attr">showTimestamps:</span> <span class="hljs-attr">true</span>,
+        }}
+        <span class="hljs-attr">onMessageSent</span>=<span class="hljs-string">{(message)</span> =&gt;</span> console.log(&quot;Sent:&quot;, message)}
+        onMessageReceived={(message) =&gt; console.log(&quot;Received:&quot;, message)}
+      /&gt;
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">P2PChatContainer</span>
+        <span class="hljs-attr">currentUser</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">id:</span> &quot;<span class="hljs-attr">user1</span>&quot;, <span class="hljs-attr">name:</span> &quot;<span class="hljs-attr">Alice</span>&quot;, <span class="hljs-attr">status:</span> &quot;<span class="hljs-attr">online</span>&quot; }}
+        <span class="hljs-attr">realtimeEndpoint</span>=<span class="hljs-string">&quot;ws://localhost:8080&quot;</span>
+        <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+          <span class="hljs-attr">enableTyping:</span> <span class="hljs-attr">true</span>,
+          <span class="hljs-attr">enablePresence:</span> <span class="hljs-attr">true</span>,
+        }}
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-rag</h3>
+<p>RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive search capabilities.</p>
+<h4>RAG Features</h4>
+<ul>
+<li><strong>Advanced Search Interface</strong> - Comprehensive search UI with filtering and sorting</li>
+<li><strong>EmbeddingGemma Integration</strong> - Built-in support for EmbeddingGemma models</li>
+<li><strong>Real-time Results</strong> - Live search results with similarity scoring</li>
+<li><strong>Metadata Support</strong> - Rich metadata display and filtering</li>
+<li><strong>TypeScript First</strong> - Complete type safety with excellent IntelliSense</li>
+</ul>
+<h4>RAG Components</h4>
+<ul>
+<li><strong>RAGSearch</strong> - Main search interface with query input and result display</li>
+<li><strong>SearchFilters</strong> - Advanced filtering options for search results</li>
+<li><strong>ResultCard</strong> - Individual search result display with metadata</li>
+<li><strong>SimilarityIndicator</strong> - Visual similarity score display</li>
+</ul>
+<h4>RAG Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">RAGSearch</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-rag&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">RAGApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RAGSearch</span>
+      <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/rag/search&quot;</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;600px&quot;</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableFilters:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">showMetadata:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">maxResults:</span> <span class="hljs-attr">20</span>,
+        <span class="hljs-attr">similarityThreshold:</span> <span class="hljs-attr">0.7</span>,
+      }}
+      <span class="hljs-attr">onSearch</span>=<span class="hljs-string">{(query)</span> =&gt;</span> console.log(&quot;Searching:&quot;, query)}
+      onResultClick={(result) =&gt; console.log(&quot;Selected:&quot;, result)}
+    /&gt;</span>
+  );
+}</code></pre><h3>reynard-auth</h3>
+<p>Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive security features.</p>
+<h4>Auth Features</h4>
+<ul>
+<li><strong>JWT Authentication</strong> - Complete token-based authentication with refresh tokens</li>
+<li><strong>Login &amp; Registration</strong> - Ready-to-use forms with validation and error handling</li>
+<li><strong>Password Security</strong> - Advanced password strength analysis using zxcvbn</li>
+<li><strong>User Management</strong> - Profile management, password changes, and user preferences</li>
+<li><strong>Security</strong> - Automatic token refresh, secure storage, and CSRF protection</li>
+</ul>
+<h4>Auth Components</h4>
+<ul>
+<li><strong>AuthProvider</strong> - Context provider for authentication state and methods</li>
+<li><strong>LoginForm</strong> - Complete login form with validation</li>
+<li><strong>RegisterForm</strong> - Registration form with password strength analysis</li>
+<li><strong>ProfileForm</strong> - User profile management form</li>
+<li><strong>PasswordChangeForm</strong> - Secure password change form</li>
+</ul>
+<h4>Auth Composables</h4>
+<ul>
+<li><strong><code>useAuth()</code></strong> - Main authentication hook with state management and API integration</li>
+<li><strong><code>useAuthContext()</code></strong> - Access authentication context</li>
+<li><strong><code>withAuth()</code></strong> - Higher-order component for authentication requirements</li>
+</ul>
+<h4>Auth Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">AuthProvider</span>,
+  <span class="hljs-title class_">LoginForm</span>,
+  <span class="hljs-title class_">RegisterForm</span>,
+  useAuthContext,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-auth&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AuthProvider</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">apiUrl:</span> &quot;/<span class="hljs-attr">api</span>/<span class="hljs-attr">auth</span>&quot;,
+        <span class="hljs-attr">tokenStorageKey:</span> &quot;<span class="hljs-attr">auth_token</span>&quot;,
+        <span class="hljs-attr">refreshTokenStorageKey:</span> &quot;<span class="hljs-attr">refresh_token</span>&quot;,
+      }}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">AuthApp</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AuthProvider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AuthApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { isAuthenticated, user, login, logout } = <span class="hljs-title function_">useAuthContext</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {isAuthenticated() ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Welcome, {user()?.name}!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{logout}</span>&gt;</span>Logout<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">LoginForm</span> <span class="hljs-attr">onSuccess</span>=<span class="hljs-string">{()</span> =&gt;</span> console.log(&quot;Logged in!&quot;)} /&gt;
+          <span class="hljs-tag">&lt;<span class="hljs-name">RegisterForm</span> <span class="hljs-attr">onSuccess</span>=<span class="hljs-string">{()</span> =&gt;</span> console.log(&quot;Registered!&quot;)} /&gt;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-charts</h3>
+<p>Advanced data visualization components built on Chart.js with real-time updates and comprehensive theming.</p>
+<h4>Chart Types</h4>
+<ul>
+<li><strong>LineChart</strong> - Perfect for showing trends over time or continuous data</li>
+<li><strong>BarChart</strong> - Ideal for comparing categories or showing discrete data</li>
+<li><strong>PieChart</strong> - Great for showing proportions and percentages</li>
+<li><strong>TimeSeriesChart</strong> - Advanced real-time chart with automatic data management</li>
+</ul>
+<h4>Charts Features</h4>
+<ul>
+<li><strong>Real-time Updates</strong> - Live data streaming with automatic management</li>
+<li><strong>Theme Integration</strong> - Seamlessly works with Reynard&#39;s theming system</li>
+<li><strong>Responsive Design</strong> - Charts adapt to container size and mobile devices</li>
+<li><strong>Performance</strong> - Optimized rendering with data aggregation and limits</li>
+<li><strong>Accessibility</strong> - Screen reader friendly with proper ARIA labels</li>
+</ul>
+<h4>Charts Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">LineChart</span>, <span class="hljs-title class_">BarChart</span>, <span class="hljs-title class_">PieChart</span>, <span class="hljs-title class_">TimeSeriesChart</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-charts&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Dashboard</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> salesData = {
+    <span class="hljs-attr">labels</span>: [<span class="hljs-string">&quot;Mon&quot;</span>, <span class="hljs-string">&quot;Tue&quot;</span>, <span class="hljs-string">&quot;Wed&quot;</span>, <span class="hljs-string">&quot;Thu&quot;</span>, <span class="hljs-string">&quot;Fri&quot;</span>],
+    <span class="hljs-attr">datasets</span>: [
+      {
+        <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Sales&quot;</span>,
+        <span class="hljs-attr">data</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">19</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>],
+      },
+    ],
+  };
+
+  <span class="hljs-keyword">const</span> performanceData = [
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">300000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">45</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;5 min ago&quot;</span> },
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">240000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">52</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;4 min ago&quot;</span> },
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">180000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">38</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;3 min ago&quot;</span> },
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">120000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">67</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;2 min ago&quot;</span> },
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() - <span class="hljs-number">60000</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">74</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;1 min ago&quot;</span> },
+    { <span class="hljs-attr">timestamp</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>(), <span class="hljs-attr">value</span>: <span class="hljs-number">82</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Now&quot;</span> },
+  ];
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">display:</span> &quot;<span class="hljs-attr">grid</span>&quot;,
+        &quot;<span class="hljs-attr">grid-template-columns</span>&quot;<span class="hljs-attr">:</span> &quot;<span class="hljs-attr">1fr</span> <span class="hljs-attr">1fr</span>&quot;,
+        <span class="hljs-attr">gap:</span> &quot;<span class="hljs-attr">2rem</span>&quot;,
+      }}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">LineChart</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Sales Trend&quot;</span>
+        <span class="hljs-attr">labels</span>=<span class="hljs-string">{salesData.labels}</span>
+        <span class="hljs-attr">datasets</span>=<span class="hljs-string">{salesData.datasets}</span>
+        <span class="hljs-attr">yAxis</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">label:</span> &quot;<span class="hljs-attr">Sales</span> ($)&quot; }}
+        <span class="hljs-attr">responsive</span>
+      /&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">TimeSeriesChart</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Real-time Performance&quot;</span>
+        <span class="hljs-attr">data</span>=<span class="hljs-string">{performanceData}</span>
+        <span class="hljs-attr">autoScroll</span>
+        <span class="hljs-attr">maxDataPoints</span>=<span class="hljs-string">{50}</span>
+        <span class="hljs-attr">valueFormatter</span>=<span class="hljs-string">{(value)</span> =&gt;</span> `${value}%`}
+      /&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-gallery</h3>
+<p>Advanced file and media management system with drag-and-drop, responsive grids, and comprehensive file handling.</p>
+<h4>Gallery Features</h4>
+<ul>
+<li><strong>File Management</strong> - Complete file browser with folder navigation</li>
+<li><strong>Media Support</strong> - Images, videos, audio, text, and document preview</li>
+<li><strong>Responsive Grid</strong> - Adaptive layouts (grid, list, masonry) with virtual scrolling</li>
+<li><strong>File Upload</strong> - Drag-and-drop upload with progress tracking and validation</li>
+<li><strong>Search &amp; Filter</strong> - Real-time search with advanced filtering options</li>
+<li><strong>Favorites</strong> - Mark files as favorites with persistent storage</li>
+<li><strong>Selection</strong> - Multi-select with keyboard shortcuts and context menus</li>
+</ul>
+<h4>Gallery Components</h4>
+<ul>
+<li><strong>Gallery</strong> - Main gallery component with navigation and management</li>
+<li><strong>GalleryGrid</strong> - Responsive grid layout with virtual scrolling</li>
+<li><strong>ImageViewer</strong> - Sophisticated image viewer with zoom, pan, and navigation</li>
+<li><strong>FileUploadZone</strong> - Drag-and-drop file upload with progress tracking</li>
+<li><strong>BreadcrumbNavigation</strong> - Folder navigation breadcrumbs</li>
+</ul>
+<h4>Gallery Composables</h4>
+<ul>
+<li><strong><code>useGalleryState()</code></strong> - Gallery state management with persistence</li>
+<li><strong><code>useFileUpload()</code></strong> - File upload handling with progress tracking</li>
+<li><strong><code>useMultiSelect()</code></strong> - Multi-selection system with keyboard shortcuts</li>
+</ul>
+<h4>Gallery Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Gallery</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-gallery&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">GalleryData</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-gallery&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">FileManager</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [galleryData, setGalleryData] = createSignal&lt;<span class="hljs-title class_">GalleryData</span>&gt;({
+    <span class="hljs-attr">files</span>: [
+      { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;document.pdf&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;file&quot;</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">1024</span> },
+      { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;image.jpg&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;file&quot;</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">2048</span> },
+    ],
+    <span class="hljs-attr">folders</span>: [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;3&quot;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Documents&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;folder&quot;</span> }],
+    <span class="hljs-attr">currentPath</span>: <span class="hljs-string">&quot;/&quot;</span>,
+    <span class="hljs-attr">breadcrumbs</span>: [{ <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Home&quot;</span>, <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/&quot;</span> }],
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Gallery</span>
+      <span class="hljs-attr">data</span>=<span class="hljs-string">{galleryData()}</span>
+      <span class="hljs-attr">onFileSelect</span>=<span class="hljs-string">{(file)</span> =&gt;</span> console.log(&quot;Selected:&quot;, file)}
+      onFolderNavigate={(path) =&gt; console.log(&quot;Navigate to:&quot;, path)}
+      onFileUpload={(files) =&gt; console.log(&quot;Upload:&quot;, files)}
+      showUpload={true}
+      showBreadcrumbs={true}
+      enableDragAndDrop={true}
+    /&gt;</span>
+  );
+}</code></pre><h3>reynard-settings</h3>
+<p>Comprehensive configuration management system with validation, persistence, and UI components.</p>
+<h4>Settings Features</h4>
+<ul>
+<li><strong>Settings Schema</strong> - Type-safe settings definitions with validation</li>
+<li><strong>Multiple Storage</strong> - localStorage, sessionStorage, IndexedDB, and remote storage</li>
+<li><strong>Validation</strong> - Comprehensive validation with custom rules</li>
+<li><strong>Migration</strong> - Automatic settings migration between versions</li>
+<li><strong>Backup</strong> - Automatic backup and restore functionality</li>
+<li><strong>Categories</strong> - Organized settings with categories and search</li>
+</ul>
+<h4>Setting Types</h4>
+<ul>
+<li><strong>Boolean</strong> - Toggle switches and checkboxes</li>
+<li><strong>String</strong> - Text inputs with validation</li>
+<li><strong>Number</strong> - Numeric inputs with min/max constraints</li>
+<li><strong>Select</strong> - Dropdown selections with options</li>
+<li><strong>MultiSelect</strong> - Multiple selection with tags</li>
+<li><strong>Range</strong> - Slider inputs with min/max values</li>
+<li><strong>Color</strong> - Color picker inputs</li>
+<li><strong>File</strong> - File upload inputs</li>
+<li><strong>JSON</strong> - JSON object inputs with validation</li>
+</ul>
+<h4>Settings Components</h4>
+<ul>
+<li><strong>SettingsPanel</strong> - Complete settings interface with categories and search</li>
+<li><strong>SettingControl</strong> - Individual setting control components</li>
+<li><strong>SettingsProvider</strong> - Context provider for settings management</li>
+</ul>
+<h4>Settings Composables</h4>
+<ul>
+<li><strong><code>useSettings()</code></strong> - Main settings management hook</li>
+<li><strong><code>useSetting()</code></strong> - Individual setting management</li>
+<li><strong><code>useSettingsValidation()</code></strong> - Settings validation utilities</li>
+</ul>
+<h4>Settings Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SettingsPanel</span>, <span class="hljs-title class_">SettingsProvider</span>, useSettings } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-settings&quot;</span>;
+
+<span class="hljs-keyword">const</span> settingsSchema = {
+  <span class="hljs-attr">appearance</span>: {
+    <span class="hljs-attr">theme</span>: {
+      <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;appearance.theme&quot;</span>,
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Theme&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;select&quot;</span>,
+      <span class="hljs-attr">defaultValue</span>: <span class="hljs-string">&quot;light&quot;</span>,
+      <span class="hljs-attr">options</span>: [
+        { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;light&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Light&quot;</span> },
+        { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;dark&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Dark&quot;</span> },
+      ],
+    },
+  },
+  <span class="hljs-attr">behavior</span>: {
+    <span class="hljs-attr">autoSave</span>: {
+      <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;behavior.autoSave&quot;</span>,
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Auto Save&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">defaultValue</span>: <span class="hljs-literal">true</span>,
+    },
+  },
+};
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SettingsProvider</span> <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">schema:</span> <span class="hljs-attr">settingsSchema</span> }}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">SettingsPanel</span>
+        <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Application Settings&quot;</span>
+        <span class="hljs-attr">showSearch</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">showCategories</span>=<span class="hljs-string">{true}</span>
+        <span class="hljs-attr">showImportExport</span>=<span class="hljs-string">{true}</span>
+      /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">SettingsProvider</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-algorithms</h3>
+<p>Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and geometric calculations.</p>
+<h4>Algorithm Types</h4>
+<ul>
+<li><strong>Union-Find Algorithm</strong> - Efficient set operations and cycle detection with path compression</li>
+<li><strong>AABB Collision Detection</strong> - Spatial queries and overlap detection with spatial hashing support</li>
+<li><strong>Spatial Hashing</strong> - Efficient spatial partitioning and nearest neighbor searches</li>
+<li><strong>Performance Utilities</strong> - Benchmarking, profiling, and monitoring tools</li>
+<li><strong>Geometry Operations</strong> - 2D geometric calculations and transformations</li>
+</ul>
+<h4>Core Features</h4>
+<ul>
+<li><strong>High Performance</strong> - Optimized algorithms with O(α(n)) Union-Find and O(1) collision detection</li>
+<li><strong>Memory Efficient</strong> - Minimal memory overhead with automatic cleanup and optimization</li>
+<li><strong>Type Safe</strong> - Full TypeScript support with comprehensive type definitions</li>
+<li><strong>Framework Agnostic</strong> - Pure algorithms that work with any JavaScript framework</li>
+</ul>
+<h4>Algorithms Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">UnionFind</span>,
+  detectCycle,
+  checkCollision,
+  <span class="hljs-title class_">SpatialHash</span>,
+  <span class="hljs-title class_">PerformanceTimer</span>,
+  <span class="hljs-title class_">PointOps</span>,
+  <span class="hljs-title class_">VectorOps</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-algorithms&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AlgorithmDemo</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// Union-Find for connected components</span>
+  <span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">10</span>);
+  uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+  uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">connected</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// true</span>
+
+  <span class="hljs-comment">// Collision detection</span>
+  <span class="hljs-keyword">const</span> aabb1 = { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+  <span class="hljs-keyword">const</span> aabb2 = { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+  <span class="hljs-keyword">const</span> collision = <span class="hljs-title function_">checkCollision</span>(aabb1, aabb2);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(collision.<span class="hljs-property">colliding</span>); <span class="hljs-comment">// true</span>
+
+  <span class="hljs-comment">// Spatial hashing</span>
+  <span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>({ <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span> });
+  spatialHash.<span class="hljs-title function_">insert</span>({ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;object1&quot;</span> } });
+  <span class="hljs-keyword">const</span> nearby = spatialHash.<span class="hljs-title function_">queryRadius</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);
+
+  <span class="hljs-comment">// Performance monitoring</span>
+  <span class="hljs-keyword">const</span> timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceTimer</span>();
+  timer.<span class="hljs-title function_">start</span>();
+  <span class="hljs-comment">// ... perform operation</span>
+  <span class="hljs-keyword">const</span> duration = timer.<span class="hljs-title function_">stop</span>();
+
+  <span class="hljs-comment">// Geometry operations</span>
+  <span class="hljs-keyword">const</span> point1 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+  <span class="hljs-keyword">const</span> point2 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+  <span class="hljs-keyword">const</span> distance = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">distance</span>(point1, point2); <span class="hljs-comment">// 5</span>
+
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Algorithm demo running...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+}</code></pre><h3>reynard-file-processing</h3>
+<p>Advanced file processing pipeline with thumbnail generation, metadata extraction, and comprehensive file type support.</p>
+<h4>Supported File Types</h4>
+<ul>
+<li><strong>Images</strong> - JPG, PNG, GIF, WebP, BMP, TIFF, JXL, AVIF, HEIC, HEIF, JP2, SVG, EPS, AI, CDR, RAW formats</li>
+<li><strong>Videos</strong> - MP4, AVI, MOV, MKV, WebM, FLV, WMV, MPG, MPEG, TS, MTS, M2TS, ProRes, DNxHD, Cine, R3D, BRAW</li>
+<li><strong>Audio</strong> - MP3, AAC, OGG, WMA, Opus, WAV, FLAC, ALAC, APE, WV, DSD, DFF, DSF</li>
+<li><strong>Text &amp; Code</strong> - TXT, MD, RST, TEX, LOG, JSON, XML, YAML, TOML, CSV, TSV, Parquet, Arrow, Feather, HDF5, NumPy, and programming languages</li>
+<li><strong>Documents</strong> - PDF, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, MOBI, AZW3, KFX, RTF, Pages, Key, Numbers</li>
+<li><strong>LoRA Models</strong> - SafeTensors, Checkpoint, PyTorch, ONNX, Bin</li>
+</ul>
+<h4>Core Components</h4>
+<ul>
+<li><strong>ThumbnailGenerator</strong> - Multi-format thumbnail generation with smart rendering</li>
+<li><strong>MetadataExtractor</strong> - Comprehensive metadata extraction and analysis</li>
+<li><strong>ContentAnalyzer</strong> - Content analysis and processing utilities</li>
+<li><strong>ProgressTracker</strong> - Progress tracking and callback system</li>
+</ul>
+<h4>File Processing Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">ThumbnailGenerator</span>,
+  <span class="hljs-title class_">MetadataExtractor</span>,
+  useFileProcessing,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-file-processing&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">FileProcessor</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { generateThumbnail, extractMetadata } = <span class="hljs-title function_">useFileProcessing</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleFileUpload</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">file</span>: <span class="hljs-title class_">File</span></span>) =&gt; {
+    <span class="hljs-comment">// Generate thumbnail</span>
+    <span class="hljs-keyword">const</span> thumbnail = <span class="hljs-keyword">await</span> <span class="hljs-title function_">generateThumbnail</span>(file, {
+      <span class="hljs-attr">width</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-attr">height</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-attr">quality</span>: <span class="hljs-number">0.8</span>,
+    });
+
+    <span class="hljs-comment">// Extract metadata</span>
+    <span class="hljs-keyword">const</span> metadata = <span class="hljs-keyword">await</span> <span class="hljs-title function_">extractMetadata</span>(file);
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Thumbnail:&quot;</span>, thumbnail);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Metadata:&quot;</span>, metadata);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> handleFileUpload(e.target.files[0])} /&gt;</span>
+  );
+}</code></pre><h3>reynard-annotating</h3>
+<p>Unified annotation system for Reynard with production features and modular architecture. This package integrates all caption generators into a single, easy-to-use interface.</p>
+<blockquote>
+<p><strong>💡 Architecture Note</strong>: The annotating system follows a modular plugin architecture where each generator (JTP2, JoyCaption, WDv3, Florence2) is a separate package that can be used independently or through the unified interface.</p>
+</blockquote>
+<h4>Annotating Features</h4>
+<ul>
+<li><strong>Unified Interface</strong> - Single manager for all caption generators</li>
+<li><strong>Production Features</strong> - Usage tracking, health monitoring, circuit breakers</li>
+<li><strong>Modular Architecture</strong> - Individual packages for each generator</li>
+<li><strong>Type Safety</strong> - Full TypeScript support</li>
+<li><strong>Event System</strong> - Comprehensive event handling</li>
+<li><strong>Smart Model Management</strong> - Automatic loading, unloading, and coordination</li>
+<li><strong>Multiple AI Models</strong> - Support for JTP2, JoyCaption, WDv3, Florence2, and other caption generation models</li>
+<li><strong>Batch Processing</strong> - Efficient batch caption generation with progress tracking</li>
+<li><strong>Model Management</strong> - Dynamic model loading, switching, and lifecycle management</li>
+<li><strong>Confidence Scoring</strong> - Confidence threshold management and quality assessment</li>
+<li><strong>Plugin Architecture</strong> - Extensible plugin system for adding new generators</li>
+<li><strong>Simulation Support</strong> - Development/testing simulation for all generators</li>
+</ul>
+<h4>Annotating Package Structure</h4>
+<p>The annotating system consists of multiple specialized packages:</p>
+<ul>
+<li><strong>reynard-annotating-core</strong> - Core functionality, types, and services</li>
+<li><strong>reynard-annotating-jtp2</strong> - JTP2 generator (furry artwork tagging)</li>
+<li><strong>reynard-annotating-joy</strong> - JoyCaption generator (multilingual LLM)</li>
+<li><strong>reynard-annotating-florence2</strong> - Florence2 generator (general purpose)</li>
+<li><strong>reynard-annotating-wdv3</strong> - WDv3 generator (Danbooru-style tagging)</li>
+<li><strong>reynard-annotating</strong> - Unified interface (this package)</li>
+</ul>
+<h4>Annotating Components</h4>
+<ul>
+<li><strong>UnifiedAnnotationManager</strong> - Main orchestrator for caption generation workflows</li>
+<li><strong>AnnotationService</strong> - Core caption generation service with model integration</li>
+<li><strong>BaseCaptionGenerator</strong> - Abstract base class for implementing custom generators</li>
+<li><strong>Plugin System</strong> - Dynamic model registration and management system</li>
+<li><strong>Health Monitoring</strong> - Real-time health checks and performance metrics</li>
+<li><strong>Circuit Breakers</strong> - Fault tolerance and error handling</li>
+<li><strong>Usage Tracking</strong> - Model usage statistics and performance monitoring</li>
+</ul>
+<h4>Annotating Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  createUnifiedAnnotationManager,
+  <span class="hljs-variable constant_">PRODUCTION_CONFIG</span>,
+  <span class="hljs-keyword">type</span> <span class="hljs-title class_">CaptionTask</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-annotating&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CaptionGenerator</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [manager, setManager] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-title function_">onMount</span>(<span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-comment">// Create unified manager with production features</span>
+    <span class="hljs-keyword">const</span> annotationManager = <span class="hljs-title function_">createUnifiedAnnotationManager</span>(<span class="hljs-variable constant_">PRODUCTION_CONFIG</span>);
+    <span class="hljs-keyword">await</span> annotationManager.<span class="hljs-title function_">initialize</span>();
+    <span class="hljs-title function_">setManager</span>(annotationManager);
+  });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateCaptions</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">images</span>: <span class="hljs-title class_">File</span>[]</span>) =&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">manager</span>()) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> service = <span class="hljs-title function_">manager</span>().<span class="hljs-title function_">getService</span>();
+
+    <span class="hljs-comment">// Generate captions using different generators</span>
+    <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>(
+      images.<span class="hljs-title function_">map</span>(<span class="hljs-title function_">async</span> (image) =&gt; {
+        <span class="hljs-keyword">const</span> <span class="hljs-attr">task</span>: <span class="hljs-title class_">CaptionTask</span> = {
+          <span class="hljs-attr">imagePath</span>: image.<span class="hljs-property">name</span>,
+          <span class="hljs-attr">generatorName</span>: <span class="hljs-string">&quot;jtp2&quot;</span>,
+          <span class="hljs-attr">config</span>: { <span class="hljs-attr">threshold</span>: <span class="hljs-number">0.2</span> },
+        };
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> service.<span class="hljs-title function_">generateCaption</span>(task);
+      }),
+    );
+
+    <span class="hljs-keyword">return</span> results;
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span>
+        <span class="hljs-attr">multiple</span>
+        <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/*&quot;</span>
+        <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> generateCaptions(Array.from(e.target.files))}
+      /&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-caption</h3>
+<p>Caption editing UI components with tag management, validation, and comprehensive user interface for caption workflows.</p>
+<blockquote>
+<p><strong>💡 Architecture Note</strong>: <code>reynard-caption</code> provides the UI components for caption editing, while <code>reynard-annotating</code> handles the AI/ML caption generation. Use them together for complete caption workflows!</p>
+</blockquote>
+<h4>Caption Features</h4>
+<ul>
+<li><strong>Tag Management</strong> - Interactive tag editing with autocomplete and validation</li>
+<li><strong>Multiple Caption Types</strong> - Support for CAPTION, TAGS, E621, TOML, and custom formats</li>
+<li><strong>Real-time Validation</strong> - Live validation with error highlighting and suggestions</li>
+<li><strong>Accessibility</strong> - Full keyboard navigation and screen reader support</li>
+<li><strong>Theming Integration</strong> - Seamless integration with Reynard&#39;s theming system</li>
+</ul>
+<h4>Caption Components</h4>
+<ul>
+<li><strong>TagBubble</strong> - Interactive tag editing component with drag-and-drop</li>
+<li><strong>CaptionInput</strong> - Comprehensive caption input with multiple caption types</li>
+<li><strong>TagAutocomplete</strong> - Smart autocomplete for tag suggestions</li>
+<li><strong>CaptionValidator</strong> - Real-time validation and error display</li>
+</ul>
+<h4>Caption Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">TagBubble</span>, <span class="hljs-title class_">CaptionInput</span>, <span class="hljs-title class_">CaptionValidator</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CaptionEditor</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [caption, setCaption] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [tags, setTags] = createSignal&lt;<span class="hljs-built_in">string</span>[]&gt;([]);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">CaptionInput</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{caption()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{setCaption}</span>
+        <span class="hljs-attr">captionType</span>=<span class="hljs-string">&quot;CAPTION&quot;</span>
+        <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your caption...&quot;</span>
+      /&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">TagBubble</span>
+        <span class="hljs-attr">tags</span>=<span class="hljs-string">{tags()}</span>
+        <span class="hljs-attr">onTagsChange</span>=<span class="hljs-string">{setTags}</span>
+        <span class="hljs-attr">suggestions</span>=<span class="hljs-string">{[</span>&quot;<span class="hljs-attr">portrait</span>&quot;, &quot;<span class="hljs-attr">landscape</span>&quot;, &quot;<span class="hljs-attr">abstract</span>&quot;, &quot;<span class="hljs-attr">nature</span>&quot;]}
+        <span class="hljs-attr">maxTags</span>=<span class="hljs-string">{10}</span>
+      /&gt;</span>
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">CaptionValidator</span>
+        <span class="hljs-attr">caption</span>=<span class="hljs-string">{caption()}</span>
+        <span class="hljs-attr">tags</span>=<span class="hljs-string">{tags()}</span>
+        <span class="hljs-attr">onValidationChange</span>=<span class="hljs-string">{(isValid,</span> <span class="hljs-attr">errors</span>) =&gt;</span> {
+          console.log(&quot;Validation:&quot;, isValid, errors);
+        }}
+      /&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h4>Complete Caption Workflow Example</h4>
+<p>Here&#39;s how to combine both packages for a complete caption generation and editing workflow:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">AnnotationManager</span>, <span class="hljs-title class_">AnnotationService</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-annotating&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">TagBubble</span>, <span class="hljs-title class_">CaptionInput</span>, <span class="hljs-title class_">CaptionValidator</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span>, <span class="hljs-title class_">Card</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+<span class="hljs-keyword">import</span> { useNotifications } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-core&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CompleteCaptionWorkflow</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [image, setImage] = createSignal&lt;<span class="hljs-title class_">File</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> [generatedCaption, setGeneratedCaption] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [editedCaption, setEditedCaption] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">const</span> [tags, setTags] = createSignal&lt;<span class="hljs-built_in">string</span>[]&gt;([]);
+  <span class="hljs-keyword">const</span> [isGenerating, setIsGenerating] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-keyword">const</span> { notify } = <span class="hljs-title function_">useNotifications</span>();
+  <span class="hljs-keyword">const</span> annotationService = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationService</span>();
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">generateCaption</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">image</span>()) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-comment">// Use reynard-annotating for AI caption generation</span>
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> annotationService.<span class="hljs-title function_">generateCaptions</span>([<span class="hljs-title function_">image</span>()!], {
+        <span class="hljs-attr">model</span>: <span class="hljs-string">&quot;florence2&quot;</span>,
+        <span class="hljs-attr">confidenceThreshold</span>: <span class="hljs-number">0.8</span>,
+      });
+
+      <span class="hljs-keyword">const</span> caption = result[<span class="hljs-number">0</span>]?.<span class="hljs-property">caption</span> || <span class="hljs-string">&quot;&quot;</span>;
+      <span class="hljs-title function_">setGeneratedCaption</span>(caption);
+      <span class="hljs-title function_">setEditedCaption</span>(caption);
+
+      <span class="hljs-comment">// Extract tags from generated caption</span>
+      <span class="hljs-keyword">const</span> extractedTags = caption
+        .<span class="hljs-title function_">split</span>(<span class="hljs-regexp">/[,\s]+/</span>)
+        .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> tag.<span class="hljs-property">length</span> &gt; <span class="hljs-number">2</span>);
+      <span class="hljs-title function_">setTags</span>(extractedTags);
+
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Caption generated successfully!&quot;</span>, <span class="hljs-string">&quot;success&quot;</span>);
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Failed to generate caption&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>);
+    } <span class="hljs-keyword">finally</span> {
+      <span class="hljs-title function_">setIsGenerating</span>(<span class="hljs-literal">false</span>);
+    }
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">saveCaption</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-comment">// Save the final caption and tags</span>
+    <span class="hljs-keyword">const</span> finalData = {
+      <span class="hljs-attr">caption</span>: <span class="hljs-title function_">editedCaption</span>(),
+      <span class="hljs-attr">tags</span>: <span class="hljs-title function_">tags</span>(),
+      <span class="hljs-attr">image</span>: <span class="hljs-title function_">image</span>()?.<span class="hljs-property">name</span>,
+    };
+
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Saving caption data:&quot;</span>, finalData);
+    <span class="hljs-title function_">notify</span>(<span class="hljs-string">&quot;Caption saved!&quot;</span>, <span class="hljs-string">&quot;success&quot;</span>);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Card</span> <span class="hljs-attr">padding</span>=<span class="hljs-string">&quot;lg&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Complete Caption Workflow<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+
+      {/* Image Upload */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span>
+          <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/*&quot;</span>
+          <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setImage(e.target.files?.[0] || null)}
+        /&gt;
+        {image() &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Selected: {image()!.name}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* AI Generation */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{generateCaption}</span>
+          <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!image()</span> || <span class="hljs-attr">isGenerating</span>()}
+          <span class="hljs-attr">loading</span>=<span class="hljs-string">{isGenerating()}</span>
+        &gt;</span>
+          {isGenerating() ? &quot;Generating...&quot; : &quot;Generate Caption with AI&quot;}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Generated Caption Display */}
+      {generatedCaption() &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-bottom: 1rem; padding: 1rem; background: var(--secondary-bg); border-radius: 6px;&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>AI Generated Caption:<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;font-style: italic; color: var(--text-secondary);&quot;</span>&gt;</span>
+            {generatedCaption()}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+
+      {/* Caption Editing with reynard-caption */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">CaptionInput</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{editedCaption()}</span>
+          <span class="hljs-attr">onInput</span>=<span class="hljs-string">{setEditedCaption}</span>
+          <span class="hljs-attr">captionType</span>=<span class="hljs-string">&quot;CAPTION&quot;</span>
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Edit your caption...&quot;</span>
+          <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Edit Caption&quot;</span>
+        /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Tag Management with reynard-caption */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-bottom: 1rem;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TagBubble</span>
+          <span class="hljs-attr">tags</span>=<span class="hljs-string">{tags()}</span>
+          <span class="hljs-attr">onTagsChange</span>=<span class="hljs-string">{setTags}</span>
+          <span class="hljs-attr">suggestions</span>=<span class="hljs-string">{[</span>
+            &quot;<span class="hljs-attr">portrait</span>&quot;,
+            &quot;<span class="hljs-attr">landscape</span>&quot;,
+            &quot;<span class="hljs-attr">abstract</span>&quot;,
+            &quot;<span class="hljs-attr">nature</span>&quot;,
+            &quot;<span class="hljs-attr">art</span>&quot;,
+            &quot;<span class="hljs-attr">photography</span>&quot;,
+          ]}
+          <span class="hljs-attr">maxTags</span>=<span class="hljs-string">{15}</span>
+          <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Tags&quot;</span>
+        /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Validation */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">CaptionValidator</span>
+        <span class="hljs-attr">caption</span>=<span class="hljs-string">{editedCaption()}</span>
+        <span class="hljs-attr">tags</span>=<span class="hljs-string">{tags()}</span>
+        <span class="hljs-attr">onValidationChange</span>=<span class="hljs-string">{(isValid,</span> <span class="hljs-attr">errors</span>) =&gt;</span> {
+          if (!isValid &amp;&amp; errors.length &gt; 0) {
+            console.log(&quot;Validation errors:&quot;, errors);
+          }
+        }}
+      /&gt;
+
+      {/* Save Button */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
+        <span class="hljs-attr">onClick</span>=<span class="hljs-string">{saveCaption}</span>
+        <span class="hljs-attr">disabled</span>=<span class="hljs-string">{!editedCaption().trim()}</span>
+        <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;primary&quot;</span>
+      &gt;</span>
+        Save Caption
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Card</span>&gt;</span></span>
+  );
+}</code></pre><h3>reynard-testing</h3>
+<p>Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities, and assertion utilities.</p>
+<h4>Testing Features</h4>
+<ul>
+<li><strong>Vitest Integration</strong> - Pre-configured Vitest configurations for different testing scenarios</li>
+<li><strong>Component Testing</strong> - Utilities for testing SolidJS components with proper rendering</li>
+<li><strong>Mock Utilities</strong> - Comprehensive mocking for browser APIs, external libraries, and SolidJS</li>
+<li><strong>Assertion Utilities</strong> - Enhanced assertion helpers for common testing patterns</li>
+<li><strong>Test Fixtures</strong> - Reusable test fixtures and setup utilities</li>
+</ul>
+<h4>Testing Utilities</h4>
+<ul>
+<li><strong>Test Configurations</strong> - Base, component, integration, and E2E test configurations</li>
+<li><strong>Render Utilities</strong> - Component rendering with proper context and providers</li>
+<li><strong>Mock Utilities</strong> - Browser mocks, external library mocks, and SolidJS mocks</li>
+<li><strong>Assertion Helpers</strong> - Custom matchers and assertion utilities</li>
+<li><strong>Test Setup</strong> - Automated test setup and teardown utilities</li>
+</ul>
+<h4>Testing Example Usage</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { describe, it, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vitest&quot;</span>;
+<span class="hljs-keyword">import</span> { render, screen } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Button Component&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;renders with correct text&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span>&gt;</span>Click me<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>);
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&quot;Click me&quot;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;handles click events&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> handleClick = vi.<span class="hljs-title function_">fn</span>();
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleClick}</span>&gt;</span>Click me<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>);
+
+    <span class="hljs-keyword">await</span> userEvent.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&quot;Click me&quot;</span>));
+    <span class="hljs-title function_">expect</span>(handleClick).<span class="hljs-title function_">toHaveBeenCalledTimes</span>(<span class="hljs-number">1</span>);
+  });
+});</code></pre><h2>Additional Packages</h2>
+<h3>UI and Layout</h3>
+<ul>
+<li><strong>reynard-ui</strong> - Advanced layout and navigation components</li>
+<li><strong>reynard-fluent-icons</strong> - Fluent UI icons for Reynard design system</li>
+<li><strong>reynard-error-boundaries</strong> - Comprehensive error boundary system</li>
+</ul>
+<h3>Development and Tools</h3>
+<ul>
+<li><strong>reynard-tools</strong> - Development and runtime tools for Reynard applications</li>
+<li><strong>reynard-composables</strong> - Reusable reactive logic for Reynard applications</li>
+<li><strong>reynard-connection</strong> - Enterprise-grade networking for Reynard applications</li>
+</ul>
+<h3>Specialized Features</h3>
+<ul>
+<li><strong>reynard-3d</strong> - 3D graphics and visualization components using Three.js</li>
+<li><strong>reynard-games</strong> - Interactive games and visualizations</li>
+<li><strong>reynard-monaco</strong> - Monaco code editor and text editing components</li>
+<li><strong>reynard-boundingbox</strong> - Reusable bounding box and annotation editing components</li>
+<li><strong>reynard-color-media</strong> - Color generation utilities and media handling components</li>
+</ul>
+<h3>Model and Service Management</h3>
+<ul>
+<li><strong>reynard-model-management</strong> - Model management system for ML model loading and lifecycle</li>
+<li><strong>reynard-service-manager</strong> - Service management system for service lifecycle and health monitoring</li>
+<li><strong>reynard-features</strong> - Advanced feature system for managing application features and dependencies</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li><strong>reynard-docs-core</strong> - Core documentation rendering engine</li>
+<li><strong>reynard-docs-components</strong> - Beautiful UI components for documentation sites</li>
+<li><strong>reynard-docs-generator</strong> - Automated documentation generator</li>
+<li><strong>reynard-docs-site</strong> - Beautiful documentation site application</li>
+</ul>
+<h3>Applications</h3>
+<ul>
+<li><strong>reynard-basic-app</strong> - Basic Todo App - Minimal Reynard framework example</li>
+<li><strong>reynard-clock-app</strong> - Comprehensive clock, timer, alarm, and countdown application</li>
+<li><strong>reynard-test-app</strong> - Comprehensive test application showcasing Reynard framework features</li>
+</ul>
+<h2>Package Installation</h2>
+<p>Install packages individually based on your needs:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Core packages</span>
+npm install reynard-core reynard-themes reynard-components
+
+<span class="hljs-comment"># Specialized packages</span>
+npm install reynard-chat reynard-rag reynard-auth reynard-charts
+npm install reynard-gallery reynard-settings reynard-algorithms
+npm install reynard-file-processing reynard-annotating reynard-caption
+
+<span class="hljs-comment"># Development packages</span>
+npm install reynard-testing reynard-tools reynard-composables
+
+<span class="hljs-comment"># UI packages</span>
+npm install reynard-ui reynard-fluent-icons reynard-error-boundaries
+
+<span class="hljs-comment"># Specialized features</span>
+npm install reynard-3d reynard-games reynard-monaco reynard-boundingbox</code></pre><h2>Next Steps</h2>
+<ul>
+<li><strong><a href="./examples.md">Examples and Templates</a></strong> - See real-world applications using these packages</li>
+<li><strong><a href="./api.md">API Reference</a></strong> - Detailed API documentation for all packages</li>
+<li><strong><a href="./performance.md">Performance Guide</a></strong> - Optimization tips and bundle size information</li>
+</ul>
+<hr>
+<p><em>Explore the full power of Reynard&#39;s modular architecture!</em> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

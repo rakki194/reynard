@@ -20,10 +20,10 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
-# Check if npm is available
-if ! command -v npm &> /dev/null; then
-    echo "❌ npm is required but not installed."
-    echo "   Please install npm and try again."
+# Check if pnpm is available
+if ! command -v pnpm &> /dev/null; then
+    echo "❌ pnpm is required but not installed."
+    echo "   Please install pnpm and try again."
     exit 1
 fi
 
@@ -47,7 +47,7 @@ echo ""
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
-npm install
+pnpm install
 if [ $? -ne 0 ]; then
     echo "❌ Failed to install Node.js dependencies"
     exit 1
@@ -65,4 +65,4 @@ echo "Press Ctrl+C to stop both servers"
 echo ""
 
 # Start both servers concurrently
-npm run dev:full
+pnpm run dev:full

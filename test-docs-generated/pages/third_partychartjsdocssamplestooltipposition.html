@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Position - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Position</h1>
+      <div class="markdown-content"><h1>Position</h1>
+<p>This sample shows how to use the tooltip position mode setting.</p>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:actions:3&gt;</span>
+<span class="hljs-keyword">const</span> actions = [
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Position: average&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">tooltip</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&#x27;average&#x27;</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Position: nearest&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">tooltip</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&#x27;nearest&#x27;</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Position: bottom (custom)&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">tooltip</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&#x27;bottom&#x27;</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+];
+<span class="hljs-comment">// &lt;/block:actions&gt;</span>
+
+<span class="hljs-comment">// &lt;block:setup:2&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DATA_COUNT</span> = <span class="hljs-number">7</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">NUMBER_CFG</span> = {<span class="hljs-attr">count</span>: <span class="hljs-variable constant_">DATA_COUNT</span>, <span class="hljs-attr">min</span>: -<span class="hljs-number">100</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>};
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">labels</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">months</span>({<span class="hljs-attr">count</span>: <span class="hljs-variable constant_">DATA_COUNT</span>}),
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>(<span class="hljs-variable constant_">NUMBER_CFG</span>),
+      <span class="hljs-attr">fill</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">transparentize</span>(<span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>, <span class="hljs-number">0.5</span>),
+    },
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset 2&#x27;</span>,
+      <span class="hljs-attr">data</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>(<span class="hljs-variable constant_">NUMBER_CFG</span>),
+      <span class="hljs-attr">fill</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">transparentize</span>(<span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>, <span class="hljs-number">0.5</span>),
+    },
+  ]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:positioner:1&gt;</span>
+<span class="hljs-comment">// Create a custom tooltip positioner to put at the bottom of the chart area</span>
+components.<span class="hljs-property">Tooltip</span>.<span class="hljs-property">positioners</span>.<span class="hljs-property">bottom</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">items</span>) {
+  <span class="hljs-keyword">const</span> pos = components.<span class="hljs-property">Tooltip</span>.<span class="hljs-property">positioners</span>.<span class="hljs-title function_">average</span>(items);
+
+  <span class="hljs-comment">// Happens when nothing is found</span>
+  <span class="hljs-keyword">if</span> (pos === <span class="hljs-literal">false</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-keyword">const</span> chart = <span class="hljs-variable language_">this</span>.<span class="hljs-property">chart</span>;
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">x</span>: pos.<span class="hljs-property">x</span>,
+    <span class="hljs-attr">y</span>: chart.<span class="hljs-property">chartArea</span>.<span class="hljs-property">bottom</span>,
+    <span class="hljs-attr">xAlign</span>: <span class="hljs-string">&#x27;center&#x27;</span>,
+    <span class="hljs-attr">yAlign</span>: <span class="hljs-string">&#x27;bottom&#x27;</span>,
+  };
+};
+
+<span class="hljs-comment">// &lt;/block:positioner&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">interaction</span>: {
+      <span class="hljs-attr">intersect</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;index&#x27;</span>,
+    },
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">title</span>: {
+        <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">text</span>: <span class="hljs-function">(<span class="hljs-params">ctx</span>) =&gt;</span> <span class="hljs-string">&#x27;Tooltip position mode: &#x27;</span> + ctx.<span class="hljs-property">chart</span>.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">tooltip</span>.<span class="hljs-property">position</span>,
+      },
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">actions</span>: actions,
+  <span class="hljs-attr">config</span>: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../configuration/tooltip.md">Tooltip</a><ul>
+<li><a href="../../configuration/tooltip.md#position-modes">Position Modes</a></li>
+<li><a href="../../configuration/tooltip.md#custom-position-modes">Custom Position Modes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

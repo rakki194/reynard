@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misaki English Phonemes - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Misaki English Phonemes</h1>
+      <div class="markdown-content"><h1>Misaki English Phonemes</h1>
+<p>For English, Misaki currently uses 49 total phonemes. Of these, 41 are shared by both Americans and Brits, 4 are American-only, and 4 are British-only.</p>
+<p>Disclaimer: Author is an ML researcher, not a linguist, and may have butchered or reappropriated the traditional meaning of some symbols. These symbols are intended as input tokens for neural networks to yield optimal performance.</p>
+<h3>🤝 Shared (41)</h3>
+<p><strong>Stress Marks (2)</strong></p>
+<ul>
+<li><code>ˈ</code>: Primary stress, visually looks similar to an apostrophe.</li>
+<li><code>ˌ</code>: Secondary stress.</li>
+</ul>
+<p><strong>IPA Consonants (22)</strong></p>
+<ul>
+<li><code>bdfhjklmnpstvwz</code>: 15 alpha consonants taken from IPA. They mostly sound as you&#39;d expect, but <code>j</code> actually represents the &quot;y&quot; sound, like <code>yes =&gt; jˈɛs</code>.</li>
+<li><code>ɡ</code>: Hard &quot;g&quot; sound, like <code>get =&gt; ɡɛt</code>. Visually looks like the lowercase letter g, but its actually <code>U+0261</code>.</li>
+<li><code>ŋ</code>: The &quot;ng&quot; sound, like <code>sung =&gt; sˈʌŋ</code>.</li>
+<li><code>ɹ</code>: Upside-down r is just an &quot;r&quot; sound, like <code>red =&gt; ɹˈɛd</code>.</li>
+<li><code>ʃ</code>: The &quot;sh&quot; sound, like <code>shin =&gt; ʃˈɪn</code>.</li>
+<li><code>ʒ</code>: The &quot;zh&quot; sound, like <code>Asia =&gt; ˈAʒə</code>.</li>
+<li><code>ð</code>: Soft &quot;th&quot; sound, like <code>than =&gt; ðən</code>.</li>
+<li><code>θ</code>: Hard &quot;th&quot; sound, like <code>thin =&gt; θˈɪn</code>.</li>
+</ul>
+<p><strong>Consonant Clusters (2)</strong></p>
+<ul>
+<li><code>ʤ</code>: A &quot;j&quot; or &quot;dg&quot; sound, merges <code>dʒ</code>, like <code>jump =&gt; ʤˈʌmp</code> or <code>lunge =&gt; lˈʌnʤ</code>.</li>
+<li><code>ʧ</code>: The &quot;ch&quot; sound, merges <code>tʃ</code>, like <code>chump =&gt; ʧˈʌmp</code> or <code>lunch =&gt; lˈʌnʧ</code>.</li>
+</ul>
+<p><strong>IPA Vowels (10)</strong></p>
+<ul>
+<li><code>ə</code>: The schwa is a common, unstressed vowel sound, like <code>a 🍌 =&gt; ə 🍌</code>.</li>
+<li><code>i</code>: As in <code>easy =&gt; ˈizi</code>.</li>
+<li><code>u</code>: As in <code>flu =&gt; flˈu</code>.</li>
+<li><code>ɑ</code>: As in <code>spa =&gt; spˈɑ</code>.</li>
+<li><code>ɔ</code>: As in <code>all =&gt; ˈɔl</code>.</li>
+<li><code>ɛ</code>: As in <code>hair =&gt; hˈɛɹ</code> or <code>bed =&gt; bˈɛd</code>. Possibly dubious, because those vowel sounds do not sound similar to my ear.</li>
+<li><code>ɜ</code>: As in <code>her =&gt; hɜɹ</code>. Easy to confuse with <code>ɛ</code> above.</li>
+<li><code>ɪ</code>: As in <code>brick =&gt; bɹˈɪk</code>.</li>
+<li><code>ʊ</code>: As in <code>wood =&gt; wˈʊd</code>.</li>
+<li><code>ʌ</code>: As in <code>sun =&gt; sˈʌn</code>.</li>
+</ul>
+<p><strong>Dipthong Vowels (4)</strong></p>
+<ul>
+<li><code>A</code>: The &quot;eh&quot; vowel sound, like <code>hey =&gt; hˈA</code>. Expands to <code>eɪ</code> in IPA.</li>
+<li><code>I</code>: The &quot;eye&quot; vowel sound, like <code>high =&gt; hˈI</code>. Expands to <code>aɪ</code> in IPA.</li>
+<li><code>W</code>: The &quot;ow&quot; vowel sound, like <code>how =&gt; hˌW</code>. Expands to <code>aʊ</code> in IPA.</li>
+<li><code>Y</code>: The &quot;oy&quot; vowel sound, like <code>soy =&gt; sˈY</code>. Expands to <code>ɔɪ</code> in IPA.</li>
+</ul>
+<p><strong>Custom Vowel (1)</strong></p>
+<ul>
+<li><code>ᵊ</code>: Small schwa, muted version of <code>ə</code>, like <code>pixel =&gt; pˈɪksᵊl</code>. I made this one up, so I&#39;m not entirely sure if it&#39;s correct.</li>
+</ul>
+<h3>🇺🇸 American-only (4)</h3>
+<p><strong>Vowels (3)</strong></p>
+<ul>
+<li><code>æ</code>: The vowel sound at the start of <code>ash =&gt; ˈæʃ</code>.</li>
+<li><code>O</code>: Capital letter representing the American &quot;oh&quot; vowel sound. Expands to <code>oʊ</code> in IPA.</li>
+<li><code>ᵻ</code>: A sound somewhere in between <code>ə</code> and <code>ɪ</code>, often used in certain -s suffixes like <code>boxes =&gt; bˈɑksᵻz</code>.</li>
+</ul>
+<p><strong>Consonant (1)</strong></p>
+<ul>
+<li><code>ɾ</code>: A sound somewhere in between <code>t</code> and <code>d</code>, like <code>butter =&gt; bˈʌɾəɹ</code>.</li>
+</ul>
+<h3>🇬🇧 British-only (4)</h3>
+<p><strong>Vowels (3)</strong></p>
+<ul>
+<li><code>a</code>: The vowel sound at the start of <code>ash =&gt; ˈaʃ</code>.</li>
+<li><code>Q</code>: Capital letter representing the British &quot;oh&quot; vowel sound. Expands to <code>əʊ</code> in IPA.</li>
+<li><code>ɒ</code>: The sound at the start of <code>on =&gt; ˌɒn</code>. Easy to confuse with <code>ɑ</code>, which is a shared phoneme.</li>
+</ul>
+<p><strong>Other (1)</strong></p>
+<ul>
+<li><code>ː</code>: Vowel extender, visually looks similar to a colon. Possibly dubious, because Americans extend vowels too, but the gold US dictionary somehow lacks these. Often used by the Brits instead of <code>ɹ</code>: Americans say <code>or =&gt; ɔɹ</code>, but Brits say <code>or =&gt; ɔː</code>.</li>
+</ul>
+<h3>♻️ From espeak to Misaki</h3>
+<pre><code class="hljs language-py"><span class="hljs-keyword">import</span> re
+FROM_ESPEAKS = <span class="hljs-built_in">sorted</span>({<span class="hljs-string">&#x27;\u0303&#x27;</span>:<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;a^ɪ&#x27;</span>:<span class="hljs-string">&#x27;I&#x27;</span>,<span class="hljs-string">&#x27;a^ʊ&#x27;</span>:<span class="hljs-string">&#x27;W&#x27;</span>,<span class="hljs-string">&#x27;d^ʒ&#x27;</span>:<span class="hljs-string">&#x27;ʤ&#x27;</span>,<span class="hljs-string">&#x27;e&#x27;</span>:<span class="hljs-string">&#x27;A&#x27;</span>,<span class="hljs-string">&#x27;e^ɪ&#x27;</span>:<span class="hljs-string">&#x27;A&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>:<span class="hljs-string">&#x27;ɹ&#x27;</span>,<span class="hljs-string">&#x27;t^ʃ&#x27;</span>:<span class="hljs-string">&#x27;ʧ&#x27;</span>,<span class="hljs-string">&#x27;x&#x27;</span>:<span class="hljs-string">&#x27;k&#x27;</span>,<span class="hljs-string">&#x27;ç&#x27;</span>:<span class="hljs-string">&#x27;k&#x27;</span>,<span class="hljs-string">&#x27;ɐ&#x27;</span>:<span class="hljs-string">&#x27;ə&#x27;</span>,<span class="hljs-string">&#x27;ɔ^ɪ&#x27;</span>:<span class="hljs-string">&#x27;Y&#x27;</span>,<span class="hljs-string">&#x27;ə^l&#x27;</span>:<span class="hljs-string">&#x27;ᵊl&#x27;</span>,<span class="hljs-string">&#x27;ɚ&#x27;</span>:<span class="hljs-string">&#x27;əɹ&#x27;</span>,<span class="hljs-string">&#x27;ɬ&#x27;</span>:<span class="hljs-string">&#x27;l&#x27;</span>,<span class="hljs-string">&#x27;ʔ&#x27;</span>:<span class="hljs-string">&#x27;t&#x27;</span>,<span class="hljs-string">&#x27;ʔn&#x27;</span>:<span class="hljs-string">&#x27;tᵊn&#x27;</span>,<span class="hljs-string">&#x27;ʔˌn\u0329&#x27;</span>:<span class="hljs-string">&#x27;tᵊn&#x27;</span>,<span class="hljs-string">&#x27;ʲ&#x27;</span>:<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;ʲO&#x27;</span>:<span class="hljs-string">&#x27;jO&#x27;</span>,<span class="hljs-string">&#x27;ʲQ&#x27;</span>:<span class="hljs-string">&#x27;jQ&#x27;</span>}.items(), key=<span class="hljs-keyword">lambda</span> kv: -<span class="hljs-built_in">len</span>(kv[<span class="hljs-number">0</span>]))
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">from_espeak</span>(<span class="hljs-params">ps, british</span>):
+    <span class="hljs-keyword">for</span> old, new <span class="hljs-keyword">in</span> FROM_ESPEAKS:
+        ps = ps.replace(old, new)
+    ps = re.sub(<span class="hljs-string">r&#x27;(\S)\u0329&#x27;</span>, <span class="hljs-string">r&#x27;ᵊ\1&#x27;</span>, ps).replace(<span class="hljs-built_in">chr</span>(<span class="hljs-number">809</span>), <span class="hljs-string">&#x27;&#x27;</span>)
+    <span class="hljs-keyword">if</span> british:
+        ps = ps.replace(<span class="hljs-string">&#x27;e^ə&#x27;</span>, <span class="hljs-string">&#x27;ɛː&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;iə&#x27;</span>, <span class="hljs-string">&#x27;ɪə&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;ə^ʊ&#x27;</span>, <span class="hljs-string">&#x27;Q&#x27;</span>)
+    <span class="hljs-keyword">else</span>:
+        ps = ps.replace(<span class="hljs-string">&#x27;o^ʊ&#x27;</span>, <span class="hljs-string">&#x27;O&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;ɜːɹ&#x27;</span>, <span class="hljs-string">&#x27;ɜɹ&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;ɜː&#x27;</span>, <span class="hljs-string">&#x27;ɜɹ&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;ɪə&#x27;</span>, <span class="hljs-string">&#x27;iə&#x27;</span>)
+        ps = ps.replace(<span class="hljs-string">&#x27;ː&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+    <span class="hljs-keyword">return</span> ps.replace(<span class="hljs-string">&#x27;^&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+
+<span class="hljs-keyword">import</span> phonemizer
+british = <span class="hljs-literal">False</span>
+espeak = phonemizer.backend.EspeakBackend(
+    language=<span class="hljs-string">f&quot;en-<span class="hljs-subst">{<span class="hljs-string">&#x27;gb&#x27;</span> <span class="hljs-keyword">if</span> british <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;us&#x27;</span>}</span>&quot;</span>,
+    preserve_punctuation=<span class="hljs-literal">True</span>, with_stress=<span class="hljs-literal">True</span>, tie=<span class="hljs-string">&#x27;^&#x27;</span>
+)
+text = <span class="hljs-string">&#x27;merchantship&#x27;</span>
+espeak_ps = espeak.phonemize([text])
+espeak_ps = espeak_ps[<span class="hljs-number">0</span>].strip() <span class="hljs-keyword">if</span> espeak_ps <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;&#x27;</span>
+<span class="hljs-keyword">assert</span> espeak_ps == <span class="hljs-string">&#x27;mˈɜːt^ʃəntʃˌɪp&#x27;</span>, espeak_ps
+ps = from_espeak(espeak_ps, british)
+<span class="hljs-keyword">assert</span> ps == (<span class="hljs-string">&#x27;mˈɜːʧəntʃˌɪp&#x27;</span> <span class="hljs-keyword">if</span> british <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;mˈɜɹʧəntʃˌɪp&#x27;</span>), ps
+VOCAB = <span class="hljs-built_in">frozenset</span>(<span class="hljs-string">&#x27;AIWYbdfhijklmnpstuvwzðŋɑɔəɛɜɡɪɹʃʊʌʒʤʧˈˌθᵊ&#x27;</span> + (<span class="hljs-string">&#x27;Qaɒː&#x27;</span> <span class="hljs-keyword">if</span> british <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;Oæɾᵻ&#x27;</span>))
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(VOCAB) == <span class="hljs-number">45</span>, <span class="hljs-built_in">len</span>(VOCAB)
+<span class="hljs-keyword">assert</span> <span class="hljs-built_in">all</span>(p <span class="hljs-keyword">in</span> VOCAB <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> ps), ps</code></pre><h3>♻️ Misaki to espeak</h3>
+<pre><code class="hljs language-py"><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_espeak</span>(<span class="hljs-params">ps</span>):
+    <span class="hljs-comment"># Optionally, you can add a tie character in between the 2 replacement characters.</span>
+    ps = ps.replace(<span class="hljs-string">&#x27;ʤ&#x27;</span>, <span class="hljs-string">&#x27;dʒ&#x27;</span>).replace(<span class="hljs-string">&#x27;ʧ&#x27;</span>, <span class="hljs-string">&#x27;tʃ&#x27;</span>)
+    ps = ps.replace(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;eɪ&#x27;</span>).replace(<span class="hljs-string">&#x27;I&#x27;</span>, <span class="hljs-string">&#x27;aɪ&#x27;</span>).replace(<span class="hljs-string">&#x27;Y&#x27;</span>, <span class="hljs-string">&#x27;ɔɪ&#x27;</span>)
+    ps = ps.replace(<span class="hljs-string">&#x27;O&#x27;</span>, <span class="hljs-string">&#x27;oʊ&#x27;</span>).replace(<span class="hljs-string">&#x27;Q&#x27;</span>, <span class="hljs-string">&#x27;əʊ&#x27;</span>).replace(<span class="hljs-string">&#x27;W&#x27;</span>, <span class="hljs-string">&#x27;aʊ&#x27;</span>)
+    <span class="hljs-keyword">return</span> ps.replace(<span class="hljs-string">&#x27;ᵊ&#x27;</span>, <span class="hljs-string">&#x27;ə&#x27;</span>)</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

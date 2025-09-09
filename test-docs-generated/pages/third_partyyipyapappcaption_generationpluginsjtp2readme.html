@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JTP2 Caption Generator Plugin - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>JTP2 Caption Generator Plugin</h1>
+      <div class="markdown-content"><h1>JTP2 Caption Generator Plugin</h1>
+<p>The JTP2 (Joint Tagger Project PILOT2) plugin is a caption generator that produces English tags for images using a fine-tuned vision model.</p>
+<h2>Features</h2>
+<ul>
+<li>Generate descriptive tags for images</li>
+<li>GPU acceleration for faster inference (when available)</li>
+<li>Configurable confidence threshold for tag selection</li>
+<li>Handles various image formats, including RGBA images</li>
+</ul>
+<h2>Model Information</h2>
+<p>The JTP2 captioner uses the Joint Tagger Project PILOT2 model, which is based on the vision-so400m-14 architecture. The model is trained to recognize a variety of concepts in furry and anthro images.</p>
+<h2>Configuration</h2>
+<p>The plugin accepts the following configuration parameters:</p>
+<ul>
+<li><code>model_path</code>: Path to the model weights file (safetensors format)</li>
+<li><code>tags_path</code>: Path to the tags dictionary file (JSON format)</li>
+<li><code>threshold</code>: Confidence threshold for tag selection (default: 0.2)</li>
+<li><code>force_cpu</code>: Whether to force CPU inference (default: false)</li>
+</ul>
+<h2>Usage</h2>
+<p>You can use the JTP2 captioner through the API:</p>
+<pre><code class="hljs language-bash">POST /api/generate-caption/{path:path}?generator=jtp2</code></pre><h2>Implementation Details</h2>
+<p>The plugin is implemented in <code>generator.py</code> and uses:</p>
+<ul>
+<li>PyTorch for model inference</li>
+<li>timm for model architecture</li>
+<li>safetensors for model loading</li>
+<li>Pillow for image processing</li>
+</ul>
+<h2>Model Loading Issue and Fix</h2>
+<p>The JTP2 model uses a <code>GatedHead</code> structure in our code, but the weights file contains a simple linear head. To resolve this mismatch, the plugin:</p>
+<ol>
+<li>First loads the model weights with the original linear head structure</li>
+<li>Then replaces it with a GatedHead that&#39;s initialized with the linear head&#39;s weights</li>
+<li>This ensures compatibility with the weights while maintaining the expected structure</li>
+</ol>
+<h2>Model Files</h2>
+<p>The JTP2 model files are automatically downloaded from HuggingFace Hub when the plugin is first used. The files are managed by the unified model download system and cached appropriately for future use.</p>
+<p>The model files include:</p>
+<ul>
+<li>Model weights file (safetensors format)</li>
+<li>Tags dictionary file (JSON format)</li>
+</ul>
+<p>The unified downloader handles all model management, including downloading, caching, and version control.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard ECS Performance Package - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard ECS Performance Package</h1>
+      <div class="markdown-content"><h1>Reynard ECS Performance Package</h1>
+<p>A high-performance ECS implementation with automatic WASM SIMD acceleration and graceful TypeScript fallback.</p>
+<h2>🚀 Features</h2>
+<ul>
+<li><strong>Automatic WASM SIMD Detection</strong>: Automatically detects and uses WebAssembly SIMD when available</li>
+<li><strong>4.2x Performance Boost</strong>: Significant speedup for position updates and other SIMD-optimized operations</li>
+<li><strong>Graceful Fallback</strong>: Seamlessly falls back to TypeScript implementation when WASM is not available</li>
+<li><strong>Zero Configuration</strong>: Works out of the box with optimal performance settings</li>
+<li><strong>Performance Monitoring</strong>: Built-in metrics and diagnostics for performance analysis</li>
+<li><strong>Type Safety</strong>: Full TypeScript support with comprehensive type definitions</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createECSSystem } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;</code></pre><h2>🎯 Quick Start</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createECSSystem } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-comment">// Automatically selects the best available implementation</span>
+<span class="hljs-keyword">const</span> ecs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createECSSystem</span>({
+  <span class="hljs-attr">maxEntities</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">enableWASM</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">enableMetrics</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Use the ECS system</span>
+<span class="hljs-keyword">const</span> entity = ecs.<span class="hljs-title function_">spawn</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> <span class="hljs-title class_">Velocity</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>));
+ecs.<span class="hljs-title function_">runSystems</span>(<span class="hljs-number">0.016</span>);
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Performance mode: <span class="hljs-subst">${ecs.performanceMode}</span>`</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`WASM SIMD active: <span class="hljs-subst">${ecs.isWASMActive}</span>`</span>);</code></pre><h3>Quick Start Function</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { quickStartECS } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-comment">// Quick start with default configuration</span>
+<span class="hljs-keyword">const</span> ecs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">quickStartECS</span>(<span class="hljs-number">10000</span>);</code></pre><h2>🔧 Configuration Options</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ECSConfig</span> {
+  <span class="hljs-attr">maxEntities</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Maximum number of entities (default: 10000)</span>
+  <span class="hljs-attr">enableWASM</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable WASM SIMD acceleration (default: true)</span>
+  <span class="hljs-attr">enableMetrics</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Enable performance monitoring (default: false)</span>
+  <span class="hljs-attr">preferredMode</span>?: <span class="hljs-string">&quot;wasm-simd&quot;</span> | <span class="hljs-string">&quot;typescript&quot;</span> | <span class="hljs-string">&quot;auto&quot;</span>; <span class="hljs-comment">// Preferred implementation</span>
+  <span class="hljs-attr">fallbackBehavior</span>?: <span class="hljs-string">&quot;silent&quot;</span> | <span class="hljs-string">&quot;warn&quot;</span> | <span class="hljs-string">&quot;error&quot;</span>; <span class="hljs-comment">// Fallback behavior</span>
+}</code></pre><h2>🏗️ Architecture</h2>
+<h3>Unified Interface</h3>
+<p>The performance package provides a unified interface that abstracts implementation details:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">UnifiedECS</span> {
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">world</span>: <span class="hljs-title class_">World</span>;
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">metrics</span>: <span class="hljs-title class_">ECSPerformanceMetrics</span>;
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">isWASMActive</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-keyword">readonly</span> <span class="hljs-attr">performanceMode</span>: <span class="hljs-string">&quot;wasm-simd&quot;</span> | <span class="hljs-string">&quot;typescript&quot;</span> | <span class="hljs-string">&quot;hybrid&quot;</span>;
+
+  spawn&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Component</span>[]&gt;(...<span class="hljs-attr">components</span>: T): <span class="hljs-title class_">Entity</span>;
+  <span class="hljs-title function_">despawn</span>(<span class="hljs-attr">entity</span>: <span class="hljs-title class_">Entity</span>): <span class="hljs-built_in">void</span>;
+  query&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Component</span>[]&gt;(
+    ...<span class="hljs-attr">componentTypes</span>: <span class="hljs-built_in">any</span>[]
+  ): <span class="hljs-title class_">IterableIterator</span>&lt;[<span class="hljs-title class_">Entity</span>, ...T]&gt;;
+  <span class="hljs-title function_">addSystem</span>(<span class="hljs-attr">system</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">world</span>: <span class="hljs-title class_">World</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>, <span class="hljs-attr">name</span>?: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span>;
+  <span class="hljs-title function_">runSystems</span>(<span class="hljs-attr">deltaTime</span>?: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span>;
+  <span class="hljs-comment">// ... more methods</span>
+}</code></pre><h3>Implementation Selection</h3>
+<p>The system automatically selects the best available implementation:</p>
+<ol>
+<li><strong>WASM SIMD</strong> (Preferred): 4.2x speedup for position updates</li>
+<li><strong>TypeScript</strong> (Fallback): Full compatibility, no performance penalty</li>
+</ol>
+<h3>Detection Flow</h3>
+<pre><code class="hljs">graph TD
+    A[Create ECS System] --&gt; B{WASM Enabled?}
+    B --&gt;|<span class="hljs-type">No</span>| <span class="hljs-type">C</span>[Use TypeScript]
+    B --&gt;|<span class="hljs-type">Yes</span>| <span class="hljs-type">D</span>{WASM Supported?}
+    D --&gt;|<span class="hljs-type">No</span>| <span class="hljs-type">C</span>
+    D --&gt;|<span class="hljs-type">Yes</span>| <span class="hljs-type">E</span>{WASM Available?}
+    E --&gt;|<span class="hljs-type">No</span>| <span class="hljs-type">C</span>
+    E --&gt;|<span class="hljs-type">Yes</span>| <span class="hljs-type">F</span>[Use WASM SIMD]
+    C --&gt; G[ECS Ready]
+    F --&gt; G</code></pre><h2>📊 Performance Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>TypeScript</th>
+<th>WASM SIMD</th>
+<th>Speedup</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Position Updates</td>
+<td>1.0x</td>
+<td>4.2x</td>
+<td>4.2x</td>
+</tr>
+<tr>
+<td>Collision Detection</td>
+<td>1.0x</td>
+<td>3.4x</td>
+<td>3.4x</td>
+</tr>
+<tr>
+<td>Spatial Queries</td>
+<td>1.0x</td>
+<td>3.8x</td>
+<td>3.8x</td>
+</tr>
+</tbody></table>
+<h2>🧪 Examples</h2>
+<h3>Complete Game Example</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { runECSExample } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./example&quot;</span>;
+
+<span class="hljs-comment">// Run the complete example</span>
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">runECSExample</span>();</code></pre><h3>Performance Benchmark</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { benchmarkECS } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title function_">benchmarkECS</span>(<span class="hljs-number">1000</span>, <span class="hljs-number">100</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`WASM SIMD speedup: <span class="hljs-subst">${results.wasmSpeedup}</span>x`</span>);</code></pre><h3>Diagnostics</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { diagnoseECS } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-keyword">const</span> diagnostics = <span class="hljs-keyword">await</span> <span class="hljs-title function_">diagnoseECS</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ECS Diagnostics:&quot;</span>, diagnostics);</code></pre><h2>🔍 Diagnostics and Troubleshooting</h2>
+<h3>Environment Diagnostics</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getECSDiagnostics } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-keyword">const</span> diagnostics = <span class="hljs-title function_">getECSDiagnostics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Environment:&quot;</span>, diagnostics.<span class="hljs-property">environment</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;WASM Support:&quot;</span>, diagnostics.<span class="hljs-property">wasm</span>);</code></pre><h3>Performance Monitoring</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> ecs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createECSSystem</span>({ <span class="hljs-attr">enableMetrics</span>: <span class="hljs-literal">true</span> });
+
+<span class="hljs-comment">// Get current metrics</span>
+<span class="hljs-keyword">const</span> metrics = ecs.<span class="hljs-title function_">getMetrics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Entity Count:&quot;</span>, metrics.<span class="hljs-property">entityCount</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Average System Time:&quot;</span>, metrics.<span class="hljs-property">averageSystemTime</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Memory Usage:&quot;</span>, metrics.<span class="hljs-property">memoryUsage</span>);</code></pre><h2>🛠️ Advanced Usage</h2>
+<h3>Explicit Implementation Selection</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  createWASMSIMDECSSystem,
+  createTypeScriptECSSystem,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-comment">// Force WASM SIMD implementation</span>
+<span class="hljs-keyword">const</span> wasmECS = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createWASMSIMDECSSystem</span>({
+  <span class="hljs-attr">maxEntities</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">enableMetrics</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-comment">// Force TypeScript implementation</span>
+<span class="hljs-keyword">const</span> tsECS = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createTypeScriptECSSystem</span>({
+  <span class="hljs-attr">maxEntities</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">enableMetrics</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h3>Custom System Integration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Add custom systems</span>
+ecs.<span class="hljs-title function_">addSystem</span>(<span class="hljs-function">(<span class="hljs-params">world</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> query = world.<span class="hljs-title function_">query</span>(<span class="hljs-title class_">Position</span>, <span class="hljs-title class_">Velocity</span>);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [entity, position, velocity] <span class="hljs-keyword">of</span> query) {
+    position.<span class="hljs-property">x</span> += velocity.<span class="hljs-property">vx</span> * <span class="hljs-number">0.016</span>;
+    position.<span class="hljs-property">y</span> += velocity.<span class="hljs-property">vy</span> * <span class="hljs-number">0.016</span>;
+  }
+}, <span class="hljs-string">&quot;movement&quot;</span>);
+
+<span class="hljs-comment">// Run systems</span>
+ecs.<span class="hljs-title function_">runSystems</span>(<span class="hljs-number">0.016</span>);</code></pre><h2>🔧 Integration with Reynard Core</h2>
+<h3>Main ECS Package Integration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// In packages/games/src/ecs/index.ts</span>
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./performance&quot;</span>;
+
+<span class="hljs-comment">// Users can now import from the main ECS package</span>
+<span class="hljs-keyword">import</span> { createECSSystem } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-games/ecs&quot;</span>;</code></pre><h3>Component Compatibility</h3>
+<p>The performance package is fully compatible with existing Reynard ECS components:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Position</span>, <span class="hljs-title class_">Velocity</span>, <span class="hljs-title class_">Health</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../types&quot;</span>;
+
+<span class="hljs-keyword">const</span> entity = ecs.<span class="hljs-title function_">spawn</span>(
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Velocity</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>),
+  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Health</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>),
+);</code></pre><h2>🚀 Performance Tips</h2>
+<ol>
+<li><strong>Enable Metrics</strong>: Use <code>enableMetrics: true</code> for performance monitoring</li>
+<li><strong>Batch Operations</strong>: Group entity operations for better performance</li>
+<li><strong>System Ordering</strong>: Order systems by frequency of execution</li>
+<li><strong>Memory Management</strong>: Use <code>ecs.dispose()</code> to clean up resources</li>
+<li><strong>WASM Optimization</strong>: Ensure WASM SIMD is available for maximum performance</li>
+</ol>
+<h2>🐛 Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>WASM Not Available</strong>: Check browser support and module loading</li>
+<li><strong>Performance Issues</strong>: Verify WASM SIMD is active and metrics are enabled</li>
+<li><strong>Memory Leaks</strong>: Ensure proper cleanup with <code>ecs.dispose()</code></li>
+<li><strong>Type Errors</strong>: Verify component types match the unified interface</li>
+</ol>
+<h3>Debug Mode</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> ecs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">createECSSystem</span>({
+  <span class="hljs-attr">fallbackBehavior</span>: <span class="hljs-string">&quot;warn&quot;</span>, <span class="hljs-comment">// Show warnings for fallbacks</span>
+  <span class="hljs-attr">enableMetrics</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Enable performance monitoring</span>
+});</code></pre><h2>📈 Future Enhancements</h2>
+<ul>
+<li><strong>Hybrid Mode</strong>: Mix WASM SIMD and TypeScript implementations</li>
+<li><strong>GPU Acceleration</strong>: WebGPU integration for even higher performance</li>
+<li><strong>Parallel Systems</strong>: Multi-threaded system execution</li>
+<li><strong>Advanced SIMD</strong>: More SIMD-optimized operations</li>
+<li><strong>Memory Pooling</strong>: Optimized memory management for large entity counts</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Add tests for new functionality</li>
+<li>Ensure performance benchmarks pass</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>📄 License</h2>
+<p>This package is part of the Reynard ECS system and follows the same license terms.</p>
+<hr>
+<p><strong>🦊 Built with cunning agility by the Reynard team</strong></p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

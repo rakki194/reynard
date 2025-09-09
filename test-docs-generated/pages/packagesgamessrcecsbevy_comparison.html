@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bevy ECS vs Reynard ECS Comparison - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Bevy ECS vs Reynard ECS Comparison</h1>
+      <div class="markdown-content"><h1>Bevy ECS vs Reynard ECS Comparison</h1>
+<p>This document compares our TypeScript ECS implementation with Bevy&#39;s Rust ECS to identify similarities, differences, and areas for improvement.</p>
+<h2>✅ Implemented Features</h2>
+<h3>Core ECS Components</h3>
+<ul>
+<li><strong>Entities</strong>: Generational indexing with <code>Entity</code> struct (index + generation)</li>
+<li><strong>Components</strong>: Type-safe component system with <code>Component</code> trait</li>
+<li><strong>Systems</strong>: Function-based systems with dependency management</li>
+<li><strong>World</strong>: Central container for all ECS data</li>
+<li><strong>Resources</strong>: Global singleton data management</li>
+</ul>
+<h3>Storage Strategies</h3>
+<ul>
+<li><strong>Table Storage</strong>: Dense storage for frequently accessed components</li>
+<li><strong>SparseSet Storage</strong>: Sparse storage for optional components</li>
+<li><strong>Component Registry</strong>: Type registration and management</li>
+</ul>
+<h3>Query System</h3>
+<ul>
+<li><strong>Type-safe Queries</strong>: Component filtering with TypeScript generics</li>
+<li><strong>Query Filters</strong>: <code>with</code>, <code>without</code>, <code>added</code>, <code>changed</code> filters</li>
+<li><strong>Query Results</strong>: Iterator-like interface for component access</li>
+</ul>
+<h3>System Management</h3>
+<ul>
+<li><strong>System Scheduling</strong>: Dependency-based execution order</li>
+<li><strong>System Sets</strong>: Grouping systems for organization</li>
+<li><strong>Exclusive Systems</strong>: Systems that require exclusive world access</li>
+</ul>
+<h2>🆕 Newly Added Features (Matching Bevy)</h2>
+<h3>Archetype System</h3>
+<ul>
+<li><strong>Archetypes</strong>: Groups entities with same component layout</li>
+<li><strong>ArchetypeId</strong>: Unique identifiers for archetypes</li>
+<li><strong>ArchetypeRow</strong>: Position within an archetype</li>
+<li><strong>Archetype Management</strong>: Creation and lookup of archetypes</li>
+</ul>
+<h3>Entity Location Tracking</h3>
+<ul>
+<li><strong>EntityLocation</strong>: Precise tracking of entity storage location</li>
+<li><strong>EntityMeta</strong>: Metadata including generation and location</li>
+<li><strong>Location Updates</strong>: Automatic location tracking during component changes</li>
+</ul>
+<h3>Change Detection</h3>
+<ul>
+<li><strong>Tick System</strong>: Time-based change tracking</li>
+<li><strong>Component Ticks</strong>: Track when components were added/changed</li>
+<li><strong>Change Queries</strong>: Filter entities by change status</li>
+</ul>
+<h3>Bundle System</h3>
+<ul>
+<li><strong>Bundle Trait</strong>: Grouped component operations</li>
+<li><strong>Bundle Registry</strong>: Type registration for bundles</li>
+<li><strong>Bundle Operations</strong>: Insert/remove multiple components together</li>
+</ul>
+<h3>Event System</h3>
+<ul>
+<li><strong>Event Collection</strong>: Type-safe event management</li>
+<li><strong>Event Readers</strong>: Read events since last check</li>
+<li><strong>Event Writers</strong>: Send events to the system</li>
+<li><strong>Event Registry</strong>: Manage different event types</li>
+</ul>
+<h3>Parallel Execution System</h3>
+<ul>
+<li><strong>Parallel Iterators</strong>: Multi-threaded query execution</li>
+<li><strong>Task Pool</strong>: Web Worker-based parallel processing</li>
+<li><strong>Batching Strategies</strong>: Configurable batch sizes for optimization</li>
+<li><strong>Parallel Commands</strong>: Deferred operations in parallel contexts</li>
+</ul>
+<h3>System Conditions</h3>
+<ul>
+<li><strong>Conditional Execution</strong>: Systems run based on conditions</li>
+<li><strong>Resource Conditions</strong>: Check resource state and changes</li>
+<li><strong>Entity Conditions</strong>: Check entity existence and counts</li>
+<li><strong>Time Conditions</strong>: Frame-based and time-based conditions</li>
+<li><strong>Input Conditions</strong>: Keyboard and mouse input conditions</li>
+<li><strong>Condition Combinators</strong>: AND, OR, NOT, XOR logic</li>
+</ul>
+<h3>Component Hooks</h3>
+<ul>
+<li><strong>Lifecycle Hooks</strong>: onAdd, onInsert, onReplace, onRemove, onDespawn</li>
+<li><strong>Hook Registry</strong>: Centralized hook management</li>
+<li><strong>Common Hooks</strong>: Logging, validation, event triggering</li>
+<li><strong>Custom Hooks</strong>: User-defined lifecycle behavior</li>
+</ul>
+<h3>Query State Management</h3>
+<ul>
+<li><strong>Query Caching</strong>: Cache query results for performance</li>
+<li><strong>State Optimization</strong>: Track dirty states and updates</li>
+<li><strong>Query State Builder</strong>: Fluent API for query construction</li>
+<li><strong>Performance Monitoring</strong>: Track query performance metrics</li>
+</ul>
+<h2>🔄 Key Differences from Bevy</h2>
+<h3>Language-Specific Adaptations</h3>
+<h4>TypeScript vs Rust</h4>
+<ul>
+<li><strong>Generics</strong>: TypeScript generics vs Rust generics (similar concepts, different syntax)</li>
+<li><strong>Memory Management</strong>: Automatic garbage collection vs manual memory management</li>
+<li><strong>Type Safety</strong>: Compile-time type checking (both languages)</li>
+<li><strong>Performance</strong>: JavaScript engine optimizations vs zero-cost abstractions</li>
+</ul>
+<h4>API Design</h4>
+<ul>
+<li><strong>Method Names</strong>: camelCase vs snake_case</li>
+<li><strong>Optional Parameters</strong>: TypeScript optional parameters vs Rust Option types</li>
+<li><strong>Error Handling</strong>: Exceptions vs Result types</li>
+<li><strong>Async Support</strong>: Promise-based vs async/await (both support async)</li>
+</ul>
+<h3>Missing Bevy Features</h3>
+<h4>Advanced Query Features</h4>
+<ul>
+<li><strong>Parallel Iteration</strong>: Bevy&#39;s <code>par_iter()</code> for multi-threaded queries</li>
+<li><strong>Query State Caching</strong>: Bevy caches query state for performance</li>
+<li><strong>Dynamic Queries</strong>: Runtime query construction</li>
+<li><strong>Query Conflicts</strong>: Automatic detection of conflicting queries</li>
+</ul>
+<h4>Advanced System Features</h4>
+<ul>
+<li><strong>System Conditions</strong>: Conditional system execution</li>
+<li><strong>System Stepping</strong>: Step-by-step system execution for debugging</li>
+<li><strong>System Parameters</strong>: More parameter types (NonSend, etc.)</li>
+<li><strong>System Chaining</strong>: Piping system outputs to inputs</li>
+</ul>
+<h4>Advanced Storage Features</h4>
+<ul>
+<li><strong>Blob Storage</strong>: Custom memory layouts for components</li>
+<li><strong>Component Hooks</strong>: Lifecycle hooks for components</li>
+<li><strong>Required Components</strong>: Automatic component dependencies</li>
+<li><strong>Component Relationships</strong>: Parent-child relationships</li>
+</ul>
+<h4>Performance Optimizations</h4>
+<ul>
+<li><strong>SIMD Operations</strong>: Vectorized operations for bulk data</li>
+<li><strong>Memory Pools</strong>: Pre-allocated memory pools</li>
+<li><strong>Cache-Friendly Layouts</strong>: Optimized memory access patterns</li>
+<li><strong>Parallel Execution</strong>: Multi-threaded system execution</li>
+</ul>
+<h2>🎯 Performance Considerations</h2>
+<h3>Current Implementation</h3>
+<ul>
+<li><strong>Single-threaded</strong>: All operations run on main thread</li>
+<li><strong>Basic Caching</strong>: Simple component storage without advanced caching</li>
+<li><strong>Memory Overhead</strong>: JavaScript object overhead vs zero-cost abstractions</li>
+<li><strong>Garbage Collection</strong>: Potential GC pressure from frequent allocations</li>
+</ul>
+<h3>Bevy Optimizations</h3>
+<ul>
+<li><strong>Multi-threading</strong>: Parallel system execution</li>
+<li><strong>Memory Layouts</strong>: Optimized component storage</li>
+<li><strong>Zero-cost Abstractions</strong>: Compile-time optimizations</li>
+<li><strong>SIMD</strong>: Vectorized operations for bulk data</li>
+</ul>
+<h2>🚀 Future Improvements</h2>
+<h3>High Priority</h3>
+<ol>
+<li><strong>Query State Caching</strong>: Cache query results for better performance</li>
+<li><strong>Parallel Iteration</strong>: Multi-threaded query execution</li>
+<li><strong>System Conditions</strong>: Conditional system execution</li>
+<li><strong>Component Hooks</strong>: Lifecycle management for components</li>
+</ol>
+<h3>Medium Priority</h3>
+<ol>
+<li><strong>Dynamic Queries</strong>: Runtime query construction</li>
+<li><strong>System Stepping</strong>: Debugging support</li>
+<li><strong>Memory Pools</strong>: Reduce allocation overhead</li>
+<li><strong>SIMD Operations</strong>: Vectorized bulk operations</li>
+</ol>
+<h3>Low Priority</h3>
+<ol>
+<li><strong>Component Relationships</strong>: Parent-child hierarchies</li>
+<li><strong>Advanced Storage</strong>: Custom memory layouts</li>
+<li><strong>System Chaining</strong>: Output-to-input piping</li>
+<li><strong>Performance Profiling</strong>: Built-in performance monitoring</li>
+</ol>
+<h2>📊 Feature Completeness</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Bevy</th>
+<th>Reynard</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Core ECS</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Storage Strategies</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Query System</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>System Scheduling</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Archetypes</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Change Detection</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Bundles</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Events</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Parallel Execution</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Query Caching</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>System Conditions</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Component Hooks</td>
+<td>✅</td>
+<td>✅</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Dynamic Queries</td>
+<td>✅</td>
+<td>❌</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td>System Stepping</td>
+<td>✅</td>
+<td>❌</td>
+<td>Missing</td>
+</tr>
+<tr>
+<td>SIMD Operations</td>
+<td>✅</td>
+<td>❌</td>
+<td>Missing</td>
+</tr>
+</tbody></table>
+<h2>🎉 Conclusion</h2>
+<p>Our TypeScript ECS implementation successfully captures the core architecture and patterns of Bevy ECS while adapting them for the JavaScript/TypeScript ecosystem. The implementation provides:</p>
+<ul>
+<li><strong>Complete Core Functionality</strong>: All essential ECS features</li>
+<li><strong>Advanced Features</strong>: Parallel execution, system conditions, component hooks, query caching</li>
+<li><strong>Type Safety</strong>: Full TypeScript support with generics</li>
+<li><strong>Performance</strong>: Optimized for JavaScript engine capabilities with Web Worker support</li>
+<li><strong>Extensibility</strong>: Easy to add new features and optimizations</li>
+<li><strong>Developer Experience</strong>: Clean, intuitive API design with fluent interfaces</li>
+</ul>
+<p>The implementation is production-ready for complex use cases and provides a solid foundation for building sophisticated games and simulations in the Reynard framework. With the addition of parallel execution, system conditions, component hooks, and query state management, our ECS now matches the advanced capabilities of Bevy ECS while maintaining the flexibility and ease of use that makes it perfect for the Reynard ecosystem.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

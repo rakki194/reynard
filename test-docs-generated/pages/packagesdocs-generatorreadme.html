@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-docs-generator - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-docs-generator</h1>
+      <div class="markdown-content"><h1>reynard-docs-generator</h1>
+<blockquote>
+<p><strong>Automated documentation generator for Reynard packages</strong> 🦊</p>
+</blockquote>
+<p>Automatically generate beautiful documentation from your Reynard packages with TypeScript analysis, API extraction, and interactive examples.</p>
+<h2>✨ Features</h2>
+<h3>🎯 <strong>Core Capabilities</strong></h3>
+<ul>
+<li><strong>Automatic Package Discovery</strong>: Find and analyze all packages in your workspace</li>
+<li><strong>TypeScript Analysis</strong>: Extract API documentation from TypeScript source code</li>
+<li><strong>Markdown Processing</strong>: Process existing markdown documentation</li>
+<li><strong>Example Generation</strong>: Create interactive code examples</li>
+<li><strong>Watch Mode</strong>: Live regeneration on file changes</li>
+<li><strong>CLI Interface</strong>: Easy-to-use command line tool</li>
+</ul>
+<h3>🔍 <strong>Analysis Features</strong></h3>
+<ul>
+<li><strong>Package Analysis</strong>: Extract metadata from package.json files</li>
+<li><strong>API Documentation</strong>: Generate comprehensive API docs from TypeScript</li>
+<li><strong>JSDoc Support</strong>: Extract documentation from JSDoc comments</li>
+<li><strong>Type Information</strong>: Full TypeScript type analysis</li>
+<li><strong>Dependency Tracking</strong>: Analyze package dependencies</li>
+</ul>
+<h3>🎨 <strong>Output Features</strong></h3>
+<ul>
+<li><strong>Structured Data</strong>: Generate JSON documentation data</li>
+<li><strong>Template System</strong>: Customizable documentation templates</li>
+<li><strong>Multiple Formats</strong>: Support for various output formats</li>
+<li><strong>Search Integration</strong>: Generate searchable documentation</li>
+<li><strong>Navigation</strong>: Automatic navigation structure generation</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-docs-generator</code></pre><h2>🚀 Quick Start</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Generate documentation once</span>
+npx reynard-docs-generator
+
+<span class="hljs-comment"># Watch for changes and regenerate</span>
+npx reynard-docs-generator --watch
+
+<span class="hljs-comment"># Use custom config file</span>
+npx reynard-docs-generator --config ./my-config.js</code></pre><h3>Configuration</h3>
+<p>Create a <code>reynard-docs.config.js</code> file in your project root:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">rootPath</span>: process.<span class="hljs-title function_">cwd</span>(),
+  <span class="hljs-attr">outputPath</span>: <span class="hljs-string">&quot;docs-generated&quot;</span>,
+  <span class="hljs-attr">packages</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;core&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./packages/core&quot;</span>,
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;Core&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;components&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./packages/components&quot;</span>,
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;UI&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;themes&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./packages/themes&quot;</span>,
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;Styling&quot;</span>,
+    },
+  ],
+  <span class="hljs-attr">site</span>: {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;My Reynard Documentation&quot;</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Beautiful documentation for my Reynard packages&quot;</span>,
+    <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;/&quot;</span>,
+  },
+  <span class="hljs-attr">theme</span>: {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;custom&quot;</span>,
+    <span class="hljs-attr">primaryColor</span>: <span class="hljs-string">&quot;#6366f1&quot;</span>,
+    <span class="hljs-attr">secondaryColor</span>: <span class="hljs-string">&quot;#8b5cf6&quot;</span>,
+    <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;#ffffff&quot;</span>,
+    <span class="hljs-attr">textColor</span>: <span class="hljs-string">&quot;#1f2937&quot;</span>,
+    <span class="hljs-attr">accentColor</span>: <span class="hljs-string">&quot;#f59e0b&quot;</span>,
+  },
+  <span class="hljs-attr">navigation</span>: {
+    <span class="hljs-attr">main</span>: [
+      { <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Getting Started&quot;</span>, <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;/getting-started&quot;</span> },
+      { <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Packages&quot;</span>, <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;/packages&quot;</span> },
+      { <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;API Reference&quot;</span>, <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;/api&quot;</span> },
+    ],
+    <span class="hljs-attr">breadcrumbs</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">sidebar</span>: <span class="hljs-literal">true</span>,
+  },
+  <span class="hljs-attr">search</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">provider</span>: <span class="hljs-string">&quot;local&quot;</span>,
+    <span class="hljs-attr">placeholder</span>: <span class="hljs-string">&quot;Search documentation...&quot;</span>,
+  },
+};</code></pre><h3>Programmatic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createDocGenerator } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-docs-generator&quot;</span>;
+
+<span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">createDocGenerator</span>({
+  <span class="hljs-attr">rootPath</span>: process.<span class="hljs-title function_">cwd</span>(),
+  <span class="hljs-attr">outputPath</span>: <span class="hljs-string">&quot;docs-generated&quot;</span>,
+  <span class="hljs-attr">packages</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;my-package&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./packages/my-package&quot;</span>,
+      <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;Core&quot;</span>,
+    },
+  ],
+  <span class="hljs-attr">site</span>: {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;My Documentation&quot;</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;Generated documentation&quot;</span>,
+    <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">&quot;/&quot;</span>,
+  },
+  <span class="hljs-attr">theme</span>: {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;default&quot;</span>,
+    <span class="hljs-attr">primaryColor</span>: <span class="hljs-string">&quot;#6366f1&quot;</span>,
+    <span class="hljs-attr">secondaryColor</span>: <span class="hljs-string">&quot;#8b5cf6&quot;</span>,
+    <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;#ffffff&quot;</span>,
+    <span class="hljs-attr">textColor</span>: <span class="hljs-string">&quot;#1f2937&quot;</span>,
+    <span class="hljs-attr">accentColor</span>: <span class="hljs-string">&quot;#f59e0b&quot;</span>,
+  },
+  <span class="hljs-attr">navigation</span>: {
+    <span class="hljs-attr">main</span>: [],
+    <span class="hljs-attr">breadcrumbs</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">sidebar</span>: <span class="hljs-literal">true</span>,
+  },
+});
+
+<span class="hljs-comment">// Generate documentation</span>
+<span class="hljs-keyword">await</span> generator.<span class="hljs-title function_">generate</span>();
+
+<span class="hljs-comment">// Watch for changes</span>
+<span class="hljs-keyword">await</span> generator.<span class="hljs-title function_">watch</span>();</code></pre><h2>🔧 Configuration Options</h2>
+<h3>Package Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">PackageConfig</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Package name</span>
+  <span class="hljs-attr">path</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Path to package directory</span>
+  <span class="hljs-attr">pattern</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Glob pattern to find packages</span>
+  <span class="hljs-attr">category</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Documentation category</span>
+  <span class="hljs-attr">priority</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Display priority</span>
+  <span class="hljs-attr">include</span>?: <span class="hljs-built_in">string</span>[]; <span class="hljs-comment">// Files to include</span>
+  <span class="hljs-attr">exclude</span>?: <span class="hljs-built_in">string</span>[]; <span class="hljs-comment">// Files to exclude</span>
+}</code></pre><h3>Site Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SiteConfig</span> {
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Site title</span>
+  <span class="hljs-attr">description</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Site description</span>
+  <span class="hljs-attr">baseUrl</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Base URL for the site</span>
+  <span class="hljs-attr">logo</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Logo URL</span>
+  <span class="hljs-attr">favicon</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Favicon URL</span>
+}</code></pre><h3>Theme Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ThemeConfig</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Theme name</span>
+  <span class="hljs-attr">primaryColor</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Primary color</span>
+  <span class="hljs-attr">secondaryColor</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Secondary color</span>
+  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Background color</span>
+  <span class="hljs-attr">textColor</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Text color</span>
+  <span class="hljs-attr">accentColor</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Accent color</span>
+  <span class="hljs-attr">fontFamily</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Font family</span>
+  <span class="hljs-attr">customCSS</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Custom CSS</span>
+}</code></pre><h3>Navigation Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">NavigationConfig</span> {
+  <span class="hljs-attr">main</span>: <span class="hljs-title class_">NavItem</span>[]; <span class="hljs-comment">// Main navigation items</span>
+  <span class="hljs-attr">footer</span>?: <span class="hljs-title class_">NavItem</span>[]; <span class="hljs-comment">// Footer navigation items</span>
+  <span class="hljs-attr">breadcrumbs</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Show breadcrumbs</span>
+  <span class="hljs-attr">sidebar</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Show sidebar</span>
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">NavItem</span> {
+  <span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Navigation label</span>
+  <span class="hljs-attr">href</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Navigation URL</span>
+  <span class="hljs-attr">icon</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Icon</span>
+  <span class="hljs-attr">children</span>?: <span class="hljs-title class_">NavItem</span>[]; <span class="hljs-comment">// Sub-navigation</span>
+  <span class="hljs-attr">external</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// External link</span>
+  <span class="hljs-attr">badge</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Badge text</span>
+  <span class="hljs-attr">color</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Badge color</span>
+}</code></pre><h2>📚 Generated Documentation Structure</h2>
+<p>The generator creates a structured documentation site with:</p>
+<pre><code class="hljs">docs-<span class="hljs-keyword">generated</span>/
+├── docs-config.json          # Main <span class="hljs-keyword">configuration</span>
+├── pages/                    # Individual pages
+│   ├── package-<span class="hljs-type">name</span>.json
+│   ├── package-<span class="hljs-type">name</span>-api.json
+│   └── package-<span class="hljs-type">name</span>-examples.json
+├── sections/                 # Documentation sections
+│   ├── core.json
+│   ├── ui.json
+│   └── styling.json
+├── examples/                 # Code examples
+│   ├── example<span class="hljs-number">-1.</span><span class="hljs-type">json</span>
+│   └── example<span class="hljs-number">-2.</span><span class="hljs-type">json</span>
+└── api/                      # API documentation
+    ├── <span class="hljs-keyword">function</span>-<span class="hljs-type">name</span>.json
+    └── <span class="hljs-keyword">class</span>-<span class="hljs-type">name</span>.json</code></pre><h2>🎯 API Documentation</h2>
+<p>The generator automatically extracts API documentation from TypeScript source code:</p>
+<h3>Function Documentation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">/**
+ * Creates a new notification
+ * <span class="hljs-doctag">@param</span> <span class="hljs-variable">message</span> - The notification message
+ * <span class="hljs-doctag">@param</span> <span class="hljs-variable">type</span> - The notification type
+ * <span class="hljs-doctag">@param</span> <span class="hljs-variable">options</span> - Additional options
+ * <span class="hljs-doctag">@returns</span> The notification ID
+ * <span class="hljs-doctag">@example</span>
+ * ```typescript
+ * const id = createNotification(&#x27;Hello!&#x27;, &#x27;success&#x27;);
+ * ```
+ * <span class="hljs-doctag">@since</span> 1.0.0
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createNotification</span>(<span class="hljs-params">
+  <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>,
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;success&quot;</span> | <span class="hljs-string">&quot;error&quot;</span> | <span class="hljs-string">&quot;warning&quot;</span> | <span class="hljs-string">&quot;info&quot;</span>,
+  <span class="hljs-attr">options</span>?: <span class="hljs-title class_">NotificationOptions</span>,
+</span>): <span class="hljs-built_in">string</span> {
+  <span class="hljs-comment">// Implementation</span>
+}</code></pre><h3>Class Documentation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">/**
+ * Manages application state
+ * <span class="hljs-doctag">@example</span>
+ * ```typescript
+ * const store = new StateManager();
+ * store.set(&#x27;user&#x27;, { name: &#x27;John&#x27; });
+ * ```
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StateManager</span> {
+  <span class="hljs-comment">/**
+   * Set a value in the store
+   * <span class="hljs-doctag">@param</span> <span class="hljs-variable">key</span> - The key to set
+   * <span class="hljs-doctag">@param</span> <span class="hljs-variable">value</span> - The value to store
+   */</span>
+  set&lt;T&gt;(<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">value</span>: T): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// Implementation</span>
+  }
+}</code></pre><h2>🔍 Search Integration</h2>
+<p>The generator creates searchable documentation with:</p>
+<ul>
+<li><strong>Full-text search</strong> across all documentation</li>
+<li><strong>API search</strong> for functions, classes, and types</li>
+<li><strong>Example search</strong> for code examples</li>
+<li><strong>Tag-based filtering</strong> for categorized content</li>
+</ul>
+<h2>🎨 Customization</h2>
+<h3>Custom Templates</h3>
+<p>Create custom templates for different documentation types:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">createDocGenerator</span>({
+  <span class="hljs-comment">// ... other config</span>
+  <span class="hljs-attr">templates</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;custom-overview&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./templates/overview.hbs&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;package-overview&quot;</span>,
+    },
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;custom-api&quot;</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;./templates/api.hbs&quot;</span>,
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;api&quot;</span>,
+    },
+  ],
+});</code></pre><h3>Custom Components</h3>
+<p>Register custom components for documentation:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">createDocGenerator</span>({
+  <span class="hljs-comment">// ... other config</span>
+  <span class="hljs-attr">customComponents</span>: {
+    <span class="hljs-title class_">MyCustomComponent</span>: <span class="hljs-title class_">MyCustomComponent</span>,
+    <span class="hljs-title class_">InteractiveDemo</span>: <span class="hljs-title class_">InteractiveDemo</span>,
+  },
+});</code></pre><h2>🧪 Testing</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run <span class="hljs-built_in">test</span>:coverage
+
+<span class="hljs-comment"># Run tests in watch mode</span>
+npm run <span class="hljs-built_in">test</span>:watch</code></pre><h2>📦 Bundle Size</h2>
+<ul>
+<li><strong>Core generator</strong>: ~45 kB (gzipped)</li>
+<li><strong>CLI tool</strong>: ~35 kB (gzipped)</li>
+<li><strong>TypeScript analyzer</strong>: ~25 kB (gzipped)</li>
+<li><strong>Total</strong>: ~105 kB (gzipped)</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>See the main <a href="../../README.md">Reynard repository</a> for contribution guidelines.</p>
+<h2>📄 License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<hr>
+<p><strong>Built with ❤️ using TypeScript and modern web standards</strong> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

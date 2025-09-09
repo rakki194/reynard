@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Charts - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Responsive Charts</h1>
+      <div class="markdown-content"><h1>Responsive Charts</h1>
+<p>When it comes to changing the chart size based on the window size, a major limitation is that the canvas <em>render</em> size (<code>canvas.width</code> and <code>.height</code>) can <strong>not</strong> be expressed with relative values, contrary to the <em>display</em> size (<code>canvas.style.width</code> and <code>.height</code>). Furthermore, these sizes are independent of each other and thus the canvas <em>render</em> size does not adjust automatically based on the <em>display</em> size, making the rendering inaccurate.</p>
+<p>The following examples <strong>do not work</strong>:</p>
+<ul>
+<li><code>&lt;canvas height=&quot;40vh&quot; width=&quot;80vw&quot;&gt;</code>: <strong>invalid</strong> values, the canvas doesn&#39;t resize (<a href="https://codepen.io/chartjs/pen/oWLZaR">example</a>)</li>
+<li><code>&lt;canvas style=&quot;height:40vh; width:80vw&quot;&gt;</code>: <strong>invalid</strong> behavior, the canvas is resized but becomes blurry (<a href="https://codepen.io/chartjs/pen/WjxpmO">example</a>)</li>
+<li><code>&lt;canvas style=&quot;margin: 0 auto;&quot;&gt;</code>: <strong>invalid</strong> behavior, the canvas continually shrinks. Chart.js needs a dedicated container for each canvas and this styling should be applied there.</li>
+</ul>
+<p>Chart.js provides a <a href="#configuration-options">few options</a> to enable responsiveness and control the resize behavior of charts by detecting when the canvas <em>display</em> size changes and update the <em>render</em> size accordingly.</p>
+<h2>Configuration Options</h2>
+<p>Namespace: <code>options</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>responsive</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Resizes the chart canvas when its container does (<a href="#important-note">important note...</a>).</td>
+</tr>
+<tr>
+<td><code>maintainAspectRatio</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Maintain the original canvas aspect ratio <code>(width / height)</code> when resizing.</td>
+</tr>
+<tr>
+<td><code>aspectRatio</code></td>
+<td><code>number</code></td>
+<td><code>1</code>|<code>2</code></td>
+<td>Canvas aspect ratio (i.e. <code>width / height</code>, a value of 1 representing a square canvas). Note that this option is ignored if the height is explicitly defined either as attribute or via the style. The default value varies by chart type; Radial charts (doughnut, pie, polarArea, radar) default to <code>1</code> and others default to <code>2</code>.</td>
+</tr>
+<tr>
+<td><code>onResize</code></td>
+<td><code>function</code></td>
+<td><code>null</code></td>
+<td>Called when a resize occurs. Gets passed two arguments: the chart instance and the new size.</td>
+</tr>
+<tr>
+<td><code>resizeDelay</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Delay the resize update by the given amount of milliseconds. This can ease the resize process by debouncing the update of the elements.</td>
+</tr>
+</tbody></table>
+<h2>Important Note</h2>
+<p>Detecting when the canvas size changes can not be done directly from the <code>canvas</code> element. Chart.js uses its parent container to update the canvas <em>render</em> and <em>display</em> sizes. However, this method requires the container to be <strong>relatively positioned</strong> and <strong>dedicated to the chart canvas only</strong>. Responsiveness can then be achieved by setting relative values for the container size (<a href="https://codepen.io/chartjs/pen/YVWZbz">example</a>):</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;chart-container&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: relative; height:40vh; width:80vw&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">canvas</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;chart&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">canvas</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre><p>The chart can also be programmatically resized by modifying the container size:</p>
+<pre><code class="hljs language-javascript">chart.<span class="hljs-property">canvas</span>.<span class="hljs-property">parentNode</span>.<span class="hljs-property">style</span>.<span class="hljs-property">height</span> = <span class="hljs-string">&#x27;128px&#x27;</span>;
+chart.<span class="hljs-property">canvas</span>.<span class="hljs-property">parentNode</span>.<span class="hljs-property">style</span>.<span class="hljs-property">width</span> = <span class="hljs-string">&#x27;128px&#x27;</span>;</code></pre><p>Note that in order for the above code to correctly resize the chart height, the <a href="#configuration-options"><code>maintainAspectRatio</code></a> option must also be set to <code>false</code>.</p>
+<h2>Printing Resizable Charts</h2>
+<p>CSS media queries allow changing styles when printing a page. The CSS applied from these media queries may cause charts to need to resize. However, the resize won&#39;t happen automatically. To support resizing charts when printing, you need to hook the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeprint">onbeforeprint</a> event and manually trigger resizing of each chart.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">beforePrintHandler</span> (<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> id <span class="hljs-keyword">in</span> <span class="hljs-title class_">Chart</span>.<span class="hljs-property">instances</span>) {
+        <span class="hljs-title class_">Chart</span>.<span class="hljs-property">instances</span>[id].<span class="hljs-title function_">resize</span>();
+    }
+}</code></pre><p>You may also find that, due to complexities in when the browser lays out the document for printing and when resize events are fired, Chart.js is unable to properly resize for the print layout. To work around this, you can pass an explicit size to <code>.resize()</code> then use an <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onafterprint">onafterprint</a> event to restore the automatic size when done.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;beforeprint&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  myChart.<span class="hljs-title function_">resize</span>(<span class="hljs-number">600</span>, <span class="hljs-number">600</span>);
+});
+<span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;afterprint&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  myChart.<span class="hljs-title function_">resize</span>();
+});</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

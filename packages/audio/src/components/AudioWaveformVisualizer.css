@@ -1,0 +1,344 @@
+/**
+ * Audio Waveform Visualizer Styles
+ * 
+ * Styles for the interactive audio waveform visualizer with playback controls
+ * and zoom functionality. Integrates with Reynard's design system.
+ */
+
+.audio-waveform-visualizer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Container */
+.waveform-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--color-border, #e5e7eb);
+  border-top: 3px solid var(--color-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-error-hover, #fef2f2);
+  border: 1px solid var(--color-error, #dc2626);
+  border-radius: 0.5rem;
+  color: var(--color-error, #dc2626);
+}
+
+.error-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Waveform Wrapper */
+.waveform-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--color-surface-hover, #f9fafb);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.waveform-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.waveform-canvas:hover {
+  background: var(--color-surface-hover, #f9fafb);
+}
+
+/* Playback Controls */
+.playback-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--color-surface-hover, #f9fafb);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+}
+
+/* Play Button */
+.play-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary, #3b82f6);
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.play-button:hover:not(:disabled) {
+  background: var(--color-primary-hover, #2563eb);
+  transform: scale(1.05);
+}
+
+.play-button:disabled {
+  background: var(--color-surface-dark, #f3f4f6);
+  color: var(--color-text-secondary, #6b7280);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Time Display */
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+  font-size: 0.875rem;
+  color: var(--color-text, #111827);
+  min-width: 5rem;
+}
+
+.current-time {
+  font-weight: 600;
+  color: var(--color-primary, #3b82f6);
+}
+
+.duration {
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* Volume Control */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.volume-icon {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.volume-slider {
+  width: 6rem;
+  height: 0.25rem;
+  border-radius: 0.125rem;
+  background: var(--color-border, #e5e7eb);
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--color-primary, #3b82f6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  background: var(--color-primary-hover, #2563eb);
+  transform: scale(1.1);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--color-primary, #3b82f6);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  background: var(--color-primary-hover, #2563eb);
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .audio-waveform-visualizer {
+    padding: 1rem;
+  }
+  
+  .playback-controls {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .play-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+  
+  .time-display {
+    font-size: 0.75rem;
+    min-width: 4rem;
+  }
+  
+  .volume-control {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .volume-slider {
+    width: 8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .playback-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .play-button {
+    align-self: center;
+  }
+  
+  .time-display {
+    justify-content: center;
+  }
+  
+  .volume-control {
+    justify-content: center;
+  }
+}
+
+/* Dark Theme Support */
+@media (prefers-color-scheme: dark) {
+  .audio-waveform-visualizer {
+    background: var(--color-surface-dark, #1f2937);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .waveform-wrapper {
+    background: var(--color-surface-dark-hover, #374151);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .playback-controls {
+    background: var(--color-surface-dark-hover, #374151);
+    border-color: var(--color-border-dark, #374151);
+  }
+  
+  .waveform-canvas:hover {
+    background: var(--color-surface-dark-hover, #374151);
+  }
+}
+
+/* Animation Enhancements */
+.waveform-canvas {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.waveform-canvas:active {
+  transform: scale(0.98);
+}
+
+.play-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.play-button:active {
+  transform: scale(0.95);
+}
+
+/* Focus States */
+.play-button:focus-visible {
+  outline: 2px solid var(--color-primary, #3b82f6);
+  outline-offset: 2px;
+}
+
+.volume-slider:focus-visible {
+  outline: 2px solid var(--color-primary, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .audio-waveform-visualizer {
+    border-width: 2px;
+  }
+  
+  .waveform-wrapper {
+    border-width: 2px;
+  }
+  
+  .playback-controls {
+    border-width: 2px;
+  }
+  
+  .play-button {
+    border: 2px solid var(--color-primary, #3b82f6);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner {
+    animation: none;
+  }
+  
+  .waveform-canvas,
+  .play-button,
+  .volume-slider::-webkit-slider-thumb,
+  .volume-slider::-moz-range-thumb {
+    transition: none;
+  }
+  
+  .waveform-canvas:active,
+  .play-button:active {
+    transform: none;
+  }
+}

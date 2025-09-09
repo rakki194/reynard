@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🤝 Contributing to Reynard - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🤝 Contributing to Reynard</h1>
+      <div class="markdown-content"><h1>🤝 Contributing to Reynard</h1>
+<p>Thank you for your interest in contributing to Reynard! This guide will help you get started with contributing to our cunning SolidJS framework.</p>
+<h2>🦊 Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 18+ and npm</li>
+<li>Git</li>
+<li>Basic knowledge of TypeScript and SolidJS</li>
+<li>Understanding of the 140-line axiom (see <a href="#-modularity-standards">Modularity Standards</a>)</li>
+</ul>
+<h3>Development Setup</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Clone the repository</span>
+git <span class="hljs-built_in">clone</span> https://github.com/rakki194/reynard.git
+<span class="hljs-built_in">cd</span> reynard
+
+<span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development</span>
+npm run dev
+
+<span class="hljs-comment"># Run tests</span>
+npm <span class="hljs-built_in">test</span></code></pre><h2>📋 Development Workflow</h2>
+<h3>1. Create a Branch</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Create a feature branch</span>
+git checkout -b feature/your-feature-name
+
+<span class="hljs-comment"># Or for bug fixes</span>
+git checkout -b fix/your-bug-description</code></pre><h3>2. Make Changes</h3>
+<p>Follow our coding standards and modularity guidelines (see below).</p>
+<h3>3. Test Your Changes</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run linting</span>
+npm run lint
+
+<span class="hljs-comment"># Run type checking</span>
+npm run typecheck
+
+<span class="hljs-comment"># Run formatting check</span>
+npm run format:check</code></pre><h3>4. Commit Your Changes</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Add your changes</span>
+git add .
+
+<span class="hljs-comment"># Commit with a descriptive message</span>
+git commit -m <span class="hljs-string">&quot;feat: add new component for user authentication&quot;</span></code></pre><h3>5. Push and Create PR</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Push your branch</span>
+git push origin feature/your-feature-name
+
+<span class="hljs-comment"># Create a pull request on GitHub</span></code></pre><h2>🦊 Modularity Standards</h2>
+<p>Reynard follows the <strong>140-line axiom</strong> for maintainable code. This is enforced automatically through ESLint rules and pre-commit hooks.</p>
+<h3>File Size Limits</h3>
+<table>
+<thead>
+<tr>
+<th>File Type</th>
+<th>Max Lines</th>
+<th>Max Function Lines</th>
+<th>Purpose</th>
+<th>ESLint Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TypeScript (.ts)</strong></td>
+<td>140</td>
+<td>50</td>
+<td>Core business logic</td>
+<td><code>**/*.{ts,tsx}</code></td>
+</tr>
+<tr>
+<td><strong>SolidJS (.tsx)</strong></td>
+<td>140</td>
+<td>50</td>
+<td>React components</td>
+<td><code>**/*.{tsx,jsx}</code></td>
+</tr>
+<tr>
+<td><strong>Test Files</strong></td>
+<td>200</td>
+<td>100</td>
+<td>Comprehensive testing</td>
+<td><code>**/*.test.{ts,tsx}</code>, <code>**/__tests__/**/*.{ts,tsx}</code>, <code>**/test/**/*.{ts,tsx}</code></td>
+</tr>
+<tr>
+<td><strong>JavaScript (.js)</strong></td>
+<td>None</td>
+<td>None</td>
+<td>Legacy/config files</td>
+<td>Base config only</td>
+</tr>
+<tr>
+<td><strong>Config Files</strong></td>
+<td>None</td>
+<td>None</td>
+<td>Setup and configuration</td>
+<td><code>**/*.config.js</code>, <code>**/*.config.mjs</code></td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>200</td>
+<td>N/A</td>
+<td>Guides and references</td>
+<td>Not enforced by ESLint</td>
+</tr>
+</tbody></table>
+<h3>Refactoring Patterns</h3>
+<p>When files exceed these limits, use these proven patterns:</p>
+<h4>Factory Pattern</h4>
+<p>For classes handling multiple types or variants:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Before: Single large class (500+ lines)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">FileProcessor</span> {
+  <span class="hljs-title function_">processImage</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* ... */</span>
+  }
+  <span class="hljs-title function_">processVideo</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* ... */</span>
+  }
+  <span class="hljs-title function_">processAudio</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* ... */</span>
+  }
+}
+
+<span class="hljs-comment">// After: Specialized processors</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageProcessor</span> {
+  <span class="hljs-comment">/* ... */</span>
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">VideoProcessor</span> {
+  <span class="hljs-comment">/* ... */</span>
+}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">AudioProcessor</span> {
+  <span class="hljs-comment">/* ... */</span>
+}
+
+<span class="hljs-comment">// Main file: Re-export from modules</span>
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">ImageProcessor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./image-processor&quot;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">VideoProcessor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./video-processor&quot;</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">AudioProcessor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./audio-processor&quot;</span>;</code></pre><h4>Composable Pattern</h4>
+<p>For composables with multiple concerns:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Before: Single large composable (500+ lines)</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useChat</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// Connection logic (200 lines)</span>
+  <span class="hljs-comment">// Message handling (200 lines)</span>
+  <span class="hljs-comment">// File upload (100 lines)</span>
+}
+
+<span class="hljs-comment">// After: Focused composables</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useChatConnection</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">/* ... */</span>
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useChatMessages</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">/* ... */</span>
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useChatFileUpload</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">/* ... */</span>
+}
+
+<span class="hljs-comment">// Main composable: Orchestrate focused composables</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useChat</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> connection = <span class="hljs-title function_">useChatConnection</span>();
+  <span class="hljs-keyword">const</span> messages = <span class="hljs-title function_">useChatMessages</span>();
+  <span class="hljs-keyword">const</span> fileUpload = <span class="hljs-title function_">useChatFileUpload</span>();
+
+  <span class="hljs-keyword">return</span> { connection, messages, fileUpload };
+}</code></pre><h3>ESLint Configuration Details</h3>
+<p>The max-lines rules are configured differently for each file type:</p>
+<p><strong>TypeScript/SolidJS Files</strong>:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-string">&quot;max-lines&quot;</span>: [<span class="hljs-string">&quot;error&quot;</span>, {
+  <span class="hljs-attr">max</span>: <span class="hljs-number">140</span>,
+  <span class="hljs-attr">skipBlankLines</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">skipComments</span>: <span class="hljs-literal">true</span>
+}],
+<span class="hljs-string">&quot;max-lines-per-function&quot;</span>: [<span class="hljs-string">&quot;error&quot;</span>, {
+  <span class="hljs-attr">max</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">skipBlankLines</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">skipComments</span>: <span class="hljs-literal">true</span>
+}]</code></pre><p><strong>Test Files</strong>:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-string">&quot;max-lines&quot;</span>: [<span class="hljs-string">&quot;error&quot;</span>, {
+  <span class="hljs-attr">max</span>: <span class="hljs-number">200</span>,
+  <span class="hljs-attr">skipBlankLines</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">skipComments</span>: <span class="hljs-literal">true</span>
+}],
+<span class="hljs-string">&quot;max-lines-per-function&quot;</span>: [<span class="hljs-string">&quot;error&quot;</span>, {
+  <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">skipBlankLines</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">skipComments</span>: <span class="hljs-literal">true</span>
+}]</code></pre><p><strong>JavaScript Files</strong>: No max-lines enforcement (legacy support)</p>
+<p><strong>Config Files</strong>: No max-lines enforcement (Node.js environment)</p>
+<h3>Enforcement</h3>
+<ul>
+<li><strong>ESLint Rules</strong>: Automatic linting with <code>max-lines</code> and <code>max-lines-per-function</code></li>
+<li><strong>Pre-commit Hooks</strong>: Line count validation before commits (100 lines for source, 200 for tests)</li>
+<li><strong>CI/CD</strong>: Build failures on violations</li>
+<li><strong>Code Reviews</strong>: Manual verification during reviews</li>
+</ul>
+<h3>Line Counting Logic</h3>
+<p>ESLint counts lines using this logic:</p>
+<ul>
+<li>✅ <strong>Counts</strong>: Actual code lines</li>
+<li>❌ <strong>Excludes</strong>: Blank lines (<code>^\s*$</code>)</li>
+<li>❌ <strong>Excludes</strong>: Single-line comments (<code>^\s*//</code>)</li>
+<li>❌ <strong>Excludes</strong>: Multi-line comments (<code>^\s*/\*</code>, <code>^\s*\*</code>)</li>
+</ul>
+<p>For detailed refactoring guidelines, see <a href="../docs/architecture/modularity-patterns.md">Modularity Patterns</a>.</p>
+<h2>🎨 Code Style</h2>
+<h3>TypeScript</h3>
+<ul>
+<li>Use strict TypeScript with full type annotations</li>
+<li>Prefer interfaces over types for object shapes</li>
+<li>Use meaningful variable and function names</li>
+<li>Add JSDoc comments for public APIs</li>
+<li>Use underscore prefix for unused variables (<code>_unusedVar</code>)</li>
+</ul>
+<h3>SolidJS</h3>
+<ul>
+<li>Follow SolidJS best practices for reactivity</li>
+<li>Use proper component patterns</li>
+<li>Implement proper cleanup in effects</li>
+<li>Follow accessibility guidelines</li>
+<li>Use array destructuring for signals: <code>const [count, setCount] = createSignal(0)</code></li>
+<li>Avoid destructuring reactive objects (triggers <code>solid/no-destructure</code> warning)</li>
+<li>Wrap event handlers in functions for reactivity</li>
+</ul>
+<h3>ESLint Rules</h3>
+<p><strong>TypeScript Rules</strong>:</p>
+<ul>
+<li><code>@typescript-eslint/no-unused-vars</code>: Error (with underscore prefix pattern)</li>
+<li><code>@typescript-eslint/no-explicit-any</code>: Warning</li>
+<li><code>@typescript-eslint/no-require-imports</code>: Off (allows require() in some cases)</li>
+</ul>
+<p><strong>SolidJS Rules</strong>:</p>
+<ul>
+<li><code>solid/reactivity</code>: Warning (reactive variable usage)</li>
+<li><code>solid/no-destructure</code>: Warning (destructuring reactive objects)</li>
+<li><code>solid/jsx-no-undef</code>: Error (undefined JSX elements)</li>
+<li><code>solid/no-innerhtml</code>: Warning (innerHTML usage)</li>
+<li><code>solid/self-closing-comp</code>: Warning (self-closing components)</li>
+</ul>
+<p><strong>Accessibility Rules</strong>:</p>
+<ul>
+<li><code>jsx-a11y/aria-role</code>: Error (valid ARIA roles)</li>
+<li><code>jsx-a11y/aria-props</code>: Error (valid ARIA properties)</li>
+<li><code>jsx-a11y/aria-proptypes</code>: Error (valid ARIA prop types)</li>
+<li><code>jsx-a11y/role-has-required-aria-props</code>: Error (required ARIA props)</li>
+<li><code>jsx-a11y/role-supports-aria-props</code>: Error (ARIA prop compatibility)</li>
+</ul>
+<h3>Formatting</h3>
+<ul>
+<li>Use Prettier for consistent formatting</li>
+<li>Follow ESLint rules</li>
+<li>Use meaningful commit messages</li>
+<li>Add proper documentation</li>
+</ul>
+<h2>🧪 Testing</h2>
+<h3>Test Structure</h3>
+<ul>
+<li>Write tests for all new functionality</li>
+<li>Use descriptive test names</li>
+<li>Follow the AAA pattern (Arrange, Act, Assert)</li>
+<li>Keep test files under 200 lines (ESLint enforced)</li>
+<li>Keep test functions under 100 lines (ESLint enforced)</li>
+</ul>
+<h3>Test File Patterns</h3>
+<p>ESLint recognizes these test file patterns:</p>
+<ul>
+<li><code>**/*.test.{ts,tsx}</code> - Standard test files</li>
+<li><code>**/__tests__/**/*.{ts,tsx}</code> - Jest-style test directories</li>
+<li><code>**/test/**/*.{ts,tsx}</code> - Custom test directories</li>
+</ul>
+<h3>Test-Specific ESLint Rules</h3>
+<p>Test files have relaxed rules:</p>
+<ul>
+<li><code>@typescript-eslint/no-unused-vars</code>: Off (allows unused variables)</li>
+<li><code>@typescript-eslint/no-explicit-any</code>: Off (allows <code>any</code> type)</li>
+<li><code>max-lines</code>: 200 (vs 140 for source files)</li>
+<li><code>max-lines-per-function</code>: 100 (vs 50 for source files)</li>
+</ul>
+<h3>Test Types</h3>
+<ul>
+<li><strong>Unit Tests</strong>: Test individual functions and components</li>
+<li><strong>Integration Tests</strong>: Test component interactions</li>
+<li><strong>E2E Tests</strong>: Test complete user workflows</li>
+</ul>
+<h3>Test Files</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// component.test.tsx</span>
+<span class="hljs-keyword">import</span> { describe, it, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vitest&#x27;</span>;
+<span class="hljs-keyword">import</span> { render, screen } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@solidjs/testing-library&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">MyComponent</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./MyComponent&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;MyComponent&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;should render correctly&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span></span>);
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Hello World&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+});</code></pre><h2>📝 Documentation</h2>
+<h3>Code Documentation</h3>
+<ul>
+<li>Add JSDoc comments for all public APIs</li>
+<li>Include examples in documentation</li>
+<li>Document complex algorithms and patterns</li>
+<li>Keep documentation up to date</li>
+</ul>
+<h3>Architecture Documentation</h3>
+<ul>
+<li>Update architecture docs for significant changes</li>
+<li>Document new patterns and conventions</li>
+<li>Include decision records for major changes</li>
+<li>Maintain refactoring guidelines</li>
+</ul>
+<h2>🚀 Pull Request Process</h2>
+<h3>Before Submitting</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Code follows modularity standards (140-line axiom)</li>
+<li><input disabled="" type="checkbox"> All tests pass</li>
+<li><input disabled="" type="checkbox"> Linting passes (ESLint with max-lines rules)</li>
+<li><input disabled="" type="checkbox"> Type checking passes</li>
+<li><input disabled="" type="checkbox"> Documentation is updated</li>
+<li><input disabled="" type="checkbox"> No breaking changes (or properly documented)</li>
+</ul>
+<h3>PR Description Template</h3>
+<pre><code class="hljs language-markdown"><span class="hljs-section">## Description</span>
+
+Brief description of changes
+
+<span class="hljs-section">## Type of Change</span>
+
+<span class="hljs-bullet">-</span> [ ] Bug fix
+<span class="hljs-bullet">-</span> [ ] New feature
+<span class="hljs-bullet">-</span> [ ] Breaking change
+<span class="hljs-bullet">-</span> [ ] Documentation update
+
+<span class="hljs-section">## Testing</span>
+
+<span class="hljs-bullet">-</span> [ ] Unit tests added/updated
+<span class="hljs-bullet">-</span> [ ] Integration tests added/updated
+<span class="hljs-bullet">-</span> [ ] Manual testing completed
+
+<span class="hljs-section">## Modularity Compliance</span>
+
+<span class="hljs-bullet">-</span> [ ] All TypeScript/SolidJS files under 140 lines
+<span class="hljs-bullet">-</span> [ ] All test files under 200 lines
+<span class="hljs-bullet">-</span> [ ] All functions under 50 lines (100 for tests)
+<span class="hljs-bullet">-</span> [ ] Proper separation of concerns
+<span class="hljs-bullet">-</span> [ ] No circular dependencies
+<span class="hljs-bullet">-</span> [ ] ESLint max-lines rules pass
+
+<span class="hljs-section">## ESLint Compliance</span>
+
+<span class="hljs-bullet">-</span> [ ] TypeScript rules pass
+<span class="hljs-bullet">-</span> [ ] SolidJS rules pass
+<span class="hljs-bullet">-</span> [ ] Accessibility rules pass
+<span class="hljs-bullet">-</span> [ ] No unused variables (or prefixed with <span class="hljs-code">`_`</span>)
+<span class="hljs-bullet">-</span> [ ] No explicit <span class="hljs-code">`any`</span> types (or justified)
+
+<span class="hljs-section">## Checklist</span>
+
+<span class="hljs-bullet">-</span> [ ] Code follows style guidelines
+<span class="hljs-bullet">-</span> [ ] Self-review completed
+<span class="hljs-bullet">-</span> [ ] Documentation updated
+<span class="hljs-bullet">-</span> [ ] No breaking changes</code></pre><h3>Review Process</h3>
+<ol>
+<li><strong>Automated Checks</strong>: CI/CD runs all checks</li>
+<li><strong>Code Review</strong>: Team members review code</li>
+<li><strong>Testing</strong>: Verify functionality works</li>
+<li><strong>Documentation</strong>: Ensure docs are updated</li>
+<li><strong>Approval</strong>: Maintainer approves and merges</li>
+</ol>
+<h2>🐛 Bug Reports</h2>
+<h3>Before Reporting</h3>
+<ul>
+<li>Check existing issues</li>
+<li>Verify the bug exists in the latest version</li>
+<li>Try to reproduce the issue</li>
+</ul>
+<h3>Bug Report Template</h3>
+<pre><code class="hljs language-markdown"><span class="hljs-section">## Bug Description</span>
+
+Clear description of the bug
+
+<span class="hljs-section">## Steps to Reproduce</span>
+
+<span class="hljs-bullet">1.</span> Go to &#x27;...&#x27;
+<span class="hljs-bullet">2.</span> Click on &#x27;...&#x27;
+<span class="hljs-bullet">3.</span> See error
+
+<span class="hljs-section">## Expected Behavior</span>
+
+What should happen
+
+<span class="hljs-section">## Actual Behavior</span>
+
+What actually happens
+
+<span class="hljs-section">## Environment</span>
+
+<span class="hljs-bullet">-</span> OS: [e.g., Windows 10]
+<span class="hljs-bullet">-</span> Node.js: [e.g., 18.17.0]
+<span class="hljs-bullet">-</span> Browser: [e.g., Chrome 91]
+
+<span class="hljs-section">## Additional Context</span>
+
+Any other relevant information</code></pre><h2>✨ Feature Requests</h2>
+<h3>Before Requesting</h3>
+<ul>
+<li>Check existing feature requests</li>
+<li>Consider if it aligns with Reynard&#39;s goals</li>
+<li>Think about implementation complexity</li>
+</ul>
+<h3>Feature Request Template</h3>
+<pre><code class="hljs language-markdown"><span class="hljs-section">## Feature Description</span>
+
+Clear description of the feature
+
+<span class="hljs-section">## Use Case</span>
+
+Why is this feature needed?
+
+<span class="hljs-section">## Proposed Solution</span>
+
+How should this feature work?
+
+<span class="hljs-section">## Alternatives Considered</span>
+
+What other approaches were considered?
+
+<span class="hljs-section">## Additional Context</span>
+
+Any other relevant information</code></pre><h2>🏆 Recognition</h2>
+<p>Contributors are recognized in:</p>
+<ul>
+<li>GitHub contributors list</li>
+<li>Release notes</li>
+<li>Documentation acknowledgments</li>
+<li>Community highlights</li>
+</ul>
+<h2>🔧 ESLint Configuration</h2>
+<h3>Understanding ESLint Rules</h3>
+<p>Reynard uses a sophisticated ESLint configuration that applies different rules based on file patterns:</p>
+<p><strong>File Pattern Matching</strong>:</p>
+<ul>
+<li><code>**/*.{ts,tsx}</code> - TypeScript and SolidJS files</li>
+<li><code>**/*.{tsx,jsx}</code> - SolidJS component files (additional rules)</li>
+<li><code>**/*.test.{ts,tsx}</code> - Test files (relaxed rules)</li>
+<li><code>**/__tests__/**/*.{ts,tsx}</code> - Jest-style test directories</li>
+<li><code>**/test/**/*.{ts,tsx}</code> - Custom test directories</li>
+<li><code>**/*.config.js</code>, <code>**/*.config.mjs</code> - Configuration files (Node.js environment)</li>
+</ul>
+<h3>Common ESLint Issues</h3>
+<p><strong>Max-Lines Violations</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check line count manually</span>
+grep -v <span class="hljs-string">&#x27;^\s*$&#x27;</span> your-file.ts | grep -v <span class="hljs-string">&#x27;^\s*//&#x27;</span> | grep -v <span class="hljs-string">&#x27;^\s*/\*&#x27;</span> | grep -v <span class="hljs-string">&#x27;^\s*\*&#x27;</span> | <span class="hljs-built_in">wc</span> -l</code></pre><p><strong>SolidJS Reactivity Warnings</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ❌ Bad: Destructuring reactive object</span>
+<span class="hljs-keyword">const</span> { value } = props;
+
+<span class="hljs-comment">// ✅ Good: Access directly</span>
+props.<span class="hljs-property">value</span>;</code></pre><p><strong>Unused Variable Errors</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ❌ Bad: Unused variable</span>
+<span class="hljs-keyword">const</span> unusedVar = <span class="hljs-string">&quot;test&quot;</span>;
+
+<span class="hljs-comment">// ✅ Good: Prefix with underscore</span>
+<span class="hljs-keyword">const</span> _unusedVar = <span class="hljs-string">&quot;test&quot;</span>;</code></pre><h3>ESLint Commands</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check specific file</span>
+npx eslint your-file.ts
+
+<span class="hljs-comment"># Check with specific format</span>
+npx eslint your-file.ts --format=compact
+
+<span class="hljs-comment"># Check configuration for file</span>
+npx eslint --print-config your-file.ts
+
+<span class="hljs-comment"># Fix auto-fixable issues</span>
+npx eslint your-file.ts --fix</code></pre><h3>Ignore Patterns</h3>
+<p>ESLint automatically ignores:</p>
+<ul>
+<li><code>**/node_modules/**</code> - Dependencies</li>
+<li><code>**/dist/**</code>, <code>**/build/**</code> - Build outputs</li>
+<li><code>**/coverage/**</code> - Test coverage</li>
+<li><code>**/*.min.js</code> - Minified files</li>
+<li><code>**/vite.config.ts</code>, <code>**/vitest.config.ts</code> - Config files</li>
+<li><code>**/debug-scan.js</code> - Debug scripts</li>
+<li><code>**/pkg/**/*.js</code> - Generated WebAssembly files</li>
+</ul>
+<h2>📞 Getting Help</h2>
+<ul>
+<li><strong>Documentation</strong>: <a href="https://docs.reynard.dev">docs.reynard.dev</a></li>
+<li><strong>Issues</strong>: <a href="https://github.com/rakki194/reynard/issues">GitHub Issues</a></li>
+<li><strong>Discussions</strong>: <a href="https://github.com/rakki194/reynard/discussions">GitHub Discussions</a></li>
+<li><strong>Discord</strong>: <a href="https://discord.gg/reynard">Join our Discord</a></li>
+</ul>
+<h2>📄 License</h2>
+<p>By contributing to Reynard, you agree that your contributions will be licensed under the MIT License.</p>
+<hr>
+<p><em>&quot;The cunning fox knows that great software is built through collaboration and shared wisdom.&quot;</em> 🦊</p>
+<p>Thank you for contributing to Reynard!</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,404 @@
+/**
+ * Video Grid Component Styles
+ * 
+ * Styles for video processing components in the Reynard Caption System.
+ * Leverages existing design patterns and OKLCH color system.
+ */
+
+.video-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: oklch(var(--surface-color));
+  border-radius: 0.5rem;
+  border: 1px solid oklch(var(--border-color));
+}
+
+/* Upload Section */
+.video-upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: oklch(var(--surface-elevated));
+  border-radius: 0.375rem;
+  border: 2px dashed oklch(var(--border-color));
+  transition: border-color 0.2s ease;
+}
+
+.video-upload-section:hover {
+  border-color: oklch(var(--primary-color));
+}
+
+.video-upload-input {
+  padding: 0.75rem;
+  border: 1px solid oklch(var(--border-color));
+  border-radius: 0.375rem;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-color));
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.video-upload-input:hover {
+  border-color: oklch(var(--primary-color));
+}
+
+.video-upload-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading and Error States */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: oklch(var(--info-color) / 0.1);
+  color: oklch(var(--info-color));
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.error-message {
+  padding: 0.5rem;
+  background: oklch(var(--error-color) / 0.1);
+  color: oklch(var(--error-color));
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+/* Video Files Grid */
+.video-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+/* Video File Card */
+.video-file-card {
+  position: relative;
+  background: oklch(var(--surface-elevated));
+  border: 1px solid oklch(var(--border-color));
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.video-file-card:hover {
+  border-color: oklch(var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px oklch(var(--shadow-color) / 0.15);
+}
+
+.video-file-card.selected {
+  border-color: oklch(var(--primary-color));
+  box-shadow: 0 0 0 2px oklch(var(--primary-color) / 0.2);
+}
+
+/* Video Thumbnail */
+.video-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: oklch(var(--surface-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-muted));
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: oklch(0 0 0 / 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.video-file-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.play-button {
+  width: 3rem;
+  height: 3rem;
+  background: oklch(var(--primary-color));
+  color: oklch(var(--primary-contrast));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.video-file-card:hover .play-button {
+  transform: scale(1);
+}
+
+/* Video Info */
+.video-info {
+  padding: 0.75rem;
+}
+
+.video-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: oklch(var(--text-color));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-size {
+  font-size: 0.75rem;
+  color: oklch(var(--text-muted));
+  margin-bottom: 0.5rem;
+}
+
+/* Video Metadata */
+.video-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metadata-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.metadata-item .label {
+  color: oklch(var(--text-muted));
+  font-weight: 500;
+}
+
+.metadata-item .value {
+  color: oklch(var(--text-color));
+  font-weight: 600;
+}
+
+/* Remove Button */
+.remove-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: oklch(var(--error-color));
+  color: oklch(var(--error-contrast));
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.video-file-card:hover .remove-button {
+  opacity: 1;
+}
+
+.remove-button:hover {
+  background: oklch(var(--error-color) / 0.8);
+}
+
+/* Video Player Modal */
+.video-player-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: oklch(0 0 0 / 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.video-player-content {
+  position: relative;
+  background: oklch(var(--surface-color));
+  border-radius: 0.75rem;
+  overflow: hidden;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 100%;
+  max-width: 800px;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  background: oklch(0 0 0 / 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+  background: oklch(0 0 0 / 0.7);
+}
+
+/* Video Container */
+.video-container {
+  position: relative;
+  width: 100%;
+  background: oklch(0 0 0);
+}
+
+.video-element {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  display: block;
+}
+
+/* Video Controls */
+.video-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: oklch(var(--surface-elevated));
+  border-top: 1px solid oklch(var(--border-color));
+}
+
+.play-pause-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: oklch(var(--primary-color));
+  color: oklch(var(--primary-contrast));
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.play-pause-button:hover {
+  background: oklch(var(--primary-color) / 0.8);
+}
+
+.time-display {
+  font-size: 0.875rem;
+  color: oklch(var(--text-muted));
+  font-weight: 500;
+  min-width: 5rem;
+}
+
+.video-info {
+  flex: 1;
+}
+
+.video-info h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: oklch(var(--text-color));
+}
+
+.video-details {
+  font-size: 0.75rem;
+  color: oklch(var(--text-muted));
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .video-files-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .video-thumbnail {
+    height: 100px;
+  }
+  
+  .video-player-modal {
+    padding: 1rem;
+  }
+  
+  .video-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .video-info {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-files-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .video-thumbnail {
+    height: 80px;
+  }
+  
+  .video-info {
+    padding: 0.5rem;
+  }
+  
+  .video-name {
+    font-size: 0.75rem;
+  }
+}
+

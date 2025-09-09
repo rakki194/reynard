@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programmatic Event Triggers - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Programmatic Event Triggers</h1>
+      <div class="markdown-content"><h1>Programmatic Event Triggers</h1>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:hover:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+function triggerHover(chart) {
+  <span class="hljs-keyword">if</span> (chart.getActiveElements().length <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>) {
+    chart.setActiveElements([]);
+  } <span class="hljs-keyword">else</span> {
+    chart.setActiveElements([
+      {
+        <span class="hljs-params">datasetIndex:</span> <span class="hljs-number">0</span>,
+        <span class="hljs-params">index:</span> <span class="hljs-number">0</span>,
+      }, {
+        <span class="hljs-params">datasetIndex:</span> <span class="hljs-number">1</span>,
+        <span class="hljs-params">index:</span> <span class="hljs-number">0</span>,
+      }
+    ]);
+  }
+  chart.update();
+}
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:hover<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:tooltip:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+function triggerTooltip(chart) {
+  const tooltip <span class="hljs-operator">=</span> chart.tooltip;
+  <span class="hljs-keyword">if</span> (tooltip.getActiveElements().length <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>) {
+    tooltip.setActiveElements([], {<span class="hljs-params">x:</span> <span class="hljs-number">0</span>, <span class="hljs-params">y:</span> <span class="hljs-number">0</span>});
+  } <span class="hljs-keyword">else</span> {
+    const chartArea <span class="hljs-operator">=</span> chart.chartArea;
+    tooltip.setActiveElements([
+      {
+        <span class="hljs-params">datasetIndex:</span> <span class="hljs-number">0</span>,
+        <span class="hljs-params">index:</span> <span class="hljs-number">2</span>,
+      }, {
+        <span class="hljs-params">datasetIndex:</span> <span class="hljs-number">1</span>,
+        <span class="hljs-params">index:</span> <span class="hljs-number">2</span>,
+      }
+    ],
+    {
+      <span class="hljs-params">x:</span> (chartArea.left <span class="hljs-operator">+</span> chartArea.right) <span class="hljs-symbol">/</span> <span class="hljs-number">2</span>,
+      <span class="hljs-params">y:</span> (chartArea.top <span class="hljs-operator">+</span> chartArea.bottom) <span class="hljs-symbol">/</span> <span class="hljs-number">2</span>,
+    });
+  }
+
+  chart.update();
+}
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:tooltip<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:actions:<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>
+const actions <span class="hljs-operator">=</span> [
+  {
+    <span class="hljs-params">name:</span> &#x27;Trigger Hover&#x27;,
+    <span class="hljs-params">handler:</span> triggerHover
+  },
+  {
+    <span class="hljs-params">name:</span> &#x27;Trigger Tooltip&#x27;,
+    <span class="hljs-params">handler:</span> triggerTooltip
+  }
+];
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:actions<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">4</span><span class="hljs-operator">&gt;</span>
+const DATA_COUNT <span class="hljs-operator">=</span> <span class="hljs-number">7</span>;
+const NUMBER_CFG <span class="hljs-operator">=</span> {<span class="hljs-params">count:</span> DATA_COUNT, <span class="hljs-params">min:</span> <span class="hljs-operator">-</span><span class="hljs-number">100</span>, <span class="hljs-params">max:</span> <span class="hljs-number">100</span>};
+
+const labels <span class="hljs-operator">=</span> Utils.months({<span class="hljs-params">count:</span> <span class="hljs-number">7</span>});
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">labels:</span> labels,
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;Dataset <span class="hljs-number">1</span>&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">hoverBorderWidth:</span> <span class="hljs-number">5</span>,
+      <span class="hljs-params">hoverBorderColor:</span> &#x27;green&#x27;,
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;Dataset <span class="hljs-number">2</span>&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.blue,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.blue, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">hoverBorderWidth:</span> <span class="hljs-number">5</span>,
+      <span class="hljs-params">hoverBorderColor:</span> &#x27;green&#x27;,
+    }
+  ]
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">3</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;bar&#x27;,
+  <span class="hljs-params">data:</span> data,
+  <span class="hljs-params">options:</span> {
+  },
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">actions:</span> actions,
+  <span class="hljs-params">config:</span> config,
+};</code></pre><h2>API</h2>
+<ul>
+<li><a href="../../api/classes/Chart.md">Chart</a><ul>
+<li><a href="../../api/classes/Chart.md#setactiveelements"><code>setActiveElements</code></a></li>
+</ul>
+</li>
+<li><a href="../../api/interfaces/TooltipModel.md">TooltipModel</a><ul>
+<li><a href="../../api/interfaces/TooltipModel.md#setactiveelements"><code>setActiveElements</code></a></li>
+</ul>
+</li>
+</ul>
+<h2>Docs</h2>
+<ul>
+<li><a href="../../charts/bar.md">Bar</a><ul>
+<li><a href="../../charts/bar.md#interactions">Interactions (<code>hoverBorderColor</code>)</a></li>
+</ul>
+</li>
+<li><a href="../../configuration/interactions.md">Interactions</a></li>
+<li><a href="../../configuration/tooltip.md">Tooltip</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

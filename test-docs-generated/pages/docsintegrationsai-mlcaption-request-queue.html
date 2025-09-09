@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caption Request Queue - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Caption Request Queue</h1>
+      <div class="markdown-content"><h1>Caption Request Queue</h1>
+<p>Queues caption generation requests when models aren’t yet available and processes them automatically once downloads complete. Exposes a background service and a manager with query and cancel operations.</p>
+<h2>Overview</h2>
+<ul>
+<li><p>Manager: <code>CaptionRequestQueueManager</code> holds requests keyed by ID with per‑generator grouping and a lock‑protected queue. It polls the unified download manager to decide when a generator is available, then calls the unified caption service to generate and persist captions.</p>
+</li>
+<li><p>Background: <code>CaptionRequestQueueService</code> owns the manager instance and starts its processor during app boot.</p>
+</li>
+<li><p>Files:</p>
+<ul>
+<li><code>app/managers/caption_request_queue.py</code></li>
+<li><code>app/services/background/caption_request_queue_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Request Lifecycle</h2>
+<ol>
+<li>Queue: <code>queue_request(image_path, generator_name, config, force?, post_process?, data_source?, callback?)</code> returns a <code>request_id</code>.</li>
+<li>Process: When <code>is_completed(model_id)</code> is true for the mapped generator, the manager generates a caption via <code>UnifiedCaptionService.generate_single_caption</code>.</li>
+<li>Complete: The request transitions to <code>COMPLETED</code>/<code>FAILED</code>, optionally invoking a callback. Results include <code>success</code>, <code>caption</code>, and <code>processing_time</code>.</li>
+<li>Cleanup: <code>cleanup_old_requests(max_age_hours)</code> removes stale completed/failed/cancelled entries.</li>
+</ol>
+<h2>Status and Control</h2>
+<ul>
+<li><code>get_request_status(request_id)</code> returns status fields and any result/error.</li>
+<li><code>get_queue_status()</code> summarizes queued/processing/completed/failed/cancelled per generator.</li>
+<li><code>cancel_request(request_id)</code> cancels a queued (not yet processing) request.</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>Requests are grouped by image path to process sequentially per image and avoid race conditions on sidecar writes.</li>
+<li>Known generator→model IDs: <code>jtp2 → jtp2-pilot2</code>, <code>wdv3 → wdv3</code>, <code>joy → joycaption</code>, <code>florence2 → florence2</code>.</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

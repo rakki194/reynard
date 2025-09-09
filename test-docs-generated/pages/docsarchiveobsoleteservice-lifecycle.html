@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Lifecycle and Core Setup - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Service Lifecycle and Core Setup</h1>
+      <div class="markdown-content"><h1>Service Lifecycle and Core Setup</h1>
+<p>YipYap runs backend services under a unified lifecycle. Each service derives from a common base that provides startup sequencing, dependency wiring, periodic health checks, and uniform metadata.</p>
+<h2>Base Service Model</h2>
+<p>All services inherit from <code>app/services/base.py</code> <code>BaseService</code>. The base defines the lifecycle:</p>
+<ul>
+<li>start: verifies dependency readiness and required packages, calls <code>initialize</code>, transitions to RUNNING, starts a periodic health loop.</li>
+<li>stop: cancels health checks, calls <code>shutdown</code>, transitions to STOPPED.</li>
+<li>health: <code>_health_check</code> returns <code>HEALTHY</code>/<code>DEGRADED</code>/<code>UNHEALTHY</code>. The base records <code>last_check</code>, <code>startup_time</code>, and <code>error</code> if any.</li>
+</ul>
+<p>Services declare: <code>name</code>, <code>dependencies</code>, optional <code>required_packages</code>, <code>startup_priority</code> (lower starts earlier), and <code>auto_start</code>. <code>get_info()</code> returns status, health, dependencies, startup time, and last error.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/base.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Core Service Initialization</h2>
+<p><code>initialize_core_services(config_file=&quot;config.json&quot;)</code> (in <code>app/services/core/service_setup.py</code>) creates a <code>ServiceManager</code>, registers services, and starts them in dependency order. It conditionally registers RAG and NLWeb stacks based on config flags.</p>
+<p>Registered services include (non‑exhaustive):</p>
+<ul>
+<li>Core: <code>config_manager</code>, <code>threading_manager</code>, <code>data_source</code>, <code>file_watcher</code>, <code>model_registry</code>, <code>caption_generator</code>, <code>detection_models</code>, <code>image_processing</code></li>
+<li>Integrations: <code>ollama</code>, <code>tool_registry</code>, <code>git</code>, <code>memory</code>, <code>tts</code>, <code>crawl_service</code>, <code>summarize_service</code>, optional <code>comfy</code></li>
+<li>Background: <code>index_service</code>, <code>training_script_watcher_service</code>, <code>caption_request_queue</code></li>
+<li>RAG (when <code>rag_enabled</code>): <code>vector_db</code>, <code>embedding_service</code>, <code>clip_embedding_service</code>, <code>embedding_index_service</code>, <code>rag_service</code></li>
+<li>NLWeb (when <code>nlweb_enabled</code>): <code>nlweb_router_service</code></li>
+</ul>
+<p>Helpers: <code>get_service_manager()</code>, <code>get_core_service_status()</code>, <code>shutdown_core_services()</code>.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/core/service_setup.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Config Manager Service</h2>
+<p><code>ConfigManagerService</code> wraps <code>AppConfig</code> and provides config IO with env overrides. It loads <code>config.json</code> or <code>config.default.json</code>, applies environment overrides (NLWeb, Comfy, RAG, etc.), and exposes <code>get_config()</code>, <code>update_config(**kwargs)</code>, <code>save_config()</code>.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/core/config_manager_service.py</code></li>
+<li><code>app/services/core/app_config.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Health and Diagnostics</h2>
+<p>Each service runs <code>_health_check()</code> on an interval (<code>health_check_interval</code>). Aggregate info is exposed via the manager’s <code>get_all_service_info()</code> (wired to <code>get_core_service_status()</code>), while each service returns a structured dict via <code>get_info()</code>.</p>
+<h3>Watchdog and Backoff Tunables</h3>
+<p>Several services expose configuration-backed health and reconnection tunables, with environment overrides consumed by the config manager:</p>
+<ul>
+<li>Comfy: <code>COMFY_HEALTH_INTERVAL_S</code>, <code>COMFY_RECONNECT_MAX_ATTEMPTS</code>, <code>COMFY_RECONNECT_BASE_DELAY_S</code>, <code>COMFY_RECONNECT_MAX_DELAY_S</code></li>
+<li>NLWeb: <code>NLWEB_HEALTH_INTERVAL_S</code>, <code>NLWEB_RECONNECT_MAX_ATTEMPTS</code>, <code>NLWEB_RECONNECT_BASE_DELAY_MS</code>, <code>NLWEB_RECONNECT_MAX_DELAY_MS</code></li>
+<li>VectorDB (Postgres): <code>PG_HEALTH_INTERVAL_S</code>, <code>PG_POOL_PRE_PING</code>, <code>PG_RECONNECT_ON_ERROR</code></li>
+</ul>
+<h2>Feature Flags and Optional Services</h2>
+<p>Feature flags in <code>AppConfig</code> (with env overrides) control optional subsystems:</p>
+<ul>
+<li><code>rag_enabled</code>, <code>pg_dsn</code>, RAG models, and CLIP options</li>
+<li><code>nlweb_enabled</code> and related router/performance toggles</li>
+<li><code>comfy_enabled</code>, <code>comfy_api_url</code>, <code>comfy_timeout</code>, <code>comfy_image_dir</code></li>
+<li><code>tts_enabled</code>, defaults and runtime toggles</li>
+<li><code>crawl_enabled</code>, <code>firecrawl_base_url</code>, <code>crawl_cache_dir</code></li>
+</ul>
+<h2>Lifecycle States and Health Model</h2>
+<p>Services progress through clearly defined lifecycle statuses: pending, starting, running, stopping, stopped, failed, and disabled. Health is tracked separately as healthy, degraded, unhealthy, or unknown. A service is considered usable when its status is running and its health is healthy or degraded, and the system captures startup time, last health check timestamp, and the last error message for later inspection. Health checks are executed on a configurable interval inside each service, and detailed results include status, health, a human-readable message, optional error, and timestamps suitable for surfacing in diagnostics or external monitoring.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/health.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Service Registration and Metadata</h2>
+<p>Services are registered declaratively using decorators. The <code>@service</code> decorator attaches metadata including name, dependencies, required packages, startup priority, health check interval, and <code>auto_start</code>, and it registers the class with the service registry. Additional helpers such as <code>@requires_packages</code>, <code>@depends_on</code>, <code>@startup_priority</code>, and <code>@health_check</code> can be used to incrementally tune behavior. At runtime, <code>BaseService</code> validates required packages using the project’s lazy loader before initialization to avoid importing heavy dependencies prematurely and to fail fast with a clear message when prerequisites are missing.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/decorators.py</code></li>
+<li><code>app/services/base.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Startup Orchestration and Parallelism</h2>
+<p>The service manager computes an optimal startup plan that respects dependencies and declared priorities, organizing services into parallel groups to minimize overall startup time. Within each group, services start concurrently with progress tracked per service, and dependency readiness is propagated to their dependents to unlock subsequent groups. If some services fail to start, the system continues with reduced functionality rather than blocking the whole application, which allows noncritical subsystems to be unavailable without halting core features.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/manager.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Health Checks, Watchdog, and Monitoring</h2>
+<p>Each running service performs its own periodic health checks. In addition, the manager runs a background monitor that invokes health checks across all services at a regular cadence and logs any unhealthy states. This dual approach provides both local self-assessment and centralized visibility. Tunables for health interval and reconnection behavior are sourced from configuration and environment variables so operators can adjust sensitivity without code changes.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/base.py</code></li>
+<li><code>app/services/manager.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Graceful Shutdown</h2>
+<p>Shutdown proceeds in reverse dependency order to ensure dependents are torn down before their providers. For each service, the health loop is cancelled and awaited briefly, and <code>shutdown()</code> is called to release resources. The manager also stops its monitoring task before stopping services. Errors during stop are logged but do not prevent the remainder of the system from shutting down cleanly.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/base.py</code></li>
+<li><code>app/services/manager.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Configuration Overrides and Feature Flags</h2>
+<p>Configuration is backed by <code>AppConfig</code> and loaded through <code>ConfigManagerService</code>. Settings can be provided via <code>config.json</code> or <code>config.default.json</code> and are further overridden by environment variables for key features like NLWeb, Comfy, and RAG, as well as watchdog, reconnection, and rollout tunables. After core services are up, NLWeb may be registered and started dynamically if enabled in configuration.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/core/config_manager_service.py</code></li>
+<li><code>app/services/core/app_config.py</code></li>
+<li><code>app/services/core/service_setup.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Accessing Services Programmatically</h2>
+<p>To avoid circular imports, convenience accessors resolve service instances through the global manager. These helpers return typed instances for common subsystems like configuration, threading, data source, model registry, image processing, and integration services. They should be preferred over manual lookups to keep call sites concise and decoupled from the manager.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/access.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Operational Guidance and Best Practices</h2>
+<p>When deploying in containerized environments, map service health to platform probes. Readiness should reflect that a service is running with at least degraded health so traffic is only routed when dependencies are satisfied, while liveness should fail on persistent unhealthy states to trigger restarts. For external connections, favor exponential backoff with jitter to avoid thundering herds during outages, and consider a circuit breaker for flaky dependencies to protect upstreams. During shutdown, ensure background tasks are cancelled and awaited briefly so no in-flight operations are left hanging.</p>
+<p>Recommended references: For container probes, see the Kubernetes documentation on liveness, readiness, and startup probes (<a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes">Kubernetes Probes</a>). For resilient retries, see the AWS Architecture Blog on exponential backoff with full jitter (<a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/">AWS Backoff With Jitter</a>). For graceful task cancellation, consult the Python <code>asyncio</code> documentation on cancelling tasks (<a href="https://docs.python.org/3/library/asyncio-task.html#task-cancellation">AsyncIO Task Cancellation</a>). For dependency protection, consider an asyncio-compatible circuit breaker such as <code>aiobreaker</code> (<a href="https://pypi.org/project/aiobreaker/">aiobreaker on PyPI</a>).</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

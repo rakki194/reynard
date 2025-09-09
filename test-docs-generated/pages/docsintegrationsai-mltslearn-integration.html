@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tslearn Integration for Training Script Editor - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>tslearn Integration for Training Script Editor</h1>
+      <div class="markdown-content"><h1>tslearn Integration for Training Script Editor</h1>
+<p>This document describes the integration of tslearn (Time Series LEARNing) library into the Yipyap training script editor, providing powerful time series analysis and visualization capabilities.</p>
+<h2>Overview</h2>
+<p>tslearn is a Python package that provides machine learning tools for time series analysis. The integration adds visualization capabilities to the training script editor, allowing users to:</p>
+<ul>
+<li>Visualize Dynamic Time Warping (DTW) paths between time series</li>
+<li>Perform and visualize time series clustering</li>
+<li>Discover and visualize shapelets in time series data</li>
+<li>Analyze matrix profiles for motif discovery</li>
+<li>Generate sample time series data for testing</li>
+</ul>
+<h2>Architecture</h2>
+<h3>Backend Components</h3>
+<h4>1. Visualization Utilities (<code>app/utils/tslearn_visualizer.py</code>)</h4>
+<p>The core visualization module that provides:</p>
+<ul>
+<li><strong>TSLearnVisualizer Class</strong>: Main class for creating visualizations</li>
+<li><strong>DTW Visualization</strong>: Shows DTW paths and cost matrices</li>
+<li><strong>Clustering Visualization</strong>: Displays clustering results with centroids</li>
+<li><strong>Shapelet Visualization</strong>: Shows discovered shapelets</li>
+<li><strong>Matrix Profile Visualization</strong>: Displays matrix profiles for motif discovery</li>
+<li><strong>Sample Data Generation</strong>: Creates synthetic time series for testing</li>
+</ul>
+<h4>2. API Endpoints (<code>app/api/training.py</code>)</h4>
+<p>New REST API endpoints for visualization:</p>
+<ul>
+<li><code>POST /api/training/visualize/dtw</code> - DTW visualization</li>
+<li><code>POST /api/training/visualize/clustering</code> - Clustering visualization</li>
+<li><code>POST /api/training/visualize/shapelets</code> - Shapelet visualization</li>
+<li><code>POST /api/training/visualize/matrix-profile</code> - Matrix profile visualization</li>
+<li><code>POST /api/training/visualize/sample-data</code> - Generate sample data</li>
+<li><code>GET /api/training/visualize/available-methods</code> - List available methods</li>
+</ul>
+<h3>Frontend Components</h3>
+<h4>1. Visualization Panel (<code>src/components/TrainingScriptEditor/VisualizationPanel.tsx</code>)</h4>
+<p>A slide-out panel that provides:</p>
+<ul>
+<li>Method selection dropdown</li>
+<li>Parameter configuration forms</li>
+<li>Sample data generation controls</li>
+<li>Visualization display with metadata</li>
+<li>Error handling and loading states</li>
+</ul>
+<h4>2. Integration with Training Script Editor</h4>
+<p>The visualization panel is integrated into the main training script editor with:</p>
+<ul>
+<li>A &quot;Visualize&quot; button in the editor controls</li>
+<li>Slide-out panel interface</li>
+<li>Responsive design for different screen sizes</li>
+</ul>
+<h2>Features</h2>
+<h3>1. Dynamic Time Warping (DTW)</h3>
+<p><strong>Purpose</strong>: Measure similarity between time series with temporal alignment.</p>
+<p><strong>Visualization</strong>:</p>
+<ul>
+<li>Shows original time series</li>
+<li>Displays DTW cost matrix</li>
+<li>Highlights optimal alignment path</li>
+<li>Provides cost metrics</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Pattern matching in time series</li>
+<li>Anomaly detection</li>
+<li>Time series classification</li>
+</ul>
+<h3>2. Time Series Clustering</h3>
+<p><strong>Purpose</strong>: Group similar time series together.</p>
+<p><strong>Methods</strong>:</p>
+<ul>
+<li><strong>K-Means</strong>: Traditional k-means with DTW distance</li>
+<li><strong>K-Shape</strong>: Shape-based clustering using cross-correlation</li>
+</ul>
+<p><strong>Visualization</strong>:</p>
+<ul>
+<li>Shows time series grouped by cluster</li>
+<li>Displays cluster centroids</li>
+<li>Provides cluster statistics</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Customer behavior segmentation</li>
+<li>Sensor data analysis</li>
+<li>Pattern discovery</li>
+</ul>
+<h3>3. Shapelet Discovery</h3>
+<p><strong>Purpose</strong>: Find discriminative subsequences in time series.</p>
+<p><strong>Visualization</strong>:</p>
+<ul>
+<li>Shows discovered shapelets</li>
+<li>Displays shapelet locations</li>
+<li>Provides classification accuracy</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Time series classification</li>
+<li>Feature extraction</li>
+<li>Interpretable machine learning</li>
+</ul>
+<h3>4. Matrix Profile Analysis</h3>
+<p><strong>Purpose</strong>: Find motifs and anomalies in time series.</p>
+<p><strong>Visualization</strong>:</p>
+<ul>
+<li>Shows original time series</li>
+<li>Displays matrix profile</li>
+<li>Highlights motif positions</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Motif discovery</li>
+<li>Anomaly detection</li>
+<li>Pattern mining</li>
+</ul>
+<h2>Usage Guide</h2>
+<h3>1. Accessing the Visualization Panel</h3>
+<ol>
+<li>Open the Training Script Editor</li>
+<li>Click the &quot;Visualize&quot; button in the editor controls</li>
+<li>The visualization panel will slide in from the right</li>
+</ol>
+<h3>2. Generating Sample Data</h3>
+<ol>
+<li>In the visualization panel, configure sample data parameters:<ul>
+<li>Number of time series (5-50)</li>
+<li>Series length (10-1000)</li>
+</ul>
+</li>
+<li>Click &quot;Generate Sample Data&quot;</li>
+<li>The system will create synthetic time series with different patterns</li>
+</ol>
+<h3>3. Creating Visualizations</h3>
+<h4>DTW Visualization</h4>
+<ol>
+<li>Select &quot;Dynamic Time Warping&quot; from the method dropdown</li>
+<li>Enter two time series as comma-separated values</li>
+<li>Optionally customize the title</li>
+<li>Click &quot;Create Visualization&quot;</li>
+</ol>
+<h4>Clustering Visualization</h4>
+<ol>
+<li>Generate sample data first</li>
+<li>Select &quot;Time Series Clustering&quot; from the method dropdown</li>
+<li>Configure parameters:<ul>
+<li>Number of clusters (2-10)</li>
+<li>Clustering method (K-Means or K-Shape)</li>
+</ul>
+</li>
+<li>Click &quot;Create Visualization&quot;</li>
+</ol>
+<h4>Shapelet Visualization</h4>
+<ol>
+<li>Generate sample data first</li>
+<li>Select &quot;Shapelet Discovery&quot; from the method dropdown</li>
+<li>Configure the number of shapelets (1-10)</li>
+<li>Click &quot;Create Visualization&quot;</li>
+</ol>
+<h4>Matrix Profile Visualization</h4>
+<ol>
+<li>Generate sample data first</li>
+<li>Select &quot;Matrix Profile Analysis&quot; from the method dropdown</li>
+<li>Configure subsequence length (10-200)</li>
+<li>Click &quot;Create Visualization&quot;</li>
+</ol>
+<h3>4. Interpreting Results</h3>
+<p>Each visualization includes:</p>
+<ul>
+<li><strong>Plot</strong>: The main visualization image</li>
+<li><strong>Metadata</strong>: Quantitative results and statistics</li>
+<li><strong>Export</strong>: Ability to save results</li>
+</ul>
+<h2>API Reference</h2>
+<h3>Visualization Request Models</h3>
+<h4>DTW Visualization</h4>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">series1</span>: <span class="hljs-built_in">number</span>[];      <span class="hljs-comment">// First time series</span>
+  <span class="hljs-attr">series2</span>: <span class="hljs-built_in">number</span>[];      <span class="hljs-comment">// Second time series</span>
+  <span class="hljs-attr">title</span>?: <span class="hljs-built_in">string</span>;         <span class="hljs-comment">// Optional plot title</span>
+}</code></pre><h4>Clustering Visualization</h4>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">time_series</span>: <span class="hljs-built_in">number</span>[][]; <span class="hljs-comment">// List of time series</span>
+  <span class="hljs-attr">n_clusters</span>: <span class="hljs-built_in">number</span>;      <span class="hljs-comment">// Number of clusters</span>
+  <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;kmeans&quot;</span> | <span class="hljs-string">&quot;kshape&quot;</span>; <span class="hljs-comment">// Clustering method</span>
+  <span class="hljs-attr">title</span>?: <span class="hljs-built_in">string</span>;          <span class="hljs-comment">// Optional plot title</span>
+}</code></pre><h4>Shapelet Visualization</h4>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">time_series</span>: <span class="hljs-built_in">number</span>[][]; <span class="hljs-comment">// List of time series</span>
+  <span class="hljs-attr">labels</span>: <span class="hljs-built_in">number</span>[];        <span class="hljs-comment">// Class labels</span>
+  <span class="hljs-attr">n_shapelets</span>: <span class="hljs-built_in">number</span>;     <span class="hljs-comment">// Number of shapelets</span>
+  <span class="hljs-attr">title</span>?: <span class="hljs-built_in">string</span>;          <span class="hljs-comment">// Optional plot title</span>
+}</code></pre><h4>Matrix Profile Visualization</h4>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">time_series</span>: <span class="hljs-built_in">number</span>[];   <span class="hljs-comment">// Input time series</span>
+  <span class="hljs-attr">subsequence_length</span>: <span class="hljs-built_in">number</span>;     <span class="hljs-comment">// Length of subsequences to analyze</span>
+  <span class="hljs-attr">title</span>?: <span class="hljs-built_in">string</span>;          <span class="hljs-comment">// Optional plot title</span>
+}</code></pre><h3>Response Format</h3>
+<p>All visualization endpoints return:</p>
+<pre><code class="hljs language-typescript">{
+  <span class="hljs-attr">plot_data</span>: <span class="hljs-built_in">string</span>;       <span class="hljs-comment">// Base64 encoded PNG image</span>
+  [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>;      <span class="hljs-comment">// Method-specific metadata</span>
+}</code></pre><h2>Dependencies</h2>
+<h3>Backend Dependencies</h3>
+<ul>
+<li><code>tslearn</code>: Time series machine learning library</li>
+<li><code>matplotlib</code>: Plotting library</li>
+<li><code>seaborn</code>: Statistical visualization</li>
+<li><code>numpy</code>: Numerical computing</li>
+</ul>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash">pip install tslearn matplotlib seaborn</code></pre><h2>Example Training Script</h2>
+<p>See <code>training_scripts/tslearn_demo.py</code> for a complete example that demonstrates:</p>
+<ul>
+<li>Sample data generation</li>
+<li>DTW computation</li>
+<li>Time series clustering</li>
+<li>Shapelet discovery</li>
+<li>Matrix profile analysis</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>1. Data Preparation</h3>
+<ul>
+<li>Ensure time series are properly normalized</li>
+<li>Handle missing values appropriately</li>
+<li>Consider the scale and units of your data</li>
+</ul>
+<h3>2. Parameter Selection</h3>
+<ul>
+<li><strong>Clustering</strong>: Start with 3-5 clusters for exploration</li>
+<li><strong>Shapelets</strong>: Use 1-3 shapelets per class initially</li>
+<li><strong>Matrix Profile</strong>: Subsequence length should be 10-20% of series length</li>
+</ul>
+<h3>3. Performance Considerations</h3>
+<ul>
+<li>Large datasets may require longer processing times</li>
+<li>Consider downsampling for very long time series</li>
+<li>Use appropriate distance metrics for your domain</li>
+</ul>
+<h3>4. Visualization Interpretation</h3>
+<ul>
+<li>Always check metadata for quantitative results</li>
+<li>Compare multiple parameter settings</li>
+<li>Validate results with domain knowledge</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>tslearn not available</strong></p>
+<ul>
+<li>Install tslearn: <code>pip install tslearn</code></li>
+<li>Check Python environment compatibility</li>
+</ul>
+</li>
+<li><p><strong>Memory errors with large datasets</strong></p>
+<ul>
+<li>Reduce number of time series</li>
+<li>Decrease series length</li>
+<li>Use smaller subsequence lengths for matrix profile</li>
+</ul>
+</li>
+<li><p><strong>Poor clustering results</strong></p>
+<ul>
+<li>Try different numbers of clusters</li>
+<li>Experiment with different distance metrics</li>
+<li>Preprocess data (normalize, scale)</li>
+</ul>
+</li>
+<li><p><strong>Shapelet discovery fails</strong></p>
+<ul>
+<li>Ensure sufficient class balance</li>
+<li>Reduce number of shapelets</li>
+<li>Check for sufficient data in each class</li>
+</ul>
+</li>
+</ol>
+<h3>Error Messages</h3>
+<ul>
+<li><strong>&quot;tslearn not available&quot;</strong>: Install tslearn package</li>
+<li><strong>&quot;Invalid parameters&quot;</strong>: Check parameter ranges and formats</li>
+<li><strong>&quot;Insufficient data&quot;</strong>: Generate more sample data or use smaller parameters</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ul>
+<li>Real-time visualization updates</li>
+<li>Interactive plots with zoom/pan</li>
+<li>Export to various formats (PDF, SVG)</li>
+<li>Integration with training script variables</li>
+<li>Custom distance metrics</li>
+<li>Advanced clustering algorithms</li>
+</ul>
+<h3>Potential Integrations</h3>
+<ul>
+<li>Real-time data streaming</li>
+<li>Database connectivity for large datasets</li>
+<li>Model persistence and loading</li>
+<li>Automated parameter optimization</li>
+<li>Integration with other ML libraries</li>
+</ul>
+<h2>Contributing</h2>
+<p>To extend the tslearn integration:</p>
+<ol>
+<li>Add new visualization methods to <code>TSLearnVisualizer</code></li>
+<li>Create corresponding API endpoints</li>
+<li>Update the frontend visualization panel</li>
+<li>Add comprehensive tests</li>
+<li>Update documentation</li>
+</ol>
+<h2>References</h2>
+<ul>
+<li><a href="https://tslearn.readthedocs.io/">tslearn Documentation</a></li>
+<li><a href="https://tslearn.readthedocs.io/en/stable/auto_examples/index.html">Time Series Analysis with tslearn</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Dynamic_time_warping">Dynamic Time Warping</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Shapelet_(time_series)">Shapelet Discovery</a></li>
+<li><a href="https://www.cs.ucr.edu/~eamonn/MatrixProfile.html">Matrix Profile</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4.x Migration Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>4.x Migration Guide</h1>
+      <div class="markdown-content"><h1>4.x Migration Guide</h1>
+<p>Chart.js 4.0 introduces a number of breaking changes. We tried keeping the amount of breaking changes to a minimum. For some features and bug fixes it was necessary to break backwards compatibility, but we aimed to do so only when worth the benefit.</p>
+<h2>End user migration</h2>
+<h3>Charts</h3>
+<ul>
+<li>Charts don&#39;t override the default tooltip callbacks, so all chart types have the same-looking tooltips.</li>
+<li>Default scale override has been removed if the configured scale starts with <code>x</code>/<code>y</code>. Defining <code>xAxes</code> in your config will now create a second scale instead of overriding the default <code>x</code> axis.</li>
+</ul>
+<h3>Options</h3>
+<p>A number of changes were made to the configuration options passed to the <code>Chart</code> constructor. Those changes are documented below.</p>
+<h4>Specific changes</h4>
+<ul>
+<li>The radialLinear grid indexable and scriptable options don&#39;t decrease the index of the specified grid line anymore.</li>
+<li>The <code>destroy</code> plugin hook has been removed and replaced with <code>afterDestroy</code>.</li>
+<li>Ticks callback on time scale now receives timestamp instead of a formatted label.</li>
+<li><code>scales[id].grid.drawBorder</code> has been renamed to <code>scales[id].border.display</code>.</li>
+<li><code>scales[id].grid.borderWidth</code> has been renamed to <code>scales[id].border.width</code>.</li>
+<li><code>scales[id].grid.borderColor</code> has been renamed to <code>scales[id].border.color</code>.</li>
+<li><code>scales[id].grid.borderDash</code> has been renamed to <code>scales[id].border.dash</code>.</li>
+<li><code>scales[id].grid.borderDashOffset</code> has been renamed to <code>scales[id].border.dashOffset</code>.</li>
+<li>The z index for the border of a scale is now configurable instead of being 1 higher as the grid z index.</li>
+<li>Linear scales now add and subtracts <code>5%</code> of the max value to the range if the min and max are the same instead of <code>1</code>.</li>
+<li>If the tooltip callback returns <code>undefined</code>, then the default callback will be used.</li>
+<li><code>maintainAspectRatio</code> respects container height.</li>
+<li>Time and timeseries scales use <code>ticks.stepSize</code> instead of <code>time.stepSize</code>, which has been removed.</li>
+<li><code>maxTickslimit</code> won&#39;t be used for the ticks in <code>autoSkip</code> if the determined max ticks is less then the <code>maxTicksLimit</code>.</li>
+<li><code>dist/chart.js</code> has been removed.</li>
+<li><code>dist/chart.min.js</code> has been renamed to <code>dist/chart.umd.min.js</code> (and before 4.5.0 <code>dist/chart.umd.js</code>).</li>
+<li><code>dist/chart.esm.js</code> has been renamed to <code>dist/chart.js</code>.</li>
+</ul>
+<h4>Type changes</h4>
+<ul>
+<li>The order of the <code>ChartMeta</code> parameters have been changed from <code>&lt;Element, DatasetElement, Type&gt;</code> to <code>&lt;Type, Element, DatasetElement&gt;</code>.</li>
+</ul>
+<h3>General</h3>
+<ul>
+<li>Chart.js becomes an <a href="https://nodejs.org/api/esm.html">ESM-only package</a> (<a href="../getting-started/installation.md#cdn">the UMD bundle is still available</a>). To use Chart.js, your project should also be an ES module. Make sure to have this in your <code>package.json</code>:<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;module&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre>If you are experiencing problems with <a href="https://jestjs.io">Jest</a>, follow its <a href="https://jestjs.io/docs/ecmascript-modules">documentation</a> to enable the ESM support. Or, we can recommend you migrating to <a href="https://vitest.dev/">Vitest</a>. Vitest has the ESM support out of the box and <a href="https://vitest.dev/guide/migration.html#migrating-from-jest">almost the same API as Jest</a>. See an <a href="https://github.com/reactchartjs/react-chartjs-2/commit/7f3ec96101d21e43cae8cbfe5e09a46a17cff1ef">example of migration</a>.</li>
+<li>Removed fallback to <code>fontColor</code> for the legend text and strikethrough color.</li>
+<li>Removed <code>config._chart</code> fallback for <code>this.chart</code> in the filler plugin.</li>
+<li>Removed <code>this._chart</code> in the filler plugin.</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

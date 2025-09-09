@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Reynard 3D Demo - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Reynard 3D Demo</h1>
+      <div class="markdown-content"><h1>🦊 Reynard 3D Demo</h1>
+<p>Interactive 3D games and visualizations showcasing the power of the Reynard 3D package built on Three.js.</p>
+<h2>🎮 Games &amp; Demos</h2>
+<h3>🎲 Cube Collector</h3>
+<ul>
+<li><strong>Objective</strong>: Collect colorful cubes by clicking on them</li>
+<li><strong>Features</strong>: Physics simulation, score system, progressive difficulty</li>
+<li><strong>Controls</strong>: Mouse click to collect cubes</li>
+<li><strong>Difficulty</strong>: Easy</li>
+</ul>
+<h3>🚀 Space Shooter</h3>
+<ul>
+<li><strong>Objective</strong>: Defend against alien invaders in fast-paced space combat</li>
+<li><strong>Features</strong>: Particle effects, enemy AI, power-ups</li>
+<li><strong>Controls</strong>: WASD/Arrow Keys to move, SPACE to shoot</li>
+<li><strong>Difficulty</strong>: Medium</li>
+</ul>
+<h3>🧩 Maze Explorer</h3>
+<ul>
+<li><strong>Objective</strong>: Navigate through procedurally generated 3D mazes</li>
+<li><strong>Features</strong>: Procedural generation, first-person controls, dynamic lighting</li>
+<li><strong>Controls</strong>: WASD/Arrow Keys to move, Mouse to look around</li>
+<li><strong>Difficulty</strong>: Hard</li>
+</ul>
+<h3>✨ Particle Playground</h3>
+<ul>
+<li><strong>Objective</strong>: Create beautiful particle effects and explore WebGL rendering</li>
+<li><strong>Features</strong>: Interactive particles, real-time effects, visual art</li>
+<li><strong>Controls</strong>: Click to create effects, mouse movement to aim</li>
+<li><strong>Difficulty</strong>: Easy</li>
+</ul>
+<h2>🚀 Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 18+</li>
+<li>npm or yarn</li>
+</ul>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build
+
+<span class="hljs-comment"># Preview production build</span>
+npm run serve</code></pre><h3>Development</h3>
+<p>The app runs on <code>http://localhost:3003</code> by default.</p>
+<h2>🛠️ Technical Features</h2>
+<h3>3D Rendering</h3>
+<ul>
+<li><strong>WebGL</strong>: Hardware-accelerated 3D graphics</li>
+<li><strong>Three.js</strong>: Industry-standard 3D library</li>
+<li><strong>Responsive</strong>: Automatic canvas resizing and device pixel ratio optimization</li>
+<li><strong>Performance</strong>: Optimized rendering with efficient geometry and materials</li>
+</ul>
+<h3>Game Engine Features</h3>
+<ul>
+<li><strong>Physics Simulation</strong>: Realistic object interactions and collisions</li>
+<li><strong>Particle Systems</strong>: Dynamic visual effects and explosions</li>
+<li><strong>Procedural Generation</strong>: Algorithmic content creation for mazes</li>
+<li><strong>Input Handling</strong>: Mouse and keyboard controls with smooth responsiveness</li>
+</ul>
+<h3>Reynard Integration</h3>
+<ul>
+<li><strong>Theme System</strong>: Dark/light mode support with CSS variables</li>
+<li><strong>Component Architecture</strong>: Modular, reusable game components</li>
+<li><strong>State Management</strong>: Reactive state with SolidJS signals</li>
+<li><strong>Notifications</strong>: User feedback system for game events</li>
+</ul>
+<h2>🎯 Game Mechanics</h2>
+<h3>Scoring System</h3>
+<ul>
+<li><strong>Cube Collector</strong>: Points based on cube color and collection speed</li>
+<li><strong>Space Shooter</strong>: Points for destroying enemies, bonus for combos</li>
+<li><strong>Maze Explorer</strong>: Points for reaching the exit quickly</li>
+<li><strong>Particle Demo</strong>: Points for creating effects and interactions</li>
+</ul>
+<h3>Controls</h3>
+<ul>
+<li><strong>Mouse</strong>: Look around, interact with objects, aim</li>
+<li><strong>WASD/Arrow Keys</strong>: Movement in applicable games</li>
+<li><strong>Space</strong>: Shoot, jump, or special actions</li>
+<li><strong>Scroll</strong>: Zoom in/out (where applicable)</li>
+</ul>
+<h2>🎨 Visual Design</h2>
+<h3>Theme Support</h3>
+<ul>
+<li><strong>Light Mode</strong>: Clean, bright interface with high contrast</li>
+<li><strong>Dark Mode</strong>: Easy on the eyes with vibrant accent colors</li>
+<li><strong>Responsive</strong>: Adapts to different screen sizes and orientations</li>
+</ul>
+<h3>UI Components</h3>
+<ul>
+<li><strong>Game Cards</strong>: Interactive selection with hover effects</li>
+<li><strong>HUD Elements</strong>: Real-time game information display</li>
+<li><strong>Instructions</strong>: Context-sensitive help and controls</li>
+<li><strong>Score Display</strong>: Prominent scoring system</li>
+</ul>
+<h2>🔧 Architecture</h2>
+<h3>Component Structure</h3>
+<pre><code class="hljs">src<span class="hljs-symbol">/</span>
+├── App.tsx                 <span class="hljs-comment"># Main application component</span>
+├── components<span class="hljs-symbol">/</span>             <span class="hljs-comment"># Reusable UI components</span>
+│   ├── GameSelector.tsx   <span class="hljs-comment"># Game selection interface</span>
+│   ├── GameContainer.tsx  <span class="hljs-comment"># Game wrapper and controls</span>
+│   ├── GameInfo.tsx       <span class="hljs-comment"># Information and help</span>
+│   └── ThemeToggle.tsx    <span class="hljs-comment"># Theme switching</span>
+├── games<span class="hljs-symbol">/</span>                 <span class="hljs-comment"># Individual game implementations</span>
+│   ├── CubeCollectorGame.tsx
+│   ├── SpaceShooterGame.tsx
+│   ├── MazeExplorerGame.tsx
+│   └── ParticleDemo.tsx
+└── styles.css            <span class="hljs-comment"># Global styles and theming</span></code></pre><h3>Game Loop Architecture</h3>
+<p>Each game implements a consistent pattern:</p>
+<ol>
+<li><strong>Scene Setup</strong>: Initialize Three.js scene, lighting, and objects</li>
+<li><strong>Input Handling</strong>: Mouse and keyboard event management</li>
+<li><strong>Game Loop</strong>: Update logic, physics, and rendering</li>
+<li><strong>State Management</strong>: Score tracking and game state</li>
+<li><strong>Cleanup</strong>: Resource management and event cleanup</li>
+</ol>
+<h2>🚀 Performance Optimizations</h2>
+<h3>Rendering</h3>
+<ul>
+<li><strong>Frustum Culling</strong>: Only render visible objects</li>
+<li><strong>Level of Detail</strong>: Adjust quality based on distance</li>
+<li><strong>Efficient Materials</strong>: Reuse materials and geometries</li>
+<li><strong>Batch Operations</strong>: Group similar rendering operations</li>
+</ul>
+<h3>Memory Management</h3>
+<ul>
+<li><strong>Object Pooling</strong>: Reuse particle and bullet objects</li>
+<li><strong>Garbage Collection</strong>: Minimize object creation in game loops</li>
+<li><strong>Resource Cleanup</strong>: Proper disposal of Three.js objects</li>
+<li><strong>Event Cleanup</strong>: Remove event listeners on component unmount</li>
+</ul>
+<h2>🎯 Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ul>
+<li><strong>Multiplayer Support</strong>: Real-time multiplayer games</li>
+<li><strong>VR/AR Integration</strong>: Immersive 3D experiences</li>
+<li><strong>Advanced Physics</strong>: More realistic simulations</li>
+<li><strong>Audio System</strong>: 3D spatial audio and sound effects</li>
+<li><strong>Save System</strong>: Progress persistence and high scores</li>
+</ul>
+<h3>Technical Improvements</h3>
+<ul>
+<li><strong>Web Workers</strong>: Offload heavy computations</li>
+<li><strong>WebAssembly</strong>: Performance-critical game logic</li>
+<li><strong>Progressive Web App</strong>: Offline support and app-like experience</li>
+<li><strong>Analytics</strong>: Game performance and user behavior tracking</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>This demo serves as a showcase for the Reynard 3D package capabilities. Contributions are welcome for:</p>
+<ul>
+<li>New game implementations</li>
+<li>Performance optimizations</li>
+<li>Visual enhancements</li>
+<li>Bug fixes and improvements</li>
+</ul>
+<h2>📄 License</h2>
+<p>Part of the Reynard framework ecosystem. See main project for licensing information.</p>
+<hr>
+<p>Built with 🦊 Reynard Framework • Powered by Three.js • Made with ❤️</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

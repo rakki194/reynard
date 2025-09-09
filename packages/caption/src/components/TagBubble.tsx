@@ -15,7 +15,7 @@ import {
 } from "solid-js";
 import { TagBubbleProps } from "../types/index.js";
 import { useTagAutocomplete } from "../utils/tagAutocomplete.js";
-import { createTagColorGenerator } from "../utils/tagColors.js";
+import { createTagColorGenerator, type TagColorOptions } from "../utils/tagColors.js";
 import "./TagBubble.css";
 
 export const TagBubble: Component<TagBubbleProps> = (props) => {
@@ -29,9 +29,17 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
   let tagBubbleRef: HTMLDivElement | undefined;
 
   const tagColorGenerator = createTagColorGenerator();
-  const tagColor = tagColorGenerator.getColor(props.tag);
+  
+  // Enhanced OKLCH color generation with options
+  const tagColorOptions: TagColorOptions = {
+    intensity: props.intensity || 1.0,
+    variant: props.variant || "default",
+    theme: props.theme,
+  };
+  
+  const tagColor = tagColorGenerator.getColor(props.tag, tagColorOptions);
 
-  // Set CSS custom properties for dynamic styling
+  // Set CSS custom properties for dynamic styling with OKLCH support
   createEffect(() => {
     if (tagBubbleRef) {
       tagBubbleRef.style.setProperty(
@@ -40,6 +48,17 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
       );
       tagBubbleRef.style.setProperty("--tag-text-color", tagColor.text);
       tagBubbleRef.style.setProperty("--tag-border-color", tagColor.border);
+      
+      // Enhanced OKLCH hover and active states
+      if (tagColor.hover) {
+        tagBubbleRef.style.setProperty("--tag-hover-color", tagColor.hover);
+      }
+      if (tagColor.active) {
+        tagBubbleRef.style.setProperty("--tag-active-color", tagColor.active);
+      }
+      if (tagColor.focus) {
+        tagBubbleRef.style.setProperty("--tag-focus-color", tagColor.focus);
+      }
     }
   });
 
@@ -248,6 +267,11 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
         "tag-bubble--editable": props.editable !== false,
         "tag-bubble--removable": props.removable !== false,
         [`tag-bubble--${props.size || "medium"}`]: true,
+        // Enhanced OKLCH variant classes
+        "tag-bubble--muted": props.variant === "muted",
+        "tag-bubble--vibrant": props.variant === "vibrant",
+        "tag-bubble--intense": !!(props.intensity && props.intensity > 1.5),
+        "tag-bubble--subtle": !!(props.intensity && props.intensity < 0.8),
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

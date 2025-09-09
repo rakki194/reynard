@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-docs-site - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-docs-site</h1>
+      <div class="markdown-content"><h1>reynard-docs-site</h1>
+<blockquote>
+<p><strong>Beautiful documentation site application for Reynard framework</strong> 🦊</p>
+</blockquote>
+<p>A complete documentation site built with Reynard itself, featuring beautiful design, interactive examples, and comprehensive API documentation.</p>
+<h2>✨ Features</h2>
+<h3>🎯 <strong>Core Features</strong></h3>
+<ul>
+<li><strong>Beautiful Design</strong>: Modern, responsive design with dark mode support</li>
+<li><strong>Interactive Examples</strong>: Live code examples with editable playgrounds</li>
+<li><strong>API Documentation</strong>: Comprehensive API docs with search and filtering</li>
+<li><strong>Search Functionality</strong>: Full-text search across all documentation</li>
+<li><strong>Navigation</strong>: Intuitive navigation with breadcrumbs and sidebar</li>
+<li><strong>Responsive</strong>: Mobile-first design that works on all devices</li>
+</ul>
+<h3>🎨 <strong>Design Features</strong></h3>
+<ul>
+<li><strong>Theme System</strong>: Seamless integration with Reynard&#39;s theming system</li>
+<li><strong>Dark Mode</strong>: Automatic dark mode support</li>
+<li><strong>Custom Styling</strong>: Customizable CSS variables and themes</li>
+<li><strong>Accessibility</strong>: WCAG 2.1 compliant design</li>
+<li><strong>Performance</strong>: Optimized for fast loading and smooth interactions</li>
+</ul>
+<h3>🔧 <strong>Technical Features</strong></h3>
+<ul>
+<li><strong>SolidJS</strong>: Built with SolidJS for optimal performance</li>
+<li><strong>TypeScript</strong>: Full TypeScript support with type safety</li>
+<li><strong>Vite</strong>: Fast development and build process</li>
+<li><strong>Routing</strong>: Client-side routing with Solid Router</li>
+<li><strong>State Management</strong>: Reactive state management with SolidJS</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-docs-site</code></pre><h2>🚀 Quick Start</h2>
+<h3>Development</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build
+
+<span class="hljs-comment"># Preview production build</span>
+npm run preview</code></pre><h3>Generate Documentation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Generate documentation from packages</span>
+npm run generate-docs
+
+<span class="hljs-comment"># Watch for changes and regenerate</span>
+npm run generate-docs:watch</code></pre><h2>🏗️ Project Structure</h2>
+<pre><code class="hljs">src<span class="hljs-symbol">/</span>
+├── App.tsx                 <span class="hljs-comment"># Main application component</span>
+├── App.css                 <span class="hljs-comment"># Application styles</span>
+├── main.tsx                <span class="hljs-comment"># Application entry point</span>
+├── index.css               <span class="hljs-comment"># Global styles</span>
+├── pages<span class="hljs-symbol">/</span>                  <span class="hljs-comment"># Page components</span>
+│   ├── HomePage.tsx        <span class="hljs-comment"># Home page</span>
+│   ├── PackagePage.tsx     <span class="hljs-comment"># Package documentation</span>
+│   ├── ApiPage.tsx         <span class="hljs-comment"># API documentation</span>
+│   ├── ExamplePage.tsx     <span class="hljs-comment"># Code examples</span>
+│   ├── SearchPage.tsx      <span class="hljs-comment"># Search page</span>
+│   └── NotFoundPage.tsx    <span class="hljs-comment"># 404 page</span>
+└── test-setup.ts           <span class="hljs-comment"># Test setup</span></code></pre><h2>🎨 Customization</h2>
+<h3>Themes</h3>
+<p>The documentation site integrates seamlessly with Reynard&#39;s theming system:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { useTheme } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-themes&#x27;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { theme, setTheme } = <span class="hljs-title function_">useTheme</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">docs-component</span> <span class="hljs-attr">docs-component--</span>${<span class="hljs-attr">theme</span>()}`}&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setTheme(theme() === &#x27;light&#x27; ? &#x27;dark&#x27; : &#x27;light&#x27;)}&gt;
+        Toggle Theme
+      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h3>Custom Styles</h3>
+<p>Override CSS variables to customize the appearance:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-attr">--accent</span>: #your-color;
+  <span class="hljs-attr">--bg-color</span>: #your-bg;
+  <span class="hljs-attr">--text-primary</span>: #your-text;
+  <span class="hljs-comment">/* ... other variables */</span>
+}</code></pre><h3>Custom Components</h3>
+<p>Register custom components for documentation:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createDocEngine } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-docs-core&quot;</span>;
+
+<span class="hljs-keyword">const</span> engine = <span class="hljs-title function_">createDocEngine</span>({
+  <span class="hljs-comment">// ... other config</span>
+  <span class="hljs-attr">customComponents</span>: {
+    <span class="hljs-title class_">MyCustomComponent</span>: <span class="hljs-title class_">MyCustomComponent</span>,
+    <span class="hljs-title class_">InteractiveDemo</span>: <span class="hljs-title class_">InteractiveDemo</span>,
+  },
+});</code></pre><h2>📱 Responsive Design</h2>
+<p>The documentation site is built with a mobile-first approach:</p>
+<ul>
+<li><strong>Mobile</strong>: Optimized for touch interactions and small screens</li>
+<li><strong>Tablet</strong>: Adapted layout for medium screens</li>
+<li><strong>Desktop</strong>: Full-featured experience for large screens</li>
+</ul>
+<h2>🔍 Search Integration</h2>
+<p>The site includes comprehensive search functionality:</p>
+<ul>
+<li><strong>Full-text search</strong> across all documentation</li>
+<li><strong>API search</strong> for functions, classes, and types</li>
+<li><strong>Example search</strong> for code examples</li>
+<li><strong>Tag-based filtering</strong> for categorized content</li>
+</ul>
+<h2>🎯 Performance</h2>
+<p>The documentation site is optimized for performance:</p>
+<ul>
+<li><strong>Code splitting</strong> for faster initial load</li>
+<li><strong>Lazy loading</strong> for images and components</li>
+<li><strong>Optimized bundles</strong> with tree shaking</li>
+<li><strong>Service worker</strong> for offline support (optional)</li>
+</ul>
+<h2>🧪 Testing</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run <span class="hljs-built_in">test</span>:coverage
+
+<span class="hljs-comment"># Run tests in watch mode</span>
+npm run <span class="hljs-built_in">test</span>:watch</code></pre><h2>📦 Bundle Size</h2>
+<ul>
+<li><strong>Initial bundle</strong>: ~150 kB (gzipped)</li>
+<li><strong>Total bundle</strong>: ~300 kB (gzipped)</li>
+<li><strong>Runtime</strong>: ~50 kB (gzipped)</li>
+</ul>
+<h2>🚀 Deployment</h2>
+<h3>Static Hosting</h3>
+<p>The documentation site can be deployed to any static hosting service:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build the site</span>
+npm run build
+
+<span class="hljs-comment"># Deploy to your hosting service</span>
+<span class="hljs-comment"># The dist/ folder contains all the files needed</span></code></pre><h3>Docker</h3>
+<pre><code class="hljs language-dockerfile"><span class="hljs-keyword">FROM</span> node:<span class="hljs-number">18</span>-alpine
+
+<span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> package*.json ./</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> npm ci --only=production</span>
+
+<span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> npm run build</span>
+
+<span class="hljs-keyword">FROM</span> nginx:alpine
+<span class="hljs-keyword">COPY</span><span class="language-bash"> --from=0 /app/dist /usr/share/nginx/html</span>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> nginx.conf /etc/nginx/nginx.conf</span>
+
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">80</span>
+<span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;nginx&quot;</span>, <span class="hljs-string">&quot;-g&quot;</span>, <span class="hljs-string">&quot;daemon off;&quot;</span>]</span></code></pre><h3>CI/CD</h3>
+<p>Example GitHub Actions workflow:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">Documentation</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> [<span class="hljs-string">main</span>]
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">deploy:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">&quot;18&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">ci</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">build</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">peaceiris/actions-gh-pages@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">github_token:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">publish_dir:</span> <span class="hljs-string">./dist</span></code></pre><h2>🤝 Contributing</h2>
+<p>See the main <a href="../../README.md">Reynard repository</a> for contribution guidelines.</p>
+<h2>📄 License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<hr>
+<p><strong>Built with ❤️ using SolidJS and modern web standards</strong> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

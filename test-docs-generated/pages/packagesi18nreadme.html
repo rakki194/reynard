@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard I18n - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard I18n</h1>
+      <div class="markdown-content"><h1>Reynard I18n</h1>
+<p>🦊 <strong>Enhanced internationalization system for the Reynard framework</strong> - Now with Yipyap-inspired advanced features!</p>
+<p>Comprehensive internationalization system with support for 37 languages, featuring sophisticated pluralization rules, grammar helpers, and advanced language-specific utilities.</p>
+<h2>✨ Features</h2>
+<h3>🌍 <strong>37 Language Support</strong></h3>
+<p>Complete translations for major world languages including European, Asian, Middle Eastern, and RTL languages.</p>
+<h3>🎯 <strong>Advanced Pluralization</strong></h3>
+<p>Language-specific pluralization rules for complex languages:</p>
+<ul>
+<li><strong>Russian/Slavic</strong>: 3-form pluralization (one, few, many)</li>
+<li><strong>Arabic</strong>: 4-form pluralization (singular, dual, plural, large plural)</li>
+<li><strong>Polish/Czech</strong>: Special teen number handling</li>
+<li><strong>Romanian</strong>: Unique 3-form system</li>
+<li><strong>Turkish</strong>: Vowel harmony-based pluralization</li>
+</ul>
+<h3>🧠 <strong>Grammar Helpers</strong></h3>
+<p>Language-specific grammar utilities:</p>
+<ul>
+<li><strong>Hungarian</strong>: Article selection (a/az) and vowel harmony suffixes</li>
+<li><strong>Turkish</strong>: Vowel harmony for plural suffixes</li>
+<li><strong>Portuguese</strong>: Complex plural form handling</li>
+</ul>
+<h3>🚀 <strong>Performance Optimized</strong></h3>
+<ul>
+<li>Dynamic translation loading with <code>import.meta.glob</code></li>
+<li>Efficient fallback mechanisms</li>
+<li>Lazy loading of language files</li>
+</ul>
+<h3>🎨 <strong>Developer Experience</strong></h3>
+<ul>
+<li>Full TypeScript support with comprehensive type definitions</li>
+<li>SolidJS integration with reactive system</li>
+<li>Browser language detection</li>
+<li>Persistent language preferences</li>
+<li>Comprehensive test suite</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-i18n</code></pre><h2>🚀 Quick Start</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createI18nModule, useI18n, I18nProvider } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-i18n&#x27;</span>;
+
+<span class="hljs-comment">// Create i18n module</span>
+<span class="hljs-keyword">const</span> i18n = <span class="hljs-title function_">createI18nModule</span>();
+
+<span class="hljs-comment">// Use in SolidJS component</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">I18nProvider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{i18n}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">I18nProvider</span>&gt;</span></span>
+  );
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { t, locale, setLocale, languages } = <span class="hljs-title function_">useI18n</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{t(&#x27;common.welcome&#x27;)}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setLocale(e.target.value)}&gt;
+        {languages.map(lang =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{lang.code}</span>&gt;</span>{lang.nativeName}<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>🌍 Supported Languages</h2>
+<h3>European Languages</h3>
+<ul>
+<li><strong>Germanic</strong>: English, German, Dutch, Swedish, Norwegian, Danish</li>
+<li><strong>Romance</strong>: French, Spanish, Italian, Portuguese, Romanian</li>
+<li><strong>Slavic</strong>: Russian, Polish, Czech, Bulgarian, Croatian, Slovenian, Slovak, Ukrainian</li>
+<li><strong>Baltic</strong>: Estonian, Latvian, Lithuanian</li>
+<li><strong>Others</strong>: Hungarian, Finnish, Greek, Maltese</li>
+</ul>
+<h3>Asian Languages</h3>
+<ul>
+<li><strong>East Asian</strong>: Japanese, Chinese, Korean</li>
+<li><strong>Southeast Asian</strong>: Vietnamese, Thai, Indonesian</li>
+<li><strong>South Asian</strong>: Hindi</li>
+</ul>
+<h3>Middle Eastern Languages</h3>
+<ul>
+<li><strong>Semitic</strong>: Arabic, Hebrew</li>
+<li><strong>Turkic</strong>: Turkish</li>
+</ul>
+<h3>RTL Languages</h3>
+<ul>
+<li>Arabic (العربية)</li>
+<li>Hebrew (עברית)</li>
+</ul>
+<h2>🔧 Advanced Features</h2>
+<h3>Sophisticated Pluralization</h3>
+<h4>Russian Pluralization (3 Forms)</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getRussianPlural } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">forms</span>: [<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>] = [<span class="hljs-string">&quot;файл&quot;</span>, <span class="hljs-string">&quot;файла&quot;</span>, <span class="hljs-string">&quot;файлов&quot;</span>];
+<span class="hljs-title function_">getRussianPlural</span>(<span class="hljs-number">1</span>, forms); <span class="hljs-comment">// &quot;файл&quot; (singular)</span>
+<span class="hljs-title function_">getRussianPlural</span>(<span class="hljs-number">2</span>, forms); <span class="hljs-comment">// &quot;файла&quot; (few)</span>
+<span class="hljs-title function_">getRussianPlural</span>(<span class="hljs-number">5</span>, forms); <span class="hljs-comment">// &quot;файлов&quot; (many)</span>
+<span class="hljs-title function_">getRussianPlural</span>(<span class="hljs-number">21</span>, forms); <span class="hljs-comment">// &quot;файл&quot; (singular)</span>
+<span class="hljs-title function_">getRussianPlural</span>(<span class="hljs-number">22</span>, forms); <span class="hljs-comment">// &quot;файла&quot; (few)</span></code></pre><h4>Arabic Pluralization (4 Forms)</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getArabicPlural } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-keyword">const</span> forms = {
+  <span class="hljs-attr">singular</span>: <span class="hljs-string">&quot;كتاب&quot;</span>,
+  <span class="hljs-attr">dual</span>: <span class="hljs-string">&quot;كتابان&quot;</span>,
+  <span class="hljs-attr">plural</span>: <span class="hljs-string">&quot;كتب&quot;</span>,
+  <span class="hljs-attr">pluralLarge</span>: <span class="hljs-string">&quot;كتاب&quot;</span>,
+};
+<span class="hljs-title function_">getArabicPlural</span>(<span class="hljs-number">1</span>, forms); <span class="hljs-comment">// &quot;كتاب&quot; (singular)</span>
+<span class="hljs-title function_">getArabicPlural</span>(<span class="hljs-number">2</span>, forms); <span class="hljs-comment">// &quot;كتابان&quot; (dual)</span>
+<span class="hljs-title function_">getArabicPlural</span>(<span class="hljs-number">3</span>, forms); <span class="hljs-comment">// &quot;كتب&quot; (plural)</span>
+<span class="hljs-title function_">getArabicPlural</span>(<span class="hljs-number">11</span>, forms); <span class="hljs-comment">// &quot;كتاب&quot; (large plural)</span></code></pre><h4>Polish Pluralization (Special Teen Handling)</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getPolishPlural } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-keyword">const</span> forms = {
+  <span class="hljs-attr">singular</span>: <span class="hljs-string">&quot;plik&quot;</span>,
+  <span class="hljs-attr">plural2_4</span>: <span class="hljs-string">&quot;pliki&quot;</span>,
+  <span class="hljs-attr">plural5_</span>: <span class="hljs-string">&quot;plików&quot;</span>,
+};
+<span class="hljs-title function_">getPolishPlural</span>(<span class="hljs-number">1</span>, forms); <span class="hljs-comment">// &quot;plik&quot; (singular)</span>
+<span class="hljs-title function_">getPolishPlural</span>(<span class="hljs-number">2</span>, forms); <span class="hljs-comment">// &quot;pliki&quot; (2-4)</span>
+<span class="hljs-title function_">getPolishPlural</span>(<span class="hljs-number">5</span>, forms); <span class="hljs-comment">// &quot;plików&quot; (5+)</span>
+<span class="hljs-title function_">getPolishPlural</span>(<span class="hljs-number">12</span>, forms); <span class="hljs-comment">// &quot;plików&quot; (teens)</span></code></pre><h3>Grammar Helpers</h3>
+<h4>Hungarian Articles</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getHungarianArticle } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-title function_">getHungarianArticle</span>(<span class="hljs-string">&quot;alma&quot;</span>); <span class="hljs-comment">// &quot;az&quot; (vowel)</span>
+<span class="hljs-title function_">getHungarianArticle</span>(<span class="hljs-string">&quot;ház&quot;</span>); <span class="hljs-comment">// &quot;a&quot; (consonant)</span>
+<span class="hljs-title function_">getHungarianArticle</span>(<span class="hljs-string">&quot;egy&quot;</span>); <span class="hljs-comment">// &quot;az&quot; (special case)</span>
+<span class="hljs-title function_">getHungarianArticle</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// &quot;az&quot; (egy)</span>
+<span class="hljs-title function_">getHungarianArticle</span>(<span class="hljs-number">2</span>); <span class="hljs-comment">// &quot;a&quot; (kettő)</span></code></pre><h4>Hungarian Vowel Harmony</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getHungarianSuffix } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-title function_">getHungarianSuffix</span>(<span class="hljs-string">&quot;ház&quot;</span>, <span class="hljs-string">&quot;ban&quot;</span>, <span class="hljs-string">&quot;ben&quot;</span>); <span class="hljs-comment">// &quot;ban&quot; (back vowel)</span>
+<span class="hljs-title function_">getHungarianSuffix</span>(<span class="hljs-string">&quot;ember&quot;</span>, <span class="hljs-string">&quot;ban&quot;</span>, <span class="hljs-string">&quot;ben&quot;</span>); <span class="hljs-comment">// &quot;ben&quot; (front vowel)</span>
+<span class="hljs-title function_">getHungarianSuffix</span>(<span class="hljs-string">&quot;kert&quot;</span>, <span class="hljs-string">&quot;nak&quot;</span>, <span class="hljs-string">&quot;nek&quot;</span>); <span class="hljs-comment">// &quot;nak&quot; (back vowel)</span>
+<span class="hljs-title function_">getHungarianSuffix</span>(<span class="hljs-string">&quot;iskola&quot;</span>, <span class="hljs-string">&quot;nak&quot;</span>, <span class="hljs-string">&quot;nek&quot;</span>); <span class="hljs-comment">// &quot;nek&quot; (front vowel)</span></code></pre><h4>Turkish Vowel Harmony</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { getTurkishPlural } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-keyword">const</span> forms = {
+  <span class="hljs-attr">singular</span>: <span class="hljs-string">&quot;kitap&quot;</span>,
+  <span class="hljs-attr">pluralLar</span>: <span class="hljs-string">&quot;kitaplar&quot;</span>, <span class="hljs-comment">// back vowels</span>
+  <span class="hljs-attr">pluralLer</span>: <span class="hljs-string">&quot;kitapler&quot;</span>, <span class="hljs-comment">// front vowels</span>
+};
+<span class="hljs-title function_">getTurkishPlural</span>(<span class="hljs-string">&quot;kitap&quot;</span>, forms); <span class="hljs-comment">// &quot;kitaplar&quot; (back vowel)</span>
+<span class="hljs-title function_">getTurkishPlural</span>(<span class="hljs-string">&quot;ev&quot;</span>, forms); <span class="hljs-comment">// &quot;kitapler&quot; (front vowel)</span></code></pre><h3>Dynamic Translation Loading</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { loadTranslations, translations } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-comment">// Load specific locale</span>
+<span class="hljs-keyword">const</span> englishTranslations = <span class="hljs-keyword">await</span> <span class="hljs-title function_">loadTranslations</span>(<span class="hljs-string">&quot;en&quot;</span>);
+
+<span class="hljs-comment">// Access all available translations</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(translations)); <span class="hljs-comment">// [&#x27;en&#x27;, &#x27;fr&#x27;, &#x27;de&#x27;, ...]</span></code></pre><h3>Formatting Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { formatNumber, formatDate, formatCurrency } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-i18n&quot;</span>;
+
+<span class="hljs-title function_">formatNumber</span>(<span class="hljs-number">1234.56</span>, <span class="hljs-string">&quot;en&quot;</span>); <span class="hljs-comment">// &quot;1,234.56&quot;</span>
+<span class="hljs-title function_">formatNumber</span>(<span class="hljs-number">1234.56</span>, <span class="hljs-string">&quot;de&quot;</span>); <span class="hljs-comment">// &quot;1.234,56&quot;</span>
+<span class="hljs-title function_">formatDate</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(), <span class="hljs-string">&quot;en&quot;</span>); <span class="hljs-comment">// &quot;12/25/2023&quot;</span>
+<span class="hljs-title function_">formatDate</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(), <span class="hljs-string">&quot;de&quot;</span>); <span class="hljs-comment">// &quot;25.12.2023&quot;</span>
+<span class="hljs-title function_">formatCurrency</span>(<span class="hljs-number">99.99</span>, <span class="hljs-string">&quot;en&quot;</span>, <span class="hljs-string">&quot;USD&quot;</span>); <span class="hljs-comment">// &quot;$99.99&quot;</span>
+<span class="hljs-title function_">formatCurrency</span>(<span class="hljs-number">99.99</span>, <span class="hljs-string">&quot;de&quot;</span>, <span class="hljs-string">&quot;EUR&quot;</span>); <span class="hljs-comment">// &quot;99,99 €&quot;</span></code></pre><h2>🎯 API Reference</h2>
+<h3>Core Functions</h3>
+<h4><code>createI18nModule(initialTranslations?)</code></h4>
+<p>Creates a new i18n module instance with optional initial translations.</p>
+<h4><code>useI18n()</code></h4>
+<p>SolidJS hook to access i18n functionality within a component.</p>
+<h4><code>loadTranslations(locale: LanguageCode)</code></h4>
+<p>Dynamically loads translations for a specific locale with fallback support.</p>
+<h3>Translation Function</h3>
+<h4><code>t(key: string, params?: TranslationParams)</code></h4>
+<p>Translates a key with optional parameter interpolation.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">t</span>(<span class="hljs-string">&quot;common.welcome&quot;</span>); <span class="hljs-comment">// &quot;Welcome&quot;</span>
+<span class="hljs-title function_">t</span>(<span class="hljs-string">&quot;common.greeting&quot;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John&quot;</span> }); <span class="hljs-comment">// &quot;Hello, John!&quot;</span>
+<span class="hljs-title function_">t</span>(<span class="hljs-string">&quot;common.itemCount&quot;</span>, { <span class="hljs-attr">count</span>: <span class="hljs-number">5</span> }); <span class="hljs-comment">// &quot;You have 5 items&quot;</span></code></pre><h3>Language Management</h3>
+<h4><code>setLocale(locale: LanguageCode)</code></h4>
+<p>Changes the current locale and persists the preference.</p>
+<h4><code>locale(): LanguageCode</code></h4>
+<p>Gets the current locale.</p>
+<h4><code>languages: Language[]</code></h4>
+<p>Array of supported languages with metadata (code, name, nativeName, rtl).</p>
+<h4><code>isRTL: boolean</code></h4>
+<p>Boolean indicating if current locale is right-to-left.</p>
+<h3>Advanced Pluralization Functions</h3>
+<ul>
+<li><code>getRussianPlural(num, forms)</code> - Russian/Slavic pluralization</li>
+<li><code>getArabicPlural(count, forms)</code> - Arabic pluralization</li>
+<li><code>getPolishPlural(count, forms)</code> - Polish pluralization</li>
+<li><code>getSpanishPlural(count, forms)</code> - Spanish pluralization</li>
+<li><code>getTurkishPlural(word, forms)</code> - Turkish vowel harmony</li>
+<li><code>getCzechPlural(count, forms)</code> - Czech pluralization</li>
+<li><code>getRomanianPlural(count, forms)</code> - Romanian pluralization</li>
+<li><code>getPortuguesePlural(num, forms)</code> - Portuguese pluralization</li>
+</ul>
+<h3>Grammar Helper Functions</h3>
+<ul>
+<li><code>getHungarianArticle(word)</code> - Hungarian article selection</li>
+<li><code>getHungarianArticleForWord(name)</code> - Hungarian article for words</li>
+<li><code>getHungarianSuffix(word, backSuffix, frontSuffix)</code> - Hungarian vowel harmony</li>
+</ul>
+<h3>Utility Functions</h3>
+<ul>
+<li><code>formatNumber(value, locale)</code> - Locale-specific number formatting</li>
+<li><code>formatDate(date, locale, options?)</code> - Locale-specific date formatting</li>
+<li><code>formatCurrency(value, locale, currency)</code> - Locale-specific currency formatting</li>
+<li><code>isRTL(locale)</code> - Check if locale is right-to-left</li>
+<li><code>getBrowserLocale()</code> - Detect browser language</li>
+<li><code>getInitialLocale()</code> - Get initial locale from storage or browser</li>
+</ul>
+<h2>🧪 Testing</h2>
+<p>The package includes comprehensive test suites:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with UI</span>
+npm run <span class="hljs-built_in">test</span>:ui
+
+<span class="hljs-comment"># Run tests once</span>
+npm run <span class="hljs-built_in">test</span>:run
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run <span class="hljs-built_in">test</span>:coverage</code></pre><h3>Test Coverage</h3>
+<ul>
+<li>✅ <strong>Pluralization Rules</strong>: All language-specific pluralization functions</li>
+<li>✅ <strong>Grammar Helpers</strong>: Hungarian articles and vowel harmony</li>
+<li>✅ <strong>Core I18n</strong>: Translation loading, locale management, RTL support</li>
+<li>✅ <strong>Utility Functions</strong>: Formatting, validation, browser detection</li>
+<li>✅ <strong>Edge Cases</strong>: Error handling, fallbacks, parameter interpolation</li>
+</ul>
+<h2>📝 Type Definitions</h2>
+<p>The package provides comprehensive TypeScript definitions:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Translations</span> {
+  <span class="hljs-attr">common</span>: <span class="hljs-title class_">CommonTranslations</span>;
+  <span class="hljs-attr">themes</span>: <span class="hljs-title class_">ThemeTranslations</span>;
+  <span class="hljs-attr">core</span>: <span class="hljs-title class_">CoreTranslations</span>;
+  <span class="hljs-attr">components</span>: <span class="hljs-title class_">ComponentTranslations</span>;
+  <span class="hljs-attr">gallery</span>: <span class="hljs-title class_">GalleryTranslations</span>;
+  <span class="hljs-attr">charts</span>: <span class="hljs-title class_">ChartTranslations</span>;
+  <span class="hljs-attr">auth</span>: <span class="hljs-title class_">AuthTranslations</span>;
+  <span class="hljs-attr">chat</span>: <span class="hljs-title class_">ChatTranslations</span>;
+  <span class="hljs-attr">monaco</span>: <span class="hljs-title class_">MonacoTranslations</span>;
+  <span class="hljs-attr">settings</span>: <span class="hljs-title class_">SettingsTranslations</span>; <span class="hljs-comment">// Enhanced from Yipyap</span>
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">LanguageCode</span> =
+  | <span class="hljs-string">&quot;en&quot;</span>
+  | <span class="hljs-string">&quot;ja&quot;</span>
+  | <span class="hljs-string">&quot;fr&quot;</span>
+  | <span class="hljs-string">&quot;ru&quot;</span>
+  | <span class="hljs-string">&quot;zh&quot;</span>
+  | <span class="hljs-string">&quot;sv&quot;</span>
+  | <span class="hljs-string">&quot;pl&quot;</span>
+  | <span class="hljs-string">&quot;uk&quot;</span>
+  | <span class="hljs-string">&quot;fi&quot;</span>
+  | <span class="hljs-string">&quot;de&quot;</span>
+  | <span class="hljs-string">&quot;es&quot;</span>
+  | <span class="hljs-string">&quot;it&quot;</span>
+  | <span class="hljs-string">&quot;pt&quot;</span>
+  | <span class="hljs-string">&quot;pt-BR&quot;</span>
+  | <span class="hljs-string">&quot;ko&quot;</span>
+  | <span class="hljs-string">&quot;nl&quot;</span>
+  | <span class="hljs-string">&quot;tr&quot;</span>
+  | <span class="hljs-string">&quot;vi&quot;</span>
+  | <span class="hljs-string">&quot;th&quot;</span>
+  | <span class="hljs-string">&quot;ar&quot;</span>
+  | <span class="hljs-string">&quot;he&quot;</span>
+  | <span class="hljs-string">&quot;hi&quot;</span>
+  | <span class="hljs-string">&quot;id&quot;</span>
+  | <span class="hljs-string">&quot;cs&quot;</span>
+  | <span class="hljs-string">&quot;el&quot;</span>
+  | <span class="hljs-string">&quot;hu&quot;</span>
+  | <span class="hljs-string">&quot;ro&quot;</span>
+  | <span class="hljs-string">&quot;bg&quot;</span>
+  | <span class="hljs-string">&quot;da&quot;</span>
+  | <span class="hljs-string">&quot;nb&quot;</span>
+  | <span class="hljs-string">&quot;sk&quot;</span>
+  | <span class="hljs-string">&quot;sl&quot;</span>
+  | <span class="hljs-string">&quot;hr&quot;</span>
+  | <span class="hljs-string">&quot;et&quot;</span>
+  | <span class="hljs-string">&quot;lv&quot;</span>
+  | <span class="hljs-string">&quot;lt&quot;</span>
+  | <span class="hljs-string">&quot;mt&quot;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Language</span> {
+  <span class="hljs-attr">code</span>: <span class="hljs-title class_">LanguageCode</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">nativeName</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">rtl</span>?: <span class="hljs-built_in">boolean</span>;
+}</code></pre><h2>🔄 Migration from Basic I18n</h2>
+<p>If you&#39;re upgrading from a basic i18n system, the enhanced Reynard I18n provides:</p>
+<ol>
+<li><strong>Backward Compatibility</strong>: All existing APIs work as before</li>
+<li><strong>Enhanced Features</strong>: Access to advanced pluralization and grammar helpers</li>
+<li><strong>Better Performance</strong>: Dynamic loading and optimized fallbacks</li>
+<li><strong>Comprehensive Types</strong>: Full TypeScript support for all features</li>
+</ol>
+<h2>🤝 Contributing</h2>
+<p>Contributions are welcome! The package follows these guidelines:</p>
+<ol>
+<li><strong>Translation Quality</strong>: All translations must be native-level quality</li>
+<li><strong>Type Safety</strong>: All new features must include TypeScript definitions</li>
+<li><strong>Test Coverage</strong>: New features require comprehensive test coverage</li>
+<li><strong>Documentation</strong>: All public APIs must be documented</li>
+<li><strong>Performance</strong>: New features should not impact bundle size significantly</li>
+</ol>
+<h3>Adding New Languages</h3>
+<ol>
+<li>Create translation file in <code>src/lang/[code].ts</code></li>
+<li>Add language metadata to <code>languages</code> array in <code>utils.ts</code></li>
+<li>Add pluralization rules if needed</li>
+<li>Update type definitions</li>
+<li>Add comprehensive tests</li>
+</ol>
+<h3>Adding Grammar Helpers</h3>
+<ol>
+<li>Implement helper functions in <code>utils.ts</code></li>
+<li>Add comprehensive test coverage</li>
+<li>Document usage patterns</li>
+<li>Export from main index file</li>
+</ol>
+<h2>📄 License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+<hr>
+<p>🦊 <strong>Built with the cunning of a fox and the precision of an otter!</strong> 🦦</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

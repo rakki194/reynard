@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-connection - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-connection</h1>
+      <div class="markdown-content"><h1>reynard-connection</h1>
+<p>Enterprise-grade networking for Reynard applications with comprehensive connection management, health monitoring, and recovery strategies.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Multiple Protocols</strong>: HTTP, WebSocket, and Server-Sent Events support</li>
+<li><strong>Connection Pooling</strong>: Efficient connection reuse and management</li>
+<li><strong>Health Monitoring</strong>: Automatic health checks and recovery</li>
+<li><strong>Retry Strategies</strong>: Configurable retry logic with exponential backoff</li>
+<li><strong>Security</strong>: Built-in security features and authentication</li>
+<li><strong>Metrics</strong>: Comprehensive connection metrics and analytics</li>
+<li><strong>TypeScript First</strong>: Full type safety with excellent IntelliSense</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-connection</code></pre><h2>Quick Start</h2>
+<h3>Basic HTTP Connection</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">HTTPConnection</span>, <span class="hljs-title class_">ConnectionConfigManager</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> configManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionConfigManager</span>();
+<span class="hljs-keyword">const</span> config = configManager.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;http&quot;</span>);
+
+<span class="hljs-keyword">const</span> httpConn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HTTPConnection</span>({
+  ...config,
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;https://api.example.com&quot;</span>,
+  <span class="hljs-attr">timeout</span>: <span class="hljs-number">5000</span>,
+});
+
+<span class="hljs-keyword">await</span> httpConn.<span class="hljs-title function_">connect</span>();
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> httpConn.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;/users&quot;</span> });</code></pre><h3>WebSocket Connection</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">WebSocketConnection</span>, <span class="hljs-title class_">ConnectionManager</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> wsConn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnection</span>({
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;wss://api.example.com/ws&quot;</span>,
+  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">retryCount</span>: <span class="hljs-number">3</span>,
+});
+
+<span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionManager</span>();
+manager.<span class="hljs-title function_">addConnection</span>(wsConn, <span class="hljs-string">&quot;realtime&quot;</span>);
+
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">start</span>();
+<span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">connect</span>();
+
+<span class="hljs-comment">// Send and receive messages</span>
+<span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;ping&quot;</span> });
+<span class="hljs-keyword">const</span> message = <span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">receive</span>();</code></pre><h3>Connection Pooling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">WebSocketConnectionPool</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnectionPool</span>(
+  {
+    <span class="hljs-attr">maxSize</span>: <span class="hljs-number">8</span>,
+    <span class="hljs-attr">minSize</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">maxIdleTime</span>: <span class="hljs-number">60</span>,
+    <span class="hljs-attr">acquireTimeout</span>: <span class="hljs-number">5</span>,
+  },
+  wsConfig,
+);
+
+<span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">start</span>();
+<span class="hljs-keyword">const</span> conn = <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">acquire</span>();
+<span class="hljs-keyword">if</span> (conn) {
+  <span class="hljs-keyword">await</span> conn.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-attr">payload</span>: <span class="hljs-string">&quot;test&quot;</span> });
+  <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">release</span>(conn);
+}</code></pre><h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Connection defaults</span>
+VITE_CONNECTION_TIMEOUT=5000
+VITE_CONNECTION_RETRY_COUNT=3
+VITE_CONNECTION_RETRY_DELAY=1000
+VITE_CONNECTION_BACKOFF_MULTIPLIER=2
+VITE_CONNECTION_MAX_POOL_SIZE=10
+VITE_CONNECTION_KEEP_ALIVE=30000
+VITE_CONNECTION_COMPRESSION=<span class="hljs-literal">true</span>
+VITE_CONNECTION_ENCRYPTION=<span class="hljs-literal">true</span>
+VITE_CONNECTION_SECURITY_LEVEL=enhanced
+VITE_CONNECTION_HEALTH_CHECK_INTERVAL=30000
+VITE_CONNECTION_AUTO_RECONNECT=<span class="hljs-literal">true</span>
+VITE_CONNECTION_CIRCUIT_BREAKER=<span class="hljs-literal">true</span>
+VITE_CONNECTION_CIRCUIT_BREAKER_THRESHOLD=5
+VITE_CONNECTION_CIRCUIT_BREAKER_TIMEOUT=60000
+
+<span class="hljs-comment"># Protocol-specific URLs</span>
+VITE_HTTP_URL=https://api.example.com
+VITE_WEBSOCKET_URL=wss://api.example.com/ws
+VITE_SSE_URL=https://api.example.com/events</code></pre><h3>Custom Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ConnectionConfig</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">customConfig</span>: <span class="hljs-title class_">ConnectionConfig</span> = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;api&quot;</span>,
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;https://api.example.com&quot;</span>,
+  <span class="hljs-attr">connectionType</span>: <span class="hljs-title class_">ConnectionType</span>.<span class="hljs-property">HTTP</span>,
+  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,
+  <span class="hljs-attr">retryCount</span>: <span class="hljs-number">5</span>,
+  <span class="hljs-attr">retryDelay</span>: <span class="hljs-number">2000</span>,
+  <span class="hljs-attr">backoffMultiplier</span>: <span class="hljs-number">1.5</span>,
+  <span class="hljs-attr">maxConnections</span>: <span class="hljs-number">20</span>,
+  <span class="hljs-attr">keepAlive</span>: <span class="hljs-number">60000</span>,
+  <span class="hljs-attr">compression</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">encryption</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">securityLevel</span>: <span class="hljs-title class_">SecurityLevel</span>.<span class="hljs-property">MAXIMUM</span>,
+  <span class="hljs-attr">healthCheckInterval</span>: <span class="hljs-number">15000</span>,
+  <span class="hljs-attr">healthCheckTimeout</span>: <span class="hljs-number">5000</span>,
+  <span class="hljs-attr">autoReconnect</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">autoRetry</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">circuitBreaker</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">circuitBreakerThreshold</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">circuitBreakerTimeout</span>: <span class="hljs-number">120000</span>,
+  <span class="hljs-attr">rateLimit</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">rateLimitRequests</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">rateLimitWindow</span>: <span class="hljs-number">60000</span>,
+  <span class="hljs-attr">auditLogging</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">monitoring</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">customHeaders</span>: {
+    <span class="hljs-string">&quot;X-API-Key&quot;</span>: <span class="hljs-string">&quot;your-api-key&quot;</span>,
+    <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;MyApp/1.0&quot;</span>,
+  },
+};</code></pre><h2>Connection Types</h2>
+<h3>HTTPConnection</h3>
+<p>Stateless HTTP connections with automatic retry and error handling.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> httpConn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HTTPConnection</span>(config);
+
+<span class="hljs-comment">// Connect (marks as ready)</span>
+<span class="hljs-keyword">await</span> httpConn.<span class="hljs-title function_">connect</span>();
+
+<span class="hljs-comment">// Send request</span>
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> httpConn.<span class="hljs-title function_">send</span>({
+  <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;/api/data&quot;</span>,
+  <span class="hljs-attr">headers</span>: { <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span> },
+  <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;test&quot;</span> }),
+});
+
+<span class="hljs-comment">// Health check</span>
+<span class="hljs-keyword">const</span> health = <span class="hljs-keyword">await</span> httpConn.<span class="hljs-title function_">healthCheck</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(health.<span class="hljs-property">isHealthy</span>);</code></pre><h3>WebSocketConnection</h3>
+<p>Persistent WebSocket connections with automatic reconnection.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> wsConn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnection</span>(config);
+
+<span class="hljs-comment">// Connect</span>
+<span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">connect</span>();
+
+<span class="hljs-comment">// Send message</span>
+<span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;hello&quot;</span> });
+
+<span class="hljs-comment">// Receive message</span>
+<span class="hljs-keyword">const</span> message = <span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">receive</span>();
+
+<span class="hljs-comment">// Check connection status</span>
+<span class="hljs-keyword">const</span> isConnected = <span class="hljs-keyword">await</span> wsConn.<span class="hljs-title function_">isConnected</span>();</code></pre><h3>SSEConnection</h3>
+<p>Server-Sent Events for one-way server-to-client communication.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> sseConn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SSEConnection</span>(config);
+
+<span class="hljs-comment">// Connect</span>
+<span class="hljs-keyword">await</span> sseConn.<span class="hljs-title function_">connect</span>();
+
+<span class="hljs-comment">// Receive events (send always returns false for SSE)</span>
+<span class="hljs-keyword">const</span> event = <span class="hljs-keyword">await</span> sseConn.<span class="hljs-title function_">receive</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(event.<span class="hljs-property">data</span>);</code></pre><h2>Connection Management</h2>
+<h3>ConnectionManager</h3>
+<p>Centralized management of multiple connections.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ConnectionManager</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionManager</span>();
+
+<span class="hljs-comment">// Add connections</span>
+manager.<span class="hljs-title function_">addConnection</span>(httpConn, <span class="hljs-string">&quot;api&quot;</span>);
+manager.<span class="hljs-title function_">addConnection</span>(wsConn, <span class="hljs-string">&quot;realtime&quot;</span>);
+
+<span class="hljs-comment">// Start management (begins health checks)</span>
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">start</span>();
+
+<span class="hljs-comment">// Bulk operations</span>
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">connectAll</span>();
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">healthCheckAll</span>();
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">disconnectAll</span>();
+
+<span class="hljs-comment">// Get statistics</span>
+<span class="hljs-keyword">const</span> stats = manager.<span class="hljs-title function_">getStatistics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(stats.<span class="hljs-property">totalConnections</span>, stats.<span class="hljs-property">healthyConnections</span>);
+
+<span class="hljs-comment">// Stop management</span>
+<span class="hljs-keyword">await</span> manager.<span class="hljs-title function_">stop</span>();</code></pre><h3>Connection Pooling</h3>
+<p>Efficient connection reuse with automatic lifecycle management.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ConnectionPool</span>, <span class="hljs-title class_">WebSocketConnectionPool</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-comment">// Generic pool</span>
+<span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionPool</span>&lt;<span class="hljs-title class_">WebSocketConnection</span>&gt;(
+  {
+    <span class="hljs-attr">maxSize</span>: <span class="hljs-number">10</span>,
+    <span class="hljs-attr">minSize</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">maxIdleTime</span>: <span class="hljs-number">300</span>,
+    <span class="hljs-attr">acquireTimeout</span>: <span class="hljs-number">10</span>,
+    <span class="hljs-attr">releaseTimeout</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">healthCheckInterval</span>: <span class="hljs-number">60</span>,
+    <span class="hljs-attr">cleanupInterval</span>: <span class="hljs-number">120</span>,
+  },
+  <span class="hljs-function">(<span class="hljs-params">config</span>) =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnection</span>(config),
+);
+
+<span class="hljs-comment">// Pre-configured WebSocket pool</span>
+<span class="hljs-keyword">const</span> wsPool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnectionPool</span>(poolConfig, wsConfig);
+
+<span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">start</span>();
+
+<span class="hljs-comment">// Acquire connection</span>
+<span class="hljs-keyword">const</span> conn = <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">acquire</span>();
+<span class="hljs-keyword">if</span> (conn) {
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">await</span> conn.<span class="hljs-title function_">send</span>(data);
+  } <span class="hljs-keyword">finally</span> {
+    <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">release</span>(conn);
+  }
+}</code></pre><h2>Retry Strategies</h2>
+<h3>Exponential Backoff</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ExponentialBackoffRetry</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> retry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExponentialBackoffRetry</span>(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 5 attempts: 1s, 2s, 4s, 8s, 16s</span>
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> retry.<span class="hljs-title function_">execute</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/data&quot;</span>);
+  <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Request failed&quot;</span>);
+  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();
+});</code></pre><h3>Linear Backoff</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">LinearBackoffRetry</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> retry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinearBackoffRetry</span>(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 3 attempts: 1s, 3s, 5s</span>
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> retry.<span class="hljs-title function_">execute</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-title function_">riskyOperation</span>();
+});</code></pre><h3>Jitter Retry</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">JitterRetry</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-keyword">const</span> retry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">JitterRetry</span>(<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>); <span class="hljs-comment">// 4 attempts with ±50% jitter</span>
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> retry.<span class="hljs-title function_">execute</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-title function_">distributedOperation</span>();
+});</code></pre><h2>Health Monitoring</h2>
+<h3>Health Checks</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Automatic health checks</span>
+<span class="hljs-keyword">const</span> health = <span class="hljs-keyword">await</span> connection.<span class="hljs-title function_">healthCheck</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>({
+  <span class="hljs-attr">isHealthy</span>: health.<span class="hljs-property">isHealthy</span>,
+  <span class="hljs-attr">responseTime</span>: health.<span class="hljs-property">responseTime</span>,
+  <span class="hljs-attr">details</span>: health.<span class="hljs-property">details</span>,
+  <span class="hljs-attr">errorMessage</span>: health.<span class="hljs-property">errorMessage</span>,
+});
+
+<span class="hljs-comment">// Manual health check with custom timeout</span>
+<span class="hljs-keyword">const</span> health = <span class="hljs-keyword">await</span> connection.<span class="hljs-title function_">healthCheck</span>(<span class="hljs-number">10000</span>);</code></pre><h3>Health Events</h3>
+<pre><code class="hljs language-typescript">connection.<span class="hljs-title function_">onHealthChange</span>(<span class="hljs-function">(<span class="hljs-params">health</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (health === <span class="hljs-title class_">ConnectionHealth</span>.<span class="hljs-property">UNHEALTHY</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection is unhealthy, attempting recovery...&quot;</span>);
+  }
+});
+
+connection.<span class="hljs-title function_">onEvent</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;health_check_failed&quot;</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Health check failed:&quot;</span>, event.<span class="hljs-property">message</span>);
+  }
+});</code></pre><h2>Security</h2>
+<h3>Security Levels</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SecurityLevel</span>, <span class="hljs-title class_">ConnectionSecurity</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-connection&quot;</span>;
+
+<span class="hljs-comment">// Configure security level</span>
+<span class="hljs-keyword">const</span> config = {
+  ...baseConfig,
+  <span class="hljs-attr">securityLevel</span>: <span class="hljs-title class_">SecurityLevel</span>.<span class="hljs-property">MAXIMUM</span>,
+  <span class="hljs-attr">encryption</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">customHeaders</span>: {
+    <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">&quot;Bearer token&quot;</span>,
+    <span class="hljs-string">&quot;X-API-Key&quot;</span>: <span class="hljs-string">&quot;api-key&quot;</span>,
+  },
+};
+
+<span class="hljs-comment">// Create security context</span>
+<span class="hljs-keyword">const</span> security = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConnectionSecurity</span>();
+<span class="hljs-keyword">const</span> headers = security.<span class="hljs-title function_">createAuthorizationHeaders</span>(<span class="hljs-string">&quot;token&quot;</span>, <span class="hljs-string">&quot;api-key&quot;</span>);</code></pre><h3>Authentication</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Token-based authentication</span>
+<span class="hljs-keyword">const</span> authHeaders = security.<span class="hljs-title function_">createAuthorizationHeaders</span>(<span class="hljs-string">&quot;bearer-token&quot;</span>);
+
+<span class="hljs-comment">// API key authentication</span>
+<span class="hljs-keyword">const</span> apiHeaders = security.<span class="hljs-title function_">createAuthorizationHeaders</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">&quot;api-key&quot;</span>);
+
+<span class="hljs-comment">// Custom authentication</span>
+<span class="hljs-keyword">const</span> customHeaders = {
+  <span class="hljs-string">&quot;X-Custom-Auth&quot;</span>: <span class="hljs-string">&quot;custom-token&quot;</span>,
+  <span class="hljs-string">&quot;X-Client-ID&quot;</span>: <span class="hljs-string">&quot;client-id&quot;</span>,
+};</code></pre><h2>Metrics and Analytics</h2>
+<h3>Connection Metrics</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Get connection metrics</span>
+<span class="hljs-keyword">const</span> metrics = connection.<span class="hljs-title function_">getMetrics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>({
+  <span class="hljs-attr">requestCount</span>: metrics.<span class="hljs-property">requestCount</span>,
+  <span class="hljs-attr">errorCount</span>: metrics.<span class="hljs-property">errorCount</span>,
+  <span class="hljs-attr">errorRate</span>: metrics.<span class="hljs-property">errorRate</span>,
+  <span class="hljs-attr">averageResponseTime</span>: metrics.<span class="hljs-property">averageResponseTime</span>,
+  <span class="hljs-attr">throughput</span>: metrics.<span class="hljs-property">throughput</span>,
+  <span class="hljs-attr">uptime</span>: metrics.<span class="hljs-property">uptime</span>,
+});
+
+<span class="hljs-comment">// Get aggregated metrics from manager</span>
+<span class="hljs-keyword">const</span> stats = manager.<span class="hljs-title function_">getStatistics</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(stats);</code></pre><h3>Event Tracking</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Track custom events</span>
+connection.<span class="hljs-title function_">emitEvent</span>(<span class="hljs-string">&quot;custom_event&quot;</span>, {
+  <span class="hljs-attr">data</span>: { <span class="hljs-attr">userId</span>: <span class="hljs-number">123</span>, <span class="hljs-attr">action</span>: <span class="hljs-string">&quot;login&quot;</span> },
+  <span class="hljs-attr">severity</span>: <span class="hljs-string">&quot;info&quot;</span>,
+});
+
+<span class="hljs-comment">// Listen to all events</span>
+manager.<span class="hljs-title function_">addGlobalHandler</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">type</span>, event</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Event: <span class="hljs-subst">${<span class="hljs-keyword">type</span>}</span>`</span>, event);
+});</code></pre><h2>Error Handling</h2>
+<h3>Connection Errors</h3>
+<pre><code class="hljs language-typescript">connection.<span class="hljs-title function_">onEvent</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.<span class="hljs-property">severity</span> === <span class="hljs-string">&quot;error&quot;</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Connection error:&quot;</span>, event.<span class="hljs-property">message</span>);
+
+    <span class="hljs-comment">// Handle specific error types</span>
+    <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;connection_failed&quot;</span>) {
+      <span class="hljs-comment">// Attempt reconnection</span>
+      connection.<span class="hljs-title function_">connect</span>();
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;authentication_failed&quot;</span>) {
+      <span class="hljs-comment">// Refresh authentication</span>
+      <span class="hljs-title function_">refreshAuthToken</span>();
+    }
+  }
+});</code></pre><h3>Circuit Breaker</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Circuit breaker automatically opens after threshold failures</span>
+connection.<span class="hljs-title function_">onEvent</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;circuit_breaker_opened&quot;</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Circuit breaker opened, requests will be rejected&quot;</span>);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;circuit_breaker_closed&quot;</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Circuit breaker closed, requests will be allowed&quot;</span>);
+  }
+});</code></pre><h2>Best Practices</h2>
+<h3>1. Connection Lifecycle</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Always clean up connections</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> connection.<span class="hljs-title function_">connect</span>();
+  <span class="hljs-comment">// Use connection</span>
+} <span class="hljs-keyword">finally</span> {
+  <span class="hljs-keyword">await</span> connection.<span class="hljs-title function_">disconnect</span>();
+}</code></pre><h3>2. Error Handling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Handle connection errors gracefully</span>
+connection.<span class="hljs-title function_">onEvent</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (event.<span class="hljs-property">severity</span> === <span class="hljs-string">&quot;error&quot;</span>) {
+    <span class="hljs-comment">// Log error</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Connection error:&quot;</span>, event);
+
+    <span class="hljs-comment">// Implement fallback logic</span>
+    <span class="hljs-keyword">if</span> (event.<span class="hljs-property">eventType</span> === <span class="hljs-string">&quot;connection_lost&quot;</span>) {
+      <span class="hljs-comment">// Switch to backup connection</span>
+      <span class="hljs-title function_">switchToBackupConnection</span>();
+    }
+  }
+});</code></pre><h3>3. Health Monitoring</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Regular health checks</span>
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> health = <span class="hljs-keyword">await</span> connection.<span class="hljs-title function_">healthCheck</span>();
+  <span class="hljs-keyword">if</span> (!health.<span class="hljs-property">isHealthy</span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">&quot;Connection unhealthy, response time:&quot;</span>, health.<span class="hljs-property">responseTime</span>);
+  }
+}, <span class="hljs-number">30000</span>);</code></pre><h3>4. Connection Pooling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Use connection pools for high-throughput scenarios</span>
+<span class="hljs-keyword">const</span> pool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocketConnectionPool</span>(poolConfig, wsConfig);
+
+<span class="hljs-comment">// Always release connections back to pool</span>
+<span class="hljs-keyword">const</span> conn = <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">acquire</span>();
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> conn.<span class="hljs-title function_">send</span>(data);
+} <span class="hljs-keyword">finally</span> {
+  <span class="hljs-keyword">await</span> pool.<span class="hljs-title function_">release</span>(conn);
+}</code></pre><h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Connection Timeouts</strong>: Increase timeout values or check network connectivity</li>
+<li><strong>Authentication Failures</strong>: Verify credentials and token expiration</li>
+<li><strong>Circuit Breaker</strong>: Check error rates and adjust thresholds</li>
+<li><strong>Pool Exhaustion</strong>: Increase pool size or check for connection leaks</li>
+</ol>
+<h3>Debug Mode</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Enable debug logging</span>
+<span class="hljs-keyword">const</span> config = {
+  ...baseConfig,
+  <span class="hljs-attr">debug</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">logLevel</span>: <span class="hljs-string">&quot;debug&quot;</span>,
+};
+
+<span class="hljs-comment">// Monitor connection events</span>
+connection.<span class="hljs-title function_">onEvent</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Connection event:&quot;</span>, event);
+});</code></pre><h2>API Reference</h2>
+<p>See the <a href="./docs/api.md">API documentation</a> for complete reference of all classes, methods, and types.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Tracking System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Memory Tracking System</h1>
+      <div class="markdown-content"><h1>Memory Tracking System</h1>
+<h2>Overview</h2>
+<p>The Memory Tracking System is a comprehensive solution for monitoring and managing memory usage in the lazy loading system. It provides real-time memory monitoring, leak detection, and optimization suggestions to ensure optimal performance and resource utilization.</p>
+<h2>Features</h2>
+<h3>Core Memory Tracking</h3>
+<ul>
+<li><strong>Real-time Memory Monitoring</strong>: Track current and peak memory usage for each package</li>
+<li><strong>Memory Footprint Calculation</strong>: Estimate memory footprint of loaded modules</li>
+<li><strong>Memory History Tracking</strong>: Maintain historical memory usage data for trend analysis</li>
+<li><strong>Memory Statistics</strong>: Calculate average usage, variance, and growth rates</li>
+</ul>
+<h3>Memory Leak Detection</h3>
+<ul>
+<li><strong>Automatic Leak Detection</strong>: Identify packages with potential memory leaks</li>
+<li><strong>Leak Scoring</strong>: Assign leak scores based on memory growth patterns</li>
+<li><strong>Trend Analysis</strong>: Analyze memory usage trends (increasing, decreasing, stable)</li>
+<li><strong>Configurable Thresholds</strong>: Adjustable detection sensitivity</li>
+</ul>
+<h3>Memory Optimization</h3>
+<ul>
+<li><strong>Optimization Suggestions</strong>: Provide actionable recommendations for memory optimization</li>
+<li><strong>System Pressure Monitoring</strong>: Monitor overall system memory pressure</li>
+<li><strong>Garbage Collection</strong>: Force garbage collection and track memory freed</li>
+<li><strong>Performance Metrics</strong>: Track memory-related performance indicators</li>
+</ul>
+<h2>Architecture</h2>
+<h3>MemoryMonitor Class</h3>
+<p>The <code>MemoryMonitor</code> class provides low-level memory monitoring capabilities:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MemoryMonitor</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_current_memory_usage</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_memory_footprint</span>(<span class="hljs-params">self, module_name: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_memory_leak</span>(<span class="hljs-params">self, memory_history: <span class="hljs-type">List</span>[<span class="hljs-type">Tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]]</span>) -&gt; <span class="hljs-type">Tuple</span>[<span class="hljs-built_in">bool</span>, <span class="hljs-built_in">float</span>]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_memory_pressure_level</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">str</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">analyze_memory_trend</span>(<span class="hljs-params">self, memory_history: <span class="hljs-type">List</span>[<span class="hljs-type">Tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]]</span>) -&gt; <span class="hljs-built_in">str</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate_memory_statistics</span>(<span class="hljs-params">self, memory_history: <span class="hljs-type">List</span>[<span class="hljs-type">Tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]]</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]</code></pre><h3>MemoryMetrics Class</h3>
+<p>The <code>MemoryMetrics</code> class stores memory-related data for each package:</p>
+<pre><code class="hljs language-python"><span class="hljs-meta">@dataclass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MemoryMetrics</span>:
+    current_memory_usage: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span>
+    peak_memory_usage: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span>
+    memory_footprint: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">float</span>] = <span class="hljs-literal">None</span>
+    memory_growth_rate: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.0</span>
+    memory_leak_score: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.0</span>
+    memory_trend: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;stable&quot;</span>
+    memory_pressure_level: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;low&quot;</span>
+    memory_history: <span class="hljs-type">List</span>[<span class="hljs-type">Tuple</span>[<span class="hljs-built_in">float</span>, <span class="hljs-built_in">float</span>]] = field(default_factory=<span class="hljs-built_in">list</span>)
+    <span class="hljs-comment"># ... additional fields</span></code></pre><h3>PackageInfo Integration</h3>
+<p>Memory tracking is integrated into the <code>PackageInfo</code> class:</p>
+<pre><code class="hljs language-python"><span class="hljs-meta">@dataclass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PackageInfo</span>:
+    <span class="hljs-comment"># ... existing fields</span>
+    memory_metrics: MemoryMetrics = field(default_factory=MemoryMetrics)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_memory_metrics</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_memory_summary</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</code></pre><h2>API Endpoints</h2>
+<h3>Memory Summary</h3>
+<p><strong>GET</strong> <code>/api/packages/memory/summary</code></p>
+<p>Returns a comprehensive memory usage summary for all packages.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;total_current_memory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">104857600</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_peak_memory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">157286400</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_memory_footprint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">83886080</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;packages_with_leaks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;leak_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.3</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;trend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;increasing&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;growth_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1048576</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_trends&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;increasing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;decreasing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;stable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_pressure_levels&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;low&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;medium&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;high&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;critical&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;system_memory_pressure&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;low&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;loaded_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Package Memory Info</h3>
+<p><strong>GET</strong> <code>/api/packages/memory/{package_name}</code></p>
+<p>Returns detailed memory information for a specific package.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_metrics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;current_memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">52428800</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;peak_memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">78643200</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_footprint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">31457280</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_leak_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_trend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;stable&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_pressure_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;low&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_growth_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;average_memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">47185920</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_variance&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5242880</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_check_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_memory_check&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_history_length&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;is_loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;loaded&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Memory Leak Detection</h3>
+<p><strong>GET</strong> <code>/api/packages/memory/leaks?threshold=0.1</code></p>
+<p>Detects packages with potential memory leaks.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;leaks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;leak_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.4</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;memory_trend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;increasing&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;memory_growth_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2097152</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;current_memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">104857600</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;peak_memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">157286400</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;memory_footprint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">52428800</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;memory_check_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;last_memory_check&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_leaks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;threshold&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;detection_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Memory Optimization Suggestions</h3>
+<p><strong>GET</strong> <code>/api/packages/memory/optimization-suggestions</code></p>
+<p>Provides memory optimization suggestions based on current usage patterns.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;suggestions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;memory_leak&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;severity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;high&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Package &#x27;torch&#x27; shows signs of memory leak (score: 0.40)&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;recommendation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Investigate memory usage patterns and consider reloading&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.4</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;high_memory_footprint&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;transformers&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;severity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;medium&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Package &#x27;transformers&#x27; has high memory footprint: 150.0MB&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;recommendation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Consider unloading if not frequently used&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">157286400</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;total_suggestions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;high_severity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;medium_severity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;low_severity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;generation_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Garbage Collection</h3>
+<p><strong>POST</strong> <code>/api/packages/memory/garbage-collection</code></p>
+<p>Forces garbage collection and returns memory statistics.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;memory_before&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">209715200</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_after&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">157286400</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_freed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">52428800</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;objects_collected&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;garbage_collection_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Update Memory Metrics</h3>
+<p><strong>POST</strong> <code>/api/packages/memory/update-metrics</code></p>
+<p>Updates memory metrics for all packages.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;success&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Memory metrics updated for all packages&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;update_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1703123456.789</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Usage Examples</h2>
+<h3>Basic Memory Monitoring</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.lazy_loader <span class="hljs-keyword">import</span> get_lazy_loader
+
+<span class="hljs-comment"># Get lazy loader instance</span>
+loader = get_lazy_loader()
+
+<span class="hljs-comment"># Update memory metrics for all packages</span>
+loader.update_all_memory_metrics()
+
+<span class="hljs-comment"># Get memory usage summary</span>
+summary = loader.get_memory_usage_summary()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total current memory: <span class="hljs-subst">{summary[<span class="hljs-string">&#x27;total_current_memory&#x27;</span>] / (<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>):<span class="hljs-number">.1</span>f}</span>MB&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;System memory pressure: <span class="hljs-subst">{summary[<span class="hljs-string">&#x27;system_memory_pressure&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Memory Leak Detection</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Detect memory leaks with custom threshold</span>
+leaks = loader.detect_memory_leaks(threshold=<span class="hljs-number">0.2</span>)
+
+<span class="hljs-keyword">for</span> leak <span class="hljs-keyword">in</span> leaks:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Package <span class="hljs-subst">{leak[<span class="hljs-string">&#x27;package_name&#x27;</span>]}</span> has leak score: <span class="hljs-subst">{leak[<span class="hljs-string">&#x27;leak_score&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory trend: <span class="hljs-subst">{leak[<span class="hljs-string">&#x27;memory_trend&#x27;</span>]}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Growth rate: <span class="hljs-subst">{leak[<span class="hljs-string">&#x27;memory_growth_rate&#x27;</span>] / (<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>):<span class="hljs-number">.1</span>f}</span>MB/s&quot;</span>)</code></pre><h3>Memory Optimization</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get optimization suggestions</span>
+suggestions = loader.get_memory_optimization_suggestions()
+
+<span class="hljs-keyword">for</span> suggestion <span class="hljs-keyword">in</span> suggestions:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;severity&#x27;</span>].upper()}</span>: <span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;message&#x27;</span>]}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Recommendation: <span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;recommendation&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Package-Specific Memory Info</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get memory info for specific package</span>
+memory_info = loader.get_package_memory_info(<span class="hljs-string">&quot;torch&quot;</span>)
+
+<span class="hljs-keyword">if</span> memory_info:
+    metrics = memory_info[<span class="hljs-string">&quot;memory_metrics&quot;</span>]
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Current memory: <span class="hljs-subst">{metrics[<span class="hljs-string">&#x27;current_memory_usage&#x27;</span>] / (<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>):<span class="hljs-number">.1</span>f}</span>MB&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory footprint: <span class="hljs-subst">{metrics[<span class="hljs-string">&#x27;memory_footprint&#x27;</span>] / (<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>):<span class="hljs-number">.1</span>f}</span>MB&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Leak score: <span class="hljs-subst">{metrics[<span class="hljs-string">&#x27;memory_leak_score&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Memory trend: <span class="hljs-subst">{metrics[<span class="hljs-string">&#x27;memory_trend&#x27;</span>]}</span>&quot;</span>)</code></pre><h2>Configuration</h2>
+<h3>Memory Thresholds</h3>
+<p>The system uses configurable thresholds for different memory pressure levels:</p>
+<pre><code class="hljs language-python">_memory_thresholds = {
+    <span class="hljs-string">&quot;low&quot;</span>: <span class="hljs-number">0.5</span>,      <span class="hljs-comment"># 50% of available memory</span>
+    <span class="hljs-string">&quot;medium&quot;</span>: <span class="hljs-number">0.7</span>,   <span class="hljs-comment"># 70% of available memory</span>
+    <span class="hljs-string">&quot;high&quot;</span>: <span class="hljs-number">0.85</span>,    <span class="hljs-comment"># 85% of available memory</span>
+    <span class="hljs-string">&quot;critical&quot;</span>: <span class="hljs-number">0.95</span> <span class="hljs-comment"># 95% of available memory</span>
+}</code></pre><h3>Leak Detection Settings</h3>
+<ul>
+<li><strong>Leak Detection Threshold</strong>: 1MB growth threshold (configurable)</li>
+<li><strong>Memory Check Interval</strong>: 30 seconds (configurable)</li>
+<li><strong>History Retention</strong>: Last 100 measurements per package</li>
+</ul>
+<h2>Performance Considerations</h2>
+<h3>Memory Overhead</h3>
+<ul>
+<li><strong>Memory History</strong>: Limited to 100 measurements per package to prevent memory bloat</li>
+<li><strong>Efficient Calculations</strong>: Uses optimized algorithms for trend analysis and statistics</li>
+<li><strong>Lazy Evaluation</strong>: Memory metrics are calculated on-demand</li>
+</ul>
+<h3>Monitoring Frequency</h3>
+<ul>
+<li><strong>Automatic Updates</strong>: Memory metrics are updated during package loading</li>
+<li><strong>Manual Updates</strong>: Can be triggered via API endpoints</li>
+<li><strong>Background Monitoring</strong>: Can be integrated with periodic monitoring systems</li>
+</ul>
+<h2>Integration with Existing Systems</h2>
+<h3>Lazy Loading Integration</h3>
+<p>Memory tracking is automatically integrated into the package loading process:</p>
+<ol>
+<li><strong>Before Loading</strong>: Memory metrics are captured before package loading</li>
+<li><strong>After Loading</strong>: Memory metrics are updated after successful loading</li>
+<li><strong>Error Handling</strong>: Memory metrics are updated even if loading fails</li>
+</ol>
+<h3>API Integration</h3>
+<p>All memory monitoring features are available through REST API endpoints, making them accessible to:</p>
+<ul>
+<li><strong>Frontend Dashboards</strong>: Real-time memory monitoring UI</li>
+<li><strong>Monitoring Systems</strong>: Integration with external monitoring tools</li>
+<li><strong>Automation Scripts</strong>: Automated memory management workflows</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>Memory Monitoring</h3>
+<ol>
+<li><strong>Regular Updates</strong>: Update memory metrics periodically for accurate tracking</li>
+<li><strong>Threshold Monitoring</strong>: Set appropriate thresholds for your system resources</li>
+<li><strong>Trend Analysis</strong>: Monitor memory trends over time rather than single measurements</li>
+</ol>
+<h3>Leak Detection</h3>
+<ol>
+<li><strong>Baseline Establishment</strong>: Establish baseline memory usage patterns</li>
+<li><strong>Gradual Thresholds</strong>: Start with conservative thresholds and adjust based on observations</li>
+<li><strong>Context Awareness</strong>: Consider application-specific memory usage patterns</li>
+</ol>
+<h3>Optimization</h3>
+<ol>
+<li><strong>Proactive Monitoring</strong>: Monitor memory usage before issues arise</li>
+<li><strong>Regular Cleanup</strong>: Use garbage collection when memory pressure is high</li>
+<li><strong>Package Management</strong>: Unload unused packages to free memory</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>High Memory Usage</strong>: Check for memory leaks and consider unloading unused packages</li>
+<li><strong>False Positives</strong>: Adjust leak detection thresholds based on your application patterns</li>
+<li><strong>Performance Impact</strong>: Monitor the overhead of memory tracking in high-frequency scenarios</li>
+</ol>
+<h3>Debugging</h3>
+<ol>
+<li><strong>Enable Logging</strong>: Check logs for memory tracking errors</li>
+<li><strong>API Testing</strong>: Use API endpoints to verify memory tracking functionality</li>
+<li><strong>Manual Inspection</strong>: Use package memory info endpoints for detailed analysis</li>
+</ol>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ol>
+<li><strong>Predictive Analytics</strong>: Predict memory usage based on historical patterns</li>
+<li><strong>Automated Optimization</strong>: Automatic package unloading based on memory pressure</li>
+<li><strong>Memory Profiling</strong>: Detailed memory profiling for individual packages</li>
+<li><strong>Integration APIs</strong>: Enhanced integration with external monitoring systems</li>
+</ol>
+<h3>Performance Improvements</h3>
+<ol>
+<li><strong>Caching</strong>: Cache memory calculations for improved performance</li>
+<li><strong>Batch Processing</strong>: Batch memory updates for multiple packages</li>
+<li><strong>Async Processing</strong>: Asynchronous memory monitoring for better responsiveness</li>
+</ol>
+<h2>Conclusion</h2>
+<p>The Memory Tracking System provides comprehensive memory monitoring and management capabilities for the lazy loading system. It enables proactive memory management, leak detection, and optimization, ensuring optimal performance and resource utilization.</p>
+<p>By integrating memory tracking into the package loading process and providing accessible API endpoints, the system offers both automated and manual memory management capabilities suitable for various deployment scenarios.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -15,11 +15,11 @@ fi
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
-npm install
+pnpm install
 
 # Build all packages
 echo "🔨 Building all packages..."
-npm run build
+pnpm run build
 
 # Set up Python virtual environment for backend
 echo "🐍 Setting up Python virtual environment..."
@@ -73,7 +73,7 @@ echo "🎉 Development environment setup complete!"
 echo ""
 echo "To start the development servers:"
 echo "1. Backend: cd backend && source venv/bin/activate && python main.py"
-echo "2. Frontend: npm run dev"
+echo "2. Frontend: pnpm run dev"
 echo ""
 echo "The backend will be available at http://localhost:8000"
 echo "The frontend will be available at http://localhost:5173"

@@ -339,13 +339,13 @@ Portfolio website template with gallery and contact forms.
 cd examples/basic-app
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 ```
 
 ### Available Examples
@@ -402,10 +402,10 @@ cp -r templates/starter my-new-app
 cd my-new-app
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development
-npm run dev
+pnpm run dev
 ```
 
 ## Example Features by Category
@@ -497,9 +497,9 @@ All examples follow consistent patterns:
 
 ## Next Steps
 
-- **[Package Documentation](./PACKAGES.md)** - Detailed package documentation
-- **[API Reference](./API.md)** - Complete API documentation
-- **[Performance Guide](./PERFORMANCE.md)** - Optimization tips
+- **[Package Documentation](./packages.md)** - Detailed package documentation
+- **[API Reference](./api.md)** - Complete API documentation
+- **[Performance Guide](./performance.md)** - Optimization tips
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute
 
 ---

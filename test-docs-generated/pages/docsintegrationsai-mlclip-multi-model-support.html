@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLIP Multi-Model Support - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>CLIP Multi-Model Support</h1>
+      <div class="markdown-content"><h1>CLIP Multi-Model Support</h1>
+<h2>Overview</h2>
+<p>The ClipEmbeddingService now supports multiple CLIP model variants with intelligent model management, automatic unloading, and concurrent model loading capabilities. This enhancement allows users to switch between different CLIP models based on their specific needs while maintaining optimal memory usage.</p>
+<h2>Features</h2>
+<h3>Model Registry</h3>
+<p>A comprehensive model registry containing 6 different CLIP model variants:</p>
+<ul>
+<li><strong>ViT-L-14/openai</strong>: Large Vision Transformer (768d) - OpenAI weights</li>
+<li><strong>ViT-L-14/laion2b_s32b_b82k</strong>: Large Vision Transformer (768d) - LAION-2B weights</li>
+<li><strong>ViT-B-32/openai</strong>: Base Vision Transformer (512d) - OpenAI weights</li>
+<li><strong>ViT-B-32/laion2b_s34b_b79k</strong>: Base Vision Transformer (512d) - LAION-2B weights</li>
+<li><strong>ViT-H-14/laion2b_s32b_b79k</strong>: Huge Vision Transformer (1024d) - LAION-2B weights</li>
+<li><strong>ViT-L-14@336px/openai</strong>: Large Vision Transformer (768d) - 336px resolution</li>
+</ul>
+<p>Each model includes detailed metadata:</p>
+<ul>
+<li>Model name and pretrained weights</li>
+<li>Description and recommended use cases</li>
+<li>Embedding dimensions and preprocessing size</li>
+<li>Memory usage estimates</li>
+<li>Performance ratings</li>
+</ul>
+<h3>Model Management</h3>
+<h4>Loading Models</h4>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Load a specific model</span>
+success = <span class="hljs-keyword">await</span> clip_service.load_model(<span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>)
+
+<span class="hljs-comment"># Check if model is loaded</span>
+is_loaded = clip_service.is_model_loaded(<span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>)
+
+<span class="hljs-comment"># Get current model ID</span>
+current_model = clip_service.get_current_model_id()</code></pre><h4>Switching Models</h4>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Switch to a different model (automatically unloads current)</span>
+success = <span class="hljs-keyword">await</span> clip_service.switch_model_by_id(<span class="hljs-string">&quot;ViT-B-32/openai&quot;</span>)</code></pre><h4>Unloading Models</h4>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Unload specific model</span>
+success = <span class="hljs-keyword">await</span> clip_service.unload_model(<span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>)
+
+<span class="hljs-comment"># Unload current model</span>
+success = <span class="hljs-keyword">await</span> clip_service.unload_model()</code></pre><h3>Concurrent Model Support</h3>
+<ul>
+<li><strong>Concurrent Limit</strong>: Up to 2 models can be loaded simultaneously</li>
+<li><strong>LRU Eviction</strong>: When the limit is reached, the least recently used model is automatically unloaded</li>
+<li><strong>Memory Management</strong>: Intelligent memory usage tracking and pressure detection</li>
+</ul>
+<h3>Memory Usage Tracking</h3>
+<p>Each model tracks:</p>
+<ul>
+<li>GPU memory usage (CUDA)</li>
+<li>System memory usage</li>
+<li>Loading times</li>
+<li>Last usage timestamps</li>
+<li>Memory pressure levels</li>
+</ul>
+<h2>API Endpoints</h2>
+<h3>Get Available Models</h3>
+<pre><code class="hljs language-plaintext">GET /api/rag/embedding/models</code></pre><p>Returns information about all available models for both vision and text embeddings.</p>
+<h3>Load Vision Model</h3>
+<pre><code class="hljs language-plaintext">POST /api/rag/embedding/vision/load/{model_id}</code></pre><p>Loads a specific CLIP model by ID.</p>
+<h3>Switch Vision Model</h3>
+<pre><code class="hljs language-plaintext">POST /api/rag/embedding/vision/switch/{model_id}</code></pre><p>Switches to a different CLIP model, automatically unloading the current one.</p>
+<h3>Unload Vision Model</h3>
+<pre><code class="hljs language-plaintext">POST /api/rag/embedding/vision/unload/{model_id}</code></pre><p>Unloads a specific CLIP model.</p>
+<h3>Get Vision Status</h3>
+<pre><code class="hljs language-plaintext">GET /api/rag/embedding/vision/status</code></pre><p>Returns detailed status of all CLIP models including loading state, memory usage, and performance metrics.</p>
+<h2>Usage Examples</h2>
+<h3>Basic Model Switching</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.services.access <span class="hljs-keyword">import</span> get_clip_embedding_service
+
+clip_service = get_clip_embedding_service()
+
+<span class="hljs-comment"># Switch to a faster, lower-memory model</span>
+<span class="hljs-keyword">await</span> clip_service.switch_model_by_id(<span class="hljs-string">&quot;ViT-B-32/openai&quot;</span>)
+
+<span class="hljs-comment"># Switch to highest quality model</span>
+<span class="hljs-keyword">await</span> clip_service.switch_model_by_id(<span class="hljs-string">&quot;ViT-H-14/laion2b_s32b_b79k&quot;</span>)
+
+<span class="hljs-comment"># Switch to higher resolution model</span>
+<span class="hljs-keyword">await</span> clip_service.switch_model_by_id(<span class="hljs-string">&quot;ViT-L-14@336px/openai&quot;</span>)</code></pre><h3>Concurrent Model Management</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Load multiple models</span>
+<span class="hljs-keyword">await</span> clip_service.load_model(<span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>)
+<span class="hljs-keyword">await</span> clip_service.load_model(<span class="hljs-string">&quot;ViT-B-32/openai&quot;</span>)
+
+<span class="hljs-comment"># Check loaded models</span>
+loaded_models = clip_service.get_loaded_models()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Loaded models: <span class="hljs-subst">{loaded_models}</span>&quot;</span>)
+
+<span class="hljs-comment"># Get detailed info</span>
+all_info = clip_service.get_all_loaded_models_info()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Model info: <span class="hljs-subst">{all_info}</span>&quot;</span>)</code></pre><h3>Memory Monitoring</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Get memory usage for current model</span>
+memory_info = clip_service.get_model_memory_usage()
+
+<span class="hljs-comment"># Get memory usage for specific model</span>
+memory_info = clip_service.get_model_memory_usage(<span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>)
+
+<span class="hljs-comment"># Check memory pressure</span>
+pressure_level = clip_service.get_memory_pressure_level()</code></pre><h2>Configuration</h2>
+<h3>Model Selection</h3>
+<p>The default model is configured via the <code>rag_clip_model</code> setting:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;rag_clip_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Concurrent Model Limit</h3>
+<p>The maximum number of models that can be loaded simultaneously is configurable:</p>
+<pre><code class="hljs language-python">clip_service._concurrent_models_limit = <span class="hljs-number">2</span>  <span class="hljs-comment"># Default value</span></code></pre><h2>Performance Considerations</h2>
+<h3>Memory Usage</h3>
+<ul>
+<li><strong>ViT-L-14 models</strong>: ~1.2GB GPU memory</li>
+<li><strong>ViT-B-32 models</strong>: ~0.6GB GPU memory</li>
+<li><strong>ViT-H-14 models</strong>: ~2.4GB GPU memory</li>
+<li><strong>336px models</strong>: ~1.8GB GPU memory</li>
+</ul>
+<h3>Loading Times</h3>
+<ul>
+<li>Model loading typically takes 2-5 seconds depending on hardware</li>
+<li>Loading times are tracked and cached for optimization</li>
+</ul>
+<h3>Recommendations</h3>
+<ul>
+<li>Use <strong>ViT-B-32</strong> models for faster inference and lower memory usage</li>
+<li>Use <strong>ViT-L-14</strong> models for general purpose, high quality embeddings</li>
+<li>Use <strong>ViT-H-14</strong> models for highest quality when memory allows</li>
+<li>Use <strong>336px</strong> models for better detail in high-resolution images</li>
+</ul>
+<h2>Integration with Existing Systems</h2>
+<h3>ModelUsageTracker Integration</h3>
+<p>All models are automatically registered with the ModelUsageTracker for:</p>
+<ul>
+<li>Automatic unloading based on timeouts</li>
+<li>Usage statistics and metrics</li>
+<li>Memory pressure monitoring</li>
+</ul>
+<h3>Health Monitoring</h3>
+<p>The service provides enhanced health information including:</p>
+<ul>
+<li>Multi-model support status</li>
+<li>Current model information</li>
+<li>Memory usage metrics</li>
+<li>Loading/unloading events</li>
+</ul>
+<h2>Testing</h2>
+<p>Comprehensive test coverage includes:</p>
+<ul>
+<li>Model registry validation</li>
+<li>Loading/unloading functionality</li>
+<li>Model switching</li>
+<li>Concurrent model management</li>
+<li>Memory usage tracking</li>
+<li>API endpoint testing</li>
+</ul>
+<p>Run tests with:</p>
+<pre><code class="hljs language-bash">python -m pytest app/tests/services/test_clip_embedding_multi_model.py -v
+python -m pytest app/tests/api/test_rag_multi_model_endpoints.py -v</code></pre><h2>Migration from Single Model</h2>
+<p>The multi-model support is backward compatible. Existing code will continue to work with the default model, but can now take advantage of the new capabilities:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Old way (still works)</span>
+<span class="hljs-keyword">await</span> clip_service.embed_images(image_paths)
+
+<span class="hljs-comment"># New way with model selection</span>
+<span class="hljs-keyword">await</span> clip_service.switch_model_by_id(<span class="hljs-string">&quot;ViT-B-32/openai&quot;</span>)
+<span class="hljs-keyword">await</span> clip_service.embed_images(image_paths)</code></pre><h2>Future Enhancements</h2>
+<p>Potential future improvements:</p>
+<ul>
+<li>Dynamic model loading based on usage patterns</li>
+<li>Model compression for inactive models</li>
+<li>Automatic model selection based on image characteristics</li>
+<li>Support for custom model variants</li>
+<li>Integration with model serving frameworks</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

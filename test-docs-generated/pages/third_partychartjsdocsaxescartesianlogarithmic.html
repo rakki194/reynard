@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logarithmic Axis - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Logarithmic Axis</h1>
+      <div class="markdown-content"><h1>Logarithmic Axis</h1>
+<p>The logarithmic scale is used to chart numerical data. It can be placed on either the x or y-axis. As the name suggests, logarithmic interpolation is used to determine where a value lies on the axis.</p>
+<h2>Configuration Options</h2>
+<p>!!!include(axes/cartesian/_common.md)!!!</p>
+<p>!!!include(axes/_common.md)!!!</p>
+<h2>Tick Configuration</h2>
+<h3>Logarithmic Axis specific options</h3>
+<p>Namespace: <code>options.scales[scaleId].ticks</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>format</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"><code>Intl.NumberFormat</code></a> options used by the default label formatter</td>
+</tr>
+</tbody></table>
+<p>!!!include(axes/cartesian/_common_ticks.md)!!!</p>
+<p>!!!include(axes/_common_ticks.md)!!!</p>
+<h2>Internal data format</h2>
+<p>Internally, the logarithmic scale uses numeric data.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

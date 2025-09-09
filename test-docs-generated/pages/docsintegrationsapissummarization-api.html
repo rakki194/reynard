@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summarization API Documentation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Summarization API Documentation</h1>
+      <div class="markdown-content"><h1>Summarization API Documentation</h1>
+<p>The Summarization API provides comprehensive text summarization capabilities powered by Ollama models. The system supports multiple content types, summary levels, streaming responses, and batch processing.</p>
+<h2>Overview</h2>
+<p>The summarization system is built on a modular architecture with specialized summarizers for different content types:</p>
+<ul>
+<li><strong>Article Summarizer</strong>: Optimized for web articles, blog posts, and news content</li>
+<li><strong>Code Summarizer</strong>: Specialized for source code files and programming documentation</li>
+<li><strong>Document Summarizer</strong>: General-purpose summarizer for reports, papers, and documents</li>
+<li><strong>Contextual Summarizer</strong>: Personalized summaries based on user preferences and history</li>
+<li><strong>Cross-Language Summarizer</strong>: Multi-language support with language detection</li>
+</ul>
+<h2>Base URL</h2>
+<p>All endpoints are prefixed with <code>/api/summarize</code></p>
+<h2>Authentication</h2>
+<p>All endpoints require authentication via JWT token in the Authorization header:</p>
+<pre><code class="hljs language-plaintext">Authorization: Bearer &lt;jwt_token&gt;</code></pre><h2>Endpoints</h2>
+<h3>1. URL Summarization</h3>
+<p>Summarize content from a URL by first crawling the content, then generating a summary.</p>
+<h4><code>POST /api/summarize/url</code></h4>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;max_age_days&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Parameters:</strong></p>
+<ul>
+<li><code>url</code> (string, required): The URL to summarize</li>
+<li><code>max_age_days</code> (integer, optional): Maximum age of cached content in days (default: 5)</li>
+<li><code>include_outline</code> (boolean, optional): Include structured outline in summary (default: false)</li>
+<li><code>include_highlights</code> (boolean, optional): Include key highlights in summary (default: false)</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-string&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Title&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Generated summary text...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Key point 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Key point 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Important highlight 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Important highlight 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;processing_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2.5</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;model_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;quality_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;cached&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+<span class="hljs-punctuation">}</span></code></pre><h3>2. Text Summarization</h3>
+<p>Summarize provided text content directly.</p>
+<h4><code>POST /api/summarize/text</code></h4>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Text content to summarize...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;detailed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;temperature&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.7</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;top_p&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.9</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Parameters:</strong></p>
+<ul>
+<li><code>text</code> (string, required): Text content to summarize</li>
+<li><code>include_outline</code> (boolean, optional): Include structured outline (default: false)</li>
+<li><code>include_highlights</code> (boolean, optional): Include key highlights (default: false)</li>
+<li><code>content_type</code> (string, optional): Content type - &quot;article&quot;, &quot;code&quot;, &quot;document&quot;, &quot;technical&quot;, &quot;general&quot;</li>
+<li><code>summary_level</code> (string, optional): Summary level - &quot;brief&quot;, &quot;detailed&quot;, &quot;comprehensive&quot;</li>
+<li><code>model</code> (string, optional): Ollama model to use (default: &quot;qwen3:8b&quot;)</li>
+<li><code>temperature</code> (float, optional): Generation temperature 0.0-1.0 (default: 0.7)</li>
+<li><code>top_p</code> (float, optional): Top-p sampling parameter 0.0-1.0 (default: 0.9)</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-string&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Generated summary text...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Key point 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Key point 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Important highlight 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Important highlight 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;detailed&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">800</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;processing_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1.8</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;model_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;quality_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.88</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>3. Streaming Summarization</h3>
+<p>Stream summarization progress and results in real-time using Server-Sent Events (SSE).</p>
+<h4><code>GET /api/summarize/stream</code></h4>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>url</code> (string, optional): URL to summarize</li>
+<li><code>text</code> (string, optional): Text to summarize</li>
+<li><code>include_outline</code> (boolean, optional): Include outline (default: false)</li>
+<li><code>include_highlights</code> (boolean, optional): Include highlights (default: false)</li>
+<li><code>content_type</code> (string, optional): Content type</li>
+<li><code>summary_level</code> (string, optional): Summary level</li>
+<li><code>model</code> (string, optional): Model to use</li>
+</ul>
+<p><strong>SSE Events:</strong></p>
+<ol>
+<li><p><strong>Start Event:</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> start
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Crawl Progress (URL only):</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> crawl_progress
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;fetching&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;progress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Cleaning Event:</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> cleaning
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;processing_markdown&quot;</span><span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Token Stream:</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> tokens
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Generated&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;partial_summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Generated summary so far...&quot;</span><span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Completion Event:</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> done
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+<span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Complete summary...&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>...<span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-attr">&quot;quality_metrics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;coherence&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;completeness&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.92</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;relevance&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.88</span>
+<span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Error Event:</strong></p>
+<pre><code class="hljs language-json">event<span class="hljs-punctuation">:</span> error
+data<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Error description&quot;</span><span class="hljs-punctuation">}</span></code></pre></li>
+</ol>
+<h3>4. Batch Summarization</h3>
+<p>Process multiple summarization requests in parallel.</p>
+<h4><code>POST /api/summarize/batch</code></h4>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;requests&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;First text to summarize&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;brief&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article1&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;include_outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Second text to summarize&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;code&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;detailed&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;enable_caching&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;enable_streaming&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Parameters:</strong></p>
+<ul>
+<li><code>requests</code> (array, required): Array of summarization requests</li>
+<li><code>enable_caching</code> (boolean, optional): Enable result caching (default: true)</li>
+<li><code>enable_streaming</code> (boolean, optional): Enable streaming for batch (default: false)</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;batch_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-string&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;request_index&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-1&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Summary 1...&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>...<span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;request_index&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-2&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Summary 2...&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>...<span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;processing_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;success_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;error_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>5. Retrieve Summary</h3>
+<p>Retrieve a previously generated summary by ID.</p>
+<h4><code>GET /api/summarize/{summary_id}</code></h4>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-string&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Title&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Generated summary text...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Key point 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Key point 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Important highlight 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Important highlight 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;processing_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2.5</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;model_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;quality_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00Z&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>6. Available Models</h3>
+<p>Get information about available summarization models and capabilities.</p>
+<h4><code>GET /api/summarize/models/available</code></h4>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;available_summarizers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;ollama&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ollama Summarizer&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_content_types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;code&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;document&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;technical&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">&quot;general&quot;</span>
+      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_languages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;es&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;fr&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;de&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;zh&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;ja&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;default_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;article&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Summarizer&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_content_types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_languages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;es&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;fr&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;de&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;default_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Code Summarizer&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_content_types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;code&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_languages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;default_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;supported_content_types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;code&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;document&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;technical&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;general&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;supported_languages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;es&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;fr&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;de&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;zh&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;ja&quot;</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>7. Enhanced Summarization</h3>
+<p>Advanced summarization with additional features and controls.</p>
+<h4><code>POST /api/summarize/enhanced</code></h4>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Text content to summarize...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;detailed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;temperature&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.7</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;top_p&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.9</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;max_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1000</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;user_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user123&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;uuid-string&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Enhanced summary with personalization...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Key point 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Key point 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Important highlight 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Important highlight 2&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;personalization&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;user_preferences_applied&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;context_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;content_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;detailed&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">800</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;processing_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2.1</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;model_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;quality_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.92</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Content Types</h2>
+<h3>Article</h3>
+<p>Optimized for web articles, blog posts, news content, and general web text.</p>
+<h3>Code</h3>
+<p>Specialized for source code files, programming documentation, and technical specifications.</p>
+<h3>Document</h3>
+<p>General-purpose summarizer for reports, papers, academic content, and formal documents.</p>
+<h3>Technical</h3>
+<p>Optimized for technical documentation, manuals, and specialized content.</p>
+<h3>General</h3>
+<p>Default summarizer for any type of text content.</p>
+<h2>Summary Levels</h2>
+<h3>Brief</h3>
+<p>Concise summaries focusing on key points and main ideas (100-200 words).</p>
+<h3>Detailed</h3>
+<p>Comprehensive summaries with supporting details and context (200-500 words).</p>
+<h3>Comprehensive</h3>
+<p>In-depth summaries with full analysis and complete coverage (500+ words).</p>
+<h2>Error Handling</h2>
+<p>All endpoints return appropriate HTTP status codes:</p>
+<ul>
+<li><code>200</code>: Success</li>
+<li><code>400</code>: Bad Request (invalid parameters)</li>
+<li><code>401</code>: Unauthorized (missing or invalid token)</li>
+<li><code>404</code>: Not Found (summary ID not found)</li>
+<li><code>500</code>: Internal Server Error</li>
+<li><code>503</code>: Service Unavailable (summarization service down)</li>
+</ul>
+<p><strong>Error Response Format:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;detail&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Error description&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;error_code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ERROR_CODE&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-15T10:30:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Rate Limiting</h2>
+<p>The API implements rate limiting to ensure fair usage:</p>
+<ul>
+<li><strong>Default</strong>: 100 requests per minute per user</li>
+<li><strong>Streaming</strong>: 10 concurrent streams per user</li>
+<li><strong>Batch</strong>: 5 batch requests per minute per user</li>
+</ul>
+<p>Rate limit headers are included in responses:</p>
+<pre><code class="hljs language-json">X-RateLimit-Limit<span class="hljs-punctuation">:</span> <span class="hljs-number">100</span>
+X-RateLimit-Remaining<span class="hljs-punctuation">:</span> <span class="hljs-number">95</span>
+X-RateLimit-Reset<span class="hljs-punctuation">:</span> <span class="hljs-number">1642234567</span></code></pre><h2>Caching</h2>
+<p>Summarization results are cached to improve performance:</p>
+<ul>
+<li><strong>URL summaries</strong>: Cached for 5 days by default</li>
+<li><strong>Text summaries</strong>: Cached for 24 hours</li>
+<li><strong>Cache keys</strong>: Generated from content hash and parameters</li>
+<li><strong>Cache invalidation</strong>: Automatic based on TTL</li>
+</ul>
+<h2>Quality Metrics</h2>
+<p>Summarization quality is automatically assessed using multiple metrics:</p>
+<ul>
+<li><strong>Coherence</strong>: Logical flow and structure (0.0-1.0)</li>
+<li><strong>Completeness</strong>: Coverage of source content (0.0-1.0)</li>
+<li><strong>Relevance</strong>: Focus on important information (0.0-1.0)</li>
+<li><strong>Overall Score</strong>: Weighted average of all metrics (0.0-1.0)</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>JavaScript/TypeScript</h3>
+<pre><code class="hljs language-javascript"><span class="hljs-comment">// Basic text summarization</span>
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/summarize/text&quot;</span>, {
+  <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+  <span class="hljs-attr">headers</span>: {
+    <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,
+    <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${token}</span>`</span>,
+  },
+  <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({
+    <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;Long text content to summarize...&quot;</span>,
+    <span class="hljs-attr">content_type</span>: <span class="hljs-string">&quot;article&quot;</span>,
+    <span class="hljs-attr">summary_level</span>: <span class="hljs-string">&quot;detailed&quot;</span>,
+  }),
+});
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">summary</span>);
+
+<span class="hljs-comment">// Streaming summarization</span>
+<span class="hljs-keyword">const</span> eventSource = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>(
+  <span class="hljs-string">&quot;/api/summarize/stream?text=Content&amp;content_type=article&quot;</span>,
+);
+eventSource.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tokens&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(event.<span class="hljs-property">data</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Partial summary:&quot;</span>, data.<span class="hljs-property">partial_summary</span>);
+});
+eventSource.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;done&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(event.<span class="hljs-property">data</span>);
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Final summary:&quot;</span>, data.<span class="hljs-property">result</span>.<span class="hljs-property">summary</span>);
+  eventSource.<span class="hljs-title function_">close</span>();
+});</code></pre><h3>Python</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
+
+<span class="hljs-comment"># Text summarization</span>
+response = requests.post(
+    <span class="hljs-string">&#x27;http://localhost:7000/api/summarize/text&#x27;</span>,
+    headers={<span class="hljs-string">&#x27;Authorization&#x27;</span>: <span class="hljs-string">f&#x27;Bearer <span class="hljs-subst">{token}</span>&#x27;</span>},
+    json={
+        <span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;Long text content to summarize...&#x27;</span>,
+        <span class="hljs-string">&#x27;content_type&#x27;</span>: <span class="hljs-string">&#x27;article&#x27;</span>,
+        <span class="hljs-string">&#x27;summary_level&#x27;</span>: <span class="hljs-string">&#x27;detailed&#x27;</span>
+    }
+)
+
+result = response.json()
+<span class="hljs-built_in">print</span>(result[<span class="hljs-string">&#x27;summary&#x27;</span>])
+
+<span class="hljs-comment"># URL summarization</span>
+response = requests.post(
+    <span class="hljs-string">&#x27;http://localhost:7000/api/summarize/url&#x27;</span>,
+    headers={<span class="hljs-string">&#x27;Authorization&#x27;</span>: <span class="hljs-string">f&#x27;Bearer <span class="hljs-subst">{token}</span>&#x27;</span>},
+    json={
+        <span class="hljs-string">&#x27;url&#x27;</span>: <span class="hljs-string">&#x27;https://example.com/article&#x27;</span>,
+        <span class="hljs-string">&#x27;include_outline&#x27;</span>: <span class="hljs-literal">True</span>,
+        <span class="hljs-string">&#x27;include_highlights&#x27;</span>: <span class="hljs-literal">True</span>
+    }
+)
+
+result = response.json()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Summary: <span class="hljs-subst">{result[<span class="hljs-string">&#x27;summary&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Outline: <span class="hljs-subst">{result[<span class="hljs-string">&#x27;outline&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>cURL</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Text summarization</span>
+curl -X POST http://localhost:7000/api/summarize/text \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;text&quot;: &quot;Long text content to summarize...&quot;,
+    &quot;content_type&quot;: &quot;article&quot;,
+    &quot;summary_level&quot;: &quot;detailed&quot;
+  }&#x27;</span>
+
+<span class="hljs-comment"># URL summarization</span>
+curl -X POST http://localhost:7000/api/summarize/url \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;url&quot;: &quot;https://example.com/article&quot;,
+    &quot;include_outline&quot;: true,
+    &quot;include_highlights&quot;: true
+  }&#x27;</span>
+
+<span class="hljs-comment"># Streaming summarization</span>
+curl -N http://localhost:7000/api/summarize/stream?text=Content&amp;content_type=article \
+  -H <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">$TOKEN</span>&quot;</span></code></pre><h2>Best Practices</h2>
+<ol>
+<li><strong>Content Type Selection</strong>: Choose the appropriate content type for better summarization quality</li>
+<li><strong>Summary Level</strong>: Use &quot;brief&quot; for quick overviews, &quot;detailed&quot; for comprehensive summaries</li>
+<li><strong>Caching</strong>: Leverage caching by reusing summary IDs when possible</li>
+<li><strong>Streaming</strong>: Use streaming endpoints for long content to provide real-time feedback</li>
+<li><strong>Error Handling</strong>: Always handle potential errors and implement retry logic</li>
+<li><strong>Rate Limiting</strong>: Respect rate limits and implement exponential backoff</li>
+<li><strong>Quality Metrics</strong>: Monitor quality scores to ensure satisfactory results</li>
+<li><strong>Batch Processing</strong>: Use batch endpoints for multiple summarization requests</li>
+</ol>
+<h2>Integration Notes</h2>
+<ul>
+<li>The summarization system integrates with the existing Ollama service infrastructure</li>
+<li>Results are compatible with the TTS system for &quot;summarize and speak&quot; functionality</li>
+<li>The system supports the existing notification system for progress updates</li>
+<li>All summarization results are stored in the cache directory for later retrieval</li>
+<li>The API follows the same authentication and authorization patterns as other services</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

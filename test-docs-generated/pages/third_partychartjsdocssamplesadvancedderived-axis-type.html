@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Derived Axis Type - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Derived Axis Type</h1>
+      <div class="markdown-content"><h1>Derived Axis Type</h1>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+const DATA_COUNT <span class="hljs-operator">=</span> <span class="hljs-number">12</span>;
+const NUMBER_CFG <span class="hljs-operator">=</span> {<span class="hljs-params">count:</span> DATA_COUNT, <span class="hljs-params">min:</span> <span class="hljs-number">0</span>, <span class="hljs-params">max:</span> <span class="hljs-number">1000</span>};
+const labels <span class="hljs-operator">=</span> Utils.months({<span class="hljs-params">count:</span> DATA_COUNT});
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">labels:</span> labels,
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;My First dataset&#x27;,
+      <span class="hljs-params">data:</span> Utils.numbers(NUMBER_CFG),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red, <span class="hljs-number">0.5</span>),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>,
+    }
+  ],
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;line&#x27;,
+  data,
+  <span class="hljs-params">options:</span> {
+    <span class="hljs-params">responsive:</span> <span class="hljs-literal">true</span>,
+    <span class="hljs-params">scales:</span> {
+      <span class="hljs-params">x:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+      },
+      <span class="hljs-params">y:</span> {
+        <span class="hljs-params">display:</span> <span class="hljs-literal">true</span>,
+        <span class="hljs-params">type:</span> &#x27;log2&#x27;,
+      }
+    }
+  }
+};
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">actions:</span> [],
+  <span class="hljs-params">config:</span> config,
+};</code></pre><h2>Log2 axis implementation</h2>
+<p>&lt;&lt;&lt; @/scripts/log2.js</p>
+<h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../developers/axes.md">New Axes</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard ECS System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard ECS System</h1>
+      <div class="markdown-content"><h1>Reynard ECS System</h1>
+<p>A complete Entity-Component-System (ECS) implementation for TypeScript, inspired by Bevy ECS architecture. This system provides high-performance, type-safe entity management for games and simulations.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Entity Management</strong>: Generational indexing prevents use-after-free bugs</li>
+<li><strong>Component System</strong>: Flexible component storage with Table and SparseSet strategies</li>
+<li><strong>Resource System</strong>: Global singleton data management</li>
+<li><strong>Query System</strong>: Type-safe component access with filtering</li>
+<li><strong>System Scheduling</strong>: Dependency-based system execution</li>
+<li><strong>Change Detection</strong>: Track component modifications</li>
+<li><strong>Commands</strong>: Deferred world modifications</li>
+</ul>
+<h2>Core Concepts</h2>
+<h3>Entities</h3>
+<p>Lightweight identifiers that group components together. Entities use generational indexing to prevent bugs when reusing entity IDs.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createEntity, entityToString } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-keyword">const</span> entity = <span class="hljs-title function_">createEntity</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">entityToString</span>(entity)); <span class="hljs-comment">// &quot;0v1&quot;</span></code></pre><h3>Components</h3>
+<p>Data containers that can be attached to entities. Components implement the <code>Component</code> interface.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Component</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Position</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Component</span> {
+  <span class="hljs-keyword">readonly</span> __component = <span class="hljs-literal">true</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>,
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>,
+  </span>) {}
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Velocity</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Component</span> {
+  <span class="hljs-keyword">readonly</span> __component = <span class="hljs-literal">true</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>,
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>,
+  </span>) {}
+}</code></pre><h3>Resources</h3>
+<p>Global singleton data accessible to all systems. Resources implement the <code>Resource</code> interface.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Resource</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GameTime</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Resource</span> {
+  <span class="hljs-keyword">readonly</span> __resource = <span class="hljs-literal">true</span>;
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">deltaTime</span>: <span class="hljs-built_in">number</span>,
+    <span class="hljs-keyword">public</span> <span class="hljs-attr">totalTime</span>: <span class="hljs-built_in">number</span>,
+  </span>) {}
+}</code></pre><h3>Systems</h3>
+<p>Functions that operate on components and resources. Systems are the behavior layer of the ECS.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">World</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">movementSystem</span>(<span class="hljs-params"><span class="hljs-attr">world</span>: <span class="hljs-title class_">World</span></span>): <span class="hljs-built_in">void</span> {
+  <span class="hljs-keyword">const</span> gameTime = world.<span class="hljs-title function_">getResource</span>(<span class="hljs-title class_">GameTime</span>);
+  <span class="hljs-keyword">if</span> (!gameTime) <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-keyword">const</span> query = world.<span class="hljs-title function_">query</span>(<span class="hljs-title class_">Position</span>, <span class="hljs-title class_">Velocity</span>);
+  query.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">entity, position, velocity</span>) =&gt;</span> {
+    position.<span class="hljs-property">x</span> += velocity.<span class="hljs-property">x</span> * gameTime.<span class="hljs-property">deltaTime</span>;
+    position.<span class="hljs-property">y</span> += velocity.<span class="hljs-property">y</span> * gameTime.<span class="hljs-property">deltaTime</span>;
+  });
+}</code></pre><h2>Usage</h2>
+<h3>Basic Setup</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  createWorld,
+  <span class="hljs-title class_">ComponentType</span>,
+  <span class="hljs-title class_">ResourceType</span>,
+  <span class="hljs-title class_">StorageType</span>,
+  system,
+  schedule,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-comment">// Create world</span>
+<span class="hljs-keyword">const</span> world = <span class="hljs-title function_">createWorld</span>();
+
+<span class="hljs-comment">// Register component types</span>
+<span class="hljs-keyword">const</span> registry = world.<span class="hljs-title function_">getComponentRegistry</span>();
+<span class="hljs-keyword">const</span> positionType = registry.<span class="hljs-title function_">register</span>(
+  <span class="hljs-string">&quot;Position&quot;</span>,
+  <span class="hljs-title class_">StorageType</span>.<span class="hljs-property">Table</span>,
+  <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+);
+<span class="hljs-keyword">const</span> velocityType = registry.<span class="hljs-title function_">register</span>(
+  <span class="hljs-string">&quot;Velocity&quot;</span>,
+  <span class="hljs-title class_">StorageType</span>.<span class="hljs-property">Table</span>,
+  <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Velocity</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+);
+
+<span class="hljs-comment">// Register resource types</span>
+<span class="hljs-keyword">const</span> resourceRegistry = world.<span class="hljs-title function_">getResourceRegistry</span>();
+<span class="hljs-keyword">const</span> gameTimeType = resourceRegistry.<span class="hljs-title function_">register</span>(
+  <span class="hljs-string">&quot;GameTime&quot;</span>,
+  <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GameTime</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+);
+
+<span class="hljs-comment">// Add systems</span>
+world.<span class="hljs-title function_">addSystem</span>(<span class="hljs-title function_">system</span>(<span class="hljs-string">&quot;movement&quot;</span>, movementSystem).<span class="hljs-title function_">build</span>());
+
+<span class="hljs-comment">// Create entities</span>
+<span class="hljs-keyword">const</span> player = world.<span class="hljs-title function_">spawn</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>), <span class="hljs-keyword">new</span> <span class="hljs-title class_">Velocity</span>(<span class="hljs-number">50</span>, <span class="hljs-number">0</span>));
+
+<span class="hljs-comment">// Add resources</span>
+world.<span class="hljs-title function_">insertResource</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">GameTime</span>(<span class="hljs-number">0.016</span>, <span class="hljs-number">0</span>));
+
+<span class="hljs-comment">// Run systems</span>
+world.<span class="hljs-title function_">runSystem</span>(<span class="hljs-string">&quot;movement&quot;</span>);</code></pre><h3>Advanced Features</h3>
+<h4>Query Filtering</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">QueryFilter</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ecs&quot;</span>;
+
+<span class="hljs-comment">// Query entities with Position but without Velocity</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">filter</span>: <span class="hljs-title class_">QueryFilter</span> = {
+  <span class="hljs-attr">with</span>: [positionType],
+  <span class="hljs-attr">without</span>: [velocityType],
+};
+
+<span class="hljs-keyword">const</span> query = world.<span class="hljs-title function_">queryFiltered</span>([positionType], filter);</code></pre><h4>System Dependencies</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Create systems with dependencies</span>
+<span class="hljs-keyword">const</span> movementSystem = <span class="hljs-title function_">system</span>(<span class="hljs-string">&quot;movement&quot;</span>, movementSystemFn)
+  .<span class="hljs-title function_">after</span>(<span class="hljs-string">&quot;input&quot;</span>)
+  .<span class="hljs-title function_">build</span>();
+
+<span class="hljs-keyword">const</span> inputSystem = <span class="hljs-title function_">system</span>(<span class="hljs-string">&quot;input&quot;</span>, inputSystemFn).<span class="hljs-title function_">build</span>();
+
+<span class="hljs-comment">// Systems will run in order: input -&gt; movement</span></code></pre><h4>Commands for Deferred Operations</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">spawnBulletSystem</span>(<span class="hljs-params"><span class="hljs-attr">world</span>: <span class="hljs-title class_">World</span></span>): <span class="hljs-built_in">void</span> {
+  <span class="hljs-keyword">const</span> commands = world.<span class="hljs-title function_">commands</span>();
+
+  <span class="hljs-comment">// Deferred operations</span>
+  commands.<span class="hljs-title function_">spawn</span>(
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>),
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Velocity</span>(<span class="hljs-number">0</span>, -<span class="hljs-number">300</span>),
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Bullet</span>(<span class="hljs-number">300</span>),
+  );
+
+  <span class="hljs-comment">// Commands are applied at the end of the system</span>
+}</code></pre><h2>Storage Strategies</h2>
+<h3>Table Storage (Dense)</h3>
+<ul>
+<li>Optimized for iteration</li>
+<li>Components stored in contiguous arrays</li>
+<li>Best for frequently accessed components</li>
+</ul>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> positionType = registry.<span class="hljs-title function_">register</span>(
+  <span class="hljs-string">&quot;Position&quot;</span>,
+  <span class="hljs-title class_">StorageType</span>.<span class="hljs-property">Table</span>,
+  <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Position</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+);</code></pre><h3>SparseSet Storage (Sparse)</h3>
+<ul>
+<li>Optimized for insertion/removal</li>
+<li>Components stored in hash maps</li>
+<li>Best for optional components</li>
+</ul>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> powerUpType = registry.<span class="hljs-title function_">register</span>(
+  <span class="hljs-string">&quot;PowerUp&quot;</span>,
+  <span class="hljs-title class_">StorageType</span>.<span class="hljs-property">SparseSet</span>,
+  <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PowerUp</span>(),
+);</code></pre><h2>Performance Considerations</h2>
+<ol>
+<li><strong>Use Table storage</strong> for components that are frequently iterated</li>
+<li><strong>Use SparseSet storage</strong> for optional components</li>
+<li><strong>Minimize system dependencies</strong> to enable parallel execution</li>
+<li><strong>Use queries efficiently</strong> - avoid creating queries in hot paths</li>
+<li><strong>Batch operations</strong> using commands when possible</li>
+</ol>
+<h2>Examples</h2>
+<p>See the <code>examples/</code> directory for complete game implementations:</p>
+<ul>
+<li><strong>Basic Game</strong>: Simple player movement and enemy AI</li>
+<li><strong>Shooting Game</strong>: Bullet physics and collision detection</li>
+<li><strong>Component Examples</strong>: Various component patterns</li>
+<li><strong>System Examples</strong>: Different system architectures</li>
+</ul>
+<h2>API Reference</h2>
+<h3>Core Types</h3>
+<ul>
+<li><code>Entity</code>: Lightweight entity identifier</li>
+<li><code>Component</code>: Base interface for all components</li>
+<li><code>Resource</code>: Base interface for all resources</li>
+<li><code>World</code>: Main ECS container</li>
+<li><code>System</code>: Behavior functions</li>
+<li><code>Query</code>: Component access patterns</li>
+</ul>
+<h3>Storage Types</h3>
+<ul>
+<li><code>StorageType.Table</code>: Dense storage for frequent access</li>
+<li><code>StorageType.SparseSet</code>: Sparse storage for optional components</li>
+</ul>
+<h3>Query Filters</h3>
+<ul>
+<li><code>with</code>: Entities must have these components</li>
+<li><code>without</code>: Entities must not have these components</li>
+<li><code>added</code>: Entities that had these components added this frame</li>
+<li><code>changed</code>: Entities that had these components changed this frame</li>
+</ul>
+<h2>Integration with Reynard</h2>
+<p>This ECS system is designed to integrate seamlessly with the Reynard framework:</p>
+<ul>
+<li><strong>SolidJS Integration</strong>: Systems can be used in SolidJS components</li>
+<li><strong>Type Safety</strong>: Full TypeScript support with strict typing</li>
+<li><strong>Performance</strong>: Optimized for 60fps game loops</li>
+<li><strong>Modularity</strong>: Can be used independently or as part of larger applications</li>
+</ul>
+<h2>License</h2>
+<p>Part of the Reynard framework. See main project license for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -38,7 +38,7 @@ python setup_database.py
 # Install Node.js dependencies if needed
 if [ ! -d "node_modules" ]; then
     echo "📦 Installing Node.js dependencies..."
-    npm install
+    pnpm install
 fi
 
 echo "✅ Setup complete! Starting the application..."
@@ -49,6 +49,6 @@ echo ""
 echo "Press Ctrl+C to stop both servers"
 
 # Start both frontend and backend
-npm run dev:full
+pnpm run dev:full
 
 

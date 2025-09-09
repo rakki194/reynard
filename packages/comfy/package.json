@@ -1,0 +1,36 @@
+{
+  "name": "reynard-comfy",
+  "version": "0.1.0",
+  "description": "ComfyUI integration package for Reynard framework",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "reynard-api-client": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "comfyui",
+    "workflow",
+    "ai",
+    "image-generation",
+    "reynard"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT"
+}

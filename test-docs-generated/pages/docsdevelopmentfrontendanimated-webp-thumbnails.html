@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated WebP Thumbnail Support - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Animated WebP Thumbnail Support</h1>
+      <div class="markdown-content"><h1>Animated WebP Thumbnail Support</h1>
+<p>This document describes the animated WebP thumbnail processing functionality added to the yipyap application.</p>
+<h2>Overview</h2>
+<p>The application now supports generating animated WebP thumbnails from animated source images (GIF, APNG, animated WebP). This provides better visual representation of animated content in the gallery while maintaining efficient file sizes.</p>
+<h2>Features</h2>
+<h3>Backend Support</h3>
+<ul>
+<li><strong>Automatic Animation Detection</strong>: The system automatically detects animated images using the existing animation detection infrastructure</li>
+<li><strong>Animated WebP Generation</strong>: Creates animated WebP thumbnails that preserve the original animation</li>
+<li><strong>Frame Processing</strong>: Processes all frames of animated images and maintains timing information</li>
+<li><strong>Fallback Support</strong>: Single-frame animated images fall back to static WebP generation</li>
+<li><strong>Quality Optimization</strong>: Uses high-quality WebP encoding (method 6) with appropriate quality settings</li>
+</ul>
+<h3>Frontend Support</h3>
+<ul>
+<li><strong>Native Browser Support</strong>: Animated WebP thumbnails are displayed natively by modern browsers</li>
+<li><strong>Animation Indicators</strong>: Existing animation indicators continue to work with animated thumbnails</li>
+<li><strong>Performance</strong>: Animated thumbnails are efficiently loaded through the existing batch thumbnail system</li>
+<li><strong>Progressive Loading</strong>: Maintains the existing progressive loading behavior</li>
+</ul>
+<h2>Technical Implementation</h2>
+<h3>Backend Changes</h3>
+<p>The <code>ImageProcessor</code> class has been enhanced with:</p>
+<ol>
+<li><strong>Animation Detection</strong>: Uses the existing <code>detect_animation_info</code> function to identify animated images</li>
+<li><strong>Dual Processing Paths</strong>:<ul>
+<li><code>_generate_static_thumbnail()</code> for static images</li>
+<li><code>_generate_animated_thumbnail()</code> for animated images</li>
+</ul>
+</li>
+<li><strong>Frame-by-Frame Processing</strong>: Extracts and processes each frame individually</li>
+<li><strong>Duration Preservation</strong>: Maintains original frame timing information</li>
+</ol>
+<h3>Key Methods</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_thumbnail</span>(<span class="hljs-params">self, path: Path</span>) -&gt; <span class="hljs-built_in">bytes</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Generate WebP thumbnail from image, preserving animation for animated images.&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_animated_thumbnail</span>(<span class="hljs-params">self, img: Image.Image, animation_info: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</span>) -&gt; <span class="hljs-built_in">bytes</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Generate animated WebP thumbnail from animated image.&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_static_thumbnail</span>(<span class="hljs-params">self, img: Image.Image</span>) -&gt; <span class="hljs-built_in">bytes</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Generate static WebP thumbnail from image.&quot;&quot;&quot;</span></code></pre><h3>Frontend Integration</h3>
+<p>The frontend automatically supports animated WebP thumbnails through:</p>
+<ol>
+<li><strong>Existing Image Display</strong>: The current <code>&lt;img&gt;</code> tag implementation supports animated WebP natively</li>
+<li><strong>Batch Loading</strong>: Animated thumbnails work with the existing batch thumbnail loading system</li>
+<li><strong>Animation Indicators</strong>: The existing animation indicator overlay continues to work</li>
+<li><strong>Performance</strong>: No additional frontend code required</li>
+</ol>
+<h2>Supported Formats</h2>
+<h3>Input Formats (Animated)</h3>
+<ul>
+<li><strong>GIF</strong>: Animated GIF files</li>
+<li><strong>APNG</strong>: Animated PNG files</li>
+<li><strong>WebP</strong>: Animated WebP files</li>
+</ul>
+<h3>Output Format</h3>
+<ul>
+<li><strong>WebP</strong>: Animated WebP thumbnails with preserved animation</li>
+</ul>
+<h2>Configuration</h2>
+<p>The animated WebP functionality uses the same configuration as static thumbnails:</p>
+<ul>
+<li><strong>Thumbnail Size</strong>: Controlled by the existing thumbnail size settings</li>
+<li><strong>Quality</strong>: WebP quality setting of 80 (optimized for size vs quality)</li>
+<li><strong>Encoding Method</strong>: Method 6 for high-quality encoding</li>
+</ul>
+<h2>Performance Considerations</h2>
+<h3>File Size</h3>
+<ul>
+<li>Animated WebP thumbnails are typically larger than static thumbnails due to multiple frames</li>
+<li>However, they are still significantly smaller than the original animated files</li>
+<li>The system uses efficient WebP encoding to minimize file size</li>
+</ul>
+<h3>Processing Time</h3>
+<ul>
+<li>Animated thumbnail generation takes longer than static thumbnails</li>
+<li>Each frame must be processed individually</li>
+<li>The system uses the existing thread pool for background processing</li>
+</ul>
+<h3>Memory Usage</h3>
+<ul>
+<li>Frame processing requires additional memory for temporary frame storage</li>
+<li>Memory usage scales with the number of frames and frame size</li>
+</ul>
+<h2>Testing</h2>
+<p>The implementation includes comprehensive tests:</p>
+<ol>
+<li><strong>Unit Tests</strong>: Mock-based tests for all new functionality</li>
+<li><strong>Integration Tests</strong>: Real file-based tests using generated animated GIFs</li>
+<li><strong>Edge Case Tests</strong>: Single-frame animated images, error handling</li>
+<li><strong>Performance Tests</strong>: File size and processing time validation</li>
+</ol>
+<h3>Running Tests</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all image processor tests</span>
+python -m pytest app/tests/test_image_processor.py -v
+
+<span class="hljs-comment"># Run animated WebP integration tests</span>
+python -m pytest app/tests/test_animated_webp_integration.py -v</code></pre><h2>Browser Support</h2>
+<p>Animated WebP is supported by:</p>
+<ul>
+<li>Chrome 32+</li>
+<li>Firefox 65+</li>
+<li>Safari 14+</li>
+<li>Edge 79+</li>
+</ul>
+<p>For browsers that don&#39;t support animated WebP, the thumbnails will display as static images (first frame only).</p>
+<h2>Future Enhancements</h2>
+<p>Potential improvements for future versions:</p>
+<ol>
+<li><strong>Format-Specific Optimization</strong>: Different encoding settings for different source formats</li>
+<li><strong>Frame Rate Control</strong>: Option to reduce frame rate for smaller file sizes</li>
+<li><strong>Selective Frame Processing</strong>: Skip frames for very long animations</li>
+<li><strong>Quality Tiers</strong>: Different quality settings for different use cases</li>
+<li><strong>Fallback Formats</strong>: Generate static thumbnails for unsupported browsers</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Large File Sizes</strong>: Check if the source animation has many frames or high resolution</li>
+<li><strong>Processing Errors</strong>: Verify that the source file is a valid animated image</li>
+<li><strong>Browser Display Issues</strong>: Ensure the browser supports animated WebP</li>
+</ol>
+<h3>Debug Information</h3>
+<p>The system logs detailed information about animation processing:</p>
+<pre><code class="hljs language-python">logger.debug(<span class="hljs-string">f&quot;Processing animated image: <span class="hljs-subst">{frame_count}</span> frames, <span class="hljs-subst">{duration}</span>s duration&quot;</span>)
+logger.debug(<span class="hljs-string">f&quot;Generated animated WebP thumbnail: <span class="hljs-subst">{<span class="hljs-built_in">len</span>(thumbnail_data)}</span> bytes&quot;</span>)</code></pre><h2>Migration Notes</h2>
+<p>This feature is backward compatible:</p>
+<ul>
+<li>Existing static thumbnails continue to work unchanged</li>
+<li>New animated images automatically get animated thumbnails</li>
+<li>No database migration required</li>
+<li>No frontend changes required</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

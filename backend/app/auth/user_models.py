@@ -16,6 +16,7 @@ class UserCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    full_name: Optional[str] = None
     
     @field_validator('username')
     @classmethod
@@ -60,6 +61,7 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: str
+    full_name: Optional[str] = None
     is_active: bool
     created_at: datetime
 

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard Features Demo - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard Features Demo</h1>
+      <div class="markdown-content"><h1>Reynard Features Demo</h1>
+<p>🦊 <strong>Interactive demonstration of the Reynard feature management system</strong></p>
+<p>This demo application showcases the powerful capabilities of the <code>reynard-features</code> package, demonstrating how to build resilient, service-aware applications that gracefully handle various deployment scenarios and service availability states.</p>
+<h2>🎯 What This Demo Shows</h2>
+<h3>Feature Management System</h3>
+<ul>
+<li><strong>Real-time Feature Status</strong>: Live updates of feature availability, degradation, and health scores</li>
+<li><strong>Service Dependencies</strong>: Features automatically adapt based on external service availability</li>
+<li><strong>Graceful Degradation</strong>: Optional dependencies allow features to work in degraded mode</li>
+<li><strong>Health Monitoring</strong>: Comprehensive feature health scoring and status tracking</li>
+</ul>
+<h3>Interactive Components</h3>
+<ul>
+<li><strong>Feature Dashboard</strong>: Real-time statistics and feature overview</li>
+<li><strong>Service Controls</strong>: Toggle services to see features adapt in real-time</li>
+<li><strong>Feature Demos</strong>: Interactive examples of feature-aware components</li>
+<li><strong>Multi-language Support</strong>: Demonstrates internationalization capabilities</li>
+<li><strong>Theme System</strong>: Light/dark theme switching</li>
+</ul>
+<h2>🚀 Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 18+</li>
+<li>npm or yarn</li>
+</ul>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev</code></pre><p>The demo will be available at <code>http://localhost:3002</code></p>
+<h3>Building for Production</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build the application</span>
+npm run build
+
+<span class="hljs-comment"># Preview the build</span>
+npm run serve</code></pre><h2>🦦 How It Works</h2>
+<h3>Feature Configuration</h3>
+<p>The demo uses a comprehensive feature configuration with 25+ predefined features across all categories:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> featureConfig = {
+  <span class="hljs-attr">features</span>: <span class="hljs-variable constant_">COMMON_FEATURES</span>,
+  <span class="hljs-attr">serviceChecker</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">serviceName</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> serviceAvailability[serviceName],
+  <span class="hljs-attr">autoRefresh</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">refreshInterval</span>: <span class="hljs-number">5000</span>,
+  <span class="hljs-attr">onStatusChange</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">featureId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">status</span>: <span class="hljs-title class_">FeatureStatus</span></span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Feature <span class="hljs-subst">${featureId}</span> status changed:`</span>, status);
+  },
+};</code></pre><h3>Service Simulation</h3>
+<p>Services are simulated with toggle controls to demonstrate real-time feature adaptation:</p>
+<ul>
+<li><strong>Core Services</strong>: DataSourceService, AuthService, DatabaseService</li>
+<li><strong>ML/AI Services</strong>: ImageProcessingService, CaptionGeneratorService, DetectionModelsService</li>
+<li><strong>Integration Services</strong>: GitService, APIGateway, CloudStorageService</li>
+<li><strong>Utility Services</strong>: CacheService, LoggingService, MonitoringService</li>
+<li><strong>Data Services</strong>: ExportService, ImportService, ValidationService, SearchService</li>
+</ul>
+<h3>Feature-Aware Components</h3>
+<p>Each demo component uses the <code>useFeatureAware</code> hook to automatically adapt based on feature availability:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> { shouldRender, fallback } = <span class="hljs-title function_">useFeatureAware</span>(
+  <span class="hljs-string">&quot;image-processing&quot;</span>,
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Image processing unavailable<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+);
+
+<span class="hljs-keyword">return</span> (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    {shouldRender() ? (
+      <span class="hljs-tag">&lt;<span class="hljs-name">ImageProcessingInterface</span> /&gt;</span>
+    ) : (
+      fallback
+    )}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+);</code></pre><h2>🐺 Key Features Demonstrated</h2>
+<h3>1. Real-time Status Updates</h3>
+<ul>
+<li>Features automatically update when services become available/unavailable</li>
+<li>Health scores reflect current service status</li>
+<li>Degraded mode handling for optional dependencies</li>
+</ul>
+<h3>2. Service Dependency Management</h3>
+<ul>
+<li>Required vs optional service dependencies</li>
+<li>Automatic feature availability calculation</li>
+<li>Service impact analysis</li>
+</ul>
+<h3>3. Feature Categories &amp; Priorities</h3>
+<ul>
+<li><strong>Categories</strong>: Core, ML/AI, Integration, Utility, UI, Data</li>
+<li><strong>Priorities</strong>: Critical, High, Medium, Low</li>
+<li>Smart filtering and organization</li>
+</ul>
+<h3>4. Interactive Demonstrations</h3>
+<ul>
+<li><strong>Image Processing</strong>: Upload and process images (when service available)</li>
+<li><strong>Caption Generation</strong>: AI-powered caption generation with degraded mode</li>
+<li><strong>Object Detection</strong>: Simulated object detection with loading states</li>
+<li><strong>Text Analysis</strong>: Comprehensive text analysis with statistics</li>
+<li><strong>Git Integration</strong>: Repository status checking and management</li>
+</ul>
+<h3>5. Graceful Degradation</h3>
+<ul>
+<li>Features show appropriate fallback content when unavailable</li>
+<li>Degraded mode with limited functionality</li>
+<li>Clear status messages and user feedback</li>
+</ul>
+<h2>🦊 Advanced Usage Patterns</h2>
+<h3>Custom Feature Definitions</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> customFeatures = [
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-custom-feature&quot;</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Custom Feature&quot;</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">&quot;A custom feature for my application&quot;</span>,
+    <span class="hljs-attr">dependencies</span>: [
+      { <span class="hljs-attr">services</span>: [<span class="hljs-string">&quot;MyService&quot;</span>], <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span> },
+      { <span class="hljs-attr">services</span>: [<span class="hljs-string">&quot;OptionalService&quot;</span>], <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span> },
+    ],
+    <span class="hljs-attr">category</span>: <span class="hljs-string">&quot;utility&quot;</span>,
+    <span class="hljs-attr">priority</span>: <span class="hljs-string">&quot;medium&quot;</span>,
+    <span class="hljs-attr">defaultConfig</span>: {
+      <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">timeout</span>: <span class="hljs-number">5000</span>,
+    },
+  },
+];</code></pre><h3>Feature Configuration Management</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> { config, setConfigValue } = <span class="hljs-title function_">useFeatureConfiguration</span>(<span class="hljs-string">&quot;image-processing&quot;</span>);
+<span class="hljs-title function_">setConfigValue</span>(<span class="hljs-string">&quot;threshold&quot;</span>, <span class="hljs-number">0.8</span>);
+<span class="hljs-title function_">setConfigValue</span>(<span class="hljs-string">&quot;timeout&quot;</span>, <span class="hljs-number">5000</span>);</code></pre><h3>Service Availability Monitoring</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> { getFeaturesDependentOnService } = <span class="hljs-title function_">useFeatures</span>();
+<span class="hljs-keyword">const</span> affectedFeatures = <span class="hljs-title function_">getFeaturesDependentOnService</span>(<span class="hljs-string">&quot;MyService&quot;</span>);</code></pre><h2>🦦 Testing the System</h2>
+<h3>Service Toggle Scenarios</h3>
+<ol>
+<li><strong>Disable Core Services</strong>: See critical features become unavailable</li>
+<li><strong>Disable ML Services</strong>: Watch AI features degrade or become unavailable</li>
+<li><strong>Disable Integration Services</strong>: Observe optional features adapt</li>
+<li><strong>Enable All Services</strong>: See full feature availability</li>
+</ol>
+<h3>Feature Interaction</h3>
+<ul>
+<li>Upload images to test image processing</li>
+<li>Generate captions to see degraded mode in action</li>
+<li>Analyze text to demonstrate NLP capabilities</li>
+<li>Check Git repositories to test integration features</li>
+</ul>
+<h2>🐺 Architecture Highlights</h2>
+<h3>Reactive State Management</h3>
+<ul>
+<li>SolidJS signals for real-time updates</li>
+<li>Efficient re-rendering only when status changes</li>
+<li>Memory management with proper cleanup</li>
+</ul>
+<h3>Error Resilience</h3>
+<ul>
+<li>Circuit breaker pattern for service failures</li>
+<li>Fallback mechanisms for optional dependencies</li>
+<li>Health scoring for monitoring</li>
+</ul>
+<h3>Performance Optimizations</h3>
+<ul>
+<li>Lazy evaluation of feature checks</li>
+<li>Efficient dependency resolution</li>
+<li>Minimal re-renders with reactive updates</li>
+</ul>
+<h2>🦊 Contributing</h2>
+<p>This demo is part of the Reynard framework. When contributing:</p>
+<ol>
+<li>Ensure features are truly reusable and not tied to specific applications</li>
+<li>Provide comprehensive TypeScript types</li>
+<li>Include proper error handling and validation</li>
+<li>Add JSDoc comments for better developer experience</li>
+<li>Test features in isolation</li>
+</ol>
+<h2>📚 Related Documentation</h2>
+<ul>
+<li><a href="../../packages/features/README.md">Reynard Features Package</a></li>
+<li><a href="../../packages/core/README.md">Reynard Core Package</a></li>
+<li><a href="../../packages/themes/README.md">Reynard Themes Package</a></li>
+</ul>
+<h2>🎉 Conclusion</h2>
+<p>This demo showcases how the Reynard features package enables building resilient, service-aware applications that can gracefully handle various deployment scenarios. The system provides:</p>
+<ul>
+<li><strong>Intelligent Feature Management</strong>: Automatic dependency resolution and health monitoring</li>
+<li><strong>Graceful Degradation</strong>: Features adapt to service availability without breaking</li>
+<li><strong>Real-time Updates</strong>: Live status updates with reactive UI components</li>
+<li><strong>Developer Experience</strong>: Simple hooks and clear APIs for feature-aware development</li>
+</ul>
+<p>Try toggling different services to see how features adapt in real-time, and explore the various demo components to understand the power of feature-aware application development!</p>
+<hr>
+<h2>Built with 🦊 Reynard</h2>
+<p>The cunning framework for modern applications</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

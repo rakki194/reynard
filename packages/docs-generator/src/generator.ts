@@ -11,15 +11,15 @@ import type {
   ExampleConfig,
 } from "./config/types/package";
 import { DocEngineConfig } from "./types.js";
-import { discoverPackages } from "./discovery.js";
+import { discoverPackages } from "./discovery";
 import {
   analyzePackages,
   generatePages,
   generateSections,
   generateExamples,
   generateApiDocs,
-} from "./builders.js";
-import { writeOutput } from "./output/html.js";
+} from "./builders";
+import { writeOutput } from "./output/html";
 
 export class ReynardDocGenerator {
   private config: GeneratorConfig;

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTS and Crawl Integration Rollout Plan - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>TTS and Crawl Integration Rollout Plan</h1>
+      <div class="markdown-content"><h1>TTS and Crawl Integration Rollout Plan</h1>
+<h2>Overview</h2>
+<p>This document outlines the rollout strategy for the TTS and Crawl Integration feature in YipYap. The rollout follows a phased approach with feature flags, canary deployment, and comprehensive monitoring to ensure a smooth transition and quick rollback capability if needed.</p>
+<h2>Rollout Phases</h2>
+<h3>Phase 1: Development and Testing (Complete)</h3>
+<p><strong>Status</strong>: ✅ Complete<br><strong>Duration</strong>: Development phase<br><strong>Scope</strong>: Feature development, unit tests, integration tests</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> Core feature development</li>
+<li><input checked="" disabled="" type="checkbox"> Backend API implementation</li>
+<li><input checked="" disabled="" type="checkbox"> Frontend composables and UI</li>
+<li><input checked="" disabled="" type="checkbox"> Unit and integration tests</li>
+<li><input checked="" disabled="" type="checkbox"> Documentation and demo scripts</li>
+</ul>
+<h3>Phase 2: Feature Flag Deployment</h3>
+<p><strong>Status</strong>: 🔄 In Progress<br><strong>Duration</strong>: 1-2 days<br><strong>Scope</strong>: Deploy feature flags with defaults disabled</p>
+<h4>Configuration Changes</h4>
+<ol>
+<li><p><strong>Environment Variables</strong> (Default: Disabled)</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Feature flags - default to disabled</span>
+CRAWL_ENABLED=<span class="hljs-literal">false</span>
+TTS_ENABLED=<span class="hljs-literal">false</span>
+
+<span class="hljs-comment"># Service configuration</span>
+FIRECRAWL_BASE_URL=https://api.firecrawl.dev
+CRAWL_CACHE_DIR=/path/to/cache
+CRAWL_CACHE_TTL_DAYS=7
+TTS_DEFAULT_BACKEND=kokoro
+TTS_AUDIO_DIR=/path/to/audio
+TTS_KOKORO_MODE=powersave</code></pre></li>
+<li><p><strong>Service Registration</strong> (Conditional)</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># app/services/core/service_setup.py</span>
+<span class="hljs-keyword">if</span> os.getenv(<span class="hljs-string">&quot;CRAWL_ENABLED&quot;</span>, <span class="hljs-string">&quot;false&quot;</span>).lower() == <span class="hljs-string">&quot;true&quot;</span>:
+    register_service(<span class="hljs-string">&quot;crawl&quot;</span>, CrawlService())
+
+<span class="hljs-keyword">if</span> os.getenv(<span class="hljs-string">&quot;TTS_ENABLED&quot;</span>, <span class="hljs-string">&quot;false&quot;</span>).lower() == <span class="hljs-string">&quot;true&quot;</span>:
+    register_service(<span class="hljs-string">&quot;tts&quot;</span>, TTSService())</code></pre></li>
+<li><p><strong>API Endpoint Registration</strong> (Conditional)</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># app/api/__init__.py</span>
+<span class="hljs-keyword">if</span> os.getenv(<span class="hljs-string">&quot;CRAWL_ENABLED&quot;</span>, <span class="hljs-string">&quot;false&quot;</span>).lower() == <span class="hljs-string">&quot;true&quot;</span>:
+    app.include_router(crawl_router, prefix=<span class="hljs-string">&quot;/api/crawl&quot;</span>)
+
+<span class="hljs-keyword">if</span> os.getenv(<span class="hljs-string">&quot;TTS_ENABLED&quot;</span>, <span class="hljs-string">&quot;false&quot;</span>).lower() == <span class="hljs-string">&quot;true&quot;</span>:
+    app.include_router(tts_router, prefix=<span class="hljs-string">&quot;/api/tts&quot;</span>)</code></pre></li>
+</ol>
+<h4>Deployment Steps</h4>
+<ol>
+<li><p><strong>Deploy with Feature Flags Disabled</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Deploy new version with features disabled</span>
+git tag v1.2.0-tts-crawl
+git push origin v1.2.0-tts-crawl</code></pre></li>
+<li><p><strong>Verify Feature Flags Work</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Test that features are disabled by default</span>
+curl http://localhost:7000/api/crawl/fetch
+<span class="hljs-comment"># Expected: 404 Not Found</span>
+
+curl http://localhost:7000/api/tts/voices
+<span class="hljs-comment"># Expected: 404 Not Found</span></code></pre></li>
+<li><p><strong>Test Feature Flag Activation</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable features for testing</span>
+<span class="hljs-built_in">export</span> CRAWL_ENABLED=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> TTS_ENABLED=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Restart server and verify endpoints are available</span>
+curl http://localhost:7000/api/crawl/fetch
+<span class="hljs-comment"># Expected: 400 Bad Request (missing URL)</span>
+
+curl http://localhost:7000/api/tts/voices
+<span class="hljs-comment"># Expected: 200 OK with voice list</span></code></pre></li>
+</ol>
+<h3>Phase 3: Canary Deployment</h3>
+<p><strong>Status</strong>: ⏳ Pending<br><strong>Duration</strong>: 3-5 days<br><strong>Scope</strong>: Enable features for development team and select users</p>
+<h4>Canary Configuration</h4>
+<ol>
+<li><p><strong>Development Environment</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable for development team</span>
+CRAWL_ENABLED=<span class="hljs-literal">true</span>
+TTS_ENABLED=<span class="hljs-literal">true</span>
+TTS_KOKORO_MODE=normal  <span class="hljs-comment"># Conservative mode</span></code></pre></li>
+<li><p><strong>User-Specific Feature Flags</strong> (Optional)</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># app/services/access.py</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_tts_crawl_enabled</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-comment"># Allow specific users to test features</span>
+    canary_users = [<span class="hljs-string">&quot;user1&quot;</span>, <span class="hljs-string">&quot;user2&quot;</span>, <span class="hljs-string">&quot;user3&quot;</span>]
+    <span class="hljs-keyword">return</span> user_id <span class="hljs-keyword">in</span> canary_users</code></pre></li>
+</ol>
+<h4>Canary Testing Plan</h4>
+<ol>
+<li><p><strong>Internal Testing</strong> (Days 1-2)</p>
+<ul>
+<li>Development team testing</li>
+<li>Integration testing with existing features</li>
+<li>Performance monitoring</li>
+</ul>
+</li>
+<li><p><strong>Select User Testing</strong> (Days 3-5)</p>
+<ul>
+<li>Invite 5-10 trusted users</li>
+<li>Monitor usage patterns and error rates</li>
+<li>Collect feedback on UX</li>
+</ul>
+</li>
+</ol>
+<h4>Monitoring During Canary</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Monitor error rates</span>
+<span class="hljs-built_in">tail</span> -f logs/app.log | grep -E <span class="hljs-string">&quot;(ERROR|CRITICAL)&quot;</span> | grep -E <span class="hljs-string">&quot;(crawl|tts)&quot;</span>
+
+<span class="hljs-comment"># Monitor performance metrics</span>
+curl http://localhost:7000/api/metrics/crawl
+curl http://localhost:7000/api/metrics/tts
+
+<span class="hljs-comment"># Monitor resource usage</span>
+htop  <span class="hljs-comment"># Check CPU/memory usage</span>
+nvidia-smi  <span class="hljs-comment"># Check GPU usage (for Kokoro)</span></code></pre><h3>Phase 4: Gradual Rollout</h3>
+<p><strong>Status</strong>: ⏳ Pending<br><strong>Duration</strong>: 1-2 weeks<br><strong>Scope</strong>: Enable features for increasing percentage of users</p>
+<h4>Rollout Schedule</h4>
+<ol>
+<li><p><strong>Week 1: 10% of Users</strong></p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Enable for 10% of users based on user ID hash</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">should_enable_tts_crawl</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    hash_value = <span class="hljs-built_in">hash</span>(user_id) % <span class="hljs-number">100</span>
+    <span class="hljs-keyword">return</span> hash_value &lt; <span class="hljs-number">10</span>  <span class="hljs-comment"># 10% rollout</span></code></pre></li>
+<li><p><strong>Week 2: 50% of Users</strong></p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">should_enable_tts_crawl</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    hash_value = <span class="hljs-built_in">hash</span>(user_id) % <span class="hljs-number">100</span>
+    <span class="hljs-keyword">return</span> hash_value &lt; <span class="hljs-number">50</span>  <span class="hljs-comment"># 50% rollout</span></code></pre></li>
+<li><p><strong>Week 3: 100% of Users</strong></p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">should_enable_tts_crawl</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Full rollout</span></code></pre></li>
+</ol>
+<h4>Monitoring and Alerting</h4>
+<ol>
+<li><p><strong>Error Rate Thresholds</strong></p>
+<ul>
+<li>Crawl error rate: &lt; 5%</li>
+<li>TTS error rate: &lt; 3%</li>
+<li>Overall system error rate: &lt; 2%</li>
+</ul>
+</li>
+<li><p><strong>Performance Thresholds</strong></p>
+<ul>
+<li>Crawl response time: p95 &lt; 15s</li>
+<li>TTS response time: p95 &lt; 8s</li>
+<li>Memory usage: &lt; 80% of available</li>
+</ul>
+</li>
+<li><p><strong>Resource Monitoring</strong></p>
+<ul>
+<li>Disk space usage (cache and audio files)</li>
+<li>GPU memory usage (Kokoro)</li>
+<li>Network bandwidth (Firecrawl API calls)</li>
+</ul>
+</li>
+</ol>
+<h3>Phase 5: Full Deployment</h3>
+<p><strong>Status</strong>: ⏳ Pending<br><strong>Duration</strong>: 1 day<br><strong>Scope</strong>: Enable features for all users</p>
+<h4>Final Configuration</h4>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable features globally</span>
+CRAWL_ENABLED=<span class="hljs-literal">true</span>
+TTS_ENABLED=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Optimize for production</span>
+TTS_KOKORO_MODE=normal  <span class="hljs-comment"># Balance performance and resource usage</span>
+CRAWL_CACHE_TTL_DAYS=7  <span class="hljs-comment"># Reasonable cache duration</span></code></pre><h4>Post-Deployment Monitoring</h4>
+<ol>
+<li><p><strong>24/7 Monitoring</strong> (First week)</p>
+<ul>
+<li>Real-time error rate monitoring</li>
+<li>Performance metrics tracking</li>
+<li>User feedback collection</li>
+</ul>
+</li>
+<li><p><strong>Weekly Reviews</strong> (Ongoing)</p>
+<ul>
+<li>Usage statistics review</li>
+<li>Performance optimization</li>
+<li>Feature enhancement planning</li>
+</ul>
+</li>
+</ol>
+<h2>Rollback Procedures</h2>
+<h3>Quick Rollback (Feature Flags)</h3>
+<p>If issues are detected, immediately disable features:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Disable features via environment variables</span>
+<span class="hljs-built_in">export</span> CRAWL_ENABLED=<span class="hljs-literal">false</span>
+<span class="hljs-built_in">export</span> TTS_ENABLED=<span class="hljs-literal">false</span>
+
+<span class="hljs-comment"># Restart the application</span>
+<span class="hljs-built_in">sudo</span> systemctl restart yipyap</code></pre><h3>Emergency Rollback (Code Rollback)</h3>
+<p>If feature flags are insufficient:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Rollback to previous stable version</span>
+git checkout v1.1.0
+git push origin v1.1.0 --force
+
+<span class="hljs-comment"># Restart services</span>
+<span class="hljs-built_in">sudo</span> systemctl restart yipyap</code></pre><h3>Data Cleanup (If Needed)</h3>
+<p>If rollback requires data cleanup:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Clean up TTS audio files</span>
+<span class="hljs-built_in">rm</span> -rf /path/to/tts/audio/*
+
+<span class="hljs-comment"># Clean up crawl cache</span>
+<span class="hljs-built_in">rm</span> -rf /path/to/crawl/cache/*
+
+<span class="hljs-comment"># Clean up database entries (if any)</span>
+<span class="hljs-comment"># This would require database-specific cleanup scripts</span></code></pre><h2>Success Metrics</h2>
+<h3>Technical Metrics</h3>
+<ol>
+<li><p><strong>Error Rates</strong></p>
+<ul>
+<li>Crawl success rate: &gt; 95%</li>
+<li>TTS success rate: &gt; 97%</li>
+<li>Overall system stability: &gt; 99.9%</li>
+</ul>
+</li>
+<li><p><strong>Performance Metrics</strong></p>
+<ul>
+<li>Crawl latency: p95 &lt; 15s</li>
+<li>TTS latency: p95 &lt; 8s</li>
+<li>Cache hit rate: &gt; 80%</li>
+</ul>
+</li>
+<li><p><strong>Resource Usage</strong></p>
+<ul>
+<li>Memory usage: &lt; 80% of available</li>
+<li>Disk usage: &lt; 70% of available</li>
+<li>GPU memory: &lt; 90% of available</li>
+</ul>
+</li>
+</ol>
+<h3>User Experience Metrics</h3>
+<ol>
+<li><p><strong>Adoption Metrics</strong></p>
+<ul>
+<li>Feature usage rate: &gt; 10% of active users</li>
+<li>User retention: No decrease in overall retention</li>
+<li>User satisfaction: &gt; 4.0/5.0 rating</li>
+</ul>
+</li>
+<li><p><strong>Quality Metrics</strong></p>
+<ul>
+<li>Audio quality feedback: &gt; 4.0/5.0</li>
+<li>Summary quality feedback: &gt; 4.0/5.0</li>
+<li>Overall feature rating: &gt; 4.0/5.0</li>
+</ul>
+</li>
+</ol>
+<h2>Risk Mitigation</h2>
+<h3>Technical Risks</h3>
+<ol>
+<li><p><strong>Firecrawl API Outages</strong></p>
+<ul>
+<li>Mitigation: Local caching, graceful error handling</li>
+<li>Fallback: Manual URL input with copy-paste</li>
+</ul>
+</li>
+<li><p><strong>TTS Backend Failures</strong></p>
+<ul>
+<li>Mitigation: Multiple backend support, automatic fallback</li>
+<li>Fallback: Text-only mode</li>
+</ul>
+</li>
+<li><p><strong>Resource Exhaustion</strong></p>
+<ul>
+<li>Mitigation: Resource monitoring, automatic cleanup</li>
+<li>Fallback: Powersave mode, cache size limits</li>
+</ul>
+</li>
+</ol>
+<h3>Operational Risks</h3>
+<ol>
+<li><p><strong>User Experience Issues</strong></p>
+<ul>
+<li>Mitigation: Comprehensive testing, gradual rollout</li>
+<li>Fallback: Feature flag disable</li>
+</ul>
+</li>
+<li><p><strong>Performance Degradation</strong></p>
+<ul>
+<li>Mitigation: Performance monitoring, optimization</li>
+<li>Fallback: Resource limits, queue management</li>
+</ul>
+</li>
+</ol>
+<h2>Communication Plan</h2>
+<h3>Internal Communication</h3>
+<ol>
+<li><p><strong>Development Team</strong></p>
+<ul>
+<li>Daily standups during rollout</li>
+<li>Slack channel for real-time issues</li>
+<li>Weekly progress reviews</li>
+</ul>
+</li>
+<li><p><strong>Stakeholders</strong></p>
+<ul>
+<li>Weekly status updates</li>
+<li>Monthly feature reviews</li>
+<li>Quarterly roadmap planning</li>
+</ul>
+</li>
+</ol>
+<h3>User Communication</h3>
+<ol>
+<li><p><strong>Beta Users</strong></p>
+<ul>
+<li>Direct email communication</li>
+<li>Feedback collection forms</li>
+<li>Bug report channels</li>
+</ul>
+</li>
+<li><p><strong>General Users</strong></p>
+<ul>
+<li>In-app notifications for new features</li>
+<li>Documentation and tutorials</li>
+<li>Support channel availability</li>
+</ul>
+</li>
+</ol>
+<h2>Post-Rollout Activities</h2>
+<h3>Feature Enhancement</h3>
+<ol>
+<li><p><strong>Performance Optimization</strong></p>
+<ul>
+<li>Cache optimization</li>
+<li>Backend performance tuning</li>
+<li>Resource usage optimization</li>
+</ul>
+</li>
+<li><p><strong>Feature Expansion</strong></p>
+<ul>
+<li>Additional TTS backends</li>
+<li>Advanced crawling options</li>
+<li>Batch processing capabilities</li>
+</ul>
+</li>
+</ol>
+<h3>Documentation Updates</h3>
+<ol>
+<li><p><strong>User Documentation</strong></p>
+<ul>
+<li>Feature guides and tutorials</li>
+<li>Troubleshooting guides</li>
+<li>Best practices</li>
+</ul>
+</li>
+<li><p><strong>Technical Documentation</strong></p>
+<ul>
+<li>Architecture documentation</li>
+<li>API documentation</li>
+<li>Deployment guides</li>
+</ul>
+</li>
+</ol>
+<h3>Monitoring and Maintenance</h3>
+<ol>
+<li><p><strong>Ongoing Monitoring</strong></p>
+<ul>
+<li>Performance metrics tracking</li>
+<li>Error rate monitoring</li>
+<li>User feedback collection</li>
+</ul>
+</li>
+<li><p><strong>Regular Maintenance</strong></p>
+<ul>
+<li>Cache cleanup</li>
+<li>Database optimization</li>
+<li>Security updates</li>
+</ul>
+</li>
+</ol>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

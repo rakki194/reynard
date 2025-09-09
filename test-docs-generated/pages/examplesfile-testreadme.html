@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard File Test App - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard File Test App</h1>
+      <div class="markdown-content"><h1>Reynard File Test App</h1>
+<p>A comprehensive test application for the Reynard file processing and thumbnail generation system.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Multi-format File Upload</strong>: Supports images, videos, audio, text, code, and documents</li>
+<li><strong>Real-time Thumbnail Generation</strong>: Generates thumbnails for various file types</li>
+<li><strong>Audio Waveform Visualization</strong>: Uses Web Audio API to create real waveform thumbnails from audio data</li>
+<li><strong>Drag &amp; Drop Interface</strong>: Easy file upload with drag and drop support</li>
+<li><strong>Processing Metrics</strong>: Shows processing time and file information</li>
+<li><strong>Error Handling</strong>: Graceful error handling with user-friendly messages</li>
+</ul>
+<h2>Supported File Types</h2>
+<h3>Images</h3>
+<ul>
+<li>JPEG, PNG, GIF, WebP, SVG, BMP</li>
+</ul>
+<h3>Videos</h3>
+<ul>
+<li>MP4, AVI, MOV, WMV, FLV, WebM, MKV</li>
+</ul>
+<h3>Audio</h3>
+<ul>
+<li>MP3, WAV, FLAC, AAC, OGG, M4A</li>
+</ul>
+<h3>Text &amp; Code</h3>
+<ul>
+<li>TXT, MD, JSON, XML, CSV</li>
+<li>JS, TS, JSX, TSX, CSS, HTML, Python, Java, C++, C</li>
+</ul>
+<h3>Documents</h3>
+<ul>
+<li>PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX</li>
+</ul>
+<h2>Getting Started</h2>
+<ol>
+<li><p><strong>Install Dependencies</strong></p>
+<pre><code class="hljs language-bash">npm install</code></pre></li>
+<li><p><strong>Start Development Server</strong></p>
+<pre><code class="hljs language-bash">npm run dev</code></pre></li>
+<li><p><strong>Open in Browser</strong></p>
+<ul>
+<li>Navigate to <code>http://localhost:3003</code></li>
+<li>Upload files to test thumbnail generation</li>
+<li>Try the audio waveform test with your audio files</li>
+</ul>
+</li>
+</ol>
+<h2>Testing Audio Waveforms</h2>
+<p>The app includes a special audio test section that:</p>
+<ol>
+<li>Uses the Web Audio API to analyze real audio data</li>
+<li>Generates waveform visualizations based on actual audio content</li>
+<li>Shows processing time and file information</li>
+<li>Provides fallback visualization if audio analysis fails</li>
+</ol>
+<h3>Test with Your Audio File</h3>
+<p>To test with your <code>nolan_north_cut.wav</code> file:</p>
+<ol>
+<li>Start the development server</li>
+<li>Go to the &quot;Audio Waveform Test&quot; section</li>
+<li>Select your audio file</li>
+<li>Click &quot;Generate Waveform Thumbnail&quot;</li>
+<li>The thumbnail will show a real waveform based on the audio data</li>
+</ol>
+<h2>Development</h2>
+<ul>
+<li><strong>Framework</strong>: SolidJS</li>
+<li><strong>Build Tool</strong>: Vite</li>
+<li><strong>Styling</strong>: CSS with modern layout (Grid, Flexbox)</li>
+<li><strong>File Processing</strong>: Reynard File Processing package</li>
+</ul>
+<h2>Scripts</h2>
+<ul>
+<li><code>npm run dev</code> - Start development server</li>
+<li><code>npm run build</code> - Build for production</li>
+<li><code>npm run preview</code> - Preview production build</li>
+</ul>
+<h2>Architecture</h2>
+<p>The app is structured with:</p>
+<ul>
+<li><strong>App.tsx</strong>: Main application component with state management</li>
+<li><strong>FileUploader</strong>: Drag &amp; drop file upload component</li>
+<li><strong>ThumbnailViewer</strong>: Displays generated thumbnails with file info</li>
+<li><strong>AudioTest</strong>: Specialized audio waveform testing component</li>
+</ul>
+<h2>Port</h2>
+<p>The development server runs on port <strong>3003</strong> to avoid conflicts with other Reynard apps.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -6,14 +6,15 @@
 
 import { createSignal } from "solid-js";
 import type { BoundingBox } from "../types";
+import type { Setter } from "solid-js";
 
 export interface DrawingState {
   isDrawing: () => boolean;
-  setIsDrawing: (value: boolean) => void;
+  setIsDrawing: Setter<boolean>;
   newBox: () => Partial<BoundingBox> | null;
-  setNewBox: (value: Partial<BoundingBox> | null) => void;
+  setNewBox: Setter<Partial<BoundingBox> | null>;
   startPoint: () => { x: number; y: number } | null;
-  setStartPoint: (value: { x: number; y: number } | null) => void;
+  setStartPoint: Setter<{ x: number; y: number } | null>;
 }
 
 export const useDrawingState = (): DrawingState => {

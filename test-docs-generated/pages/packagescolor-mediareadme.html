@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-color-media - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-color-media</h1>
+      <div class="markdown-content"><h1>reynard-color-media</h1>
+<p>A comprehensive package for color generation, theme management, and media handling using OKLCH color space.</p>
+<h2>Features</h2>
+<h3>🎨 Color Generation</h3>
+<ul>
+<li><strong>OKLCH Color Space</strong>: Perceptually uniform color generation for consistent theming</li>
+<li><strong>Tag-based Colors</strong>: Deterministic color generation based on text tags</li>
+<li><strong>Theme-aware Colors</strong>: Automatic color adjustment based on light/dark themes</li>
+<li><strong>Color Palettes</strong>: Generate harmonious color palettes and complementary colors</li>
+<li><strong>Color Manipulation</strong>: Adjust lightness, saturation, and other color properties</li>
+</ul>
+<h3>🌓 Theme Management</h3>
+<ul>
+<li><strong>Multiple Themes</strong>: Support for dark, light, gray, banana, strawberry, and peanut themes</li>
+<li><strong>Theme Persistence</strong>: Automatic theme saving to localStorage</li>
+<li><strong>Theme Rotation</strong>: Easy theme switching with rotation helpers</li>
+<li><strong>Theme Metadata</strong>: Rich theme information for UI display</li>
+</ul>
+<h3>📱 Media Modalities</h3>
+<ul>
+<li><strong>File Type Detection</strong>: Automatic detection of image, audio, video, and text files</li>
+<li><strong>Modality Registry</strong>: Centralized management of different content types</li>
+<li><strong>File Validation</strong>: Built-in file extension validation</li>
+<li><strong>Utility Functions</strong>: File size formatting, duration formatting, and more</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-color-media</code></pre><h2>Usage</h2>
+<h3>Color Generation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createTagColorGenerator, formatOKLCH } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-color-media&quot;</span>;
+
+<span class="hljs-comment">// Create a color generator</span>
+<span class="hljs-keyword">const</span> colorGenerator = <span class="hljs-title function_">createTagColorGenerator</span>();
+
+<span class="hljs-comment">// Generate colors for tags</span>
+<span class="hljs-keyword">const</span> tagColor = colorGenerator.<span class="hljs-title function_">getTagColor</span>(<span class="hljs-string">&quot;dark&quot;</span>, <span class="hljs-string">&quot;javascript&quot;</span>, <span class="hljs-number">1.0</span>);
+<span class="hljs-keyword">const</span> cssColor = <span class="hljs-title function_">formatOKLCH</span>(tagColor); <span class="hljs-comment">// &quot;oklch(25% 0.1 240)&quot;</span>
+
+<span class="hljs-comment">// Generate color palettes</span>
+<span class="hljs-keyword">import</span> { generateColorPalette } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-color-media&quot;</span>;
+<span class="hljs-keyword">const</span> palette = <span class="hljs-title function_">generateColorPalette</span>(<span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.6</span>);</code></pre><h3>Theme Management</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createThemeContext, getStoredTheme } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-color-media&quot;</span>;
+
+<span class="hljs-comment">// Create a theme context</span>
+<span class="hljs-keyword">const</span> themeContext = <span class="hljs-title function_">createThemeContext</span>();
+
+<span class="hljs-comment">// Get current theme</span>
+<span class="hljs-keyword">const</span> currentTheme = themeContext.<span class="hljs-property">theme</span>;
+
+<span class="hljs-comment">// Change theme</span>
+themeContext.<span class="hljs-title function_">setTheme</span>(<span class="hljs-string">&quot;dark&quot;</span>);
+
+<span class="hljs-comment">// Get tag styles for current theme</span>
+<span class="hljs-keyword">const</span> tagStyle = themeContext.<span class="hljs-title function_">getTagStyle</span>(<span class="hljs-string">&quot;react&quot;</span>);
+<span class="hljs-comment">// Returns: { backgroundColor: &quot;...&quot;, color: &quot;...&quot;, hoverStyles: {...}, animation: &quot;...&quot; }</span></code></pre><h3>Media Modalities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">BaseModality</span>,
+  <span class="hljs-title class_">ModalityRegistry</span>,
+  isImageFile,
+  isAudioFile,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-color-media&quot;</span>;
+
+<span class="hljs-comment">// Check file types</span>
+<span class="hljs-keyword">const</span> file = <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>([<span class="hljs-string">&quot;&quot;</span>], <span class="hljs-string">&quot;image.jpg&quot;</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">isImageFile</span>(file)); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">isAudioFile</span>(file)); <span class="hljs-comment">// false</span>
+
+<span class="hljs-comment">// Create modality registry</span>
+<span class="hljs-keyword">const</span> registry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModalityRegistry</span>();
+
+<span class="hljs-comment">// Register custom modality</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomModality</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">BaseModality</span> {
+  <span class="hljs-keyword">readonly</span> id = <span class="hljs-string">&quot;custom&quot;</span>;
+  <span class="hljs-keyword">readonly</span> name = <span class="hljs-string">&quot;Custom&quot;</span>;
+  <span class="hljs-keyword">readonly</span> icon = <span class="hljs-string">&quot;custom-icon&quot;</span>;
+  <span class="hljs-keyword">readonly</span> description = <span class="hljs-string">&quot;Custom modality for special files&quot;</span>;
+  <span class="hljs-keyword">readonly</span> enabled = <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">readonly</span> fileExtensions = [<span class="hljs-string">&quot;.custom&quot;</span>];
+  <span class="hljs-keyword">readonly</span> supportedFunctionalities = [<span class="hljs-string">&quot;view&quot;</span>, <span class="hljs-string">&quot;edit&quot;</span>];
+  <span class="hljs-keyword">readonly</span> component = <span class="hljs-title class_">CustomComponent</span>;
+}
+
+registry.<span class="hljs-title function_">registerModality</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomModality</span>());</code></pre><h3>File Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { formatFileSize, formatDuration } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-color-media&quot;</span>;
+
+<span class="hljs-comment">// Format file sizes</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatFileSize</span>(<span class="hljs-number">1024</span>)); <span class="hljs-comment">// &quot;1 KB&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatFileSize</span>(<span class="hljs-number">1048576</span>)); <span class="hljs-comment">// &quot;1 MB&quot;</span>
+
+<span class="hljs-comment">// Format durations</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatDuration</span>(<span class="hljs-number">65</span>)); <span class="hljs-comment">// &quot;1:05&quot;</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">formatDuration</span>(<span class="hljs-number">3661</span>)); <span class="hljs-comment">// &quot;1:01:01&quot;</span></code></pre><h2>API Reference</h2>
+<h3>Color Utilities</h3>
+<h4><code>createTagColorGenerator()</code></h4>
+<p>Creates a color generator with caching for performance.</p>
+<h4><code>formatOKLCH(color: OKLCHColor): string</code></h4>
+<p>Formats an OKLCH color object into a CSS color string.</p>
+<h4><code>generateColorPalette(count: number, baseHue?: number, saturation?: number, lightness?: number): string[]</code></h4>
+<p>Generates a color palette with the specified number of colors.</p>
+<h4><code>generateComplementaryColors(baseColor: OKLCHColor): OKLCHColor[]</code></h4>
+<p>Generates complementary colors based on a base color.</p>
+<h3>Theme Utilities</h3>
+<h4><code>createThemeContext(initialTheme?: ThemeName): ThemeContext</code></h4>
+<p>Creates a theme context object for managing theme state.</p>
+<h4><code>getStoredTheme(): ThemeName</code></h4>
+<p>Gets the current theme from localStorage or returns the default.</p>
+<h4><code>setStoredTheme(theme: ThemeName): void</code></h4>
+<p>Sets the theme in localStorage and updates the document attribute.</p>
+<h4><code>getTagStyle(theme: ThemeName, tag: string)</code></h4>
+<p>Gets the complete tag style object for a given theme and tag.</p>
+<h3>Modality Utilities</h3>
+<h4><code>BaseModality</code></h4>
+<p>Abstract base class for implementing modalities.</p>
+<h4><code>ModalityRegistry</code></h4>
+<p>Class for managing all available modalities.</p>
+<h4><code>isImageFile(file: File): boolean</code></h4>
+<p>Checks if a file is an image file.</p>
+<h4><code>isAudioFile(file: File): boolean</code></h4>
+<p>Checks if a file is an audio file.</p>
+<h4><code>isVideoFile(file: File): boolean</code></h4>
+<p>Checks if a file is a video file.</p>
+<h4><code>isTextFile(file: File): boolean</code></h4>
+<p>Checks if a file is a text file.</p>
+<h2>Supported File Types</h2>
+<h3>Images</h3>
+<ul>
+<li><code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.gif</code>, <code>.webp</code>, <code>.bmp</code>, <code>.tiff</code>, <code>.svg</code></li>
+</ul>
+<h3>Audio</h3>
+<ul>
+<li><code>.mp3</code>, <code>.wav</code>, <code>.flac</code>, <code>.aac</code>, <code>.ogg</code>, <code>.m4a</code>, <code>.wma</code>, <code>.opus</code></li>
+</ul>
+<h3>Video</h3>
+<ul>
+<li><code>.mp4</code>, <code>.avi</code>, <code>.mov</code>, <code>.mkv</code>, <code>.webm</code>, <code>.flv</code>, <code>.wmv</code>, <code>.m4v</code></li>
+</ul>
+<h3>Text</h3>
+<ul>
+<li><code>.txt</code>, <code>.md</code>, <code>.json</code>, <code>.xml</code>, <code>.html</code>, <code>.css</code>, <code>.js</code>, <code>.ts</code>, <code>.tsx</code></li>
+</ul>
+<h2>Themes</h2>
+<p>The package includes several pre-built themes:</p>
+<ul>
+<li><strong>Dark</strong>: High contrast dark theme</li>
+<li><strong>Light</strong>: Clean light theme</li>
+<li><strong>Gray</strong>: Monochromatic gray theme</li>
+<li><strong>Banana</strong>: Warm yellow and cream theme</li>
+<li><strong>Strawberry</strong>: Red and pink with green accents</li>
+<li><strong>Peanut</strong>: Warm brown and tan theme</li>
+</ul>
+<h2>Contributing</h2>
+<p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<h2>License</h2>
+<p>MIT License - see the LICENSE file for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

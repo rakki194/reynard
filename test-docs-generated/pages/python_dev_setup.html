@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Python Development Setup for Reynard - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Python Development Setup for Reynard</h1>
+      <div class="markdown-content"><h1>🦊 Python Development Setup for Reynard</h1>
+<p>This document describes the professional Python development environment setup for the Reynard framework, including linting, formatting, and validation tools integrated with Husky git hooks.</p>
+<h2>🚀 Quick Setup</h2>
+<p>Run the automated setup script to get started:</p>
+<pre><code class="hljs language-bash">npm run python:setup</code></pre><p>This will:</p>
+<ul>
+<li>Create a Python virtual environment</li>
+<li>Install all development dependencies</li>
+<li>Set up linting and formatting tools</li>
+<li>Configure git hooks for Python validation</li>
+</ul>
+<h2>🛠️ Tools Included</h2>
+<h3>Code Formatting</h3>
+<ul>
+<li><strong>Black</strong>: Opinionated Python code formatter</li>
+<li><strong>isort</strong>: Import statement organizer</li>
+</ul>
+<h3>Linting &amp; Code Quality</h3>
+<ul>
+<li><strong>Flake8</strong>: Style guide enforcement</li>
+<li><strong>Pylint</strong>: Advanced static analysis</li>
+<li><strong>MyPy</strong>: Static type checking</li>
+<li><strong>Bandit</strong>: Security vulnerability scanner</li>
+</ul>
+<h3>Testing</h3>
+<ul>
+<li><strong>Pytest</strong>: Testing framework</li>
+<li><strong>pytest-cov</strong>: Coverage reporting</li>
+</ul>
+<h3>Pre-commit Hooks</h3>
+<ul>
+<li><strong>Husky</strong>: Git hooks management</li>
+<li><strong>Custom Python validator</strong>: Comprehensive Python file validation</li>
+</ul>
+<h2>📋 Available Commands</h2>
+<h3>Setup &amp; Installation</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Set up Python development environment</span>
+npm run python:setup
+
+<span class="hljs-comment"># Activate virtual environment (after setup)</span>
+<span class="hljs-built_in">source</span> venv/bin/activate</code></pre><h3>Code Formatting</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Format all Python files</span>
+npm run python:format
+
+<span class="hljs-comment"># Check formatting without making changes</span>
+npm run python:format:check
+
+<span class="hljs-comment"># Format specific files</span>
+black path/to/file.py
+isort path/to/file.py</code></pre><h3>Linting &amp; Analysis</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all linting checks</span>
+npm run python:lint
+
+<span class="hljs-comment"># Run type checking</span>
+npm run python:typecheck
+
+<span class="hljs-comment"># Run security checks</span>
+npm run python:security
+
+<span class="hljs-comment"># Run all checks (format, lint, typecheck)</span>
+npm run python:check</code></pre><h3>Testing</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run tests</span>
+npm run python:<span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with coverage</span>
+npm run python:<span class="hljs-built_in">test</span>:coverage</code></pre><h2>🔧 Configuration Files</h2>
+<h3><code>pyproject.toml</code></h3>
+<p>Central configuration for all Python tools:</p>
+<ul>
+<li>Black formatting settings</li>
+<li>isort import sorting rules</li>
+<li>MyPy type checking configuration</li>
+<li>Pytest testing configuration</li>
+<li>Bandit security settings</li>
+</ul>
+<h3><code>.flake8</code></h3>
+<p>Flake8 linting configuration:</p>
+<ul>
+<li>Line length: 88 characters (Black compatible)</li>
+<li>Ignored error codes</li>
+<li>Per-file ignore rules</li>
+<li>Complexity settings</li>
+</ul>
+<h3><code>requirements-dev.txt</code></h3>
+<p>Development dependencies including:</p>
+<ul>
+<li>Code quality tools</li>
+<li>Testing frameworks</li>
+<li>Documentation tools</li>
+<li>Type checking utilities</li>
+</ul>
+<h2>🎯 Git Hooks Integration</h2>
+<h3>Pre-commit Hook</h3>
+<p>The pre-commit hook automatically runs when you commit Python files:</p>
+<ol>
+<li><strong>Black formatting check</strong> - Ensures consistent code formatting</li>
+<li><strong>isort import check</strong> - Verifies import statement organization</li>
+<li><strong>Flake8 linting</strong> - Checks for style and syntax issues</li>
+<li><strong>MyPy type checking</strong> - Validates type hints (non-blocking)</li>
+<li><strong>Bandit security check</strong> - Scans for security issues (non-blocking)</li>
+</ol>
+<h3>Bypassing Hooks</h3>
+<p>If you need to bypass the pre-commit hooks (not recommended):</p>
+<pre><code class="hljs language-bash">git commit --no-verify -m <span class="hljs-string">&quot;your commit message&quot;</span></code></pre><h2>🦊 Reynard-Specific Features</h2>
+<h3>Color-coded Output</h3>
+<p>All tools use the Reynard color scheme:</p>
+<ul>
+<li>🔵 <strong>Blue</strong>: Information and progress</li>
+<li>🟢 <strong>Green</strong>: Success messages</li>
+<li>🟡 <strong>Yellow</strong>: Warnings and tips</li>
+<li>🔴 <strong>Red</strong>: Errors and failures</li>
+<li>🟣 <strong>Purple</strong>: Reynard branding</li>
+</ul>
+<h3>Furry Flair</h3>
+<p>The setup includes whimsical fox-themed messages and emojis throughout the development workflow, maintaining the Reynard brand personality.</p>
+<h2>📁 Project Structure</h2>
+<pre><code class="hljs">reynard<span class="hljs-symbol">/</span>
+├── .husky<span class="hljs-symbol">/</span>
+│   ├── pre-commit              <span class="hljs-comment"># Enhanced with Python validation</span>
+│   └── validate-python.py      <span class="hljs-comment"># Custom Python validator</span>
+├── scripts<span class="hljs-symbol">/</span>
+│   └── setup-python-dev.sh     <span class="hljs-comment"># Automated setup script</span>
+├── pyproject.toml              <span class="hljs-comment"># Python tool configuration</span>
+├── .flake8                     <span class="hljs-comment"># Flake8 configuration</span>
+├── requirements-dev.txt        <span class="hljs-comment"># Development dependencies</span>
+└── PYTHON_DEV_SETUP.md         <span class="hljs-comment"># This file</span></code></pre><h2>🔍 Troubleshooting</h2>
+<h3>Common Issues</h3>
+<p><strong>Virtual Environment Not Found</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Recreate virtual environment</span>
+<span class="hljs-built_in">rm</span> -rf venv
+npm run python:setup</code></pre><p><strong>Tools Not Found</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Ensure virtual environment is activated</span>
+<span class="hljs-built_in">source</span> venv/bin/activate
+
+<span class="hljs-comment"># Reinstall dependencies</span>
+pip install -r requirements-dev.txt</code></pre><p><strong>Pre-commit Hook Failing</strong></p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check Python validation script</span>
+python3 .husky/validate-python.py
+
+<span class="hljs-comment"># Fix formatting issues</span>
+npm run python:format
+
+<span class="hljs-comment"># Fix import sorting</span>
+isort .
+
+<span class="hljs-comment"># Check linting issues</span>
+npm run python:lint</code></pre><h3>Getting Help</h3>
+<ol>
+<li>Check the tool-specific documentation</li>
+<li>Run individual tools to isolate issues</li>
+<li>Use <code>--help</code> flag with any tool for usage information</li>
+<li>Check the Reynard project documentation</li>
+</ol>
+<h2>🎉 Best Practices</h2>
+<h3>Development Workflow</h3>
+<ol>
+<li><strong>Before coding</strong>: Activate virtual environment (<code>source venv/bin/activate</code>)</li>
+<li><strong>During coding</strong>: Use your IDE&#39;s Python extension for real-time feedback</li>
+<li><strong>Before committing</strong>: Run <code>npm run python:check</code> to verify everything</li>
+<li><strong>After committing</strong>: The pre-commit hook will catch any remaining issues</li>
+</ol>
+<h3>Code Style</h3>
+<ul>
+<li>Follow Black&#39;s formatting rules (88 character line length)</li>
+<li>Use type hints where appropriate</li>
+<li>Keep functions small and focused</li>
+<li>Write comprehensive docstrings</li>
+<li>Use meaningful variable names</li>
+</ul>
+<h3>Testing</h3>
+<ul>
+<li>Write tests for new functionality</li>
+<li>Aim for high test coverage</li>
+<li>Use descriptive test names</li>
+<li>Test edge cases and error conditions</li>
+</ul>
+<h2>🦊 Happy Coding</h2>
+<p>The Reynard Python development environment is designed to help you write clean, secure, and maintainable Python code while maintaining the framework&#39;s playful and professional character. The fox is always watching, so make sure your code is as cunning as it is clean! 🦊✨</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

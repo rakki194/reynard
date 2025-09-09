@@ -22,7 +22,7 @@ import torch
 from PIL import Image
 from transformers import AutoProcessor, AutoModelForCausalLM
 
-from ...base import CaptionGenerator, CaptionType, ModelCategory
+from ...base import CaptionGeneratorBase, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
@@ -79,7 +79,7 @@ CAPTION_TYPE_MAP = {
 }
 
 
-class JoyCaptionGenerator(CaptionGenerator):
+class JoyCaptionGenerator(CaptionGeneratorBase):
     """
     JoyCaption caption generator.
 

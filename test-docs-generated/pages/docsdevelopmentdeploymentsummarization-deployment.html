@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summarization System Deployment Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Summarization System Deployment Guide</h1>
+      <div class="markdown-content"><h1>Summarization System Deployment Guide</h1>
+<p>This guide covers deploying the YipYap summarization system across different environments, including development, staging, and production configurations.</p>
+<h2>Overview</h2>
+<p>The summarization system is designed to be flexible and scalable across different deployment scenarios. It supports various configurations for different use cases and performance requirements.</p>
+<h2>Environment Variables</h2>
+<h3>Core Summarization Settings</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable/disable summarization system</span>
+SUMMARIZATION_ENABLED=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Default model for summarization</span>
+SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
+
+<span class="hljs-comment"># Cache configuration</span>
+SUMMARIZATION_CACHE_DIR=cache/summarization
+SUMMARIZATION_CACHE_TTL_HOURS=24
+
+<span class="hljs-comment"># Performance settings</span>
+SUMMARIZATION_MAX_CONCURRENT=3
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=10000
+SUMMARIZATION_MAX_BATCH_SIZE=10
+
+<span class="hljs-comment"># Generation parameters</span>
+SUMMARIZATION_DEFAULT_TEMPERATURE=0.3
+SUMMARIZATION_DEFAULT_TOP_P=0.9
+SUMMARIZATION_MAX_TEXT_LENGTH=16000
+
+<span class="hljs-comment"># Quality settings</span>
+SUMMARIZATION_QUALITY_THRESHOLD=0.7
+SUMMARIZATION_QUALITY_METRICS_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_AUTO_REGENERATION_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_AUTO_REGENERATION_THRESHOLD=0.6
+
+<span class="hljs-comment"># Feature toggles</span>
+SUMMARIZATION_ENABLE_STREAMING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CACHING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_PARALLEL_PROCESSING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_PERSONALIZATION=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CROSS_LANGUAGE=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CONTEXTUAL=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Rate limiting</span>
+SUMMARIZATION_RATE_LIMIT_PER_MINUTE=100
+SUMMARIZATION_STREAM_RATE_LIMIT_PER_MINUTE=10
+SUMMARIZATION_BATCH_RATE_LIMIT_PER_MINUTE=5
+
+<span class="hljs-comment"># Health monitoring</span>
+SUMMARIZATION_HEALTH_CHECK_INTERVAL=60
+SUMMARIZATION_RECONNECT_MAX_ATTEMPTS=3
+SUMMARIZATION_RECONNECT_BASE_DELAY_S=1.0
+SUMMARIZATION_RECONNECT_MAX_DELAY_S=30.0
+
+<span class="hljs-comment"># Storage paths</span>
+SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences</code></pre><h2>Development Environment</h2>
+<h3>Local Development Setup</h3>
+<ol>
+<li><p><strong>Clone and Setup</strong>:</p>
+<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/rakki194/yipyap
+<span class="hljs-built_in">cd</span> yipyap
+python -m venv venv
+<span class="hljs-built_in">source</span> venv/bin/activate  <span class="hljs-comment"># On Windows: venv\Scripts\activate</span>
+pip install -r requirements.txt</code></pre></li>
+<li><p><strong>Environment Configuration</strong>:<br>Create a <code>.env</code> file in the project root:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Development settings</span>
+ENVIRONMENT=development
+DEV_PORT=7000
+ROOT_DIR=<span class="hljs-variable">$HOME</span>/datasets
+
+<span class="hljs-comment"># Summarization settings for development</span>
+SUMMARIZATION_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
+SUMMARIZATION_CACHE_DIR=cache/summarization
+SUMMARIZATION_MAX_CONCURRENT=2
+SUMMARIZATION_ENABLE_STREAMING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CACHING=<span class="hljs-literal">true</span>
+SUMMARIZATION_RATE_LIMIT_PER_MINUTE=50
+SUMMARIZATION_QUALITY_METRICS_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_PERSONALIZATION=<span class="hljs-literal">true</span></code></pre></li>
+<li><p><strong>Start Development Server</strong>:</p>
+<pre><code class="hljs language-bash">DEV_PORT=7000 ROOT_DIR=<span class="hljs-variable">$HOME</span>/datasets NODE_ENV=development python -m app</code></pre></li>
+<li><p><strong>Verify Installation</strong>:</p>
+<ul>
+<li>Open <a href="http://localhost:7000">http://localhost:7000</a></li>
+<li>Navigate to a text file</li>
+<li>Test summarization functionality</li>
+</ul>
+</li>
+</ol>
+<h3>Development with Docker</h3>
+<ol>
+<li><p><strong>Docker Compose Setup</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># docker-compose.dev.yml</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">yipyap-backend:</span>
+    <span class="hljs-attr">build:</span>
+      <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+      <span class="hljs-attr">dockerfile:</span> <span class="hljs-string">Dockerfile</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">ENVIRONMENT:</span> <span class="hljs-string">development</span>
+      <span class="hljs-attr">DEV_PORT:</span> <span class="hljs-number">7000</span>
+      <span class="hljs-attr">ROOT_DIR:</span> <span class="hljs-string">/app/images</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLED:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_DEFAULT_MODEL:</span> <span class="hljs-string">qwen3:8b</span>
+      <span class="hljs-attr">SUMMARIZATION_CACHE_DIR:</span> <span class="hljs-string">/app/cache/summarization</span>
+      <span class="hljs-attr">SUMMARIZATION_MAX_CONCURRENT:</span> <span class="hljs-number">2</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_STREAMING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_CACHING:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./data:/app/data</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./cache:/app/cache</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./models:/app/models</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;7001:7001&quot;</span></code></pre></li>
+<li><p><strong>Start with Docker</strong>:</p>
+<pre><code class="hljs language-bash">docker-compose -f docker-compose.dev.yml up --build</code></pre></li>
+</ol>
+<h2>Staging Environment</h2>
+<h3>Staging Configuration</h3>
+<ol>
+<li><p><strong>Environment Variables</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Staging settings</span>
+ENVIRONMENT=staging
+SUMMARIZATION_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
+SUMMARIZATION_CACHE_DIR=/var/cache/yipyap/summarization
+SUMMARIZATION_CACHE_TTL_HOURS=12
+SUMMARIZATION_MAX_CONCURRENT=5
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=15000
+SUMMARIZATION_MAX_BATCH_SIZE=15
+SUMMARIZATION_DEFAULT_TEMPERATURE=0.4
+SUMMARIZATION_DEFAULT_TOP_P=0.85
+SUMMARIZATION_QUALITY_THRESHOLD=0.75
+SUMMARIZATION_ENABLE_STREAMING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CACHING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_PARALLEL_PROCESSING=<span class="hljs-literal">true</span>
+SUMMARIZATION_RATE_LIMIT_PER_MINUTE=200
+SUMMARIZATION_STREAM_RATE_LIMIT_PER_MINUTE=20
+SUMMARIZATION_BATCH_RATE_LIMIT_PER_MINUTE=10
+SUMMARIZATION_HEALTH_CHECK_INTERVAL=30
+SUMMARIZATION_ENABLE_PERSONALIZATION=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CROSS_LANGUAGE=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CONTEXTUAL=<span class="hljs-literal">true</span>
+SUMMARIZATION_QUALITY_METRICS_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_AUTO_REGENERATION_ENABLED=<span class="hljs-literal">true</span></code></pre></li>
+<li><p><strong>Docker Compose for Staging</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># docker-compose.staging.yml</span>
+<span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3.8&quot;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">yipyap:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">yipyap:staging</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">ENVIRONMENT:</span> <span class="hljs-string">staging</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLED:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_DEFAULT_MODEL:</span> <span class="hljs-string">qwen3:8b</span>
+      <span class="hljs-attr">SUMMARIZATION_CACHE_DIR:</span> <span class="hljs-string">/var/cache/yipyap/summarization</span>
+      <span class="hljs-attr">SUMMARIZATION_MAX_CONCURRENT:</span> <span class="hljs-number">5</span>
+      <span class="hljs-attr">SUMMARIZATION_RATE_LIMIT_PER_MINUTE:</span> <span class="hljs-number">200</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_STREAMING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_CACHING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_PARALLEL_PROCESSING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_QUALITY_METRICS_ENABLED:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/cache/yipyap:/var/cache/yipyap</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/log/yipyap:/var/log/yipyap</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/data/yipyap:/var/data/yipyap</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8080:8080&quot;</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+    <span class="hljs-attr">healthcheck:</span>
+      <span class="hljs-attr">test:</span> [<span class="hljs-string">&quot;CMD&quot;</span>, <span class="hljs-string">&quot;curl&quot;</span>, <span class="hljs-string">&quot;-f&quot;</span>, <span class="hljs-string">&quot;http://localhost:8080/api/health&quot;</span>]
+      <span class="hljs-attr">interval:</span> <span class="hljs-string">30s</span>
+      <span class="hljs-attr">timeout:</span> <span class="hljs-string">10s</span>
+      <span class="hljs-attr">retries:</span> <span class="hljs-number">3</span></code></pre></li>
+<li><p><strong>Deploy to Staging</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build staging image</span>
+docker build -t yipyap:staging .
+
+<span class="hljs-comment"># Deploy with docker-compose</span>
+docker-compose -f docker-compose.staging.yml up -d
+
+<span class="hljs-comment"># Check logs</span>
+docker-compose -f docker-compose.staging.yml logs -f</code></pre></li>
+</ol>
+<h2>Production Environment</h2>
+<h3>Production Configuration</h3>
+<ol>
+<li><p><strong>High-Performance Settings</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Production settings</span>
+ENVIRONMENT=production
+SUMMARIZATION_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
+SUMMARIZATION_CACHE_DIR=/var/cache/yipyap/summarization
+SUMMARIZATION_CACHE_TTL_HOURS=48
+SUMMARIZATION_MAX_CONCURRENT=10
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=20000
+SUMMARIZATION_MAX_BATCH_SIZE=20
+SUMMARIZATION_DEFAULT_TEMPERATURE=0.3
+SUMMARIZATION_DEFAULT_TOP_P=0.9
+SUMMARIZATION_MAX_TEXT_LENGTH=20000
+SUMMARIZATION_QUALITY_THRESHOLD=0.8
+SUMMARIZATION_ENABLE_STREAMING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CACHING=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_PARALLEL_PROCESSING=<span class="hljs-literal">true</span>
+SUMMARIZATION_RATE_LIMIT_PER_MINUTE=500
+SUMMARIZATION_STREAM_RATE_LIMIT_PER_MINUTE=50
+SUMMARIZATION_BATCH_RATE_LIMIT_PER_MINUTE=20
+SUMMARIZATION_HEALTH_CHECK_INTERVAL=15
+SUMMARIZATION_RECONNECT_MAX_ATTEMPTS=5
+SUMMARIZATION_RECONNECT_BASE_DELAY_S=0.5
+SUMMARIZATION_RECONNECT_MAX_DELAY_S=60.0
+SUMMARIZATION_ENABLE_PERSONALIZATION=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CROSS_LANGUAGE=<span class="hljs-literal">true</span>
+SUMMARIZATION_ENABLE_CONTEXTUAL=<span class="hljs-literal">true</span>
+SUMMARIZATION_QUALITY_METRICS_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_AUTO_REGENERATION_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_AUTO_REGENERATION_THRESHOLD=0.7</code></pre></li>
+<li><p><strong>Production Docker Compose</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># docker-compose.prod.yml</span>
+<span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3.8&quot;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">yipyap:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">yipyap:latest</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">ENVIRONMENT:</span> <span class="hljs-string">production</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLED:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_DEFAULT_MODEL:</span> <span class="hljs-string">qwen3:8b</span>
+      <span class="hljs-attr">SUMMARIZATION_CACHE_DIR:</span> <span class="hljs-string">/var/cache/yipyap/summarization</span>
+      <span class="hljs-attr">SUMMARIZATION_MAX_CONCURRENT:</span> <span class="hljs-number">10</span>
+      <span class="hljs-attr">SUMMARIZATION_RATE_LIMIT_PER_MINUTE:</span> <span class="hljs-number">500</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_STREAMING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_CACHING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_PARALLEL_PROCESSING:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_QUALITY_METRICS_ENABLED:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_PERSONALIZATION:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_CROSS_LANGUAGE:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-attr">SUMMARIZATION_ENABLE_CONTEXTUAL:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/cache/yipyap:/var/cache/yipyap</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/log/yipyap:/var/log/yipyap</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/data/yipyap:/var/data/yipyap</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">/var/models/yipyap:/var/models/yipyap</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;80:8080&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;443:8443&quot;</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+    <span class="hljs-attr">healthcheck:</span>
+      <span class="hljs-attr">test:</span> [<span class="hljs-string">&quot;CMD&quot;</span>, <span class="hljs-string">&quot;curl&quot;</span>, <span class="hljs-string">&quot;-f&quot;</span>, <span class="hljs-string">&quot;http://localhost:8080/api/health&quot;</span>]
+      <span class="hljs-attr">interval:</span> <span class="hljs-string">15s</span>
+      <span class="hljs-attr">timeout:</span> <span class="hljs-string">5s</span>
+      <span class="hljs-attr">retries:</span> <span class="hljs-number">3</span>
+      <span class="hljs-attr">start_period:</span> <span class="hljs-string">60s</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">resources:</span>
+        <span class="hljs-attr">limits:</span>
+          <span class="hljs-attr">memory:</span> <span class="hljs-string">8G</span>
+          <span class="hljs-attr">cpus:</span> <span class="hljs-string">&quot;4.0&quot;</span>
+        <span class="hljs-attr">reservations:</span>
+          <span class="hljs-attr">memory:</span> <span class="hljs-string">4G</span>
+          <span class="hljs-attr">cpus:</span> <span class="hljs-string">&quot;2.0&quot;</span></code></pre></li>
+<li><p><strong>Production Deployment</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build production image</span>
+docker build -t yipyap:latest .
+
+<span class="hljs-comment"># Deploy with docker-compose</span>
+docker-compose -f docker-compose.prod.yml up -d
+
+<span class="hljs-comment"># Monitor deployment</span>
+docker-compose -f docker-compose.prod.yml logs -f
+
+<span class="hljs-comment"># Check health</span>
+curl http://localhost/api/health</code></pre></li>
+</ol>
+<h2>Kubernetes Deployment</h2>
+<h3>Kubernetes Configuration</h3>
+<ol>
+<li><p><strong>ConfigMap for Environment Variables</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># k8s/configmap.yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">yipyap-summarization-config</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLED:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_DEFAULT_MODEL:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_CACHE_DIR:</span> <span class="hljs-string">&quot;/var/cache/yipyap/summarization&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_MAX_CONCURRENT:</span> <span class="hljs-string">&quot;10&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_RATE_LIMIT_PER_MINUTE:</span> <span class="hljs-string">&quot;500&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_STREAMING:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_CACHING:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_PARALLEL_PROCESSING:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_QUALITY_METRICS_ENABLED:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_PERSONALIZATION:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_CROSS_LANGUAGE:</span> <span class="hljs-string">&quot;true&quot;</span>
+  <span class="hljs-attr">SUMMARIZATION_ENABLE_CONTEXTUAL:</span> <span class="hljs-string">&quot;true&quot;</span></code></pre></li>
+<li><p><strong>Deployment Configuration</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># k8s/deployment.yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">yipyap</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">yipyap</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">yipyap</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">yipyap</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">yipyap</span>
+          <span class="hljs-attr">image:</span> <span class="hljs-string">yipyap:latest</span>
+          <span class="hljs-attr">ports:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8080</span>
+          <span class="hljs-attr">envFrom:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">configMapRef:</span>
+                <span class="hljs-attr">name:</span> <span class="hljs-string">yipyap-summarization-config</span>
+          <span class="hljs-attr">resources:</span>
+            <span class="hljs-attr">requests:</span>
+              <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;4Gi&quot;</span>
+              <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;2&quot;</span>
+            <span class="hljs-attr">limits:</span>
+              <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;8Gi&quot;</span>
+              <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;4&quot;</span>
+          <span class="hljs-attr">volumeMounts:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">cache-volume</span>
+              <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/cache/yipyap</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data-volume</span>
+              <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/data/yipyap</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">models-volume</span>
+              <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/models/yipyap</span>
+          <span class="hljs-attr">livenessProbe:</span>
+            <span class="hljs-attr">httpGet:</span>
+              <span class="hljs-attr">path:</span> <span class="hljs-string">/api/health</span>
+              <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+            <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">60</span>
+            <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">15</span>
+          <span class="hljs-attr">readinessProbe:</span>
+            <span class="hljs-attr">httpGet:</span>
+              <span class="hljs-attr">path:</span> <span class="hljs-string">/api/health</span>
+              <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+            <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">30</span>
+            <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+      <span class="hljs-attr">volumes:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">cache-volume</span>
+          <span class="hljs-attr">persistentVolumeClaim:</span>
+            <span class="hljs-attr">claimName:</span> <span class="hljs-string">yipyap-cache-pvc</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data-volume</span>
+          <span class="hljs-attr">persistentVolumeClaim:</span>
+            <span class="hljs-attr">claimName:</span> <span class="hljs-string">yipyap-data-pvc</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">models-volume</span>
+          <span class="hljs-attr">persistentVolumeClaim:</span>
+            <span class="hljs-attr">claimName:</span> <span class="hljs-string">yipyap-models-pvc</span></code></pre></li>
+<li><p><strong>Service Configuration</strong>:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-comment"># k8s/service.yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">yipyap-service</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">yipyap</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8080</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">LoadBalancer</span></code></pre></li>
+<li><p><strong>Deploy to Kubernetes</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Apply configurations</span>
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+
+<span class="hljs-comment"># Check deployment status</span>
+kubectl get pods -l app=yipyap
+kubectl get services -l app=yipyap
+
+<span class="hljs-comment"># Check logs</span>
+kubectl logs -l app=yipyap -f</code></pre></li>
+</ol>
+<h2>Cloud Deployment</h2>
+<h3>AWS Deployment</h3>
+<ol>
+<li><p><strong>ECS Task Definition</strong>:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;family&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yipyap&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;networkMode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;awsvpc&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;requiresCompatibilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;FARGATE&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;cpu&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2048&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4096&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;executionRoleArn&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;arn:aws:iam::account:role/ecsTaskExecutionRole&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;containerDefinitions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yipyap&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;yipyap:latest&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;portMappings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;containerPort&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8080</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;protocol&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tcp&quot;</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;environment&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ENVIRONMENT&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;production&quot;</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUMMARIZATION_ENABLED&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;true&quot;</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUMMARIZATION_DEFAULT_MODEL&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;qwen3:8b&quot;</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUMMARIZATION_MAX_CONCURRENT&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;10&quot;</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SUMMARIZATION_RATE_LIMIT_PER_MINUTE&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;value&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;500&quot;</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;logConfiguration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;logDriver&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;awslogs&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;awslogs-group&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/ecs/yipyap&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;awslogs-region&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;us-west-2&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;awslogs-stream-prefix&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ecs&quot;</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;healthCheck&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;command&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+          <span class="hljs-string">&quot;CMD-SHELL&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-string">&quot;curl -f http://localhost:8080/api/health || exit 1&quot;</span>
+        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;retries&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;startPeriod&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></li>
+<li><p><strong>Deploy to ECS</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Create ECS cluster</span>
+aws ecs create-cluster --cluster-name yipyap-cluster
+
+<span class="hljs-comment"># Register task definition</span>
+aws ecs register-task-definition --cli-input-json file://task-definition.json
+
+<span class="hljs-comment"># Create service</span>
+aws ecs create-service \
+  --cluster yipyap-cluster \
+  --service-name yipyap-service \
+  --task-definition yipyap:1 \
+  --desired-count 3 \
+  --launch-type FARGATE \
+  --network-configuration <span class="hljs-string">&quot;awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}&quot;</span></code></pre></li>
+</ol>
+<h3>Google Cloud Run</h3>
+<ol>
+<li><p><strong>Deploy to Cloud Run</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Build and push image</span>
+docker build -t gcr.io/PROJECT_ID/yipyap .
+docker push gcr.io/PROJECT_ID/yipyap
+
+<span class="hljs-comment"># Deploy to Cloud Run</span>
+gcloud run deploy yipyap \
+  --image gcr.io/PROJECT_ID/yipyap \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --memory 4Gi \
+  --cpu 2 \
+  --max-instances 10 \
+  --set-env-vars <span class="hljs-string">&quot;ENVIRONMENT=production,SUMMARIZATION_ENABLED=true,SUMMARIZATION_DEFAULT_MODEL=qwen3:8b,SUMMARIZATION_MAX_CONCURRENT=10&quot;</span></code></pre></li>
+</ol>
+<h2>Performance Tuning</h2>
+<h3>Resource Optimization</h3>
+<ol>
+<li><p><strong>Memory Settings</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># For high-memory workloads</span>
+SUMMARIZATION_MAX_CONCURRENT=5
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=8000
+SUMMARIZATION_MAX_BATCH_SIZE=8
+
+<span class="hljs-comment"># For high-throughput workloads</span>
+SUMMARIZATION_MAX_CONCURRENT=15
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=12000
+SUMMARIZATION_MAX_BATCH_SIZE=12</code></pre></li>
+<li><p><strong>Cache Optimization</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Increase cache TTL for better performance</span>
+SUMMARIZATION_CACHE_TTL_HOURS=72
+
+<span class="hljs-comment"># Use Redis for distributed caching</span>
+SUMMARIZATION_CACHE_REDIS_URL=redis://redis:6379</code></pre></li>
+<li><p><strong>Rate Limiting</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Adjust based on expected load</span>
+SUMMARIZATION_RATE_LIMIT_PER_MINUTE=1000
+SUMMARIZATION_STREAM_RATE_LIMIT_PER_MINUTE=100
+SUMMARIZATION_BATCH_RATE_LIMIT_PER_MINUTE=50</code></pre></li>
+</ol>
+<h2>Monitoring and Alerting</h2>
+<h3>Health Checks</h3>
+<ol>
+<li><p><strong>Health Check Endpoint</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check summarization service health</span>
+curl http://localhost:8080/api/summarize/health
+
+<span class="hljs-comment"># Expected response</span>
+{
+  <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;healthy&quot;</span>,
+  <span class="hljs-string">&quot;services&quot;</span>: {
+    <span class="hljs-string">&quot;summarization_manager&quot;</span>: <span class="hljs-string">&quot;healthy&quot;</span>,
+    <span class="hljs-string">&quot;ollama_service&quot;</span>: <span class="hljs-string">&quot;healthy&quot;</span>,
+    <span class="hljs-string">&quot;cache_manager&quot;</span>: <span class="hljs-string">&quot;healthy&quot;</span>
+  },
+  <span class="hljs-string">&quot;metrics&quot;</span>: {
+    <span class="hljs-string">&quot;total_requests&quot;</span>: 1234,
+    <span class="hljs-string">&quot;cache_hit_rate&quot;</span>: 0.85,
+    <span class="hljs-string">&quot;average_response_time&quot;</span>: 2.3
+  }
+}</code></pre></li>
+<li><p><strong>Prometheus Metrics</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable metrics endpoint</span>
+SUMMARIZATION_METRICS_ENABLED=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Access metrics</span>
+curl http://localhost:8080/metrics</code></pre></li>
+</ol>
+<h3>Logging Configuration</h3>
+<ol>
+<li><p><strong>Structured Logging</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable structured logging</span>
+SUMMARIZATION_STRUCTURED_LOGGING=<span class="hljs-literal">true</span>
+SUMMARIZATION_LOG_LEVEL=INFO
+
+<span class="hljs-comment"># Log to file</span>
+SUMMARIZATION_LOG_FILE=/var/log/yipyap/summarization.log</code></pre></li>
+<li><p><strong>Log Rotation</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Configure log rotation</span>
+/var/log/yipyap/summarization.log {
+  daily
+  rotate 30
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 644 yipyap yipyap
+}</code></pre></li>
+</ol>
+<h2>Security Considerations</h2>
+<h3>Environment Security</h3>
+<ol>
+<li><p><strong>Secrets Management</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Use environment variables for secrets</span>
+SUMMARIZATION_API_KEY=<span class="hljs-variable">${SUMMARIZATION_API_KEY}</span>
+SUMMARIZATION_DB_PASSWORD=<span class="hljs-variable">${SUMMARIZATION_DB_PASSWORD}</span></code></pre></li>
+<li><p><strong>Network Security</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Restrict network access</span>
+SUMMARIZATION_ALLOWED_ORIGINS=https://yourdomain.com
+SUMMARIZATION_RATE_LIMIT_PER_IP=50</code></pre></li>
+<li><p><strong>Data Privacy</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable data redaction</span>
+SUMMARIZATION_REDACT_SENSITIVE_DATA=<span class="hljs-literal">true</span>
+SUMMARIZATION_LOG_REDACTION=<span class="hljs-literal">true</span></code></pre></li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>High Memory Usage</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Reduce concurrent operations</span>
+SUMMARIZATION_MAX_CONCURRENT=3
+SUMMARIZATION_MAX_TOKENS_PER_BATCH=5000</code></pre></li>
+<li><p><strong>Slow Response Times</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable caching</span>
+SUMMARIZATION_ENABLE_CACHING=<span class="hljs-literal">true</span>
+SUMMARIZATION_CACHE_TTL_HOURS=24
+
+<span class="hljs-comment"># Increase concurrent operations</span>
+SUMMARIZATION_MAX_CONCURRENT=8</code></pre></li>
+<li><p><strong>Service Unavailable</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check Ollama service</span>
+curl http://localhost:11434/api/tags
+
+<span class="hljs-comment"># Restart summarization service</span>
+docker-compose restart yipyap</code></pre></li>
+</ol>
+<h3>Debug Mode</h3>
+<ol>
+<li><p><strong>Enable Debug Logging</strong>:</p>
+<pre><code class="hljs language-bash">SUMMARIZATION_LOG_LEVEL=DEBUG
+SUMMARIZATION_DEBUG_MODE=<span class="hljs-literal">true</span></code></pre></li>
+<li><p><strong>Performance Profiling</strong>:</p>
+<pre><code class="hljs language-bash">SUMMARIZATION_PROFILING_ENABLED=<span class="hljs-literal">true</span>
+SUMMARIZATION_PROFILING_OUTPUT=/tmp/summarization_profile.json</code></pre></li>
+</ol>
+<p>This deployment guide provides comprehensive instructions for deploying the summarization system across different environments. Adjust the configurations based on your specific requirements and infrastructure constraints.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

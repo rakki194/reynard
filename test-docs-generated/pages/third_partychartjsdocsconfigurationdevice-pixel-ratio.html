@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Pixel Ratio - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Device Pixel Ratio</h1>
+      <div class="markdown-content"><h1>Device Pixel Ratio</h1>
+<p>By default, the chart&#39;s canvas will use a 1:1 pixel ratio, unless the physical display has a higher pixel ratio (e.g. Retina displays).</p>
+<p>For applications where a chart will be converted to a bitmap, or printed to a higher DPI medium, it can be desirable to render the chart at a higher resolution than the default.</p>
+<p>Setting <code>devicePixelRatio</code> to a value other than 1 will force the canvas size to be scaled by that amount, relative to the container size. There should be no visible difference on screen; the difference will only be visible when the image is zoomed or printed.</p>
+<h2>Configuration Options</h2>
+<p>Namespace: <code>options</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>devicePixelRatio</code></td>
+<td><code>number</code></td>
+<td><code>window.devicePixelRatio</code></td>
+<td>Override the window&#39;s default devicePixelRatio.</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

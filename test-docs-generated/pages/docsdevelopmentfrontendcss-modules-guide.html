@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Modules Guide for YipYap - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>CSS Modules Guide for YipYap</h1>
+      <div class="markdown-content"><h1>CSS Modules Guide for YipYap</h1>
+<p>This guide covers how to write CSS for YipYap using CSS Modules, following the<br>established patterns and best practices used throughout the codebase.</p>
+<h2>Overview</h2>
+<p>CSS Modules provide local scoping for CSS class names, preventing global<br>conflicts and enabling component-based styling. In YipYap, we use CSS Modules<br>for all component-specific styles, with global styles reserved for resets,<br>layout primitives, and design tokens.</p>
+<h2>File Naming Convention</h2>
+<p>Use the <code>.module.css</code> extension for all CSS Module files:</p>
+<pre><code class="hljs language-plaintext">ComponentName.module.css</code></pre><h2>Basic Usage</h2>
+<h3>Creating a CSS Module</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Button.module.css */</span>
+<span class="hljs-selector-class">.button</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--half-spacing) <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-built_in">var</span>(--border-radius);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.9rem</span>;
+  <span class="hljs-attribute">font-weight</span>: <span class="hljs-number">500</span>;
+  <span class="hljs-attribute">transition</span>: all <span class="hljs-built_in">var</span>(--transition-duration) <span class="hljs-built_in">var</span>(--transition-timing);
+  <span class="hljs-attribute">cursor</span>: pointer;
+  <span class="hljs-attribute">display</span>: flex;
+  <span class="hljs-attribute">align-items</span>: center;
+  <span class="hljs-attribute">justify-content</span>: center;
+  <span class="hljs-attribute">gap</span>: <span class="hljs-built_in">var</span>(--half-spacing);
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid transparent;
+  <span class="hljs-attribute">background</span>: none;
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span><span class="hljs-selector-pseudo">:not</span>(<span class="hljs-selector-pseudo">:disabled</span>) {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--secondary-bg);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-primary);
+}</code></pre><h3>Using in Components</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Button.tsx</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Component</span>, <span class="hljs-variable constant_">JSX</span>, createMemo } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;solid-js&quot;</span>;
+<span class="hljs-keyword">import</span> styles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Button.module.css&quot;</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ButtonProps</span> <span class="hljs-keyword">extends</span> JSX.<span class="hljs-title class_">ButtonHTMLAttributes</span>&lt;<span class="hljs-title class_">HTMLButtonElement</span>&gt; {
+  <span class="hljs-attr">variant</span>?: <span class="hljs-string">&quot;primary&quot;</span> | <span class="hljs-string">&quot;secondary&quot;</span> | <span class="hljs-string">&quot;error&quot;</span>;
+  <span class="hljs-attr">size</span>?: <span class="hljs-string">&quot;small&quot;</span> | <span class="hljs-string">&quot;medium&quot;</span> | <span class="hljs-string">&quot;large&quot;</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">Button</span>: <span class="hljs-title class_">Component</span>&lt;<span class="hljs-title class_">ButtonProps</span>&gt; = <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> {
+    variant = <span class="hljs-string">&quot;primary&quot;</span>,
+    size = <span class="hljs-string">&quot;medium&quot;</span>,
+    <span class="hljs-attr">class</span>: className,
+    children,
+    ...restProps
+  } = props;
+
+  <span class="hljs-keyword">const</span> buttonClasses = <span class="hljs-title function_">createMemo</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">return</span> [styles.<span class="hljs-property">button</span>, styles[variant], styles[size], className || <span class="hljs-string">&quot;&quot;</span>]
+      .<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>)
+      .<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot; &quot;</span>);
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">{buttonClasses()}</span> {<span class="hljs-attr">...restProps</span>}&gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  );
+};</code></pre><h2>Design Tokens and Variables</h2>
+<p>Always use CSS custom properties from the theme system instead of hard-coded<br>values:</p>
+<h3>Available Tokens</h3>
+<h4>Colors</h4>
+<pre><code class="hljs language-css"><span class="hljs-attr">--accent</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">270deg</span> <span class="hljs-number">60%</span> <span class="hljs-number">60%</span>);
+<span class="hljs-attr">--bg-color</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+<span class="hljs-attr">--secondary-bg</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">90%</span>);
+<span class="hljs-attr">--card-bg</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">85%</span>);
+<span class="hljs-attr">--text-primary</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">240deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">12%</span>);
+<span class="hljs-attr">--text-secondary</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">240deg</span> <span class="hljs-number">10%</span> <span class="hljs-number">45%</span>);
+<span class="hljs-attr">--text-tertiary</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+<span class="hljs-attr">--text-on-accent</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+<span class="hljs-attr">--border-color</span>: <span class="hljs-built_in">var</span>(--card-bg);
+<span class="hljs-attr">--border-secondary</span>: <span class="hljs-built_in">var</span>(--accent);</code></pre><h4>Spacing</h4>
+<pre><code class="hljs language-css"><span class="hljs-attr">--spacing</span>: <span class="hljs-number">0.7rem</span>;
+<span class="hljs-attr">--quarter-spacing</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--spacing) / <span class="hljs-number">4</span>);
+<span class="hljs-attr">--half-spacing</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--spacing) / <span class="hljs-number">2</span>);
+<span class="hljs-attr">--double-spacing</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--spacing) * <span class="hljs-number">2</span>);
+<span class="hljs-attr">--triple-spacing</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--spacing) * <span class="hljs-number">3</span>);
+<span class="hljs-attr">--quad-spacing</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--spacing) * <span class="hljs-number">4</span>);</code></pre><h4>Motion</h4>
+<pre><code class="hljs language-css"><span class="hljs-attr">--duration-fast</span>: <span class="hljs-number">120ms</span>;
+<span class="hljs-attr">--duration-base</span>: <span class="hljs-number">200ms</span>;
+<span class="hljs-attr">--duration-slow</span>: <span class="hljs-number">320ms</span>;
+<span class="hljs-attr">--easing-standard</span>: <span class="hljs-built_in">cubic-bezier</span>(<span class="hljs-number">0.2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+<span class="hljs-attr">--easing-decelerate</span>: <span class="hljs-built_in">cubic-bezier</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+<span class="hljs-attr">--easing-accelerate</span>: <span class="hljs-built_in">cubic-bezier</span>(<span class="hljs-number">0.3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-attr">--transition-duration</span>: <span class="hljs-number">0.2s</span>;
+<span class="hljs-attr">--transition-timing</span>: ease;</code></pre><h4>Z-Index Scale</h4>
+<pre><code class="hljs language-css"><span class="hljs-attr">--z-base</span>: <span class="hljs-number">0</span>;
+<span class="hljs-attr">--z-dropdown</span>: <span class="hljs-number">10</span>;
+<span class="hljs-attr">--z-sticky</span>: <span class="hljs-number">20</span>;
+<span class="hljs-attr">--z-tooltip</span>: <span class="hljs-number">30</span>;
+<span class="hljs-attr">--z-modal</span>: <span class="hljs-number">40</span>;
+<span class="hljs-attr">--z-toast</span>: <span class="hljs-number">50</span>;</code></pre><h4>Elevation (Shadows)</h4>
+<pre><code class="hljs language-css"><span class="hljs-attr">--elevation-1</span>: <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">2px</span> <span class="hljs-built_in">rgb</span>(<span class="hljs-built_in">var</span>(--shadow-rgb, <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>) / <span class="hljs-number">12%</span>);
+<span class="hljs-attr">--elevation-2</span>: <span class="hljs-number">0</span> <span class="hljs-number">2px</span> <span class="hljs-number">4px</span> <span class="hljs-built_in">rgb</span>(<span class="hljs-built_in">var</span>(--shadow-rgb, <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>) / <span class="hljs-number">16%</span>);
+<span class="hljs-attr">--elevation-3</span>: <span class="hljs-number">0</span> <span class="hljs-number">4px</span> <span class="hljs-number">8px</span> <span class="hljs-built_in">rgb</span>(<span class="hljs-built_in">var</span>(--shadow-rgb, <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>) / <span class="hljs-number">20%</span>);
+<span class="hljs-attr">--elevation-4</span>: <span class="hljs-number">0</span> <span class="hljs-number">8px</span> <span class="hljs-number">16px</span> <span class="hljs-built_in">rgb</span>(<span class="hljs-built_in">var</span>(--shadow-rgb, <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>) / <span class="hljs-number">24%</span>);</code></pre><h2>State Management Patterns</h2>
+<h3>Using Data Attributes for States</h3>
+<p>Prefer data attributes over class-based states for better separation of<br>concerns:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component</span>
+&lt;div <span class="hljs-keyword">class</span>={styles.<span class="hljs-property">card</span>} data-active={<span class="hljs-title function_">isActive</span>() ? <span class="hljs-string">&#x27;&#x27;</span> : <span class="hljs-literal">undefined</span>}&gt;
+  <span class="hljs-title class_">Card</span> content
+&lt;/div&gt;
+
+<span class="hljs-comment">// CSS</span>
+.<span class="hljs-property">card</span>[data-active] {
+  border-<span class="hljs-attr">color</span>: <span class="hljs-title function_">var</span>(--accent);
+  box-<span class="hljs-attr">shadow</span>: <span class="hljs-title function_">var</span>(--elevation-<span class="hljs-number">2</span>);
+}</code></pre><h3>Using ARIA Attributes for Semantic States</h3>
+<p>Use ARIA attributes for states with accessibility implications:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component</span>
+&lt;button
+  aria-expanded={<span class="hljs-title function_">isExpanded</span>()}
+  aria-pressed={<span class="hljs-title function_">isPressed</span>()}
+&gt;
+  <span class="hljs-title class_">Toggle</span>
+&lt;/button&gt;
+
+<span class="hljs-comment">// CSS</span>
+.<span class="hljs-property">button</span>[aria-expanded=<span class="hljs-string">&quot;true&quot;</span>] {
+  <span class="hljs-attr">background</span>: <span class="hljs-title function_">var</span>(--accent);
+  <span class="hljs-attr">color</span>: <span class="hljs-title function_">var</span>(--text-on-accent);
+}</code></pre><h3>Class-Based Variants</h3>
+<p>For component variants, use class-based approach:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Button.module.css */</span>
+<span class="hljs-selector-class">.button</span> {
+  <span class="hljs-comment">/* Base styles */</span>
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-class">.primary</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--accent);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-on-accent);
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-class">.secondary</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--bg-color);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-secondary);
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-built_in">var</span>(--border-color);
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-class">.small</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--quarter-spacing) <span class="hljs-built_in">var</span>(--half-spacing);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.8rem</span>;
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-class">.large</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--spacing) <span class="hljs-built_in">var</span>(--double-spacing);
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+}</code></pre><h2>Composition</h2>
+<h3>Composing Classes Within a Module</h3>
+<p>Use <code>composes</code> to combine styles within the same module:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.baseButton</span> {
+  <span class="hljs-attribute">padding</span>: <span class="hljs-built_in">var</span>(--half-spacing) <span class="hljs-built_in">var</span>(--spacing);
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-built_in">var</span>(--border-radius);
+  <span class="hljs-attribute">cursor</span>: pointer;
+}
+
+<span class="hljs-selector-class">.primaryButton</span> {
+  composes: baseButton;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--accent);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-on-accent);
+}
+
+<span class="hljs-selector-class">.secondaryButton</span> {
+  composes: baseButton;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--bg-color);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-secondary);
+}</code></pre><h3>Composing from Other Modules</h3>
+<p>Compose styles from other CSS modules:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Card.module.css */</span>
+<span class="hljs-selector-class">.card</span> {
+  composes: baseCard from <span class="hljs-string">&quot;./primitives/Card.module.css&quot;</span>;
+  <span class="hljs-comment">/* Additional card-specific styles */</span>
+}</code></pre><h3>Composing from Global Classes</h3>
+<p>Compose from global class names:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.globalButton</span> {
+  composes: global-button from global;
+  <span class="hljs-comment">/* Additional local styles */</span>
+}</code></pre><h2>Cascade Layers</h2>
+<p>All component styles should be placed under the <code>components</code> layer:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Component.module.css */</span>
+<span class="hljs-keyword">@layer</span> components {
+  <span class="hljs-selector-class">.component</span> {
+    <span class="hljs-comment">/* Component styles */</span>
+  }
+
+  <span class="hljs-selector-class">.component</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-comment">/* Hover styles */</span>
+  }
+}</code></pre><h2>Specificity Management</h2>
+<h3>Using <code>:where()</code> for Lower Specificity</h3>
+<p>Use <code>:where()</code> to reduce specificity when possible:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Low specificity selectors */</span>
+<span class="hljs-selector-class">.component</span><span class="hljs-selector-pseudo">:where</span>(<span class="hljs-selector-pseudo">:not</span>(<span class="hljs-selector-class">.noop</span>)) {
+  <span class="hljs-comment">/* Styles with zero specificity */</span>
+}
+
+<span class="hljs-selector-class">.component</span><span class="hljs-selector-pseudo">:where</span>(<span class="hljs-selector-pseudo">:hover</span>) {
+  <span class="hljs-comment">/* Hover styles with zero specificity */</span>
+}</code></pre><h3>Avoiding Deep Descendant Selectors</h3>
+<p>Prefer class-based states over deep descendant selectors:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ✅ Good: Class-based state */</span>
+<span class="hljs-selector-class">.card</span><span class="hljs-selector-attr">[data-active]</span> <span class="hljs-selector-class">.content</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--accent);
+}
+
+<span class="hljs-comment">/* ❌ Avoid: Deep descendants */</span>
+<span class="hljs-selector-class">.card</span> <span class="hljs-selector-class">.content</span> <span class="hljs-selector-class">.item</span> <span class="hljs-selector-class">.text</span> {
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--accent);
+}</code></pre><h2>Pseudo Classes and States</h2>
+<p>CSS Modules support all pseudo classes and states:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.button</span> {
+  <span class="hljs-comment">/* Base styles */</span>
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--secondary-bg);
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:focus</span> {
+  <span class="hljs-attribute">outline</span>: <span class="hljs-number">2px</span> solid <span class="hljs-built_in">var</span>(--accent);
+  <span class="hljs-attribute">outline-offset</span>: <span class="hljs-number">2px</span>;
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:active</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateY</span>(<span class="hljs-number">1px</span>);
+}
+
+<span class="hljs-selector-class">.button</span><span class="hljs-selector-pseudo">:disabled</span> {
+  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0.5</span>;
+  <span class="hljs-attribute">cursor</span>: not-allowed;
+}</code></pre><h2>Responsive Design</h2>
+<p>Use container queries and media queries as needed:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.component</span> {
+  <span class="hljs-comment">/* Base styles */</span>
+}
+
+<span class="hljs-comment">/* Container queries */</span>
+<span class="hljs-keyword">@container</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">400px</span>) {
+  <span class="hljs-selector-class">.component</span> {
+    <span class="hljs-comment">/* Styles for wider containers */</span>
+  }
+}
+
+<span class="hljs-comment">/* Media queries */</span>
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>: <span class="hljs-number">768px</span>) {
+  <span class="hljs-selector-class">.component</span> {
+    <span class="hljs-comment">/* Mobile styles */</span>
+  }
+}</code></pre><h2>Accessibility</h2>
+<h3>Focus Management</h3>
+<p>Ensure proper focus indicators:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.component</span><span class="hljs-selector-pseudo">:focus-visible</span> {
+  <span class="hljs-attribute">outline</span>: <span class="hljs-built_in">var</span>(--focus-ring-width) solid <span class="hljs-built_in">var</span>(--focus-ring-color);
+  <span class="hljs-attribute">outline-offset</span>: <span class="hljs-built_in">var</span>(--focus-ring-offset);
+}</code></pre><h3>Reduced Motion Support</h3>
+<p>Respect user motion preferences:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">transition</span>: transform <span class="hljs-built_in">var</span>(--duration-base) <span class="hljs-built_in">var</span>(--easing-standard);
+}
+
+<span class="hljs-keyword">@media</span> (<span class="hljs-attribute">prefers-reduced-motion</span>: reduce) {
+  <span class="hljs-selector-class">.component</span> {
+    <span class="hljs-attribute">transition</span>: none;
+  }
+}</code></pre><h2>Performance Considerations</h2>
+<h3>Hardware Acceleration</h3>
+<p>Use hardware-accelerated properties for animations:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translate3d</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">/* Force hardware acceleration */</span>
+  <span class="hljs-attribute">will-change</span>: transform; <span class="hljs-comment">/* Hint for animations */</span>
+}</code></pre><h3>Efficient Selectors</h3>
+<p>Use efficient selectors and avoid expensive operations:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* ✅ Efficient */</span>
+<span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--bg-color);
+}
+
+<span class="hljs-comment">/* ❌ Expensive */</span>
+<span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(<span class="hljs-number">45deg</span>, <span class="hljs-built_in">var</span>(--bg-color), <span class="hljs-built_in">var</span>(--secondary-bg));
+}</code></pre><h2>Testing CSS Modules</h2>
+<h3>Mocking CSS Modules in Tests</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-comment">// Component.test.tsx</span>
+<span class="hljs-keyword">import</span> { vi } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vitest&quot;</span>;
+
+vi.<span class="hljs-title function_">mock</span>(<span class="hljs-string">&quot;./Component.module.css&quot;</span>, <span class="hljs-function">() =&gt;</span> ({
+  <span class="hljs-attr">component</span>: <span class="hljs-string">&quot;component-class&quot;</span>,
+  <span class="hljs-attr">active</span>: <span class="hljs-string">&quot;active-class&quot;</span>,
+  <span class="hljs-attr">disabled</span>: <span class="hljs-string">&quot;disabled-class&quot;</span>,
+}));
+
+<span class="hljs-comment">// Test component with mocked styles</span></code></pre><h2>Common Patterns</h2>
+<h3>Conditional Classes</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> classes = <span class="hljs-title function_">createMemo</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">return</span> [
+    styles.<span class="hljs-property">base</span>,
+    props.<span class="hljs-property">variant</span> &amp;&amp; styles[props.<span class="hljs-property">variant</span>],
+    props.<span class="hljs-property">size</span> &amp;&amp; styles[props.<span class="hljs-property">size</span>],
+    props.<span class="hljs-property">disabled</span> &amp;&amp; styles.<span class="hljs-property">disabled</span>,
+    className,
+  ]
+    .<span class="hljs-title function_">filter</span>(<span class="hljs-title class_">Boolean</span>)
+    .<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot; &quot;</span>);
+});</code></pre><h3>Multiple Style Imports</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> baseStyles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Base.module.css&quot;</span>;
+<span class="hljs-keyword">import</span> variantStyles <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Variants.module.css&quot;</span>;
+
+<span class="hljs-keyword">const</span> styles = { ...baseStyles, ...variantStyles };</code></pre><h3>Theme-Aware Components</h3>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Component.module.css */</span>
+<span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--card-bg);
+  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--text-primary);
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-built_in">var</span>(--border-color);
+}
+
+<span class="hljs-comment">/* Theme-specific overrides */</span>
+<span class="hljs-selector-pseudo">:root</span><span class="hljs-selector-attr">[data-theme=<span class="hljs-string">&quot;dark&quot;</span>]</span> <span class="hljs-selector-class">.component</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--card-bg);
+  <span class="hljs-attribute">border-color</span>: <span class="hljs-built_in">var</span>(--border-secondary);
+}</code></pre><h2>Best Practices</h2>
+<ol>
+<li><strong>Use Design Tokens</strong>: Always use CSS custom properties from the theme system</li>
+<li><strong>Prefer Data Attributes</strong>: Use <code>data-*</code> attributes for component states</li>
+<li><strong>Keep Specificity Low</strong>: Use <code>:where()</code> and avoid deep selectors</li>
+<li><strong>Follow Naming Conventions</strong>: Use camelCase for class names</li>
+<li><strong>Compose Styles</strong>: Use <code>composes</code> for reusable style combinations</li>
+<li><strong>Layer Organization</strong>: Place all styles under the <code>components</code> layer</li>
+<li><strong>Accessibility First</strong>: Ensure proper focus management and reduced motion<br>support</li>
+<li><strong>Performance Conscious</strong>: Use hardware acceleration and efficient selectors</li>
+<li><strong>Test Your Styles</strong>: Mock CSS modules in component tests</li>
+<li><strong>Theme Integration</strong>: Make components work across all themes</li>
+</ol>
+<h2>File Structure</h2>
+<pre><code class="hljs language-plaintext">src/
+├── components/
+│   ├── ComponentName/
+│   │   ├── ComponentName.tsx
+│   │   ├── ComponentName.module.css
+│   │   └── ComponentName.test.tsx
+│   └── UI/
+│       └── primitives/
+│           ├── Button.tsx
+│           ├── Button.module.css
+│           └── Button.test.tsx
+├── styles.css          # Global styles and layers
+└── themes.css          # Theme variables and tokens</code></pre><p>This guide provides a comprehensive overview of CSS Modules usage in YipYap,<br>following the established patterns and best practices used throughout the<br>codebase.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

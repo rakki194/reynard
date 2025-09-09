@@ -8,19 +8,16 @@
 import {
   BackendAnnotationManager as CoreBackendManager,
   createBackendAnnotationManager,
-  type CaptionTask,
-  type CaptionResult,
   type ModelManagerConfig,
   type AnyAnnotationEvent,
 } from "reynard-annotating-core";
-
-// Define the config type locally since it's not exported from core
-export interface BackendAnnotationManagerConfig {
-  baseUrl: string;
-  timeout?: number;
-  retries?: number;
-  apiKey?: string;
-}
+import type { BackendAnnotationManagerConfig } from "./config";
+import {
+  generateFurryTags,
+  generateDetailedCaption,
+  generateAnimeTags,
+  generateGeneralCaption,
+} from "./caption-generators";
 
 export class BackendAnnotationManager {
   private coreManager: CoreBackendManager;
@@ -129,53 +126,29 @@ export class BackendAnnotationManager {
   async generateFurryTags(
     imagePath: string,
     config?: Record<string, unknown>,
-  ): Promise<CaptionResult> {
-    const service = this.getService();
-    const task: CaptionTask = {
-      imagePath,
-      generatorName: "jtp2",
-      config: config || {},
-    };
-    return service.generateCaption(task);
+  ) {
+    return generateFurryTags(this, imagePath, config);
   }
 
   async generateDetailedCaption(
     imagePath: string,
     config?: Record<string, unknown>,
-  ): Promise<CaptionResult> {
-    const service = this.getService();
-    const task: CaptionTask = {
-      imagePath,
-      generatorName: "joycaption",
-      config: config || {},
-    };
-    return service.generateCaption(task);
+  ) {
+    return generateDetailedCaption(this, imagePath, config);
   }
 
   async generateAnimeTags(
     imagePath: string,
     config?: Record<string, unknown>,
-  ): Promise<CaptionResult> {
-    const service = this.getService();
-    const task: CaptionTask = {
-      imagePath,
-      generatorName: "wdv3",
-      config: config || {},
-    };
-    return service.generateCaption(task);
+  ) {
+    return generateAnimeTags(this, imagePath, config);
   }
 
   async generateGeneralCaption(
     imagePath: string,
     config?: Record<string, unknown>,
-  ): Promise<CaptionResult> {
-    const service = this.getService();
-    const task: CaptionTask = {
-      imagePath,
-      generatorName: "florence2",
-      config: config || {},
-    };
-    return service.generateCaption(task);
+  ) {
+    return generateGeneralCaption(this, imagePath, config);
   }
 }
 
@@ -187,12 +160,3 @@ export function createAnnotationManager(
 ): BackendAnnotationManager {
   return new BackendAnnotationManager(config);
 }
-
-/**
- * Default configuration for backend annotation manager
- */
-export const DEFAULT_BACKEND_CONFIG: BackendAnnotationManagerConfig = {
-  baseUrl: "http://localhost:8000",
-  timeout: 30000,
-  retries: 3,
-};

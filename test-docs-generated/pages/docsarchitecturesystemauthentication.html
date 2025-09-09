@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Setup Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Authentication Setup Guide</h1>
+      <div class="markdown-content"><h1>Authentication Setup Guide</h1>
+<h2>Overview</h2>
+<p>The Reynard framework uses JWT (JSON Web Tokens) for authentication with both access tokens and refresh tokens for enhanced security. The system employs modern password hashing using PBKDF2 with HMAC-SHA256, providing robust security for the modular framework architecture. This guide explains how to set up secure authentication in your Reynard deployment and provides a detailed technical overview of its implementation.</p>
+<h2>Environment Variables</h2>
+<p>The authentication system requires the following environment variables:</p>
+<h3>Required Variables</h3>
+<ul>
+<li><code>SECRET_KEY</code>: A cryptographically secure secret key for signing JWT tokens</li>
+<li><code>ACCESS_TOKEN_EXPIRE_MINUTES</code>: Access token expiration time in minutes (default: 30)</li>
+<li><code>REFRESH_TOKEN_EXPIRE_DAYS</code>: Refresh token expiration time in days (default: 7)</li>
+</ul>
+<h3>Setting Up Environment Variables</h3>
+<h4>Development Environment</h4>
+<ol>
+<li><p>Copy the example environment file:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cp</span> .env.example .<span class="hljs-built_in">env</span></code></pre></li>
+<li><p>Generate a secure secret key:</p>
+<pre><code class="hljs language-bash">python3 -c <span class="hljs-string">&quot;import secrets; print(secrets.token_urlsafe(64))&quot;</span></code></pre></li>
+<li><p>Edit the <code>.env</code> file and replace <code>your-secret-key-here</code> with your generated key:</p>
+<pre><code class="hljs"><span class="hljs-attr">JWT_SECRET_KEY</span>=your-generated-secret-key-here
+<span class="hljs-attr">ACCESS_TOKEN_EXPIRE_MINUTES</span>=<span class="hljs-number">30</span>
+<span class="hljs-attr">REFRESH_TOKEN_EXPIRE_DAYS</span>=<span class="hljs-number">7</span></code></pre></li>
+</ol>
+<h4>Production Environment</h4>
+<p>For production deployments, set environment variables directly on your server or through your deployment platform:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> JWT_SECRET_KEY=<span class="hljs-string">&quot;your-secure-secret-key&quot;</span>
+<span class="hljs-built_in">export</span> ACCESS_TOKEN_EXPIRE_MINUTES=30
+<span class="hljs-built_in">export</span> REFRESH_TOKEN_EXPIRE_DAYS=7</code></pre><h2>Security Best Practices</h2>
+<ol>
+<li><strong>Never commit the <code>.env</code> file</strong> - It&#39;s already in <code>.gitignore</code></li>
+<li><strong>Use a different secret key for each environment</strong> (development, staging, production)</li>
+<li><strong>Generate secret keys with sufficient entropy</strong> (at least 64 characters)</li>
+<li><strong>Rotate secret keys periodically</strong> in production</li>
+<li><strong>Use HTTPS in production</strong> to protect tokens in transit</li>
+<li><strong>Set appropriate token expiration times</strong> based on your security requirements</li>
+<li><strong>Ensure argon2-cffi is installed</strong> for modern password hashing</li>
+</ol>
+<h2>Password Hashing System</h2>
+<p>YipYap uses the argon2-cffi library for password hashing, which provides a modern, secure approach to password management with configurable security levels:</p>
+<h3>Hash Algorithm Configuration</h3>
+<p>The system is configured with configurable security levels:</p>
+<ul>
+<li><strong>Low Security:</strong> Development/testing environments (64 MiB memory, 2 iterations)</li>
+<li><strong>Medium Security:</strong> General production use (128 MiB memory, 3 iterations)</li>
+<li><strong>High Security:</strong> Sensitive applications (256 MiB memory, 4 iterations)</li>
+<li><strong>Paranoid Security:</strong> Maximum security (512 MiB memory, 6 iterations)</li>
+</ul>
+<p>The security level can be configured via the <code>ARGON2_SECURITY_LEVEL</code> environment variable.</p>
+<h3>Automatic Hash Migration</h3>
+<p>The system automatically migrates legacy bcrypt hashes to Argon2 during user login:</p>
+<ul>
+<li>When a user logs in, the system verifies their password and checks if the hash needs updating</li>
+<li>If the stored hash is using an outdated algorithm (bcrypt) or parameters, a new Argon2 hash is generated</li>
+<li>The updated hash is automatically stored in the database, ensuring all passwords use the most secure algorithm</li>
+</ul>
+<h3>Hash Verification Process</h3>
+<p>The password verification process supports multiple hash formats:</p>
+<ol>
+<li><strong>Argon2 hashes</strong> (preferred) - Modern, memory-hard algorithm</li>
+<li><strong>bcrypt hashes</strong> (legacy) - Automatically migrated to Argon2 upon successful verification</li>
+<li><strong>Unknown formats</strong> - Logged as warnings and rejected for security</li>
+</ol>
+<h2>Token Types</h2>
+<h3>Access Token</h3>
+<ul>
+<li>Short-lived (default: 30 minutes)</li>
+<li>Used for API authentication</li>
+<li>Contains user information and permissions</li>
+<li>Automatically refreshed when expired</li>
+</ul>
+<h3>Refresh Token</h3>
+<ul>
+<li>Long-lived (default: 7 days)</li>
+<li>Used to obtain new access tokens</li>
+<li>More secure than long-lived access tokens</li>
+<li>Stored securely in the client</li>
+</ul>
+<h2>Authentication Flow</h2>
+<ol>
+<li>User logs in with username/password.</li>
+<li>The server, via the <code>/api/login</code> endpoint, authenticates the user against stored credentials. Upon successful authentication, it generates a short-lived access token and a longer-lived refresh token using <code>create_access_token</code> and <code>create_refresh_token</code>. Both tokens are signed with the <code>JWT_SECRET_KEY</code> and include the user&#39;s <code>username</code> as the <code>sub</code> claim and their <code>role</code> (e.g., &quot;admin&quot;, &quot;regular&quot;, &quot;guest&quot;) in their payload.</li>
+<li>The client receives these tokens and stores them (e.g., in <code>localStorage</code>). For subsequent API requests, the client includes the access token in the <code>Authorization</code> header as a <code>Bearer</code> token.</li>
+<li>On the server side, backend endpoints utilize FastAPI&#39;s dependency injection to validate the incoming request. Functions like <code>get_current_user</code>, <code>get_current_active_user</code>, and <code>is_admin</code> are used as dependencies. The <code>verify_token</code> function decodes and validates the access token, extracting the <code>sub</code> and <code>role</code> claims.</li>
+<li><code>get_current_user</code> retrieves the full user object from the database, using the <code>username</code> from the token payload to ensure data consistency.</li>
+<li><code>get_current_active_user</code> is a specialized dependency that ensures the authenticated user is not a &#39;guest&#39;, enforcing a <code>403 Forbidden</code> error if they are.</li>
+<li><code>is_admin</code> specifically checks if the user&#39;s role, extracted from the token and confirmed with the database, is &#39;admin&#39;. If the role does not match, a <code>403 Forbidden</code> error is returned.</li>
+<li>When the access token expires (default: 30 minutes), the client automatically uses the refresh token to obtain a new access token via the <code>/api/refresh-token</code> endpoint. The <code>verify_refresh_token</code> function validates this token.</li>
+<li>If the refresh token is expired or invalid, the user must log in again, triggering the full authentication flow from step 1.</li>
+</ol>
+<h2>JWT Structure and Claims</h2>
+<p>JWTs in YipYap are composed of three parts: a header, a payload, and a signature. The payload contains claims, which are statements about an entity (typically, the user) and additional data.</p>
+<ul>
+<li><strong><code>sub</code> (Subject):</strong> This claim holds the <code>username</code> of the authenticated user. It is a unique identifier for the user.</li>
+<li><strong><code>role</code>:</strong> This custom claim defines the user&#39;s authorization level within the application, corresponding to the <code>UserRole</code> enum (e.g., &quot;admin&quot;, &quot;regular&quot;, &quot;guest&quot;). This claim is crucial for implementing role-based access control (RBAC) on various API endpoints.</li>
+<li><strong><code>exp</code> (Expiration Time):</strong> This claim specifies the expiration time on or after which the JWT must not be accepted for processing. It is represented as a Unix timestamp (seconds since epoch). Both access and refresh tokens have this claim to manage their lifecycles.</li>
+<li><strong><code>type</code>:</strong> This custom claim distinguishes between &quot;access&quot; tokens and &quot;refresh&quot; tokens, allowing the backend to correctly handle token refreshing.</li>
+</ul>
+<p>The server&#39;s <code>JWT_SECRET_KEY</code> is used to sign these tokens, ensuring their integrity and authenticity. Any modification to the token or a mismatch in the <code>JWT_SECRET_KEY</code> will result in validation failure (e.g., <code>401 Unauthorized</code>).</p>
+<h2>Backend Dependencies for Access Control</h2>
+<p>The FastAPI application uses dependency injection to manage user authentication and authorization. The key dependencies involved are:</p>
+<ul>
+<li><p><strong><code>get_current_user(token: str = Depends(oauth2_scheme)) -&gt; User</code></strong>: This asynchronous dependency retrieves the JWT token from the <code>Authorization</code> header, verifies its authenticity using <code>verify_token</code>, and extracts the <code>username</code> and <code>role</code> from its payload. It then fetches the full user profile from the database to ensure the user still exists and their role is current. This is the base dependency for any authenticated endpoint.</p>
+</li>
+<li><p><strong><code>get_current_active_user(current_user: User = Depends(get_current_user)) -&gt; User</code></strong>: This dependency builds upon <code>get_current_user</code>. It checks if the authenticated user&#39;s role is <code>UserRole.guest</code>. If it is, an <code>HTTPException</code> with <code>403 Forbidden</code> status is raised, preventing guest users from accessing the endpoint. This is used for functionalities accessible to both &quot;admin&quot; and &quot;regular&quot; users but not &quot;guests&quot;.</p>
+</li>
+<li><p><strong><code>is_admin(current_user: User = Depends(get_current_user))</code></strong>: This dependency also relies on <code>get_current_user</code>. It specifically checks if the <code>current_user</code>&#39;s <code>role</code> is <code>UserRole.admin</code>. If the user is not an admin, an <code>HTTPException</code> with <code>403 Forbidden</code> status is raised, restricting the endpoint to administrators only.</p>
+</li>
+</ul>
+<p>These dependencies are applied to API routes using <code>Depends()</code>, enabling fine-grained control over which users can access specific functionalities based on their authenticated status and assigned roles. For example, sensitive configuration endpoints like <code>/api/index/fast-mode</code> and <code>/api/ollama/status</code> are protected by <code>is_admin</code>, while general status checks like <code>/api/index/status</code> are accessible to <code>get_current_active_user</code>.</p>
+<h2>Detailed Authentication Implementation</h2>
+<h3>Password Hashing Implementation</h3>
+<p>The password hashing system is implemented in <code>app/utils/password_utils.py</code> using the argon2-cffi library:</p>
+<ul>
+<li><strong><code>get_password_hasher()</code></strong>: Returns a singleton instance of the password hasher configured with current security level parameters</li>
+<li><strong><code>hash_password(password: str) -&gt; str</code></strong>: Hashes a password using Argon2 with optimal security parameters</li>
+<li><strong><code>verify_password(password: str, hashed_password: str) -&gt; bool</code></strong>: Verifies a password against a hash, supporting both Argon2 and bcrypt</li>
+<li><strong><code>verify_and_update_password(password: str, hashed_password: str) -&gt; Tuple[bool, Optional[str]]</code></strong>: Verifies a password and returns an updated hash if needed (e.g., migrating from bcrypt to Argon2 or updating Argon2 parameters)</li>
+<li><strong><code>validate_password_strength(password: str) -&gt; Tuple[bool, str]</code></strong>: Validates password strength according to modern security standards</li>
+<li><strong><code>get_hash_info(hashed_password: str) -&gt; Dict[str, Any]</code></strong>: Provides detailed information about password hashes</li>
+</ul>
+<h3>Frontend Credential Management (SolidJS)</h3>
+<p>The SolidJS frontend manages authentication state and tokens primarily through the <code>src/contexts/app.tsx</code> context and the <code>src/composables/useAuthFetch.ts</code> composable.</p>
+<ul>
+<li><p><strong><code>src/contexts/app.tsx</code>:</strong> This module defines the global application context, which includes reactive signals for <code>isLoggedIn</code> (boolean) and <code>userRole</code> (string).</p>
+<ul>
+<li><strong><code>login(token: string, role: string, username: string, refreshToken?: string)</code>:</strong> This function is invoked upon successful user login. It stores the <code>access_token</code> as <code>jwt_token</code> and the <code>refreshToken</code> (if provided) in <code>localStorage</code>. It also updates the <code>isLoggedIn</code> and <code>userRole</code> signals, making the authentication state available globally to SolidJS components.</li>
+<li><strong><code>logout()</code>:</strong> This function clears the <code>jwt_token</code> and <code>refresh_token</code> from <code>localStorage</code> and resets the <code>isLoggedIn</code> and <code>userRole</code> signals, effectively ending the user&#39;s session.</li>
+<li><strong><code>notify()</code>:</strong> The global notification system, provided by this context, is utilized by the <code>useAuthFetch</code> composable to display user-friendly messages for authentication and authorization events (e.g., &quot;Session expired,&quot; &quot;Access forbidden&quot;).</li>
+</ul>
+</li>
+<li><p><strong><code>src/composables/useAuthFetch.ts</code>:</strong> This composable provides an authenticated <code>fetch</code> wrapper that automatically includes the <code>Authorization</code> header with the <code>Bearer</code> token for all API requests.</p>
+<ul>
+<li><strong>Token Storage:</strong> It retrieves <code>jwt_token</code> and <code>refresh_token</code> directly from <code>localStorage</code>.</li>
+<li><strong>Proactive Token Refresh:</strong> The <code>checkTokenAndRefresh</code> function runs on a <code>TOKEN_REFRESH_INTERVAL_MS</code> (e.g., every 5 minutes). If the <code>jwt_token</code> is set to expire within a predefined window (e.g., 10 minutes), it attempts to use the <code>refresh_token</code> to obtain a new <code>access_token</code> from the <code>/api/refresh-token</code> endpoint. This minimizes the chance of a user&#39;s session silently expiring during active use.</li>
+<li><strong>Reactive Token Refresh (on 401):</strong> If any <code>authFetch</code> call receives a <code>401 Unauthorized</code> response, it attempts to refresh the <code>access_token</code> using the <code>refresh_token</code>. If successful, the original request is automatically retried with the new <code>access_token</code>.</li>
+<li><strong>Error Handling:</strong><ul>
+<li>If the proactive or reactive token refresh fails, or if a <code>401</code> or <code>403</code> response is received after a retry, the user is logged out (<code>logout()</code>) and redirected to the login page, accompanied by an appropriate notification.</li>
+<li>Specifically, <code>403 Forbidden</code> responses trigger a notification indicating &quot;Access forbidden. You don&#39;t have permission for this action.&quot;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>User Registration Process</h3>
+<p>The user registration is handled by the backend through the <code>/api/register</code> endpoint in <code>app/api/auth.py</code>.</p>
+<ul>
+<li><strong>Endpoint:</strong> <code>POST /api/register</code></li>
+<li><strong>Input:</strong> Accepts <code>username</code> (string), <code>password</code> (string), and optionally <code>role</code> (string, defaults to &quot;regular&quot; if not provided).</li>
+<li><strong>Role Assignment Logic:</strong><ul>
+<li>The system checks the total number of existing users in the database.</li>
+<li>If <code>data_source_instance.count_users()</code> returns <code>0</code>, meaning no users currently exist, the new registering user is automatically assigned the <code>UserRole.admin</code> role. This ensures that the first user to register can establish administrative control over the application.</li>
+<li>For all subsequent registrations (when <code>user_count &gt; 0</code>), the user is assigned <code>UserRole.guest</code> by default, unless a specific role is provided in the <code>UserCreate</code> model.</li>
+</ul>
+</li>
+<li><strong>Password Hashing:</strong> The plain-text password provided by the user is securely hashed using the modern Argon2 algorithm via the <code>hash_password()</code> function from <code>app/utils/password_utils.py</code>. This function uses argon2-cffi&#39;s PasswordHasher to create cryptographically secure hashes that are resistant to brute-force and rainbow table attacks.</li>
+<li><strong>Database Interaction:</strong> The <code>data_source_instance.create_user()</code> method is called to persist the new user&#39;s <code>username</code>, <code>password_hash</code>, and <code>assigned_role</code> into the SQLite database.</li>
+<li><strong>Error Handling:</strong> The endpoint includes <code>try-except</code> blocks to catch <code>ValueError</code> (e.g., if the username already exists) and other general exceptions, returning appropriate <code>HTTPException</code> responses (e.g., <code>400 Bad Request</code> or <code>500 Internal Server Error</code>).</li>
+</ul>
+<h3>User Login and Hash Migration</h3>
+<p>The login process in <code>/api/login</code> endpoint includes automatic hash migration:</p>
+<ul>
+<li><strong>Password Verification:</strong> Uses <code>verify_and_update_password()</code> to verify the password and check if the hash needs updating</li>
+<li><strong>Automatic Migration:</strong> If the stored hash is using bcrypt (legacy) or outdated parameters, a new Argon2 hash is automatically generated</li>
+<li><strong>Database Update:</strong> The updated hash is stored in the database, ensuring all passwords use the most secure algorithm</li>
+<li><strong>Seamless Experience:</strong> The migration process is transparent to users - they continue using their existing passwords</li>
+</ul>
+<h3>Password Change Process</h3>
+<p>The password change endpoint (<code>/api/users/me/password</code>) ensures security:</p>
+<ul>
+<li><strong>Current Password Verification:</strong> Verifies the user&#39;s current password before allowing changes</li>
+<li><strong>New Password Hashing:</strong> Uses Argon2 to hash the new password with optimal security parameters</li>
+<li><strong>Database Update:</strong> Updates the stored hash in the database</li>
+</ul>
+<h3>API Integration and Error Handling</h3>
+<p>YipYap&#39;s robust authentication and authorization system integrates seamlessly between the frontend and backend, with a focus on comprehensive error handling.</p>
+<ul>
+<li><strong>Frontend API Calls:</strong><ul>
+<li>All API calls requiring authentication (e.g., fetching user settings, managing indexing, interacting with Ollama models) are made using the <code>authFetch</code> function from <code>useAuthFetch</code>. This guarantees that the <code>Authorization: Bearer &lt;token&gt;</code> header is consistently included in the request.</li>
+<li>The <code>authFetch</code> composable is crucial for abstracting away the complexities of token management and refresh, allowing components to focus on data interaction.</li>
+</ul>
+</li>
+<li><strong>Backend API Endpoints:</strong><ul>
+<li>FastAPI endpoints define their required access levels using <code>Depends(get_current_user)</code>, <code>Depends(get_current_active_user)</code>, or <code>Depends(is_admin)</code>.</li>
+<li>These dependencies perform the necessary token validation and role checks.</li>
+<li>If a validation or role check fails, the dependencies automatically raise <code>HTTPException</code> (e.g., <code>status.HTTP_401_UNAUTHORIZED</code> or <code>status.HTTP_403_FORBIDDEN</code>), which FastAPI then translates into appropriate HTTP responses.</li>
+</ul>
+</li>
+<li><strong>Centralized Error Handling:</strong> The <code>useAuthFetch</code> composable acts as a centralized error handler for HTTP status codes related to authentication and authorization. It intercepts <code>401</code> and <code>403</code> responses, triggering token refresh attempts, user logout, and informative notifications to the user via the <code>app.notify</code> function. This provides a consistent and user-friendly experience even when authentication issues arise.</li>
+<li><strong>Security Implications:</strong> By using short-lived access tokens and longer-lived refresh tokens, coupled with automatic token rotation and secure storage (<code>localStorage</code> for tokens, Argon2 for passwords), the system minimizes the window of opportunity for token compromise and enhances overall security.</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>&quot;JWT_SECRET_KEY environment variable is required&quot;</strong></p>
+<ul>
+<li>Ensure your <code>.env</code> file exists and contains the <code>JWT_SECRET_KEY</code> and that it is being loaded correctly by the application.</li>
+<li>Verify the .env file is being loaded correctly</li>
+</ul>
+</li>
+<li><p><strong>&quot;argon2-cffi is required for password hashing&quot;</strong></p>
+<ul>
+<li>Install the required dependency: <code>pip install argon2-cffi</code></li>
+<li>Ensure the package is listed in your requirements.txt file</li>
+</ul>
+</li>
+<li><p><strong>&quot;Could not validate credentials&quot;</strong></p>
+<ul>
+<li>Check that the <code>JWT_SECRET_KEY</code> hasn&#39;t changed between token creation and validation</li>
+<li>Verify the token hasn&#39;t expired</li>
+</ul>
+</li>
+<li><p><strong>Session timeout issues</strong></p>
+<ul>
+<li>The application now automatically refreshes tokens, reducing session timeouts</li>
+<li>If you still experience issues, check the refresh token expiration settings</li>
+</ul>
+</li>
+<li><p><strong>Password hash migration issues</strong></p>
+<ul>
+<li>Legacy bcrypt hashes are automatically migrated to Argon2 during login</li>
+<li>If migration fails, users can still log in with their existing passwords</li>
+<li>Check application logs for any migration-related warnings</li>
+</ul>
+</li>
+</ol>
+<h3>Persistent 401 Unauthorized Errors for GET Requests</h3>
+<p>If you are logged in as an admin but still receive <code>401 Unauthorized</code> errors for specific GET requests (e.g., to index or Ollama status endpoints) while POST requests to other endpoints work, the issue is almost certainly on the frontend. This typically indicates that the GET requests are not including the <code>Authorization</code> header.</p>
+<p><strong>Steps to diagnose and fix on the frontend:</strong></p>
+<ol>
+<li><p><strong>Verify <code>useAuthFetch</code> Usage:</strong> Ensure that any component or composable making API calls (especially GET requests to protected endpoints like <code>/api/index/status</code> or <code>/api/ollama/status</code>) is explicitly using the <code>authFetch</code> function provided by the <code>useAuthFetch</code> composable. Direct <code>fetch</code> calls will bypass the authentication header injection.</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Incorrect: Bypasses authentication</span>
+<span class="hljs-comment">// const response = await fetch(&#x27;/api/index/status&#x27;);</span>
+
+<span class="hljs-comment">// Correct: Uses the authenticated fetch wrapper</span>
+<span class="hljs-keyword">import</span> { useAuthFetch } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/composables/useAuthFetch&quot;</span>;
+<span class="hljs-comment">// ...</span>
+<span class="hljs-keyword">const</span> authFetch = <span class="hljs-title function_">useAuthFetch</span>();
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">authFetch</span>(<span class="hljs-string">&quot;/api/index/status&quot;</span>);</code></pre></li>
+<li><p><strong>Hard Refresh Browser:</strong> After making changes to your frontend code, perform a hard refresh in your browser (Ctrl + Shift + R or Cmd + Shift + R). This ensures that the browser loads the latest JavaScript files and bypasses any cached versions that might not include your code updates.</p>
+</li>
+<li><p><strong>Inspect Network Tab:</strong> Use your browser&#39;s developer tools (F12) and go to the &quot;Network&quot; tab.</p>
+<ul>
+<li>Inspect the failing GET request.</li>
+<li>Under &quot;Request Headers,&quot; confirm that an <code>Authorization: Bearer &lt;your_jwt_token&gt;</code> header is present. If it&#39;s missing, the frontend is not correctly attaching it.</li>
+<li>Check the &quot;Response&quot; tab for the exact status code and body returned by the server.</li>
+</ul>
+</li>
+</ol>
+<h2>Migration from Previous Versions</h2>
+<h3>From Versions Without Refresh Tokens</h3>
+<p>If you&#39;re upgrading from a version without refresh tokens:</p>
+<ol>
+<li>Users will need to log in again after the upgrade</li>
+<li>The new system will automatically handle token refresh</li>
+<li>No changes needed to existing user accounts</li>
+</ol>
+<h3>From Versions with bcrypt Password Hashing</h3>
+<p>If you&#39;re upgrading from a version that used bcrypt for password hashing:</p>
+<ol>
+<li><strong>Automatic Migration:</strong> All existing bcrypt password hashes will be automatically migrated to Argon2 during user login</li>
+<li><strong>Backward Compatibility:</strong> Users can continue using their existing passwords without any changes</li>
+<li><strong>Seamless Upgrade:</strong> The migration process is transparent and requires no user intervention</li>
+<li><strong>Security Enhancement:</strong> All passwords will eventually use the more secure Argon2 algorithm</li>
+</ol>
+<h3>Hash Algorithm Detection</h3>
+<p>The system includes utility functions to detect hash algorithms:</p>
+<ul>
+<li><strong><code>is_argon2_hash(hashed_password: str) -&gt; bool</code></strong>: Checks if a hash is in Argon2 format</li>
+<li><strong><code>is_bcrypt_hash(hashed_password: str) -&gt; bool</code></strong>: Checks if a hash is in bcrypt format</li>
+<li><strong><code>get_hash_algorithm(hashed_password: str) -&gt; str</code></strong>: Returns the algorithm name (&#39;argon2&#39;, &#39;bcrypt&#39;, or &#39;unknown&#39;)</li>
+</ul>
+<h2>Security Considerations</h2>
+<ul>
+<li><strong>Secret Key Management:</strong> The secret key is the most critical security component</li>
+<li><strong>Key Backup:</strong> Keep backups of your secret key in secure storage</li>
+<li><strong>Environment Separation:</strong> Use different secret keys for each environment (development, staging, production)</li>
+<li><strong>Monitoring:</strong> Monitor for any authentication errors in production logs</li>
+<li><strong>Rate Limiting:</strong> Consider implementing rate limiting for login attempts</li>
+<li><strong>Password Strength:</strong> Use strong passwords for user accounts</li>
+<li><strong>Hash Algorithm:</strong> Argon2 provides superior security compared to bcrypt, offering better resistance against hardware-based attacks</li>
+<li><strong>Automatic Migration:</strong> The system automatically migrates legacy hashes to maintain security standards</li>
+<li><strong>Thread Safety:</strong> The password hashing system is thread-safe and can be used in concurrent environments</li>
+</ul>
+<h2>Dependencies</h2>
+<p>The authentication system requires the following Python packages:</p>
+<ul>
+<li><strong><code>argon2-cffi</code></strong>: Modern Argon2 password hashing implementation</li>
+<li><strong><code>bcrypt</code></strong>: Legacy bcrypt support for hash migration</li>
+<li><strong><code>PyJWT</code></strong>: JWT token creation and validation</li>
+<li><strong><code>python-jose</code></strong>: Additional JWT functionality</li>
+<li><strong><code>python-dotenv</code></strong>: Environment variable management</li>
+</ul>
+<p>Install these dependencies using:</p>
+<pre><code class="hljs language-bash">pip install argon2-cffi bcrypt PyJWT python-jose python-dotenv</code></pre><p>Or ensure they are included in your <code>requirements.txt</code> file.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NLWeb Integration - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>NLWeb Integration</h1>
+      <div class="markdown-content"><h1>NLWeb Integration</h1>
+<p>This document describes configuration and rollout for integrating NLWeb into yipyap.</p>
+<h2>Configuration</h2>
+<ul>
+<li>Environment variables:<ul>
+<li><code>NLWEB_ENABLED</code>: set to <code>true</code> to enable the integration (default: false)</li>
+<li><code>NLWEB_CONFIG_DIR</code>: path to NLWeb config directory (default: <code>config/nlweb</code>)</li>
+<li><code>NLWEB_BASE_URL</code>: optional external NLWeb server URL (omit to use embedded router)</li>
+</ul>
+</li>
+</ul>
+<h3>Health and Watchdog Tunables</h3>
+<p>The router service performs periodic health checks and supports bounded exponential backoff for reconnection.</p>
+<ul>
+<li><code>NLWEB_HEALTH_INTERVAL_S</code> (default 120): health probe cadence</li>
+<li><code>NLWEB_RECONNECT_MAX_ATTEMPTS</code> (default 5)</li>
+<li><code>NLWEB_RECONNECT_BASE_DELAY_MS</code> (default 200)</li>
+<li><code>NLWEB_RECONNECT_MAX_DELAY_MS</code> (default 5000)</li>
+</ul>
+<p>These are mirrored in <code>AppConfig</code> as <code>nlweb_health_interval_s</code>, <code>nlweb_reconnect_max_attempts</code>, <code>nlweb_reconnect_base_delay_ms</code>, and <code>nlweb_reconnect_max_delay_ms</code>.</p>
+<h3>Rollout and Performance Configuration</h3>
+<p>Additional environment variables for rollout management:</p>
+<ul>
+<li><code>NLWEB_CANARY_ENABLED</code>: enable canary rollout (default: false)</li>
+<li><code>NLWEB_CANARY_PERCENTAGE</code>: percentage of users for canary (default: 5.0)</li>
+<li><code>NLWEB_SUGGESTION_TIMEOUT_MS</code>: suggestion timeout in milliseconds (default: 1500)</li>
+<li><code>NLWEB_CACHE_TTL_SECONDS</code>: cache TTL for suggestions (default: 10)</li>
+<li><code>NLWEB_MAX_CACHE_ENTRIES</code>: maximum cache entries (default: 64)</li>
+<li><code>NLWEB_RATE_LIMIT_REQUESTS_PER_MINUTE</code>: rate limiting (default: 30)</li>
+<li><code>NLWEB_ROLLBACK_ENABLED</code>: emergency rollback flag (default: false)</li>
+<li><code>NLWEB_PERFORMANCE_MONITORING_ENABLED</code>: performance monitoring (default: true)</li>
+</ul>
+<h2>Backend wiring</h2>
+<ul>
+<li>The <code>AppConfig</code> includes <code>nlweb_enabled</code>, <code>nlweb_config_dir</code>, <code>nlweb_base_url</code>.</li>
+<li><code>ConfigManagerService</code> reads env overrides for these keys.</li>
+<li><code>service_setup</code> logs whether NLWeb is enabled after core services start. Subsequent phases add router and bridge services behind this flag.</li>
+</ul>
+<h2>Frontend UX</h2>
+<ul>
+<li>Streaming SSE will interleave <code>tool_execution</code> and <code>tool_result</code> chunks. The <code>useOllama</code> composable already handles these chunk types and updates conversation history accordingly.</li>
+</ul>
+<h2>Rollout Strategy</h2>
+<h3>Environment-Specific Configurations</h3>
+<p><strong>Local Development:</strong></p>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">false</span> NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">false</span> python -m app</code></pre><p><strong>Staging Environment:</strong></p>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_PERCENTAGE=10 NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">true</span> python -m app</code></pre><p><strong>Production Environment:</strong></p>
+<pre><code class="hljs language-bash">NLWEB_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_ENABLED=<span class="hljs-literal">true</span> NLWEB_CANARY_PERCENTAGE=5 NLWEB_ROLLBACK_ENABLED=<span class="hljs-literal">true</span> python -m app</code></pre><h3>Canary Rollout</h3>
+<p>The canary rollout system enables NLWeb for a percentage of users based on their user ID hash. This allows for gradual rollout and monitoring before full deployment.</p>
+<ul>
+<li>Canary percentage is configurable via <code>NLWEB_CANARY_PERCENTAGE</code></li>
+<li>User selection is deterministic based on user ID hash</li>
+<li>Users not in canary receive empty suggestions (silent fallback)</li>
+<li>Canary status is logged for monitoring</li>
+</ul>
+<h3>Performance Monitoring (Ops)</h3>
+<p>The system includes comprehensive performance monitoring:</p>
+<ul>
+<li><strong>Suggestion Latency</strong>: Tracks P95 and P99 latencies for tool suggestions</li>
+<li><strong>Cache Performance</strong>: Monitors cache hit rates and cache efficiency</li>
+<li><strong>Tool Execution</strong>: Tracks execution times for individual tools</li>
+<li><strong>Rate Limiting</strong>: Monitors rate limit violations and user patterns</li>
+</ul>
+<h3>Emergency Rollback</h3>
+<p>Emergency rollback can be enabled via:</p>
+<ol>
+<li><strong>Environment Variable</strong>: Set <code>NLWEB_ROLLBACK_ENABLED=true</code></li>
+<li><strong>API Endpoint</strong>: POST to <code>/api/nlweb/rollback</code> (admin only)</li>
+<li><strong>Rollout Script</strong>: Use <code>./scripts/nlweb_rollout.sh -a rollback</code></li>
+</ol>
+<p>When rollback is enabled:</p>
+<ul>
+<li>All NLWeb suggestions return empty results</li>
+<li>Performance monitoring continues</li>
+<li>Health checks return DEGRADED status</li>
+<li>Rollback can be disabled via the same methods</li>
+</ul>
+<h2>Rollout Script</h2>
+<p>The <code>scripts/nlweb_rollout.sh</code> script provides a command-line interface for managing NLWeb deployment:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check current status</span>
+./scripts/nlweb_rollout.sh -e <span class="hljs-built_in">local</span> -a status
+
+<span class="hljs-comment"># Enable canary rollout</span>
+./scripts/nlweb_rollout.sh -e staging -a canary
+
+<span class="hljs-comment"># Enable full rollout</span>
+./scripts/nlweb_rollout.sh -e production -a <span class="hljs-built_in">enable</span>
+
+<span class="hljs-comment"># Emergency rollback</span>
+./scripts/nlweb_rollout.sh -e production -a rollback</code></pre><h2>API Endpoints</h2>
+<h3>Status and Monitoring</h3>
+<ul>
+<li><code>GET /api/nlweb/status</code> - Get NLWeb integration status and performance metrics</li>
+<li><code>GET /api/nlweb/verification</code> - Get verification checklist for rollout</li>
+<li><code>POST /api/nlweb/rollback</code> - Enable/disable emergency rollback (admin only)</li>
+</ul>
+<h3>Example Status Response</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;canary_enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;canary_percentage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rollback_enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;performance_monitoring&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;performance&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;total_requests&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">150</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;avg_latency_ms&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">245.3</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;p95_latency_ms&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1200.0</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;p99_latency_ms&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1800.0</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_hit_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">35.2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tool_execution_stats&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;git_status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;avg_execution_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.8</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;max_execution_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2.1</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;budget&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5.0</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;within_budget&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;total_executions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;cache&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;cache_hits&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">53</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_misses&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">97</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_hit_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">35.3</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_size&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_max_entries&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">64</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;cache_ttl_seconds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Performance Budgets</h2>
+<h3>Suggestion Latency Budgets</h3>
+<ul>
+<li><strong>Cold Start</strong>: &lt; 1.5s P95 (first request after startup)</li>
+<li><strong>Warm Cache</strong>: &lt; 300ms P95 (subsequent requests)</li>
+<li><strong>Timeout</strong>: 1.5s maximum per suggestion request</li>
+</ul>
+<h3>Tool Execution Budgets</h3>
+<ul>
+<li><strong>git_status</strong>: 5 seconds</li>
+<li><strong>list_files</strong>: 3 seconds</li>
+<li><strong>read_file</strong>: 2 seconds</li>
+<li><strong>generate_captions</strong>: 30 seconds</li>
+<li><strong>Default</strong>: 10 seconds</li>
+</ul>
+<h3>Cache Performance Targets</h3>
+<ul>
+<li><strong>Cache Hit Rate</strong>: &gt; 20% for production</li>
+<li><strong>Cache TTL</strong>: 10 seconds (configurable)</li>
+<li><strong>Cache Size</strong>: 64 entries maximum (configurable)</li>
+</ul>
+<h2>Verification Checklist</h2>
+<p>The verification endpoint provides automated checks for rollout readiness:</p>
+<ul>
+<li><strong>Suggestion Latency</strong>: P95 under 1.5s</li>
+<li><strong>Cache Hit Rate</strong>: Above 20%</li>
+<li><strong>Request Volume</strong>: At least 10 requests processed</li>
+<li><strong>Configuration</strong>: Proper settings for environment</li>
+<li><strong>Rollback Status</strong>: Emergency rollback disabled</li>
+</ul>
+<h2>Quick Troubleshooting Tip</h2>
+<ul>
+<li>If the server logs do not show NLWeb status, verify env variables are passed to the Python process and that <code>ConfigManagerService</code> loads without errors.</li>
+</ul>
+<h2>Troubleshooting Guide</h2>
+<p>This section covers common issues and their solutions when working with the NLWeb integration.</p>
+<h3>Configuration Issues</h3>
+<p><strong>Problem</strong>: NLWeb integration not starting</p>
+<ul>
+<li><strong>Symptoms</strong>: Server logs show &quot;NLWeb integration disabled&quot; or no NLWeb-related messages</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>NLWEB_ENABLED=true</code> is set in environment</li>
+<li>Check that <code>NLWEB_CONFIG_DIR</code> points to a valid directory containing <code>tools.xml</code></li>
+<li>Ensure the config directory has proper read permissions</li>
+<li>Restart the server after changing environment variables</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: Router service fails to initialize</p>
+<ul>
+<li><strong>Symptoms</strong>: Error messages about &quot;NLWeb router service not available&quot; or XML parsing errors</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>config/nlweb/tools.xml</code> exists and is valid XML</li>
+<li>Check XML syntax with <code>xmllint --noout config/nlweb/tools.xml</code></li>
+<li>Ensure all referenced tool names in XML match actual tool registry names</li>
+<li>Check server logs for specific XML parsing error details</li>
+</ol>
+</li>
+</ul>
+<h3>Performance Issues</h3>
+<p><strong>Problem</strong>: Tool suggestions are slow (&gt;1.5s)</p>
+<ul>
+<li><strong>Symptoms</strong>: Long delays before tool suggestions appear</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Check if router cache is warming properly (look for &quot;cache warm&quot; logs)</li>
+<li>Verify LLM endpoint is responsive and not overloaded</li>
+<li>Consider reducing <code>top_k</code> parameter in router suggestions</li>
+<li>Monitor system resources (CPU, memory) during suggestions</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: Tool execution timeouts</p>
+<ul>
+<li><strong>Symptoms</strong>: Tools fail with timeout errors or take too long to complete</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Check individual tool performance and optimize slow operations</li>
+<li>Increase timeout values in tool configurations if appropriate</li>
+<li>Verify external dependencies (databases, APIs) are responsive</li>
+<li>Consider implementing tool-specific timeouts</li>
+</ol>
+</li>
+</ul>
+<h3>Rollout Issues</h3>
+<p><strong>Problem</strong>: Canary rollout not working</p>
+<ul>
+<li><strong>Symptoms</strong>: No users receiving NLWeb suggestions despite canary being enabled</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>NLWEB_CANARY_ENABLED=true</code> is set</li>
+<li>Check <code>NLWEB_CANARY_PERCENTAGE</code> value (should be &gt; 0)</li>
+<li>Ensure user IDs are being passed correctly in context</li>
+<li>Check logs for canary selection messages</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: Emergency rollback not working</p>
+<ul>
+<li><strong>Symptoms</strong>: NLWeb still active despite rollback being enabled</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>NLWEB_ROLLBACK_ENABLED=true</code> is set</li>
+<li>Restart the server after enabling rollback</li>
+<li>Check API endpoint <code>/api/nlweb/rollback</code> for status</li>
+<li>Verify admin permissions for API rollback</li>
+</ol>
+</li>
+</ul>
+<h3>XML Configuration Issues</h3>
+<p><strong>Problem</strong>: Invalid tool suggestions</p>
+<ul>
+<li><strong>Symptoms</strong>: Router suggests inappropriate tools or wrong parameters</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Review and improve tool descriptions in <code>tools.xml</code></li>
+<li>Add more specific examples to tool definitions</li>
+<li>Check that parameter extraction hints are clear and accurate</li>
+<li>Test with simpler queries to isolate the issue</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: XML parsing errors</p>
+<ul>
+<li><strong>Symptoms</strong>: Server fails to start with XML-related errors</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Validate XML syntax: <code>xmllint --noout config/nlweb/tools.xml</code></li>
+<li>Check for special characters in tool descriptions</li>
+<li>Ensure all XML tags are properly closed</li>
+<li>Verify XML encoding is UTF-8</li>
+</ol>
+</li>
+</ul>
+<h3>MCP Proxy Issues</h3>
+<p><strong>Problem</strong>: External NLWeb server connection failures</p>
+<ul>
+<li><strong>Symptoms</strong>: 404/503 errors when using <code>NLWEB_BASE_URL</code></li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>NLWEB_BASE_URL</code> is correct and accessible</li>
+<li>Check network connectivity to external server</li>
+<li>Ensure external server supports required endpoints (<code>/ask</code>, <code>/mcp</code>, <code>/sites</code>)</li>
+<li>Verify authentication if external server requires it</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: MCP JSON-RPC errors</p>
+<ul>
+<li><strong>Symptoms</strong>: MCP tool calls fail with JSON-RPC errors</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Check MCP method names match external server capabilities</li>
+<li>Verify JSON-RPC request format is correct</li>
+<li>Ensure parameters match expected schema</li>
+<li>Check external server logs for detailed error information</li>
+</ol>
+</li>
+</ul>
+<h3>Streaming and Frontend Issues</h3>
+<p><strong>Problem</strong>: Tool execution chunks not appearing in frontend</p>
+<ul>
+<li><strong>Symptoms</strong>: Backend executes tools but frontend doesn&#39;t show progress</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify <code>useOllama.ts</code> handles <code>tool_execution</code> and <code>tool_result</code> chunks</li>
+<li>Check SSE stream is properly formatted</li>
+<li>Ensure frontend notification system is working</li>
+<li>Check browser console for JavaScript errors</li>
+</ol>
+</li>
+</ul>
+<p><strong>Problem</strong>: Assistant responses are incomplete</p>
+<ul>
+<li><strong>Symptoms</strong>: Tool results not integrated into final response</li>
+<li><strong>Solutions</strong>:<ol>
+<li>Verify tool results are properly formatted for LLM context</li>
+<li>Check that <code>tool_result</code> chunks include necessary data</li>
+<li>Ensure LLM has sufficient context about executed tools</li>
+<li>Monitor assistant pipeline logs for integration issues</li>
+</ol>
+</li>
+</ul>
+<h3>Debugging Tools</h3>
+<p><strong>Enable Debug Logging</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Set debug level for NLWeb components</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=DEBUG
+<span class="hljs-built_in">export</span> NLWEB_DEBUG=<span class="hljs-literal">true</span></code></pre><p><strong>Test Router Suggestions</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Use the demo script to test router functionality</span>
+python scripts/nlweb_demo.py --query <span class="hljs-string">&quot;your test query&quot;</span></code></pre><p><strong>Check Tool Registry</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Verify tools are properly registered</span>
+curl http://localhost:7000/api/tools/list</code></pre><p><strong>Monitor Server Logs</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Watch for NLWeb-related log messages</span>
+<span class="hljs-built_in">tail</span> -f logs/app.log | grep -i nlweb</code></pre><h3>Common Error Messages</h3>
+<ul>
+<li><strong>&quot;NLWeb router service not available&quot;</strong>: Router service failed to start or is disabled</li>
+<li><strong>&quot;Tool suggestions rate-limited&quot;</strong>: Too many requests in short time period</li>
+<li><strong>&quot;XML parsing failed&quot;</strong>: Invalid XML syntax in tools.xml</li>
+<li><strong>&quot;External server unreachable&quot;</strong>: Cannot connect to NLWEB_BASE_URL</li>
+<li><strong>&quot;Tool execution timeout&quot;</strong>: Tool took too long to complete</li>
+<li><strong>&quot;Parameter validation failed&quot;</strong>: Extracted parameters don&#39;t match tool schema</li>
+</ul>
+<h3>Performance Monitoring</h3>
+<p>Monitor these metrics to ensure optimal performance:</p>
+<ul>
+<li><strong>Router selection latency</strong>: Should be &lt;300ms (cached) or &lt;1.5s (cold)</li>
+<li><strong>Tool execution success rate</strong>: Should be ≥97%</li>
+<li><strong>Cache hit rate</strong>: Should be &gt;80% for common queries</li>
+<li><strong>Memory usage</strong>: Monitor for memory leaks in router service</li>
+<li><strong>Error rates</strong>: Should be &lt;1% for production use</li>
+</ul>
+<h3>Getting Help</h3>
+<p>If you encounter issues not covered in this guide:</p>
+<ol>
+<li>Check the server logs for detailed error messages</li>
+<li>Run the demo script to isolate the problem</li>
+<li>Verify configuration with the troubleshooting tools above</li>
+<li>Check the NLWeb project documentation for external server issues</li>
+<li>Review recent changes to tools.xml or router configuration</li>
+</ol>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

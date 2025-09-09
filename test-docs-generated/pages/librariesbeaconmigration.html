@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migration Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Migration Guide</h1>
+      <div class="markdown-content"><h1>Migration Guide</h1>
+<p>This guide helps you migrate from existing logging solutions to the Beacon library.</p>
+<h2>From <code>utils/lib/logging_utils.py</code></h2>
+<h3>Before (Old Code)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> utils.lib.logging_utils <span class="hljs-keyword">import</span> setup_logger
+
+logger = setup_logger(<span class="hljs-string">&quot;my_app&quot;</span>, log_dir=<span class="hljs-string">&quot;/var/log&quot;</span>, debug=<span class="hljs-literal">True</span>)</code></pre><h3>After (Beacon)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> setup_logger
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+logger = setup_logger(<span class="hljs-string">&quot;my_app&quot;</span>, log_dir=Path(<span class="hljs-string">&quot;/var/log&quot;</span>), debug=<span class="hljs-literal">True</span>)</code></pre><h2>From <code>games/mlgame/backend/app/utils/logging.py</code></h2>
+<h3>Before (Old Code)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> games.mlgame.backend.app.utils.logging <span class="hljs-keyword">import</span> (
+    setup_logging,
+    get_logger,
+    log_request_info,
+    log_training_event,
+    log_model_event
+)
+
+setup_logging()
+logger = get_logger(<span class="hljs-string">&quot;my_app&quot;</span>)
+
+log_request_info(logger, {
+    <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;GET&quot;</span>,
+    <span class="hljs-string">&quot;path&quot;</span>: <span class="hljs-string">&quot;/api/users&quot;</span>,
+    <span class="hljs-string">&quot;status_code&quot;</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-string">&quot;duration&quot;</span>: <span class="hljs-number">0.15</span>
+})
+
+log_training_event(logger, <span class="hljs-string">&quot;session_123&quot;</span>, <span class="hljs-string">&quot;training_start&quot;</span>)
+log_model_event(logger, <span class="hljs-number">1</span>, <span class="hljs-string">&quot;model_saved&quot;</span>)</code></pre><h3>After (Beacon)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> (
+    setup_structured_logging,
+    get_structured_logger,
+    RequestLogger,
+    TrainingLogger
+)
+
+<span class="hljs-comment"># Setup structured logging</span>
+setup_structured_logging()
+
+<span class="hljs-comment"># Get structured logger</span>
+logger = get_structured_logger(<span class="hljs-string">&quot;my_app&quot;</span>)
+
+<span class="hljs-comment"># Request logging</span>
+request_logger = RequestLogger()
+request_logger.log_request(
+    method=<span class="hljs-string">&quot;GET&quot;</span>,
+    path=<span class="hljs-string">&quot;/api/users&quot;</span>,
+    status_code=<span class="hljs-number">200</span>,
+    duration=<span class="hljs-number">0.15</span>
+)
+
+<span class="hljs-comment"># Training logging</span>
+training_logger = TrainingLogger()
+training_logger.log_training_event(<span class="hljs-string">&quot;session_123&quot;</span>, <span class="hljs-string">&quot;training_start&quot;</span>)
+training_logger.log_model_event(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;model_saved&quot;</span>)</code></pre><h2>From PawPrint Logging Manager</h2>
+<h3>Before (Old Code)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pawprint.core.logging_manager <span class="hljs-keyword">import</span> LoggingManager
+
+logging_manager = LoggingManager()
+<span class="hljs-keyword">with</span> logging_manager.performance_tracker(<span class="hljs-string">&quot;operation&quot;</span>, {<span class="hljs-string">&quot;context&quot;</span>: <span class="hljs-string">&quot;data&quot;</span>}):
+    <span class="hljs-comment"># Your operation here</span>
+    <span class="hljs-keyword">pass</span></code></pre><h3>After (Beacon)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> performance_tracker
+
+<span class="hljs-keyword">with</span> performance_tracker(<span class="hljs-string">&quot;operation&quot;</span>, {<span class="hljs-string">&quot;context&quot;</span>: <span class="hljs-string">&quot;data&quot;</span>}):
+    <span class="hljs-comment"># Your operation here</span>
+    <span class="hljs-keyword">pass</span></code></pre><h2>Environment Variables</h2>
+<h3>Before</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Various environment variables for different logging systems</span>
+LOG_LEVEL=INFO
+LOG_FORMAT=json
+LOG_DIR=/var/log</code></pre><h3>After</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Beacon environment variables</span>
+BEACON_LOG_LEVEL=INFO
+BEACON_LOG_FORMAT=json
+BEACON_LOG_DIR=/var/log
+BEACON_LOG_NAME=my_app</code></pre><h2>Configuration Migration</h2>
+<h3>Before (Custom Config)</h3>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Custom configuration object</span>
+config = {
+    <span class="hljs-string">&quot;level&quot;</span>: <span class="hljs-string">&quot;DEBUG&quot;</span>,
+    <span class="hljs-string">&quot;format&quot;</span>: <span class="hljs-string">&quot;json&quot;</span>,
+    <span class="hljs-string">&quot;handlers&quot;</span>: [<span class="hljs-string">&quot;console&quot;</span>, <span class="hljs-string">&quot;file&quot;</span>],
+    <span class="hljs-string">&quot;log_dir&quot;</span>: <span class="hljs-string">&quot;/var/log&quot;</span>
+}</code></pre><h3>After (Beacon Config)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> LogConfig, LogLevel, LogFormat, FileHandlerConfig
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+config = LogConfig(
+    level=LogLevel.DEBUG,
+    <span class="hljs-built_in">format</span>=LogFormat.JSON,
+    file=FileHandlerConfig(
+        directory=Path(<span class="hljs-string">&quot;/var/log&quot;</span>),
+        enabled=<span class="hljs-literal">True</span>
+    )
+)</code></pre><h2>Performance Monitoring Migration</h2>
+<h3>Before (Custom Performance Tracking)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> time
+
+start_time = time.time()
+<span class="hljs-comment"># Your operation</span>
+duration = time.time() - start_time
+logger.info(<span class="hljs-string">f&quot;Operation took <span class="hljs-subst">{duration:<span class="hljs-number">.3</span>f}</span>s&quot;</span>)</code></pre><h3>After (Beacon Performance Tracking)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> performance_tracker
+
+<span class="hljs-keyword">with</span> performance_tracker(<span class="hljs-string">&quot;operation_name&quot;</span>, {<span class="hljs-string">&quot;context&quot;</span>: <span class="hljs-string">&quot;data&quot;</span>}):
+    <span class="hljs-comment"># Your operation</span>
+    <span class="hljs-keyword">pass</span></code></pre><h2>Request Logging Migration</h2>
+<h3>Before (Custom Request Logging)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">log_request</span>(<span class="hljs-params">request, response, duration</span>):
+    logger.info(<span class="hljs-string">f&quot;<span class="hljs-subst">{request.method}</span> <span class="hljs-subst">{request.path}</span> - <span class="hljs-subst">{response.status_code}</span> (<span class="hljs-subst">{duration:<span class="hljs-number">.3</span>f}</span>s)&quot;</span>)</code></pre><h3>After (Beacon Request Logging)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> RequestLogger
+
+request_logger = RequestLogger()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">log_request</span>(<span class="hljs-params">request, response, duration</span>):
+    request_logger.log_request(
+        method=request.method,
+        path=request.path,
+        status_code=response.status_code,
+        duration=duration,
+        user_agent=request.headers.get(<span class="hljs-string">&quot;User-Agent&quot;</span>),
+        ip_address=request.remote_addr
+    )</code></pre><h2>Training Logging Migration</h2>
+<h3>Before (Custom Training Logging)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">log_training_step</span>(<span class="hljs-params">step, epoch, loss</span>):
+    logger.info(<span class="hljs-string">f&quot;Step <span class="hljs-subst">{step}</span>, Epoch <span class="hljs-subst">{epoch}</span>, Loss: <span class="hljs-subst">{loss}</span>&quot;</span>)</code></pre><h3>After (Beacon Training Logging)</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> TrainingLogger
+
+training_logger = TrainingLogger()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">log_training_step</span>(<span class="hljs-params">step, epoch, loss</span>):
+    training_logger.log_training_step(
+        session_id=<span class="hljs-string">&quot;train_001&quot;</span>,
+        step=step,
+        epoch=epoch,
+        loss=loss
+    )</code></pre><h2>Benefits of Migration</h2>
+<ol>
+<li><strong>Unified API</strong>: Single, consistent logging interface across all projects</li>
+<li><strong>Better Performance</strong>: Built-in performance monitoring and metrics collection</li>
+<li><strong>Structured Logging</strong>: JSON and structured log formats for better parsing</li>
+<li><strong>Type Safety</strong>: Full type hints and Pydantic validation</li>
+<li><strong>Flexible Configuration</strong>: Environment variables, configuration objects, and more</li>
+<li><strong>Log Aggregation</strong>: Automatic log rotation and specialized handlers</li>
+<li><strong>Request Tracking</strong>: Built-in HTTP request/response logging</li>
+<li><strong>Training Support</strong>: Specialized ML training event logging</li>
+</ol>
+<h2>Testing Migration</h2>
+<p>After migrating, test your logging setup:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> beacon <span class="hljs-keyword">import</span> setup_logger, performance_tracker
+
+<span class="hljs-comment"># Test basic logging</span>
+logger = setup_logger(<span class="hljs-string">&quot;test_app&quot;</span>)
+logger.info(<span class="hljs-string">&quot;Migration successful!&quot;</span>)
+
+<span class="hljs-comment"># Test performance tracking</span>
+<span class="hljs-keyword">with</span> performance_tracker(<span class="hljs-string">&quot;test_operation&quot;</span>):
+    <span class="hljs-keyword">import</span> time
+    time.sleep(<span class="hljs-number">0.1</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;✅ Migration test completed!&quot;</span>)</code></pre><h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Import Errors</strong>: Make sure beacon is installed: <code>pip install beacon</code></li>
+<li><strong>Configuration Errors</strong>: Check that LogConfig values are valid</li>
+<li><strong>Handler Issues</strong>: Verify that log directories exist and are writable</li>
+<li><strong>Performance Issues</strong>: Ensure performance tracking is properly configured</li>
+</ol>
+<h3>Getting Help</h3>
+<ul>
+<li>Check the <a href="README.md">README.md</a> for detailed documentation</li>
+<li>Run the <a href="examples/basic_usage.py">examples/basic_usage.py</a> to see working examples</li>
+<li>Review the test files in <a href="tests/">tests/</a> for usage patterns</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

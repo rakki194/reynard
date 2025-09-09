@@ -17,7 +17,7 @@ Reynard follows the "cunning fox" philosophy:
 
 ### Prerequisites
 
-- **Node.js** 18+ and npm
+- **Node.js** 18+ and pnpm
 - **Git** for version control
 - **TypeScript** knowledge
 - **SolidJS** experience (helpful but not required)
@@ -30,19 +30,19 @@ git clone https://github.com/rakki194/reynard.git
 cd reynard
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start development
-npm run dev
+pnpm run dev
 
 # Run tests
-npm test
+pnpm test
 
 # Build all packages
-npm run build
+pnpm run build
 
 # Type check
-npm run typecheck
+pnpm run typecheck
 ```
 
 ### Project Structure
@@ -76,7 +76,7 @@ reynard/
 2. **Initialize Package**
 
    ```bash
-   npm init -y
+   pnpm init
    ```
 
 3. **Set Up Package Structure**
@@ -260,7 +260,7 @@ Brief description of the package.
 ## Installation
 
 ```bash
-npm install reynard-package-name
+pnpm install reynard-package-name
 ```
 ````
 
@@ -298,19 +298,19 @@ function App() {
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Run tests with coverage
-npm test:coverage
+pnpm test:coverage
 
 # Run tests in UI mode
-npm test:ui
+pnpm test:ui
 
 # Run specific test file
-npm test MyComponent.test.tsx
+pnpm test MyComponent.test.tsx
 
 # Run tests in watch mode
-npm test:watch
+pnpm test:watch
 ```
 
 ### Test Coverage
@@ -332,13 +332,13 @@ npm test:watch
 
 ```bash
 # Add production dependency
-npm install package-name
+pnpm install package-name
 
 # Add development dependency
-npm install -D package-name
+pnpm install -D package-name
 
 # Add peer dependency
-npm install -P package-name
+pnpm install -P package-name
 ```
 
 ### Version Management
@@ -351,13 +351,13 @@ npm install -P package-name
 
 ```bash
 # Build package
-npm run build
+pnpm run build
 
 # Run tests
-npm test
+pnpm test
 
 # Publish to npm
-npm publish
+pnpm publish
 ```
 
 ## 🔄 Pull Request Process
@@ -544,10 +544,10 @@ Any other context about the feature request.
 
 ### Documentation
 
-- **[Overview](./OVERVIEW.md)** - Framework overview
-- **[Quick Start](./QUICKSTART.md)** - Getting started guide
-- **[Tutorial](./TUTORIAL.md)** - Complete tutorial
-- **[API Reference](./API.md)** - Complete API documentation
+- **[Overview](./overview.md)** - Framework overview
+- **[Quick Start](./quickstart.md)** - Getting started guide
+- **[Tutorial](./tutorial.md)** - Complete tutorial
+- **[API Reference](./api.md)** - Complete API documentation
 
 ## 🏆 Recognition
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Locale - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Locale</h1>
+      <div class="markdown-content"><h1>Locale</h1>
+<p>For applications where the numbers of ticks on scales must be formatted accordingly with a language sensitive number formatting, you can enable this kind of formatting by setting the <code>locale</code> option.</p>
+<p>The locale is a string that is a <a href="https://www.unicode.org/reports/tr35/tr35.html#BCP_47_Conformance">Unicode BCP 47 locale identifier</a>.</p>
+<p>A Unicode BCP 47 locale identifier consists of</p>
+<ol>
+<li>a language code,</li>
+<li>(optionally) a script code,</li>
+<li>(optionally) a region (or country) code,</li>
+<li>(optionally) one or more variant codes, and</li>
+<li>(optionally) one or more extension sequences,</li>
+</ol>
+<p>with all present components separated by hyphens.</p>
+<p>By default, the chart is using the default locale of the platform which is running on.</p>
+<h2>Configuration Options</h2>
+<p>Namespace: <code>options</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>locale</code></td>
+<td><code>string</code></td>
+<td><code>undefined</code></td>
+<td>a string with a BCP 47 language tag, leveraging on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">INTL NumberFormat</a>.</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

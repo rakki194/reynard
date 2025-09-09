@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligent Package Unloading System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Intelligent Package Unloading System</h1>
+      <div class="markdown-content"><h1>Intelligent Package Unloading System</h1>
+<p>The Intelligent Package Unloading System is a comprehensive solution for managing memory usage in the lazy loading system by automatically unloading packages based on various criteria including memory pressure, usage patterns, user preferences, and system resources.</p>
+<h2>Overview</h2>
+<p>The system provides intelligent, adaptive package unloading that balances memory efficiency with application performance. It automatically monitors package usage and memory pressure to make informed decisions about when to unload packages from memory.</p>
+<h2>Features</h2>
+<h3>Core Functionality</h3>
+<ul>
+<li><strong>Memory Pressure Unloading</strong>: Automatically unloads packages when system memory pressure is high</li>
+<li><strong>Usage Pattern Unloading</strong>: Unloads packages based on inactivity timeouts</li>
+<li><strong>User Preference Control</strong>: Allows users to prevent specific packages from being unloaded</li>
+<li><strong>Adaptive Unloading</strong>: Adjusts unloading behavior based on system resources</li>
+<li><strong>Performance Impact Analysis</strong>: Tracks and analyzes the impact of unloading operations</li>
+</ul>
+<h3>Unloading Strategies</h3>
+<p>The system supports three configurable unloading strategies:</p>
+<h4>AGGRESSIVE</h4>
+<ul>
+<li><strong>Timeout</strong>: 5 minutes of inactivity</li>
+<li><strong>Use Case</strong>: Memory-constrained environments</li>
+<li><strong>Behavior</strong>: Quickly frees memory but may require frequent reloading</li>
+</ul>
+<h4>BALANCED (Default)</h4>
+<ul>
+<li><strong>Timeout</strong>: 15 minutes of inactivity</li>
+<li><strong>Use Case</strong>: General purpose environments</li>
+<li><strong>Behavior</strong>: Balanced approach between memory efficiency and performance</li>
+</ul>
+<h4>CONSERVATIVE</h4>
+<ul>
+<li><strong>Timeout</strong>: 30 minutes of inactivity</li>
+<li><strong>Use Case</strong>: Performance-critical environments</li>
+<li><strong>Behavior</strong>: Keeps packages loaded longer to minimize reload overhead</li>
+</ul>
+<h2>Configuration</h2>
+<h3>App Configuration Settings</h3>
+<p>The system can be configured through the application configuration with the following settings:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Enable/disable the unloading system</span>
+lazy_loading_unloading_enabled: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># Default unloading strategy</span>
+lazy_loading_unloading_strategy: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;BALANCED&quot;</span>  <span class="hljs-comment"># AGGRESSIVE, BALANCED, CONSERVATIVE</span>
+
+<span class="hljs-comment"># Check interval for unloading decisions (seconds)</span>
+lazy_loading_unloading_check_interval: <span class="hljs-built_in">int</span> = <span class="hljs-number">60</span>
+
+<span class="hljs-comment"># Timeout values for each strategy (seconds)</span>
+lazy_loading_unloading_aggressive_timeout: <span class="hljs-built_in">int</span> = <span class="hljs-number">300</span>   <span class="hljs-comment"># 5 minutes</span>
+lazy_loading_unloading_balanced_timeout: <span class="hljs-built_in">int</span> = <span class="hljs-number">900</span>     <span class="hljs-comment"># 15 minutes</span>
+lazy_loading_unloading_conservative_timeout: <span class="hljs-built_in">int</span> = <span class="hljs-number">1800</span> <span class="hljs-comment"># 30 minutes</span>
+
+<span class="hljs-comment"># Memory pressure settings</span>
+lazy_loading_unloading_memory_pressure_threshold: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.8</span>  <span class="hljs-comment"># 80% memory usage</span>
+lazy_loading_unloading_memory_pressure_timeout: <span class="hljs-built_in">int</span> = <span class="hljs-number">60</span>       <span class="hljs-comment"># 1 minute under pressure</span>
+
+<span class="hljs-comment"># Feature toggles</span>
+lazy_loading_unloading_enable_memory_pressure_unloading: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+lazy_loading_unloading_enable_usage_pattern_unloading: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+lazy_loading_unloading_enable_user_preference_unloading: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+lazy_loading_unloading_enable_adaptive_unloading: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># Performance tracking</span>
+lazy_loading_unloading_performance_impact_tracking: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># Limits</span>
+lazy_loading_unloading_max_unloads_per_cycle: <span class="hljs-built_in">int</span> = <span class="hljs-number">5</span>  <span class="hljs-comment"># Max packages per cycle</span>
+lazy_loading_unloading_min_memory_savings_threshold: <span class="hljs-built_in">int</span> = <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>  <span class="hljs-comment"># 1MB minimum</span></code></pre><h2>API Endpoints</h2>
+<h3>Status and Metrics</h3>
+<h4>GET <code>/api/package-unloading/status</code></h4>
+<p>Get the current status of the unloading system.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;check_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;current_strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;balanced&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_pressure_threshold&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.8</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;max_unloads_per_cycle&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;min_memory_savings_threshold&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1048576</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET <code>/api/package-unloading/metrics</code></h4>
+<p>Get comprehensive unloading metrics.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;total_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;successful_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">23</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;failed_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_memory_freed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">52428800</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;average_memory_freed_per_unload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2097152</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_unload_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;average_unload_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;unload_success_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.92</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;last_unload_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;unload_reasons&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;Memory pressure unloading (high)&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Usage pattern unloading (balanced)&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;performance_impact_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_pressure_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;usage_pattern_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;user_preference_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;adaptive_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET <code>/api/package-unloading/performance-impact</code></h4>
+<p>Get performance impact analysis and recommendations.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;total_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;loaded_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">35</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;unloaded_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_memory_freed_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;average_memory_per_package_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_unload_time_seconds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;average_unload_time_seconds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_efficiency&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;time_efficiency&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.97</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;success_efficiency&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.92</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;performance_impact_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.85</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;recommendations&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;info&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;High unload frequency detected&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;suggestion&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Consider using more conservative unloading strategy&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;priority&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;medium&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Package Management</h3>
+<h4>GET <code>/api/package-unloading/packages</code></h4>
+<p>Get unloading information for all packages.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;torch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;is_loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;unloading_strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;balanced&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;user_preference_unload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;unload_attempt_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;unload_failure_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;unloading_metrics&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;total_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;successful_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;failed_unloads&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;total_memory_freed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10485760</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;average_memory_freed_per_unload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5242880</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;unload_success_rate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;last_unload_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;loaded_packages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">35</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>PUT <code>/api/package-unloading/packages/{package_name}/strategy</code></h4>
+<p>Set the unloading strategy for a specific package.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;aggressive&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Successfully set unloading strategy for package &#x27;torch&#x27; to aggressive&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;strategy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;aggressive&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>PUT <code>/api/package-unloading/packages/{package_name}/user-preference</code></h4>
+<p>Set user preference for package unloading.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;allow_unload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Successfully set user preference for package &#x27;torch&#x27; unloading to false&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;allow_unload&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>POST <code>/api/package-unloading/packages/{package_name}/unload</code></h4>
+<p>Manually unload a specific package.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Successfully unloaded package &#x27;torch&#x27;&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;package_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;torch&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;was_loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>System Operations</h3>
+<h4>POST <code>/api/package-unloading/force-garbage-collection</code></h4>
+<p>Force garbage collection and return memory statistics.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;memory_before&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1073741824</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_after&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1048576000</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_freed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25165824</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;objects_collected&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">150</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;garbage_collection_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Decision Logic</h2>
+<h3>Unloading Decision Factors</h3>
+<p>The system evaluates multiple factors when deciding whether to unload a package:</p>
+<ol>
+<li><strong>User Preference Override</strong>: If user explicitly prevents unloading, package is kept loaded</li>
+<li><strong>Memory Pressure</strong>: Under high/critical memory pressure, packages are unloaded after a short timeout</li>
+<li><strong>Usage Pattern</strong>: Packages are unloaded after exceeding their strategy&#39;s timeout</li>
+<li><strong>Memory Savings</strong>: Packages with insufficient memory footprint are not unloaded</li>
+<li><strong>Priority Score</strong>: Higher priority packages are unloaded first when multiple candidates exist</li>
+</ol>
+<h3>Priority Scoring</h3>
+<p>Packages are scored based on:</p>
+<ul>
+<li><strong>Memory Pressure</strong>: 1.0 (highest priority)</li>
+<li><strong>Usage Pattern</strong>: 0.8 (medium priority)</li>
+<li><strong>Memory Savings</strong>: 0.0 (no priority if insufficient)</li>
+</ul>
+<h3>Memory Pressure Levels</h3>
+<ul>
+<li><strong>Low</strong>: &lt; 50% memory usage</li>
+<li><strong>Medium</strong>: 50-70% memory usage</li>
+<li><strong>High</strong>: 70-85% memory usage</li>
+<li><strong>Critical</strong>: &gt; 85% memory usage</li>
+</ul>
+<h2>Performance Monitoring</h2>
+<h3>Metrics Tracked</h3>
+<ul>
+<li><strong>Unload Counts</strong>: Total, successful, and failed unloads</li>
+<li><strong>Memory Efficiency</strong>: Total and average memory freed</li>
+<li><strong>Time Efficiency</strong>: Total and average unload times</li>
+<li><strong>Success Rate</strong>: Percentage of successful unloads</li>
+<li><strong>Reason Analysis</strong>: Breakdown of unload reasons</li>
+<li><strong>Performance Impact</strong>: Overall system impact score</li>
+</ul>
+<h3>Recommendations</h3>
+<p>The system provides automatic recommendations based on:</p>
+<ul>
+<li><strong>Low Success Rate</strong>: Suggests reviewing dependencies and unload order</li>
+<li><strong>Low Memory Savings</strong>: Suggests adjusting minimum savings threshold</li>
+<li><strong>High Frequency</strong>: Suggests using more conservative strategy</li>
+</ul>
+<h2>Usage Examples</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.lazy_loader <span class="hljs-keyword">import</span> get_lazy_loader, UnloadingStrategy
+
+<span class="hljs-comment"># Get the lazy loader instance</span>
+loader = get_lazy_loader()
+
+<span class="hljs-comment"># Set unloading strategy for a package</span>
+loader.set_unloading_strategy(<span class="hljs-string">&quot;torch&quot;</span>, UnloadingStrategy.AGGRESSIVE)
+
+<span class="hljs-comment"># Set user preference to prevent unloading</span>
+loader.set_user_preference_unload(<span class="hljs-string">&quot;critical_package&quot;</span>, <span class="hljs-literal">False</span>)
+
+<span class="hljs-comment"># Get unloading metrics</span>
+metrics = loader.get_unloading_metrics()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total memory freed: <span class="hljs-subst">{metrics[<span class="hljs-string">&#x27;total_memory_freed&#x27;</span>] / (<span class="hljs-number">1024</span>*<span class="hljs-number">1024</span>):<span class="hljs-number">.2</span>f}</span>MB&quot;</span>)
+
+<span class="hljs-comment"># Get performance analysis</span>
+analysis = loader.get_unloading_performance_impact_analysis()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Performance impact score: <span class="hljs-subst">{analysis[<span class="hljs-string">&#x27;performance_impact_score&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>&quot;</span>)</code></pre><h3>API Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
+
+<span class="hljs-comment"># Get unloading status</span>
+response = requests.get(<span class="hljs-string">&quot;/api/package-unloading/status&quot;</span>)
+status = response.json()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;System enabled: <span class="hljs-subst">{status[<span class="hljs-string">&#x27;enabled&#x27;</span>]}</span>&quot;</span>)
+
+<span class="hljs-comment"># Set package strategy</span>
+response = requests.put(<span class="hljs-string">&quot;/api/package-unloading/packages/torch/strategy&quot;</span>,
+                       json={<span class="hljs-string">&quot;strategy&quot;</span>: <span class="hljs-string">&quot;aggressive&quot;</span>})
+result = response.json()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Strategy set: <span class="hljs-subst">{result[<span class="hljs-string">&#x27;success&#x27;</span>]}</span>&quot;</span>)
+
+<span class="hljs-comment"># Get performance analysis</span>
+response = requests.get(<span class="hljs-string">&quot;/api/package-unloading/performance-impact&quot;</span>)
+analysis = response.json()
+<span class="hljs-keyword">for</span> rec <span class="hljs-keyword">in</span> analysis[<span class="hljs-string">&#x27;recommendations&#x27;</span>]:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Recommendation: <span class="hljs-subst">{rec[<span class="hljs-string">&#x27;message&#x27;</span>]}</span>&quot;</span>)</code></pre><h2>Integration with Existing Systems</h2>
+<h3>Lazy Loading Integration</h3>
+<p>The unloading system integrates seamlessly with the existing lazy loading system:</p>
+<ul>
+<li>Automatically starts when lazy loading is initialized</li>
+<li>Respects package loading states and dependencies</li>
+<li>Updates package status when unloaded</li>
+<li>Maintains compatibility with existing APIs</li>
+</ul>
+<h3>Memory Monitoring Integration</h3>
+<p>Uses the existing memory monitoring system:</p>
+<ul>
+<li>Leverages memory pressure detection</li>
+<li>Utilizes memory footprint calculations</li>
+<li>Integrates with memory leak detection</li>
+<li>Shares memory statistics and trends</li>
+</ul>
+<h3>Configuration Integration</h3>
+<p>Integrates with the application configuration system:</p>
+<ul>
+<li>Loads settings from AppConfig</li>
+<li>Supports environment variable overrides</li>
+<li>Provides runtime configuration updates</li>
+<li>Maintains configuration persistence</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>Strategy Selection</h3>
+<ul>
+<li><strong>AGGRESSIVE</strong>: Use in memory-constrained environments or when memory is critical</li>
+<li><strong>BALANCED</strong>: Default choice for most applications</li>
+<li><strong>CONSERVATIVE</strong>: Use when performance is critical and memory is abundant</li>
+</ul>
+<h3>User Preferences</h3>
+<ul>
+<li>Set <code>user_preference_unload=False</code> for frequently used packages</li>
+<li>Set <code>user_preference_unload=True</code> for rarely used packages</li>
+<li>Use sparingly to allow the system to optimize automatically</li>
+</ul>
+<h3>Monitoring</h3>
+<ul>
+<li>Regularly check performance impact analysis</li>
+<li>Monitor unload success rates</li>
+<li>Review recommendations and adjust settings accordingly</li>
+<li>Track memory efficiency over time</li>
+</ul>
+<h3>Configuration</h3>
+<ul>
+<li>Start with default settings and adjust based on usage patterns</li>
+<li>Monitor system performance after configuration changes</li>
+<li>Use conservative settings in production environments</li>
+<li>Test different strategies in development environments</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><p><strong>High Unload Failure Rate</strong></p>
+<ul>
+<li>Check package dependencies</li>
+<li>Review unload order</li>
+<li>Verify memory availability</li>
+</ul>
+</li>
+<li><p><strong>Low Memory Savings</strong></p>
+<ul>
+<li>Adjust minimum savings threshold</li>
+<li>Review package memory footprints</li>
+<li>Consider different unloading strategies</li>
+</ul>
+</li>
+<li><p><strong>Performance Degradation</strong></p>
+<ul>
+<li>Switch to more conservative strategy</li>
+<li>Increase unload timeouts</li>
+<li>Set user preferences for critical packages</li>
+</ul>
+</li>
+</ol>
+<h3>Debug Information</h3>
+<p>Enable debug logging to get detailed information about unloading decisions:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> logging
+logging.getLogger(<span class="hljs-string">&quot;uvicorn&quot;</span>).setLevel(logging.DEBUG)</code></pre><p>The system logs:</p>
+<ul>
+<li>Unloading decisions and reasons</li>
+<li>Memory pressure levels</li>
+<li>Package status changes</li>
+<li>Performance metrics updates</li>
+<li>Configuration changes</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ul>
+<li><strong>Machine Learning Optimization</strong>: Use ML to predict optimal unloading times</li>
+<li><strong>Predictive Loading</strong>: Pre-load packages based on usage patterns</li>
+<li><strong>Cross-Process Coordination</strong>: Coordinate unloading across multiple processes</li>
+<li><strong>Advanced Analytics</strong>: More sophisticated performance analysis and recommendations</li>
+<li><strong>Custom Strategies</strong>: User-defined unloading strategies</li>
+<li><strong>Integration APIs</strong>: APIs for third-party monitoring and control tools</li>
+</ul>
+<h3>Performance Improvements</h3>
+<ul>
+<li><strong>Parallel Unloading</strong>: Unload multiple packages simultaneously</li>
+<li><strong>Incremental Unloading</strong>: Partial package unloading for large packages</li>
+<li><strong>Smart Caching</strong>: Intelligent caching of frequently used package components</li>
+<li><strong>Memory Pooling</strong>: Shared memory pools for similar packages</li>
+</ul>
+<h2>Conclusion</h2>
+<p>The Intelligent Package Unloading System provides a robust, configurable solution for managing memory usage in the lazy loading system. It balances memory efficiency with application performance through intelligent decision-making and comprehensive monitoring capabilities.</p>
+<p>The system is designed to be:</p>
+<ul>
+<li><strong>Automatic</strong>: Requires minimal manual intervention</li>
+<li><strong>Configurable</strong>: Adaptable to different environments and requirements</li>
+<li><strong>Transparent</strong>: Provides comprehensive monitoring and analysis</li>
+<li><strong>Efficient</strong>: Optimizes memory usage without impacting performance</li>
+<li><strong>Reliable</strong>: Handles edge cases and provides fallback mechanisms</li>
+</ul>
+<p>By implementing this system, applications can achieve better memory efficiency while maintaining optimal performance and user experience.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

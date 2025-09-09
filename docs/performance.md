@@ -468,13 +468,13 @@ function usePerformanceMonitoring() {
 
 ```bash
 # Analyze bundle size
-npm run build -- --analyze
+pnpm run build -- --analyze
 
 # Check bundle composition
-npx vite-bundle-analyzer dist
+pnpx vite-bundle-analyzer dist
 
 # Monitor bundle size over time
-npm run build:size
+pnpm run build:size
 ```
 
 ## Memory Management
@@ -598,13 +598,13 @@ describe("Performance Tests", () => {
 
 ```bash
 # Run performance tests
-npm run test:performance
+pnpm run test:performance
 
 # Load test with Artillery
-npx artillery run load-test.yml
+pnpx artillery run load-test.yml
 
 # Monitor performance metrics
-npm run monitor:performance
+pnpm run monitor:performance
 ```
 
 ## Best Practices
@@ -744,9 +744,9 @@ function setupRUM() {
 
 ## Next Steps
 
-- **[Package Documentation](./PACKAGES.md)** - Detailed package documentation
-- **[Examples and Templates](./EXAMPLES.md)** - Performance-optimized examples
-- **[API Reference](./API.md)** - Performance-related APIs
+- **[Package Documentation](./packages.md)** - Detailed package documentation
+- **[Examples and Templates](./examples.md)** - Performance-optimized examples
+- **[API Reference](./api.md)** - Performance-related APIs
 
 ---
 

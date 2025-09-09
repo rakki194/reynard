@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard RAG System 🦊🔍 - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard RAG System 🦊🔍</h1>
+      <div class="markdown-content"><h1>Reynard RAG System 🦊🔍</h1>
+<p>A comprehensive RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and advanced search capabilities.</p>
+<h2>✨ Features</h2>
+<h3>🚀 <strong>Core Capabilities</strong></h3>
+<ul>
+<li><strong>Advanced Search Interface</strong>: Comprehensive search UI with filtering and sorting</li>
+<li><strong>EmbeddingGemma Integration</strong>: Built-in support for EmbeddingGemma models</li>
+<li><strong>Real-time Results</strong>: Live search results with similarity scoring</li>
+<li><strong>Metadata Support</strong>: Rich metadata display and filtering</li>
+<li><strong>TypeScript First</strong>: Complete type safety with excellent IntelliSense</li>
+</ul>
+<h3>🎨 <strong>UI/UX Excellence</strong></h3>
+<ul>
+<li><strong>Responsive Design</strong>: Mobile-first with adaptive layouts</li>
+<li><strong>Accessibility</strong>: Full WCAG 2.1 compliance with keyboard navigation</li>
+<li><strong>Theming</strong>: Seamless integration with Reynard&#39;s theming system</li>
+<li><strong>Animations</strong>: Smooth transitions and engaging micro-interactions</li>
+<li><strong>Dark Mode</strong>: Built-in dark mode support</li>
+</ul>
+<h3>⚡ <strong>Performance</strong></h3>
+<ul>
+<li><strong>Optimized Search</strong>: Efficient query processing and result caching</li>
+<li><strong>Memory Management</strong>: Smart result limiting and cleanup</li>
+<li><strong>Lazy Loading</strong>: Progressive result loading</li>
+<li><strong>Tree Shakable</strong>: Import only what you need</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-rag reynard-components solid-js</code></pre><h2>🎯 Quick Start</h2>
+<h3>Basic RAG Search Implementation</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">RAGSearch</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-rag&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-rag/styles&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RAGSearch</span>
+      <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/rag/search&quot;</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;600px&quot;</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableFilters:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">showMetadata:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">maxResults:</span> <span class="hljs-attr">20</span>,
+      }}
+      <span class="hljs-attr">onSearch</span>=<span class="hljs-string">{(query)</span> =&gt;</span> console.log(&quot;Searching:&quot;, query)}
+      onResultClick={(result) =&gt; console.log(&quot;Selected:&quot;, result)}
+    /&gt;</span>
+  );
+}</code></pre><h3>Advanced Usage with Custom Configuration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">RAGSearch</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-rag&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CustomRAGApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleSearch</span> = (<span class="hljs-params"><span class="hljs-attr">query</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-comment">// Custom search logic</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Custom search:&quot;</span>, query);
+  };
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">handleResultClick</span> = (<span class="hljs-params"><span class="hljs-attr">result</span>: <span class="hljs-title class_">RAGResult</span></span>) =&gt; {
+    <span class="hljs-comment">// Custom result handling</span>
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Result selected:&quot;</span>, result);
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">RAGSearch</span>
+      <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/rag/search&quot;</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableFilters:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">showMetadata:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">maxResults:</span> <span class="hljs-attr">50</span>,
+        <span class="hljs-attr">similarityThreshold:</span> <span class="hljs-attr">0.7</span>,
+        <span class="hljs-attr">enableReranking:</span> <span class="hljs-attr">true</span>,
+      }}
+      <span class="hljs-attr">onSearch</span>=<span class="hljs-string">{handleSearch}</span>
+      <span class="hljs-attr">onResultClick</span>=<span class="hljs-string">{handleResultClick}</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h2>🔧 API Reference</h2>
+<h3>RAGSearch Props</h3>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>endpoint</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>API endpoint for RAG search</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td><code>RAGConfig</code></td>
+<td><code>{}</code></td>
+<td>Configuration options</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td><code>string</code></td>
+<td><code>&quot;400px&quot;</code></td>
+<td>Container height</td>
+</tr>
+<tr>
+<td><code>onSearch</code></td>
+<td><code>(query: string) =&gt; void</code></td>
+<td>-</td>
+<td>Search callback</td>
+</tr>
+<tr>
+<td><code>onResultClick</code></td>
+<td><code>(result: RAGResult) =&gt; void</code></td>
+<td>-</td>
+<td>Result click callback</td>
+</tr>
+</tbody></table>
+<h3>RAGConfig</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">RAGConfig</span> {
+  <span class="hljs-attr">enableFilters</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showMetadata</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">maxResults</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">similarityThreshold</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">enableReranking</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">defaultFilters</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
+}</code></pre><h3>RAGResult</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">RAGResult</span> {
+  <span class="hljs-attr">chunk_id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">document_id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">similarity_score</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">rank</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">metadata</span>: {
+    <span class="hljs-attr">chunk_length</span>?: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">document_source</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">embedding_model</span>?: <span class="hljs-built_in">string</span>;
+    [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>;
+  };
+}</code></pre><h2>🎨 Styling</h2>
+<p>The RAG system comes with built-in styles that integrate seamlessly with Reynard&#39;s theming system:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-rag/styles&quot;</span>;</code></pre><h3>Custom Styling</h3>
+<p>You can customize the appearance using CSS custom properties:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-attr">--rag-primary-color</span>: <span class="hljs-number">#0078d4</span>;
+  <span class="hljs-attr">--rag-background</span>: <span class="hljs-number">#ffffff</span>;
+  <span class="hljs-attr">--rag-border</span>: <span class="hljs-number">#e1e1e1</span>;
+  <span class="hljs-attr">--rag-text</span>: <span class="hljs-number">#323130</span>;
+}</code></pre><h2>🧪 Testing</h2>
+<pre><code class="hljs language-bash">npm <span class="hljs-built_in">test</span>
+npm run <span class="hljs-built_in">test</span>:coverage</code></pre><h2>📚 Examples</h2>
+<p>Check out the examples directory for complete implementation examples:</p>
+<ul>
+<li>Basic RAG search</li>
+<li>Advanced filtering</li>
+<li>Custom result rendering</li>
+<li>Integration with chat systems</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>Contributions are welcome! Please read our contributing guidelines and submit pull requests to our repository.</p>
+<h2>📄 License</h2>
+<p>MIT License - see LICENSE file for details.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

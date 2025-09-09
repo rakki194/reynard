@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript Quick Reference Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>TypeScript Quick Reference Guide</h1>
+      <div class="markdown-content"><h1>TypeScript Quick Reference Guide</h1>
+<h2>Common Issues and Solutions</h2>
+<h3>1. Function Too Many Lines</h3>
+<p><strong>Error</strong>: <code>Function &#39;functionName&#39; has too many lines (X). Maximum allowed is 140.</code></p>
+<p><strong>Quick Fix</strong>:</p>
+<ol>
+<li>Extract functionality into separate modules</li>
+<li>Use factory pattern for composition</li>
+<li>Separate types from implementation</li>
+</ol>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Before: Monolithic function</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">largeFunction</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// 140+ lines of mixed concerns</span>
+}
+
+<span class="hljs-comment">// After: Modular approach</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createModuleA</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">/* focused functionality */</span>
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createModuleB</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">/* focused functionality */</span>
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createMainModule</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> {
+    ...<span class="hljs-title function_">createModuleA</span>(),
+    ...<span class="hljs-title function_">createModuleB</span>(),
+  };
+}</code></pre><h3>2. Type Safety Issues</h3>
+<p><strong>Error</strong>: <code>Unexpected any. Specify a different type.</code></p>
+<p><strong>Quick Fix</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ❌ Bad</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">process</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-keyword">return</span> data.<span class="hljs-property">property</span>;
+}
+
+<span class="hljs-comment">// ✅ Good</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">process</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>) {
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&quot;object&quot;</span> &amp;&amp; data !== <span class="hljs-literal">null</span> &amp;&amp; <span class="hljs-string">&quot;property&quot;</span> <span class="hljs-keyword">in</span> data) {
+    <span class="hljs-keyword">return</span> (data <span class="hljs-keyword">as</span> { <span class="hljs-attr">property</span>: <span class="hljs-built_in">string</span> }).<span class="hljs-property">property</span>;
+  }
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Invalid data&quot;</span>);
+}</code></pre><h3>3. AbortSignal Type Issues</h3>
+<p><strong>Error</strong>: <code>&#39;AbortSignal&#39; is not defined.</code></p>
+<p><strong>Quick Fix</strong>:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Use globalThis.AbortSignal (2025 best practice)</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"><span class="hljs-attr">signal</span>?: globalThis.<span class="hljs-title class_">AbortSignal</span></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/data&quot;</span>, { signal });
+}</code></pre><h3>4. Missing DOM Types</h3>
+<p><strong>Error</strong>: <code>&#39;RequestInfo&#39; is not defined.</code></p>
+<p><strong>Quick Fix</strong>: Ensure DOM library in tsconfig.json:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;lib&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;ES2022&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;DOM&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;DOM.Iterable&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>5. Unused Imports</h3>
+<p><strong>Error</strong>: <code>&#39;importName&#39; is defined but never used.</code></p>
+<p><strong>Quick Fix</strong>: Remove unused imports:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Before</span>
+<span class="hljs-keyword">import</span> { used, unused1, unused2 } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;module&quot;</span>;
+
+<span class="hljs-comment">// After</span>
+<span class="hljs-keyword">import</span> { used } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;module&quot;</span>;</code></pre><h2>Type Safety Patterns</h2>
+<h3>Generic Constraints</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Proper generic with default</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">Data</span>&lt;T = <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;&gt; {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">payload</span>: T;
+}</code></pre><h3>Type Guards</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Type guard for unknown data</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isUserData</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">unknown</span></span>): data is { <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span> } {
+  <span class="hljs-keyword">return</span> (
+    <span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&quot;object&quot;</span> &amp;&amp;
+    data !== <span class="hljs-literal">null</span> &amp;&amp;
+    <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-keyword">in</span> data &amp;&amp;
+    <span class="hljs-string">&quot;email&quot;</span> <span class="hljs-keyword">in</span> data
+  );
+}</code></pre><h3>Interface-First Design</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Define interface before implementation</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ServiceConfig</span> {
+  <span class="hljs-attr">endpoint</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">timeout</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">retries</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">createService</span>(<span class="hljs-params"><span class="hljs-attr">config</span>: <span class="hljs-title class_">ServiceConfig</span></span>) {
+  <span class="hljs-comment">// Implementation</span>
+}</code></pre><h2>Modular Architecture Patterns</h2>
+<h3>Factory Pattern</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createModule</span>(<span class="hljs-params"><span class="hljs-attr">options</span>: <span class="hljs-title class_">ModuleOptions</span></span>) {
+  <span class="hljs-keyword">const</span> privateState = {};
+
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">publicMethod</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-comment">/* implementation */</span>
+    },
+    <span class="hljs-attr">anotherMethod</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-comment">/* implementation */</span>
+    },
+  };
+}</code></pre><h3>Composition Pattern</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createMainModule</span>(<span class="hljs-params"><span class="hljs-attr">options</span>: <span class="hljs-title class_">MainOptions</span></span>) {
+  <span class="hljs-keyword">const</span> subModuleA = <span class="hljs-title function_">createSubModuleA</span>(options.<span class="hljs-property">a</span>);
+  <span class="hljs-keyword">const</span> subModuleB = <span class="hljs-title function_">createSubModuleB</span>(options.<span class="hljs-property">b</span>);
+
+  <span class="hljs-keyword">return</span> {
+    ...subModuleA,
+    ...subModuleB,
+    <span class="hljs-attr">mainMethod</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-comment">/* orchestration */</span>
+    },
+  };
+}</code></pre><h3>Barrel Exports</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// index.ts</span>
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./module-a&quot;</span>;
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./module-b&quot;</span>;
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./module-c&quot;</span>;</code></pre><h2>ESLint Configuration</h2>
+<h3>Essential Rules</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;rules&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;max-lines-per-function&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;error&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-number">140</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;@typescript-eslint/no-explicit-any&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;error&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;@typescript-eslint/no-unused-vars&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;error&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>File Organization</h2>
+<h3>Recommended Structure</h3>
+<pre><code class="hljs">src<span class="hljs-symbol">/</span>
+├── types<span class="hljs-symbol">/</span>           <span class="hljs-comment"># Type definitions</span>
+├── modules<span class="hljs-symbol">/</span>         <span class="hljs-comment"># Business logic modules</span>
+├── composables<span class="hljs-symbol">/</span>     <span class="hljs-comment"># Reusable composables</span>
+├── utils<span class="hljs-symbol">/</span>           <span class="hljs-comment"># Utility functions</span>
+└── index.ts         <span class="hljs-comment"># Barrel exports</span></code></pre><h3>Naming Conventions</h3>
+<ul>
+<li><strong>Files</strong>: <code>kebab-case.ts</code></li>
+<li><strong>Classes</strong>: <code>PascalCase</code></li>
+<li><strong>Functions</strong>: <code>camelCase</code></li>
+<li><strong>Interfaces</strong>: <code>PascalCase</code></li>
+<li><strong>Types</strong>: <code>PascalCase</code></li>
+</ul>
+<h2>Performance Considerations</h2>
+<h3>Lazy Loading</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Lazy load heavy modules</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">loadHeavyModule</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> { <span class="hljs-title class_">HeavyModule</span> } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;./heavy-module&quot;</span>);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HeavyModule</span>();
+};</code></pre><h3>Memory Management</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// ✅ Clean up resources</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ResourceManager</span> {
+  <span class="hljs-keyword">private</span> resources = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>&lt;<span class="hljs-title class_">Resource</span>&gt;();
+
+  <span class="hljs-title function_">dispose</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">resources</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">resource</span>) =&gt;</span> resource.<span class="hljs-title function_">cleanup</span>());
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">resources</span>.<span class="hljs-title function_">clear</span>();
+  }
+}</code></pre><h2>Testing Modular Code</h2>
+<h3>Unit Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./module&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;Module&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should create module with correct interface&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-variable language_">module</span> = <span class="hljs-title function_">createModule</span>({ <span class="hljs-attr">option</span>: <span class="hljs-string">&quot;value&quot;</span> });
+    <span class="hljs-title function_">expect</span>(<span class="hljs-variable language_">module</span>).<span class="hljs-title function_">toHaveProperty</span>(<span class="hljs-string">&quot;publicMethod&quot;</span>);
+  });
+});</code></pre><h3>Integration Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createMainModule } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./main-module&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;MainModule Integration&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should compose sub-modules correctly&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> main = <span class="hljs-title function_">createMainModule</span>({ <span class="hljs-attr">a</span>: {}, <span class="hljs-attr">b</span>: {} });
+    <span class="hljs-title function_">expect</span>(main.<span class="hljs-property">subMethodA</span>).<span class="hljs-title function_">toBeDefined</span>();
+    <span class="hljs-title function_">expect</span>(main.<span class="hljs-property">subMethodB</span>).<span class="hljs-title function_">toBeDefined</span>();
+  });
+});</code></pre><h2>Common Anti-Patterns to Avoid</h2>
+<h3>❌ Monolithic Functions</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Don&#x27;t do this</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">doEverything</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-comment">// 140+ lines of mixed concerns</span>
+}</code></pre><h3>❌ Any Types</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Don&#x27;t do this</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">process</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-built_in">any</span></span>) {
+  <span class="hljs-keyword">return</span> data.<span class="hljs-property">whatever</span>;
+}</code></pre><h3>❌ Mixed Concerns</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Don&#x27;t do this</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
+  <span class="hljs-title function_">validateUser</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* validation */</span>
+  }
+  <span class="hljs-title function_">hashPassword</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* security */</span>
+  }
+  <span class="hljs-title function_">saveUser</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* persistence */</span>
+  }
+  <span class="hljs-title function_">sendEmail</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-comment">/* notification */</span>
+  }
+}</code></pre><h3>❌ Tight Coupling</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Don&#x27;t do this</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">SpecificImplementation</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./specific-impl&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useService</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpecificImplementation</span>(); <span class="hljs-comment">// Hard to test/mock</span>
+}</code></pre><h2>Resources</h2>
+<ul>
+<li><a href="./typescript-modularity-standards.md">Full TypeScript Modularity Standards</a></li>
+<li><a href="../architecture/decisions/002-typescript-modularity-refactoring.md">Architecture Decision Record</a></li>
+<li><a href="https://www.typescriptlang.org/docs/">TypeScript Official Docs</a></li>
+<li><a href="https://typescript-eslint.io/rules/">ESLint TypeScript Rules</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1044,21 +1044,21 @@ Install packages individually based on your needs:
 
 ```bash
 # Core packages
-npm install reynard-core reynard-themes reynard-components
+pnpm install reynard-core reynard-themes reynard-components
 
 # Specialized packages
-npm install reynard-chat reynard-rag reynard-auth reynard-charts
-npm install reynard-gallery reynard-settings reynard-algorithms
-npm install reynard-file-processing reynard-annotating reynard-caption
+pnpm install reynard-chat reynard-rag reynard-auth reynard-charts
+pnpm install reynard-gallery reynard-settings reynard-algorithms
+pnpm install reynard-file-processing reynard-annotating reynard-caption
 
 # Development packages
-npm install reynard-testing reynard-tools reynard-composables
+pnpm install reynard-testing reynard-tools reynard-composables
 
 # UI packages
-npm install reynard-ui reynard-fluent-icons reynard-error-boundaries
+pnpm install reynard-ui reynard-fluent-icons reynard-error-boundaries
 
 # Specialized features
-npm install reynard-3d reynard-games reynard-monaco reynard-boundingbox
+pnpm install reynard-3d reynard-games reynard-monaco reynard-boundingbox
 ```
 
 ## Next Steps

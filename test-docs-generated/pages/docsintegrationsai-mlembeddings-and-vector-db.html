@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embeddings & Vector DB Operations - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Embeddings & Vector DB Operations</h1>
+      <div class="markdown-content"><h1>Embeddings &amp; Vector DB Operations</h1>
+<p>This note collects recommended settings and practices for embeddings and pgvector in YipYap.</p>
+<p>Device and Batching</p>
+<p>On GPU systems, start with moderate CLIP batch sizes and adjust based on memory:</p>
+<ul>
+<li>GPU (ViT-L/14): start <code>RAG_CLIP_BATCH_MAX=8</code>, enable <code>RAG_CLIP_AUTOSCALE=true</code>.</li>
+<li>CPU: start <code>RAG_CLIP_BATCH_MAX=2–4</code>, autoscale can remain enabled; throughput will be lower than GPU.</li>
+</ul>
+<p>The CLIP service enforces a conservative memory cap and will auto-downscale sub-batches if an OOM is detected (best-effort). You can disable autoscaling by setting <code>RAG_CLIP_AUTOSCALE=false</code> and manually tune batch sizes.</p>
+<p>Vector Dimensions</p>
+<p>Text/code/captions default to <code>VECTOR(1024)</code> and CLIP image embeddings to <code>VECTOR(768)</code>. The embedding service validates model dimensions and surfaces mismatches in <code>/api/rag/ops/metrics</code> under <code>dimensions</code>.</p>
+<p>Changing Dimensions</p>
+<p>To migrate from <code>VECTOR(1024)</code> to <code>VECTOR(768)</code> (or vice versa):</p>
+<ol>
+<li>Schedule maintenance (writes paused; queries may continue on old data).</li>
+<li>Create new columns/tables with the target <code>VECTOR(N)</code> or rebuild tables if downtime is acceptable.</li>
+<li>Re-embed affected content into the new dimension.</li>
+<li>Switch queries to read from the new columns/tables.</li>
+<li>Drop or archive old columns/tables when confident.</li>
+</ol>
+<p>Prefer parallel tables for zero-downtime migrations; single-column type changes require exclusive locks and are not recommended in production.</p>
+<p>Maintenance</p>
+<ul>
+<li>Run <code>ANALYZE</code> after large ingests (automated threshold available via <code>RAG_ANALYZE_AFTER_ROWS</code>).</li>
+<li>Use <code>VACUUM (ANALYZE)</code> after deletions when bloat is suspected.</li>
+<li>Rebuild HNSW indexes selectively during maintenance windows if bloat persists.</li>
+</ul>
+<h2>Embeddings and Vector Database</h2>
+<p>Text and image embeddings are produced by dedicated services and stored in Postgres using <code>pgvector</code>. The indexing service ingests documents in a streaming-friendly way, while the RAG service exposes a simple orchestrated flow.</p>
+<h2>Configuration</h2>
+<p>Enable via <code>AppConfig</code>:</p>
+<ul>
+<li><code>rag_enabled: bool</code></li>
+<li><code>pg_dsn: string</code></li>
+<li>Default models and CLIP settings: <code>rag_text_model</code>, <code>rag_code_model</code>, <code>rag_caption_model</code>, <code>rag_clip_model</code>, <code>rag_clip_preprocess</code>, <code>rag_clip_multicrop</code>.</li>
+</ul>
+<h2>Embedding Service (Text)</h2>
+<p><code>EmbeddingService.embed_texts(model, texts, timeout_s?) -&gt; List[List[float]]</code> calls Ollama <code>/api/embed</code> and preserves input order, with an in-memory cache keyed by <code>(model,text)</code> and normalization of whitespace. On errors or when Ollama is unavailable, it falls back to a deterministic hash-based vector with the expected dimension. Basic metrics (<code>requests</code>, <code>errors</code>, <code>last_ms</code>) are tracked.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/embedding_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Vector DB Service (pgvector)</h2>
+<p><code>VectorDBService</code> initializes a SQLAlchemy engine from <code>pg_dsn</code> and runs three idempotent migrations: <code>001_pgvector.sql</code>, <code>002_embeddings.sql</code>, and <code>003_indexes.sql</code>. It provides helpers:</p>
+<ul>
+<li><p><code>insert_document_with_chunks(source, content, metadata, chunks)</code> -&gt; <code>(document_id, [(chunk_id, chunk_index), ...])</code></p>
+</li>
+<li><p><code>insert_document_embeddings(rows)</code> -&gt; inserted row count; rows include <code>chunk_id</code>, <code>embedding</code>, <code>model_id</code>, <code>dim</code>, <code>metric</code></p>
+</li>
+<li><p><code>similar_document_chunks(embedding, top_k)</code> -&gt; list with <code>chunk_id</code>, <code>model_id</code>, <code>dim</code>, and <code>score = 1 - cosine_distance</code></p>
+</li>
+<li><p>Files:</p>
+<ul>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+<li><code>scripts/db/*.sql</code></li>
+</ul>
+</li>
+</ul>
+<h3>Health and Watchdog Tunables</h3>
+<p>Operational tunables are exposed via env and <code>AppConfig</code>:</p>
+<ul>
+<li><code>PG_HEALTH_INTERVAL_S</code> (default 60): health probe cadence for <code>VectorDBService</code></li>
+<li><code>PG_POOL_PRE_PING</code> (default true): enable SQLAlchemy <code>pool_pre_ping</code> to validate connections before checkout</li>
+<li><code>PG_RECONNECT_ON_ERROR</code> (default true): toggle for auto-reconnect path that disposes/rebuilds the engine on operational errors (implemented in watchdog phase)</li>
+</ul>
+<h2>Indexing Service</h2>
+<p><code>EmbeddingIndexService.ingest_documents(items, model, batch_size)</code> accepts a sequence of <code>{source, content}</code> items, chunks each document, stores document/chunk rows, batches text for embeddings, and inserts vectors in groups. Yields progress events <code>{type: &#39;progress&#39;|&#39;error&#39;|&#39;complete&#39;, ...}</code> suitable for streaming UIs.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/background/embedding_index_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>RAG Service</h2>
+<p><code>RAGService.ingest_document(source, content, chunks, model, metric)</code> performs a synchronous ingest and embedding call; <code>query_similar(vector, top_k)</code> delegates to the vector DB service. Intended as a minimal orchestrator for early integration.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/rag_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>Embedding rows record <code>model_id</code>, <code>dim</code>, and <code>metric</code> to support multiple models simultaneously.</li>
+<li><code>vector_literal</code> encodes vectors as <code>[v1,v2,...]</code> for <code>pgvector</code> casts.</li>
+<li>For large batches, prefer the streaming <code>ingest_documents</code> API to avoid long request times.</li>
+</ul>
+<h2>Schema and Dimensions</h2>
+<p>The default schema provisions fixed dimensions for vector columns:</p>
+<ul>
+<li>Documents/code/captions: <code>VECTOR(1024)</code></li>
+<li>CLIP images: <code>VECTOR(768)</code></li>
+</ul>
+<p>Ensure the chosen embedding model dimension matches the table definition. The default text models include a mix of 1024- and 768-dimensional models (e.g., <code>mxbai-embed-large</code> 1024, <code>bge-m3</code> 1024, <code>nomic-embed-text</code> 768). If you select a 768-dim model for documents or captions, adjust the migrations to use <code>VECTOR(768)</code> or create a new column/table variant. The runtime also stores <code>dim</code> per row for auditing, but Postgres will enforce the declared <code>VECTOR(n)</code> arity at insert time.</p>
+<ul>
+<li>Files:<ul>
+<li><code>scripts/db/002_embeddings.sql</code></li>
+</ul>
+</li>
+</ul>
+<h2>Query Patterns and Operators</h2>
+<p>Similarity search uses pgvector’s <code>&lt;=&gt;</code> operator with cosine distance and returns a normalized score in<br>( [0,1] ) as <code>score = 1 - cosine_distance</code>:</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> e.chunk_id, e.model_id, e.dim,
+       (<span class="hljs-number">1</span> <span class="hljs-operator">-</span> (e.embedding <span class="hljs-operator">&lt;=&gt;</span> <span class="hljs-built_in">CAST</span>(:vec <span class="hljs-keyword">AS</span> vector))) <span class="hljs-keyword">AS</span> score
+<span class="hljs-keyword">FROM</span> rag_document_embeddings e
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> e.embedding <span class="hljs-operator">&lt;=&gt;</span> <span class="hljs-built_in">CAST</span>(:vec <span class="hljs-keyword">AS</span> vector)
+LIMIT :k;</code></pre><p>The service uses this pattern for document/code/caption/image searches. When doing brute-force comparisons for recall checks, the session temporarily disables index and bitmap scans.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Indexing Strategy and Tuning</h2>
+<p>HNSW indexes are created for all embedding tables with cosine ops:</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">CREATE</span> INDEX IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> idx_document_embeddings_hnsw
+<span class="hljs-keyword">ON</span> rag_document_embeddings
+<span class="hljs-keyword">USING</span> hnsw (embedding vector_cosine_ops)
+<span class="hljs-keyword">WITH</span> (m<span class="hljs-operator">=</span><span class="hljs-number">16</span>, ef_construction<span class="hljs-operator">=</span><span class="hljs-number">200</span>);</code></pre><p>At query time, you can tune search quality/latency via <code>hnsw.ef_search</code> (session-level). The service exposes <code>VectorDBService.set_ef_search(ef)</code> which executes <code>SET hnsw.ef_search = :ef</code> best-effort on the engine’s connections.</p>
+<p>General guidance (see pgvector docs): increase <code>ef_search</code> for higher recall at the cost of latency; <code>m</code> and <code>ef_construction</code> control index build time/memory/recall trade-offs. Run <code>ANALYZE</code> regularly so the planner has fresh stats.</p>
+<ul>
+<li>Files:<ul>
+<li><code>scripts/db/003_indexes.sql</code></li>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Batch Insertion and Vector Literals</h2>
+<p>Embeddings are inserted in batches using a compact vector literal format <code>&quot;[v1,v2,...]&quot;</code> and cast on the server:</p>
+<pre><code class="hljs language-sql"><span class="hljs-keyword">INSERT INTO</span> rag_document_embeddings (chunk_id, embedding, model_id, dim, metric)
+<span class="hljs-keyword">VALUES</span> (:chunk_id, <span class="hljs-built_in">CAST</span>(:embedding <span class="hljs-keyword">AS</span> vector), :model_id, :dim, :metric);</code></pre><p>The helper <code>vector_literal(vec)</code> formats floats with fixed precision and preserves input order. For large ingests, prefer batching and the streaming indexer.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+<li><code>app/services/background/embedding_index_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Recall Sampling and Metrics</h2>
+<p>To estimate recall, the RAG service compares top-K results from the HNSW index against a sequential-scan query and computes set overlap. Samples may be persisted to <code>rag_recall_samples</code> (created idempotently during migrations) with optional <code>q_hash</code> and <code>correlation_id</code> for later analysis. The vector DB service can also report index sizes and heap stats via <code>get_pg_metrics()</code>.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/rag_service.py</code></li>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Ollama Embed API Details</h2>
+<p>Text/code/caption embeddings are requested from Ollama’s <code>/api/embed</code> in ordered batches. Inputs are normalized for whitespace when caching small texts. On non-200 responses or client unavailability, a deterministic hash-based fallback produces vectors of the expected dimension to keep pipelines functional during outages.</p>
+<p>Example request payload:</p>
+<pre><code class="hljs language-http">POST /api/embed
+<span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json
+
+{ &quot;model&quot;: &quot;mxbai-embed-large&quot;, &quot;input&quot;: [&quot;first text&quot;, &quot;second text&quot;] }</code></pre><p>Expected response (shape varies by model/provider):</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;embeddings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">[</span>...<span class="hljs-punctuation">]</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">}</span></code></pre><ul>
+<li>Files:<ul>
+<li><code>app/services/integration/embedding_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Image Embeddings (CLIP)</h2>
+<p>Image vectors are stored in <code>rag_image_embeddings</code> with default dimension 768 (ViT-L/14). The indexer currently schedules per-image items and inserts rows via <code>VectorDBService.insert_image_embeddings</code>. Text→image retrieval uses cosine on the image embedding table. The current wiring uses a placeholder <code>image_id</code> until full image metadata integration lands.</p>
+<ul>
+<li>Files:<ul>
+<li><code>scripts/db/002_embeddings.sql</code></li>
+<li><code>app/services/integration/vector_db_service.py</code></li>
+<li><code>app/services/background/embedding_index_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Operational Guidance</h2>
+<p>Connectivity and Migrations:</p>
+<ul>
+<li>The vector DB service creates a SQLAlchemy engine using <code>pg_dsn</code>, verifies connection (<code>SELECT 1</code>), and applies idempotent migrations on start. Health probes check connectivity and the <code>vector</code> extension.</li>
+<li><code>pg_pool_pre_ping</code> defaults to true to validate pooled connections. <code>pg_health_interval_s</code> controls probe cadence. A <code>pg_reconnect_on_error</code> flag exists in configuration and may be used by future watchdog logic; the current implementation relies on health checks plus pre-ping.</li>
+</ul>
+<p>Postgres/pgvector tips:</p>
+<ul>
+<li>Keep <code>VACUUM</code>/<code>ANALYZE</code> running and autovacuum tuned for your ingest rate.</li>
+<li>Monitor index sizes and heap stats; <code>VectorDBService.get_pg_metrics()</code> returns basic insights that you can export to your monitoring.</li>
+<li>Adjust <code>hnsw.ef_search</code> per workload and consider separate indexes per metric/model space if mixing metrics.</li>
+</ul>
+<h2>Security and Limits</h2>
+<p>Server-side rate limits and content clamps protect resources during RAG operations. Query/ingest limits, allowed filesystem roots for CLIP image ingestion, and privacy toggles are configured via <code>AppConfig</code> (<code>rag_query_rate_limit_per_minute</code>, <code>rag_ingest_*</code>, <code>rag_ingest_allowed_roots</code>, redaction flags). API endpoints enforce these constraints.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/core/app_config.py</code></li>
+<li><code>app/api/rag.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>End-to-End Flow (Docs)</h2>
+<p>Synchronous path (RAG service): store document and chunks, embed synchronously via the text model, insert vectors, then query with <code>similar_document_chunks</code> or <code>hybrid_search_documents</code>.</p>
+<p>Streaming path (Indexing service): enqueue documents, chunk, batch-embed, and insert vectors with progress events suitable for SSE-driven UIs. The queue supports pause/resume, retries with exponential backoff, and a dead-letter list.</p>
+<ul>
+<li>Files:<ul>
+<li><code>app/services/integration/rag_service.py</code></li>
+<li><code>app/services/background/embedding_index_service.py</code></li>
+</ul>
+</li>
+</ul>
+<h2>Troubleshooting</h2>
+<ul>
+<li>Insert fails with dimension mismatch: make sure your table’s <code>VECTOR(n)</code> matches the chosen model, or migrate to the correct dimension.</li>
+<li>Empty or zero vectors in results: during outages the embedder may fall back; check <code>EmbeddingService</code> metrics (<code>requests</code>, <code>errors</code>, <code>last_ms</code>) and Ollama health.</li>
+<li>Slow queries: confirm HNSW indexes exist, adjust <code>hnsw.ef_search</code>, and run <code>ANALYZE</code>. For diagnostics, compare index vs brute-force results via the recall sampling helper.</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

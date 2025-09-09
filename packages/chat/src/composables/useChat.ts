@@ -9,6 +9,7 @@ import { createSignal, createResource, onCleanup, onMount } from "solid-js";
 import { useChatMessages } from "./useChatMessages";
 import { useChatStreaming } from "./useChatStreaming";
 import { useChatTools } from "./useChatTools";
+import { useChat as useGeneratedChat, createReynardApiClient } from "reynard-api-client";
 import type { ChatState, ChatActions, UseChatReturn } from "../types";
 
 export interface UseChatOptions {
@@ -62,6 +63,18 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     fetchFn = fetch,
     reconnection = DEFAULT_RECONNECTION,
   } = options;
+
+  // Create API client
+  const apiClient = createReynardApiClient({
+    basePath: endpoint.replace('/api/chat', ''),
+    authFetch: fetchFn
+  });
+
+  // Use generated chat composable
+  const generatedChat = useGeneratedChat({
+    apiClient,
+    defaultModel: "llama3.1"
+  });
 
   // Core state
   const [availableModels] = createSignal<string[]>([]);
@@ -165,11 +178,25 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     streamingComposable.cancelStreaming();
   });
 
-  // Actions object
+  // Actions object - integrate with generated chat composable
   const actions: ChatActions = {
-    sendMessage: streamingComposable.sendMessage,
+    sendMessage: async (message: string) => {
+      try {
+        await generatedChat.sendMessage(message, selectedModel());
+      } catch (err) {
+        setError({
+          type: "send_error",
+          message: err instanceof Error ? err.message : "Send failed",
+          timestamp: Date.now(),
+          recoverable: true
+        });
+      }
+    },
     cancelStreaming: streamingComposable.cancelStreaming,
-    clearConversation: messagesComposable.clearConversation,
+    clearConversation: () => {
+      messagesComposable.clearConversation();
+      generatedChat.clearMessages();
+    },
     retryLastMessage: streamingComposable.retryLastMessage,
     updateConfig,
     connect,
@@ -178,17 +205,22 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     importConversation: messagesComposable.importConversation,
   };
 
-  // Return chat state and actions
+  // Return chat state and actions - integrate generated chat state
   return {
-    messages: messagesComposable.messages,
+    messages: () => {
+      // Merge legacy messages with generated chat messages
+      const legacyMessages = messagesComposable.messages();
+      const generatedMessages = generatedChat.messages();
+      return [...legacyMessages, ...generatedMessages];
+    },
     currentMessage: messagesComposable.currentMessage,
-    isStreaming: streamingComposable.isStreaming,
+    isStreaming: () => generatedChat.isStreaming() || streamingComposable.isStreaming(),
     isThinking: streamingComposable.isThinking,
-    availableModels,
+    availableModels: () => generatedChat.models() || availableModels(),
     selectedModel,
     availableTools: toolsComposable.availableTools,
     connectionState,
-    error,
+    error: () => generatedChat.error() || error(),
     config,
     actions,
   };

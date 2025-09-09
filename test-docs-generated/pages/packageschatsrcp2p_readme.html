@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Chat System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>P2P Chat System</h1>
+      <div class="markdown-content"><h1>P2P Chat System</h1>
+<p>A comprehensive peer-to-peer chat system built on top of the Reynard chat foundation, enabling real-time user-to-user messaging with all the features of modern chat applications.</p>
+<h2>Features</h2>
+<h3>Core Messaging</h3>
+<ul>
+<li><strong>Real-time messaging</strong> via WebSocket connections</li>
+<li><strong>Room-based conversations</strong> (direct messages, group chats, public/private channels)</li>
+<li><strong>Message reactions</strong> with emoji support</li>
+<li><strong>Read receipts</strong> to track message delivery and reading status</li>
+<li><strong>Typing indicators</strong> to show when users are actively typing</li>
+<li><strong>Message threads</strong> for organized discussions</li>
+<li><strong>Message editing and deletion</strong> with edit history</li>
+<li><strong>File attachments</strong> with progress tracking and previews</li>
+</ul>
+<h3>Advanced Features</h3>
+<ul>
+<li><strong>Presence indicators</strong> showing user online/away/busy/offline status</li>
+<li><strong>Message search</strong> across all conversations</li>
+<li><strong>Message pinning</strong> for important announcements</li>
+<li><strong>Priority messaging</strong> (normal, high, urgent)</li>
+<li><strong>Notification system</strong> with configurable settings</li>
+<li><strong>Message export/import</strong> for backup and migration</li>
+<li><strong>Markdown support</strong> with the same powerful parser as assistant chat</li>
+<li><strong>Code sharing</strong> with syntax highlighting</li>
+</ul>
+<h3>Technical Features</h3>
+<ul>
+<li><strong>Shared codebase</strong> with assistant chat for consistency</li>
+<li><strong>Streaming markdown parser</strong> for real-time content rendering</li>
+<li><strong>Optimistic updates</strong> for responsive user experience</li>
+<li><strong>Offline support</strong> with message queuing</li>
+<li><strong>Connection resilience</strong> with automatic reconnection</li>
+<li><strong>Mobile-first design</strong> with responsive layouts</li>
+<li><strong>Accessibility support</strong> (WCAG 2.1 compliant)</li>
+<li><strong>Theme integration</strong> with Reynard&#39;s design system</li>
+</ul>
+<h2>Quick Start</h2>
+<h3>Basic P2P Chat</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { P2PChatContainer } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyApp</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> currentUser = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;user-123&quot;</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
+    <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;online&quot;</span>,
+    <span class="hljs-attr">avatar</span>: <span class="hljs-string">&quot;👤&quot;</span>,
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">P2PChatContainer</span>
+      <span class="hljs-attr">currentUser</span>=<span class="hljs-string">{currentUser}</span>
+      <span class="hljs-attr">realtimeEndpoint</span>=<span class="hljs-string">&quot;wss://your-server.com/chat&quot;</span>
+      <span class="hljs-attr">apiEndpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">enableFileUploads:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableReactions:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableTypingIndicators:</span> <span class="hljs-attr">true</span>,
+        <span class="hljs-attr">enableReadReceipts:</span> <span class="hljs-attr">true</span>,
+      }}
+    /&gt;</span></span>
+  );
+}</code></pre><h3>Custom P2P Chat with Hooks</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useP2PChat } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">CustomChat</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> currentUser = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;user-123&quot;</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
+    <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;online&quot;</span>,
+  };
+
+  <span class="hljs-keyword">const</span> p2pChat = <span class="hljs-title function_">useP2PChat</span>({
+    currentUser,
+    <span class="hljs-attr">realtimeEndpoint</span>: <span class="hljs-string">&quot;wss://your-server.com/chat&quot;</span>,
+    <span class="hljs-attr">autoConnect</span>: <span class="hljs-literal">true</span>,
+  });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">sendMessage</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"><span class="hljs-attr">content</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+    <span class="hljs-keyword">const</span> activeRoom = p2pChat.<span class="hljs-title function_">activeRoom</span>();
+    <span class="hljs-keyword">if</span> (activeRoom) {
+      <span class="hljs-keyword">await</span> p2pChat.<span class="hljs-property">actions</span>.<span class="hljs-title function_">sendMessageToRoom</span>(activeRoom.<span class="hljs-property">id</span>, content);
+    }
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Rooms ({p2pChat.rooms().length})<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+      {p2pChat.rooms().map((room) =&gt; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{room.id}</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> p2pChat.actions.switchRoom(room.id)}&gt;
+          {room.name}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      ))}
+
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        {p2pChat.messages().map((message) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{message.id}</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>{message.sender?.name}:<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span> {message.content}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}</code></pre><h2>Component Reference</h2>
+<h3>P2PChatContainer</h3>
+<p>The main container component for P2P chat functionality.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> P2PChatContainerProps {
+  <span class="hljs-attr">currentUser</span>: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">realtimeEndpoint</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">apiEndpoint</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">authHeaders</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;;
+  <span class="hljs-attr">initialRoomId</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">initialRooms</span>?: <span class="hljs-title class_">ChatRoom</span>[];
+  <span class="hljs-attr">config</span>?: P2PChatConfig;
+  <span class="hljs-attr">ui</span>?: <span class="hljs-title class_">UIConfig</span>;
+  <span class="hljs-attr">onRoomJoined</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">room</span>: <span class="hljs-title class_">ChatRoom</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onMessageReceived</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">message</span>: P2PChatMessage</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onError</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">error</span>: <span class="hljs-built_in">any</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}</code></pre><h3>P2PMessage</h3>
+<p>Individual message component with P2P-specific features.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> P2PMessageProps {
+  <span class="hljs-attr">message</span>: P2PChatMessage;
+  <span class="hljs-attr">currentUser</span>: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">showSender</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showAvatar</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showTimestamp</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showReactions</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showReadReceipts</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">onMessageAction</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">action</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">message</span>: P2PChatMessage</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onReaction</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">emoji</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+}</code></pre><h3>RoomList</h3>
+<p>Room/channel management component.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">RoomListProps</span> {
+  <span class="hljs-attr">rooms</span>: <span class="hljs-title class_">ChatRoom</span>[];
+  <span class="hljs-attr">activeRoom</span>?: <span class="hljs-title class_">ChatRoom</span>;
+  <span class="hljs-attr">currentUser</span>: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">onRoomSelect</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">room</span>: <span class="hljs-title class_">ChatRoom</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onCreateRoom</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">searchQuery</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">onSearch</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">query</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">compact</span>?: <span class="hljs-built_in">boolean</span>;
+}</code></pre><h3>UserList</h3>
+<p>User presence and management component.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserListProps</span> {
+  <span class="hljs-attr">users</span>: <span class="hljs-title class_">ChatUser</span>[];
+  <span class="hljs-attr">currentUser</span>: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">onUserSelect</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">user</span>: <span class="hljs-title class_">ChatUser</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">showStatus</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showActions</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">compact</span>?: <span class="hljs-built_in">boolean</span>;
+}</code></pre><h2>Hook Reference</h2>
+<h3>useP2PChat</h3>
+<p>Main composable for P2P chat functionality.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">UseP2PChatOptions</span> {
+  <span class="hljs-attr">currentUser</span>: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">realtimeEndpoint</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">apiEndpoint</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">authHeaders</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;;
+  <span class="hljs-attr">initialRoomId</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">initialRooms</span>?: <span class="hljs-title class_">ChatRoom</span>[];
+  <span class="hljs-attr">autoConnect</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">config</span>?: P2PChatConfig;
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">UseP2PChatReturn</span> <span class="hljs-keyword">extends</span> P2PChatState {
+  <span class="hljs-attr">actions</span>: P2PChatActions;
+}</code></pre><h4>Key Actions</h4>
+<ul>
+<li><code>createRoom(name, type, participants)</code> - Create a new room</li>
+<li><code>joinRoom(roomId)</code> - Join an existing room</li>
+<li><code>leaveRoom(roomId)</code> - Leave a room</li>
+<li><code>sendMessageToRoom(roomId, content, options)</code> - Send a message</li>
+<li><code>editMessage(messageId, newContent)</code> - Edit a message</li>
+<li><code>deleteMessage(messageId)</code> - Delete a message</li>
+<li><code>reactToMessage(messageId, emoji)</code> - Add/remove reaction</li>
+<li><code>startTyping(roomId)</code> - Start typing indicator</li>
+<li><code>stopTyping(roomId)</code> - Stop typing indicator</li>
+<li><code>uploadFile(file, roomId)</code> - Upload file attachment</li>
+<li><code>searchMessages(query, roomId?)</code> - Search messages</li>
+</ul>
+<h2>Type Definitions</h2>
+<h3>Core Types</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChatUser</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">avatar</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">status</span>: <span class="hljs-string">&quot;online&quot;</span> | <span class="hljs-string">&quot;away&quot;</span> | <span class="hljs-string">&quot;busy&quot;</span> | <span class="hljs-string">&quot;offline&quot;</span>;
+  <span class="hljs-attr">lastSeen</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">metadata</span>?: {
+    <span class="hljs-attr">timezone</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">language</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">role</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">customFields</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
+  };
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChatRoom</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;direct&quot;</span> | <span class="hljs-string">&quot;group&quot;</span> | <span class="hljs-string">&quot;public&quot;</span> | <span class="hljs-string">&quot;private&quot;</span>;
+  <span class="hljs-attr">description</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">participants</span>: <span class="hljs-title class_">ChatUser</span>[];
+  <span class="hljs-attr">metadata</span>?: {
+    <span class="hljs-attr">createdAt</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">createdBy</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">topic</span>?: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">settings</span>?: <span class="hljs-title class_">RoomSettings</span>;
+  };
+  <span class="hljs-attr">unreadCount</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">lastMessage</span>?: P2PChatMessage;
+}
+
+<span class="hljs-keyword">interface</span> P2PChatMessage <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ChatMessage</span> {
+  <span class="hljs-attr">sender</span>?: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">recipient</span>?: <span class="hljs-title class_">ChatUser</span>;
+  <span class="hljs-attr">roomId</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">threadId</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">replyTo</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">reactions</span>?: <span class="hljs-title class_">MessageReaction</span>[];
+  <span class="hljs-attr">readBy</span>?: <span class="hljs-title class_">MessageReadReceipt</span>[];
+  <span class="hljs-attr">attachments</span>?: <span class="hljs-title class_">MessageAttachment</span>[];
+  <span class="hljs-attr">priority</span>?: <span class="hljs-string">&quot;low&quot;</span> | <span class="hljs-string">&quot;normal&quot;</span> | <span class="hljs-string">&quot;high&quot;</span> | <span class="hljs-string">&quot;urgent&quot;</span>;
+  <span class="hljs-attr">isPinned</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">editHistory</span>?: <span class="hljs-title class_">MessageEdit</span>[];
+  <span class="hljs-attr">deliveryStatus</span>?: <span class="hljs-string">&quot;sent&quot;</span> | <span class="hljs-string">&quot;delivered&quot;</span> | <span class="hljs-string">&quot;read&quot;</span> | <span class="hljs-string">&quot;failed&quot;</span>;
+}</code></pre><h3>Real-time Events</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">type</span> P2PChatEvent =
+  | <span class="hljs-title class_">UserJoinedEvent</span>
+  | <span class="hljs-title class_">UserLeftEvent</span>
+  | <span class="hljs-title class_">UserStatusChangedEvent</span>
+  | <span class="hljs-title class_">MessageSentEvent</span>
+  | <span class="hljs-title class_">MessageEditedEvent</span>
+  | <span class="hljs-title class_">MessageDeletedEvent</span>
+  | <span class="hljs-title class_">MessageReactionEvent</span>
+  | <span class="hljs-title class_">TypingStartEvent</span>
+  | <span class="hljs-title class_">TypingStopEvent</span>
+  | <span class="hljs-title class_">RoomCreatedEvent</span>
+  | <span class="hljs-title class_">RoomUpdatedEvent</span>
+  | <span class="hljs-title class_">ReadReceiptEvent</span>;</code></pre><h2>Configuration</h2>
+<h3>Chat Configuration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> P2PChatConfig {
+  <span class="hljs-attr">enableFileUploads</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">enableReactions</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">enableTypingIndicators</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">enableReadReceipts</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">enableThreads</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">maxFileSize</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">allowedFileTypes</span>?: <span class="hljs-built_in">string</span>[];
+  <span class="hljs-attr">messageRetention</span>?: <span class="hljs-built_in">number</span>;
+}</code></pre><h3>UI Configuration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">UIConfig</span> {
+  <span class="hljs-attr">showUserList</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">showRoomList</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">compact</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">theme</span>?: <span class="hljs-string">&quot;light&quot;</span> | <span class="hljs-string">&quot;dark&quot;</span> | <span class="hljs-string">&quot;auto&quot;</span>;
+}</code></pre><h2>Server Integration</h2>
+<h3>WebSocket Events</h3>
+<p>The P2P chat system expects the following WebSocket message format:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;message_sent&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;msg-123&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello World&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200000</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;roomId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;room-456&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;sender&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user-789&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;John Doe&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;online&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200000</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>REST API Endpoints</h3>
+<p>Expected API endpoints:</p>
+<ul>
+<li><code>POST /api/chat/rooms</code> - Create room</li>
+<li><code>GET /api/chat/rooms/:id/messages</code> - Get room messages</li>
+<li><code>POST /api/chat/rooms/:id/messages</code> - Send message</li>
+<li><code>PATCH /api/chat/messages/:id</code> - Edit message</li>
+<li><code>DELETE /api/chat/messages/:id</code> - Delete message</li>
+<li><code>POST /api/chat/messages/:id/reactions</code> - React to message</li>
+<li><code>POST /api/chat/upload</code> - Upload file</li>
+<li><code>GET /api/chat/search/messages</code> - Search messages</li>
+</ul>
+<h2>Styling</h2>
+<p>The P2P chat system uses CSS custom properties for theming:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-attr">--reynard-chat-bg</span>: <span class="hljs-number">#ffffff</span>;
+  <span class="hljs-attr">--reynard-chat-surface</span>: <span class="hljs-number">#f8fafc</span>;
+  <span class="hljs-attr">--reynard-chat-border</span>: <span class="hljs-number">#e2e8f0</span>;
+  <span class="hljs-attr">--reynard-chat-primary</span>: <span class="hljs-number">#3b82f6</span>;
+  <span class="hljs-attr">--reynard-chat-success</span>: <span class="hljs-number">#10b981</span>;
+  <span class="hljs-attr">--reynard-chat-warning</span>: <span class="hljs-number">#f59e0b</span>;
+  <span class="hljs-attr">--reynard-chat-error</span>: <span class="hljs-number">#ef4444</span>;
+}</code></pre><p>Import the styles:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-components/dist/chat/styles.css&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-components/dist/chat/styles/p2p.css&quot;</span>;</code></pre><h2>Examples</h2>
+<p>See the <code>examples/</code> directory for comprehensive usage examples:</p>
+<ul>
+<li><code>BasicP2PChat</code> - Simple P2P chat setup</li>
+<li><code>DualChatExample</code> - Assistant and P2P chat side-by-side</li>
+<li><code>CustomP2PChat</code> - Custom implementation using hooks</li>
+<li><code>RealtimeFeaturesDemo</code> - Showcase of real-time features</li>
+</ul>
+<h2>Code Sharing with Assistant Chat</h2>
+<p>The P2P chat system shares significant code with the assistant chat:</p>
+<ul>
+<li><strong>Markdown parser</strong> - Same <code>StreamingMarkdownParser</code> for consistent rendering</li>
+<li><strong>Message components</strong> - Shared base components with P2P extensions</li>
+<li><strong>Styling system</strong> - Consistent design language and theming</li>
+<li><strong>Type definitions</strong> - Extended from base chat types</li>
+<li><strong>Utilities</strong> - Shared helper functions and validators</li>
+</ul>
+<p>This ensures:</p>
+<ul>
+<li>Consistent user experience across chat types</li>
+<li>Reduced bundle size through code reuse</li>
+<li>Easier maintenance and updates</li>
+<li>Feature parity between chat systems</li>
+</ul>
+<h2>Performance Considerations</h2>
+<ul>
+<li><strong>Virtual scrolling</strong> for large message lists</li>
+<li><strong>Message pagination</strong> to avoid loading too many messages</li>
+<li><strong>Optimistic updates</strong> for immediate UI feedback</li>
+<li><strong>Connection pooling</strong> for efficient WebSocket usage</li>
+<li><strong>File upload chunking</strong> for large files</li>
+<li><strong>Message caching</strong> for faster loading</li>
+<li><strong>Tree-shaking support</strong> for minimal bundle size</li>
+</ul>
+<h2>Accessibility</h2>
+<ul>
+<li><strong>Keyboard navigation</strong> for all interactive elements</li>
+<li><strong>Screen reader support</strong> with proper ARIA labels</li>
+<li><strong>Focus management</strong> for modal dialogs and dropdowns</li>
+<li><strong>High contrast support</strong> for visual accessibility</li>
+<li><strong>Reduced motion</strong> options for motion-sensitive users</li>
+<li><strong>Voice input</strong> compatibility</li>
+<li><strong>Touch target sizing</strong> for mobile accessibility</li>
+</ul>
+<h2>Browser Support</h2>
+<ul>
+<li>Chrome 88+</li>
+<li>Firefox 85+</li>
+<li>Safari 14+</li>
+<li>Edge 88+</li>
+<li>Mobile browsers with WebSocket support</li>
+</ul>
+<h2>License</h2>
+<p>Same as Reynard components package.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

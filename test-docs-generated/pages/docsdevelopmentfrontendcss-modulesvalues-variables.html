@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exporting values variables - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Exporting values variables</h1>
+      <div class="markdown-content"><h1>Exporting values variables</h1>
+<p>You can export values with css modules similar to using variables in less or<br>sass.</p>
+<p>Just ensure you are using postcss and the<br><a href="https://github.com/css-modules/postcss-modules-values">postcss-modules-values</a><br>plugin</p>
+<p>Now you set up your values/variables</p>
+<h2><code>colors.css</code></h2>
+<pre><code class="hljs language-css"><span class="hljs-keyword">@value</span> <span class="hljs-attribute">blue</span>: #<span class="hljs-number">0</span>c77f8;
+<span class="hljs-keyword">@value</span> <span class="hljs-attribute">red</span>: #ff0000;
+<span class="hljs-keyword">@value</span> <span class="hljs-attribute">green</span>: #aaf200;</code></pre><p>then import them into your components css module</p>
+<h2><code>demo.css</code></h2>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* import your colors... */</span>
+<span class="hljs-keyword">@value</span> <span class="hljs-attribute">colors</span>: <span class="hljs-string">&quot;./colors.css&quot;</span>;
+<span class="hljs-keyword">@value</span> blue, red, green from colors;
+
+<span class="hljs-selector-class">.button</span> {
+  <span class="hljs-attribute">color</span>: blue;
+  <span class="hljs-attribute">display</span>: inline-block;
+}</code></pre><h2>Example <code>webpack.config.js</code> for <code>postcss-modules-values</code></h2>
+<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);
+<span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ExtractTextPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;extract-text-webpack-plugin&quot;</span>);
+<span class="hljs-keyword">var</span> values = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;postcss-modules-values&quot;</span>);
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">entry</span>: [<span class="hljs-string">&quot;./src/index&quot;</span>],
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;bundle.js&quot;</span>,
+    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;public&quot;</span>),
+    <span class="hljs-attr">publicPath</span>: <span class="hljs-string">&quot;/public/&quot;</span>,
+  },
+  <span class="hljs-attr">module</span>: {
+    <span class="hljs-attr">loaders</span>: [
+      { <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>, <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span> },
+      {
+        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>,
+        <span class="hljs-attr">loader</span>: <span class="hljs-title class_">ExtractTextPlugin</span>.<span class="hljs-title function_">extract</span>(
+          <span class="hljs-string">&quot;style-loader&quot;</span>,
+          <span class="hljs-string">&quot;css-loader?modules&amp;importLoaders=1&amp;localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader&quot;</span>,
+        ),
+      },
+    ],
+  },
+  <span class="hljs-attr">postcss</span>: [values],
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-keyword">new</span> <span class="hljs-title class_">ExtractTextPlugin</span>(<span class="hljs-string">&quot;style.css&quot;</span>, { <span class="hljs-attr">allChunks</span>: <span class="hljs-literal">true</span> })],
+};</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

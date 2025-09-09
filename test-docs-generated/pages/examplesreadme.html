@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦊 Reynard Framework Examples - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>🦊 Reynard Framework Examples</h1>
+      <div class="markdown-content"><h1>🦊 Reynard Framework Examples</h1>
+<p>Welcome to the Reynard framework examples! These practical applications demonstrate the power and flexibility of the Reynard SolidJS framework and UI library.</p>
+<h2>📱 Available Examples</h2>
+<h3>🌍 <a href="./i18n-demo/">i18n Demo</a> - Internationalization Showcase</h3>
+<p>A comprehensive demonstration of Reynard&#39;s internationalization system with 37 language support.</p>
+<p><strong>What you&#39;ll learn:</strong></p>
+<ul>
+<li>Global translation system implementation</li>
+<li>Advanced pluralization rules</li>
+<li>RTL support for Arabic and Hebrew</li>
+<li>Type-safe translations with autocomplete</li>
+<li>Dynamic loading for optimal performance</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>🌍 37 languages with comprehensive coverage</li>
+<li>🎯 Advanced pluralization (Arabic, Russian, Polish, etc.)</li>
+<li>📱 RTL support for Arabic and Hebrew</li>
+<li>🔧 Type-safe translations with autocomplete</li>
+<li>⚡ Dynamic loading for optimal performance</li>
+<li>🎨 Integration with Reynard&#39;s theming system</li>
+</ul>
+<p><strong>Bundle size:</strong> ~15 kB total (gzipped)</p>
+<hr>
+<h3>🚀 <a href="./basic-app/">Basic App</a> - Todo Application</h3>
+<p>A minimal todo application demonstrating core Reynard features.</p>
+<p><strong>What you&#39;ll learn:</strong></p>
+<ul>
+<li>Core SolidJS reactivity with Reynard</li>
+<li>Theme switching and persistence</li>
+<li>Notification system integration</li>
+<li>Responsive design patterns</li>
+<li>Component composition</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>✅ CRUD todo operations</li>
+<li>🎨 5 beautiful themes with live switching</li>
+<li>📱 Mobile-responsive design</li>
+<li>🔔 User feedback notifications</li>
+<li>💾 Theme persistence</li>
+</ul>
+<p><strong>Bundle size:</strong> ~11 kB total (gzipped)</p>
+<hr>
+<h3>🎨 <a href="./multi-theme/">Multi-Theme Gallery</a> - Advanced Theming Showcase</h3>
+<p>Comprehensive demonstration of Reynard&#39;s theming capabilities.</p>
+<p><strong>What you&#39;ll learn:</strong></p>
+<ul>
+<li>Advanced theme system implementation</li>
+<li>Component library development</li>
+<li>Theme comparison interfaces</li>
+<li>CSS custom properties architecture</li>
+<li>Responsive design patterns</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>🖼️ Interactive theme gallery with previews</li>
+<li>🧩 Complete component showcase</li>
+<li>⚖️ Side-by-side theme comparison (up to 3 themes)</li>
+<li>🎨 Color palette visualization</li>
+<li>📊 Component adaptation demonstration</li>
+</ul>
+<p><strong>Bundle size:</strong> ~23 kB total (gzipped)</p>
+<hr>
+<h3>🌐 <a href="./full-stack/">Full-Stack App</a> - Complete Application <em>(Coming Soon)</em></h3>
+<p>A comprehensive example with frontend, backend, and database integration.</p>
+<p><strong>What you&#39;ll learn:</strong></p>
+<ul>
+<li>Full-stack architecture with Reynard</li>
+<li>API integration patterns</li>
+<li>Real-time features</li>
+<li>Authentication and authorization</li>
+<li>Database operations</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>👤 User authentication</li>
+<li>🔄 Real-time data synchronization</li>
+<li>📊 Dashboard with charts</li>
+<li>🔍 Search and filtering</li>
+<li>📱 Progressive Web App features</li>
+</ul>
+<hr>
+<h2>🚀 Quick Start</h2>
+<h3>Running an Example</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Navigate to any example directory</span>
+<span class="hljs-built_in">cd</span> basic-app  <span class="hljs-comment"># or multi-theme</span>
+
+<span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+
+<span class="hljs-comment"># Build for production</span>
+npm run build</code></pre><h3>Development Ports</h3>
+<ul>
+<li><strong>Basic App</strong>: <a href="http://localhost:3001">http://localhost:3001</a></li>
+<li><strong>Multi-Theme Gallery</strong>: <a href="http://localhost:3002">http://localhost:3002</a></li>
+<li><strong>Full-Stack App</strong>: <a href="http://localhost:3003">http://localhost:3003</a> <em>(when available)</em></li>
+</ul>
+<h2>🏗️ Architecture Overview</h2>
+<p>All examples follow Reynard&#39;s architectural principles:</p>
+<h3>📦 Package Structure</h3>
+<pre><code class="hljs">example-app<span class="hljs-symbol">/</span>
+├── src<span class="hljs-symbol">/</span>
+│   ├── components<span class="hljs-symbol">/</span>          <span class="hljs-comment"># Reusable UI components</span>
+│   ├── App.tsx             <span class="hljs-comment"># Main application</span>
+│   ├── index.tsx           <span class="hljs-comment"># Entry point</span>
+│   └── styles.css          <span class="hljs-comment"># Theme-aware styles</span>
+├── package.json            <span class="hljs-comment"># Dependencies (uses reynard-core)</span>
+├── vite.config.ts          <span class="hljs-comment"># Build configuration</span>
+├── tsconfig.json           <span class="hljs-comment"># TypeScript setup</span>
+└── README.md               <span class="hljs-comment"># Example documentation</span></code></pre><h3>🎨 Theming System</h3>
+<ul>
+<li><strong>CSS Custom Properties</strong>: Theme-aware variables</li>
+<li><strong>Automatic Adaptation</strong>: Components respond to theme changes</li>
+<li><strong>Persistence</strong>: Themes saved to localStorage</li>
+<li><strong>5 Built-in Themes</strong>: light, dark, banana, strawberry, peanut</li>
+</ul>
+<h3>🧩 Core Features Used</h3>
+<ul>
+<li><strong>Theme Management</strong>: <code>useTheme()</code> composable</li>
+<li><strong>Notifications</strong>: <code>useNotifications()</code> for user feedback</li>
+<li><strong>Local Storage</strong>: <code>useLocalStorage()</code> for persistence</li>
+<li><strong>Responsive Design</strong>: Mobile-first CSS patterns</li>
+</ul>
+<h2>📚 Learning Path</h2>
+<h3>1. Start with Basic App</h3>
+<ul>
+<li>Learn fundamental Reynard concepts</li>
+<li>Understand SolidJS reactivity</li>
+<li>Practice theme integration</li>
+<li>Explore component patterns</li>
+</ul>
+<h3>2. Explore Multi-Theme Gallery</h3>
+<ul>
+<li>Advanced styling techniques</li>
+<li>Component library development</li>
+<li>Theme comparison interfaces</li>
+<li>Complex state management</li>
+</ul>
+<h3>3. Build Full-Stack App <em>(when available)</em></h3>
+<ul>
+<li>Real-world application architecture</li>
+<li>API integration patterns</li>
+<li>Authentication flows</li>
+<li>Advanced features</li>
+</ul>
+<h2>🎯 Use Cases</h2>
+<h3>Basic App is perfect for</h3>
+<ul>
+<li>Learning Reynard fundamentals</li>
+<li>Prototyping simple applications</li>
+<li>Understanding theme systems</li>
+<li>Getting started with SolidJS</li>
+</ul>
+<h3>Multi-Theme Gallery is ideal for</h3>
+<ul>
+<li>Design system development</li>
+<li>Theme evaluation and comparison</li>
+<li>Component library showcases</li>
+<li>Advanced styling patterns</li>
+</ul>
+<h3>Full-Stack App will demonstrate</h3>
+<ul>
+<li>Production-ready applications</li>
+<li>Real-time features</li>
+<li>Authentication patterns</li>
+<li>Database integration</li>
+</ul>
+<h2>🔧 Customization</h2>
+<h3>Adding New Themes</h3>
+<ol>
+<li>Add theme variables to <code>styles.css</code>:</li>
+</ol>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span><span class="hljs-selector-attr">[data-theme=<span class="hljs-string">&quot;mytheme&quot;</span>]</span> {
+  <span class="hljs-attr">--accent</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">120deg</span> <span class="hljs-number">60%</span> <span class="hljs-number">50%</span>);
+  <span class="hljs-attr">--bg-color</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">120deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+  <span class="hljs-comment">/* ... other variables */</span>
+}</code></pre><ol start="2">
+<li>Update theme lists in components</li>
+<li>Add theme descriptions and emojis</li>
+</ol>
+<h3>Extending Examples</h3>
+<ul>
+<li>Add new components to showcase</li>
+<li>Implement additional features</li>
+<li>Integrate with external APIs</li>
+<li>Add animations and transitions</li>
+</ul>
+<h2>📊 Performance</h2>
+<p>All examples are optimized for:</p>
+<ul>
+<li><strong>Fast Loading</strong>: Small bundle sizes with code splitting</li>
+<li><strong>Smooth Interactions</strong>: 60fps animations and transitions</li>
+<li><strong>Accessibility</strong>: ARIA labels, keyboard navigation, focus management</li>
+<li><strong>SEO Ready</strong>: Semantic HTML and meta tags</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>Found a bug or have an improvement idea?</p>
+<ol>
+<li><strong>Issues</strong>: Report bugs or suggest features</li>
+<li><strong>Pull Requests</strong>: Submit improvements or new examples</li>
+<li><strong>Documentation</strong>: Help improve guides and examples</li>
+</ol>
+<h2>🔗 Links</h2>
+<ul>
+<li><strong><a href="../../README.md">Reynard Documentation</a></strong> - Framework overview</li>
+<li><strong><a href="../../packages/core/">Core Package</a></strong> - Core functionality</li>
+<li><strong><a href="../../templates/starter/">Starter Template</a></strong> - Project template</li>
+<li><strong><a href="https://solidjs.com">SolidJS Docs</a></strong> - SolidJS framework</li>
+</ul>
+<hr>
+<p><em>Built with ❤️ using Reynard framework, SolidJS, and modern web technologies</em> 🦊</p>
+<p><strong>Happy coding!</strong> 🚀</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

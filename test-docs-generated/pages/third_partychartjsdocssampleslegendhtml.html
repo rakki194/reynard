@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Legend - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>HTML Legend</h1>
+      <div class="markdown-content"><h1>HTML Legend</h1>
+<p>This example shows how to create a custom HTML legend using a plugin and connect it to the chart in lieu of the default on-canvas legend.<br>For an html legend to work you need to place an empty div at your web page with the ID you provide in the options to bind to like so: <code>&lt;div id=&quot;legend-container&quot;&gt;&lt;/div&gt;</code>.  </p>
+<div id="legend-container"></div>
+
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:plugin:0&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">getOrCreateLegendList</span> = (<span class="hljs-params">chart, id</span>) =&gt; {
+  <span class="hljs-keyword">const</span> legendContainer = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id);
+  <span class="hljs-keyword">let</span> listContainer = legendContainer.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;ul&#x27;</span>);
+
+  <span class="hljs-keyword">if</span> (!listContainer) {
+    listContainer = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;ul&#x27;</span>);
+    listContainer.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;flex&#x27;</span>;
+    listContainer.<span class="hljs-property">style</span>.<span class="hljs-property">flexDirection</span> = <span class="hljs-string">&#x27;row&#x27;</span>;
+    listContainer.<span class="hljs-property">style</span>.<span class="hljs-property">margin</span> = <span class="hljs-number">0</span>;
+    listContainer.<span class="hljs-property">style</span>.<span class="hljs-property">padding</span> = <span class="hljs-number">0</span>;
+
+    legendContainer.<span class="hljs-title function_">appendChild</span>(listContainer);
+  }
+
+  <span class="hljs-keyword">return</span> listContainer;
+};
+
+<span class="hljs-keyword">const</span> htmlLegendPlugin = {
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;htmlLegend&#x27;</span>,
+  <span class="hljs-title function_">afterUpdate</span>(<span class="hljs-params">chart, args, options</span>) {
+    <span class="hljs-keyword">const</span> ul = <span class="hljs-title function_">getOrCreateLegendList</span>(chart, options.<span class="hljs-property">containerID</span>);
+
+    <span class="hljs-comment">// Remove old legend items</span>
+    <span class="hljs-keyword">while</span> (ul.<span class="hljs-property">firstChild</span>) {
+      ul.<span class="hljs-property">firstChild</span>.<span class="hljs-title function_">remove</span>();
+    }
+
+    <span class="hljs-comment">// Reuse the built-in legendItems generator</span>
+    <span class="hljs-keyword">const</span> items = chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">legend</span>.<span class="hljs-property">labels</span>.<span class="hljs-title function_">generateLabels</span>(chart);
+
+    items.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+      <span class="hljs-keyword">const</span> li = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;li&#x27;</span>);
+      li.<span class="hljs-property">style</span>.<span class="hljs-property">alignItems</span> = <span class="hljs-string">&#x27;center&#x27;</span>;
+      li.<span class="hljs-property">style</span>.<span class="hljs-property">cursor</span> = <span class="hljs-string">&#x27;pointer&#x27;</span>;
+      li.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;flex&#x27;</span>;
+      li.<span class="hljs-property">style</span>.<span class="hljs-property">flexDirection</span> = <span class="hljs-string">&#x27;row&#x27;</span>;
+      li.<span class="hljs-property">style</span>.<span class="hljs-property">marginLeft</span> = <span class="hljs-string">&#x27;10px&#x27;</span>;
+
+      li.<span class="hljs-property">onclick</span> = <span class="hljs-function">() =&gt;</span> {
+        <span class="hljs-keyword">const</span> {<span class="hljs-keyword">type</span>} = chart.<span class="hljs-property">config</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === <span class="hljs-string">&#x27;pie&#x27;</span> || <span class="hljs-keyword">type</span> === <span class="hljs-string">&#x27;doughnut&#x27;</span>) {
+          <span class="hljs-comment">// Pie and doughnut charts only have a single dataset and visibility is per item</span>
+          chart.<span class="hljs-title function_">toggleDataVisibility</span>(item.<span class="hljs-property">index</span>);
+        } <span class="hljs-keyword">else</span> {
+          chart.<span class="hljs-title function_">setDatasetVisibility</span>(item.<span class="hljs-property">datasetIndex</span>, !chart.<span class="hljs-title function_">isDatasetVisible</span>(item.<span class="hljs-property">datasetIndex</span>));
+        }
+        chart.<span class="hljs-title function_">update</span>();
+      };
+
+      <span class="hljs-comment">// Color box</span>
+      <span class="hljs-keyword">const</span> boxSpan = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;span&#x27;</span>);
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">background</span> = item.<span class="hljs-property">fillStyle</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">borderColor</span> = item.<span class="hljs-property">strokeStyle</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">borderWidth</span> = item.<span class="hljs-property">lineWidth</span> + <span class="hljs-string">&#x27;px&#x27;</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;inline-block&#x27;</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">flexShrink</span> = <span class="hljs-number">0</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">height</span> = <span class="hljs-string">&#x27;20px&#x27;</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">marginRight</span> = <span class="hljs-string">&#x27;10px&#x27;</span>;
+      boxSpan.<span class="hljs-property">style</span>.<span class="hljs-property">width</span> = <span class="hljs-string">&#x27;20px&#x27;</span>;
+
+      <span class="hljs-comment">// Text</span>
+      <span class="hljs-keyword">const</span> textContainer = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;p&#x27;</span>);
+      textContainer.<span class="hljs-property">style</span>.<span class="hljs-property">color</span> = item.<span class="hljs-property">fontColor</span>;
+      textContainer.<span class="hljs-property">style</span>.<span class="hljs-property">margin</span> = <span class="hljs-number">0</span>;
+      textContainer.<span class="hljs-property">style</span>.<span class="hljs-property">padding</span> = <span class="hljs-number">0</span>;
+      textContainer.<span class="hljs-property">style</span>.<span class="hljs-property">textDecoration</span> = item.<span class="hljs-property">hidden</span> ? <span class="hljs-string">&#x27;line-through&#x27;</span> : <span class="hljs-string">&#x27;&#x27;</span>;
+
+      <span class="hljs-keyword">const</span> text = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(item.<span class="hljs-property">text</span>);
+      textContainer.<span class="hljs-title function_">appendChild</span>(text);
+
+      li.<span class="hljs-title function_">appendChild</span>(boxSpan);
+      li.<span class="hljs-title function_">appendChild</span>(textContainer);
+      ul.<span class="hljs-title function_">appendChild</span>(li);
+    });
+  }
+};
+<span class="hljs-comment">// &lt;/block:plugin&gt;</span>
+
+<span class="hljs-comment">// &lt;block:data:1&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">NUM_DATA</span> = <span class="hljs-number">7</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">NUM_CFG</span> = {<span class="hljs-attr">count</span>: <span class="hljs-variable constant_">NUM_DATA</span>, <span class="hljs-attr">min</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>};
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">labels</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">months</span>({<span class="hljs-attr">count</span>: <span class="hljs-variable constant_">NUM_DATA</span>}),
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset: 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>(<span class="hljs-variable constant_">NUM_CFG</span>),
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">transparentize</span>(<span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>, <span class="hljs-number">0.5</span>),
+      <span class="hljs-attr">fill</span>: <span class="hljs-literal">false</span>,
+    },
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset: 1&#x27;</span>,
+      <span class="hljs-attr">data</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">numbers</span>(<span class="hljs-variable constant_">NUM_CFG</span>),
+      <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>,
+      <span class="hljs-attr">backgroundColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">transparentize</span>(<span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">blue</span>, <span class="hljs-number">0.5</span>),
+      <span class="hljs-attr">fill</span>: <span class="hljs-literal">false</span>,
+    },
+  ],
+};
+<span class="hljs-comment">// &lt;/block:data&gt;</span>
+
+<span class="hljs-comment">// &lt;block:setup:2&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">htmlLegend</span>: {
+        <span class="hljs-comment">// ID of the container to put the legend in</span>
+        <span class="hljs-attr">containerID</span>: <span class="hljs-string">&#x27;legend-container&#x27;</span>,
+      },
+      <span class="hljs-attr">legend</span>: {
+        <span class="hljs-attr">display</span>: <span class="hljs-literal">false</span>,
+      }
+    }
+  },
+  <span class="hljs-attr">plugins</span>: [htmlLegendPlugin],
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">actions</span>: [],
+  <span class="hljs-attr">config</span>: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../configuration/legend.md">Legend</a><ul>
+<li><code>display: false</code></li>
+</ul>
+</li>
+<li><a href="../../developers/plugins.md">Plugins</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

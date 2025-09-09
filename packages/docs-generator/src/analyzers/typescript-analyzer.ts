@@ -66,7 +66,9 @@ export class TypeScriptAnalyzer {
     const visit = (node: ts.Node) => {
       if (isExportedDeclaration(node)) {
         const info = extractApiInfo(node, sourceFile, this.checker!);
-        if (info) found.push(info);
+        if (info) {
+          found.push(info);
+        }
       }
       ts.forEachChild(node, visit);
     };

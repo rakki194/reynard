@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elements - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Elements</h1>
+      <div class="markdown-content"><h1>Elements</h1>
+<p>While chart types provide settings to configure the styling of each dataset, you sometimes want to style <strong>all datasets the same way</strong>. A common example would be to stroke all the bars in a bar chart with the same colour but change the fill per dataset. Options can be configured for four different types of elements: <strong><a href="#arc-configuration">arc</a></strong>, <strong><a href="#line-configuration">lines</a></strong>, <strong><a href="#point-configuration">points</a></strong>, and <strong><a href="#bar-configuration">bars</a></strong>. When set, these options apply to all objects of that type unless specifically overridden by the configuration attached to a dataset.</p>
+<h2>Global Configuration</h2>
+<p>The element options can be specified per chart or globally. The global options for elements are defined in <code>Chart.defaults.elements</code>. For example, to set the border width of all bar charts globally, you would do:</p>
+<pre><code class="hljs language-javascript"><span class="hljs-title class_">Chart</span>.<span class="hljs-property">defaults</span>.<span class="hljs-property">elements</span>.<span class="hljs-property">bar</span>.<span class="hljs-property">borderWidth</span> = <span class="hljs-number">2</span>;</code></pre><h2>Point Configuration</h2>
+<p>Point elements are used to represent the points in a line, radar or bubble chart.</p>
+<p>Namespace: <code>options.elements.point</code>, global point options: <code>Chart.defaults.elements.point</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>radius</code></td>
+<td><code>number</code></td>
+<td><code>3</code></td>
+<td>Point radius.</td>
+</tr>
+<tr>
+<td><a href="#point-styles"><code>pointStyle</code></a></td>
+<td><a href="#types"><code>pointStyle</code></a></td>
+<td><code>&#39;circle&#39;</code></td>
+<td>Point style.</td>
+</tr>
+<tr>
+<td><code>rotation</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Point rotation (in degrees).</td>
+</tr>
+<tr>
+<td><code>backgroundColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.backgroundColor</code></td>
+<td>Point fill color.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td><code>number</code></td>
+<td><code>1</code></td>
+<td>Point stroke width.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;Chart.defaults.borderColor</code></td>
+<td>Point stroke color.</td>
+</tr>
+<tr>
+<td><code>hitRadius</code></td>
+<td><code>number</code></td>
+<td><code>1</code></td>
+<td>Extra radius added to point radius for hit detection.</td>
+</tr>
+<tr>
+<td><code>hoverRadius</code></td>
+<td><code>number</code></td>
+<td><code>4</code></td>
+<td>Point radius when hovered.</td>
+</tr>
+<tr>
+<td><code>hoverBorderWidth</code></td>
+<td><code>number</code></td>
+<td><code>1</code></td>
+<td>Stroke width when hovered.</td>
+</tr>
+</tbody></table>
+<h3>Point Styles</h3>
+<h4>Types</h4>
+<p>The <code>pointStyle</code> argument accepts the following type of inputs: <code>string</code>, <code>Image</code> and <code>HTMLCanvasElement</code></p>
+<h4>Info</h4>
+<p>When a string is provided, the following values are supported:</p>
+<ul>
+<li><code>&#39;circle&#39;</code></li>
+<li><code>&#39;cross&#39;</code></li>
+<li><code>&#39;crossRot&#39;</code></li>
+<li><code>&#39;dash&#39;</code></li>
+<li><code>&#39;line&#39;</code></li>
+<li><code>&#39;rect&#39;</code></li>
+<li><code>&#39;rectRounded&#39;</code></li>
+<li><code>&#39;rectRot&#39;</code></li>
+<li><code>&#39;star&#39;</code></li>
+<li><code>&#39;triangle&#39;</code></li>
+<li><code>false</code></li>
+</ul>
+<p>If the value is an image or a canvas element, that image or canvas element is drawn on the canvas using <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/drawImage">drawImage</a>.</p>
+<h2>Line Configuration</h2>
+<p>Line elements are used to represent the line in a line chart.</p>
+<p>Namespace: <code>options.elements.line</code>, global line options: <code>Chart.defaults.elements.line</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tension</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Bézier curve tension (<code>0</code> for no Bézier curves).</td>
+</tr>
+<tr>
+<td><code>backgroundColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.backgroundColor</code></td>
+<td>Line fill color.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td><code>number</code></td>
+<td><code>3</code></td>
+<td>Line stroke width.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.borderColor</code></td>
+<td>Line stroke color.</td>
+</tr>
+<tr>
+<td><code>borderCapStyle</code></td>
+<td><code>string</code></td>
+<td><code>&#39;butt&#39;</code></td>
+<td>Line cap style. See <a href="https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D/lineCap">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDash</code></td>
+<td><code>number[]</code></td>
+<td><code>[]</code></td>
+<td>Line dash. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDashOffset</code></td>
+<td><code>number</code></td>
+<td><code>0.0</code></td>
+<td>Line dash offset. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderJoinStyle</code></td>
+<td><code>&#39;round&#39;</code>|<code>&#39;bevel&#39;</code>|<code>&#39;miter&#39;</code></td>
+<td><code>&#39;miter&#39;</code></td>
+<td>Line join style. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>capBezierPoints</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td><code>true</code> to keep Bézier control inside the chart, <code>false</code> for no restriction.</td>
+</tr>
+<tr>
+<td><code>cubicInterpolationMode</code></td>
+<td><code>string</code></td>
+<td><code>&#39;default&#39;</code></td>
+<td>Interpolation mode to apply. <a href="/charts/line.md#cubicinterpolationmode">See more...</a></td>
+</tr>
+<tr>
+<td><code>fill</code></td>
+<td><code>boolean</code>|<code>string</code></td>
+<td><code>false</code></td>
+<td>How to fill the area under the line. See <a href="/charts/area.md#filling-modes">area charts</a>.</td>
+</tr>
+<tr>
+<td><code>stepped</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td><code>true</code> to show the line as a stepped line (<code>tension</code> will be ignored).</td>
+</tr>
+</tbody></table>
+<h2>Bar Configuration</h2>
+<p>Bar elements are used to represent the bars in a bar chart.</p>
+<p>Namespace: <code>options.elements.bar</code>, global bar options: <code>Chart.defaults.elements.bar</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backgroundColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.backgroundColor</code></td>
+<td>Bar fill color.</td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Bar stroke width.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.borderColor</code></td>
+<td>Bar stroke color.</td>
+</tr>
+<tr>
+<td><code>borderSkipped</code></td>
+<td><code>string</code></td>
+<td><code>&#39;start&#39;</code></td>
+<td>Skipped (excluded) border: <code>&#39;start&#39;</code>, <code>&#39;end&#39;</code>, <code>&#39;middle&#39;</code>, <code>&#39;bottom&#39;</code>, <code>&#39;left&#39;</code>, <code>&#39;top&#39;</code>, <code>&#39;right&#39;</code> or <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>borderRadius</code></td>
+<td><code>number</code>|<code>object</code></td>
+<td><code>0</code></td>
+<td>The bar border radius (in pixels).</td>
+</tr>
+<tr>
+<td><code>inflateAmount</code></td>
+<td><code>number</code>|<code>&#39;auto&#39;</code></td>
+<td><code>&#39;auto&#39;</code></td>
+<td>The amount of pixels to inflate the bar rectangle(s) when drawing.</td>
+</tr>
+<tr>
+<td><a href="#point-styles"><code>pointStyle</code></a></td>
+<td><code>string</code>|<code>Image</code>|<code>HTMLCanvasElement</code></td>
+<td><code>&#39;circle&#39;</code></td>
+<td>Style of the point for legend.</td>
+</tr>
+</tbody></table>
+<h2>Arc Configuration</h2>
+<p>Arcs are used in the polar area, doughnut and pie charts.</p>
+<p>Namespace: <code>options.elements.arc</code>, global arc options: <code>Chart.defaults.elements.arc</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>angle</code> - for polar only</td>
+<td><code>number</code></td>
+<td><code>circumference / (arc count)</code></td>
+<td>Arc angle to cover.</td>
+</tr>
+<tr>
+<td><code>backgroundColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>Chart.defaults.backgroundColor</code></td>
+<td>Arc fill color.</td>
+</tr>
+<tr>
+<td><code>borderAlign</code></td>
+<td><code>&#39;center&#39;</code>|<code>&#39;inner&#39;</code></td>
+<td><code>&#39;center&#39;</code></td>
+<td>Arc stroke alignment.</td>
+</tr>
+<tr>
+<td><code>borderColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td><code>&#39;#fff&#39;</code></td>
+<td>Arc stroke color.</td>
+</tr>
+<tr>
+<td><code>borderDash</code></td>
+<td><code>number[]</code></td>
+<td><code>[]</code></td>
+<td>Arc line dash. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDashOffset</code></td>
+<td><code>number</code></td>
+<td><code>0.0</code></td>
+<td>Arc line dash offset. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderJoinStyle</code></td>
+<td><code>&#39;round&#39;</code>|<code>&#39;bevel&#39;</code>|<code>&#39;miter&#39;</code></td>
+<td><code>&#39;bevel&#39;</code>|<code>&#39;round&#39;</code></td>
+<td>Line join style. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin">MDN</a>. The default is <code>&#39;round&#39;</code> when <code>borderAlign</code> is <code>&#39;inner&#39;</code></td>
+</tr>
+<tr>
+<td><code>borderWidth</code></td>
+<td><code>number</code></td>
+<td><code>2</code></td>
+<td>Arc stroke width.</td>
+</tr>
+<tr>
+<td><code>circular</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>By default the Arc is curved. If <code>circular: false</code> the Arc will be flat</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

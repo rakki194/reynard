@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas background - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Canvas background</h1>
+      <div class="markdown-content"><h1>Canvas background</h1>
+<p>In some use cases you would want a background image or color over the whole canvas. There is no built-in support for this, the way you can achieve this is by writing a custom plugin.</p>
+<p>In the two example plugins underneath here you can see how you can draw a color or image to the canvas as background. This way of giving the chart a background is only necessary if you want to export the chart with that specific background.<br>For normal use you can set the background more easily with <a href="https://www.w3schools.com/cssref/css3_pr_background.asp">CSS</a>.</p>
+<p>:::: tabs</p>
+<p>::: tab Color</p>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:setup:1&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">data</span> = {
+  labels: [
+    <span class="hljs-string">&#x27;Red&#x27;</span>,
+    <span class="hljs-string">&#x27;Blue&#x27;</span>,
+    <span class="hljs-string">&#x27;Yellow&#x27;</span>
+  ],
+  datasets: [{
+    label: <span class="hljs-string">&#x27;My First Dataset&#x27;</span>,
+    <span class="hljs-keyword">data</span>: [<span class="hljs-number">300</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>],
+    backgroundColor: [
+      <span class="hljs-string">&#x27;rgb(255, 99, 132)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(54, 162, 235)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(255, 205, 86)&#x27;</span>
+    ],
+    hoverOffset: <span class="hljs-number">4</span>
+  }]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:plugin:2&gt;</span>
+<span class="hljs-comment">// Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().</span>
+<span class="hljs-keyword">const</span> plugin = {
+  id: <span class="hljs-string">&#x27;customCanvasBackgroundColor&#x27;</span>,
+  beforeDraw: (chart, args, options) =&gt; {
+    <span class="hljs-keyword">const</span> {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = <span class="hljs-string">&#x27;destination-over&#x27;</span>;
+    ctx.fillStyle = options.color || <span class="hljs-string">&#x27;#99ffff&#x27;</span>;
+    ctx.fillRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+<span class="hljs-comment">// &lt;/block:plugin&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  type: <span class="hljs-string">&#x27;doughnut&#x27;</span>,
+  <span class="hljs-keyword">data</span>: <span class="hljs-keyword">data</span>,
+  options: {
+    plugins: {
+      customCanvasBackgroundColor: {
+        color: <span class="hljs-string">&#x27;lightGreen&#x27;</span>,
+      }
+    }
+  },
+  plugins: [plugin],
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+module.exports = {
+  actions: [],
+  config: config,
+};</code></pre><p>:::</p>
+<p>::: tab Image</p>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:setup:1&gt;</span>
+<span class="hljs-keyword">const</span> data = {
+  labels: [
+    <span class="hljs-string">&#x27;Red&#x27;</span>,
+    <span class="hljs-string">&#x27;Blue&#x27;</span>,
+    <span class="hljs-string">&#x27;Yellow&#x27;</span>
+  ],
+  datasets: [{
+    label: <span class="hljs-string">&#x27;My First Dataset&#x27;</span>,
+    data: [<span class="hljs-number">300</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>],
+    backgroundColor: [
+      <span class="hljs-string">&#x27;rgb(255, 99, 132)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(54, 162, 235)&#x27;</span>,
+      <span class="hljs-string">&#x27;rgb(255, 205, 86)&#x27;</span>
+    ],
+    hoverOffset: <span class="hljs-number">4</span>
+  }]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:plugin:2&gt;</span>
+<span class="hljs-comment">// Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().</span>
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">image</span> = <span class="hljs-keyword">new </span><span class="hljs-class title_">Image</span>();
+<span class="hljs-built_in">image</span>.<span class="hljs-property">src</span> = <span class="hljs-string">&#x27;https://www.chartjs.org/img/chartjs-logo.svg&#x27;</span>;
+
+<span class="hljs-keyword">const</span> plugin = {
+  id: <span class="hljs-string">&#x27;customCanvasBackgroundImage&#x27;</span>,
+  beforeDraw: (chart) =&gt; {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">image</span>.<span class="hljs-property">complete</span>) {
+      <span class="hljs-keyword">const</span> ctx = chart.<span class="hljs-property">ctx</span>;
+      <span class="hljs-keyword">const</span> {top, left, <span class="hljs-built_in">width</span>, <span class="hljs-built_in">height</span>} = chart.<span class="hljs-property">chartArea</span>;
+      <span class="hljs-keyword">const</span> x = left + <span class="hljs-built_in">width</span> / <span class="hljs-number">2</span> - <span class="hljs-built_in">image</span>.<span class="hljs-property">width</span> / <span class="hljs-number">2</span>;
+      <span class="hljs-keyword">const</span> y = top + <span class="hljs-built_in">height</span> / <span class="hljs-number">2</span> - <span class="hljs-built_in">image</span>.<span class="hljs-property">height</span> / <span class="hljs-number">2</span>;
+      ctx.<span class="hljs-property">drawImage</span>(<span class="hljs-built_in">image</span>, x, y);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-built_in">image</span>.<span class="hljs-property">onload</span> = () =&gt; chart.<span class="hljs-property">draw</span>();
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:plugin&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  type: <span class="hljs-string">&#x27;doughnut&#x27;</span>,
+  data: data,
+  plugins: [plugin],
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+module.<span class="hljs-property">exports</span> = {
+  actions: [],
+  config: config,
+};</code></pre><p>:::</p>
+<p>::::</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

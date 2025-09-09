@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynard Basic Backend - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Reynard Basic Backend</h1>
+      <div class="markdown-content"><h1>Reynard Basic Backend</h1>
+<p>A modular FastAPI backend example demonstrating uvicorn reload best practices and development patterns for the Reynard ecosystem.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Optimized Uvicorn Reload</strong>: Smart reload detection and service management</li>
+<li>🏗️ <strong>Modular Architecture</strong>: Clean separation of concerns with services and routes</li>
+<li><strong>Configuration Management</strong>: Environment-based configuration with sensible defaults</li>
+<li>🗄️ <strong>Service Layer</strong>: Database, cache, and background service abstractions</li>
+<li>📊 <strong>Health Monitoring</strong>: Comprehensive health checks and metrics</li>
+<li>🔐 <strong>Authentication</strong>: JWT-based authentication with session management</li>
+<li>👥 <strong>User Management</strong>: Full CRUD operations for user management</li>
+<li>🧪 <strong>Development Ready</strong>: Optimized for development workflows</li>
+<li>📝 <strong>Professional Logging</strong>: Comprehensive logging with YAML configuration and environment variable support</li>
+</ul>
+<h2>Quick Start</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Python 3.8+</li>
+<li>pip (Python package manager)</li>
+</ul>
+<h3>Installation</h3>
+<ol>
+<li><p><strong>Navigate to the backend directory</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> examples/basic-backend</code></pre></li>
+<li><p><strong>Create a virtual environment</strong>:</p>
+<pre><code class="hljs language-bash">python -m venv venv
+<span class="hljs-built_in">source</span> venv/bin/activate  <span class="hljs-comment"># On Windows: venv\Scripts\activate</span></code></pre></li>
+<li><p><strong>Install dependencies</strong>:</p>
+<pre><code class="hljs language-bash">pip install -r requirements.txt</code></pre></li>
+<li><p><strong>Run the development server</strong>:</p>
+<pre><code class="hljs language-bash">python main.py</code></pre></li>
+</ol>
+<p>The API will be available at <code>http://localhost:8000</code></p>
+<h2>API Documentation</h2>
+<p>Once the server is running, you can access:</p>
+<ul>
+<li><strong>Swagger UI</strong>: <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></li>
+<li><strong>ReDoc</strong>: <a href="http://localhost:8000/redoc">http://localhost:8000/redoc</a></li>
+<li><strong>OpenAPI JSON</strong>: <a href="http://localhost:8000/openapi.json">http://localhost:8000/openapi.json</a></li>
+</ul>
+<h2>Project Structure</h2>
+<pre><code class="hljs language-text">basic-backend/
+├── main.py                 # FastAPI application entry point
+├── config.py              # Configuration management
+├── logging_config.py      # Professional logging configuration
+├── log_conf.yaml          # YAML logging configuration
+├── requirements.txt       # Python dependencies
+├── README.md             # This file
+├── logs/                 # Log files directory (auto-created)
+│   ├── reynard-backend.log
+│   └── reynard-errors.log
+├── services/             # Service layer
+│   ├── __init__.py
+│   ├── database.py       # Database service
+│   ├── cache.py          # Cache service
+│   └── background.py     # Background service
+└── routes/               # API routes
+    ├── __init__.py
+    ├── health.py         # Health check endpoints
+    ├── auth.py           # Authentication endpoints
+    └── users.py          # User management endpoints</code></pre><h2>Configuration</h2>
+<p>The backend uses environment-based configuration. You can customize behavior using environment variables:</p>
+<h3>Uvicorn Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UVICORN_HOST</code></td>
+<td><code>0.0.0.0</code></td>
+<td>Host to bind to</td>
+</tr>
+<tr>
+<td><code>UVICORN_PORT</code></td>
+<td><code>8000</code></td>
+<td>Port to bind to</td>
+</tr>
+<tr>
+<td><code>UVICORN_RELOAD</code></td>
+<td><code>true</code></td>
+<td>Enable auto-reload</td>
+</tr>
+<tr>
+<td><code>UVICORN_LOG_LEVEL</code></td>
+<td><code>info</code></td>
+<td>Logging level</td>
+</tr>
+<tr>
+<td><code>UVICORN_RELOAD_DIRS</code></td>
+<td><code>.</code></td>
+<td>Comma-separated directories to watch</td>
+</tr>
+<tr>
+<td><code>UVICORN_RELOAD_DELAY</code></td>
+<td><code>0.25</code></td>
+<td>Delay between file checks</td>
+</tr>
+</tbody></table>
+<h3>Application Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ENVIRONMENT</code></td>
+<td><code>development</code></td>
+<td>Environment (development/production)</td>
+</tr>
+<tr>
+<td><code>DEBUG</code></td>
+<td><code>true</code></td>
+<td>Enable debug mode</td>
+</tr>
+<tr>
+<td><code>SECRET_KEY</code></td>
+<td><code>your-secret-key-change-in-production</code></td>
+<td>Secret key for JWT</td>
+</tr>
+<tr>
+<td><code>CORS_ORIGINS</code></td>
+<td><code>http://localhost:3000,http://localhost:5173</code></td>
+<td>CORS origins</td>
+</tr>
+</tbody></table>
+<h3>Database Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DATABASE_URL</code></td>
+<td><code>sqlite:///./reynard.db</code></td>
+<td>Database connection URL</td>
+</tr>
+<tr>
+<td><code>DATABASE_ECHO</code></td>
+<td><code>false</code></td>
+<td>Enable SQL logging</td>
+</tr>
+<tr>
+<td><code>DATABASE_POOL_SIZE</code></td>
+<td><code>5</code></td>
+<td>Connection pool size</td>
+</tr>
+<tr>
+<td><code>DATABASE_MAX_OVERFLOW</code></td>
+<td><code>10</code></td>
+<td>Max overflow connections</td>
+</tr>
+</tbody></table>
+<h3>Cache Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CACHE_URL</code></td>
+<td><code>redis://localhost:6379/0</code></td>
+<td>Cache connection URL</td>
+</tr>
+<tr>
+<td><code>CACHE_TTL</code></td>
+<td><code>3600</code></td>
+<td>Default TTL in seconds</td>
+</tr>
+<tr>
+<td><code>CACHE_MAX_CONNECTIONS</code></td>
+<td><code>10</code></td>
+<td>Max cache connections</td>
+</tr>
+</tbody></table>
+<h3>Logging Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LOG_LEVEL</code></td>
+<td><code>INFO</code></td>
+<td>Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)</td>
+</tr>
+<tr>
+<td><code>LOG_FORMAT</code></td>
+<td><code>detailed</code></td>
+<td>Log format (default, access, detailed, json)</td>
+</tr>
+<tr>
+<td><code>LOG_TO_FILE</code></td>
+<td><code>true</code></td>
+<td>Enable file logging</td>
+</tr>
+<tr>
+<td><code>LOG_FILE_PATH</code></td>
+<td><code>logs/reynard-backend.log</code></td>
+<td>Main log file path</td>
+</tr>
+<tr>
+<td><code>LOG_ERROR_FILE_PATH</code></td>
+<td><code>logs/reynard-errors.log</code></td>
+<td>Error log file path</td>
+</tr>
+<tr>
+<td><code>LOG_MAX_BYTES</code></td>
+<td><code>10485760</code></td>
+<td>Max log file size (10MB)</td>
+</tr>
+<tr>
+<td><code>LOG_BACKUP_COUNT</code></td>
+<td><code>5</code></td>
+<td>Number of backup log files</td>
+</tr>
+<tr>
+<td><code>USE_YAML_LOG_CONFIG</code></td>
+<td><code>true</code></td>
+<td>Use YAML configuration file</td>
+</tr>
+<tr>
+<td><code>YAML_LOG_CONFIG_PATH</code></td>
+<td><code>log_conf.yaml</code></td>
+<td>Path to YAML config file</td>
+</tr>
+</tbody></table>
+<h2>API Endpoints</h2>
+<h3>Health &amp; System</h3>
+<ul>
+<li><code>GET /</code> - Root endpoint with system information</li>
+<li><code>GET /api/system</code> - Detailed system status</li>
+<li><code>GET /api/health</code> - Comprehensive health check</li>
+<li><code>GET /api/health/simple</code> - Simple health check</li>
+<li><code>GET /api/health/ready</code> - Readiness check (Kubernetes)</li>
+<li><code>GET /api/health/live</code> - Liveness check (Kubernetes)</li>
+<li><code>GET /api/health/services</code> - Detailed service status</li>
+<li><code>GET /api/health/metrics</code> - System metrics</li>
+</ul>
+<h3>Authentication</h3>
+<ul>
+<li><code>POST /api/auth/login</code> - User login</li>
+<li><code>POST /api/auth/register</code> - User registration</li>
+<li><code>POST /api/auth/logout</code> - User logout</li>
+<li><code>GET /api/auth/me</code> - Get current user</li>
+<li><code>POST /api/auth/refresh</code> - Refresh access token</li>
+<li><code>GET /api/auth/users</code> - List all users</li>
+</ul>
+<h3>User Management</h3>
+<ul>
+<li><code>GET /api/users/</code> - List users with pagination</li>
+<li><code>GET /api/users/{user_id}</code> - Get user by ID</li>
+<li><code>POST /api/users/</code> - Create new user</li>
+<li><code>PUT /api/users/{user_id}</code> - Update user</li>
+<li><code>DELETE /api/users/{user_id}</code> - Delete user</li>
+<li><code>GET /api/users/stats/overview</code> - User statistics</li>
+<li><code>GET /api/users/search/{query}</code> - Search users</li>
+</ul>
+<h2>Professional Logging</h2>
+<p>This backend includes a comprehensive logging system that unifies FastAPI and Uvicorn logging with professional formatting and configuration options.</p>
+<h3>Logging Features</h3>
+<ul>
+<li><strong>Unified Logging</strong>: FastAPI and Uvicorn logs use the same professional formatting</li>
+<li><strong>Multiple Formats</strong>: Support for default, access, detailed, and JSON log formats</li>
+<li><strong>File Logging</strong>: Automatic log rotation with configurable size and backup count</li>
+<li><strong>Environment Configuration</strong>: All logging settings configurable via environment variables</li>
+<li><strong>YAML Configuration</strong>: Professional YAML-based logging configuration</li>
+<li><strong>Structured Logging</strong>: JSON format support for log aggregation systems</li>
+<li><strong>Error Separation</strong>: Separate error logs for easier debugging</li>
+</ul>
+<h3>Log Output Examples</h3>
+<p><strong>Before (default Uvicorn logging):</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">INFO</span>:     Uvicorn running <span class="hljs-keyword">on</span> http://<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">8000</span> (Press CTRL+C <span class="hljs-keyword">to</span> quit)
+<span class="hljs-keyword">INFO</span>:     Started reloader process [<span class="hljs-number">34318</span>] <span class="hljs-keyword">using</span> StatReload
+<span class="hljs-keyword">INFO</span>:     <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">50062</span> - &quot;GET / HTTP/1.1&quot; <span class="hljs-number">200</span> OK</code></pre><p><strong>After (professional logging):</strong></p>
+<pre><code class="hljs"><span class="hljs-attribute">2023</span>-<span class="hljs-number">03</span>-<span class="hljs-number">08</span> <span class="hljs-number">15</span>:<span class="hljs-number">40</span>:<span class="hljs-number">41</span>,<span class="hljs-number">170</span> - uvicorn.error - INFO - Uvicorn running <span class="hljs-literal">on</span> http://<span class="hljs-number">127.0.0.1:8000</span> (Press CTRL+C to quit)
+<span class="hljs-attribute">2023</span>-<span class="hljs-number">03</span>-<span class="hljs-number">08</span> <span class="hljs-number">15</span>:<span class="hljs-number">40</span>:<span class="hljs-number">41</span>,<span class="hljs-number">170</span> - uvicorn.error - INFO - Started reloader process<span class="hljs-meta"> [34322] using StatReload
+2023-03-08 15:40:41,432 - uvicorn.error - INFO - Application startup complete.
+2023-03-08 15:48:21,450 - main - INFO - Root endpoint accessed
+2023-03-08 15:48:21,450 - uvicorn.access - INFO - 127.0.0.1:59782 - &quot;GET / HTTP/1.1&quot; 200</span></code></pre><h3>Using Loggers in Your Code</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> logging_config <span class="hljs-keyword">import</span> get_app_logger, get_service_logger, get_route_logger
+
+<span class="hljs-comment"># Get application logger</span>
+logger = get_app_logger()
+logger.info(<span class="hljs-string">&quot;Application started&quot;</span>)
+
+<span class="hljs-comment"># Get service-specific logger</span>
+service_logger = get_service_logger(<span class="hljs-string">&quot;database&quot;</span>)
+service_logger.info(<span class="hljs-string">&quot;Database connection established&quot;</span>)
+
+<span class="hljs-comment"># Get route-specific logger</span>
+route_logger = get_route_logger(<span class="hljs-string">&quot;users&quot;</span>)
+route_logger.info(<span class="hljs-string">&quot;User endpoint accessed&quot;</span>)</code></pre><h3>Logging Configuration Options</h3>
+<h4>Using YAML Configuration (Recommended)</h4>
+<p>The backend automatically uses <code>log_conf.yaml</code> if available. This provides the most comprehensive logging setup with file rotation and multiple formatters.</p>
+<h4>Using Environment Variables</h4>
+<p>Override any logging setting using environment variables:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Set log level</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=<span class="hljs-string">&quot;DEBUG&quot;</span>
+
+<span class="hljs-comment"># Disable file logging</span>
+<span class="hljs-built_in">export</span> LOG_TO_FILE=<span class="hljs-string">&quot;false&quot;</span>
+
+<span class="hljs-comment"># Use JSON format for log aggregation</span>
+<span class="hljs-built_in">export</span> LOG_FORMAT=<span class="hljs-string">&quot;json&quot;</span>
+
+<span class="hljs-comment"># Custom log file paths</span>
+<span class="hljs-built_in">export</span> LOG_FILE_PATH=<span class="hljs-string">&quot;/var/log/reynard/app.log&quot;</span>
+<span class="hljs-built_in">export</span> LOG_ERROR_FILE_PATH=<span class="hljs-string">&quot;/var/log/reynard/errors.log&quot;</span></code></pre><h4>Production Logging Setup</h4>
+<p>For production environments:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Production logging configuration</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=<span class="hljs-string">&quot;WARNING&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FORMAT=<span class="hljs-string">&quot;json&quot;</span>
+<span class="hljs-built_in">export</span> LOG_TO_FILE=<span class="hljs-string">&quot;true&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FILE_PATH=<span class="hljs-string">&quot;/var/log/reynard/production.log&quot;</span>
+<span class="hljs-built_in">export</span> LOG_MAX_BYTES=<span class="hljs-string">&quot;52428800&quot;</span>  <span class="hljs-comment"># 50MB</span>
+<span class="hljs-built_in">export</span> LOG_BACKUP_COUNT=<span class="hljs-string">&quot;10&quot;</span></code></pre><h3>Log File Management</h3>
+<ul>
+<li><strong>Automatic Rotation</strong>: Log files are automatically rotated when they reach the configured size</li>
+<li><strong>Backup Files</strong>: Old log files are kept as <code>.1</code>, <code>.2</code>, etc.</li>
+<li><strong>Error Separation</strong>: Critical errors are logged to a separate file for easier monitoring</li>
+<li><strong>Directory Creation</strong>: Log directories are created automatically if they don&#39;t exist</li>
+</ul>
+<h2>Uvicorn Reload Features</h2>
+<p>This backend demonstrates several uvicorn reload optimization patterns:</p>
+<h3>1. Reload Mode Detection</h3>
+<pre><code class="hljs language-python">IS_RELOAD_MODE = os.environ.get(<span class="hljs-string">&quot;UVICORN_RELOAD_PROCESS&quot;</span>) == <span class="hljs-string">&quot;1&quot;</span></code></pre><h3>2. Optimized Service Initialization</h3>
+<p>Services skip heavy initialization during reload to speed up the process:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">if</span> IS_RELOAD_MODE:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[INFO] Skipping heavy initialization during reload&quot;</span>)
+    <span class="hljs-keyword">yield</span>
+    <span class="hljs-keyword">return</span></code></pre><h3>3. Smart Background Task Management</h3>
+<p>Background services are disabled during reload to prevent hanging:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">if</span> IS_RELOAD_MODE:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[INFO] Skipping background service during reload&quot;</span>)
+    <span class="hljs-keyword">return</span></code></pre><h3>4. Configuration-Based Reload</h3>
+<p>The reload behavior is configurable via environment variables:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Custom reload configuration</span>
+<span class="hljs-built_in">export</span> UVICORN_RELOAD_DIRS=<span class="hljs-string">&quot;services,routes&quot;</span>
+<span class="hljs-built_in">export</span> UVICORN_RELOAD_DELAY=<span class="hljs-string">&quot;0.5&quot;</span>
+<span class="hljs-built_in">export</span> UVICORN_LOG_LEVEL=<span class="hljs-string">&quot;debug&quot;</span></code></pre><h3>5. Professional Logging Integration</h3>
+<p>The reload system works seamlessly with the professional logging configuration:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Start with custom logging configuration</span>
+python main.py
+
+<span class="hljs-comment"># Or use uvicorn directly with YAML config</span>
+uvicorn main:app --reload --log-config=log_conf.yaml
+
+<span class="hljs-comment"># Or with environment variable overrides</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=<span class="hljs-string">&quot;DEBUG&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FORMAT=<span class="hljs-string">&quot;detailed&quot;</span>
+python main.py</code></pre><h2>Development Workflow</h2>
+<h3>1. Start Development Server</h3>
+<pre><code class="hljs language-bash">python main.py</code></pre><h3>2. Make Changes</h3>
+<p>Edit any Python file in the project. Uvicorn will automatically detect changes and reload the server.</p>
+<h3>3. Monitor Reload</h3>
+<p>Watch the console output for reload messages with professional logging:</p>
+<pre><code class="hljs language-text">2023-03-08 15:40:41,170 - main - INFO - Running in uvicorn reload mode - skipping heavy initialization
+2023-03-08 15:40:41,170 - main - INFO - Skipping database initialization during reload
+2023-03-08 15:40:41,170 - main - INFO - Skipping cache initialization during reload
+2023-03-08 15:40:41,170 - main - INFO - Skipping background service during reload</code></pre><h3>4. Test Endpoints</h3>
+<p>Use the interactive API documentation at <a href="http://localhost:8000/docs">http://localhost:8000/docs</a> to test endpoints.</p>
+<h2>Production Deployment</h2>
+<p>For production deployment, disable reload and configure properly:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> UVICORN_RELOAD=<span class="hljs-string">&quot;false&quot;</span>
+<span class="hljs-built_in">export</span> ENVIRONMENT=<span class="hljs-string">&quot;production&quot;</span>
+<span class="hljs-built_in">export</span> DEBUG=<span class="hljs-string">&quot;false&quot;</span>
+<span class="hljs-built_in">export</span> SECRET_KEY=<span class="hljs-string">&quot;your-secure-secret-key&quot;</span>
+
+<span class="hljs-comment"># Production logging configuration</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=<span class="hljs-string">&quot;WARNING&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FORMAT=<span class="hljs-string">&quot;json&quot;</span>
+<span class="hljs-built_in">export</span> LOG_TO_FILE=<span class="hljs-string">&quot;true&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FILE_PATH=<span class="hljs-string">&quot;/var/log/reynard/production.log&quot;</span>
+<span class="hljs-built_in">export</span> LOG_MAX_BYTES=<span class="hljs-string">&quot;52428800&quot;</span>  <span class="hljs-comment"># 50MB</span>
+<span class="hljs-built_in">export</span> LOG_BACKUP_COUNT=<span class="hljs-string">&quot;10&quot;</span></code></pre><h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Reload Not Working</strong>: Ensure you have <code>uvicorn[standard]</code> installed</li>
+<li><strong>Slow Reloads</strong>: Check <code>UVICORN_RELOAD_DELAY</code> and <code>UVICORN_RELOAD_DIRS</code></li>
+<li><strong>Hanging Processes</strong>: Use <code>pkill -f uvicorn</code> to kill hanging processes</li>
+<li><strong>Import Errors</strong>: Ensure all dependencies are installed in the virtual environment</li>
+<li><strong>Logging Issues</strong>: Check that <code>PyYAML</code> is installed and <code>log_conf.yaml</code> exists</li>
+<li><strong>Log File Permissions</strong>: Ensure the application has write permissions to the log directory</li>
+</ol>
+<h3>Debug Mode</h3>
+<p>Enable debug logging for more verbose output:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> UVICORN_LOG_LEVEL=<span class="hljs-string">&quot;debug&quot;</span>
+<span class="hljs-built_in">export</span> DEBUG=<span class="hljs-string">&quot;true&quot;</span>
+<span class="hljs-built_in">export</span> LOG_LEVEL=<span class="hljs-string">&quot;DEBUG&quot;</span>
+<span class="hljs-built_in">export</span> LOG_FORMAT=<span class="hljs-string">&quot;detailed&quot;</span></code></pre><h2>Contributing</h2>
+<p>This is an example backend for the Reynard ecosystem. Feel free to use it as a starting point for your own projects or contribute improvements.</p>
+<h2>License</h2>
+<p>Part of the Reynard framework ecosystem.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Decimation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Data Decimation</h1>
+      <div class="markdown-content"><h1>Data Decimation</h1>
+<p>This example shows how to use the built-in data decimation to reduce the number of points drawn on the graph for improved performance.</p>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:actions:3&gt;</span>
+<span class="hljs-keyword">const</span> actions = [
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;No decimation (default)&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">false</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;min-max decimation&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">algorithm</span> = <span class="hljs-string">&#x27;min-max&#x27;</span>;
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">true</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    },
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;LTTB decimation (50 samples)&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">algorithm</span> = <span class="hljs-string">&#x27;lttb&#x27;</span>;
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">true</span>;
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">samples</span> = <span class="hljs-number">50</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;LTTB decimation (500 samples)&#x27;</span>,
+    <span class="hljs-title function_">handler</span>(<span class="hljs-params">chart</span>) {
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">algorithm</span> = <span class="hljs-string">&#x27;lttb&#x27;</span>;
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">true</span>;
+      chart.<span class="hljs-property">options</span>.<span class="hljs-property">plugins</span>.<span class="hljs-property">decimation</span>.<span class="hljs-property">samples</span> = <span class="hljs-number">500</span>;
+      chart.<span class="hljs-title function_">update</span>();
+    }
+  }
+];
+<span class="hljs-comment">// &lt;/block:actions&gt;</span>
+
+<span class="hljs-comment">// &lt;block:data:1&gt;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">NUM_POINTS</span> = <span class="hljs-number">100000</span>;
+<span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">srand</span>(<span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// parseISODate returns a luxon date object to work with in the samples</span>
+<span class="hljs-comment">// We will create points every 30s starting from this point in time</span>
+<span class="hljs-keyword">const</span> start = <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">parseISODate</span>(<span class="hljs-string">&#x27;2021-04-01T00:00:00Z&#x27;</span>).<span class="hljs-title function_">toMillis</span>();
+<span class="hljs-keyword">const</span> pointData = [];
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable constant_">NUM_POINTS</span>; ++i) {
+  <span class="hljs-comment">// Most data will be in the range [0, 20) but some rare data will be in the range [0, 100)</span>
+  <span class="hljs-keyword">const</span> max = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() &lt; <span class="hljs-number">0.001</span> ? <span class="hljs-number">100</span> : <span class="hljs-number">20</span>;
+  pointData.<span class="hljs-title function_">push</span>({<span class="hljs-attr">x</span>: start + (i * <span class="hljs-number">30000</span>), <span class="hljs-attr">y</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-title function_">rand</span>(<span class="hljs-number">0</span>, max)});
+}
+
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attr">datasets</span>: [{
+    <span class="hljs-attr">borderColor</span>: <span class="hljs-title class_">Utils</span>.<span class="hljs-property">CHART_COLORS</span>.<span class="hljs-property">red</span>,
+    <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">data</span>: pointData,
+    <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Large Dataset&#x27;</span>,
+    <span class="hljs-attr">radius</span>: <span class="hljs-number">0</span>,
+  }]
+};
+<span class="hljs-comment">// &lt;/block:data&gt;</span>
+
+<span class="hljs-comment">// &lt;block:decimation:0&gt;</span>
+<span class="hljs-keyword">const</span> decimation = {
+  <span class="hljs-attr">enabled</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&#x27;min-max&#x27;</span>,
+};
+<span class="hljs-comment">// &lt;/block:decimation&gt;</span>
+
+<span class="hljs-comment">// &lt;block:setup:2&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-comment">// Turn off animations and data parsing for performance</span>
+    <span class="hljs-attr">animation</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">parsing</span>: <span class="hljs-literal">false</span>,
+
+    <span class="hljs-attr">interaction</span>: {
+      <span class="hljs-attr">mode</span>: <span class="hljs-string">&#x27;nearest&#x27;</span>,
+      <span class="hljs-attr">axis</span>: <span class="hljs-string">&#x27;x&#x27;</span>,
+      <span class="hljs-attr">intersect</span>: <span class="hljs-literal">false</span>
+    },
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">decimation</span>: decimation,
+    },
+    <span class="hljs-attr">scales</span>: {
+      <span class="hljs-attr">x</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;time&#x27;</span>,
+        <span class="hljs-attr">ticks</span>: {
+          <span class="hljs-attr">source</span>: <span class="hljs-string">&#x27;auto&#x27;</span>,
+          <span class="hljs-comment">// Disabled rotation for performance</span>
+          <span class="hljs-attr">maxRotation</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">autoSkip</span>: <span class="hljs-literal">true</span>,
+        }
+      }
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">actions</span>: actions,
+  <span class="hljs-attr">config</span>: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../configuration/decimation.md">Data Decimation</a></li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../axes/cartesian/time.md">Time Scale</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

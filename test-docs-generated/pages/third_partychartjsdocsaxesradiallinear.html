@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Radial Axis - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Linear Radial Axis</h1>
+      <div class="markdown-content"><h1>Linear Radial Axis</h1>
+<p>The linear radial scale is used to chart numerical data. As the name suggests, linear interpolation is used to determine where a value lies in relation to the center of the axis.</p>
+<p>The following additional configuration options are provided by the radial linear scale.</p>
+<h2>Configuration Options</h2>
+<h3>Linear Radial Axis specific options</h3>
+<p>Namespace: <code>options.scales[scaleId]</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>animate</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Whether to animate scaling the chart from the centre</td>
+</tr>
+<tr>
+<td><code>angleLines</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>Angle line configuration. <a href="#angle-line-options">more...</a></td>
+</tr>
+<tr>
+<td><code>beginAtZero</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>If true, scale will include 0 if it is not already included.</td>
+</tr>
+<tr>
+<td><code>pointLabels</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>Point label configuration. <a href="#point-label-options">more...</a></td>
+</tr>
+<tr>
+<td><code>startAngle</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Starting angle of the scale. In degrees, 0 is at top.</td>
+</tr>
+</tbody></table>
+<h3>Common options for all axes</h3>
+<p>Namespace: <code>options.scales[scaleId]</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>string</code></td>
+<td></td>
+<td>Type of scale being employed. Custom scales can be created and registered with a string key. This allows changing the type of an axis for a chart.</td>
+</tr>
+<tr>
+<td><code>alignToPixels</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Align pixel values to device pixels.</td>
+</tr>
+<tr>
+<td><code>backgroundColor</code></td>
+<td><a href="/general/colors.md"><code>Color</code></a></td>
+<td></td>
+<td>Background color of the scale area.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>boolean</code>|<code>string</code></td>
+<td><code>true</code></td>
+<td>Controls the axis global visibility (visible when <code>true</code>, hidden when <code>false</code>). When <code>display: &#39;auto&#39;</code>, the axis is visible only if at least one associated dataset is visible.</td>
+</tr>
+<tr>
+<td><code>grid</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>Grid line configuration. <a href="#grid-line-configuration">more...</a></td>
+</tr>
+<tr>
+<td><code>min</code></td>
+<td><code>number</code></td>
+<td></td>
+<td>User defined minimum number for the scale, overrides minimum value from data. <a href="/axes/index.md#axis-range-settings">more...</a></td>
+</tr>
+<tr>
+<td><code>max</code></td>
+<td><code>number</code></td>
+<td></td>
+<td>User defined maximum number for the scale, overrides maximum value from data. <a href="/axes/index.md#axis-range-settings">more...</a></td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Reverse the scale.</td>
+</tr>
+<tr>
+<td><code>stacked</code></td>
+<td><code>boolean</code>|<code>string</code></td>
+<td><code>false</code></td>
+<td>Should the data be stacked. <a href="/axes/index.md#stacking">more...</a></td>
+</tr>
+<tr>
+<td><code>suggestedMax</code></td>
+<td><code>number</code></td>
+<td></td>
+<td>Adjustment used when calculating the maximum data value. <a href="/axes/index.md#axis-range-settings">more...</a></td>
+</tr>
+<tr>
+<td><code>suggestedMin</code></td>
+<td><code>number</code></td>
+<td></td>
+<td>Adjustment used when calculating the minimum data value. <a href="/axes/index.md#axis-range-settings">more...</a></td>
+</tr>
+<tr>
+<td><code>ticks</code></td>
+<td><code>object</code></td>
+<td></td>
+<td>Tick configuration. <a href="/axes/index.md#tick-configuration">more...</a></td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>The weight used to sort the axis. Higher weights are further away from the chart area.</td>
+</tr>
+</tbody></table>
+<h2>Tick Configuration</h2>
+<h3>Linear Radial Axis specific tick options</h3>
+<p>Namespace: <code>options.scales[scaleId].ticks</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Scriptable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>count</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td><code>undefined</code></td>
+<td>The number of ticks to generate. If specified, this overrides the automatic generation.</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td><code>object</code></td>
+<td>Yes</td>
+<td></td>
+<td>The <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"><code>Intl.NumberFormat</code></a> options used by the default label formatter</td>
+</tr>
+<tr>
+<td><code>maxTicksLimit</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td><code>11</code></td>
+<td>Maximum number of ticks and gridlines to show.</td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td></td>
+<td>If defined and <code>stepSize</code> is not specified, the step size will be rounded to this many decimal places.</td>
+</tr>
+<tr>
+<td><code>stepSize</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td></td>
+<td>User defined fixed step size for the scale. <a href="#step-size">more...</a></td>
+</tr>
+</tbody></table>
+<p>!!!include(axes/_common_ticks.md)!!!</p>
+<p>The scriptable context is described in <a href="../../general/options.md#tick">Options</a> section.</p>
+<h2>Grid Line Configuration</h2>
+<p>Namespace: <code>options.scales[scaleId].grid</code>, it defines options for the grid lines of the axis.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th align="center">Scriptable</th>
+<th align="center">Indexable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>borderDash</code></td>
+<td><code>number[]</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td><code>[]</code></td>
+<td>Length and spacing of dashes on grid lines. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDashOffset</code></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center"></td>
+<td><code>0.0</code></td>
+<td>Offset for line dashes. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>circular</code></td>
+<td><code>boolean</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td><code>false</code></td>
+<td>If true, gridlines are circular (on radar and polar area charts only).</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><a href="../general/colors.md"><code>Color</code></a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>Chart.defaults.borderColor</code></td>
+<td>The color of the grid lines. If specified as an array, the first color applies to the first grid line, the second to the second grid line, and so on.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>boolean</code></td>
+<td align="center"></td>
+<td align="center"></td>
+<td><code>true</code></td>
+<td>If false, do not display grid lines for this axis.</td>
+</tr>
+<tr>
+<td><code>lineWidth</code></td>
+<td><code>number</code></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td><code>1</code></td>
+<td>Stroke width of grid lines.</td>
+</tr>
+</tbody></table>
+<p>The scriptable context is described in <a href="../general/options.md#tick">Options</a> section.</p>
+<h2>Axis Range Settings</h2>
+<p>Given the number of axis range settings, it is important to understand how they all interact with each other.</p>
+<p>The <code>suggestedMax</code> and <code>suggestedMin</code> settings only change the data values that are used to scale the axis. These are useful for extending the range of the axis while maintaining the auto-fit behaviour.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> minDataValue = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(mostNegativeValue, options.<span class="hljs-property">ticks</span>.<span class="hljs-property">suggestedMin</span>);
+<span class="hljs-keyword">let</span> maxDataValue = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(mostPositiveValue, options.<span class="hljs-property">ticks</span>.<span class="hljs-property">suggestedMax</span>);</code></pre><p>In this example, the largest positive value is 50, but the data maximum is expanded out to 100. However, because the lowest data value is below the <code>suggestedMin</code> setting, it is ignored.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;radar&#x27;</span>,
+    <span class="hljs-attr">data</span>: {
+        <span class="hljs-attr">datasets</span>: [{
+            <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;First dataset&#x27;</span>,
+            <span class="hljs-attr">data</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">20</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>]
+        }],
+        <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;January&#x27;</span>, <span class="hljs-string">&#x27;February&#x27;</span>, <span class="hljs-string">&#x27;March&#x27;</span>, <span class="hljs-string">&#x27;April&#x27;</span>]
+    },
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">scales</span>: {
+            <span class="hljs-attr">r</span>: {
+                <span class="hljs-attr">suggestedMin</span>: <span class="hljs-number">50</span>,
+                <span class="hljs-attr">suggestedMax</span>: <span class="hljs-number">100</span>
+            }
+        }
+    }
+});</code></pre><p>In contrast to the <code>suggested*</code> settings, the <code>min</code> and <code>max</code> settings set explicit ends to the axes. When these are set, some data points may not be visible.</p>
+<h2>Step Size</h2>
+<p>If set, the scale ticks will be enumerated by multiple of <code>stepSize</code>, having one tick per increment. If not set, the ticks are labeled automatically using the nice numbers algorithm.</p>
+<p>This example sets up a chart with a y axis that creates ticks at <code>0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5</code>.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">let</span> options = {
+    <span class="hljs-attr">scales</span>: {
+        <span class="hljs-attr">r</span>: {
+            <span class="hljs-attr">max</span>: <span class="hljs-number">5</span>,
+            <span class="hljs-attr">min</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">ticks</span>: {
+                <span class="hljs-attr">stepSize</span>: <span class="hljs-number">0.5</span>
+            }
+        }
+    }
+};</code></pre><h2>Angle Line Options</h2>
+<p>The following options are used to configure angled lines that radiate from the center of the chart to the point labels.<br>Namespace: <code>options.scales[scaleId].angleLines</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Scriptable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>display</code></td>
+<td><code>boolean</code></td>
+<td></td>
+<td><code>true</code></td>
+<td>If true, angle lines are shown.</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><a href="../../general/colors.md"><code>Color</code></a></td>
+<td>Yes</td>
+<td><code>Chart.defaults.borderColor</code></td>
+<td>Color of angled lines.</td>
+</tr>
+<tr>
+<td><code>lineWidth</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td><code>1</code></td>
+<td>Width of angled lines.</td>
+</tr>
+<tr>
+<td><code>borderDash</code></td>
+<td><code>number[]</code></td>
+<td>Yes<sup>1</sup></td>
+<td><code>[]</code></td>
+<td>Length and spacing of dashes on angled lines. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash">MDN</a>.</td>
+</tr>
+<tr>
+<td><code>borderDashOffset</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td><code>0.0</code></td>
+<td>Offset for line dashes. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset">MDN</a>.</td>
+</tr>
+</tbody></table>
+<ol>
+<li>the <code>borderDash</code> setting only accepts a static value or a function. Passing an array of arrays is not supported.</li>
+</ol>
+<p>The scriptable context is described in <a href="../../general/options.md#pointLabel">Options</a> section.</p>
+<h2>Point Label Options</h2>
+<p>The following options are used to configure the point labels that are shown on the perimeter of the scale.<br>Namespace: <code>options.scales[scaleId].pointLabels</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Scriptable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backdropColor</code></td>
+<td><a href="../../general/colors.md"><code>Color</code></a></td>
+<td><code>true</code></td>
+<td><code>undefined</code></td>
+<td>Background color of the point label.</td>
+</tr>
+<tr>
+<td><code>backdropPadding</code></td>
+<td><a href="../../general/padding.md"><code>Padding</code></a></td>
+<td></td>
+<td><code>2</code></td>
+<td>Padding of label backdrop.</td>
+</tr>
+<tr>
+<td><code>borderRadius</code></td>
+<td><code>number</code>|<code>object</code></td>
+<td><code>true</code></td>
+<td><code>0</code></td>
+<td>Border radius of the point label</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>boolean</code>|<code>string</code></td>
+<td></td>
+<td><code>true</code></td>
+<td>If true, point labels are shown.  When <code>display: &#39;auto&#39;</code>, the label is hidden if it overlaps with another label.</td>
+</tr>
+<tr>
+<td><code>callback</code></td>
+<td><code>function</code></td>
+<td></td>
+<td></td>
+<td>Callback function to transform data labels to point labels. The default implementation simply returns the current string.</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><a href="../../general/colors.md"><code>Color</code></a></td>
+<td>Yes</td>
+<td><code>Chart.defaults.color</code></td>
+<td>Color of label.</td>
+</tr>
+<tr>
+<td><code>font</code></td>
+<td><code>Font</code></td>
+<td>Yes</td>
+<td><code>Chart.defaults.font</code></td>
+<td>See <a href="../../general/fonts.md">Fonts</a></td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td><code>number</code></td>
+<td>Yes</td>
+<td>5</td>
+<td>Padding between chart and point labels.</td>
+</tr>
+<tr>
+<td><a href="../../samples/other-charts/polar-area-center-labels.md"><code>centerPointLabels</code></a></td>
+<td><code>boolean</code></td>
+<td></td>
+<td><code>false</code></td>
+<td>If true, point labels are centered.</td>
+</tr>
+</tbody></table>
+<p>The scriptable context is described in <a href="../../general/options.md#pointLabel">Options</a> section.</p>
+<h2>Internal data format</h2>
+<p>Internally, the linear radial scale uses numeric data</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

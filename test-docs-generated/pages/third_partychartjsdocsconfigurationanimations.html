@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animations - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Animations</h1>
+      <div class="markdown-content"><h1>Animations</h1>
+<p>Chart.js animates charts out of the box. A number of options are provided to configure how the animation looks and how long it takes.</p>
+<p>:::: tabs</p>
+<p>::: tab &quot;Looping tension [property]&quot;</p>
+<pre><code class="hljs">// &lt;block:setup:<span class="hljs-number">1</span>&gt;
+const data = {
+  labels: [<span class="hljs-string">&#x27;January&#x27;</span>, <span class="hljs-string">&#x27;February&#x27;</span>, <span class="hljs-string">&#x27;March&#x27;</span>, <span class="hljs-string">&#x27;April&#x27;</span>, <span class="hljs-string">&#x27;May&#x27;</span>, <span class="hljs-string">&#x27;June&#x27;</span>, <span class="hljs-string">&#x27;July&#x27;</span>],
+  datasets: [{
+    <span class="hljs-selector-tag">label</span>: <span class="hljs-string">&#x27;Looping tension&#x27;</span>,
+    data: [<span class="hljs-number">65</span>, <span class="hljs-number">59</span>, <span class="hljs-number">80</span>, <span class="hljs-number">81</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">40</span>],
+    fill: false,
+    borderColor: <span class="hljs-string">&#x27;rgb(75, 192, 192)&#x27;</span>,
+  }]
+};
+// &lt;/block:setup&gt;
+
+// &lt;block:config:<span class="hljs-number">0</span>&gt;
+const config = {
+  type: <span class="hljs-string">&#x27;line&#x27;</span>,
+  data: data,
+  options: {
+    animations: {
+      tension: {
+        duration: <span class="hljs-number">1000</span>,
+        easing: <span class="hljs-string">&#x27;linear&#x27;</span>,
+        from: <span class="hljs-number">1</span>,
+        to: <span class="hljs-number">0</span>,
+        loop: true
+      }
+    },
+    scales: {
+      <span class="hljs-attribute">y</span>: { // defining min and max so hiding the dataset does not change <span class="hljs-attribute">scale</span> range
+        min: <span class="hljs-number">0</span>,
+        max: <span class="hljs-number">100</span>
+      }
+    }
+  }
+};
+// &lt;/block:config&gt;
+
+module.exports = {
+  actions: [],
+  config: config,
+};</code></pre><p>:::</p>
+<p>::: tab &quot;Hide and show [mode]&quot;</p>
+<pre><code class="hljs">// &lt;block:setup:<span class="hljs-number">1</span>&gt;
+const data = {
+  labels: [<span class="hljs-string">&#x27;January&#x27;</span>, <span class="hljs-string">&#x27;February&#x27;</span>, <span class="hljs-string">&#x27;March&#x27;</span>, <span class="hljs-string">&#x27;April&#x27;</span>, <span class="hljs-string">&#x27;May&#x27;</span>, <span class="hljs-string">&#x27;June&#x27;</span>, <span class="hljs-string">&#x27;July&#x27;</span>],
+  datasets: [{
+    <span class="hljs-selector-tag">label</span>: <span class="hljs-string">&#x27;Try hiding me&#x27;</span>,
+    data: [<span class="hljs-number">65</span>, <span class="hljs-number">59</span>, <span class="hljs-number">80</span>, <span class="hljs-number">81</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">40</span>],
+    fill: false,
+    borderColor: <span class="hljs-string">&#x27;rgb(75, 192, 192)&#x27;</span>,
+  }]
+};
+// &lt;/block:setup&gt;
+
+// &lt;block:config:<span class="hljs-number">0</span>&gt;
+const config = {
+  type: <span class="hljs-string">&#x27;line&#x27;</span>,
+  data: data,
+  options: {
+    transitions: {
+      show: {
+        animations: {
+          <span class="hljs-attribute">x</span>: {
+            <span class="hljs-selector-tag">from</span>: <span class="hljs-number">0</span>
+          },
+          <span class="hljs-attribute">y</span>: {
+            <span class="hljs-selector-tag">from</span>: <span class="hljs-number">0</span>
+          }
+        }
+      },
+      hide: {
+        animations: {
+          <span class="hljs-attribute">x</span>: {
+            <span class="hljs-selector-tag">to</span>: <span class="hljs-number">0</span>
+          },
+          <span class="hljs-attribute">y</span>: {
+            <span class="hljs-selector-tag">to</span>: <span class="hljs-number">0</span>
+          }
+        }
+      }
+    }
+  }
+};
+// &lt;/block:config&gt;
+
+module.exports = {
+  actions: [],
+  config: config,
+};</code></pre><p>:::</p>
+<p>::::</p>
+<h2>Animation configuration</h2>
+<p>Animation configuration consists of 3 keys.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>animation</td>
+<td><code>object</code></td>
+<td><a href="#animation">animation</a></td>
+</tr>
+<tr>
+<td>animations</td>
+<td><code>object</code></td>
+<td><a href="#animations">animations</a></td>
+</tr>
+<tr>
+<td>transitions</td>
+<td><code>object</code></td>
+<td><a href="#transitions">transitions</a></td>
+</tr>
+</tbody></table>
+<p>These keys can be configured in following paths:</p>
+<ul>
+<li>`` - chart options</li>
+<li><code>datasets[type]</code> - dataset type options</li>
+<li><code>overrides[type]</code> - chart type options</li>
+</ul>
+<p>These paths are valid under <code>defaults</code> for global configuration and <code>options</code> for instance configuration.</p>
+<h2>animation</h2>
+<p>The default configuration is defined here: <a href="https://github.com/chartjs/Chart.js/blob/master/src/core/core.animations.defaults.js" target="_blank">core.animations.defaults.js</a></p>
+<p>Namespace: <code>options.animation</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>duration</code></td>
+<td><code>number</code></td>
+<td><code>1000</code></td>
+<td>The number of milliseconds an animation takes.</td>
+</tr>
+<tr>
+<td><code>easing</code></td>
+<td><code>string</code></td>
+<td><code>&#39;easeOutQuart&#39;</code></td>
+<td>Easing function to use. <a href="#easing">more...</a></td>
+</tr>
+<tr>
+<td><code>delay</code></td>
+<td><code>number</code></td>
+<td><code>undefined</code></td>
+<td>Delay before starting the animations.</td>
+</tr>
+<tr>
+<td><code>loop</code></td>
+<td><code>boolean</code></td>
+<td><code>undefined</code></td>
+<td>If set to <code>true</code>, the animations loop endlessly.</td>
+</tr>
+</tbody></table>
+<p>These defaults can be overridden in <code>options.animation</code> or <code>dataset.animation</code> and <code>tooltip.animation</code>. These keys are also <a href="../general/options.md#scriptable-options">Scriptable</a>.</p>
+<h2>animations</h2>
+<p>Animations options configures which element properties are animated and how.<br>In addition to the main <a href="#animation-configuration">animation configuration</a>, the following options are available:</p>
+<p>Namespace: <code>options.animations[animation]</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>properties</code></td>
+<td><code>string[]</code></td>
+<td><code>key</code></td>
+<td>The property names this configuration applies to. Defaults to the key name of this object.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>string</code></td>
+<td><code>typeof property</code></td>
+<td>Type of property, determines the interpolator used. Possible values: <code>&#39;number&#39;</code>, <code>&#39;color&#39;</code> and <code>&#39;boolean&#39;</code>. Only really needed for <code>&#39;color&#39;</code>, because <code>typeof</code> does not get that right.</td>
+</tr>
+<tr>
+<td><code>from</code></td>
+<td><code>number</code>|<code>Color</code>|<code>boolean</code></td>
+<td><code>undefined</code></td>
+<td>Start value for the animation. Current value is used when <code>undefined</code></td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td><code>number</code>|<code>Color</code>|<code>boolean</code></td>
+<td><code>undefined</code></td>
+<td>End value for the animation. Updated value is used when <code>undefined</code></td>
+</tr>
+<tr>
+<td><code>fn</code></td>
+<td><code>&lt;T&gt;(from: T, to: T, factor: number) => T;</code></td>
+<td><code>undefined</code></td>
+<td>Optional custom interpolator, instead of using a predefined interpolator from <code>type</code></td>
+</tr>
+</tbody></table>
+<h3>Default animations</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Option</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>numbers</code></td>
+<td><code>properties</code></td>
+<td><code>[&#39;x&#39;, &#39;y&#39;, &#39;borderWidth&#39;, &#39;radius&#39;, &#39;tension&#39;]</code></td>
+</tr>
+<tr>
+<td><code>numbers</code></td>
+<td><code>type</code></td>
+<td><code>&#39;number&#39;</code></td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td><code>properties</code></td>
+<td><code>[&#39;color&#39;, &#39;borderColor&#39;, &#39;backgroundColor&#39;]</code></td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td><code>type</code></td>
+<td><code>&#39;color&#39;</code></td>
+</tr>
+</tbody></table>
+<p>:::tip Note<br>These default animations are overridden by most of the dataset controllers.<br>:::</p>
+<h2>transitions</h2>
+<p>The core transitions are <code>&#39;active&#39;</code>, <code>&#39;hide&#39;</code>, <code>&#39;reset&#39;</code>, <code>&#39;resize&#39;</code>, <code>&#39;show&#39;</code>.<br>A custom transition can be used by passing a custom <code>mode</code> to <a href="../developers/api.md#updatemode">update</a>.<br>Transition extends the main <a href="#animation-configuration">animation configuration</a> and <a href="#animations-configuration">animations configuration</a>.</p>
+<h3>Default transitions</h3>
+<p>Namespace: <code>options.transitions[mode]</code></p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Option</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&#39;active&#39;</code></td>
+<td>animation.duration</td>
+<td>400</td>
+<td>Override default duration to 400ms for hover animations</td>
+</tr>
+<tr>
+<td><code>&#39;resize&#39;</code></td>
+<td>animation.duration</td>
+<td>0</td>
+<td>Override default duration to 0ms (= no animation) for resize</td>
+</tr>
+<tr>
+<td><code>&#39;show&#39;</code></td>
+<td>animations.colors</td>
+<td><code>{ type: &#39;color&#39;, properties: [&#39;borderColor&#39;, &#39;backgroundColor&#39;], from: &#39;transparent&#39; }</code></td>
+<td>Colors are faded in from transparent when dataset is shown using legend / <a href="../developers/api.md#showdatasetIndex">api</a>.</td>
+</tr>
+<tr>
+<td><code>&#39;show&#39;</code></td>
+<td>animations.visible</td>
+<td><code>{ type: &#39;boolean&#39;, duration: 0 }</code></td>
+<td>Dataset visibility is immediately changed to true so the color transition from transparent is visible.</td>
+</tr>
+<tr>
+<td><code>&#39;hide&#39;</code></td>
+<td>animations.colors</td>
+<td><code>{ type: &#39;color&#39;, properties: [&#39;borderColor&#39;, &#39;backgroundColor&#39;], to: &#39;transparent&#39; }</code></td>
+<td>Colors are faded to transparent when dataset id hidden using legend / <a href="../developers/api.md#hidedatasetIndex">api</a>.</td>
+</tr>
+<tr>
+<td><code>&#39;hide&#39;</code></td>
+<td>animations.visible</td>
+<td><code>{ type: &#39;boolean&#39;, easing: &#39;easeInExpo&#39; }</code></td>
+<td>Visibility is changed to false at a very late phase of animation</td>
+</tr>
+</tbody></table>
+<h2>Disabling animation</h2>
+<p>To disable an animation configuration, the animation node must be set to <code>false</code>, with the exception for animation modes which can be disabled by setting the <code>duration</code> to <code>0</code>.</p>
+<pre><code class="hljs language-javascript">chart.<span class="hljs-property">options</span>.<span class="hljs-property">animation</span> = <span class="hljs-literal">false</span>; <span class="hljs-comment">// disables all animations</span>
+chart.<span class="hljs-property">options</span>.<span class="hljs-property">animations</span>.<span class="hljs-property">colors</span> = <span class="hljs-literal">false</span>; <span class="hljs-comment">// disables animation defined by the collection of &#x27;colors&#x27; properties</span>
+chart.<span class="hljs-property">options</span>.<span class="hljs-property">animations</span>.<span class="hljs-property">x</span> = <span class="hljs-literal">false</span>; <span class="hljs-comment">// disables animation defined by the &#x27;x&#x27; property</span>
+chart.<span class="hljs-property">options</span>.<span class="hljs-property">transitions</span>.<span class="hljs-property">active</span>.<span class="hljs-property">animation</span>.<span class="hljs-property">duration</span> = <span class="hljs-number">0</span>; <span class="hljs-comment">// disables the animation for &#x27;active&#x27; mode</span></code></pre><h2>Easing</h2>
+<p>Available options are:</p>
+<ul>
+<li><code>&#39;linear&#39;</code></li>
+<li><code>&#39;easeInQuad&#39;</code></li>
+<li><code>&#39;easeOutQuad&#39;</code></li>
+<li><code>&#39;easeInOutQuad&#39;</code></li>
+<li><code>&#39;easeInCubic&#39;</code></li>
+<li><code>&#39;easeOutCubic&#39;</code></li>
+<li><code>&#39;easeInOutCubic&#39;</code></li>
+<li><code>&#39;easeInQuart&#39;</code></li>
+<li><code>&#39;easeOutQuart&#39;</code></li>
+<li><code>&#39;easeInOutQuart&#39;</code></li>
+<li><code>&#39;easeInQuint&#39;</code></li>
+<li><code>&#39;easeOutQuint&#39;</code></li>
+<li><code>&#39;easeInOutQuint&#39;</code></li>
+<li><code>&#39;easeInSine&#39;</code></li>
+<li><code>&#39;easeOutSine&#39;</code></li>
+<li><code>&#39;easeInOutSine&#39;</code></li>
+<li><code>&#39;easeInExpo&#39;</code></li>
+<li><code>&#39;easeOutExpo&#39;</code></li>
+<li><code>&#39;easeInOutExpo&#39;</code></li>
+<li><code>&#39;easeInCirc&#39;</code></li>
+<li><code>&#39;easeOutCirc&#39;</code></li>
+<li><code>&#39;easeInOutCirc&#39;</code></li>
+<li><code>&#39;easeInElastic&#39;</code></li>
+<li><code>&#39;easeOutElastic&#39;</code></li>
+<li><code>&#39;easeInOutElastic&#39;</code></li>
+<li><code>&#39;easeInBack&#39;</code></li>
+<li><code>&#39;easeOutBack&#39;</code></li>
+<li><code>&#39;easeInOutBack&#39;</code></li>
+<li><code>&#39;easeInBounce&#39;</code></li>
+<li><code>&#39;easeOutBounce&#39;</code></li>
+<li><code>&#39;easeInOutBounce&#39;</code></li>
+</ul>
+<p>See <a href="http://robertpenner.com/easing/">Robert Penner&#39;s easing equations</a>.</p>
+<h2>Animation Callbacks</h2>
+<p>The animation configuration provides callbacks which are useful for synchronizing an external draw to the chart animation.<br>The callbacks can be set only at main <a href="#animation-configuration">animation configuration</a>.</p>
+<p>Namespace: <code>options.animation</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>onProgress</code></td>
+<td><code>function</code></td>
+<td><code>null</code></td>
+<td>Callback called on each step of an animation.</td>
+</tr>
+<tr>
+<td><code>onComplete</code></td>
+<td><code>function</code></td>
+<td><code>null</code></td>
+<td>Callback called when all animations are completed.</td>
+</tr>
+</tbody></table>
+<p>The callback is passed the following object:</p>
+<pre><code class="hljs language-javascript">{
+  <span class="hljs-comment">// Chart object</span>
+  <span class="hljs-attr">chart</span>: <span class="hljs-title class_">Chart</span>,
+
+  <span class="hljs-comment">// Number of animations still in progress</span>
+  <span class="hljs-attr">currentStep</span>: number,
+
+  <span class="hljs-comment">// `true` for the initial animation of the chart</span>
+  <span class="hljs-attr">initial</span>: boolean,
+
+  <span class="hljs-comment">// Total number of animations at the start of current animation</span>
+  <span class="hljs-attr">numSteps</span>: number,
+}</code></pre><p>The following example fills a progress bar during the chart animation.</p>
+<pre><code class="hljs language-javascript"><span class="hljs-keyword">const</span> chart = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Chart</span>(ctx, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+    <span class="hljs-attr">data</span>: data,
+    <span class="hljs-attr">options</span>: {
+        <span class="hljs-attr">animation</span>: {
+            <span class="hljs-attr">onProgress</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">animation</span>) {
+                progress.<span class="hljs-property">value</span> = animation.<span class="hljs-property">currentStep</span> / animation.<span class="hljs-property">numSteps</span>;
+            }
+        }
+    }
+});</code></pre><p>Another example usage of these callbacks can be found <a href="../samples/advanced/progress-bar.md">in this progress bar sample,</a> which displays a progress bar showing how far along the animation is.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

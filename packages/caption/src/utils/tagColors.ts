@@ -1,50 +1,66 @@
 /**
  * Tag Color Utilities
  *
- * Utilities for generating consistent colors for tags.
+ * Advanced OKLCH-based color generation for tags with intensity control
+ * and theme integration. Leverages Reynard's existing OKLCH color system.
  */
 
 export interface TagColor {
   background: string;
   text: string;
   border: string;
+  hover?: string;
+  active?: string;
+  focus?: string;
+}
+
+export interface TagColorOptions {
+  intensity?: number; // 0.5 (subtle) to 2.0 (intense)
+  theme?: string;
+  variant?: "default" | "muted" | "vibrant";
+}
+
+export interface OKLCHColor {
+  l: number; // lightness (0-100)
+  c: number; // chroma (0-0.4)
+  h: number; // hue (0-360)
 }
 
 export class TagColorGenerator {
-  private colors: TagColor[] = [
-    { background: "#e3f2fd", text: "#1976d2", border: "#bbdefb" },
-    { background: "#f3e5f5", text: "#7b1fa2", border: "#e1bee7" },
-    { background: "#e8f5e8", text: "#388e3c", border: "#c8e6c9" },
-    { background: "#fff3e0", text: "#f57c00", border: "#ffcc02" },
-    { background: "#fce4ec", text: "#c2185b", border: "#f8bbd9" },
-    { background: "#e0f2f1", text: "#00796b", border: "#b2dfdb" },
-    { background: "#f1f8e9", text: "#689f38", border: "#dcedc8" },
-    { background: "#fff8e1", text: "#ffa000", border: "#ffecb3" },
-    { background: "#e3f2fd", text: "#0288d1", border: "#b3e5fc" },
-    { background: "#f3e5f5", text: "#8e24aa", border: "#e1bee7" },
-    { background: "#e8f5e8", text: "#43a047", border: "#c8e6c9" },
-    { background: "#fff3e0", text: "#fb8c00", border: "#ffcc02" },
-    { background: "#fce4ec", text: "#e91e63", border: "#f8bbd9" },
-    { background: "#e0f2f1", text: "#00acc1", border: "#b2dfdb" },
-    { background: "#f1f8e9", text: "#7cb342", border: "#dcedc8" },
-    { background: "#fff8e1", text: "#ffb300", border: "#ffecb3" },
-  ];
-
   private usedColors = new Map<string, number>();
+  private baseHues = [240, 300, 120, 60, 0, 180, 30, 270, 150, 90, 210, 330]; // OKLCH hue values
 
-  getColor(tag: string): TagColor {
+  getColor(tag: string, options: TagColorOptions = {}): TagColor {
     const normalizedTag = tag.toLowerCase().trim();
+    const { intensity = 1.0, variant = "default" } = options;
 
-    if (this.usedColors.has(normalizedTag)) {
-      const index = this.usedColors.get(normalizedTag)!;
-      return this.colors[index % this.colors.length];
+    // Get consistent hue for this tag
+    const hue = this.getTagHue(normalizedTag);
+    
+    // Generate OKLCH color with intensity control
+    const baseColor = this.generateOKLCHColor(hue, intensity, variant);
+    
+    return {
+      background: this.oklchToCSS(baseColor.l, baseColor.c, baseColor.h),
+      text: this.oklchToCSS(Math.max(0, baseColor.l - 40), Math.min(0.3, baseColor.c + 0.1), baseColor.h),
+      border: this.oklchToCSS(baseColor.l - 10, baseColor.c, baseColor.h),
+      hover: this.oklchToCSS(Math.min(100, baseColor.l + 5), baseColor.c, baseColor.h),
+      active: this.oklchToCSS(Math.max(0, baseColor.l - 5), baseColor.c, baseColor.h),
+      focus: this.oklchToCSS(baseColor.l, Math.min(0.4, baseColor.c + 0.15), baseColor.h),
+    };
+  }
+
+  private getTagHue(tag: string): number {
+    if (this.usedColors.has(tag)) {
+      const index = this.usedColors.get(tag)!;
+      return this.baseHues[index % this.baseHues.length];
     }
 
-    // Find the least used color
+    // Find the least used hue
     let leastUsedIndex = 0;
     let leastUsedCount = Infinity;
 
-    for (let i = 0; i < this.colors.length; i++) {
+    for (let i = 0; i < this.baseHues.length; i++) {
       const count = Array.from(this.usedColors.values()).filter(
         (v) => v === i,
       ).length;
@@ -54,12 +70,52 @@ export class TagColorGenerator {
       }
     }
 
-    this.usedColors.set(normalizedTag, leastUsedIndex);
-    return this.colors[leastUsedIndex];
+    this.usedColors.set(tag, leastUsedIndex);
+    return this.baseHues[leastUsedIndex];
   }
 
-  getColorByIndex(index: number): TagColor {
-    return this.colors[index % this.colors.length];
+  private generateOKLCHColor(hue: number, intensity: number, variant: string): OKLCHColor {
+    const baseLightness = 70;
+    const baseChroma = 0.15;
+
+    let lightness = baseLightness;
+    let chroma = baseChroma * intensity;
+
+    // Adjust for variant
+    switch (variant) {
+      case "muted":
+        chroma *= 0.6;
+        lightness += 5;
+        break;
+      case "vibrant":
+        chroma *= 1.4;
+        lightness -= 5;
+        break;
+    }
+
+    return {
+      l: Math.max(20, Math.min(90, lightness)),
+      c: Math.max(0.05, Math.min(0.4, chroma)),
+      h: hue,
+    };
+  }
+
+  private oklchToCSS(l: number, c: number, h: number): string {
+    return `oklch(${l}% ${c} ${h})`;
+  }
+
+  getColorByIndex(index: number, options: TagColorOptions = {}): TagColor {
+    const hue = this.baseHues[index % this.baseHues.length];
+    const baseColor = this.generateOKLCHColor(hue, options.intensity || 1.0, options.variant || "default");
+    
+    return {
+      background: this.oklchToCSS(baseColor.l, baseColor.c, baseColor.h),
+      text: this.oklchToCSS(Math.max(0, baseColor.l - 40), Math.min(0.3, baseColor.c + 0.1), baseColor.h),
+      border: this.oklchToCSS(baseColor.l - 10, baseColor.c, baseColor.h),
+      hover: this.oklchToCSS(Math.min(100, baseColor.l + 5), baseColor.c, baseColor.h),
+      active: this.oklchToCSS(Math.max(0, baseColor.l - 5), baseColor.c, baseColor.h),
+      focus: this.oklchToCSS(baseColor.l, Math.min(0.4, baseColor.c + 0.15), baseColor.h),
+    };
   }
 
   reset(): void {

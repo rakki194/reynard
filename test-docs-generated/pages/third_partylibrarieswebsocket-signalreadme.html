@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal - Real-time WebSocket Communication Library - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Signal - Real-time WebSocket Communication Library</h1>
+      <div class="markdown-content"><h1>Signal - Real-time WebSocket Communication Library</h1>
+<p>A comprehensive Python library for building real-time WebSocket applications with advanced features like connection management, message routing, circuit breakers, and performance monitoring.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Connection Management</strong>: Robust WebSocket connection handling with automatic reconnection</li>
+<li><strong>Message Broadcasting</strong>: Efficient message broadcasting to multiple clients</li>
+<li><strong>Circuit Breaker Pattern</strong>: Built-in circuit breaker for fault tolerance</li>
+<li><strong>Connection Pooling</strong>: Connection pooling for better resource management</li>
+<li><strong>Rate Limiting</strong>: Configurable rate limiting per connection</li>
+<li><strong>Authentication</strong>: Flexible authentication system with user management</li>
+<li><strong>Message Routing</strong>: Advanced message routing and filtering</li>
+<li><strong>Performance Analytics</strong>: Comprehensive analytics and health monitoring</li>
+<li><strong>Error Recovery</strong>: Automatic error recovery and retry mechanisms</li>
+<li><strong>Configuration Management</strong>: Environment-based configuration with runtime updates</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">pip install signal</code></pre><h2>Quick Start</h2>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig, WebSocketMessage, WebSocketMessageType
+
+<span class="hljs-comment"># Create configuration</span>
+config = WebSocketConfig(
+    max_connections=<span class="hljs-number">100</span>,
+    enable_heartbeat=<span class="hljs-literal">True</span>,
+    enable_metrics=<span class="hljs-literal">True</span>
+)
+
+<span class="hljs-comment"># Initialize manager</span>
+manager = WebSocketManager(config)
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-comment"># Start the manager</span>
+    <span class="hljs-keyword">await</span> manager.start()
+    
+    <span class="hljs-comment"># Create a message</span>
+    message = WebSocketMessage(
+        message_type=WebSocketMessageType.INFO,
+        data={<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;Hello, World!&quot;</span>}
+    )
+    
+    <span class="hljs-comment"># Broadcast to all connections</span>
+    <span class="hljs-keyword">await</span> manager.broadcast(message)
+    
+    <span class="hljs-comment"># Get metrics</span>
+    metrics = manager.get_metrics()
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active connections: <span class="hljs-subst">{metrics.active_connections}</span>&quot;</span>)
+    
+    <span class="hljs-comment"># Stop the manager</span>
+    <span class="hljs-keyword">await</span> manager.stop()
+
+asyncio.run(main())</code></pre><h3>FastAPI Integration</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, WebSocket, WebSocketDisconnect
+<span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig
+
+app = FastAPI()
+manager = WebSocketManager(WebSocketConfig())
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;startup&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">startup_event</span>():
+    <span class="hljs-keyword">await</span> manager.start()
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;shutdown&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown_event</span>():
+    <span class="hljs-keyword">await</span> manager.stop()
+
+<span class="hljs-meta">@app.websocket(<span class="hljs-params"><span class="hljs-string">&quot;/ws/{client_id}&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">websocket_endpoint</span>(<span class="hljs-params">websocket: WebSocket, client_id: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">await</span> websocket.accept()
+    
+    <span class="hljs-comment"># Connect to manager</span>
+    connection_id = <span class="hljs-keyword">await</span> manager.connect(websocket, client_id)
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-comment"># Receive message from client</span>
+            data = <span class="hljs-keyword">await</span> websocket.receive_text()
+            
+            <span class="hljs-comment"># Broadcast to all other clients</span>
+            <span class="hljs-keyword">await</span> manager.broadcast({
+                <span class="hljs-string">&quot;client_id&quot;</span>: client_id,
+                <span class="hljs-string">&quot;message&quot;</span>: data
+            })
+            
+    <span class="hljs-keyword">except</span> WebSocketDisconnect:
+        <span class="hljs-keyword">await</span> manager.disconnect(connection_id)</code></pre><h3>Advanced Features</h3>
+<h4>Authentication</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig
+
+<span class="hljs-comment"># Custom authentication service</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">auth_service</span>(<span class="hljs-params">user_id: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-comment"># Your authentication logic here</span>
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&quot;authenticated&quot;</span>: <span class="hljs-literal">True</span>,
+        <span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>
+    }
+
+config = WebSocketConfig(
+    enable_authentication=<span class="hljs-literal">True</span>,
+    require_authentication=<span class="hljs-literal">True</span>
+)
+
+manager = WebSocketManager(config)
+manager.set_auth_service(auth_service)
+
+<span class="hljs-comment"># Connect with user authentication</span>
+connection_id = <span class="hljs-keyword">await</span> manager.connect(websocket, user_id=<span class="hljs-string">&quot;user123&quot;</span>)</code></pre><h4>Message Routing</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketMessageType
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Add message route</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_progress_updates</span>(<span class="hljs-params">message</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Progress update: <span class="hljs-subst">{message.data}</span>&quot;</span>)
+
+manager.add_message_route(<span class="hljs-string">&quot;type:progress_update&quot;</span>, handle_progress_updates)
+
+<span class="hljs-comment"># Add message filter</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">filter_admin_messages</span>(<span class="hljs-params">message</span>):
+    <span class="hljs-keyword">return</span> message.data.get(<span class="hljs-string">&quot;user_role&quot;</span>) == <span class="hljs-string">&quot;admin&quot;</span>
+
+manager.add_message_filter(filter_admin_messages)</code></pre><h4>Connection Pooling</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Create connection pool</span>
+pool = manager.create_connection_pool(<span class="hljs-string">&quot;main_pool&quot;</span>, max_size=<span class="hljs-number">50</span>)
+
+<span class="hljs-comment"># Add connections to pool</span>
+connection = WebSocketConnection(...)
+pool.add_connection(connection)
+
+<span class="hljs-comment"># Get connection from pool</span>
+connection = pool.get_connection()
+<span class="hljs-keyword">if</span> connection:
+    <span class="hljs-comment"># Use connection</span>
+    pool.release_connection(connection.connection_id)</code></pre><h4>Circuit Breaker</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig
+
+config = WebSocketConfig(
+    enable_circuit_breaker=<span class="hljs-literal">True</span>,
+    circuit_breaker_threshold=<span class="hljs-number">5</span>,
+    circuit_breaker_timeout=<span class="hljs-number">60.0</span>,
+    circuit_breaker_reset_timeout=<span class="hljs-number">300.0</span>
+)
+
+manager = WebSocketManager(config)
+
+<span class="hljs-comment"># Circuit breaker is automatically managed</span>
+<span class="hljs-comment"># It will open after 5 failures and reset after 5 minutes</span></code></pre><h4>Analytics and Monitoring</h4>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig
+
+config = WebSocketConfig(enable_analytics=<span class="hljs-literal">True</span>)
+manager = WebSocketManager(config)
+
+<span class="hljs-comment"># Get usage metrics</span>
+metrics = manager.get_metrics()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total messages sent: <span class="hljs-subst">{metrics.total_messages_sent}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error rate: <span class="hljs-subst">{metrics.error_rate:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)
+
+<span class="hljs-comment"># Get health status</span>
+health = manager.get_health_status()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Status: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;status&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error rate: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;error_rate&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)
+
+<span class="hljs-comment"># Get analytics summary</span>
+analytics = manager.get_analytics_summary()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Peak connections: <span class="hljs-subst">{analytics[<span class="hljs-string">&#x27;usage&#x27;</span>][<span class="hljs-string">&#x27;peak_connections&#x27;</span>]}</span>&quot;</span>)</code></pre><h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<p>The library supports configuration via environment variables:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Connection settings</span>
+<span class="hljs-built_in">export</span> SIGNAL_MAX_CONNECTIONS=100
+<span class="hljs-built_in">export</span> SIGNAL_MAX_MESSAGE_SIZE=1048576
+<span class="hljs-built_in">export</span> SIGNAL_HEARTBEAT_INTERVAL=30.0
+<span class="hljs-built_in">export</span> SIGNAL_CONNECTION_TIMEOUT=60.0
+
+<span class="hljs-comment"># Retry settings</span>
+<span class="hljs-built_in">export</span> SIGNAL_RETRY_ATTEMPTS=3
+<span class="hljs-built_in">export</span> SIGNAL_RETRY_DELAY=1.0
+
+<span class="hljs-comment"># Feature flags</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_COMPRESSION=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_HEARTBEAT=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_METRICS=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_ERROR_RECOVERY=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_RATE_LIMITING=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Rate limiting</span>
+<span class="hljs-built_in">export</span> SIGNAL_RATE_LIMIT_MESSAGES_PER_SECOND=100
+<span class="hljs-built_in">export</span> SIGNAL_RATE_LIMIT_BURST_SIZE=10
+
+<span class="hljs-comment"># Authentication</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_AUTHENTICATION=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_AUTHENTICATION_TIMEOUT=30.0
+<span class="hljs-built_in">export</span> SIGNAL_REQUIRE_AUTHENTICATION=<span class="hljs-literal">false</span>
+
+<span class="hljs-comment"># Connection pooling</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_CONNECTION_POOLING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_POOL_SIZE=50
+<span class="hljs-built_in">export</span> SIGNAL_POOL_CLEANUP_INTERVAL=300.0
+
+<span class="hljs-comment"># Circuit breaker</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_CIRCUIT_BREAKER=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_CIRCUIT_BREAKER_THRESHOLD=5
+<span class="hljs-built_in">export</span> SIGNAL_CIRCUIT_BREAKER_TIMEOUT=60.0
+<span class="hljs-built_in">export</span> SIGNAL_CIRCUIT_BREAKER_RESET_TIMEOUT=300.0
+
+<span class="hljs-comment"># Message routing</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_MESSAGE_ROUTING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_MESSAGE_FILTERING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_MAX_MESSAGE_QUEUE_SIZE=1000
+<span class="hljs-built_in">export</span> SIGNAL_MESSAGE_PROCESSING_WORKERS=4
+
+<span class="hljs-comment"># Analytics</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_ANALYTICS=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ANALYTICS_UPDATE_INTERVAL=30.0
+
+<span class="hljs-comment"># Security</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_SSL=<span class="hljs-literal">false</span>
+<span class="hljs-built_in">export</span> SIGNAL_SSL_CERT_FILE=
+<span class="hljs-built_in">export</span> SIGNAL_SSL_KEY_FILE=
+
+<span class="hljs-comment"># Logging</span>
+<span class="hljs-built_in">export</span> SIGNAL_LOG_LEVEL=INFO
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_REQUEST_LOGGING=<span class="hljs-literal">true</span>
+<span class="hljs-built_in">export</span> SIGNAL_ENABLE_ERROR_LOGGING=<span class="hljs-literal">true</span></code></pre><h3>Configuration Class</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketConfig
+
+config = WebSocketConfig(
+    <span class="hljs-comment"># Connection settings</span>
+    max_connections=<span class="hljs-number">100</span>,
+    max_message_size=<span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>,  <span class="hljs-comment"># 1MB</span>
+    heartbeat_interval=<span class="hljs-number">30.0</span>,
+    connection_timeout=<span class="hljs-number">60.0</span>,
+    
+    <span class="hljs-comment"># Retry settings</span>
+    retry_attempts=<span class="hljs-number">3</span>,
+    retry_delay=<span class="hljs-number">1.0</span>,
+    
+    <span class="hljs-comment"># Feature flags</span>
+    enable_compression=<span class="hljs-literal">True</span>,
+    enable_heartbeat=<span class="hljs-literal">True</span>,
+    enable_metrics=<span class="hljs-literal">True</span>,
+    enable_error_recovery=<span class="hljs-literal">True</span>,
+    enable_rate_limiting=<span class="hljs-literal">True</span>,
+    
+    <span class="hljs-comment"># Rate limiting</span>
+    rate_limit_messages_per_second=<span class="hljs-number">100</span>,
+    rate_limit_burst_size=<span class="hljs-number">10</span>,
+    
+    <span class="hljs-comment"># Authentication</span>
+    enable_authentication=<span class="hljs-literal">True</span>,
+    authentication_timeout=<span class="hljs-number">30.0</span>,
+    require_authentication=<span class="hljs-literal">False</span>,
+    
+    <span class="hljs-comment"># Connection pooling</span>
+    enable_connection_pooling=<span class="hljs-literal">True</span>,
+    pool_size=<span class="hljs-number">50</span>,
+    pool_cleanup_interval=<span class="hljs-number">300.0</span>,
+    
+    <span class="hljs-comment"># Circuit breaker</span>
+    enable_circuit_breaker=<span class="hljs-literal">True</span>,
+    circuit_breaker_threshold=<span class="hljs-number">5</span>,
+    circuit_breaker_timeout=<span class="hljs-number">60.0</span>,
+    circuit_breaker_reset_timeout=<span class="hljs-number">300.0</span>,
+    
+    <span class="hljs-comment"># Message routing</span>
+    enable_message_routing=<span class="hljs-literal">True</span>,
+    enable_message_filtering=<span class="hljs-literal">True</span>,
+    max_message_queue_size=<span class="hljs-number">1000</span>,
+    message_processing_workers=<span class="hljs-number">4</span>,
+    
+    <span class="hljs-comment"># Analytics</span>
+    enable_analytics=<span class="hljs-literal">True</span>,
+    analytics_update_interval=<span class="hljs-number">30.0</span>,
+    
+    <span class="hljs-comment"># Security</span>
+    enable_ssl=<span class="hljs-literal">False</span>,
+    ssl_cert_file=<span class="hljs-literal">None</span>,
+    ssl_key_file=<span class="hljs-literal">None</span>,
+    
+    <span class="hljs-comment"># Logging</span>
+    log_level=<span class="hljs-string">&quot;INFO&quot;</span>,
+    enable_request_logging=<span class="hljs-literal">True</span>,
+    enable_error_logging=<span class="hljs-literal">True</span>,
+)</code></pre><h2>Message Types</h2>
+<p>The library supports various message types:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketMessageType
+
+<span class="hljs-comment"># System messages</span>
+WebSocketMessageType.PROGRESS_UPDATE
+WebSocketMessageType.STATUS_UPDATE
+WebSocketMessageType.ERROR
+WebSocketMessageType.WARNING
+WebSocketMessageType.INFO
+
+<span class="hljs-comment"># Connection messages</span>
+WebSocketMessageType.PING
+WebSocketMessageType.PONG
+WebSocketMessageType.HEARTBEAT
+WebSocketMessageType.CONNECTION_STATUS
+
+<span class="hljs-comment"># User messages</span>
+WebSocketMessageType.USER_MESSAGE
+WebSocketMessageType.BROADCAST
+WebSocketMessageType.AUTHENTICATION
+
+<span class="hljs-comment"># System metrics</span>
+WebSocketMessageType.SYSTEM_METRICS
+
+<span class="hljs-comment"># Custom messages</span>
+WebSocketMessageType.CUSTOM</code></pre><h2>Message Priority</h2>
+<p>Messages can have different priority levels:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> MessagePriority
+
+<span class="hljs-comment"># Priority levels</span>
+MessagePriority.LOW      <span class="hljs-comment"># 0</span>
+MessagePriority.NORMAL   <span class="hljs-comment"># 1</span>
+MessagePriority.HIGH     <span class="hljs-comment"># 2</span>
+MessagePriority.CRITICAL <span class="hljs-comment"># 3</span>
+
+<span class="hljs-comment"># Create high priority message</span>
+message = WebSocketMessage(
+    message_type=WebSocketMessageType.ERROR,
+    data={<span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;Critical system failure&quot;</span>},
+    priority=MessagePriority.CRITICAL
+)</code></pre><h2>Error Handling</h2>
+<p>The library provides comprehensive error handling:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketErrorType
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Add error callback</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">error_handler</span>(<span class="hljs-params">connection_id: <span class="hljs-built_in">str</span>, error: Exception</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error on connection <span class="hljs-subst">{connection_id}</span>: <span class="hljs-subst">{error}</span>&quot;</span>)
+
+manager.add_error_callback(error_handler)
+
+<span class="hljs-comment"># Error types</span>
+WebSocketErrorType.CONNECTION_FAILED
+WebSocketErrorType.MESSAGE_SEND_FAILED
+WebSocketErrorType.MESSAGE_RECEIVE_FAILED
+WebSocketErrorType.TIMEOUT
+WebSocketErrorType.PROTOCOL_ERROR
+WebSocketErrorType.AUTHENTICATION_ERROR
+WebSocketErrorType.RATE_LIMIT_EXCEEDED
+WebSocketErrorType.CIRCUIT_BREAKER_OPEN
+WebSocketErrorType.UNKNOWN_ERROR</code></pre><h2>Performance Monitoring</h2>
+<h3>Metrics</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Get performance metrics</span>
+metrics = manager.get_metrics()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total connections: <span class="hljs-subst">{metrics.total_connections}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active connections: <span class="hljs-subst">{metrics.active_connections}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total messages sent: <span class="hljs-subst">{metrics.total_messages_sent}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total messages received: <span class="hljs-subst">{metrics.total_messages_received}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total errors: <span class="hljs-subst">{metrics.total_errors}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error rate: <span class="hljs-subst">{metrics.error_rate:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Messages per second: <span class="hljs-subst">{metrics.messages_per_second:<span class="hljs-number">.2</span>f}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Average message size: <span class="hljs-subst">{metrics.average_message_size:<span class="hljs-number">.2</span>f}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Authentication success rate: <span class="hljs-subst">{metrics.authentication_success_rate:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Circuit breaker trips: <span class="hljs-subst">{metrics.circuit_breaker_trips}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Pool utilization: <span class="hljs-subst">{metrics.pool_utilization:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)</code></pre><h3>Health Status</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Get health status</span>
+health = manager.get_health_status()
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Status: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;status&#x27;</span>]}</span>&quot;</span>)  <span class="hljs-comment"># healthy, degraded, unhealthy</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Is running: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;is_running&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total connections: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;total_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active connections: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;active_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error rate: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;error_rate&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>%&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Messages per second: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;messages_per_second&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Uptime: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;uptime&#x27;</span>]:<span class="hljs-number">.2</span>f}</span>s&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Session ID: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;session_id&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Circuit breaker state: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;circuit_breaker&#x27;</span>][<span class="hljs-string">&#x27;state&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total pools: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;connection_pools&#x27;</span>][<span class="hljs-string">&#x27;total_pools&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Authenticated connections: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;authenticated_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total users: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;total_users&#x27;</span>]}</span>&quot;</span>)</code></pre><h3>Analytics Summary</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager
+
+manager = WebSocketManager()
+
+<span class="hljs-comment"># Get analytics summary</span>
+analytics = manager.get_analytics_summary()
+
+<span class="hljs-comment"># Usage metrics</span>
+usage = analytics[<span class="hljs-string">&#x27;usage&#x27;</span>]
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total connections: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;total_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active connections: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;active_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Peak connections: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;peak_connections&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total messages sent: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;total_messages_sent&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total messages received: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;total_messages_received&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Error rate: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;error_rate&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Messages per second: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;messages_per_second&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Average response time: <span class="hljs-subst">{usage[<span class="hljs-string">&#x27;average_response_time&#x27;</span>]}</span>&quot;</span>)
+
+<span class="hljs-comment"># Health metrics</span>
+health = analytics[<span class="hljs-string">&#x27;health&#x27;</span>]
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Overall health: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;overall_health&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Health score: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;health_score&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Uptime percentage: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;uptime_percentage&#x27;</span>]}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Active alerts: <span class="hljs-subst">{health[<span class="hljs-string">&#x27;active_alerts&#x27;</span>]}</span>&quot;</span>)
+
+<span class="hljs-comment"># Optimization suggestions</span>
+suggestions = analytics[<span class="hljs-string">&#x27;optimization_suggestions&#x27;</span>]
+<span class="hljs-keyword">for</span> suggestion <span class="hljs-keyword">in</span> suggestions:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Suggestion: <span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;title&#x27;</span>]}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Priority: <span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;priority&#x27;</span>]}</span>&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Impact: <span class="hljs-subst">{suggestion[<span class="hljs-string">&#x27;estimated_impact&#x27;</span>]}</span>&quot;</span>)</code></pre><h2>Examples</h2>
+<h3>Chat Application</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, WebSocket, WebSocketDisconnect
+<span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig, WebSocketMessage, WebSocketMessageType
+
+app = FastAPI()
+manager = WebSocketManager(WebSocketConfig())
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;startup&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">startup_event</span>():
+    <span class="hljs-keyword">await</span> manager.start()
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;shutdown&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown_event</span>():
+    <span class="hljs-keyword">await</span> manager.stop()
+
+<span class="hljs-meta">@app.websocket(<span class="hljs-params"><span class="hljs-string">&quot;/chat/{username}&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">chat_endpoint</span>(<span class="hljs-params">websocket: WebSocket, username: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">await</span> websocket.accept()
+    
+    <span class="hljs-comment"># Connect to manager</span>
+    connection_id = <span class="hljs-keyword">await</span> manager.connect(websocket, username)
+    
+    <span class="hljs-comment"># Send welcome message</span>
+    welcome_message = WebSocketMessage(
+        message_type=WebSocketMessageType.INFO,
+        data={
+            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;system&quot;</span>,
+            <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;<span class="hljs-subst">{username}</span> joined the chat&quot;</span>
+        }
+    )
+    <span class="hljs-keyword">await</span> manager.broadcast(welcome_message, exclude_connections={connection_id})
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-comment"># Receive message from client</span>
+            data = <span class="hljs-keyword">await</span> websocket.receive_text()
+            
+            <span class="hljs-comment"># Create chat message</span>
+            chat_message = WebSocketMessage(
+                message_type=WebSocketMessageType.USER_MESSAGE,
+                data={
+                    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;chat&quot;</span>,
+                    <span class="hljs-string">&quot;username&quot;</span>: username,
+                    <span class="hljs-string">&quot;message&quot;</span>: data
+                }
+            )
+            
+            <span class="hljs-comment"># Broadcast to all clients</span>
+            <span class="hljs-keyword">await</span> manager.broadcast(chat_message)
+            
+    <span class="hljs-keyword">except</span> WebSocketDisconnect:
+        <span class="hljs-comment"># Send leave message</span>
+        leave_message = WebSocketMessage(
+            message_type=WebSocketMessageType.INFO,
+            data={
+                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;system&quot;</span>,
+                <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;<span class="hljs-subst">{username}</span> left the chat&quot;</span>
+            }
+        )
+        <span class="hljs-keyword">await</span> manager.broadcast(leave_message, exclude_connections={connection_id})
+        
+        <span class="hljs-comment"># Disconnect from manager</span>
+        <span class="hljs-keyword">await</span> manager.disconnect(connection_id)</code></pre><h3>Real-time Dashboard</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, WebSocket, WebSocketDisconnect
+<span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig, WebSocketMessage, WebSocketMessageType
+
+app = FastAPI()
+manager = WebSocketManager(WebSocketConfig())
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;startup&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">startup_event</span>():
+    <span class="hljs-keyword">await</span> manager.start()
+
+<span class="hljs-meta">@app.on_event(<span class="hljs-params"><span class="hljs-string">&quot;shutdown&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">shutdown_event</span>():
+    <span class="hljs-keyword">await</span> manager.stop()
+
+<span class="hljs-meta">@app.websocket(<span class="hljs-params"><span class="hljs-string">&quot;/dashboard&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">dashboard_endpoint</span>(<span class="hljs-params">websocket: WebSocket</span>):
+    <span class="hljs-keyword">await</span> websocket.accept()
+    
+    <span class="hljs-comment"># Connect to manager</span>
+    connection_id = <span class="hljs-keyword">await</span> manager.connect(websocket)
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-comment"># Send metrics every 5 seconds</span>
+            <span class="hljs-keyword">await</span> asyncio.sleep(<span class="hljs-number">5</span>)
+            
+            metrics = manager.get_metrics()
+            health = manager.get_health_status()
+            
+            <span class="hljs-comment"># Create metrics message</span>
+            metrics_message = WebSocketMessage(
+                message_type=WebSocketMessageType.SYSTEM_METRICS,
+                data={
+                    <span class="hljs-string">&quot;metrics&quot;</span>: {
+                        <span class="hljs-string">&quot;active_connections&quot;</span>: metrics.active_connections,
+                        <span class="hljs-string">&quot;total_messages_sent&quot;</span>: metrics.total_messages_sent,
+                        <span class="hljs-string">&quot;error_rate&quot;</span>: metrics.error_rate,
+                        <span class="hljs-string">&quot;messages_per_second&quot;</span>: metrics.messages_per_second
+                    },
+                    <span class="hljs-string">&quot;health&quot;</span>: {
+                        <span class="hljs-string">&quot;status&quot;</span>: health[<span class="hljs-string">&quot;status&quot;</span>],
+                        <span class="hljs-string">&quot;error_rate&quot;</span>: health[<span class="hljs-string">&quot;error_rate&quot;</span>],
+                        <span class="hljs-string">&quot;uptime&quot;</span>: health[<span class="hljs-string">&quot;uptime&quot;</span>]
+                    }
+                }
+            )
+            
+            <span class="hljs-keyword">await</span> manager.send_to_connection(connection_id, metrics_message)
+            
+    <span class="hljs-keyword">except</span> WebSocketDisconnect:
+        <span class="hljs-keyword">await</span> manager.disconnect(connection_id)</code></pre><h2>Testing</h2>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> pytest
+<span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> signal <span class="hljs-keyword">import</span> WebSocketManager, WebSocketConfig, WebSocketMessage, WebSocketMessageType
+
+<span class="hljs-meta">@pytest.fixture</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">manager</span>():
+    config = WebSocketConfig(max_connections=<span class="hljs-number">10</span>)
+    manager = WebSocketManager(config)
+    <span class="hljs-keyword">await</span> manager.start()
+    <span class="hljs-keyword">yield</span> manager
+    <span class="hljs-keyword">await</span> manager.stop()
+
+<span class="hljs-meta">@pytest.mark.asyncio</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_connection_management</span>(<span class="hljs-params">manager</span>):
+    <span class="hljs-comment"># Test connection</span>
+    websocket = MockWebSocket()
+    connection_id = <span class="hljs-keyword">await</span> manager.connect(websocket)
+    
+    <span class="hljs-keyword">assert</span> connection_id <span class="hljs-keyword">in</span> manager._connections
+    <span class="hljs-keyword">assert</span> manager._connections[connection_id].state == WebSocketConnectionState.CONNECTED
+    
+    <span class="hljs-comment"># Test disconnect</span>
+    <span class="hljs-keyword">await</span> manager.disconnect(connection_id)
+    <span class="hljs-keyword">assert</span> connection_id <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> manager._connections
+
+<span class="hljs-meta">@pytest.mark.asyncio</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_message_broadcasting</span>(<span class="hljs-params">manager</span>):
+    <span class="hljs-comment"># Connect multiple clients</span>
+    websocket1 = MockWebSocket()
+    websocket2 = MockWebSocket()
+    
+    conn1 = <span class="hljs-keyword">await</span> manager.connect(websocket1)
+    conn2 = <span class="hljs-keyword">await</span> manager.connect(websocket2)
+    
+    <span class="hljs-comment"># Broadcast message</span>
+    message = WebSocketMessage(
+        message_type=WebSocketMessageType.INFO,
+        data={<span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-string">&quot;message&quot;</span>}
+    )
+    
+    sent_count = <span class="hljs-keyword">await</span> manager.broadcast(message)
+    <span class="hljs-keyword">assert</span> sent_count == <span class="hljs-number">2</span>
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MockWebSocket</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.messages = []
+    
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">accept</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+    
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_json</span>(<span class="hljs-params">self, data</span>):
+        <span class="hljs-variable language_">self</span>.messages.append(data)
+    
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">receive_text</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;test message&quot;</span></code></pre><h2>Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Make your changes</li>
+<li>Add tests</li>
+<li>Run the test suite</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2>Support</h2>
+<p>For support and questions:</p>
+<ul>
+<li>Create an issue on GitHub</li>
+<li>Check the documentation</li>
+<li>Join our community discussions</li>
+</ul>
+<h2>Roadmap</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Redis backend for distributed deployments</li>
+<li><input disabled="" type="checkbox"> WebSocket compression support</li>
+<li><input disabled="" type="checkbox"> Message persistence</li>
+<li><input disabled="" type="checkbox"> Advanced routing patterns</li>
+<li><input disabled="" type="checkbox"> Load balancing support</li>
+<li><input disabled="" type="checkbox"> Kubernetes integration</li>
+<li><input disabled="" type="checkbox"> Prometheus metrics export</li>
+<li><input disabled="" type="checkbox"> GraphQL subscriptions support</li>
+<li><input disabled="" type="checkbox"> MQTT protocol support</li>
+<li><input disabled="" type="checkbox"> WebRTC integration</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -28,6 +28,10 @@ export interface TagBubbleProps {
   removable?: boolean;
   color?: string;
   size?: "small" | "medium" | "large";
+  // Enhanced OKLCH color options
+  intensity?: number; // 0.5 (subtle) to 2.0 (intense)
+  variant?: "default" | "muted" | "vibrant";
+  theme?: string;
 }
 
 export interface CaptionInputProps {

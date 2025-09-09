@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTS and Crawl Integration Documentation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>TTS and Crawl Integration Documentation</h1>
+      <div class="markdown-content"><h1>TTS and Crawl Integration Documentation</h1>
+<h2>Overview</h2>
+<p>The TTS and Crawl Integration system brings web crawling and high-quality text-to-speech capabilities to YipYap. This system allows users to crawl web URLs via Firecrawl, summarize content using the existing LLM pipeline, synthesize speech using multiple TTS backends (Coqui, Kokoro, XTTS), and ingest the results into the Audio modality for playback and management.</p>
+<h2>Architecture</h2>
+<h3>System Components</h3>
+<p>The integration consists of several key components working together:</p>
+<ol>
+<li><p><strong>Crawl Service</strong> (<code>app/services/integration/crawl_service.py</code>)</p>
+<ul>
+<li>Firecrawl proxy with local caching</li>
+<li>Job management and status tracking</li>
+<li>Cache TTL and cleanup mechanisms</li>
+</ul>
+</li>
+<li><p><strong>Summarization Service</strong> (<code>app/services/integration/summarize_service.py</code>)</p>
+<ul>
+<li>Markdown cleaning and normalization</li>
+<li>LLM-based summarization via Ollama</li>
+<li>Outline and highlights generation</li>
+</ul>
+</li>
+<li><p><strong>TTS Service</strong> (<code>app/services/integration/tts_service.py</code>)</p>
+<ul>
+<li>Multi-backend orchestration (Coqui, Kokoro, XTTS)</li>
+<li>Performance mode management</li>
+<li>Voice selection and language support</li>
+</ul>
+</li>
+<li><p><strong>Audio Ingestion</strong> (<code>app/api/audio.py</code>)</p>
+<ul>
+<li>Deduplication by content hash</li>
+<li>Metadata storage and provenance tracking</li>
+<li>Gallery integration</li>
+</ul>
+</li>
+</ol>
+<h3>Data Flow</h3>
+<pre><code class="hljs"><span class="hljs-built_in">URL</span> <span class="hljs-built_in">Input</span> → <span class="hljs-variable">Crawl</span> <span class="hljs-variable">Service</span> → <span class="hljs-variable">Markdown</span> → <span class="hljs-variable">Summarization</span> → <span class="hljs-variable">TTS</span> → <span class="hljs-built_in">Audio</span> <span class="hljs-variable">Ingestion</span> → <span class="hljs-variable">Gallery</span>
+    ↓           ↓           ↓            ↓           ↓         ↓
+  <span class="hljs-variable">Validation</span>  <span class="hljs-variable">Firecrawl</span>   <span class="hljs-variable">Cleaning</span>    <span class="hljs-variable">LLM</span> <span class="hljs-variable">Chat</span>   <span class="hljs-variable">Synthesis</span>  <span class="hljs-variable">Deduplication</span>
+    ↓           ↓           ↓            ↓           ↓         ↓
+  <span class="hljs-variable">Allowlist</span>   <span class="hljs-variable">Caching</span>   <span class="hljs-variable">Normalization</span>  <span class="hljs-variable">Streaming</span>   <span class="hljs-variable">Chunking</span>   <span class="hljs-variable">Metadata</span></code></pre><h3>Configuration</h3>
+<p>The system is controlled by environment variables and feature flags:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Core feature flags</span>
+CRAWL_ENABLED=true
+TTS_ENABLED=true
+
+<span class="hljs-comment"># Firecrawl configuration</span>
+FIRECRAWL_BASE_URL=https://api.firecrawl.dev
+CRAWL_CACHE_DIR=/path/to/cache
+CRAWL_CACHE_TTL_DAYS=<span class="hljs-number">7</span>
+
+<span class="hljs-comment"># TTS configuration</span>
+TTS_DEFAULT_BACKEND=kokoro
+TTS_AUDIO_DIR=/path/to/audio
+TTS_KOKORO_MODE=powersave  <span class="hljs-comment"># performance, normal, powersave</span></code></pre><h2>API Contracts</h2>
+<h3>Crawl API</h3>
+<h4>POST /api/crawl/fetch</h4>
+<p>Submit a URL for crawling.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;max_age_days&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;queued&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET /api/crawl/status/{job_id}</h4>
+<p>Get the status of a crawl job.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;completed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;markdown&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;# Article Title\n\nContent...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;crawl_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;content_length&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15000</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET /api/crawl/direct</h4>
+<p>Direct crawl without job management.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;markdown&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;# Article Title\n\nContent...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;crawl_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET /api/crawl/stream</h4>
+<p>Server-Sent Events stream for crawl progress.</p>
+<p><strong>Event Types:</strong></p>
+<ul>
+<li><code>crawl_started</code>: Job submitted to Firecrawl</li>
+<li><code>crawl_progress</code>: Crawl progress update</li>
+<li><code>crawl_completed</code>: Crawl finished successfully</li>
+<li><code>crawl_failed</code>: Crawl failed with error</li>
+</ul>
+<h3>Summarization API</h3>
+<h4>POST /api/summarize/url</h4>
+<p>Crawl and summarize a URL in one operation.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include_highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;processing&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET /api/summarize/{summary_id}</h4>
+<p>Get the complete summary data.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;markdown&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;# Original Content...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Summarized Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;abstract&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Brief summary of the content...&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;outline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Point 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Point 2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Point 3&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Key highlight 1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Key highlight 2&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;crawl_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:05:00Z&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>TTS API</h3>
+<h4>POST /api/tts/speak</h4>
+<p>Synthesize speech from text.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Text to synthesize&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;backend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;kokoro&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;voice&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;to_ogg&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;audio_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/audio.wav&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;ogg_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/audio.ogg&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;duration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;backend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;kokoro&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;voice&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;word_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>POST /api/tts/speak-summary</h4>
+<p>Synthesize speech from a stored summary.</p>
+<p><strong>Request:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;backend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;kokoro&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;voice&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;audio_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/audio.wav&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;duration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45.2</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>GET /api/tts/voices</h4>
+<p>Get available voices for each backend.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;kokoro&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;English Female 1&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;gender&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;female&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;coqui&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_vctk_p225&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;VCTK P225&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;language&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;gender&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;female&quot;</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Event Schemas</h2>
+<h3>Crawl Events</h3>
+<h4>crawl_started</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_started&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>crawl_progress</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_progress&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;progress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">75</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;stage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;extracting_content&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:01:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>crawl_completed</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_completed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;crawl_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;markdown&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;# Content...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Article Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;content_length&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15000</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:02:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Summarization Events</h3>
+<h4>summarize_started</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summarize_started&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:03:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>summarize_progress</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summarize_progress&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;stage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;llm_processing&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;progress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:04:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>summarize_completed</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summarize_completed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Summarized Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;abstract&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Brief summary...&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:05:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>TTS Events</h3>
+<h4>tts_started</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_started&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;text_length&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">150</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;backend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;kokoro&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;voice&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:06:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>tts_progress</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_progress&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;progress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chunk&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;total_chunks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:07:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>tts_completed</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_completed&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;job_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tts_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;audio_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/audio.wav&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;duration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15.5</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:08:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Audio Ingestion Events</h3>
+<h4>audio_ingested</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;event&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;audio_ingested&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;audio_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;audio_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;file_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/audio.wav&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;source_url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;summary_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;summary_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;backend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;kokoro&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;voice&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;en_female_1&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:09:00Z&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Frontend Integration</h2>
+<h3>Composables</h3>
+<h4>useCrawl</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> { crawlUrl, getCrawlStatus, streamCrawl } = <span class="hljs-title function_">useCrawl</span>();
+
+<span class="hljs-comment">// Submit a URL for crawling</span>
+<span class="hljs-keyword">const</span> jobId = <span class="hljs-keyword">await</span> <span class="hljs-title function_">crawlUrl</span>(<span class="hljs-string">&quot;https://example.com/article&quot;</span>);
+
+<span class="hljs-comment">// Get status</span>
+<span class="hljs-keyword">const</span> status = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getCrawlStatus</span>(jobId);
+
+<span class="hljs-comment">// Stream progress</span>
+<span class="hljs-keyword">const</span> unsubscribe = <span class="hljs-title function_">streamCrawl</span>(jobId, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(event);
+});</code></pre><h4>useTTS</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">const</span> { speak, speakSummary, getVoices } = <span class="hljs-title function_">useTTS</span>();
+
+<span class="hljs-comment">// Synthesize text</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">speak</span>(<span class="hljs-string">&quot;Hello world&quot;</span>, {
+  <span class="hljs-attr">backend</span>: <span class="hljs-string">&quot;kokoro&quot;</span>,
+  <span class="hljs-attr">voice</span>: <span class="hljs-string">&quot;en_female_1&quot;</span>,
+});
+
+<span class="hljs-comment">// Synthesize summary</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">speakSummary</span>(<span class="hljs-string">&quot;summary_1234567890&quot;</span>, {
+  <span class="hljs-attr">backend</span>: <span class="hljs-string">&quot;kokoro&quot;</span>,
+  <span class="hljs-attr">voice</span>: <span class="hljs-string">&quot;en_female_1&quot;</span>,
+});
+
+<span class="hljs-comment">// Get available voices</span>
+<span class="hljs-keyword">const</span> voices = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getVoices</span>();</code></pre><h3>Settings Integration</h3>
+<p>The TTS and Crawl settings are integrated into the existing settings system:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Settings structure</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">TTSAndCrawlSettings</span> {
+  <span class="hljs-attr">crawl</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-attr">baseUrl</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">cacheTtlDays</span>: <span class="hljs-built_in">number</span>;
+  };
+  <span class="hljs-attr">tts</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-built_in">boolean</span>;
+    <span class="hljs-attr">defaultBackend</span>: <span class="hljs-built_in">string</span>;
+    <span class="hljs-attr">kokoroMode</span>: <span class="hljs-string">&quot;performance&quot;</span> | <span class="hljs-string">&quot;normal&quot;</span> | <span class="hljs-string">&quot;powersave&quot;</span>;
+    <span class="hljs-attr">defaultVoice</span>: <span class="hljs-built_in">string</span>;
+  };
+}</code></pre><h2>Error Handling</h2>
+<h3>Error Categories</h3>
+<ol>
+<li><p><strong>Network Errors</strong></p>
+<ul>
+<li>Firecrawl API unavailable</li>
+<li>TTS backend connection issues</li>
+<li>Timeout errors</li>
+</ul>
+</li>
+<li><p><strong>Validation Errors</strong></p>
+<ul>
+<li>Invalid URLs</li>
+<li>Content size limits exceeded</li>
+<li>Unsupported languages or voices</li>
+</ul>
+</li>
+<li><p><strong>Processing Errors</strong></p>
+<ul>
+<li>Crawl failures</li>
+<li>Summarization failures</li>
+<li>TTS synthesis errors</li>
+</ul>
+</li>
+<li><p><strong>Resource Errors</strong></p>
+<ul>
+<li>Disk space issues</li>
+<li>Memory pressure</li>
+<li>VRAM limitations</li>
+</ul>
+</li>
+</ol>
+<h3>Error Response Format</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CRAWL_FAILED&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Failed to crawl URL&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;details&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://example.com/article&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;timeout&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;correlation_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;corr_1234567890&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<h4>Crawl Failures</h4>
+<p><strong>Problem</strong>: URLs fail to crawl<br><strong>Solutions</strong>:</p>
+<ol>
+<li>Check Firecrawl API status and credentials</li>
+<li>Verify URL is accessible and not blocked</li>
+<li>Check cache TTL settings</li>
+<li>Review allowlist/denylist patterns</li>
+</ol>
+<p><strong>Debugging</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check crawl service logs</span>
+<span class="hljs-built_in">tail</span> -f logs/crawl_service.log
+
+<span class="hljs-comment"># Test Firecrawl connectivity</span>
+curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/crawl/direct&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{&quot;url&quot;: &quot;https://example.com&quot;}&#x27;</span></code></pre><h4>TTS Synthesis Issues</h4>
+<p><strong>Problem</strong>: Audio synthesis fails<br><strong>Solutions</strong>:</p>
+<ol>
+<li>Check TTS backend availability</li>
+<li>Verify voice and language compatibility</li>
+<li>Check VRAM usage (Kokoro)</li>
+<li>Review text length limits</li>
+</ol>
+<p><strong>Debugging</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check TTS service logs</span>
+<span class="hljs-built_in">tail</span> -f logs/tts_service.log
+
+<span class="hljs-comment"># Test TTS endpoint</span>
+curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/tts/speak&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{&quot;text&quot;: &quot;Test&quot;, &quot;backend&quot;: &quot;kokoro&quot;}&#x27;</span></code></pre><h4>Performance Issues</h4>
+<p><strong>Problem</strong>: Slow processing or timeouts<br><strong>Solutions</strong>:</p>
+<ol>
+<li>Adjust Kokoro mode (performance/normal/powersave)</li>
+<li>Check cache hit rates</li>
+<li>Monitor system resources</li>
+<li>Review concurrent job limits</li>
+</ol>
+<p><strong>Monitoring</strong>:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check metrics</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/metrics/crawl&quot;</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/metrics/tts&quot;</span>
+
+<span class="hljs-comment"># Monitor cache usage</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/crawl/cache-info&quot;</span></code></pre><h3>Log Analysis</h3>
+<p>The system uses structured logging with correlation IDs for end-to-end tracing:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Find all events for a specific job</span>
+grep <span class="hljs-string">&quot;corr_1234567890&quot;</span> logs/*.<span class="hljs-built_in">log</span>
+
+<span class="hljs-comment"># Analyze crawl performance</span>
+grep <span class="hljs-string">&quot;crawl_completed&quot;</span> logs/crawl_service.log | jq <span class="hljs-string">&#x27;.duration&#x27;</span>
+
+<span class="hljs-comment"># Check error patterns</span>
+grep <span class="hljs-string">&quot;ERROR&quot;</span> logs/*.<span class="hljs-built_in">log</span> | jq <span class="hljs-string">&#x27;.error.code&#x27;</span> | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c</code></pre><h3>Cache Management</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Purge specific URL cache</span>
+curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/crawl/purge-cache&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{&quot;url&quot;: &quot;https://example.com/article&quot;}&#x27;</span>
+
+<span class="hljs-comment"># Purge all cache</span>
+curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/crawl/purge-cache&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{&quot;all&quot;: true}&#x27;</span>
+
+<span class="hljs-comment"># Get cache statistics</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/crawl/cache-info&quot;</span></code></pre><h2>Performance Tuning</h2>
+<h3>Kokoro Mode Optimization</h3>
+<ul>
+<li><strong>Performance</strong>: Preload models, keep in VRAM</li>
+<li><strong>Normal</strong>: Load on demand, prewarm threshold</li>
+<li><strong>Powersave</strong>: Auto-unload after inactivity</li>
+</ul>
+<h3>Cache Optimization</h3>
+<ul>
+<li>Adjust TTL based on content freshness requirements</li>
+<li>Monitor cache hit rates and adjust accordingly</li>
+<li>Implement cache size limits to prevent disk space issues</li>
+</ul>
+<h3>Concurrent Processing</h3>
+<ul>
+<li>Limit concurrent crawl jobs to prevent API rate limiting</li>
+<li>Queue TTS jobs to manage VRAM usage</li>
+<li>Use background processing for long-running operations</li>
+</ul>
+<h2>Security Considerations</h2>
+<h3>URL Validation</h3>
+<ul>
+<li>Implement allowlist/denylist patterns</li>
+<li>Validate URL format and length</li>
+<li>Check for malicious content patterns</li>
+</ul>
+<h3>Content Limits</h3>
+<ul>
+<li>Enforce maximum content size limits</li>
+<li>Implement text length restrictions for TTS</li>
+<li>Monitor resource usage and implement rate limiting</li>
+</ul>
+<h3>Access Control</h3>
+<ul>
+<li>Integrate with existing authentication system</li>
+<li>Implement API rate limiting</li>
+<li>Log all operations for audit trails</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ol>
+<li><strong>RVC Voice Conversion</strong>: Add voice cloning capabilities</li>
+<li><strong>Batch Processing</strong>: Process multiple URLs simultaneously</li>
+<li><strong>Advanced Caching</strong>: Implement distributed caching</li>
+<li><strong>Quality Metrics</strong>: Add audio quality assessment</li>
+<li><strong>Custom Voices</strong>: Support for user-uploaded voice models</li>
+</ol>
+<h3>Integration Opportunities</h3>
+<ol>
+<li><strong>Workflow Builder</strong>: Integrate with existing workflow system</li>
+<li><strong>Memory System</strong>: Store and retrieve crawl/summary history</li>
+<li><strong>Export Features</strong>: Export audio with metadata</li>
+<li><strong>Collaboration</strong>: Share summaries and audio with team members</li>
+</ol>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -27,12 +27,11 @@
   },
   "include": ["src"],
   "exclude": [
+    "dist",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "**/test-setup.ts",
-    "dist",
-    "node_modules/@types/three"
+    "**/test-setup.ts"
   ]
 }

@@ -52,6 +52,17 @@ export {
   type ThumbnailGeneratorFactoryOptions,
 } from "./processors/ThumbnailGeneratorFactory";
 
+// Metadata extractors
+export {
+  AudioMetadataExtractor,
+  ImageMetadataExtractor,
+  VideoMetadataExtractor,
+  DocumentMetadataExtractor,
+  MetadataExtractorFactory,
+  BaseMetadataExtractor,
+  type MetadataExtractionOptions,
+} from "./processors/extractors";
+
 // Main pipeline
 export { FileProcessingPipeline } from "./processing-pipeline";
 

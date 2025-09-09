@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Package Export System - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Package Export System</h1>
+      <div class="markdown-content"><h1>Package Export System</h1>
+<p>The Package Export System provides a comprehensive solution for lazy loading of heavy packages with advanced features including validation, performance monitoring, and specialized exports.</p>
+<h2>Overview</h2>
+<p>The system is designed to replace the basic lazy loading functionality in the original <code>lazy_loader.py</code> with a more sophisticated approach that includes:</p>
+<ul>
+<li><strong>Proxy-based lazy loading</strong> with automatic cleanup</li>
+<li><strong>Export validation and type checking</strong> at multiple levels</li>
+<li><strong>Performance monitoring and optimization</strong></li>
+<li><strong>Specialized exports</strong> for common packages</li>
+<li><strong>Export registry</strong> for centralized management</li>
+</ul>
+<h2>Core Components</h2>
+<h3>LazyPackageExport</h3>
+<p>The main class for lazy loading packages with enhanced features:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> LazyPackageExport, ExportValidationLevel
+
+<span class="hljs-comment"># Basic usage</span>
+torch = LazyPackageExport(<span class="hljs-string">&quot;torch&quot;</span>)
+
+<span class="hljs-comment"># With custom validation level</span>
+numpy = LazyPackageExport(<span class="hljs-string">&quot;numpy&quot;</span>, validation_level=ExportValidationLevel.STRICT)
+
+<span class="hljs-comment"># With performance monitoring disabled</span>
+sklearn = LazyPackageExport(<span class="hljs-string">&quot;sklearn&quot;</span>, enable_performance_monitoring=<span class="hljs-literal">False</span>)</code></pre><h3>Validation Levels</h3>
+<p>The system supports multiple validation levels:</p>
+<ul>
+<li><strong>NONE</strong>: No validation performed</li>
+<li><strong>BASIC</strong>: Checks for basic module attributes (<code>__name__</code>, <code>__file__</code>)</li>
+<li><strong>STRICT</strong>: Checks for common module attributes (<code>__name__</code>, <code>__file__</code>, <code>__package__</code>)</li>
+<li><strong>COMPREHENSIVE</strong>: Package-specific validation (e.g., checks for <code>torch.Tensor</code> and <code>torch.nn</code>)</li>
+</ul>
+<h3>Specialized Exports</h3>
+<p>Specialized exports provide type-safe access to specific components of packages:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> TorchExports, TransformersExports
+
+<span class="hljs-comment"># PyTorch specialized exports</span>
+torch_exports = TorchExports()
+nn_module = torch_exports.nn
+functional = torch_exports.F
+
+<span class="hljs-comment"># Transformers specialized exports</span>
+tr_exports = TransformersExports()
+pretrained_model = tr_exports.PreTrainedModel
+auto_processor = tr_exports.AutoProcessor</code></pre><h3>Performance Monitoring</h3>
+<p>The system includes built-in performance monitoring:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> get_export_metadata, get_all_performance_metrics
+
+<span class="hljs-comment"># Get metadata for a specific export</span>
+metadata = get_export_metadata(<span class="hljs-string">&quot;torch&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Access count: <span class="hljs-subst">{metadata.access_count}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Load time: <span class="hljs-subst">{metadata.load_time}</span>&quot;</span>)
+
+<span class="hljs-comment"># Get performance metrics for all exports</span>
+metrics = get_all_performance_metrics()
+<span class="hljs-keyword">for</span> package, package_metrics <span class="hljs-keyword">in</span> metrics.items():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{package}</span>: <span class="hljs-subst">{package_metrics}</span>&quot;</span>)</code></pre><h2>Export Registry</h2>
+<p>The export registry provides centralized management of all exports:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> (
+    get_export_registry,
+    register_export,
+    get_export,
+    cleanup_exports
+)
+
+<span class="hljs-comment"># Get the global registry</span>
+registry = get_export_registry()
+
+<span class="hljs-comment"># Register a custom export</span>
+custom_export = LazyPackageExport(<span class="hljs-string">&quot;my_package&quot;</span>)
+register_export(<span class="hljs-string">&quot;my_package&quot;</span>, custom_export)
+
+<span class="hljs-comment"># Get an export</span>
+export = get_export(<span class="hljs-string">&quot;my_package&quot;</span>)
+
+<span class="hljs-comment"># Clean up unused exports</span>
+cleanup_exports()</code></pre><h2>Factory Functions</h2>
+<p>The system provides factory functions for creating exports:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> create_lazy_export, create_specialized_export
+
+<span class="hljs-comment"># Create a lazy export with custom settings</span>
+export = create_lazy_export(
+    <span class="hljs-string">&quot;my_package&quot;</span>,
+    validation_level=ExportValidationLevel.STRICT,
+    enable_performance_monitoring=<span class="hljs-literal">True</span>
+)
+
+<span class="hljs-comment"># Create a specialized export</span>
+torch_exports = create_specialized_export(TorchExports)</code></pre><h2>Available Specialized Exports</h2>
+<h3>TorchExports</h3>
+<p>Provides access to PyTorch components:</p>
+<ul>
+<li><code>F</code>: <code>torch.nn.functional</code></li>
+<li><code>nn</code>: <code>torch.nn</code></li>
+<li><code>checkpoint</code>: <code>torch.utils.checkpoint</code></li>
+<li><code>CrossEntropyLoss</code>: <code>torch.nn.CrossEntropyLoss</code></li>
+<li><code>Module</code>: <code>torch.nn.Module</code></li>
+<li>And many more...</li>
+</ul>
+<h3>TransformersExports</h3>
+<p>Provides access to Transformers components:</p>
+<ul>
+<li><code>PreTrainedModel</code>: <code>transformers.modeling_utils.PreTrainedModel</code></li>
+<li><code>AutoProcessor</code>: <code>transformers.AutoProcessor</code></li>
+<li><code>AutoModelForCausalLM</code>: <code>transformers.AutoModelForCausalLM</code></li>
+<li>Flash attention components (when available)</li>
+<li>And many more...</li>
+</ul>
+<h3>TensorflowExports</h3>
+<p>Provides access to TensorFlow components:</p>
+<ul>
+<li><code>TF</code>: Main tensorflow module</li>
+<li><code>TVF</code>: <code>tensorflow.keras</code></li>
+<li><code>keras</code>: <code>tensorflow.keras</code></li>
+<li>And various Keras submodules...</li>
+</ul>
+<h3>PILExports</h3>
+<p>Provides access to PIL components with plugin support:</p>
+<ul>
+<li><code>Image</code>: <code>PIL.Image</code></li>
+<li><code>ImageDraw</code>: <code>PIL.ImageDraw</code></li>
+<li><code>ImageFont</code>: <code>PIL.ImageFont</code></li>
+<li>Plugin support methods for JXL/AVIF formats</li>
+</ul>
+<h3>Other Specialized Exports</h3>
+<ul>
+<li><code>AiohttpExports</code>: For aiohttp components</li>
+<li><code>EinopsExports</code>: For einops components</li>
+</ul>
+<h2>Migration from Old System</h2>
+<p>The new system is backward compatible. Existing code using the old lazy loader exports will continue to work:</p>
+<pre><code class="hljs language-python"><span class="hljs-comment"># Old way (still works)</span>
+<span class="hljs-keyword">from</span> app.utils.lazy_loader <span class="hljs-keyword">import</span> torch, numpy, PIL
+
+<span class="hljs-comment"># New way (recommended)</span>
+<span class="hljs-keyword">from</span> app.utils.package_exports <span class="hljs-keyword">import</span> torch, numpy, PIL</code></pre><h2>Performance Benefits</h2>
+<p>The new system provides several performance benefits:</p>
+<ol>
+<li><strong>Automatic cleanup</strong>: Unused exports are automatically cleaned up to free memory</li>
+<li><strong>Performance monitoring</strong>: Track load times and access patterns</li>
+<li><strong>Optimization suggestions</strong>: System can suggest when exports should be optimized</li>
+<li><strong>Caching</strong>: Specialized exports cache accessed components</li>
+</ol>
+<h2>Error Handling</h2>
+<p>The system provides robust error handling:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">try</span>:
+    export = LazyPackageExport(<span class="hljs-string">&quot;missing_package&quot;</span>)
+    result = export.some_function()
+<span class="hljs-keyword">except</span> ImportError <span class="hljs-keyword">as</span> e:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Package not available: <span class="hljs-subst">{e}</span>&quot;</span>)
+<span class="hljs-keyword">except</span> ExportValidationError <span class="hljs-keyword">as</span> e:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Validation failed: <span class="hljs-subst">{e}</span>&quot;</span>)</code></pre><h2>Best Practices</h2>
+<ol>
+<li><strong>Use appropriate validation levels</strong>: Use <code>BASIC</code> for simple packages, <code>STRICT</code> for complex ones</li>
+<li><strong>Enable performance monitoring</strong>: Keep it enabled unless you have specific reasons to disable it</li>
+<li><strong>Use specialized exports</strong>: They provide better type hints and caching</li>
+<li><strong>Clean up when needed</strong>: Use <code>cleanup_exports()</code> periodically to free memory</li>
+<li><strong>Monitor performance</strong>: Check performance metrics to identify bottlenecks</li>
+</ol>
+<h2>Testing</h2>
+<p>The system includes comprehensive tests in <code>tests/test_package_exports.py</code> that cover:</p>
+<ul>
+<li>LazyPackageExport functionality</li>
+<li>Validation at all levels</li>
+<li>Performance monitoring</li>
+<li>Specialized exports</li>
+<li>Export registry</li>
+<li>Integration scenarios</li>
+</ul>
+<p>Run the tests with:</p>
+<pre><code class="hljs language-bash">python -m pytest tests/test_package_exports.py -v</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

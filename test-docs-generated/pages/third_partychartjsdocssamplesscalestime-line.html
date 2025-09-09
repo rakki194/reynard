@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Scale - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Time Scale</h1>
+      <div class="markdown-content"><h1>Time Scale</h1>
+<pre><code class="hljs">// &lt;block:actions:<span class="hljs-number">2</span>&gt;
+<span class="hljs-title">const</span> actions = [
+  {
+    name: &#x27;<span class="hljs-type">Randomize&#x27;</span>,
+    handler(chart) {
+      chart.<span class="hljs-class"><span class="hljs-keyword">data</span>.datasets.forEach(<span class="hljs-title">dataset</span> =&gt; {
+        <span class="hljs-title">dataset</span>.<span class="hljs-title">data</span>.<span class="hljs-title">forEach</span>(<span class="hljs-title">function</span>(<span class="hljs-title">dataObj</span>, <span class="hljs-title">j</span>) {
+          <span class="hljs-title">const</span> <span class="hljs-title">newVal</span> = <span class="hljs-type">Utils</span>.<span class="hljs-title">rand</span>(0, 100);
+
+          <span class="hljs-title">if</span> (<span class="hljs-title">typeof</span> <span class="hljs-title">dataObj</span> === &#x27;<span class="hljs-title">object&#x27;</span>) {
+            <span class="hljs-title">dataObj</span>.<span class="hljs-title">y</span> = <span class="hljs-title">newVal</span>;
+          } else {
+            <span class="hljs-title">dataset</span>.<span class="hljs-title">data</span>[<span class="hljs-title">j</span>] = <span class="hljs-title">newVal</span>;
+          }</span>
+        });
+      });
+      chart.update();
+    }
+  },
+];
+// &lt;/block:actions&gt;
+
+// &lt;block:setup:<span class="hljs-number">1</span>&gt;
+<span class="hljs-title">const</span> <span class="hljs-type">DATA_COUNT</span> = <span class="hljs-number">7</span>;
+<span class="hljs-title">const</span> <span class="hljs-type">NUMBER_CFG</span> = {count: <span class="hljs-type">DATA_COUNT</span>, min: <span class="hljs-number">0</span>, max: <span class="hljs-number">100</span>};
+
+<span class="hljs-title">const</span> <span class="hljs-class"><span class="hljs-keyword">data</span> = {
+  <span class="hljs-title">labels</span>: [ // <span class="hljs-type">Date</span> <span class="hljs-type">Objects</span>
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(0),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(1),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(2),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(3),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(4),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(5),
+    <span class="hljs-type">Utils</span>.<span class="hljs-title">newDate</span>(6)
+  ],
+  <span class="hljs-title">datasets</span>: [{
+    <span class="hljs-title">label</span>: &#x27;<span class="hljs-type">My</span> <span class="hljs-type">First</span> <span class="hljs-title">dataset&#x27;</span>,
+    <span class="hljs-title">backgroundColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">transparentize</span>(<span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">red</span>, 0.5),
+    <span class="hljs-title">borderColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">red</span>,
+    <span class="hljs-title">fill</span>: <span class="hljs-title">false</span>,
+    <span class="hljs-title">data</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">numbers</span>(<span class="hljs-type">NUMBER_CFG</span>),
+  }, {
+    <span class="hljs-title">label</span>: &#x27;<span class="hljs-type">My</span> <span class="hljs-type">Second</span> <span class="hljs-title">dataset&#x27;</span>,
+    <span class="hljs-title">backgroundColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">transparentize</span>(<span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">blue</span>, 0.5),
+    <span class="hljs-title">borderColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">blue</span>,
+    <span class="hljs-title">fill</span>: <span class="hljs-title">false</span>,
+    <span class="hljs-title">data</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">numbers</span>(<span class="hljs-type">NUMBER_CFG</span>),
+  }, {
+    <span class="hljs-title">label</span>: &#x27;<span class="hljs-type">Dataset</span> <span class="hljs-title">with</span> <span class="hljs-title">point</span> <span class="hljs-title">data&#x27;</span>,
+    <span class="hljs-title">backgroundColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">transparentize</span>(<span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">green</span>, 0.5),
+    <span class="hljs-title">borderColor</span>: <span class="hljs-type">Utils</span>.<span class="hljs-type">CHART_COLORS</span>.<span class="hljs-title">green</span>,
+    <span class="hljs-title">fill</span>: <span class="hljs-title">false</span>,
+    <span class="hljs-title">data</span>: [{
+      <span class="hljs-title">x</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">newDateString</span>(0),
+      <span class="hljs-title">y</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">rand</span>(0, 100)
+    }, {
+      <span class="hljs-title">x</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">newDateString</span>(5),
+      <span class="hljs-title">y</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">rand</span>(0, 100)
+    }, {
+      <span class="hljs-title">x</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">newDateString</span>(7),
+      <span class="hljs-title">y</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">rand</span>(0, 100)
+    }, {
+      <span class="hljs-title">x</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">newDateString</span>(15),
+      <span class="hljs-title">y</span>: <span class="hljs-type">Utils</span>.<span class="hljs-title">rand</span>(0, 100)
+    }],</span>
+  }]
+};
+// &lt;/block:setup&gt;
+
+// &lt;block:config:<span class="hljs-number">0</span>&gt;
+<span class="hljs-title">const</span> config = {
+  <span class="hljs-class"><span class="hljs-keyword">type</span>: &#x27;line&#x27;,</span>
+  <span class="hljs-class"><span class="hljs-keyword">data</span>: <span class="hljs-keyword">data</span>,</span>
+  options: {
+    plugins: {
+      title: {
+        text: &#x27;<span class="hljs-type">Chart</span>.js <span class="hljs-type">Time</span> <span class="hljs-type">Scale&#x27;</span>,
+        display: true
+      }
+    },
+    scales: {
+      x: {
+        <span class="hljs-class"><span class="hljs-keyword">type</span>: &#x27;time&#x27;,</span>
+        time: {
+          // <span class="hljs-type">Luxon</span> format string
+          tooltipFormat: &#x27;<span class="hljs-type">DD</span> <span class="hljs-type">T&#x27;</span>
+        },
+        title: {
+          display: true,
+          text: &#x27;<span class="hljs-type">Date&#x27;</span>
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: &#x27;value&#x27;
+        }
+      }
+    },
+  },
+};
+// &lt;/block:config&gt;
+
+<span class="hljs-title">module</span>.exports = {
+  actions: actions,
+  config: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../axes/cartesian/time.md">Time Cartesian Axis</a></li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

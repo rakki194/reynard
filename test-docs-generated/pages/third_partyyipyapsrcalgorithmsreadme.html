@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithm Primitives - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Algorithm Primitives</h1>
+      <div class="markdown-content"><h1>Algorithm Primitives</h1>
+<p>A comprehensive collection of reusable algorithm primitives for the yipyap<br>application. These algorithms are designed to be modular, performant, and<br>reusable across different parts of the application.</p>
+<h2>Overview</h2>
+<p>This module provides essential algorithmic building blocks including:</p>
+<ul>
+<li><strong>Union-Find Algorithm</strong> - Efficient set operations and cycle detection</li>
+<li><strong>AABB Collision Detection</strong> - Spatial queries and overlap detection</li>
+<li><strong>Spatial Hashing</strong> - Efficient spatial partitioning and nearest neighbor<br>queries</li>
+<li><strong>Performance Utilities</strong> - Benchmarking, profiling, and monitoring tools</li>
+<li><strong>Geometry Operations</strong> - 2D geometric calculations and transformations</li>
+</ul>
+<h2>Installation</h2>
+<p>All algorithms are available through the main index:</p>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">UnionFind</span>,
+  checkCollision,
+  <span class="hljs-title class_">SpatialHash</span>,
+  <span class="hljs-title class_">PerformanceTimer</span>,
+  <span class="hljs-title class_">PointOps</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;</code></pre><h2>Union-Find Algorithm</h2>
+<p>A highly optimized Union-Find data structure for efficient set operations and<br>cycle detection.</p>
+<h3>Features</h3>
+<ul>
+<li>Path compression for optimal performance</li>
+<li>Union by rank for balanced trees</li>
+<li>Cycle detection capabilities</li>
+<li>Memory-efficient implementation</li>
+<li>Type-safe operations</li>
+</ul>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">UnionFind</span>, detectCycle, findConnectedComponents } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;
+
+<span class="hljs-comment">// Create a Union-Find structure</span>
+<span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// Union operations</span>
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+uf.<span class="hljs-title function_">union</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+
+<span class="hljs-comment">// Check connectivity</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">connected</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>)); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">connected</span>(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>)); <span class="hljs-comment">// false</span>
+
+<span class="hljs-comment">// Get set information</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">getSetSize</span>(<span class="hljs-number">0</span>)); <span class="hljs-comment">// 3</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(uf.<span class="hljs-title function_">getSetMembers</span>(<span class="hljs-number">0</span>)); <span class="hljs-comment">// [0, 1, 2]</span>
+
+<span class="hljs-comment">// Cycle detection</span>
+<span class="hljs-keyword">const</span> edges = [
+  [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+  [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>],
+];
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">detectCycle</span>(edges)); <span class="hljs-comment">// true</span>
+
+<span class="hljs-comment">// Find connected components</span>
+<span class="hljs-keyword">const</span> components = <span class="hljs-title function_">findConnectedComponents</span>(edges);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(components); <span class="hljs-comment">// [[0, 1, 2]]</span></code></pre><h3>API Reference</h3>
+<h4>UnionFind Class</h4>
+<ul>
+<li><code>constructor(size: number)</code> - Create a new Union-Find structure</li>
+<li><code>find(x: number): number</code> - Find the root of a node with path compression</li>
+<li><code>union(x: number, y: number): boolean</code> - Union two sets by rank</li>
+<li><code>connected(x: number, y: number): boolean</code> - Check if two nodes are connected</li>
+<li><code>getSetSize(x: number): number</code> - Get the size of the set containing x</li>
+<li><code>getSetMembers(x: number): number[]</code> - Get all nodes in the same set as x</li>
+<li><code>getStats(): UnionFindStats</code> - Get performance statistics</li>
+<li><code>reset(): void</code> - Reset the structure</li>
+<li><code>clone(): UnionFind</code> - Create a copy of the structure</li>
+</ul>
+<h4>Utility Functions</h4>
+<ul>
+<li><code>detectCycle(edges: Array&lt;[number, number]&gt;): boolean</code> - Detect cycles in a<br>graph</li>
+<li><code>findConnectedComponents(edges: Array&lt;[number, number]&gt;): number[][]</code> - Find<br>all connected components</li>
+</ul>
+<h2>AABB Collision Detection</h2>
+<p>A highly optimized collision detection system for axis-aligned bounding boxes.</p>
+<h3>Features</h3>
+<ul>
+<li>Fast overlap detection</li>
+<li>Spatial hashing support</li>
+<li>Batch collision queries</li>
+<li>Memory-efficient implementation</li>
+<li>Type-safe operations</li>
+<li>Performance monitoring</li>
+</ul>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { checkCollision, batchCollisionDetection, <span class="hljs-variable constant_">AABB</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;
+
+<span class="hljs-comment">// Define AABBs</span>
+<span class="hljs-keyword">const</span> <span class="hljs-attr">aabb1</span>: <span class="hljs-variable constant_">AABB</span> = { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+<span class="hljs-keyword">const</span> <span class="hljs-attr">aabb2</span>: <span class="hljs-variable constant_">AABB</span> = { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">100</span> };
+
+<span class="hljs-comment">// Check collision</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-title function_">checkCollision</span>(aabb1, aabb2);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">colliding</span>); <span class="hljs-comment">// true</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">overlapArea</span>); <span class="hljs-comment">// 2500</span>
+
+<span class="hljs-comment">// Batch collision detection</span>
+<span class="hljs-keyword">const</span> aabbs = [aabb1, aabb2, { <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">width</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">50</span> }];
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">batchCollisionDetection</span>(aabbs);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(collisions.<span class="hljs-property">length</span>); <span class="hljs-comment">// 1 collision found</span></code></pre><h3>API Reference</h3>
+<h4>Core Functions</h4>
+<ul>
+<li><code>checkCollision(a: AABB, b: AABB): CollisionResult</code> - Check if two AABBs<br>collide</li>
+<li><code>pointInAABB(point: Point, aabb: AABB): boolean</code> - Check if a point is inside<br>an AABB</li>
+<li><code>unionAABB(a: AABB, b: AABB): AABB</code> - Get the union of two AABBs</li>
+<li><code>intersectionAABB(a: AABB, b: AABB): AABB | null</code> - Get the intersection of<br>two AABBs</li>
+<li><code>expandAABB(aabb: AABB, amount: number): AABB</code> - Expand an AABB by a given<br>amount</li>
+<li><code>containsAABB(container: AABB, contained: AABB): boolean</code> - Check if one AABB<br>contains another</li>
+</ul>
+<h4>Batch Operations</h4>
+<ul>
+<li><code>batchCollisionDetection(aabbs: AABB[], options?: BatchOptions): CollisionResult[]</code> -<br>Detect all collisions in a set of AABBs</li>
+<li><code>batchCollisionWithSpatialHash(aabbs: AABB[], options?: BatchOptions): CollisionResult[]</code> -<br>Optimized batch detection using spatial hashing</li>
+</ul>
+<h4>Utility Functions</h4>
+<ul>
+<li><code>getAABBArea(aabb: AABB): number</code> - Calculate the area of an AABB</li>
+<li><code>getAABBPerimeter(aabb: AABB): number</code> - Calculate the perimeter of an AABB</li>
+<li><code>areAABBsTouching(a: AABB, b: AABB): boolean</code> - Check if AABBs are touching</li>
+</ul>
+<h2>Spatial Hashing</h2>
+<p>A highly optimized spatial partitioning system for efficient spatial queries and<br>nearest neighbor searches.</p>
+<h3>Features</h3>
+<ul>
+<li>Dynamic cell size adjustment</li>
+<li>Efficient spatial queries</li>
+<li>Memory-optimized storage</li>
+<li>Type-safe operations</li>
+<li>Performance monitoring</li>
+<li>Automatic cleanup</li>
+</ul>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SpatialHash</span>, createOptimizedSpatialHash } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;
+
+<span class="hljs-comment">// Create a spatial hash</span>
+<span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>&lt;{ <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> }&gt;({
+  <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">maxObjectsPerCell</span>: <span class="hljs-number">50</span>,
+});
+
+<span class="hljs-comment">// Insert objects</span>
+spatialHash.<span class="hljs-title function_">insert</span>({
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;1&#x27;</span>,
+  <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;object1&#x27;</span> },
+});
+
+<span class="hljs-comment">// Query objects within a rectangle</span>
+<span class="hljs-keyword">const</span> objectsInRect = spatialHash.<span class="hljs-title function_">queryRect</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>);
+
+<span class="hljs-comment">// Query objects within a radius</span>
+<span class="hljs-keyword">const</span> objectsInRadius = spatialHash.<span class="hljs-title function_">queryRadius</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);
+
+<span class="hljs-comment">// Find nearest neighbor</span>
+<span class="hljs-keyword">const</span> nearest = spatialHash.<span class="hljs-title function_">findNearest</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// Create optimized spatial hash from existing objects</span>
+<span class="hljs-keyword">const</span> objects = [
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;obj1&#x27;</span> } },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">150</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">150</span>, <span class="hljs-attr">data</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;obj2&#x27;</span> } },
+];
+<span class="hljs-keyword">const</span> optimizedHash = <span class="hljs-title function_">createOptimizedSpatialHash</span>(objects);</code></pre><h3>API Reference</h3>
+<h4>SpatialHash Class</h4>
+<ul>
+<li><code>constructor(config?: Partial&lt;SpatialHashConfig&gt;)</code> - Create a new spatial hash</li>
+<li><code>insert(object: SpatialObject &amp; { data: T }): void</code> - Insert an object</li>
+<li><code>remove(objectId: string | number): boolean</code> - Remove an object</li>
+<li><code>update(object: SpatialObject &amp; { data: T }): boolean</code> - Update an object</li>
+<li><code>queryRect(x: number, y: number, width: number, height: number): SpatialObject[]</code> -<br>Query objects within a rectangle</li>
+<li><code>queryRadius(centerX: number, centerY: number, radius: number): QueryResult[]</code> -<br>Query objects within a radius</li>
+<li><code>findNearest(x: number, y: number, maxDistance?: number): QueryResult | null</code> -<br>Find the nearest object</li>
+<li><code>getAllObjects(): SpatialObject[]</code> - Get all objects</li>
+<li><code>clear(): void</code> - Clear all objects</li>
+<li><code>getStats(): SpatialHashStats</code> - Get performance statistics</li>
+<li><code>resize(newCellSize: number): void</code> - Resize the spatial hash</li>
+</ul>
+<h4>Utility Functions</h4>
+<ul>
+<li><code>createOptimizedSpatialHash&lt;T&gt;(objects: SpatialObject[], options?: OptimizationOptions): SpatialHash&lt;T&gt;</code> -<br>Create an optimized spatial hash from existing objects</li>
+</ul>
+<h2>Performance Utilities</h2>
+<p>A comprehensive performance monitoring and optimization toolkit.</p>
+<h3>Features</h3>
+<ul>
+<li>High-precision timing measurements</li>
+<li>Memory usage monitoring</li>
+<li>Performance benchmarking</li>
+<li>Throttling and debouncing utilities</li>
+<li>Frame rate monitoring</li>
+<li>Performance budgets</li>
+<li>Memory leak detection</li>
+</ul>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">PerformanceTimer</span>,
+  <span class="hljs-title class_">MemoryMonitor</span>,
+  throttle,
+  debounce,
+  <span class="hljs-title class_">PerformanceBenchmark</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;
+
+<span class="hljs-comment">// Performance timing</span>
+<span class="hljs-keyword">const</span> timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceTimer</span>();
+timer.<span class="hljs-title function_">start</span>();
+<span class="hljs-comment">// ... perform operation</span>
+<span class="hljs-keyword">const</span> duration = timer.<span class="hljs-title function_">stop</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Operation took <span class="hljs-subst">${duration}</span>ms`</span>);
+
+<span class="hljs-comment">// Memory monitoring</span>
+<span class="hljs-keyword">const</span> monitor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MemoryMonitor</span>();
+<span class="hljs-keyword">const</span> usage = monitor.<span class="hljs-title function_">measure</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Memory usage: <span class="hljs-subst">${usage}</span> bytes`</span>);
+
+<span class="hljs-comment">// Throttling</span>
+<span class="hljs-keyword">const</span> throttledFn = <span class="hljs-title function_">throttle</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Throttled function called&#x27;</span>);
+}, <span class="hljs-number">1000</span>);
+
+<span class="hljs-comment">// Debouncing</span>
+<span class="hljs-keyword">const</span> debouncedFn = <span class="hljs-title function_">debounce</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Debounced function called&#x27;</span>);
+}, <span class="hljs-number">500</span>);
+
+<span class="hljs-comment">// Performance benchmarking</span>
+<span class="hljs-keyword">const</span> benchmark = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceBenchmark</span>();
+<span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">await</span> benchmark.<span class="hljs-title function_">run</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// Function to benchmark</span>
+  <span class="hljs-keyword">let</span> sum = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) {
+    sum += i;
+  }
+  <span class="hljs-keyword">return</span> sum;
+}, <span class="hljs-number">10</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Average time: <span class="hljs-subst">${metrics.averageTime}</span>ms`</span>);</code></pre><h3>API Reference</h3>
+<h4>PerformanceTimer Class</h4>
+<ul>
+<li><code>start(): void</code> - Start the timer</li>
+<li><code>stop(): number</code> - Stop the timer and return duration</li>
+<li><code>getElapsed(): number</code> - Get elapsed time while running</li>
+<li><code>reset(): void</code> - Reset the timer</li>
+</ul>
+<h4>MemoryMonitor Class</h4>
+<ul>
+<li><code>measure(): number</code> - Measure current memory usage</li>
+<li><code>getDelta(): number</code> - Get memory usage delta</li>
+<li><code>getAverageUsage(): number</code> - Get average memory usage</li>
+<li><code>clear(): void</code> - Clear measurements</li>
+</ul>
+<h4>PerformanceBenchmark Class</h4>
+<ul>
+<li><code>run&lt;T&gt;(fn: () =&gt; T | Promise&lt;T&gt;, iterations?: number, budget?: PerformanceBudget): Promise&lt;PerformanceMetrics&gt;</code> -<br>Run a benchmark</li>
+</ul>
+<h4>Utility Functions</h4>
+<ul>
+<li><code>throttle&lt;T&gt;(func: T, wait: number, options?: ThrottleOptions): T</code> - Create a<br>throttled function</li>
+<li><code>debounce&lt;T&gt;(func: T, wait: number, options?: DebounceOptions): T</code> - Create a<br>debounced function</li>
+<li><code>measureAsync&lt;T&gt;(operation: () =&gt; Promise&lt;T&gt;, name?: string): Promise&lt;{ result: T; metrics: PerformanceMetrics }&gt;</code> -<br>Measure async operations</li>
+<li><code>measureSync&lt;T&gt;(operation: () =&gt; T, name?: string, iterations?: number): Promise&lt;{ result: T; metrics: PerformanceMetrics }&gt;</code> -<br>Measure sync operations</li>
+</ul>
+<h2>Geometry Operations</h2>
+<p>A comprehensive geometry toolkit for 2D geometric calculations and<br>transformations.</p>
+<h3>Features</h3>
+<ul>
+<li>Point and vector operations</li>
+<li>Line and polygon calculations</li>
+<li>Geometric transformations</li>
+<li>Intersection detection</li>
+<li>Distance calculations</li>
+<li>Area and perimeter computations</li>
+<li>Bounding box operations</li>
+</ul>
+<h3>Basic Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  <span class="hljs-title class_">PointOps</span>,
+  <span class="hljs-title class_">VectorOps</span>,
+  <span class="hljs-title class_">LineOps</span>,
+  <span class="hljs-title class_">RectangleOps</span>,
+  <span class="hljs-title class_">CircleOps</span>,
+  <span class="hljs-title class_">PolygonOps</span>,
+  <span class="hljs-title class_">TransformOps</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/algorithms&#x27;</span>;
+
+<span class="hljs-comment">// Point operations</span>
+<span class="hljs-keyword">const</span> point1 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> point2 = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+<span class="hljs-keyword">const</span> distance = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">distance</span>(point1, point2); <span class="hljs-comment">// 5</span>
+<span class="hljs-keyword">const</span> midpoint = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">midpoint</span>(point1, point2); <span class="hljs-comment">// { x: 1.5, y: 2 }</span>
+
+<span class="hljs-comment">// Vector operations</span>
+<span class="hljs-keyword">const</span> vector1 = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> vector2 = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">const</span> dot = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">dot</span>(vector1, vector2); <span class="hljs-comment">// 0</span>
+<span class="hljs-keyword">const</span> magnitude = <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">magnitude</span>(vector1); <span class="hljs-comment">// 1</span>
+
+<span class="hljs-comment">// Line operations</span>
+<span class="hljs-keyword">const</span> line = <span class="hljs-title class_">LineOps</span>.<span class="hljs-title function_">create</span>(point1, point2);
+<span class="hljs-keyword">const</span> length = <span class="hljs-title class_">LineOps</span>.<span class="hljs-title function_">length</span>(line); <span class="hljs-comment">// 5</span>
+<span class="hljs-keyword">const</span> direction = <span class="hljs-title class_">LineOps</span>.<span class="hljs-title function_">direction</span>(line); <span class="hljs-comment">// { x: 0.6, y: 0.8 }</span>
+
+<span class="hljs-comment">// Rectangle operations</span>
+<span class="hljs-keyword">const</span> rect = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>);
+<span class="hljs-keyword">const</span> area = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">area</span>(rect); <span class="hljs-comment">// 5000</span>
+<span class="hljs-keyword">const</span> center = <span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">center</span>(rect); <span class="hljs-comment">// { x: 50, y: 25 }</span>
+
+<span class="hljs-comment">// Circle operations</span>
+<span class="hljs-keyword">const</span> circle = <span class="hljs-title class_">CircleOps</span>.<span class="hljs-title function_">create</span>({ <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span> }, <span class="hljs-number">5</span>);
+<span class="hljs-keyword">const</span> circleArea = <span class="hljs-title class_">CircleOps</span>.<span class="hljs-title function_">area</span>(circle); <span class="hljs-comment">// 78.54...</span>
+<span class="hljs-keyword">const</span> circumference = <span class="hljs-title class_">CircleOps</span>.<span class="hljs-title function_">circumference</span>(circle); <span class="hljs-comment">// 31.42...</span>
+
+<span class="hljs-comment">// Polygon operations</span>
+<span class="hljs-keyword">const</span> polygon = <span class="hljs-title class_">PolygonOps</span>.<span class="hljs-title function_">create</span>([
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span> },
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">0</span> },
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">10</span> },
+  { <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">10</span> },
+]);
+<span class="hljs-keyword">const</span> polygonArea = <span class="hljs-title class_">PolygonOps</span>.<span class="hljs-title function_">area</span>(polygon); <span class="hljs-comment">// 100</span>
+<span class="hljs-keyword">const</span> centroid = <span class="hljs-title class_">PolygonOps</span>.<span class="hljs-title function_">centroid</span>(polygon); <span class="hljs-comment">// { x: 5, y: 5 }</span>
+
+<span class="hljs-comment">// Transform operations</span>
+<span class="hljs-keyword">const</span> transform = <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">combine</span>(
+  <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">translate</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>),
+  <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">scale</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+);
+<span class="hljs-keyword">const</span> transformedPoint = <span class="hljs-title class_">TransformOps</span>.<span class="hljs-title function_">applyToPoint</span>(transform, point1);</code></pre><h3>API Reference</h3>
+<h4>PointOps Class</h4>
+<ul>
+<li><code>create(x: number, y: number): Point</code> - Create a point</li>
+<li><code>add(a: Point, b: Point): Point</code> - Add two points</li>
+<li><code>subtract(a: Point, b: Point): Point</code> - Subtract two points</li>
+<li><code>multiply(a: Point, scalar: number): Point</code> - Multiply point by scalar</li>
+<li><code>divide(a: Point, scalar: number): Point</code> - Divide point by scalar</li>
+<li><code>distance(a: Point, b: Point): number</code> - Calculate distance between points</li>
+<li><code>distanceSquared(a: Point, b: Point): number</code> - Calculate squared distance</li>
+<li><code>midpoint(a: Point, b: Point): Point</code> - Calculate midpoint</li>
+<li><code>equals(a: Point, b: Point): boolean</code> - Check if points are equal</li>
+<li><code>clone(point: Point): Point</code> - Clone a point</li>
+</ul>
+<h4>VectorOps Class</h4>
+<ul>
+<li><code>create(x: number, y: number): Vector</code> - Create a vector</li>
+<li><code>fromPoints(start: Point, end: Point): Vector</code> - Create vector from points</li>
+<li><code>add(a: Vector, b: Vector): Vector</code> - Add two vectors</li>
+<li><code>subtract(a: Vector, b: Vector): Vector</code> - Subtract two vectors</li>
+<li><code>multiply(a: Vector, scalar: number): Vector</code> - Multiply vector by scalar</li>
+<li><code>divide(a: Vector, scalar: number): Vector</code> - Divide vector by scalar</li>
+<li><code>dot(a: Vector, b: Vector): number</code> - Calculate dot product</li>
+<li><code>cross(a: Vector, b: Vector): number</code> - Calculate cross product</li>
+<li><code>magnitude(vector: Vector): number</code> - Calculate magnitude</li>
+<li><code>magnitudeSquared(vector: Vector): number</code> - Calculate squared magnitude</li>
+<li><code>normalize(vector: Vector): Vector</code> - Normalize vector</li>
+<li><code>rotate(vector: Vector, angle: number): Vector</code> - Rotate vector</li>
+<li><code>angle(vector: Vector): number</code> - Calculate angle</li>
+<li><code>angleBetween(a: Vector, b: Vector): number</code> - Calculate angle between vectors</li>
+</ul>
+<h4>LineOps Class</h4>
+<ul>
+<li><code>create(start: Point, end: Point): Line</code> - Create a line</li>
+<li><code>length(line: Line): number</code> - Calculate line length</li>
+<li><code>lengthSquared(line: Line): number</code> - Calculate squared length</li>
+<li><code>midpoint(line: Line): Point</code> - Calculate line midpoint</li>
+<li><code>direction(line: Line): Vector</code> - Calculate line direction</li>
+<li><code>normal(line: Line): Vector</code> - Calculate line normal</li>
+<li><code>pointAt(line: Line, t: number): Point</code> - Get point at parameter t</li>
+<li><code>distanceToPoint(line: Line, point: Point): number</code> - Calculate distance from<br>line to point</li>
+<li><code>intersects(a: Line, b: Line): Point | null</code> - Find intersection point</li>
+</ul>
+<h4>RectangleOps Class</h4>
+<ul>
+<li><code>create(x: number, y: number, width: number, height: number): Rectangle</code> -<br>Create a rectangle</li>
+<li><code>fromPoints(topLeft: Point, bottomRight: Point): Rectangle</code> - Create rectangle<br>from points</li>
+<li><code>area(rect: Rectangle): number</code> - Calculate rectangle area</li>
+<li><code>perimeter(rect: Rectangle): number</code> - Calculate rectangle perimeter</li>
+<li><code>center(rect: Rectangle): Point</code> - Calculate rectangle center</li>
+<li><code>topLeft(rect: Rectangle): Point</code> - Get top-left corner</li>
+<li><code>topRight(rect: Rectangle): Point</code> - Get top-right corner</li>
+<li><code>bottomLeft(rect: Rectangle): Point</code> - Get bottom-left corner</li>
+<li><code>bottomRight(rect: Rectangle): Point</code> - Get bottom-right corner</li>
+<li><code>containsPoint(rect: Rectangle, point: Point): boolean</code> - Check if rectangle<br>contains point</li>
+<li><code>containsRectangle(outer: Rectangle, inner: Rectangle): boolean</code> - Check if<br>rectangle contains another</li>
+<li><code>intersects(a: Rectangle, b: Rectangle): boolean</code> - Check if rectangles<br>intersect</li>
+<li><code>intersection(a: Rectangle, b: Rectangle): Rectangle | null</code> - Get<br>intersection rectangle</li>
+<li><code>union(a: Rectangle, b: Rectangle): Rectangle</code> - Get union rectangle</li>
+<li><code>expand(rect: Rectangle, amount: number): Rectangle</code> - Expand rectangle</li>
+<li><code>shrink(rect: Rectangle, amount: number): Rectangle</code> - Shrink rectangle</li>
+<li><code>translate(rect: Rectangle, offset: Vector): Rectangle</code> - Translate rectangle</li>
+<li><code>scale(rect: Rectangle, factor: number, center?: Point): Rectangle</code> - Scale<br>rectangle</li>
+</ul>
+<h4>CircleOps Class</h4>
+<ul>
+<li><code>create(center: Point, radius: number): Circle</code> - Create a circle</li>
+<li><code>area(circle: Circle): number</code> - Calculate circle area</li>
+<li><code>circumference(circle: Circle): number</code> - Calculate circle circumference</li>
+<li><code>containsPoint(circle: Circle, point: Point): boolean</code> - Check if circle<br>contains point</li>
+<li><code>intersects(a: Circle, b: Circle): boolean</code> - Check if circles intersect</li>
+<li><code>expand(circle: Circle, amount: number): Circle</code> - Expand circle</li>
+<li><code>shrink(circle: Circle, amount: number): Circle</code> - Shrink circle</li>
+<li><code>translate(circle: Circle, offset: Vector): Circle</code> - Translate circle</li>
+</ul>
+<h4>PolygonOps Class</h4>
+<ul>
+<li><code>create(points: Point[]): Polygon</code> - Create a polygon</li>
+<li><code>area(polygon: Polygon): number</code> - Calculate polygon area</li>
+<li><code>perimeter(polygon: Polygon): number</code> - Calculate polygon perimeter</li>
+<li><code>centroid(polygon: Polygon): Point</code> - Calculate polygon centroid</li>
+<li><code>containsPoint(polygon: Polygon, point: Point): boolean</code> - Check if polygon<br>contains point</li>
+<li><code>boundingBox(polygon: Polygon): Rectangle</code> - Get polygon bounding box</li>
+<li><code>translate(polygon: Polygon, offset: Vector): Polygon</code> - Translate polygon</li>
+<li><code>scale(polygon: Polygon, factor: number, center?: Point): Polygon</code> - Scale<br>polygon</li>
+</ul>
+<h4>TransformOps Class</h4>
+<ul>
+<li><code>identity(): Transform</code> - Create identity transform</li>
+<li><code>translate(x: number, y: number): Transform</code> - Create translation transform</li>
+<li><code>scale(x: number, y?: number): Transform</code> - Create scale transform</li>
+<li><code>rotate(angle: number): Transform</code> - Create rotation transform</li>
+<li><code>combine(a: Transform, b: Transform): Transform</code> - Combine transforms</li>
+<li><code>applyToPoint(transform: Transform, point: Point): Point</code> - Apply transform to<br>point</li>
+<li><code>applyToRectangle(transform: Transform, rect: Rectangle): Rectangle</code> - Apply<br>transform to rectangle</li>
+<li><code>inverse(transform: Transform): Transform</code> - Get inverse transform</li>
+</ul>
+<h2>Performance Considerations</h2>
+<h3>Union-Find Algorithm</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(α(n)) for union and find operations (where α is the<br>inverse Ackermann function)</li>
+<li><strong>Space Complexity</strong>: O(n) where n is the number of elements</li>
+<li><strong>Optimizations</strong>: Path compression and union by rank</li>
+</ul>
+<h3>AABB Collision Detection</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) for single collision check, O(n²) for naive batch<br>detection</li>
+<li><strong>Space Complexity</strong>: O(n) for batch detection</li>
+<li><strong>Optimizations</strong>: Spatial hashing for batch operations</li>
+</ul>
+<h3>Spatial Hashing</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) average case for queries, O(n) worst case</li>
+<li><strong>Space Complexity</strong>: O(n) where n is the number of objects</li>
+<li><strong>Optimizations</strong>: Dynamic cell sizing, automatic cleanup</li>
+</ul>
+<h3>Performance Utilities</h3>
+<ul>
+<li><strong>Memory Overhead</strong>: Minimal for basic operations</li>
+<li><strong>Accuracy</strong>: High-precision timing using <code>performance.now()</code></li>
+<li><strong>Optimizations</strong>: Efficient memory monitoring, throttling, and debouncing</li>
+</ul>
+<h3>Geometry Operations</h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) for most operations, O(n) for polygon operations</li>
+<li><strong>Space Complexity</strong>: O(1) for most operations, O(n) for polygon operations</li>
+<li><strong>Optimizations</strong>: Efficient mathematical calculations, minimal object<br>creation</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>General Guidelines</h3>
+<ol>
+<li><strong>Choose the Right Algorithm</strong>: Select algorithms based on your specific use<br>case and performance requirements</li>
+<li><strong>Reuse Objects</strong>: Minimize object creation in performance-critical code</li>
+<li><strong>Batch Operations</strong>: Use batch operations when processing multiple items</li>
+<li><strong>Monitor Performance</strong>: Use performance utilities to monitor and optimize<br>your code</li>
+<li><strong>Handle Edge Cases</strong>: Always consider edge cases like empty inputs, invalid<br>data, etc.</li>
+</ol>
+<h3>Union-Find Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Reuse Union-Find instance</span>
+<span class="hljs-keyword">const</span> uf = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(<span class="hljs-number">1000</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [a, b] <span class="hljs-keyword">of</span> edges) {
+  uf.<span class="hljs-title function_">union</span>(a, b);
+}
+
+<span class="hljs-comment">// Good: Use for cycle detection</span>
+<span class="hljs-keyword">const</span> hasCycle = <span class="hljs-title function_">detectCycle</span>(edges);
+
+<span class="hljs-comment">// Good: Find connected components</span>
+<span class="hljs-keyword">const</span> components = <span class="hljs-title function_">findConnectedComponents</span>(edges);</code></pre><h3>Collision Detection Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Use batch detection for multiple objects</span>
+<span class="hljs-keyword">const</span> collisions = <span class="hljs-title function_">batchCollisionDetection</span>(objects, {
+  <span class="hljs-attr">maxDistance</span>: <span class="hljs-number">100</span>,
+  <span class="hljs-attr">spatialHash</span>: { <span class="hljs-attr">cellSize</span>: <span class="hljs-number">50</span> },
+});
+
+<span class="hljs-comment">// Good: Use spatial hashing for large datasets</span>
+<span class="hljs-keyword">const</span> spatialHash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpatialHash</span>({ <span class="hljs-attr">cellSize</span>: <span class="hljs-number">100</span> });
+objects.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">obj</span> =&gt;</span> spatialHash.<span class="hljs-title function_">insert</span>(obj));
+<span class="hljs-keyword">const</span> nearby = spatialHash.<span class="hljs-title function_">queryRadius</span>(centerX, centerY, radius);</code></pre><h3>Performance Monitoring Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Use performance timer for critical operations</span>
+<span class="hljs-keyword">const</span> timer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerformanceTimer</span>();
+timer.<span class="hljs-title function_">start</span>();
+<span class="hljs-comment">// ... critical operation</span>
+<span class="hljs-keyword">const</span> duration = timer.<span class="hljs-title function_">stop</span>();
+
+<span class="hljs-comment">// Good: Use throttling for frequent events</span>
+<span class="hljs-keyword">const</span> throttledHandler = <span class="hljs-title function_">throttle</span>(handleScroll, <span class="hljs-number">16</span>); <span class="hljs-comment">// ~60fps</span>
+
+<span class="hljs-comment">// Good: Use debouncing for search inputs</span>
+<span class="hljs-keyword">const</span> debouncedSearch = <span class="hljs-title function_">debounce</span>(performSearch, <span class="hljs-number">300</span>);</code></pre><h3>Geometry Usage</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Reuse point objects</span>
+<span class="hljs-keyword">const</span> origin = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+<span class="hljs-keyword">const</span> point = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">add</span>(origin, <span class="hljs-title class_">VectorOps</span>.<span class="hljs-title function_">create</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>));
+
+<span class="hljs-comment">// Good: Use efficient operations</span>
+<span class="hljs-keyword">const</span> distance = <span class="hljs-title class_">PointOps</span>.<span class="hljs-title function_">distanceSquared</span>(a, b); <span class="hljs-comment">// Avoid square root when possible</span>
+
+<span class="hljs-comment">// Good: Use bounding box for quick checks</span>
+<span class="hljs-keyword">const</span> bbox = <span class="hljs-title class_">PolygonOps</span>.<span class="hljs-title function_">boundingBox</span>(polygon);
+<span class="hljs-keyword">if</span> (<span class="hljs-title class_">RectangleOps</span>.<span class="hljs-title function_">intersects</span>(bbox, viewport)) {
+  <span class="hljs-comment">// Perform detailed intersection test</span>
+}</code></pre><h2>Testing</h2>
+<p>All algorithms include comprehensive test suites. Run tests with:</p>
+<pre><code class="hljs language-bash">npm <span class="hljs-built_in">test</span> src/algorithms/</code></pre><h2>Contributing</h2>
+<p>When adding new algorithms:</p>
+<ol>
+<li>Follow the existing patterns and naming conventions</li>
+<li>Include comprehensive JSDoc documentation</li>
+<li>Add comprehensive test coverage</li>
+<li>Consider performance implications</li>
+<li>Keep algorithms focused and single-purpose</li>
+<li>Update this documentation with usage examples</li>
+</ol>
+<h2>License</h2>
+<p>This module is part of the yipyap project and follows the same licensing terms.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

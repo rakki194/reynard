@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatekeeper - Authentication and Authorization Library - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Gatekeeper - Authentication and Authorization Library</h1>
+      <div class="markdown-content"><h1>Gatekeeper - Authentication and Authorization Library</h1>
+<p>A comprehensive authentication and authorization library for Python applications, providing secure user management, JWT token handling, role-based access control, and flexible backend integration.</p>
+<h2>Features</h2>
+<ul>
+<li>🔐 <strong>Secure Password Hashing</strong>: Modern Argon2 hashing with optimal security parameters</li>
+<li>🎫 <strong>JWT Token Management</strong>: Access and refresh tokens with configurable expiration</li>
+<li>👥 <strong>Role-Based Access Control</strong>: Flexible role system (admin, regular, guest)</li>
+<li>🗄️ <strong>Abstract Backend Interface</strong>: Easy integration with any storage system</li>
+<li>🚀 <strong>FastAPI Integration</strong>: Built-in dependency injection and route helpers</li>
+<li>🔒 <strong>Security First</strong>: Comprehensive security features and best practices</li>
+<li>📦 <strong>Modular Design</strong>: Clean separation of concerns and easy extensibility</li>
+</ul>
+<h2>Quick Start</h2>
+<h3>Installation</h3>
+<pre><code class="hljs language-bash">pip install gatekeeper</code></pre><h3>Basic Usage</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> AuthManager, TokenConfig, UserCreate, UserRole
+<span class="hljs-keyword">from</span> gatekeeper.backends.memory <span class="hljs-keyword">import</span> MemoryBackend
+
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-comment"># Initialize authentication manager</span>
+    token_config = TokenConfig(
+        secret_key=<span class="hljs-string">&quot;your-secret-key-here&quot;</span>,
+        access_token_expire_minutes=<span class="hljs-number">30</span>,
+        refresh_token_expire_days=<span class="hljs-number">7</span>
+    )
+
+    auth_manager = AuthManager(
+        backend=MemoryBackend(),
+        token_config=token_config
+    )
+
+    <span class="hljs-comment"># Create a user</span>
+    user_data = UserCreate(
+        username=<span class="hljs-string">&quot;john_doe&quot;</span>,
+        password=<span class="hljs-string">&quot;SecurePassword123!&quot;</span>,
+        email=<span class="hljs-string">&quot;john@example.com&quot;</span>,
+        role=UserRole.REGULAR
+    )
+
+    user = <span class="hljs-keyword">await</span> auth_manager.create_user(user_data)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Created user: <span class="hljs-subst">{user.username}</span>&quot;</span>)
+
+    <span class="hljs-comment"># Authenticate user</span>
+    tokens = <span class="hljs-keyword">await</span> auth_manager.authenticate(<span class="hljs-string">&quot;john_doe&quot;</span>, <span class="hljs-string">&quot;SecurePassword123!&quot;</span>)
+    <span class="hljs-keyword">if</span> tokens:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Access token: <span class="hljs-subst">{tokens.access_token}</span>&quot;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Refresh token: <span class="hljs-subst">{tokens.refresh_token}</span>&quot;</span>)
+
+    <span class="hljs-comment"># Get current user from token</span>
+    current_user = <span class="hljs-keyword">await</span> auth_manager.get_current_user(tokens.access_token)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Current user: <span class="hljs-subst">{current_user.username}</span>&quot;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    asyncio.run(main())</code></pre><h2>FastAPI Integration</h2>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Depends, HTTPException
+<span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> AuthManager, TokenConfig, UserCreate, UserRole
+<span class="hljs-keyword">from</span> gatekeeper.backends.memory <span class="hljs-keyword">import</span> MemoryBackend
+<span class="hljs-keyword">from</span> gatekeeper.api.dependencies <span class="hljs-keyword">import</span> get_current_user, require_role
+<span class="hljs-keyword">from</span> gatekeeper.models.user <span class="hljs-keyword">import</span> User
+
+app = FastAPI()
+
+<span class="hljs-comment"># Initialize auth manager</span>
+token_config = TokenConfig(secret_key=<span class="hljs-string">&quot;your-secret-key&quot;</span>)
+auth_manager = AuthManager(backend=MemoryBackend(), token_config=token_config)
+
+<span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/register&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">register</span>(<span class="hljs-params">user_data: UserCreate</span>):
+    <span class="hljs-keyword">try</span>:
+        user = <span class="hljs-keyword">await</span> auth_manager.create_user(user_data)
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;User created successfully&quot;</span>, <span class="hljs-string">&quot;username&quot;</span>: user.username}
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">raise</span> HTTPException(status_code=<span class="hljs-number">400</span>, detail=<span class="hljs-built_in">str</span>(e))
+
+<span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/login&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">login</span>(<span class="hljs-params">username: <span class="hljs-built_in">str</span>, password: <span class="hljs-built_in">str</span></span>):
+    tokens = <span class="hljs-keyword">await</span> auth_manager.authenticate(username, password)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> tokens:
+        <span class="hljs-keyword">raise</span> HTTPException(status_code=<span class="hljs-number">401</span>, detail=<span class="hljs-string">&quot;Invalid credentials&quot;</span>)
+    <span class="hljs-keyword">return</span> tokens
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/me&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_current_user_info</span>(<span class="hljs-params">current_user: User = Depends(<span class="hljs-params">get_current_user</span>)</span>):
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;username&quot;</span>: current_user.username, <span class="hljs-string">&quot;role&quot;</span>: current_user.role}
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/admin-only&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">admin_endpoint</span>(<span class="hljs-params">current_user: User = Depends(<span class="hljs-params">require_role(<span class="hljs-params">UserRole.ADMIN</span>)</span>)</span>):
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;Admin access granted&quot;</span>}</code></pre><h2>Core Components</h2>
+<h3>AuthManager</h3>
+<p>The main orchestrator for all authentication operations:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> AuthManager
+
+auth_manager = AuthManager(
+    backend=your_backend,
+    token_config=token_config,
+    password_security_level=SecurityLevel.MEDIUM
+)
+
+<span class="hljs-comment"># User management</span>
+user = <span class="hljs-keyword">await</span> auth_manager.create_user(user_data)
+tokens = <span class="hljs-keyword">await</span> auth_manager.authenticate(username, password)
+current_user = <span class="hljs-keyword">await</span> auth_manager.get_current_user(token)
+
+<span class="hljs-comment"># User operations</span>
+<span class="hljs-keyword">await</span> auth_manager.update_user(username, user_update)
+<span class="hljs-keyword">await</span> auth_manager.delete_user(username)
+<span class="hljs-keyword">await</span> auth_manager.change_password(username, current_password, new_password)</code></pre><h3>PasswordManager</h3>
+<p>Handles secure password operations with Argon2:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> PasswordManager, SecurityLevel
+
+password_manager = PasswordManager(security_level=SecurityLevel.HIGH)
+
+<span class="hljs-comment"># Hash password</span>
+hashed_password = password_manager.hash_password(<span class="hljs-string">&quot;my_password&quot;</span>)
+
+<span class="hljs-comment"># Verify password</span>
+is_valid = password_manager.verify_password(<span class="hljs-string">&quot;my_password&quot;</span>, hashed_password)
+
+<span class="hljs-comment"># Validate password strength</span>
+is_strong, reason = password_manager.validate_password_strength(<span class="hljs-string">&quot;my_password&quot;</span>)</code></pre><h3>TokenManager</h3>
+<p>Manages JWT token creation and validation:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> TokenManager, TokenConfig
+
+token_config = TokenConfig(
+    secret_key=<span class="hljs-string">&quot;your-secret-key&quot;</span>,
+    access_token_expire_minutes=<span class="hljs-number">30</span>,
+    refresh_token_expire_days=<span class="hljs-number">7</span>
+)
+
+token_manager = TokenManager(token_config)
+
+<span class="hljs-comment"># Create tokens</span>
+tokens = token_manager.create_token_pair(<span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;role&quot;</span>)
+
+<span class="hljs-comment"># Verify tokens</span>
+result = token_manager.verify_access_token(token)
+<span class="hljs-keyword">if</span> result.is_valid:
+    user_data = result.payload</code></pre><h2>Backend Implementations</h2>
+<h3>Memory Backend</h3>
+<p>For testing and development:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper.backends.memory <span class="hljs-keyword">import</span> MemoryBackend
+
+backend = MemoryBackend()
+<span class="hljs-comment"># Data is lost when application restarts</span></code></pre><h3>Custom Backend</h3>
+<p>Implement the <code>UserBackend</code> interface for your storage system:</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper.backends.base <span class="hljs-keyword">import</span> UserBackend, User, UserCreate
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDatabaseBackend</span>(<span class="hljs-title class_ inherited__">UserBackend</span>):
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">create_user</span>(<span class="hljs-params">self, user: UserCreate</span>) -&gt; User:
+        <span class="hljs-comment"># Your implementation here</span>
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user_by_username</span>(<span class="hljs-params">self, username: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-type">Optional</span>[User]:
+        <span class="hljs-comment"># Your implementation here</span>
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-comment"># ... implement all required methods</span></code></pre><h2>Security Features</h2>
+<h3>Password Security</h3>
+<ul>
+<li><strong>Argon2 Hashing</strong>: Modern, memory-hard hashing algorithm</li>
+<li><strong>Modern Security</strong>: Argon2 with configurable security levels</li>
+<li><strong>Configurable Security Levels</strong>: Low, Medium, High, Paranoid</li>
+<li><strong>Password Strength Validation</strong>: Enforces strong password requirements</li>
+</ul>
+<h3>Token Security</h3>
+<ul>
+<li><strong>JWT Tokens</strong>: Industry-standard JSON Web Tokens</li>
+<li><strong>Access &amp; Refresh Tokens</strong>: Separate short-lived and long-lived tokens</li>
+<li><strong>Configurable Expiration</strong>: Flexible token lifetime settings</li>
+<li><strong>Token Validation</strong>: Comprehensive token verification</li>
+</ul>
+<h3>Role-Based Access Control</h3>
+<ul>
+<li><strong>Flexible Roles</strong>: Admin, Regular, Guest (easily extensible)</li>
+<li><strong>Role Validation</strong>: Built-in role checking utilities</li>
+<li><strong>Permission System</strong>: Easy to extend with custom permissions</li>
+</ul>
+<h2>Configuration</h2>
+<h3>Token Configuration</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> TokenConfig
+
+token_config = TokenConfig(
+    secret_key=<span class="hljs-string">&quot;your-secret-key-here&quot;</span>,
+    algorithm=<span class="hljs-string">&quot;HS256&quot;</span>,
+    access_token_expire_minutes=<span class="hljs-number">30</span>,
+    refresh_token_expire_days=<span class="hljs-number">7</span>,
+    issuer=<span class="hljs-string">&quot;your-app&quot;</span>,
+    audience=<span class="hljs-string">&quot;your-app-users&quot;</span>
+)</code></pre><h3>Password Security Levels</h3>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> gatekeeper <span class="hljs-keyword">import</span> SecurityLevel
+
+<span class="hljs-comment"># Development/Testing</span>
+password_manager = PasswordManager(security_level=SecurityLevel.LOW)
+
+<span class="hljs-comment"># General Use</span>
+password_manager = PasswordManager(security_level=SecurityLevel.MEDIUM)
+
+<span class="hljs-comment"># High Security</span>
+password_manager = PasswordManager(security_level=SecurityLevel.HIGH)
+
+<span class="hljs-comment"># Maximum Security</span>
+password_manager = PasswordManager(security_level=SecurityLevel.PARANOID)</code></pre><h2>API Reference</h2>
+<h3>Models</h3>
+<ul>
+<li><code>User</code>: Complete user model with all fields</li>
+<li><code>UserCreate</code>: User creation model with validation</li>
+<li><code>UserUpdate</code>: User update model</li>
+<li><code>UserPublic</code>: Public user model (no sensitive data)</li>
+<li><code>TokenResponse</code>: Authentication response with tokens</li>
+<li><code>TokenConfig</code>: JWT configuration</li>
+</ul>
+<h3>Core Classes</h3>
+<ul>
+<li><code>AuthManager</code>: Main authentication orchestrator</li>
+<li><code>PasswordManager</code>: Password hashing and validation</li>
+<li><code>TokenManager</code>: JWT token management</li>
+<li><code>UserBackend</code>: Abstract backend interface</li>
+</ul>
+<h3>Backends</h3>
+<ul>
+<li><code>MemoryBackend</code>: In-memory storage for testing</li>
+<li><code>UserBackend</code>: Abstract interface for custom backends</li>
+</ul>
+<h2>Development</h2>
+<h3>Installation for Development</h3>
+<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> &lt;repository&gt;
+<span class="hljs-built_in">cd</span> gatekeeper
+pip install -e <span class="hljs-string">&quot;.[dev]&quot;</span></code></pre><h3>Running Tests</h3>
+<pre><code class="hljs language-bash">pytest</code></pre><h3>Code Formatting</h3>
+<pre><code class="hljs language-bash">black gatekeeper/
+isort gatekeeper/</code></pre><h3>Type Checking</h3>
+<pre><code class="hljs language-bash">mypy gatekeeper/</code></pre><h2>Contributing</h2>
+<ol>
+<li>Fork the repository</li>
+<li>Create a feature branch</li>
+<li>Make your changes</li>
+<li>Add tests for new functionality</li>
+<li>Ensure all tests pass</li>
+<li>Submit a pull request</li>
+</ol>
+<h2>License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2>Security</h2>
+<p>If you discover any security-related issues, please email <a href="mailto:security@example.com">security@example.com</a> instead of using the issue tracker.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

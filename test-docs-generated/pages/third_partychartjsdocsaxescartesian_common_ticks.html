@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>### Common tick options to all cartesian axes - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>### Common tick options to all cartesian axes</h1>
+      <div class="markdown-content"><h3>Common tick options to all cartesian axes</h3>
+<p>Namespace: <code>options.scales[scaleId].ticks</code></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>align</code></td>
+<td><code>string</code></td>
+<td><code>&#39;center&#39;</code></td>
+<td>The tick alignment along the axis. Can be <code>&#39;start&#39;</code>, <code>&#39;center&#39;</code>, <code>&#39;end&#39;</code>, or <code>&#39;inner&#39;</code>. <code>inner</code> alignment means align <code>start</code> for first tick and <code>end</code> for the last tick of horizontal axis</td>
+</tr>
+<tr>
+<td><code>crossAlign</code></td>
+<td><code>string</code></td>
+<td><code>&#39;near&#39;</code></td>
+<td>The tick alignment perpendicular to the axis. Can be <code>&#39;near&#39;</code>, <code>&#39;center&#39;</code>, or <code>&#39;far&#39;</code>. See <a href="/axes/cartesian/#tick-alignment">Tick Alignment</a></td>
+</tr>
+<tr>
+<td><code>sampleSize</code></td>
+<td><code>number</code></td>
+<td><code>ticks.length</code></td>
+<td>The number of ticks to examine when deciding how many labels will fit. Setting a smaller value will be faster, but may be less accurate when there is large variability in label length.</td>
+</tr>
+<tr>
+<td><code>autoSkip</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>If true, automatically calculates how many labels can be shown and hides labels accordingly. Labels will be rotated up to <code>maxRotation</code> before skipping any. Turn <code>autoSkip</code> off to show all labels no matter what.</td>
+</tr>
+<tr>
+<td><code>autoSkipPadding</code></td>
+<td><code>number</code></td>
+<td><code>3</code></td>
+<td>Padding between the ticks on the horizontal axis when <code>autoSkip</code> is enabled.</td>
+</tr>
+<tr>
+<td><code>includeBounds</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Should the defined <code>min</code> and <code>max</code> values be presented as ticks even if they are not &quot;nice&quot;.</td>
+</tr>
+<tr>
+<td><code>labelOffset</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Distance in pixels to offset the label from the centre point of the tick (in the x-direction for the x-axis, and the y-direction for the y-axis). <em>Note: this can cause labels at the edges to be cropped by the edge of the canvas</em></td>
+</tr>
+<tr>
+<td><code>maxRotation</code></td>
+<td><code>number</code></td>
+<td><code>50</code></td>
+<td>Maximum rotation for tick labels when rotating to condense labels. Note: Rotation doesn&#39;t occur until necessary. <em>Note: Only applicable to horizontal scales.</em></td>
+</tr>
+<tr>
+<td><code>minRotation</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Minimum rotation for tick labels. <em>Note: Only applicable to horizontal scales.</em></td>
+</tr>
+<tr>
+<td><code>mirror</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Flips tick labels around axis, displaying the labels inside the chart instead of outside. <em>Note: Only applicable to vertical scales.</em></td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>Padding between the tick label and the axis. When set on a vertical axis, this applies in the horizontal (X) direction. When set on a horizontal axis, this applies in the vertical (Y) direction.</td>
+</tr>
+<tr>
+<td><code>maxTicksLimit</code></td>
+<td><code>number</code></td>
+<td><code>11</code></td>
+<td>Maximum number of ticks and gridlines to show.</td>
+</tr>
+</tbody></table>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

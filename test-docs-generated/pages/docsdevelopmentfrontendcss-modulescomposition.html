@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composition - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Composition</h1>
+      <div class="markdown-content"><h1>Composition</h1>
+<p>You can compose selectors together with <code>composes</code>:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.className</span> {
+  <span class="hljs-attribute">color</span>: green;
+  <span class="hljs-attribute">background</span>: red;
+}
+
+<span class="hljs-selector-class">.otherClassName</span> {
+  composes: className;
+  <span class="hljs-attribute">color</span>: yellow;
+}</code></pre><p>There can be multiple <code>composes</code> rules, but <code>composes</code> rules must be before<br>other rules. Extending works only for local-scoped selectors and only if the<br>selector is a single class name. When a class name composes another class name,<br>the <strong>CSS Module</strong> exports both class names for the local class. This can add up<br>to multiple class names.</p>
+<p>It&#39;s also possible to compose multiple classes with<br><code>composes: classNameA classNameB;</code>.</p>
+<h2>Pseudo classes</h2>
+<p>Classes which have pseudo selectors attached will be brought along when used in<br>a <code>composes</code> statement.</p>
+<p>In the example below, <code>otherClassName</code> will also be given the <code>:hover</code> pseudo<br>class defined on <code>className</code>.</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.className</span> {
+  <span class="hljs-attribute">color</span>: green;
+}
+
+<span class="hljs-selector-class">.className</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">color</span>: red;
+}
+
+<span class="hljs-selector-class">.otherClassName</span> {
+  composes: className;
+  <span class="hljs-attribute">background</span>: black;
+}</code></pre><p><code>otherClassName</code> above is the same as defining:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.otherClassName</span> {
+  <span class="hljs-attribute">color</span>: green;
+  <span class="hljs-attribute">background</span>: black;
+}
+
+<span class="hljs-selector-class">.otherClassName</span><span class="hljs-selector-pseudo">:hover</span> {
+  <span class="hljs-attribute">color</span>: red;
+}</code></pre><h2>Dependencies</h2>
+<h3>Composing from other files</h3>
+<p>It&#39;s possible to compose class names from other <strong>CSS Modules</strong>.</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.otherClassName</span> {
+  composes: className from <span class="hljs-string">&quot;./style.css&quot;</span>;
+}</code></pre><p>When composing multiple classes from different files, the order of appliance is<br><em>undefined</em>. Do not define different values for the same property in multiple<br>class names from different files when they are composed in a single class.</p>
+<p>Composing should not form a circular dependency. Otherwise, it&#39;s <em>undefined</em><br>whether properties of a rule override properties of a composed rule. The module<br>system may emit an error.</p>
+<p>We recommend that classes do a single thing and dependencies are hierarchic.</p>
+<h3>Composing from global class names</h3>
+<p>It&#39;s possible to compose from <strong>global</strong> class names.</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.otherClassName</span> {
+  composes: globalClassName from global;
+}</code></pre><h2>Exceptions</h2>
+<p><code>:global</code> switches to global scope for the current selector respective<br>identifier. <code>:global(.xxx)</code> respective <code>@keyframes :global(xxx)</code> declares the<br>stuff in parenthesis in the global scope.</p>
+<p>Similarly, <code>:local</code> and <code>:local(...)</code> for local scope.</p>
+<pre><code class="hljs language-css">:<span class="hljs-built_in">global</span>(.some-selector) {
+  <span class="hljs-comment">/* ... */</span>
+}</code></pre><p>If the selector is switched into global mode, global mode is also activated for<br>the rules. (This allows us to make <code>animation: abc;</code> local.)</p>
+<p>Example: ``</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.localA</span> :global .global-b .global-c :<span class="hljs-built_in">local</span>(.localD.localE) .global-d {
+  <span class="hljs-comment">/* ... */</span>
+}</code></pre></div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

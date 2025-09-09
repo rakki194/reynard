@@ -7,7 +7,17 @@
   "scripts": {
     "start": "python main.py",
     "dev": "python main.py",
-    "test": "python test_caption_integration.py"
+    "test": "python test_caption_integration.py",
+    "test:all": "./scripts/run-tests.sh",
+    "test:unit": "./scripts/run-tests.sh -t unit",
+    "test:integration": "./scripts/run-tests.sh -t integration",
+    "test:security": "./scripts/run-tests.sh -t security",
+    "test:api": "./scripts/run-tests.sh -t api",
+    "test:auth": "./scripts/run-tests.sh -t auth",
+    "test:coverage": "./scripts/run-tests.sh -c",
+    "test:verbose": "./scripts/run-tests.sh -v",
+    "test:parallel": "./scripts/run-tests.sh -p",
+    "test:ci": "./scripts/run-tests.sh -t all -c -p -r xml"
   },
   "keywords": [
     "fastapi",
@@ -22,11 +32,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reynard-framework/reynard.git",
+    "url": "https://github.com/rakki194/reynard.git",
     "directory": "backend"
   },
   "bugs": {
-    "url": "https://github.com/reynard-framework/reynard/issues"
+    "url": "https://github.com/rakki194/reynard/issues"
   },
-  "homepage": "https://github.com/reynard-framework/reynard#readme"
+  "homepage": "https://github.com/rakki194/reynard#readme"
 }

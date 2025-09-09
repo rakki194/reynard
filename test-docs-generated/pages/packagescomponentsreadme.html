@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-components - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-components</h1>
+      <div class="markdown-content"><h1>reynard-components</h1>
+<p>Production-ready SolidJS component library with comprehensive theming and accessibility support.</p>
+<h2>🚀 Features</h2>
+<ul>
+<li><strong>🎨 Theme Integration</strong>: Seamlessly works with Reynard&#39;s theming system</li>
+<li><strong>♿ Accessibility</strong>: Full ARIA support and keyboard navigation</li>
+<li><strong>📱 Responsive</strong>: Mobile-first design with responsive breakpoints</li>
+<li><strong>🎯 TypeScript</strong>: Complete type safety with excellent IntelliSense</li>
+<li><strong>⚡ Performance</strong>: Optimized for SolidJS&#39;s fine-grained reactivity</li>
+<li><strong>🧪 Tested</strong>: Comprehensive test coverage with Vitest</li>
+<li><strong>📦 Modular</strong>: Import only what you need</li>
+</ul>
+<h2>📦 Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-components reynard-core solid-js</code></pre><h2>🎯 Quick Start</h2>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Button</span>, <span class="hljs-title class_">Card</span>, <span class="hljs-title class_">TextField</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;reynard-components/styles&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Card</span> <span class="hljs-attr">padding</span>=<span class="hljs-string">&quot;lg&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">TextField</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Email&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your email&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;primary&quot;</span> <span class="hljs-attr">fullWidth</span>&gt;</span>
+        Sign Up
+      <span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Card</span>&gt;</span></span>
+  );
+}</code></pre><h2>📚 Components</h2>
+<h3>Primitives</h3>
+<h4>Button</h4>
+<p>Versatile button component with multiple variants and states.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">Button</span> variant=<span class="hljs-string">&quot;primary&quot;</span> size=<span class="hljs-string">&quot;lg&quot;</span> loading&gt;
+  <span class="hljs-title class_">Submit</span>
+&lt;/<span class="hljs-title class_">Button</span>&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;secondary&quot;</span> <span class="hljs-attr">leftIcon</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">Icon</span> /&gt;</span>}&gt;
+  With Icon
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;danger&quot;</span> <span class="hljs-attr">iconOnly</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">DeleteIcon</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span></code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>variant</code>: &#39;primary&#39; | &#39;secondary&#39; | &#39;tertiary&#39; | &#39;danger&#39; | &#39;success&#39; | &#39;warning&#39;</li>
+<li><code>size</code>: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;</li>
+<li><code>loading</code>: boolean</li>
+<li><code>disabled</code>: boolean</li>
+<li><code>fullWidth</code>: boolean</li>
+<li><code>iconOnly</code>: boolean</li>
+<li><code>leftIcon</code>, <code>rightIcon</code>: JSX.Element</li>
+</ul>
+<h4>Card</h4>
+<p>Flexible container component with consistent styling.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">Card</span>
+  variant=<span class="hljs-string">&quot;elevated&quot;</span>
+  padding=<span class="hljs-string">&quot;lg&quot;</span>
+  header={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Card Title<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span></span>}
+  footer={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span>&gt;</span>Action<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>}
+&gt;
+  <span class="hljs-title class_">Card</span> content goes here
+&lt;/<span class="hljs-title class_">Card</span>&gt;</code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>variant</code>: &#39;default&#39; | &#39;elevated&#39; | &#39;outlined&#39; | &#39;filled&#39;</li>
+<li><code>padding</code>: &#39;none&#39; | &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;</li>
+<li><code>interactive</code>: boolean</li>
+<li><code>selected</code>: boolean</li>
+<li><code>header</code>, <code>footer</code>: JSX.Element</li>
+</ul>
+<h4>TextField</h4>
+<p>Flexible text input with validation and styling.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">TextField</span>
+  label=<span class="hljs-string">&quot;Full Name&quot;</span>
+  placeholder=<span class="hljs-string">&quot;Enter your name&quot;</span>
+  error={hasError}
+  errorMessage=<span class="hljs-string">&quot;This field is required&quot;</span>
+  leftIcon={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserIcon</span> /&gt;</span></span>}
+  required
+/&gt;</code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>variant</code>: &#39;default&#39; | &#39;filled&#39; | &#39;outlined&#39;</li>
+<li><code>size</code>: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;</li>
+<li><code>error</code>: boolean</li>
+<li><code>errorMessage</code>, <code>helperText</code>: string</li>
+<li><code>label</code>: string</li>
+<li><code>required</code>: boolean</li>
+<li><code>leftIcon</code>, <code>rightIcon</code>: JSX.Element</li>
+<li><code>fullWidth</code>: boolean</li>
+<li><code>loading</code>: boolean</li>
+</ul>
+<h4>Select</h4>
+<p>Dropdown select component with options support.</p>
+<pre><code class="hljs language-tsx">&lt;<span class="hljs-title class_">Select</span>
+  label=<span class="hljs-string">&quot;Country&quot;</span>
+  placeholder=<span class="hljs-string">&quot;Choose a country&quot;</span>
+  options={[
+    { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;us&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;United States&quot;</span> },
+    { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;ca&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Canada&quot;</span> },
+    { <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;uk&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;United Kingdom&quot;</span> },
+  ]}
+/&gt;</code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>variant</code>: &#39;default&#39; | &#39;filled&#39; | &#39;outlined&#39;</li>
+<li><code>size</code>: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;</li>
+<li><code>options</code>: SelectOption[]</li>
+<li><code>placeholder</code>: string</li>
+<li>All TextField props except <code>type</code></li>
+</ul>
+<h3>Composite Components</h3>
+<h4>Modal</h4>
+<p>Flexible modal dialog with backdrop and animations.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> [isOpen, setIsOpen] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">false</span>);
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Modal</span>
+  <span class="hljs-attr">open</span>=<span class="hljs-string">{isOpen()}</span>
+  <span class="hljs-attr">onClose</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsOpen(false)}
+  title=&quot;Confirm Action&quot;
+  size=&quot;md&quot;
+&gt;
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Are you sure you want to continue?<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">display:</span> &quot;<span class="hljs-attr">flex</span>&quot;, <span class="hljs-attr">gap:</span> &quot;<span class="hljs-attr">1rem</span>&quot;, <span class="hljs-attr">marginTop:</span> &quot;<span class="hljs-attr">1rem</span>&quot; }}&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setIsOpen(false)}&gt;Cancel<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;primary&quot;</span>&gt;</span>Confirm<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Modal</span>&gt;</span></span>;</code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>open</code>: boolean</li>
+<li><code>onClose</code>: () =&gt; void</li>
+<li><code>size</code>: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39; | &#39;xl&#39; | &#39;full&#39;</li>
+<li><code>title</code>: JSX.Element</li>
+<li><code>showCloseButton</code>: boolean</li>
+<li><code>closeOnBackdrop</code>, <code>closeOnEscape</code>: boolean</li>
+</ul>
+<h4>Tabs</h4>
+<p>Tab navigation with keyboard support and accessibility.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> [activeTab, setActiveTab] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;tab1&quot;</span>);
+
+<span class="hljs-keyword">const</span> tabs = [
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;tab1&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Overview&quot;</span>, <span class="hljs-attr">icon</span>: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">OverviewIcon</span> /&gt;</span></span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;tab2&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Settings&quot;</span>, <span class="hljs-attr">badge</span>: <span class="hljs-number">3</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;tab3&quot;</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">&quot;Help&quot;</span> },
+];
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Tabs</span>
+  <span class="hljs-attr">items</span>=<span class="hljs-string">{tabs}</span>
+  <span class="hljs-attr">activeTab</span>=<span class="hljs-string">{activeTab()}</span>
+  <span class="hljs-attr">onTabChange</span>=<span class="hljs-string">{setActiveTab}</span>
+  <span class="hljs-attr">variant</span>=<span class="hljs-string">&quot;pills&quot;</span>
+&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">TabPanel</span> <span class="hljs-attr">tabId</span>=<span class="hljs-string">&quot;tab1&quot;</span> <span class="hljs-attr">activeTab</span>=<span class="hljs-string">{activeTab()}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Overview Content<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">TabPanel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">TabPanel</span> <span class="hljs-attr">tabId</span>=<span class="hljs-string">&quot;tab2&quot;</span> <span class="hljs-attr">activeTab</span>=<span class="hljs-string">{activeTab()}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Settings Content<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">TabPanel</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">TabPanel</span> <span class="hljs-attr">tabId</span>=<span class="hljs-string">&quot;tab3&quot;</span> <span class="hljs-attr">activeTab</span>=<span class="hljs-string">{activeTab()}</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>Help Content<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">TabPanel</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">Tabs</span>&gt;</span></span>;</code></pre><p><strong>Props:</strong></p>
+<ul>
+<li><code>items</code>: TabItem[]</li>
+<li><code>activeTab</code>: string</li>
+<li><code>onTabChange</code>: (tabId: string) =&gt; void</li>
+<li><code>variant</code>: &#39;default&#39; | &#39;pills&#39; | &#39;underline&#39;</li>
+<li><code>size</code>: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;</li>
+<li><code>fullWidth</code>: boolean</li>
+</ul>
+<h2>🎨 Theming</h2>
+<p>Components automatically adapt to your theme using CSS custom properties:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-attr">--accent</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">270deg</span> <span class="hljs-number">60%</span> <span class="hljs-number">60%</span>);
+  <span class="hljs-attr">--bg-color</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">20%</span> <span class="hljs-number">95%</span>);
+  <span class="hljs-attr">--card-bg</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">85%</span>);
+  <span class="hljs-attr">--text-primary</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">240deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">12%</span>);
+  <span class="hljs-attr">--text-secondary</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">240deg</span> <span class="hljs-number">10%</span> <span class="hljs-number">45%</span>);
+  <span class="hljs-attr">--border-color</span>: <span class="hljs-built_in">hsl</span>(<span class="hljs-number">220deg</span> <span class="hljs-number">15%</span> <span class="hljs-number">75%</span>);
+  <span class="hljs-comment">/* ... */</span>
+}</code></pre><p>Works seamlessly with <code>reynard-themes</code> theme system:</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { useTheme } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-themes&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ThemedComponent</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { theme, setTheme } = <span class="hljs-title function_">useTheme</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setTheme(&quot;dark&quot;)}&gt;Current theme: {theme}<span class="hljs-tag">&lt;/<span class="hljs-name">Button</span>&gt;</span></span>
+  );
+}</code></pre><h2>♿ Accessibility</h2>
+<p>All components follow WCAG 2.1 guidelines:</p>
+<ul>
+<li><strong>Keyboard Navigation</strong>: Full keyboard support</li>
+<li><strong>Screen Readers</strong>: Proper ARIA labels and roles</li>
+<li><strong>Focus Management</strong>: Visible focus indicators</li>
+<li><strong>Color Contrast</strong>: Meets AA standards</li>
+<li><strong>Semantic HTML</strong>: Proper element usage</li>
+</ul>
+<h2>📦 Bundle Size</h2>
+<ul>
+<li><strong>Core components</strong>: ~12 kB (gzipped)</li>
+<li><strong>Styles</strong>: ~8 kB (gzipped)</li>
+<li><strong>Tree-shakable</strong>: Import only what you use</li>
+</ul>
+<h2>🧪 Testing</h2>
+<pre><code class="hljs language-bash">npm run <span class="hljs-built_in">test</span>        <span class="hljs-comment"># Run tests</span>
+npm run <span class="hljs-built_in">test</span>:coverage  <span class="hljs-comment"># Coverage report</span>
+npm run <span class="hljs-built_in">test</span>:ui     <span class="hljs-comment"># Visual test runner</span></code></pre><h3>Chat System</h3>
+<p>Complete streaming chat messaging system with AI assistant support.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">ChatContainer</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-components&quot;</span>;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ChatContainer</span>
+  <span class="hljs-attr">endpoint</span>=<span class="hljs-string">&quot;/api/chat&quot;</span>
+  <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;600px&quot;</span>
+  <span class="hljs-attr">config</span>=<span class="hljs-string">{{</span>
+    <span class="hljs-attr">enableThinking:</span> <span class="hljs-attr">true</span>,
+    <span class="hljs-attr">enableTools:</span> <span class="hljs-attr">true</span>,
+    <span class="hljs-attr">showTimestamps:</span> <span class="hljs-attr">true</span>,
+  }}
+  <span class="hljs-attr">onMessageSent</span>=<span class="hljs-string">{(message)</span> =&gt;</span> console.log(&quot;Sent:&quot;, message)}
+  onMessageReceived={(message) =&gt; console.log(&quot;Received:&quot;, message)}
+/&gt;</span>;</code></pre><p><strong>Features:</strong></p>
+<ul>
+<li><strong>Real-time Streaming</strong>: Advanced streaming text processing with real-time markdown rendering</li>
+<li><strong>Thinking Sections</strong>: Support for AI assistant thinking process visualization</li>
+<li><strong>Tool Integration</strong>: Complete tool calling system with progress tracking</li>
+<li><strong>Markdown Parsing</strong>: Full markdown support including tables, code blocks, and math</li>
+<li><strong>Accessibility</strong>: Full WCAG 2.1 compliance with keyboard navigation</li>
+<li><strong>Responsive Design</strong>: Mobile-first with adaptive layouts</li>
+<li><strong>Dark Mode</strong>: Built-in dark mode support</li>
+</ul>
+<p><a href="src/chat/README.md">📖 Complete Chat Documentation</a></p>
+<h2>🤝 Contributing</h2>
+<p>See the main <a href="../../README.md">Reynard repository</a> for contribution guidelines.</p>
+<hr>
+<p><strong>Built with ❤️ using SolidJS and modern web standards</strong> 🦊</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

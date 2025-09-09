@@ -1,0 +1,445 @@
+/**
+ * Image Grid Styles for Reynard Caption System
+ * 
+ * Comprehensive styling for image file display and management.
+ */
+
+.image-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: oklch(var(--surface-color));
+  border-radius: 0.5rem;
+  border: 1px solid oklch(var(--border-color));
+}
+
+/* Upload Section */
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: oklch(var(--surface-elevated));
+  border-radius: 0.375rem;
+  border: 2px dashed oklch(var(--border-color));
+  transition: border-color 0.2s ease;
+}
+
+.upload-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: oklch(var(--text-color));
+  margin-bottom: 0.5rem;
+}
+
+.image-upload-section:hover {
+  border-color: oklch(var(--primary-color));
+}
+
+.image-upload-input {
+  padding: 0.75rem;
+  border: 1px solid oklch(var(--border-color));
+  border-radius: 0.375rem;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-color));
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.image-upload-input:hover {
+  border-color: oklch(var(--primary-color));
+}
+
+.image-upload-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading and Error States */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: oklch(var(--info-color) / 0.1);
+  color: oklch(var(--info-color));
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: oklch(var(--error-color) / 0.1);
+  color: oklch(var(--error-color));
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Images Grid */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+/* Image File Card */
+.image-file-card {
+  display: flex;
+  flex-direction: column;
+  background: oklch(var(--surface-elevated));
+  border: 1px solid oklch(var(--border-color));
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.image-file-card:hover {
+  border-color: oklch(var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px oklch(var(--shadow-color) / 0.15);
+}
+
+.image-file-card.selected {
+  border-color: oklch(var(--primary-color));
+  box-shadow: 0 0 0 2px oklch(var(--primary-color) / 0.2);
+}
+
+/* Image Thumbnail */
+.image-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: oklch(var(--surface-color));
+}
+
+.image-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.image-file-card:hover .image-thumbnail img {
+  transform: scale(1.05);
+}
+
+.thumbnail-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-muted));
+  font-size: 2rem;
+}
+
+/* Image Overlay */
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: oklch(var(--overlay-color) / 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.image-file-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.image-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-color));
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px oklch(var(--shadow-color) / 0.2);
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px oklch(var(--shadow-color) / 0.3);
+}
+
+.generate-button {
+  background: oklch(var(--primary-color));
+  color: oklch(var(--primary-contrast));
+}
+
+.remove-button {
+  background: oklch(var(--error-color));
+  color: oklch(var(--error-contrast));
+}
+
+.action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Image Info */
+.image-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: oklch(var(--text-color));
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.image-size {
+  font-size: 0.75rem;
+  color: oklch(var(--text-muted));
+}
+
+/* Image Metadata */
+.image-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.metadata-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.metadata-item .label {
+  color: oklch(var(--text-muted));
+  font-weight: 500;
+}
+
+.metadata-item .value {
+  color: oklch(var(--text-color));
+  font-weight: 400;
+}
+
+/* Image Viewer Modal */
+.image-viewer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: oklch(var(--overlay-color) / 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.image-viewer-content {
+  background: oklch(var(--surface-elevated));
+  border-radius: 0.75rem;
+  border: 1px solid oklch(var(--border-color));
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px oklch(var(--shadow-color) / 0.3);
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: oklch(var(--surface-color));
+  color: oklch(var(--text-color));
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.close-button:hover {
+  background: oklch(var(--error-color));
+  color: oklch(var(--error-contrast));
+  transform: scale(1.1);
+}
+
+.image-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid oklch(var(--border-color));
+}
+
+.image-viewer-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: oklch(var(--text-color));
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+.image-viewer-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.generate-caption-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: oklch(var(--primary-color));
+  color: oklch(var(--primary-contrast));
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.generate-caption-button:hover:not(:disabled) {
+  background: oklch(var(--primary-color) / 0.9);
+  transform: translateY(-1px);
+}
+
+.generate-caption-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.image-viewer-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.viewer-image {
+  flex: 1;
+  object-fit: contain;
+  max-height: 60vh;
+  background: oklch(var(--surface-color));
+}
+
+.image-metadata-panel {
+  width: 300px;
+  padding: 1.5rem;
+  border-left: 1px solid oklch(var(--border-color));
+  background: oklch(var(--surface-color));
+  overflow-y: auto;
+}
+
+.image-metadata-panel h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: oklch(var(--text-color));
+  margin: 0 0 1rem 0;
+}
+
+.metadata-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .images-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .image-viewer-modal {
+    padding: 1rem;
+  }
+  
+  .image-viewer-content {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+  
+  .image-viewer-body {
+    flex-direction: column;
+  }
+  
+  .image-metadata-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid oklch(var(--border-color));
+  }
+  
+  .viewer-image {
+    max-height: 50vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .images-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .image-thumbnail {
+    height: 150px;
+  }
+  
+  .image-info {
+    padding: 0.75rem;
+  }
+  
+  .image-name {
+    font-size: 0.8rem;
+  }
+  
+  .image-size {
+    font-size: 0.7rem;
+  }
+}

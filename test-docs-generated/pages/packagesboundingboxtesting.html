@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BoundingBoxEditor Testing Guide - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>BoundingBoxEditor Testing Guide</h1>
+      <div class="markdown-content"><h1>BoundingBoxEditor Testing Guide</h1>
+<p>This document provides a comprehensive overview of the testing strategy and implementation for the BoundingBoxEditor component and its related composables.</p>
+<h2>Test Structure</h2>
+<p>The test suite is organized into several categories:</p>
+<h3>1. Component Tests (<code>BoundingBoxEditor.test.tsx</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: Unit tests for the main BoundingBoxEditor component</li>
+<li><strong>Coverage</strong>: Component rendering, props handling, user interactions, configuration options</li>
+<li><strong>Key Areas</strong>:<ul>
+<li>Component initialization and rendering</li>
+<li>Label management and selection</li>
+<li>Box management (add, edit, delete)</li>
+<li>Event handling and callbacks</li>
+<li>Configuration options</li>
+<li>Error handling</li>
+</ul>
+</li>
+</ul>
+<h3>2. Composable Tests</h3>
+<ul>
+<li><strong><code>useBoxResize.test.ts</code></strong>: Tests for the resize functionality</li>
+<li><strong><code>useBoxMove.test.ts</code></strong>: Tests for the move functionality</li>
+<li><strong>Coverage</strong>: State management, constraints, event handling, configuration</li>
+</ul>
+<h3>3. Integration Tests (<code>BoundingBoxEditor.integration.test.tsx</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: End-to-end user workflows and complex scenarios</li>
+<li><strong>Coverage</strong>:<ul>
+<li>Complete user workflows (create, edit, delete)</li>
+<li>Canvas interactions with Fabric.js</li>
+<li>State synchronization</li>
+<li>Performance testing</li>
+<li>Error recovery</li>
+</ul>
+</li>
+</ul>
+<h3>4. Accessibility Tests (<code>BoundingBoxEditor.accessibility.test.tsx</code>)</h3>
+<ul>
+<li><strong>Purpose</strong>: WCAG compliance and accessibility features</li>
+<li><strong>Coverage</strong>:<ul>
+<li>ARIA labels and roles</li>
+<li>Keyboard navigation</li>
+<li>Screen reader compatibility</li>
+<li>Focus management</li>
+<li>Visual accessibility</li>
+</ul>
+</li>
+</ul>
+<h2>Test Configuration</h2>
+<h3>Dependencies</h3>
+<ul>
+<li><strong>Vitest</strong>: Test runner and assertion library</li>
+<li><strong>@solidjs/testing-library</strong>: SolidJS component testing utilities</li>
+<li><strong>@testing-library/jest-dom</strong>: Additional DOM matchers</li>
+<li><strong>jsdom</strong>: DOM environment for testing</li>
+</ul>
+<h3>Setup</h3>
+<p>The test setup (<code>src/test-setup.ts</code>) includes:</p>
+<ul>
+<li>Fabric.js mocking for canvas operations</li>
+<li>Jest DOM matchers for better assertions</li>
+<li>Global test configuration</li>
+</ul>
+<h2>Running Tests</h2>
+<h3>Available Scripts</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run all tests in watch mode</span>
+npm run <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests once</span>
+npm run <span class="hljs-built_in">test</span>:run
+
+<span class="hljs-comment"># Run tests with coverage report</span>
+npm run <span class="hljs-built_in">test</span>:coverage
+
+<span class="hljs-comment"># Run tests with UI interface</span>
+npm run <span class="hljs-built_in">test</span>:ui
+
+<span class="hljs-comment"># Run tests in watch mode</span>
+npm run <span class="hljs-built_in">test</span>:watch</code></pre><h3>Test Categories</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run only component tests</span>
+npm run <span class="hljs-built_in">test</span> -- --grep <span class="hljs-string">&quot;BoundingBoxEditor&quot;</span>
+
+<span class="hljs-comment"># Run only composable tests</span>
+npm run <span class="hljs-built_in">test</span> -- --grep <span class="hljs-string">&quot;useBox&quot;</span>
+
+<span class="hljs-comment"># Run only integration tests</span>
+npm run <span class="hljs-built_in">test</span> -- --grep <span class="hljs-string">&quot;Integration&quot;</span>
+
+<span class="hljs-comment"># Run only accessibility tests</span>
+npm run <span class="hljs-built_in">test</span> -- --grep <span class="hljs-string">&quot;Accessibility&quot;</span></code></pre><h2>Test Coverage</h2>
+<h3>Current Coverage Areas</h3>
+<ul>
+<li>✅ Component rendering and initialization</li>
+<li>✅ User interactions (click, keyboard)</li>
+<li>✅ Event handling and callbacks</li>
+<li>✅ Configuration options</li>
+<li>✅ Error handling and edge cases</li>
+<li>✅ Accessibility features</li>
+<li>✅ Integration workflows</li>
+<li>✅ Performance scenarios</li>
+</ul>
+<h3>Coverage Goals</h3>
+<ul>
+<li><strong>Statements</strong>: 90%+</li>
+<li><strong>Branches</strong>: 85%+</li>
+<li><strong>Functions</strong>: 90%+</li>
+<li><strong>Lines</strong>: 90%+</li>
+</ul>
+<h2>Mocking Strategy</h2>
+<h3>Fabric.js Mocking</h3>
+<p>The test suite includes comprehensive mocking for Fabric.js:</p>
+<ul>
+<li>Canvas operations (add, remove, clear, render)</li>
+<li>Event handling (mouse events, object selection)</li>
+<li>Object creation and manipulation</li>
+<li>Pointer and coordinate calculations</li>
+</ul>
+<h3>Event Handler Mocking</h3>
+<p>All event handlers are mocked using Vitest&#39;s <code>vi.fn()</code> to:</p>
+<ul>
+<li>Track function calls and arguments</li>
+<li>Verify event propagation</li>
+<li>Test callback behavior</li>
+</ul>
+<h2>Testing Patterns</h2>
+<h3>Component Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Render component with props</span>
+<span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">BoundingBoxEditor</span>
+    <span class="hljs-attr">imageInfo</span>=<span class="hljs-string">{mockImageInfo}</span>
+    <span class="hljs-attr">config</span>=<span class="hljs-string">{defaultConfig}</span>
+    <span class="hljs-attr">eventHandlers</span>=<span class="hljs-string">{mockEventHandlers}</span>
+  /&gt;</span></span>
+));
+
+<span class="hljs-comment">// Assert component state</span>
+<span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Bounding Boxes (0)&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+
+<span class="hljs-comment">// Simulate user interaction</span>
+fireEvent.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/edit/i</span> }));
+
+<span class="hljs-comment">// Verify event handling</span>
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">expect</span>(mockEventHandlers.<span class="hljs-property">onEditingStart</span>).<span class="hljs-title function_">toHaveBeenCalled</span>();
+});</code></pre><h3>Composable Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Initialize composable</span>
+<span class="hljs-keyword">const</span> resizeEngine = <span class="hljs-title function_">useBoxResize</span>({
+  <span class="hljs-attr">minWidth</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">minHeight</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">maxWidth</span>: <span class="hljs-number">1920</span>,
+  <span class="hljs-attr">maxHeight</span>: <span class="hljs-number">1080</span>,
+  <span class="hljs-attr">onResizeStart</span>: mockCallback,
+});
+
+<span class="hljs-comment">// Test functionality</span>
+resizeEngine.<span class="hljs-title function_">startResize</span>(<span class="hljs-string">&quot;box-1&quot;</span>, <span class="hljs-string">&quot;se&quot;</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">100</span> });
+<span class="hljs-title function_">expect</span>(mockCallback).<span class="hljs-title function_">toHaveBeenCalledWith</span>(<span class="hljs-string">&quot;box-1&quot;</span>);</code></pre><h3>Integration Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Test complete workflows</span>
+<span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should handle complete box creation workflow&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-comment">// Simulate canvas interactions</span>
+  fireEvent.<span class="hljs-title function_">mouseDown</span>(canvas, { <span class="hljs-attr">clientX</span>: <span class="hljs-number">100</span>, <span class="hljs-attr">clientY</span>: <span class="hljs-number">100</span> });
+  fireEvent.<span class="hljs-title function_">mouseMove</span>(canvas, { <span class="hljs-attr">clientX</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">clientY</span>: <span class="hljs-number">200</span> });
+  fireEvent.<span class="hljs-title function_">mouseUp</span>(canvas, { <span class="hljs-attr">clientX</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">clientY</span>: <span class="hljs-number">200</span> });
+
+  <span class="hljs-comment">// Verify end-to-end behavior</span>
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">expect</span>(mockEventHandlers.<span class="hljs-property">onAnnotationCreate</span>).<span class="hljs-title function_">toHaveBeenCalled</span>();
+  });
+});</code></pre><h2>Best Practices</h2>
+<h3>1. Test Organization</h3>
+<ul>
+<li>Group related tests using <code>describe</code> blocks</li>
+<li>Use descriptive test names that explain the expected behavior</li>
+<li>Keep tests focused on single responsibilities</li>
+</ul>
+<h3>2. Mocking</h3>
+<ul>
+<li>Mock external dependencies (Fabric.js, DOM APIs)</li>
+<li>Use realistic mock data that matches production scenarios</li>
+<li>Reset mocks between tests to avoid interference</li>
+</ul>
+<h3>3. Assertions</h3>
+<ul>
+<li>Use specific assertions that test the exact behavior</li>
+<li>Test both positive and negative cases</li>
+<li>Verify side effects and state changes</li>
+</ul>
+<h3>4. Async Testing</h3>
+<ul>
+<li>Use <code>waitFor</code> for async operations</li>
+<li>Test loading states and error conditions</li>
+<li>Handle timing issues with proper async/await patterns</li>
+</ul>
+<h3>5. Accessibility Testing</h3>
+<ul>
+<li>Test keyboard navigation paths</li>
+<li>Verify ARIA labels and roles</li>
+<li>Check focus management</li>
+<li>Test screen reader compatibility</li>
+</ul>
+<h2>Common Issues and Solutions</h2>
+<h3>1. Canvas Testing</h3>
+<p><strong>Issue</strong>: Fabric.js canvas operations are difficult to test<br><strong>Solution</strong>: Comprehensive mocking of Fabric.js APIs with realistic behavior</p>
+<h3>2. Event Timing</h3>
+<p><strong>Issue</strong>: Canvas events may not fire in the expected order<br><strong>Solution</strong>: Use <code>waitFor</code> and proper async/await patterns</p>
+<h3>3. State Synchronization</h3>
+<p><strong>Issue</strong>: Component state may not update immediately<br><strong>Solution</strong>: Test state changes with <code>waitFor</code> and verify final state</p>
+<h3>4. Mock Cleanup</h3>
+<p><strong>Issue</strong>: Mocks may interfere between tests<br><strong>Solution</strong>: Use <code>beforeEach</code> and <code>afterEach</code> to reset mocks</p>
+<h2>Performance Testing</h2>
+<h3>Large Dataset Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;should handle large numbers of boxes efficiently&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> manyBoxes = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>({ <span class="hljs-attr">length</span>: <span class="hljs-number">100</span> }, <span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> ({
+    ...mockBoundingBox,
+    <span class="hljs-attr">id</span>: <span class="hljs-string">`box-<span class="hljs-subst">${i}</span>`</span>,
+    <span class="hljs-attr">x</span>: (i % <span class="hljs-number">10</span>) * <span class="hljs-number">200</span>,
+    <span class="hljs-attr">y</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(i / <span class="hljs-number">10</span>) * <span class="hljs-number">200</span>
+  }));
+
+  <span class="hljs-keyword">const</span> startTime = performance.<span class="hljs-title function_">now</span>();
+  <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">BoundingBoxEditor</span>
+      <span class="hljs-attr">imageInfo</span>=<span class="hljs-string">{mockImageInfo}</span>
+      <span class="hljs-attr">config</span>=<span class="hljs-string">{defaultConfig}</span>
+      <span class="hljs-attr">eventHandlers</span>=<span class="hljs-string">{mockEventHandlers}</span>
+      <span class="hljs-attr">initialBoxes</span>=<span class="hljs-string">{manyBoxes}</span>
+    /&gt;</span></span>
+  ));
+  <span class="hljs-keyword">const</span> endTime = performance.<span class="hljs-title function_">now</span>();
+
+  <span class="hljs-title function_">expect</span>(endTime - startTime).<span class="hljs-title function_">toBeLessThan</span>(<span class="hljs-number">1000</span>);
+});</code></pre><h3>Rapid Interaction Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">it</span>(<span class="hljs-string">&quot;should handle rapid user interactions&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  <span class="hljs-comment">// Simulate rapid clicks</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+    fireEvent.<span class="hljs-title function_">click</span>(editButton);
+    fireEvent.<span class="hljs-title function_">click</span>(cancelButton);
+  }
+
+  <span class="hljs-comment">// Should handle all interactions without errors</span>
+  <span class="hljs-title function_">expect</span>(mockEventHandlers.<span class="hljs-property">onEditingStart</span>).<span class="hljs-title function_">toHaveBeenCalledTimes</span>(<span class="hljs-number">10</span>);
+});</code></pre><h2>Continuous Integration</h2>
+<h3>GitHub Actions</h3>
+<p>The test suite is designed to run in CI environments:</p>
+<ul>
+<li>Fast execution with parallel test runs</li>
+<li>Comprehensive coverage reporting</li>
+<li>Linting and type checking integration</li>
+</ul>
+<h3>Pre-commit Hooks</h3>
+<p>Recommended pre-commit hooks:</p>
+<ul>
+<li>Run tests before committing</li>
+<li>Check test coverage thresholds</li>
+<li>Lint test files</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Improvements</h3>
+<ol>
+<li><strong>Visual Regression Testing</strong>: Screenshot comparisons for UI changes</li>
+<li><strong>E2E Testing</strong>: Full browser automation with Playwright</li>
+<li><strong>Performance Benchmarking</strong>: Automated performance regression detection</li>
+<li><strong>Accessibility Auditing</strong>: Automated WCAG compliance checking</li>
+</ol>
+<h3>Test Data Management</h3>
+<ul>
+<li>Centralized test data factories</li>
+<li>Realistic image data for testing</li>
+<li>Edge case data sets</li>
+</ul>
+<h2>Contributing</h2>
+<h3>Adding New Tests</h3>
+<ol>
+<li>Follow the existing test structure and naming conventions</li>
+<li>Add tests for new features and bug fixes</li>
+<li>Ensure tests are deterministic and don&#39;t depend on external state</li>
+<li>Update this documentation when adding new test categories</li>
+</ol>
+<h3>Test Review Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Tests cover the main functionality</li>
+<li><input disabled="" type="checkbox"> Edge cases and error conditions are tested</li>
+<li><input disabled="" type="checkbox"> Accessibility features are verified</li>
+<li><input disabled="" type="checkbox"> Performance implications are considered</li>
+<li><input disabled="" type="checkbox"> Tests are maintainable and readable</li>
+<li><input disabled="" type="checkbox"> Mocking is appropriate and realistic</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor Config and Prettier Setup - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Editor Config and Prettier Setup</h1>
+      <div class="markdown-content"><h1>Editor Config and Prettier Setup</h1>
+<p>This document describes the Editor Config and Prettier configuration for YipYap, ensuring consistent code formatting across different editors and development environments.</p>
+<h2>Overview</h2>
+<p>The project uses Editor Config for basic editor settings and Prettier for advanced code formatting. This combination ensures:</p>
+<ul>
+<li><strong>Consistent formatting</strong> across all developers and editors</li>
+<li><strong>Automatic formatting</strong> on save and commit</li>
+<li><strong>CSS-specific optimizations</strong> for <code>@layer</code> blocks and import order</li>
+<li><strong>Integration</strong> with existing Stylelint and TypeScript tooling</li>
+</ul>
+<h2>Files</h2>
+<h3>Configuration Files</h3>
+<ul>
+<li><code>.editorconfig</code> - Basic editor settings (indentation, line endings, etc.)</li>
+<li><code>.prettierrc</code> - Prettier formatting rules</li>
+<li><code>.prettierignore</code> - Files to exclude from Prettier formatting</li>
+</ul>
+<h3>Scripts</h3>
+<ul>
+<li><code>scripts/pre-commit.sh</code> - Comprehensive pre-commit hook for all file types</li>
+<li><code>scripts/pre-commit-stylelint.sh</code> - CSS-specific pre-commit hook</li>
+<li><code>scripts/setup-git-hooks.sh</code> - Automatic git hook installation</li>
+</ul>
+<h2>Editor Config</h2>
+<p>The <code>.editorconfig</code> file defines basic editor settings that work across different IDEs and text editors.</p>
+<h3>Key Settings</h3>
+<pre><code class="hljs language-ini"><span class="hljs-comment"># Global settings</span>
+<span class="hljs-attr">charset</span> = utf-<span class="hljs-number">8</span>
+<span class="hljs-attr">end_of_line</span> = lf
+<span class="hljs-attr">insert_final_newline</span> = <span class="hljs-literal">true</span>
+<span class="hljs-attr">trim_trailing_whitespace</span> = <span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># CSS files - specific settings for @layer blocks</span>
+<span class="hljs-section">[*.{css,module.css}]</span>
+<span class="hljs-attr">indent_style</span> = space
+<span class="hljs-attr">indent_size</span> = <span class="hljs-number">2</span>
+<span class="hljs-attr">max_line_length</span> = <span class="hljs-number">120</span></code></pre><h3>Supported Editors</h3>
+<p>Editor Config is supported by most modern editors:</p>
+<ul>
+<li><strong>VS Code</strong> - Built-in support</li>
+<li><strong>WebStorm/IntelliJ</strong> - Built-in support</li>
+<li><strong>Sublime Text</strong> - With EditorConfig plugin</li>
+<li><strong>Vim/Neovim</strong> - With EditorConfig plugin</li>
+<li><strong>Emacs</strong> - With EditorConfig plugin</li>
+</ul>
+<h2>Prettier Configuration</h2>
+<p>The <code>.prettierrc</code> file defines advanced formatting rules for different file types.</p>
+<h3>Global Settings</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;semi&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;trailingComma&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;es5&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;singleQuote&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;printWidth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">120</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tabWidth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;useTabs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;bracketSpacing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;bracketSameLine&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;arrowParens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;avoid&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;endOfLine&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lf&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>CSS-Specific Settings</h3>
+<p>CSS files have special formatting rules to handle <code>@layer</code> blocks and maintain readability:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;files&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;*.{css,module.css}&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;options&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;printWidth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">120</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tabWidth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;singleQuote&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;semi&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;trailingComma&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;none&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Import Order for @layer Blocks</h3>
+<p>Prettier automatically handles <code>@layer</code> block formatting:</p>
+<pre><code class="hljs language-css"><span class="hljs-comment">/* Before formatting */</span>
+<span class="hljs-keyword">@layer</span> reset, base, components, utilities, overrides;
+
+<span class="hljs-keyword">@layer</span> components {
+  <span class="hljs-selector-class">.button</span> {
+    <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--accent);
+  }
+}
+
+<span class="hljs-keyword">@layer</span> utilities {
+  <span class="hljs-selector-class">.sr-only</span> {
+    <span class="hljs-attribute">position</span>: absolute;
+  }
+}</code></pre><pre><code class="hljs language-css"><span class="hljs-comment">/* After formatting */</span>
+<span class="hljs-keyword">@layer</span> reset, base, components, utilities, overrides;
+
+<span class="hljs-keyword">@layer</span> components {
+  <span class="hljs-selector-class">.button</span> {
+    <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--accent);
+  }
+}
+
+<span class="hljs-keyword">@layer</span> utilities {
+  <span class="hljs-selector-class">.sr-only</span> {
+    <span class="hljs-attribute">position</span>: absolute;
+  }
+}</code></pre><h2>Git Hooks</h2>
+<h3>Pre-commit Hooks</h3>
+<p>The project includes two pre-commit hooks:</p>
+<ol>
+<li><p><strong>Comprehensive Hook</strong> (<code>scripts/pre-commit.sh</code>)</p>
+<ul>
+<li>Formats all file types with Prettier</li>
+<li>Runs Stylelint on CSS files</li>
+<li>Runs TypeScript type checking</li>
+<li>Runs tests if files were modified</li>
+</ul>
+</li>
+<li><p><strong>CSS-Only Hook</strong> (<code>scripts/pre-commit-stylelint.sh</code>)</p>
+<ul>
+<li>Formats CSS files with Prettier</li>
+<li>Runs Stylelint on CSS files</li>
+<li>Faster for CSS-only changes</li>
+</ul>
+</li>
+</ol>
+<h3>Installation</h3>
+<p>Run the setup script to install git hooks:</p>
+<pre><code class="hljs language-bash">npm run setup-hooks</code></pre><p>Or manually:</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">chmod</span> +x scripts/pre-commit.sh
+<span class="hljs-built_in">chmod</span> +x scripts/pre-commit-stylelint.sh
+<span class="hljs-built_in">cp</span> scripts/pre-commit.sh .git/hooks/pre-commit
+<span class="hljs-built_in">chmod</span> +x .git/hooks/pre-commit</code></pre><h2>NPM Scripts</h2>
+<p>The following npm scripts are available for formatting and linting:</p>
+<h3>Formatting Scripts</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Format all files</span>
+npm run format
+
+<span class="hljs-comment"># Check formatting without changing files</span>
+npm run format:check
+
+<span class="hljs-comment"># Run both Stylelint and format checking</span>
+npm run lint
+
+<span class="hljs-comment"># Run Stylelint and format all files</span>
+npm run lint:fix</code></pre><h3>CSS-Specific Scripts</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Run Stylelint on CSS files</span>
+npm run styles
+
+<span class="hljs-comment"># Setup git hooks</span>
+npm run setup-hooks</code></pre><h2>Integration with Existing Tools</h2>
+<h3>Stylelint Integration</h3>
+<p>Prettier and Stylelint work together:</p>
+<ol>
+<li><strong>Prettier</strong> handles formatting (spacing, line breaks, etc.)</li>
+<li><strong>Stylelint</strong> handles linting (rules, best practices, etc.)</li>
+</ol>
+<p>The configuration ensures no conflicts between the tools.</p>
+<h3>TypeScript Integration</h3>
+<p>Prettier formats TypeScript files according to the project&#39;s style guide:</p>
+<ul>
+<li>2-space indentation</li>
+<li>Single quotes for strings</li>
+<li>Semicolons required</li>
+<li>120 character line length</li>
+</ul>
+<h3>Vite Integration</h3>
+<p>The Vite configuration includes <code>vite-plugin-stylelint</code> for development-time linting.</p>
+<h2>Editor Setup</h2>
+<h3>VS Code</h3>
+<ol>
+<li>Install the <strong>EditorConfig</strong> extension</li>
+<li>Install the <strong>Prettier</strong> extension</li>
+<li>Configure VS Code settings:</li>
+</ol>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;editor.formatOnSave&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;editor.defaultFormatter&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;esbenp.prettier-vscode&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;[css]&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;editor.defaultFormatter&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;esbenp.prettier-vscode&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;[typescript]&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;editor.defaultFormatter&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;esbenp.prettier-vscode&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;[typescriptreact]&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;editor.defaultFormatter&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;esbenp.prettier-vscode&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>WebStorm/IntelliJ</h3>
+<ol>
+<li>Enable EditorConfig support in settings</li>
+<li>Install the Prettier plugin</li>
+<li>Configure Prettier as the default formatter for supported file types</li>
+</ol>
+<h3>Other Editors</h3>
+<p>Most editors support EditorConfig and Prettier through plugins or built-in features. Check the respective editor documentation for setup instructions.</p>
+<h2>Workflow</h2>
+<h3>Development Workflow</h3>
+<ol>
+<li><strong>Write code</strong> - Editor automatically formats on save</li>
+<li><strong>Stage changes</strong> - <code>git add &lt;files&gt;</code></li>
+<li><strong>Commit</strong> - Pre-commit hooks automatically format and lint</li>
+<li><strong>Push</strong> - Code is consistently formatted</li>
+</ol>
+<h3>Manual Formatting</h3>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Format specific files</span>
+npx prettier --write src/components/Button.tsx
+
+<span class="hljs-comment"># Format all files</span>
+npm run format
+
+<span class="hljs-comment"># Check formatting</span>
+npm run format:check</code></pre><h3>Troubleshooting</h3>
+<h4>Format Conflicts</h4>
+<p>If Prettier and Stylelint conflict:</p>
+<ol>
+<li>Run <code>npm run lint:fix</code> to format and fix issues</li>
+<li>Check the configuration files for conflicting rules</li>
+<li>Use <code>/* prettier-ignore */</code> comments sparingly</li>
+</ol>
+<h4>Git Hook Issues</h4>
+<p>If pre-commit hooks fail:</p>
+<ol>
+<li>Check that the hooks are executable: <code>ls -la .git/hooks/</code></li>
+<li>Reinstall hooks: <code>npm run setup-hooks</code></li>
+<li>Check for syntax errors in the hook scripts</li>
+</ol>
+<h4>Editor Integration Issues</h4>
+<p>If formatting doesn&#39;t work in your editor:</p>
+<ol>
+<li>Verify EditorConfig and Prettier extensions are installed</li>
+<li>Check editor settings for formatter configuration</li>
+<li>Restart the editor after configuration changes</li>
+</ol>
+<h2>Best Practices</h2>
+<h3>CSS Formatting</h3>
+<ul>
+<li>Use <code>@layer</code> blocks to organize CSS</li>
+<li>Keep selectors simple and avoid deep nesting</li>
+<li>Use CSS custom properties for values</li>
+<li>Maintain consistent spacing around properties</li>
+</ul>
+<h3>TypeScript/JavaScript Formatting</h3>
+<ul>
+<li>Use consistent import ordering</li>
+<li>Prefer const over let when possible</li>
+<li>Use template literals for string interpolation</li>
+<li>Keep functions focused and small</li>
+</ul>
+<h3>Commit Messages</h3>
+<ul>
+<li>Use conventional commit format</li>
+<li>Keep messages concise and descriptive</li>
+<li>Reference issues when applicable</li>
+</ul>
+<h2>Configuration Reference</h2>
+<h3>EditorConfig Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>charset</code></td>
+<td>File encoding</td>
+<td><code>utf-8</code></td>
+</tr>
+<tr>
+<td><code>end_of_line</code></td>
+<td>Line ending style</td>
+<td><code>lf</code></td>
+</tr>
+<tr>
+<td><code>insert_final_newline</code></td>
+<td>Add newline at end</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>trim_trailing_whitespace</code></td>
+<td>Remove trailing spaces</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>indent_style</code></td>
+<td>Indentation type</td>
+<td><code>space</code></td>
+</tr>
+<tr>
+<td><code>indent_size</code></td>
+<td>Indentation size</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>max_line_length</code></td>
+<td>Maximum line length</td>
+<td><code>120</code></td>
+</tr>
+</tbody></table>
+<h3>Prettier Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>semi</code></td>
+<td>Add semicolons</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>trailingComma</code></td>
+<td>Trailing comma style</td>
+<td><code>es5</code></td>
+</tr>
+<tr>
+<td><code>singleQuote</code></td>
+<td>Use single quotes</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>printWidth</code></td>
+<td>Line length</td>
+<td><code>120</code></td>
+</tr>
+<tr>
+<td><code>tabWidth</code></td>
+<td>Tab width</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>useTabs</code></td>
+<td>Use tabs instead of spaces</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>bracketSpacing</code></td>
+<td>Spaces in object literals</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>bracketSameLine</code></td>
+<td>JSX bracket placement</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>arrowParens</code></td>
+<td>Arrow function parentheses</td>
+<td><code>avoid</code></td>
+</tr>
+<tr>
+<td><code>endOfLine</code></td>
+<td>Line ending</td>
+<td><code>lf</code></td>
+</tr>
+</tbody></table>
+<h2>Migration Guide</h2>
+<h3>From Manual Formatting</h3>
+<p>If you&#39;re migrating from manual formatting:</p>
+<ol>
+<li>Install the configuration files</li>
+<li>Set up your editor with the required extensions</li>
+<li>Run <code>npm run format</code> to format existing code</li>
+<li>Install git hooks: <code>npm run setup-hooks</code></li>
+<li>Update your workflow to use the new scripts</li>
+</ol>
+<h3>From Other Formatters</h3>
+<p>If you&#39;re migrating from other formatters:</p>
+<ol>
+<li>Remove old formatter configurations</li>
+<li>Install Prettier and EditorConfig</li>
+<li>Update editor settings</li>
+<li>Test formatting on a few files</li>
+<li>Gradually migrate the codebase</li>
+</ol>
+<h2>Future Enhancements</h2>
+<h3>Potential Improvements</h3>
+<ul>
+<li><strong>Import sorting</strong> - Add import order rules</li>
+<li><strong>Custom Prettier plugins</strong> - Project-specific formatting rules</li>
+<li><strong>CI integration</strong> - Automated formatting checks in CI/CD</li>
+<li><strong>Performance optimization</strong> - Faster formatting for large codebases</li>
+</ul>
+<h3>Configuration Evolution</h3>
+<p>The configuration will evolve based on:</p>
+<ul>
+<li>Team feedback and preferences</li>
+<li>New language features and best practices</li>
+<li>Tool updates and improvements</li>
+<li>Project-specific requirements</li>
+</ul>
+<h2>Support</h2>
+<p>For issues with Editor Config or Prettier setup:</p>
+<ol>
+<li>Check this documentation</li>
+<li>Review the configuration files</li>
+<li>Test with a minimal example</li>
+<li>Consult the tool documentation</li>
+<li>Ask the development team</li>
+</ol>
+<h2>References</h2>
+<ul>
+<li><a href="https://editorconfig.org/">EditorConfig</a> - Official documentation</li>
+<li><a href="https://prettier.io/">Prettier</a> - Official documentation</li>
+<li><a href="https://stylelint.io/">Stylelint</a> - CSS linting tool</li>
+<li><a href="https://git-scm.com/docs/githooks">Git Hooks</a> - Git hook documentation</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

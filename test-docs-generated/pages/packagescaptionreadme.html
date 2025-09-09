@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-caption - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-caption</h1>
+      <div class="markdown-content"><h1>reynard-caption</h1>
+<p>Caption editing UI components for Reynard applications - provides textarea and tag bubbles for caption editing with a modern, accessible interface.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>TagBubble Component</strong>: Interactive tag bubbles with editing, removal, and navigation capabilities</li>
+<li><strong>CaptionInput Component</strong>: Comprehensive caption input with support for different caption types</li>
+<li><strong>Tag Management</strong>: Utilities for tag parsing, validation, and autocomplete</li>
+<li><strong>Accessibility</strong>: Full keyboard navigation and screen reader support</li>
+<li><strong>Theming</strong>: Support for light/dark modes and high contrast</li>
+<li><strong>TypeScript Support</strong>: Full TypeScript support with comprehensive type definitions</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-caption</code></pre><h2>Quick Start</h2>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">TagBubble</span>, <span class="hljs-title class_">CaptionInput</span>, <span class="hljs-title class_">CaptionType</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-caption&#x27;</span>;
+
+<span class="hljs-comment">// Basic tag bubble</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">MyTagBubble</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> [tag, setTag] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&#x27;furry&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TagBubble</span>
+      <span class="hljs-attr">tag</span>=<span class="hljs-string">{tag()}</span>
+      <span class="hljs-attr">index</span>=<span class="hljs-string">{0}</span>
+      <span class="hljs-attr">onEdit</span>=<span class="hljs-string">{(newTag)</span> =&gt;</span> setTag(newTag)}
+      onRemove={() =&gt; setTag(&#x27;&#x27;)}
+      editable={true}
+      removable={true}
+    /&gt;</span>
+  );
+};
+
+<span class="hljs-comment">// Caption input with different types</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">MyCaptionInput</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> [caption, setCaption] = <span class="hljs-title function_">createSignal</span>({
+    <span class="hljs-attr">type</span>: <span class="hljs-title class_">CaptionType</span>.<span class="hljs-property">TAGS</span>,
+    <span class="hljs-attr">content</span>: <span class="hljs-string">&#x27;furry, anthro, digital art&#x27;</span>
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CaptionInput</span>
+      <span class="hljs-attr">caption</span>=<span class="hljs-string">{caption()}</span>
+      <span class="hljs-attr">state</span>=<span class="hljs-string">&quot;expanded&quot;</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {}}
+      onCaptionChange={setCaption}
+      onSave={(caption) =&gt; console.log(&#x27;Saved:&#x27;, caption)}
+      placeholder=&quot;Enter tags...&quot;
+    /&gt;</span>
+  );
+};</code></pre><h2>API Reference</h2>
+<h3>TagBubble</h3>
+<p>A component that renders an individual tag with editing and navigation capabilities.</p>
+<h4>Props</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">TagBubbleProps</span> {
+  <span class="hljs-attr">tag</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// The tag text to display</span>
+  <span class="hljs-attr">index</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// The index of the tag in the list</span>
+  <span class="hljs-attr">onRemove</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Callback when tag is removed</span>
+  <span class="hljs-attr">onEdit</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">newTag</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Callback when tag is edited</span>
+  <span class="hljs-attr">onNavigate</span>?: <span class="hljs-function">(<span class="hljs-params">
+    <span class="hljs-attr">direction</span>: <span class="hljs-string">&quot;left&quot;</span> | <span class="hljs-string">&quot;right&quot;</span> | <span class="hljs-string">&quot;up&quot;</span> | <span class="hljs-string">&quot;down&quot;</span> | <span class="hljs-string">&quot;start&quot;</span> | <span class="hljs-string">&quot;end&quot;</span>,
+  </span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">editable</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Whether the tag can be edited (default: true)</span>
+  <span class="hljs-attr">removable</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Whether the tag can be removed (default: true)</span>
+  <span class="hljs-attr">color</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Custom color for the tag</span>
+  <span class="hljs-attr">size</span>?: <span class="hljs-string">&quot;small&quot;</span> | <span class="hljs-string">&quot;medium&quot;</span> | <span class="hljs-string">&quot;large&quot;</span>; <span class="hljs-comment">// Size of the tag bubble (default: &#x27;medium&#x27;)</span>
+}</code></pre><h4>Usage</h4>
+<pre><code class="hljs language-typescript">&lt;<span class="hljs-title class_">TagBubble</span>
+  tag=<span class="hljs-string">&quot;furry&quot;</span>
+  index={<span class="hljs-number">0</span>}
+  onEdit={<span class="hljs-function">(<span class="hljs-params">newTag</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Edited to:&#x27;</span>, newTag)}
+  onRemove={<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Removed&#x27;</span>)}
+  onNavigate={<span class="hljs-function">(<span class="hljs-params">direction</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Navigate:&#x27;</span>, direction)}
+  editable={<span class="hljs-literal">true</span>}
+  removable={<span class="hljs-literal">true</span>}
+  size=<span class="hljs-string">&quot;medium&quot;</span>
+/&gt;</code></pre><h3>CaptionInput</h3>
+<p>A comprehensive caption input component that supports different caption types.</p>
+<h4>Props</h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">CaptionInputProps</span> {
+  <span class="hljs-attr">caption</span>: <span class="hljs-title class_">CaptionData</span>; <span class="hljs-comment">// The caption data</span>
+  <span class="hljs-attr">state</span>: <span class="hljs-string">&quot;expanded&quot;</span> | <span class="hljs-string">&quot;collapsed&quot;</span> | <span class="hljs-literal">null</span>; <span class="hljs-comment">// Current state</span>
+  <span class="hljs-attr">onClick</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Click handler</span>
+  <span class="hljs-attr">shouldAutoFocus</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Whether to auto-focus (default: false)</span>
+  <span class="hljs-attr">imageInfo</span>?: <span class="hljs-title class_">ImageInfo</span>; <span class="hljs-comment">// Optional image information</span>
+  <span class="hljs-attr">onCaptionChange</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">caption</span>: <span class="hljs-title class_">CaptionData</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Caption change handler</span>
+  <span class="hljs-attr">onSave</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">caption</span>: <span class="hljs-title class_">CaptionData</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Save handler</span>
+  <span class="hljs-attr">onCancel</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>; <span class="hljs-comment">// Cancel handler</span>
+  <span class="hljs-attr">placeholder</span>?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Placeholder text</span>
+  <span class="hljs-attr">maxLength</span>?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// Maximum length</span>
+  <span class="hljs-attr">disabled</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Whether disabled (default: false)</span>
+  <span class="hljs-attr">readonly</span>?: <span class="hljs-built_in">boolean</span>; <span class="hljs-comment">// Whether readonly (default: false)</span>
+}</code></pre><h4>Usage</h4>
+<pre><code class="hljs language-typescript">&lt;<span class="hljs-title class_">CaptionInput</span>
+  caption={{ <span class="hljs-attr">type</span>: <span class="hljs-title class_">CaptionType</span>.<span class="hljs-property">TAGS</span>, <span class="hljs-attr">content</span>: <span class="hljs-string">&#x27;furry, anthro&#x27;</span> }}
+  state=<span class="hljs-string">&quot;expanded&quot;</span>
+  onClick={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">setExpanded</span>(<span class="hljs-literal">true</span>)}
+  onCaptionChange={<span class="hljs-function">(<span class="hljs-params">caption</span>) =&gt;</span> <span class="hljs-title function_">setCaption</span>(caption)}
+  onSave={<span class="hljs-function">(<span class="hljs-params">caption</span>) =&gt;</span> <span class="hljs-title function_">saveCaption</span>(caption)}
+  onCancel={<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">setExpanded</span>(<span class="hljs-literal">false</span>)}
+  placeholder=<span class="hljs-string">&quot;Enter tags...&quot;</span>
+  maxLength={<span class="hljs-number">1000</span>}
+/&gt;</code></pre><h2>Types</h2>
+<h3>CaptionData</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">CaptionData</span> {
+  <span class="hljs-attr">type</span>: <span class="hljs-title class_">CaptionType</span>;
+  <span class="hljs-attr">content</span>: <span class="hljs-built_in">string</span>;
+}</code></pre><h3>CaptionType</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">CaptionType</span> {
+  <span class="hljs-variable constant_">CAPTION</span> = <span class="hljs-string">&quot;caption&quot;</span>,
+  <span class="hljs-variable constant_">TAGS</span> = <span class="hljs-string">&quot;tags&quot;</span>,
+  <span class="hljs-variable constant_">E621</span> = <span class="hljs-string">&quot;e621&quot;</span>,
+  <span class="hljs-variable constant_">TOML</span> = <span class="hljs-string">&quot;toml&quot;</span>,
+}</code></pre><h2>Utilities</h2>
+<h3>Tag Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { splitAndCleanTags, validateTag, formatTags } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+
+<span class="hljs-comment">// Split comma-separated tags</span>
+<span class="hljs-keyword">const</span> tags = <span class="hljs-title function_">splitAndCleanTags</span>(<span class="hljs-string">&quot;furry, anthro, digital art&quot;</span>);
+<span class="hljs-comment">// Result: [&#x27;furry&#x27;, &#x27;anthro&#x27;, &#x27;digital art&#x27;]</span>
+
+<span class="hljs-comment">// Validate a tag</span>
+<span class="hljs-keyword">const</span> isValid = <span class="hljs-title function_">validateTag</span>(<span class="hljs-string">&quot;furry&quot;</span>);
+<span class="hljs-comment">// Result: true</span>
+
+<span class="hljs-comment">// Format tags array to string</span>
+<span class="hljs-keyword">const</span> tagString = <span class="hljs-title function_">formatTags</span>([<span class="hljs-string">&quot;furry&quot;</span>, <span class="hljs-string">&quot;anthro&quot;</span>]);
+<span class="hljs-comment">// Result: &#x27;furry, anthro&#x27;</span></code></pre><h3>Tag Colors</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createTagColorGenerator, getTagColor } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+
+<span class="hljs-comment">// Create a color generator</span>
+<span class="hljs-keyword">const</span> generator = <span class="hljs-title function_">createTagColorGenerator</span>();
+<span class="hljs-keyword">const</span> color = generator.<span class="hljs-title function_">getColor</span>(<span class="hljs-string">&quot;furry&quot;</span>);
+<span class="hljs-comment">// Result: { background: &#x27;#e3f2fd&#x27;, text: &#x27;#1976d2&#x27;, border: &#x27;#bbdefb&#x27; }</span>
+
+<span class="hljs-comment">// Get color for a single tag</span>
+<span class="hljs-keyword">const</span> color = <span class="hljs-title function_">getTagColor</span>(<span class="hljs-string">&quot;anthro&quot;</span>);</code></pre><h3>Tag Autocomplete</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { useTagAutocomplete, createTagAutocompleteManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-caption&#x27;</span>;
+
+<span class="hljs-comment">// Use in a component</span>
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">MyComponent</span> = (<span class="hljs-params"></span>) =&gt; {
+  <span class="hljs-keyword">const</span> autocomplete = <span class="hljs-title function_">useTagAutocomplete</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+        <span class="hljs-attr">value</span>=<span class="hljs-string">{autocomplete.query()}</span>
+        <span class="hljs-attr">onInput</span>=<span class="hljs-string">{(e)</span> =&gt;</span> autocomplete.setQuery(e.target.value)}
+      /&gt;
+      {autocomplete.isOpen() &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          {autocomplete.suggestions().map((suggestion, index) =&gt; (
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+              <span class="hljs-attr">class</span>=<span class="hljs-string">{index</span> === <span class="hljs-string">autocomplete.selectedIndex()</span> ? &#x27;<span class="hljs-attr">selected</span>&#x27; <span class="hljs-attr">:</span> &#x27;&#x27;}
+              <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> autocomplete.setQuery(suggestion)}
+            &gt;
+              {suggestion}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          ))}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+};</code></pre><h2>Advanced Usage</h2>
+<h3>Custom Tag Colors</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">TagColorGenerator</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+
+<span class="hljs-keyword">const</span> customGenerator = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TagColorGenerator</span>();
+<span class="hljs-comment">// Add custom colors</span>
+customGenerator.<span class="hljs-property">colors</span>.<span class="hljs-title function_">push</span>({
+  <span class="hljs-attr">background</span>: <span class="hljs-string">&quot;#ffebee&quot;</span>,
+  <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;#c62828&quot;</span>,
+  <span class="hljs-attr">border</span>: <span class="hljs-string">&quot;#ffcdd2&quot;</span>,
+});
+
+<span class="hljs-keyword">const</span> color = customGenerator.<span class="hljs-title function_">getColor</span>(<span class="hljs-string">&quot;custom-tag&quot;</span>);</code></pre><h3>Tag Validation</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { validateTag, cleanTag } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-caption&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">validateAndCleanTag</span> = (<span class="hljs-params"><span class="hljs-attr">tag</span>: <span class="hljs-built_in">string</span></span>) =&gt; {
+  <span class="hljs-keyword">const</span> cleaned = <span class="hljs-title function_">cleanTag</span>(tag);
+  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">validateTag</span>(cleaned)) {
+    <span class="hljs-keyword">return</span> cleaned;
+  }
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Invalid tag&quot;</span>);
+};</code></pre><h3>Keyboard Navigation</h3>
+<p>The components support full keyboard navigation:</p>
+<ul>
+<li><strong>Tab</strong>: Navigate between elements</li>
+<li><strong>Enter</strong>: Edit tag or save caption</li>
+<li><strong>Escape</strong>: Cancel editing or close suggestions</li>
+<li><strong>Arrow Keys</strong>: Navigate suggestions or between tags</li>
+<li><strong>Backspace/Delete</strong>: Remove tag when empty</li>
+<li><strong>Ctrl+S</strong>: Save caption</li>
+<li><strong>Ctrl+Z</strong>: Undo (when implemented)</li>
+</ul>
+<h3>Accessibility</h3>
+<p>The components are built with accessibility in mind:</p>
+<ul>
+<li>Full keyboard navigation support</li>
+<li>ARIA labels and roles</li>
+<li>Screen reader friendly</li>
+<li>High contrast mode support</li>
+<li>Reduced motion support</li>
+</ul>
+<h3>Theming</h3>
+<p>The components support CSS custom properties for theming:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-class">.tag-bubble</span> {
+  <span class="hljs-attr">--tag-color</span>: <span class="hljs-number">#e3f2fd</span>;
+  <span class="hljs-attr">--tag-text-color</span>: <span class="hljs-number">#1976d2</span>;
+  <span class="hljs-attr">--tag-border-color</span>: <span class="hljs-number">#bbdefb</span>;
+}</code></pre><h2>License</h2>
+<p>MIT</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

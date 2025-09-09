@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedding Model Management - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Embedding Model Management</h1>
+      <div class="markdown-content"><h1>Embedding Model Management</h1>
+<p>This document provides comprehensive guidance for managing embedding models in the YipYap RAG system, including automatic unloading, memory optimization, configuration options, and operational best practices.</p>
+<h2>Overview</h2>
+<p>The embedding model management system transforms the traditional &quot;load once, keep forever&quot; approach into a dynamic, memory-efficient model lifecycle management system. It automatically handles model loading, unloading, and memory optimization based on usage patterns, system resources, and configurable policies.</p>
+<h3>Key Features</h3>
+<ul>
+<li><strong>Automatic Model Unloading</strong>: Models are automatically unloaded after configurable periods of inactivity</li>
+<li><strong>Memory Pressure Detection</strong>: Proactive unloading when system memory usage is high</li>
+<li><strong>Usage Pattern Tracking</strong>: Intelligent preloading based on usage patterns</li>
+<li><strong>Multi-Model Support</strong>: Support for multiple CLIP variants and text embedding models</li>
+<li><strong>Health Monitoring</strong>: Comprehensive health checks and metrics collection</li>
+<li><strong>API Management</strong>: RESTful endpoints for manual model management</li>
+</ul>
+<h2>Architecture</h2>
+<p>The embedding model management system consists of several interconnected components:</p>
+<h3>Core Components</h3>
+<ul>
+<li><strong>ModelUsageTracker</strong>: Centralized tracking and automatic cleanup for all model types</li>
+<li><strong>ClipEmbeddingService</strong>: Manages CLIP vision embedding models with automatic unloading</li>
+<li><strong>EmbeddingService</strong>: Manages Ollama text embedding models with lifecycle tracking</li>
+<li><strong>VisionEmbeddingUnloader</strong>: Specialized unloader for vision embedding services</li>
+<li><strong>Memory Pressure Monitor</strong>: Monitors system memory and triggers proactive unloading</li>
+</ul>
+<h3>Service Integration</h3>
+<p>The system integrates with existing services through well-defined interfaces:</p>
+<ul>
+<li><strong>Service Lifecycle</strong>: Models are automatically unloaded during service shutdown</li>
+<li><strong>Health Checks</strong>: Model loading status is included in service health reports</li>
+<li><strong>Metrics Collection</strong>: Memory usage and performance metrics are tracked</li>
+<li><strong>Configuration Management</strong>: Settings are managed through the configuration system</li>
+</ul>
+<h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<p>Embedding model management can be configured through environment variables:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Enable/disable automatic model unloading</span>
+MODEL_USAGE_TRACKER_ENABLED=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># Cleanup interval (seconds)</span>
+MODEL_USAGE_TRACKER_CLEANUP_INTERVAL=60
+
+<span class="hljs-comment"># Vision embedding model timeouts (seconds)</span>
+MODEL_USAGE_TRACKER_VISION_EMBEDDING_VRAM_TIMEOUT=600
+MODEL_USAGE_TRACKER_VISION_EMBEDDING_RAM_TIMEOUT=1800
+
+<span class="hljs-comment"># Text embedding model timeouts (seconds)</span>
+MODEL_USAGE_TRACKER_EMBEDDING_MODEL_VRAM_TIMEOUT=600
+MODEL_USAGE_TRACKER_EMBEDDING_MODEL_RAM_TIMEOUT=1800
+
+<span class="hljs-comment"># Memory pressure settings</span>
+LAZY_LOADING_UNLOADING_MEMORY_PRESSURE_THRESHOLD=0.8
+LAZY_LOADING_UNLOADING_MEMORY_PRESSURE_TIMEOUT=60</code></pre><h3>Configuration File</h3>
+<p>Settings can also be configured through the configuration file:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_cleanup_interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_vision_embedding_vram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">600</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_vision_embedding_ram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1800</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_embedding_model_vram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">600</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_usage_tracker_embedding_model_ram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1800</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;lazy_loading_unloading_memory_pressure_threshold&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.8</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;lazy_loading_unloading_memory_pressure_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Timeout Configuration</h3>
+<p>Timeout settings control when models are automatically unloaded:</p>
+<ul>
+<li><strong>VRAM Timeout</strong>: Time in seconds before unloading from GPU memory (default: 600 seconds)</li>
+<li><strong>RAM Timeout</strong>: Time in seconds before unloading from system memory (default: 1800 seconds)</li>
+<li><strong>Memory Pressure Timeout</strong>: Time in seconds before unloading under memory pressure (default: 60 seconds)</li>
+</ul>
+<h2>API Reference</h2>
+<h3>Model Management Endpoints</h3>
+<h4>Unload Models</h4>
+<pre><code class="hljs language-http">POST /api/rag/embedding/unload/{model_type}</code></pre><p>Manually unload embedding models by type.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model_type</code>: Type of model to unload (<code>vision</code> or <code>text</code>)</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;unloaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vision&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CLIP model unloaded successfully&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Example:</strong></p>
+<pre><code class="hljs language-bash">curl -X POST <span class="hljs-string">&quot;http://localhost:7000/api/rag/embedding/unload/vision&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: Bearer &lt;token&gt;&quot;</span></code></pre><h4>Get Model Status</h4>
+<pre><code class="hljs language-http">GET /api/rag/embedding/status</code></pre><p>Get the current status of all embedding models.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;vision_embeddings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;model_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;dimension&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">768</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;metric&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cosine&quot;</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;vram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;ram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">128</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_pressure_level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;normal&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;last_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;text_embeddings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;mxbai-embed-large&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;model_info&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mxbai-embed-large&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;dimension&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1024</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;metric&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cosine&quot;</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;ram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">256</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;memory_pressure&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;text_embeddings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;normal&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;tracker_status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;clip_vision_embedding&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;model_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vision_embedding&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;usage_count&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">42</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;is_loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;vram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">600</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;ram_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1800</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>Reload Models</h4>
+<pre><code class="hljs language-http">POST /api/rag/embedding/reload/{model_type}</code></pre><p>Force reload a specific embedding model type.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model_type</code>: Type of model to reload (<code>vision</code> or <code>text</code>)</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Model ViT-L-14/openai reloaded successfully&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>Get Health Information</h4>
+<pre><code class="hljs language-http">GET /api/rag/embedding/health</code></pre><p>Get detailed health information for embedding services.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;timestamp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2024-01-01T12:00:00Z&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;services&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;clip_embedding_service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;healthy&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;model_loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;vram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;ram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">128</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;last_used&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1640995200.0</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;embedding_service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;healthy&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;loaded_models&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;mxbai-embed-large&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;ram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">256</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;summary&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;total_services&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;healthy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;degraded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;unhealthy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Vision Model Management</h3>
+<h4>Switch Vision Model</h4>
+<pre><code class="hljs language-http">POST /api/rag/embedding/vision/switch/{model_id}</code></pre><p>Switch to a different CLIP vision embedding model.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model_id</code>: ID of the model to switch to (e.g., <code>ViT-L-14/openai</code>)</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Successfully switched to ViT-L-14/openai&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>Unload Specific Vision Model</h4>
+<pre><code class="hljs language-http">POST /api/rag/embedding/vision/unload/{model_id}</code></pre><p>Unload a specific CLIP vision embedding model.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model_id</code>: ID of the model to unload</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;unloaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CLIP model ViT-L-14/openai unloaded successfully&quot;</span>
+<span class="hljs-punctuation">}</span></code></pre><h4>Get Vision Model Status</h4>
+<pre><code class="hljs language-http">GET /api/rag/embedding/vision/status</code></pre><p>Get detailed status information for vision embedding models.</p>
+<p><strong>Response:</strong></p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;current_model&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;loaded&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;memory_usage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;vram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">512</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;ram_mb&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">128</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;available_models&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;model_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L-14/openai&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ViT-L/14&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;dimension&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">768</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;supported_features&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;image_embedding&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;text_embedding&quot;</span><span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Model Types and Variants</h2>
+<h3>Vision Embedding Models (CLIP)</h3>
+<p>The system supports multiple CLIP model variants for vision embedding:</p>
+<ul>
+<li><strong>ViT-L-14/openai</strong>: Default CLIP model with 768-dimensional embeddings</li>
+<li><strong>ViT-B-32/openai</strong>: Smaller model with 512-dimensional embeddings</li>
+<li><strong>ViT-H-14/laion2b</strong>: High-performance model with 1024-dimensional embeddings</li>
+</ul>
+<h3>Text Embedding Models</h3>
+<p>Text embedding models are managed through the Ollama integration:</p>
+<ul>
+<li><strong>mxbai-embed-large</strong>: 1024-dimensional embeddings (default)</li>
+<li><strong>bge-m3</strong>: 1024-dimensional embeddings</li>
+<li><strong>nomic-embed-text</strong>: 768-dimensional embeddings</li>
+</ul>
+<h2>Memory Management</h2>
+<h3>Automatic Unloading</h3>
+<p>Models are automatically unloaded based on configurable timeouts:</p>
+<ol>
+<li><strong>VRAM Timeout</strong>: Models are unloaded from GPU memory after the specified timeout</li>
+<li><strong>RAM Timeout</strong>: Models are unloaded from system memory after the specified timeout</li>
+<li><strong>Memory Pressure</strong>: Models are proactively unloaded when system memory usage exceeds thresholds</li>
+</ol>
+<h3>Memory Pressure Detection</h3>
+<p>The system monitors memory usage and automatically responds to pressure:</p>
+<ul>
+<li><strong>Threshold Monitoring</strong>: Continuously monitors system memory usage</li>
+<li><strong>Proactive Unloading</strong>: Unloads models when memory usage exceeds configurable thresholds</li>
+<li><strong>Priority-Based Unloading</strong>: Unloads least recently used models first</li>
+<li><strong>Graceful Degradation</strong>: Maintains system stability during memory pressure</li>
+</ul>
+<h3>Memory Optimization Strategies</h3>
+<p>Several strategies are employed to optimize memory usage:</p>
+<ul>
+<li><strong>Lazy Loading</strong>: Models are loaded only when first needed</li>
+<li><strong>Smart Preloading</strong>: Frequently used models are preloaded during idle periods</li>
+<li><strong>Model Switching</strong>: Automatic cleanup when switching between model variants</li>
+<li><strong>Resource Cleanup</strong>: Proper cleanup of GPU and system resources</li>
+</ul>
+<h2>Best Practices</h2>
+<h3>Configuration Best Practices</h3>
+<ol>
+<li><p><strong>Set Appropriate Timeouts</strong>: Balance memory efficiency with user experience</p>
+<ul>
+<li>VRAM timeouts: 5-15 minutes for most use cases</li>
+<li>RAM timeouts: 15-60 minutes depending on system resources</li>
+</ul>
+</li>
+<li><p><strong>Monitor Memory Usage</strong>: Use the health endpoints to monitor memory consumption</p>
+<ul>
+<li>Set up alerts for high memory usage</li>
+<li>Adjust timeouts based on observed patterns</li>
+</ul>
+</li>
+<li><p><strong>Configure Memory Pressure Thresholds</strong>: Set thresholds based on system capabilities</p>
+<ul>
+<li>Default: 80% memory usage</li>
+<li>Adjust based on system stability requirements</li>
+</ul>
+</li>
+</ol>
+<h3>Operational Best Practices</h3>
+<ol>
+<li><p><strong>Regular Health Checks</strong>: Monitor embedding service health regularly</p>
+<ul>
+<li>Use the health endpoints to check service status</li>
+<li>Monitor memory usage and model loading status</li>
+</ul>
+</li>
+<li><p><strong>Graceful Shutdown</strong>: Ensure proper model unloading during service shutdown</p>
+<ul>
+<li>Models are automatically unloaded during service shutdown</li>
+<li>Monitor shutdown logs for any issues</li>
+</ul>
+</li>
+<li><p><strong>Performance Monitoring</strong>: Track model loading and inference performance</p>
+<ul>
+<li>Monitor loading times and memory consumption</li>
+<li>Optimize timeouts based on performance patterns</li>
+</ul>
+</li>
+</ol>
+<h3>Development Best Practices</h3>
+<ol>
+<li><p><strong>Model Registration</strong>: Register models with appropriate timeouts</p>
+<ul>
+<li>Use the ModelUsageTracker to register new models</li>
+<li>Set appropriate timeouts based on model characteristics</li>
+</ul>
+</li>
+<li><p><strong>Error Handling</strong>: Implement proper error handling for model operations</p>
+<ul>
+<li>Handle model loading failures gracefully</li>
+<li>Implement fallback mechanisms for critical operations</li>
+</ul>
+</li>
+<li><p><strong>Testing</strong>: Test model management functionality thoroughly</p>
+<ul>
+<li>Test automatic unloading under various conditions</li>
+<li>Verify memory cleanup and resource management</li>
+</ul>
+</li>
+</ol>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<h4>Models Not Unloading</h4>
+<p><strong>Symptoms:</strong> Models remain loaded despite timeout settings</p>
+<p><strong>Possible Causes:</strong></p>
+<ul>
+<li>ModelUsageTracker is disabled</li>
+<li>Incorrect timeout configuration</li>
+<li>Service integration issues</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li>Check if <code>MODEL_USAGE_TRACKER_ENABLED=true</code></li>
+<li>Verify timeout settings in configuration</li>
+<li>Check service logs for integration errors</li>
+<li>Use manual unload endpoints to test functionality</li>
+</ol>
+<h4>Memory Pressure Not Detected</h4>
+<p><strong>Symptoms:</strong> Models not unloading under memory pressure</p>
+<p><strong>Possible Causes:</strong></p>
+<ul>
+<li>Memory pressure thresholds not configured</li>
+<li>Monitoring system not working properly</li>
+<li>Thresholds set too high</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li>Verify memory pressure threshold configuration</li>
+<li>Check system memory monitoring</li>
+<li>Lower memory pressure thresholds if needed</li>
+<li>Monitor system logs for pressure detection events</li>
+</ol>
+<h4>Model Loading Failures</h4>
+<p><strong>Symptoms:</strong> Models fail to load or reload</p>
+<p><strong>Possible Causes:</strong></p>
+<ul>
+<li>Insufficient system resources</li>
+<li>Model file corruption</li>
+<li>Service configuration issues</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li>Check system resources (GPU memory, RAM)</li>
+<li>Verify model files and dependencies</li>
+<li>Check service configuration and logs</li>
+<li>Try manual reload through API endpoints</li>
+</ol>
+<h4>Performance Degradation</h4>
+<p><strong>Symptoms:</strong> Slow model loading or inference</p>
+<p><strong>Possible Causes:</strong></p>
+<ul>
+<li>Frequent model loading/unloading</li>
+<li>Suboptimal timeout settings</li>
+<li>System resource constraints</li>
+</ul>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li>Adjust timeout settings to reduce frequency</li>
+<li>Monitor system resources and performance</li>
+<li>Consider preloading frequently used models</li>
+<li>Optimize model loading strategies</li>
+</ol>
+<h3>Debugging Tools</h3>
+<h4>Health Check Endpoints</h4>
+<p>Use the health check endpoints to diagnose issues:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Check overall embedding service health</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/rag/embedding/health&quot;</span>
+
+<span class="hljs-comment"># Check specific model status</span>
+curl <span class="hljs-string">&quot;http://localhost:7000/api/rag/embedding/status&quot;</span></code></pre><h4>Log Monitoring</h4>
+<p>Monitor service logs for debugging information:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Monitor embedding service logs</span>
+<span class="hljs-built_in">tail</span> -f logs/embedding_service.log
+
+<span class="hljs-comment"># Monitor model usage tracker logs</span>
+<span class="hljs-built_in">tail</span> -f logs/model_usage_tracker.log</code></pre><h4>Memory Monitoring</h4>
+<p>Use system tools to monitor memory usage:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Monitor GPU memory usage</span>
+nvidia-smi -l 1
+
+<span class="hljs-comment"># Monitor system memory usage</span>
+free -h</code></pre><h3>Performance Tuning</h3>
+<h4>Optimizing Timeouts</h4>
+<p>Adjust timeouts based on usage patterns:</p>
+<ul>
+<li><strong>High-frequency usage</strong>: Shorter timeouts for better memory efficiency</li>
+<li><strong>Low-frequency usage</strong>: Longer timeouts for better user experience</li>
+<li><strong>Memory-constrained systems</strong>: Shorter timeouts to prevent memory pressure</li>
+</ul>
+<h4>Memory Pressure Thresholds</h4>
+<p>Configure memory pressure thresholds based on system capabilities:</p>
+<ul>
+<li><strong>High-memory systems</strong>: Higher thresholds (85-90%)</li>
+<li><strong>Low-memory systems</strong>: Lower thresholds (70-80%)</li>
+<li><strong>Production systems</strong>: Conservative thresholds for stability</li>
+</ul>
+<h2>Integration with Other Systems</h2>
+<h3>Model Usage Tracker Integration</h3>
+<p>The embedding model management system integrates with the ModelUsageTracker:</p>
+<ul>
+<li><strong>Automatic Registration</strong>: Models are automatically registered when loaded</li>
+<li><strong>Usage Tracking</strong>: Usage patterns are tracked for optimization</li>
+<li><strong>Timeout Management</strong>: Timeouts are managed centrally</li>
+<li><strong>Performance Metrics</strong>: Loading times and memory usage are tracked</li>
+</ul>
+<h3>Service Lifecycle Integration</h3>
+<p>Models are properly managed during service lifecycle events:</p>
+<ul>
+<li><strong>Service Startup</strong>: Models are loaded on first use</li>
+<li><strong>Service Shutdown</strong>: Models are automatically unloaded</li>
+<li><strong>Service Restart</strong>: Model state is properly restored</li>
+<li><strong>Health Checks</strong>: Model status is included in health reports</li>
+</ul>
+<h3>Configuration Management Integration</h3>
+<p>Settings are managed through the configuration system:</p>
+<ul>
+<li><strong>Environment Variables</strong>: Settings can be overridden via environment</li>
+<li><strong>Configuration Files</strong>: Settings can be managed through config files</li>
+<li><strong>Runtime Updates</strong>: Some settings can be updated at runtime</li>
+<li><strong>Validation</strong>: Settings are validated for correctness</li>
+</ul>
+<h2>Future Enhancements</h2>
+<h3>Planned Features</h3>
+<ul>
+<li><strong>Predictive Loading</strong>: Load models based on predicted usage patterns</li>
+<li><strong>Adaptive Timeouts</strong>: Automatically adjust timeouts based on usage patterns</li>
+<li><strong>Model Compression</strong>: Compress inactive models to save memory</li>
+<li><strong>Distributed Management</strong>: Support for distributed model management</li>
+</ul>
+<h3>Extension Points</h3>
+<p>The system is designed for extensibility:</p>
+<ul>
+<li><strong>New Model Types</strong>: Easy addition of new embedding model types</li>
+<li><strong>Custom Unloading Strategies</strong>: Support for custom unloading logic</li>
+<li><strong>External Integrations</strong>: Integration with external monitoring systems</li>
+<li><strong>Plugin Architecture</strong>: Plugin-based architecture for custom features</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="rag.md">RAG Documentation</a>: General RAG system documentation</li>
+<li><a href="model-usage-tracker.md">Model Usage Tracker Documentation</a>: Model usage tracking system</li>
+<li><a href="embeddings-and-vector-db.md">Embeddings and Vector DB Documentation</a>: Vector database operations</li>
+<li><a href="memory-pressure-management.md">Memory Pressure Management Documentation</a>: Memory management strategies</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

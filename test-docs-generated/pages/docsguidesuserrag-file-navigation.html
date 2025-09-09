@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG File Navigation - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>RAG File Navigation</h1>
+      <div class="markdown-content"><h1>RAG File Navigation</h1>
+<p>This document describes the file navigation feature in the RAG Search &amp; Ingest system, which allows users to navigate to and open source files directly from search results.</p>
+<h2>Overview</h2>
+<p>The RAG file navigation feature enhances search results by providing direct access to source files. When you perform a search in the RAG system, each result now includes file information and navigation options that allow you to:</p>
+<ul>
+<li>View file details and metadata</li>
+<li>Open files in appropriate modals</li>
+<li>Navigate to files in the gallery</li>
+<li>Copy file paths to clipboard</li>
+<li>Preview chunk content</li>
+</ul>
+<h2>Features</h2>
+<h3>File Information Display</h3>
+<p>Each search result now includes:</p>
+<ul>
+<li><strong>File Path</strong>: The full path to the source file</li>
+<li><strong>File Content</strong>: The complete content of the file</li>
+<li><strong>File Metadata</strong>: Additional information about the file</li>
+<li><strong>Chunk Information</strong>: Details about the specific chunk that matched the search<ul>
+<li>Chunk index (position in the file)</li>
+<li>Chunk text (the actual matching text)</li>
+<li>Token count</li>
+<li>Chunk metadata</li>
+</ul>
+</li>
+</ul>
+<h3>Navigation Options</h3>
+<p>For each search result, you can:</p>
+<ol>
+<li><strong>Open File</strong>: Opens the file in a dedicated modal with syntax highlighting for code files</li>
+<li><strong>Open in Gallery</strong>: Navigates to the file&#39;s location in the gallery view</li>
+<li><strong>Copy Path</strong>: Copies the file path to your clipboard</li>
+</ol>
+<h3>File Modal</h3>
+<p>When you click &quot;Open&quot; on a search result, a modal opens that displays:</p>
+<ul>
+<li><strong>File Header</strong>: File name, path, size, line count, and detected language</li>
+<li><strong>Chunk Highlight</strong>: The specific chunk that matched your search (if available)</li>
+<li><strong>Full Content</strong>: The complete file content with syntax highlighting for code files</li>
+<li><strong>Actions</strong>: Copy chunk content, copy full file content, or close modal</li>
+</ul>
+<h2>Supported File Types</h2>
+<p>The file navigation feature works with all modalities except images:</p>
+<ul>
+<li><strong>Documents</strong> (<code>docs</code> modality): Text files, markdown, PDFs, etc.</li>
+<li><strong>Code</strong> (<code>code</code> modality): Source code files with syntax highlighting</li>
+<li><strong>Captions</strong> (<code>captions</code> modality): Caption files and metadata</li>
+</ul>
+<h2>Technical Implementation</h2>
+<h3>Backend Changes</h3>
+<p>The backend has been enhanced to include file information in search results:</p>
+<ol>
+<li><p><strong>Enhanced Database Queries</strong>: The <code>hybrid_search_documents</code> and <code>similar_document_chunks</code> functions now join with document and chunk tables to retrieve file information.</p>
+</li>
+<li><p><strong>API Response Structure</strong>: The <code>/api/rag/query</code> endpoint now returns additional fields:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;hits&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;chunk_id&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.88</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;highlights&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;matched text&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;file_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/to/file.txt&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;file_content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;full file content&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;file_metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;file_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;text&quot;</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;chunk_index&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;chunk_text&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;chunk content&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;chunk_tokens&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;chunk_metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;chunk_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;paragraph&quot;</span> <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></li>
+</ol>
+<h3>Frontend Components</h3>
+<p>The frontend includes several new components:</p>
+<ol>
+<li><strong>RAGFileNavigation</strong>: Displays file information and navigation buttons in search results</li>
+<li><strong>RAGFileModal</strong>: Modal for viewing file content with syntax highlighting</li>
+<li><strong>Enhanced RAGSearch</strong>: Main search component that integrates file navigation</li>
+</ol>
+<h2>Usage</h2>
+<h3>Basic Search with File Navigation</h3>
+<ol>
+<li>Navigate to the RAG Search page</li>
+<li>Enter your search query</li>
+<li>Select the appropriate modality (docs, code, captions)</li>
+<li>View search results with file information</li>
+<li>Click &quot;Open&quot; to view the full file content</li>
+<li>Use &quot;Gallery&quot; to navigate to the file&#39;s location</li>
+<li>Use &quot;Copy Path&quot; to copy the file path</li>
+</ol>
+<h3>File Modal Features</h3>
+<p>When viewing a file in the modal:</p>
+<ul>
+<li><strong>Syntax Highlighting</strong>: Code files are displayed with proper syntax highlighting</li>
+<li><strong>Chunk Highlighting</strong>: The matching chunk is highlighted at the top of the modal</li>
+<li><strong>Copy Actions</strong>: Copy either the chunk content or the full file content</li>
+<li><strong>File Statistics</strong>: View file size, line count, and detected language</li>
+<li><strong>Keyboard Shortcuts</strong>: Press Escape to close the modal</li>
+</ul>
+<h2>Configuration</h2>
+<p>The file navigation feature is enabled by default when RAG is enabled. No additional configuration is required.</p>
+<h2>Limitations</h2>
+<ul>
+<li><strong>Image Modality</strong>: File navigation is not available for image search results</li>
+<li><strong>Large Files</strong>: Very large files may take time to load in the modal</li>
+<li><strong>Memory Usage</strong>: File content is loaded into memory, so very large files may impact performance</li>
+</ul>
+<h2>Future Enhancements</h2>
+<p>Potential future improvements include:</p>
+<ul>
+<li><strong>File Editing</strong>: Direct editing of files from search results</li>
+<li><strong>Version Control</strong>: Integration with git for file history</li>
+<li><strong>Advanced Search</strong>: Search within specific files or directories</li>
+<li><strong>Batch Operations</strong>: Perform operations on multiple files from search results</li>
+<li><strong>File Relationships</strong>: Show related files and dependencies</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

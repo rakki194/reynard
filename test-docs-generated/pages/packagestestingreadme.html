@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-testing - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-testing</h1>
+      <div class="markdown-content"><h1>reynard-testing</h1>
+<p>Unified testing framework for Reynard packages with comprehensive utilities, mocks, and configurations.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Unified Configuration</strong>: Standardized Vitest configs for all package types</li>
+<li><strong>Test Utilities</strong>: Common testing helpers and custom render functions</li>
+<li><strong>Comprehensive Mocks</strong>: Browser APIs, SolidJS, and external libraries</li>
+<li><strong>Assertion Utilities</strong>: Custom assertions for common testing scenarios</li>
+<li><strong>TypeScript First</strong>: Full type safety with excellent IntelliSense</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-testing --save-dev</code></pre><h2>Quick Start</h2>
+<h3>1. Use Pre-configured Vitest Configs</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// vitest.config.ts</span>
+<span class="hljs-keyword">import</span> { createComponentTestConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/config&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">createComponentTestConfig</span>(<span class="hljs-string">&quot;my-package&quot;</span>);</code></pre><h3>2. Use Test Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// my-component.test.tsx</span>
+<span class="hljs-keyword">import</span> { renderWithProviders, expectComponentToRender } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing&#x27;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;renders without errors&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">MyComponent</span> = (<span class="hljs-params"></span>) =&gt; <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+  <span class="hljs-title function_">expectComponentToRender</span>(<span class="hljs-title class_">MyComponent</span>);
+});</code></pre><h3>3. Use Mocks</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// my-test.ts</span>
+<span class="hljs-keyword">import</span> { mockFetch, mockLocalStorage } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/mocks&quot;</span>;
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;uses fetch&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+  mockFetch.<span class="hljs-title function_">mockResolvedValueOnce</span>({
+    <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">json</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>({ <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;test&quot;</span> }),
+  });
+
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api/test&quot;</span>);
+  <span class="hljs-title function_">expect</span>(result.<span class="hljs-property">ok</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+});</code></pre><h2>Configuration</h2>
+<h3>Base Configuration</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createBaseVitestConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/config&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">createBaseVitestConfig</span>({
+  <span class="hljs-attr">packageName</span>: <span class="hljs-string">&quot;my-package&quot;</span>,
+  <span class="hljs-attr">setupFiles</span>: [<span class="hljs-string">&quot;./src/test-setup.ts&quot;</span>],
+  <span class="hljs-attr">coverageThresholds</span>: {
+    <span class="hljs-attr">branches</span>: <span class="hljs-number">90</span>,
+    <span class="hljs-attr">functions</span>: <span class="hljs-number">95</span>,
+    <span class="hljs-attr">lines</span>: <span class="hljs-number">95</span>,
+    <span class="hljs-attr">statements</span>: <span class="hljs-number">95</span>,
+  },
+});</code></pre><h3>Component Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createComponentTestConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/config&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">createComponentTestConfig</span>(<span class="hljs-string">&quot;my-component-package&quot;</span>);</code></pre><h3>Integration Testing</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createIntegrationTestConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/config&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">createIntegrationTestConfig</span>(<span class="hljs-string">&quot;my-integration-package&quot;</span>);</code></pre><h2>Test Utilities</h2>
+<h3>Custom Render Functions</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  renderWithProviders,
+  renderWithTheme,
+  renderWithRouter
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing/utils&#x27;</span>;
+
+<span class="hljs-comment">// Render with all providers</span>
+<span class="hljs-title function_">renderWithProviders</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span></span>);
+
+<span class="hljs-comment">// Render with theme</span>
+<span class="hljs-title function_">renderWithTheme</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span></span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;dark&#x27;</span> });
+
+<span class="hljs-comment">// Render with router</span>
+<span class="hljs-title function_">renderWithRouter</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span></span>, <span class="hljs-string">&#x27;/dashboard&#x27;</span>);</code></pre><h3>Mock Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  createMockFn,
+  createMockResponse,
+  createMockFile,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/utils&quot;</span>;
+
+<span class="hljs-comment">// Create mock function</span>
+<span class="hljs-keyword">const</span> mockFn = <span class="hljs-title function_">createMockFn</span>();
+
+<span class="hljs-comment">// Create mock response</span>
+<span class="hljs-keyword">const</span> response = <span class="hljs-title function_">createMockResponse</span>({ <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;test&quot;</span> });
+
+<span class="hljs-comment">// Create mock file</span>
+<span class="hljs-keyword">const</span> file = <span class="hljs-title function_">createMockFile</span>(<span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>);</code></pre><h3>Assertion Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  expectComponentToRender,
+  expectPromiseToResolve,
+  expectElementToHaveClass,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/utils&quot;</span>;
+
+<span class="hljs-comment">// Component assertions</span>
+<span class="hljs-title function_">expectComponentToRender</span>(<span class="hljs-title class_">MyComponent</span>);
+
+<span class="hljs-comment">// Promise assertions</span>
+<span class="hljs-keyword">await</span> <span class="hljs-title function_">expectPromiseToResolve</span>(<span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api&quot;</span>));
+
+<span class="hljs-comment">// DOM assertions</span>
+<span class="hljs-title function_">expectElementToHaveClass</span>(element, <span class="hljs-string">&quot;active&quot;</span>);</code></pre><h2>Mocks</h2>
+<h3>Browser APIs</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  mockFetch,
+  mockLocalStorage,
+  mockWebSocket,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/mocks&quot;</span>;
+
+<span class="hljs-comment">// Mock fetch</span>
+mockFetch.<span class="hljs-title function_">mockResolvedValueOnce</span>({ <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span> });
+
+<span class="hljs-comment">// Mock localStorage</span>
+mockLocalStorage.<span class="hljs-property">getItem</span>.<span class="hljs-title function_">mockReturnValue</span>(<span class="hljs-string">&quot;value&quot;</span>);
+
+<span class="hljs-comment">// Mock WebSocket</span>
+<span class="hljs-keyword">const</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title function_">mockWebSocket</span>();</code></pre><h3>External Libraries</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { mockFabric, mockD3 } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/mocks&quot;</span>;
+
+<span class="hljs-comment">// Mock Fabric.js</span>
+<span class="hljs-keyword">const</span> canvas = <span class="hljs-keyword">new</span> mockFabric.<span class="hljs-title class_">Canvas</span>();
+
+<span class="hljs-comment">// Mock D3.js</span>
+<span class="hljs-keyword">const</span> selection = mockD3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&quot;body&quot;</span>);</code></pre><h2>Package Configuration Templates</h2>
+<h3>Component Package</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;test:run&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest run&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;test:coverage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest run --coverage&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;test:ui&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest --ui&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;reynard-testing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;workspace:*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;vitest&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.0.0&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h3>Utility Package</h3>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;test:run&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest run&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;test:coverage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest run --coverage&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;reynard-testing&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;workspace:*&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;vitest&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.0.0&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre><h2>Best Practices</h2>
+<h3>1. Use Appropriate Config</h3>
+<ul>
+<li><strong>Component packages</strong>: Use <code>createComponentTestConfig</code></li>
+<li><strong>Utility packages</strong>: Use <code>createUtilityTestConfig</code></li>
+<li><strong>Integration packages</strong>: Use <code>createIntegrationTestConfig</code></li>
+</ul>
+<h3>2. Leverage Test Utilities</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Use custom render functions</span>
+<span class="hljs-title function_">renderWithProviders</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span></span>);
+
+<span class="hljs-comment">// Avoid: Manual provider setup</span>
+<span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ThemeProvider</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">RouterProvider</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MyComponent</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">RouterProvider</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ThemeProvider</span>&gt;</span></span>
+));</code></pre><h3>3. Use Comprehensive Mocks</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Use provided mocks</span>
+<span class="hljs-keyword">import</span> { mockFetch } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-testing/mocks&quot;</span>;
+
+<span class="hljs-comment">// Avoid: Manual fetch mocking</span>
+<span class="hljs-variable language_">global</span>.<span class="hljs-property">fetch</span> = vi.<span class="hljs-title function_">fn</span>();</code></pre><h3>4. Write Descriptive Tests</h3>
+<pre><code class="hljs language-typescript"><span class="hljs-comment">// Good: Descriptive test names</span>
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;should render component with correct theme colors&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// test implementation</span>
+});
+
+<span class="hljs-comment">// Avoid: Vague test names</span>
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;works&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-comment">// test implementation</span>
+});</code></pre><h2>🧪 Advanced Testing Patterns</h2>
+<h3>Component Testing Patterns</h3>
+<h4>1. <strong>Testing with Context Providers</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { renderWithProviders } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing&#x27;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ReynardProvider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-themes&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;ThemedComponent&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;renders with light theme&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">renderWithProviders</span>(
+      <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ThemedComponent</span> /&gt;</span></span>,
+      {
+        <span class="hljs-attr">providers</span>: [
+          [<span class="hljs-title class_">ReynardProvider</span>, { <span class="hljs-attr">defaultTheme</span>: <span class="hljs-string">&#x27;light&#x27;</span> }]
+        ]
+      }
+    );
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">&#x27;component&#x27;</span>)).<span class="hljs-title function_">toHaveClass</span>(<span class="hljs-string">&#x27;theme-light&#x27;</span>);
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;switches theme on button click&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> themeModule = <span class="hljs-title function_">createTheme</span>({ <span class="hljs-attr">defaultTheme</span>: <span class="hljs-string">&#x27;light&#x27;</span> });
+
+    <span class="hljs-title function_">renderWithProviders</span>(
+      <span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ThemeToggle</span> /&gt;</span></span>,
+      {
+        <span class="hljs-attr">providers</span>: [
+          [<span class="hljs-title class_">ThemeProvider</span>, { <span class="hljs-attr">value</span>: themeModule }]
+        ]
+      }
+    );
+
+    <span class="hljs-keyword">const</span> toggleButton = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/toggle theme/i</span> });
+    <span class="hljs-keyword">await</span> userEvent.<span class="hljs-title function_">click</span>(toggleButton);
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByTestId</span>(<span class="hljs-string">&#x27;component&#x27;</span>)).<span class="hljs-title function_">toHaveClass</span>(<span class="hljs-string">&#x27;theme-dark&#x27;</span>);
+  });
+});</code></pre><h4>2. <strong>Testing Async Operations</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { waitFor } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@solidjs/testing-library&#x27;</span>;
+<span class="hljs-keyword">import</span> { mockFetch } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing/mocks&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;AsyncComponent&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;loads data and displays it&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> mockData = { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Test Item&#x27;</span> };
+    mockFetch.<span class="hljs-title function_">mockResolvedValueOnce</span>({
+      <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">json</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(mockData)
+    });
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AsyncComponent</span> /&gt;</span></span>);
+
+    <span class="hljs-comment">// Wait for loading to complete</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Test Item&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+
+    <span class="hljs-title function_">expect</span>(mockFetch).<span class="hljs-title function_">toHaveBeenCalledWith</span>(<span class="hljs-string">&#x27;/api/data&#x27;</span>);
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;handles loading states&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    mockFetch.<span class="hljs-title function_">mockImplementation</span>(<span class="hljs-function">() =&gt;</span>
+      <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">100</span>))
+    );
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AsyncComponent</span> /&gt;</span></span>);
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Loading...&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;handles error states&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    mockFetch.<span class="hljs-title function_">mockRejectedValueOnce</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Network error&#x27;</span>));
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AsyncComponent</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Error loading data&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+  });
+});</code></pre><h4>3. <strong>Testing Form Interactions</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { userEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@testing-library/user-event&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;ContactForm&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;submits form with valid data&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> user = userEvent.<span class="hljs-title function_">setup</span>();
+    <span class="hljs-keyword">const</span> mockSubmit = vi.<span class="hljs-title function_">fn</span>();
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ContactForm</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{mockSubmit}</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">type</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/name/i</span>), <span class="hljs-string">&#x27;John Doe&#x27;</span>);
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">type</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/email/i</span>), <span class="hljs-string">&#x27;john@example.com&#x27;</span>);
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">type</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/message/i</span>), <span class="hljs-string">&#x27;Hello world&#x27;</span>);
+
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/submit/i</span> }));
+
+    <span class="hljs-title function_">expect</span>(mockSubmit).<span class="hljs-title function_">toHaveBeenCalledWith</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span>,
+      <span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;john@example.com&#x27;</span>,
+      <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;Hello world&#x27;</span>
+    });
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;shows validation errors&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> user = userEvent.<span class="hljs-title function_">setup</span>();
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ContactForm</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/submit/i</span> }));
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Name is required&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Email is required&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+});</code></pre><h3>Utility Testing Patterns</h3>
+<h4>1. <strong>Testing Pure Functions</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { formatDate, validateEmail, sanitizeInput } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-core&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;formatDate&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;formats date correctly&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">&quot;2024-01-15T10:30:00Z&quot;</span>);
+
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">formatDate</span>(date, <span class="hljs-string">&quot;YYYY-MM-DD&quot;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;2024-01-15&quot;</span>);
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">formatDate</span>(date, <span class="hljs-string">&quot;MM/DD/YYYY&quot;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;01/15/2024&quot;</span>);
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">formatDate</span>(date, <span class="hljs-string">&quot;relative&quot;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;2 hours ago&quot;</span>);
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;handles invalid dates&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">formatDate</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">&quot;invalid&quot;</span>), <span class="hljs-string">&quot;YYYY-MM-DD&quot;</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;Invalid Date&quot;</span>);
+  });
+});
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;validateEmail&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  test.<span class="hljs-title function_">each</span>([
+    [<span class="hljs-string">&quot;user@example.com&quot;</span>, <span class="hljs-literal">true</span>],
+    [<span class="hljs-string">&quot;test.email@domain.co.uk&quot;</span>, <span class="hljs-literal">true</span>],
+    [<span class="hljs-string">&quot;invalid-email&quot;</span>, <span class="hljs-literal">false</span>],
+    [<span class="hljs-string">&quot;@domain.com&quot;</span>, <span class="hljs-literal">false</span>],
+    [<span class="hljs-string">&quot;user@&quot;</span>, <span class="hljs-literal">false</span>],
+  ])(<span class="hljs-string">&quot;validates email %s as %s&quot;</span>, <span class="hljs-function">(<span class="hljs-params">email, expected</span>) =&gt;</span> {
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">validateEmail</span>(email)).<span class="hljs-title function_">toBe</span>(expected);
+  });
+});</code></pre><h4>2. <strong>Testing Async Utilities</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { retryWithBackoff, batchExecute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-core&quot;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;retryWithBackoff&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;retries failed operations&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">let</span> attempts = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">failingOperation</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+      attempts++;
+      <span class="hljs-keyword">if</span> (attempts &lt; <span class="hljs-number">3</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Temporary failure&quot;</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;
+    };
+
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-title function_">retryWithBackoff</span>(failingOperation, <span class="hljs-number">3</span>, <span class="hljs-number">100</span>);
+
+    <span class="hljs-title function_">expect</span>(result).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">&quot;success&quot;</span>);
+    <span class="hljs-title function_">expect</span>(attempts).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">3</span>);
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;fails after max retries&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">failingOperation</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Permanent failure&quot;</span>);
+    };
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">retryWithBackoff</span>(failingOperation, <span class="hljs-number">2</span>, <span class="hljs-number">100</span>)).<span class="hljs-property">rejects</span>.<span class="hljs-title function_">toThrow</span>(
+      <span class="hljs-string">&quot;Permanent failure&quot;</span>,
+    );
+  });
+});
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&quot;batchExecute&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&quot;executes operations in batches&quot;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> operations = [
+      <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;result1&quot;</span>),
+      <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;result2&quot;</span>),
+      <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;result3&quot;</span>),
+      <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;result4&quot;</span>),
+    ];
+
+    <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title function_">batchExecute</span>(operations, <span class="hljs-number">2</span>);
+
+    <span class="hljs-title function_">expect</span>(results).<span class="hljs-title function_">toEqual</span>([<span class="hljs-string">&quot;result1&quot;</span>, <span class="hljs-string">&quot;result2&quot;</span>, <span class="hljs-string">&quot;result3&quot;</span>, <span class="hljs-string">&quot;result4&quot;</span>]);
+  });
+});</code></pre><h3>Integration Testing Patterns</h3>
+<h4>1. <strong>Testing Component Integration</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;UserDashboard Integration&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;complete user workflow&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> user = userEvent.<span class="hljs-title function_">setup</span>();
+
+    <span class="hljs-comment">// Mock API responses</span>
+    mockFetch
+      .<span class="hljs-title function_">mockResolvedValueOnce</span>({
+        <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">json</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>({ <span class="hljs-attr">user</span>: { <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span> } })
+      })
+      .<span class="hljs-title function_">mockResolvedValueOnce</span>({
+        <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">json</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>({ <span class="hljs-attr">posts</span>: [{ <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Post 1&#x27;</span> }] })
+      });
+
+    <span class="hljs-title function_">renderWithProviders</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserDashboard</span> /&gt;</span></span>);
+
+    <span class="hljs-comment">// Wait for user data to load</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Welcome, John&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+
+    <span class="hljs-comment">// Wait for posts to load</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Post 1&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+
+    <span class="hljs-comment">// Test user interaction</span>
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/create post/i</span> }));
+
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">type</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/title/i</span>), <span class="hljs-string">&#x27;New Post&#x27;</span>);
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">type</span>(screen.<span class="hljs-title function_">getByLabelText</span>(<span class="hljs-regexp">/content/i</span>), <span class="hljs-string">&#x27;Post content&#x27;</span>);
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">click</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/save/i</span> }));
+
+    <span class="hljs-comment">// Verify post was created</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;New Post&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+  });
+});</code></pre><h4>2. <strong>Testing Error Boundaries</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;ErrorBoundary&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;catches and displays errors&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">ThrowError</span> = (<span class="hljs-params"></span>) =&gt; {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Test error&#x27;</span>);
+    };
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ErrorBoundary</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span>&gt;</span>Something went wrong<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">ThrowError</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ErrorBoundary</span>&gt;</span></span>
+    ));
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Something went wrong&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;recovers from errors&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> [shouldThrow, setShouldThrow] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-literal">true</span>);
+
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">ConditionalError</span> = (<span class="hljs-params"></span>) =&gt; {
+      <span class="hljs-keyword">if</span> (<span class="hljs-title function_">shouldThrow</span>()) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Test error&#x27;</span>);
+      <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Recovered<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;
+    };
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ErrorBoundary</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">div</span>&gt;</span>Error occurred<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>}&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">ConditionalError</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ErrorBoundary</span>&gt;</span></span>
+    ));
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Error occurred&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+
+    <span class="hljs-title function_">setShouldThrow</span>(<span class="hljs-literal">false</span>);
+
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Recovered&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+  });
+});</code></pre><h3>Performance Testing</h3>
+<h4>1. <strong>Testing Component Performance</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { performance } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;perf_hooks&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Performance Tests&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;component renders within time limit&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> start = performance.<span class="hljs-title function_">now</span>();
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">LargeDataTable</span> <span class="hljs-attr">data</span>=<span class="hljs-string">{largeDataset}</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">const</span> end = performance.<span class="hljs-title function_">now</span>();
+    <span class="hljs-keyword">const</span> renderTime = end - start;
+
+    <span class="hljs-title function_">expect</span>(renderTime).<span class="hljs-title function_">toBeLessThan</span>(<span class="hljs-number">100</span>); <span class="hljs-comment">// Should render in under 100ms</span>
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;handles large datasets efficiently&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> largeDataset = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>({ <span class="hljs-attr">length</span>: <span class="hljs-number">10000</span> }, <span class="hljs-function">(<span class="hljs-params">_, i</span>) =&gt;</span> ({
+      <span class="hljs-attr">id</span>: i,
+      <span class="hljs-attr">name</span>: <span class="hljs-string">`Item <span class="hljs-subst">${i}</span>`</span>,
+      <span class="hljs-attr">value</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()
+    }));
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">VirtualizedList</span> <span class="hljs-attr">items</span>=<span class="hljs-string">{largeDataset}</span> /&gt;</span></span>);
+
+    <span class="hljs-comment">// Should only render visible items</span>
+    <span class="hljs-keyword">const</span> renderedItems = screen.<span class="hljs-title function_">getAllByTestId</span>(<span class="hljs-regexp">/list-item/</span>);
+    <span class="hljs-title function_">expect</span>(renderedItems.<span class="hljs-property">length</span>).<span class="hljs-title function_">toBeLessThan</span>(<span class="hljs-number">100</span>);
+  });
+});</code></pre><h4>2. <strong>Memory Leak Testing</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Memory Leak Tests&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;cleans up event listeners&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> addEventListenerSpy = vi.<span class="hljs-title function_">spyOn</span>(<span class="hljs-variable language_">window</span>, <span class="hljs-string">&#x27;addEventListener&#x27;</span>);
+    <span class="hljs-keyword">const</span> removeEventListenerSpy = vi.<span class="hljs-title function_">spyOn</span>(<span class="hljs-variable language_">window</span>, <span class="hljs-string">&#x27;removeEventListener&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> { unmount } = <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ComponentWithListeners</span> /&gt;</span></span>);
+
+    <span class="hljs-title function_">expect</span>(addEventListenerSpy).<span class="hljs-title function_">toHaveBeenCalled</span>();
+
+    <span class="hljs-title function_">unmount</span>();
+
+    <span class="hljs-title function_">expect</span>(removeEventListenerSpy).<span class="hljs-title function_">toHaveBeenCalled</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;cleans up timers&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> setTimeoutSpy = vi.<span class="hljs-title function_">spyOn</span>(<span class="hljs-variable language_">global</span>, <span class="hljs-string">&#x27;setTimeout&#x27;</span>);
+    <span class="hljs-keyword">const</span> clearTimeoutSpy = vi.<span class="hljs-title function_">spyOn</span>(<span class="hljs-variable language_">global</span>, <span class="hljs-string">&#x27;clearTimeout&#x27;</span>);
+
+    <span class="hljs-keyword">const</span> { unmount } = <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ComponentWithTimers</span> /&gt;</span></span>);
+
+    <span class="hljs-title function_">expect</span>(setTimeoutSpy).<span class="hljs-title function_">toHaveBeenCalled</span>();
+
+    <span class="hljs-title function_">unmount</span>();
+
+    <span class="hljs-title function_">expect</span>(clearTimeoutSpy).<span class="hljs-title function_">toHaveBeenCalled</span>();
+  });
+});</code></pre><h3>Accessibility Testing</h3>
+<h4>1. <strong>Testing ARIA Attributes</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { axe, toHaveNoViolations } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;jest-axe&#x27;</span>;
+
+expect.<span class="hljs-title function_">extend</span>(toHaveNoViolations);
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Accessibility Tests&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;has no accessibility violations&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> { container } = <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AccessibleComponent</span> /&gt;</span></span>);
+    <span class="hljs-keyword">const</span> results = <span class="hljs-keyword">await</span> <span class="hljs-title function_">axe</span>(container);
+    <span class="hljs-title function_">expect</span>(results).<span class="hljs-title function_">toHaveNoViolations</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;supports keyboard navigation&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> user = userEvent.<span class="hljs-title function_">setup</span>();
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">KeyboardNavigableComponent</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">const</span> firstButton = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/first/i</span> });
+    firstButton.<span class="hljs-title function_">focus</span>();
+
+    <span class="hljs-keyword">await</span> user.<span class="hljs-title function_">keyboard</span>(<span class="hljs-string">&#x27;{Tab}&#x27;</span>);
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;button&#x27;</span>, { <span class="hljs-attr">name</span>: <span class="hljs-regexp">/second/i</span> })).<span class="hljs-title function_">toHaveFocus</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;announces changes to screen readers&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AnnouncingComponent</span> /&gt;</span></span>);
+
+    <span class="hljs-keyword">const</span> statusRegion = screen.<span class="hljs-title function_">getByRole</span>(<span class="hljs-string">&#x27;status&#x27;</span>);
+    <span class="hljs-title function_">expect</span>(statusRegion).<span class="hljs-title function_">toHaveAttribute</span>(<span class="hljs-string">&#x27;aria-live&#x27;</span>, <span class="hljs-string">&#x27;polite&#x27;</span>);
+  });
+});</code></pre><h3>Mock Strategies</h3>
+<h4>1. <strong>Comprehensive Mocking</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> {
+  mockFetch,
+  mockLocalStorage,
+  mockWebSocket,
+  mockIntersectionObserver
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing/mocks&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Component with External Dependencies&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-comment">// Reset all mocks</span>
+    vi.<span class="hljs-title function_">clearAllMocks</span>();
+    mockLocalStorage.<span class="hljs-title function_">clear</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;works with mocked dependencies&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-comment">// Setup fetch mock</span>
+    mockFetch.<span class="hljs-title function_">mockResolvedValueOnce</span>({
+      <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">json</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>({ <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;test&#x27;</span> })
+    });
+
+    <span class="hljs-comment">// Setup localStorage mock</span>
+    mockLocalStorage.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> }));
+
+    <span class="hljs-comment">// Setup WebSocket mock</span>
+    <span class="hljs-keyword">const</span> mockWs = mockWebSocket.<span class="hljs-title function_">createMock</span>();
+    mockWs.<span class="hljs-title function_">onmessage</span>({ <span class="hljs-attr">data</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;update&#x27;</span> }) });
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ComponentWithDependencies</span> /&gt;</span></span>);
+
+    <span class="hljs-comment">// Test interactions</span>
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">waitFor</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;test&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    });
+  });
+});</code></pre><h4>2. <strong>Custom Mock Factories</strong></h4>
+<pre><code class="hljs language-typescript"><span class="hljs-keyword">import</span> { createMockUser, createMockPost } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;reynard-testing/fixtures&#x27;</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;User Components&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;renders user profile&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> mockUser = <span class="hljs-title function_">createMockUser</span>({
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span>,
+      <span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;john@example.com&#x27;</span>,
+      <span class="hljs-attr">role</span>: <span class="hljs-string">&#x27;admin&#x27;</span>
+    });
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserProfile</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{mockUser}</span> /&gt;</span></span>);
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;John Doe&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;john@example.com&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Admin&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+
+  <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;renders user posts&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> mockPosts = [
+      <span class="hljs-title function_">createMockPost</span>({ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Post 1&#x27;</span>, <span class="hljs-attr">author</span>: <span class="hljs-string">&#x27;John&#x27;</span> }),
+      <span class="hljs-title function_">createMockPost</span>({ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;Post 2&#x27;</span>, <span class="hljs-attr">author</span>: <span class="hljs-string">&#x27;John&#x27;</span> })
+    ];
+
+    <span class="hljs-title function_">render</span>(<span class="hljs-function">() =&gt;</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">UserPosts</span> <span class="hljs-attr">posts</span>=<span class="hljs-string">{mockPosts}</span> /&gt;</span></span>);
+
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Post 1&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+    <span class="hljs-title function_">expect</span>(screen.<span class="hljs-title function_">getByText</span>(<span class="hljs-string">&#x27;Post 2&#x27;</span>)).<span class="hljs-title function_">toBeInTheDocument</span>();
+  });
+});</code></pre><h2>Coverage Requirements</h2>
+<ul>
+<li><strong>Components</strong>: 85%+ branches, 90%+ functions/lines/statements</li>
+<li><strong>Utilities</strong>: 90%+ branches, 95%+ functions/lines/statements</li>
+<li><strong>Integration</strong>: 75%+ branches, 80%+ functions/lines/statements</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<ol>
+<li><strong>Mock not working</strong>: Ensure mocks are imported before use</li>
+<li><strong>Coverage too low</strong>: Check if test files are excluded from coverage</li>
+<li><strong>Type errors</strong>: Ensure TypeScript types are properly configured</li>
+</ol>
+<h3>Getting Help</h3>
+<ul>
+<li>Check existing package configurations for examples</li>
+<li>Review test utilities documentation</li>
+<li>Consult Vitest documentation for advanced usage</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

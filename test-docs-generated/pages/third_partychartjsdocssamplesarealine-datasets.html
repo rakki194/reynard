@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line Chart Datasets - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Line Chart Datasets</h1>
+      <div class="markdown-content"><h1>Line Chart Datasets</h1>
+<pre><code class="hljs"><span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:setup:<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>
+const inputs <span class="hljs-operator">=</span> {
+  <span class="hljs-params">min:</span> <span class="hljs-number">20</span>,
+  <span class="hljs-params">max:</span> <span class="hljs-number">80</span>,
+  <span class="hljs-params">count:</span> <span class="hljs-number">8</span>,
+  <span class="hljs-params">decimals:</span> <span class="hljs-number">2</span>,
+  <span class="hljs-params">continuity:</span> <span class="hljs-number">1</span>
+};
+
+const generateLabels <span class="hljs-operator">=</span> () <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> {
+  return Utils.months({<span class="hljs-params">count:</span> inputs.count});
+};
+
+const generateData <span class="hljs-operator">=</span> () <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> (Utils.numbers(inputs));
+
+Utils.srand(<span class="hljs-number">42</span>);
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:setup<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:data:<span class="hljs-number">0</span><span class="hljs-operator">&gt;</span>
+const data <span class="hljs-operator">=</span> {
+  <span class="hljs-params">labels:</span> generateLabels(),
+  <span class="hljs-params">datasets:</span> [
+    {
+      <span class="hljs-params">label:</span> &#x27;D0&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red),
+      <span class="hljs-params">hidden:</span> <span class="hljs-literal">true</span>
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D1&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.orange,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.orange),
+      <span class="hljs-params">fill:</span> &#x27;-<span class="hljs-number">1</span>&#x27;
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D2&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.yellow,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.yellow),
+      <span class="hljs-params">hidden:</span> <span class="hljs-literal">true</span>,
+      <span class="hljs-params">fill:</span> <span class="hljs-number">1</span>
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D3&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.green,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.green),
+      <span class="hljs-params">fill:</span> &#x27;-<span class="hljs-number">1</span>&#x27;
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D4&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.blue,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.blue),
+      <span class="hljs-params">fill:</span> &#x27;-<span class="hljs-number">1</span>&#x27;
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D5&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.grey,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.grey),
+      <span class="hljs-params">fill:</span> &#x27;<span class="hljs-operator">+</span><span class="hljs-number">2</span>&#x27;
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D6&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.purple,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.purple),
+      <span class="hljs-params">fill:</span> <span class="hljs-literal">false</span>
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D7&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.red,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.red),
+      <span class="hljs-params">fill:</span> <span class="hljs-number">8</span>
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D8&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.orange,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.orange),
+      <span class="hljs-params">fill:</span> &#x27;end&#x27;,
+      <span class="hljs-params">hidden:</span> <span class="hljs-literal">true</span>
+    },
+    {
+      <span class="hljs-params">label:</span> &#x27;D9&#x27;,
+      <span class="hljs-params">data:</span> generateData(),
+      <span class="hljs-params">borderColor:</span> Utils.CHART_COLORS.yellow,
+      <span class="hljs-params">backgroundColor:</span> Utils.transparentize(Utils.CHART_COLORS.yellow),
+      <span class="hljs-params">fill:</span> {<span class="hljs-params">above:</span> &#x27;blue&#x27;, <span class="hljs-params">below:</span> &#x27;red&#x27;, <span class="hljs-params">target:</span> {<span class="hljs-params">value:</span> <span class="hljs-number">350</span>}}
+    }
+  ]
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:data<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:actions:<span class="hljs-number">3</span><span class="hljs-operator">&gt;</span>
+<span class="hljs-keyword">let</span> smooth <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">let</span> propagate <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+
+const actions <span class="hljs-operator">=</span> [
+  {
+    <span class="hljs-params">name:</span> &#x27;Randomize&#x27;,
+    handler(chart) {
+      chart.data.datasets.forEach(dataset <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> {
+        <span class="hljs-attr">dataset.data</span> <span class="hljs-operator">=</span> generateData();
+      });
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-params">name:</span> &#x27;Propagate&#x27;,
+    handler(chart) {
+      <span class="hljs-attr">propagate</span> <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>propagate;
+      <span class="hljs-attr">chart.options.plugins.filler.propagate</span> <span class="hljs-operator">=</span> propagate;
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-params">name:</span> &#x27;Smooth&#x27;,
+    handler(chart) {
+      <span class="hljs-attr">smooth</span> <span class="hljs-operator">=</span> <span class="hljs-operator">!</span>smooth;
+      <span class="hljs-attr">chart.options.elements.line.tension</span> <span class="hljs-operator">=</span> smooth <span class="hljs-operator">?</span> <span class="hljs-number">0.4</span> : <span class="hljs-number">0</span>;
+      chart.update();
+    }
+  }
+];
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:actions<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span>block:config:<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>
+const config <span class="hljs-operator">=</span> {
+  <span class="hljs-params">type:</span> &#x27;line&#x27;,
+  <span class="hljs-params">data:</span> data,
+  <span class="hljs-params">options:</span> {
+    <span class="hljs-params">scales:</span> {
+      <span class="hljs-params">y:</span> {
+        <span class="hljs-params">stacked:</span> <span class="hljs-literal">true</span>
+      }
+    },
+    <span class="hljs-params">plugins:</span> {
+      <span class="hljs-params">filler:</span> {
+        <span class="hljs-params">propagate:</span> <span class="hljs-literal">false</span>
+      },
+      &#x27;<span class="hljs-params">samples-filler-analyser&#x27;:</span> {
+        <span class="hljs-params">target:</span> &#x27;chart-analyser&#x27;
+      }
+    },
+    <span class="hljs-params">interaction:</span> {
+      <span class="hljs-params">intersect:</span> <span class="hljs-literal">false</span>,
+    },
+  },
+};
+<span class="hljs-operator">//</span> <span class="hljs-operator">&lt;</span><span class="hljs-operator">/</span>block:config<span class="hljs-operator">&gt;</span>
+
+<span class="hljs-attr">module.exports</span> <span class="hljs-operator">=</span> {
+  <span class="hljs-params">actions:</span> actions,
+  <span class="hljs-params">config:</span> config,
+};</code></pre><div id="chart-analyser" class="analyser"></div>
+
+<h2>Docs</h2>
+<ul>
+<li><a href="../../charts/area.md">Area</a><ul>
+<li><a href="../../charts/area.md#filling-modes">Filling modes</a></li>
+</ul>
+</li>
+<li><a href="../../charts/line.md">Line</a></li>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../axes/">Axes scales</a><ul>
+<li><a href="../../axes/#common-options-to-all-axes">Common options to all axes (<code>stacked</code>)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

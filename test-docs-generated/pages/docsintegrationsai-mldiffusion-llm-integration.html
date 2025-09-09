@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diffusion LLM Integration (DreamOn, LLaDA) - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Diffusion LLM Integration (DreamOn, LLaDA)</h1>
+      <div class="markdown-content"><h1>Diffusion LLM Integration (DreamOn, LLaDA)</h1>
+<p>This document describes how diffusion-based language models are integrated into YipYap for text generation and infilling, providing real-time streaming, robust model management, and a polished user experience.</p>
+<h2>Architecture and Services</h2>
+<p>The backend exposes a dedicated API namespace under <code>/api/diffusion</code>. The <code>DiffusionLLMService</code> is registered with the <code>ServiceManager</code> when <code>diffusion_llm_enabled</code> is set to true in the app configuration. The service can operate in embedded mode using an internal <code>DiffusionModelManager</code>, or in proxy mode (planned for the future). The manager maintains model instances, supports device selection and safe unloading, and automatically falls back to CPU if an out-of-memory condition occurs.</p>
+<pre><code class="hljs"><span class="hljs-selector-tag">flowchart</span> <span class="hljs-selector-tag">LR</span>
+    <span class="hljs-selector-tag">A</span><span class="hljs-selector-attr">[UI Panels\n- TextGeneratorPanel\n- TextInfillerPanel]</span> <span class="hljs-selector-tag">--</span>&gt; <span class="hljs-selector-tag">B</span><span class="hljs-selector-attr">[useDiffusionLLM]</span>
+    <span class="hljs-selector-tag">B</span> <span class="hljs-selector-tag">--</span>&gt;|<span class="hljs-selector-tag">typed</span> <span class="hljs-selector-tag">requests</span>| <span class="hljs-selector-tag">C</span><span class="hljs-selector-attr">[/api/diffusion/*]</span>
+    <span class="hljs-selector-tag">C</span> <span class="hljs-selector-tag">--</span>&gt; <span class="hljs-selector-tag">D</span><span class="hljs-selector-attr">[DiffusionLLMService]</span>
+    <span class="hljs-selector-tag">D</span> <span class="hljs-selector-tag">--</span>&gt; <span class="hljs-selector-tag">E</span><span class="hljs-selector-attr">[DiffusionModelManager]</span>
+    <span class="hljs-selector-tag">E</span> <span class="hljs-selector-tag">--</span>&gt; <span class="hljs-selector-tag">F</span><span class="hljs-selector-attr">[DreamOn / LLaDA Models]</span>
+    <span class="hljs-selector-tag">D</span> <span class="hljs-selector-tag">--</span>&gt; <span class="hljs-selector-tag">G</span><span class="hljs-selector-attr">[(Metrics DB)]</span></code></pre><h2>API Endpoints and Contracts</h2>
+<p><strong>Model Management:</strong></p>
+<ul>
+<li><p><code>GET /api/diffusion/models</code><br>Lists available models with metadata and loaded state.</p>
+</li>
+<li><p><code>POST /api/diffusion/models/{id}/load</code><br>Loads or switches the active model. Accepts an optional <code>device</code> parameter (<code>auto</code>, <code>cuda</code>, <code>cpu</code>).</p>
+</li>
+<li><p><code>GET /api/diffusion/models/current</code><br>Returns information about the currently loaded model.</p>
+</li>
+</ul>
+<p><strong>Text Generation:</strong></p>
+<ul>
+<li><p><code>POST /api/diffusion/generate</code><br>Produces a complete response with <code>text</code>, <code>history</code>, <code>generation_time</code>, and <code>model_used</code>.</p>
+</li>
+<li><p><code>POST /api/diffusion/generate/stream</code><br>Streams Server-Sent Events (SSE) describing status, step updates, completion, and errors.</p>
+</li>
+</ul>
+<p><strong>Text Infilling:</strong></p>
+<ul>
+<li><p><code>POST /api/diffusion/infill</code><br>Produces a complete response for prefix/suffix infilling.</p>
+</li>
+<li><p><code>POST /api/diffusion/infill/stream</code><br>Streams SSE in the same format as generation.</p>
+</li>
+</ul>
+<h2>Server-Sent Events Schema</h2>
+<p>Example SSE frame sequence:</p>
+<pre><code class="hljs language-text">data: {&quot;type&quot;:&quot;status&quot;,&quot;message&quot;:&quot;Starting text generation...&quot;}
+data: {&quot;type&quot;:&quot;step&quot;,&quot;step&quot;:1,&quot;text&quot;:&quot;Once upon&quot;}
+data: {&quot;type&quot;:&quot;step&quot;,&quot;step&quot;:2,&quot;text&quot;:&quot; a time&quot;}
+data: {&quot;type&quot;:&quot;complete&quot;,&quot;text&quot;:&quot;Once upon a time&quot;,&quot;generation_time&quot;:0.02,&quot;model_used&quot;:&quot;llada&quot;}</code></pre><p>Events are formatted as JSON frames in <code>data:</code> lines.</p>
+<ul>
+<li><strong>Status frames</strong> indicate startup state.</li>
+<li><strong>Step frames</strong> carry incremental text.</li>
+<li><strong>Complete frames</strong> contain the final text, <code>model_used</code>, and <code>generation_time</code>.</li>
+<li><strong>Error frames</strong> contain <code>error_type</code>, <code>message</code>, and <code>retryable</code>.</li>
+</ul>
+<h2>Error Handling and Redaction</h2>
+<p>Errors are mapped to structured categories: <code>validation</code>, <code>network</code>, <code>timeout</code>, <code>model_loading</code>, <code>model_unavailable</code>, and <code>generation</code>. Sensitive inputs such as <code>prompt</code>, <code>prefix</code>, and <code>suffix</code> are redacted in logs and error payloads. HTTP 429 is returned when per-client rate limits are exceeded on streaming endpoints.</p>
+<h2>Observability and Limits</h2>
+<h3>Structured Logging</h3>
+<p>The diffusion LLM integration uses structured logging with correlation IDs for comprehensive observability:</p>
+<ul>
+<li><strong>Correlation IDs</strong>: All requests receive a unique correlation ID that is propagated through the entire request lifecycle</li>
+<li><strong>Structured JSON logs</strong>: Logs are formatted as JSON with consistent fields including timestamp, level, correlation ID, and structured data</li>
+<li><strong>Enhanced redaction</strong>: Sensitive fields (prompt, prefix, suffix) are automatically redacted in logs, with additional redaction for debug-level logs</li>
+<li><strong>Context propagation</strong>: Correlation IDs are maintained across async operations using context variables</li>
+</ul>
+<h3>Log Files</h3>
+<ul>
+<li><code>logs/structured.log</code> - Contains structured JSON logs for diffusion LLM operations</li>
+<li><code>logs/backend.log</code> - Contains traditional formatted logs including diffusion LLM entries</li>
+</ul>
+<h3>Correlation ID Usage</h3>
+<p>Streaming routes attach an <code>X-Correlation-ID</code> header. The start and end of streams are logged with the correlation ID and duration. Stream durations are recorded in the metrics database. Per-client rate limiting is enabled for streaming endpoints to protect the server under load.</p>
+<h2>Model Management and Downloads</h2>
+<p>DreamOn and LLaDA are registered in the unified model download registry. The system honors HuggingFace cache configuration when downloading model weights. The Model Management settings view displays overall download and cache status and provides quick access to downloads.</p>
+<h2>Frontend Composition and Panels</h2>
+<p>Typed types are provided in <code>src/types/diffusionLLM.ts</code>. A Solid composable in <code>src/composables/useDiffusionLLM.ts</code> implements model listing, model loading (with device preference), and streaming for generation and infilling. Panels for model selection, generation, and infilling are implemented in <code>src/components/LLM</code> and are integrated into the functionality system via <code>TextLLMFunctionality</code>.</p>
+<h2>Settings and Persistence</h2>
+<p>Additional cleanup flags are supported end-to-end:</p>
+<ul>
+<li><code>auto_trim</code>: Trim whitespace in streamed text on server (and optionally client)</li>
+<li><code>fix_punctuation</code>: Normalize basic punctuation spacing on server (and optionally client)</li>
+</ul>
+<p>These are toggled in Settings and persisted via <code>localStorage</code>.</p>
+<p>User-facing settings allow configuration of default <code>max_new_tokens</code>, request timeout, and preferred device. These settings are persisted in <code>localStorage</code> and read on startup via the app context. The composable and panels respect these defaults when calling the API.</p>
+<h2>Troubleshooting</h2>
+<ul>
+<li>If text appears with odd spacing, ensure <code>Fix punctuation</code> is enabled in Settings, or send <code>fix_punctuation: true</code>.</li>
+<li>If trailing whitespace appears, enable <code>Auto-trim</code>.</li>
+</ul>
+<p>If streaming returns no events, verify that the service is enabled and that a model is loaded. If a 429 rate limit is returned, reduce request frequency or wait a few seconds. If model loading fails due to memory constraints, switch the device to CPU or close other GPU workloads. Confirm that HuggingFace cache variables (<code>HF_HOME</code>, <code>HF_CACHE</code>) are correctly configured when using embedded mode.</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

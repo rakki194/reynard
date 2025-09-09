@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reynard-monaco - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>reynard-monaco</h1>
+      <div class="markdown-content"><h1>reynard-monaco</h1>
+<p>Monaco code editor and text editing components for Reynard, built with SolidJS.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Monaco Editor Integration</strong>: Full Monaco Editor support with syntax highlighting</li>
+<li><strong>Shiki Integration</strong>: Enhanced syntax highlighting with Shiki</li>
+<li><strong>Language Detection</strong>: Automatic detection of programming and natural languages</li>
+<li><strong>Theme Support</strong>: Dark, light, and custom theme support</li>
+<li><strong>TypeScript Support</strong>: Full TypeScript definitions included</li>
+<li><strong>Accessible</strong>: Built with accessibility in mind</li>
+</ul>
+<h2>Installation</h2>
+<pre><code class="hljs language-bash">npm install reynard-monaco</code></pre><h2>Usage</h2>
+<h3>Basic Code Editor</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">CodeEditor</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-monaco&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [code, setCode] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&#x27;console.log(&quot;Hello, World!&quot;);&#x27;</span>);
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CodeEditor</span>
+      <span class="hljs-attr">value</span>=<span class="hljs-string">{code()}</span>
+      <span class="hljs-attr">language</span>=<span class="hljs-string">&quot;javascript&quot;</span>
+      <span class="hljs-attr">theme</span>=<span class="hljs-string">&quot;dark&quot;</span>
+      <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setCode}</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;400px&quot;</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h3>With Language Detection</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">CodeEditor</span>, useLanguageDetection } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-monaco&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [code, setCode] = <span class="hljs-title function_">createSignal</span>(
+    <span class="hljs-string">&#x27;def hello_world():\n    print(&quot;Hello, World!&quot;)&#x27;</span>,
+  );
+  <span class="hljs-keyword">const</span> languageDetection = <span class="hljs-title function_">useLanguageDetection</span>();
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CodeEditor</span>
+      <span class="hljs-attr">value</span>=<span class="hljs-string">{code()}</span>
+      <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setCode}</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;400px&quot;</span>
+      // <span class="hljs-attr">Language</span> <span class="hljs-attr">will</span> <span class="hljs-attr">be</span> <span class="hljs-attr">auto-detected</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h3>With Shiki Integration</h3>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">CodeEditor</span>, useMonacoShiki } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-monaco&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> [code, setCode] = <span class="hljs-title function_">createSignal</span>(<span class="hljs-string">&quot;const x = 42;&quot;</span>);
+  <span class="hljs-keyword">const</span> monacoShiki = <span class="hljs-title function_">useMonacoShiki</span>({
+    <span class="hljs-attr">theme</span>: <span class="hljs-string">&quot;github-dark&quot;</span>,
+    <span class="hljs-attr">lang</span>: <span class="hljs-string">&quot;typescript&quot;</span>,
+    <span class="hljs-attr">enableShikiHighlighting</span>: <span class="hljs-literal">true</span>,
+  });
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">CodeEditor</span>
+      <span class="hljs-attr">value</span>=<span class="hljs-string">{code()}</span>
+      <span class="hljs-attr">language</span>=<span class="hljs-string">&quot;typescript&quot;</span>
+      <span class="hljs-attr">onChange</span>=<span class="hljs-string">{setCode}</span>
+      <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;400px&quot;</span>
+    /&gt;</span></span>
+  );
+}</code></pre><h2>API Reference</h2>
+<h3>CodeEditor Props</h3>
+<table>
+<thead>
+<tr>
+<th>Prop</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>value</code></td>
+<td><code>string</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>The code content</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>string</code></td>
+<td><code>&#39;javascript&#39;</code></td>
+<td>Programming language</td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td><code>string</code></td>
+<td><code>&#39;auto&#39;</code></td>
+<td>Editor theme</td>
+</tr>
+<tr>
+<td><code>readOnly</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Whether editor is read-only</td>
+</tr>
+<tr>
+<td><code>onChange</code></td>
+<td><code>(value: string) =&gt; void</code></td>
+<td>-</td>
+<td>Change handler</td>
+</tr>
+<tr>
+<td><code>onSave</code></td>
+<td><code>() =&gt; void</code></td>
+<td>-</td>
+<td>Save handler</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td><code>string</code></td>
+<td><code>&#39;400px&#39;</code></td>
+<td>Editor height</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td><code>string</code></td>
+<td><code>&#39;100%&#39;</code></td>
+<td>Editor width</td>
+</tr>
+<tr>
+<td><code>showLineNumbers</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Show line numbers</td>
+</tr>
+<tr>
+<td><code>showSearch</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Show search functionality</td>
+</tr>
+<tr>
+<td><code>className</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>Additional CSS class</td>
+</tr>
+</tbody></table>
+<h3>Composables</h3>
+<h4><code>useLanguageDetection()</code></h4>
+<p>Provides language detection capabilities.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> languageDetection = <span class="hljs-title function_">useLanguageDetection</span>();
+
+<span class="hljs-comment">// Detect natural language</span>
+<span class="hljs-keyword">await</span> languageDetection.<span class="hljs-title function_">detectNaturalLanguage</span>(<span class="hljs-string">&quot;Hello, world!&quot;</span>);
+
+<span class="hljs-comment">// Detect programming language from filename</span>
+<span class="hljs-keyword">const</span> lang = languageDetection.<span class="hljs-title function_">detectProgrammingLanguageFromFile</span>(<span class="hljs-string">&quot;app.js&quot;</span>);</code></pre><h4><code>useMonacoShiki(options)</code></h4>
+<p>Provides Monaco-Shiki integration.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> monacoShiki = <span class="hljs-title function_">useMonacoShiki</span>({
+  <span class="hljs-attr">theme</span>: <span class="hljs-string">&quot;github-dark&quot;</span>,
+  <span class="hljs-attr">lang</span>: <span class="hljs-string">&quot;typescript&quot;</span>,
+  <span class="hljs-attr">enableShikiHighlighting</span>: <span class="hljs-literal">true</span>,
+});</code></pre><h4><code>useShiki(options)</code></h4>
+<p>Provides Shiki syntax highlighting.</p>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">const</span> shiki = <span class="hljs-title function_">useShiki</span>({
+  <span class="hljs-attr">theme</span>: <span class="hljs-string">&quot;github-dark&quot;</span>,
+  <span class="hljs-attr">lang</span>: <span class="hljs-string">&quot;typescript&quot;</span>,
+});</code></pre><h3>Utilities</h3>
+<h4>Language Utilities</h4>
+<pre><code class="hljs language-tsx"><span class="hljs-keyword">import</span> {
+  getMonacoLanguage,
+  getLanguageDisplayName,
+  isCodeFile,
+  getLanguageInfo,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;reynard-monaco&quot;</span>;
+
+<span class="hljs-comment">// Get Monaco language from file path</span>
+<span class="hljs-keyword">const</span> lang = <span class="hljs-title function_">getMonacoLanguage</span>(<span class="hljs-string">&quot;app.js&quot;</span>); <span class="hljs-comment">// &#x27;javascript&#x27;</span>
+
+<span class="hljs-comment">// Get display name</span>
+<span class="hljs-keyword">const</span> name = <span class="hljs-title function_">getLanguageDisplayName</span>(<span class="hljs-string">&quot;app.js&quot;</span>); <span class="hljs-comment">// &#x27;JavaScript&#x27;</span>
+
+<span class="hljs-comment">// Check if file is code</span>
+<span class="hljs-keyword">const</span> isCode = <span class="hljs-title function_">isCodeFile</span>(<span class="hljs-string">&quot;app.js&quot;</span>); <span class="hljs-comment">// true</span>
+
+<span class="hljs-comment">// Get complete language info</span>
+<span class="hljs-keyword">const</span> info = <span class="hljs-title function_">getLanguageInfo</span>(<span class="hljs-string">&quot;app.js&quot;</span>);
+<span class="hljs-comment">// { monacoLanguage: &#x27;javascript&#x27;, displayName: &#x27;JavaScript&#x27;, isCode: true }</span></code></pre><h2>Supported Languages</h2>
+<p>The package supports a wide range of programming languages including:</p>
+<ul>
+<li>JavaScript/TypeScript (JS, TS, JSX, TSX)</li>
+<li>Web Technologies (HTML, CSS, SCSS, SASS, Less)</li>
+<li>Programming Languages (Python, Java, C/C++, C#, PHP, Ruby, Go, Rust, Swift, Kotlin, Scala, R, Julia, MATLAB)</li>
+<li>Data Formats (SQL, JSON, XML, YAML, TOML)</li>
+<li>Documentation (Markdown)</li>
+<li>Shell Scripts (Bash, Zsh, Fish, PowerShell)</li>
+<li>Configuration Files (Dockerfile, Git configs, etc.)</li>
+<li>Build Systems (Make, CMake, Gradle, Maven, etc.)</li>
+</ul>
+<h2>Theming</h2>
+<p>The package supports CSS custom properties for theming:</p>
+<pre><code class="hljs language-css"><span class="hljs-selector-pseudo">:root</span> {
+  <span class="hljs-attr">--bg-color</span>: <span class="hljs-number">#ffffff</span>;
+  <span class="hljs-attr">--secondary-bg</span>: <span class="hljs-number">#f8f9fa</span>;
+  <span class="hljs-attr">--text-primary</span>: <span class="hljs-number">#212529</span>;
+  <span class="hljs-attr">--text-secondary</span>: <span class="hljs-number">#6c757d</span>;
+  <span class="hljs-attr">--border-color</span>: <span class="hljs-number">#e1e5e9</span>;
+  <span class="hljs-attr">--accent</span>: <span class="hljs-number">#007bff</span>;
+  <span class="hljs-attr">--text-on-accent</span>: <span class="hljs-number">#ffffff</span>;
+  <span class="hljs-attr">--border-radius</span>: <span class="hljs-number">8px</span>;
+  <span class="hljs-attr">--spacing</span>: <span class="hljs-number">12px</span>;
+  <span class="hljs-attr">--half-spacing</span>: <span class="hljs-number">8px</span>;
+  <span class="hljs-attr">--quarter-spacing</span>: <span class="hljs-number">4px</span>;
+  <span class="hljs-attr">--font-size</span>: <span class="hljs-number">14px</span>;
+  <span class="hljs-attr">--font-family-mono</span>: <span class="hljs-string">&quot;Monaco&quot;</span>, <span class="hljs-string">&quot;Menlo&quot;</span>, <span class="hljs-string">&quot;Ubuntu Mono&quot;</span>, monospace;
+  <span class="hljs-attr">--transition-duration</span>: <span class="hljs-number">0.2s</span>;
+  <span class="hljs-attr">--transition-timing</span>: ease;
+  <span class="hljs-attr">--hover-transform</span>: <span class="hljs-built_in">translateY</span>(-<span class="hljs-number">1px</span>);
+  <span class="hljs-attr">--shadow-hover</span>: <span class="hljs-number">0</span> <span class="hljs-number">2px</span> <span class="hljs-number">4px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.1</span>);
+}</code></pre><h2>Development</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Build the package</span>
+npm run build
+
+<span class="hljs-comment"># Run tests</span>
+npm <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># Run tests with UI</span>
+npm run <span class="hljs-built_in">test</span>:ui
+
+<span class="hljs-comment"># Type checking</span>
+npm run type-check
+
+<span class="hljs-comment"># Linting</span>
+npm run lint</code></pre><h2>License</h2>
+<p>MIT</p>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

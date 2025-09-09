@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stepped Line Charts - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Stepped Line Charts</h1>
+      <div class="markdown-content"><h1>Stepped Line Charts</h1>
+<pre><code class="hljs"><span class="hljs-comment">// &lt;block:actions:2&gt;</span>
+const actions = [
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Step: false (default)&#x27;</span>,
+    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">chart</span>) =&gt;</span> {
+      chart.data.datasets.forEach(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.stepped = <span class="hljs-literal">false</span>;
+      });
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Step: true&#x27;</span>,
+    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">chart</span>) =&gt;</span> {
+      chart.data.datasets.forEach(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.stepped = <span class="hljs-literal">true</span>;
+      });
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Step: before&#x27;</span>,
+    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">chart</span>) =&gt;</span> {
+      chart.data.datasets.forEach(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.stepped = <span class="hljs-string">&#x27;before&#x27;</span>;
+      });
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Step: after&#x27;</span>,
+    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">chart</span>) =&gt;</span> {
+      chart.data.datasets.forEach(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.stepped = <span class="hljs-string">&#x27;after&#x27;</span>;
+      });
+      chart.update();
+    }
+  },
+  {
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Step: middle&#x27;</span>,
+    <span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">chart</span>) =&gt;</span> {
+      chart.data.datasets.forEach(<span class="hljs-function"><span class="hljs-params">dataset</span> =&gt;</span> {
+        dataset.stepped = <span class="hljs-string">&#x27;middle&#x27;</span>;
+      });
+      chart.update();
+    }
+  }
+];
+<span class="hljs-comment">// &lt;/block:actions&gt;</span>
+
+<span class="hljs-comment">// &lt;block:setup:1&gt;</span>
+const data = {
+  <span class="hljs-attr">labels</span>: [<span class="hljs-string">&#x27;Day 1&#x27;</span>, <span class="hljs-string">&#x27;Day 2&#x27;</span>, <span class="hljs-string">&#x27;Day 3&#x27;</span>, <span class="hljs-string">&#x27;Day 4&#x27;</span>, <span class="hljs-string">&#x27;Day 5&#x27;</span>, <span class="hljs-string">&#x27;Day 6&#x27;</span>],
+  <span class="hljs-attr">datasets</span>: [
+    {
+      <span class="hljs-attr">label</span>: <span class="hljs-string">&#x27;Dataset&#x27;</span>,
+      <span class="hljs-attr">data</span>: Utils.numbers({<span class="hljs-attr">count</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">min</span>: <span class="hljs-number">-100</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">100</span>}),
+      <span class="hljs-attr">borderColor</span>: Utils.CHART_COLORS.red,
+      <span class="hljs-attr">fill</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">stepped</span>: <span class="hljs-literal">true</span>,
+    }
+  ]
+};
+<span class="hljs-comment">// &lt;/block:setup&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+const config = {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;line&#x27;</span>,
+  <span class="hljs-attr">data</span>: data,
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">responsive</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">interaction</span>: {
+      <span class="hljs-attr">intersect</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">axis</span>: <span class="hljs-string">&#x27;x&#x27;</span>
+    },
+    <span class="hljs-attr">plugins</span>: {
+      <span class="hljs-attr">title</span>: {
+        <span class="hljs-attr">display</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">text</span>: <span class="hljs-function">(<span class="hljs-params">ctx</span>) =&gt;</span> <span class="hljs-string">&#x27;Step &#x27;</span> + ctx.chart.data.datasets[<span class="hljs-number">0</span>].stepped + <span class="hljs-string">&#x27; Interpolation&#x27;</span>,
+      }
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+module.exports = {
+  <span class="hljs-attr">actions</span>: actions,
+  <span class="hljs-attr">config</span>: config,
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../general/data-structures.md">Data structures (<code>labels</code>)</a></li>
+<li><a href="../../charts/line.md">Line</a><ul>
+<li><a href="../../charts/line.md#stepped">Stepped</a></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

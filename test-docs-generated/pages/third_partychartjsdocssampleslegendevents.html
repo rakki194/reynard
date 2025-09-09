@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - Reynard Documentation Test</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../highlight.css">
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+  <nav class="docs-nav">
+    <div class="nav-brand"><a href="../index.html">Reynard Documentation Test</a></div>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../api.html">API Reference</a></div>
+  </nav>
+  <main class="docs-main">
+    <div class="docs-content">
+      <h1>Events</h1>
+      <div class="markdown-content"><h1>Events</h1>
+<p>This sample demonstrates how to use the event hooks to highlight chart elements.</p>
+<pre><code class="hljs">
+<span class="hljs-comment">// &lt;block:data:3&gt;</span>
+<span class="hljs-keyword">const</span> data = {
+  <span class="hljs-attribute">labels</span>: [<span class="hljs-string">&#x27;Red&#x27;</span>, <span class="hljs-string">&#x27;Blue&#x27;</span>, <span class="hljs-string">&#x27;Yellow&#x27;</span>, <span class="hljs-string">&#x27;Green&#x27;</span>, <span class="hljs-string">&#x27;Purple&#x27;</span>, <span class="hljs-string">&#x27;Orange&#x27;</span>],
+  <span class="hljs-attribute">datasets</span>: [{
+    <span class="hljs-attribute">label</span>: <span class="hljs-string">&#x27;# of Votes&#x27;</span>,
+    <span class="hljs-attribute">data</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">19</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+    <span class="hljs-attribute">borderWidth</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attribute">backgroundColor</span>: [<span class="hljs-string">&#x27;#CB4335&#x27;</span>, <span class="hljs-string">&#x27;#1F618D&#x27;</span>, <span class="hljs-string">&#x27;#F1C40F&#x27;</span>, <span class="hljs-string">&#x27;#27AE60&#x27;</span>, <span class="hljs-string">&#x27;#884EA0&#x27;</span>, <span class="hljs-string">&#x27;#D35400&#x27;</span>],
+  }]
+};
+<span class="hljs-comment">// &lt;/block:data&gt;</span>
+
+<span class="hljs-comment">// &lt;block:handleHover:1&gt;</span>
+<span class="hljs-comment">// Append &#x27;4d&#x27; to the colors (alpha channel), except for the hovered index</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleHover</span>(<span class="hljs-params">evt, item, legend</span>) </span>{
+  legend.chart.data.datasets[<span class="hljs-number">0</span>].backgroundColor.forEach((<span class="hljs-built_in">color</span>, index, colors) =&gt; {
+    colors[index] = index === item.index || <span class="hljs-built_in">color</span>.length === <span class="hljs-number">9</span> ? <span class="hljs-attribute">color</span> : <span class="hljs-built_in">color</span> + <span class="hljs-string">&#x27;4D&#x27;</span>;
+  });
+  legend.chart.update();
+}
+<span class="hljs-comment">// &lt;/block:handleHover&gt;</span>
+
+<span class="hljs-comment">// &lt;block:handleLeave:2&gt;</span>
+<span class="hljs-comment">// Removes the alpha channel from background colors</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleLeave</span>(<span class="hljs-params">evt, item, legend</span>) </span>{
+  legend.chart.data.datasets[<span class="hljs-number">0</span>].backgroundColor.forEach((<span class="hljs-built_in">color</span>, index, colors) =&gt; {
+    colors[index] = <span class="hljs-built_in">color</span>.length === <span class="hljs-number">9</span> ? <span class="hljs-built_in">color</span>.slice(<span class="hljs-number">0</span>, <span class="hljs-number">-2</span>) : <span class="hljs-built_in">color</span>;
+  });
+  legend.chart.update();
+}
+<span class="hljs-comment">// &lt;/block:handleLeave&gt;</span>
+
+<span class="hljs-comment">// &lt;block:config:0&gt;</span>
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attribute">type</span>: <span class="hljs-string">&#x27;pie&#x27;</span>,
+  <span class="hljs-attribute">data</span>: data,
+  <span class="hljs-attribute">options</span>: {
+    <span class="hljs-attribute">plugins</span>: {
+      <span class="hljs-attribute">legend</span>: {
+        <span class="hljs-attribute">onHover</span>: handleHover,
+        <span class="hljs-attribute">onLeave</span>: handleLeave
+      }
+    }
+  }
+};
+<span class="hljs-comment">// &lt;/block:config&gt;</span>
+
+<span class="hljs-built_in">module</span>.exports = {
+  config
+};</code></pre><h2>Docs</h2>
+<ul>
+<li><a href="../../charts/doughnut.md">Doughnut and Pie Charts</a></li>
+<li><a href="../../configuration/legend.md">Legend</a><ul>
+<li><code>onHover</code></li>
+<li><code>onLeave</code></li>
+</ul>
+</li>
+</ul>
+</div>
+    </div>
+  </main>
+  <footer class="docs-footer"><p>&copy; 2024 Reynard Documentation Test. Built with ❤️ using SolidJS.</p></footer>
+</body>
+</html>

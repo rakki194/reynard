@@ -4,3 +4,9 @@
 [submodule "libraries/beacon"]
 	path = libraries/beacon
 	url = https://github.com/rakki194/beacon
+[submodule "third_party/yipyap"]
+	path = third_party/yipyap
+	url = https://github.com/rakki194/yipyap
+[submodule "third_party/pawprint"]
+	path = third_party/pawprint
+	url = https://github.com/rakki194/pawprint
