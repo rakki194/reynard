@@ -15,3 +15,6 @@ export const getIconHtml = (name: string) => {
   const icon = getIconFromRegistry(name);
   return icon || "";
 };
+
+// Re-export Icon component and related types
+export * from "./Icon";

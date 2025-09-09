@@ -14,7 +14,7 @@ import {
   generateOKLCHGradient,
 } from "./oklchColors";
 import { oklchStringToCSS } from "./colorConversion";
-import { createTagColorGenerator } from "reynard-color-media";
+import { createTagColorGenerator } from "reynard-colors";
 
 /**
  * Hook to get OKLCH colors for the current theme

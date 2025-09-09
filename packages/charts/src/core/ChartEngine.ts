@@ -18,7 +18,7 @@ import {
   Filler,
   registerables,
 } from "chart.js";
-import { generateColorsWithCache } from "reynard-color-media";
+import { generateColorsWithCache } from "reynard-colors";
 import { ChartTheme, Dataset, ChartType } from "../types";
 
 export interface ChartEngineConfig {

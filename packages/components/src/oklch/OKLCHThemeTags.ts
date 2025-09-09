@@ -4,7 +4,7 @@
  */
 
 import { createMemo, type Accessor } from "solid-js";
-import { createTagColorGenerator } from "reynard-color-media";
+import { createTagColorGenerator } from "reynard-colors";
 import { getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export interface ThemeTagsState {

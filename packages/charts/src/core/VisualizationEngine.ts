@@ -10,7 +10,7 @@ import {
   generateColorsWithCache,
   oklchToCSSWithAlpha,
   type ThemeName,
-} from "reynard-color-media";
+} from "reynard-colors";
 
 export interface VisualizationConfig {
   /** Theme for color generation */

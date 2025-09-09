@@ -9,7 +9,7 @@ import {
   formatOKLCH,
   adjustLightness,
   type OKLCHColor,
-} from "reynard-color-media";
+} from "reynard-colors";
 import { themeOKLCHPalettes } from "./oklchPalettes";
 
 // Create a cached color generator for performance

@@ -4,7 +4,7 @@
  */
 
 import type { ThemeName } from "./types";
-import type { OKLCHColor } from "reynard-color-media";
+import type { OKLCHColor } from "reynard-colors";
 
 /**
  * OKLCH Color Palette for each theme

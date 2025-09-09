@@ -39,6 +39,7 @@
     "editing"
   ],
   "dependencies": {
+    "reynard-api-client": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-components": "workspace:*",
     "reynard-fluent-icons": "workspace:*",

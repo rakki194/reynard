@@ -14,7 +14,7 @@ import {
   createEffect,
 } from "solid-js";
 import { useTheme } from "reynard-themes";
-import { formatOKLCH, type OKLCHColor } from "reynard-color-media";
+import { formatOKLCH, type OKLCHColor } from "reynard-colors";
 
 // Golden angle constant (137.507° in radians)
 const GOLDEN_ANGLE = (137.507 * Math.PI) / 180;

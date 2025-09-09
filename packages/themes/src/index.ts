@@ -56,7 +56,7 @@ export {
   adjustLightness,
   adjustSaturation,
   type OKLCHColor,
-} from "reynard-color-media";
+} from "reynard-colors";
 
 // Re-export i18n system from reynard-i18n
 export {

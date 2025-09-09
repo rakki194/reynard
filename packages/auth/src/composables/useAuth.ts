@@ -8,6 +8,7 @@ import { createSignal, onMount, onCleanup } from "solid-js";
 import type { AuthState, AuthConfiguration, AuthCallbacks } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
+import { useAuth as useGeneratedAuth, createReynardApiClient } from "reynard-api-client";
 
 export interface UseAuthOptions {
   /** Authentication configuration */
@@ -22,7 +23,29 @@ export function useAuth(options: UseAuthOptions = {}) {
   const config = { ...DEFAULT_AUTH_CONFIG, ...options.config };
   const callbacks = options.callbacks || {};
 
-  // Auth state
+  // Create API client for generated auth
+  const apiClient = createReynardApiClient({
+    basePath: config.baseUrl
+  });
+
+  // Use generated auth composable
+  const generatedAuth = useGeneratedAuth({
+    apiClient,
+    onLoginSuccess: (user, tokens) => {
+      callbacks.onLoginSuccess?.(user, tokens);
+    },
+    onLoginError: (error) => {
+      callbacks.onLoginError?.(error);
+    },
+    onRegisterSuccess: (user) => {
+      callbacks.onRegisterSuccess?.(user);
+    },
+    onRegisterError: (error) => {
+      callbacks.onRegisterError?.(error);
+    }
+  });
+
+  // Auth state - integrate with generated auth
   const [authState, setAuthState] = createSignal<AuthState>({
     user: null,
     isAuthenticated: false,
@@ -61,18 +84,35 @@ export function useAuth(options: UseAuthOptions = {}) {
   });
 
   return {
-    // State
+    // State - integrate with generated auth
     authState,
-    user: () => authState().user,
-    isAuthenticated: () => authState().isAuthenticated,
-    isLoading: () => authState().isLoading,
-    error: () => authState().error,
+    user: () => generatedAuth.user() || authState().user,
+    isAuthenticated: () => generatedAuth.isAuthenticated() || authState().isAuthenticated,
+    isLoading: () => generatedAuth.isLoading() || authState().isLoading,
+    error: () => generatedAuth.error() || authState().error,
     isRefreshing: () => authState().isRefreshing,
 
-    // Actions
-    login: orchestrator.authActions.login,
-    register: orchestrator.authActions.register,
-    logout: orchestrator.authActions.logout,
+    // Actions - integrate with generated auth
+    login: async (credentials: any) => {
+      try {
+        await generatedAuth.login(credentials);
+      } catch (err) {
+        // Fallback to legacy login if needed
+        await orchestrator.authActions.login(credentials);
+      }
+    },
+    register: async (data: any) => {
+      try {
+        await generatedAuth.register(data);
+      } catch (err) {
+        // Fallback to legacy register if needed
+        await orchestrator.authActions.register(data);
+      }
+    },
+    logout: () => {
+      generatedAuth.logout();
+      orchestrator.authActions.logout();
+    },
     refreshTokens: orchestrator.tokenRefreshManager.refreshTokens,
     changePassword: orchestrator.authActions.changePassword,
     updateProfile: orchestrator.userProfileManager.updateProfile,

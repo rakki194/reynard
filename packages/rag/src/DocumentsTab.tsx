@@ -6,18 +6,8 @@
  */
 
 import { For } from "solid-js";
-import { Button, Card } from "reynard-components";
-import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
+import { Button, Card, Icon } from "reynard-components";
 import type { RAGDocument } from "./types";
-
-// Helper function to get icon as JSX element
-const getIcon = (name: string) => {
-  const icon = getIconFromRegistry(name);
-  if (icon) {
-    return <div innerHTML={icon as unknown as string} />;
-  }
-  return null;
-};
 
 export interface DocumentsTabProps {
   documents: RAGDocument[];
@@ -52,7 +42,7 @@ export function DocumentsTab(props: DocumentsTabProps) {
                   </div>
                   <div class="document-actions">
                     <Button variant="ghost" size="sm" iconOnly>
-                      {getIcon("eye")}
+                      <Icon name="eye" size="sm" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -60,7 +50,7 @@ export function DocumentsTab(props: DocumentsTabProps) {
                       iconOnly
                       onClick={() => props.onDeleteDocument(doc.id)}
                     >
-                      {getIcon("delete")}
+                      <Icon name="delete" size="sm" />
                     </Button>
                   </div>
                 </div>

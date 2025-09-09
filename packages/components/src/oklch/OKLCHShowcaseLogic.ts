@@ -4,7 +4,7 @@
  */
 
 import type { Accessor } from "solid-js";
-import { formatOKLCH } from "reynard-color-media";
+import { formatOKLCH } from "reynard-colors";
 import { createColorVariations } from "./OKLCHColorVariations";
 import { createGradientDemos } from "./OKLCHGradientDemos";
 import { createThemeTags } from "./OKLCHThemeTags";

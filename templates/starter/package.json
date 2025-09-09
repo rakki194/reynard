@@ -16,6 +16,7 @@
     "format:check": "prettier --check 'src/**/*.{ts,tsx,css,json}'"
   },
   "dependencies": {
+    "reynard-api-client": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-themes": "workspace:*",

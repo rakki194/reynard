@@ -9,7 +9,7 @@ import {
   adjustLightness,
   adjustSaturation,
   type OKLCHColor,
-} from "reynard-color-media";
+} from "reynard-colors";
 
 export interface ColorVariationsState {
   selectedHue: Accessor<number>;

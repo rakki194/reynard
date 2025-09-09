@@ -10,7 +10,7 @@ import {
   createTagColorGenerator,
   formatOKLCH,
   type OKLCHColor,
-} from "reynard-color-media";
+} from "reynard-colors";
 
 // Create a cached tag color generator for performance
 const tagColorGenerator = createTagColorGenerator();

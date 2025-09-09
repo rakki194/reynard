@@ -10,7 +10,7 @@ import {
   OKLCHAdvancedFeatures as AdvancedFeatures,
 } from "./";
 import type { OKLCHState } from "./useOKLCHState";
-import type { OKLCHColor } from "reynard-color-media";
+import type { OKLCHColor } from "reynard-colors";
 
 interface TagColorData {
   theme: string;

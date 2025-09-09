@@ -131,7 +131,7 @@ export const BatchProcessingExample: Component = () => {
   return (
     <div class="batch-example-container">
       <div class="example-header">
-        <h1>🦊> Batch Caption Processing</h1>
+        <h1>🦊 Batch Caption Processing</h1>
         <p>
           Advanced batch processing for caption generation with real-time progress tracking,
           multiple generator support, and comprehensive result management.

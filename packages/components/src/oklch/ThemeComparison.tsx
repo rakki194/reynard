@@ -4,7 +4,7 @@
  */
 
 import { Component, For, createEffect } from "solid-js";
-import { formatOKLCH } from "reynard-color-media";
+import { formatOKLCH } from "reynard-colors";
 
 interface TagColorData {
   theme: string;

@@ -4,7 +4,7 @@
  */
 
 import { createMemo, type Accessor } from "solid-js";
-import { generateColorPalette } from "reynard-color-media";
+import { generateColorPalette } from "reynard-colors";
 
 export interface AnimatedPaletteState {
   selectedHue: Accessor<number>;

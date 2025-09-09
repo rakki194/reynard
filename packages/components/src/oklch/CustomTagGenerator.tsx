@@ -4,7 +4,7 @@
  */
 
 import { Component, For, createEffect } from "solid-js";
-import { createTagColorGenerator, formatOKLCH } from "reynard-color-media";
+import { createTagColorGenerator, formatOKLCH } from "reynard-colors";
 
 interface CustomTagGeneratorProps {
   availableThemes: string[];

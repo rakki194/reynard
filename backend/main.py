@@ -28,6 +28,7 @@ from app.api.tts import router as tts_router
 # from app.api.diffusion import router as diffusion_router
 from app.api.ollama import router as ollama_router
 from app.api.comfy import router as comfy_router
+from app.api.summarization import router as summarization_router
 
 # Load environment variables
 load_dotenv()
@@ -82,6 +83,7 @@ def create_app() -> FastAPI:
     # app.include_router(diffusion_router)
     app.include_router(ollama_router)
     app.include_router(comfy_router)
+    app.include_router(summarization_router)
     
     # Define core routes
     @app.get("/")

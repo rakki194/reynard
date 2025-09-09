@@ -7,6 +7,7 @@
 
 import { onMount, onCleanup } from "solid-js";
 import { createBackendAnnotationManager } from "reynard-annotating";
+import { useCaption as useGeneratedCaption, createReynardApiClient } from "reynard-api-client";
 import type { CaptionGeneratorState, GeneratorInfo } from "./useCaptionGeneratorState";
 
 export interface BackendConfig {
@@ -16,6 +17,7 @@ export interface BackendConfig {
 
 export interface CaptionGeneratorBackend {
   manager: ReturnType<typeof createBackendAnnotationManager> | null;
+  generatedCaption: ReturnType<typeof useGeneratedCaption> | null;
   initialize: () => Promise<void>;
   shutdown: () => Promise<void>;
 }
@@ -28,9 +30,11 @@ export function useCaptionGeneratorBackend(
   config?: BackendConfig
 ): CaptionGeneratorBackend {
   let manager: ReturnType<typeof createBackendAnnotationManager> | null = null;
+  let generatedCaption: ReturnType<typeof useGeneratedCaption> | null = null;
 
   const initialize = async () => {
     try {
+      // Initialize legacy manager
       manager = createBackendAnnotationManager({
         baseUrl: config?.baseUrl || "http://localhost:8000",
         apiKey: config?.apiKey,
@@ -38,14 +42,24 @@ export function useCaptionGeneratorBackend(
       
       await manager.initialize();
       
-      // Get available generators
+      // Initialize generated API client
+      const apiClient = createReynardApiClient({
+        basePath: config?.baseUrl || "http://localhost:8000"
+      });
+      
+      generatedCaption = useGeneratedCaption({ apiClient });
+      
+      // Get available generators from both sources
       const generators = await manager.getAvailableGenerators();
+      const generatedGenerators = generatedCaption.availableGenerators();
+      
       const generatorInfos: GeneratorInfo[] = [
         {
           name: "jtp2",
           displayName: "JTP2 (Furry Tags)",
           description: "Specialized for furry and anthropomorphic content",
-          available: generators.some(g => g.name === "jtp2"),
+          available: generators.some(g => g.name === "jtp2") || 
+                    generatedGenerators?.some((g: any) => g.name === "jtp2"),
           loading: false,
         },
         {
@@ -89,6 +103,7 @@ export function useCaptionGeneratorBackend(
 
   return {
     get manager() { return manager; },
+    get generatedCaption() { return generatedCaption; },
     initialize,
     shutdown,
   };

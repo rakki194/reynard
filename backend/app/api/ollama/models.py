@@ -3,7 +3,7 @@ Pydantic models for Ollama API endpoints.
 """
 
 from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class OllamaChatRequest(BaseModel):
@@ -87,6 +87,8 @@ class OllamaConfig(BaseModel):
 
 class OllamaStats(BaseModel):
     """Statistics for Ollama service."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     total_requests: int = Field(..., description="Total chat requests")
     successful_requests: int = Field(..., description="Successful chat requests")
     failed_requests: int = Field(..., description="Failed chat requests")

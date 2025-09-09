@@ -15,8 +15,8 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Request
 from fastapi.responses import Response, StreamingResponse
 
-from ..auth import get_current_active_user
-from ..models import User
+from ...auth.user_service import get_current_active_user
+from gatekeeper.models.user import User
 from ...services.comfy.service_initializer import get_comfy_service, initialize_comfy_service
 from .models import (
     ComfyQueueRequest,

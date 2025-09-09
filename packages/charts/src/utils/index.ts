@@ -10,11 +10,11 @@ import {
   DEFAULT_THEME,
   DEFAULT_COLORS,
 } from "../types";
-import { generateColorsWithCache } from "reynard-color-media";
+import { generateColorsWithCache } from "reynard-colors";
 
 /**
  * Generate a color palette for datasets
- * @deprecated Use generateColorsWithCache from reynard-color-media instead
+ * @deprecated Use generateColorsWithCache from reynard-colors instead
  */
 export function generateColors(count: number, opacity: number = 1): string[] {
   // Use centralized color generation with default parameters
