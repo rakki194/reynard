@@ -4,21 +4,21 @@
  */
 
 export enum ErrorSeverity {
-  LOW = 'low',
-  MEDIUM = 'medium', 
-  HIGH = 'high',
-  CRITICAL = 'critical'
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 export enum ErrorCategory {
-  RENDERING = 'rendering',
-  NETWORK = 'network',
-  VALIDATION = 'validation',
-  AUTHENTICATION = 'authentication',
-  PERMISSION = 'permission',
-  RESOURCE = 'resource',
-  TIMEOUT = 'timeout',
-  UNKNOWN = 'unknown'
+  RENDERING = "rendering",
+  NETWORK = "network",
+  VALIDATION = "validation",
+  AUTHENTICATION = "authentication",
+  PERMISSION = "permission",
+  RESOURCE = "resource",
+  TIMEOUT = "timeout",
+  UNKNOWN = "unknown",
 }
 
 export interface ErrorInfo {
@@ -81,9 +81,9 @@ export interface ErrorReportingConfig {
 }
 
 export interface ErrorFilter {
-  type: 'severity' | 'category' | 'message' | 'component';
+  type: "severity" | "category" | "message" | "component";
   value: unknown;
-  action: 'include' | 'exclude';
+  action: "include" | "exclude";
 }
 
 export interface ErrorFallbackProps {
@@ -105,12 +105,12 @@ export interface ErrorMetrics {
   errorsByCategory: Record<ErrorCategory, number>;
   errorsBySeverity: Record<ErrorSeverity, number>;
   topErrors: Array<{ error: string; count: number }>;
-  errorRateTrend: 'up' | 'down' | 'stable';
-  recoveryRateTrend: 'up' | 'down' | 'stable';
+  errorRateTrend: "up" | "down" | "stable";
+  recoveryRateTrend: "up" | "down" | "stable";
 }
 
 // Re-export Component type from SolidJS
-import type { Component } from 'solid-js';
-import type { RecoveryStrategy, RecoveryAction } from './RecoveryTypes';
+import type { Component } from "solid-js";
+import type { RecoveryStrategy, RecoveryAction } from "./RecoveryTypes";
 
 export type { Component };

@@ -1,13 +1,13 @@
 /**
  * Resize Constraints Module
- * 
+ *
  * Pure functions for applying resize constraints including:
  * - Size constraints (min/max width/height)
  * - Aspect ratio maintenance
  * - Position constraints
  */
 
-import type { TransformConstraints } from '../types';
+import type { TransformConstraints } from "../types";
 
 export interface ResizeDimensions {
   width: number;
@@ -18,11 +18,11 @@ export interface ResizeDimensions {
 
 /**
  * Applies resize constraints to dimensions
- * 
+ *
  * @param dimensions - The dimensions to constrain
  * @param constraints - The constraints to apply
  * @returns Constrained dimensions
- * 
+ *
  * @example
  * ```typescript
  * const constrained = applyResizeConstraints(
@@ -33,7 +33,7 @@ export interface ResizeDimensions {
  */
 export function applyResizeConstraints(
   dimensions: ResizeDimensions,
-  constraints: TransformConstraints
+  constraints: TransformConstraints,
 ): ResizeDimensions {
   let { width, height } = dimensions;
   const { x, y } = dimensions;
@@ -66,7 +66,7 @@ export function applyResizeConstraints(
 
 /**
  * Calculates aspect ratio from dimensions
- * 
+ *
  * @param dimensions - The dimensions to calculate aspect ratio from
  * @returns The aspect ratio (width / height)
  */
@@ -76,25 +76,37 @@ export function calculateAspectRatio(dimensions: ResizeDimensions): number {
 
 /**
  * Validates if dimensions meet constraints
- * 
+ *
  * @param dimensions - The dimensions to validate
  * @param constraints - The constraints to check against
  * @returns True if dimensions are valid
  */
 export function validateResizeConstraints(
   dimensions: ResizeDimensions,
-  constraints: TransformConstraints
+  constraints: TransformConstraints,
 ): boolean {
-  if (constraints.minWidth !== undefined && dimensions.width < constraints.minWidth) {
+  if (
+    constraints.minWidth !== undefined &&
+    dimensions.width < constraints.minWidth
+  ) {
     return false;
   }
-  if (constraints.minHeight !== undefined && dimensions.height < constraints.minHeight) {
+  if (
+    constraints.minHeight !== undefined &&
+    dimensions.height < constraints.minHeight
+  ) {
     return false;
   }
-  if (constraints.maxWidth !== undefined && dimensions.width > constraints.maxWidth) {
+  if (
+    constraints.maxWidth !== undefined &&
+    dimensions.width > constraints.maxWidth
+  ) {
     return false;
   }
-  if (constraints.maxHeight !== undefined && dimensions.height > constraints.maxHeight) {
+  if (
+    constraints.maxHeight !== undefined &&
+    dimensions.height > constraints.maxHeight
+  ) {
     return false;
   }
   return true;

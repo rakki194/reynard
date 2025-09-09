@@ -3,11 +3,14 @@
  * Hook for managing error boundary state and actions
  */
 
-import { createSignal, createMemo, onCleanup } from 'solid-js';
-import { ErrorContext } from '../types/ErrorTypes';
-import { RecoveryAction, RecoveryStrategy } from '../types/RecoveryTypes';
-import { createErrorContext } from '../utils/ErrorAnalyzer';
-import { getApplicableStrategies, executeRecoveryStrategy } from '../utils/RecoveryStrategies';
+import { createSignal, createMemo, onCleanup } from "solid-js";
+import { ErrorContext } from "../types/ErrorTypes";
+import { RecoveryAction, RecoveryStrategy } from "../types/RecoveryTypes";
+import { createErrorContext } from "../utils/ErrorAnalyzer";
+import {
+  getApplicableStrategies,
+  executeRecoveryStrategy,
+} from "../utils/RecoveryStrategies";
 
 interface UseErrorBoundaryOptions {
   recoveryStrategies?: RecoveryStrategy[];
@@ -28,46 +31,50 @@ interface UseErrorBoundaryReturn {
   clearError: () => void;
 }
 
-export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErrorBoundaryReturn {
+export function useErrorBoundary(
+  options: UseErrorBoundaryOptions = {},
+): UseErrorBoundaryReturn {
   const [error, setError] = createSignal<Error | null>(null);
   const [errorInfo, setErrorInfo] = createSignal<any>(null);
   const [isRecovering, setIsRecovering] = createSignal(false);
-  const [recoveryActions, setRecoveryActions] = createSignal<RecoveryAction[]>([]);
+  const [recoveryActions, setRecoveryActions] = createSignal<RecoveryAction[]>(
+    [],
+  );
 
   // Create error context when error occurs
   const errorContext = createMemo(() => {
     const currentError = error();
     const currentErrorInfo = errorInfo();
     if (!currentError || !currentErrorInfo) return null;
-    
+
     return createErrorContext(currentError, currentErrorInfo);
   });
 
   // Handle error occurrence
   const handleError = (error: Error, errorInfo: any) => {
-    console.error('useErrorBoundary caught error:', error, errorInfo);
-    
+    console.error("useErrorBoundary caught error:", error, errorInfo);
+
     setError(error);
     setErrorInfo(errorInfo);
-    
+
     // Create error context
     const context = createErrorContext(error, errorInfo);
-    
+
     // Get applicable recovery strategies
     const strategies = getApplicableStrategies(
       error,
       context,
-      options.recoveryStrategies
+      options.recoveryStrategies,
     );
-    
+
     // Convert strategies to recovery actions
-    const actions: RecoveryAction[] = strategies.map(strategy => ({
+    const actions: RecoveryAction[] = strategies.map((strategy) => ({
       id: strategy.id,
       name: strategy.name,
       description: strategy.description,
       action: strategy.id as any,
       priority: strategy.priority,
-      timeout: strategy.timeout
+      timeout: strategy.timeout,
     }));
 
     setRecoveryActions(actions);
@@ -99,14 +106,16 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErro
   const executeRecovery = async (action: RecoveryAction) => {
     const currentError = error();
     const currentContext = errorContext();
-    
+
     if (!currentError || !currentContext) return;
 
     setIsRecovering(true);
 
     try {
       // Find the strategy for this action
-      const strategy = options.recoveryStrategies?.find(s => s.id === action.id);
+      const strategy = options.recoveryStrategies?.find(
+        (s) => s.id === action.id,
+      );
       if (!strategy) {
         throw new Error(`Recovery strategy not found: ${action.id}`);
       }
@@ -115,20 +124,20 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErro
       const result = await executeRecoveryStrategy(
         strategy,
         currentError,
-        currentContext
+        currentContext,
       );
 
       if (result.success) {
         // Call user recovery handler
         options.onRecovery?.(action);
-        
+
         // Clear error state
         clearError();
       } else {
-        console.error('Recovery failed:', result.error);
+        console.error("Recovery failed:", result.error);
       }
     } catch (recoveryError) {
-      console.error('Recovery execution failed:', recoveryError);
+      console.error("Recovery execution failed:", recoveryError);
     } finally {
       setIsRecovering(false);
     }
@@ -139,8 +148,8 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErro
     if (options.isolate) {
       event.preventDefault();
       handleError(new Error(event.message), {
-        componentStack: 'Global error',
-        errorBoundary: 'global'
+        componentStack: "Global error",
+        errorBoundary: "global",
       });
     }
   };
@@ -150,20 +159,23 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErro
     if (options.isolate) {
       event.preventDefault();
       handleError(new Error(String(event.reason)), {
-        componentStack: 'Unhandled promise rejection',
-        errorBoundary: 'global'
+        componentStack: "Unhandled promise rejection",
+        errorBoundary: "global",
       });
     }
   };
 
   // Set up global error handlers
-  if (typeof window !== 'undefined' && options.isolate) {
-    window.addEventListener('error', handleGlobalError);
-    window.addEventListener('unhandledrejection', handleUnhandledRejection);
-    
+  if (typeof window !== "undefined" && options.isolate) {
+    window.addEventListener("error", handleGlobalError);
+    window.addEventListener("unhandledrejection", handleUnhandledRejection);
+
     onCleanup(() => {
-      window.removeEventListener('error', handleGlobalError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener("error", handleGlobalError);
+      window.removeEventListener(
+        "unhandledrejection",
+        handleUnhandledRejection,
+      );
     });
   }
 
@@ -176,6 +188,6 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErro
     retry,
     reset,
     executeRecovery,
-    clearError
+    clearError,
   };
 }

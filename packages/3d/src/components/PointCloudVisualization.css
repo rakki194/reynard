@@ -319,26 +319,26 @@
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .stat-item {
     flex-direction: row;
     justify-content: space-between;
     min-width: auto;
   }
-  
+
   .point-cloud-controls {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .control-group {
     min-width: auto;
   }
-  
+
   .selection-list {
     max-height: 150px;
   }
-  
+
   .point-tooltip {
     max-width: 250px;
     font-size: 11px;
@@ -361,7 +361,7 @@
   .selection-groups {
     border: 2px solid #ffffff;
   }
-  
+
   .point-tooltip {
     border: 2px solid #ffffff;
   }

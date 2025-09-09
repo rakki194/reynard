@@ -13,7 +13,7 @@ This document provides operational guidance for interpreting service states, per
 - No recent errors or connection issues
 - **Action**: Monitor normally
 
-#### DEGRADED  
+#### DEGRADED
 
 - Service is running but experiencing performance issues
 - May have elevated latency or partial functionality
@@ -77,7 +77,7 @@ This document provides operational guidance for interpreting service states, per
    # Check current service state
    curl -s -H "Authorization: Bearer $TOKEN" \
      "$BASE_URL/api/services/health/$SERVICE_NAME" | jq
-   
+
    # Check service metrics
    curl -s -H "Authorization: Bearer $TOKEN" \
      "$BASE_URL/api/services/metrics/$SERVICE_NAME" | jq
@@ -98,7 +98,7 @@ This document provides operational guidance for interpreting service states, per
    sleep 30
    curl -s -H "Authorization: Bearer $TOKEN" \
      "$BASE_URL/api/services/health/$SERVICE_NAME" | jq
-   
+
    # Monitor for 2-3 minutes to ensure stability
    ```
 
@@ -173,12 +173,12 @@ Parameters can also be set in `config.json`:
   "comfy_reconnect_max_attempts": 5,
   "comfy_reconnect_base_delay_s": 0.5,
   "comfy_reconnect_max_delay_s": 30,
-  
+
   "nlweb_health_interval_s": 120,
   "nlweb_reconnect_max_attempts": 5,
   "nlweb_reconnect_base_delay_ms": 200,
   "nlweb_reconnect_max_delay_ms": 5000,
-  
+
   "pg_health_interval_s": 60,
   "pg_reconnect_on_error": true,
   "pg_pool_pre_ping": true

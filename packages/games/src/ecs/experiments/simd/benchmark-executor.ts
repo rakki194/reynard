@@ -1,13 +1,13 @@
 // Benchmark execution utilities for individual system operations
 
-import { BenchmarkResult } from './benchmark-types.js';
-import { PositionSystemSIMD } from './position-system-simd.js';
-import { World } from '../../index.js';
+import { BenchmarkResult } from "./benchmark-types.js";
+import { PositionSystemSIMD } from "./position-system-simd.js";
+import { World } from "../../index.js";
 
 export class BenchmarkExecutor {
   constructor(
     private simdSystem: PositionSystemSIMD,
-    private reynardWorld: World
+    private reynardWorld: World,
   ) {}
 
   executeSIMDPositions(iterations: number, deltaTime: number): number {
@@ -21,7 +21,7 @@ export class BenchmarkExecutor {
   executeReynardPositions(iterations: number): number {
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
-      this.reynardWorld.runSystem('positionUpdateSystem');
+      this.reynardWorld.runSystem("positionUpdateSystem");
     }
     return performance.now() - start;
   }
@@ -37,12 +37,17 @@ export class BenchmarkExecutor {
   executeReynardCollisions(iterations: number): number {
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
-      this.reynardWorld.runSystem('collisionSystem');
+      this.reynardWorld.runSystem("collisionSystem");
     }
     return performance.now() - start;
   }
 
-  executeSIMDSpatial(iterations: number, queryX: number, queryY: number, radius: number): number {
+  executeSIMDSpatial(
+    iterations: number,
+    queryX: number,
+    queryY: number,
+    radius: number,
+  ): number {
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
       this.simdSystem.spatialQuery(queryX, queryY, radius);
@@ -53,40 +58,53 @@ export class BenchmarkExecutor {
   executeReynardSpatial(iterations: number): number {
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
-      this.reynardWorld.runSystem('spatialQuerySystem');
+      this.reynardWorld.runSystem("spatialQuerySystem");
     }
     return performance.now() - start;
   }
 }
 
 export class BenchmarkResultFactory {
-  static createPositionResult(name: string, iterations: number, totalTime: number, entityCount: number): BenchmarkResult {
+  static createPositionResult(
+    name: string,
+    iterations: number,
+    totalTime: number,
+    entityCount: number,
+  ): BenchmarkResult {
     return {
       name,
       iterations,
       totalTime,
       averageTime: totalTime / iterations,
-      operationsPerSecond: (iterations * entityCount) / (totalTime / 1000)
+      operationsPerSecond: (iterations * entityCount) / (totalTime / 1000),
     };
   }
 
-  static createCollisionResult(name: string, iterations: number, totalTime: number): BenchmarkResult {
+  static createCollisionResult(
+    name: string,
+    iterations: number,
+    totalTime: number,
+  ): BenchmarkResult {
     return {
       name,
       iterations,
       totalTime,
       averageTime: totalTime / iterations,
-      operationsPerSecond: iterations / (totalTime / 1000)
+      operationsPerSecond: iterations / (totalTime / 1000),
     };
   }
 
-  static createSpatialResult(name: string, iterations: number, totalTime: number): BenchmarkResult {
+  static createSpatialResult(
+    name: string,
+    iterations: number,
+    totalTime: number,
+  ): BenchmarkResult {
     return {
       name,
       iterations,
       totalTime,
       averageTime: totalTime / iterations,
-      operationsPerSecond: iterations / (totalTime / 1000)
+      operationsPerSecond: iterations / (totalTime / 1000),
     };
   }
 }

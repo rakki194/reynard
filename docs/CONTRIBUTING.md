@@ -216,10 +216,8 @@ describe("MyComponent", () => {
 
   it("handles click events", async () => {
     const handleAction = vi.fn();
-    render(() => (
-      <MyComponent title="Test" onAction={handleAction} />
-    ));
-    
+    render(() => <MyComponent title="Test" onAction={handleAction} />);
+
     await userEvent.click(screen.getByRole("button"));
     expect(handleAction).toHaveBeenCalledTimes(1);
   });
@@ -254,7 +252,7 @@ Each package should include:
 
 #### Documentation Format
 
-```markdown
+````markdown
 # Package Name
 
 Brief description of the package.
@@ -264,6 +262,7 @@ Brief description of the package.
 ```bash
 npm install reynard-package-name
 ```
+````
 
 ## Usage
 
@@ -279,9 +278,9 @@ function App() {
 
 ### Component
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| prop | string | - | Description of prop |
+| Prop | Type   | Default | Description         |
+| ---- | ------ | ------- | ------------------- |
+| prop | string | -       | Description of prop |
 
 ## Examples
 
@@ -565,4 +564,4 @@ By contributing to Reynard, you agree that your contributions will be licensed u
 
 ---
 
-*Thank you for contributing to Reynard! Together, we're building something amazing.* 🦊
+_Thank you for contributing to Reynard! Together, we're building something amazing._ 🦊

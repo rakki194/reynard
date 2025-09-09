@@ -5,11 +5,11 @@
 
 import { Component } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { 
-  ThemeSelector, 
-  ThemeDetails, 
+import {
+  ThemeSelector,
+  ThemeDetails,
   useThemeShowcase,
-  getThemeColors
+  getThemeColors,
 } from ".";
 
 export const ThemeShowcase: Component = () => {
@@ -24,7 +24,7 @@ export const ThemeShowcase: Component = () => {
     copyColorValue,
     currentTheme,
     currentThemeConfig,
-    themeContext
+    themeContext,
   } = useThemeShowcase();
 
   return (
@@ -41,7 +41,10 @@ export const ThemeShowcase: Component = () => {
           )}
           Theme Showcase
         </h2>
-        <p>Experience Reynard's comprehensive theming system with 8 built-in themes</p>
+        <p>
+          Experience Reynard's comprehensive theming system with 8 built-in
+          themes
+        </p>
       </div>
 
       <div class="theme-showcase-content">

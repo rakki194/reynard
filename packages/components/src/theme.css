@@ -8,31 +8,31 @@
   /* ==========================================================================
      Base Theme Variables
      ========================================================================== */
-  
+
   /* Primary Colors */
   --accent: hsl(270deg 60% 60%);
   --bg-color: hsl(0deg 0% 100%);
   --secondary-bg: hsl(0deg 0% 95%);
   --card-bg: hsl(0deg 0% 100%);
-  
+
   /* Text Colors */
   --text-primary: hsl(0deg 0% 10%);
   --text-secondary: hsl(0deg 0% 30%);
   --text-tertiary: hsl(0deg 0% 50%);
   --text-on-accent: hsl(220deg 20% 95%);
-  
+
   /* Border and UI Colors */
   --border-color: hsl(0deg 0% 85%);
   --border-secondary: var(--accent);
   --placeholder-color: var(--text-secondary);
-  
+
   /* Status Colors */
   --error: hsl(0deg 60% 50%);
   --success: hsl(120deg 60% 50%);
   --info: hsl(200deg 60% 50%);
   --warning: hsl(45deg 60% 50%);
   --danger: hsl(0deg 60% 50%);
-  
+
   /* Status Background Colors */
   --error-bg: color-mix(in srgb, var(--error) 10%, var(--card-bg));
   --error-text: var(--error);
@@ -42,32 +42,32 @@
   --info-text: var(--info);
   --warning-bg: color-mix(in srgb, var(--warning) 10%, var(--card-bg));
   --warning-text: var(--warning);
-  
+
   /* ==========================================================================
      Spacing and Layout
      ========================================================================== */
-  
+
   --spacing: 1rem;
   --quarter-spacing: calc(var(--spacing) / 4);
   --half-spacing: calc(var(--spacing) / 2);
   --double-spacing: calc(var(--spacing) * 2);
   --triple-spacing: calc(var(--spacing) * 3);
   --quad-spacing: calc(var(--spacing) * 4);
-  
+
   /* ==========================================================================
      Border Radius and Shadows
      ========================================================================== */
-  
+
   --border-radius: 0.5rem;
-  --shadow-color: rgb(0 0 0 / 30%);;
+  --shadow-color: rgb(0 0 0 / 30%);
   --shadow-accent: var(--accent);
   --shadow-default: 0 2px 4px var(--shadow-color);
   --shadow-hover: 0 4px 6px var(--shadow-accent);
-  
+
   /* ==========================================================================
      Z-Index Scale
      ========================================================================== */
-  
+
   --z-base: 0;
   --z-content: 1;
   --z-overlay: 2;
@@ -82,11 +82,11 @@
   --z-overlay-ultra: 1100;
   --z-overlay-max: 2000;
   --z-overlay-super: 9999;
-  
+
   /* ==========================================================================
      Motion and Transitions
      ========================================================================== */
-  
+
   --duration-fast: 120ms;
   --duration-base: 200ms;
   --duration-slow: 320ms;
@@ -98,11 +98,11 @@
   --easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
   --transition-timing: ease;
   --animation-timing: ease;
-  
+
   /* ==========================================================================
      Overlay and Backdrop
      ========================================================================== */
-  
+
   --overlay-bg: rgb(0 0 0 / 20%);
   --overlay-bg-dark: rgb(0 0 0 / 80%);
   --overlay-bg-darker: rgb(0 0 0 / 90%);
@@ -113,28 +113,31 @@
   --backdrop-opacity: 0.2;
   --backdrop-saturation: 0.5;
   --overlay-backdrop: brightness(0.5) saturate(var(--backdrop-saturation, 0.5));
-  
+
   /* ==========================================================================
      Typography
      ========================================================================== */
-  
+
   --font-size: 14px;
   --line-height: 1.6;
-  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  
+  --font-family-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
+
   /* ==========================================================================
      Interactive States
      ========================================================================== */
-  
+
   --hover-transform: translate3d(0, -4px, 0);
   --focus-ring-color: var(--accent);
   --focus-ring-width: 2px;
-  --focus-ring-offset: 0 0 0 2px hsl(0deg 0% 100%), 0 0 0 4px hsl(270deg 60% 60% / 0.5);
-  
+  --focus-ring-offset:
+    0 0 0 2px hsl(0deg 0% 100%), 0 0 0 4px hsl(270deg 60% 60% / 0.5);
+
   /* ==========================================================================
      Component Specific
      ========================================================================== */
-  
+
   --icon-size: 1.5em;
   --loader-size: 30px;
   --loader-border-width: 3px;
@@ -179,7 +182,7 @@
   --border-color: hsl(0deg 0% 85%);
   --border-secondary: var(--accent);
   --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);;
+  --shadow-color: rgb(0 0 0 / 30%);
 }
 
 /* ==========================================================================

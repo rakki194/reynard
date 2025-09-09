@@ -71,11 +71,11 @@ The backend has been enhanced to include file information in search results:
          "highlights": ["matched text"],
          "file_path": "/path/to/file.txt",
          "file_content": "full file content",
-         "file_metadata": {"file_type": "text"},
+         "file_metadata": { "file_type": "text" },
          "chunk_index": 0,
          "chunk_text": "chunk content",
          "chunk_tokens": 10,
-         "chunk_metadata": {"chunk_type": "paragraph"}
+         "chunk_metadata": { "chunk_type": "paragraph" }
        }
      ]
    }

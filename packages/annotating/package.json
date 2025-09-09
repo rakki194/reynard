@@ -1,7 +1,7 @@
 {
   "name": "reynard-annotating",
-  "version": "0.1.2",
-  "description": "Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows",
+  "version": "0.2.0",
+  "description": "Reynard annotation system - unified interface for all caption generators with production features",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -11,13 +11,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.js"
-    },
-    "./services": {
-      "types": "./dist/services/index.d.ts",
-      "import": "./dist/services/index.js"
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
     },
     "./generators": {
       "types": "./dist/generators/index.d.ts",
@@ -29,11 +25,10 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -43,12 +38,18 @@
     "tagging",
     "image",
     "ml",
-    "ai"
+    "ai",
+    "unified",
+    "production"
   ],
   "dependencies": {
-    "reynard-core": "0.1.1",
-    "reynard-service-manager": "0.1.0",
-    "reynard-model-management": "0.1.0"
+    "reynard-annotating-core": "workspace:*",
+    "reynard-annotating-jtp2": "workspace:*",
+    "reynard-annotating-joy": "workspace:*",
+    "reynard-annotating-florence2": "workspace:*",
+    "reynard-annotating-wdv3": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-service-manager": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

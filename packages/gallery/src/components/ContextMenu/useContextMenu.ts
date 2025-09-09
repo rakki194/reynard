@@ -24,7 +24,9 @@ export interface UseContextMenuReturn {
 /**
  * Main composable that orchestrates all context menu functionality
  */
-export const useContextMenu = (props: ContextMenuProps): UseContextMenuReturn => {
+export const useContextMenu = (
+  props: ContextMenuProps,
+): UseContextMenuReturn => {
   const { state, setState, resetState, setVisible } = useContextMenuState();
 
   // Event handlers

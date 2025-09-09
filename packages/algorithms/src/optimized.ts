@@ -1,30 +1,39 @@
 /**
  * Optimized Algorithms API
- * 
+ *
  * This module provides the unified, performance-optimized API for the algorithms package.
  * It automatically selects optimal algorithms based on workload characteristics and
  * integrates memory pooling for maximum performance.
- * 
+ *
  * @module algorithms/optimized
  */
 
-import { OptimizedCollisionAdapter, type OptimizedCollisionConfig } from './optimization/adapters/optimized-collision-adapter';
-import { AlgorithmSelector, type WorkloadCharacteristics } from './optimization/core/algorithm-selector';
-import { EnhancedMemoryPool, type MemoryPoolConfig } from './optimization/core/enhanced-memory-pool';
-import { checkCollision } from './geometry/collision/aabb-collision';
-import type { AABB, CollisionPair } from './geometry/collision/aabb-types';
+import {
+  OptimizedCollisionAdapter,
+  type OptimizedCollisionConfig,
+} from "./optimization/adapters/optimized-collision-adapter";
+import {
+  AlgorithmSelector,
+  type WorkloadCharacteristics,
+} from "./optimization/core/algorithm-selector";
+import {
+  EnhancedMemoryPool,
+  type MemoryPoolConfig,
+} from "./optimization/core/enhanced-memory-pool";
+import { checkCollision } from "./geometry/collision/aabb-collision";
+import type { AABB, CollisionPair } from "./geometry/collision/aabb-types";
 
 // Global optimization configuration
 let globalOptimizationConfig: OptimizedCollisionConfig = {
   enableMemoryPooling: true,
   enableAlgorithmSelection: true,
   enablePerformanceMonitoring: true,
-  algorithmSelectionStrategy: 'adaptive',
+  algorithmSelectionStrategy: "adaptive",
   performanceThresholds: {
     maxExecutionTime: 16, // 16ms for 60fps
     maxMemoryUsage: 50 * 1024 * 1024, // 50MB
-    minHitRate: 90
-  }
+    minHitRate: 90,
+  },
 };
 
 // Global instances
@@ -35,13 +44,17 @@ let globalAlgorithmSelector: AlgorithmSelector | null = null;
 /**
  * Configure the global optimization settings
  */
-export function configureOptimization(config: Partial<OptimizedCollisionConfig>): void {
+export function configureOptimization(
+  config: Partial<OptimizedCollisionConfig>,
+): void {
   globalOptimizationConfig = { ...globalOptimizationConfig, ...config };
-  
+
   // Reinitialize global instances if they exist
   if (globalCollisionAdapter) {
     globalCollisionAdapter.destroy();
-    globalCollisionAdapter = new OptimizedCollisionAdapter(globalOptimizationConfig);
+    globalCollisionAdapter = new OptimizedCollisionAdapter(
+      globalOptimizationConfig,
+    );
   }
 }
 
@@ -50,7 +63,9 @@ export function configureOptimization(config: Partial<OptimizedCollisionConfig>)
  */
 function getGlobalCollisionAdapter(): OptimizedCollisionAdapter {
   if (!globalCollisionAdapter) {
-    globalCollisionAdapter = new OptimizedCollisionAdapter(globalOptimizationConfig);
+    globalCollisionAdapter = new OptimizedCollisionAdapter(
+      globalOptimizationConfig,
+    );
   }
   return globalCollisionAdapter;
 }
@@ -77,25 +92,25 @@ function getGlobalAlgorithmSelector(): AlgorithmSelector {
 
 /**
  * Detect collisions with automatic algorithm selection and optimization
- * 
+ *
  * This is the main entry point for collision detection. It automatically:
  * - Analyzes workload characteristics
  * - Selects the optimal algorithm (naive, spatial, or optimized)
  * - Uses memory pooling to eliminate allocation overhead
  * - Monitors performance and adapts as needed
- * 
+ *
  * @param aabbs Array of AABB objects to check for collisions
  * @returns Array of collision pairs
- * 
+ *
  * @example
  * ```typescript
  * import { detectCollisions } from 'reynard-algorithms';
- * 
+ *
  * const aabbs = [
  *   { x: 0, y: 0, width: 100, height: 100 },
  *   { x: 50, y: 50, width: 100, height: 100 }
  * ];
- * 
+ *
  * const collisions = detectCollisions(aabbs);
  * console.log(`Found ${collisions.length} collisions`);
  * ```
@@ -107,25 +122,25 @@ export function detectCollisions(aabbs: AABB[]): CollisionPair[] {
 
 /**
  * Perform spatial query with optimization
- * 
+ *
  * @param queryAABB The AABB to query against
  * @param spatialObjects Array of spatial objects
  * @returns Array of nearby objects
  */
 export function performSpatialQuery(
   queryAABB: AABB,
-  spatialObjects: Array<{ aabb: AABB; data: any }>
+  spatialObjects: Array<{ aabb: AABB; data: any }>,
 ): Array<{ aabb: AABB; data: any }> {
   // This would be implemented with the spatial query adapter
   // For now, return a simple implementation
   const nearby: Array<{ aabb: AABB; data: any }> = [];
-  
+
   for (const obj of spatialObjects) {
     if (checkCollision(queryAABB, obj.aabb).colliding) {
       nearby.push(obj);
     }
   }
-  
+
   return nearby;
 }
 
@@ -242,7 +257,9 @@ export class OptimizationConfig {
   /**
    * Set algorithm selection strategy
    */
-  setAlgorithmStrategy(strategy: 'naive' | 'spatial' | 'optimized' | 'adaptive'): void {
+  setAlgorithmStrategy(
+    strategy: "naive" | "spatial" | "optimized" | "adaptive",
+  ): void {
     this.update({ algorithmSelectionStrategy: strategy });
   }
 
@@ -257,8 +274,8 @@ export class OptimizationConfig {
     this.update({
       performanceThresholds: {
         ...this.config.performanceThresholds,
-        ...thresholds
-      }
+        ...thresholds,
+      },
     });
   }
 }
@@ -275,12 +292,12 @@ export function cleanup(): void {
     globalCollisionAdapter.destroy();
     globalCollisionAdapter = null;
   }
-  
+
   if (globalMemoryPool) {
     globalMemoryPool.destroy();
     globalMemoryPool = null;
   }
-  
+
   if (globalAlgorithmSelector) {
     globalAlgorithmSelector.clearPerformanceHistory();
     globalAlgorithmSelector = null;

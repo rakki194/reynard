@@ -2,15 +2,15 @@
  * @fileoverview Package documentation page
  */
 
-import { Component, createSignal, onMount, For } from 'solid-js';
-import { useParams } from 'solid-router';
-import { 
-  DocsPage, 
-  DocsSection, 
+import { Component, createSignal, onMount, For } from "solid-js";
+import { useParams } from "solid-router";
+import {
+  DocsPage,
+  DocsSection,
   DocsBreadcrumbs,
-  DocsCodeBlock
-} from 'reynard-docs-components';
-import { DocRenderer } from 'reynard-docs-core';
+  DocsCodeBlock,
+} from "reynard-docs-components";
+import { DocRenderer } from "reynard-docs-core";
 
 /**
  * Package documentation page component
@@ -24,15 +24,15 @@ export const PackagePage: Component = () => {
     try {
       const packageName = params.package;
       const response = await fetch(`/docs-generated/pages/${packageName}.json`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setPackageData(data);
       } else {
-        console.error('Package not found');
+        console.error("Package not found");
       }
     } catch (error) {
-      console.error('Failed to load package data:', error);
+      console.error("Failed to load package data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -41,9 +41,9 @@ export const PackagePage: Component = () => {
   const breadcrumbs = () => {
     const packageName = params.package;
     return [
-      { label: 'Home', href: '/' },
-      { label: 'Packages', href: '/packages' },
-      { label: packageName, href: `/packages/${packageName}` }
+      { label: "Home", href: "/" },
+      { label: "Packages", href: "/packages" },
+      { label: packageName, href: `/packages/${packageName}` },
     ];
   };
 
@@ -64,7 +64,9 @@ export const PackagePage: Component = () => {
         <div class="docs-error">
           <h1>Package Not Found</h1>
           <p>The package "{params.package}" could not be found.</p>
-          <a href="/" class="docs-error-link">← Back to Home</a>
+          <a href="/" class="docs-error-link">
+            ← Back to Home
+          </a>
         </div>
       </DocsPage>
     );
@@ -75,13 +77,17 @@ export const PackagePage: Component = () => {
   return (
     <DocsPage>
       <DocsBreadcrumbs items={breadcrumbs()} />
-      
+
       <DocsSection>
         <div class="docs-package-header">
           <h1 class="docs-package-title">{packageInfo.title}</h1>
           <div class="docs-package-meta">
-            <span class="docs-package-version">v{packageInfo.metadata.version}</span>
-            <span class="docs-package-category">{packageInfo.metadata.category}</span>
+            <span class="docs-package-version">
+              v{packageInfo.metadata.version}
+            </span>
+            <span class="docs-package-category">
+              {packageInfo.metadata.category}
+            </span>
           </div>
         </div>
 
@@ -90,10 +96,16 @@ export const PackagePage: Component = () => {
         </div>
 
         <div class="docs-package-actions">
-          <a href={`/packages/${params.package}/api`} class="docs-package-button">
+          <a
+            href={`/packages/${params.package}/api`}
+            class="docs-package-button"
+          >
             View API
           </a>
-          <a href={`/packages/${params.package}/examples`} class="docs-package-button">
+          <a
+            href={`/packages/${params.package}/examples`}
+            class="docs-package-button"
+          >
             View Examples
           </a>
         </div>
@@ -120,9 +132,11 @@ export const PackagePage: Component = () => {
 
       <DocsSection title="Features">
         <div class="docs-package-features">
-          {<For each={packageInfo.metadata.tags}>{(tag: string) => (
-            <span class="docs-package-feature">{tag}</span>
-          )}</For>}
+          {
+            <For each={packageInfo.metadata.tags}>
+              {(tag: string) => <span class="docs-package-feature">{tag}</span>}
+            </For>
+          }
         </div>
       </DocsSection>
 
@@ -134,7 +148,10 @@ export const PackagePage: Component = () => {
             </a>
           )}
           {packageInfo.metadata.repository?.url && (
-            <a href={packageInfo.metadata.repository.url} class="docs-package-link">
+            <a
+              href={packageInfo.metadata.repository.url}
+              class="docs-package-link"
+            >
               Repository
             </a>
           )}

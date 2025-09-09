@@ -7,13 +7,13 @@
  * @module algorithms/spatialHashCore
  */
 
-import { 
-  SpatialHashConfig, 
-  SpatialHashStats, 
-  SpatialObject, 
-  QueryResult 
-} from './spatial-hash-types';
-import { estimateMemoryUsage } from './spatial-hash-utils';
+import {
+  SpatialHashConfig,
+  SpatialHashStats,
+  SpatialObject,
+  QueryResult,
+} from "./spatial-hash-types";
+import { estimateMemoryUsage } from "./spatial-hash-utils";
 
 export class SpatialHash<T = any> {
   private cells = new Map<string, Array<SpatialObject & { data: T }>>();
@@ -67,7 +67,7 @@ export class SpatialHash<T = any> {
     for (const cellKey of Array.from(cellKeys)) {
       const cell = this.cells.get(cellKey);
       if (cell) {
-        const index = cell.findIndex(obj => obj.id === objectId);
+        const index = cell.findIndex((obj) => obj.id === objectId);
         if (index !== -1) {
           cell.splice(index, 1);
           if (cell.length === 0) {
@@ -96,7 +96,12 @@ export class SpatialHash<T = any> {
   /**
    * Query for objects in a rectangular area
    */
-  queryRect(x: number, y: number, width: number, height: number): Array<SpatialObject & { data: T }> {
+  queryRect(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): Array<SpatialObject & { data: T }> {
     const cellKeys = this.getRectCells(x, y, width, height);
     const results = new Map<string | number, SpatialObject & { data: T }>();
 
@@ -118,7 +123,11 @@ export class SpatialHash<T = any> {
   /**
    * Query for objects within a radius of a point
    */
-  queryRadius(centerX: number, centerY: number, radius: number): Array<QueryResult<T>> {
+  queryRadius(
+    centerX: number,
+    centerY: number,
+    radius: number,
+  ): Array<QueryResult<T>> {
     const cellKeys = this.getRadiusCells(centerX, centerY, radius);
     const results: Array<QueryResult<T>> = [];
 
@@ -145,7 +154,11 @@ export class SpatialHash<T = any> {
   /**
    * Find the nearest object to a point
    */
-  findNearest(x: number, y: number, maxDistance?: number): QueryResult<T> | null {
+  findNearest(
+    x: number,
+    y: number,
+    maxDistance?: number,
+  ): QueryResult<T> | null {
     const radius = maxDistance || this.config.cellSize * 2;
     const results = this.queryRadius(x, y, radius);
 
@@ -197,15 +210,24 @@ export class SpatialHash<T = any> {
       maxObjectsInCell = Math.max(maxObjectsInCell, cell.length);
     }
 
-    emptyCells = this.cells.size === 0 ? 0 : Array.from(this.cells.values()).filter(cell => cell.length === 0).length;
+    emptyCells =
+      this.cells.size === 0
+        ? 0
+        : Array.from(this.cells.values()).filter((cell) => cell.length === 0)
+            .length;
 
     return {
       totalCells: this.cells.size,
       totalObjects,
-      averageObjectsPerCell: this.cells.size > 0 ? totalObjects / this.cells.size : 0,
+      averageObjectsPerCell:
+        this.cells.size > 0 ? totalObjects / this.cells.size : 0,
       maxObjectsInCell,
       emptyCells,
-      memoryUsage: estimateMemoryUsage(this.cells.size, totalObjects, this.objectToCells.size),
+      memoryUsage: estimateMemoryUsage(
+        this.cells.size,
+        totalObjects,
+        this.objectToCells.size,
+      ),
       queryCount: this.stats.queryCount,
       insertCount: this.stats.insertCount,
       removeCount: this.stats.removeCount,
@@ -228,7 +250,9 @@ export class SpatialHash<T = any> {
     // Reinsert all objects with new cell size
     for (const [objectId, cellKeys] of Array.from(oldObjectToCells.entries())) {
       const firstCellKey = Array.from(cellKeys)[0];
-      const object = oldCells.get(firstCellKey)?.find((obj: any) => obj.id === objectId);
+      const object = oldCells
+        .get(firstCellKey)
+        ?.find((obj: any) => obj.id === objectId);
       if (object) {
         this.insert(object);
       }
@@ -241,7 +265,12 @@ export class SpatialHash<T = any> {
     return this.getRectCells(object.x, object.y, width, height);
   }
 
-  private getRectCells(x: number, y: number, width: number, height: number): Set<string> {
+  private getRectCells(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): Set<string> {
     const minCellX = Math.floor(x / this.config.cellSize);
     const maxCellX = Math.floor((x + width) / this.config.cellSize);
     const minCellY = Math.floor(y / this.config.cellSize);
@@ -256,7 +285,11 @@ export class SpatialHash<T = any> {
     return cellKeys;
   }
 
-  private getRadiusCells(centerX: number, centerY: number, radius: number): Set<string> {
+  private getRadiusCells(
+    centerX: number,
+    centerY: number,
+    radius: number,
+  ): Set<string> {
     const minCellX = Math.floor((centerX - radius) / this.config.cellSize);
     const maxCellX = Math.floor((centerX + radius) / this.config.cellSize);
     const minCellY = Math.floor((centerY - radius) / this.config.cellSize);
@@ -276,7 +309,7 @@ export class SpatialHash<T = any> {
     rectX: number,
     rectY: number,
     rectWidth: number,
-    rectHeight: number
+    rectHeight: number,
   ): boolean {
     const objWidth = object.width || 0;
     const objHeight = object.height || 0;
@@ -299,7 +332,8 @@ export class SpatialHash<T = any> {
     if (!this.config.enableAutoResize) return;
 
     const stats = this.getStats();
-    const loadFactor = stats.averageObjectsPerCell / this.config.maxObjectsPerCell;
+    const loadFactor =
+      stats.averageObjectsPerCell / this.config.maxObjectsPerCell;
 
     if (loadFactor > this.config.resizeThreshold) {
       const newCellSize = this.config.cellSize * 1.5;

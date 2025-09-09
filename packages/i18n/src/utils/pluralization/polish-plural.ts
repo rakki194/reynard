@@ -16,7 +16,7 @@ export function getPolishPlural(
     singular: string;
     plural2_4: string;
     plural5_: string;
-  }
+  },
 ): string {
   // Get absolute value and last digit
   const absCount = Math.abs(Math.floor(count));

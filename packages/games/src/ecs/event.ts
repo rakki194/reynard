@@ -1,6 +1,6 @@
 // Event system for decoupled communication
 
-import { Event, EventReader, EventWriter } from './types';
+import { Event, EventReader, EventWriter } from "./types";
 
 /**
  * Event instance with metadata.
@@ -40,7 +40,7 @@ export class Events<T = unknown> {
     const instance: EventInstance<T> = {
       event,
       id,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     this.events.push(instance);
     return createEventId(id);
@@ -50,14 +50,14 @@ export class Events<T = unknown> {
    * Sends multiple events.
    */
   sendBatch(events: T[]): EventId[] {
-    return events.map(event => this.send(event));
+    return events.map((event) => this.send(event));
   }
 
   /**
    * Gets an event by ID.
    */
   getEvent(id: number): [T, EventId] | undefined {
-    const instance = this.events.find(e => e.id === id);
+    const instance = this.events.find((e) => e.id === id);
     return instance ? [instance.event, createEventId(instance.id)] : undefined;
   }
 
@@ -79,7 +79,7 @@ export class Events<T = unknown> {
    * Drains all events and returns them.
    */
   drain(): T[] {
-    const events = this.events.map(instance => instance.event);
+    const events = this.events.map((instance) => instance.event);
     this.events.length = 0;
     return events;
   }
@@ -107,10 +107,10 @@ export class EventReaderImpl<T = unknown> implements EventReader<T> {
     const allEvents = this.events.getAllEvents();
     const newEvents = allEvents.slice(this.lastReadIndex);
     this.lastReadIndex = allEvents.length;
-    
-    return newEvents.map(instance => ({
+
+    return newEvents.map((instance) => ({
       data: instance.event,
-      timestamp: instance.timestamp
+      timestamp: instance.timestamp,
     }));
   }
 
@@ -191,4 +191,3 @@ export class EventRegistry {
     }
   }
 }
-

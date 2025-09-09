@@ -85,14 +85,14 @@ Reynard follows the **140-line axiom** for maintainable code. This is enforced a
 
 ### File Size Limits
 
-| File Type | Max Lines | Max Function Lines | Purpose | ESLint Pattern |
-|-----------|-----------|-------------------|---------|----------------|
-| **TypeScript (.ts)** | 140 | 50 | Core business logic | `**/*.{ts,tsx}` |
-| **SolidJS (.tsx)** | 140 | 50 | React components | `**/*.{tsx,jsx}` |
-| **Test Files** | 200 | 100 | Comprehensive testing | `**/*.test.{ts,tsx}`, `**/__tests__/**/*.{ts,tsx}`, `**/test/**/*.{ts,tsx}` |
-| **JavaScript (.js)** | None | None | Legacy/config files | Base config only |
-| **Config Files** | None | None | Setup and configuration | `**/*.config.js`, `**/*.config.mjs` |
-| **Documentation** | 200 | N/A | Guides and references | Not enforced by ESLint |
+| File Type            | Max Lines | Max Function Lines | Purpose                 | ESLint Pattern                                                              |
+| -------------------- | --------- | ------------------ | ----------------------- | --------------------------------------------------------------------------- |
+| **TypeScript (.ts)** | 140       | 50                 | Core business logic     | `**/*.{ts,tsx}`                                                             |
+| **SolidJS (.tsx)**   | 140       | 50                 | React components        | `**/*.{tsx,jsx}`                                                            |
+| **Test Files**       | 200       | 100                | Comprehensive testing   | `**/*.test.{ts,tsx}`, `**/__tests__/**/*.{ts,tsx}`, `**/test/**/*.{ts,tsx}` |
+| **JavaScript (.js)** | None      | None               | Legacy/config files     | Base config only                                                            |
+| **Config Files**     | None      | None               | Setup and configuration | `**/*.config.js`, `**/*.config.mjs`                                         |
+| **Documentation**    | 200       | N/A                | Guides and references   | Not enforced by ESLint                                                      |
 
 ### Refactoring Patterns
 
@@ -105,20 +105,32 @@ For classes handling multiple types or variants:
 ```typescript
 // Before: Single large class (500+ lines)
 class FileProcessor {
-  processImage() { /* ... */ }
-  processVideo() { /* ... */ }
-  processAudio() { /* ... */ }
+  processImage() {
+    /* ... */
+  }
+  processVideo() {
+    /* ... */
+  }
+  processAudio() {
+    /* ... */
+  }
 }
 
 // After: Specialized processors
-class ImageProcessor { /* ... */ }
-class VideoProcessor { /* ... */ }
-class AudioProcessor { /* ... */ }
+class ImageProcessor {
+  /* ... */
+}
+class VideoProcessor {
+  /* ... */
+}
+class AudioProcessor {
+  /* ... */
+}
 
 // Main file: Re-export from modules
-export { ImageProcessor } from './image-processor';
-export { VideoProcessor } from './video-processor';
-export { AudioProcessor } from './audio-processor';
+export { ImageProcessor } from "./image-processor";
+export { VideoProcessor } from "./video-processor";
+export { AudioProcessor } from "./audio-processor";
 ```
 
 #### Composable Pattern
@@ -134,16 +146,22 @@ export function useChat() {
 }
 
 // After: Focused composables
-export function useChatConnection() { /* ... */ }
-export function useChatMessages() { /* ... */ }
-export function useChatFileUpload() { /* ... */ }
+export function useChatConnection() {
+  /* ... */
+}
+export function useChatMessages() {
+  /* ... */
+}
+export function useChatFileUpload() {
+  /* ... */
+}
 
 // Main composable: Orchestrate focused composables
 export function useChat() {
   const connection = useChatConnection();
   const messages = useChatMessages();
   const fileUpload = useChatFileUpload();
-  
+
   return { connection, messages, fileUpload };
 }
 ```
@@ -155,30 +173,30 @@ The max-lines rules are configured differently for each file type:
 **TypeScript/SolidJS Files**:
 
 ```javascript
-"max-lines": ["error", { 
-  max: 140, 
-  skipBlankLines: true, 
-  skipComments: true 
+"max-lines": ["error", {
+  max: 140,
+  skipBlankLines: true,
+  skipComments: true
 }],
-"max-lines-per-function": ["error", { 
-  max: 50, 
-  skipBlankLines: true, 
-  skipComments: true 
+"max-lines-per-function": ["error", {
+  max: 50,
+  skipBlankLines: true,
+  skipComments: true
 }]
 ```
 
 **Test Files**:
 
 ```javascript
-"max-lines": ["error", { 
-  max: 200, 
-  skipBlankLines: true, 
-  skipComments: true 
+"max-lines": ["error", {
+  max: 200,
+  skipBlankLines: true,
+  skipComments: true
 }],
-"max-lines-per-function": ["error", { 
-  max: 100, 
-  skipBlankLines: true, 
-  skipComments: true 
+"max-lines-per-function": ["error", {
+  max: 100,
+  skipBlankLines: true,
+  skipComments: true
 }]
 ```
 
@@ -335,20 +353,24 @@ describe('MyComponent', () => {
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
 - [ ] Manual testing completed
 
 ## Modularity Compliance
+
 - [ ] All TypeScript/SolidJS files under 140 lines
 - [ ] All test files under 200 lines
 - [ ] All functions under 50 lines (100 for tests)
@@ -357,6 +379,7 @@ Brief description of changes
 - [ ] ESLint max-lines rules pass
 
 ## ESLint Compliance
+
 - [ ] TypeScript rules pass
 - [ ] SolidJS rules pass
 - [ ] Accessibility rules pass
@@ -364,6 +387,7 @@ Brief description of changes
 - [ ] No explicit `any` types (or justified)
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -390,25 +414,31 @@ Brief description of changes
 
 ```markdown
 ## Bug Description
+
 Clear description of the bug
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '...'
 3. See error
 
 ## Expected Behavior
+
 What should happen
 
 ## Actual Behavior
+
 What actually happens
 
 ## Environment
+
 - OS: [e.g., Windows 10]
 - Node.js: [e.g., 18.17.0]
 - Browser: [e.g., Chrome 91]
 
 ## Additional Context
+
 Any other relevant information
 ```
 
@@ -424,18 +454,23 @@ Any other relevant information
 
 ```markdown
 ## Feature Description
+
 Clear description of the feature
 
 ## Use Case
+
 Why is this feature needed?
 
 ## Proposed Solution
+
 How should this feature work?
 
 ## Alternatives Considered
+
 What other approaches were considered?
 
 ## Additional Context
+
 Any other relevant information
 ```
 
@@ -479,17 +514,17 @@ grep -v '^\s*$' your-file.ts | grep -v '^\s*//' | grep -v '^\s*/\*' | grep -v '^
 const { value } = props;
 
 // ✅ Good: Access directly
-props.value
+props.value;
 ```
 
 **Unused Variable Errors**:
 
 ```typescript
 // ❌ Bad: Unused variable
-const unusedVar = 'test';
+const unusedVar = "test";
 
 // ✅ Good: Prefix with underscore
-const _unusedVar = 'test';
+const _unusedVar = "test";
 ```
 
 ### ESLint Commands
@@ -533,6 +568,6 @@ By contributing to Reynard, you agree that your contributions will be licensed u
 
 ---
 
-*"The cunning fox knows that great software is built through collaboration and shared wisdom."* 🦊
+_"The cunning fox knows that great software is built through collaboration and shared wisdom."_ 🦊
 
 Thank you for contributing to Reynard!

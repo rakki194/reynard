@@ -33,7 +33,12 @@ interface ThreeLight {
 
 interface ThreeInstance {
   Scene: new () => ThreeScene;
-  PerspectiveCamera: new (fov: number, aspect: number, near: number, far: number) => ThreeCamera;
+  PerspectiveCamera: new (
+    fov: number,
+    aspect: number,
+    near: number,
+    far: number,
+  ) => ThreeCamera;
   WebGLRenderer: new (options: { antialias: boolean }) => ThreeRenderer;
   Color: new (color: string | number) => unknown;
   AmbientLight: new (color: number, intensity: number) => unknown;
@@ -61,7 +66,7 @@ export class ThreeJSSceneManager {
       75,
       this.config.width / this.config.height,
       0.1,
-      1000
+      1000,
     );
     this.camera.position.z = 8;
 
@@ -79,7 +84,7 @@ export class ThreeJSSceneManager {
 
   private setupLighting(THREE: ThreeInstance) {
     if (!this.scene) return;
-    
+
     const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
     this.scene.add(ambientLight);
 

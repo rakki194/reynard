@@ -34,7 +34,7 @@ export class PointOps {
 
   static divide(a: Point, scalar: number): Point {
     if (scalar === 0) {
-      throw new Error('Division by zero');
+      throw new Error("Division by zero");
     }
     return { x: a.x / scalar, y: a.y / scalar };
   }

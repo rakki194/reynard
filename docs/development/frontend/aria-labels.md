@@ -36,7 +36,7 @@ The Gallery is a core feature of yipyap that requires careful attention to acces
 - Image Grid Items:
 
   ```tsx
-  <div 
+  <div
     role="gridcell"
     aria-label={`Image: ${title}`}
     aria-selected={isSelected}
@@ -48,10 +48,7 @@ The Gallery is a core feature of yipyap that requires careful attention to acces
 - Batch Selection Controls:
 
   ```tsx
-  <button
-    aria-label="Select all images"
-    aria-pressed={allSelected}
-  >
+  <button aria-label="Select all images" aria-pressed={allSelected}>
     Select All
   </button>
   ```
@@ -64,7 +61,7 @@ The Image Viewer needs clear labeling for its controls and interactive elements:
 
   ```tsx
   <button
-    aria-label={`Zoom ${isZoomedIn ? 'out' : 'in'}`}
+    aria-label={`Zoom ${isZoomedIn ? "out" : "in"}`}
     aria-pressed={isZoomedIn}
   >
     <ZoomIcon />
@@ -74,10 +71,7 @@ The Image Viewer needs clear labeling for its controls and interactive elements:
 - Navigation Controls:
 
   ```tsx
-  <button
-    aria-label="Previous image"
-    aria-disabled={isFirstImage}
-  >
+  <button aria-label="Previous image" aria-disabled={isFirstImage}>
     <PrevIcon />
   </button>
   ```
@@ -95,7 +89,7 @@ Settings panels require clear labeling to ensure users understand configuration 
         type="radio"
         name="theme"
         value="light"
-        aria-checked={currentTheme === 'light'}
+        aria-checked={currentTheme === "light"}
       />
       Light Theme
     </label>
@@ -127,9 +121,7 @@ The Upload Overlay needs clear status and instruction communication:
     aria-label="File upload area"
     aria-describedby="upload-instructions"
   >
-    <p id="upload-instructions">
-      Drop images here or click to select
-    </p>
+    <p id="upload-instructions">Drop images here or click to select</p>
   </div>
   ```
 
@@ -196,11 +188,7 @@ Use these tools in the yipyap development workflow:
 ### Status Updates
 
 ```tsx
-<div 
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
->
+<div role="status" aria-live="polite" aria-atomic="true">
   {uploadProgress}% uploaded
 </div>
 ```
@@ -221,11 +209,8 @@ Use these tools in the yipyap development workflow:
 ### Loading States
 
 ```tsx
-<div
-  aria-busy={isLoading}
-  aria-live="polite"
->
-  {isLoading ? 'Loading images...' : 'Images loaded'}
+<div aria-busy={isLoading} aria-live="polite">
+  {isLoading ? "Loading images..." : "Images loaded"}
 </div>
 ```
 

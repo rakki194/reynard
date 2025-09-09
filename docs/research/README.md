@@ -367,4 +367,4 @@ Research findings contribute to the broader community:
 
 ---
 
-*This academic research archive represents rigorous analysis and innovation conducted during the development of the Reynard platform. Each paper contributes to the broader understanding of system architecture, user experience, and technical innovation in modern web applications, with direct implementation impact and measurable performance improvements.*
+_This academic research archive represents rigorous analysis and innovation conducted during the development of the Reynard platform. Each paper contributes to the broader understanding of system architecture, user experience, and technical innovation in modern web applications, with direct implementation impact and measurable performance improvements._

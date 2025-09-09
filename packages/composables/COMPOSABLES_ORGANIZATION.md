@@ -78,7 +78,7 @@ packages/composables/
 - Import RAG composables from `reynard-rag` instead:
 
   ```typescript
-  import { useRAG, createRAGClient } from 'reynard-rag';
+  import { useRAG, createRAGClient } from "reynard-rag";
   ```
 
 ## 📦 Package Dependencies
@@ -93,25 +93,25 @@ The composables package now has clean, minimal dependencies:
 ### File Upload
 
 ```typescript
-import { useFileUpload } from 'reynard-composables';
+import { useFileUpload } from "reynard-composables";
 
 const { uploadFiles, uploadProgress, isUploading } = useFileUpload({
   maxFileSize: 50 * 1024 * 1024, // 50MB
-  allowedFileTypes: ['jpg', 'png', 'pdf'],
+  allowedFileTypes: ["jpg", "png", "pdf"],
   onProgress: (progress) => console.log(`Upload: ${progress}%`),
-  onSuccess: (result) => console.log('Upload successful:', result)
+  onSuccess: (result) => console.log("Upload successful:", result),
 });
 ```
 
 ### RAG System (from reynard-rag package)
 
 ```typescript
-import { useRAG } from 'reynard-rag';
+import { useRAG } from "reynard-rag";
 
 const rag = useRAG({
   authFetch: myAuthFetch,
-  configUrl: '/api/rag/config',
-  queryUrl: '/api/rag/query'
+  configUrl: "/api/rag/config",
+  queryUrl: "/api/rag/query",
 });
 
 // Access reactive resources
@@ -123,12 +123,12 @@ const metrics = rag.metrics();
 ### Performance Monitoring
 
 ```typescript
-import { usePerformanceMonitor } from 'reynard-composables';
+import { usePerformanceMonitor } from "reynard-composables";
 
 const monitor = usePerformanceMonitor({
   trackMemory: true,
   trackNetwork: true,
-  trackRendering: true
+  trackRendering: true,
 });
 
 // Access performance data

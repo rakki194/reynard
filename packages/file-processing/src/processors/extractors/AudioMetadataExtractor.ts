@@ -1,12 +1,15 @@
 /**
  * Audio metadata extractor
- * 
+ *
  * Handles metadata extraction for audio files including duration,
  * sample rate, channels, codec information, and format details.
  */
 
 import { AudioMetadata } from "../../types";
-import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
+import {
+  BaseMetadataExtractor,
+  MetadataExtractionOptions,
+} from "./BaseMetadataExtractor";
 
 export class AudioMetadataExtractor extends BaseMetadataExtractor {
   /**

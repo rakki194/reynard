@@ -1,5 +1,5 @@
-import { createSignal } from 'solid-js';
-import { ThumbnailGenerator } from 'reynard-file-processing';
+import { createSignal } from "solid-js";
+import { ThumbnailGenerator } from "reynard-file-processing";
 
 interface AudioTestProps {
   thumbnailGenerator: ThumbnailGenerator;
@@ -7,18 +7,18 @@ interface AudioTestProps {
 
 export default function AudioTest(props: AudioTestProps) {
   const [selectedFile, setSelectedFile] = createSignal<File | null>(null);
-  const [thumbnailUrl, setThumbnailUrl] = createSignal<string>('');
+  const [thumbnailUrl, setThumbnailUrl] = createSignal<string>("");
   const [isProcessing, setIsProcessing] = createSignal(false);
   const [processingTime, setProcessingTime] = createSignal(0);
-  const [error, setError] = createSignal<string>('');
+  const [error, setError] = createSignal<string>("");
 
   const handleFileSelect = (event: Event) => {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      setThumbnailUrl('');
-      setError('');
+      setThumbnailUrl("");
+      setError("");
     }
   };
 
@@ -27,47 +27,47 @@ export default function AudioTest(props: AudioTestProps) {
     if (!file) return;
 
     setIsProcessing(true);
-    setError('');
-    
+    setError("");
+
     try {
       const startTime = Date.now();
       const result = await props.thumbnailGenerator.generateThumbnail(file, {
         size: [200, 200],
         format: "webp",
-        quality: 85
+        quality: 85,
       });
       const duration = Date.now() - startTime;
-      
+
       setProcessingTime(duration);
-      
+
       if (result.success && result.data instanceof Blob) {
         const url = URL.createObjectURL(result.data);
         setThumbnailUrl(url);
-        console.log('Thumbnail generated successfully:', result);
+        console.log("Thumbnail generated successfully:", result);
       } else {
-        const errorMsg = result.error || 'Failed to generate thumbnail';
+        const errorMsg = result.error || "Failed to generate thumbnail";
         setError(errorMsg);
-        console.error('Thumbnail generation failed:', result);
+        console.error("Thumbnail generation failed:", result);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error occurred');
+      setError(err instanceof Error ? err.message : "Unknown error occurred");
     } finally {
       setIsProcessing(false);
     }
   };
 
   const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   return (
     <div class="audio-test">
       <h3>Test Audio Waveform Generation</h3>
-      
+
       <div class="audio-file-input">
         <label for="audio-file-input" class="file-input-label">
           Select Audio File:
@@ -83,9 +83,15 @@ export default function AudioTest(props: AudioTestProps) {
 
       {selectedFile() && (
         <div class="file-info-container">
-          <p><strong>Selected File:</strong> {selectedFile()!.name}</p>
-          <p><strong>Size:</strong> {formatFileSize(selectedFile()!.size)}</p>
-          <p><strong>Type:</strong> {selectedFile()!.type}</p>
+          <p>
+            <strong>Selected File:</strong> {selectedFile()!.name}
+          </p>
+          <p>
+            <strong>Size:</strong> {formatFileSize(selectedFile()!.size)}
+          </p>
+          <p>
+            <strong>Type:</strong> {selectedFile()!.type}
+          </p>
         </div>
       )}
 
@@ -95,21 +101,15 @@ export default function AudioTest(props: AudioTestProps) {
           onClick={generateThumbnail}
           disabled={isProcessing()}
         >
-          {isProcessing() ? 'Generating...' : 'Generate Waveform Thumbnail'}
+          {isProcessing() ? "Generating..." : "Generate Waveform Thumbnail"}
         </button>
       )}
 
       {processingTime() > 0 && (
-        <div class="processing-time">
-          Processing time: {processingTime()}ms
-        </div>
+        <div class="processing-time">Processing time: {processingTime()}ms</div>
       )}
 
-      {error() && (
-        <div class="processing-status error">
-          Error: {error()}
-        </div>
-      )}
+      {error() && <div class="processing-status error">Error: {error()}</div>}
 
       {thumbnailUrl() && (
         <div>
@@ -127,10 +127,16 @@ export default function AudioTest(props: AudioTestProps) {
         <ol>
           <li>Select an audio file (MP3, WAV, etc.)</li>
           <li>Click "Generate Waveform Thumbnail"</li>
-          <li>The thumbnail will show a waveform visualization based on the actual audio data</li>
+          <li>
+            The thumbnail will show a waveform visualization based on the actual
+            audio data
+          </li>
           <li>Try different audio files to see how the waveform changes</li>
         </ol>
-        <p><strong>Note:</strong> The waveform is generated using the Web Audio API to analyze real audio data, not random patterns.</p>
+        <p>
+          <strong>Note:</strong> The waveform is generated using the Web Audio
+          API to analyze real audio data, not random patterns.
+        </p>
       </div>
     </div>
   );

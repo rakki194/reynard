@@ -1,11 +1,15 @@
 /**
  * Model Download Manager
- * 
+ *
  * Handles model downloading with progress tracking and concurrent download management.
  */
 
-import { ModelDownloadManager as IModelDownloadManager, ModelDownloadProgress, ModelStatus } from '../types/index.js';
-import { ModelRegistry } from './ModelRegistry.js';
+import {
+  ModelDownloadManager as IModelDownloadManager,
+  ModelDownloadProgress,
+  ModelStatus,
+} from "../types/index.js";
+import { ModelRegistry } from "./ModelRegistry.js";
 
 export class ModelDownloadManager implements IModelDownloadManager {
   private _registry: ModelRegistry;
@@ -14,13 +18,20 @@ export class ModelDownloadManager implements IModelDownloadManager {
   private _maxConcurrentDownloads: number = 3;
   private _downloadTimeout: number = 300000; // 5 minutes
 
-  constructor(registry: ModelRegistry, maxConcurrentDownloads = 3, downloadTimeout = 300000) {
+  constructor(
+    registry: ModelRegistry,
+    maxConcurrentDownloads = 3,
+    downloadTimeout = 300000,
+  ) {
     this._registry = registry;
     this._maxConcurrentDownloads = maxConcurrentDownloads;
     this._downloadTimeout = downloadTimeout;
   }
 
-  async downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void> {
+  async downloadModel(
+    modelId: string,
+    progressCallback?: (progress: ModelDownloadProgress) => void,
+  ): Promise<void> {
     // Check if model is registered
     const modelInfo = this._registry.getModelInfo(modelId);
     if (!modelInfo) {
@@ -39,7 +50,9 @@ export class ModelDownloadManager implements IModelDownloadManager {
 
     // Check concurrent download limit
     if (this._activeDownloads.size >= this._maxConcurrentDownloads) {
-      throw new Error(`Maximum concurrent downloads (${this._maxConcurrentDownloads}) reached`);
+      throw new Error(
+        `Maximum concurrent downloads (${this._maxConcurrentDownloads}) reached`,
+      );
     }
 
     // Initialize progress tracking
@@ -49,12 +62,17 @@ export class ModelDownloadManager implements IModelDownloadManager {
       progress: 0,
       downloadedBytes: 0,
       totalBytes: modelInfo.totalSizeEstimate,
-      startTime: new Date()
+      startTime: new Date(),
     };
     this._downloadProgress.set(modelId, progress);
 
     // Create download promise
-    const downloadPromise = this._performDownload(modelId, modelInfo, progress, progressCallback);
+    const downloadPromise = this._performDownload(
+      modelId,
+      modelInfo,
+      progress,
+      progressCallback,
+    );
     this._activeDownloads.set(modelId, downloadPromise);
 
     try {
@@ -68,7 +86,7 @@ export class ModelDownloadManager implements IModelDownloadManager {
     const progress = this._downloadProgress.get(modelId);
     if (progress && progress.status === ModelStatus.DOWNLOADING) {
       progress.status = ModelStatus.ERROR;
-      progress.error = 'Download cancelled';
+      progress.error = "Download cancelled";
       this._downloadProgress.set(modelId, progress);
     }
   }
@@ -100,7 +118,7 @@ export class ModelDownloadManager implements IModelDownloadManager {
     modelId: string,
     modelInfo: any,
     progress: ModelDownloadProgress,
-    progressCallback?: (progress: ModelDownloadProgress) => void
+    progressCallback?: (progress: ModelDownloadProgress) => void,
   ): Promise<void> {
     try {
       // Simulate download process
@@ -111,13 +129,15 @@ export class ModelDownloadManager implements IModelDownloadManager {
       for (let i = 0; i < totalFiles; i++) {
         // Check if download was cancelled
         if (progress.status === ModelStatus.ERROR) {
-          throw new Error('Download cancelled');
+          throw new Error("Download cancelled");
         }
 
         // Simulate file download
         progress.currentFile = `file_${i + 1}.bin`;
         progress.downloadedBytes += bytesPerFile;
-        progress.progress = Math.round((progress.downloadedBytes / progress.totalBytes) * 100);
+        progress.progress = Math.round(
+          (progress.downloadedBytes / progress.totalBytes) * 100,
+        );
 
         // Calculate estimated time remaining
         if (progress.startTime) {
@@ -135,7 +155,7 @@ export class ModelDownloadManager implements IModelDownloadManager {
         }
 
         // Simulate download time
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       // Mark as downloaded
@@ -148,7 +168,6 @@ export class ModelDownloadManager implements IModelDownloadManager {
       if (progressCallback) {
         progressCallback({ ...progress });
       }
-
     } catch (error) {
       progress.status = ModelStatus.ERROR;
       progress.error = error instanceof Error ? error.message : String(error);
@@ -217,7 +236,7 @@ export class ModelDownloadManager implements IModelDownloadManager {
       activeDownloads: this._activeDownloads.size,
       completedDownloads,
       failedDownloads,
-      totalBytesDownloaded
+      totalBytesDownloaded,
     };
   }
 }

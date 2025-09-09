@@ -1,13 +1,19 @@
 // Point cloud visualization composable for SolidJS
 // Adapted from yipyap's EmbeddingPointCloud component
 
-import { createSignal, createMemo } from 'solid-js';
-import type { Point3D, PointCloudSettings, SearchIntegrationSettings, TouchEvent, MouseEvent } from '../types';
-import { useThreeJSAnimations } from './useThreeJSAnimations';
+import { createSignal, createMemo } from "solid-js";
+import type {
+  Point3D,
+  PointCloudSettings,
+  SearchIntegrationSettings,
+  TouchEvent,
+  MouseEvent,
+} from "../types";
+import { useThreeJSAnimations } from "./useThreeJSAnimations";
 
 // Lazy load Three.js components for performance
 const loadThreeJS = async () => {
-  const THREE = await import('three') as any;
+  const THREE = (await import("three")) as any;
   const {
     BufferGeometry,
     Float32BufferAttribute,
@@ -70,7 +76,7 @@ const loadThreeJS = async () => {
 export function usePointCloud(
   points: () => Point3D[],
   settings: () => PointCloudSettings = () => ({}),
-  searchIntegration: () => SearchIntegrationSettings = () => ({})
+  searchIntegration: () => SearchIntegrationSettings = () => ({}),
 ) {
   const animations = useThreeJSAnimations();
 
@@ -84,14 +90,21 @@ export function usePointCloud(
 
   // Point cloud state
   const [pointCloud, setPointCloud] = createSignal<unknown>(null);
-  const [_thumbnailTextures, _setThumbnailTextures] = createSignal<Map<string, unknown>>(new Map());
-  const [_textSprites, _setTextSprites] = createSignal<Map<string, unknown>>(new Map());
+  const [_thumbnailTextures, _setThumbnailTextures] = createSignal<
+    Map<string, unknown>
+  >(new Map());
+  const [_textSprites, _setTextSprites] = createSignal<Map<string, unknown>>(
+    new Map(),
+  );
 
   // Interaction state
   const [hoveredPoint, setHoveredPoint] = createSignal<Point3D | null>(null);
   const [selectedPoints, setSelectedPoints] = createSignal<Point3D[]>([]);
   const [_isDragging, _setIsDragging] = createSignal(false);
-  const [_dragStart, _setDragStart] = createSignal<{ x: number; y: number } | null>(null);
+  const [_dragStart, _setDragStart] = createSignal<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   // Visualization settings
   const [_enableThumbnails, _setEnableThumbnails] = createSignal(true);
@@ -102,33 +115,68 @@ export function usePointCloud(
   // Performance settings
   const maxPoints = createMemo(() => settings().maxPoints || 100000);
   const pointSize = createMemo(() => settings().pointSize || 2);
-  const enableInstancing = createMemo(() => settings().enableInstancing ?? true);
+  const enableInstancing = createMemo(
+    () => settings().enableInstancing ?? true,
+  );
   const enableLOD = createMemo(() => settings().enableLOD ?? true);
   const enableCulling = createMemo(() => settings().enableCulling ?? true);
   const lodDistance = createMemo(() => settings().lodDistance || 50);
   const lodLevels = createMemo(() => settings().lodLevels || 3);
-  const enableHighlighting = createMemo(() => settings().enableHighlighting ?? true);
-  const highlightColor = createMemo(() => settings().highlightColor || [1, 1, 0]);
+  const enableHighlighting = createMemo(
+    () => settings().enableHighlighting ?? true,
+  );
+  const highlightColor = createMemo(
+    () => settings().highlightColor || [1, 1, 0],
+  );
   const highlightSize = createMemo(() => settings().highlightSize || 1.5);
 
   // Search integration settings
-  const enableSearchIntegration = createMemo(() => searchIntegration().enableSearchIntegration ?? false);
-  const searchQueryEmbedding = createMemo(() => searchIntegration().searchQueryEmbedding);
-  const searchResults = createMemo(() => searchIntegration().searchResults || []);
-  const reductionMethod = createMemo(() => searchIntegration().reductionMethod || 'tsne');
-  const transformedData = createMemo(() => searchIntegration().transformedData || []);
-  const originalIndices = createMemo(() => searchIntegration().originalIndices || []);
-  const highlightQueryPoint = createMemo(() => searchIntegration().highlightQueryPoint ?? true);
-  const showSimilarityPaths = createMemo(() => searchIntegration().showSimilarityPaths ?? true);
-  const showSimilarityRadius = createMemo(() => searchIntegration().showSimilarityRadius ?? true);
-  const radiusThreshold = createMemo(() => searchIntegration().radiusThreshold || 0.8);
-  const maxPathLength = createMemo(() => searchIntegration().maxPathLength || 5);
-  const queryPointColor = createMemo(() => searchIntegration().queryPointColor || [1, 0, 0]);
-  const pathColor = createMemo(() => searchIntegration().pathColor || [0, 1, 1]);
-  const radiusColor = createMemo(() => searchIntegration().radiusColor || [1, 0, 1]);
+  const enableSearchIntegration = createMemo(
+    () => searchIntegration().enableSearchIntegration ?? false,
+  );
+  const searchQueryEmbedding = createMemo(
+    () => searchIntegration().searchQueryEmbedding,
+  );
+  const searchResults = createMemo(
+    () => searchIntegration().searchResults || [],
+  );
+  const reductionMethod = createMemo(
+    () => searchIntegration().reductionMethod || "tsne",
+  );
+  const transformedData = createMemo(
+    () => searchIntegration().transformedData || [],
+  );
+  const originalIndices = createMemo(
+    () => searchIntegration().originalIndices || [],
+  );
+  const highlightQueryPoint = createMemo(
+    () => searchIntegration().highlightQueryPoint ?? true,
+  );
+  const showSimilarityPaths = createMemo(
+    () => searchIntegration().showSimilarityPaths ?? true,
+  );
+  const showSimilarityRadius = createMemo(
+    () => searchIntegration().showSimilarityRadius ?? true,
+  );
+  const radiusThreshold = createMemo(
+    () => searchIntegration().radiusThreshold || 0.8,
+  );
+  const maxPathLength = createMemo(
+    () => searchIntegration().maxPathLength || 5,
+  );
+  const queryPointColor = createMemo(
+    () => searchIntegration().queryPointColor || [1, 0, 0],
+  );
+  const pathColor = createMemo(
+    () => searchIntegration().pathColor || [0, 1, 1],
+  );
+  const radiusColor = createMemo(
+    () => searchIntegration().radiusColor || [1, 0, 1],
+  );
 
   // Search integration state
-  const [searchIntegrationData, setSearchIntegrationData] = createSignal<unknown>(null);
+  const [searchIntegrationData, setSearchIntegrationData] =
+    createSignal<unknown>(null);
   const [queryPointMesh, setQueryPointMesh] = createSignal<unknown>(null);
   const [pathMeshes, setPathMeshes] = createSignal<unknown[]>([]);
   const [radiusMesh, setRadiusMesh] = createSignal<unknown>(null);
@@ -147,8 +195,13 @@ export function usePointCloud(
   });
 
   // Interaction state
-  const [tooltipPosition, setTooltipPosition] = createSignal<{ x: number; y: number } | null>(null);
-  const [_selectionGroups, _setSelectionGroups] = createSignal<Map<string, Point3D[]>>(new Map());
+  const [tooltipPosition, setTooltipPosition] = createSignal<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [_selectionGroups, _setSelectionGroups] = createSignal<
+    Map<string, Point3D[]>
+  >(new Map());
 
   /**
    * Initialize Three.js
@@ -156,7 +209,7 @@ export function usePointCloud(
   const initializeThreeJS = async () => {
     try {
       setIsLoading(true);
-      setError('');
+      setError("");
 
       const threeJSModules = await loadThreeJS();
       setThreeJS(threeJSModules);
@@ -173,8 +226,12 @@ export function usePointCloud(
 
       setIsLoading(false);
     } catch (err) {
-      console.error('Failed to initialize Three.js:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize 3D components');
+      console.error("Failed to initialize Three.js:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to initialize 3D components",
+      );
       setIsLoading(false);
     }
   };
@@ -183,13 +240,13 @@ export function usePointCloud(
    * Color mapping based on different strategies
    */
   const calculatePointColors = (points: Point3D[]): Point3D[] => {
-    const colorMapping = settings().colorMapping || 'similarity';
+    const colorMapping = settings().colorMapping || "similarity";
 
-    return points.map(point => {
+    return points.map((point) => {
       let color: [number, number, number] = [1, 1, 1];
 
       switch (colorMapping) {
-        case 'similarity':
+        case "similarity":
           // Color based on similarity to center point or query point
           if (point.similarity !== undefined) {
             // Use similarity value directly
@@ -200,18 +257,18 @@ export function usePointCloud(
             const center = [0, 0, 0];
             const distance = Math.sqrt(
               Math.pow(point.position[0] - center[0], 2) +
-              Math.pow(point.position[1] - center[1], 2) +
-              Math.pow(point.position[2] - center[2], 2)
+                Math.pow(point.position[1] - center[1], 2) +
+                Math.pow(point.position[2] - center[2], 2),
             );
             const normalizedDistance = Math.min(distance / 10, 1);
             color = [normalizedDistance, 1 - normalizedDistance, 0.5];
           }
           break;
 
-        case 'cluster':
+        case "cluster":
           // Color based on cluster ID
           if (point.clusterId) {
-            const hash = point.clusterId.split('').reduce((a, b) => {
+            const hash = point.clusterId.split("").reduce((a, b) => {
               a = (a << 5) - a + b.charCodeAt(0);
               return a & a;
             }, 0);
@@ -221,19 +278,19 @@ export function usePointCloud(
           }
           break;
 
-        case 'importance':
+        case "importance":
           // Color based on importance
           const importance = point.importance || 0.5;
           color = [importance, 1 - importance, 0.5];
           break;
 
-        case 'confidence':
+        case "confidence":
           // Color based on confidence
           const confidence = point.confidence || 0.5;
           color = [confidence, 1 - confidence, 0.5];
           break;
 
-        case 'custom':
+        case "custom":
           // Use custom color if provided
           color = point.color || [1, 1, 1];
           break;
@@ -247,22 +304,22 @@ export function usePointCloud(
    * Size mapping based on different strategies
    */
   const calculatePointSizes = (points: Point3D[]): Point3D[] => {
-    const sizeMapping = settings().sizeMapping || 'uniform';
+    const sizeMapping = settings().sizeMapping || "uniform";
 
-    return points.map(point => {
+    return points.map((point) => {
       let size = pointSize();
 
       switch (sizeMapping) {
-        case 'importance':
+        case "importance":
           size = (point.importance || 0.5) * pointSize() * 2;
           break;
 
-        case 'confidence':
+        case "confidence":
           const confidence = point.confidence || 0.5;
           size = confidence * pointSize() * 2;
           break;
 
-        case 'uniform':
+        case "uniform":
           size = pointSize();
           break;
       }
@@ -274,7 +331,11 @@ export function usePointCloud(
   /**
    * Utility function to convert HSL to RGB
    */
-  const hslToRgb = (h: number, s: number, l: number): [number, number, number] => {
+  const hslToRgb = (
+    h: number,
+    s: number,
+    l: number,
+  ): [number, number, number] => {
     const hue2rgb = (p: number, q: number, t: number) => {
       if (t < 0) t += 1;
       if (t > 1) t -= 1;
@@ -310,11 +371,14 @@ export function usePointCloud(
     }
 
     // Apply search integration highlighting
-    return pointData.map(point => {
+    return pointData.map((point) => {
       const highlightedPoint = { ...point };
 
       // Check if point is in highlighted results
-      const isHighlighted = (searchData as any).highlighted_results?.some((result: { original_index: string | number }) => result.original_index === point.id);
+      const isHighlighted = (searchData as any).highlighted_results?.some(
+        (result: { original_index: string | number }) =>
+          result.original_index === point.id,
+      );
 
       if (isHighlighted) {
         highlightedPoint.color = queryPointColor() as [number, number, number];
@@ -328,25 +392,34 @@ export function usePointCloud(
   /**
    * Handle point selection via raycasting
    */
-  const handlePointSelection = (event: MouseEvent | TouchEvent, camera: unknown, scene: unknown) => {
+  const handlePointSelection = (
+    event: MouseEvent | TouchEvent,
+    camera: unknown,
+    scene: unknown,
+  ) => {
     if (!raycaster() || !mouse()) return;
 
     const target = (event as any).currentTarget as HTMLElement;
     if (!target) return;
 
     const rect = target.getBoundingClientRect();
-    
+
     // Handle both MouseEvent and TouchEvent
-    const clientX = 'clientX' in event ? event.clientX : event.touches[0]?.clientX || 0;
-    const clientY = 'clientY' in event ? event.clientY : event.touches[0]?.clientY || 0;
-    
+    const clientX =
+      "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
+    const clientY =
+      "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
+
     (mouse() as any).x = ((clientX - rect.left) / rect.width) * 2 - 1;
     (mouse() as any).y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
     (raycaster() as any).setFromCamera(mouse(), camera);
 
     // Find intersected points
-    const intersects = (raycaster() as any).intersectObjects((scene as any).children, true);
+    const intersects = (raycaster() as any).intersectObjects(
+      (scene as any).children,
+      true,
+    );
 
     if (intersects.length > 0) {
       const intersectedPoint = intersects[0];
@@ -360,10 +433,10 @@ export function usePointCloud(
         if (point) {
           if (event.ctrlKey || event.metaKey) {
             // Multi-select
-            setSelectedPoints(prev => {
-              const isSelected = prev.some(p => p.id === point.id);
+            setSelectedPoints((prev) => {
+              const isSelected = prev.some((p) => p.id === point.id);
               if (isSelected) {
-                return prev.filter(p => p.id !== point.id);
+                return prev.filter((p) => p.id !== point.id);
               } else {
                 return [...prev, point];
               }
@@ -385,18 +458,24 @@ export function usePointCloud(
   /**
    * Handle point hovering
    */
-  const handlePointHover = (event: MouseEvent | TouchEvent, camera: unknown, scene: unknown) => {
+  const handlePointHover = (
+    event: MouseEvent | TouchEvent,
+    camera: unknown,
+    scene: unknown,
+  ) => {
     if (!raycaster() || !mouse()) return;
 
     const target = (event as any).currentTarget as HTMLElement;
     if (!target) return;
 
     const rect = target.getBoundingClientRect();
-    
+
     // Handle both MouseEvent and TouchEvent
-    const clientX = 'clientX' in event ? event.clientX : event.touches[0]?.clientX || 0;
-    const clientY = 'clientY' in event ? event.clientY : event.touches[0]?.clientY || 0;
-    
+    const clientX =
+      "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
+    const clientY =
+      "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
+
     (mouse() as any).x = ((clientX - rect.left) / rect.width) * 2 - 1;
     (mouse() as any).y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
@@ -405,7 +484,10 @@ export function usePointCloud(
 
     (raycaster() as any).setFromCamera(mouse(), camera);
 
-    const intersects = (raycaster() as any).intersectObjects((scene as any).children, true);
+    const intersects = (raycaster() as any).intersectObjects(
+      (scene as any).children,
+      true,
+    );
 
     if (intersects.length > 0) {
       const intersectedPoint = intersects[0];

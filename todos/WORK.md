@@ -41,7 +41,7 @@
 
 ### **🛠️ Phase 1: Shared Foundation Packages** (Weeks 1-2)
 
-*XP Reward: 200 points per package*
+_XP Reward: 200 points per package_
 
 #### **Quest 1.1: `reynard-ai-shared`** ⚠️ **CRITICAL**
 
@@ -54,21 +54,21 @@
 ```typescript
 // Core shared functionality
 export abstract class BaseAIService {
-  abstract initialize(): Promise<void>
-  abstract healthCheck(): Promise<ServiceHealth>
-  abstract shutdown(): Promise<void>
+  abstract initialize(): Promise<void>;
+  abstract healthCheck(): Promise<ServiceHealth>;
+  abstract shutdown(): Promise<void>;
 }
 
 export abstract class BaseModel {
-  abstract load(): Promise<void>
-  abstract unload(): Promise<void>
-  abstract isLoaded(): boolean
+  abstract load(): Promise<void>;
+  abstract unload(): Promise<void>;
+  abstract isLoaded(): boolean;
 }
 
 export class ModelRegistry {
-  registerModel(model: BaseModel): void
-  getModel(name: string): BaseModel | undefined
-  listModels(): ModelInfo[]
+  registerModel(model: BaseModel): void;
+  getModel(name: string): BaseModel | undefined;
+  listModels(): ModelInfo[];
 }
 ```
 
@@ -96,21 +96,24 @@ export class ModelRegistry {
 ```typescript
 // Utility functions
 export class ModelLoader {
-  static async downloadModel(modelId: string): Promise<void>
-  static async validateModel(modelPath: string): Promise<boolean>
-  static async getModelInfo(modelId: string): Promise<ModelInfo>
+  static async downloadModel(modelId: string): Promise<void>;
+  static async validateModel(modelPath: string): Promise<boolean>;
+  static async getModelInfo(modelId: string): Promise<ModelInfo>;
 }
 
 export class PostProcessor {
-  static cleanCaption(caption: string, rules: PostProcessingRules): string
-  static normalizeTags(tags: string[]): string[]
-  static validateOutput(output: any, schema: any): boolean
+  static cleanCaption(caption: string, rules: PostProcessingRules): string;
+  static normalizeTags(tags: string[]): string[];
+  static validateOutput(output: any, schema: any): boolean;
 }
 
 export class PerformanceMonitor {
-  static trackModelPerformance(modelName: string, operation: string): PerformanceTracker
-  static getMemoryUsage(): MemoryInfo
-  static getGPUInfo(): GPUInfo
+  static trackModelPerformance(
+    modelName: string,
+    operation: string,
+  ): PerformanceTracker;
+  static getMemoryUsage(): MemoryInfo;
+  static getGPUInfo(): GPUInfo;
 }
 ```
 
@@ -138,19 +141,19 @@ export class PerformanceMonitor {
 ```typescript
 // Configuration management
 export class AIConfigManager {
-  getModelConfig(modelName: string): ModelConfig
-  updateModelConfig(modelName: string, config: Partial<ModelConfig>): void
-  getGlobalConfig(): GlobalAIConfig
-  validateConfig(config: any): ValidationResult
+  getModelConfig(modelName: string): ModelConfig;
+  updateModelConfig(modelName: string, config: Partial<ModelConfig>): void;
+  getGlobalConfig(): GlobalAIConfig;
+  validateConfig(config: any): ValidationResult;
 }
 
 export interface ModelConfig {
-  threshold: number
-  maxLength: number
-  temperature: number
-  batchSize: number
-  gpuAcceleration: boolean
-  postProcessing: PostProcessingRules
+  threshold: number;
+  maxLength: number;
+  temperature: number;
+  batchSize: number;
+  gpuAcceleration: boolean;
+  postProcessing: PostProcessingRules;
 }
 ```
 
@@ -169,7 +172,7 @@ export interface ModelConfig {
 
 ### **🤖 Phase 2: Core AI/ML Services** (Weeks 3-4)
 
-*XP Reward: 300 points per package*
+_XP Reward: 300 points per package_
 
 #### **Quest 2.1: `reynard-caption-models`** ⚠️ **CRITICAL**
 
@@ -231,17 +234,26 @@ export class JoyCaptionGenerator extends BaseCaptionGenerator {
 ```typescript
 // Ollama service
 export class OllamaService extends BaseAIService {
-  async listModels(): Promise<OllamaModel[]>
-  async pullModel(modelName: string): Promise<void>
-  async chatWithModel(model: string, messages: Message[]): Promise<ChatResponse>
-  async streamChat(model: string, messages: Message[]): Promise<AsyncIterable<string>>
-  async deleteModel(modelName: string): Promise<void>
+  async listModels(): Promise<OllamaModel[]>;
+  async pullModel(modelName: string): Promise<void>;
+  async chatWithModel(
+    model: string,
+    messages: Message[],
+  ): Promise<ChatResponse>;
+  async streamChat(
+    model: string,
+    messages: Message[],
+  ): Promise<AsyncIterable<string>>;
+  async deleteModel(modelName: string): Promise<void>;
 }
 
 export class OllamaAssistant {
-  async chat(prompt: string, context?: ChatContext): Promise<string>
-  async streamChat(prompt: string, context?: ChatContext): Promise<AsyncIterable<string>>
-  async getContext(path: string): Promise<ChatContext>
+  async chat(prompt: string, context?: ChatContext): Promise<string>;
+  async streamChat(
+    prompt: string,
+    context?: ChatContext,
+  ): Promise<AsyncIterable<string>>;
+  async getContext(path: string): Promise<ChatContext>;
 }
 ```
 
@@ -269,17 +281,17 @@ export class OllamaAssistant {
 ```typescript
 // Embedding service
 export class EmbeddingService extends BaseAIService {
-  async generateEmbeddings(texts: string[]): Promise<number[][]>
-  async generateImageEmbeddings(images: string[]): Promise<number[][]>
-  async searchSimilar(query: string, topK: number): Promise<SearchResult[]>
-  async addToIndex(items: IndexItem[]): Promise<void>
-  async removeFromIndex(ids: string[]): Promise<void>
+  async generateEmbeddings(texts: string[]): Promise<number[][]>;
+  async generateImageEmbeddings(images: string[]): Promise<number[][]>;
+  async searchSimilar(query: string, topK: number): Promise<SearchResult[]>;
+  async addToIndex(items: IndexItem[]): Promise<void>;
+  async removeFromIndex(ids: string[]): Promise<void>;
 }
 
 export class CLIPEmbeddingService extends EmbeddingService {
-  async encodeText(text: string): Promise<number[]>
-  async encodeImage(imagePath: string): Promise<number[]>
-  async computeSimilarity(text: string, image: string): Promise<number>
+  async encodeText(text: string): Promise<number[]>;
+  async encodeImage(imagePath: string): Promise<number[]>;
+  async computeSimilarity(text: string, image: string): Promise<number>;
 }
 ```
 
@@ -298,7 +310,7 @@ export class CLIPEmbeddingService extends EmbeddingService {
 
 ### **🚀 Phase 3: Advanced AI/ML Services** (Weeks 5-6)
 
-*XP Reward: 400 points per package*
+_XP Reward: 400 points per package_
 
 #### **Quest 3.1: `reynard-diffusion-llm`** ⚠️ **MEDIUM**
 
@@ -311,14 +323,26 @@ export class CLIPEmbeddingService extends EmbeddingService {
 ```typescript
 // Diffusion LLM models
 export class DreamOnModel extends BaseModel {
-  async generateText(prompt: string, options: GenerationOptions): Promise<GenerationResult>
-  async infillText(text: string, mask: string): Promise<string>
-  async generateStreaming(prompt: string, options: GenerationOptions): Promise<AsyncIterable<string>>
+  async generateText(
+    prompt: string,
+    options: GenerationOptions,
+  ): Promise<GenerationResult>;
+  async infillText(text: string, mask: string): Promise<string>;
+  async generateStreaming(
+    prompt: string,
+    options: GenerationOptions,
+  ): Promise<AsyncIterable<string>>;
 }
 
 export class LLaDAModel extends BaseModel {
-  async generateStreaming(prompt: string, options: GenerationOptions): Promise<AsyncIterable<string>>
-  async generateBatch(prompts: string[], options: GenerationOptions): Promise<GenerationResult[]>
+  async generateStreaming(
+    prompt: string,
+    options: GenerationOptions,
+  ): Promise<AsyncIterable<string>>;
+  async generateBatch(
+    prompts: string[],
+    options: GenerationOptions,
+  ): Promise<GenerationResult[]>;
 }
 ```
 
@@ -346,15 +370,24 @@ export class LLaDAModel extends BaseModel {
 ```typescript
 // TTS service
 export class TTSService extends BaseAIService {
-  async generateSpeech(text: string, options: TTSOptions): Promise<AudioBuffer>
-  async batchGenerate(texts: string[], options: TTSOptions): Promise<AudioBuffer[]>
-  async getAvailableVoices(): Promise<Voice[]>
-  async getVoiceInfo(voiceId: string): Promise<VoiceInfo>
+  async generateSpeech(text: string, options: TTSOptions): Promise<AudioBuffer>;
+  async batchGenerate(
+    texts: string[],
+    options: TTSOptions,
+  ): Promise<AudioBuffer[]>;
+  async getAvailableVoices(): Promise<Voice[]>;
+  async getVoiceInfo(voiceId: string): Promise<VoiceInfo>;
 }
 
 export class KokoroTTSService extends TTSService {
-  async generateSpeech(text: string, options: KokoroOptions): Promise<AudioBuffer>
-  async generateWithEmotion(text: string, emotion: Emotion): Promise<AudioBuffer>
+  async generateSpeech(
+    text: string,
+    options: KokoroOptions,
+  ): Promise<AudioBuffer>;
+  async generateWithEmotion(
+    text: string,
+    emotion: Emotion,
+  ): Promise<AudioBuffer>;
 }
 ```
 
@@ -382,17 +415,21 @@ export class KokoroTTSService extends TTSService {
 ```typescript
 // ComfyUI service
 export class ComfyService extends BaseAIService {
-  async queueWorkflow(workflow: Workflow): Promise<JobId>
-  async getJobStatus(jobId: JobId): Promise<JobStatus>
-  async getResult(jobId: JobId): Promise<JobResult>
-  async listPresets(): Promise<Preset[]>
-  async getQueueStatus(): Promise<QueueStatus>
+  async queueWorkflow(workflow: Workflow): Promise<JobId>;
+  async getJobStatus(jobId: JobId): Promise<JobStatus>;
+  async getResult(jobId: JobId): Promise<JobResult>;
+  async listPresets(): Promise<Preset[]>;
+  async getQueueStatus(): Promise<QueueStatus>;
 }
 
 export class WorkflowBuilder {
-  createTextToImage(prompt: string, options: TextToImageOptions): Workflow
-  createImageToImage(image: string, prompt: string, options: ImageToImageOptions): Workflow
-  createUpscale(image: string, options: UpscaleOptions): Workflow
+  createTextToImage(prompt: string, options: TextToImageOptions): Workflow;
+  createImageToImage(
+    image: string,
+    prompt: string,
+    options: ImageToImageOptions,
+  ): Workflow;
+  createUpscale(image: string, options: UpscaleOptions): Workflow;
 }
 ```
 
@@ -411,7 +448,7 @@ export class WorkflowBuilder {
 
 ### **🌐 Phase 4: External Integrations** (Weeks 7-8)
 
-*XP Reward: 500 points per package*
+_XP Reward: 500 points per package_
 
 #### **Quest 4.1: `reynard-crawling`** ⚠️ **LOW**
 
@@ -424,18 +461,18 @@ export class WorkflowBuilder {
 ```typescript
 // Crawling service
 export class CrawlingService extends BaseAIService {
-  async crawlUrl(url: string): Promise<CrawlResult>
-  async crawlBatch(urls: string[]): Promise<CrawlResult[]>
-  async extractText(html: string): Promise<string>
-  async extractImages(html: string): Promise<ImageInfo[]>
-  async extractMetadata(html: string): Promise<Metadata>
+  async crawlUrl(url: string): Promise<CrawlResult>;
+  async crawlBatch(urls: string[]): Promise<CrawlResult[]>;
+  async extractText(html: string): Promise<string>;
+  async extractImages(html: string): Promise<ImageInfo[]>;
+  async extractMetadata(html: string): Promise<Metadata>;
 }
 
 export class ContentProcessor {
-  async summarizeContent(content: string): Promise<Summary>
-  async extractKeywords(content: string): Promise<string[]>
-  async detectLanguage(content: string): Promise<string>
-  async cleanContent(content: string): Promise<string>
+  async summarizeContent(content: string): Promise<Summary>;
+  async extractKeywords(content: string): Promise<string[]>;
+  async detectLanguage(content: string): Promise<string>;
+  async cleanContent(content: string): Promise<string>;
 }
 ```
 
@@ -463,16 +500,25 @@ export class ContentProcessor {
 ```typescript
 // Summarization service
 export class SummarizationService extends BaseAIService {
-  async summarizeText(text: string, options: SummarizationOptions): Promise<Summary>
-  async summarizeDocument(document: Document, options: SummarizationOptions): Promise<Summary>
-  async summarizeBatch(texts: string[], options: SummarizationOptions): Promise<Summary[]>
-  async getSummaryTypes(): Promise<SummaryType[]>
+  async summarizeText(
+    text: string,
+    options: SummarizationOptions,
+  ): Promise<Summary>;
+  async summarizeDocument(
+    document: Document,
+    options: SummarizationOptions,
+  ): Promise<Summary>;
+  async summarizeBatch(
+    texts: string[],
+    options: SummarizationOptions,
+  ): Promise<Summary[]>;
+  async getSummaryTypes(): Promise<SummaryType[]>;
 }
 
 export class DocumentSummarizer {
-  async summarizePDF(pdfPath: string): Promise<Summary>
-  async summarizeWebPage(url: string): Promise<Summary>
-  async summarizeCode(code: string, language: string): Promise<Summary>
+  async summarizePDF(pdfPath: string): Promise<Summary>;
+  async summarizeWebPage(url: string): Promise<Summary>;
+  async summarizeCode(code: string, language: string): Promise<Summary>;
 }
 ```
 
@@ -491,7 +537,7 @@ export class DocumentSummarizer {
 
 ### **🔧 Phase 5: Backend Integration** (Weeks 9-10)
 
-*XP Reward: 600 points per task*
+_XP Reward: 600 points per task_
 
 #### **Quest 5.1: Backend AI/ML APIs** ⚠️ **CRITICAL**
 
@@ -599,7 +645,7 @@ class Embedding(Base):
 
 ### **🔗 Phase 6: Frontend Integration** (Weeks 11-12)
 
-*XP Reward: 700 points per task*
+_XP Reward: 700 points per task_
 
 #### **Quest 6.1: Update Existing Packages** ⚠️ **CRITICAL**
 
@@ -734,4 +780,4 @@ class Embedding(Base):
 
 **Ready to begin your quest?** Start with **Quest 1.1: `reynard-ai-shared`** and begin your journey to become a Master Fox! 🦊
 
-*May the cunning of the fox guide your path!*
+_May the cunning of the fox guide your path!_

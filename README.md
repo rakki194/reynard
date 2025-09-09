@@ -38,13 +38,13 @@ function App() {
 
 ## 📚 Documentation
 
-- **[📖 Overview](./docs/OVERVIEW.md)** - Framework introduction and philosophy
-- **[🚀 Quick Start](./docs/QUICKSTART.md)** - Get up and running in minutes
-- **[📚 Complete Tutorial](./docs/TUTORIAL.md)** - Build your first Reynard app
-- **[📦 Package Documentation](./docs/PACKAGES.md)** - Detailed package documentation
-- **[📱 Examples & Templates](./docs/EXAMPLES.md)** - Real-world applications
-- **[📖 API Reference](./docs/API.md)** - Complete API documentation
-- **[🚀 Performance Guide](./docs/PERFORMANCE.md)** - Optimization and performance tips
+- **[📖 Overview](./docs/overview.md)** - Framework introduction and philosophy
+- **[🚀 Quick Start](./docs/quickstart.md)** - Get up and running in minutes
+- **[📚 Complete Tutorial](./docs/tutorial.md)** - Build your first Reynard app
+- **[📦 Package Documentation](./docs/packages.md)** - Detailed package documentation
+- **[📱 Examples & Templates](./docs/examples.md)** - Real-world applications
+- **[📖 API Reference](./docs/api.md)** - Complete API documentation
+- **[🚀 Performance Guide](./docs/performance.md)** - Optimization and performance tips
 - **[🏗️ Architecture Patterns](./docs/architecture/modularity-patterns.md)** - Modularity patterns and refactoring strategies
 - **[🤝 Contributing](./docs/CONTRIBUTING.md)** - How to contribute to Reynard
 
@@ -114,18 +114,9 @@ Reynard is optimized for performance with bundle splitting, lazy loading, and in
 
 ### Bundle Sizes
 
-| Package | Size | Gzipped | Description |
-|---------|------|---------|-------------|
-| `reynard-core` | ~16 kB | 3.7 kB | Core utilities and modules |
-| `reynard-components` | ~46 kB | 11.8 kB | UI component library |
-| `reynard-chat` | ~110 kB | 25.1 kB | Chat messaging system |
-| `reynard-rag` | ~21 kB | 6.7 kB | RAG system components |
-| `reynard-auth` | ~46 kB | 11.8 kB | Authentication system |
-| `reynard-charts` | ~28 kB | 8.4 kB | Data visualization |
-| `reynard-gallery` | ~87 kB | 21.3 kB | File management |
-| `reynard-monaco` | ~232 kB | 62.0 kB | Code editor |
+Reynard packages are optimized for performance with minimal bundle sizes. The largest package (`reynard-components`) is only 760K (190.7 kB gzipped), while most specialized packages are under 100K.
 
-_[View complete performance guide →](./docs/PERFORMANCE.md)_
+_[View complete bundle sizes and performance guide →](./docs/performance.md)_
 
 ## 📚 Package Documentation
 
@@ -233,7 +224,7 @@ function ChatApp() {
         onMessageSent={(message) => console.log("Sent:", message)}
         onMessageReceived={(message) => console.log("Received:", message)}
       />
-      
+
       <P2PChatContainer
         currentUser={{ id: "user1", name: "Alice", status: "online" }}
         realtimeEndpoint="ws://localhost:8080"
@@ -382,12 +373,7 @@ Advanced data visualization components built on Chart.js with real-time updates 
 #### Charts Example Usage
 
 ```tsx
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  TimeSeriesChart,
-} from "reynard-charts";
+import { LineChart, BarChart, PieChart, TimeSeriesChart } from "reynard-charts";
 
 function Dashboard() {
   const salesData = {
@@ -536,11 +522,7 @@ Comprehensive configuration management system with validation, persistence, and 
 #### Settings Example Usage
 
 ```tsx
-import {
-  SettingsPanel,
-  SettingsProvider,
-  useSettings,
-} from "reynard-settings";
+import { SettingsPanel, SettingsProvider, useSettings } from "reynard-settings";
 
 const settingsSchema = {
   appearance: {
@@ -626,7 +608,7 @@ function AlgorithmDemo() {
 
   // Spatial hashing
   const spatialHash = new SpatialHash({ cellSize: 100 });
-  spatialHash.insert({ id: '1', x: 50, y: 50, data: { name: 'object1' } });
+  spatialHash.insert({ id: "1", x: 50, y: 50, data: { name: "object1" } });
   const nearby = spatialHash.queryRadius(0, 0, 100);
 
   // Performance monitoring
@@ -745,9 +727,9 @@ function CaptionGenerator() {
 
   return (
     <div>
-      <input 
-        type="file" 
-        multiple 
+      <input
+        type="file"
+        multiple
         accept="image/*"
         onChange={(e) => generateCaptions(Array.from(e.target.files))}
       />
@@ -794,14 +776,14 @@ function CaptionEditor() {
         captionType="CAPTION"
         placeholder="Enter your caption..."
       />
-      
+
       <TagBubble
         tags={tags()}
         onTagsChange={setTags}
         suggestions={["portrait", "landscape", "abstract", "nature"]}
         maxTags={10}
       />
-      
+
       <CaptionValidator
         caption={caption()}
         tags={tags()}
@@ -830,13 +812,13 @@ function CompleteCaptionWorkflow() {
   const [editedCaption, setEditedCaption] = createSignal("");
   const [tags, setTags] = createSignal<string[]>([]);
   const [isGenerating, setIsGenerating] = createSignal(false);
-  
+
   const { notify } = useNotifications();
   const annotationService = new AnnotationService();
 
   const generateCaption = async () => {
     if (!image()) return;
-    
+
     setIsGenerating(true);
     try {
       // Use reynard-annotating for AI caption generation
@@ -844,15 +826,17 @@ function CompleteCaptionWorkflow() {
         model: "florence2",
         confidenceThreshold: 0.8,
       });
-      
+
       const caption = result[0]?.caption || "";
       setGeneratedCaption(caption);
       setEditedCaption(caption);
-      
+
       // Extract tags from generated caption
-      const extractedTags = caption.split(/[,\s]+/).filter(tag => tag.length > 2);
+      const extractedTags = caption
+        .split(/[,\s]+/)
+        .filter((tag) => tag.length > 2);
       setTags(extractedTags);
-      
+
       notify("Caption generated successfully!", "success");
     } catch (error) {
       notify("Failed to generate caption", "error");
@@ -868,7 +852,7 @@ function CompleteCaptionWorkflow() {
       tags: tags(),
       image: image()?.name,
     };
-    
+
     console.log("Saving caption data:", finalData);
     notify("Caption saved!", "success");
   };
@@ -876,7 +860,7 @@ function CompleteCaptionWorkflow() {
   return (
     <Card padding="lg">
       <h3>Complete Caption Workflow</h3>
-      
+
       {/* Image Upload */}
       <div style="margin-bottom: 1rem;">
         <input
@@ -884,14 +868,12 @@ function CompleteCaptionWorkflow() {
           accept="image/*"
           onChange={(e) => setImage(e.target.files?.[0] || null)}
         />
-        {image() && (
-          <p>Selected: {image()!.name}</p>
-        )}
+        {image() && <p>Selected: {image()!.name}</p>}
       </div>
 
       {/* AI Generation */}
       <div style="margin-bottom: 1rem;">
-        <Button 
+        <Button
           onClick={generateCaption}
           disabled={!image() || isGenerating()}
           loading={isGenerating()}
@@ -926,7 +908,14 @@ function CompleteCaptionWorkflow() {
         <TagBubble
           tags={tags()}
           onTagsChange={setTags}
-          suggestions={["portrait", "landscape", "abstract", "nature", "art", "photography"]}
+          suggestions={[
+            "portrait",
+            "landscape",
+            "abstract",
+            "nature",
+            "art",
+            "photography",
+          ]}
           maxTags={15}
           label="Tags"
         />
@@ -944,7 +933,7 @@ function CompleteCaptionWorkflow() {
       />
 
       {/* Save Button */}
-      <Button 
+      <Button
         onClick={saveCaption}
         disabled={!editedCaption().trim()}
         variant="primary"
@@ -992,7 +981,7 @@ describe("Button Component", () => {
   it("handles click events", async () => {
     const handleClick = vi.fn();
     render(() => <Button onClick={handleClick}>Click me</Button>);
-    
+
     await userEvent.click(screen.getByText("Click me"));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -1097,54 +1086,6 @@ npm run test:e2e
 - **Component Tests** - Comprehensive component testing with user interactions
 - **Integration Tests** - End-to-end testing with Playwright
 - **Accessibility Tests** - Automated accessibility testing
-
-## 🚀 Performance
-
-Reynard is optimized for performance:
-
-- **Bundle Splitting** - Automatic code splitting and lazy loading
-- **Tree Shaking** - Import only what you need
-- **Optimized Builds** - Production builds with minification and compression
-- **Virtual Scrolling** - Efficient rendering of large lists
-- **Memory Management** - Smart cleanup and garbage collection
-
-### Bundle Sizes
-
-- **reynard-core** - ~16 kB (3.7 kB gzipped)
-- **reynard-components** - ~46 kB (11.8 kB gzipped)
-- **reynard-chat** - ~110 kB (25.1 kB gzipped)
-- **reynard-rag** - ~21 kB (6.7 kB gzipped)
-- **reynard-auth** - ~46 kB (11.8 kB gzipped)
-- **reynard-charts** - ~28 kB (8.4 kB gzipped)
-- **reynard-gallery** - ~87 kB (21.3 kB gzipped)
-- **reynard-settings** - ~35 kB (8.8 kB gzipped)
-- **reynard-monaco** - ~232 kB (62.0 kB gzipped)
-- **reynard-annotating** - ~35 kB (8.8 kB gzipped)
-- **reynard-caption** - ~22 kB (7.0 kB gzipped)
-- **reynard-algorithms** - ~12 kB (3.6 kB gzipped)
-- **reynard-file-processing** - ~28 kB (8.8 kB gzipped)
-- **reynard-testing** - ~45 kB (12.1 kB gzipped)
-- **reynard-themes** - ~22 kB (6.1 kB gzipped)
-- **reynard-fluent-icons** - ~21 kB (4.7 kB gzipped)
-- **reynard-error-boundaries** - ~16 kB (3.6 kB gzipped)
-- **reynard-3d** - ~60 kB (19.6 kB gzipped)
-- **reynard-i18n** - ~22 kB (6.1 kB gzipped)
-- **reynard-ui** - ~38 kB (12.2 kB gzipped)
-- **reynard-composables** - ~16 kB (3.6 kB gzipped)
-- **reynard-connection** - ~27 kB (5.6 kB gzipped)
-- **reynard-features** - ~11 kB (3.6 kB gzipped)
-- **reynard-model-management** - ~21 kB (4.7 kB gzipped)
-- **reynard-service-manager** - ~22 kB (7.1 kB gzipped)
-- **reynard-tools** - ~21 kB (5.6 kB gzipped)
-- **reynard-boundingbox** - ~28 kB (8.4 kB gzipped)
-- **reynard-color-media** - ~26 kB (7.0 kB gzipped)
-- **reynard-games** - ~34 kB (12.2 kB gzipped)
-- **reynard-docs-core** - ~22 kB (6.1 kB gzipped)
-- **reynard-docs-components** - ~38 kB (12.2 kB gzipped)
-- **reynard-docs-generator** - ~340 kB (72.6 kB gzipped)
-- **reynard-docs-site** - ~192 kB (57.8 kB gzipped)
-- **reynard-basic-app** - ~8 kB (2.1 kB gzipped)
-- **reynard-clock-app** - ~12 kB (3.2 kB gzipped)
 
 ## ♿ Accessibility
 

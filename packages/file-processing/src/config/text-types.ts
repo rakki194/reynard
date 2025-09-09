@@ -1,6 +1,6 @@
 /**
  * Text file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported text file extensions, MIME types, and
  * processing capabilities for text files.
  */

@@ -15,7 +15,7 @@ import { onSystemThemeChange } from "./systemThemeUtils";
 export const setupThemeLifecycle = (
   theme: () => ThemeName,
   setThemeState: (theme: ThemeName) => void,
-  i18nModule: I18nModule
+  i18nModule: I18nModule,
 ) => {
   onMount(async () => {
     console.log("onMount - Current theme:", theme());

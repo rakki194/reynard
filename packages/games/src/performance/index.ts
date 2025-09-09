@@ -1,1 +1,1 @@
-export { PerformanceDemo } from './PerformanceDemo';
+export { PerformanceDemo } from "./PerformanceDemo";

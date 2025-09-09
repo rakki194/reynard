@@ -22,17 +22,23 @@ export const ThemeDetails: Component<ThemeDetailsProps> = (props) => {
     <div class="theme-details-panel">
       <div class="current-theme-info">
         <h3>Current Theme: {props.currentThemeName}</h3>
-        <button 
+        <button
           class="button button--secondary"
           onClick={() => props.onToggleColorDetails()}
         >
-          {fluentIconsPackage.getIcon(props.showColorDetails ? "eye-off" : "eye") && (
+          {fluentIconsPackage.getIcon(
+            props.showColorDetails ? "eye-off" : "eye",
+          ) && (
             <span
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(props.showColorDetails ? "eye-off" : "eye")?.outerHTML}
+              innerHTML={
+                fluentIconsPackage.getIcon(
+                  props.showColorDetails ? "eye-off" : "eye",
+                )?.outerHTML
+              }
             />
           )}
-          {props.showColorDetails ? 'Hide' : 'Show'} Color Details
+          {props.showColorDetails ? "Hide" : "Show"} Color Details
         </button>
       </div>
 

@@ -1,6 +1,6 @@
 /**
  * useBoxMove composable
- * 
+ *
  * Provides move functionality for bounding boxes with support for:
  * - Drag-to-move logic
  * - Move constraints and boundary checking
@@ -8,8 +8,8 @@
  * - Performance optimization
  */
 
-import { createSignal } from 'solid-js';
-import type { BoundingBox, ImageInfo } from '../types';
+import { createSignal } from "solid-js";
+import type { BoundingBox, ImageInfo } from "../types";
 
 export interface MoveConstraints {
   minX: number;
@@ -50,7 +50,12 @@ export interface UseBoxMoveReturn {
   moveState: () => MoveState | null;
   isMoving: () => boolean;
   movingBoxId: () => string | null;
-  startBoxMove: (boxId: string, box: BoundingBox, startX: number, startY: number) => void;
+  startBoxMove: (
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
+  ) => void;
   updateBoxMove: (currentX: number, currentY: number) => void;
   endBoxMove: () => void;
   cancelBoxMove: () => void;
@@ -95,7 +100,11 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
   }
 
   // Apply move constraints
-  function applyMoveConstraints(x: number, y: number, constraints: MoveConstraints): { x: number; y: number } {
+  function applyMoveConstraints(
+    x: number,
+    y: number,
+    constraints: MoveConstraints,
+  ): { x: number; y: number } {
     if (!constraints.enableBoundaryCheck) {
       return { x, y };
     }
@@ -107,7 +116,11 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
   }
 
   // Calculate snapping to grid or other boxes
-  function calculateSnapping(x: number, y: number, _box: BoundingBox): { x: number; y: number } {
+  function calculateSnapping(
+    x: number,
+    y: number,
+    _box: BoundingBox,
+  ): { x: number; y: number } {
     if (!enableSnapping) {
       return { x, y };
     }
@@ -121,7 +134,11 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
   }
 
   // Calculate alignment with other elements
-  function calculateAlignment(x: number, y: number, box: BoundingBox): { x: number; y: number } {
+  function calculateAlignment(
+    x: number,
+    y: number,
+    box: BoundingBox,
+  ): { x: number; y: number } {
     if (!enableAlignment) {
       return { x, y };
     }
@@ -160,7 +177,12 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
     return { x: alignedX, y: alignedY };
   }
 
-  function startBoxMove(boxId: string, box: BoundingBox, startX: number, startY: number) {
+  function startBoxMove(
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
+  ) {
     if (!isEnabled) return;
 
     try {
@@ -181,7 +203,10 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
 
       console.debug(`[useBoxMove] Started moving box ${boxId}`);
     } catch (error) {
-      console.error(`[useBoxMove] Error starting move for box ${boxId}:`, error);
+      console.error(
+        `[useBoxMove] Error starting move for box ${boxId}:`,
+        error,
+      );
       onBoxMoveError?.(boxId, error);
     }
   }
@@ -213,20 +238,28 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
       const constrained = applyMoveConstraints(newX, newY, constraints);
 
       // Apply snapping
-      const snapped = calculateSnapping(constrained.x, constrained.y, state.originalBox);
+      const snapped = calculateSnapping(
+        constrained.x,
+        constrained.y,
+        state.originalBox,
+      );
 
       // Apply alignment
-      const aligned = calculateAlignment(snapped.x, snapped.y, state.originalBox);
+      const aligned = calculateAlignment(
+        snapped.x,
+        snapped.y,
+        state.originalBox,
+      );
 
       // Update move state
-      setMoveState(prev =>
+      setMoveState((prev) =>
         prev
           ? {
               ...prev,
               currentX,
               currentY,
             }
-          : null
+          : null,
       );
 
       // Create updated box
@@ -239,7 +272,10 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
       // Notify parent of move update
       onBoxMoved?.(state.boxId!, updatedBox);
     } catch (error) {
-      console.error(`[useBoxMove] Error updating move for box ${state.boxId}:`, error);
+      console.error(
+        `[useBoxMove] Error updating move for box ${state.boxId}:`,
+        error,
+      );
       onBoxMoveError?.(state.boxId!, error);
     }
   }
@@ -261,7 +297,10 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
 
       console.debug(`[useBoxMove] Finished moving box ${state.boxId}`);
     } catch (error) {
-      console.error(`[useBoxMove] Error ending move for box ${state.boxId}:`, error);
+      console.error(
+        `[useBoxMove] Error ending move for box ${state.boxId}:`,
+        error,
+      );
       onBoxMoveError?.(state.boxId!, error);
     }
   }
@@ -278,7 +317,10 @@ export function useBoxMove(options: MoveOptions): UseBoxMoveReturn {
 
       console.debug(`[useBoxMove] Cancelled move for box ${state.boxId}`);
     } catch (error) {
-      console.error(`[useBoxMove] Error cancelling move for box ${state.boxId}:`, error);
+      console.error(
+        `[useBoxMove] Error cancelling move for box ${state.boxId}:`,
+        error,
+      );
       onBoxMoveError?.(state.boxId!, error);
     }
   }

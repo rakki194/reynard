@@ -1,17 +1,20 @@
 /**
  * PAW (Perfect Algorithmic World) Benchmark Suite
- * 
+ *
  * Comprehensive benchmarking system for comparing spatial algorithms
  * against the original NEXUS implementation.
- * 
+ *
  * @module paw-benchmark-suite
  */
 
-import { SpatialCollisionOptimizer } from '../../../packages/algorithms/src/geometry/collision/spatial-collision-optimizer';
-import { UnionFind } from '../../../packages/algorithms/src/union-find/union-find-core';
-import { BatchUnionFind } from '../../../packages/algorithms/src/union-find/union-find-batch-operations';
-import { SpatialHash } from '../../../packages/algorithms/src/spatial-hash/spatial-hash-core';
-import type { AABB, CollisionResult } from '../../../packages/algorithms/src/geometry/collision/aabb-types';
+import { SpatialCollisionOptimizer } from "../../../packages/algorithms/src/geometry/collision/spatial-collision-optimizer";
+import { UnionFind } from "../../../packages/algorithms/src/union-find/union-find-core";
+import { BatchUnionFind } from "../../../packages/algorithms/src/union-find/union-find-batch-operations";
+import { SpatialHash } from "../../../packages/algorithms/src/spatial-hash/spatial-hash-core";
+import type {
+  AABB,
+  CollisionResult,
+} from "../../../packages/algorithms/src/geometry/collision/aabb-types";
 
 export interface BenchmarkConfig {
   iterations: number;
@@ -75,23 +78,29 @@ export class PAWBenchmarkSuite {
   /**
    * Generate test data with controlled overlap density
    */
-  private generateTestData(objectCount: number, overlapDensity: number): AABB[] {
+  private generateTestData(
+    objectCount: number,
+    overlapDensity: number,
+  ): AABB[] {
     const aabbs: AABB[] = [];
     const baseSize = 50;
     const maxSize = 150;
-    
+
     for (let i = 0; i < objectCount; i++) {
       const size = baseSize + Math.random() * (maxSize - baseSize);
       let x, y;
       let attempts = 0;
-      
+
       do {
         x = Math.random() * (800 - size);
         y = Math.random() * (600 - size);
         attempts++;
-      } while (attempts < 100 && this.shouldOverlap(overlapDensity) && 
-               this.hasOverlap(aabbs, { x, y, width: size, height: size }));
-      
+      } while (
+        attempts < 100 &&
+        this.shouldOverlap(overlapDensity) &&
+        this.hasOverlap(aabbs, { x, y, width: size, height: size })
+      );
+
       aabbs.push({
         x,
         y,
@@ -99,7 +108,7 @@ export class PAWBenchmarkSuite {
         height: size,
       });
     }
-    
+
     return aabbs;
   }
 
@@ -108,12 +117,16 @@ export class PAWBenchmarkSuite {
   }
 
   private hasOverlap(existing: AABB[], newBox: AABB): boolean {
-    return existing.some(box => this.checkCollision(box, newBox));
+    return existing.some((box) => this.checkCollision(box, newBox));
   }
 
   private checkCollision(a: AABB, b: AABB): boolean {
-    return !(a.x + a.width <= b.x || b.x + b.width <= a.x ||
-             a.y + a.height <= b.y || b.y + b.height <= a.y);
+    return !(
+      a.x + a.width <= b.x ||
+      b.x + b.width <= a.x ||
+      a.y + a.height <= b.y ||
+      b.y + b.height <= a.y
+    );
   }
 
   /**
@@ -135,19 +148,24 @@ export class PAWBenchmarkSuite {
       if (i === 0) {
         memoryStart = (performance as any).memory?.usedJSHeapSize || 0;
       }
-      
+
       const start = performance.now();
       collisionCount = this.nexusNaiveCollisionDetection(aabbs);
       const end = performance.now();
-      
+
       times.push(end - start);
-      
+
       if (i === this.config.iterations - 1) {
         memoryEnd = (performance as any).memory?.usedJSHeapSize || 0;
       }
     }
 
-    return this.calculateMetrics('NEXUS-Naive', times, collisionCount, memoryEnd - memoryStart);
+    return this.calculateMetrics(
+      "NEXUS-Naive",
+      times,
+      collisionCount,
+      memoryEnd - memoryStart,
+    );
   }
 
   /**
@@ -177,20 +195,26 @@ export class PAWBenchmarkSuite {
       if (i === 0) {
         memoryStart = (performance as any).memory?.usedJSHeapSize || 0;
       }
-      
+
       const start = performance.now();
       const collisions = optimizer.detectCollisions(aabbs);
       const end = performance.now();
-      
+
       collisionCount = collisions.length;
       times.push(end - start);
-      
+
       if (i === this.config.iterations - 1) {
         memoryEnd = (performance as any).memory?.usedJSHeapSize || 0;
       }
     }
 
-    return this.calculateMetrics('PAW-Spatial', times, collisionCount, memoryEnd - memoryStart, config);
+    return this.calculateMetrics(
+      "PAW-Spatial",
+      times,
+      collisionCount,
+      memoryEnd - memoryStart,
+      config,
+    );
   }
 
   /**
@@ -212,19 +236,24 @@ export class PAWBenchmarkSuite {
       if (i === 0) {
         memoryStart = (performance as any).memory?.usedJSHeapSize || 0;
       }
-      
+
       const start = performance.now();
       collisionCount = this.pawUnionFindCollisionDetection(aabbs);
       const end = performance.now();
-      
+
       times.push(end - start);
-      
+
       if (i === this.config.iterations - 1) {
         memoryEnd = (performance as any).memory?.usedJSHeapSize || 0;
       }
     }
 
-    return this.calculateMetrics('PAW-UnionFind', times, collisionCount, memoryEnd - memoryStart);
+    return this.calculateMetrics(
+      "PAW-UnionFind",
+      times,
+      collisionCount,
+      memoryEnd - memoryStart,
+    );
   }
 
   /**
@@ -232,7 +261,7 @@ export class PAWBenchmarkSuite {
    */
   private nexusNaiveCollisionDetection(aabbs: AABB[]): number {
     let collisionCount = 0;
-    
+
     for (let i = 0; i < aabbs.length; i++) {
       for (let j = i + 1; j < aabbs.length; j++) {
         if (this.checkCollision(aabbs[i], aabbs[j])) {
@@ -240,7 +269,7 @@ export class PAWBenchmarkSuite {
         }
       }
     }
-    
+
     return collisionCount;
   }
 
@@ -249,7 +278,7 @@ export class PAWBenchmarkSuite {
    */
   private pawUnionFindCollisionDetection(aabbs: AABB[]): number {
     const unionFind = new BatchUnionFind(aabbs.length);
-    
+
     // Find all collisions and union connected components
     for (let i = 0; i < aabbs.length; i++) {
       for (let j = i + 1; j < aabbs.length; j++) {
@@ -258,7 +287,7 @@ export class PAWBenchmarkSuite {
         }
       }
     }
-    
+
     // Count connected components
     const components = unionFind.getAllComponents();
     return components.reduce((total, component) => total + component.length, 0);
@@ -268,15 +297,17 @@ export class PAWBenchmarkSuite {
    * Calculate statistical metrics from timing data
    */
   private calculateMetrics(
-    algorithm: string, 
-    times: number[], 
-    collisionCount: number, 
+    algorithm: string,
+    times: number[],
+    collisionCount: number,
     memoryUsage: number,
-    config?: any
+    config?: any,
   ): BenchmarkResult {
     const sortedTimes = [...times].sort((a, b) => a - b);
     const mean = times.reduce((sum, time) => sum + time, 0) / times.length;
-    const variance = times.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) / times.length;
+    const variance =
+      times.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) /
+      times.length;
     const standardDeviation = Math.sqrt(variance);
 
     return {
@@ -303,37 +334,42 @@ export class PAWBenchmarkSuite {
    * Run comprehensive benchmark suite
    */
   async runBenchmarks(): Promise<BenchmarkResult[]> {
-    console.log('🦊> Starting PAW Algorithm Benchmark Suite...');
-    
+    console.log("🦊> Starting PAW Algorithm Benchmark Suite...");
+
     for (const objectCount of this.config.objectCounts) {
       for (const overlapDensity of this.config.overlapDensities) {
-        console.log(`\n🦦> Benchmarking ${objectCount} objects with ${(overlapDensity * 100).toFixed(0)}% overlap density`);
-        
+        console.log(
+          `\n🦦> Benchmarking ${objectCount} objects with ${(overlapDensity * 100).toFixed(0)}% overlap density`,
+        );
+
         const testData = this.generateTestData(objectCount, overlapDensity);
-        
+
         // Benchmark NEXUS naive approach
         const nexusResult = this.benchmarkNexusNaive(testData);
         nexusResult.objectCount = objectCount;
         nexusResult.overlapDensity = overlapDensity;
         this.results.push(nexusResult);
-        
+
         // Benchmark PAW Union-Find
         const unionFindResult = this.benchmarkPAWUnionFind(testData);
         unionFindResult.objectCount = objectCount;
         unionFindResult.overlapDensity = overlapDensity;
         this.results.push(unionFindResult);
-        
+
         // Benchmark PAW Spatial with different configurations
         for (const spatialConfig of this.config.spatialConfigs) {
-          const spatialResult = this.benchmarkPAWSpatial(testData, spatialConfig);
+          const spatialResult = this.benchmarkPAWSpatial(
+            testData,
+            spatialConfig,
+          );
           spatialResult.objectCount = objectCount;
           spatialResult.overlapDensity = overlapDensity;
           this.results.push(spatialResult);
         }
       }
     }
-    
-    console.log('🐺> Benchmark suite completed!');
+
+    console.log("🐺> Benchmark suite completed!");
     return this.results;
   }
 
@@ -342,20 +378,33 @@ export class PAWBenchmarkSuite {
    */
   generateComparison(): ComparisonResult[] {
     const comparisons: ComparisonResult[] = [];
-    const nexusResults = this.results.filter(r => r.algorithm === 'NEXUS-Naive');
-    
+    const nexusResults = this.results.filter(
+      (r) => r.algorithm === "NEXUS-Naive",
+    );
+
     for (const nexusResult of nexusResults) {
-      const optimizedResults = this.results.filter(r => 
-        r.algorithm !== 'NEXUS-Naive' && 
-        r.objectCount === nexusResult.objectCount && 
-        r.overlapDensity === nexusResult.overlapDensity
+      const optimizedResults = this.results.filter(
+        (r) =>
+          r.algorithm !== "NEXUS-Naive" &&
+          r.objectCount === nexusResult.objectCount &&
+          r.overlapDensity === nexusResult.overlapDensity,
       );
-      
+
       for (const optimizedResult of optimizedResults) {
-        const timeImprovement = ((nexusResult.metrics.meanTime - optimizedResult.metrics.meanTime) / nexusResult.metrics.meanTime) * 100;
-        const memoryImprovement = ((nexusResult.metrics.memoryUsage - optimizedResult.metrics.memoryUsage) / nexusResult.metrics.memoryUsage) * 100;
-        const throughputImprovement = ((optimizedResult.metrics.meanTime / nexusResult.metrics.meanTime) - 1) * 100;
-        
+        const timeImprovement =
+          ((nexusResult.metrics.meanTime - optimizedResult.metrics.meanTime) /
+            nexusResult.metrics.meanTime) *
+          100;
+        const memoryImprovement =
+          ((nexusResult.metrics.memoryUsage -
+            optimizedResult.metrics.memoryUsage) /
+            nexusResult.metrics.memoryUsage) *
+          100;
+        const throughputImprovement =
+          (optimizedResult.metrics.meanTime / nexusResult.metrics.meanTime -
+            1) *
+          100;
+
         comparisons.push({
           baseline: nexusResult,
           optimized: optimizedResult,
@@ -367,7 +416,7 @@ export class PAWBenchmarkSuite {
         });
       }
     }
-    
+
     return comparisons;
   }
 
@@ -375,11 +424,15 @@ export class PAWBenchmarkSuite {
    * Export results to JSON
    */
   exportResults(): string {
-    return JSON.stringify({
-      config: this.config,
-      results: this.results,
-      comparisons: this.generateComparison(),
-      timestamp: new Date().toISOString(),
-    }, null, 2);
+    return JSON.stringify(
+      {
+        config: this.config,
+        results: this.results,
+        comparisons: this.generateComparison(),
+        timestamp: new Date().toISOString(),
+      },
+      null,
+      2,
+    );
   }
 }

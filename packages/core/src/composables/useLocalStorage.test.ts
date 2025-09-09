@@ -147,7 +147,7 @@ describe("useLocalStorage", () => {
 
   it("should handle storage events from other tabs", () => {
     localStorageMock.getItem.mockReturnValue(null);
-    
+
     createRoot(() => {
       const [value, setValue, remove] = useLocalStorage("test-key-tabs", {
         defaultValue: "initial",
@@ -171,7 +171,7 @@ describe("useLocalStorage", () => {
   it("should handle malicious JSON in storage events", () => {
     const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     localStorageMock.getItem.mockReturnValue(null);
-    
+
     createRoot(() => {
       const [value, setValue, remove] = useLocalStorage("test-key-malicious", {
         defaultValue: "initial",
@@ -189,7 +189,7 @@ describe("useLocalStorage", () => {
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
         'Error parsing storage event for key "test-key-malicious":',
-        expect.any(Error)
+        expect.any(Error),
       );
       expect(value()).toBe("initial");
     });
@@ -197,21 +197,21 @@ describe("useLocalStorage", () => {
 
   it("should validate key input", () => {
     expect(() => useLocalStorage("", { defaultValue: "test" })).toThrow(
-      "useLocalStorage key must be a non-empty string"
+      "useLocalStorage key must be a non-empty string",
     );
-    expect(() => useLocalStorage(null as any, { defaultValue: "test" })).toThrow(
-      "useLocalStorage key must be a non-empty string"
-    );
-    expect(() => useLocalStorage(undefined as any, { defaultValue: "test" })).toThrow(
-      "useLocalStorage key must be a non-empty string"
-    );
+    expect(() =>
+      useLocalStorage(null as any, { defaultValue: "test" }),
+    ).toThrow("useLocalStorage key must be a non-empty string");
+    expect(() =>
+      useLocalStorage(undefined as any, { defaultValue: "test" }),
+    ).toThrow("useLocalStorage key must be a non-empty string");
   });
 
   it("should handle extremely large JSON values", () => {
     const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const largeValue = "x".repeat(2000000); // 2MB string
     localStorageMock.getItem.mockReturnValue(null);
-    
+
     createRoot(() => {
       const [value, setValue, remove] = useLocalStorage("test-key-large", {
         defaultValue: "initial",
@@ -229,7 +229,7 @@ describe("useLocalStorage", () => {
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
         'Error parsing storage event for key "test-key-large":',
-        expect.any(Error)
+        expect.any(Error),
       );
       expect(value()).toBe("initial");
     });

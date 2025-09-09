@@ -10,7 +10,6 @@ import { ThinkingCore } from "./ThinkingCore";
 import type { ParseResult } from "../types";
 
 export class ThinkingSectionParser extends BaseMarkdownParser {
-
   /**
    * Parse a single line for thinking sections
    */
@@ -76,7 +75,7 @@ export class ThinkingSectionParser extends BaseMarkdownParser {
       this.state,
       this.addWarning.bind(this),
       this.addNode.bind(this),
-      this.createNode.bind(this)
+      this.createNode.bind(this),
     );
   }
 
@@ -88,7 +87,7 @@ export class ThinkingSectionParser extends BaseMarkdownParser {
       line,
       this.state,
       this.addNode.bind(this),
-      this.createNode.bind(this)
+      this.createNode.bind(this),
     );
   }
 
@@ -121,6 +120,4 @@ export class ThinkingSectionParser extends BaseMarkdownParser {
     this.state.thinkingBuffer = "";
     this.state.inThinking = false;
   }
-
-
 }

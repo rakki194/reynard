@@ -33,7 +33,12 @@ curl -X POST -H 'Content-Type: application/json' \
 ```
 
 ```json
-{ "results": [ { "model": "jtp2", "loaded": true }, { "model": "wdv3", "loaded": true } ] }
+{
+  "results": [
+    { "model": "jtp2", "loaded": true },
+    { "model": "wdv3", "loaded": true }
+  ]
+}
 ```
 
 When a generator exposes a `warmup()` method, warmup will be executed best‑effort after the model loads. Load times are recorded into the model usage tracker for performance analysis.

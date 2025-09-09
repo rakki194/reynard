@@ -31,17 +31,11 @@ export const SystemStatus: Component = () => {
       <div class="card-content">
         <StatusItem
           label="Connection"
-          value={isOnline() ? 'Online' : 'Offline'}
-          statusClass={isOnline() ? 'online' : 'offline'}
+          value={isOnline() ? "Online" : "Offline"}
+          statusClass={isOnline() ? "online" : "offline"}
         />
-        <StatusItem
-          label="Current Time"
-          value={currentTime()}
-        />
-        <StatusItem
-          label="Theme"
-          value={themeContext().theme}
-        />
+        <StatusItem label="Current Time" value={currentTime()} />
+        <StatusItem label="Theme" value={themeContext().theme} />
       </div>
     </div>
   );

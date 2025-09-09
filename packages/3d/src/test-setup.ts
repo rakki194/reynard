@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Mock Three.js for testing
 (global as any).THREE = {
@@ -53,7 +53,9 @@ import '@testing-library/jest-dom';
   dispose() {}
   update() {}
   set enabled(_value: boolean) {}
-  get enabled() { return true; }
+  get enabled() {
+    return true;
+  }
   set enableDamping(_value: boolean) {}
   set dampingFactor(_value: number) {}
   set enableZoom(_value: boolean) {}
@@ -68,7 +70,9 @@ import '@testing-library/jest-dom';
   set rotateSpeed(_value: number) {}
   set panSpeed(_value: number) {}
   set target(_value: any) {}
-  get target() { return { x: 0, y: 0, z: 0 }; }
+  get target() {
+    return { x: 0, y: 0, z: 0 };
+  }
 };
 
 // Mock ResizeObserver

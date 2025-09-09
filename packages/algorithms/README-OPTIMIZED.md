@@ -16,12 +16,12 @@ The Reynard Algorithms package now includes a comprehensive optimization framewo
 ### Basic Usage
 
 ```typescript
-import { detectCollisions, PerformanceMonitor } from 'reynard-algorithms';
+import { detectCollisions, PerformanceMonitor } from "reynard-algorithms";
 
 // Automatic algorithm selection and optimization
 const aabbs = [
   { x: 0, y: 0, width: 100, height: 100 },
-  { x: 50, y: 50, width: 100, height: 100 }
+  { x: 50, y: 50, width: 100, height: 100 },
 ];
 
 const collisions = detectCollisions(aabbs);
@@ -36,22 +36,22 @@ console.log(`Hit rate: ${report.summary.hitRate}%`);
 ### Advanced Configuration
 
 ```typescript
-import { 
-  OptimizationConfig, 
+import {
+  OptimizationConfig,
   configureOptimization,
-  detectCollisions 
-} from 'reynard-algorithms';
+  detectCollisions,
+} from "reynard-algorithms";
 
 // Configure global optimization settings
 configureOptimization({
   enableMemoryPooling: true,
   enableAlgorithmSelection: true,
-  algorithmSelectionStrategy: 'adaptive',
+  algorithmSelectionStrategy: "adaptive",
   performanceThresholds: {
     maxExecutionTime: 16, // 16ms for 60fps
     maxMemoryUsage: 50 * 1024 * 1024, // 50MB
-    minHitRate: 90
-  }
+    minHitRate: 90,
+  },
 });
 
 // Use optimized algorithms
@@ -69,7 +69,7 @@ Automatically detects collisions between AABB objects using the optimal algorith
 ```typescript
 const aabbs: AABB[] = [
   { x: 0, y: 0, width: 100, height: 100 },
-  { x: 50, y: 50, width: 100, height: 100 }
+  { x: 50, y: 50, width: 100, height: 100 },
 ];
 
 const collisions = detectCollisions(aabbs);
@@ -88,8 +88,8 @@ Performs optimized spatial queries to find objects within a specified area.
 
 ```typescript
 const spatialObjects = [
-  { aabb: { x: 0, y: 0, width: 50, height: 50 }, data: 'object1' },
-  { aabb: { x: 100, y: 100, width: 50, height: 50 }, data: 'object2' }
+  { aabb: { x: 0, y: 0, width: 50, height: 50 }, data: "object1" },
+  { aabb: { x: 100, y: 100, width: 50, height: 50 }, data: "object2" },
 ];
 
 const queryAABB = { x: 0, y: 0, width: 100, height: 100 };
@@ -104,7 +104,7 @@ Finds connected components using optimized Union-Find algorithms.
 ```typescript
 const collisionPairs = [
   { a: 0, b: 1, result: { colliding: true, distance: 0 } },
-  { a: 1, b: 2, result: { colliding: true, distance: 0 } }
+  { a: 1, b: 2, result: { colliding: true, distance: 0 } },
 ];
 
 const components = findConnectedComponents(collisionPairs, 4);
@@ -132,18 +132,18 @@ console.log(`Allocations avoided: ${poolStats.poolHits}`);
 
 // Get optimization recommendations
 const recommendations = monitor.getOptimizationRecommendations();
-recommendations.forEach(rec => {
+recommendations.forEach((rec) => {
   console.log(`${rec.type}: ${rec.description}`);
 });
 
 // Check for performance degradation
 if (monitor.isPerformanceDegraded()) {
-  console.log('Performance degradation detected!');
+  console.log("Performance degradation detected!");
 }
 
 // Get comprehensive report
 const report = monitor.getPerformanceReport();
-console.log('Performance Report:', report);
+console.log("Performance Report:", report);
 ```
 
 ### Configuration Management
@@ -157,16 +157,16 @@ const config = new OptimizationConfig();
 
 // Update configuration
 config.update({
-  algorithmSelectionStrategy: 'spatial',
-  enableMemoryPooling: true
+  algorithmSelectionStrategy: "spatial",
+  enableMemoryPooling: true,
 });
 
 // Convenience methods
 config.enableMemoryPooling();
-config.setAlgorithmStrategy('optimized');
+config.setAlgorithmStrategy("optimized");
 config.setPerformanceThresholds({
   maxExecutionTime: 8,
-  minHitRate: 95
+  minHitRate: 95,
 });
 
 // Get current configuration
@@ -181,12 +181,12 @@ Updates global optimization configuration.
 configureOptimization({
   enableMemoryPooling: true,
   enableAlgorithmSelection: true,
-  algorithmSelectionStrategy: 'adaptive',
+  algorithmSelectionStrategy: "adaptive",
   performanceThresholds: {
     maxExecutionTime: 16,
     maxMemoryUsage: 50 * 1024 * 1024,
-    minHitRate: 90
-  }
+    minHitRate: 90,
+  },
 });
 ```
 
@@ -204,14 +204,14 @@ const workload = {
   spatialDensity: 0.5,
   overlapRatio: 0.3,
   updateFrequency: 5,
-  queryPattern: 'random'
+  queryPattern: "random",
 };
 
 // Select optimal collision detection algorithm
 const selection = selector.selectCollisionAlgorithm(workload);
 console.log(`Selected algorithm: ${selection.algorithm}`);
 console.log(`Confidence: ${selection.confidence}`);
-console.log(`Reasoning: ${selection.reasoning.join(', ')}`);
+console.log(`Reasoning: ${selection.reasoning.join(", ")}`);
 
 // Get selection statistics
 const stats = selector.getSelectionStats();
@@ -230,7 +230,7 @@ const pool = new MemoryPool({
   spatialHashPoolSize: 20,
   unionFindPoolSize: 50,
   collisionArrayPoolSize: 100,
-  enableAutoResize: true
+  enableAutoResize: true,
 });
 
 // Get pool statistics
@@ -240,13 +240,15 @@ console.log(`Memory saved: ${stats.memorySaved} bytes`);
 
 // Get pool information
 const info = pool.getPoolInfo();
-console.log(`Spatial hash pool: ${info.spatialHashPool.inUse}/${info.spatialHashPool.total} in use`);
+console.log(
+  `Spatial hash pool: ${info.spatialHashPool.inUse}/${info.spatialHashPool.total} in use`,
+);
 
 // Optimize for specific workload
 pool.optimizeForWorkload({
   objectCount: 200,
   spatialDensity: 0.8,
-  updateFrequency: 15
+  updateFrequency: 15,
 });
 
 // Clean up resources
@@ -289,14 +291,14 @@ The optimized API maintains backward compatibility while providing enhanced perf
 
 ```typescript
 // Legacy API (still supported)
-import { UnionFind, SpatialHash, checkCollision } from 'reynard-algorithms';
+import { UnionFind, SpatialHash, checkCollision } from "reynard-algorithms";
 
 const uf = new UnionFind(100);
 const spatialHash = new SpatialHash({ cellSize: 100 });
 const collision = checkCollision(aabb1, aabb2);
 
 // New Optimized API (recommended)
-import { detectCollisions, findConnectedComponents } from 'reynard-algorithms';
+import { detectCollisions, findConnectedComponents } from "reynard-algorithms";
 
 const collisions = detectCollisions(aabbs);
 const components = findConnectedComponents(collisionPairs, objectCount);
@@ -316,22 +318,22 @@ Migration to the optimized API provides:
 ### Custom Optimization Configuration
 
 ```typescript
-import { 
-  OptimizationConfig, 
+import {
+  OptimizationConfig,
   PerformanceMonitor,
-  detectCollisions 
-} from 'reynard-algorithms';
+  detectCollisions,
+} from "reynard-algorithms";
 
 // Create custom configuration
 const config = new OptimizationConfig({
   enableMemoryPooling: true,
   enableAlgorithmSelection: true,
-  algorithmSelectionStrategy: 'adaptive',
+  algorithmSelectionStrategy: "adaptive",
   performanceThresholds: {
     maxExecutionTime: 8, // 8ms for 120fps
     maxMemoryUsage: 25 * 1024 * 1024, // 25MB
-    minHitRate: 95
-  }
+    minHitRate: 95,
+  },
 });
 
 // Monitor performance
@@ -344,14 +346,14 @@ const collisions = detectCollisions(aabbs);
 // Check performance
 if (monitor.isPerformanceDegraded()) {
   const recommendations = monitor.getOptimizationRecommendations();
-  console.log('Optimization recommendations:', recommendations);
+  console.log("Optimization recommendations:", recommendations);
 }
 ```
 
 ### Workload-Specific Optimization
 
 ```typescript
-import { MemoryPool, AlgorithmSelector } from 'reynard-algorithms';
+import { MemoryPool, AlgorithmSelector } from "reynard-algorithms";
 
 // Analyze workload characteristics
 const workload = {
@@ -359,7 +361,7 @@ const workload = {
   spatialDensity: 0.8,
   overlapRatio: 0.6,
   updateFrequency: 30,
-  queryPattern: 'clustered'
+  queryPattern: "clustered",
 };
 
 // Get algorithm selection
@@ -367,7 +369,9 @@ const selector = new AlgorithmSelector();
 const selection = selector.selectCollisionAlgorithm(workload);
 
 console.log(`Optimal algorithm: ${selection.algorithm}`);
-console.log(`Expected performance: ${selection.expectedPerformance.executionTime}ms`);
+console.log(
+  `Expected performance: ${selection.expectedPerformance.executionTime}ms`,
+);
 
 // Optimize memory pool for workload
 const pool = new MemoryPool();
@@ -408,14 +412,14 @@ const monitor = new PerformanceMonitor();
 // Check if performance is degraded
 if (monitor.isPerformanceDegraded()) {
   const report = monitor.getPerformanceReport();
-  
-  console.log('Performance Issues:');
+
+  console.log("Performance Issues:");
   console.log(`- Execution time: ${report.summary.averageExecutionTime}ms`);
   console.log(`- Memory usage: ${report.summary.averageMemoryUsage} bytes`);
   console.log(`- Hit rate: ${report.summary.hitRate}%`);
-  
+
   // Get optimization recommendations
-  report.recommendations.forEach(rec => {
+  report.recommendations.forEach((rec) => {
     console.log(`- ${rec.description} (${rec.impact} impact)`);
   });
 }
@@ -428,14 +432,14 @@ const pool = new MemoryPool();
 const stats = pool.getStatistics();
 
 if (stats.hitRate < 90) {
-  console.log('Low pool hit rate detected');
+  console.log("Low pool hit rate detected");
   console.log(`Current hit rate: ${stats.hitRate}%`);
   console.log(`Pool hits: ${stats.poolHits}`);
   console.log(`Pool misses: ${stats.poolMisses}`);
-  
+
   // Get optimization recommendations
   const recommendations = pool.getOptimizationRecommendations();
-  recommendations.forEach(rec => {
+  recommendations.forEach((rec) => {
     console.log(`Recommendation: ${rec.description}`);
   });
 }

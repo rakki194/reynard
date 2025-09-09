@@ -3,10 +3,7 @@
  * Main orchestrator for file uploads with progress tracking and validation
  */
 
-import type {
-  UploadConfiguration,
-  GalleryCallbacks,
-} from "../types";
+import type { UploadConfiguration, GalleryCallbacks } from "../types";
 import { useUploadState } from "./useUploadState";
 import { useFileValidation } from "./useFileValidation";
 import { useSingleFileUpload } from "./useSingleFileUpload";
@@ -34,7 +31,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
   const updateUploadProgress = createUpdateProgressFunction(
     state.setUploads,
     state.uploads,
-    options.callbacks
+    options.callbacks,
   );
 
   const singleUpload = useSingleFileUpload({
@@ -49,7 +46,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
     validation,
     singleUpload,
     updateUploadProgress,
-    options
+    options,
   );
 
   return {

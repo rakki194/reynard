@@ -3,12 +3,19 @@
  * Comprehensive error analysis and classification system
  */
 
-import { ErrorSeverity, ErrorCategory, ErrorContext } from '../types/ErrorTypes';
+import {
+  ErrorSeverity,
+  ErrorCategory,
+  ErrorContext,
+} from "../types/ErrorTypes";
 
 /**
  * Analyze an error and determine its severity and category
  */
-export function analyzeError(error: Error, errorInfo: any): {
+export function analyzeError(
+  error: Error,
+  errorInfo: any,
+): {
   severity: ErrorSeverity;
   category: ErrorCategory;
   recoverable: boolean;
@@ -16,17 +23,17 @@ export function analyzeError(error: Error, errorInfo: any): {
 } {
   const message = error.message.toLowerCase();
   const name = error.name.toLowerCase();
-  const stack = error.stack || '';
+  const stack = error.stack || "";
 
   // Determine category based on error characteristics
   const category = determineErrorCategory(error, message, name, stack);
-  
+
   // Determine severity based on category and context
   const severity = determineErrorSeverity(category, error, errorInfo);
-  
+
   // Determine if error is recoverable
   const recoverable = isErrorRecoverable(category, severity, error);
-  
+
   // Extract metadata
   const metadata = extractErrorMetadata(error, errorInfo, stack);
 
@@ -34,7 +41,7 @@ export function analyzeError(error: Error, errorInfo: any): {
     severity,
     category,
     recoverable,
-    metadata
+    metadata,
   };
 }
 
@@ -42,84 +49,84 @@ export function analyzeError(error: Error, errorInfo: any): {
  * Determine error category based on error characteristics
  */
 function determineErrorCategory(
-  _error: Error, 
-  message: string, 
-  name: string, 
-  stack: string
+  _error: Error,
+  message: string,
+  name: string,
+  stack: string,
 ): ErrorCategory {
   // Network errors
   if (
-    name.includes('network') ||
-    name.includes('fetch') ||
-    name.includes('timeout') ||
-    message.includes('network') ||
-    message.includes('fetch') ||
-    message.includes('timeout') ||
-    message.includes('connection') ||
-    message.includes('cors')
+    name.includes("network") ||
+    name.includes("fetch") ||
+    name.includes("timeout") ||
+    message.includes("network") ||
+    message.includes("fetch") ||
+    message.includes("timeout") ||
+    message.includes("connection") ||
+    message.includes("cors")
   ) {
     return ErrorCategory.NETWORK;
   }
 
   // Authentication errors
   if (
-    name.includes('auth') ||
-    message.includes('unauthorized') ||
-    message.includes('forbidden') ||
-    message.includes('401') ||
-    message.includes('403') ||
-    message.includes('token')
+    name.includes("auth") ||
+    message.includes("unauthorized") ||
+    message.includes("forbidden") ||
+    message.includes("401") ||
+    message.includes("403") ||
+    message.includes("token")
   ) {
     return ErrorCategory.AUTHENTICATION;
   }
 
   // Permission errors
   if (
-    message.includes('permission') ||
-    message.includes('access denied') ||
-    message.includes('not allowed')
+    message.includes("permission") ||
+    message.includes("access denied") ||
+    message.includes("not allowed")
   ) {
     return ErrorCategory.PERMISSION;
   }
 
   // Validation errors
   if (
-    name.includes('validation') ||
-    name.includes('invalid') ||
-    message.includes('validation') ||
-    message.includes('invalid') ||
-    message.includes('required') ||
-    message.includes('format')
+    name.includes("validation") ||
+    name.includes("invalid") ||
+    message.includes("validation") ||
+    message.includes("invalid") ||
+    message.includes("required") ||
+    message.includes("format")
   ) {
     return ErrorCategory.VALIDATION;
   }
 
   // Resource errors
   if (
-    name.includes('resource') ||
-    message.includes('not found') ||
-    message.includes('404') ||
-    message.includes('file not found') ||
-    message.includes('module not found')
+    name.includes("resource") ||
+    message.includes("not found") ||
+    message.includes("404") ||
+    message.includes("file not found") ||
+    message.includes("module not found")
   ) {
     return ErrorCategory.RESOURCE;
   }
 
   // Rendering errors
   if (
-    name.includes('render') ||
-    name.includes('component') ||
-    stack.includes('render') ||
-    stack.includes('component')
+    name.includes("render") ||
+    name.includes("component") ||
+    stack.includes("render") ||
+    stack.includes("component")
   ) {
     return ErrorCategory.RENDERING;
   }
 
   // Timeout errors
   if (
-    name.includes('timeout') ||
-    message.includes('timeout') ||
-    message.includes('timed out')
+    name.includes("timeout") ||
+    message.includes("timeout") ||
+    message.includes("timed out")
   ) {
     return ErrorCategory.TIMEOUT;
   }
@@ -133,14 +140,14 @@ function determineErrorCategory(
 function determineErrorSeverity(
   category: ErrorCategory,
   error: Error,
-  _errorInfo: any
+  _errorInfo: any,
 ): ErrorSeverity {
   // Critical errors that break the entire application
   if (
     category === ErrorCategory.AUTHENTICATION ||
     category === ErrorCategory.PERMISSION ||
-    error.message.includes('critical') ||
-    error.message.includes('fatal')
+    error.message.includes("critical") ||
+    error.message.includes("fatal")
   ) {
     return ErrorSeverity.CRITICAL;
   }
@@ -149,8 +156,8 @@ function determineErrorSeverity(
   if (
     category === ErrorCategory.RENDERING ||
     category === ErrorCategory.RESOURCE ||
-    error.message.includes('cannot') ||
-    error.message.includes('failed to')
+    error.message.includes("cannot") ||
+    error.message.includes("failed to")
   ) {
     return ErrorSeverity.HIGH;
   }
@@ -174,7 +181,7 @@ function determineErrorSeverity(
 function isErrorRecoverable(
   category: ErrorCategory,
   severity: ErrorSeverity,
-  _error: Error
+  _error: Error,
 ): boolean {
   // Critical errors are generally not recoverable
   if (severity === ErrorSeverity.CRITICAL) {
@@ -182,7 +189,10 @@ function isErrorRecoverable(
   }
 
   // Network and timeout errors are usually recoverable
-  if (category === ErrorCategory.NETWORK || category === ErrorCategory.TIMEOUT) {
+  if (
+    category === ErrorCategory.NETWORK ||
+    category === ErrorCategory.TIMEOUT
+  ) {
     return true;
   }
 
@@ -210,32 +220,28 @@ function isErrorRecoverable(
 function extractErrorMetadata(
   _error: Error,
   errorInfo: any,
-  stack: string
+  stack: string,
 ): Record<string, unknown> {
   const metadata: Record<string, unknown> = {};
 
   // Extract component information from stack
   const componentMatch = stack.match(/at\s+(\w+)/g);
   if (componentMatch) {
-    metadata.components = componentMatch.map(match => 
-      match.replace('at ', '')
+    metadata.components = componentMatch.map((match) =>
+      match.replace("at ", ""),
     );
   }
 
   // Extract file information
   const fileMatch = stack.match(/\(([^)]+\.(tsx?|jsx?)):/g);
   if (fileMatch) {
-    metadata.files = fileMatch.map(match => 
-      match.replace(/[()]/g, '')
-    );
+    metadata.files = fileMatch.map((match) => match.replace(/[()]/g, ""));
   }
 
   // Extract line numbers
   const lineMatch = stack.match(/:(\d+):(\d+)/g);
   if (lineMatch) {
-    metadata.locations = lineMatch.map(match => 
-      match.replace(/:/g, '')
-    );
+    metadata.locations = lineMatch.map((match) => match.replace(/:/g, ""));
   }
 
   // Add error info metadata
@@ -249,7 +255,7 @@ function extractErrorMetadata(
   }
 
   // Add browser information
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     metadata.userAgent = navigator.userAgent;
     metadata.url = window.location.href;
     metadata.timestamp = Date.now();
@@ -264,23 +270,23 @@ function extractErrorMetadata(
 export function createErrorContext(
   error: Error,
   _errorInfo: any,
-  additionalContext?: Partial<ErrorContext>
+  additionalContext?: Partial<ErrorContext>,
 ): ErrorContext {
   const analysis = analyzeError(error, _errorInfo);
-  
+
   return {
-    componentStack: _errorInfo?.componentStack?.split('\n') || [],
+    componentStack: _errorInfo?.componentStack?.split("\n") || [],
     errorBoundaryId: generateErrorBoundaryId(),
     timestamp: Date.now(),
-    userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
-    url: typeof window !== 'undefined' ? window.location.href : '',
+    userAgent: typeof window !== "undefined" ? navigator.userAgent : "",
+    url: typeof window !== "undefined" ? window.location.href : "",
     sessionId: getSessionId(),
     severity: analysis.severity,
     category: analysis.category,
     recoverable: analysis.recoverable,
     metadata: analysis.metadata,
     errorBoundaryStack: _errorInfo?.errorBoundaryStack,
-    ...additionalContext
+    ...additionalContext,
   };
 }
 
@@ -295,14 +301,14 @@ function generateErrorBoundaryId(): string {
  * Get or create session ID
  */
 function getSessionId(): string {
-  if (typeof window === 'undefined') {
-    return 'server-session';
+  if (typeof window === "undefined") {
+    return "server-session";
   }
 
-  let sessionId = sessionStorage.getItem('reynard-session-id');
+  let sessionId = sessionStorage.getItem("reynard-session-id");
   if (!sessionId) {
     sessionId = `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-    sessionStorage.setItem('reynard-session-id', sessionId);
+    sessionStorage.setItem("reynard-session-id", sessionId);
   }
   return sessionId;
 }

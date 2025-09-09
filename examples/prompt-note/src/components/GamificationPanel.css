@@ -127,21 +127,21 @@
 }
 
 .leaderboard-item.rank-1 {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
+  background: linear-gradient(135deg, #ffd700, #ffa500);
   color: #000;
-  border-color: #FFD700;
+  border-color: #ffd700;
 }
 
 .leaderboard-item.rank-2 {
-  background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+  background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
   color: #000;
-  border-color: #C0C0C0;
+  border-color: #c0c0c0;
 }
 
 .leaderboard-item.rank-3 {
-  background: linear-gradient(135deg, #CD7F32, #B8860B);
+  background: linear-gradient(135deg, #cd7f32, #b8860b);
   color: #000;
-  border-color: #CD7F32;
+  border-color: #cd7f32;
 }
 
 .leaderboard-item.current-user {

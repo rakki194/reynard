@@ -3,7 +3,13 @@
  * 3D cluster visualization with convex hulls and statistical information
  */
 
-import { Component, createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import {
+  Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  createEffect,
+} from "solid-js";
 import { ClusterVisualizationManager } from "./modules";
 
 interface ClusterVisualizationProps {
@@ -13,10 +19,12 @@ interface ClusterVisualizationProps {
   clusterCount?: number;
 }
 
-export const ClusterVisualization: Component<ClusterVisualizationProps> = (props) => {
+export const ClusterVisualization: Component<ClusterVisualizationProps> = (
+  props,
+) => {
   const [container, setContainer] = createSignal<HTMLDivElement>();
   const [isInitialized, setIsInitialized] = createSignal(false);
-  
+
   let visualizationManager: ClusterVisualizationManager | null = null;
 
   const initializeThreeJS = async () => {
@@ -28,13 +36,13 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = (props
         height: props.height || 300,
         theme: props.theme,
         clusterCount: props.clusterCount || 4,
-        container: container()!
+        container: container()!,
       });
 
       await visualizationManager.initialize();
       setIsInitialized(true);
     } catch (error) {
-      console.error('Failed to initialize Three.js:', error);
+      console.error("Failed to initialize Three.js:", error);
     }
   };
 
@@ -54,10 +62,5 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = (props
     }
   });
 
-  return (
-    <div 
-      ref={setContainer}
-      class="simple-threed-container"
-    />
-  );
+  return <div ref={setContainer} class="simple-threed-container" />;
 };

@@ -1,7 +1,7 @@
 /**
  * Authentication Utilities
  * Helper functions for auth operations, validation, and token management
- * 
+ *
  * This module aggregates all utility functions from specialized modules.
  */
 
@@ -16,4 +16,3 @@ export * from "./token-refresh";
 export * from "./user-profile";
 export * from "./auth-initialization";
 export * from "./auth-orchestrator";
-

@@ -1,9 +1,9 @@
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { RAGConfig } from './rag-types';
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import { RAGConfig } from "./rag-types";
 
 /**
  * Creates auto-refresh functionality for RAG status and metrics
- * 
+ *
  * @param config RAG config resource
  * @param refetchIndexingStatus Function to refetch indexing status
  * @param refetchMetrics Function to refetch metrics
@@ -12,9 +12,10 @@ import { RAGConfig } from './rag-types';
 export function createRAGAutoRefresh(
   config: () => RAGConfig | undefined,
   refetchIndexingStatus: () => void,
-  refetchMetrics: () => void
+  refetchMetrics: () => void,
 ) {
-  const [statusRefreshInterval, setStatusRefreshInterval] = createSignal<NodeJS.Timeout | null>(null);
+  const [statusRefreshInterval, setStatusRefreshInterval] =
+    createSignal<NodeJS.Timeout | null>(null);
 
   createEffect(() => {
     if (config()?.rag_enabled) {
@@ -25,7 +26,7 @@ export function createRAGAutoRefresh(
           refetchMetrics();
         } catch (error) {
           // Silently handle errors in auto-refresh to avoid console spam
-          console.debug('RAG auto-refresh error:', error);
+          console.debug("RAG auto-refresh error:", error);
         }
       }, 5000);
       setStatusRefreshInterval(interval);

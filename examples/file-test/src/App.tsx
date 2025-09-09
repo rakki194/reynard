@@ -1,8 +1,8 @@
-import { createSignal, For } from 'solid-js';
-import { ThumbnailGenerator } from 'reynard-file-processing';
-import FileUploader from './components/FileUploader';
-import ThumbnailViewer from './components/ThumbnailViewer';
-import AudioTest from './components/AudioTest';
+import { createSignal, For } from "solid-js";
+import { ThumbnailGenerator } from "reynard-file-processing";
+import FileUploader from "./components/FileUploader";
+import ThumbnailViewer from "./components/ThumbnailViewer";
+import AudioTest from "./components/AudioTest";
 
 interface ProcessedFile {
   file: File;
@@ -14,14 +14,16 @@ interface ProcessedFile {
 export default function App() {
   const [processedFiles, setProcessedFiles] = createSignal<ProcessedFile[]>([]);
   const [isProcessing, setIsProcessing] = createSignal(false);
-  const [thumbnailGenerator] = createSignal(new ThumbnailGenerator({
-    size: [200, 200],
-    format: 'webp',
-    quality: 85,
-    maintainAspectRatio: true,
-    backgroundColor: '#ffffff',
-    maxThumbnailSize: 10 * 1024 * 1024 // 10MB limit for testing
-  }));
+  const [thumbnailGenerator] = createSignal(
+    new ThumbnailGenerator({
+      size: [200, 200],
+      format: "webp",
+      quality: 85,
+      maintainAspectRatio: true,
+      backgroundColor: "#ffffff",
+      maxThumbnailSize: 10 * 1024 * 1024, // 10MB limit for testing
+    }),
+  );
 
   const handleFilesSelected = async (files: FileList) => {
     setIsProcessing(true);
@@ -37,27 +39,27 @@ export default function App() {
           newProcessedFiles.push({
             file,
             thumbnail: result.data,
-            processingTime
+            processingTime,
           });
         } else {
           newProcessedFiles.push({
             file,
-            thumbnail: '',
+            thumbnail: "",
             processingTime,
-            error: result.error || 'Unknown error'
+            error: result.error || "Unknown error",
           });
         }
       } catch (error) {
         newProcessedFiles.push({
           file,
-          thumbnail: '',
+          thumbnail: "",
           processingTime: 0,
-          error: error instanceof Error ? error.message : 'Unknown error'
+          error: error instanceof Error ? error.message : "Unknown error",
         });
       }
     }
 
-    setProcessedFiles(prev => [...prev, ...newProcessedFiles]);
+    setProcessedFiles((prev) => [...prev, ...newProcessedFiles]);
     setIsProcessing(false);
   };
 
@@ -74,11 +76,11 @@ export default function App() {
 
       <section class="test-section">
         <h2>File Upload & Thumbnail Generation</h2>
-        <FileUploader 
+        <FileUploader
           onFilesSelected={handleFilesSelected}
           disabled={isProcessing()}
         />
-        
+
         {isProcessing() && (
           <div class="processing-status loading">
             Processing files... Please wait.
@@ -89,8 +91,8 @@ export default function App() {
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
               <h3>Processed Files ({processedFiles().length})</h3>
-              <button 
-                class="upload-button" 
+              <button
+                class="upload-button"
                 onClick={clearFiles}
                 style="background: #dc3545;"
               >

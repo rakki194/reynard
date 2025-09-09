@@ -23,47 +23,47 @@ npm install reynard-connection
 ### Basic HTTP Connection
 
 ```typescript
-import { HTTPConnection, ConnectionConfigManager } from 'reynard-connection';
+import { HTTPConnection, ConnectionConfigManager } from "reynard-connection";
 
 const configManager = new ConnectionConfigManager();
-const config = configManager.get('http');
+const config = configManager.get("http");
 
 const httpConn = new HTTPConnection({
   ...config,
-  url: 'https://api.example.com',
+  url: "https://api.example.com",
   timeout: 5000,
 });
 
 await httpConn.connect();
-const response = await httpConn.send({ method: 'GET', url: '/users' });
+const response = await httpConn.send({ method: "GET", url: "/users" });
 ```
 
 ### WebSocket Connection
 
 ```typescript
-import { WebSocketConnection, ConnectionManager } from 'reynard-connection';
+import { WebSocketConnection, ConnectionManager } from "reynard-connection";
 
 const wsConn = new WebSocketConnection({
-  url: 'wss://api.example.com/ws',
+  url: "wss://api.example.com/ws",
   timeout: 10000,
   retryCount: 3,
 });
 
 const manager = new ConnectionManager();
-manager.addConnection(wsConn, 'realtime');
+manager.addConnection(wsConn, "realtime");
 
 await manager.start();
 await wsConn.connect();
 
 // Send and receive messages
-await wsConn.send({ type: 'ping' });
+await wsConn.send({ type: "ping" });
 const message = await wsConn.receive();
 ```
 
 ### Connection Pooling
 
 ```typescript
-import { WebSocketConnectionPool } from 'reynard-connection';
+import { WebSocketConnectionPool } from "reynard-connection";
 
 const pool = new WebSocketConnectionPool(
   {
@@ -72,13 +72,13 @@ const pool = new WebSocketConnectionPool(
     maxIdleTime: 60,
     acquireTimeout: 5,
   },
-  wsConfig
+  wsConfig,
 );
 
 await pool.start();
 const conn = await pool.acquire();
 if (conn) {
-  await conn.send({ type: 'data', payload: 'test' });
+  await conn.send({ type: "data", payload: "test" });
   await pool.release(conn);
 }
 ```
@@ -113,11 +113,11 @@ VITE_SSE_URL=https://api.example.com/events
 ### Custom Configuration
 
 ```typescript
-import { ConnectionConfig } from 'reynard-connection';
+import { ConnectionConfig } from "reynard-connection";
 
 const customConfig: ConnectionConfig = {
-  name: 'api',
-  url: 'https://api.example.com',
+  name: "api",
+  url: "https://api.example.com",
   connectionType: ConnectionType.HTTP,
   timeout: 10000,
   retryCount: 5,
@@ -141,8 +141,8 @@ const customConfig: ConnectionConfig = {
   auditLogging: true,
   monitoring: true,
   customHeaders: {
-    'X-API-Key': 'your-api-key',
-    'User-Agent': 'MyApp/1.0',
+    "X-API-Key": "your-api-key",
+    "User-Agent": "MyApp/1.0",
   },
 };
 ```
@@ -161,10 +161,10 @@ await httpConn.connect();
 
 // Send request
 const response = await httpConn.send({
-  method: 'POST',
-  url: '/api/data',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ data: 'test' }),
+  method: "POST",
+  url: "/api/data",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ data: "test" }),
 });
 
 // Health check
@@ -183,7 +183,7 @@ const wsConn = new WebSocketConnection(config);
 await wsConn.connect();
 
 // Send message
-await wsConn.send({ type: 'message', data: 'hello' });
+await wsConn.send({ type: "message", data: "hello" });
 
 // Receive message
 const message = await wsConn.receive();
@@ -214,13 +214,13 @@ console.log(event.data);
 Centralized management of multiple connections.
 
 ```typescript
-import { ConnectionManager } from 'reynard-connection';
+import { ConnectionManager } from "reynard-connection";
 
 const manager = new ConnectionManager();
 
 // Add connections
-manager.addConnection(httpConn, 'api');
-manager.addConnection(wsConn, 'realtime');
+manager.addConnection(httpConn, "api");
+manager.addConnection(wsConn, "realtime");
 
 // Start management (begins health checks)
 await manager.start();
@@ -243,7 +243,7 @@ await manager.stop();
 Efficient connection reuse with automatic lifecycle management.
 
 ```typescript
-import { ConnectionPool, WebSocketConnectionPool } from 'reynard-connection';
+import { ConnectionPool, WebSocketConnectionPool } from "reynard-connection";
 
 // Generic pool
 const pool = new ConnectionPool<WebSocketConnection>(
@@ -256,7 +256,7 @@ const pool = new ConnectionPool<WebSocketConnection>(
     healthCheckInterval: 60,
     cleanupInterval: 120,
   },
-  (config) => new WebSocketConnection(config)
+  (config) => new WebSocketConnection(config),
 );
 
 // Pre-configured WebSocket pool
@@ -280,13 +280,13 @@ if (conn) {
 ### Exponential Backoff
 
 ```typescript
-import { ExponentialBackoffRetry } from 'reynard-connection';
+import { ExponentialBackoffRetry } from "reynard-connection";
 
 const retry = new ExponentialBackoffRetry(5, 1, 2); // 5 attempts: 1s, 2s, 4s, 8s, 16s
 
 const result = await retry.execute(async () => {
-  const response = await fetch('/api/data');
-  if (!response.ok) throw new Error('Request failed');
+  const response = await fetch("/api/data");
+  if (!response.ok) throw new Error("Request failed");
   return response.json();
 });
 ```
@@ -294,7 +294,7 @@ const result = await retry.execute(async () => {
 ### Linear Backoff
 
 ```typescript
-import { LinearBackoffRetry } from 'reynard-connection';
+import { LinearBackoffRetry } from "reynard-connection";
 
 const retry = new LinearBackoffRetry(3, 1, 2); // 3 attempts: 1s, 3s, 5s
 
@@ -306,7 +306,7 @@ const result = await retry.execute(async () => {
 ### Jitter Retry
 
 ```typescript
-import { JitterRetry } from 'reynard-connection';
+import { JitterRetry } from "reynard-connection";
 
 const retry = new JitterRetry(4, 1, 0.5); // 4 attempts with ±50% jitter
 
@@ -338,13 +338,13 @@ const health = await connection.healthCheck(10000);
 ```typescript
 connection.onHealthChange((health) => {
   if (health === ConnectionHealth.UNHEALTHY) {
-    console.log('Connection is unhealthy, attempting recovery...');
+    console.log("Connection is unhealthy, attempting recovery...");
   }
 });
 
 connection.onEvent((event) => {
-  if (event.eventType === 'health_check_failed') {
-    console.log('Health check failed:', event.message);
+  if (event.eventType === "health_check_failed") {
+    console.log("Health check failed:", event.message);
   }
 });
 ```
@@ -354,7 +354,7 @@ connection.onEvent((event) => {
 ### Security Levels
 
 ```typescript
-import { SecurityLevel, ConnectionSecurity } from 'reynard-connection';
+import { SecurityLevel, ConnectionSecurity } from "reynard-connection";
 
 // Configure security level
 const config = {
@@ -362,29 +362,29 @@ const config = {
   securityLevel: SecurityLevel.MAXIMUM,
   encryption: true,
   customHeaders: {
-    'Authorization': 'Bearer token',
-    'X-API-Key': 'api-key',
+    Authorization: "Bearer token",
+    "X-API-Key": "api-key",
   },
 };
 
 // Create security context
 const security = new ConnectionSecurity();
-const headers = security.createAuthorizationHeaders('token', 'api-key');
+const headers = security.createAuthorizationHeaders("token", "api-key");
 ```
 
 ### Authentication
 
 ```typescript
 // Token-based authentication
-const authHeaders = security.createAuthorizationHeaders('bearer-token');
+const authHeaders = security.createAuthorizationHeaders("bearer-token");
 
 // API key authentication
-const apiHeaders = security.createAuthorizationHeaders(null, 'api-key');
+const apiHeaders = security.createAuthorizationHeaders(null, "api-key");
 
 // Custom authentication
 const customHeaders = {
-  'X-Custom-Auth': 'custom-token',
-  'X-Client-ID': 'client-id',
+  "X-Custom-Auth": "custom-token",
+  "X-Client-ID": "client-id",
 };
 ```
 
@@ -413,9 +413,9 @@ console.log(stats);
 
 ```typescript
 // Track custom events
-connection.emitEvent('custom_event', {
-  data: { userId: 123, action: 'login' },
-  severity: 'info',
+connection.emitEvent("custom_event", {
+  data: { userId: 123, action: "login" },
+  severity: "info",
 });
 
 // Listen to all events
@@ -430,14 +430,14 @@ manager.addGlobalHandler((type, event) => {
 
 ```typescript
 connection.onEvent((event) => {
-  if (event.severity === 'error') {
-    console.error('Connection error:', event.message);
-    
+  if (event.severity === "error") {
+    console.error("Connection error:", event.message);
+
     // Handle specific error types
-    if (event.eventType === 'connection_failed') {
+    if (event.eventType === "connection_failed") {
       // Attempt reconnection
       connection.connect();
-    } else if (event.eventType === 'authentication_failed') {
+    } else if (event.eventType === "authentication_failed") {
       // Refresh authentication
       refreshAuthToken();
     }
@@ -450,10 +450,10 @@ connection.onEvent((event) => {
 ```typescript
 // Circuit breaker automatically opens after threshold failures
 connection.onEvent((event) => {
-  if (event.eventType === 'circuit_breaker_opened') {
-    console.log('Circuit breaker opened, requests will be rejected');
-  } else if (event.eventType === 'circuit_breaker_closed') {
-    console.log('Circuit breaker closed, requests will be allowed');
+  if (event.eventType === "circuit_breaker_opened") {
+    console.log("Circuit breaker opened, requests will be rejected");
+  } else if (event.eventType === "circuit_breaker_closed") {
+    console.log("Circuit breaker closed, requests will be allowed");
   }
 });
 ```
@@ -477,12 +477,12 @@ try {
 ```typescript
 // Handle connection errors gracefully
 connection.onEvent((event) => {
-  if (event.severity === 'error') {
+  if (event.severity === "error") {
     // Log error
-    console.error('Connection error:', event);
-    
+    console.error("Connection error:", event);
+
     // Implement fallback logic
-    if (event.eventType === 'connection_lost') {
+    if (event.eventType === "connection_lost") {
       // Switch to backup connection
       switchToBackupConnection();
     }
@@ -497,7 +497,7 @@ connection.onEvent((event) => {
 setInterval(async () => {
   const health = await connection.healthCheck();
   if (!health.isHealthy) {
-    console.warn('Connection unhealthy, response time:', health.responseTime);
+    console.warn("Connection unhealthy, response time:", health.responseTime);
   }
 }, 30000);
 ```
@@ -533,12 +533,12 @@ try {
 const config = {
   ...baseConfig,
   debug: true,
-  logLevel: 'debug',
+  logLevel: "debug",
 };
 
 // Monitor connection events
 connection.onEvent((event) => {
-  console.log('Connection event:', event);
+  console.log("Connection event:", event);
 });
 ```
 

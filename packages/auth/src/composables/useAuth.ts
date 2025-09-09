@@ -3,17 +3,9 @@
  * Main authentication hook with state management and API integration
  */
 
-import {
-  createSignal,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { createSignal, onMount, onCleanup } from "solid-js";
 
-import type {
-  AuthState,
-  AuthConfiguration,
-  AuthCallbacks,
-} from "../types";
+import type { AuthState, AuthConfiguration, AuthCallbacks } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
 
@@ -53,7 +45,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     config,
     callbacks,
     authState,
-    updateAuthState
+    updateAuthState,
   );
 
   // Auto-initialize if enabled

@@ -7,7 +7,7 @@
  * @module algorithms/shapes
  */
 
-import { Point } from './point-algorithms';
+import { Point } from "./point-algorithms";
 
 export interface Line {
   start: Point;

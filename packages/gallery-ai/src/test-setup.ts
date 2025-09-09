@@ -3,8 +3,8 @@
  * Configures testing environment and global test utilities
  */
 
-import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
@@ -26,7 +26,7 @@ global.ResizeObserver = class ResizeObserver {
 } as any;
 
 // Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
     matches: false,
@@ -47,7 +47,7 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 };
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
 });
 
@@ -58,6 +58,6 @@ const sessionStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 };
-Object.defineProperty(window, 'sessionStorage', {
+Object.defineProperty(window, "sessionStorage", {
   value: sessionStorageMock,
 });

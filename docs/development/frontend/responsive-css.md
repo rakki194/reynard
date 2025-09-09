@@ -125,7 +125,7 @@ We provide utility classes for common container patterns:
 // Component
 <div class={`${styles.galleryContainer} container container-name-layout`}>
   <div class={styles.gallery}>
-    {items.map(item => (
+    {items.map((item) => (
       <div class={styles.item} key={item.id}>
         {item.content}
       </div>
@@ -204,9 +204,10 @@ We provide utility classes for common container patterns:
 }
 
 .transition-colors {
-  transition: color var(--transition-duration) var(--transition-timing),
-              background-color var(--transition-duration) var(--transition-timing),
-              border-color var(--transition-duration) var(--transition-timing);
+  transition:
+    color var(--transition-duration) var(--transition-timing),
+    background-color var(--transition-duration) var(--transition-timing),
+    border-color var(--transition-duration) var(--transition-timing);
 }
 
 .transition-transform {
@@ -489,7 +490,7 @@ export function ResponsiveGallery({ items }: { items: Item[] }) {
   return (
     <div class={`${styles.container} container container-name-gallery`}>
       <div class={styles.grid}>
-        {items.map(item => (
+        {items.map((item) => (
           <div class={styles.item} key={item.id}>
             <img src={item.image} alt={item.title} />
             <div class={styles.content}>
@@ -560,9 +561,7 @@ export function ResponsiveGallery({ items }: { items: Item[] }) {
 export function SettingsPanel({ children }: { children: JSX.Element }) {
   return (
     <div class={`${styles.container} container container-name-settings`}>
-      <div class={styles.panel}>
-        {children}
-      </div>
+      <div class={styles.panel}>{children}</div>
     </div>
   );
 }
@@ -605,17 +604,17 @@ export function SettingsPanel({ children }: { children: JSX.Element }) {
 
 ```tsx
 // Test container queries
-test('adapts layout based on container size', () => {
+test("adapts layout based on container size", () => {
   render(<ResponsiveGallery items={mockItems} />);
-  const container = screen.getByRole('main');
-  
+  const container = screen.getByRole("main");
+
   // Test mobile layout
-  Object.defineProperty(container, 'offsetWidth', { value: 300 });
-  expect(container).toHaveClass('flex-col');
-  
+  Object.defineProperty(container, "offsetWidth", { value: 300 });
+  expect(container).toHaveClass("flex-col");
+
   // Test desktop layout
-  Object.defineProperty(container, 'offsetWidth', { value: 800 });
-  expect(container).toHaveClass('grid');
+  Object.defineProperty(container, "offsetWidth", { value: 800 });
+  expect(container).toHaveClass("grid");
 });
 ```
 
@@ -623,18 +622,18 @@ test('adapts layout based on container size', () => {
 
 ```tsx
 // Test reduced motion support
-test('respects reduced motion preference', () => {
+test("respects reduced motion preference", () => {
   // Mock reduced motion preference
-  Object.defineProperty(window, 'matchMedia', {
-    value: jest.fn().mockImplementation(query => ({
-      matches: query === '(prefers-reduced-motion: reduce)',
+  Object.defineProperty(window, "matchMedia", {
+    value: jest.fn().mockImplementation((query) => ({
+      matches: query === "(prefers-reduced-motion: reduce)",
       media: query,
     })),
   });
 
   render(<AnimatedButton />);
-  const button = screen.getByRole('button');
-  
+  const button = screen.getByRole("button");
+
   // Should not have transition styles
   expect(button).not.toHaveStyle({ transition: expect.any(String) });
 });

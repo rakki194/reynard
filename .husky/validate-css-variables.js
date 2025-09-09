@@ -24,9 +24,10 @@ import console from "console";
 const CONFIG = {
   // Directories to scan for CSS files
   scanDirs: ["packages", "examples", "templates", "src", "styles"],
-  
+
   // Verbose mode - show all CSS files being processed
-  verbose: process.argv.includes('--verbose') || process.argv.includes('--list-files'),
+  verbose:
+    process.argv.includes("--verbose") || process.argv.includes("--list-files"),
 
   // Files to ignore
   ignorePatterns: [
@@ -89,7 +90,7 @@ class CSSVariableValidator {
    */
   findCSSFiles(rootDir = process.cwd()) {
     const cssFiles = [];
-    
+
     if (this.options.verbose) {
       console.log("🔍 Scanning for CSS files in Reynard projects...");
     }
@@ -113,7 +114,7 @@ class CSSVariableValidator {
           // Skip ignored directories
           if (
             this.options.ignorePatterns.some((pattern) =>
-              pattern.test(fullPath)
+              pattern.test(fullPath),
             )
           ) {
             continue;
@@ -130,8 +131,10 @@ class CSSVariableValidator {
             // Also scan subdirectories within configured directories
             // Check if any ancestor directory is in the configured scan directories
             const pathParts = fullPath.split(path.sep);
-            const shouldScan = pathParts.some(part => 
-              this.options.scanDirs.includes(part) || part.startsWith("reynard")
+            const shouldScan = pathParts.some(
+              (part) =>
+                this.options.scanDirs.includes(part) ||
+                part.startsWith("reynard"),
             );
             if (shouldScan) {
               scanDirectory(fullPath);
@@ -141,7 +144,7 @@ class CSSVariableValidator {
           // Only include CSS files that are not in ignored directories
           if (
             !this.options.ignorePatterns.some((pattern) =>
-              pattern.test(fullPath)
+              pattern.test(fullPath),
             )
           ) {
             cssFiles.push(fullPath);
@@ -156,36 +159,38 @@ class CSSVariableValidator {
     };
 
     scanDirectory(rootDir);
-    
+
     if (this.options.verbose) {
       console.log(`\n📊 Summary:`);
       console.log(`  Total CSS files found: ${cssFiles.length}`);
-      
+
       // Break down by project type
-      const reynardMain = cssFiles.filter(f => f.includes('/reynard/') && !f.includes('/reynard-'));
-      const reynardApps = cssFiles.filter(f => f.includes('/reynard-'));
-      
+      const reynardMain = cssFiles.filter(
+        (f) => f.includes("/reynard/") && !f.includes("/reynard-"),
+      );
+      const reynardApps = cssFiles.filter((f) => f.includes("/reynard-"));
+
       console.log(`  Main reynard directory: ${reynardMain.length} files`);
       console.log(`  Reynard apps (reynard-*): ${reynardApps.length} files`);
-      
+
       if (reynardMain.length > 0) {
         console.log(`\n📁 Main reynard directory files:`);
-        reynardMain.forEach(f => {
+        reynardMain.forEach((f) => {
           const relativePath = path.relative(rootDir, f);
           console.log(`    ${relativePath}`);
         });
       }
-      
+
       if (reynardApps.length > 0) {
         console.log(`\n📱 Reynard apps files:`);
-        reynardApps.forEach(f => {
+        reynardApps.forEach((f) => {
           const relativePath = path.relative(rootDir, f);
           console.log(`    ${relativePath}`);
         });
       }
-      console.log('');
+      console.log("");
     }
-    
+
     return cssFiles;
   }
 
@@ -194,26 +199,26 @@ class CSSVariableValidator {
    */
   resolveImportPath(importPath, importingFile) {
     // Remove quotes from import path
-    const cleanPath = importPath.replace(/['"]/g, '');
-    
+    const cleanPath = importPath.replace(/['"]/g, "");
+
     // Handle absolute paths (starting with /)
-    if (cleanPath.startsWith('/')) {
+    if (cleanPath.startsWith("/")) {
       return cleanPath;
     }
-    
+
     // Handle relative paths
     const importingDir = path.dirname(importingFile);
     const resolvedPath = path.resolve(importingDir, cleanPath);
-    
+
     // Try different extensions if the file doesn't exist
-    const extensions = ['', '.css'];
+    const extensions = ["", ".css"];
     for (const ext of extensions) {
       const fullPath = resolvedPath + ext;
       if (fs.existsSync(fullPath)) {
         return fullPath;
       }
     }
-    
+
     return resolvedPath;
   }
 
@@ -234,7 +239,7 @@ class CSSVariableValidator {
       if (importMatch) {
         const importPath = importMatch[1];
         const resolvedPath = this.resolveImportPath(importPath, filePath);
-        
+
         imports.push({
           originalPath: importPath,
           resolvedPath: resolvedPath,
@@ -289,11 +294,11 @@ class CSSVariableValidator {
       const varDefMatch = line.match(/--([a-zA-Z0-9-]+)\s*:\s*(.*)/);
       if (varDefMatch) {
         const [, varName, varValueStart] = varDefMatch;
-        
+
         // Check if this is a multi-line definition
-        if (varValueStart.includes(';')) {
+        if (varValueStart.includes(";")) {
           // Single line definition
-          const value = varValueStart.replace(/;.*$/, '').trim();
+          const value = varValueStart.replace(/;.*$/, "").trim();
           fileVariables.definitions.push({
             name: varName,
             value: value,
@@ -306,24 +311,24 @@ class CSSVariableValidator {
           // Multi-line definition - collect until we find the closing semicolon
           let fullValue = varValueStart;
           let j = i + 1;
-          
-          while (j < lines.length && !fullValue.includes(';')) {
-            fullValue += ' ' + lines[j].trim();
+
+          while (j < lines.length && !fullValue.includes(";")) {
+            fullValue += " " + lines[j].trim();
             j++;
           }
-          
+
           // Extract the value (everything before the semicolon)
-          const value = fullValue.replace(/;.*$/, '').trim();
-          
+          const value = fullValue.replace(/;.*$/, "").trim();
+
           fileVariables.definitions.push({
             name: varName,
             value: value,
             line: i + 1,
             theme: currentTheme,
             file: filePath,
-            context: lines.slice(i, j).join(' ').trim(),
+            context: lines.slice(i, j).join(" ").trim(),
           });
-          
+
           // Skip the lines we've already processed
           i = j - 1;
         }
@@ -348,8 +353,11 @@ class CSSVariableValidator {
     for (const importInfo of imports) {
       if (fs.existsSync(importInfo.resolvedPath)) {
         try {
-          const importedVars = this.extractVariables(importInfo.resolvedPath, visitedFiles);
-          
+          const importedVars = this.extractVariables(
+            importInfo.resolvedPath,
+            visitedFiles,
+          );
+
           // Add imported definitions with import context
           for (const def of importedVars.definitions) {
             fileVariables.definitions.push({
@@ -358,7 +366,7 @@ class CSSVariableValidator {
               importedVia: filePath,
             });
           }
-          
+
           // Add imported usage
           for (const usage of importedVars.usage) {
             fileVariables.usage.push({
@@ -370,11 +378,15 @@ class CSSVariableValidator {
         } catch (error) {
           // Skip files that can't be read (permissions, etc.)
           if (this.options.verbose) {
-            console.log(`  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`);
+            console.log(
+              `  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`,
+            );
           }
         }
       } else if (this.options.verbose) {
-        console.log(`  ⚠️  Imported file not found: ${importInfo.resolvedPath}`);
+        console.log(
+          `  ⚠️  Imported file not found: ${importInfo.resolvedPath}`,
+        );
       }
     }
 
@@ -407,9 +419,14 @@ class CSSVariableValidator {
           const relativePath = path.relative(process.cwd(), file);
           console.log(`  📦 ${relativePath} imports:`);
           for (const imp of fileVars.imports) {
-            const importRelativePath = path.relative(process.cwd(), imp.resolvedPath);
-            const exists = fs.existsSync(imp.resolvedPath) ? '✅' : '❌';
-            console.log(`    ${exists} ${imp.originalPath} → ${importRelativePath}`);
+            const importRelativePath = path.relative(
+              process.cwd(),
+              imp.resolvedPath,
+            );
+            const exists = fs.existsSync(imp.resolvedPath) ? "✅" : "❌";
+            console.log(
+              `    ${exists} ${imp.originalPath} → ${importRelativePath}`,
+            );
           }
         }
 
@@ -548,24 +565,26 @@ class CSSVariableValidator {
 
     // Summary
     const totalDefinitions = Array.from(
-      this.variables.definitions.values()
+      this.variables.definitions.values(),
     ).reduce((sum, defs) => sum + defs.length, 0);
     const totalUsage = Array.from(this.variables.usage.values()).reduce(
       (sum, usages) => sum + usages.length,
-      0
+      0,
     );
 
     // Count imported variables
     const importedDefinitions = Array.from(this.variables.definitions.values())
       .flat()
-      .filter(def => def.importedFrom).length;
+      .filter((def) => def.importedFrom).length;
     const importedUsage = Array.from(this.variables.usage.values())
       .flat()
-      .filter(usage => usage.importedFrom).length;
+      .filter((usage) => usage.importedFrom).length;
 
     report.push("## Summary");
     report.push(`- **Total Variable Definitions**: ${totalDefinitions}`);
-    report.push(`  - Direct definitions: ${totalDefinitions - importedDefinitions}`);
+    report.push(
+      `  - Direct definitions: ${totalDefinitions - importedDefinitions}`,
+    );
     report.push(`  - Imported definitions: ${importedDefinitions}`);
     report.push(`- **Total Variable Usage**: ${totalUsage}`);
     report.push(`  - Direct usage: ${totalUsage - importedUsage}`);
@@ -603,13 +622,15 @@ class CSSVariableValidator {
         report.push(`### ❌ \`--${missing.variable}\``);
         report.push(`- **Usage Count**: ${missing.usageCount}`);
         report.push(`- **Files**: ${missing.files.join(", ")}`);
-        
+
         // Show import context if available
         const usages = this.variables.usage.get(missing.variable) || [];
-        const importedUsages = usages.filter(usage => usage.importedFrom);
+        const importedUsages = usages.filter((usage) => usage.importedFrom);
         if (importedUsages.length > 0) {
           report.push(`- **Import Context**: Used in files that import from:`);
-          const importSources = [...new Set(importedUsages.map(u => u.importedFrom))];
+          const importSources = [
+            ...new Set(importedUsages.map((u) => u.importedFrom)),
+          ];
           for (const source of importSources) {
             const relativeSource = path.relative(process.cwd(), source);
             report.push(`  - ${relativeSource}`);

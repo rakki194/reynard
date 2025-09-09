@@ -72,7 +72,7 @@ const transformation = {
   icon: "edit",
   type: "searchReplace",
   pattern: "\\d+",
-  replacement: "#"
+  replacement: "#",
 };
 addTransformation(transformation);
 ```

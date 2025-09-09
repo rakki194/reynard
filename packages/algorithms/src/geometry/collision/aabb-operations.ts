@@ -7,13 +7,21 @@
  * @module algorithms/aabbOperations
  */
 
-import type { AABB } from './aabb-types';
+import type { AABB } from "./aabb-types";
 
 /**
  * Check if a point is inside an AABB
  */
-export function pointInAABB(point: { x: number; y: number }, aabb: AABB): boolean {
-  return point.x >= aabb.x && point.x <= aabb.x + aabb.width && point.y >= aabb.y && point.y <= aabb.y + aabb.height;
+export function pointInAABB(
+  point: { x: number; y: number },
+  aabb: AABB,
+): boolean {
+  return (
+    point.x >= aabb.x &&
+    point.x <= aabb.x + aabb.width &&
+    point.y >= aabb.y &&
+    point.y <= aabb.y + aabb.height
+  );
 }
 
 /**
@@ -37,8 +45,14 @@ export function unionAABB(a: AABB, b: AABB): AABB {
  * Get the intersection of two AABBs
  */
 export function intersectionAABB(a: AABB, b: AABB): AABB | null {
-  const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
-  const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+  const overlapX = Math.max(
+    0,
+    Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
+  );
+  const overlapY = Math.max(
+    0,
+    Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
+  );
 
   // Only return intersection if there's actual overlap (not just touching)
   if (overlapX > 0 && overlapY > 0) {
@@ -77,14 +91,19 @@ export function containsAABB(container: AABB, contained: AABB): boolean {
   );
 }
 
-
 /**
  * Check if two AABBs are touching (edge contact)
  */
 export function areAABBsTouching(a: AABB, b: AABB): boolean {
   // Check if AABBs are touching but not overlapping
-  const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
-  const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+  const overlapX = Math.max(
+    0,
+    Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
+  );
+  const overlapY = Math.max(
+    0,
+    Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
+  );
 
   // They are touching if they are adjacent but not overlapping
   const isAdjacentX = a.x + a.width === b.x || b.x + b.width === a.x;

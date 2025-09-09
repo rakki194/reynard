@@ -24,11 +24,17 @@ export const useImageViewerEvents = (
   state: () => ImageViewerState,
   setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
   containerRef: () => HTMLDivElement | undefined,
-  imageRef: () => HTMLImageElement | undefined
+  imageRef: () => HTMLImageElement | undefined,
 ): UseImageViewerEventsReturn => {
   const zoomEvents = useZoomEvents(config, state, setState);
   const panEvents = usePanEvents(config, state, setState);
-  const navEvents = useNavigationEvents(config, state, setState, containerRef, imageRef);
+  const navEvents = useNavigationEvents(
+    config,
+    state,
+    setState,
+    containerRef,
+    imageRef,
+  );
 
   return {
     ...zoomEvents,

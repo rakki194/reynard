@@ -98,6 +98,7 @@ Readiness Checks
     ```
 
   - If first-time setup failed, re-run migrations by restarting the service or manually executing the SQL in `scripts/db/001_pgvector.sql`, `002_embeddings.sql`, and `003_indexes.sql`.
+
 - Health endpoint sanity
   - Once services are up, the following calls should return healthy or degraded (not error): see Quickchecks below.
 

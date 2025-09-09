@@ -33,7 +33,11 @@ function App() {
     { id: "themes", label: "Themes", icon: getIcon("sparkle") },
     { id: "components", label: "Components", icon: getIcon("grid") },
     { id: "core", label: "Core", icon: getIcon("rocket") },
-    { id: "notifications", label: "Notifications", icon: getIcon("service-bell") },
+    {
+      id: "notifications",
+      label: "Notifications",
+      icon: getIcon("service-bell"),
+    },
     { id: "chat", label: "Chat", icon: getIcon("chat") },
     { id: "algorithms", label: "Algorithms", icon: getIcon("calculator") },
     { id: "unused-vars", label: "Unused Variables", icon: getIcon("palette") },
@@ -49,7 +53,8 @@ function App() {
               <header class="app-header">
                 <h1 class="app-title">Reynard Test Application</h1>
                 <p class="app-description">
-                  Comprehensive demonstration of Reynard framework features, components, and utilities.
+                  Comprehensive demonstration of Reynard framework features,
+                  components, and utilities.
                 </p>
               </header>
 
@@ -65,35 +70,35 @@ function App() {
                   <TabPanel tabId="tutorial" activeTab={activeTab()}>
                     <ReynardTutorial />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="monaco" activeTab={activeTab()}>
                     <MonacoEditorDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="themes" activeTab={activeTab()}>
                     <ThemeDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="components" activeTab={activeTab()}>
                     <ComponentsDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="core" activeTab={activeTab()}>
                     <CoreDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="notifications" activeTab={activeTab()}>
                     <NotificationsDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="chat" activeTab={activeTab()}>
                     <ChatDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="algorithms" activeTab={activeTab()}>
                     <AlgorithmsDemo />
                   </TabPanel>
-                  
+
                   <TabPanel tabId="unused-vars" activeTab={activeTab()}>
                     <UnusedVariablesDemo />
                   </TabPanel>

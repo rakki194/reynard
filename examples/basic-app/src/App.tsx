@@ -37,12 +37,16 @@ interface Todo {
 }
 
 // Custom translation context
-const CustomTranslationContext = createContext<((key: string, params?: Record<string, string>) => string) | undefined>();
+const CustomTranslationContext = createContext<
+  ((key: string, params?: Record<string, string>) => string) | undefined
+>();
 
 export const useCustomTranslation = () => {
   const context = useContext(CustomTranslationContext);
   if (!context) {
-    throw new Error("useCustomTranslation must be used within a CustomTranslationProvider");
+    throw new Error(
+      "useCustomTranslation must be used within a CustomTranslationProvider",
+    );
   }
   return context;
 };
@@ -60,38 +64,45 @@ const TodoApp: Component = () => {
 
   // Create a reactive signal for locale changes
   const [currentLocale, setCurrentLocale] = createSignal(locale);
-  
+
   // Custom setLocale that updates both the theme provider and our signal
   const customSetLocale = (newLocale: LanguageCode) => {
-    console.log('Custom setLocale called with:', newLocale);
+    console.log("Custom setLocale called with:", newLocale);
     setLocale(newLocale);
     setCurrentLocale(newLocale);
   };
 
   // Load custom translations for this app
   const [translationsResource] = createResource(() => {
-    console.log('Translation resource triggered with locale:', currentLocale());
+    console.log("Translation resource triggered with locale:", currentLocale());
     return currentLocale();
   }, loadTranslations);
-  
+
   // Create a custom translation function that uses our app's translations
   const customT = (key: string, params?: Record<string, string>) => {
     const translations = translationsResource();
-    console.log('customT called with key:', key, 'translations:', translations, 'locale:', currentLocale());
-    
+    console.log(
+      "customT called with key:",
+      key,
+      "translations:",
+      translations,
+      "locale:",
+      currentLocale(),
+    );
+
     if (!translations) {
-      console.log('No translations loaded, returning key:', key);
+      console.log("No translations loaded, returning key:", key);
       return key;
     }
-    
+
     // Simple nested key lookup
-    const keys = key.split('.');
+    const keys = key.split(".");
     let value: unknown = translations;
     for (const k of keys) {
       value = (value as Record<string, unknown>)?.[k];
     }
-    
-    if (typeof value === 'string') {
+
+    if (typeof value === "string") {
       // Simple parameter replacement
       if (params) {
         return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
@@ -100,8 +111,8 @@ const TodoApp: Component = () => {
       }
       return value;
     }
-    
-    console.log('Translation not found for key:', key, 'value:', value);
+
+    console.log("Translation not found for key:", key, "value:", value);
     return key;
   };
 
@@ -139,9 +150,7 @@ const TodoApp: Component = () => {
     <div class="app">
       <header class="app-header">
         <h1>
-          <span class="reynard-logo">
-            🦊
-          </span>
+          <span class="reynard-logo">🦊</span>
           {customT("app.title")}
         </h1>
         <p>{customT("app.subtitle")}</p>
@@ -198,9 +207,7 @@ const App: Component = () => {
   const notificationsModule = createNotificationsModule();
 
   return (
-    <ReynardProvider 
-      defaultLocale="en"
-    >
+    <ReynardProvider defaultLocale="en">
       <NotificationsProvider value={notificationsModule}>
         <TodoApp />
       </NotificationsProvider>

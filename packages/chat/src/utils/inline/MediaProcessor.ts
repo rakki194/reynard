@@ -11,12 +11,14 @@ export class MediaProcessor extends InlineProcessor {
   process(text: string): string {
     return text.replace(MARKDOWN_PATTERNS.image, (match, alt, src) => {
       // Create an image node for tracking
-      this.nodes.push(this.createTrackingNode({
-        type: "image",
-        content: "",
-        src: src.trim(),
-        alt: alt.trim(),
-      }));
+      this.nodes.push(
+        this.createTrackingNode({
+          type: "image",
+          content: "",
+          src: src.trim(),
+          alt: alt.trim(),
+        }),
+      );
       return `<img src="${src}" alt="${alt}" />`;
     });
   }

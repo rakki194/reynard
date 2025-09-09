@@ -26,7 +26,7 @@ def register_plugin():
     """Register the JoyCaption plugin with the Reynard system."""
     return {
         "name": "joycaption",
-        "module_path": "app.caption_generation.plugins.joycaption.generator",
+        "module_path": "app.caption_generation.plugins.joycaption",
         "default_config": {
             "max_length": 256,
             "temperature": 0.7,

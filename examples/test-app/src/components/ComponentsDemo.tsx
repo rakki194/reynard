@@ -18,14 +18,18 @@ export function ComponentsDemo() {
   ];
 
   const buttonVariants = [
-    "primary", "secondary", "tertiary", "ghost", "danger", "success", "warning"
+    "primary",
+    "secondary",
+    "tertiary",
+    "ghost",
+    "danger",
+    "success",
+    "warning",
   ] as const;
 
   const buttonSizes = ["sm", "md", "lg"] as const;
 
-  const cardVariants = [
-    "default", "elevated", "outlined", "filled"
-  ] as const;
+  const cardVariants = ["default", "elevated", "outlined", "filled"] as const;
 
   const simulateLoading = () => {
     setLoading(true);
@@ -37,7 +41,7 @@ export function ComponentsDemo() {
       <Card class="demo-section">
         <h3>Button Component</h3>
         <p>Demonstrates all button variants, sizes, and states.</p>
-        
+
         <div class="demo-subsection">
           <h4>Variants</h4>
           <div class="button-grid">
@@ -56,9 +60,7 @@ export function ComponentsDemo() {
           <div class="button-grid">
             <For each={buttonSizes}>
               {(size) => (
-                <Button size={size}>
-                  {size.toUpperCase()} Button
-                </Button>
+                <Button size={size}>{size.toUpperCase()} Button</Button>
               )}
             </For>
           </div>
@@ -80,12 +82,14 @@ export function ComponentsDemo() {
       <Card class="demo-section">
         <h3>Card Component</h3>
         <p>Demonstrates different card variants and configurations.</p>
-        
+
         <div class="card-grid">
           <For each={cardVariants}>
             {(variant) => (
               <Card variant={variant} padding="md">
-                <h4>{variant.charAt(0).toUpperCase() + variant.slice(1)} Card</h4>
+                <h4>
+                  {variant.charAt(0).toUpperCase() + variant.slice(1)} Card
+                </h4>
                 <p>This is a {variant} card variant with medium padding.</p>
               </Card>
             )}
@@ -108,8 +112,8 @@ export function ComponentsDemo() {
 
         <div class="demo-subsection">
           <h4>Card with Header and Footer</h4>
-          <Card 
-            variant="elevated" 
+          <Card
+            variant="elevated"
             padding="lg"
             header={<h4>Card Header</h4>}
             footer={<Button size="sm">Action</Button>}
@@ -122,7 +126,7 @@ export function ComponentsDemo() {
       <Card class="demo-section">
         <h3>TextField Component</h3>
         <p>Demonstrates text input with various configurations.</p>
-        
+
         <div class="form-grid">
           <TextField
             label="Basic Text Field"
@@ -130,34 +134,30 @@ export function ComponentsDemo() {
             value={textValue()}
             onInput={(e) => setTextValue(e.currentTarget.value)}
           />
-          
+
           <TextField
             label="Required Field"
             placeholder="This field is required"
             required
             helperText="This field is required to continue"
           />
-          
+
           <TextField
             label="Error State"
             placeholder="This field has an error"
             error
             errorMessage="This field contains an error"
           />
-          
-          <TextField
-            label="Loading State"
-            placeholder="Loading..."
-            loading
-          />
-          
+
+          <TextField label="Loading State" placeholder="Loading..." loading />
+
           <TextField
             label="With Icons"
             placeholder="Search..."
             leftIcon={<span innerHTML={getIcon("search") || ""}></span>}
             rightIcon={<span innerHTML={getIcon("edit") || ""}></span>}
           />
-          
+
           <TextField
             label="Full Width"
             placeholder="This field takes full width"
@@ -169,7 +169,7 @@ export function ComponentsDemo() {
       <Card class="demo-section">
         <h3>Select Component</h3>
         <p>Demonstrates dropdown select with various configurations.</p>
-        
+
         <div class="form-grid">
           <Select
             label="Basic Select"
@@ -178,7 +178,7 @@ export function ComponentsDemo() {
             value={selectValue()}
             onChange={(e) => setSelectValue(e.currentTarget.value)}
           />
-          
+
           <Select
             label="Required Select"
             placeholder="This select is required"
@@ -186,7 +186,7 @@ export function ComponentsDemo() {
             required
             helperText="Please select an option"
           />
-          
+
           <Select
             label="Error State"
             placeholder="This select has an error"
@@ -194,14 +194,14 @@ export function ComponentsDemo() {
             error
             errorMessage="Please select a valid option"
           />
-          
+
           <Select
             label="Loading State"
             placeholder="Loading options..."
             options={selectOptions}
             loading
           />
-          
+
           <Select
             label="With Icon"
             placeholder="Search options..."
@@ -214,11 +214,9 @@ export function ComponentsDemo() {
       <Card class="demo-section">
         <h3>Modal Component</h3>
         <p>Demonstrates modal dialogs with different configurations.</p>
-        
+
         <div class="button-grid">
-          <Button onClick={() => setShowModal(true)}>
-            Open Modal
-          </Button>
+          <Button onClick={() => setShowModal(true)}>Open Modal</Button>
           <Button onClick={simulateLoading} loading={loading()}>
             Simulate Loading
           </Button>
@@ -232,7 +230,9 @@ export function ComponentsDemo() {
         >
           <div class="modal-content">
             <p>This is a demonstration of the Modal component.</p>
-            <p>Current theme: <strong>{theme}</strong></p>
+            <p>
+              Current theme: <strong>{theme}</strong>
+            </p>
             <p>You can close this modal by:</p>
             <ul>
               <li>Clicking the X button in the header</li>
@@ -240,9 +240,7 @@ export function ComponentsDemo() {
               <li>Pressing the Escape key</li>
             </ul>
             <div class="modal-actions">
-              <Button onClick={() => setShowModal(false)}>
-                Close Modal
-              </Button>
+              <Button onClick={() => setShowModal(false)}>Close Modal</Button>
             </div>
           </div>
         </Modal>

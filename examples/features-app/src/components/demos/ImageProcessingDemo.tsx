@@ -13,9 +13,9 @@ export default function ImageProcessingDemo() {
     "image-processing",
     <div class="demo-content unavailable">
       <p>Image processing is currently unavailable</p>
-    </div>
+    </div>,
   );
-  
+
   const status = useFeatureStatus("image-processing");
   const [uploadedImage, setUploadedImage] = createSignal<string | null>(null);
 
@@ -35,35 +35,44 @@ export default function ImageProcessingDemo() {
     <div class="feature-demo">
       <h3>🖼️ Image Processing</h3>
       <p>Upload and process images with AI-powered analysis</p>
-      
+
       {shouldRender() ? (
         <div class="demo-content">
           <p>Image processing is fully available</p>
-          
+
           {status()?.degraded && (
-            <div class="status-message warning">
-              ⚠️ {status()?.message}
-            </div>
+            <div class="status-message warning">⚠️ {status()?.message}</div>
           )}
-          
-          <div style={{"margin-top": "var(--spacing)"}}>
+
+          <div style={{ "margin-top": "var(--spacing)" }}>
             <input
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              style={{"margin-bottom": "var(--spacing)"}}
+              style={{ "margin-bottom": "var(--spacing)" }}
               aria-label="Upload image for processing"
             />
-            
+
             {uploadedImage() && (
               <div>
-                <img 
-                  src={uploadedImage()!} 
-                  alt="Uploaded" 
-                  style={{"max-width": "100%", "height": "auto", "border-radius": "var(--border-radius)"}}
+                <img
+                  src={uploadedImage()!}
+                  alt="Uploaded"
+                  style={{
+                    "max-width": "100%",
+                    height: "auto",
+                    "border-radius": "var(--border-radius)",
+                  }}
                 />
-                <p style={{"margin-top": "calc(var(--spacing) / 2)", "font-size": "0.9rem", "color": "var(--text-secondary)"}}>
-                  Image uploaded successfully! Processing features would be available here.
+                <p
+                  style={{
+                    "margin-top": "calc(var(--spacing) / 2)",
+                    "font-size": "0.9rem",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Image uploaded successfully! Processing features would be
+                  available here.
                 </p>
               </div>
             )}

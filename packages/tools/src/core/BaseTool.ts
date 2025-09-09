@@ -2,7 +2,13 @@
  * Abstract base class for all tools
  */
 
-import { ToolDefinition, ToolResult, ToolExecutionContext, ToolParameter, ParameterType } from './types';
+import {
+  ToolDefinition,
+  ToolResult,
+  ToolExecutionContext,
+  ToolParameter,
+  ParameterType,
+} from "./types";
 
 export abstract class BaseTool {
   protected definition: ToolDefinition;
@@ -59,12 +65,14 @@ export abstract class BaseTool {
   get metrics() {
     return {
       ...this._metrics,
-      averageExecutionTime: this._metrics.totalCalls > 0 
-        ? this._metrics.totalExecutionTime / this._metrics.totalCalls 
-        : 0,
-      errorRate: this._metrics.totalCalls > 0 
-        ? this._metrics.failedCalls / this._metrics.totalCalls 
-        : 0,
+      averageExecutionTime:
+        this._metrics.totalCalls > 0
+          ? this._metrics.totalExecutionTime / this._metrics.totalCalls
+          : 0,
+      errorRate:
+        this._metrics.totalCalls > 0
+          ? this._metrics.failedCalls / this._metrics.totalCalls
+          : 0,
     };
   }
 
@@ -73,7 +81,7 @@ export abstract class BaseTool {
    */
   async execute(
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<ToolResult> {
     const startTime = Date.now();
     this._metrics.totalCalls++;
@@ -118,7 +126,7 @@ export abstract class BaseTool {
    */
   protected abstract executeImpl(
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<any>;
 
   /**
@@ -152,7 +160,7 @@ export abstract class BaseTool {
   protected validateParameterType(param: ToolParameter, value: any): void {
     switch (param.type) {
       case ParameterType.STRING:
-        if (typeof value !== 'string') {
+        if (typeof value !== "string") {
           throw new Error(`Parameter '${param.name}' must be a string`);
         }
         break;
@@ -162,12 +170,12 @@ export abstract class BaseTool {
         }
         break;
       case ParameterType.NUMBER:
-        if (typeof value !== 'number' || isNaN(value)) {
+        if (typeof value !== "number" || isNaN(value)) {
           throw new Error(`Parameter '${param.name}' must be a number`);
         }
         break;
       case ParameterType.BOOLEAN:
-        if (typeof value !== 'boolean') {
+        if (typeof value !== "boolean") {
           throw new Error(`Parameter '${param.name}' must be a boolean`);
         }
         break;
@@ -177,7 +185,11 @@ export abstract class BaseTool {
         }
         break;
       case ParameterType.OBJECT:
-        if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+        if (
+          typeof value !== "object" ||
+          value === null ||
+          Array.isArray(value)
+        ) {
           throw new Error(`Parameter '${param.name}' must be an object`);
         }
         break;
@@ -187,33 +199,52 @@ export abstract class BaseTool {
   /**
    * Validate parameter constraints
    */
-  protected validateParameterConstraints(param: ToolParameter, value: any): void {
+  protected validateParameterConstraints(
+    param: ToolParameter,
+    value: any,
+  ): void {
     // String constraints
-    if (param.type === ParameterType.STRING && typeof value === 'string') {
+    if (param.type === ParameterType.STRING && typeof value === "string") {
       if (param.minLength !== undefined && value.length < param.minLength) {
-        throw new Error(`Parameter '${param.name}' must be at least ${param.minLength} characters long`);
+        throw new Error(
+          `Parameter '${param.name}' must be at least ${param.minLength} characters long`,
+        );
       }
       if (param.maxLength !== undefined && value.length > param.maxLength) {
-        throw new Error(`Parameter '${param.name}' must be at most ${param.maxLength} characters long`);
+        throw new Error(
+          `Parameter '${param.name}' must be at most ${param.maxLength} characters long`,
+        );
       }
       if (param.pattern && !new RegExp(param.pattern).test(value)) {
-        throw new Error(`Parameter '${param.name}' does not match required pattern`);
+        throw new Error(
+          `Parameter '${param.name}' does not match required pattern`,
+        );
       }
     }
 
     // Number constraints
-    if ((param.type === ParameterType.NUMBER || param.type === ParameterType.INTEGER) && typeof value === 'number') {
+    if (
+      (param.type === ParameterType.NUMBER ||
+        param.type === ParameterType.INTEGER) &&
+      typeof value === "number"
+    ) {
       if (param.minimum !== undefined && value < param.minimum) {
-        throw new Error(`Parameter '${param.name}' must be at least ${param.minimum}`);
+        throw new Error(
+          `Parameter '${param.name}' must be at least ${param.minimum}`,
+        );
       }
       if (param.maximum !== undefined && value > param.maximum) {
-        throw new Error(`Parameter '${param.name}' must be at most ${param.maximum}`);
+        throw new Error(
+          `Parameter '${param.name}' must be at most ${param.maximum}`,
+        );
       }
     }
 
     // Enum constraints
     if (param.enum && !param.enum.includes(value)) {
-      throw new Error(`Parameter '${param.name}' must be one of: ${param.enum.join(', ')}`);
+      throw new Error(
+        `Parameter '${param.name}' must be one of: ${param.enum.join(", ")}`,
+      );
     }
   }
 
@@ -227,7 +258,9 @@ export abstract class BaseTool {
 
     for (const permission of this.permissions) {
       if (!context.permissions.includes(permission)) {
-        throw new Error(`Permission '${permission}' is required to execute tool '${this.name}'`);
+        throw new Error(
+          `Permission '${permission}' is required to execute tool '${this.name}'`,
+        );
       }
     }
   }
@@ -240,14 +273,17 @@ export abstract class BaseTool {
       name: this.name,
       description: this.description,
       parameters: {
-        type: 'object',
-        properties: this.definition.parameters.reduce((props, param) => {
-          props[param.name] = this.parameterToJSONSchema(param);
-          return props;
-        }, {} as Record<string, any>),
+        type: "object",
+        properties: this.definition.parameters.reduce(
+          (props, param) => {
+            props[param.name] = this.parameterToJSONSchema(param);
+            return props;
+          },
+          {} as Record<string, any>,
+        ),
         required: this.definition.parameters
-          .filter(param => param.required)
-          .map(param => param.name),
+          .filter((param) => param.required)
+          .map((param) => param.name),
       },
     };
   }
@@ -294,10 +330,13 @@ export abstract class BaseTool {
     }
 
     if (param.properties) {
-      schema.properties = Object.entries(param.properties).reduce((props, [key, value]) => {
-        props[key] = this.parameterToJSONSchema(value);
-        return props;
-      }, {} as Record<string, any>);
+      schema.properties = Object.entries(param.properties).reduce(
+        (props, [key, value]) => {
+          props[key] = this.parameterToJSONSchema(value);
+          return props;
+        },
+        {} as Record<string, any>,
+      );
     }
 
     return schema;

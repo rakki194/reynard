@@ -12,38 +12,38 @@ const QuickActions: Component = () => {
       icon: "📝",
       label: "New Note",
       description: "Create a new note",
-      action: () => console.log("New note")
+      action: () => console.log("New note"),
     },
     {
       icon: "📚",
       label: "New Notebook",
       description: "Create a new notebook",
-      action: () => console.log("New notebook")
+      action: () => console.log("New notebook"),
     },
     {
       icon: "🔍",
       label: "Search Notes",
       description: "Find notes quickly",
-      action: () => console.log("Search")
+      action: () => console.log("Search"),
     },
     {
       icon: "🤖",
       label: "AI Assistant",
       description: "Get help with AI",
-      action: () => console.log("AI assistant")
+      action: () => console.log("AI assistant"),
     },
     {
       icon: "📊",
       label: "Analytics",
       description: "View your stats",
-      action: () => console.log("Analytics")
+      action: () => console.log("Analytics"),
     },
     {
       icon: "⚙️",
       label: "Settings",
       description: "App preferences",
-      action: () => console.log("Settings")
-    }
+      action: () => console.log("Settings"),
+    },
   ];
 
   return (

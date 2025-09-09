@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 /**
  * Utility functions for creating and managing mocks in tests
@@ -8,7 +8,7 @@ import { vi } from 'vitest';
  * Create a mock function with additional properties for testing
  */
 export function createMockFn<T extends (...args: any[]) => any>(
-  implementation?: T
+  implementation?: T,
 ): T & { mockClear: () => void; mockReset: () => void } {
   const mockFn = vi.fn(implementation) as any;
   mockFn.mockClear = () => vi.clearAllMocks();
@@ -20,14 +20,18 @@ export function createMockFn<T extends (...args: any[]) => any>(
  * Create a mock object with all methods mocked
  */
 export function createMockObject<T extends Record<string, any>>(
-  methods: (keyof T)[]
+  methods: (keyof T)[],
 ): {
   [K in keyof T]: T[K] extends (...args: any[]) => any
-    ? T[K] & { mockClear: () => void; mockReset: () => void; mockReturnValue: (value: ReturnType<T[K]>) => any }
-    : T[K]
+    ? T[K] & {
+        mockClear: () => void;
+        mockReset: () => void;
+        mockReturnValue: (value: ReturnType<T[K]>) => any;
+      }
+    : T[K];
 } {
   const mockObj = {} as any;
-  methods.forEach(method => {
+  methods.forEach((method) => {
     mockObj[method] = createMockFn();
   });
   return mockObj;
@@ -42,10 +46,10 @@ export function createMockResponse(
     status?: number;
     statusText?: string;
     headers?: Record<string, string>;
-  } = {}
+  } = {},
 ) {
-  const { status = 200, statusText = 'OK', headers = {} } = options;
-  
+  const { status = 200, statusText = "OK", headers = {} } = options;
+
   return {
     ok: status >= 200 && status < 300,
     status,
@@ -58,8 +62,8 @@ export function createMockResponse(
     formData: vi.fn().mockResolvedValue(new FormData()),
     clone: vi.fn().mockReturnThis(),
     redirected: false,
-    type: 'basic',
-    url: '',
+    type: "basic",
+    url: "",
     body: null,
     bodyUsed: false,
     bytes: vi.fn().mockResolvedValue(new Uint8Array()),
@@ -70,16 +74,16 @@ export function createMockResponse(
  * Create a mock fetch function
  */
 export function createMockFetch(
-  responses: Record<string, any> = {}
+  responses: Record<string, any> = {},
 ): typeof fetch {
   return vi.fn().mockImplementation((url: string | URL | Request) => {
     const urlString = url.toString();
-    const response = responses[urlString] || responses['*'] || { data: {} };
-    
+    const response = responses[urlString] || responses["*"] || { data: {} };
+
     if (response instanceof Error) {
       return Promise.reject(response);
     }
-    
+
     return Promise.resolve(createMockResponse(response.data, response.options));
   });
 }
@@ -90,11 +94,11 @@ export function createMockFetch(
 export function createMockWebSocket(): WebSocket {
   const mockWs = {
     readyState: WebSocket.CONNECTING,
-    url: '',
-    protocol: '',
-    extensions: '',
+    url: "",
+    protocol: "",
+    extensions: "",
     bufferedAmount: 0,
-    binaryType: 'blob' as BinaryType,
+    binaryType: "blob" as BinaryType,
     onopen: null,
     onclose: null,
     onmessage: null,
@@ -105,15 +109,15 @@ export function createMockWebSocket(): WebSocket {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn().mockReturnValue(true),
   } as any;
-  
+
   // Simulate connection
   setTimeout(() => {
     mockWs.readyState = WebSocket.OPEN;
     if (mockWs.onopen) {
-      mockWs.onopen(new Event('open'));
+      mockWs.onopen(new Event("open"));
     }
   }, 0);
-  
+
   return mockWs;
 }
 
@@ -123,7 +127,7 @@ export function createMockWebSocket(): WebSocket {
 export function createMockEventSource(): EventSource {
   const mockEs = {
     readyState: EventSource.CONNECTING,
-    url: '',
+    url: "",
     withCredentials: false,
     onopen: null,
     onmessage: null,
@@ -133,15 +137,15 @@ export function createMockEventSource(): EventSource {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn().mockReturnValue(true),
   } as any;
-  
+
   // Simulate connection
   setTimeout(() => {
     mockEs.readyState = EventSource.OPEN;
     if (mockEs.onopen) {
-      mockEs.onopen(new Event('open'));
+      mockEs.onopen(new Event("open"));
     }
   }, 0);
-  
+
   return mockEs;
 }
 
@@ -154,16 +158,17 @@ export function createMockFile(
   options: {
     type?: string;
     lastModified?: number;
-  } = {}
+  } = {},
 ): File {
-  const { type = 'text/plain', lastModified = Date.now() } = options;
-  
-  const blob = content instanceof Blob ? content : new Blob([content], { type });
-  
+  const { type = "text/plain", lastModified = Date.now() } = options;
+
+  const blob =
+    content instanceof Blob ? content : new Blob([content], { type });
+
   return Object.assign(blob, {
     name,
     lastModified,
-    webkitRelativePath: '',
+    webkitRelativePath: "",
   }) as File;
 }
 
@@ -180,24 +185,22 @@ export function createMockFileList(files: File[]): FileList {
       }
     },
   } as any;
-  
+
   // Add numeric indices
   files.forEach((file, index) => {
     fileList[index] = file;
   });
-  
+
   return fileList;
 }
 
 /**
  * Create a mock DataTransfer object
  */
-export function createMockDataTransfer(
-  files: File[] = []
-): DataTransfer {
+export function createMockDataTransfer(files: File[] = []): DataTransfer {
   return {
-    dropEffect: 'none',
-    effectAllowed: 'none',
+    dropEffect: "none",
+    effectAllowed: "none",
     items: {
       length: files.length,
       add: vi.fn(),
@@ -206,7 +209,7 @@ export function createMockDataTransfer(
       [Symbol.iterator]: function* () {
         for (let i = 0; i < files.length; i++) {
           yield {
-            kind: 'file',
+            kind: "file",
             type: files[i].type,
             getAsFile: () => files[i],
             getAsString: vi.fn(),
@@ -215,8 +218,8 @@ export function createMockDataTransfer(
       },
     },
     files: createMockFileList(files),
-    types: files.length > 0 ? ['Files'] : [],
-    getData: vi.fn().mockReturnValue(''),
+    types: files.length > 0 ? ["Files"] : [],
+    getData: vi.fn().mockReturnValue(""),
     setData: vi.fn(),
     clearData: vi.fn(),
     setDragImage: vi.fn(),
@@ -227,7 +230,7 @@ export function createMockDataTransfer(
  * Create a mock IntersectionObserver
  */
 export function createMockIntersectionObserver(
-  entries: IntersectionObserverEntry[] = []
+  entries: IntersectionObserverEntry[] = [],
 ): typeof IntersectionObserver {
   const MockIntersectionObserver = vi.fn().mockImplementation((callback) => {
     return {
@@ -235,13 +238,13 @@ export function createMockIntersectionObserver(
       unobserve: vi.fn(),
       disconnect: vi.fn(),
       root: null,
-      rootMargin: '',
+      rootMargin: "",
       thresholds: [],
     };
   });
-  
+
   MockIntersectionObserver.mockReturnValue = vi.fn();
-  
+
   return MockIntersectionObserver as any;
 }
 
@@ -283,7 +286,7 @@ export function createMockPerformanceObserver(): typeof PerformanceObserver {
  */
 export function createMockCrypto(): Crypto {
   return {
-    randomUUID: vi.fn().mockReturnValue('00000000-0000-4000-8000-000000000000'),
+    randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
     getRandomValues: vi.fn().mockImplementation((array) => {
       for (let i = 0; i < array.length; i++) {
         array[i] = Math.floor(Math.random() * 256);
@@ -298,7 +301,7 @@ export function createMockCrypto(): Crypto {
  * Create a mock matchMedia function
  */
 export function createMockMatchMedia(
-  matches: boolean = false
+  matches: boolean = false,
 ): typeof window.matchMedia {
   return vi.fn().mockImplementation((query: string) => ({
     matches,

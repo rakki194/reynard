@@ -33,7 +33,11 @@ export const TodoItem: Component<TodoItemProps> = (props) => {
 
       <span class="todo-text">{props.todo.text}</span>
 
-      <button class="todo-delete" onClick={() => props.onDelete()} title="Delete todo">
+      <button
+        class="todo-delete"
+        onClick={() => props.onDelete()}
+        title="Delete todo"
+      >
         ×
       </button>
     </div>

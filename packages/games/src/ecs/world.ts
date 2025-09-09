@@ -1,25 +1,24 @@
 // World implementation - the central ECS container
 
-import { 
-  Entity, 
-  Component, 
-  Resource, 
-  ComponentType, 
-  ResourceType, 
-  System, 
-  SystemFunction, 
+import {
+  Entity,
+  Component,
+  Resource,
+  ComponentType,
+  ResourceType,
+  System,
+  SystemFunction,
   Schedule,
   Commands,
   QueryResult,
   QueryFilter,
-  World as IWorld
-} from './types';
+  World as IWorld,
+} from "./types";
 
-
-import { EntityManager } from './entity';
-import { ComponentRegistry, ComponentStorage } from './component';
-import { ResourceRegistry, ResourceStorage } from './resource';
-import { QueryImpl } from './query';
+import { EntityManager } from "./entity";
+import { ComponentRegistry, ComponentStorage } from "./component";
+import { ResourceRegistry, ResourceStorage } from "./resource";
+import { QueryImpl } from "./query";
 
 /**
  * Commands implementation for deferred world modifications.
@@ -32,7 +31,7 @@ export class CommandsImpl implements Commands {
   spawn<T extends Component[]>(...components: T): Entity {
     const entity = this.world.spawnEmpty();
     this.world.insert(entity, ...components);
-    return entity;  
+    return entity;
   }
 
   spawnEmpty(): Entity {
@@ -47,7 +46,10 @@ export class CommandsImpl implements Commands {
     this.world.insert(entity, ...components);
   }
 
-  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void {
+  remove<T extends Component[]>(
+    entity: Entity,
+    ...componentTypes: ComponentType<T[number]>[]
+  ): void {
     this.commands.push(() => this.world.remove(entity, ...componentTypes));
   }
 
@@ -113,13 +115,14 @@ export class WorldImpl implements IWorld {
     // Remove all components from the entity
     const componentTypes = this.componentRegistry.getAllTypes();
     for (const componentType of componentTypes) {
-      const storage = this.componentStorage.getTableStorage(componentType) || 
-                     this.componentStorage.getSparseSetStorage(componentType);
+      const storage =
+        this.componentStorage.getTableStorage(componentType) ||
+        this.componentStorage.getSparseSetStorage(componentType);
       if (storage?.has(entity.index)) {
         storage.remove(entity.index);
       }
     }
-    
+
     return this.entityManager.free(entity);
   }
 
@@ -130,57 +133,81 @@ export class WorldImpl implements IWorld {
   // Component operations
   insert<T extends Component[]>(entity: Entity, ...components: T): void {
     if (!this.entityManager.contains(entity)) {
-      throw new Error(`Entity ${entity.index}v${entity.generation} does not exist`);
+      throw new Error(
+        `Entity ${entity.index}v${entity.generation} does not exist`,
+      );
     }
 
     for (let i = 0; i < components.length; i++) {
       const component = components[i];
       const componentType = this.findComponentType(component);
       if (!componentType) {
-        throw new Error(`Component type not registered: ${component.constructor.name}`);
+        throw new Error(
+          `Component type not registered: ${component.constructor.name}`,
+        );
       }
 
-      const storage = this.componentStorage.getStorage(componentType, componentType.storage);
+      const storage = this.componentStorage.getStorage(
+        componentType,
+        componentType.storage,
+      );
       storage.insert(entity.index, component);
     }
   }
 
-  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void {
+  remove<T extends Component[]>(
+    entity: Entity,
+    ...componentTypes: ComponentType<T[number]>[]
+  ): void {
     if (!this.entityManager.contains(entity)) {
-      throw new Error(`Entity ${entity.index}v${entity.generation} does not exist`);
+      throw new Error(
+        `Entity ${entity.index}v${entity.generation} does not exist`,
+      );
     }
 
     for (const componentType of componentTypes) {
-      const storage = this.componentStorage.getTableStorage(componentType) || 
-                     this.componentStorage.getSparseSetStorage(componentType);
+      const storage =
+        this.componentStorage.getTableStorage(componentType) ||
+        this.componentStorage.getSparseSetStorage(componentType);
       if (storage) {
         storage.remove(entity.index);
       }
     }
   }
 
-  get<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined {
+  get<T extends Component>(
+    entity: Entity,
+    componentType: ComponentType<T>,
+  ): T | undefined {
     if (!this.entityManager.contains(entity)) {
       return undefined;
     }
 
-    const storage = this.componentStorage.getTableStorage(componentType) || 
-                   this.componentStorage.getSparseSetStorage(componentType);
+    const storage =
+      this.componentStorage.getTableStorage(componentType) ||
+      this.componentStorage.getSparseSetStorage(componentType);
     return storage?.get(entity.index);
   }
 
-  getMut<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined {
+  getMut<T extends Component>(
+    entity: Entity,
+    componentType: ComponentType<T>,
+  ): T | undefined {
     // For now, same as get - in a real implementation, this would track mutability
     return this.get(entity, componentType);
   }
 
-  has<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
+  has<T extends Component>(
+    entity: Entity,
+    componentType: ComponentType<T>,
+  ): boolean {
     if (!this.entityManager.contains(entity)) {
       return false;
     }
 
-    const storage = this.componentStorage.getTableStorage(componentType) || 
-                   this.componentStorage.getSparseSetStorage(componentType);
+    const storage =
+      this.componentStorage.getTableStorage(componentType) ||
+      this.componentStorage.getSparseSetStorage(componentType);
     return storage?.has(entity.index) ?? false;
   }
 
@@ -188,20 +215,28 @@ export class WorldImpl implements IWorld {
   insertResource<T extends Resource>(resource: T): void {
     const resourceType = this.findResourceType(resource);
     if (!resourceType) {
-      throw new Error(`Resource type not registered: ${resource.constructor.name}`);
+      throw new Error(
+        `Resource type not registered: ${resource.constructor.name}`,
+      );
     }
     this.resourceStorage.insert(resourceType, resource);
   }
 
-  removeResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
+  removeResource<T extends Resource>(
+    resourceType: ResourceType<T>,
+  ): T | undefined {
     return this.resourceStorage.remove(resourceType);
   }
 
-  getResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
+  getResource<T extends Resource>(
+    resourceType: ResourceType<T>,
+  ): T | undefined {
     return this.resourceStorage.get(resourceType);
   }
 
-  getResourceMut<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
+  getResourceMut<T extends Resource>(
+    resourceType: ResourceType<T>,
+  ): T | undefined {
     // For now, same as get - in a real implementation, this would track mutability
     return this.resourceStorage.get(resourceType);
   }
@@ -211,17 +246,27 @@ export class WorldImpl implements IWorld {
   }
 
   // Query operations
-  query<T extends Component[]>(...componentTypes: ComponentType<T[number]>[]): QueryResult<T> {
+  query<T extends Component[]>(
+    ...componentTypes: ComponentType<T[number]>[]
+  ): QueryResult<T> {
     const query = new QueryImpl(componentTypes, {});
-    return query.execute(this.entityManager, this.componentStorage, this.changeDetection);
+    return query.execute(
+      this.entityManager,
+      this.componentStorage,
+      this.changeDetection,
+    );
   }
 
   queryFiltered<T extends Component[]>(
     componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter
+    filter: QueryFilter,
   ): QueryResult<T> {
     const query = new QueryImpl(componentTypes, filter);
-    return query.execute(this.entityManager, this.componentStorage, this.changeDetection);
+    return query.execute(
+      this.entityManager,
+      this.componentStorage,
+      this.changeDetection,
+    );
   }
 
   // System operations
@@ -259,9 +304,12 @@ export class WorldImpl implements IWorld {
     return this.entityManager.getEntityCount();
   }
 
-  getComponentCount<T extends Component>(componentType: ComponentType<T>): number {
-    const storage = this.componentStorage.getTableStorage(componentType) || 
-                   this.componentStorage.getSparseSetStorage(componentType);
+  getComponentCount<T extends Component>(
+    componentType: ComponentType<T>,
+  ): number {
+    const storage =
+      this.componentStorage.getTableStorage(componentType) ||
+      this.componentStorage.getSparseSetStorage(componentType);
     return storage?.getCount() ?? 0;
   }
 
@@ -275,7 +323,9 @@ export class WorldImpl implements IWorld {
   }
 
   // Helper methods
-  private findComponentType(component: Component): ComponentType<any> | undefined {
+  private findComponentType(
+    component: Component,
+  ): ComponentType<any> | undefined {
     const componentName = component.constructor.name;
     return this.componentRegistry.getByName(componentName);
   }

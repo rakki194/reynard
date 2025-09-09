@@ -22,35 +22,35 @@ npm install reynard-composables
 ### Authentication
 
 ```typescript
-import { useAuthFetch, createAuthFetch } from 'reynard-composables';
+import { useAuthFetch, createAuthFetch } from "reynard-composables";
 
 // With SolidJS context
 const authFetch = useAuthFetch({
-  logout: () => console.log('Logged out'),
+  logout: () => console.log("Logged out"),
   notify: (message, type) => console.log(message, type),
-  navigate: (path) => window.location.href = path
+  navigate: (path) => (window.location.href = path),
 });
 
 // Standalone usage
 const { authFetch } = createAuthFetch({
-  logout: () => console.log('Logged out'),
-  notify: (message, type) => console.log(message, type)
+  logout: () => console.log("Logged out"),
+  notify: (message, type) => console.log(message, type),
 });
 
 // Use authenticated fetch
-const response = await authFetch('/api/protected-endpoint');
+const response = await authFetch("/api/protected-endpoint");
 ```
 
 ### Service Management
 
 ```typescript
-import { useServiceManager } from 'reynard-composables';
+import { useServiceManager } from "reynard-composables";
 
 const serviceManager = useServiceManager({
   authFetch: myAuthFetch,
   notify: (message, type) => console.log(message, type),
-  websocketUrl: 'ws://localhost:8080/services',
-  refreshInterval: 30000
+  websocketUrl: "ws://localhost:8080/services",
+  refreshInterval: 30000,
 });
 
 // Access service state
@@ -58,54 +58,54 @@ const services = serviceManager.services();
 const summary = serviceManager.summary();
 
 // Manage services
-await serviceManager.restartService('my-service');
+await serviceManager.restartService("my-service");
 await serviceManager.refreshStatus();
 ```
 
 ### Drag and Drop
 
 ```typescript
-import { useDragAndDrop } from 'reynard-composables';
+import { useDragAndDrop } from "reynard-composables";
 
 const { isMoving } = useDragAndDrop({
   onDragStateChange: (isDragging) => {
     setShowDropOverlay(isDragging);
   },
   onFilesDropped: async (files) => {
-    console.log('Files dropped:', files);
+    console.log("Files dropped:", files);
   },
   onItemsDropped: async (items, targetPath) => {
-    console.log('Items moved to:', targetPath);
+    console.log("Items moved to:", targetPath);
   },
   maxFileSize: 50 * 1024 * 1024, // 50MB
-  allowedFileTypes: ['jpg', 'png', 'pdf'],
+  allowedFileTypes: ["jpg", "png", "pdf"],
   uploadFiles: async (files) => {
     // Handle file upload
   },
   moveItems: async (items, sourcePath, targetPath) => {
     // Handle item movement
-  }
+  },
 });
 ```
 
 ### Performance Monitoring
 
 ```typescript
-import { usePerformanceMonitor } from 'reynard-composables';
+import { usePerformanceMonitor } from "reynard-composables";
 
 const monitor = usePerformanceMonitor({
   thresholds: {
     criticalOperationTime: 2000,
     highOperationTime: 1000,
-    criticalMemoryUsage: 100 * 1024 * 1024
-  }
+    criticalMemoryUsage: 100 * 1024 * 1024,
+  },
 });
 
 // Start profiling
-monitor.startProfiling('data-processing', 10000);
+monitor.startProfiling("data-processing", 10000);
 
 // Record operations
-monitor.recordDOMUpdate('list-render', 45);
+monitor.recordDOMUpdate("list-render", 45);
 monitor.recordStyleApplication(100, 12);
 
 // End profiling and get results
@@ -116,13 +116,13 @@ monitor.logPerformanceReport();
 ### RAG (Retrieval-Augmented Generation)
 
 ```typescript
-import { useRAG, createRAGClient } from 'reynard-composables';
+import { useRAG, createRAGClient } from "reynard-composables";
 
 // With SolidJS reactivity
 const rag = useRAG({
   authFetch: myAuthFetch,
-  configUrl: '/api/config',
-  queryUrl: '/api/rag/query'
+  configUrl: "/api/config",
+  queryUrl: "/api/rag/query",
 });
 
 // Create search resource
@@ -130,36 +130,34 @@ const [searchParams, setSearchParams] = createSignal(null);
 const searchResults = rag.createRAGSearchResource(searchParams);
 
 // Query RAG
-setSearchParams({ q: 'search query', modality: 'docs', topK: 10 });
+setSearchParams({ q: "search query", modality: "docs", topK: 10 });
 
 // Ingest documents
-await rag.ingestDocuments([
-  { source: 'document.pdf', content: 'Document content...' }
-], 'text-model', (event) => {
-  console.log('Ingest progress:', event);
-});
+await rag.ingestDocuments(
+  [{ source: "document.pdf", content: "Document content..." }],
+  "text-model",
+  (event) => {
+    console.log("Ingest progress:", event);
+  },
+);
 ```
 
 ### File Upload
 
 ```typescript
-import { useFileUpload } from 'reynard-composables';
+import { useFileUpload } from "reynard-composables";
 
-const {
-  uploadFiles,
-  uploadProgress,
-  isUploading,
-  validateFile
-} = useFileUpload({
-  maxFileSize: 100 * 1024 * 1024, // 100MB
-  allowedFileTypes: ['jpg', 'png', 'pdf', 'docx'],
-  maxFiles: 5,
-  uploadUrl: '/api/upload',
-  authFetch: myAuthFetch,
-  onProgress: (progress) => console.log('Upload progress:', progress),
-  onSuccess: (response) => console.log('Upload successful:', response),
-  onError: (error) => console.error('Upload failed:', error)
-});
+const { uploadFiles, uploadProgress, isUploading, validateFile } =
+  useFileUpload({
+    maxFileSize: 100 * 1024 * 1024, // 100MB
+    allowedFileTypes: ["jpg", "png", "pdf", "docx"],
+    maxFiles: 5,
+    uploadUrl: "/api/upload",
+    authFetch: myAuthFetch,
+    onProgress: (progress) => console.log("Upload progress:", progress),
+    onSuccess: (response) => console.log("Upload successful:", response),
+    onError: (error) => console.error("Upload failed:", error),
+  });
 
 // Upload files
 const files = document.querySelector('input[type="file"]').files;
@@ -172,22 +170,22 @@ const progress = uploadProgress();
 ### Storage
 
 ```typescript
-import { useLocalStorage, useSessionStorage } from 'reynard-composables';
+import { useLocalStorage, useSessionStorage } from "reynard-composables";
 
 // Local storage with cross-tab sync
-const [user, setUser, removeUser] = useLocalStorage('user', {
+const [user, setUser, removeUser] = useLocalStorage("user", {
   defaultValue: null,
-  syncAcrossTabs: true
+  syncAcrossTabs: true,
 });
 
 // Session storage
-const [tempData, setTempData, removeTempData] = useSessionStorage('temp', {
-  defaultValue: {}
+const [tempData, setTempData, removeTempData] = useSessionStorage("temp", {
+  defaultValue: {},
 });
 
 // Use the storage
-setUser({ id: 1, name: 'John' });
-setTempData({ formData: 'draft content' });
+setUser({ id: 1, name: "John" });
+setTempData({ formData: "draft content" });
 ```
 
 ## API Reference

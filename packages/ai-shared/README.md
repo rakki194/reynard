@@ -40,22 +40,26 @@ npm install reynard-ai-shared
 ### Basic Service Implementation
 
 ```typescript
-import { BaseAIService, ServiceConfig, ServiceHealthInfo } from 'reynard-ai-shared'
+import {
+  BaseAIService,
+  ServiceConfig,
+  ServiceHealthInfo,
+} from "reynard-ai-shared";
 
 class MyAIService extends BaseAIService {
   constructor() {
     const config: ServiceConfig = {
-      name: 'my-ai-service',
-      dependencies: ['database-service'],
+      name: "my-ai-service",
+      dependencies: ["database-service"],
       startupPriority: 50,
-      autoStart: true
-    }
-    super(config)
+      autoStart: true,
+    };
+    super(config);
   }
 
   async initialize(): Promise<void> {
     // Initialize your service
-    console.log('Initializing MyAI Service...')
+    console.log("Initializing MyAI Service...");
   }
 
   async healthCheck(): Promise<ServiceHealthInfo> {
@@ -68,61 +72,66 @@ class MyAIService extends BaseAIService {
       memoryUsage: 0,
       cpuUsage: 0,
       errorCount: 0,
-      metadata: {}
-    }
+      metadata: {},
+    };
   }
 
   async shutdown(): Promise<void> {
     // Clean up resources
-    console.log('Shutting down MyAI Service...')
+    console.log("Shutting down MyAI Service...");
   }
 }
 
 // Register and use the service
-import { getServiceRegistry } from 'reynard-ai-shared'
+import { getServiceRegistry } from "reynard-ai-shared";
 
-const registry = getServiceRegistry()
-const service = new MyAIService()
-registry.register(service)
-await service.start()
+const registry = getServiceRegistry();
+const service = new MyAIService();
+registry.register(service);
+await service.start();
 ```
 
 ### Basic Model Implementation
 
 ```typescript
-import { BaseModel, ModelType, ModelInfo, ModelConfig } from 'reynard-ai-shared'
+import {
+  BaseModel,
+  ModelType,
+  ModelInfo,
+  ModelConfig,
+} from "reynard-ai-shared";
 
 class MyAIModel extends BaseModel {
   constructor() {
     super(
-      'my-ai-model',
-      'My AI Model',
+      "my-ai-model",
+      "My AI Model",
       ModelType.CAPTION,
-      '1.0.0',
-      'A sample AI model for caption generation',
+      "1.0.0",
+      "A sample AI model for caption generation",
       {
-        threshold: { type: 'number', min: 0, max: 1, default: 0.5 },
-        maxLength: { type: 'number', min: 1, max: 512, default: 256 }
-      }
-    )
+        threshold: { type: "number", min: 0, max: 1, default: 0.5 },
+        maxLength: { type: "number", min: 1, max: 512, default: 256 },
+      },
+    );
   }
 
   async load(config?: ModelConfig): Promise<void> {
     // Load your model
-    console.log('Loading MyAI Model...')
-    this._size = 1024 * 1024 * 100 // 100MB
-    this._memoryUsage = 1024 * 1024 * 50 // 50MB
+    console.log("Loading MyAI Model...");
+    this._size = 1024 * 1024 * 100; // 100MB
+    this._memoryUsage = 1024 * 1024 * 50; // 50MB
   }
 
   async unload(): Promise<void> {
     // Unload your model
-    console.log('Unloading MyAI Model...')
-    this._memoryUsage = 0
+    console.log("Unloading MyAI Model...");
+    this._memoryUsage = 0;
   }
 
   async isAvailable(): Promise<boolean> {
     // Check if model is available
-    return true
+    return true;
   }
 
   async getModelInfo(): Promise<ModelInfo> {
@@ -140,65 +149,65 @@ class MyAIModel extends BaseModel {
       configSchema: this.configSchema,
       metadata: this.metadata,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }
+      updatedAt: new Date(),
+    };
   }
 }
 
 // Register and use the model
-import { getModelRegistry } from 'reynard-ai-shared'
+import { getModelRegistry } from "reynard-ai-shared";
 
-const registry = getModelRegistry()
-const model = new MyAIModel()
-registry.register(model)
-await model.loadModel({ threshold: 0.7 })
+const registry = getModelRegistry();
+const model = new MyAIModel();
+registry.register(model);
+await model.loadModel({ threshold: 0.7 });
 ```
 
 ### Using Utilities
 
 ```typescript
-import { 
-  ValidationUtils, 
-  PerformanceMonitor, 
-  ErrorUtils, 
-  DataUtils, 
-  ProgressTracker 
-} from 'reynard-ai-shared'
+import {
+  ValidationUtils,
+  PerformanceMonitor,
+  ErrorUtils,
+  DataUtils,
+  ProgressTracker,
+} from "reynard-ai-shared";
 
 // Validation
-const result = ValidationUtils.validateValue('test@example.com', {
-  type: 'string',
+const result = ValidationUtils.validateValue("test@example.com", {
+  type: "string",
   pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  required: true
-})
+  required: true,
+});
 
 // Performance monitoring
-const timer = PerformanceMonitor.startTimer('my-operation')
+const timer = PerformanceMonitor.startTimer("my-operation");
 // ... do work ...
-const metrics = timer()
+const metrics = timer();
 
 // Error handling with retry
 const result = await ErrorUtils.retry(
   async () => {
     // Risky operation
-    return await fetchData()
+    return await fetchData();
   },
   3, // max retries
-  1000 // base delay
-)
+  1000, // base delay
+);
 
 // Data processing
-const cleanTags = DataUtils.cleanTags(['tag1', 'TAG2', 'tag1', 'tag3'])
-const formattedSize = DataUtils.formatFileSize(1024 * 1024 * 5) // "5.00 MB"
+const cleanTags = DataUtils.cleanTags(["tag1", "TAG2", "tag1", "tag3"]);
+const formattedSize = DataUtils.formatFileSize(1024 * 1024 * 5); // "5.00 MB"
 
 // Progress tracking
 const tracker = new ProgressTracker(100, (progress, message) => {
-  console.log(`Progress: ${progress.toFixed(1)}% - ${message}`)
-})
+  console.log(`Progress: ${progress.toFixed(1)}% - ${message}`);
+});
 
 for (let i = 0; i < 100; i++) {
   // Do work
-  tracker.increment(1, `Processing item ${i}`)
+  tracker.increment(1, `Processing item ${i}`);
 }
 ```
 
@@ -231,13 +240,13 @@ for (let i = 0; i < 100; i++) {
 
 ```typescript
 interface ServiceConfig {
-  name: string
-  dependencies?: string[]
-  requiredPackages?: string[]
-  startupPriority?: number
-  healthCheckInterval?: number
-  autoStart?: boolean
-  config?: Record<string, any>
+  name: string;
+  dependencies?: string[];
+  requiredPackages?: string[];
+  startupPriority?: number;
+  healthCheckInterval?: number;
+  autoStart?: boolean;
+  config?: Record<string, any>;
 }
 ```
 
@@ -245,13 +254,13 @@ interface ServiceConfig {
 
 ```typescript
 interface ModelConfig {
-  threshold?: number
-  maxLength?: number
-  temperature?: number
-  batchSize?: number
-  gpuAcceleration?: boolean
-  postProcessing?: PostProcessingRules
-  [key: string]: any
+  threshold?: number;
+  maxLength?: number;
+  temperature?: number;
+  batchSize?: number;
+  gpuAcceleration?: boolean;
+  postProcessing?: PostProcessingRules;
+  [key: string]: any;
 }
 ```
 

@@ -1,1 +1,1 @@
-export { SpatialHashDemo } from './SpatialHashDemo';
+export { SpatialHashDemo } from "./SpatialHashDemo";

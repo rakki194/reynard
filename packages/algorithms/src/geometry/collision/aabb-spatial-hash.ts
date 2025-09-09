@@ -7,7 +7,7 @@
  * @module algorithms/aabbSpatialHash
  */
 
-import type { AABB } from './aabb-types';
+import type { AABB } from "./aabb-types";
 
 /**
  * Spatial hash for optimized collision detection

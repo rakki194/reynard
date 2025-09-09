@@ -19,8 +19,4 @@ export type {
   BreadcrumbNavigationState,
 } from "./types";
 
-export {
-  formatFileSize,
-  parseFileSize,
-  formatDate,
-} from "./utils";
+export { formatFileSize, parseFileSize, formatDate } from "./utils";

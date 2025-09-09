@@ -308,10 +308,10 @@ try:
     # Make configuration changes
     engine.set("lazy_loading_unloading_strategy", "AGGRESSIVE")
     engine.set("lazy_loading_unloading_check_interval", 15.0)
-    
+
     # Test the changes
     # ... perform testing ...
-    
+
 except Exception as e:
     # Rollback on error
     engine.rollback_to_snapshot(snapshot_id)

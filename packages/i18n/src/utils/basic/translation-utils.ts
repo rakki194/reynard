@@ -3,28 +3,28 @@
  * Core translation value extraction and parameter substitution
  */
 
-import type { LanguageCode, TranslationParams } from '../../types';
+import type { LanguageCode, TranslationParams } from "../../types";
 
 // Helper function to get nested translation values with type safety
 export function getTranslationValue(
   obj: Record<string, unknown>,
   path: string,
-  params?: TranslationParams
+  params?: TranslationParams,
 ): string {
-  const value = path.split('.').reduce((acc: any, part) => acc?.[part], obj);
-  
-  if (typeof value === 'function') {
+  const value = path.split(".").reduce((acc: any, part) => acc?.[part], obj);
+
+  if (typeof value === "function") {
     return (value as (params: TranslationParams) => string)(params || {});
   }
-  
-  if (typeof value === 'string' && params) {
+
+  if (typeof value === "string" && params) {
     return Object.entries(params).reduce(
-      (str, [key, val]) => str.replace(`{${key}}`, val?.toString() || ''),
-      value
+      (str, [key, val]) => str.replace(`{${key}}`, val?.toString() || ""),
+      value,
     );
   }
-  
-  return (typeof value === 'string' ? value : '') || path;
+
+  return (typeof value === "string" ? value : "") || path;
 }
 
 // Format number according to locale
@@ -37,7 +37,11 @@ export function formatNumber(value: number, locale: LanguageCode): string {
 }
 
 // Format date according to locale
-export function formatDate(date: Date, locale: LanguageCode, options?: Intl.DateTimeFormatOptions): string {
+export function formatDate(
+  date: Date,
+  locale: LanguageCode,
+  options?: Intl.DateTimeFormatOptions,
+): string {
   try {
     return new Intl.DateTimeFormat(locale, options).format(date);
   } catch {
@@ -46,10 +50,14 @@ export function formatDate(date: Date, locale: LanguageCode, options?: Intl.Date
 }
 
 // Format currency according to locale
-export function formatCurrency(value: number, locale: LanguageCode, currency = 'USD'): string {
+export function formatCurrency(
+  value: number,
+  locale: LanguageCode,
+  currency = "USD",
+): string {
   try {
     return new Intl.NumberFormat(locale, {
-      style: 'currency',
+      style: "currency",
       currency,
     }).format(value);
   } catch {

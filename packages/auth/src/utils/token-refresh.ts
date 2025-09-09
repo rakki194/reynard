@@ -11,7 +11,8 @@ import type {
   AuthTokens,
   User,
 } from "../types";
-import { TokenManager, decodeToken, getUserFromToken, retryWithBackoff } from "./token-utils";
+import { TokenManager, decodeToken, getUserFromToken } from "./token-utils";
+import { retryWithBackoff } from "./password-utils";
 import { parseApiResponse } from "./api-utils";
 
 export interface TokenRefreshManager {
@@ -29,7 +30,7 @@ export const createTokenRefreshManager = (
   authState: () => AuthState,
   updateAuthState: (updates: Partial<AuthState>) => void,
   callbacks: AuthCallbacks,
-  logout: () => Promise<void>
+  logout: () => Promise<void>,
 ): TokenRefreshManager => {
   let refreshTimer: number | null = null;
 

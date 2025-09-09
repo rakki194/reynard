@@ -77,17 +77,15 @@ npm run build
 ### Basic Usage
 
 ```tsx
-import { useI18n } from 'reynard-i18n';
+import { useI18n } from "reynard-i18n";
 
 function MyComponent() {
   const { t, locale, setLocale, languages } = useI18n();
-  
+
   return (
     <div>
-      <h1>{t('common.welcome')}</h1>
-      <button onClick={() => setLocale('ja')}>
-        {t('common.language')}
-      </button>
+      <h1>{t("common.welcome")}</h1>
+      <button onClick={() => setLocale("ja")}>{t("common.language")}</button>
     </div>
   );
 }
@@ -98,10 +96,10 @@ function MyComponent() {
 ```tsx
 function LanguageSelector() {
   const { locale, setLocale, languages } = useI18n();
-  
+
   return (
     <select value={locale()} onChange={(e) => setLocale(e.target.value)}>
-      {languages.map(lang => (
+      {languages.map((lang) => (
         <option key={lang.code} value={lang.code}>
           {lang.nativeName}
         </option>
@@ -116,10 +114,10 @@ function LanguageSelector() {
 ```tsx
 function MyComponent() {
   const { t, isRTL } = useI18n();
-  
+
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <h1>{t('common.welcome')}</h1>
+    <div dir={isRTL ? "rtl" : "ltr"}>
+      <h1>{t("common.welcome")}</h1>
     </div>
   );
 }
@@ -127,45 +125,45 @@ function MyComponent() {
 
 ## Supported Languages
 
-| Code | Language | Native Name |
-|------|----------|-------------|
-| en | English | English |
-| ja | Japanese | 日本語 |
-| fr | French | Français |
-| ru | Russian | Русский |
-| zh | Chinese | 简体中文 |
-| ar | Arabic | العربية |
-| he | Hebrew | עברית |
-| de | German | Deutsch |
-| es | Spanish | Español |
-| it | Italian | Italiano |
-| pt | Portuguese | Português |
+| Code  | Language            | Native Name        |
+| ----- | ------------------- | ------------------ |
+| en    | English             | English            |
+| ja    | Japanese            | 日本語             |
+| fr    | French              | Français           |
+| ru    | Russian             | Русский            |
+| zh    | Chinese             | 简体中文           |
+| ar    | Arabic              | العربية            |
+| he    | Hebrew              | עברית              |
+| de    | German              | Deutsch            |
+| es    | Spanish             | Español            |
+| it    | Italian             | Italiano           |
+| pt    | Portuguese          | Português          |
 | pt-BR | Portuguese (Brazil) | Português (Brasil) |
-| ko | Korean | 한국어 |
-| nl | Dutch | Nederlands |
-| tr | Turkish | Türkçe |
-| vi | Vietnamese | Tiếng Việt |
-| th | Thai | ไทย |
-| hi | Hindi | हिन्दी |
-| id | Indonesian | Bahasa Indonesia |
-| cs | Czech | Čeština |
-| el | Greek | Ελληνικά |
-| hu | Hungarian | Magyar |
-| ro | Romanian | Română |
-| bg | Bulgarian | Български |
-| da | Danish | Dansk |
-| nb | Norwegian | Norsk |
-| sv | Swedish | Svenska |
-| pl | Polish | Polski |
-| uk | Ukrainian | Українська |
-| fi | Finnish | Suomi |
-| sk | Slovak | Slovenčina |
-| sl | Slovenian | Slovenščina |
-| hr | Croatian | Hrvatski |
-| et | Estonian | Eesti |
-| lv | Latvian | Latviešu |
-| lt | Lithuanian | Lietuvių |
-| mt | Maltese | Malti |
+| ko    | Korean              | 한국어             |
+| nl    | Dutch               | Nederlands         |
+| tr    | Turkish             | Türkçe             |
+| vi    | Vietnamese          | Tiếng Việt         |
+| th    | Thai                | ไทย                |
+| hi    | Hindi               | हिन्दी             |
+| id    | Indonesian          | Bahasa Indonesia   |
+| cs    | Czech               | Čeština            |
+| el    | Greek               | Ελληνικά           |
+| hu    | Hungarian           | Magyar             |
+| ro    | Romanian            | Română             |
+| bg    | Bulgarian           | Български          |
+| da    | Danish              | Dansk              |
+| nb    | Norwegian           | Norsk              |
+| sv    | Swedish             | Svenska            |
+| pl    | Polish              | Polski             |
+| uk    | Ukrainian           | Українська         |
+| fi    | Finnish             | Suomi              |
+| sk    | Slovak              | Slovenčina         |
+| sl    | Slovenian           | Slovenščina        |
+| hr    | Croatian            | Hrvatski           |
+| et    | Estonian            | Eesti              |
+| lv    | Latvian             | Latviešu           |
+| lt    | Lithuanian          | Lietuvių           |
+| mt    | Maltese             | Malti              |
 
 ## Architecture
 

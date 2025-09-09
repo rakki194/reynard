@@ -23,27 +23,30 @@ const StatsPanel: Component = () => {
     notesCreated: 47,
     notesShared: 12,
     aiFeaturesUsed: 23,
-    loginStreak: 7
+    loginStreak: 7,
   };
 
   const getProgressToNextLevel = () => {
     const currentLevelXP = stats.level * 200;
     const nextLevelXP = (stats.level + 1) * 200;
-    const progress = ((stats.experiencePoints - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
+    const progress =
+      ((stats.experiencePoints - currentLevelXP) /
+        (nextLevelXP - currentLevelXP)) *
+      100;
     return Math.min(100, Math.max(0, progress));
   };
 
   return (
     <Card class="stats-panel" padding="lg">
       <h3>📊 Your Stats</h3>
-      
+
       <div class="level-section">
         <div class="level-info">
           <span class="level-number">Level {stats.level}</span>
           <span class="xp-count">{stats.experiencePoints} XP</span>
         </div>
         <div class="progress-bar">
-          <div 
+          <div
             class="progress-fill"
             style={{ width: `${getProgressToNextLevel()}%` }}
           />
@@ -61,7 +64,7 @@ const StatsPanel: Component = () => {
             <span class="stat-label">Notes Created</span>
           </div>
         </div>
-        
+
         <div class="stat-item">
           <span class="stat-icon">🤝</span>
           <div class="stat-content">
@@ -69,7 +72,7 @@ const StatsPanel: Component = () => {
             <span class="stat-label">Notes Shared</span>
           </div>
         </div>
-        
+
         <div class="stat-item">
           <span class="stat-icon">🤖</span>
           <div class="stat-content">
@@ -77,7 +80,7 @@ const StatsPanel: Component = () => {
             <span class="stat-label">AI Features Used</span>
           </div>
         </div>
-        
+
         <div class="stat-item">
           <span class="stat-icon">🔥</span>
           <div class="stat-content">

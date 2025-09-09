@@ -1,6 +1,6 @@
 # Solid Router Guide
 
-*Comprehensive routing solution for SolidJS applications with universal rendering support.*
+_Comprehensive routing solution for SolidJS applications with universal rendering support._
 
 ## Overview
 
@@ -25,13 +25,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'solid-router': ['@solidjs/router'],
-          'reynard-core': ['reynard-core'],
-          'reynard-components': ['reynard-components'],
-        }
-      }
-    }
-  }
+          "solid-router": ["@solidjs/router"],
+          "reynard-core": ["reynard-core"],
+          "reynard-components": ["reynard-components"],
+        },
+      },
+    },
+  },
 });
 ```
 
@@ -70,7 +70,7 @@ render(
       <App />
     </Router>
   ),
-  document.getElementById("root")!
+  document.getElementById("root")!,
 );
 ```
 
@@ -78,18 +78,16 @@ render(
 
 ```tsx
 // third_party/yipyap/src/main.tsx
-import { Router } from '@solidjs/router';
-import { routes } from './router';
+import { Router } from "@solidjs/router";
+import { routes } from "./router";
 
-const Layout: ParentComponent = props => {
+const Layout: ParentComponent = (props) => {
   return (
     <AppProvider>
       <CaptionerProvider>
         <AuthGuardWrapper>
           <GalleryProvider>
-            <SidebarProvider>
-              {props.children}
-            </SidebarProvider>
+            <SidebarProvider>{props.children}</SidebarProvider>
           </GalleryProvider>
         </AuthGuardWrapper>
       </CaptionerProvider>
@@ -112,12 +110,12 @@ import { Router, Route } from "@solidjs/router";
 import Home from "./routes/Home";
 
 render(
-    () => (
-        <Router>
-            <Route path="/" component={Home} />
-        </Router>
-    ),
-    document.getElementById("app")
+  () => (
+    <Router>
+      <Route path="/" component={Home} />
+    </Router>
+  ),
+  document.getElementById("app"),
 );
 ```
 
@@ -127,7 +125,7 @@ render(
 
 ```tsx
 // packages/docs-site/src/App.tsx
-import { Router, Route, Routes } from 'solid-router';
+import { Router, Route, Routes } from "solid-router";
 
 const App: Component = () => {
   return (
@@ -162,10 +160,7 @@ const App: Component = () => {
     <ReynardProvider>
       <NotificationsProvider value={notifications}>
         <AuthProvider config={authConfig}>
-          <AppLayout
-            sidebar={<Sidebar />}
-            header={<Header />}
-          >
+          <AppLayout sidebar={<Sidebar />} header={<Header />}>
             <Route path="/" component={Dashboard} />
             <Route path="/charts" component={Charts} />
             <Route path="/components" component={Components} />
@@ -190,49 +185,51 @@ Configure routes programmatically for better organization and performance optimi
 
 ```tsx
 // third_party/yipyap/src/router.ts
-import { lazy } from 'solid-js';
-import { RouteDefinition } from '@solidjs/router';
-import { NotFound } from './pages/not_found';
+import { lazy } from "solid-js";
+import { RouteDefinition } from "@solidjs/router";
+import { NotFound } from "./pages/not_found";
 
 // Lazy load components for code splitting
-const GalleryPage = lazy(() => import('./pages/Gallery'));
-const LoginPage = lazy(() => import('./components/Auth/Login'));
-const RegisterPage = lazy(() => import('./components/Auth/Register'));
-const UserEngagementPage = lazy(() => import('./components/Auth/UserEngagement'));
-const TextViewerPage = lazy(() => import('./pages/TextViewer'));
-const RAGPage = lazy(() => import('./pages/RAG'));
+const GalleryPage = lazy(() => import("./pages/Gallery"));
+const LoginPage = lazy(() => import("./components/Auth/Login"));
+const RegisterPage = lazy(() => import("./components/Auth/Register"));
+const UserEngagementPage = lazy(
+  () => import("./components/Auth/UserEngagement"),
+);
+const TextViewerPage = lazy(() => import("./pages/TextViewer"));
+const RAGPage = lazy(() => import("./pages/RAG"));
 
 export const routes: RouteDefinition[] = [
   {
-    path: '/',
+    path: "/",
     component: GalleryPage,
   },
   {
-    path: '/login',
+    path: "/login",
     component: LoginPage,
   },
   {
-    path: '/register',
+    path: "/register",
     component: RegisterPage,
   },
   {
-    path: '/settings/engagement',
+    path: "/settings/engagement",
     component: UserEngagementPage,
   },
   {
-    path: '/rag',
+    path: "/rag",
     component: RAGPage,
   },
   {
-    path: '/text/*path',
+    path: "/text/*path",
     component: TextViewerPage,
   },
   {
-    path: '/*path',
+    path: "/*path",
     component: GalleryPage,
   },
   {
-    path: '*404',
+    path: "*404",
     component: NotFound,
   },
 ];
@@ -247,34 +244,34 @@ export const routes: RouteDefinition[] = [
 const routes: RouteDefinition[] = [
   // Public routes
   {
-    path: '/',
-    component: lazy(() => import('./pages/Home')),
+    path: "/",
+    component: lazy(() => import("./pages/Home")),
   },
   {
-    path: '/login',
-    component: lazy(() => import('./pages/Login')),
+    path: "/login",
+    component: lazy(() => import("./pages/Login")),
   },
-  
+
   // Protected routes
   {
-    path: '/dashboard',
-    component: lazy(() => import('./pages/Dashboard')),
+    path: "/dashboard",
+    component: lazy(() => import("./pages/Dashboard")),
   },
   {
-    path: '/settings',
-    component: lazy(() => import('./pages/Settings')),
+    path: "/settings",
+    component: lazy(() => import("./pages/Settings")),
   },
-  
+
   // API routes
   {
-    path: '/api/*path',
-    component: lazy(() => import('./pages/ApiProxy')),
+    path: "/api/*path",
+    component: lazy(() => import("./pages/ApiProxy")),
   },
-  
+
   // Catch-all routes
   {
-    path: '*404',
-    component: lazy(() => import('./pages/NotFound')),
+    path: "*404",
+    component: lazy(() => import("./pages/NotFound")),
   },
 ];
 ```
@@ -289,20 +286,22 @@ Optimize application performance through strategic component loading. Lazy loadi
 
 ```tsx
 // third_party/yipyap/src/router.ts
-import { lazy } from 'solid-js';
+import { lazy } from "solid-js";
 
 // Lazy load components for code splitting
-const GalleryPage = lazy(() => import('./pages/Gallery'));
-const LoginPage = lazy(() => import('./components/Auth/Login'));
-const RegisterPage = lazy(() => import('./components/Auth/Register'));
-const UserEngagementPage = lazy(() => import('./components/Auth/UserEngagement'));
-const TextViewerPage = lazy(() => import('./pages/TextViewer'));
-const RAGPage = lazy(() => import('./pages/RAG'));
-const EmbeddingParameterControlsDemoPage = lazy(() => 
-  import('./components/UI/EmbeddingParameterControlsDemo')
+const GalleryPage = lazy(() => import("./pages/Gallery"));
+const LoginPage = lazy(() => import("./components/Auth/Login"));
+const RegisterPage = lazy(() => import("./components/Auth/Register"));
+const UserEngagementPage = lazy(
+  () => import("./components/Auth/UserEngagement"),
 );
-const EmbeddingVisualizationExportDemoPage = lazy(() => 
-  import('./components/UI/EmbeddingVisualizationExportDemo')
+const TextViewerPage = lazy(() => import("./pages/TextViewer"));
+const RAGPage = lazy(() => import("./pages/RAG"));
+const EmbeddingParameterControlsDemoPage = lazy(
+  () => import("./components/UI/EmbeddingParameterControlsDemo"),
+);
+const EmbeddingVisualizationExportDemoPage = lazy(
+  () => import("./components/UI/EmbeddingVisualizationExportDemo"),
 );
 ```
 
@@ -314,26 +313,28 @@ const EmbeddingVisualizationExportDemoPage = lazy(() =>
 import { lazy, ErrorBoundary } from "solid-js";
 
 // Lazy load with error handling
-const LazyComponent = lazy(() => 
-  import("./HeavyComponent").catch(() => ({ 
+const LazyComponent = lazy(() =>
+  import("./HeavyComponent").catch(() => ({
     default: () => (
       <div class="error-fallback">
         <h2>Failed to load component</h2>
         <p>Please refresh the page or try again later.</p>
       </div>
-    )
-  }))
+    ),
+  })),
 );
 
 // Usage with error boundary
 const App = () => (
   <Router>
-    <ErrorBoundary fallback={(err) => (
-      <div class="route-error">
-        <h2>Route Error</h2>
-        <p>{err.message}</p>
-      </div>
-    )}>
+    <ErrorBoundary
+      fallback={(err) => (
+        <div class="route-error">
+          <h2>Route Error</h2>
+          <p>{err.message}</p>
+        </div>
+      )}
+    >
       <Route path="/" component={LazyComponent} />
     </ErrorBoundary>
   </Router>
@@ -417,7 +418,7 @@ function Navbar() {
 **Key Properties:**
 
 - `activeClass`: CSS class applied when link is active
-- `inactiveClass`: CSS class applied when link is inactive  
+- `inactiveClass`: CSS class applied when link is inactive
 - `end`: When `true`, matches exact route only (useful for root routes)
 
 ### Programmatic Navigation
@@ -430,11 +431,11 @@ Control navigation programmatically for dynamic user interactions. This is essen
 
 ```tsx
 // third_party/yipyap/src/components/Video/VideoGrid.tsx
-import { useNavigate } from '@solidjs/router';
+import { useNavigate } from "@solidjs/router";
 
-export const VideoGrid: Component<VideoGridProps> = props => {
+export const VideoGrid: Component<VideoGridProps> = (props) => {
   const navigate = useNavigate();
-  
+
   const handleVideoClick = (video: VideoItem) => {
     // Navigate to video detail view
     navigate(`/video/${video.id}`);
@@ -444,10 +445,7 @@ export const VideoGrid: Component<VideoGridProps> = props => {
     <div class="video-grid">
       <For each={videos()}>
         {(video) => (
-          <div 
-            class="video-item" 
-            onClick={() => handleVideoClick(video)}
-          >
+          <div class="video-item" onClick={() => handleVideoClick(video)}>
             {video.title}
           </div>
         )}
@@ -512,7 +510,7 @@ Access dynamic route parameters using the `useParams` hook:
 
 ```tsx
 // packages/docs-site/src/pages/PackagePage.tsx
-import { useParams } from 'solid-router';
+import { useParams } from "solid-router";
 
 export const PackagePage: Component = () => {
   const params = useParams();
@@ -524,7 +522,7 @@ export const PackagePage: Component = () => {
       const data = await fetchPackageData(params.package);
       setPackageData(data);
     } catch (error) {
-      console.error('Failed to load package data:', error);
+      console.error("Failed to load package data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -535,9 +533,7 @@ export const PackagePage: Component = () => {
       {isLoading() ? (
         <div>Loading package documentation...</div>
       ) : (
-        <DocsSection title="Overview">
-          {packageData()?.description}
-        </DocsSection>
+        <DocsSection title="Overview">{packageData()?.description}</DocsSection>
       )}
     </DocsPage>
   );
@@ -550,16 +546,16 @@ export const PackagePage: Component = () => {
 // Route definitions with parameters
 const routes: RouteDefinition[] = [
   {
-    path: '/packages/:package',
-    component: lazy(() => import('./pages/PackagePage')),
+    path: "/packages/:package",
+    component: lazy(() => import("./pages/PackagePage")),
   },
   {
-    path: '/packages/:package/api',
-    component: lazy(() => import('./pages/ApiPage')),
+    path: "/packages/:package/api",
+    component: lazy(() => import("./pages/ApiPage")),
   },
   {
-    path: '/packages/:package/examples',
-    component: lazy(() => import('./pages/ExamplePage')),
+    path: "/packages/:package/examples",
+    component: lazy(() => import("./pages/ExamplePage")),
   },
 ];
 ```
@@ -572,25 +568,25 @@ Handle URL query parameters for search, filtering, and state management:
 
 ```tsx
 // packages/docs-site/src/pages/SearchPage.tsx
-import { useSearchParams } from 'solid-router';
+import { useSearchParams } from "solid-router";
 
 export const SearchPage: Component = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = createSignal(searchParams.q || '');
+  const [searchQuery, setSearchQuery] = createSignal(searchParams.q || "");
   const [searchResults, setSearchResults] = createSignal<any[]>([]);
   const [isSearching, setIsSearching] = createSignal(false);
 
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
     setSearchParams({ q: query });
-    
+
     if (query.trim()) {
       setIsSearching(true);
       try {
         const results = await searchDocumentation(query);
         setSearchResults(results);
       } catch (error) {
-        console.error('Search failed:', error);
+        console.error("Search failed:", error);
       } finally {
         setIsSearching(false);
       }
@@ -600,15 +596,15 @@ export const SearchPage: Component = () => {
   return (
     <DocsPage title="Search Documentation">
       <div class="search-container">
-        <input 
-          value={searchQuery()} 
+        <input
+          value={searchQuery()}
           onInput={(e) => handleSearch(e.target.value)}
           placeholder="Search documentation..."
           class="search-input"
         />
-        
+
         {isSearching() && <div>Searching...</div>}
-        
+
         <For each={searchResults()}>
           {(result) => (
             <div class="search-result">
@@ -657,17 +653,17 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'solid-js': ['solid-js'],
-          'solid-router': ['@solidjs/router'],
-          'reynard-core': ['reynard-core'],
-          'reynard-components': ['reynard-components'],
-          'reynard-themes': ['reynard-themes'],
-          'reynard-docs-core': ['reynard-docs-core'],
-          'reynard-docs-components': ['reynard-docs-components']
-        }
-      }
-    }
-  }
+          "solid-js": ["solid-js"],
+          "solid-router": ["@solidjs/router"],
+          "reynard-core": ["reynard-core"],
+          "reynard-components": ["reynard-components"],
+          "reynard-themes": ["reynard-themes"],
+          "reynard-docs-core": ["reynard-docs-core"],
+          "reynard-docs-components": ["reynard-docs-components"],
+        },
+      },
+    },
+  },
 });
 ```
 
@@ -684,32 +680,30 @@ export default defineConfig({
 
 ```tsx
 // Production-ready lazy loading pattern
-const LazyComponent = lazy(() => 
-  import("./HeavyComponent").catch(() => ({ 
+const LazyComponent = lazy(() =>
+  import("./HeavyComponent").catch(() => ({
     default: () => (
       <div class="error-fallback">
         <h2>Failed to load component</h2>
         <p>Please refresh the page or try again later.</p>
-        <button onClick={() => window.location.reload()}>
-          Retry
-        </button>
+        <button onClick={() => window.location.reload()}>Retry</button>
       </div>
-    )
-  }))
+    ),
+  })),
 );
 
 // Usage with error boundary
 const App = () => (
   <Router>
-    <ErrorBoundary fallback={(err) => (
-      <div class="route-error">
-        <h2>Route Error</h2>
-        <p>{err.message}</p>
-        <button onClick={() => window.location.href = '/'}>
-          Go Home
-        </button>
-      </div>
-    )}>
+    <ErrorBoundary
+      fallback={(err) => (
+        <div class="route-error">
+          <h2>Route Error</h2>
+          <p>{err.message}</p>
+          <button onClick={() => (window.location.href = "/")}>Go Home</button>
+        </div>
+      )}
+    >
       <Route path="/heavy" component={LazyComponent} />
     </ErrorBoundary>
   </Router>
@@ -725,24 +719,24 @@ const App = () => (
 const routes: RouteDefinition[] = [
   // Core routes (loaded immediately)
   {
-    path: '/',
-    component: lazy(() => import('./pages/Home')),
+    path: "/",
+    component: lazy(() => import("./pages/Home")),
   },
-  
+
   // Feature routes (loaded on demand)
   {
-    path: '/admin',
-    component: lazy(() => import('./pages/Admin')),
+    path: "/admin",
+    component: lazy(() => import("./pages/Admin")),
   },
   {
-    path: '/analytics',
-    component: lazy(() => import('./pages/Analytics')),
+    path: "/analytics",
+    component: lazy(() => import("./pages/Analytics")),
   },
-  
+
   // Heavy routes (loaded only when needed)
   {
-    path: '/reports',
-    component: lazy(() => import('./pages/Reports')),
+    path: "/reports",
+    component: lazy(() => import("./pages/Reports")),
   },
 ];
 ```
@@ -760,15 +754,17 @@ import { ErrorBoundary } from "solid-js";
 
 const App = () => (
   <Router>
-    <ErrorBoundary fallback={(err) => (
-      <div class="route-error-boundary">
-        <h2>Something went wrong</h2>
-        <p>Error: {err.message}</p>
-        <button onClick={() => window.location.href = '/'}>
-          Return to Home
-        </button>
-      </div>
-    )}>
+    <ErrorBoundary
+      fallback={(err) => (
+        <div class="route-error-boundary">
+          <h2>Something went wrong</h2>
+          <p>Error: {err.message}</p>
+          <button onClick={() => (window.location.href = "/")}>
+            Return to Home
+          </button>
+        </div>
+      )}
+    >
       <Route path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
     </ErrorBoundary>
@@ -784,16 +780,16 @@ const App = () => (
 // Yipyap CMS 404 pattern
 const routes: RouteDefinition[] = [
   {
-    path: '/',
+    path: "/",
     component: GalleryPage,
   },
   {
-    path: '/login',
+    path: "/login",
     component: LoginPage,
   },
   // ... other routes
   {
-    path: '*404',
+    path: "*404",
     component: NotFound,
   },
 ];
@@ -814,14 +810,16 @@ const App = () => (
 
 ```tsx
 // Error recovery with retry mechanism
-const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = (props) => {
+const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = (
+  props,
+) => {
   return (
     <div class="error-recovery">
       <h2>An error occurred</h2>
       <p>{props.error.message}</p>
       <div class="error-actions">
         <button onClick={props.onRetry}>Try Again</button>
-        <button onClick={() => window.location.href = '/'}>Go Home</button>
+        <button onClick={() => (window.location.href = "/")}>Go Home</button>
       </div>
     </div>
   );
@@ -830,12 +828,11 @@ const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = (props) 
 // Usage in error boundary
 const App = () => (
   <Router>
-    <ErrorBoundary fallback={(err) => (
-      <ErrorRecovery 
-        error={err} 
-        onRetry={() => window.location.reload()} 
-      />
-    )}>
+    <ErrorBoundary
+      fallback={(err) => (
+        <ErrorRecovery error={err} onRetry={() => window.location.reload()} />
+      )}
+    >
       <Route path="/" component={Home} />
     </ErrorBoundary>
   </Router>
@@ -860,7 +857,7 @@ test("renders home route", () => {
       <Route path="/" component={() => <div>Home</div>} />
     </Router>
   ));
-  
+
   expect(screen.getByText("Home")).toBeInTheDocument();
 });
 ```
@@ -877,9 +874,9 @@ test("renders package page with parameter", () => {
       <Route path="/packages/:package" component={PackagePage} />
     </Router>
   ));
-  
+
   // Navigate to a specific package
-  window.history.pushState({}, '', '/packages/core');
+  window.history.pushState({}, "", "/packages/core");
   expect(screen.getByText("core Package")).toBeInTheDocument();
 });
 ```
@@ -900,7 +897,7 @@ test("navigates between routes", () => {
       <Route path="/about" component={() => <div>About</div>} />
     </Router>
   ));
-  
+
   fireEvent.click(screen.getByText("About"));
   expect(screen.getByText("About")).toBeInTheDocument();
 });
@@ -912,15 +909,15 @@ test("navigates between routes", () => {
 
 ```tsx
 // third_party/yipyap/src/composables/useConnectionStatus.test.tsx
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Mock router hooks
-vi.mock('@solidjs/router', () => ({
+vi.mock("@solidjs/router", () => ({
   Router: (props: any) => props.children,
   useLocation: () => ({
-    pathname: '/test',
-    search: '',
-    hash: '',
+    pathname: "/test",
+    search: "",
+    hash: "",
     query: {},
   }),
   useNavigate: () => vi.fn(),
@@ -939,21 +936,21 @@ test("handles connection status", () => {
 
 ```tsx
 // e2e/routing.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('navigates through application routes', async ({ page }) => {
-  await page.goto('/');
-  
+test("navigates through application routes", async ({ page }) => {
+  await page.goto("/");
+
   // Test navigation to different routes
   await page.click('a[href="/dashboard"]');
-  await expect(page).toHaveURL('/dashboard');
-  
+  await expect(page).toHaveURL("/dashboard");
+
   await page.click('a[href="/settings"]');
-  await expect(page).toHaveURL('/settings');
-  
+  await expect(page).toHaveURL("/settings");
+
   // Test back navigation
   await page.goBack();
-  await expect(page).toHaveURL('/dashboard');
+  await expect(page).toHaveURL("/dashboard");
 });
 ```
 
@@ -970,34 +967,34 @@ Follow established patterns for maintainable and performant routing. These pract
 const routes: RouteDefinition[] = [
   // Public routes
   {
-    path: '/',
-    component: lazy(() => import('./pages/Home')),
+    path: "/",
+    component: lazy(() => import("./pages/Home")),
   },
   {
-    path: '/login',
-    component: lazy(() => import('./pages/Login')),
+    path: "/login",
+    component: lazy(() => import("./pages/Login")),
   },
-  
+
   // Protected routes
   {
-    path: '/dashboard',
-    component: lazy(() => import('./pages/Dashboard')),
+    path: "/dashboard",
+    component: lazy(() => import("./pages/Dashboard")),
   },
   {
-    path: '/admin',
-    component: lazy(() => import('./pages/Admin')),
+    path: "/admin",
+    component: lazy(() => import("./pages/Admin")),
   },
-  
+
   // API and utility routes
   {
-    path: '/api/*path',
-    component: lazy(() => import('./pages/ApiProxy')),
+    path: "/api/*path",
+    component: lazy(() => import("./pages/ApiProxy")),
   },
-  
+
   // Error handling
   {
-    path: '*404',
-    component: lazy(() => import('./pages/NotFound')),
+    path: "*404",
+    component: lazy(() => import("./pages/NotFound")),
   },
 ];
 ```
@@ -1027,13 +1024,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'solid-router': ['@solidjs/router'],
-          'reynard-core': ['reynard-core'],
-          'reynard-components': ['reynard-components'],
-        }
-      }
-    }
-  }
+          "solid-router": ["@solidjs/router"],
+          "reynard-core": ["reynard-core"],
+          "reynard-components": ["reynard-components"],
+        },
+      },
+    },
+  },
 });
 ```
 
@@ -1118,29 +1115,27 @@ const App = () => (
 // Debug route matching
 const DebugRouter: Component = () => {
   const location = useLocation();
-  
+
   createEffect(() => {
-    console.log('Current route:', location.pathname);
-    console.log('Search params:', location.search);
-    console.log('Hash:', location.hash);
+    console.log("Current route:", location.pathname);
+    console.log("Search params:", location.search);
+    console.log("Hash:", location.hash);
   });
-  
+
   return <Router>{/* routes */}</Router>;
 };
 
 // Debug navigation
 const DebugNavigation: Component = () => {
   const navigate = useNavigate();
-  
+
   const debugNavigate = (path: string) => {
-    console.log('Navigating to:', path);
+    console.log("Navigating to:", path);
     navigate(path);
   };
-  
+
   return (
-    <button onClick={() => debugNavigate('/debug')}>
-      Debug Navigation
-    </button>
+    <button onClick={() => debugNavigate("/debug")}>Debug Navigation</button>
   );
 };
 ```
@@ -1153,25 +1148,27 @@ const DebugNavigation: Component = () => {
 // Monitor route loading performance
 const PerformanceMonitor: Component = () => {
   const [loadTimes, setLoadTimes] = createSignal<Record<string, number>>({});
-  
+
   const measureRouteLoad = (routeName: string) => {
     const start = performance.now();
-    
+
     return () => {
       const end = performance.now();
-      setLoadTimes(prev => ({
+      setLoadTimes((prev) => ({
         ...prev,
-        [routeName]: end - start
+        [routeName]: end - start,
       }));
     };
   };
-  
+
   return (
     <div>
       <h3>Route Load Times:</h3>
       <For each={Object.entries(loadTimes())}>
         {([route, time]) => (
-          <div>{route}: {time.toFixed(2)}ms</div>
+          <div>
+            {route}: {time.toFixed(2)}ms
+          </div>
         )}
       </For>
     </div>
@@ -1223,4 +1220,4 @@ The patterns demonstrated in this guide are actively used in:
 
 These implementations showcase how Solid Router scales from simple single-page applications to complex enterprise solutions while maintaining excellent performance and developer experience.
 
-*Build robust navigation experiences with Solid Router in the Reynard ecosystem.*
+_Build robust navigation experiences with Solid Router in the Reynard ecosystem._

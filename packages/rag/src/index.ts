@@ -20,7 +20,7 @@ export type {
   RAGConfig,
   RAGIndexingStatus,
   RAGMetrics,
-  RAGClientOptions
+  RAGClientOptions,
 } from "./rag-types";
 
 // RAG Utilities

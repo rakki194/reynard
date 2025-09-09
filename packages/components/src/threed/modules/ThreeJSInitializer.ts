@@ -3,8 +3,8 @@
  * Orchestrates the complete Three.js setup process
  */
 
-import { createThreeJSSetup, createPointCloud, AnimationLoop } from './index';
-import type { ThreeJSObjects } from './ThreeJSSetup';
+import { createThreeJSSetup, createPointCloud, AnimationLoop } from "./index";
+import type { ThreeJSObjects } from "./ThreeJSSetup";
 
 export interface InitializationConfig {
   width: number;
@@ -22,26 +22,26 @@ export interface InitializedThreeJS {
 
 export const initializeThreeJS = async (
   container: HTMLDivElement,
-  config: InitializationConfig
+  config: InitializationConfig,
 ): Promise<InitializedThreeJS> => {
   const setupConfig = {
     width: config.width,
     height: config.height,
-    backgroundColor: config.backgroundColor
+    backgroundColor: config.backgroundColor,
   };
 
   const objects = await createThreeJSSetup(container, setupConfig);
-  
+
   const pointCloudConfig = {
     pointCount: config.pointCount,
-    colorPalette: config.colorPalette
+    colorPalette: config.colorPalette,
   };
 
   const points = await createPointCloud(objects.scene, pointCloudConfig);
 
   const animationLoop = new AnimationLoop({
     ...objects,
-    points
+    points,
   });
 
   return { objects, animationLoop, points };

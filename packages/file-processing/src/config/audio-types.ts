@@ -1,6 +1,6 @@
 /**
  * Audio file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported audio file extensions, MIME types, and
  * processing capabilities for audio files.
  */

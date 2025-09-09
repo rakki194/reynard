@@ -1,6 +1,6 @@
 # 🦊 Reynard Refactoring Checklist
 
-*A systematic approach to modularizing large files*
+_A systematic approach to modularizing large files_
 
 ## Pre-Refactoring Analysis
 
@@ -195,4 +195,4 @@
 
 ---
 
-*"The cunning fox plans every move carefully, ensuring success through systematic preparation."* 🦊
+_"The cunning fox plans every move carefully, ensuring success through systematic preparation."_ 🦊

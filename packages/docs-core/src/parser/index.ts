@@ -2,15 +2,15 @@
  * @fileoverview Markdown and content parsers for Reynard documentation
  */
 
-import { marked } from 'marked';
-import matter from 'gray-matter';
-import hljs from 'highlight.js';
-import type { 
-  DocPage, 
-  DocMetadata, 
-  DocContentType, 
-  MarkdownOptions 
-} from '../types';
+import { marked } from "marked";
+import matter from "gray-matter";
+import hljs from "highlight.js";
+import type {
+  DocPage,
+  DocMetadata,
+  DocContentType,
+  MarkdownOptions,
+} from "../types";
 
 /**
  * Enhanced markdown parser with syntax highlighting and custom features
@@ -28,7 +28,7 @@ export class MarkdownParser {
       smartLists: true,
       smartypants: true,
       highlight: this.highlightCode.bind(this),
-      ...options
+      ...options,
     };
 
     this.setupMarked();
@@ -37,11 +37,14 @@ export class MarkdownParser {
   /**
    * Parse markdown content with frontmatter
    */
-  async parse(content: string, type: DocContentType = 'markdown'): Promise<DocPage> {
+  async parse(
+    content: string,
+    type: DocContentType = "markdown",
+  ): Promise<DocPage> {
     const { data, content: markdownContent } = matter(content);
-    
+
     const metadata: DocMetadata = {
-      title: data.title || 'Untitled',
+      title: data.title || "Untitled",
       description: data.description,
       author: data.author,
       date: data.date,
@@ -49,7 +52,7 @@ export class MarkdownParser {
       category: data.category,
       version: data.version,
       lastModified: data.lastModified,
-      ...data
+      ...data,
     };
 
     const html = await this.parseMarkdown(markdownContent);
@@ -63,7 +66,7 @@ export class MarkdownParser {
       metadata,
       type,
       published: data.published !== false,
-      order: data.order || 0
+      order: data.order || 0,
     };
   }
 
@@ -82,11 +85,12 @@ export class MarkdownParser {
 
     // Custom code block rendering
     renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
-      const highlighted = this.options.highlight?.(text, lang || 'text') || text;
+      const highlighted =
+        this.options.highlight?.(text, lang || "text") || text;
       return `
         <div class="code-block" data-language="${lang}">
           <div class="code-header">
-            <span class="language-label">${lang || 'text'}</span>
+            <span class="language-label">${lang || "text"}</span>
             <button class="copy-button" onclick="copyCode(this)">Copy</button>
           </div>
           <pre><code class="hljs language-${lang}">${highlighted}</code></pre>
@@ -112,16 +116,32 @@ export class MarkdownParser {
     };
 
     // Custom link rendering with external link detection
-    renderer.link = ({ href, title, tokens }: { href: string; title?: string | null; tokens: any[] }) => {
-      const isExternal = href.startsWith('http') || href.startsWith('//');
-      const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-      const titleAttr = title ? ` title="${title}"` : '';
-      
-      return `<a href="${href}"${titleAttr}${target} class="doc-link ${isExternal ? 'external' : ''}">${tokens}</a>`;
+    renderer.link = ({
+      href,
+      title,
+      tokens,
+    }: {
+      href: string;
+      title?: string | null;
+      tokens: any[];
+    }) => {
+      const isExternal = href.startsWith("http") || href.startsWith("//");
+      const target = isExternal
+        ? ' target="_blank" rel="noopener noreferrer"'
+        : "";
+      const titleAttr = title ? ` title="${title}"` : "";
+
+      return `<a href="${href}"${titleAttr}${target} class="doc-link ${isExternal ? "external" : ""}">${tokens}</a>`;
     };
 
     // Custom heading rendering with anchor links
-    renderer.heading = ({ tokens, depth }: { tokens: any[]; depth: number }) => {
+    renderer.heading = ({
+      tokens,
+      depth,
+    }: {
+      tokens: any[];
+      depth: number;
+    }) => {
       const id = this.generateSlug(tokens.toString());
       return `
         <h${depth} id="${id}" class="doc-heading doc-heading--${depth}">
@@ -134,7 +154,7 @@ export class MarkdownParser {
 
     marked.setOptions({
       renderer,
-      ...this.options
+      ...this.options,
     });
   }
 
@@ -149,7 +169,7 @@ export class MarkdownParser {
         console.warn(`Failed to highlight ${language}:`, err);
       }
     }
-    
+
     // Fallback to auto-detection
     try {
       return hljs.highlightAuto(code).value;
@@ -164,9 +184,9 @@ export class MarkdownParser {
   private generateSlug(title: string): string {
     return title
       .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
       .trim();
   }
 }
@@ -187,7 +207,7 @@ export class MDXParser {
   async parse(content: string): Promise<DocPage> {
     // For now, we'll use the markdown parser
     // In a full implementation, you'd use @mdx-js/mdx
-    return await this.markdownParser.parse(content, 'mdx');
+    return await this.markdownParser.parse(content, "mdx");
   }
 
   /**
@@ -251,11 +271,11 @@ export class ContentParser {
    */
   async parse(content: string, type: DocContentType): Promise<DocPage> {
     switch (type) {
-      case 'markdown':
+      case "markdown":
         return await this.markdownParser.parse(content, type);
-      case 'mdx':
+      case "mdx":
         return await this.mdxParser.parse(content);
-      case 'api':
+      case "api":
         // Handle API documentation parsing
         return this.parseApiContent(content);
       default:
@@ -269,12 +289,12 @@ export class ContentParser {
   private parseApiContent(content: string): DocPage {
     // Parse API documentation
     return {
-      id: 'api',
-      slug: 'api',
-      title: 'API Documentation',
+      id: "api",
+      slug: "api",
+      title: "API Documentation",
       content,
-      metadata: { title: 'API Documentation' },
-      type: 'api'
+      metadata: { title: "API Documentation" },
+      type: "api",
     };
   }
 }

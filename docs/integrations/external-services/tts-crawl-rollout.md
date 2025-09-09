@@ -32,7 +32,7 @@ This document outlines the rollout strategy for the TTS and Crawl Integration fe
    # Feature flags - default to disabled
    CRAWL_ENABLED=false
    TTS_ENABLED=false
-   
+
    # Service configuration
    FIRECRAWL_BASE_URL=https://api.firecrawl.dev
    CRAWL_CACHE_DIR=/path/to/cache
@@ -48,7 +48,7 @@ This document outlines the rollout strategy for the TTS and Crawl Integration fe
    # app/services/core/service_setup.py
    if os.getenv("CRAWL_ENABLED", "false").lower() == "true":
        register_service("crawl", CrawlService())
-   
+
    if os.getenv("TTS_ENABLED", "false").lower() == "true":
        register_service("tts", TTSService())
    ```
@@ -59,7 +59,7 @@ This document outlines the rollout strategy for the TTS and Crawl Integration fe
    # app/api/__init__.py
    if os.getenv("CRAWL_ENABLED", "false").lower() == "true":
        app.include_router(crawl_router, prefix="/api/crawl")
-   
+
    if os.getenv("TTS_ENABLED", "false").lower() == "true":
        app.include_router(tts_router, prefix="/api/tts")
    ```
@@ -80,7 +80,7 @@ This document outlines the rollout strategy for the TTS and Crawl Integration fe
    # Test that features are disabled by default
    curl http://localhost:7000/api/crawl/fetch
    # Expected: 404 Not Found
-   
+
    curl http://localhost:7000/api/tts/voices
    # Expected: 404 Not Found
    ```
@@ -91,11 +91,11 @@ This document outlines the rollout strategy for the TTS and Crawl Integration fe
    # Enable features for testing
    export CRAWL_ENABLED=true
    export TTS_ENABLED=true
-   
+
    # Restart server and verify endpoints are available
    curl http://localhost:7000/api/crawl/fetch
    # Expected: 400 Bad Request (missing URL)
-   
+
    curl http://localhost:7000/api/tts/voices
    # Expected: 200 OK with voice list
    ```

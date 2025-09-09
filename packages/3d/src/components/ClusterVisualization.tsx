@@ -1,11 +1,19 @@
-import { Component, createSignal, createEffect, onCleanup, Show } from 'solid-js';
-import type { ClusterVisualizationProps } from '../types/rendering';
-import './ClusterVisualization.css';
+import {
+  Component,
+  createSignal,
+  createEffect,
+  onCleanup,
+  Show,
+} from "solid-js";
+import type { ClusterVisualizationProps } from "../types/rendering";
+import "./ClusterVisualization.css";
 
 // Three.js will be dynamically imported
 let THREE: any = null;
 
-export const ClusterVisualization: Component<ClusterVisualizationProps> = props => {
+export const ClusterVisualization: Component<ClusterVisualizationProps> = (
+  props,
+) => {
   const [hoveredCluster, setHoveredCluster] = createSignal<string | null>(null);
   const [showStatistics, setShowStatistics] = createSignal(true);
 
@@ -19,14 +27,14 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
 
     // Initialize Three.js if not already done
     if (!THREE) {
-      THREE = await import('three');
+      THREE = await import("three");
     }
 
     // Clear existing cluster visualizations
     clearClusterVisualizations();
 
     // Create new cluster visualizations
-    props.clusters.forEach(cluster => {
+    props.clusters.forEach((cluster) => {
       createConvexHull(cluster);
       createClusterLabel(cluster);
     });
@@ -37,7 +45,7 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
 
   const clearClusterVisualizations = () => {
     // Remove hull meshes
-    hullMeshes.forEach(mesh => {
+    hullMeshes.forEach((mesh) => {
       props.scene.remove(mesh);
       if (mesh.geometry) mesh.geometry.dispose();
       if (mesh.material) mesh.material.dispose();
@@ -45,7 +53,7 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
     hullMeshes = [];
 
     // Remove text sprites
-    textSprites.forEach(sprite => {
+    textSprites.forEach((sprite) => {
       props.scene.remove(sprite);
       if (sprite.material) sprite.material.dispose();
     });
@@ -62,12 +70,12 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
       transparent: true,
       opacity: 0.3,
       wireframe: false,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { clusterId: cluster.id, type: 'clusterHull' };
-    
+    mesh.userData = { clusterId: cluster.id, type: "clusterHull" };
+
     // Add hover effect
     mesh.onHover = () => setHoveredCluster(cluster.id);
     mesh.onLeave = () => setHoveredCluster(null);
@@ -80,32 +88,32 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
     if (!cluster.label || !THREE) return;
 
     // Create text sprite
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
     if (!context) return;
 
     canvas.width = 256;
     canvas.height = 64;
 
     // Draw text
-    context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    context.fillStyle = "rgba(0, 0, 0, 0.8)";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    
-    context.fillStyle = 'white';
-    context.font = '24px Arial';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
+
+    context.fillStyle = "white";
+    context.font = "24px Arial";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
     context.fillText(cluster.label, canvas.width / 2, canvas.height / 2);
 
     // Create texture and sprite
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(spriteMaterial);
-    
+
     sprite.position.copy(cluster.centroid);
     sprite.position.y += 0.5; // Offset above centroid
     sprite.scale.set(2, 0.5, 1);
-    sprite.userData = { clusterId: cluster.id, type: 'clusterLabel' };
+    sprite.userData = { clusterId: cluster.id, type: "clusterLabel" };
 
     props.scene.add(sprite);
     textSprites.push(sprite);
@@ -152,7 +160,7 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
 
     // Initialize Three.js if not already done
     if (!THREE) {
-      THREE = await import('three');
+      THREE = await import("three");
     }
 
     // Initialize raycaster and mouse
@@ -161,12 +169,12 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
 
     // Add event listeners
     const canvas = (props.renderer as any).domElement;
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('click', handleClick);
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("click", handleClick);
 
     onCleanup(() => {
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('click', handleClick);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("click", handleClick);
     });
   });
 
@@ -180,14 +188,16 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
         <div class="cluster-stats">
           <h3>Cluster Statistics</h3>
           <div class="stats-grid">
-            {props.clusters.map(cluster => (
-              <div 
-                class={`stat-item ${hoveredCluster() === cluster.id ? 'hovered' : ''} ${props.selectedClusterId === cluster.id ? 'selected' : ''}`}
+            {props.clusters.map((cluster) => (
+              <div
+                class={`stat-item ${hoveredCluster() === cluster.id ? "hovered" : ""} ${props.selectedClusterId === cluster.id ? "selected" : ""}`}
                 onClick={() => props.onClusterSelect?.(cluster.id)}
               >
                 <div class="stat-header">
                   <span class="cluster-name">{cluster.label}</span>
-                  <span class="cluster-size">{cluster.statistics.size} points</span>
+                  <span class="cluster-size">
+                    {cluster.statistics.size} points
+                  </span>
                 </div>
                 <div class="stat-details">
                   <div class="stat-row">
@@ -200,7 +210,9 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
                   </div>
                   <div class="stat-row">
                     <span>Avg Similarity:</span>
-                    <span>{cluster.statistics.averageSimilarity.toFixed(2)}</span>
+                    <span>
+                      {cluster.statistics.averageSimilarity.toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -208,13 +220,13 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = props 
           </div>
         </div>
       </Show>
-      
+
       <div class="cluster-controls">
-        <button 
+        <button
           onClick={() => setShowStatistics(!showStatistics())}
           class="toggle-stats"
         >
-          {showStatistics() ? 'Hide' : 'Show'} Statistics
+          {showStatistics() ? "Hide" : "Show"} Statistics
         </button>
       </div>
     </div>

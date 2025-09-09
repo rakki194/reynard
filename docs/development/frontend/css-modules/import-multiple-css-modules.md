@@ -8,8 +8,8 @@ this to the components default styles.
 
 ```js
 let styles = {};
-import demo from './Demo.css';
-import fancyButton from 'css-fancy-button';
+import demo from "./Demo.css";
+import fancyButton from "css-fancy-button";
 Object.assign(styles, fancyButton, demo);
 ```
 
@@ -23,16 +23,16 @@ npm install pure-css --save-dev
 Then in your component, start using pure CSS styles.
 
 ```js
-import { buttons, grids } from 'pure-css';
+import { buttons, grids } from "pure-css";
 ```
 
 A full example of a demo component with 2 css modules imported.
 
 ```jsx
-import React from 'react';
+import React from "react";
 let styles = {};
-import demo from './Demo.css';
-import fancyButton from 'css-fancy-button';
+import demo from "./Demo.css";
+import fancyButton from "css-fancy-button";
 Object.assign(styles, fancyButton, demo);
 
 export default function Demo() {

@@ -26,7 +26,8 @@ export const statusIcons = {
       name: "success",
       tags: ["status", "success", "positive"],
       description: "Success icon",
-      caption: "A checkmark icon indicating successful completion or positive status",
+      caption:
+        "A checkmark icon indicating successful completion or positive status",
       keywords: ["success", "checkmark", "done", "complete"],
     },
   },
@@ -36,7 +37,8 @@ export const statusIcons = {
       name: "question",
       tags: ["status", "help", "unknown"],
       description: "Question icon",
-      caption: "A question mark in a circle icon for help, unknown status, or seeking information",
+      caption:
+        "A question mark in a circle icon for help, unknown status, or seeking information",
       keywords: ["question", "help", "unknown", "circle"],
     },
   },
@@ -46,7 +48,8 @@ export const statusIcons = {
       name: "info",
       tags: ["status", "information", "neutral"],
       description: "Info icon",
-      caption: "An information icon with letter 'i' in a circle for displaying helpful information",
+      caption:
+        "An information icon with letter 'i' in a circle for displaying helpful information",
       keywords: ["info", "information", "i", "circle"],
     },
   },
@@ -56,7 +59,8 @@ export const statusIcons = {
       name: "warning",
       tags: ["status", "warning", "caution"],
       description: "Warning icon",
-      caption: "A warning triangle icon with exclamation mark for caution or alerts",
+      caption:
+        "A warning triangle icon with exclamation mark for caution or alerts",
       keywords: ["warning", "caution", "alert", "triangle"],
     },
   },
@@ -66,7 +70,8 @@ export const statusIcons = {
       name: "error",
       tags: ["status", "error", "negative"],
       description: "Error icon",
-      caption: "An error icon with X mark in a circle indicating failure or error state",
+      caption:
+        "An error icon with X mark in a circle indicating failure or error state",
       keywords: ["error", "x", "circle", "fail"],
     },
   },
@@ -76,7 +81,8 @@ export const statusIcons = {
       name: "checkmark-circle",
       tags: ["status", "success", "confirm"],
       description: "Checkmark circle icon",
-      caption: "A checkmark inside a circle icon for confirming success or completion",
+      caption:
+        "A checkmark inside a circle icon for confirming success or completion",
       keywords: ["checkmark", "circle", "success", "confirm"],
     },
   },
@@ -86,7 +92,8 @@ export const statusIcons = {
       name: "error-circle",
       tags: ["status", "error", "negative"],
       description: "Error circle icon",
-      caption: "An X mark inside a circle icon indicating an error or failure state",
+      caption:
+        "An X mark inside a circle icon indicating an error or failure state",
       keywords: ["error", "circle", "x", "fail"],
     },
   },
@@ -96,7 +103,8 @@ export const statusIcons = {
       name: "spinner",
       tags: ["status", "loading", "progress"],
       description: "Spinner icon",
-      caption: "A spinning loading icon indicating ongoing process or waiting state",
+      caption:
+        "A spinning loading icon indicating ongoing process or waiting state",
       keywords: ["spinner", "loading", "progress", "wait"],
     },
   },
@@ -106,7 +114,8 @@ export const statusIcons = {
       name: "loading",
       tags: ["status", "loading", "progress"],
       description: "Loading spinner icon",
-      caption: "A loading spinner icon showing that content is being processed or loaded",
+      caption:
+        "A loading spinner icon showing that content is being processed or loaded",
       keywords: ["loading", "spinner", "progress", "wait"],
     },
   },
@@ -116,7 +125,8 @@ export const statusIcons = {
       name: "clock",
       tags: ["status", "time", "temporal"],
       description: "Clock icon",
-      caption: "A clock icon representing time, scheduling, or temporal information",
+      caption:
+        "A clock icon representing time, scheduling, or temporal information",
       keywords: ["clock", "time", "temporal", "schedule"],
     },
   },
@@ -126,7 +136,8 @@ export const statusIcons = {
       name: "history",
       tags: ["status", "time", "past"],
       description: "History icon",
-      caption: "A history icon with clock and arrow representing past events or chronological data",
+      caption:
+        "A history icon with clock and arrow representing past events or chronological data",
       keywords: ["history", "time", "past", "chronological"],
     },
   },
@@ -136,7 +147,8 @@ export const statusIcons = {
       name: "calendar-date",
       tags: ["status", "time", "date"],
       description: "Calendar date icon",
-      caption: "A calendar icon with date highlighting for scheduling or date selection",
+      caption:
+        "A calendar icon with date highlighting for scheduling or date selection",
       keywords: ["calendar", "date", "time", "schedule"],
     },
   },
@@ -156,7 +168,8 @@ export const statusIcons = {
       name: "time",
       tags: ["status", "time", "calendar"],
       description: "Time icon",
-      caption: "A calendar icon representing time, scheduling, or date-related information",
+      caption:
+        "A calendar icon representing time, scheduling, or date-related information",
       keywords: ["time", "calendar", "schedule", "date"],
     },
   },
@@ -166,7 +179,8 @@ export const statusIcons = {
       name: "gauge",
       tags: ["status", "data", "usage"],
       description: "Gauge icon",
-      caption: "A gauge or meter icon for displaying data usage, performance metrics, or progress",
+      caption:
+        "A gauge or meter icon for displaying data usage, performance metrics, or progress",
       keywords: ["gauge", "data", "usage", "meter"],
     },
   },

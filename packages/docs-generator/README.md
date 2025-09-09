@@ -59,87 +59,87 @@ Create a `reynard-docs.config.js` file in your project root:
 ```javascript
 export default {
   rootPath: process.cwd(),
-  outputPath: 'docs-generated',
+  outputPath: "docs-generated",
   packages: [
     {
-      name: 'core',
-      path: './packages/core',
-      category: 'Core'
+      name: "core",
+      path: "./packages/core",
+      category: "Core",
     },
     {
-      name: 'components',
-      path: './packages/components',
-      category: 'UI'
+      name: "components",
+      path: "./packages/components",
+      category: "UI",
     },
     {
-      name: 'themes',
-      path: './packages/themes',
-      category: 'Styling'
-    }
+      name: "themes",
+      path: "./packages/themes",
+      category: "Styling",
+    },
   ],
   site: {
-    title: 'My Reynard Documentation',
-    description: 'Beautiful documentation for my Reynard packages',
-    baseUrl: '/'
+    title: "My Reynard Documentation",
+    description: "Beautiful documentation for my Reynard packages",
+    baseUrl: "/",
   },
   theme: {
-    name: 'custom',
-    primaryColor: '#6366f1',
-    secondaryColor: '#8b5cf6',
-    backgroundColor: '#ffffff',
-    textColor: '#1f2937',
-    accentColor: '#f59e0b'
+    name: "custom",
+    primaryColor: "#6366f1",
+    secondaryColor: "#8b5cf6",
+    backgroundColor: "#ffffff",
+    textColor: "#1f2937",
+    accentColor: "#f59e0b",
   },
   navigation: {
     main: [
-      { label: 'Getting Started', href: '/getting-started' },
-      { label: 'Packages', href: '/packages' },
-      { label: 'API Reference', href: '/api' }
+      { label: "Getting Started", href: "/getting-started" },
+      { label: "Packages", href: "/packages" },
+      { label: "API Reference", href: "/api" },
     ],
     breadcrumbs: true,
-    sidebar: true
+    sidebar: true,
   },
   search: {
     enabled: true,
-    provider: 'local',
-    placeholder: 'Search documentation...'
-  }
+    provider: "local",
+    placeholder: "Search documentation...",
+  },
 };
 ```
 
 ### Programmatic Usage
 
 ```typescript
-import { createDocGenerator } from 'reynard-docs-generator';
+import { createDocGenerator } from "reynard-docs-generator";
 
 const generator = createDocGenerator({
   rootPath: process.cwd(),
-  outputPath: 'docs-generated',
+  outputPath: "docs-generated",
   packages: [
     {
-      name: 'my-package',
-      path: './packages/my-package',
-      category: 'Core'
-    }
+      name: "my-package",
+      path: "./packages/my-package",
+      category: "Core",
+    },
   ],
   site: {
-    title: 'My Documentation',
-    description: 'Generated documentation',
-    baseUrl: '/'
+    title: "My Documentation",
+    description: "Generated documentation",
+    baseUrl: "/",
   },
   theme: {
-    name: 'default',
-    primaryColor: '#6366f1',
-    secondaryColor: '#8b5cf6',
-    backgroundColor: '#ffffff',
-    textColor: '#1f2937',
-    accentColor: '#f59e0b'
+    name: "default",
+    primaryColor: "#6366f1",
+    secondaryColor: "#8b5cf6",
+    backgroundColor: "#ffffff",
+    textColor: "#1f2937",
+    accentColor: "#f59e0b",
   },
   navigation: {
     main: [],
     breadcrumbs: true,
-    sidebar: true
-  }
+    sidebar: true,
+  },
 });
 
 // Generate documentation
@@ -155,13 +155,13 @@ await generator.watch();
 
 ```typescript
 interface PackageConfig {
-  name: string;           // Package name
-  path?: string;          // Path to package directory
-  pattern?: string;       // Glob pattern to find packages
-  category?: string;      // Documentation category
-  priority?: number;      // Display priority
-  include?: string[];     // Files to include
-  exclude?: string[];     // Files to exclude
+  name: string; // Package name
+  path?: string; // Path to package directory
+  pattern?: string; // Glob pattern to find packages
+  category?: string; // Documentation category
+  priority?: number; // Display priority
+  include?: string[]; // Files to include
+  exclude?: string[]; // Files to exclude
 }
 ```
 
@@ -169,11 +169,11 @@ interface PackageConfig {
 
 ```typescript
 interface SiteConfig {
-  title: string;          // Site title
-  description: string;    // Site description
-  baseUrl: string;        // Base URL for the site
-  logo?: string;          // Logo URL
-  favicon?: string;       // Favicon URL
+  title: string; // Site title
+  description: string; // Site description
+  baseUrl: string; // Base URL for the site
+  logo?: string; // Logo URL
+  favicon?: string; // Favicon URL
 }
 ```
 
@@ -181,14 +181,14 @@ interface SiteConfig {
 
 ```typescript
 interface ThemeConfig {
-  name: string;           // Theme name
-  primaryColor: string;   // Primary color
+  name: string; // Theme name
+  primaryColor: string; // Primary color
   secondaryColor: string; // Secondary color
   backgroundColor: string; // Background color
-  textColor: string;      // Text color
-  accentColor: string;    // Accent color
-  fontFamily?: string;    // Font family
-  customCSS?: string;     // Custom CSS
+  textColor: string; // Text color
+  accentColor: string; // Accent color
+  fontFamily?: string; // Font family
+  customCSS?: string; // Custom CSS
 }
 ```
 
@@ -196,20 +196,20 @@ interface ThemeConfig {
 
 ```typescript
 interface NavigationConfig {
-  main: NavItem[];        // Main navigation items
-  footer?: NavItem[];     // Footer navigation items
-  breadcrumbs?: boolean;  // Show breadcrumbs
-  sidebar?: boolean;      // Show sidebar
+  main: NavItem[]; // Main navigation items
+  footer?: NavItem[]; // Footer navigation items
+  breadcrumbs?: boolean; // Show breadcrumbs
+  sidebar?: boolean; // Show sidebar
 }
 
 interface NavItem {
-  label: string;          // Navigation label
-  href?: string;          // Navigation URL
-  icon?: string;          // Icon
-  children?: NavItem[];   // Sub-navigation
-  external?: boolean;     // External link
-  badge?: string;         // Badge text
-  color?: string;         // Badge color
+  label: string; // Navigation label
+  href?: string; // Navigation URL
+  icon?: string; // Icon
+  children?: NavItem[]; // Sub-navigation
+  external?: boolean; // External link
+  badge?: string; // Badge text
+  color?: string; // Badge color
 }
 ```
 
@@ -242,7 +242,7 @@ The generator automatically extracts API documentation from TypeScript source co
 
 ### Function Documentation
 
-```typescript
+````typescript
 /**
  * Creates a new notification
  * @param message - The notification message
@@ -257,16 +257,16 @@ The generator automatically extracts API documentation from TypeScript source co
  */
 export function createNotification(
   message: string,
-  type: 'success' | 'error' | 'warning' | 'info',
-  options?: NotificationOptions
+  type: "success" | "error" | "warning" | "info",
+  options?: NotificationOptions,
 ): string {
   // Implementation
 }
-```
+````
 
 ### Class Documentation
 
-```typescript
+````typescript
 /**
  * Manages application state
  * @example
@@ -285,7 +285,7 @@ export class StateManager {
     // Implementation
   }
 }
-```
+````
 
 ## 🔍 Search Integration
 
@@ -307,16 +307,16 @@ const generator = createDocGenerator({
   // ... other config
   templates: [
     {
-      name: 'custom-overview',
-      path: './templates/overview.hbs',
-      type: 'package-overview'
+      name: "custom-overview",
+      path: "./templates/overview.hbs",
+      type: "package-overview",
     },
     {
-      name: 'custom-api',
-      path: './templates/api.hbs',
-      type: 'api'
-    }
-  ]
+      name: "custom-api",
+      path: "./templates/api.hbs",
+      type: "api",
+    },
+  ],
 });
 ```
 
@@ -328,9 +328,9 @@ Register custom components for documentation:
 const generator = createDocGenerator({
   // ... other config
   customComponents: {
-    'MyCustomComponent': MyCustomComponent,
-    'InteractiveDemo': InteractiveDemo
-  }
+    MyCustomComponent: MyCustomComponent,
+    InteractiveDemo: InteractiveDemo,
+  },
 });
 ```
 

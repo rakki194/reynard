@@ -9,7 +9,9 @@ import type { UploadProgress } from "../types";
 export interface UploadState {
   uploads: () => UploadProgress[];
   isUploading: () => boolean;
-  setUploads: (uploads: UploadProgress[] | ((prev: UploadProgress[]) => UploadProgress[])) => void;
+  setUploads: (
+    uploads: UploadProgress[] | ((prev: UploadProgress[]) => UploadProgress[]),
+  ) => void;
   setIsUploading: (uploading: boolean | ((prev: boolean) => boolean)) => void;
   uploadControllers: Map<string, AbortController>;
 }
@@ -29,6 +31,6 @@ export function useUploadState(): UploadState {
     isUploading,
     setUploads,
     setIsUploading,
-    uploadControllers
+    uploadControllers,
   };
 }

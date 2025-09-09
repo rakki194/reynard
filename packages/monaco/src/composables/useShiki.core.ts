@@ -1,22 +1,22 @@
 /**
  * Core Shiki State Management
- * 
+ *
  * Handles the fundamental state for Shiki syntax highlighting
  */
 
-import { createSignal } from 'solid-js';
-import type { ShikiState } from '../types';
+import { createSignal } from "solid-js";
+import type { ShikiState } from "../types";
 
 export function createShikiState() {
   const [state, setState] = createSignal<ShikiState>({
     highlighter: null,
     isLoading: true,
     error: null,
-    highlightedHtml: '',
+    highlightedHtml: "",
   });
 
   const updateState = (updates: Partial<ShikiState>) => {
-    setState(prev => ({ ...prev, ...updates }));
+    setState((prev) => ({ ...prev, ...updates }));
   };
 
   const setHighlighter = (highlighter: any) => {

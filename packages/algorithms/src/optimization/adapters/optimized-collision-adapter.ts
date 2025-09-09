@@ -1,24 +1,36 @@
 /**
  * Optimized Collision Detection Adapter
- * 
+ *
  * This adapter integrates the PAW optimization techniques with collision detection,
  * providing automatic algorithm selection and memory pooling for optimal performance.
- * 
+ *
  * @module algorithms/optimization/optimizedCollisionAdapter
  */
 
-import { AlgorithmSelector, type WorkloadCharacteristics } from '../core/algorithm-selector';
-import { EnhancedMemoryPool, type MemoryPoolConfig, type MemoryPoolStats, type OptimizationRecommendation } from '../core/enhanced-memory-pool';
-import { SpatialHash } from '../../spatial-hash/spatial-hash-core';
-import { UnionFind } from '../../union-find/union-find-core';
-import type { AABB, CollisionPair, CollisionResult } from '../../geometry/collision/aabb-types';
+import {
+  AlgorithmSelector,
+  type WorkloadCharacteristics,
+} from "../core/algorithm-selector";
+import {
+  EnhancedMemoryPool,
+  type MemoryPoolConfig,
+  type MemoryPoolStats,
+  type OptimizationRecommendation,
+} from "../core/enhanced-memory-pool";
+import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
+import { UnionFind } from "../../union-find/union-find-core";
+import type {
+  AABB,
+  CollisionPair,
+  CollisionResult,
+} from "../../geometry/collision/aabb-types";
 
 export interface OptimizedCollisionConfig {
   enableMemoryPooling: boolean;
   enableAlgorithmSelection: boolean;
   enablePerformanceMonitoring: boolean;
   memoryPoolConfig?: Partial<MemoryPoolConfig>;
-  algorithmSelectionStrategy: 'naive' | 'spatial' | 'optimized' | 'adaptive';
+  algorithmSelectionStrategy: "naive" | "spatial" | "optimized" | "adaptive";
   performanceThresholds: {
     maxExecutionTime: number;
     maxMemoryUsage: number;
@@ -63,18 +75,18 @@ export class OptimizedCollisionAdapter {
       enableMemoryPooling: true,
       enableAlgorithmSelection: true,
       enablePerformanceMonitoring: true,
-      algorithmSelectionStrategy: 'adaptive',
+      algorithmSelectionStrategy: "adaptive",
       performanceThresholds: {
         maxExecutionTime: 16, // 16ms for 60fps
         maxMemoryUsage: 50 * 1024 * 1024, // 50MB
-        minHitRate: 90
+        minHitRate: 90,
       },
       ...config,
     };
 
     this.algorithmSelector = new AlgorithmSelector();
     this.memoryPool = new EnhancedMemoryPool(this.config.memoryPoolConfig);
-    
+
     this.stats = {
       totalQueries: 0,
       averageExecutionTime: 0,
@@ -82,10 +94,10 @@ export class OptimizedCollisionAdapter {
       algorithmUsage: {
         naive: 0,
         spatial: 0,
-        optimized: 0
+        optimized: 0,
       },
       memoryPoolStats: this.memoryPool.getStatistics(),
-      performanceHistory: []
+      performanceHistory: [],
     };
   }
 
@@ -95,7 +107,7 @@ export class OptimizedCollisionAdapter {
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
     const start = performance.now();
     const memoryStart = this.getCurrentMemoryUsage();
-    
+
     this.stats.totalQueries++;
 
     let result: CollisionPair[];
@@ -104,14 +116,20 @@ export class OptimizedCollisionAdapter {
     if (this.config.enableAlgorithmSelection) {
       // Use intelligent algorithm selection
       const workload = this.analyzeWorkload(aabbs);
-      const selection = this.algorithmSelector.selectCollisionAlgorithm(workload);
+      const selection =
+        this.algorithmSelector.selectCollisionAlgorithm(workload);
       algorithm = selection.algorithm;
-      
+
       result = this.executeAlgorithm(algorithm, aabbs);
-      
+
       // Update performance model
       if (this.config.enablePerformanceMonitoring) {
-        this.updatePerformanceModel(algorithm, aabbs.length, start, memoryStart);
+        this.updatePerformanceModel(
+          algorithm,
+          aabbs.length,
+          start,
+          memoryStart,
+        );
       }
     } else {
       // Use configured strategy
@@ -140,7 +158,7 @@ export class OptimizedCollisionAdapter {
       spatialDensity,
       overlapRatio,
       updateFrequency,
-      queryPattern
+      queryPattern,
     };
   }
 
@@ -151,7 +169,10 @@ export class OptimizedCollisionAdapter {
     if (aabbs.length === 0) return 0;
 
     // Calculate bounding box of all objects
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
     let totalArea = 0;
 
     for (const aabb of aabbs) {
@@ -197,7 +218,7 @@ export class OptimizedCollisionAdapter {
   private estimateUpdateFrequency(): number {
     const now = Date.now();
     const recentQueries = this.performanceHistory.filter(
-      record => now - record.timestamp < 1000 // Last second
+      (record) => now - record.timestamp < 1000, // Last second
     );
     return recentQueries.length;
   }
@@ -205,15 +226,17 @@ export class OptimizedCollisionAdapter {
   /**
    * Analyze query pattern
    */
-  private analyzeQueryPattern(aabbs: AABB[]): 'random' | 'clustered' | 'sequential' {
-    if (aabbs.length < 3) return 'random';
+  private analyzeQueryPattern(
+    aabbs: AABB[],
+  ): "random" | "clustered" | "sequential" {
+    if (aabbs.length < 3) return "random";
 
     // Analyze spatial distribution
     const spatialDensity = this.calculateSpatialDensity(aabbs);
-    
-    if (spatialDensity > 0.7) return 'clustered';
-    if (spatialDensity < 0.3) return 'random';
-    return 'sequential';
+
+    if (spatialDensity > 0.7) return "clustered";
+    if (spatialDensity < 0.3) return "random";
+    return "sequential";
   }
 
   /**
@@ -221,11 +244,11 @@ export class OptimizedCollisionAdapter {
    */
   private executeAlgorithm(algorithm: string, aabbs: AABB[]): CollisionPair[] {
     switch (algorithm) {
-      case 'naive':
+      case "naive":
         return this.executeNaiveCollisionDetection(aabbs);
-      case 'spatial':
+      case "spatial":
         return this.executeSpatialCollisionDetection(aabbs);
-      case 'optimized':
+      case "optimized":
         return this.executeOptimizedCollisionDetection(aabbs);
       default:
         return this.executeOptimizedCollisionDetection(aabbs);
@@ -237,15 +260,19 @@ export class OptimizedCollisionAdapter {
    */
   private executeNaiveCollisionDetection(aabbs: AABB[]): CollisionPair[] {
     const collisions: CollisionPair[] = [];
-    
+
     for (let i = 0; i < aabbs.length; i++) {
       for (let j = i + 1; j < aabbs.length; j++) {
         if (this.checkCollision(aabbs[i], aabbs[j])) {
-          collisions.push({ a: i, b: j, result: this.createCollisionResult(aabbs[i], aabbs[j]) });
+          collisions.push({
+            a: i,
+            b: j,
+            result: this.createCollisionResult(aabbs[i], aabbs[j]),
+          });
         }
       }
     }
-    
+
     return collisions;
   }
 
@@ -255,7 +282,7 @@ export class OptimizedCollisionAdapter {
   private executeSpatialCollisionDetection(aabbs: AABB[]): CollisionPair[] {
     const spatialHash = this.memoryPool.getSpatialHash({ cellSize: 100 });
     const collisions = this.memoryPool.getCollisionArray();
-    
+
     try {
       // Insert all AABBs
       for (let i = 0; i < aabbs.length; i++) {
@@ -271,7 +298,7 @@ export class OptimizedCollisionAdapter {
 
       // Check collisions using spatial queries
       const processed = this.memoryPool.getProcessedSet();
-      
+
       try {
         for (let i = 0; i < aabbs.length; i++) {
           if (processed.has(i)) continue;
@@ -281,7 +308,7 @@ export class OptimizedCollisionAdapter {
             aabb.x - aabb.width,
             aabb.y - aabb.height,
             aabb.width * 3,
-            aabb.height * 3
+            aabb.height * 3,
           );
 
           for (const obj of nearby) {
@@ -289,7 +316,11 @@ export class OptimizedCollisionAdapter {
             if (j <= i || processed.has(j)) continue;
 
             if (this.checkCollision(aabb, obj.data.aabb)) {
-              collisions.push({ a: i, b: j, result: this.createCollisionResult(aabb, obj.data.aabb) });
+              collisions.push({
+                a: i,
+                b: j,
+                result: this.createCollisionResult(aabb, obj.data.aabb),
+              });
             }
           }
 
@@ -318,8 +349,12 @@ export class OptimizedCollisionAdapter {
    * Basic collision detection
    */
   private checkCollision(a: AABB, b: AABB): boolean {
-    return !(a.x + a.width <= b.x || b.x + b.width <= a.x ||
-             a.y + a.height <= b.y || b.y + b.height <= a.y);
+    return !(
+      a.x + a.width <= b.x ||
+      b.x + b.width <= a.x ||
+      a.y + a.height <= b.y ||
+      b.y + b.height <= a.y
+    );
   }
 
   /**
@@ -327,21 +362,32 @@ export class OptimizedCollisionAdapter {
    */
   private createCollisionResult(a: AABB, b: AABB): CollisionResult {
     const colliding = this.checkCollision(a, b);
-    
+
     if (!colliding) {
-      return { colliding: false, distance: Infinity, overlap: null, overlapArea: 0 };
+      return {
+        colliding: false,
+        distance: Infinity,
+        overlap: null,
+        overlapArea: 0,
+      };
     }
 
     // Calculate overlap area
-    const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
-    const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+    const overlapX = Math.max(
+      0,
+      Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
+    );
+    const overlapY = Math.max(
+      0,
+      Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
+    );
     const overlapArea = overlapX * overlapY;
 
     // Calculate distance between centers
     const centerA = { x: a.x + a.width / 2, y: a.y + a.height / 2 };
     const centerB = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
     const distance = Math.sqrt(
-      Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2)
+      Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2),
     );
 
     return {
@@ -351,7 +397,7 @@ export class OptimizedCollisionAdapter {
         x: Math.max(a.x, b.x),
         y: Math.max(a.y, b.y),
         width: overlapX,
-        height: overlapY
+        height: overlapY,
       },
       overlapArea: overlapX * overlapY,
     };
@@ -364,7 +410,7 @@ export class OptimizedCollisionAdapter {
     algorithm: string,
     objectCount: number,
     startTime: number,
-    memoryStart: number
+    memoryStart: number,
   ): void {
     const executionTime = performance.now() - startTime;
     const memoryUsage = this.getCurrentMemoryUsage() - memoryStart;
@@ -376,11 +422,11 @@ export class OptimizedCollisionAdapter {
       objectCount,
       executionTime,
       memoryUsage,
-      hitRate
+      hitRate,
     };
 
     this.performanceHistory.push(record);
-    
+
     // Keep only recent history
     if (this.performanceHistory.length > 1000) {
       this.performanceHistory = this.performanceHistory.slice(-1000);
@@ -394,31 +440,39 @@ export class OptimizedCollisionAdapter {
         executionTime,
         memoryUsage,
         allocationCount: 0, // Would need to track this
-        cacheHitRate: hitRate
+        cacheHitRate: hitRate,
       },
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   }
 
   /**
    * Update statistics
    */
-  private updateStats(algorithm: string, startTime: number, memoryStart: number): void {
+  private updateStats(
+    algorithm: string,
+    startTime: number,
+    memoryStart: number,
+  ): void {
     const executionTime = performance.now() - startTime;
     const memoryUsage = this.getCurrentMemoryUsage() - memoryStart;
 
     // Update average execution time
-    this.stats.averageExecutionTime = 
-      (this.stats.averageExecutionTime * (this.stats.totalQueries - 1) + executionTime) / 
+    this.stats.averageExecutionTime =
+      (this.stats.averageExecutionTime * (this.stats.totalQueries - 1) +
+        executionTime) /
       this.stats.totalQueries;
 
     // Update average memory usage
-    this.stats.averageMemoryUsage = 
-      (this.stats.averageMemoryUsage * (this.stats.totalQueries - 1) + memoryUsage) / 
+    this.stats.averageMemoryUsage =
+      (this.stats.averageMemoryUsage * (this.stats.totalQueries - 1) +
+        memoryUsage) /
       this.stats.totalQueries;
 
     // Update algorithm usage
-    this.stats.algorithmUsage[algorithm as keyof typeof this.stats.algorithmUsage]++;
+    this.stats.algorithmUsage[
+      algorithm as keyof typeof this.stats.algorithmUsage
+    ]++;
 
     // Update memory pool stats
     this.stats.memoryPoolStats = this.memoryPool.getStatistics();
@@ -486,18 +540,18 @@ export class OptimizedCollisionAdapter {
     recommendations: OptimizationRecommendation[];
   } {
     const stats = this.getPerformanceStats();
-    
+
     return {
       summary: {
         totalQueries: stats.totalQueries,
         averageExecutionTime: stats.averageExecutionTime,
         averageMemoryUsage: stats.averageMemoryUsage,
         hitRate: stats.memoryPoolStats.hitRate,
-        isDegraded: this.isPerformanceDegraded()
+        isDegraded: this.isPerformanceDegraded(),
       },
       algorithmUsage: stats.algorithmUsage,
       memoryPool: stats.memoryPoolStats,
-      recommendations: this.getOptimizationRecommendations()
+      recommendations: this.getOptimizationRecommendations(),
     };
   }
 
@@ -512,10 +566,10 @@ export class OptimizedCollisionAdapter {
       algorithmUsage: {
         naive: 0,
         spatial: 0,
-        optimized: 0
+        optimized: 0,
       },
       memoryPoolStats: this.memoryPool.getStatistics(),
-      performanceHistory: []
+      performanceHistory: [],
     };
     this.performanceHistory = [];
     this.algorithmSelector.clearPerformanceHistory();
@@ -531,4 +585,8 @@ export class OptimizedCollisionAdapter {
 }
 
 // Re-export types for convenience
-export type { MemoryPoolConfig, MemoryPoolStats, OptimizationRecommendation } from '../core/enhanced-memory-pool';
+export type {
+  MemoryPoolConfig,
+  MemoryPoolStats,
+  OptimizationRecommendation,
+} from "../core/enhanced-memory-pool";

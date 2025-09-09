@@ -1,15 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
-import { PerformanceBenchmark, measureAsync, measureSync } from '../benchmark';
+import { describe, it, expect, vi } from "vitest";
+import { PerformanceBenchmark, measureAsync, measureSync } from "../benchmark";
 
-describe('PerformanceBenchmark', () => {
+describe("PerformanceBenchmark", () => {
   let benchmark: PerformanceBenchmark;
 
   beforeEach(() => {
     benchmark = new PerformanceBenchmark();
   });
 
-  describe('run', () => {
-    it('should benchmark a synchronous function', async () => {
+  describe("run", () => {
+    it("should benchmark a synchronous function", async () => {
       const testFn = () => {
         // Simulate some work
         let sum = 0;
@@ -20,7 +20,7 @@ describe('PerformanceBenchmark', () => {
       };
 
       const metrics = await benchmark.run(testFn, 5);
-      
+
       expect(metrics.iterations).toBe(5);
       expect(metrics.duration).toBeGreaterThan(0);
       expect(metrics.averageTime).toBeGreaterThan(0);
@@ -28,26 +28,26 @@ describe('PerformanceBenchmark', () => {
       expect(metrics.maxTime).toBeGreaterThan(0);
     });
 
-    it('should benchmark an asynchronous function', async () => {
+    it("should benchmark an asynchronous function", async () => {
       const testFn = async () => {
-        await new Promise(resolve => setTimeout(resolve, 10));
-        return 'async result';
+        await new Promise((resolve) => setTimeout(resolve, 10));
+        return "async result";
       };
 
       const metrics = await benchmark.run(testFn, 3);
-      
+
       expect(metrics.iterations).toBe(3);
       expect(metrics.duration).toBeGreaterThan(25); // At least 25ms total (more lenient)
       expect(metrics.averageTime).toBeGreaterThan(8); // More lenient timing
     });
 
-    it('should handle function errors gracefully', async () => {
+    it("should handle function errors gracefully", async () => {
       const testFn = () => {
-        throw new Error('Test error');
+        throw new Error("Test error");
       };
 
       // The benchmark will throw the error, so we expect it to throw
-      await expect(benchmark.run(testFn, 3)).rejects.toThrow('Test error');
+      await expect(benchmark.run(testFn, 3)).rejects.toThrow("Test error");
     });
   });
 

@@ -67,7 +67,13 @@ export class AudioThumbnailGenerator {
       ctx.fillRect(0, 0, targetWidth, targetHeight);
 
       // Draw audio waveform visualization
-      await this.drawAudioWaveform(ctx, targetWidth, targetHeight, audio, mergedOptions);
+      await this.drawAudioWaveform(
+        ctx,
+        targetWidth,
+        targetHeight,
+        audio,
+        mergedOptions,
+      );
 
       // Add small audio icon in corner
       this.drawAudioIcon(ctx, targetWidth, targetHeight, true);
@@ -85,7 +91,9 @@ export class AudioThumbnailGenerator {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : "Failed to generate audio thumbnail",
+          error instanceof Error
+            ? error.message
+            : "Failed to generate audio thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

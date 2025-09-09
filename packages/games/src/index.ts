@@ -1,17 +1,17 @@
 // Main exports for reynard-games package
 
 // Game components
-export { UnionFindGame } from './union-find';
-export { CollisionGame } from './collision';
-export { SpatialHashDemo } from './spatial-hash';
-export { GeometryDemo } from './geometry';
-export { PerformanceDemo } from './performance';
+export { UnionFindGame } from "./union-find";
+export { CollisionGame } from "./collision";
+export { SpatialHashDemo } from "./spatial-hash";
+export { GeometryDemo } from "./geometry";
+export { PerformanceDemo } from "./performance";
 
 // ECS System
-export * from './ecs';
+export * from "./ecs";
 
 // ECS Examples
-export * from './ecs/examples';
+export * from "./ecs/examples";
 
 // Types
 export type {
@@ -26,4 +26,4 @@ export type {
   Measurement,
   GameConfig,
   GameControls,
-} from './types';
+} from "./types";

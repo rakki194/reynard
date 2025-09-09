@@ -71,9 +71,18 @@ packages/algorithms/src/
 
 ```typescript
 interface AlgorithmSelector {
-  selectCollisionAlgorithm(objectCount: number, overlapDensity: number): CollisionAlgorithm;
-  selectSpatialAlgorithm(objectCount: number, spatialDensity: number): SpatialAlgorithm;
-  selectUnionFindAlgorithm(objectCount: number, operationCount: number): UnionFindAlgorithm;
+  selectCollisionAlgorithm(
+    objectCount: number,
+    overlapDensity: number,
+  ): CollisionAlgorithm;
+  selectSpatialAlgorithm(
+    objectCount: number,
+    spatialDensity: number,
+  ): SpatialAlgorithm;
+  selectUnionFindAlgorithm(
+    objectCount: number,
+    operationCount: number,
+  ): UnionFindAlgorithm;
 }
 ```
 
@@ -98,20 +107,20 @@ export {
   detectCollisions,
   performSpatialQuery,
   findConnectedComponents,
-  
+
   // Performance monitoring
   PerformanceMonitor,
   BenchmarkSuite,
-  
+
   // Configuration
   OptimizationConfig,
   AlgorithmSelector,
-  
+
   // Legacy API (deprecated but supported)
   UnionFind,
   SpatialHash,
-  checkCollision
-} from './optimized';
+  checkCollision,
+} from "./optimized";
 ```
 
 ## 🦊> **Detailed Implementation Plan**
@@ -127,12 +136,12 @@ export class EnhancedMemoryPool {
   private unionFindPool: PooledUnionFind[] = [];
   private collisionArrayPool: PooledCollisionArray[] = [];
   private performanceStats: MemoryPoolStats;
-  
+
   // Enhanced pooling with automatic sizing
   getSpatialHash(config: SpatialHashConfig): SpatialHash;
   getUnionFind(size: number): UnionFind;
   getCollisionArray(): CollisionPair[];
-  
+
   // Performance monitoring
   getPerformanceStats(): MemoryPoolStats;
   getOptimizationRecommendations(): OptimizationRecommendation[];
@@ -146,12 +155,12 @@ export class EnhancedMemoryPool {
 export class AlgorithmSelector {
   private performanceHistory: PerformanceRecord[];
   private workloadAnalyzer: WorkloadAnalyzer;
-  
+
   selectOptimalAlgorithm<T>(
     workload: WorkloadCharacteristics,
-    algorithmType: AlgorithmType
+    algorithmType: AlgorithmType,
   ): T;
-  
+
   updatePerformanceModel(result: PerformanceResult): void;
   getSelectionStatistics(): SelectionStats;
 }
@@ -167,31 +176,31 @@ export class OptimizedCollisionAdapter {
   private memoryPool: EnhancedMemoryPool;
   private algorithmSelector: AlgorithmSelector;
   private performanceMonitor: PerformanceMonitor;
-  
+
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
     const algorithm = this.algorithmSelector.selectCollisionAlgorithm(
       aabbs.length,
-      this.calculateOverlapDensity(aabbs)
+      this.calculateOverlapDensity(aabbs),
     );
-    
+
     return this.executeWithOptimization(algorithm, aabbs);
   }
-  
+
   private executeWithOptimization(
     algorithm: CollisionAlgorithm,
-    aabbs: AABB[]
+    aabbs: AABB[],
   ): CollisionPair[] {
     const start = performance.now();
     const result = algorithm.execute(aabbs, this.memoryPool);
     const duration = performance.now() - start;
-    
+
     this.performanceMonitor.recordResult({
       algorithm: algorithm.name,
       objectCount: aabbs.length,
       duration,
-      memoryUsage: this.memoryPool.getCurrentUsage()
+      memoryUsage: this.memoryPool.getCurrentUsage(),
     });
-    
+
     return result;
   }
 }
@@ -206,7 +215,7 @@ export class OptimizedCollisionAdapter {
 export class PerformanceMonitor {
   private metrics: PerformanceMetrics;
   private thresholds: PerformanceThresholds;
-  
+
   recordResult(result: PerformanceResult): void;
   getPerformanceReport(): PerformanceReport;
   getOptimizationSuggestions(): OptimizationSuggestion[];
@@ -232,9 +241,9 @@ export class AlgorithmBenchmarkSuite {
 
 ```typescript
 // Current fragmented approach
-import { UnionFind } from 'reynard-algorithms';
-import { SpatialHash } from 'reynard-algorithms';
-import { checkCollision } from 'reynard-algorithms';
+import { UnionFind } from "reynard-algorithms";
+import { SpatialHash } from "reynard-algorithms";
+import { checkCollision } from "reynard-algorithms";
 
 const uf = new UnionFind(100);
 const spatialHash = new SpatialHash({ cellSize: 100 });
@@ -245,13 +254,13 @@ const collision = checkCollision(aabb1, aabb2);
 
 ```typescript
 // New unified optimized approach
-import { 
+import {
   detectCollisions,
   findConnectedComponents,
   performSpatialQuery,
   PerformanceMonitor,
-  OptimizationConfig
-} from 'reynard-algorithms';
+  OptimizationConfig,
+} from "reynard-algorithms";
 
 // Automatic algorithm selection with optimization
 const collisions = detectCollisions(aabbs);
@@ -266,7 +275,7 @@ const report = monitor.getPerformanceReport();
 const config = new OptimizationConfig({
   enableMemoryPooling: true,
   enablePerformanceMonitoring: true,
-  algorithmSelectionStrategy: 'adaptive'
+  algorithmSelectionStrategy: "adaptive",
 });
 ```
 
@@ -274,11 +283,11 @@ const config = new OptimizationConfig({
 
 ```typescript
 // Legacy API still supported but deprecated
-import { 
-  UnionFind,           // @deprecated Use findConnectedComponents instead
-  SpatialHash,         // @deprecated Use performSpatialQuery instead
-  checkCollision       // @deprecated Use detectCollisions instead
-} from 'reynard-algorithms/legacy';
+import {
+  UnionFind, // @deprecated Use findConnectedComponents instead
+  SpatialHash, // @deprecated Use performSpatialQuery instead
+  checkCollision, // @deprecated Use detectCollisions instead
+} from "reynard-algorithms/legacy";
 ```
 
 ## 🐺> **Performance Integration**
@@ -291,22 +300,22 @@ export class AutoOptimizer {
   private performanceMonitor: PerformanceMonitor;
   private algorithmSelector: AlgorithmSelector;
   private memoryPool: EnhancedMemoryPool;
-  
+
   optimizeForWorkload(workload: WorkloadCharacteristics): OptimizationResult {
     // Analyze workload characteristics
     const analysis = this.analyzeWorkload(workload);
-    
+
     // Select optimal algorithms
     const algorithms = this.algorithmSelector.selectOptimalAlgorithms(analysis);
-    
+
     // Configure memory pool
     this.memoryPool.optimizeForWorkload(analysis);
-    
+
     // Return optimization result
     return {
       algorithms,
       memoryPoolConfig: this.memoryPool.getConfig(),
-      expectedPerformance: this.predictPerformance(analysis, algorithms)
+      expectedPerformance: this.predictPerformance(analysis, algorithms),
     };
   }
 }
@@ -319,15 +328,15 @@ export class AutoOptimizer {
 export class AdaptiveOptimizer {
   private performanceHistory: PerformanceRecord[];
   private adaptationThreshold: number;
-  
+
   adaptToPerformance(performanceResult: PerformanceResult): void {
     if (this.isPerformanceDegraded(performanceResult)) {
       this.triggerOptimization(performanceResult);
     }
-    
+
     this.updatePerformanceModel(performanceResult);
   }
-  
+
   private triggerOptimization(result: PerformanceResult): void {
     // Automatically adjust algorithm selection
     // Optimize memory pool configuration

@@ -14,21 +14,21 @@
  */
 
 // Export collision detection algorithms
-export * from './collision';
+export * from "./collision";
 
 // Export shape algorithms
-export * from './shapes';
+export * from "./shapes";
 
 // Export vector algorithms
-export * from './vectors';
+export * from "./vectors";
 
 // Export transformation algorithms
-export * from './transformations';
+export * from "./transformations";
 
 // Re-export all types and classes from specialized modules
-export type { Point } from './shapes/point-algorithms';
-export type { Vector } from './vectors/vector-algorithms';
-export type { Line } from './shapes/line-algorithms';
-export type { Rectangle } from './shapes/rectangle-algorithms';
-export type { Circle } from './shapes/circle-algorithms';
-export type { Polygon } from './shapes/polygon-algorithms';
+export type { Point } from "./shapes/point-algorithms";
+export type { Vector } from "./vectors/vector-algorithms";
+export type { Line } from "./shapes/line-algorithms";
+export type { Rectangle } from "./shapes/rectangle-algorithms";
+export type { Circle } from "./shapes/circle-algorithms";
+export type { Polygon } from "./shapes/polygon-algorithms";

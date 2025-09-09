@@ -21,4 +21,3 @@ export const AppFooter: Component = () => {
     </footer>
   );
 };
-

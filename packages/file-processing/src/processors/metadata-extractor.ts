@@ -13,7 +13,10 @@ import {
   FileMetadata,
 } from "../types";
 import { getFileTypeInfo, getFileCategory } from "../config/file-types";
-import { MetadataExtractorFactory, MetadataExtractionOptions } from "./extractors";
+import {
+  MetadataExtractorFactory,
+  MetadataExtractionOptions,
+} from "./extractors";
 
 export type { MetadataExtractionOptions };
 
@@ -75,7 +78,10 @@ export class MetadataExtractor {
         case "audio":
         case "document":
           // Use factory-created extractors for these types
-          const extractor = MetadataExtractorFactory.createExtractor(name, mergedOptions);
+          const extractor = MetadataExtractorFactory.createExtractor(
+            name,
+            mergedOptions,
+          );
           metadata = await extractor.extractMetadata(file, mergedOptions);
           break;
         case "text":
@@ -112,7 +118,6 @@ export class MetadataExtractor {
       };
     }
   }
-
 
   /**
    * Extract metadata from text files
@@ -220,7 +225,6 @@ export class MetadataExtractor {
 
     return metadata;
   }
-
 
   // Helper methods for remaining extractors
 

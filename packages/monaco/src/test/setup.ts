@@ -1,5 +1,5 @@
-import { beforeAll, afterEach } from 'vitest';
-import { cleanup } from '@solidjs/testing-library';
+import { beforeAll, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
 
 // Cleanup after each test case
 afterEach(() => {
@@ -10,8 +10,9 @@ afterEach(() => {
 beforeAll(() => {
   // Mock Monaco Editor
   (global as any).MonacoEnvironment = {
-    getWorker: () => new Worker('data:text/javascript;base64,' + btoa('self.postMessage({});')),
+    getWorker: () =>
+      new Worker(
+        "data:text/javascript;base64," + btoa("self.postMessage({});"),
+      ),
   };
 });
-
-

@@ -1,16 +1,20 @@
 /**
  * Optimized Spatial Collision Detection with Memory Pool Integration
- * 
+ *
  * This implementation uses the PAW memory pool system to eliminate allocation overhead,
  * addressing the primary performance bottleneck identified in empirical analysis.
- * 
+ *
  * @module algorithms/optimizedSpatialCollision
  */
 
-import { globalPAWMemoryPool, PAWMemoryPool } from './memory-pool';
-import { SpatialHash } from '../spatial-hash/spatial-hash-core';
-import { UnionFind } from '../union-find/union-find-core';
-import type { AABB, CollisionPair, CollisionResult } from '../geometry/collision/aabb-types';
+import { globalPAWMemoryPool, PAWMemoryPool } from "./memory-pool";
+import { SpatialHash } from "../spatial-hash/spatial-hash-core";
+import { UnionFind } from "../union-find/union-find-core";
+import type {
+  AABB,
+  CollisionPair,
+  CollisionResult,
+} from "../geometry/collision/aabb-types";
 
 export interface OptimizedSpatialConfig {
   cellSize: number;
@@ -55,7 +59,7 @@ export class OptimizedSpatialCollisionDetector {
     };
 
     this.memoryPool = this.config.memoryPool || globalPAWMemoryPool;
-    
+
     this.stats = {
       totalQueries: 0,
       objectsProcessed: 0,
@@ -97,7 +101,7 @@ export class OptimizedSpatialCollisionDetector {
    */
   private optimizedNaiveCollisionDetection(aabbs: AABB[]): CollisionPair[] {
     const collisions = this.memoryPool.getCollisionArray();
-    
+
     try {
       for (let i = 0; i < aabbs.length; i++) {
         for (let j = i + 1; j < aabbs.length; j++) {
@@ -107,7 +111,7 @@ export class OptimizedSpatialCollisionDetector {
           }
         }
       }
-      
+
       return [...collisions]; // Return a copy to avoid pool contamination
     } finally {
       this.memoryPool.returnCollisionArray(collisions);
@@ -118,14 +122,16 @@ export class OptimizedSpatialCollisionDetector {
    * Optimized spatial collision detection with memory pooling
    */
   private optimizedSpatialCollisionDetection(aabbs: AABB[]): CollisionPair[] {
-    const spatialHash = this.memoryPool.getSpatialHash({ cellSize: this.config.cellSize });
+    const spatialHash = this.memoryPool.getSpatialHash({
+      cellSize: this.config.cellSize,
+    });
     const collisions = this.memoryPool.getCollisionArray();
-    
+
     try {
       // Clear and rebuild spatial hash (this is still a bottleneck we'll address later)
       spatialHash.clear();
       this.stats.spatialHashRebuilds++;
-      
+
       // Insert all AABBs
       aabbs.forEach((aabb, index) => {
         spatialHash.insert({
@@ -149,7 +155,7 @@ export class OptimizedSpatialCollisionDetector {
           aabb.x - aabb.width,
           aabb.y - aabb.height,
           aabb.width * 3,
-          aabb.height * 3
+          aabb.height * 3,
         );
 
         for (const obj of nearby) {
@@ -182,7 +188,7 @@ export class OptimizedSpatialCollisionDetector {
 
     const cacheKey = this.generateCacheKey(a, b);
     const cached = this.collisionCache.get(cacheKey);
-    
+
     if (cached) {
       this.stats.cacheHits++;
       return cached;
@@ -190,12 +196,12 @@ export class OptimizedSpatialCollisionDetector {
 
     this.stats.cacheMisses++;
     const result = this.checkCollision(a, b);
-    
+
     // Add to cache if not full
     if (this.collisionCache.size < this.config.cacheSize) {
       this.collisionCache.set(cacheKey, result);
     }
-    
+
     return result;
   }
 
@@ -203,23 +209,38 @@ export class OptimizedSpatialCollisionDetector {
    * Basic AABB collision detection
    */
   private checkCollision(a: AABB, b: AABB): CollisionResult {
-    const colliding = !(a.x + a.width <= b.x || b.x + b.width <= a.x ||
-                       a.y + a.height <= b.y || b.y + b.height <= a.y);
-    
+    const colliding = !(
+      a.x + a.width <= b.x ||
+      b.x + b.width <= a.x ||
+      a.y + a.height <= b.y ||
+      b.y + b.height <= a.y
+    );
+
     if (!colliding) {
-      return { colliding: false, distance: Infinity, overlap: null, overlapArea: 0 };
+      return {
+        colliding: false,
+        distance: Infinity,
+        overlap: null,
+        overlapArea: 0,
+      };
     }
 
     // Calculate overlap area
-    const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
-    const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+    const overlapX = Math.max(
+      0,
+      Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
+    );
+    const overlapY = Math.max(
+      0,
+      Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
+    );
     const overlapArea = overlapX * overlapY;
 
     // Calculate distance between centers
     const centerA = { x: a.x + a.width / 2, y: a.y + a.height / 2 };
     const centerB = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
     const distance = Math.sqrt(
-      Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2)
+      Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2),
     );
 
     return {
@@ -229,7 +250,7 @@ export class OptimizedSpatialCollisionDetector {
         x: Math.max(a.x, b.x),
         y: Math.max(a.y, b.y),
         width: overlapX,
-        height: overlapY
+        height: overlapY,
       },
       overlapArea: overlapX * overlapY,
     };
@@ -240,7 +261,8 @@ export class OptimizedSpatialCollisionDetector {
    */
   private generateCacheKey(a: AABB, b: AABB): string {
     // Use a consistent ordering to avoid duplicate cache entries
-    const [first, second] = a.x < b.x || (a.x === b.x && a.y < b.y) ? [a, b] : [b, a];
+    const [first, second] =
+      a.x < b.x || (a.x === b.x && a.y < b.y) ? [a, b] : [b, a];
     return `${first.x},${first.y},${first.width},${first.height}|${second.x},${second.y},${second.width},${second.height}`;
   }
 
@@ -248,8 +270,8 @@ export class OptimizedSpatialCollisionDetector {
    * Update average query time
    */
   private updateAverageQueryTime(duration: number): void {
-    this.stats.averageQueryTime = 
-      (this.stats.averageQueryTime * (this.stats.totalQueries - 1) + duration) / 
+    this.stats.averageQueryTime =
+      (this.stats.averageQueryTime * (this.stats.totalQueries - 1) + duration) /
       this.stats.totalQueries;
   }
 
@@ -301,6 +323,8 @@ export class OptimizedSpatialCollisionDetector {
 /**
  * Factory function to create optimized collision detector
  */
-export function createOptimizedCollisionDetector(config?: Partial<OptimizedSpatialConfig>): OptimizedSpatialCollisionDetector {
+export function createOptimizedCollisionDetector(
+  config?: Partial<OptimizedSpatialConfig>,
+): OptimizedSpatialCollisionDetector {
   return new OptimizedSpatialCollisionDetector(config);
 }

@@ -23,39 +23,45 @@ npm install reynard-tools
 ### Basic Tool Usage
 
 ```typescript
-import { ToolRegistry, ToolExecutor, BaseTool, ToolDefinition, ParameterType } from 'reynard-tools';
+import {
+  ToolRegistry,
+  ToolExecutor,
+  BaseTool,
+  ToolDefinition,
+  ParameterType,
+} from "reynard-tools";
 
 // Create a custom tool
 class GreetTool extends BaseTool {
   constructor() {
     const definition: ToolDefinition = {
-      name: 'greet',
-      description: 'Greet a person',
+      name: "greet",
+      description: "Greet a person",
       parameters: [
         {
-          name: 'name',
+          name: "name",
           type: ParameterType.STRING,
-          description: 'Name of the person to greet',
+          description: "Name of the person to greet",
           required: true,
         },
         {
-          name: 'language',
+          name: "language",
           type: ParameterType.STRING,
-          description: 'Language for the greeting',
+          description: "Language for the greeting",
           required: false,
-          default: 'en',
-          enum: ['en', 'es', 'fr', 'de'],
+          default: "en",
+          enum: ["en", "es", "fr", "de"],
         },
       ],
-      category: 'utility',
-      tags: ['greeting', 'hello'],
+      category: "utility",
+      tags: ["greeting", "hello"],
     };
     super(definition);
   }
 
   protected async executeImpl(parameters: Record<string, any>): Promise<any> {
-    const { name, language = 'en' } = parameters;
-    
+    const { name, language = "en" } = parameters;
+
     const greetings = {
       en: `Hello, ${name}!`,
       es: `¡Hola, ${name}!`,
@@ -80,13 +86,17 @@ registry.registerTool(greetTool);
 executor.addTool(greetTool);
 
 // Execute the tool
-const result = await executor.executeTool('greet', {
-  name: 'Alice',
-  language: 'en'
-}, {
-  permissions: [],
-  metadata: {},
-});
+const result = await executor.executeTool(
+  "greet",
+  {
+    name: "Alice",
+    language: "en",
+  },
+  {
+    permissions: [],
+    metadata: {},
+  },
+);
 
 console.log(result.data.greeting); // "Hello, Alice!"
 ```
@@ -94,7 +104,7 @@ console.log(result.data.greeting); // "Hello, Alice!"
 ### Development Tools
 
 ```typescript
-import { ReadFileTool, WriteFileTool, ListDirectoryTool } from 'reynard-tools';
+import { ReadFileTool, WriteFileTool, ListDirectoryTool } from "reynard-tools";
 
 const registry = new ToolRegistry();
 const executor = new ToolExecutor();
@@ -105,114 +115,138 @@ registry.registerTool(new WriteFileTool());
 registry.registerTool(new ListDirectoryTool());
 
 // Read a file
-const fileResult = await executor.executeTool('read_file', {
-  path: '/path/to/file.txt',
-  encoding: 'utf8'
-}, {
-  permissions: ['file.read'],
-  metadata: {},
-});
+const fileResult = await executor.executeTool(
+  "read_file",
+  {
+    path: "/path/to/file.txt",
+    encoding: "utf8",
+  },
+  {
+    permissions: ["file.read"],
+    metadata: {},
+  },
+);
 
 // Write a file
-const writeResult = await executor.executeTool('write_file', {
-  path: '/path/to/output.txt',
-  content: 'Hello, World!',
-  createDirectories: true
-}, {
-  permissions: ['file.write'],
-  metadata: {},
-});
+const writeResult = await executor.executeTool(
+  "write_file",
+  {
+    path: "/path/to/output.txt",
+    content: "Hello, World!",
+    createDirectories: true,
+  },
+  {
+    permissions: ["file.write"],
+    metadata: {},
+  },
+);
 
 // List directory contents
-const listResult = await executor.executeTool('list_directory', {
-  path: '/path/to/directory',
-  recursive: true,
-  includeHidden: false
-}, {
-  permissions: ['file.read'],
-  metadata: {},
-});
+const listResult = await executor.executeTool(
+  "list_directory",
+  {
+    path: "/path/to/directory",
+    recursive: true,
+    includeHidden: false,
+  },
+  {
+    permissions: ["file.read"],
+    metadata: {},
+  },
+);
 ```
 
 ### Parallel Tool Execution
 
 ```typescript
 // Execute multiple tools in parallel
-const results = await executor.executeToolsParallel([
+const results = await executor.executeToolsParallel(
+  [
+    {
+      toolName: "read_file",
+      parameters: { path: "/file1.txt" },
+    },
+    {
+      toolName: "read_file",
+      parameters: { path: "/file2.txt" },
+    },
+    {
+      toolName: "list_directory",
+      parameters: { path: "/directory" },
+    },
+  ],
   {
-    toolName: 'read_file',
-    parameters: { path: '/file1.txt' }
+    permissions: ["file.read"],
+    metadata: {},
   },
-  {
-    toolName: 'read_file',
-    parameters: { path: '/file2.txt' }
-  },
-  {
-    toolName: 'list_directory',
-    parameters: { path: '/directory' }
-  }
-], {
-  permissions: ['file.read'],
-  metadata: {},
-});
+);
 
-console.log('All tools completed:', results.every(r => r.success));
+console.log(
+  "All tools completed:",
+  results.every((r) => r.success),
+);
 ```
 
 ### Sequential Tool Execution
 
 ```typescript
 // Execute tools sequentially (useful when output of one tool is input to another)
-const results = await executor.executeToolsSequential([
+const results = await executor.executeToolsSequential(
+  [
+    {
+      toolName: "list_directory",
+      parameters: { path: "/source" },
+    },
+    {
+      toolName: "read_file",
+      parameters: { path: "/source/config.json" },
+    },
+    {
+      toolName: "write_file",
+      parameters: {
+        path: "/destination/config.json",
+        content: '{"processed": true}',
+      },
+    },
+  ],
   {
-    toolName: 'list_directory',
-    parameters: { path: '/source' }
+    permissions: ["file.read", "file.write"],
+    metadata: { continueOnFailure: false },
   },
-  {
-    toolName: 'read_file',
-    parameters: { path: '/source/config.json' }
-  },
-  {
-    toolName: 'write_file',
-    parameters: { 
-      path: '/destination/config.json',
-      content: '{"processed": true}'
-    }
-  }
-], {
-  permissions: ['file.read', 'file.write'],
-  metadata: { continueOnFailure: false },
-});
+);
 ```
 
 ### Tool Execution with Dependencies
 
 ```typescript
 // Execute tools with dependency resolution
-const results = await executor.executeToolsWithDependencies([
+const results = await executor.executeToolsWithDependencies(
+  [
+    {
+      toolName: "read_config",
+      parameters: { path: "/config.json" },
+    },
+    {
+      toolName: "process_data",
+      parameters: { input: "data.txt" },
+      dependsOn: ["read_config"],
+    },
+    {
+      toolName: "write_output",
+      parameters: { path: "/output.txt" },
+      dependsOn: ["process_data"],
+    },
+  ],
   {
-    toolName: 'read_config',
-    parameters: { path: '/config.json' }
+    permissions: ["file.read", "file.write"],
+    metadata: {},
   },
-  {
-    toolName: 'process_data',
-    parameters: { input: 'data.txt' },
-    dependsOn: ['read_config']
-  },
-  {
-    toolName: 'write_output',
-    parameters: { path: '/output.txt' },
-    dependsOn: ['process_data']
-  }
-], {
-  permissions: ['file.read', 'file.write'],
-  metadata: {},
-});
+);
 
 // Results are returned as a Map with tool names as keys
-console.log('Config:', results.get('read_config')?.data);
-console.log('Processed:', results.get('process_data')?.data);
-console.log('Output:', results.get('write_output')?.data);
+console.log("Config:", results.get("read_config")?.data);
+console.log("Processed:", results.get("process_data")?.data);
+console.log("Output:", results.get("write_output")?.data);
 ```
 
 ## Tool Definition
@@ -222,7 +256,7 @@ console.log('Output:', results.get('write_output')?.data);
 ```typescript
 enum ParameterType {
   STRING = "string",
-  INTEGER = "integer", 
+  INTEGER = "integer",
   NUMBER = "number",
   BOOLEAN = "boolean",
   ARRAY = "array",
@@ -234,60 +268,60 @@ enum ParameterType {
 
 ```typescript
 const definition: ToolDefinition = {
-  name: 'validate_example',
-  description: 'Example with various parameter validations',
+  name: "validate_example",
+  description: "Example with various parameter validations",
   parameters: [
     {
-      name: 'username',
+      name: "username",
       type: ParameterType.STRING,
-      description: 'Username',
+      description: "Username",
       required: true,
       minLength: 3,
       maxLength: 20,
-      pattern: '^[a-zA-Z0-9_]+$',
+      pattern: "^[a-zA-Z0-9_]+$",
     },
     {
-      name: 'age',
+      name: "age",
       type: ParameterType.INTEGER,
-      description: 'Age in years',
+      description: "Age in years",
       required: true,
       minimum: 0,
       maximum: 150,
     },
     {
-      name: 'role',
+      name: "role",
       type: ParameterType.STRING,
-      description: 'User role',
+      description: "User role",
       required: false,
-      default: 'user',
-      enum: ['admin', 'user', 'guest'],
+      default: "user",
+      enum: ["admin", "user", "guest"],
     },
     {
-      name: 'preferences',
+      name: "preferences",
       type: ParameterType.OBJECT,
-      description: 'User preferences',
+      description: "User preferences",
       required: false,
       properties: {
         theme: {
-          name: 'theme',
+          name: "theme",
           type: ParameterType.STRING,
-          description: 'UI theme',
+          description: "UI theme",
           required: false,
-          default: 'light',
-          enum: ['light', 'dark'],
+          default: "light",
+          enum: ["light", "dark"],
         },
         notifications: {
-          name: 'notifications',
+          name: "notifications",
           type: ParameterType.BOOLEAN,
-          description: 'Enable notifications',
+          description: "Enable notifications",
           required: false,
           default: true,
         },
       },
     },
   ],
-  category: 'user',
-  tags: ['validation', 'user'],
+  category: "user",
+  tags: ["validation", "user"],
 };
 ```
 
@@ -298,27 +332,31 @@ const definition: ToolDefinition = {
 ```typescript
 // Tools can require specific permissions
 const definition: ToolDefinition = {
-  name: 'admin_tool',
-  description: 'Admin-only tool',
+  name: "admin_tool",
+  description: "Admin-only tool",
   parameters: [],
-  category: 'admin',
-  tags: ['admin'],
-  permissions: ['admin.access', 'system.modify'],
+  category: "admin",
+  tags: ["admin"],
+  permissions: ["admin.access", "system.modify"],
 };
 
 // Execution context must include required permissions
-const result = await executor.executeTool('admin_tool', {}, {
-  permissions: ['admin.access', 'system.modify', 'user.read'],
-  metadata: { userId: 'admin123' },
-});
+const result = await executor.executeTool(
+  "admin_tool",
+  {},
+  {
+    permissions: ["admin.access", "system.modify", "user.read"],
+    metadata: { userId: "admin123" },
+  },
+);
 ```
 
 ### Audit Logging
 
 ```typescript
 // All tool executions are automatically logged
-const history = executor.getExecutionHistory('admin_tool');
-console.log('Execution history:', history);
+const history = executor.getExecutionHistory("admin_tool");
+console.log("Execution history:", history);
 
 // Get all execution history
 const allHistory = executor.getAllExecutionHistory();
@@ -333,17 +371,21 @@ for (const [toolName, executions] of allHistory) {
 
 ```typescript
 try {
-  const result = await executor.executeTool('invalid_tool', {}, {
-    permissions: [],
-    metadata: {},
-  });
+  const result = await executor.executeTool(
+    "invalid_tool",
+    {},
+    {
+      permissions: [],
+      metadata: {},
+    },
+  );
 } catch (error) {
-  if (error.message.includes('not found')) {
-    console.log('Tool not found');
-  } else if (error.message.includes('Permission')) {
-    console.log('Insufficient permissions');
+  if (error.message.includes("not found")) {
+    console.log("Tool not found");
+  } else if (error.message.includes("Permission")) {
+    console.log("Insufficient permissions");
   } else {
-    console.log('Execution error:', error.message);
+    console.log("Execution error:", error.message);
   }
 }
 ```
@@ -353,22 +395,26 @@ try {
 ```typescript
 // Tools can specify retry and timeout behavior
 const definition: ToolDefinition = {
-  name: 'network_tool',
-  description: 'Tool that makes network requests',
+  name: "network_tool",
+  description: "Tool that makes network requests",
   parameters: [],
-  category: 'network',
-  tags: ['network'],
+  category: "network",
+  tags: ["network"],
   timeout: 10000, // 10 seconds
-  retryCount: 3,  // Retry up to 3 times
+  retryCount: 3, // Retry up to 3 times
 };
 
 // Execution context can override defaults
-const result = await executor.executeTool('network_tool', {}, {
-  permissions: [],
-  metadata: {},
-  timeout: 5000,    // Override to 5 seconds
-  retryCount: 5,    // Override to 5 retries
-});
+const result = await executor.executeTool(
+  "network_tool",
+  {},
+  {
+    permissions: [],
+    metadata: {},
+    timeout: 5000, // Override to 5 seconds
+    retryCount: 5, // Override to 5 retries
+  },
+);
 ```
 
 ## Tool Registry Management
@@ -383,19 +429,19 @@ registry.registerTool(new GreetTool());
 registry.registerTool(new ReadFileTool());
 
 // Get tools by category
-const devTools = registry.getToolsByCategory('development');
+const devTools = registry.getToolsByCategory("development");
 
 // Get tools by tag
-const fileTools = registry.getToolsByTag('file');
+const fileTools = registry.getToolsByTag("file");
 
 // Search tools
-const searchResults = registry.searchTools('file');
+const searchResults = registry.searchTools("file");
 
 // Get registry statistics
 const stats = registry.getStats();
-console.log('Total tools:', stats.totalTools);
-console.log('Total calls:', stats.totalCalls);
-console.log('Error rate:', stats.errorRate);
+console.log("Total tools:", stats.totalTools);
+console.log("Total calls:", stats.totalCalls);
+console.log("Error rate:", stats.errorRate);
 ```
 
 ### Tool Discovery
@@ -408,8 +454,8 @@ const allTools = registry.getAllTools();
 const toolsSchema = registry.getToolsAsJSONSchema();
 
 // Check if tool exists
-if (registry.hasTool('greet')) {
-  console.log('Greet tool is available');
+if (registry.hasTool("greet")) {
+  console.log("Greet tool is available");
 }
 ```
 
@@ -422,24 +468,24 @@ if (registry.hasTool('greet')) {
 class GoodTool extends BaseTool {
   constructor() {
     const definition: ToolDefinition = {
-      name: 'calculate_total',
-      description: 'Calculate total from array of numbers',
+      name: "calculate_total",
+      description: "Calculate total from array of numbers",
       parameters: [
         {
-          name: 'numbers',
+          name: "numbers",
           type: ParameterType.ARRAY,
-          description: 'Array of numbers to sum',
+          description: "Array of numbers to sum",
           required: true,
           items: {
-            name: 'number',
+            name: "number",
             type: ParameterType.NUMBER,
-            description: 'A number',
+            description: "A number",
             required: true,
           },
         },
       ],
-      category: 'math',
-      tags: ['calculation', 'sum'],
+      category: "math",
+      tags: ["calculation", "sum"],
     };
     super(definition);
   }
@@ -459,12 +505,12 @@ class GoodTool extends BaseTool {
 protected async executeImpl(parameters: Record<string, any>): Promise<any> {
   try {
     const { path } = parameters;
-    
+
     // Validate file exists
     if (!await this.fileExists(path)) {
       throw new Error(`File not found: ${path}`);
     }
-    
+
     // Perform operation
     return await this.performOperation(path);
   } catch (error) {
@@ -479,18 +525,24 @@ protected async executeImpl(parameters: Record<string, any>): Promise<any> {
 
 ```typescript
 // Good: Use parallel execution for independent operations
-const results = await executor.executeToolsParallel([
-  { toolName: 'tool1', parameters: {} },
-  { toolName: 'tool2', parameters: {} },
-  { toolName: 'tool3', parameters: {} },
-], context);
+const results = await executor.executeToolsParallel(
+  [
+    { toolName: "tool1", parameters: {} },
+    { toolName: "tool2", parameters: {} },
+    { toolName: "tool3", parameters: {} },
+  ],
+  context,
+);
 
 // Good: Use sequential execution for dependent operations
-const results = await executor.executeToolsSequential([
-  { toolName: 'read_data', parameters: {} },
-  { toolName: 'process_data', parameters: {} },
-  { toolName: 'write_result', parameters: {} },
-], context);
+const results = await executor.executeToolsSequential(
+  [
+    { toolName: "read_data", parameters: {} },
+    { toolName: "process_data", parameters: {} },
+    { toolName: "write_result", parameters: {} },
+  ],
+  context,
+);
 ```
 
 ### 4. Security
@@ -512,11 +564,11 @@ protected async executeImpl(parameters: Record<string, any>, context: ToolExecut
   if (!context.userId) {
     throw new Error('User ID is required');
   }
-  
+
   if (!context.metadata.allowedOperations?.includes('sensitive_operation')) {
     throw new Error('Operation not allowed for this user');
   }
-  
+
   // Perform operation
   return await this.performSensitiveOperation(parameters, context);
 }
@@ -529,7 +581,7 @@ protected async executeImpl(parameters: Record<string, any>, context: ToolExecut
 Abstract base class for all tools.
 
 - `name`: Tool name
-- `description`: Tool description  
+- `description`: Tool description
 - `category`: Tool category
 - `tags`: Tool tags
 - `parameters`: Tool parameters
@@ -585,9 +637,9 @@ const executor = new ToolExecutor();
 executor.addTool(new MyTool());
 
 // Check execution history
-const history = executor.getExecutionHistory('my_tool');
-console.log('Execution history:', history);
+const history = executor.getExecutionHistory("my_tool");
+console.log("Execution history:", history);
 
 // Monitor active executions
-console.log('Active executions:', executor.getActiveExecutionsCount());
+console.log("Active executions:", executor.getActiveExecutionsCount());
 ```

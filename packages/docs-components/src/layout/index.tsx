@@ -2,9 +2,9 @@
  * @fileoverview Layout components for documentation sites
  */
 
-import { Component, JSX, createSignal, Show, For } from 'solid-js';
-import { Card } from 'reynard-components';
-import { useTheme } from 'reynard-themes';
+import { Component, JSX, createSignal, Show, For } from "solid-js";
+import { Card } from "reynard-components";
+import { useTheme } from "reynard-themes";
 
 /**
  * Main documentation layout component
@@ -20,20 +20,18 @@ export const DocsLayout: Component<{
   const { theme } = useTheme();
 
   return (
-    <div class={`docs-layout docs-layout--${theme} ${props.className || ''}`}>
+    <div class={`docs-layout docs-layout--${theme} ${props.className || ""}`}>
       <Show when={props.header}>
-        <header class="docs-header">
-          {props.header}
-        </header>
+        <header class="docs-header">{props.header}</header>
       </Show>
 
       <div class="docs-main">
         <Show when={props.sidebar}>
-          <aside class={`docs-sidebar ${sidebarOpen() ? 'docs-sidebar--open' : ''}`}>
-            <div class="docs-sidebar-content">
-              {props.sidebar}
-            </div>
-            <button 
+          <aside
+            class={`docs-sidebar ${sidebarOpen() ? "docs-sidebar--open" : ""}`}
+          >
+            <div class="docs-sidebar-content">{props.sidebar}</div>
+            <button
               class="docs-sidebar-toggle"
               onClick={() => setSidebarOpen(!sidebarOpen())}
               aria-label="Toggle sidebar"
@@ -43,15 +41,11 @@ export const DocsLayout: Component<{
           </aside>
         </Show>
 
-        <main class="docs-content">
-          {props.children}
-        </main>
+        <main class="docs-content">{props.children}</main>
       </div>
 
       <Show when={props.footer}>
-        <footer class="docs-footer">
-          {props.footer}
-        </footer>
+        <footer class="docs-footer">{props.footer}</footer>
       </Show>
     </div>
   );
@@ -68,7 +62,7 @@ export const DocsHeader: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <header class={`docs-header ${props.className || ''}`}>
+    <header class={`docs-header ${props.className || ""}`}>
       <div class="docs-header-content">
         <div class="docs-header-brand">
           <Show when={props.logo}>
@@ -78,15 +72,11 @@ export const DocsHeader: Component<{
         </div>
 
         <Show when={props.navigation}>
-          <nav class="docs-header-nav">
-            {props.navigation}
-          </nav>
+          <nav class="docs-header-nav">{props.navigation}</nav>
         </Show>
 
         <Show when={props.actions}>
-          <div class="docs-header-actions">
-            {props.actions}
-          </div>
+          <div class="docs-header-actions">{props.actions}</div>
         </Show>
       </div>
     </header>
@@ -102,15 +92,13 @@ export const DocsSidebar: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <aside class={`docs-sidebar ${props.className || ''}`}>
+    <aside class={`docs-sidebar ${props.className || ""}`}>
       <Show when={props.title}>
         <div class="docs-sidebar-header">
           <h2 class="docs-sidebar-title">{props.title}</h2>
         </div>
       </Show>
-      <div class="docs-sidebar-content">
-        {props.children}
-      </div>
+      <div class="docs-sidebar-content">{props.children}</div>
     </aside>
   );
 };
@@ -123,10 +111,8 @@ export const DocsContent: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <main class={`docs-content ${props.className || ''}`}>
-      <div class="docs-content-wrapper">
-        {props.children}
-      </div>
+    <main class={`docs-content ${props.className || ""}`}>
+      <div class="docs-content-wrapper">{props.children}</div>
     </main>
   );
 };
@@ -139,10 +125,8 @@ export const DocsFooter: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <footer class={`docs-footer ${props.className || ''}`}>
-      <div class="docs-footer-content">
-        {props.children}
-      </div>
+    <footer class={`docs-footer ${props.className || ""}`}>
+      <div class="docs-footer-content">{props.children}</div>
     </footer>
   );
 };
@@ -157,7 +141,7 @@ export const DocsPage: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <article class={`docs-page ${props.className || ''}`}>
+    <article class={`docs-page ${props.className || ""}`}>
       <Show when={props.title || props.description}>
         <header class="docs-page-header">
           <Show when={props.title}>
@@ -168,10 +152,8 @@ export const DocsPage: Component<{
           </Show>
         </header>
       </Show>
-      
-      <div class="docs-page-content">
-        {props.children}
-      </div>
+
+      <div class="docs-page-content">{props.children}</div>
     </article>
   );
 };
@@ -186,7 +168,7 @@ export const DocsSection: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <section class={`docs-section ${props.className || ''}`}>
+    <section class={`docs-section ${props.className || ""}`}>
       <Show when={props.title || props.description}>
         <header class="docs-section-header">
           <Show when={props.title}>
@@ -197,10 +179,8 @@ export const DocsSection: Component<{
           </Show>
         </header>
       </Show>
-      
-      <div class="docs-section-content">
-        {props.children}
-      </div>
+
+      <div class="docs-section-content">{props.children}</div>
     </section>
   );
 };
@@ -215,15 +195,12 @@ export const DocsGrid: Component<{
   className?: string;
 }> = (props) => {
   const style = () => ({
-    'grid-template-columns': `repeat(${props.columns || 1}, 1fr)`,
-    gap: props.gap || '1rem'
+    "grid-template-columns": `repeat(${props.columns || 1}, 1fr)`,
+    gap: props.gap || "1rem",
   });
 
   return (
-    <div 
-      class={`docs-grid ${props.className || ''}`}
-      style={style()}
-    >
+    <div class={`docs-grid ${props.className || ""}`} style={style()}>
       {props.children}
     </div>
   );
@@ -247,10 +224,10 @@ export const DocsCardGrid: Component<{
     <DocsGrid columns={props.columns || 3} className={props.className}>
       <For each={props.items}>
         {(item) => (
-          <Card 
+          <Card
             class="docs-feature-card"
             interactive={!!item.href}
-            onClick={() => item.href && window.open(item.href, '_blank')}
+            onClick={() => item.href && window.open(item.href, "_blank")}
           >
             <div class="docs-feature-card-content">
               <Show when={item.icon}>
@@ -258,7 +235,7 @@ export const DocsCardGrid: Component<{
                   <img src={item.icon} alt={item.title} />
                 </div>
               </Show>
-              
+
               <div class="docs-feature-text">
                 <h3 class="docs-feature-title">
                   {item.title}
@@ -288,7 +265,7 @@ export const DocsHero: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <section class={`docs-hero ${props.className || ''}`}>
+    <section class={`docs-hero ${props.className || ""}`}>
       <div class="docs-hero-content">
         <div class="docs-hero-text">
           <h1 class="docs-hero-title">{props.title}</h1>
@@ -299,12 +276,10 @@ export const DocsHero: Component<{
             <p class="docs-hero-description">{props.description}</p>
           </Show>
           <Show when={props.actions}>
-            <div class="docs-hero-actions">
-              {props.actions}
-            </div>
+            <div class="docs-hero-actions">{props.actions}</div>
           </Show>
         </div>
-        
+
         <Show when={props.image}>
           <div class="docs-hero-image">
             <img src={props.image} alt={props.title} />

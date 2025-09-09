@@ -7,8 +7,8 @@
  * @module algorithms/rectangle-algorithms
  */
 
-import { RectangleBasic } from './rectangle-basic';
-import { RectangleAdvanced } from './rectangle-advanced';
+import { RectangleBasic } from "./rectangle-basic";
+import { RectangleAdvanced } from "./rectangle-advanced";
 
 /**
  * Combined rectangle operations

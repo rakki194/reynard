@@ -1,3 +1,3 @@
 // Export all demo components
 
-export * from '../components/ThreeJSVisualizationDemo';
+export * from "../components/ThreeJSVisualizationDemo";

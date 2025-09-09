@@ -2,10 +2,10 @@
  * Global test setup for reynard-testing
  */
 
-import '@testing-library/jest-dom';
-import { vi, beforeEach, afterEach } from 'vitest';
-import { cleanup } from '@solidjs/testing-library';
-import { setupBrowserMocks, resetBrowserMocks } from './mocks/browser-mocks';
+import "@testing-library/jest-dom";
+import { vi, beforeEach, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
+import { setupBrowserMocks, resetBrowserMocks } from "./mocks/browser-mocks";
 
 // Setup browser mocks
 setupBrowserMocks();
@@ -14,9 +14,9 @@ setupBrowserMocks();
 const originalWarn = console.warn;
 console.warn = (...args: any[]) => {
   if (
-    typeof args[0] === 'string' &&
+    typeof args[0] === "string" &&
     args[0].includes(
-      'computations created outside a `createRoot` or `render` will never be disposed',
+      "computations created outside a `createRoot` or `render` will never be disposed",
     )
   ) {
     return; // Suppress this specific warning

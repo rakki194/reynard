@@ -1,1 +1,1 @@
-export { GeometryDemo } from './GeometryDemo';
+export { GeometryDemo } from "./GeometryDemo";

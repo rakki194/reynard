@@ -31,8 +31,14 @@ export const VariationGrid: Component<VariationGridProps> = (props) => {
       if (ref) {
         const variationNames = Object.keys(variations);
         const variationName = variationNames[index];
-        if (variationName && variations[variationName as keyof typeof variations]) {
-          ref.style.setProperty('--dynamic-bg-color', variations[variationName as keyof typeof variations]);
+        if (
+          variationName &&
+          variations[variationName as keyof typeof variations]
+        ) {
+          ref.style.setProperty(
+            "--dynamic-bg-color",
+            variations[variationName as keyof typeof variations],
+          );
         }
       }
     });
@@ -43,10 +49,10 @@ export const VariationGrid: Component<VariationGridProps> = (props) => {
       <For each={Object.entries(props.colorVariations)}>
         {([name, color], index) => (
           <div class="variation-item">
-            <ColorSwatch 
+            <ColorSwatch
               color={color}
               size="small"
-              ref={(el) => variationSwatchesRef[index()] = el}
+              ref={(el) => (variationSwatchesRef[index()] = el)}
             />
             <span class="variation-name">{name}</span>
             <code class="variation-code">{color}</code>

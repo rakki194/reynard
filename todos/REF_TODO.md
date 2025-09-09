@@ -1,6 +1,6 @@
 # 🦊 Reynard Modularity Refactoring Quest
 
-*The Great Fox Hunt: Taming the Bloated TypeScript Beasts*
+_The Great Fox Hunt: Taming the Bloated TypeScript Beasts_
 
 ## 🎯 Mission Overview
 
@@ -37,7 +37,7 @@
 
 ## 🎮 Phase 1: The Great Hunt (Week 1)
 
-*Target: The Biggest Beasts - 500+ line violators*
+_Target: The Biggest Beasts - 500+ line violators_
 
 ### 🦊 Critical Path Quests
 
@@ -146,7 +146,7 @@ The cunning fox has successfully outfoxed the biggest beasts! Ready to tackle th
 
 ## 🎮 Phase 2: The Pack Hunt (Week 2)
 
-*Target: Major Violators - 300-500 line files*
+_Target: Major Violators - 300-500 line files_
 
 ### 🦦 Testing & Analysis Quests
 
@@ -252,7 +252,7 @@ The otter has successfully navigated through the Pack Hunt waters! Ready to tack
 
 ## 🎮 Phase 3: The Systematic Cleanup (Week 3)
 
-*Target: Remaining 200-300 line files*
+_Target: Remaining 200-300 line files_
 
 ### 🐺 Adversarial Analysis Quests
 
@@ -363,7 +363,7 @@ The wolf has successfully hunted down the systematic cleanup targets! Ready to t
 
 ## 🎮 Phase 4: The Final Hunt (Week 4)
 
-*Target: Remaining 100-200 line files*
+_Target: Remaining 100-200 line files_
 
 ### 🦊 Quick Wins Quests
 
@@ -541,11 +541,11 @@ The cunning fox has successfully completed the Great Modularity Refactoring Ques
 
 ## 🏅 Leaderboard
 
-*Track your progress and compete with other developers!*
+_Track your progress and compete with other developers!_
 
-| Developer | Level | XP | Completed Quests | Current Quest |
-|-----------|-------|----|------------------|---------------|
-| *Your Name* | Ultimate Fox 🏆 | 3,400 | 9 | Quest 10: Algorithm Geometry |
+| Developer   | Level           | XP    | Completed Quests | Current Quest                |
+| ----------- | --------------- | ----- | ---------------- | ---------------------------- |
+| _Your Name_ | Ultimate Fox 🏆 | 3,400 | 9                | Quest 10: Algorithm Geometry |
 
 ---
 
@@ -558,4 +558,4 @@ The cunning fox has successfully completed the Great Modularity Refactoring Ques
 
 ---
 
-*May the cunning fox guide your refactoring journey! 🦊*
+_May the cunning fox guide your refactoring journey! 🦊_

@@ -26,12 +26,17 @@ export interface P2PRoomsReturn {
   updateRoom: (roomId: string, updates: Partial<ChatRoom>) => void;
   joinRoom: (roomId: string) => Promise<void>;
   leaveRoom: (roomId: string) => Promise<void>;
-  createRoom: (roomData: Omit<ChatRoom, "id" | "createdAt" | "updatedAt">) => Promise<ChatRoom>;
+  createRoom: (
+    roomData: Omit<ChatRoom, "id" | "createdAt" | "updatedAt">,
+  ) => Promise<ChatRoom>;
   getRoomById: (roomId: string) => ChatRoom | undefined;
   isUserInRoom: (roomId: string, userId: string) => boolean;
   addUserToRoom: (roomId: string, user: ChatUser) => void;
   removeUserFromRoom: (roomId: string, userId: string) => void;
-  updateRoomLastMessage: (roomId: string, message: { content: string; timestamp: Date }) => void;
+  updateRoomLastMessage: (
+    roomId: string,
+    message: { content: string; timestamp: Date },
+  ) => void;
 }
 
 export function useP2PRooms(options: P2PRoomsOptions): P2PRoomsReturn {
@@ -57,7 +62,7 @@ export function useP2PRooms(options: P2PRoomsOptions): P2PRoomsReturn {
   // Remove a room
   const removeRoom = (roomId: string) => {
     setRooms((prev) => prev.filter((r) => r.id !== roomId));
-    
+
     // Clear active room if it was removed
     if (activeRoom()?.id === roomId) {
       setActiveRoom(null);
@@ -68,13 +73,17 @@ export function useP2PRooms(options: P2PRoomsOptions): P2PRoomsReturn {
   const updateRoom = (roomId: string, updates: Partial<ChatRoom>) => {
     setRooms((prev) =>
       prev.map((room) =>
-        room.id === roomId ? { ...room, ...updates, updatedAt: new Date() } : room
-      )
+        room.id === roomId
+          ? { ...room, ...updates, updatedAt: new Date() }
+          : room,
+      ),
     );
 
     // Update active room if it's the one being updated
     if (activeRoom()?.id === roomId) {
-      setActiveRoom((prev) => prev ? { ...prev, ...updates, updatedAt: new Date() } : null);
+      setActiveRoom((prev) =>
+        prev ? { ...prev, ...updates, updatedAt: new Date() } : null,
+      );
     }
   };
 
@@ -112,7 +121,9 @@ export function useP2PRooms(options: P2PRoomsOptions): P2PRoomsReturn {
   };
 
   // Create a new room
-  const createRoom = async (roomData: Omit<ChatRoom, "id" | "createdAt" | "updatedAt">): Promise<ChatRoom> => {
+  const createRoom = async (
+    roomData: Omit<ChatRoom, "id" | "createdAt" | "updatedAt">,
+  ): Promise<ChatRoom> => {
     const newRoom: ChatRoom = {
       ...roomData,
       id: `room-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -157,7 +168,10 @@ export function useP2PRooms(options: P2PRoomsOptions): P2PRoomsReturn {
   };
 
   // Update room's last message
-  const updateRoomLastMessage = (roomId: string, message: { content: string; timestamp: Date }) => {
+  const updateRoomLastMessage = (
+    roomId: string,
+    message: { content: string; timestamp: Date },
+  ) => {
     updateRoom(roomId, {
       lastMessage: {
         id: `msg-${Date.now()}`,

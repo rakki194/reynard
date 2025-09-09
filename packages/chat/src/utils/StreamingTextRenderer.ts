@@ -57,10 +57,10 @@ const DEFAULT_OPTIONS: Required<StreamingTextOptions> = {
   wordPause: 50,
 };
 
-import { 
-  calculateCharacterDelay, 
-  createInitialState, 
-  createTimerManager 
+import {
+  calculateCharacterDelay,
+  createInitialState,
+  createTimerManager,
 } from "./StreamingHelpers";
 import { createStreamingControls } from "./StreamingControls";
 
@@ -69,7 +69,9 @@ export function createStreamingText(
   options: StreamingTextOptions = {},
 ) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const [state, setState] = createSignal<StreamingTextState>(createInitialState(text));
+  const [state, setState] = createSignal<StreamingTextState>(
+    createInitialState(text),
+  );
   const timers = createTimerManager();
 
   const streamNext = () => {
@@ -110,11 +112,17 @@ export function createStreamingText(
     }
   };
 
-  const controls = createStreamingControls(text, opts, state, setState, timers, streamNext);
+  const controls = createStreamingControls(
+    text,
+    opts,
+    state,
+    setState,
+    timers,
+    streamNext,
+  );
   const { restart } = controls;
 
   onCleanup(timers.cleanup);
 
   return { state, ...controls };
 }
-

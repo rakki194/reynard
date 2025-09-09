@@ -16,7 +16,9 @@ interface ChartsControlsProps {
   setPerformanceMonitoring: (enabled: boolean) => void;
   availableThemes: string[];
   themeContext: {
-    setTheme: (theme: "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut") => void;
+    setTheme: (
+      theme: "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut",
+    ) => void;
   };
 }
 
@@ -31,10 +33,18 @@ export const ChartsControls: Component<ChartsControlsProps> = (props) => {
             <For each={props.availableThemes}>
               {(theme) => (
                 <button
-                  class={`theme-button ${props.selectedTheme === theme ? 'active' : ''}`}
+                  class={`theme-button ${props.selectedTheme === theme ? "active" : ""}`}
                   onClick={() => {
                     props.setSelectedTheme(theme);
-                    props.themeContext.setTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
+                    props.themeContext.setTheme(
+                      theme as
+                        | "light"
+                        | "dark"
+                        | "gray"
+                        | "banana"
+                        | "strawberry"
+                        | "peanut",
+                    );
                   }}
                 >
                   {theme}
@@ -43,9 +53,11 @@ export const ChartsControls: Component<ChartsControlsProps> = (props) => {
             </For>
           </div>
         </div>
-        
+
         <div class="control-group">
-          <label for="speed-slider">Animation Speed: {props.animationSpeed}</label>
+          <label for="speed-slider">
+            Animation Speed: {props.animationSpeed}
+          </label>
           <input
             id="speed-slider"
             type="range"

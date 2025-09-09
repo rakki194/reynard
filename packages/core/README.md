@@ -38,11 +38,15 @@ npm install reynard-core solid-js
 
 ```tsx
 import { createSignal } from "solid-js";
-import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
+import {
+  NotificationsProvider,
+  createNotifications,
+  useNotifications,
+} from "reynard-core";
 
 function App() {
   const notificationsModule = createNotifications();
-  
+
   return (
     <NotificationsProvider value={notificationsModule}>
       <NotificationDemo />
@@ -52,7 +56,7 @@ function App() {
 
 function NotificationDemo() {
   const { notify } = useNotifications();
-  
+
   return (
     <div>
       <button onClick={() => notify("Hello World!", "success")}>
@@ -66,11 +70,15 @@ function NotificationDemo() {
 ### Notifications System
 
 ```tsx
-import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
+import {
+  NotificationsProvider,
+  createNotifications,
+  useNotifications,
+} from "reynard-core";
 
 function App() {
   const notificationsModule = createNotifications();
-  
+
   return (
     <NotificationsProvider value={notificationsModule}>
       <NotificationDemo />
@@ -80,11 +88,11 @@ function App() {
 
 function NotificationDemo() {
   const { notify, dismiss, clear } = useNotifications();
-  
+
   const showSuccess = () => notify("Operation completed!", "success");
   const showError = () => notify("Something went wrong!", "error");
   const showWarning = () => notify("Please check your input", "warning");
-  
+
   return (
     <div>
       <button onClick={showSuccess}>Success</button>
@@ -106,11 +114,11 @@ function SettingsComponent() {
     language: "en",
     notifications: true,
   });
-  
+
   const updateLanguage = (language: string) => {
-    setSettings(prev => ({ ...prev, language }));
+    setSettings((prev) => ({ ...prev, language }));
   };
-  
+
   return (
     <div>
       <p>Current language: {settings().language}</p>
@@ -145,7 +153,7 @@ const { notify, dismiss, clear, notifications } = useNotifications();
 ```tsx
 function NotificationDemo() {
   const { notify } = useNotifications();
-  
+
   const handleSubmit = async () => {
     try {
       await submitForm();
@@ -154,7 +162,7 @@ function NotificationDemo() {
       notify("Failed to submit form", "error");
     }
   };
-  
+
   return <button onClick={handleSubmit}>Submit</button>;
 }
 ```
@@ -182,18 +190,18 @@ function UserPreferences() {
     language: "en",
     fontSize: 16,
   });
-  
+
   const toggleDarkMode = () => {
-    setPreferences(prev => ({ ...prev, darkMode: !prev.darkMode }));
+    setPreferences((prev) => ({ ...prev, darkMode: !prev.darkMode }));
   };
-  
+
   return (
     <div>
       <label>
-        <input 
-          type="checkbox" 
-          checked={preferences().darkMode} 
-          onChange={toggleDarkMode} 
+        <input
+          type="checkbox"
+          checked={preferences().darkMode}
+          onChange={toggleDarkMode}
         />
         Dark Mode
       </label>
@@ -216,16 +224,16 @@ const debouncedValue = useDebounce(value, delay);
 function SearchComponent() {
   const [searchTerm, setSearchTerm] = createSignal("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  
+
   createEffect(() => {
     if (debouncedSearchTerm()) {
       performSearch(debouncedSearchTerm());
     }
   });
-  
+
   return (
-    <input 
-      value={searchTerm()} 
+    <input
+      value={searchTerm()}
       onInput={(e) => setSearchTerm(e.target.value)}
       placeholder="Search..."
     />
@@ -248,20 +256,17 @@ function AutoSaveComponent() {
   const [content, setContent] = createSignal("");
   const debouncedSave = useDebouncedCallback(
     (text: string) => saveToServer(text),
-    1000
+    1000,
   );
-  
+
   createEffect(() => {
     if (content()) {
       debouncedSave(content());
     }
   });
-  
+
   return (
-    <textarea 
-      value={content()} 
-      onInput={(e) => setContent(e.target.value)}
-    />
+    <textarea value={content()} onInput={(e) => setContent(e.target.value)} />
   );
 }
 ```
@@ -281,7 +286,7 @@ const isDark = useMediaQuery("(prefers-color-scheme: dark)");
 function ResponsiveComponent() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const isTablet = useMediaQuery("(max-width: 1024px)");
-  
+
   return (
     <div>
       {isMobile() && <MobileLayout />}
@@ -330,45 +335,48 @@ const percentage = formatNumber(0.75, { style: "percent" }); // "75%"
 
 // Currency formatting
 const price = formatCurrency(99.99, "USD"); // "$99.99"
-const euro = formatCurrency(89.50, "EUR"); // "€89.50"
+const euro = formatCurrency(89.5, "EUR"); // "€89.50"
 ```
 
 #### Async Utilities
 
 ```tsx
-import { 
-  batchExecute, 
-  mapWithConcurrency, 
+import {
+  batchExecute,
+  mapWithConcurrency,
   retryWithBackoff,
-  pollUntil 
+  pollUntil,
 } from "reynard-core";
 
 // Batch execution
-const results = await batchExecute([
-  () => fetch("/api/users"),
-  () => fetch("/api/posts"),
-  () => fetch("/api/comments"),
-], 2); // Process 2 at a time
+const results = await batchExecute(
+  [
+    () => fetch("/api/users"),
+    () => fetch("/api/posts"),
+    () => fetch("/api/comments"),
+  ],
+  2,
+); // Process 2 at a time
 
 // Concurrency control
 const processedData = await mapWithConcurrency(
   items,
   async (item) => processItem(item),
-  5 // Max 5 concurrent operations
+  5, // Max 5 concurrent operations
 );
 
 // Retry with exponential backoff
 const result = await retryWithBackoff(
   () => riskyOperation(),
   3, // Max 3 retries
-  1000 // Base delay 1 second
+  1000, // Base delay 1 second
 );
 
 // Polling
 const data = await pollUntil(
   () => checkCondition(),
   1000, // Check every 1 second
-  30000 // Timeout after 30 seconds
+  30000, // Timeout after 30 seconds
 );
 ```
 
@@ -414,7 +422,7 @@ The async utility tests (`src/utils/async.test.ts`) are currently excluded from 
 ## 📦 Bundle Size
 
 - **Core composables**: ~6 kB (gzipped)
-- **Utility functions**: ~12 kB (gzipped)  
+- **Utility functions**: ~12 kB (gzipped)
 - **Total**: ~18 kB (gzipped)
 
 ## 🤝 Contributing

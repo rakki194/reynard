@@ -1,11 +1,15 @@
 // 3D geometry utilities and helpers
 
-import type { Vector3, BoundingBox } from '../types';
+import type { Vector3, BoundingBox } from "../types";
 
 /**
  * Create a 3D vector
  */
-export function createVector3(x: number = 0, y: number = 0, z: number = 0): Vector3 {
+export function createVector3(
+  x: number = 0,
+  y: number = 0,
+  z: number = 0,
+): Vector3 {
   return { x, y, z };
 }
 
@@ -46,7 +50,9 @@ export function multiplyVector3(vector: Vector3, scalar: number): Vector3 {
  * Calculate the length of a 3D vector
  */
 export function lengthVector3(vector: Vector3): number {
-  return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+  return Math.sqrt(
+    vector.x * vector.x + vector.y * vector.y + vector.z * vector.z,
+  );
 }
 
 /**
@@ -153,7 +159,10 @@ export function sizeBoundingBox(box: BoundingBox): Vector3 {
 /**
  * Check if a point is inside a bounding box
  */
-export function isPointInBoundingBox(point: Vector3, box: BoundingBox): boolean {
+export function isPointInBoundingBox(
+  point: Vector3,
+  box: BoundingBox,
+): boolean {
   return (
     point.x >= box.min.x &&
     point.x <= box.max.x &&
@@ -167,7 +176,10 @@ export function isPointInBoundingBox(point: Vector3, box: BoundingBox): boolean 
 /**
  * Expand a bounding box to include a point
  */
-export function expandBoundingBox(box: BoundingBox, point: Vector3): BoundingBox {
+export function expandBoundingBox(
+  box: BoundingBox,
+  point: Vector3,
+): BoundingBox {
   return {
     min: {
       x: Math.min(box.min.x, point.x),
@@ -185,7 +197,11 @@ export function expandBoundingBox(box: BoundingBox, point: Vector3): BoundingBox
 /**
  * Convert HSL to RGB
  */
-export function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+export function hslToRgb(
+  h: number,
+  s: number,
+  l: number,
+): [number, number, number] {
   const hue2rgb = (p: number, q: number, t: number) => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -212,7 +228,11 @@ export function hslToRgb(h: number, s: number, l: number): [number, number, numb
 /**
  * Convert RGB to HSL
  */
-export function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+export function rgbToHsl(
+  r: number,
+  g: number,
+  b: number,
+): [number, number, number] {
   r /= 255;
   g /= 255;
   b /= 255;
@@ -248,18 +268,14 @@ export function rgbToHsl(r: number, g: number, b: number): [number, number, numb
  * Generate a random color
  */
 export function randomColor(): [number, number, number] {
-  return [
-    Math.random(),
-    Math.random(),
-    Math.random(),
-  ];
+  return [Math.random(), Math.random(), Math.random()];
 }
 
 /**
  * Generate a color from a hash string
  */
 export function colorFromHash(str: string): [number, number, number] {
-  const hash = str.split('').reduce((a, b) => {
+  const hash = str.split("").reduce((a, b) => {
     a = (a << 5) - a + b.charCodeAt(0);
     return a & a;
   }, 0);
@@ -282,7 +298,7 @@ export function mapRange(
   inMin: number,
   inMax: number,
   outMin: number,
-  outMax: number
+  outMax: number,
 ): number {
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
@@ -293,28 +309,28 @@ export function mapRange(
 export function generateSpherePoints(
   center: Vector3,
   radius: number,
-  count: number
+  count: number,
 ): Vector3[] {
   const points: Vector3[] = [];
-  
+
   for (let i = 0; i < count; i++) {
     // Generate random point on unit sphere
     const u = Math.random();
     const v = Math.random();
     const theta = 2 * Math.PI * u;
     const phi = Math.acos(2 * v - 1);
-    
+
     const x = radius * Math.sin(phi) * Math.cos(theta);
     const y = radius * Math.sin(phi) * Math.sin(theta);
     const z = radius * Math.cos(phi);
-    
+
     points.push({
       x: center.x + x,
       y: center.y + y,
       z: center.z + z,
     });
   }
-  
+
   return points;
 }
 
@@ -324,11 +340,11 @@ export function generateSpherePoints(
 export function generateCubePoints(
   center: Vector3,
   size: number,
-  count: number
+  count: number,
 ): Vector3[] {
   const points: Vector3[] = [];
   // const halfSize = size / 2;
-  
+
   for (let i = 0; i < count; i++) {
     points.push({
       x: center.x + (Math.random() - 0.5) * size,
@@ -336,6 +352,6 @@ export function generateCubePoints(
       z: center.z + (Math.random() - 0.5) * size,
     });
   }
-  
+
   return points;
 }

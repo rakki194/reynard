@@ -1,7 +1,7 @@
-import { createSignal, For, Show } from 'solid-js';
-import { Card, Button, Tabs, TabPanel } from 'reynard-components';
-import { CodeBlock } from './CodeBlock';
-import './ReynardAdventure.css';
+import { createSignal, For, Show } from "solid-js";
+import { Card, Button, Tabs, TabPanel } from "reynard-components";
+import { CodeBlock } from "./CodeBlock";
+import "./ReynardAdventure.css";
 
 interface TutorialSection {
   id: string;
@@ -10,11 +10,11 @@ interface TutorialSection {
   content: TutorialContent[];
   prerequisites?: string[];
   estimatedTime: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
 }
 
 interface TutorialContent {
-  type: 'text' | 'code' | 'example' | 'exercise';
+  type: "text" | "code" | "example" | "exercise";
   title?: string;
   content: string;
   language?: string;
@@ -29,14 +29,14 @@ interface TutorialState {
 
 export const tutorialData: TutorialSection[] = [
   {
-    id: 'introduction',
-    title: 'Introduction to Reynard',
-    description: 'Learn what Reynard is and why it exists',
-    estimatedTime: '10 minutes',
-    difficulty: 'beginner',
+    id: "introduction",
+    title: "Introduction to Reynard",
+    description: "Learn what Reynard is and why it exists",
+    estimatedTime: "10 minutes",
+    difficulty: "beginner",
     content: [
       {
-        type: 'text',
+        type: "text",
         content: `# What is Reynard?
 
 Reynard is a comprehensive SolidJS framework designed for building modern, performant, and accessible web applications. It provides a complete toolkit with modular architecture, elegant theming, and exceptional developer experience.
@@ -48,30 +48,30 @@ Reynard is a comprehensive SolidJS framework designed for building modern, perfo
 - **Production Ready**: Battle-tested components with 95%+ test coverage
 - **Accessibility First**: WCAG 2.1 compliance and robust a11y features
 - **Performance Optimized**: Bundle splitting, lazy loading, and fine-grained reactivity
-- **TypeScript Native**: Complete type safety with excellent IntelliSense`
+- **TypeScript Native**: Complete type safety with excellent IntelliSense`,
       },
       {
-        type: 'code',
-        title: 'Quick Installation',
-        language: 'bash',
+        type: "code",
+        title: "Quick Installation",
+        language: "bash",
         content: `# Install core package
 npm install reynard-core solid-js
 
 # Install additional packages as needed
-npm install reynard-components reynard-auth reynard-charts`
-      }
-    ]
+npm install reynard-components reynard-auth reynard-charts`,
+      },
+    ],
   },
   {
-    id: 'core-concepts',
-    title: 'Core Concepts',
-    description: 'Understanding Reynard\'s architecture and design principles',
-    estimatedTime: '20 minutes',
-    difficulty: 'beginner',
-    prerequisites: ['introduction'],
+    id: "core-concepts",
+    title: "Core Concepts",
+    description: "Understanding Reynard's architecture and design principles",
+    estimatedTime: "20 minutes",
+    difficulty: "beginner",
+    prerequisites: ["introduction"],
     content: [
       {
-        type: 'text',
+        type: "text",
         content: `# Core Architecture
 
 Reynard follows a modular architecture where each package has a specific responsibility:
@@ -87,12 +87,12 @@ Reynard follows a modular architecture where each package has a specific respons
 - **reynard-file-processing**: Advanced file processing pipeline
 - **reynard-color-media**: Color and media utilities
 - **reynard-ui**: Additional UI components
-- **reynard-themes**: Theme system and built-in themes`
+- **reynard-themes**: Theme system and built-in themes`,
       },
       {
-        type: 'code',
-        title: 'Basic App Structure',
-        language: 'tsx',
+        type: "code",
+        title: "Basic App Structure",
+        language: "tsx",
         content: `import { createSignal } from "solid-js";
 import { useNotifications } from "reynard-core";
 import { useTheme } from "reynard-themes";
@@ -119,73 +119,80 @@ function App() {
       </Button>
     </Card>
   );
-}`
-      }
-    ]
-  }
+}`,
+      },
+    ],
+  },
 ];
 
 function formatMarkdown(text: string): string {
-  return text
-    // Escape HTML characters to prevent XSS
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // Convert markdown headers
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    // Convert bold text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Convert italic text
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    // Convert code blocks
-    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-    // Convert inline code
-    .replace(/`(.*?)`/g, '<code>$1</code>')
-    // Convert line breaks
-    .replace(/\n/g, '<br>');
+  return (
+    text
+      // Escape HTML characters to prevent XSS
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      // Convert markdown headers
+      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+      .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+      // Convert bold text
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      // Convert italic text
+      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      // Convert code blocks
+      .replace(/```([\s\S]*?)```/g, "<pre><code>$1</code></pre>")
+      // Convert inline code
+      .replace(/`(.*?)`/g, "<code>$1</code>")
+      // Convert line breaks
+      .replace(/\n/g, "<br>")
+  );
 }
 
 export default function ReynardTutorial() {
   const [tutorialState, setTutorialState] = createSignal<TutorialState>({
-    currentSection: 'introduction',
+    currentSection: "introduction",
     completedSections: [],
-    currentTab: 0
+    currentTab: 0,
   });
 
-  const currentSection = () => tutorialData.find(s => s.id === tutorialState().currentSection);
-  const currentContent = () => currentSection()?.content[tutorialState().currentTab] || null;
+  const currentSection = () =>
+    tutorialData.find((s) => s.id === tutorialState().currentSection);
+  const currentContent = () =>
+    currentSection()?.content[tutorialState().currentTab] || null;
 
   const nextSection = () => {
-    const currentIndex = tutorialData.findIndex(s => s.id === tutorialState().currentSection);
+    const currentIndex = tutorialData.findIndex(
+      (s) => s.id === tutorialState().currentSection,
+    );
     if (currentIndex < tutorialData.length - 1) {
       const nextId = tutorialData[currentIndex + 1].id;
-      setTutorialState(prev => ({
+      setTutorialState((prev) => ({
         ...prev,
         currentSection: nextId,
-        currentTab: 0
+        currentTab: 0,
       }));
     }
   };
 
   const prevSection = () => {
-    const currentIndex = tutorialData.findIndex(s => s.id === tutorialState().currentSection);
+    const currentIndex = tutorialData.findIndex(
+      (s) => s.id === tutorialState().currentSection,
+    );
     if (currentIndex > 0) {
       const prevId = tutorialData[currentIndex - 1].id;
-      setTutorialState(prev => ({
+      setTutorialState((prev) => ({
         ...prev,
         currentSection: prevId,
-        currentTab: 0
+        currentTab: 0,
       }));
     }
   };
 
-
   const completeSection = () => {
-    setTutorialState(prev => ({
+    setTutorialState((prev) => ({
       ...prev,
-      completedSections: [...prev.completedSections, prev.currentSection]
+      completedSections: [...prev.completedSections, prev.currentSection],
     }));
   };
 
@@ -195,33 +202,38 @@ export default function ReynardTutorial() {
         <h3>Reynard Tutorial</h3>
         <div class="tutorial-progress">
           <div class="progress-bar">
-            <div 
-              class="progress-fill" 
+            <div
+              class="progress-fill"
               classList={{
-                'progress-fill': true,
-                [`progress-${Math.round((tutorialState().completedSections.length / tutorialData.length) * 100)}`]: true
+                "progress-fill": true,
+                [`progress-${Math.round((tutorialState().completedSections.length / tutorialData.length) * 100)}`]: true,
               }}
             ></div>
           </div>
           <span class="progress-text">
-            {tutorialState().completedSections.length} / {tutorialData.length} sections completed
+            {tutorialState().completedSections.length} / {tutorialData.length}{" "}
+            sections completed
           </span>
         </div>
-        
+
         <div class="tutorial-sections">
           <For each={tutorialData}>
             {(section, index) => (
-              <div 
+              <div
                 class={`tutorial-section-item ${
-                  section.id === tutorialState().currentSection ? 'active' : ''
+                  section.id === tutorialState().currentSection ? "active" : ""
                 } ${
-                  tutorialState().completedSections.includes(section.id) ? 'completed' : ''
+                  tutorialState().completedSections.includes(section.id)
+                    ? "completed"
+                    : ""
                 }`}
-                onClick={() => setTutorialState(prev => ({ 
-                  ...prev, 
-                  currentSection: section.id, 
-                  currentTab: 0 
-                }))}
+                onClick={() =>
+                  setTutorialState((prev) => ({
+                    ...prev,
+                    currentSection: section.id,
+                    currentTab: 0,
+                  }))
+                }
               >
                 <div class="section-number">{index() + 1}</div>
                 <div class="section-info">
@@ -245,8 +257,12 @@ export default function ReynardTutorial() {
             <div class="tutorial-header">
               <h1 class="tutorial-title">{currentSection()?.title}</h1>
               <div class="tutorial-meta">
-                <span class="tutorial-time">{currentSection()?.estimatedTime}</span>
-                <span class={`tutorial-difficulty ${currentSection()?.difficulty}`}>
+                <span class="tutorial-time">
+                  {currentSection()?.estimatedTime}
+                </span>
+                <span
+                  class={`tutorial-difficulty ${currentSection()?.difficulty}`}
+                >
                   {currentSection()?.difficulty}
                 </span>
               </div>
@@ -256,34 +272,39 @@ export default function ReynardTutorial() {
               {currentSection()?.description}
             </div>
 
-            <Show when={currentSection()?.content && currentSection()!.content.length > 1}>
-              <Tabs 
+            <Show
+              when={
+                currentSection()?.content &&
+                currentSection()!.content.length > 1
+              }
+            >
+              <Tabs
                 items={currentSection()!.content.map((content, index) => ({
                   id: `step-${index}`,
                   label: content.title || `Step ${index + 1}`,
-                  disabled: false
+                  disabled: false,
                 }))}
                 activeTab={`step-${tutorialState().currentTab}`}
                 onTabChange={(tabId) => {
-                  const index = parseInt(tabId.replace('step-', ''));
-                  setTutorialState(prev => ({ ...prev, currentTab: index }));
+                  const index = parseInt(tabId.replace("step-", ""));
+                  setTutorialState((prev) => ({ ...prev, currentTab: index }));
                 }}
               >
                 <For each={currentSection()?.content}>
                   {(content, index) => (
-                    <TabPanel 
+                    <TabPanel
                       tabId={`step-${index()}`}
                       activeTab={`step-${tutorialState().currentTab}`}
                     >
                       <div class="tutorial-step">
-                        <Show when={content.type === 'text'}>
-                          <div 
-                            class="tutorial-text" 
+                        <Show when={content.type === "text"}>
+                          <div
+                            class="tutorial-text"
                             innerHTML={formatMarkdown(content.content)}
                           ></div>
                         </Show>
-                        
-                        <Show when={content.type === 'code'}>
+
+                        <Show when={content.type === "code"}>
                           <CodeBlock
                             code={content.content}
                             language={content.language}
@@ -300,22 +321,29 @@ export default function ReynardTutorial() {
               </Tabs>
             </Show>
 
-            <Show when={currentSection()?.content && currentSection()!.content.length === 1}>
+            <Show
+              when={
+                currentSection()?.content &&
+                currentSection()!.content.length === 1
+              }
+            >
               <div class="tutorial-step">
-                <Show when={currentContent()?.type === 'text'}>
-                  <div 
-                    class="tutorial-text" 
-                    innerHTML={formatMarkdown(currentContent()?.content || '')}
+                <Show when={currentContent()?.type === "text"}>
+                  <div
+                    class="tutorial-text"
+                    innerHTML={formatMarkdown(currentContent()?.content || "")}
                   ></div>
                 </Show>
-                
-                <Show when={currentContent()?.type === 'code'}>
+
+                <Show when={currentContent()?.type === "code"}>
                   <div class="tutorial-code">
                     <Show when={currentContent()?.title}>
                       <h4 class="code-title">{currentContent()?.title}</h4>
                     </Show>
                     <pre class="code-block">
-                      <code class={`language-${currentContent()?.language || 'text'}`}>
+                      <code
+                        class={`language-${currentContent()?.language || "text"}`}
+                      >
                         {currentContent()?.content}
                       </code>
                     </pre>
@@ -331,28 +359,39 @@ export default function ReynardTutorial() {
 
             <div class="tutorial-navigation">
               <div class="nav-buttons">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   onClick={prevSection}
-                  disabled={tutorialData.findIndex(s => s.id === tutorialState().currentSection) === 0}
+                  disabled={
+                    tutorialData.findIndex(
+                      (s) => s.id === tutorialState().currentSection,
+                    ) === 0
+                  }
                 >
                   Previous Section
                 </Button>
-                
-                <Button 
-                  variant="primary" 
+
+                <Button
+                  variant="primary"
                   onClick={nextSection}
-                  disabled={tutorialData.findIndex(s => s.id === tutorialState().currentSection) === tutorialData.length - 1}
+                  disabled={
+                    tutorialData.findIndex(
+                      (s) => s.id === tutorialState().currentSection,
+                    ) ===
+                    tutorialData.length - 1
+                  }
                 >
                   Next Section
                 </Button>
               </div>
-              
+
               <div class="section-actions">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={completeSection}
-                  disabled={tutorialState().completedSections.includes(tutorialState().currentSection)}
+                  disabled={tutorialState().completedSections.includes(
+                    tutorialState().currentSection,
+                  )}
                 >
                   Mark Complete
                 </Button>

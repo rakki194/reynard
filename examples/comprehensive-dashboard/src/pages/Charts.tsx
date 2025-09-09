@@ -1,10 +1,5 @@
 import { createSignal, createMemo } from "solid-js";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  TimeSeriesChart,
-} from "reynard-charts";
+import { LineChart, BarChart, PieChart, TimeSeriesChart } from "reynard-charts";
 import { Card, Select } from "reynard-components";
 import { useI18n } from "reynard-i18n";
 
@@ -107,7 +102,11 @@ export function Charts() {
         <div class="flex gap-4">
           <Select
             value={chartType()}
-            onInput={(e) => setChartType(e.target.value as "line" | "bar" | "pie" | "timeseries")}
+            onInput={(e) =>
+              setChartType(
+                e.target.value as "line" | "bar" | "pie" | "timeseries",
+              )
+            }
             options={[
               { value: "line", label: t("charts.types.line") },
               { value: "bar", label: t("charts.types.bar") },
@@ -117,7 +116,9 @@ export function Charts() {
           />
           <Select
             value={dataSet()}
-            onInput={(e) => setDataSet(e.target.value as "sales" | "users" | "performance")}
+            onInput={(e) =>
+              setDataSet(e.target.value as "sales" | "users" | "performance")
+            }
             options={[
               { value: "sales", label: t("charts.data.sales") },
               { value: "users", label: t("charts.data.users") },

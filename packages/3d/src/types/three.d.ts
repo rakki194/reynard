@@ -1,9 +1,9 @@
 // Type declarations for Three.js dynamic imports
-declare module 'three' {
-  export * from 'three';
+declare module "three" {
+  export * from "three";
 }
 
-declare module 'three/examples/jsm/controls/OrbitControls.js' {
+declare module "three/examples/jsm/controls/OrbitControls.js" {
   export class OrbitControls {
     constructor(camera: any, domElement: HTMLElement);
     addEventListener(type: string, listener: (event: any) => void): void;

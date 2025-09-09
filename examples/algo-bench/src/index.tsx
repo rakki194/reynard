@@ -9,7 +9,7 @@ console.log("🎯 Root element:", document.getElementById("root"));
 
 try {
   console.log("🚀 Attempting to render simple app...");
-  
+
   // Clear the loading indicator first
   const root = document.getElementById("root")!;
   const loadingIndicator = document.getElementById("loading-indicator");
@@ -17,12 +17,12 @@ try {
     console.log("🗑️ Removing loading indicator...");
     loadingIndicator.remove();
   }
-  
+
   const cleanup = render(() => {
     console.log("🎨 App component rendering...");
     return <App />;
   }, root);
-  
+
   console.log("✅ Simple app rendered successfully!", cleanup);
 } catch (error) {
   console.error("❌ Failed to render simple app:", error);

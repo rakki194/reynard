@@ -12,7 +12,7 @@ import {
   TagColorsDemo,
   GradientDemo,
   OKLCHButtonsDemo,
-  ThemeInfo
+  ThemeInfo,
 } from ".";
 
 export const OKLCHColorDemo: Component = () => {
@@ -32,25 +32,28 @@ export const OKLCHColorDemo: Component = () => {
           )}
           OKLCH Color System Demo
         </h2>
-        <p>Experience the power of OKLCH color space with perceptual uniformity and theme-aware generation</p>
+        <p>
+          Experience the power of OKLCH color space with perceptual uniformity
+          and theme-aware generation
+        </p>
       </div>
 
       <div class="oklch-demo-content">
-        <ColorSelection 
-          selectedColor={selectedColor()} 
-          onColorSelect={setSelectedColor} 
+        <ColorSelection
+          selectedColor={selectedColor()}
+          onColorSelect={setSelectedColor}
         />
-        
+
         <ColorPaletteDisplay selectedColor={selectedColor()} />
-        
+
         <ColorVariants selectedColor={selectedColor()} />
-        
+
         <TagColorsDemo />
-        
+
         <GradientDemo />
-        
+
         <OKLCHButtonsDemo />
-        
+
         <ThemeInfo />
       </div>
     </section>

@@ -8,6 +8,7 @@ This directory contains comprehensive architecture documentation for the Reynard
 
 - **`authentication.md`** - JWT/Argon2 authentication system
 - **`argon2-implementation.md`** - Argon2 password hashing implementation
+- **`annotating-system.md`** - Comprehensive annotating system architecture
 
 ### Component Architecture
 

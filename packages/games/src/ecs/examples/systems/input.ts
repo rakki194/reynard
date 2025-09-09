@@ -1,9 +1,9 @@
 // Input and player control systems
 
-import { World } from '../../types';
-import { 
-  Position, 
-  Velocity, 
+import { World } from "../../types";
+import {
+  Position,
+  Velocity,
   InputState,
   Player,
   Bullet,
@@ -11,8 +11,8 @@ import {
   PositionType,
   VelocityType,
   PlayerType,
-  InputStateType
-} from '../components';
+  InputStateType,
+} from "../components";
 
 /**
  * Player input system - handles player movement based on input.
@@ -31,16 +31,16 @@ export function playerInputSystem(world: World): void {
     vel.y = 0;
 
     // Apply movement based on input
-    if (inputState.keys.has('ArrowLeft') || inputState.keys.has('KeyA')) {
+    if (inputState.keys.has("ArrowLeft") || inputState.keys.has("KeyA")) {
       vel.x = -speed;
     }
-    if (inputState.keys.has('ArrowRight') || inputState.keys.has('KeyD')) {
+    if (inputState.keys.has("ArrowRight") || inputState.keys.has("KeyD")) {
       vel.x = speed;
     }
-    if (inputState.keys.has('ArrowUp') || inputState.keys.has('KeyW')) {
+    if (inputState.keys.has("ArrowUp") || inputState.keys.has("KeyW")) {
       vel.y = -speed;
     }
-    if (inputState.keys.has('ArrowDown') || inputState.keys.has('KeyS')) {
+    if (inputState.keys.has("ArrowDown") || inputState.keys.has("KeyS")) {
       vel.y = speed;
     }
   });
@@ -58,13 +58,13 @@ export function shootingSystem(world: World): void {
 
   query.forEach((entity, player, position) => {
     const pos = position as Position;
-    if (inputState.keys.has('Space')) {
+    if (inputState.keys.has("Space")) {
       // Create bullet
       const bullet = world.spawn(
         new Position(pos.x, pos.y),
         new Velocity(0, -bulletSpeed),
         new Bullet(bulletSpeed),
-        new Lifetime(3) // 3 second lifetime
+        new Lifetime(3), // 3 second lifetime
       );
     }
   });

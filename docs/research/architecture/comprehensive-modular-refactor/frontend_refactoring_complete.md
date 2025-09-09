@@ -119,13 +119,17 @@ The app context now uses a clean delegation pattern:
 ```typescript
 const appContext: AppContext = {
   // Theme delegation
-  get theme() { return themeModule.theme; },
+  get theme() {
+    return themeModule.theme;
+  },
   setTheme: (theme: Theme) => themeModule.setTheme(theme),
-  
+
   // Settings delegation
-  get instantDelete() { return settingsModule.instantDelete; },
+  get instantDelete() {
+    return settingsModule.instantDelete;
+  },
   setInstantDelete: (value: boolean) => settingsModule.setInstantDelete(value),
-  
+
   // ... and so on for all functionality
 };
 ```

@@ -7,8 +7,8 @@
  * @module algorithms/circle-algorithms
  */
 
-import { Point, PointOps } from './point-algorithms';
-import { Circle } from './shapes';
+import { Point, PointOps } from "./point-algorithms";
+import { Circle } from "./shapes";
 
 /**
  * Circle operations
@@ -27,7 +27,10 @@ export class CircleOps {
   }
 
   static containsPoint(circle: Circle, point: Point): boolean {
-    return PointOps.distanceSquared(circle.center, point) <= circle.radius * circle.radius;
+    return (
+      PointOps.distanceSquared(circle.center, point) <=
+      circle.radius * circle.radius
+    );
   }
 
   static intersects(a: Circle, b: Circle): boolean {
@@ -40,10 +43,19 @@ export class CircleOps {
   }
 
   static shrink(circle: Circle, amount: number): Circle {
-    return { center: circle.center, radius: Math.max(0, circle.radius - amount) };
+    return {
+      center: circle.center,
+      radius: Math.max(0, circle.radius - amount),
+    };
   }
 
-  static translate(circle: Circle, offset: import('../vectors/vector-algorithms').Vector): Circle {
-    return { center: PointOps.add(circle.center, offset), radius: circle.radius };
+  static translate(
+    circle: Circle,
+    offset: import("../vectors/vector-algorithms").Vector,
+  ): Circle {
+    return {
+      center: PointOps.add(circle.center, offset),
+      radius: circle.radius,
+    };
   }
 }

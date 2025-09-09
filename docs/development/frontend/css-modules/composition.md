@@ -67,7 +67,7 @@ It's possible to compose class names from other **CSS Modules**.
 
 ```css
 .otherClassName {
-  composes: className from './style.css';
+  composes: className from "./style.css";
 }
 ```
 

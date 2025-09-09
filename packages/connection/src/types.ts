@@ -1,48 +1,48 @@
 // Core connection types and enums for the frontend connection manager
 
 export enum ConnectionState {
-  DISCONNECTED = 'disconnected',
-  CONNECTING = 'connecting',
-  CONNECTED = 'connected',
-  DISCONNECTING = 'disconnecting',
-  ERROR = 'error',
-  DEGRADED = 'degraded',
+  DISCONNECTED = "disconnected",
+  CONNECTING = "connecting",
+  CONNECTED = "connected",
+  DISCONNECTING = "disconnecting",
+  ERROR = "error",
+  DEGRADED = "degraded",
 }
 
 export enum ConnectionType {
-  INTERNET = 'internet',
-  BACKEND = 'backend',
-  AUTHENTICATION = 'authentication',
-  SERVICE = 'service',
-  REALTIME = 'realtime',
-  FILESYSTEM = 'filesystem',
-  HTTP = 'http',
-  WEBSOCKET = 'websocket',
-  SSE = 'sse',
-  DATABASE = 'database',
-  EXTERNAL = 'external',
+  INTERNET = "internet",
+  BACKEND = "backend",
+  AUTHENTICATION = "authentication",
+  SERVICE = "service",
+  REALTIME = "realtime",
+  FILESYSTEM = "filesystem",
+  HTTP = "http",
+  WEBSOCKET = "websocket",
+  SSE = "sse",
+  DATABASE = "database",
+  EXTERNAL = "external",
 }
 
 export enum ConnectionHealth {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown',
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }
 
 export enum SecurityLevel {
-  NONE = 'none',
-  BASIC = 'basic',
-  ENHANCED = 'enhanced',
-  MAXIMUM = 'maximum',
+  NONE = "none",
+  BASIC = "basic",
+  ENHANCED = "enhanced",
+  MAXIMUM = "maximum",
 }
 
 export enum RecoveryStrategy {
-  NONE = 'none',
-  RECONNECT = 'reconnect',
-  RECONNECT_BACKOFF = 'reconnect_backoff',
-  FALLBACK = 'fallback',
-  GRACEFUL_DEGRADATION = 'graceful_degradation',
+  NONE = "none",
+  RECONNECT = "reconnect",
+  RECONNECT_BACKOFF = "reconnect_backoff",
+  FALLBACK = "fallback",
+  GRACEFUL_DEGRADATION = "graceful_degradation",
 }
 
 export interface ConnectionMetrics {
@@ -115,7 +115,7 @@ export interface ConnectionEvent {
   eventType: string;
   timestamp: number; // epoch ms
   data?: Record<string, unknown>;
-  severity?: 'info' | 'warning' | 'error';
+  severity?: "info" | "warning" | "error";
   message?: string;
 }
 

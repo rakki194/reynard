@@ -36,13 +36,9 @@ export const ContextSubmenu: Component<ContextSubmenuProps> = (props) => {
               data-testid={`context-menu-submenu-item-${item.id}`}
             >
               <Show when={props.showIcons && item.icon}>
-                <span class="reynard-context-menu__item-icon">
-                  {item.icon}
-                </span>
+                <span class="reynard-context-menu__item-icon">{item.icon}</span>
               </Show>
-              <span class="reynard-context-menu__item-label">
-                {item.label}
-              </span>
+              <span class="reynard-context-menu__item-label">{item.label}</span>
             </li>
 
             <Show when={item.separator}>

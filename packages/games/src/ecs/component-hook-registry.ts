@@ -1,7 +1,7 @@
 // Component hook registry for managing hooks
 
-import { Entity, Component, ComponentType, World } from './types';
-import { ComponentHooks } from './component-hook-types';
+import { Entity, Component, ComponentType, World } from "./types";
+import { ComponentHooks } from "./component-hook-types";
 
 /**
  * Component hook registry for managing hooks.
@@ -14,7 +14,7 @@ export class ComponentHookRegistry {
    */
   registerHooks<T extends Component>(
     componentType: ComponentType<T>,
-    hooks: ComponentHooks
+    hooks: ComponentHooks,
   ): void {
     this.hooks.set(componentType.id, hooks);
   }
@@ -22,7 +22,9 @@ export class ComponentHookRegistry {
   /**
    * Gets hooks for a component type.
    */
-  getHooks<T extends Component>(componentType: ComponentType<T>): ComponentHooks | undefined {
+  getHooks<T extends Component>(
+    componentType: ComponentType<T>,
+  ): ComponentHooks | undefined {
     return this.hooks.get(componentType.id);
   }
 
@@ -33,7 +35,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T
+    component: T,
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onAdd) {
@@ -48,7 +50,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T
+    component: T,
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onInsert) {
@@ -64,7 +66,7 @@ export class ComponentHookRegistry {
     entity: Entity,
     componentType: ComponentType<T>,
     _oldComponent: T,
-    newComponent: T
+    newComponent: T,
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onReplace) {
@@ -79,7 +81,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T
+    component: T,
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onRemove) {
@@ -94,7 +96,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T
+    component: T,
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onDespawn) {

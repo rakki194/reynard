@@ -4,12 +4,12 @@
  */
 
 // Export main components
-export { ErrorBoundary, withErrorBoundary } from './components/ErrorBoundary';
-export { ErrorFallback } from './components/ErrorFallback';
+export { ErrorBoundary, withErrorBoundary } from "./components/ErrorBoundary";
+export { ErrorFallback } from "./components/ErrorFallback";
 
 // Export composables
-export { useErrorBoundary } from './composables/useErrorBoundary';
-export { useErrorReporting } from './composables/useErrorReporting';
+export { useErrorBoundary } from "./composables/useErrorBoundary";
+export { useErrorReporting } from "./composables/useErrorReporting";
 
 // Export types
 export type {
@@ -22,8 +22,8 @@ export type {
   ErrorReportingConfig,
   ErrorFilter,
   ErrorFallbackProps,
-  ErrorMetrics
-} from './types/ErrorTypes';
+  ErrorMetrics,
+} from "./types/ErrorTypes";
 
 export type {
   RecoveryAction,
@@ -32,29 +32,26 @@ export type {
   RecoveryAction as RecoveryActionType,
   RecoveryContext,
   RecoveryOptions,
-  RecoveryState
-} from './types/RecoveryTypes';
+  RecoveryState,
+} from "./types/RecoveryTypes";
 
 // Export utilities
-export {
-  analyzeError,
-  createErrorContext
-} from './utils/ErrorAnalyzer';
+export { analyzeError, createErrorContext } from "./utils/ErrorAnalyzer";
 
 export {
   builtInRecoveryStrategies,
   getApplicableStrategies,
   executeRecoveryStrategy,
-  createRecoveryStrategy
-} from './utils/RecoveryStrategies';
+  createRecoveryStrategy,
+} from "./utils/RecoveryStrategies";
 
 export {
   serializeError,
   serializeErrorContext,
   createErrorReport,
   serializeErrorReport,
-  deserializeErrorReport
-} from './utils/ErrorSerializer';
+  deserializeErrorReport,
+} from "./utils/ErrorSerializer";
 
 // Export styles
-import './styles.css';
+import "./styles.css";

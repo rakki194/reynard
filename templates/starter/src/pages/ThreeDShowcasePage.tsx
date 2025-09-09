@@ -27,9 +27,7 @@ export const ThreeDShowcasePage: Component = () => {
             )}
             Back to Home
           </button>
-          <h1 class="page-title">
-            3D Visualization Showcase
-          </h1>
+          <h1 class="page-title">3D Visualization Showcase</h1>
         </div>
       </header>
       <main class="showcase-main">

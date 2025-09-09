@@ -127,7 +127,7 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
     timeoutId = setTimeout(async () => {
       // Use the latest arguments
       const argsToUse = currentArgs!;
-      
+
       try {
         const result = await fn(...argsToUse);
         if (resolvePending) {
@@ -175,12 +175,12 @@ export function throttle<T extends (...args: any[]) => Promise<any>>(
     if (!isThrottled || now - lastExecuted >= delay) {
       lastExecuted = now;
       isThrottled = true;
-      
+
       // Reset throttled flag after delay
       setTimeout(() => {
         isThrottled = false;
       }, delay);
-      
+
       return await fn(...args);
     }
 
@@ -244,12 +244,14 @@ export async function mapWithConcurrency<T, U>(
 
   for (let i = 0; i < items.length; i++) {
     const index = i; // Capture the index for this iteration
-    const promise = mapper(items[i], index).then((result) => {
-      results[index] = result;
-    }).catch((error) => {
-      // Store error in results array to maintain order
-      results[index] = error as U;
-    });
+    const promise = mapper(items[i], index)
+      .then((result) => {
+        results[index] = result;
+      })
+      .catch((error) => {
+        // Store error in results array to maintain order
+        results[index] = error as U;
+      });
 
     executing.push(promise);
 
@@ -258,22 +260,22 @@ export async function mapWithConcurrency<T, U>(
       await Promise.race(executing);
       // Remove completed promises by creating a new array with only pending ones
       const pendingPromises: Promise<void>[] = [];
-      
+
       for (const promise of executing) {
         // Use Promise.race to check if promise is still pending
         try {
           await Promise.race([
             promise,
-            new Promise((resolve) => setTimeout(() => resolve('timeout'), 0))
+            new Promise((resolve) => setTimeout(() => resolve("timeout"), 0)),
           ]);
         } catch {
           // Promise was rejected, it's completed
         }
-        
+
         // If we get here, the promise is still pending
         pendingPromises.push(promise);
       }
-      
+
       executing.length = 0;
       executing.push(...pendingPromises);
     }

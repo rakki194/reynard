@@ -24,9 +24,7 @@ export const BreadcrumbItem: Component<BreadcrumbItemProps> = (props) => {
   return (
     <li class="reynard-breadcrumb-navigation__item">
       <Show when={props.index > 0}>
-        <span class="reynard-breadcrumb-navigation__separator">
-          /
-        </span>
+        <span class="reynard-breadcrumb-navigation__separator">/</span>
       </Show>
 
       <Show when={props.item.clickable !== false}>

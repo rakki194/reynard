@@ -33,7 +33,7 @@ export const ThreeDDemo: Component = () => {
           View Full Showcase
         </button>
       </div>
-      
+
       <div class="threed-preview">
         <PointCloudVisualization
           width={200}
@@ -42,7 +42,7 @@ export const ThreeDDemo: Component = () => {
           pointCount={200}
         />
       </div>
-      
+
       <div class="card-footer">
         <div class="stats-row">
           <span class="stat">

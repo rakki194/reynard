@@ -300,11 +300,11 @@ Example:
   color: var(--text-on-accent);
   transition: background var(--transition-speed);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     --text-on-accent: var(--text-primary-dark);
   }
 
-  [dir='rtl'] & {
+  [dir="rtl"] & {
     margin-left: 0;
     margin-right: var(--spacing);
   }
@@ -334,7 +334,7 @@ Example:
   }
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --accent: #3498db;
   --text-primary: #ecf0f1;
 }

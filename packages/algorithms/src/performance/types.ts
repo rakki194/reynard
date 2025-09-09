@@ -27,8 +27,8 @@ export interface PerformanceBudget {
 }
 
 export interface PerformanceWarning {
-  type: 'memory' | 'css' | 'dom' | 'rendering' | 'freeze';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type: "memory" | "css" | "dom" | "rendering" | "freeze";
+  severity: "low" | "medium" | "high" | "critical";
   message: string;
   value: number;
   threshold: number;

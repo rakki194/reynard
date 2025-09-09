@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 import {
   renderWithTheme,
   renderWithRouter,
@@ -9,10 +9,10 @@ import {
   renderWithErrorBoundary,
   renderWithSuspense,
   renderWithPerformanceMonitoring,
-} from '../index';
+} from "../index";
 
 export function testRenderExports() {
-  it('should export all render utilities', () => {
+  it("should export all render utilities", () => {
     expect(renderWithTheme).toBeDefined();
     expect(renderWithRouter).toBeDefined();
     expect(renderWithNotifications).toBeDefined();

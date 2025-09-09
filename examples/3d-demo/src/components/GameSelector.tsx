@@ -18,35 +18,43 @@ const gameOptions: GameOption[] = [
   {
     id: "cube-collector",
     title: "Cube Collector",
-    description: "Collect colorful cubes while avoiding obstacles in this physics-based adventure!",
+    description:
+      "Collect colorful cubes while avoiding obstacles in this physics-based adventure!",
     icon: "🎲",
     difficulty: "Easy",
-    features: ["Physics Simulation", "Score System", "Progressive Difficulty"]
+    features: ["Physics Simulation", "Score System", "Progressive Difficulty"],
   },
   {
     id: "space-shooter",
     title: "Space Shooter",
-    description: "Defend against alien invaders in this fast-paced space combat game!",
+    description:
+      "Defend against alien invaders in this fast-paced space combat game!",
     icon: "🚀",
     difficulty: "Medium",
-    features: ["Particle Effects", "Enemy AI", "Power-ups"]
+    features: ["Particle Effects", "Enemy AI", "Power-ups"],
   },
   {
     id: "maze-explorer",
     title: "Maze Explorer",
-    description: "Navigate through procedurally generated 3D mazes with first-person controls!",
+    description:
+      "Navigate through procedurally generated 3D mazes with first-person controls!",
     icon: "🧩",
     difficulty: "Hard",
-    features: ["Procedural Generation", "First-Person Controls", "Dynamic Lighting"]
+    features: [
+      "Procedural Generation",
+      "First-Person Controls",
+      "Dynamic Lighting",
+    ],
   },
   {
     id: "particle-demo",
     title: "Particle Playground",
-    description: "Create beautiful particle effects and explore the power of WebGL rendering!",
+    description:
+      "Create beautiful particle effects and explore the power of WebGL rendering!",
     icon: "✨",
     difficulty: "Easy",
-    features: ["Interactive Particles", "Real-time Effects", "Visual Art"]
-  }
+    features: ["Interactive Particles", "Real-time Effects", "Visual Art"],
+  },
 ];
 
 export const GameSelector: Component<GameSelectorProps> = (props) => {
@@ -54,21 +62,23 @@ export const GameSelector: Component<GameSelectorProps> = (props) => {
     <div class="game-selector">
       <div class="selector-header">
         <h2>Choose Your 3D Adventure</h2>
-        <p>Select a game or demo to experience the power of Reynard's 3D capabilities</p>
+        <p>
+          Select a game or demo to experience the power of Reynard's 3D
+          capabilities
+        </p>
       </div>
-      
+
       <div class="games-grid">
         {gameOptions.map((game) => (
-          <div 
-            class="game-card"
-            onClick={() => props.onGameSelect(game.id)}
-          >
+          <div class="game-card" onClick={() => props.onGameSelect(game.id)}>
             <div class="game-icon">{game.icon}</div>
             <div class="game-content">
               <h3>{game.title}</h3>
               <p class="game-description">{game.description}</p>
               <div class="game-meta">
-                <span class={`difficulty difficulty-${game.difficulty.toLowerCase()}`}>
+                <span
+                  class={`difficulty difficulty-${game.difficulty.toLowerCase()}`}
+                >
                   {game.difficulty}
                 </span>
               </div>

@@ -1,6 +1,6 @@
 // Results formatting and display utilities for ECS benchmarks
 
-import { BenchmarkResult } from './benchmark-types.js';
+import { BenchmarkResult } from "./benchmark-types.js";
 
 export interface BenchmarkResults {
   simd: BenchmarkResult[];
@@ -12,8 +12,8 @@ export class BenchmarkResultsFormatter {
    * Print comparison results
    */
   static printResults(results: BenchmarkResults): void {
-    console.log('\n📊 COMPARISON RESULTS');
-    console.log('='.repeat(80));
+    console.log("\n📊 COMPARISON RESULTS");
+    console.log("=".repeat(80));
 
     for (let i = 0; i < results.simd.length; i++) {
       const simd = results.simd[i];
@@ -21,10 +21,16 @@ export class BenchmarkResultsFormatter {
       const speedup = reynard.totalTime / simd.totalTime;
 
       console.log(`\n${simd.name}`);
-      console.log('-'.repeat(50));
-      console.log(`WebAssembly SIMD: ${simd.totalTime.toFixed(2)}ms (${simd.operationsPerSecond.toFixed(0)} ops/sec)`);
-      console.log(`Reynard ECS:      ${reynard.totalTime.toFixed(2)}ms (${reynard.operationsPerSecond.toFixed(0)} ops/sec)`);
-      console.log(`Speedup:          ${speedup.toFixed(2)}x ${speedup > 1 ? '🚀' : '🐌'}`);
+      console.log("-".repeat(50));
+      console.log(
+        `WebAssembly SIMD: ${simd.totalTime.toFixed(2)}ms (${simd.operationsPerSecond.toFixed(0)} ops/sec)`,
+      );
+      console.log(
+        `Reynard ECS:      ${reynard.totalTime.toFixed(2)}ms (${reynard.operationsPerSecond.toFixed(0)} ops/sec)`,
+      );
+      console.log(
+        `Speedup:          ${speedup.toFixed(2)}x ${speedup > 1 ? "🚀" : "🐌"}`,
+      );
     }
   }
 
@@ -38,7 +44,7 @@ export class BenchmarkResultsFormatter {
     totalTests: number;
   } {
     const speedups: number[] = [];
-    
+
     for (let i = 0; i < results.simd.length; i++) {
       const simd = results.simd[i];
       const reynard = results.reynard[i];
@@ -46,7 +52,8 @@ export class BenchmarkResultsFormatter {
       speedups.push(speedup);
     }
 
-    const averageSpeedup = speedups.reduce((sum, speedup) => sum + speedup, 0) / speedups.length;
+    const averageSpeedup =
+      speedups.reduce((sum, speedup) => sum + speedup, 0) / speedups.length;
     const bestSpeedup = Math.max(...speedups);
     const worstSpeedup = Math.min(...speedups);
 
@@ -54,7 +61,7 @@ export class BenchmarkResultsFormatter {
       averageSpeedup,
       bestSpeedup,
       worstSpeedup,
-      totalTests: results.simd.length
+      totalTests: results.simd.length,
     };
   }
 
@@ -63,10 +70,14 @@ export class BenchmarkResultsFormatter {
    */
   static exportToJSON(results: BenchmarkResults): string {
     const summary = this.generateSummary(results);
-    return JSON.stringify({
-      results,
-      summary,
-      timestamp: new Date().toISOString()
-    }, null, 2);
+    return JSON.stringify(
+      {
+        results,
+        summary,
+        timestamp: new Date().toISOString(),
+      },
+      null,
+      2,
+    );
   }
 }

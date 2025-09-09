@@ -13,6 +13,7 @@ The implementation includes:
 """
 
 import asyncio
+import json
 import logging
 import os
 import sys
@@ -20,23 +21,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import torch
+import timm
+import safetensors
 from PIL import Image
+from huggingface_hub import hf_hub_download, try_to_load_from_cache
 
 from ...base import CaptionGenerator, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
-# Add the Yipyap JTP2 plugin to the path
-yipyap_plugin_path = Path(__file__).parent.parent.parent.parent.parent / "third_party" / "yipyap" / "app" / "caption_generation" / "plugins" / "jtp2"
-if yipyap_plugin_path.exists():
-    sys.path.insert(0, str(yipyap_plugin_path))
-
-try:
-    from generator import JTP2Generator as YipyapJTP2Generator
-    JTP2_AVAILABLE = True
-except ImportError:
-    logger.warning("Yipyap JTP2 generator not available, using mock implementation")
-    JTP2_AVAILABLE = False
+# Self-contained JTP2 implementation - no external dependencies
+JTP2_AVAILABLE = True
 
 
 class JTP2Generator(CaptionGenerator):
@@ -50,10 +45,14 @@ class JTP2Generator(CaptionGenerator):
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self._config = config or {}
         self._model = None
+        self._tags = None
+        self._transform = None
         self._device = None
         self._is_loaded = False
-        self._model_path = self._config.get("model_path")
-        self._tags_path = self._config.get("tags_path")
+        self._model_path = self._config.get("model_path", "RedRocket/JointTaggerProject/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors")
+        self._tags_path = self._config.get("tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json")
+        self._downloaded_model_path = None
+        self._downloaded_tags_path = None
 
     @property
     def name(self) -> str:
@@ -131,16 +130,13 @@ class JTP2Generator(CaptionGenerator):
         if not JTP2_AVAILABLE:
             return False
 
-        # Check if required files exist
-        if self._model_path and not Path(self._model_path).exists():
-            return False
-
-        if self._tags_path and not Path(self._tags_path).exists():
-            return False
-
-        # Check if PyTorch is available
+        # Check if required dependencies are available
         try:
             import torch
+            import timm
+            import safetensors
+            from PIL import Image
+            from huggingface_hub import hf_hub_download
             return True
         except ImportError:
             return False
@@ -167,19 +163,9 @@ class JTP2Generator(CaptionGenerator):
                 self._device = torch.device("cuda")
                 logger.info("JTP2 using GPU")
 
-            # Initialize the Yipyap JTP2 generator
-            yipyap_config = {
-                "threshold": self._config.get("threshold", 0.2),
-                "force_cpu": force_cpu,
-                "model_path": self._model_path,
-                "tags_path": self._tags_path
-            }
-
-            self._model = YipyapJTP2Generator(yipyap_config)
-            
-            # Load the model
+            # Load model and tags in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._model.load
+                None, self._load_model_and_tags
             )
 
             self._is_loaded = True
@@ -196,13 +182,10 @@ class JTP2Generator(CaptionGenerator):
             return
 
         try:
-            if self._model:
-                # Unload the model
-                await asyncio.get_event_loop().run_in_executor(
-                    None, self._model.unload
-                )
-                self._model = None
-
+            # Clear model from memory
+            self._model = None
+            self._tags = None
+            self._transform = None
             self._is_loaded = False
             logger.info("JTP2 model unloaded successfully")
 
@@ -219,9 +202,9 @@ class JTP2Generator(CaptionGenerator):
             # Merge kwargs with config
             config = {**self._config, **kwargs}
 
-            # Generate tags using the Yipyap generator
+            # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._model.generate, str(image_path)
+                None, self._generate_caption, str(image_path), config
             )
 
             return tags
@@ -237,6 +220,135 @@ class JTP2Generator(CaptionGenerator):
             "device": str(self._device) if self._device else None,
             "model_path": self._model_path,
             "tags_path": self._tags_path,
-            "yipyap_available": JTP2_AVAILABLE
+            "self_contained": True
         })
         return info
+
+    def _load_model_and_tags(self) -> None:
+        """Load model and tags from files or HuggingFace Hub."""
+        model_path, tags_path = self._ensure_files_available()
+        
+        # Load tags dictionary
+        with open(tags_path, 'r') as f:
+            self._tags = json.load(f)
+
+        # Load model
+        self._model = self._load_model_from_file(model_path)
+
+        # Create transform
+        self._transform = self._create_transform()
+
+    def _ensure_files_available(self) -> tuple[Path, Path]:
+        """Ensure model and tags files are available, downloading from HuggingFace Hub if needed."""
+        # If we already have downloaded paths, return them
+        if self._downloaded_model_path and self._downloaded_tags_path:
+            return self._downloaded_model_path, self._downloaded_tags_path
+
+        # Check if paths are local files
+        model_path = Path(self._model_path)
+        tags_path = Path(self._tags_path)
+
+        if model_path.exists() and tags_path.exists():
+            # Both files exist locally
+            self._downloaded_model_path = model_path
+            self._downloaded_tags_path = tags_path
+            return model_path, tags_path
+
+        # Download from HuggingFace Hub if needed
+        return self._download_from_huggingface()
+
+    def _download_from_huggingface(self) -> tuple[Path, Path]:
+        """Download model and tags from HuggingFace Hub."""
+        try:
+            # Extract repo path and filename from model path
+            parts = str(self._model_path).split("/")
+            if len(parts) >= 4:
+                repo_id = "RedRocket/JointTaggerProject"
+                model_filename = parts[-1]  # JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors
+                tags_filename = "tags.json"
+                subfolder = parts[-2]  # JTP_PILOT2
+
+                # Download model file
+                model_path = hf_hub_download(
+                    repo_id=repo_id,
+                    filename=model_filename,
+                    subfolder=subfolder,
+                    local_files_only=False
+                )
+
+                # Download tags file
+                tags_path = hf_hub_download(
+                    repo_id=repo_id,
+                    filename=tags_filename,
+                    subfolder=subfolder,
+                    local_files_only=False
+                )
+
+                self._downloaded_model_path = Path(model_path)
+                self._downloaded_tags_path = Path(tags_path)
+                
+                logger.info(f"Downloaded JTP2 model files from HuggingFace Hub")
+                return self._downloaded_model_path, self._downloaded_tags_path
+            else:
+                raise ValueError(f"Invalid model path format: {self._model_path}")
+
+        except Exception as e:
+            logger.error(f"Failed to download JTP2 model from HuggingFace: {e}")
+            raise
+
+    def _load_model_from_file(self, model_path: Path) -> torch.nn.Module:
+        """Load model from safetensors file."""
+        # Load model architecture
+        model = timm.create_model('vit_so400m_patch14_siglip_384', pretrained=False)
+        
+        # Load weights from safetensors
+        weights = safetensors.torch.load_file(str(model_path))
+        model.load_state_dict(weights)
+        
+        # Set to evaluation mode
+        model.eval()
+        
+        # Move to appropriate device
+        model.to(self._device)
+        
+        return model
+
+    def _create_transform(self) -> torch.nn.Module:
+        """Create image transform for preprocessing."""
+        import torchvision.transforms as transforms
+        
+        return transforms.Compose([
+            transforms.Resize((384, 384)),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.5, 0.5, 0.5],
+                std=[0.5, 0.5, 0.5]
+            )
+        ])
+
+    def _generate_caption(self, image_path: str, config: Dict[str, Any]) -> str:
+        """Generate caption for an image."""
+        if not self._model or not self._tags or not self._transform:
+            raise RuntimeError("JTP2 model components not loaded")
+
+        # Load and preprocess image
+        image = Image.open(image_path)
+        input_tensor = self._transform(image).unsqueeze(0)
+
+        # Move to device
+        input_tensor = input_tensor.to(self._device)
+
+        # Run inference
+        with torch.no_grad():
+            outputs = self._model(input_tensor)
+            probabilities = torch.sigmoid(outputs)
+
+        # Get tags above threshold
+        threshold = config.get("threshold", 0.2)
+        tag_indices = (probabilities > threshold).nonzero(as_tuple=True)[0]
+        
+        tags = [self._tags[index.item()] for index in tag_indices]
+        
+        # Limit to max_tags
+        max_tags = config.get("max_tags", 20)
+        return ", ".join(tags[:max_tags])

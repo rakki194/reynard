@@ -1,6 +1,6 @@
-import { createContext, useContext, createMemo, JSX } from 'solid-js';
-import type { FeatureContext, FeatureConfig } from '../core/types';
-import { FeatureManager } from '../core/FeatureManager';
+import { createContext, useContext, createMemo, JSX } from "solid-js";
+import type { FeatureContext, FeatureConfig } from "../core/types";
+import { FeatureManager } from "../core/FeatureManager";
 
 // Create feature context
 const FeatureContext = createContext<FeatureContext>();
@@ -25,12 +25,17 @@ export function FeatureProvider(props: FeatureProviderProps) {
     availableFeatures: createMemo(() => manager.getAvailableFeatures()),
     degradedFeatures: createMemo(() => manager.getDegradedFeatures()),
     featureSummary: createMemo(() => manager.getFeatureSummary()),
-    isFeatureAvailable: (featureId: string) => manager.isFeatureAvailable(featureId),
-    isFeatureDegraded: (featureId: string) => manager.isFeatureDegraded(featureId),
-    getFeatureStatus: (featureId: string) => manager.getFeatureStatus(featureId),
-    configureFeature: (featureId: string, config: Record<string, any>) => manager.configureFeature(featureId, config),
-    getFeatureConfig: (featureId: string) => manager.getFeatureConfig(featureId),
-    refreshFeatureStatuses: () => manager.refreshFeatureStatuses()
+    isFeatureAvailable: (featureId: string) =>
+      manager.isFeatureAvailable(featureId),
+    isFeatureDegraded: (featureId: string) =>
+      manager.isFeatureDegraded(featureId),
+    getFeatureStatus: (featureId: string) =>
+      manager.getFeatureStatus(featureId),
+    configureFeature: (featureId: string, config: Record<string, any>) =>
+      manager.configureFeature(featureId, config),
+    getFeatureConfig: (featureId: string) =>
+      manager.getFeatureConfig(featureId),
+    refreshFeatureStatuses: () => manager.refreshFeatureStatuses(),
   };
 
   return (
@@ -46,7 +51,7 @@ export function FeatureProvider(props: FeatureProviderProps) {
 export function useFeatures(): FeatureContext {
   const context = useContext(FeatureContext);
   if (!context) {
-    throw new Error('useFeatures must be used within a FeatureProvider');
+    throw new Error("useFeatures must be used within a FeatureProvider");
   }
   return context;
 }
@@ -106,7 +111,7 @@ export function useCriticalFeatures() {
   const { manager } = useFeatures();
   return createMemo(() => ({
     available: manager.areCriticalFeaturesAvailable(),
-    unavailable: manager.getUnavailableCriticalFeatures()
+    unavailable: manager.getUnavailableCriticalFeatures(),
   }));
 }
 
@@ -131,7 +136,7 @@ export function useFeatureAware(featureId: string, fallback?: any) {
     isDegraded,
     status,
     shouldRender: createMemo(() => isAvailable() || isDegraded()),
-    fallback
+    fallback,
   };
 }
 
@@ -150,13 +155,13 @@ export function useFeatureConfiguration(featureId: string) {
     const currentConfig = config() || {};
     updateConfig({
       ...currentConfig,
-      [key]: value
+      [key]: value,
     });
   };
 
   return {
     config,
     updateConfig,
-    setConfigValue
+    setConfigValue,
   };
 }

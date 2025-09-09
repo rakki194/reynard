@@ -6,16 +6,10 @@
  */
 
 // Re-export all user and presence types
-export type {
-  ChatUser,
-  TypingIndicator,
-} from "./user";
+export type { ChatUser, TypingIndicator } from "./user";
 
 // Re-export all room and channel types
-export type {
-  ChatRoom,
-  RoomSettings,
-} from "./room";
+export type { ChatRoom, RoomSettings } from "./room";
 
 // Re-export all message and attachment types
 export type {
@@ -44,14 +38,9 @@ export type {
 } from "./events";
 
 // Re-export all state and action types
-export type {
-  P2PChatState,
-  UseP2PChatReturn,
-} from "./state";
+export type { P2PChatState, UseP2PChatReturn } from "./state";
 
-export type {
-  P2PChatActions,
-} from "./actions";
+export type { P2PChatActions } from "./actions";
 
 // Re-export all component prop types
 export type {

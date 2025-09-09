@@ -41,11 +41,11 @@ class MyStreamingTool(StreamingBaseTool, ProgressReportingMixin):
     @property
     def name(self) -> str:
         return "my.streaming_tool"
-    
+
     @property
     def description(self) -> str:
         return "A streaming tool that demonstrates progress updates"
-    
+
     @property
     def parameters(self):
         return [
@@ -56,33 +56,33 @@ class MyStreamingTool(StreamingBaseTool, ProgressReportingMixin):
                 required=True
             )
         ]
-    
+
     async def execute_streaming(
         self,
         context: StreamingToolExecutionContext,
         **params
     ) -> AsyncGenerator[StreamingToolResult, None]:
         input_file = params.get("input_file")
-        
+
         # Report initialization
         await self.report_initialization_progress(
             context, self.name, context.request_id or "unknown"
         )
-        
+
         # Process in steps
         for i in range(5):
             progress = (i + 1) / 5
-            
+
             await self.report_processing_progress(
                 context,
                 progress,
                 f"Processing step {i + 1}",
                 {"step": i + 1, "total_steps": 5}
             )
-            
+
             # Simulate work
             await asyncio.sleep(0.5)
-            
+
             # Yield intermediate result
             yield StreamingToolResult(
                 success=True,
@@ -91,10 +91,10 @@ class MyStreamingTool(StreamingBaseTool, ProgressReportingMixin):
                 streamed_progress=True,
                 total_progress_updates=i + 1
             )
-        
+
         # Report completion
         await self.report_completion_progress(context, "Processing completed")
-        
+
         # Yield final result
         yield StreamingToolResult(
             success=True,
@@ -124,7 +124,7 @@ async def execute_streaming(
             error_type=type(e).__name__,
             retryable=True
         )
-        
+
         # Yield error result
         yield StreamingToolResult(
             success=False,
@@ -195,11 +195,11 @@ from app.tests.test_streaming_tools import TestStreamingExampleTool
 async def test_my_streaming_tool():
     tool = MyStreamingTool()
     context = StreamingToolExecutionContext(user_id="test", user_role="user")
-    
+
     results = []
     async for result in tool.execute_streaming(context, input_file="test.txt"):
         results.append(result)
-    
+
     assert len(results) > 0
     assert results[-1].success is True
 ```

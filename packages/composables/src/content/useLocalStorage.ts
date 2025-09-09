@@ -1,4 +1,4 @@
-import { createSignal, createEffect, onCleanup } from 'solid-js';
+import { createSignal, createEffect, onCleanup } from "solid-js";
 
 export interface LocalStorageOptions {
   defaultValue?: any;
@@ -11,12 +11,15 @@ export interface LocalStorageOptions {
 
 /**
  * Local storage composable with reactive updates and cross-tab synchronization
- * 
+ *
  * @param key Storage key
  * @param options Configuration options
  * @returns Signal with storage value and setter
  */
-export function useLocalStorage(key: string, options: LocalStorageOptions = {}) {
+export function useLocalStorage(
+  key: string,
+  options: LocalStorageOptions = {},
+) {
   const {
     defaultValue,
     serializer = {
@@ -27,9 +30,9 @@ export function useLocalStorage(key: string, options: LocalStorageOptions = {}) 
           return value;
         }
       },
-      write: (value: any) => JSON.stringify(value)
+      write: (value: any) => JSON.stringify(value),
     },
-    syncAcrossTabs = true
+    syncAcrossTabs = true,
   } = options;
 
   // Read initial value from localStorage
@@ -86,10 +89,10 @@ export function useLocalStorage(key: string, options: LocalStorageOptions = {}) 
   // Set up cross-tab synchronization
   if (syncAcrossTabs) {
     createEffect(() => {
-      window.addEventListener('storage', handleStorageChange);
-      
+      window.addEventListener("storage", handleStorageChange);
+
       onCleanup(() => {
-        window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener("storage", handleStorageChange);
       });
     });
   }
@@ -99,12 +102,15 @@ export function useLocalStorage(key: string, options: LocalStorageOptions = {}) 
 
 /**
  * Session storage composable with reactive updates
- * 
+ *
  * @param key Storage key
  * @param options Configuration options
  * @returns Signal with storage value and setter
  */
-export function useSessionStorage(key: string, options: Omit<LocalStorageOptions, 'syncAcrossTabs'> = {}) {
+export function useSessionStorage(
+  key: string,
+  options: Omit<LocalStorageOptions, "syncAcrossTabs"> = {},
+) {
   const {
     defaultValue,
     serializer = {
@@ -115,8 +121,8 @@ export function useSessionStorage(key: string, options: Omit<LocalStorageOptions
           return value;
         }
       },
-      write: (value: any) => JSON.stringify(value)
-    }
+      write: (value: any) => JSON.stringify(value),
+    },
   } = options;
 
   // Read initial value from sessionStorage

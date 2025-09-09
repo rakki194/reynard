@@ -1,6 +1,6 @@
 /**
  * Code file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported code file extensions, MIME types, and
  * processing capabilities for code files.
  */

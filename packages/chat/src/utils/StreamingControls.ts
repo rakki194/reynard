@@ -1,10 +1,13 @@
 /**
  * Streaming Controls Utilities
- * 
+ *
  * Contains control functions for managing streaming text state
  */
 
-import { StreamingTextState, StreamingTextOptions } from "./StreamingTextRenderer";
+import {
+  StreamingTextState,
+  StreamingTextOptions,
+} from "./StreamingTextRenderer";
 import { createInitialState, createTimerManager } from "./StreamingHelpers";
 
 export function createStreamingControls(
@@ -13,7 +16,7 @@ export function createStreamingControls(
   state: () => StreamingTextState,
   setState: (fn: (prev: StreamingTextState) => StreamingTextState) => void,
   timers: ReturnType<typeof createTimerManager>,
-  streamNext: () => void
+  streamNext: () => void,
 ) {
   const start = () => {
     if (state().isStreaming) return;

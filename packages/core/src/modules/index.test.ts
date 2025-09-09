@@ -17,5 +17,4 @@ describe("Modules Index Exports", () => {
   it("should export notifications module functions", () => {
     expect(Modules).toHaveProperty("createNotificationsModule");
   });
-
 });

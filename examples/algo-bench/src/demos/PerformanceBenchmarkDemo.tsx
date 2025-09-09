@@ -1,8 +1,5 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
-import { 
-  batchCollisionDetection, 
-  type AABB 
-} from "reynard-algorithms";
+import { batchCollisionDetection, type AABB } from "reynard-algorithms";
 
 interface PerformanceBenchmarkDemoProps {
   onStatsUpdate: (stats: any) => void;
@@ -16,7 +13,9 @@ interface BenchmarkResult {
   collisionCount: number;
 }
 
-export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> = (props) => {
+export const PerformanceBenchmarkDemo: Component<
+  PerformanceBenchmarkDemoProps
+> = (props) => {
   const [isRunning, setIsRunning] = createSignal(false);
   const [results, setResults] = createSignal<BenchmarkResult[]>([]);
   const [currentTest, setCurrentTest] = createSignal(0);
@@ -32,7 +31,7 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
         x: Math.random() * 700 + 50,
         y: Math.random() * 400 + 50,
         width: 20 + Math.random() * 30,
-        height: 20 + Math.random() * 30
+        height: 20 + Math.random() * 30,
       });
     }
     return objects;
@@ -41,17 +40,23 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
   // Run benchmark for a specific object count
   const runBenchmark = (objectCount: number): BenchmarkResult => {
     const objects = generateTestData(objectCount);
-    
+
     // Warm up
-    batchCollisionDetection(objects, { spatialHash: { enableOptimization: false } });
-    batchCollisionDetection(objects, { spatialHash: { enableOptimization: true, cellSize: 50 } });
+    batchCollisionDetection(objects, {
+      spatialHash: { enableOptimization: false },
+    });
+    batchCollisionDetection(objects, {
+      spatialHash: { enableOptimization: true, cellSize: 50 },
+    });
 
     // Benchmark naive algorithm (multiple runs for accuracy)
     const naiveRuns = 5;
     let naiveTotalTime = 0;
     for (let i = 0; i < naiveRuns; i++) {
       const start = performance.now();
-      batchCollisionDetection(objects, { spatialHash: { enableOptimization: false } });
+      batchCollisionDetection(objects, {
+        spatialHash: { enableOptimization: false },
+      });
       naiveTotalTime += performance.now() - start;
     }
     const naiveTime = naiveTotalTime / naiveRuns;
@@ -62,8 +67,8 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     let collisionCount = 0;
     for (let i = 0; i < spatialRuns; i++) {
       const start = performance.now();
-      const collisions = batchCollisionDetection(objects, { 
-        spatialHash: { enableOptimization: true, cellSize: 50 } 
+      const collisions = batchCollisionDetection(objects, {
+        spatialHash: { enableOptimization: true, cellSize: 50 },
       });
       spatialTotalTime += performance.now() - start;
       collisionCount = collisions.length;
@@ -75,7 +80,7 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
       naiveTime,
       spatialTime,
       speedup: naiveTime / spatialTime,
-      collisionCount
+      collisionCount,
     };
   };
 
@@ -88,17 +93,17 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
       setCurrentTest(i + 1);
       const result = runBenchmark(testSizes[i]);
       newResults.push(result);
-      
+
       // Update results incrementally
       setResults([...newResults]);
       props.onStatsUpdate({
         currentTest: i + 1,
         totalTests: testSizes.length,
-        latestResult: result
+        latestResult: result,
       });
 
       // Small delay to allow UI updates
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     setCurrentTest(0);
@@ -110,25 +115,27 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     const canvas = canvasRef();
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const resultsData = results();
     if (resultsData.length === 0) return;
 
     // Clear canvas
-    ctx.fillStyle = '#1a1a1a';
+    ctx.fillStyle = "#1a1a1a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Set up chart dimensions
     const margin = 60;
     const chartWidth = canvas.width - 2 * margin;
     const chartHeight = canvas.height - 2 * margin;
-    const maxObjects = Math.max(...resultsData.map(r => r.objectCount));
-    const maxTime = Math.max(...resultsData.map(r => Math.max(r.naiveTime, r.spatialTime)));
+    const maxObjects = Math.max(...resultsData.map((r) => r.objectCount));
+    const maxTime = Math.max(
+      ...resultsData.map((r) => Math.max(r.naiveTime, r.spatialTime)),
+    );
 
     // Draw axes
-    ctx.strokeStyle = '#666666';
+    ctx.strokeStyle = "#666666";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(margin, margin);
@@ -137,17 +144,17 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     ctx.stroke();
 
     // Draw grid lines
-    ctx.strokeStyle = '#333333';
+    ctx.strokeStyle = "#333333";
     ctx.lineWidth = 1;
     for (let i = 0; i <= 10; i++) {
       const x = margin + (i / 10) * chartWidth;
       const y = margin + (i / 10) * chartHeight;
-      
+
       ctx.beginPath();
       ctx.moveTo(x, margin);
       ctx.lineTo(x, canvas.height - margin);
       ctx.stroke();
-      
+
       ctx.beginPath();
       ctx.moveTo(margin, y);
       ctx.lineTo(canvas.width - margin, y);
@@ -155,13 +162,14 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     }
 
     // Draw naive algorithm line
-    ctx.strokeStyle = '#ff6b6b';
+    ctx.strokeStyle = "#ff6b6b";
     ctx.lineWidth = 3;
     ctx.beginPath();
     resultsData.forEach((result, index) => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const y = canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
-      
+      const y =
+        canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
+
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -171,13 +179,14 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     ctx.stroke();
 
     // Draw spatial hash algorithm line
-    ctx.strokeStyle = '#4ecdc4';
+    ctx.strokeStyle = "#4ecdc4";
     ctx.lineWidth = 3;
     ctx.beginPath();
     resultsData.forEach((result, index) => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const y = canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
-      
+      const y =
+        canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
+
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -187,45 +196,47 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     ctx.stroke();
 
     // Draw data points
-    resultsData.forEach(result => {
+    resultsData.forEach((result) => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const naiveY = canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
-      const spatialY = canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
+      const naiveY =
+        canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
+      const spatialY =
+        canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
 
       // Naive points
-      ctx.fillStyle = '#ff6b6b';
+      ctx.fillStyle = "#ff6b6b";
       ctx.beginPath();
       ctx.arc(x, naiveY, 4, 0, Math.PI * 2);
       ctx.fill();
 
       // Spatial points
-      ctx.fillStyle = '#4ecdc4';
+      ctx.fillStyle = "#4ecdc4";
       ctx.beginPath();
       ctx.arc(x, spatialY, 4, 0, Math.PI * 2);
       ctx.fill();
     });
 
     // Draw labels
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '14px monospace';
-    ctx.fillText('Object Count', canvas.width / 2 - 50, canvas.height - 20);
-    
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "14px monospace";
+    ctx.fillText("Object Count", canvas.width / 2 - 50, canvas.height - 20);
+
     ctx.save();
     ctx.translate(20, canvas.height / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillText('Execution Time (ms)', 0, 0);
+    ctx.fillText("Execution Time (ms)", 0, 0);
     ctx.restore();
 
     // Draw legend
-    ctx.fillStyle = '#ff6b6b';
+    ctx.fillStyle = "#ff6b6b";
     ctx.fillRect(canvas.width - 200, 20, 15, 15);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('Naive O(n²)', canvas.width - 180, 32);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("Naive O(n²)", canvas.width - 180, 32);
 
-    ctx.fillStyle = '#4ecdc4';
+    ctx.fillStyle = "#4ecdc4";
     ctx.fillRect(canvas.width - 200, 40, 15, 15);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('Spatial Hash O(n)', canvas.width - 180, 52);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("Spatial Hash O(n)", canvas.width - 180, 52);
   };
 
   // Animation loop
@@ -255,8 +266,8 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
     <div class="benchmark-demo">
       <div class="demo-controls">
         <div class="control-group">
-          <button 
-            class={`control-button ${isRunning() ? 'active' : ''}`}
+          <button
+            class={`control-button ${isRunning() ? "active" : ""}`}
             onClick={() => {
               if (!isRunning()) {
                 setIsRunning(true);
@@ -266,10 +277,12 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
             }}
             disabled={isRunning()}
           >
-            {isRunning() ? `🔄 Running Test ${currentTest()}/8...` : '🚀 Start Benchmark'}
+            {isRunning()
+              ? `🔄 Running Test ${currentTest()}/8...`
+              : "🚀 Start Benchmark"}
           </button>
-          
-          <button 
+
+          <button
             class="control-button"
             onClick={() => setResults([])}
             disabled={isRunning()}
@@ -287,7 +300,10 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
           class="demo-canvas"
         />
         <div class="canvas-overlay">
-          <p>Performance Comparison Chart • Red: Naive O(n²) • Teal: Spatial Hash O(n)</p>
+          <p>
+            Performance Comparison Chart • Red: Naive O(n²) • Teal: Spatial Hash
+            O(n)
+          </p>
         </div>
       </div>
 
@@ -306,12 +322,12 @@ export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> 
                 </tr>
               </thead>
               <tbody>
-                {results().map(result => (
+                {results().map((result) => (
                   <tr>
                     <td>{result.objectCount}</td>
                     <td>{result.naiveTime.toFixed(2)}</td>
                     <td>{result.spatialTime.toFixed(2)}</td>
-                    <td class={result.speedup > 2 ? 'highlight' : ''}>
+                    <td class={result.speedup > 2 ? "highlight" : ""}>
                       {result.speedup.toFixed(2)}x
                     </td>
                     <td>{result.collisionCount}</td>

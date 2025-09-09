@@ -11,7 +11,7 @@ interface SidebarProps {
 
 const Sidebar: Component<SidebarProps> = (props) => {
   const { t } = useI18n();
-  
+
   const handleToggle = () => props.onToggle();
 
   const menuItems = [

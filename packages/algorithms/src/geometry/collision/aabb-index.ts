@@ -13,10 +13,10 @@ export type {
   CollisionResult,
   CollisionStats,
   AABBSpatialHashConfig,
-} from './aabb-types';
+} from "./aabb-types";
 
 // Core collision detection
-export { checkCollision } from './aabb-collision';
+export { checkCollision } from "./aabb-collision";
 
 // AABB operations
 export {
@@ -26,19 +26,16 @@ export {
   expandAABB,
   containsAABB,
   areAABBsTouching,
-} from './aabb-operations';
+} from "./aabb-operations";
 
 // AABB utilities
-export {
-  getAABBArea,
-  getAABBPerimeter,
-} from './aabb-utils';
+export { getAABBArea, getAABBPerimeter } from "./aabb-utils";
 
 // Batch collision detection
 export {
   batchCollisionDetection,
   batchCollisionWithSpatialHash,
-} from './aabb-batch-collision';
+} from "./aabb-batch-collision";
 
 // Spatial hashing
-export { SpatialHash } from './aabb-spatial-hash';
+export { SpatialHash } from "./aabb-spatial-hash";

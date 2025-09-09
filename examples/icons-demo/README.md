@@ -82,19 +82,23 @@ The main application component featuring:
 - **Reynard Branding**: Official logo and favicon integration
 
 ```tsx
-import { createSignal } from 'solid-js';
-import { fluentIconsPackage, iconCategories, allIcons } from 'reynard-fluent-icons';
+import { createSignal } from "solid-js";
+import {
+  fluentIconsPackage,
+  iconCategories,
+  allIcons,
+} from "reynard-fluent-icons";
 
 function App() {
-  const [activeTab, setActiveTab] = createSignal('browse');
-  
+  const [activeTab, setActiveTab] = createSignal("browse");
+
   const tabs = [
-    { id: 'browse', label: 'Browse', icon: 'grid' },
-    { id: 'search', label: 'Search', icon: 'search' },
-    { id: 'categories', label: 'Categories', icon: 'folder' },
-    { id: 'stats', label: 'Statistics', icon: 'chart' }
+    { id: "browse", label: "Browse", icon: "grid" },
+    { id: "search", label: "Search", icon: "search" },
+    { id: "categories", label: "Categories", icon: "folder" },
+    { id: "stats", label: "Statistics", icon: "chart" },
   ];
-  
+
   return (
     <div class="app">
       <header>
@@ -104,11 +108,11 @@ function App() {
         </h1>
         <ThemeToggle />
       </header>
-      
+
       <nav class="tabs">
-        {tabs.map(tab => (
-          <button 
-            class={`tab-button ${activeTab() === tab.id ? 'active' : ''}`}
+        {tabs.map((tab) => (
+          <button
+            class={`tab-button ${activeTab() === tab.id ? "active" : ""}`}
             onClick={() => setActiveTab(tab.id)}
           >
             <span class="icon" innerHTML={getIcon(tab.icon)}></span>
@@ -116,10 +120,8 @@ function App() {
           </button>
         ))}
       </nav>
-      
-      <main>
-        {/* Tab content */}
-      </main>
+
+      <main>{/* Tab content */}</main>
     </div>
   );
 }
@@ -134,23 +136,23 @@ A theme switching component featuring:
 - **Accessibility**: Proper ARIA labels and keyboard support
 
 ```tsx
-import { useTheme } from 'reynard-themes';
-import { fluentIconsPackage } from 'reynard-fluent-icons';
+import { useTheme } from "reynard-themes";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 
 function ThemeToggle() {
   const { theme, setTheme, isDark } = useTheme();
-  
+
   const toggleTheme = () => {
-    setTheme(isDark() ? 'light' : 'dark');
+    setTheme(isDark() ? "light" : "dark");
   };
-  
+
   return (
-    <button 
+    <button
       class="theme-toggle"
       onClick={toggleTheme}
-      title={`Switch to ${isDark() ? 'light' : 'dark'} theme`}
+      title={`Switch to ${isDark() ? "light" : "dark"} theme`}
     >
-      <span innerHTML={getIcon(isDark() ? 'sun' : 'moon')}></span>
+      <span innerHTML={getIcon(isDark() ? "sun" : "moon")}></span>
     </button>
   );
 }
@@ -202,7 +204,7 @@ The application uses a modern CSS architecture with:
   display: inline-block;
   width: 2rem;
   height: 2rem;
-  background-image: url('/favicon.svg');
+  background-image: url("/favicon.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -302,19 +304,19 @@ npm run format       # Prettier code formatting
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from 'vite';
-import solid from 'vite-plugin-solid';
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
   plugins: [solid()],
   server: {
     port: 3001,
-    open: true
+    open: true,
   },
   build: {
-    target: 'esnext',
-    sourcemap: true
-  }
+    target: "esnext",
+    sourcemap: true,
+  },
 });
 ```
 

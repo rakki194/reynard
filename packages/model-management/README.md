@@ -20,45 +20,50 @@ npm install reynard-model-management
 ## Quick Start
 
 ```typescript
-import { ModelManager, ModelType, ModelStatus, ModelHealth } from 'reynard-model-management';
+import {
+  ModelManager,
+  ModelType,
+  ModelStatus,
+  ModelHealth,
+} from "reynard-model-management";
 
 // Create model manager
 const modelManager = new ModelManager({
   maxConcurrentDownloads: 3,
   maxConcurrentLoads: 2,
   downloadTimeout: 300000,
-  loadTimeout: 120000
+  loadTimeout: 120000,
 });
 
 // Register a model
 modelManager.registerModel({
-  modelId: 'my-caption-model',
+  modelId: "my-caption-model",
   modelType: ModelType.CAPTION_GENERATOR,
-  repoId: 'my-org/my-caption-model',
-  description: 'A caption generation model',
+  repoId: "my-org/my-caption-model",
+  description: "A caption generation model",
   totalSizeEstimate: 500_000_000, // 500MB
-  fileCountEstimate: 3
+  fileCountEstimate: 3,
 });
 
 // Download the model
-await modelManager.downloadModel('my-caption-model', (progress) => {
+await modelManager.downloadModel("my-caption-model", (progress) => {
   console.log(`Download progress: ${progress.progress}%`);
 });
 
 // Load the model
-const instance = await modelManager.loadModel('my-caption-model', {
+const instance = await modelManager.loadModel("my-caption-model", {
   threshold: 0.2,
-  forceCpu: false
+  forceCpu: false,
 });
 
-console.log('Model loaded:', instance);
+console.log("Model loaded:", instance);
 
 // Check model health
-const health = modelManager.getModelHealth('my-caption-model');
-console.log('Model health:', health);
+const health = modelManager.getModelHealth("my-caption-model");
+console.log("Model health:", health);
 
 // Unload the model
-await modelManager.unloadModel('my-caption-model');
+await modelManager.unloadModel("my-caption-model");
 ```
 
 ## API Reference
@@ -118,11 +123,11 @@ constructor(modelId: string, modelType: ModelType, config: Record<string, any> =
 
 ```typescript
 enum ModelType {
-  CAPTION_GENERATOR = 'caption_generator',
-  DETECTION_MODEL = 'detection_model',
-  EMBEDDING_MODEL = 'embedding_model',
-  DIFFUSION_LM = 'diffusion_lm',
-  CLASSIFICATION_MODEL = 'classification_model'
+  CAPTION_GENERATOR = "caption_generator",
+  DETECTION_MODEL = "detection_model",
+  EMBEDDING_MODEL = "embedding_model",
+  DIFFUSION_LM = "diffusion_lm",
+  CLASSIFICATION_MODEL = "classification_model",
 }
 ```
 
@@ -130,12 +135,12 @@ enum ModelType {
 
 ```typescript
 enum ModelStatus {
-  NOT_DOWNLOADED = 'not_downloaded',
-  DOWNLOADING = 'downloading',
-  DOWNLOADED = 'downloaded',
-  LOADING = 'loading',
-  LOADED = 'loaded',
-  ERROR = 'error'
+  NOT_DOWNLOADED = "not_downloaded",
+  DOWNLOADING = "downloading",
+  DOWNLOADED = "downloaded",
+  LOADING = "loading",
+  LOADED = "loaded",
+  ERROR = "error",
 }
 ```
 
@@ -143,10 +148,10 @@ enum ModelStatus {
 
 ```typescript
 enum ModelHealth {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown'
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }
 ```
 
@@ -156,20 +161,20 @@ enum ModelHealth {
 
 ```typescript
 modelManager.addEventListener((event) => {
-  console.log('Model event:', event);
+  console.log("Model event:", event);
 });
 ```
 
 ### Custom Model Implementation
 
 ```typescript
-import { BaseModel, ModelType, ModelHealth } from 'reynard-model-management';
+import { BaseModel, ModelType, ModelHealth } from "reynard-model-management";
 
 class MyCaptionModel extends BaseModel {
   constructor() {
-    super('my-caption-model', ModelType.CAPTION_GENERATOR, {
+    super("my-caption-model", ModelType.CAPTION_GENERATOR, {
       threshold: 0.2,
-      forceCpu: false
+      forceCpu: false,
     });
   }
 
@@ -201,14 +206,14 @@ class MyCaptionModel extends BaseModel {
 
 ```typescript
 // Update model configuration
-modelManager.updateModelConfig('my-caption-model', {
+modelManager.updateModelConfig("my-caption-model", {
   threshold: 0.3,
-  batchSize: 8
+  batchSize: 8,
 });
 
 // Get model configuration
-const instance = modelManager.getModelInstance('my-caption-model');
-console.log('Model config:', instance?.config);
+const instance = modelManager.getModelInstance("my-caption-model");
+console.log("Model config:", instance?.config);
 ```
 
 ### Statistics and Monitoring
@@ -216,13 +221,13 @@ console.log('Model config:', instance?.config);
 ```typescript
 // Get model manager statistics
 const stats = modelManager.getStatistics();
-console.log('Total models:', stats.totalModels);
-console.log('Loaded models:', stats.loadedModels);
-console.log('Active downloads:', stats.activeDownloads);
+console.log("Total models:", stats.totalModels);
+console.log("Loaded models:", stats.loadedModels);
+console.log("Active downloads:", stats.activeDownloads);
 
 // Get model manager state
 const state = modelManager.getState();
-console.log('Manager state:', state);
+console.log("Manager state:", state);
 ```
 
 ## License

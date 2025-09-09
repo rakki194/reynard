@@ -1,1 +1,1 @@
-export { BaseModel } from './BaseModel.js';
+export { BaseModel } from "./BaseModel.js";

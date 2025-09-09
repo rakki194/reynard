@@ -83,40 +83,40 @@ The backend uses environment-based configuration. You can customize behavior usi
 
 ### Uvicorn Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `UVICORN_HOST` | `0.0.0.0` | Host to bind to |
-| `UVICORN_PORT` | `8000` | Port to bind to |
-| `UVICORN_RELOAD` | `true` | Enable auto-reload |
-| `UVICORN_LOG_LEVEL` | `info` | Logging level |
-| `UVICORN_RELOAD_DIRS` | `.` | Comma-separated directories to watch |
-| `UVICORN_RELOAD_DELAY` | `0.25` | Delay between file checks |
+| Variable               | Default   | Description                          |
+| ---------------------- | --------- | ------------------------------------ |
+| `UVICORN_HOST`         | `0.0.0.0` | Host to bind to                      |
+| `UVICORN_PORT`         | `8000`    | Port to bind to                      |
+| `UVICORN_RELOAD`       | `true`    | Enable auto-reload                   |
+| `UVICORN_LOG_LEVEL`    | `info`    | Logging level                        |
+| `UVICORN_RELOAD_DIRS`  | `.`       | Comma-separated directories to watch |
+| `UVICORN_RELOAD_DELAY` | `0.25`    | Delay between file checks            |
 
 ### Application Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `ENVIRONMENT` | `development` | Environment (development/production) |
-| `DEBUG` | `true` | Enable debug mode |
-| `SECRET_KEY` | `your-secret-key-change-in-production` | Secret key for JWT |
-| `CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | CORS origins |
+| Variable       | Default                                       | Description                          |
+| -------------- | --------------------------------------------- | ------------------------------------ |
+| `ENVIRONMENT`  | `development`                                 | Environment (development/production) |
+| `DEBUG`        | `true`                                        | Enable debug mode                    |
+| `SECRET_KEY`   | `your-secret-key-change-in-production`        | Secret key for JWT                   |
+| `CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | CORS origins                         |
 
 ### Database Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DATABASE_URL` | `sqlite:///./reynard.db` | Database connection URL |
-| `DATABASE_ECHO` | `false` | Enable SQL logging |
-| `DATABASE_POOL_SIZE` | `5` | Connection pool size |
-| `DATABASE_MAX_OVERFLOW` | `10` | Max overflow connections |
+| Variable                | Default                  | Description              |
+| ----------------------- | ------------------------ | ------------------------ |
+| `DATABASE_URL`          | `sqlite:///./reynard.db` | Database connection URL  |
+| `DATABASE_ECHO`         | `false`                  | Enable SQL logging       |
+| `DATABASE_POOL_SIZE`    | `5`                      | Connection pool size     |
+| `DATABASE_MAX_OVERFLOW` | `10`                     | Max overflow connections |
 
 ### Cache Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CACHE_URL` | `redis://localhost:6379/0` | Cache connection URL |
-| `CACHE_TTL` | `3600` | Default TTL in seconds |
-| `CACHE_MAX_CONNECTIONS` | `10` | Max cache connections |
+| Variable                | Default                    | Description            |
+| ----------------------- | -------------------------- | ---------------------- |
+| `CACHE_URL`             | `redis://localhost:6379/0` | Cache connection URL   |
+| `CACHE_TTL`             | `3600`                     | Default TTL in seconds |
+| `CACHE_MAX_CONNECTIONS` | `10`                       | Max cache connections  |
 
 ## API Endpoints
 

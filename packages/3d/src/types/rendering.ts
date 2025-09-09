@@ -12,7 +12,7 @@ export interface EmbeddingPoint {
   imageUrl?: string;
   imageThumbnail?: string;
   textContent?: string;
-  contentType?: 'image' | 'text' | 'mixed';
+  contentType?: "image" | "text" | "mixed";
   thumbnailDataUrl?: string;
   originalEmbedding?: number[];
   reducedEmbedding?: number[];
@@ -22,8 +22,13 @@ export interface EmbeddingPoint {
 export interface EmbeddingRenderingConfig {
   // Point cloud settings
   pointSize: number;
-  colorMapping: 'similarity' | 'cluster' | 'importance' | 'confidence' | 'custom';
-  sizeMapping: 'importance' | 'confidence' | 'uniform';
+  colorMapping:
+    | "similarity"
+    | "cluster"
+    | "importance"
+    | "confidence"
+    | "custom";
+  sizeMapping: "importance" | "confidence" | "uniform";
 
   // Performance settings
   enableInstancing: boolean;
@@ -45,7 +50,17 @@ export interface EmbeddingRenderingConfig {
   // Animation settings
   enableAnimations: boolean;
   animationDuration: number;
-  animationEasing: 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInElastic' | 'easeOutElastic' | 'easeInOutElastic';
+  animationEasing:
+    | "linear"
+    | "easeInQuad"
+    | "easeOutQuad"
+    | "easeInOutQuad"
+    | "easeInCubic"
+    | "easeOutCubic"
+    | "easeInOutCubic"
+    | "easeInElastic"
+    | "easeOutElastic"
+    | "easeInOutElastic";
 
   // Search integration
   enableSearchHighlighting: boolean;
@@ -82,7 +97,10 @@ export interface MaterialManager {
   createPointMaterial(config: EmbeddingRenderingConfig): MaterialLike;
   createThumbnailMaterial(config: EmbeddingRenderingConfig): MaterialLike;
   createTextMaterial(config: EmbeddingRenderingConfig): MaterialLike;
-  updateMaterial(material: MaterialLike, config: EmbeddingRenderingConfig): void;
+  updateMaterial(
+    material: MaterialLike,
+    config: EmbeddingRenderingConfig,
+  ): void;
   disposeMaterial(material: MaterialLike): void;
   disposeAllMaterials(): void;
 }
@@ -113,8 +131,14 @@ export interface InstancedBufferGeometryLike extends BufferGeometryLike {
 export interface ThreeJSInterface {
   BufferGeometry: new () => BufferGeometryLike;
   InstancedBufferGeometry: new () => InstancedBufferGeometryLike;
-  Float32BufferAttribute: new (array: Float32Array, itemSize: number) => unknown;
-  InstancedBufferAttribute: new (array: Float32Array, itemSize: number) => unknown;
+  Float32BufferAttribute: new (
+    array: Float32Array,
+    itemSize: number,
+  ) => unknown;
+  InstancedBufferAttribute: new (
+    array: Float32Array,
+    itemSize: number,
+  ) => unknown;
   PointsMaterial: new (options?: Record<string, unknown>) => MaterialLike;
   SpriteMaterial: new (options?: Record<string, unknown>) => MaterialLike;
   Raycaster: new () => RaycasterLike;
@@ -139,10 +163,23 @@ export interface ThreeJSModule {
 }
 
 export interface GeometryManager {
-  createPointGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): GeometryLike;
-  createThumbnailGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): GeometryLike;
-  createTextGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): GeometryLike;
-  updateGeometry(geometry: GeometryLike, points: EmbeddingPoint[], config: EmbeddingRenderingConfig): void;
+  createPointGeometry(
+    points: EmbeddingPoint[],
+    config: EmbeddingRenderingConfig,
+  ): GeometryLike;
+  createThumbnailGeometry(
+    points: EmbeddingPoint[],
+    config: EmbeddingRenderingConfig,
+  ): GeometryLike;
+  createTextGeometry(
+    points: EmbeddingPoint[],
+    config: EmbeddingRenderingConfig,
+  ): GeometryLike;
+  updateGeometry(
+    geometry: GeometryLike,
+    points: EmbeddingPoint[],
+    config: EmbeddingRenderingConfig,
+  ): void;
   disposeGeometry(geometry: GeometryLike): void;
   disposeAllGeometries(): void;
 }
@@ -184,7 +221,7 @@ export interface VectorVisualizationProps {
   title?: string;
   width?: number;
   height?: number;
-  colormap?: 'viridis' | 'plasma' | 'inferno' | 'magma' | 'cividis';
+  colormap?: "viridis" | "plasma" | "inferno" | "magma" | "cividis";
   showLegend?: boolean;
   showValues?: boolean;
   className?: string;
@@ -199,7 +236,17 @@ export interface VectorVisualizationProps {
   animationSpeed?: number;
   transitionDuration?: number;
   enableAnimations?: boolean;
-  animationEasing?: 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeInElastic' | 'easeOutElastic' | 'easeInOutElastic';
+  animationEasing?:
+    | "linear"
+    | "easeInQuad"
+    | "easeOutQuad"
+    | "easeInOutQuad"
+    | "easeInCubic"
+    | "easeOutCubic"
+    | "easeInOutCubic"
+    | "easeInElastic"
+    | "easeOutElastic"
+    | "easeInOutElastic";
 }
 
 // Cluster visualization props
@@ -298,11 +345,18 @@ export const RENDERING_UTILS = {
   applyColorMapping: (_points: EmbeddingPoint[], _colorMapping: string) => {
     // Implementation will be in the actual utility file
   },
-  applySizeMapping: (_points: EmbeddingPoint[], _sizeMapping: string, _baseSize: number) => {
+  applySizeMapping: (
+    _points: EmbeddingPoint[],
+    _sizeMapping: string,
+    _baseSize: number,
+  ) => {
     // Implementation will be in the actual utility file
   },
-  filterPoints: (_points: EmbeddingPoint[], _config: EmbeddingRenderingConfig) => {
+  filterPoints: (
+    _points: EmbeddingPoint[],
+    _config: EmbeddingRenderingConfig,
+  ) => {
     // Implementation will be in the actual utility file
     return [] as EmbeddingPoint[];
-  }
+  },
 };

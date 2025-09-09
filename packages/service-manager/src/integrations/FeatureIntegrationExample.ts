@@ -1,13 +1,23 @@
 /**
  * Feature Integration Example
- * 
+ *
  * Example showing how to integrate the service manager with the feature system
  * using the FeatureServiceBridge.
  */
 
-import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from '../index.js';
-import { FeatureManager, FeatureProvider, COMMON_FEATURES, getActualServiceName } from 'reynard-features';
-import { FeatureServiceBridge } from './FeatureServiceBridge.js';
+import {
+  ServiceManager,
+  BaseService,
+  ServiceStatus,
+  ServiceHealth,
+} from "../index.js";
+import {
+  FeatureManager,
+  FeatureProvider,
+  COMMON_FEATURES,
+  getActualServiceName,
+} from "reynard-features";
+import { FeatureServiceBridge } from "./FeatureServiceBridge.js";
 
 /**
  * Example service that extends BaseService
@@ -15,21 +25,21 @@ import { FeatureServiceBridge } from './FeatureServiceBridge.js';
 class ExampleFileProcessingService extends BaseService {
   constructor() {
     super({
-      name: 'file-processing',
+      name: "file-processing",
       dependencies: [],
       startupPriority: 50,
-      autoStart: true
+      autoStart: true,
     });
   }
 
   async initialize(): Promise<void> {
-    console.log('FileProcessingService initialized');
+    console.log("FileProcessingService initialized");
     // Simulate initialization
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   async shutdown(): Promise<void> {
-    console.log('FileProcessingService shutdown');
+    console.log("FileProcessingService shutdown");
   }
 
   async healthCheck(): Promise<ServiceHealth> {
@@ -41,20 +51,20 @@ class ExampleFileProcessingService extends BaseService {
 class ExampleAuthService extends BaseService {
   constructor() {
     super({
-      name: 'auth',
+      name: "auth",
       dependencies: [],
       startupPriority: 30,
-      autoStart: true
+      autoStart: true,
     });
   }
 
   async initialize(): Promise<void> {
-    console.log('AuthService initialized');
-    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log("AuthService initialized");
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
   async shutdown(): Promise<void> {
-    console.log('AuthService shutdown');
+    console.log("AuthService shutdown");
   }
 
   async healthCheck(): Promise<ServiceHealth> {
@@ -65,20 +75,20 @@ class ExampleAuthService extends BaseService {
 class ExampleAnnotationService extends BaseService {
   constructor() {
     super({
-      name: 'annotation',
-      dependencies: ['file-processing'],
+      name: "annotation",
+      dependencies: ["file-processing"],
       startupPriority: 40,
-      autoStart: true
+      autoStart: true,
     });
   }
 
   async initialize(): Promise<void> {
-    console.log('AnnotationService initialized');
-    await new Promise(resolve => setTimeout(resolve, 800));
+    console.log("AnnotationService initialized");
+    await new Promise((resolve) => setTimeout(resolve, 800));
   }
 
   async shutdown(): Promise<void> {
-    console.log('AnnotationService shutdown');
+    console.log("AnnotationService shutdown");
   }
 
   async healthCheck(): Promise<ServiceHealth> {
@@ -96,7 +106,7 @@ export function createIntegratedSystem() {
     healthCheckInterval: 30000,
     startupTimeout: 300000,
     shutdownTimeout: 60000,
-    enableHealthMonitoring: true
+    enableHealthMonitoring: true,
   });
 
   // Register services
@@ -116,15 +126,15 @@ export function createIntegratedSystem() {
     serviceChecker: (serviceName: string) => {
       // Default service checker - will be overridden by bridge
       return false;
-    }
+    },
   });
 
   // Create service name mappings
   const serviceMappings = {
-    'FileProcessingService': 'file-processing',
-    'AuthService': 'auth',
-    'AnnotationService': 'annotation',
-    'ServiceManager': 'service-manager'
+    FileProcessingService: "file-processing",
+    AuthService: "auth",
+    AnnotationService: "annotation",
+    ServiceManager: "service-manager",
   };
 
   // Create the bridge
@@ -132,7 +142,7 @@ export function createIntegratedSystem() {
     serviceManager,
     featureManager,
     autoSync: true,
-    serviceNameMapping: serviceMappings
+    serviceNameMapping: serviceMappings,
   });
 
   return {
@@ -142,8 +152,8 @@ export function createIntegratedSystem() {
     services: {
       fileProcessing: fileProcessingService,
       auth: authService,
-      annotation: annotationService
-    }
+      annotation: annotationService,
+    },
   };
 }
 
@@ -151,21 +161,21 @@ export function createIntegratedSystem() {
  * Example usage function
  */
 export async function demonstrateIntegration() {
-  console.log('🚀 Creating integrated system...');
-  
+  console.log("🚀 Creating integrated system...");
+
   const system = createIntegratedSystem();
   const { serviceManager, featureManager, bridge } = system;
 
   // Start services
-  console.log('📡 Starting services...');
+  console.log("📡 Starting services...");
   await serviceManager.startServices();
 
   // Wait a bit for services to start
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   // Check feature statuses
-  console.log('🔍 Checking feature statuses...');
-  
+  console.log("🔍 Checking feature statuses...");
+
   const features = featureManager.registry.getAll();
   for (const feature of features) {
     const status = featureManager.getFeatureStatus(feature.id);
@@ -173,43 +183,45 @@ export async function demonstrateIntegration() {
     console.log(`  Available: ${status?.available}`);
     console.log(`  Degraded: ${status?.degraded}`);
     console.log(`  Health Score: ${status?.healthScore}`);
-    console.log(`  Message: ${status?.message || 'OK'}`);
-    console.log('');
+    console.log(`  Message: ${status?.message || "OK"}`);
+    console.log("");
   }
 
   // Get service statuses from bridge
-  console.log('📊 Service statuses from bridge:');
+  console.log("📊 Service statuses from bridge:");
   const serviceStatuses = bridge.getAllServiceStatuses();
   for (const [serviceName, status] of Object.entries(serviceStatuses)) {
     console.log(`Service: ${serviceName}`);
     console.log(`  Available: ${status.available}`);
     console.log(`  Status: ${status.status}`);
     console.log(`  Health: ${status.health}`);
-    console.log('');
+    console.log("");
   }
 
   // Demonstrate service failure
-  console.log('💥 Simulating service failure...');
+  console.log("💥 Simulating service failure...");
   const authService = system.services.auth;
   // Simulate service going down
   await authService.shutdown();
-  
+
   // Wait for feature system to update
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   // Check auth feature status
-  const authFeatureStatus = featureManager.getFeatureStatus('user-authentication');
-  console.log('Auth feature after service failure:');
+  const authFeatureStatus = featureManager.getFeatureStatus(
+    "user-authentication",
+  );
+  console.log("Auth feature after service failure:");
   console.log(`  Available: ${authFeatureStatus?.available}`);
   console.log(`  Degraded: ${authFeatureStatus?.degraded}`);
   console.log(`  Message: ${authFeatureStatus?.message}`);
 
   // Cleanup
-  console.log('🧹 Cleaning up...');
+  console.log("🧹 Cleaning up...");
   bridge.destroy();
   await serviceManager.stopServices();
-  
-  console.log('✅ Integration demonstration complete!');
+
+  console.log("✅ Integration demonstration complete!");
 }
 
 /**

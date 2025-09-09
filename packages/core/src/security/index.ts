@@ -3,8 +3,8 @@
  * Centralized security utilities and configurations for Reynard applications
  */
 
-export * from './headers';
-export * from './validation';
+export * from "./headers";
+export * from "./validation";
 
 // Export crypto utilities with explicit names to avoid conflicts
 export {
@@ -23,8 +23,8 @@ export {
   generatePasswordResetToken,
   generateEmailVerificationToken,
   secureRandomInt,
-  generateSecurePassword
-} from './crypto';
+  generateSecurePassword,
+} from "./crypto";
 
 /**
  * Security configuration interface
@@ -73,7 +73,14 @@ export const DEFAULT_SECURITY_CONFIG: SecurityConfig = {
   },
   fileUpload: {
     maxSize: 10 * 1024 * 1024, // 10MB
-    allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'text/plain'],
+    allowedTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "application/pdf",
+      "text/plain",
+    ],
     scanForMalware: false, // Would require backend integration
   },
 };
@@ -91,7 +98,15 @@ export const DEVELOPMENT_SECURITY_CONFIG: SecurityConfig = {
   },
   fileUpload: {
     maxSize: 50 * 1024 * 1024, // 50MB for development
-    allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf', 'text/plain', 'application/json'],
+    allowedTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "application/pdf",
+      "text/plain",
+      "application/json",
+    ],
     scanForMalware: false,
   },
 };
@@ -99,6 +114,10 @@ export const DEVELOPMENT_SECURITY_CONFIG: SecurityConfig = {
 /**
  * Get security configuration based on environment
  */
-export function getSecurityConfig(environment: 'development' | 'production' = 'production'): SecurityConfig {
-  return environment === 'development' ? DEVELOPMENT_SECURITY_CONFIG : DEFAULT_SECURITY_CONFIG;
+export function getSecurityConfig(
+  environment: "development" | "production" = "production",
+): SecurityConfig {
+  return environment === "development"
+    ? DEVELOPMENT_SECURITY_CONFIG
+    : DEFAULT_SECURITY_CONFIG;
 }

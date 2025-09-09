@@ -19,7 +19,7 @@ notify("Hello World!", "success");
 
 // Send with custom duration
 notify("This won't auto-dismiss", "error", { duration: 0 });`;
-    
+
     case "icons":
       return `import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -31,7 +31,7 @@ const saveIcon = fluentIconsPackage.getIcon("save");
 
 // Get icon metadata
 const metadata = fluentIconsPackage.getIconMetadata("save");`;
-    
+
     case "themes":
       return `import { useTheme } from "reynard-themes";
 
@@ -42,7 +42,7 @@ setTheme("dark");
 
 // Get current theme
 console.log("Current theme:", theme);`;
-    
+
     case "storage":
       return `import { useLocalStorage } from "reynard-core";
 
@@ -55,7 +55,7 @@ setValue("new value");
 
 // Remove from storage
 remove();`;
-    
+
     default:
       return "";
   }

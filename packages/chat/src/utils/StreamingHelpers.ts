@@ -1,14 +1,17 @@
 /**
  * Streaming Text Helper Functions
- * 
+ *
  * Contains utility functions for streaming text operations
  */
 
-import { StreamingTextOptions, StreamingTextState } from "./StreamingTextRenderer";
+import {
+  StreamingTextOptions,
+  StreamingTextState,
+} from "./StreamingTextRenderer";
 
 export function calculateCharacterDelay(
   char: string,
-  options: Required<StreamingTextOptions>
+  options: Required<StreamingTextOptions>,
 ): number {
   let delay = options.speed;
 

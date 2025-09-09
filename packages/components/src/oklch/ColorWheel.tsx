@@ -14,14 +14,22 @@ export const ColorWheel: Component<ColorWheelProps> = (props) => {
   let centerOrbRef: HTMLDivElement | undefined;
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
+  const setCSSProperty = (
+    element: HTMLElement,
+    property: string,
+    value: string,
+  ) => {
     element.style.setProperty(property, value);
   };
 
   // Update center orb
   createEffect(() => {
     if (centerOrbRef) {
-      setCSSProperty(centerOrbRef, '--dynamic-palette', props.animatedPalette.join(', '));
+      setCSSProperty(
+        centerOrbRef,
+        "--dynamic-palette",
+        props.animatedPalette.join(", "),
+      );
     }
   });
 
@@ -32,7 +40,7 @@ export const ColorWheel: Component<ColorWheelProps> = (props) => {
         <div class="color-wheel">
           <For each={props.animatedPalette}>
             {(color, index) => (
-              <div 
+              <div
                 class="wheel-segment"
                 data-background-color={color}
                 data-segment-index={index()}
@@ -42,10 +50,10 @@ export const ColorWheel: Component<ColorWheelProps> = (props) => {
           </For>
         </div>
         <div class="wheel-center">
-          <div 
+          <div
             ref={centerOrbRef}
             class="center-orb"
-            data-palette-colors={props.animatedPalette.join(',')}
+            data-palette-colors={props.animatedPalette.join(",")}
           />
         </div>
       </div>

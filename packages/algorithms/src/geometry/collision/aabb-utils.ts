@@ -7,7 +7,7 @@
  * @module algorithms/aabbUtils
  */
 
-import type { AABB } from './aabb-types';
+import type { AABB } from "./aabb-types";
 
 /**
  * Calculate the area of an AABB

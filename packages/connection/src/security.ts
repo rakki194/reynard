@@ -1,12 +1,15 @@
-import { SecurityLevel } from './types';
+import { SecurityLevel } from "./types";
 
 export class ConnectionSecurity {
   constructor(public level: SecurityLevel = SecurityLevel.BASIC) {}
 
-  createAuthorizationHeaders(token?: string, apiKey?: string): Record<string, string> {
+  createAuthorizationHeaders(
+    token?: string,
+    apiKey?: string,
+  ): Record<string, string> {
     const headers: Record<string, string> = {};
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-    if (apiKey) headers['X-API-Key'] = apiKey;
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (apiKey) headers["X-API-Key"] = apiKey;
     return headers;
   }
 

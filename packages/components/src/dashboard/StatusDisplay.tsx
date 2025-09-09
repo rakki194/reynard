@@ -15,7 +15,7 @@ export const StatusItem: Component<StatusItemProps> = (props) => {
   return (
     <div class="status-item">
       <span class="status-label">{props.label}:</span>
-      <span class={`status-value ${props.statusClass || ''}`}>
+      <span class={`status-value ${props.statusClass || ""}`}>
         {props.value}
       </span>
     </div>

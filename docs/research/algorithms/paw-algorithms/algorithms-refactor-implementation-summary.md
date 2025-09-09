@@ -42,7 +42,7 @@ interface WorkloadCharacteristics {
   spatialDensity: number;
   overlapRatio: number;
   updateFrequency: number;
-  queryPattern: 'random' | 'clustered' | 'sequential';
+  queryPattern: "random" | "clustered" | "sequential";
   memoryConstraints?: {
     maxMemoryUsage: number;
     gcPressure: number;
@@ -66,7 +66,7 @@ class EnhancedMemoryPool {
   private unionFindPool: PooledObject[] = [];
   private collisionArrayPool: PooledObject[] = [];
   private processedSetPool: PooledObject[] = [];
-  
+
   getSpatialHash(config?: any): SpatialHash;
   getUnionFind(size: number): UnionFind;
   getCollisionArray(): CollisionPair[];
@@ -163,9 +163,9 @@ Based on PAW benchmark results:
 
 ```typescript
 // Fragmented approach requiring manual algorithm selection
-import { UnionFind } from 'reynard-algorithms';
-import { SpatialHash } from 'reynard-algorithms';
-import { checkCollision } from 'reynard-algorithms';
+import { UnionFind } from "reynard-algorithms";
+import { SpatialHash } from "reynard-algorithms";
+import { checkCollision } from "reynard-algorithms";
 
 const uf = new UnionFind(100);
 const spatialHash = new SpatialHash({ cellSize: 100 });
@@ -176,13 +176,13 @@ const collision = checkCollision(aabb1, aabb2);
 
 ```typescript
 // Unified approach with automatic optimization
-import { 
+import {
   detectCollisions,
   findConnectedComponents,
   performSpatialQuery,
   PerformanceMonitor,
-  OptimizationConfig
-} from 'reynard-algorithms';
+  OptimizationConfig,
+} from "reynard-algorithms";
 
 // Automatic algorithm selection with optimization
 const collisions = detectCollisions(aabbs);
@@ -200,11 +200,11 @@ The refactor maintains full backward compatibility:
 
 ```typescript
 // Legacy API still supported but deprecated
-import { 
-  UnionFind,           // @deprecated Use findConnectedComponents instead
-  SpatialHash,         // @deprecated Use performSpatialQuery instead
-  checkCollision       // @deprecated Use detectCollisions instead
-} from 'reynard-algorithms/legacy';
+import {
+  UnionFind, // @deprecated Use findConnectedComponents instead
+  SpatialHash, // @deprecated Use performSpatialQuery instead
+  checkCollision, // @deprecated Use detectCollisions instead
+} from "reynard-algorithms/legacy";
 ```
 
 ## 🐺> **Testing and Validation**

@@ -9,11 +9,14 @@ import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const StorageDemo: Component = () => {
   const { notify } = useNotifications();
-  
+
   // LocalStorage demo
-  const [userName, setUserName, removeUserName] = useLocalStorage("reynard-demo-username", {
-    defaultValue: "",
-  });
+  const [userName, setUserName, removeUserName] = useLocalStorage(
+    "reynard-demo-username",
+    {
+      defaultValue: "",
+    },
+  );
 
   const handleSaveName = () => {
     if (userName().trim()) {
@@ -70,7 +73,9 @@ export const StorageDemo: Component = () => {
           </button>
         </div>
         {userName() && (
-          <p class="stored-value">Stored: <strong>{userName()}</strong></p>
+          <p class="stored-value">
+            Stored: <strong>{userName()}</strong>
+          </p>
         )}
       </div>
     </div>

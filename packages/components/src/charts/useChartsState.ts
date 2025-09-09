@@ -9,7 +9,7 @@ import { useVisualizationEngine } from "reynard-charts";
 
 export const useChartsState = () => {
   const themeContext = useTheme();
-  
+
   // Interactive state
   const [selectedTheme, setSelectedTheme] = createSignal(themeContext.theme);
   const [animationSpeed, setAnimationSpeed] = createSignal(1);
@@ -25,11 +25,13 @@ export const useChartsState = () => {
       lazyLoading: true,
       memoryLimit: 512,
       targetFPS: 60,
-    }
+    },
   });
 
   // Available themes for demonstration
-  const availableThemes = getAvailableThemes().map(theme => theme.name as ThemeName);
+  const availableThemes = getAvailableThemes().map(
+    (theme) => theme.name as ThemeName,
+  );
 
   return {
     themeContext,

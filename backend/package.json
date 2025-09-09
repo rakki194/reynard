@@ -1,0 +1,32 @@
+{
+  "name": "reynard-backend",
+  "version": "0.1.0",
+  "description": "FastAPI backend services for the Reynard framework",
+  "type": "module",
+  "main": "main.py",
+  "scripts": {
+    "start": "python main.py",
+    "dev": "python main.py",
+    "test": "python test_caption_integration.py"
+  },
+  "keywords": [
+    "fastapi",
+    "python",
+    "backend",
+    "api",
+    "reynard",
+    "jwt",
+    "authentication"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reynard-framework/reynard.git",
+    "directory": "backend"
+  },
+  "bugs": {
+    "url": "https://github.com/reynard-framework/reynard/issues"
+  },
+  "homepage": "https://github.com/reynard-framework/reynard#readme"
+}

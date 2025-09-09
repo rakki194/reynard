@@ -39,11 +39,11 @@ When adding event listeners in yipyap, follow these principles:
 
 ```typescript
 // Preferred - explicitly declare passive for scroll/touch events
-element.addEventListener('touchstart', handler, { passive: true });
-element.addEventListener('wheel', handler, { passive: true });
+element.addEventListener("touchstart", handler, { passive: true });
+element.addEventListener("wheel", handler, { passive: true });
 
 // Only use non-passive when preventDefault is required
-element.addEventListener('touchstart', handler, { passive: false });
+element.addEventListener("touchstart", handler, { passive: false });
 ```
 
 ## When to Use Passive Listeners
@@ -102,10 +102,10 @@ const useGalleryScroll = () => {
     };
 
     // Use passive listener for better performance
-    window.addEventListener('wheel', handler, { passive: true });
+    window.addEventListener("wheel", handler, { passive: true });
 
     onCleanup(() => {
-      window.removeEventListener('wheel', handler);
+      window.removeEventListener("wheel", handler);
     });
   });
 };
@@ -121,12 +121,12 @@ const useTouchInteraction = () => {
       // Touch handling logic that doesn't prevent default
     };
 
-    element.addEventListener('touchstart', touchHandler, { passive: true });
-    element.addEventListener('touchmove', touchHandler, { passive: true });
+    element.addEventListener("touchstart", touchHandler, { passive: true });
+    element.addEventListener("touchmove", touchHandler, { passive: true });
 
     onCleanup(() => {
-      element.removeEventListener('touchstart', touchHandler);
-      element.removeEventListener('touchmove', touchHandler);
+      element.removeEventListener("touchstart", touchHandler);
+      element.removeEventListener("touchmove", touchHandler);
     });
   });
 };
@@ -137,32 +137,32 @@ const useTouchInteraction = () => {
 ```typescript
 // From useCrawl.ts - SSE event listeners with passive options
 es.addEventListener(
-  'submitted',
-  ev => {
+  "submitted",
+  (ev) => {
     try {
       handlers.onSubmitted?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
   },
-  { passive: true } as any
+  { passive: true } as any,
 );
 es.addEventListener(
-  'status',
-  ev => {
+  "status",
+  (ev) => {
     try {
       handlers.onStatus?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
   },
-  { passive: true } as any
+  { passive: true } as any,
 );
 es.addEventListener(
-  'done',
-  ev => {
+  "done",
+  (ev) => {
     try {
       handlers.onDone?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
     stop();
   },
-  { passive: true } as any
+  { passive: true } as any,
 );
 ```
 
@@ -176,7 +176,7 @@ wheelHandler = (e: WheelEvent) => {
 };
 
 // Use passive listener for performance where possible; here we require preventDefault
-galleryElement.addEventListener('wheel', wheelHandler, { passive: false });
+galleryElement.addEventListener("wheel", wheelHandler, { passive: false });
 ```
 
 ## Best Practices

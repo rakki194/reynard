@@ -14,7 +14,7 @@
 }
 
 .code-title::before {
-  content: '💻';
+  content: "💻";
   font-size: 1rem;
 }
 
@@ -29,7 +29,8 @@
 
 .code-block {
   position: relative;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Courier New', monospace;
+  font-family:
+    "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Courier New", monospace;
   font-size: 0.875rem;
   line-height: 1.5;
   color: var(--color-text);
@@ -115,8 +116,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error state */
@@ -208,12 +213,12 @@
   .code-block {
     font-size: 0.8rem;
   }
-  
+
   .highlighted-code,
   .fallback-code {
     padding: 0.5rem;
   }
-  
+
   .code-title {
     font-size: 1rem;
   }
@@ -224,12 +229,12 @@
   .code-block {
     border-color: var(--color-border, #374151);
   }
-  
+
   .code-explanation {
     background: var(--color-info, #1e3a8a);
     border-left-color: var(--color-info, #60a5fa);
   }
-  
+
   .code-block.with-line-numbers .highlighted-code :global(.line::before) {
     color: var(--color-text-secondary, #999);
   }
@@ -241,15 +246,27 @@
 }
 
 /* Ensure line numbers are visible in strawberry theme */
-[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
+[data-theme="strawberry"]
+  .code-block.with-line-numbers
+  .highlighted-code
+  :global(.line::before) {
   color: #e91e63;
   opacity: 0.6;
 }
 
 /* Ensure line numbers are visible in dark themes */
-[data-theme="dark"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
-[data-theme="gray"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
-[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
+[data-theme="dark"]
+  .code-block.with-line-numbers
+  .highlighted-code
+  :global(.line::before),
+[data-theme="gray"]
+  .code-block.with-line-numbers
+  .highlighted-code
+  :global(.line::before),
+[data-theme="strawberry"]
+  .code-block.with-line-numbers
+  .highlighted-code
+  :global(.line::before) {
   color: #999;
   opacity: 0.8;
 }

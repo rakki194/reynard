@@ -32,10 +32,7 @@ export const ColorPreview: Component<ColorPreviewProps> = (props) => {
       <h2>Live Color Preview</h2>
       <div class="preview-grid">
         <div class="preview-card main-color">
-          <ColorSwatch 
-            color={props.colorVariations.base}
-            size="large"
-          />
+          <ColorSwatch color={props.colorVariations.base} size="large" />
           <ColorInfo
             color={props.colorVariations.base}
             lightness={props.selectedLightness}
@@ -43,7 +40,7 @@ export const ColorPreview: Component<ColorPreviewProps> = (props) => {
             hue={props.selectedHue}
           />
         </div>
-        
+
         <div class="preview-card variations">
           <h3>Color Variations</h3>
           <VariationGrid colorVariations={props.colorVariations} />

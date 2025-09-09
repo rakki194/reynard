@@ -1,10 +1,10 @@
 /**
  * @fileoverview Bundle types for grouping related components.
- * 
+ *
  * Bundles allow you to group multiple components that are commonly
  * used together, making entity creation more convenient and ensuring
  * consistency.
- * 
+ *
  * @example
  * ```typescript
  * class PlayerBundle implements Bundle {
@@ -16,24 +16,24 @@
  *     new Player('Player1')
  *   ];
  * }
- * 
+ *
  * const player = world.spawnBundle(new PlayerBundle());
  * ```
- * 
+ *
  * @performance Bundles enable efficient bulk component operations
  * @author Reynard ECS Team
  * @since 1.0.0
  */
 
-import { Component } from './core';
+import { Component } from "./core";
 
 /**
  * Bundle for grouping related components together.
- * 
+ *
  * Bundles allow you to group multiple components that are commonly
  * used together, making entity creation more convenient and ensuring
  * consistency.
- * 
+ *
  * @example
  * ```typescript
  * class PlayerBundle implements Bundle {
@@ -45,10 +45,10 @@ import { Component } from './core';
  *     new Player('Player1')
  *   ];
  * }
- * 
+ *
  * const player = world.spawnBundle(new PlayerBundle());
  * ```
- * 
+ *
  * @since 1.0.0
  */
 export interface Bundle {

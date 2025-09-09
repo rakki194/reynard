@@ -22,7 +22,7 @@ npm install reynard-monaco
 ### Basic Code Editor
 
 ```tsx
-import { CodeEditor } from 'reynard-monaco';
+import { CodeEditor } from "reynard-monaco";
 
 function App() {
   const [code, setCode] = createSignal('console.log("Hello, World!");');
@@ -42,10 +42,12 @@ function App() {
 ### With Language Detection
 
 ```tsx
-import { CodeEditor, useLanguageDetection } from 'reynard-monaco';
+import { CodeEditor, useLanguageDetection } from "reynard-monaco";
 
 function App() {
-  const [code, setCode] = createSignal('def hello_world():\n    print("Hello, World!")');
+  const [code, setCode] = createSignal(
+    'def hello_world():\n    print("Hello, World!")',
+  );
   const languageDetection = useLanguageDetection();
 
   return (
@@ -62,13 +64,13 @@ function App() {
 ### With Shiki Integration
 
 ```tsx
-import { CodeEditor, useMonacoShiki } from 'reynard-monaco';
+import { CodeEditor, useMonacoShiki } from "reynard-monaco";
 
 function App() {
-  const [code, setCode] = createSignal('const x = 42;');
+  const [code, setCode] = createSignal("const x = 42;");
   const monacoShiki = useMonacoShiki({
-    theme: 'github-dark',
-    lang: 'typescript',
+    theme: "github-dark",
+    lang: "typescript",
     enableShikiHighlighting: true,
   });
 
@@ -87,19 +89,19 @@ function App() {
 
 ### CodeEditor Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | `''` | The code content |
-| `language` | `string` | `'javascript'` | Programming language |
-| `theme` | `string` | `'auto'` | Editor theme |
-| `readOnly` | `boolean` | `false` | Whether editor is read-only |
-| `onChange` | `(value: string) => void` | - | Change handler |
-| `onSave` | `() => void` | - | Save handler |
-| `height` | `string` | `'400px'` | Editor height |
-| `width` | `string` | `'100%'` | Editor width |
-| `showLineNumbers` | `boolean` | `true` | Show line numbers |
-| `showSearch` | `boolean` | `false` | Show search functionality |
-| `className` | `string` | - | Additional CSS class |
+| Prop              | Type                      | Default        | Description                 |
+| ----------------- | ------------------------- | -------------- | --------------------------- |
+| `value`           | `string`                  | `''`           | The code content            |
+| `language`        | `string`                  | `'javascript'` | Programming language        |
+| `theme`           | `string`                  | `'auto'`       | Editor theme                |
+| `readOnly`        | `boolean`                 | `false`        | Whether editor is read-only |
+| `onChange`        | `(value: string) => void` | -              | Change handler              |
+| `onSave`          | `() => void`              | -              | Save handler                |
+| `height`          | `string`                  | `'400px'`      | Editor height               |
+| `width`           | `string`                  | `'100%'`       | Editor width                |
+| `showLineNumbers` | `boolean`                 | `true`         | Show line numbers           |
+| `showSearch`      | `boolean`                 | `false`        | Show search functionality   |
+| `className`       | `string`                  | -              | Additional CSS class        |
 
 ### Composables
 
@@ -111,10 +113,10 @@ Provides language detection capabilities.
 const languageDetection = useLanguageDetection();
 
 // Detect natural language
-await languageDetection.detectNaturalLanguage('Hello, world!');
+await languageDetection.detectNaturalLanguage("Hello, world!");
 
 // Detect programming language from filename
-const lang = languageDetection.detectProgrammingLanguageFromFile('app.js');
+const lang = languageDetection.detectProgrammingLanguageFromFile("app.js");
 ```
 
 #### `useMonacoShiki(options)`
@@ -123,8 +125,8 @@ Provides Monaco-Shiki integration.
 
 ```tsx
 const monacoShiki = useMonacoShiki({
-  theme: 'github-dark',
-  lang: 'typescript',
+  theme: "github-dark",
+  lang: "typescript",
   enableShikiHighlighting: true,
 });
 ```
@@ -135,8 +137,8 @@ Provides Shiki syntax highlighting.
 
 ```tsx
 const shiki = useShiki({
-  theme: 'github-dark',
-  lang: 'typescript',
+  theme: "github-dark",
+  lang: "typescript",
 });
 ```
 
@@ -150,19 +152,19 @@ import {
   getLanguageDisplayName,
   isCodeFile,
   getLanguageInfo,
-} from 'reynard-monaco';
+} from "reynard-monaco";
 
 // Get Monaco language from file path
-const lang = getMonacoLanguage('app.js'); // 'javascript'
+const lang = getMonacoLanguage("app.js"); // 'javascript'
 
 // Get display name
-const name = getLanguageDisplayName('app.js'); // 'JavaScript'
+const name = getLanguageDisplayName("app.js"); // 'JavaScript'
 
 // Check if file is code
-const isCode = isCodeFile('app.js'); // true
+const isCode = isCodeFile("app.js"); // true
 
 // Get complete language info
-const info = getLanguageInfo('app.js');
+const info = getLanguageInfo("app.js");
 // { monacoLanguage: 'javascript', displayName: 'JavaScript', isCode: true }
 ```
 
@@ -197,7 +199,7 @@ The package supports CSS custom properties for theming:
   --half-spacing: 8px;
   --quarter-spacing: 4px;
   --font-size: 14px;
-  --font-family-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  --font-family-mono: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   --transition-duration: 0.2s;
   --transition-timing: ease;
   --hover-transform: translateY(-1px);
@@ -230,5 +232,3 @@ npm run lint
 ## License
 
 MIT
-
-

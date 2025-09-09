@@ -1,6 +1,6 @@
 /**
  * Archive file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported archive file extensions, MIME types, and
  * processing capabilities for archive files.
  */

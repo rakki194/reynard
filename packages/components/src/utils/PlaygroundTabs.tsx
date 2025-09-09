@@ -21,22 +21,24 @@ export interface PlaygroundTabsProps {
 export const PlaygroundTabs: Component<PlaygroundTabsProps> = (props) => {
   return (
     <div class="playground-tabs">
-      <For each={props.tabs}>{tab => (
-        <button
-          class={`playground-tab ${props.activeTab === tab.id ? 'active' : ''}`}
-          onClick={() => props.onTabChange(tab.id)}
-        >
-          {fluentIconsPackage.getIcon(tab.icon) && (
-            <span class="tab-icon">
-              <div
-                // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={fluentIconsPackage.getIcon(tab.icon)?.outerHTML}
-              />
-            </span>
-          )}
-          {tab.name}
-        </button>
-      )}</For>
+      <For each={props.tabs}>
+        {(tab) => (
+          <button
+            class={`playground-tab ${props.activeTab === tab.id ? "active" : ""}`}
+            onClick={() => props.onTabChange(tab.id)}
+          >
+            {fluentIconsPackage.getIcon(tab.icon) && (
+              <span class="tab-icon">
+                <div
+                  // eslint-disable-next-line solid/no-innerhtml
+                  innerHTML={fluentIconsPackage.getIcon(tab.icon)?.outerHTML}
+                />
+              </span>
+            )}
+            {tab.name}
+          </button>
+        )}
+      </For>
     </div>
   );
 };

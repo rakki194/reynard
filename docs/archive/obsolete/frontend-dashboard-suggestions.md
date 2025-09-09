@@ -70,7 +70,7 @@ The service metrics system provides rich data for monitoring service health, rec
 **Thresholds**:
 
 - Green: < 5 minutes
-- Yellow: 5-15 minutes  
+- Yellow: 5-15 minutes
 - Red: > 15 minutes
 
 ### 5. Reconnection Delay Distribution
@@ -140,7 +140,7 @@ The service metrics system provides rich data for monitoring service health, rec
 - Reconnection rate > 10 attempts/minute for any service
 - Time since last OK > 15 minutes for any service
 
-### Medium Priority Alerts  
+### Medium Priority Alerts
 
 - Any service in `degraded` state for > 10 minutes
 - Reconnection rate > 5 attempts/minute for any service

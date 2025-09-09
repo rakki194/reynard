@@ -41,7 +41,7 @@ const DashboardPage: Component = () => {
       isPublic: false,
       createdAt: new Date("2024-01-15"),
       updatedAt: new Date("2024-01-20"),
-      pageCount: 12
+      pageCount: 12,
     },
     {
       id: "2",
@@ -51,7 +51,7 @@ const DashboardPage: Component = () => {
       isPublic: false,
       createdAt: new Date("2024-01-10"),
       updatedAt: new Date("2024-01-19"),
-      pageCount: 8
+      pageCount: 8,
     },
     {
       id: "3",
@@ -61,8 +61,8 @@ const DashboardPage: Component = () => {
       isPublic: true,
       createdAt: new Date("2024-01-05"),
       updatedAt: new Date("2024-01-18"),
-      pageCount: 15
-    }
+      pageCount: 15,
+    },
   ];
 
   // Initialize with mock data
@@ -72,8 +72,8 @@ const DashboardPage: Component = () => {
     setIsCreatingNotebook(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const newNotebook: Notebook = {
         id: Date.now().toString(),
         title: "New Notebook",
@@ -82,10 +82,10 @@ const DashboardPage: Component = () => {
         isPublic: false,
         createdAt: new Date(),
         updatedAt: new Date(),
-        pageCount: 0
+        pageCount: 0,
       };
-      
-      setNotebooks(prev => [newNotebook, ...prev]);
+
+      setNotebooks((prev) => [newNotebook, ...prev]);
       notify("Notebook created successfully!", "success");
     } catch (error) {
       notify("Failed to create notebook", "error");
@@ -139,11 +139,11 @@ const DashboardPage: Component = () => {
                 </For>
               </div>
             </TabPanel>
-            
+
             <TabPanel tabId="recent" activeTab={activeTab()}>
               <RecentNotes />
             </TabPanel>
-            
+
             <TabPanel tabId="favorites" activeTab={activeTab()}>
               <div class="favorites-content">
                 <p>Your favorite notes will appear here</p>

@@ -92,7 +92,9 @@ export class ImageThumbnailGenerator {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : "Failed to generate image thumbnail",
+          error instanceof Error
+            ? error.message
+            : "Failed to generate image thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

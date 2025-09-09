@@ -40,17 +40,27 @@ export interface P2PFileUploadReturn {
   generateAttachmentId: () => string;
 }
 
-export function useP2PFileUpload(options: P2PFileUploadOptions): P2PFileUploadReturn {
+export function useP2PFileUpload(
+  options: P2PFileUploadOptions,
+): P2PFileUploadReturn {
   const {
     maxFileSize = 10 * 1024 * 1024, // 10MB default
-    allowedTypes = ["image/*", "video/*", "audio/*", "application/pdf", "text/*"],
+    allowedTypes = [
+      "image/*",
+      "video/*",
+      "audio/*",
+      "application/pdf",
+      "text/*",
+    ],
     uploadEndpoint = "/api/upload",
     authHeaders = {},
     fetchFn = fetch,
   } = options;
 
   // Upload progress tracking
-  const [uploads, setUploads] = createSignal<Record<string, UploadProgress>>({});
+  const [uploads, setUploads] = createSignal<Record<string, UploadProgress>>(
+    {},
+  );
 
   // Generate unique attachment ID
   const generateAttachmentId = (): string => {
@@ -60,7 +70,9 @@ export function useP2PFileUpload(options: P2PFileUploadOptions): P2PFileUploadRe
   // Validate file
   const validateFile = (file: File): void => {
     if (file.size > maxFileSize) {
-      throw new Error(`File size ${file.size} exceeds maximum allowed size ${maxFileSize}`);
+      throw new Error(
+        `File size ${file.size} exceeds maximum allowed size ${maxFileSize}`,
+      );
     }
 
     const isAllowedType = allowedTypes.some((type) => {
@@ -76,9 +88,12 @@ export function useP2PFileUpload(options: P2PFileUploadOptions): P2PFileUploadRe
   };
 
   // Upload file
-  const uploadFile = async (file: File, roomId: string): Promise<MessageAttachment> => {
+  const uploadFile = async (
+    file: File,
+    roomId: string,
+  ): Promise<MessageAttachment> => {
     const fileId = generateAttachmentId();
-    
+
     try {
       // Validate file
       validateFile(file);
@@ -184,7 +199,12 @@ export function useP2PFileUpload(options: P2PFileUploadOptions): P2PFileUploadRe
     // Reset upload status
     setUploads((prev) => ({
       ...prev,
-      [fileId]: { ...prev[fileId], status: "pending", progress: 0, error: undefined },
+      [fileId]: {
+        ...prev[fileId],
+        status: "pending",
+        progress: 0,
+        error: undefined,
+      },
     }));
 
     // For retry, we would need to store the original file

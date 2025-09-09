@@ -4,19 +4,54 @@ This system provides a unified, model-agnostic way to generate captions and tags
 
 ## Architecture
 
-Captioning is implemented as a plugin system in the `reynard-annotating` package that discovers available generators at runtime and exposes a single service surface. The abstract interface `BaseCaptionGenerator` defines async generation, availability checks, configuration schema, versioning, and a `caption_type`. The `AnnotationManager` coordinates model loading with concurrency locks, bounded retries, post-processing, and optional persistence to the data source.
+Captioning is implemented as a modular plugin system across multiple packages in the Reynard ecosystem. The system provides a unified interface while maintaining clear separation of concerns between core functionality and individual generators.
 
-- Frontend Files (packages/annotating):
-  - `src/AnnotationManager.ts` - Main orchestrator
-  - `src/AnnotationService.ts` - Service layer
-  - `src/BaseCaptionGenerator.ts` - Abstract base class
-  - `src/generators/*` - Generator implementations
-- Backend Files (TBD):
-  - `app/caption_generation/base.py`
-  - `app/caption_generation/__init__.py`
-  - `app/caption_generation/plugin_loader.py`
-  - `app/caption_generation/caption_service.py`
-  - `app/caption_generation/plugins/*`
+### Package Structure
+
+```
+reynard-annotating/
+├── annotating-core/          # Core functionality, types, and services
+│   ├── managers/            # Model lifecycle, health monitoring, circuit breakers
+│   ├── services/            # Annotation services, batch processing, event system
+│   └── types/               # TypeScript definitions and interfaces
+├── annotating-jtp2/          # JTP2 generator package (furry artwork tagging)
+│   ├── core/                # JTP2Generator implementation
+│   ├── config/              # Configuration schemas and validation
+│   ├── plugin/              # Plugin registration and lifecycle
+│   └── simulation/          # Model simulation for development/testing
+├── annotating-joy/           # JoyCaption generator package (multilingual LLM)
+├── annotating-florence2/     # Florence2 generator package (general purpose)
+├── annotating-wdv3/          # WDv3 generator package (Danbooru-style tagging)
+└── annotating/               # Unified interface (this package)
+    ├── core/                # Manager delegation and plugin management
+    ├── factory/             # Factory functions for creating managers
+    ├── generators/          # Generator accessors and convenience methods
+    └── config/              # Production configuration
+```
+
+### Key Components
+
+- **UnifiedAnnotationManager** - Main orchestrator that coordinates all generators
+- **BaseCaptionGenerator** - Abstract interface defining generation, availability checks, configuration schema, versioning, and caption types
+- **Plugin System** - Dynamic registration and discovery of generator plugins
+- **Health Monitoring** - Real-time health checks and performance metrics
+- **Circuit Breakers** - Fault tolerance and error handling
+- **Usage Tracking** - Model usage statistics and performance monitoring
+
+### Frontend Files (packages/annotating\*)
+
+- `packages/annotating/src/UnifiedAnnotationManager.ts` - Main orchestrator
+- `packages/annotating-core/src/services/AnnotationService.ts` - Service layer
+- `packages/annotating-core/src/services/CaptionGenerator.ts` - Abstract base class
+- `packages/annotating-*/src/*` - Individual generator implementations
+
+### Backend Files (TBD)
+
+- `app/caption_generation/base.py`
+- `app/caption_generation/__init__.py`
+- `app/caption_generation/plugin_loader.py`
+- `app/caption_generation/caption_service.py`
+- `app/caption_generation/plugins/*`
 
 ## Available Generators and Types
 
@@ -84,7 +119,7 @@ Settings schema (representative):
   "enabled": true,
   "rules": {
     "replace_underscores": true,
-    "case_conversion": "none",          
+    "case_conversion": "none",
     "trim_whitespace": true,
     "remove_duplicate_spaces": true,
     "normalize_punctuation_spacing": true,
@@ -100,7 +135,7 @@ Settings schema (representative):
   ],
   "overrides": {
     "jtp2": { "replace_underscores": true },
-    "joy":  { "replace_underscores": false }
+    "joy": { "replace_underscores": false }
   }
 }
 ```
@@ -155,7 +190,10 @@ Batch request body example:
 
 ```json
 {
-  "items": [{ "path": "", "name": "example.jpg" }, { "path": "", "name": "another.png" }],
+  "items": [
+    { "path": "", "name": "example.jpg" },
+    { "path": "", "name": "another.png" }
+  ],
   "generator": "joy",
   "config": { "force": false, "post_process": true }
 }

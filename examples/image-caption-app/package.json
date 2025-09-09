@@ -1,7 +1,7 @@
 {
   "name": "reynard-image-caption-app",
-  "version": "0.1.0",
-  "description": "Image Caption App - Comprehensive Reynard framework example showcasing AI caption generation",
+  "version": "0.2.0",
+  "description": "Enhanced Image Caption App - Comprehensive Reynard framework example showcasing the new modular annotation system with production features",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,13 +10,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-components": "workspace:*",
+    "reynard-annotating": "workspace:*",
+    "reynard-caption": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

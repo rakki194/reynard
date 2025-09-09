@@ -1,6 +1,6 @@
 /**
  * useBoxMove Composable Tests
- * 
+ *
  * Tests for the useBoxMove composable covering:
  * - Move functionality and constraints
  * - Event handling and callbacks
@@ -8,29 +8,29 @@
  * - Edge cases and error handling
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useBoxMove } from './useBoxMove';
-import type { BoundingBox, ImageInfo } from '../types';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { useBoxMove } from "./useBoxMove";
+import type { BoundingBox, ImageInfo } from "../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {
   width: 1920,
   height: 1080,
-  src: '/test-image.jpg',
-  alt: 'Test image'
+  src: "/test-image.jpg",
+  alt: "Test image",
 };
 
 const mockBoundingBox: BoundingBox = {
-  id: 'test-box-1',
-  label: 'person',
+  id: "test-box-1",
+  label: "person",
   x: 100,
   y: 100,
   width: 200,
   height: 150,
-  color: '#007acc'
+  color: "#007acc",
 };
 
-describe('useBoxMove', () => {
+describe("useBoxMove", () => {
   let mockCallbacks: {
     onBoxMoved: ReturnType<typeof vi.fn>;
     onBoxMoveStart: ReturnType<typeof vi.fn>;
@@ -41,62 +41,67 @@ describe('useBoxMove', () => {
     mockCallbacks = {
       onBoxMoved: vi.fn(),
       onBoxMoveStart: vi.fn(),
-      onBoxMoveEnd: vi.fn()
+      onBoxMoveEnd: vi.fn(),
     };
   });
 
-  describe('Initialization', () => {
-    it('should initialize with default configuration', () => {
-      const moveEngine = useBoxMove({
+  describe("Initialization", () => {
+    it("should initialize with default configuration", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       expect(moveEngine).toBeDefined();
-      expect(typeof moveEngine.startBoxMove).toBe('function');
-      expect(typeof moveEngine.updateBoxMove).toBe('function');
-      expect(typeof moveEngine.endBoxMove).toBe('function');
-      expect(typeof moveEngine.isMoving).toBe('function');
+      expect(typeof moveEngine.startBoxMove).toBe("function");
+      expect(typeof moveEngine.updateBoxMove).toBe("function");
+      expect(typeof moveEngine.endBoxMove).toBe("function");
+      expect(typeof moveEngine.isMoving).toBe("function");
     });
 
-    it('should initialize with custom configuration', () => {
+    it("should initialize with custom configuration", () => {
       const customConfig = {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableSnapping: true,
-        enableAlignment: true,
-        enableConstraints: true,
-        onBoxMoved: mockCallbacks.onBoxMoved,
-        onBoxMoveStart: mockCallbacks.onBoxMoveStart,
-        onBoxMoveEnd: mockCallbacks.onBoxMoveEnd
       };
 
-      const moveEngine = useBoxMove(customConfig);
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, customConfig);
 
       expect(moveEngine).toBeDefined();
     });
   });
 
-  describe('Move Operations', () => {
-    it('should start move operation', () => {
-      const moveEngine = useBoxMove({
+  describe("Move Operations", () => {
+    it("should start move operation", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoved: mockCallbacks.onBoxMoved,
-        onBoxMoveStart: mockCallbacks.onBoxMoveStart
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
 
-      expect(mockCallbacks.onBoxMoveStart).toHaveBeenCalledWith(mockBoundingBox.id);
+      expect(mockCallbacks.onBoxMoveStart).toHaveBeenCalledWith(
+        mockBoundingBox.id,
+      );
       expect(moveEngine.isMoving()).toBe(true);
     });
 
-    it('should update move operation', () => {
-      const moveEngine = useBoxMove({
+    it("should update move operation", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -108,33 +113,38 @@ describe('useBoxMove', () => {
           x: expect.any(Number),
           y: expect.any(Number),
           width: mockBoundingBox.width,
-          height: mockBoundingBox.height
-        })
+          height: mockBoundingBox.height,
+        }),
       );
     });
 
-    it('should end move operation', () => {
-      const moveEngine = useBoxMove({
+    it("should end move operation", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoveEnd: mockCallbacks.onBoxMoveEnd
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
       moveEngine.endBoxMove();
 
-      expect(mockCallbacks.onBoxMoveEnd).toHaveBeenCalledWith(mockBoundingBox.id);
+      expect(mockCallbacks.onBoxMoveEnd).toHaveBeenCalledWith(
+        mockBoundingBox.id,
+      );
       expect(moveEngine.isMoving()).toBe(false);
     });
   });
 
-  describe('Constraints and Validation', () => {
-    it('should enforce image bounds constraints', () => {
-      const moveEngine = useBoxMove({
+  describe("Constraints and Validation", () => {
+    it("should enforce image bounds constraints", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableConstraints: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       // Try to move box beyond image bounds
@@ -143,20 +153,25 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       // Box should be constrained within image bounds
       expect(movedBox.x).toBeGreaterThanOrEqual(0);
       expect(movedBox.y).toBeGreaterThanOrEqual(0);
-      expect(movedBox.x + movedBox.width).toBeLessThanOrEqual(mockImageInfo.width);
-      expect(movedBox.y + movedBox.height).toBeLessThanOrEqual(mockImageInfo.height);
+      expect(movedBox.x + movedBox.width).toBeLessThanOrEqual(
+        mockImageInfo.width,
+      );
+      expect(movedBox.y + movedBox.height).toBeLessThanOrEqual(
+        mockImageInfo.height,
+      );
     });
 
-    it('should allow movement beyond bounds when constraints are disabled', () => {
-      const moveEngine = useBoxMove({
+    it("should allow movement beyond bounds when constraints are disabled", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableConstraints: false,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       // Try to move box beyond image bounds
@@ -165,17 +180,19 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       // Box should be allowed to move beyond bounds
       expect(movedBox.x).toBeGreaterThan(mockImageInfo.width);
       expect(movedBox.y).toBeGreaterThan(mockImageInfo.height);
     });
 
-    it('should maintain box dimensions during move', () => {
-      const moveEngine = useBoxMove({
+    it("should maintain box dimensions during move", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 200, 200);
@@ -183,19 +200,20 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       expect(movedBox.width).toBe(mockBoundingBox.width);
       expect(movedBox.height).toBe(mockBoundingBox.height);
     });
   });
 
-  describe('Snapping and Alignment', () => {
-    it('should enable snapping when configured', () => {
-      const moveEngine = useBoxMove({
+  describe("Snapping and Alignment", () => {
+    it("should enable snapping when configured", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableSnapping: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       // Move to a position that should snap
@@ -204,18 +222,19 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       // Should snap to grid or alignment points
       expect(movedBox.x).toBe(100);
       expect(movedBox.y).toBe(100);
     });
 
-    it('should disable snapping when configured', () => {
-      const moveEngine = useBoxMove({
+    it("should disable snapping when configured", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableSnapping: false,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       // Move to a position that would normally snap
@@ -224,18 +243,19 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       // Should not snap
       expect(movedBox.x).toBe(105);
       expect(movedBox.y).toBe(105);
     });
 
-    it('should enable alignment when configured', () => {
-      const moveEngine = useBoxMove({
+    it("should enable alignment when configured", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        enableAlignment: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       // Move to align with image center
@@ -244,19 +264,21 @@ describe('useBoxMove', () => {
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
       const movedBox = callArgs[1];
-      
+
       // Should align with image center
       expect(movedBox.x).toBe(860); // 960 - 100 (half width)
       expect(movedBox.y).toBe(465); // 540 - 75 (half height)
     });
   });
 
-  describe('Configuration Options', () => {
-    it('should disable move when isEnabled is false', () => {
-      const moveEngine = useBoxMove({
+  describe("Configuration Options", () => {
+    it("should disable move when isEnabled is false", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: false,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 200, 200);
@@ -266,10 +288,13 @@ describe('useBoxMove', () => {
       expect(moveEngine.isMoving()).toBe(false);
     });
 
-    it('should handle missing callbacks gracefully', () => {
-      const moveEngine = useBoxMove({
+    it("should handle missing callbacks gracefully", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       expect(() => {
@@ -280,11 +305,14 @@ describe('useBoxMove', () => {
     });
   });
 
-  describe('Error Handling', () => {
-    it('should handle invalid box gracefully', () => {
-      const moveEngine = useBoxMove({
+  describe("Error Handling", () => {
+    it("should handle invalid box gracefully", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       const invalidBox = {
@@ -292,7 +320,7 @@ describe('useBoxMove', () => {
         x: -100,
         y: -100,
         width: -50,
-        height: -50
+        height: -50,
       };
 
       expect(() => {
@@ -300,16 +328,19 @@ describe('useBoxMove', () => {
       }).not.toThrow();
     });
 
-    it('should handle invalid image info gracefully', () => {
+    it("should handle invalid image info gracefully", () => {
       const invalidImageInfo = {
         ...mockImageInfo,
         width: 0,
-        height: 0
+        height: 0,
       };
 
-      const moveEngine = useBoxMove({
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: invalidImageInfo,
-        isEnabled: true
       });
 
       expect(() => {
@@ -317,10 +348,13 @@ describe('useBoxMove', () => {
       }).not.toThrow();
     });
 
-    it('should handle update move without starting move', () => {
-      const moveEngine = useBoxMove({
+    it("should handle update move without starting move", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       expect(() => {
@@ -328,10 +362,13 @@ describe('useBoxMove', () => {
       }).not.toThrow();
     });
 
-    it('should handle end move without starting move', () => {
-      const moveEngine = useBoxMove({
+    it("should handle end move without starting move", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       expect(() => {
@@ -340,11 +377,14 @@ describe('useBoxMove', () => {
     });
   });
 
-  describe('State Management', () => {
-    it('should track move state correctly', () => {
-      const moveEngine = useBoxMove({
+  describe("State Management", () => {
+    it("should track move state correctly", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       expect(moveEngine.isMoving()).toBe(false);
@@ -356,10 +396,13 @@ describe('useBoxMove', () => {
       expect(moveEngine.isMoving()).toBe(false);
     });
 
-    it('should track current box during move', () => {
-      const moveEngine = useBoxMove({
+    it("should track current box during move", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -369,14 +412,17 @@ describe('useBoxMove', () => {
       expect(moveEngine.movingBoxId()).toBe(null);
     });
 
-    it('should track move state details', () => {
-      const moveEngine = useBoxMove({
+    it("should track move state details", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
-      
+
       const moveState = moveEngine.moveState();
       expect(moveState).toBeDefined();
       expect(moveState?.boxId).toBe(mockBoundingBox.id);
@@ -388,12 +434,14 @@ describe('useBoxMove', () => {
     });
   });
 
-  describe('Performance', () => {
-    it('should handle rapid move updates efficiently', () => {
-      const moveEngine = useBoxMove({
+  describe("Performance", () => {
+    it("should handle rapid move updates efficiently", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -409,22 +457,24 @@ describe('useBoxMove', () => {
       expect(mockCallbacks.onBoxMoved).toHaveBeenCalled();
     });
 
-    it('should handle multiple boxes efficiently', () => {
-      const moveEngine = useBoxMove({
+    it("should handle multiple boxes efficiently", () => {
+      const mockBoundingBoxes = {
+        updateBox: vi.fn().mockReturnValue(true),
+      };
+
+      const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
-        isEnabled: true,
-        onBoxMoved: mockCallbacks.onBoxMoved
       });
 
       const boxes = Array.from({ length: 10 }, (_, i) => ({
         ...mockBoundingBox,
         id: `box-${i}`,
         x: i * 100,
-        y: i * 100
+        y: i * 100,
       }));
 
       // Move each box
-      boxes.forEach(box => {
+      boxes.forEach((box) => {
         moveEngine.startBoxMove(box.id, box, box.x + 50, box.y + 50);
         moveEngine.endBoxMove();
       });

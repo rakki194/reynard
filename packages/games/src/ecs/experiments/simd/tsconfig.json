@@ -14,14 +14,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": [
-    "*.ts",
-    "../../*.ts",
-    "../../types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "rust-src"
-  ]
+  "include": ["*.ts", "../../*.ts", "../../types/**/*.ts"],
+  "exclude": ["node_modules", "dist", "rust-src"]
 }

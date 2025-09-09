@@ -37,10 +37,7 @@ export const ShowcaseSections: Component<ShowcaseSectionsProps> = (props) => {
         animationFrame={animationFrame}
       />
 
-      <AdvancedComponents
-        state={state}
-        computedValues={computedValues}
-      />
+      <AdvancedComponents state={state} computedValues={computedValues} />
     </>
   );
 };

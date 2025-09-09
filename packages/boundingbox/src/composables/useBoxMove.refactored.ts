@@ -1,15 +1,15 @@
 /**
  * useBoxMove composable - Refactored
- * 
+ *
  * Modular box movement with separated concerns:
  * - Core state management in useBoxMove.core
  * - Movement operations in useBoxMove.operations
  * - Main composable orchestrates the modules
  */
 
-import type { BoundingBox, ImageInfo } from '../types';
-import { createMoveState, type MoveConstraints } from './useBoxMove.core';
-import { createMoveOperations } from './useBoxMove.operations';
+import type { BoundingBox, ImageInfo } from "../types";
+import { createMoveState, type MoveConstraints } from "./useBoxMove.core";
+import { createMoveOperations } from "./useBoxMove.operations";
 
 export interface UseBoxMoveOptions {
   constraints?: Partial<MoveConstraints>;
@@ -19,7 +19,12 @@ export interface UseBoxMoveOptions {
 export interface UseBoxMoveReturn {
   isMoving: () => boolean;
   movingBoxId: () => string | null;
-  startMove: (boxId: string, box: BoundingBox, startX: number, startY: number) => void;
+  startMove: (
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
+  ) => void;
   updateMove: (currentX: number, currentY: number) => BoundingBox | null;
   endMove: () => BoundingBox | null;
   canMove: (box: BoundingBox, deltaX: number, deltaY: number) => boolean;
@@ -27,8 +32,10 @@ export interface UseBoxMoveReturn {
 }
 
 export function useBoxMove(
-  boundingBoxes: { updateBox: (id: string, updates: Partial<BoundingBox>) => boolean },
-  options: UseBoxMoveOptions = {}
+  boundingBoxes: {
+    updateBox: (id: string, updates: Partial<BoundingBox>) => boolean;
+  },
+  options: UseBoxMoveOptions = {},
 ): UseBoxMoveReturn {
   const { constraints = {}, imageInfo } = options;
 
@@ -51,11 +58,19 @@ export function useBoxMove(
   const state = createMoveState();
   const operations = createMoveOperations(state.state, finalConstraints);
 
-  const startMove = (boxId: string, box: BoundingBox, startX: number, startY: number) => {
+  const startMove = (
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
+  ) => {
     operations.startMove(boxId, box, startX, startY);
   };
 
-  const updateMove = (currentX: number, currentY: number): BoundingBox | null => {
+  const updateMove = (
+    currentX: number,
+    currentY: number,
+  ): BoundingBox | null => {
     return operations.updateMove(currentX, currentY, imageInfo);
   };
 
@@ -63,7 +78,11 @@ export function useBoxMove(
     return operations.endMove();
   };
 
-  const canMove = (box: BoundingBox, deltaX: number, deltaY: number): boolean => {
+  const canMove = (
+    box: BoundingBox,
+    deltaX: number,
+    deltaY: number,
+  ): boolean => {
     return operations.canMove(box, deltaX, deltaY, imageInfo);
   };
 

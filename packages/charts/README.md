@@ -1,6 +1,6 @@
 # Reynard Charts
 
-*Professional data visualization components for SolidJS applications with OKLCH color integration and real-time capabilities.*
+_Professional data visualization components for SolidJS applications with OKLCH color integration and real-time capabilities._
 
 ## Overview
 
@@ -21,11 +21,13 @@ import { Chart } from "reynard-charts";
 
 function Dashboard() {
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [{
-      label: 'Sales',
-      data: [12, 19, 3, 5, 2],
-    }]
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    datasets: [
+      {
+        label: "Sales",
+        data: [12, 19, 3, 5, 2],
+      },
+    ],
   };
 
   return (
@@ -54,11 +56,16 @@ function LiveDashboard() {
   // Simulate real-time data
   onMount(() => {
     const interval = setInterval(() => {
-      setData(prev => [...prev, {
-        timestamp: Date.now(),
-        value: Math.random() * 100,
-        label: new Date().toLocaleTimeString()
-      }].slice(-50)); // Keep last 50 points
+      setData((prev) =>
+        [
+          ...prev,
+          {
+            timestamp: Date.now(),
+            value: Math.random() * 100,
+            label: new Date().toLocaleTimeString(),
+          },
+        ].slice(-50),
+      ); // Keep last 50 points
     }, 1000);
 
     onCleanup(() => clearInterval(interval));
@@ -93,8 +100,8 @@ function AnalyticsDashboard() {
       q3: 2.8,
       max: 3.1,
       mean: 2.33,
-      std: 0.58
-    }
+      std: 0.58,
+    },
   };
 
   return (
@@ -148,7 +155,7 @@ The unified `Chart` component provides a consistent interface for all chart type
 
 ```tsx
 interface ChartProps {
-  type: 'line' | 'bar' | 'pie' | 'doughnut';
+  type: "line" | "bar" | "pie" | "doughnut";
   labels: string[];
   datasets: Dataset[];
   useOKLCH?: boolean;
@@ -191,12 +198,12 @@ Advanced statistical visualization component.
 
 ```tsx
 interface StatisticalChartProps {
-  type: 'histogram' | 'boxplot' | 'quality-bar' | 'quality-gauge';
+  type: "histogram" | "boxplot" | "quality-bar" | "quality-gauge";
   data: StatisticalData | QualityData;
   numBins?: number;
   showStatistics?: boolean;
   showAssessment?: boolean;
-  colorScheme?: 'default' | 'gradient' | 'status';
+  colorScheme?: "default" | "gradient" | "status";
   // ... other props
 }
 ```
@@ -216,12 +223,12 @@ function MyComponent() {
       lazyLoading: true,
       memoryLimit: 512,
       targetFPS: 60,
-    }
+    },
   });
 
   // Generate colors
   const colors = visualization.generateColors(5);
-  const tagColors = visualization.generateTagColors(['tag1', 'tag2']);
+  const tagColors = visualization.generateTagColors(["tag1", "tag2"]);
   const palette = visualization.generatePalette(3);
 
   // Monitor performance
@@ -248,16 +255,18 @@ function CustomChart() {
   });
 
   const customColors = visualization.generateColors(3, 0.8);
-  
+
   return (
     <Chart
       type="bar"
-      labels={['A', 'B', 'C']}
-      datasets={[{
-        label: 'Custom Colors',
-        data: [10, 20, 30],
-        backgroundColor: customColors,
-      }]}
+      labels={["A", "B", "C"]}
+      datasets={[
+        {
+          label: "Custom Colors",
+          data: [10, 20, 30],
+          backgroundColor: customColors,
+        },
+      ]}
     />
   );
 }
@@ -271,10 +280,10 @@ function StreamingChart() {
   const [data, setData] = createSignal<RealTimeDataPoint[]>([]);
 
   onMount(() => {
-    const websocket = new WebSocket('ws://localhost:8080/data');
+    const websocket = new WebSocket("ws://localhost:8080/data");
     websocket.onmessage = (event) => {
       const point = JSON.parse(event.data);
-      setData(prev => [...prev, point].slice(-100));
+      setData((prev) => [...prev, point].slice(-100));
     };
     setWs(websocket);
   });
@@ -306,10 +315,10 @@ function MonitoredChart() {
   createEffect(() => {
     const stats = visualization.stats();
     if (stats.memoryUsage > 400) {
-      console.warn('High memory usage detected');
+      console.warn("High memory usage detected");
     }
     if (stats.fps < 30) {
-      console.warn('Low FPS detected');
+      console.warn("Low FPS detected");
     }
   });
 
@@ -381,13 +390,13 @@ const engine = VisualizationEngine.getInstance({
   performance: {
     lazyLoading: true,
     memoryLimit: 256,
-  }
+  },
 });
 
 // Monitor performance
 setInterval(() => {
   const stats = engine.getStats();
-  console.log('Performance Stats:', stats);
+  console.log("Performance Stats:", stats);
 }, 5000);
 ```
 
@@ -405,7 +414,7 @@ import { LineChart } from "reynard-charts";
 import { Chart } from "reynard-charts";
 
 // Both work the same way
-<Chart type="line" labels={labels} datasets={datasets} />
+<Chart type="line" labels={labels} datasets={datasets} />;
 ```
 
 ### Adding OKLCH Support
@@ -425,7 +434,7 @@ To enable OKLCH colors in existing charts:
 
 ## Conclusion
 
-🦊> *Reynard Charts provides a professional, performant, and accessible data visualization solution that combines the best of Chart.js with advanced features from yipyap's visualization system. The unified OKLCH color management ensures consistent, accessible colors across all visualizations, while the real-time capabilities and performance monitoring make it suitable for production applications.*
+🦊> _Reynard Charts provides a professional, performant, and accessible data visualization solution that combines the best of Chart.js with advanced features from yipyap's visualization system. The unified OKLCH color management ensures consistent, accessible colors across all visualizations, while the real-time capabilities and performance monitoring make it suitable for production applications._
 
 Reynard Charts delivers a comprehensive visualization solution that scales from simple dashboards to complex real-time analytics. The modular architecture, OKLCH color integration, and performance optimization make it the ideal choice for modern SolidJS applications.
 
@@ -437,4 +446,4 @@ Key benefits:
 - **Flexibility**: Extensible architecture supports custom visualizations
 - **Integration**: Seamless integration with Reynard's theming system
 
-*Build exceptional data visualizations that outfox complexity and deliver insights with style.* 🦊
+_Build exceptional data visualizations that outfox complexity and deliver insights with style._ 🦊

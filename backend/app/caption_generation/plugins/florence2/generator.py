@@ -21,22 +21,14 @@ from typing import Any, Dict, List, Optional
 
 import torch
 from PIL import Image
+from transformers import AutoProcessor, AutoModelForCausalLM
 
 from ...base import CaptionGenerator, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
-# Add the Yipyap Florence2 plugin to the path
-yipyap_plugin_path = Path(__file__).parent.parent.parent.parent.parent / "third_party" / "yipyap" / "app" / "caption_generation" / "plugins" / "florence2"
-if yipyap_plugin_path.exists():
-    sys.path.insert(0, str(yipyap_plugin_path))
-
-try:
-    from generator import Florence2Generator as YipyapFlorence2Generator
-    FLORENCE2_AVAILABLE = True
-except ImportError:
-    logger.warning("Yipyap Florence2 generator not available, using mock implementation")
-    FLORENCE2_AVAILABLE = False
+# Self-contained Florence2 implementation - no external dependencies
+FLORENCE2_AVAILABLE = True
 
 
 class Florence2Generator(CaptionGenerator):
@@ -51,9 +43,10 @@ class Florence2Generator(CaptionGenerator):
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self._config = config or {}
         self._model = None
+        self._processor = None
         self._device = None
         self._is_loaded = False
-        self._model_path = self._config.get("model_path")
+        self._model_name = self._config.get("model_name", "microsoft/Florence-2-base")
 
     @property
     def name(self) -> str:
@@ -111,9 +104,10 @@ class Florence2Generator(CaptionGenerator):
                     "default": "caption",
                     "description": "Type of captioning task"
                 },
-                "model_path": {
+                "model_name": {
                     "type": "string",
-                    "description": "Path to the Florence2 model file"
+                    "default": "microsoft/Florence-2-base",
+                    "description": "HuggingFace model name for Florence2"
                 }
             }
         }
@@ -128,13 +122,10 @@ class Florence2Generator(CaptionGenerator):
         if not FLORENCE2_AVAILABLE:
             return False
 
-        # Check if required files exist
-        if self._model_path and not Path(self._model_path).exists():
-            return False
-
-        # Check if PyTorch is available
+        # Check if required dependencies are available
         try:
             import torch
+            import transformers
             return True
         except ImportError:
             return False
@@ -160,19 +151,9 @@ class Florence2Generator(CaptionGenerator):
                 self._device = torch.device("cuda")
                 logger.info("Florence2 using GPU")
 
-            # Initialize the Yipyap Florence2 generator
-            yipyap_config = {
-                "max_length": self._config.get("max_length", 256),
-                "temperature": self._config.get("temperature", 0.7),
-                "task": self._config.get("task", "caption"),
-                "model_path": self._model_path
-            }
-
-            self._model = YipyapFlorence2Generator(yipyap_config)
-            
-            # Load the model
+            # Load model and processor in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._model.load
+                None, self._load_model_and_processor
             )
 
             self._is_loaded = True
@@ -189,13 +170,9 @@ class Florence2Generator(CaptionGenerator):
             return
 
         try:
-            if self._model:
-                # Unload the model
-                await asyncio.get_event_loop().run_in_executor(
-                    None, self._model.unload
-                )
-                self._model = None
-
+            # Clear model from memory
+            self._model = None
+            self._processor = None
             self._is_loaded = False
             logger.info("Florence2 model unloaded successfully")
 
@@ -212,9 +189,9 @@ class Florence2Generator(CaptionGenerator):
             # Merge kwargs with config
             config = {**self._config, **kwargs}
 
-            # Generate caption using the Yipyap generator
+            # Generate caption using self-contained implementation
             caption = await asyncio.get_event_loop().run_in_executor(
-                None, self._model.generate, str(image_path)
+                None, self._generate_caption, str(image_path), config
             )
 
             return caption
@@ -228,7 +205,69 @@ class Florence2Generator(CaptionGenerator):
         info = super().get_info()
         info.update({
             "device": str(self._device) if self._device else None,
-            "model_path": self._model_path,
-            "yipyap_available": FLORENCE2_AVAILABLE
+            "model_name": self._model_name,
+            "self_contained": True
         })
         return info
+
+    def _load_model_and_processor(self) -> None:
+        """Load Florence2 model and processor from HuggingFace."""
+        # Load processor
+        self._processor = AutoProcessor.from_pretrained(self._model_name)
+        
+        # Load model
+        self._model = AutoModelForCausalLM.from_pretrained(
+            self._model_name,
+            torch_dtype=torch.float16 if self._device.type == "cuda" else torch.float32,
+            device_map="auto" if self._device.type == "cuda" else None
+        )
+        
+        # Move to device if not using device_map
+        if self._device.type == "cpu":
+            self._model.to(self._device)
+
+    def _generate_caption(self, image_path: str, config: Dict[str, Any]) -> str:
+        """Generate caption for an image using Florence2."""
+        if not self._model or not self._processor:
+            raise RuntimeError("Florence2 model components not loaded")
+
+        # Load and process image
+        image = Image.open(image_path)
+        
+        # Prepare task prompt
+        task = config.get("task", "caption")
+        task_prompts = {
+            "caption": "<DETAILED_CAPTION>",
+            "dense_caption": "<DENSE_REGION_CAPTION>",
+            "region_caption": "<REGION_CAPTION>"
+        }
+        
+        prompt = task_prompts.get(task, "<DETAILED_CAPTION>")
+        
+        # Process inputs
+        inputs = self._processor(text=prompt, images=image, return_tensors="pt")
+        
+        # Move inputs to device
+        inputs = {k: v.to(self._device) for k, v in inputs.items()}
+        
+        # Generate caption
+        max_length = config.get("max_length", 256)
+        temperature = config.get("temperature", 0.7)
+        
+        with torch.no_grad():
+            generated_ids = self._model.generate(
+                inputs["input_ids"],
+                pixel_values=inputs["pixel_values"],
+                max_length=max_length,
+                temperature=temperature,
+                do_sample=True,
+                pad_token_id=self._processor.tokenizer.eos_token_id
+            )
+        
+        # Decode the generated text
+        generated_text = self._processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        
+        # Extract caption from the generated text
+        caption = generated_text.replace(prompt, "").strip()
+        
+        return caption if caption else "Unable to generate caption for this image."

@@ -16,18 +16,15 @@ export const TagColorsDemo: Component = () => {
   return (
     <div class="tag-colors-demo">
       <h3>Dynamic Tag Colors</h3>
-      
+
       <TagInputSection
         tagInput={tagInput}
         setTagInput={setTagInput}
         intensity={intensity}
         setIntensity={setIntensity}
       />
-      
-      <TagDisplay
-        tagName={tagInput}
-        intensity={intensity}
-      />
+
+      <TagDisplay tagName={tagInput} intensity={intensity} />
 
       <SampleTags />
     </div>

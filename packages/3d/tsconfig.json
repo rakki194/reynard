@@ -31,10 +31,7 @@
     "types": ["vite/client", "vitest/globals"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "include": [
-    "src/**/*",
-    "src/types/three.d.ts"
-  ],
+  "include": ["src/**/*", "src/types/three.d.ts"],
   "exclude": [
     "node_modules",
     "dist",

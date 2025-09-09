@@ -4,11 +4,11 @@
  */
 
 import { createMemo, type Accessor } from "solid-js";
-import { 
-  formatOKLCH, 
+import {
+  formatOKLCH,
   adjustLightness,
   adjustSaturation,
-  type OKLCHColor 
+  type OKLCHColor,
 } from "reynard-color-media";
 
 export interface ColorVariationsState {
@@ -19,11 +19,13 @@ export interface ColorVariationsState {
 
 export const createColorVariations = (state: ColorVariationsState) => {
   // Generate current OKLCH color based on controls
-  const currentOKLCH = createMemo((): OKLCHColor => ({
-    l: state.selectedLightness(),
-    c: state.selectedChroma(),
-    h: state.selectedHue()
-  }));
+  const currentOKLCH = createMemo(
+    (): OKLCHColor => ({
+      l: state.selectedLightness(),
+      c: state.selectedChroma(),
+      h: state.selectedHue(),
+    }),
+  );
 
   // Generate color variations
   const colorVariations = createMemo(() => {
@@ -42,6 +44,6 @@ export const createColorVariations = (state: ColorVariationsState) => {
 
   return {
     currentOKLCH,
-    colorVariations
+    colorVariations,
   };
 };

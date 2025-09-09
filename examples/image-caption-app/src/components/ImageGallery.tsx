@@ -15,6 +15,7 @@ interface ImageGalleryProps {
   onGenerateCaption: (image: ImageItem) => void;
   onDeleteImage: (imageId: string) => void;
   selectedImage: ImageItem | null;
+  isGenerating?: boolean;
 }
 
 export const ImageGallery: Component<ImageGalleryProps> = (props) => {
@@ -23,34 +24,34 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
   const handleFileInput = (event: Event) => {
     const input = event.target as HTMLInputElement;
     const files = Array.from(input.files || []);
-    
+
     if (files.length === 0) return;
-    
+
     // Filter for image files only
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    
+    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+
     if (imageFiles.length !== files.length) {
       notify("Only image files are supported", "warning");
     }
-    
+
     if (imageFiles.length > 0) {
       props.onFileUpload(imageFiles);
     }
-    
+
     // Reset input
-    input.value = '';
+    input.value = "";
   };
 
   const handleDragOver = (event: DragEvent) => {
     event.preventDefault();
-    event.dataTransfer!.dropEffect = 'copy';
+    event.dataTransfer!.dropEffect = "copy";
   };
 
   const handleDrop = (event: DragEvent) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer?.files || []);
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
-    
+    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+
     if (imageFiles.length > 0) {
       props.onFileUpload(imageFiles);
     } else {
@@ -62,11 +63,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
     <div class="image-gallery">
       {/* File Upload Area */}
       <Card class="upload-area" padding="lg">
-        <div 
-          class="drop-zone"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
+        <div class="drop-zone" onDragOver={handleDragOver} onDrop={handleDrop}>
           <div class="upload-content">
             <div class="upload-icon">📁</div>
             <h3>Upload Images</h3>
@@ -80,10 +77,15 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
               aria-label="Upload image files"
               title="Click to select image files"
             />
-            <Button variant="primary" onClick={() => {
-              const input = document.querySelector('.file-input') as HTMLInputElement;
-              input?.click();
-            }}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                const input = document.querySelector(
+                  ".file-input",
+                ) as HTMLInputElement;
+                input?.click();
+              }}
+            >
               Choose Files
             </Button>
           </div>
@@ -95,26 +97,30 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
         <div class="images-grid">
           <For each={props.images}>
             {(image) => (
-              <Card 
-                class={`image-card ${props.selectedImage?.id === image.id ? 'selected' : ''}`}
+              <Card
+                class={`image-card ${props.selectedImage?.id === image.id ? "selected" : ""}`}
                 padding="md"
               >
                 <div class="image-container">
-                  <img 
-                    src={image.url} 
+                  <img
+                    src={image.url}
                     alt={image.name}
                     onClick={() => props.onImageSelect(image)}
                   />
-                  
+
                   <div class="image-overlay">
                     <div class="image-actions">
                       <Button
                         size="sm"
                         variant="primary"
                         onClick={() => props.onGenerateCaption(image)}
-                        disabled={!image.caption}
+                        disabled={props.isGenerating}
                       >
-                        {image.caption ? '🔄 Regenerate' : '🤖 Generate Caption'}
+                        {props.isGenerating
+                          ? "⏳ Generating..."
+                          : image.caption
+                            ? "🔄 Regenerate"
+                            : "🤖 Generate Caption"}
                       </Button>
                       <Button
                         size="sm"
@@ -126,34 +132,33 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="image-info">
                   <h4 class="image-name">{image.name}</h4>
-                  
+
                   <Show when={image.caption}>
                     <div class="caption-preview">
                       <strong>Caption:</strong>
                       <p>{image.caption}</p>
                     </div>
                   </Show>
-                  
+
                   <Show when={image.tags && image.tags.length > 0}>
                     <div class="tags-preview">
                       <strong>Tags:</strong>
                       <div class="tag-list">
                         <For each={image.tags}>
-                          {(tag) => (
-                            <span class="tag">{tag}</span>
-                          )}
+                          {(tag) => <span class="tag">{tag}</span>}
                         </For>
                       </div>
                     </div>
                   </Show>
-                  
+
                   <Show when={image.generatedAt}>
                     <div class="generation-info">
                       <small>
-                        Generated with {image.model} at {image.generatedAt?.toLocaleTimeString()}
+                        Generated with {image.model} at{" "}
+                        {image.generatedAt?.toLocaleTimeString()}
                       </small>
                     </div>
                   </Show>

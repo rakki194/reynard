@@ -1,4 +1,10 @@
-import { Component, createSignal, createEffect, createMemo, Show } from "solid-js";
+import {
+  Component,
+  createSignal,
+  createEffect,
+  createMemo,
+  Show,
+} from "solid-js";
 import { getIcon } from "reynard-fluent-icons";
 import "./Notification.css";
 
@@ -13,7 +19,7 @@ export interface NotificationProps {
   onClose?: () => void;
 }
 
-export const Notification: Component<NotificationProps> = props => {
+export const Notification: Component<NotificationProps> = (props) => {
   const [isVisible, setIsVisible] = createSignal(true);
   const [isExiting, setIsExiting] = createSignal(false);
   const [isHovered, setIsHovered] = createSignal(false);
@@ -23,29 +29,29 @@ export const Notification: Component<NotificationProps> = props => {
   const getIconContent = createMemo(() => {
     if (props.icon) {
       switch (props.icon) {
-        case 'spinner':
+        case "spinner":
           return getIcon("spinner");
-        case 'success':
+        case "success":
           return getIcon("checkmark");
-        case 'error':
+        case "error":
           return getIcon("error");
-        case 'warning':
+        case "warning":
           return getIcon("warning");
-        case 'info':
+        case "info":
           return getIcon("info");
         default:
           return getIcon("info");
       }
     }
-    
+
     switch (props.type) {
-      case 'error':
+      case "error":
         return getIcon("error");
-      case 'success':
+      case "success":
         return getIcon("checkmark");
-      case 'info':
+      case "info":
         return getIcon("info");
-      case 'warning':
+      case "warning":
         return getIcon("warning");
       default:
         return getIcon("info");
@@ -57,7 +63,7 @@ export const Notification: Component<NotificationProps> = props => {
     const message = props.message;
     const maxLength = 200; // Maximum characters for notification messages
     if (message.length > maxLength) {
-      return message.substring(0, maxLength) + '...';
+      return message.substring(0, maxLength) + "...";
     }
     return message;
   });
@@ -76,18 +82,35 @@ export const Notification: Component<NotificationProps> = props => {
       clearTimeout(timeout);
     }
 
-    console.log('[Notification] startTimer called. props.type:', props.type, 'props.icon:', props.icon, 'props.duration:', props.duration);
+    console.log(
+      "[Notification] startTimer called. props.type:",
+      props.type,
+      "props.icon:",
+      props.icon,
+      "props.duration:",
+      props.duration,
+    );
 
     // Use custom duration if provided, otherwise use default behavior
-    const duration = props.duration || (props.type === 'error' ? 0 : 5000);
-    
+    const duration = props.duration || (props.type === "error" ? 0 : 5000);
+
     // Auto-dismiss after duration for notifications that should auto-dismiss
     // Only start timer if not hovering and duration > 0
     if (duration > 0 && !isHovered()) {
-      console.log('[Notification] Setting auto-dismiss timer for', duration, 'ms');
+      console.log(
+        "[Notification] Setting auto-dismiss timer for",
+        duration,
+        "ms",
+      );
       timeout = setTimeout(handleClose, duration);
     } else {
-      console.log('[Notification] Not setting auto-dismiss timer (duration:', duration, ', hovering:', isHovered(), ')');
+      console.log(
+        "[Notification] Not setting auto-dismiss timer (duration:",
+        duration,
+        ", hovering:",
+        isHovered(),
+        ")",
+      );
     }
   };
 
@@ -108,14 +131,17 @@ export const Notification: Component<NotificationProps> = props => {
   // Set progress bar width
   createEffect(() => {
     if (progressBarRef && props.progress !== undefined) {
-      progressBarRef.style.setProperty('--progress-width', `${props.progress}%`);
+      progressBarRef.style.setProperty(
+        "--progress-width",
+        `${props.progress}%`,
+      );
     }
   });
 
   return (
     <Show when={isVisible()}>
       <div
-        class={`notification notification--${props.type} ${isExiting() ? 'notification--exiting' : ''}`}
+        class={`notification notification--${props.type} ${isExiting() ? "notification--exiting" : ""}`}
         onMouseEnter={() => {
           setIsHovered(true);
           if (timeout) {
@@ -127,25 +153,18 @@ export const Notification: Component<NotificationProps> = props => {
           startTimer();
         }}
       >
-        <div class="notification__icon">
-          {getIconContent()}
-        </div>
-        
+        <div class="notification__icon">{getIconContent()}</div>
+
         <div class="notification__content">
-          <div class="notification__message">
-            {truncatedMessage()}
-          </div>
-          
+          <div class="notification__message">{truncatedMessage()}</div>
+
           <Show when={props.progress !== undefined}>
             <div class="notification__progress">
-              <div 
-                ref={progressBarRef}
-                class="notification__progress-bar"
-              />
+              <div ref={progressBarRef} class="notification__progress-bar" />
             </div>
           </Show>
         </div>
-        
+
         <button
           class="notification__close"
           onClick={handleClose}

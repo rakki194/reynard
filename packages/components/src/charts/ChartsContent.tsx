@@ -59,9 +59,7 @@ export const ChartsContent: Component<ChartsContentProps> = (props) => {
         selectedTheme={props.state.selectedTheme()}
       />
 
-      <ChartsPerformanceSection
-        visualization={props.state.visualization}
-      />
+      <ChartsPerformanceSection visualization={props.state.visualization} />
 
       <ChartsAdvancedFeatures
         showAdvanced={props.state.showAdvanced()}

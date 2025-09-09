@@ -16,7 +16,7 @@
   --warning: hsl(45deg 60% 50%);
   --danger: hsl(0deg 60% 50%);
   --info: hsl(200deg 60% 50%);
-  
+
   /* Clock-specific colors */
   --clock-face: hsl(220deg 15% 85%);
   --clock-border: hsl(220deg 15% 70%);
@@ -24,12 +24,12 @@
   --clock-center: hsl(270deg 60% 60%);
   --clock-numbers: hsl(240deg 15% 12%);
   --clock-tick: hsl(30deg 10% 45%);
-  
+
   /* Timer/Countdown colors */
   --timer-active: hsl(140deg 60% 45%);
   --timer-paused: hsl(45deg 70% 50%);
   --timer-stopped: hsl(0deg 70% 50%);
-  
+
   /* Spacing and layout */
   --spacing: 1rem;
   --border-radius: 0.5rem;
@@ -46,7 +46,7 @@
   --text-primary: hsl(0deg 0% 10%);
   --text-secondary: hsl(0deg 0% 30%);
   --border-color: hsl(0deg 0% 85%);
-  
+
   --clock-face: hsl(220deg 15% 16%);
   --clock-border: hsl(220deg 15% 24%);
   --clock-hand: hsl(220deg 20% 95%);
@@ -64,7 +64,7 @@
   --text-primary: hsl(0deg 0% 10%);
   --text-secondary: hsl(0deg 0% 30%);
   --border-color: hsl(0deg 0% 85%);
-  
+
   --clock-face: hsl(50deg 30% 85%);
   --clock-border: hsl(45deg 25% 75%);
   --clock-hand: hsl(30deg 15% 15%);
@@ -82,7 +82,7 @@
   --text-primary: hsl(0deg 0% 10%);
   --text-secondary: hsl(0deg 0% 30%);
   --border-color: hsl(0deg 0% 85%);
-  
+
   --clock-face: hsl(350deg 15% 85%);
   --clock-border: hsl(350deg 15% 75%);
   --clock-hand: hsl(350deg 15% 12%);
@@ -100,7 +100,7 @@
   --text-primary: hsl(0deg 0% 10%);
   --text-secondary: hsl(0deg 0% 30%);
   --border-color: hsl(0deg 0% 85%);
-  
+
   --clock-face: hsl(30deg 15% 85%);
   --clock-border: hsl(30deg 15% 75%);
   --clock-hand: hsl(30deg 15% 12%);
@@ -115,7 +115,8 @@
   background-color: var(--bg-color);
   color: var(--text-primary);
   transition: all var(--transition);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .app-header {
@@ -229,7 +230,7 @@
 .clock-display {
   font-size: 4rem;
   font-weight: 300;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: var(--text-primary);
   text-align: center;
   margin-bottom: 1rem;
@@ -362,7 +363,7 @@
 .timer-display {
   font-size: 5rem;
   font-weight: 300;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: var(--text-primary);
   text-align: center;
   margin-bottom: 1rem;
@@ -409,13 +410,13 @@
   color: var(--text-primary);
   font-size: 1.2rem;
   text-align: center;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 .time-input input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent)20;
+  box-shadow: 0 0 0 3px var(--accent) 20;
 }
 
 .timer-status {
@@ -488,7 +489,7 @@
 .alarm-time {
   font-size: 1.5rem;
   font-weight: 500;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: var(--text-primary);
 }
 
@@ -544,7 +545,7 @@
 .form-group input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent)20;
+  box-shadow: 0 0 0 3px var(--accent) 20;
 }
 
 /* Countdown Styles */
@@ -603,7 +604,7 @@
 .countdown-value {
   font-size: 2.5rem;
   font-weight: 700;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: var(--accent);
   margin-bottom: 0.5rem;
 }
@@ -733,54 +734,54 @@
   .app-header {
     padding: 1rem;
   }
-  
+
   .app-header h1 {
     font-size: 2rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .header-controls {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .tab-navigation {
     flex-direction: column;
   }
-  
+
   .tab-button {
     padding: 0.75rem 1rem;
   }
-  
+
   .clock-display {
     font-size: 3rem;
   }
-  
+
   .timer-display {
     font-size: 3.5rem;
   }
-  
+
   .analog-clock {
     width: 250px;
     height: 250px;
   }
-  
+
   .countdown-display {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .countdown-value {
     font-size: 2rem;
   }
-  
+
   .timer-controls {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .timer-inputs {
     flex-direction: column;
     align-items: center;
@@ -791,20 +792,20 @@
   .clock-display {
     font-size: 2.5rem;
   }
-  
+
   .timer-display {
     font-size: 3rem;
   }
-  
+
   .analog-clock {
     width: 200px;
     height: 200px;
   }
-  
+
   .countdown-display {
     grid-template-columns: 1fr;
   }
-  
+
   .countdown-value {
     font-size: 1.8rem;
   }

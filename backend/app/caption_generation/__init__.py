@@ -16,7 +16,17 @@ separation between backend Python services and frontend TypeScript/SolidJS
 integration.
 """
 
-from .caption_service import get_caption_service, CaptionService, CaptionTask, CaptionResult
+from .services.caption_service import CaptionService, CaptionTask, CaptionResult
+
+def get_caption_service() -> CaptionService:
+    """Get the global caption service instance."""
+    global _caption_service
+    if _caption_service is None:
+        _caption_service = CaptionService()
+    return _caption_service
+
+# Global service instance
+_caption_service: CaptionService = None
 from .plugin_loader import discover_plugins, CaptionerPlugin
 from .base import CaptionGenerator
 

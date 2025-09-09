@@ -27,7 +27,8 @@ export const securityIcons = {
       name: "user-add",
       tags: ["security", "user", "add"],
       description: "Add user icon",
-      caption: "A person with plus sign icon for adding new users or creating user accounts",
+      caption:
+        "A person with plus sign icon for adding new users or creating user accounts",
       keywords: ["user", "add", "person", "new"],
     },
   },
@@ -37,7 +38,8 @@ export const securityIcons = {
       name: "logout",
       tags: ["security", "logout", "signout"],
       description: "Logout icon",
-      caption: "A sign out icon for logging out, exiting, or ending user sessions",
+      caption:
+        "A sign out icon for logging out, exiting, or ending user sessions",
       keywords: ["logout", "signout", "exit", "leave"],
     },
   },
@@ -47,7 +49,8 @@ export const securityIcons = {
       name: "login",
       tags: ["security", "login", "passkey"],
       description: "Login icon",
-      caption: "A person with passkey icon for logging in, authentication, or secure access",
+      caption:
+        "A person with passkey icon for logging in, authentication, or secure access",
       keywords: ["login", "passkey", "signin", "enter"],
     },
   },
@@ -57,7 +60,8 @@ export const securityIcons = {
       name: "lock",
       tags: ["security", "lock", "secure"],
       description: "Lock icon",
-      caption: "A closed lock icon for security, protection, or restricted access",
+      caption:
+        "A closed lock icon for security, protection, or restricted access",
       keywords: ["lock", "secure", "closed", "protection"],
     },
   },

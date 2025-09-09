@@ -146,11 +146,11 @@ describe("ComponentName", () => {
 1. Context Testing:
 
    ```typescript
-   describe('Context Creation', () => {
-     test('Context should be defined', () => {
+   describe("Context Creation", () => {
+     test("Context should be defined", () => {
        expect(AppContext).toBeDefined();
        expect(AppContext.id).toBeDefined();
-       expect(typeof AppContext.id).toBe('symbol');
+       expect(typeof AppContext.id).toBe("symbol");
      });
    });
    ```
@@ -158,16 +158,16 @@ describe("ComponentName", () => {
 2. Utility Function Testing:
 
    ```typescript
-   describe('Utility Function', () => {
-     it('should handle normal input', () => {
+   describe("Utility Function", () => {
+     it("should handle normal input", () => {
        expect(utilityFunction(input)).toBe(expectedOutput);
      });
 
-     it('should handle edge cases', () => {
+     it("should handle edge cases", () => {
        expect(utilityFunction(edgeCase)).toBe(expectedOutput);
      });
 
-     it('should throw on invalid input', () => {
+     it("should throw on invalid input", () => {
        expect(() => utilityFunction(invalidInput)).toThrow();
      });
    });
@@ -176,15 +176,15 @@ describe("ComponentName", () => {
 3. i18n Testing:
 
    ```typescript
-   describe('Translation System', () => {
-     it('should handle pluralization correctly', () => {
+   describe("Translation System", () => {
+     it("should handle pluralization correctly", () => {
        const forms = {
-         one: 'item',
-         few: 'items',
-         many: 'items',
+         one: "item",
+         few: "items",
+         many: "items",
        };
-       expect(getPlural(1, forms)).toBe('item');
-       expect(getPlural(2, forms)).toBe('items');
+       expect(getPlural(1, forms)).toBe("item");
+       expect(getPlural(2, forms)).toBe("items");
      });
    });
    ```
@@ -196,8 +196,8 @@ describe("ComponentName", () => {
 1. API Calls:
 
    ```typescript
-   vi.mock('~/resources/browse', () => ({
-     fetchData: vi.fn().mockResolvedValue({ data: 'mocked' }),
+   vi.mock("~/resources/browse", () => ({
+     fetchData: vi.fn().mockResolvedValue({ data: "mocked" }),
      saveCaptionToBackend: vi.fn().mockResolvedValue({ success: true }),
    }));
    ```
@@ -206,8 +206,8 @@ describe("ComponentName", () => {
 
    ```typescript
    beforeEach(() => {
-     Object.defineProperty(window, 'matchMedia', {
-       value: vi.fn().mockImplementation(query => ({
+     Object.defineProperty(window, "matchMedia", {
+       value: vi.fn().mockImplementation((query) => ({
          matches: false,
          media: query,
          addEventListener: vi.fn(),
@@ -220,9 +220,9 @@ describe("ComponentName", () => {
 3. Router:
 
    ```typescript
-   vi.mock('@solidjs/router', () => ({
-     useParams: () => ({ path: 'test/path' }),
-     useSearchParams: () => [{ page: '1' }, vi.fn()],
+   vi.mock("@solidjs/router", () => ({
+     useParams: () => ({ path: "test/path" }),
+     useSearchParams: () => [{ page: "1" }, vi.fn()],
      useNavigate: () => vi.fn(),
    }));
    ```
@@ -320,13 +320,13 @@ Location: `src/contexts/app.test.tsx`
 
 ```typescript
 // Error: Translation mock not working consistently
-test('notification translates message', () => {
+test("notification translates message", () => {
   const app = useAppContext();
   app.t = vi.fn(); // Don't mock at component level
 });
 
 // Solution: Mock at module level
-vi.mock('~/i18n', () => ({
+vi.mock("~/i18n", () => ({
   getTranslationValue: (key: string) => `translated:${key}`,
 }));
 ```
@@ -340,13 +340,13 @@ Location: `src/components/UI/Notification.test.tsx`
 
 ```typescript
 // Error: Event timing causing flaky tests
-test('handles multiple events', async () => {
+test("handles multiple events", async () => {
   fireEvent.mouseEnter(element);
   fireEvent.mouseLeave(element); // Events too close together
 });
 
 // Solution: Use await for events
-test('handles multiple events', async () => {
+test("handles multiple events", async () => {
   await fireEvent.mouseEnter(element);
   await fireEvent.mouseLeave(element);
 });
@@ -360,16 +360,16 @@ Location: Various test files
 
 ```typescript
 // Error: Testing state changes too quickly
-test('updates state', () => {
-  setSignal('new value');
-  expect(element).toHaveText('new value'); // Fails
+test("updates state", () => {
+  setSignal("new value");
+  expect(element).toHaveText("new value"); // Fails
 });
 
 // Solution: Wait for next tick
-test('updates state', async () => {
-  setSignal('new value');
+test("updates state", async () => {
+  setSignal("new value");
   await Promise.resolve();
-  expect(element).toHaveText('new value');
+  expect(element).toHaveText("new value");
 });
 ```
 
@@ -383,7 +383,7 @@ Location: `src/contexts/theme.test.tsx`
 ```typescript
 // Error 1: Module initialization order with vi.mock
 // Problem: Using variables in mock factory that haven't been initialized
-vi.mock('../../contexts/theme', () => {
+vi.mock("../../contexts/theme", () => {
   const mockImportMeta = { env: { DEV: false } }; // Error: Cannot access before initialization
   return {
     isSeasonalThemeAvailable: () => mockImportMeta.env.DEV,
@@ -392,7 +392,7 @@ vi.mock('../../contexts/theme', () => {
 
 // Solution: Use module-level variable for state that needs to be modified
 let isDev = false; // Declare before mock
-vi.mock('../../contexts/theme', () => ({
+vi.mock("../../contexts/theme", () => ({
   isSeasonalThemeAvailable: () => isDev,
 }));
 ```
@@ -400,12 +400,12 @@ vi.mock('../../contexts/theme', () => ({
 ```typescript
 // Error 2: Trying to modify import.meta.env directly
 // Problem: import.meta.env is read-only in the actual module
-it('should work in dev mode', () => {
+it("should work in dev mode", () => {
   import.meta.env.DEV = true; // Error: Cannot assign to read-only property
 });
 
 // Solution: Use a separate variable for controlling dev mode
-it('should work in dev mode', () => {
+it("should work in dev mode", () => {
   isDev = true;
 });
 ```
@@ -421,7 +421,7 @@ afterEach(() => {
 let mockStorage: Record<string, string> = {};
 beforeEach(() => {
   mockStorage = {}; // Reset the storage
-  Object.defineProperty(window, 'localStorage', {
+  Object.defineProperty(window, "localStorage", {
     value: {
       getItem: (key: string) => mockStorage[key] || null,
       setItem: (key: string, value: string) => {
@@ -581,10 +581,10 @@ through the implementation of the UploadOverlay component tests.
 
    ```typescript
    // Initial attempt: Using querySelector with class names
-   const overlay = container.querySelector('.overlay'); // Unreliable with CSS modules
+   const overlay = container.querySelector(".overlay"); // Unreliable with CSS modules
 
    // Solution: Using data-testid attributes
-   const overlay = getByTestId('upload-overlay'); // Reliable and explicit
+   const overlay = getByTestId("upload-overlay"); // Reliable and explicit
    ```
 
 ### Key Lessons Learned
@@ -642,16 +642,16 @@ separation of concerns.
 
    ```typescript
    // Use appropriate query methods based on expectations
-   expect(queryByTestId('upload-overlay')).not.toBeInTheDocument(); // For absent elements
-   expect(getByTestId('upload-overlay')).toBeInTheDocument(); // For present elements
+   expect(queryByTestId("upload-overlay")).not.toBeInTheDocument(); // For absent elements
+   expect(getByTestId("upload-overlay")).toBeInTheDocument(); // For present elements
    ```
 
 4. **Accessibility Testing**:
 
    ```typescript
    // Include ARIA attribute checks
-   expect(overlay).toHaveAttribute('role', 'dialog');
-   expect(overlay).toHaveAttribute('aria-label', 'Drop files to upload');
+   expect(overlay).toHaveAttribute("role", "dialog");
+   expect(overlay).toHaveAttribute("aria-label", "Drop files to upload");
    ```
 
 ### Pitfalls to Avoid
@@ -706,21 +706,21 @@ Location: `vitest.config.ts` and test files
 // Error 1: JSX import source warning
 // Problem: The JSX import source cannot be set without also enabling React's "automatic" JSX transform
 /** @jsxImportSource solid-js */ // Warning: JSX import source cannot be set
-import { render } from '@solidjs/testing-library';
+import { render } from "@solidjs/testing-library";
 
 // Solution: Configure JSX transform in vitest.config.ts instead
 export default defineConfig({
   plugins: [solidPlugin()],
   esbuild: {
-    jsx: 'automatic',
-    jsxImportSource: 'solid-js',
+    jsx: "automatic",
+    jsxImportSource: "solid-js",
   },
 });
 
 // Then remove @jsxImportSource from test files
 /// <reference types="vitest/globals" />
 /// <reference types="@solidjs/testing-library" />
-import { render } from '@solidjs/testing-library';
+import { render } from "@solidjs/testing-library";
 ```
 
 This error occurs when trying to configure the JSX transform at the file level

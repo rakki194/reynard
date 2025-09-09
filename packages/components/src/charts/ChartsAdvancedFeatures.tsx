@@ -14,16 +14,18 @@ interface ChartsAdvancedFeaturesProps {
   };
 }
 
-export const ChartsAdvancedFeatures: Component<ChartsAdvancedFeaturesProps> = (props) => {
+export const ChartsAdvancedFeatures: Component<ChartsAdvancedFeaturesProps> = (
+  props,
+) => {
   return (
     <>
       {/* Advanced Features Toggle */}
       <div class="advanced-toggle">
-        <button 
+        <button
           class="toggle-button"
           onClick={() => props.setShowAdvanced(!props.showAdvanced)}
         >
-          {props.showAdvanced ? 'Hide' : 'Show'} Advanced Features
+          {props.showAdvanced ? "Hide" : "Show"} Advanced Features
         </button>
       </div>
 
@@ -31,7 +33,7 @@ export const ChartsAdvancedFeatures: Component<ChartsAdvancedFeaturesProps> = (p
       {props.showAdvanced && (
         <div class="advanced-features">
           <h2>Advanced Chart Features</h2>
-          
+
           {/* Custom Color Generation */}
           <div class="custom-colors-section">
             <h3>Custom Color Generation</h3>
@@ -42,9 +44,11 @@ export const ChartsAdvancedFeatures: Component<ChartsAdvancedFeaturesProps> = (p
                   <For each={[0.3, 0.5, 0.7, 0.9]}>
                     {(opacity) => (
                       <div class="color-group">
-                        <div 
+                        <div
                           class="color-sample"
-                          data-bg-color={props.visualization.generateColors(1, opacity)[0]}
+                          data-bg-color={
+                            props.visualization.generateColors(1, opacity)[0]
+                          }
                         />
                         <span>Opacity: {opacity}</span>
                       </div>
@@ -69,7 +73,9 @@ export const ChartsAdvancedFeatures: Component<ChartsAdvancedFeaturesProps> = (p
               </div>
               <div class="metric">
                 <span class="metric-label">Memory Usage</span>
-                <span class="metric-value">{props.visualization.getMemoryUsage().toFixed(1)}MB</span>
+                <span class="metric-value">
+                  {props.visualization.getMemoryUsage().toFixed(1)}MB
+                </span>
               </div>
               <div class="metric">
                 <span class="metric-label">Browser Support</span>

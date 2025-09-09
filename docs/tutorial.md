@@ -796,4 +796,4 @@ Now that you have a solid foundation, try:
 
 ---
 
-*Ready to build something amazing? Check out the [Package Documentation](./packages.md) to explore all available features!* 🦊
+_Ready to build something amazing? Check out the [Package Documentation](./packages.md) to explore all available features!_ 🦊

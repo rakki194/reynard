@@ -1,13 +1,19 @@
-import { createSignal, createMemo } from 'solid-js';
-import type { FeatureDefinition, FeatureRegistry as IFeatureRegistry } from './types';
+import { createSignal, createMemo } from "solid-js";
+import type {
+  FeatureDefinition,
+  FeatureRegistry as IFeatureRegistry,
+} from "./types";
 
 /**
  * Feature registry implementation
  */
 export class FeatureRegistry implements IFeatureRegistry {
-  private functionalities = createSignal<Map<string, FeatureDefinition>>(new Map());
+  private functionalities = createSignal<Map<string, FeatureDefinition>>(
+    new Map(),
+  );
   private getFunctionalities = () => this.functionalities[0]();
-  private setFunctionalities = (value: Map<string, FeatureDefinition>) => this.functionalities[1](value);
+  private setFunctionalities = (value: Map<string, FeatureDefinition>) =>
+    this.functionalities[1](value);
 
   /**
    * Register a new feature
@@ -47,21 +53,21 @@ export class FeatureRegistry implements IFeatureRegistry {
    * Get features by category
    */
   public getByCategory(category: string): FeatureDefinition[] {
-    return this.getAll().filter(feature => feature.category === category);
+    return this.getAll().filter((feature) => feature.category === category);
   }
 
   /**
    * Get features by priority
    */
   public getByPriority(priority: string): FeatureDefinition[] {
-    return this.getAll().filter(feature => feature.priority === priority);
+    return this.getAll().filter((feature) => feature.priority === priority);
   }
 
   /**
    * Get features by tag
    */
   public getByTag(tag: string): FeatureDefinition[] {
-    return this.getAll().filter(feature => feature.tags?.includes(tag));
+    return this.getAll().filter((feature) => feature.tags?.includes(tag));
   }
 
   /**
@@ -118,19 +124,22 @@ export class FeatureRegistry implements IFeatureRegistry {
    */
   public search(query: string): FeatureDefinition[] {
     const lowerQuery = query.toLowerCase();
-    return this.getAll().filter(feature => 
-      feature.name.toLowerCase().includes(lowerQuery) ||
-      feature.description.toLowerCase().includes(lowerQuery) ||
-      feature.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+    return this.getAll().filter(
+      (feature) =>
+        feature.name.toLowerCase().includes(lowerQuery) ||
+        feature.description.toLowerCase().includes(lowerQuery) ||
+        feature.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery)),
     );
   }
 
   /**
    * Get features that depend on a specific service
    */
-  public getFeaturesDependentOnService(serviceName: string): FeatureDefinition[] {
-    return this.getAll().filter(feature => 
-      feature.dependencies.some(dep => dep.services.includes(serviceName))
+  public getFeaturesDependentOnService(
+    serviceName: string,
+  ): FeatureDefinition[] {
+    return this.getAll().filter((feature) =>
+      feature.dependencies.some((dep) => dep.services.includes(serviceName)),
     );
   }
 
@@ -138,31 +147,34 @@ export class FeatureRegistry implements IFeatureRegistry {
    * Get features that provide a specific capability
    */
   public getFeaturesByCapability(capabilityId: string): FeatureDefinition[] {
-    return this.getAll().filter(feature => 
-      feature.tags?.includes(`capability:${capabilityId}`)
+    return this.getAll().filter((feature) =>
+      feature.tags?.includes(`capability:${capabilityId}`),
     );
   }
 
   /**
    * Validate feature definition
    */
-  public validateFeature(feature: FeatureDefinition): { valid: boolean; errors: string[] } {
+  public validateFeature(feature: FeatureDefinition): {
+    valid: boolean;
+    errors: string[];
+  } {
     const errors: string[] = [];
 
-    if (!feature.id || typeof feature.id !== 'string') {
-      errors.push('Feature ID is required and must be a string');
+    if (!feature.id || typeof feature.id !== "string") {
+      errors.push("Feature ID is required and must be a string");
     }
 
-    if (!feature.name || typeof feature.name !== 'string') {
-      errors.push('Feature name is required and must be a string');
+    if (!feature.name || typeof feature.name !== "string") {
+      errors.push("Feature name is required and must be a string");
     }
 
-    if (!feature.description || typeof feature.description !== 'string') {
-      errors.push('Feature description is required and must be a string');
+    if (!feature.description || typeof feature.description !== "string") {
+      errors.push("Feature description is required and must be a string");
     }
 
     if (!Array.isArray(feature.dependencies)) {
-      errors.push('Feature dependencies must be an array');
+      errors.push("Feature dependencies must be an array");
     } else {
       feature.dependencies.forEach((dep, index) => {
         if (!Array.isArray(dep.services)) {
@@ -174,36 +186,50 @@ export class FeatureRegistry implements IFeatureRegistry {
       });
     }
 
-    const validCategories = ['core', 'ml', 'integration', 'utility', 'ui', 'data'];
+    const validCategories = [
+      "core",
+      "ml",
+      "integration",
+      "utility",
+      "ui",
+      "data",
+    ];
     if (!validCategories.includes(feature.category)) {
-      errors.push(`Feature category must be one of: ${validCategories.join(', ')}`);
+      errors.push(
+        `Feature category must be one of: ${validCategories.join(", ")}`,
+      );
     }
 
-    const validPriorities = ['critical', 'high', 'medium', 'low'];
+    const validPriorities = ["critical", "high", "medium", "low"];
     if (!validPriorities.includes(feature.priority)) {
-      errors.push(`Feature priority must be one of: ${validPriorities.join(', ')}`);
+      errors.push(
+        `Feature priority must be one of: ${validPriorities.join(", ")}`,
+      );
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
   /**
    * Register multiple features at once
    */
-  public registerMany(features: FeatureDefinition[]): { success: number; errors: string[] } {
+  public registerMany(features: FeatureDefinition[]): {
+    success: number;
+    errors: string[];
+  } {
     const errors: string[] = [];
     let success = 0;
 
-    features.forEach(feature => {
+    features.forEach((feature) => {
       const validation = this.validateFeature(feature);
       if (validation.valid) {
         this.register(feature);
         success++;
       } else {
-        errors.push(`Feature ${feature.id}: ${validation.errors.join(', ')}`);
+        errors.push(`Feature ${feature.id}: ${validation.errors.join(", ")}`);
       }
     });
 

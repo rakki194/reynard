@@ -18,14 +18,12 @@ export const ThemeToggle: Component = () => {
   const iconElement = getIcon(iconName);
 
   return (
-    <button 
+    <button
       class="theme-toggle"
       onClick={toggleTheme}
       title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
     >
-      {iconElement && (
-        <div innerHTML={iconElement} />
-      )}
+      {iconElement && <div innerHTML={iconElement} />}
     </button>
   );
 };

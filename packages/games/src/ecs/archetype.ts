@@ -1,6 +1,6 @@
 // Archetype system implementation - groups entities with same component layout
 
-import { Entity, Component, ComponentType } from './types';
+import { Entity, Component, ComponentType } from "./types";
 
 /**
  * An opaque location within an archetype.
@@ -35,14 +35,14 @@ export function createArchetypeId(index: number): ArchetypeId {
  */
 export const ARCHETYPE_IDS = {
   EMPTY: createArchetypeId(0),
-  INVALID: createArchetypeId(Number.MAX_SAFE_INTEGER)
+  INVALID: createArchetypeId(Number.MAX_SAFE_INTEGER),
 } as const;
 
 /**
  * Special archetype rows.
  */
 export const ARCHETYPE_ROWS = {
-  INVALID: createArchetypeRow(Number.MAX_SAFE_INTEGER)
+  INVALID: createArchetypeRow(Number.MAX_SAFE_INTEGER),
 } as const;
 
 /**
@@ -59,7 +59,7 @@ export class Archetype {
 
   constructor(
     public readonly id: ArchetypeId,
-    public readonly componentTypes: ComponentType<Component>[]
+    public readonly componentTypes: ComponentType<Component>[],
   ) {
     // Store component type IDs for fast lookup
     for (const componentType of componentTypes) {
@@ -176,15 +176,17 @@ export class Archetypes {
     // Create the empty archetype
     const emptyArchetype = new Archetype(ARCHETYPE_IDS.EMPTY, []);
     this.archetypes.push(emptyArchetype);
-    this.componentLayoutToArchetype.set('', ARCHETYPE_IDS.EMPTY);
+    this.componentLayoutToArchetype.set("", ARCHETYPE_IDS.EMPTY);
   }
 
   /**
    * Gets or creates an archetype for the given component types.
    */
-  getOrCreateArchetype(componentTypes: ComponentType<Component>[]): ArchetypeId {
+  getOrCreateArchetype(
+    componentTypes: ComponentType<Component>[],
+  ): ArchetypeId {
     const layoutKey = this.getComponentLayoutKey(componentTypes);
-    
+
     let archetypeId = this.componentLayoutToArchetype.get(layoutKey);
     if (archetypeId) {
       return archetypeId;
@@ -195,7 +197,7 @@ export class Archetypes {
     const archetype = new Archetype(archetypeId, componentTypes);
     this.archetypes.push(archetype);
     this.componentLayoutToArchetype.set(layoutKey, archetypeId);
-    
+
     return archetypeId;
   }
 
@@ -223,7 +225,9 @@ export class Archetypes {
   /**
    * Finds an archetype that contains the given component types.
    */
-  findArchetypeWithComponents(componentTypes: ComponentType<Component>[]): ArchetypeId | undefined {
+  findArchetypeWithComponents(
+    componentTypes: ComponentType<Component>[],
+  ): ArchetypeId | undefined {
     const layoutKey = this.getComponentLayoutKey(componentTypes);
     return this.componentLayoutToArchetype.get(layoutKey);
   }
@@ -231,11 +235,13 @@ export class Archetypes {
   /**
    * Creates a component layout key for archetype lookup.
    */
-  private getComponentLayoutKey(componentTypes: ComponentType<Component>[]): string {
+  private getComponentLayoutKey(
+    componentTypes: ComponentType<Component>[],
+  ): string {
     return componentTypes
-      .map(ct => ct.id)
+      .map((ct) => ct.id)
       .sort((a, b) => a - b)
-      .join(',');
+      .join(",");
   }
 
   /**
@@ -245,10 +251,10 @@ export class Archetypes {
     this.archetypes.length = 0;
     this.componentLayoutToArchetype.clear();
     this.nextId = 1;
-    
+
     // Recreate empty archetype
     const emptyArchetype = new Archetype(ARCHETYPE_IDS.EMPTY, []);
     this.archetypes.push(emptyArchetype);
-    this.componentLayoutToArchetype.set('', ARCHETYPE_IDS.EMPTY);
+    this.componentLayoutToArchetype.set("", ARCHETYPE_IDS.EMPTY);
   }
 }

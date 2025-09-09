@@ -40,9 +40,7 @@
   padding: 10px;
   border-radius: 4px;
   overflow-x: auto;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 12px;
   line-height: 1.4;
 }
-
-

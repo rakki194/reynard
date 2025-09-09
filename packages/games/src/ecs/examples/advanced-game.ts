@@ -1,9 +1,9 @@
 // Advanced ECS game example demonstrating all new features
 
-import { 
-  createWorld, 
-  ComponentType, 
-  ResourceType, 
+import {
+  createWorld,
+  ComponentType,
+  ResourceType,
   StorageType,
   system,
   schedule,
@@ -15,8 +15,8 @@ import {
   ComponentHookRegistry,
   ParallelIterator,
   TaskPool,
-  TASK_POOL
-} from '../index';
+  TASK_POOL,
+} from "../index";
 
 import {
   Position,
@@ -31,8 +31,8 @@ import {
   GameTime,
   GameState,
   InputState,
-  Camera
-} from './components';
+  Camera,
+} from "./components";
 
 /**
  * Advanced ECS Game demonstrating all new features.
@@ -74,25 +74,67 @@ export class AdvancedECSGame {
 
   private setupComponentTypes(): void {
     const registry = this.world.getComponentRegistry();
-    
-    this.positionType = registry.register('Position', StorageType.Table, () => new Position(0, 0));
-    this.velocityType = registry.register('Velocity', StorageType.Table, () => new Velocity(0, 0));
-    this.healthType = registry.register('Health', StorageType.Table, () => new Health(100, 100));
-    this.damageType = registry.register('Damage', StorageType.Table, () => new Damage(10));
-    this.playerType = registry.register('Player', StorageType.Table, () => new Player('Player1'));
-    this.enemyType = registry.register('Enemy', StorageType.Table, () => new Enemy('Basic'));
-    this.bulletType = registry.register('Bullet', StorageType.Table, () => new Bullet(300));
-    this.colorType = registry.register('Color', StorageType.Table, () => new Color(1, 1, 1));
-    this.sizeType = registry.register('Size', StorageType.Table, () => new Size(20, 20));
+
+    this.positionType = registry.register(
+      "Position",
+      StorageType.Table,
+      () => new Position(0, 0),
+    );
+    this.velocityType = registry.register(
+      "Velocity",
+      StorageType.Table,
+      () => new Velocity(0, 0),
+    );
+    this.healthType = registry.register(
+      "Health",
+      StorageType.Table,
+      () => new Health(100, 100),
+    );
+    this.damageType = registry.register(
+      "Damage",
+      StorageType.Table,
+      () => new Damage(10),
+    );
+    this.playerType = registry.register(
+      "Player",
+      StorageType.Table,
+      () => new Player("Player1"),
+    );
+    this.enemyType = registry.register(
+      "Enemy",
+      StorageType.Table,
+      () => new Enemy("Basic"),
+    );
+    this.bulletType = registry.register(
+      "Bullet",
+      StorageType.Table,
+      () => new Bullet(300),
+    );
+    this.colorType = registry.register(
+      "Color",
+      StorageType.Table,
+      () => new Color(1, 1, 1),
+    );
+    this.sizeType = registry.register(
+      "Size",
+      StorageType.Table,
+      () => new Size(20, 20),
+    );
   }
 
   private setupResourceTypes(): void {
     const registry = this.world.getResourceRegistry();
-    
-    this.gameTimeType = registry.register('GameTime', () => new GameTime(0, 0));
-    this.gameStateType = registry.register('GameState', () => new GameState(0, 1));
-    this.inputStateType = registry.register('InputState', () => new InputState());
-    this.cameraType = registry.register('Camera', () => new Camera(0, 0, 1));
+
+    this.gameTimeType = registry.register("GameTime", () => new GameTime(0, 0));
+    this.gameStateType = registry.register(
+      "GameState",
+      () => new GameState(0, 1),
+    );
+    this.inputStateType = registry.register(
+      "InputState",
+      () => new InputState(),
+    );
+    this.cameraType = registry.register("Camera", () => new Camera(0, 0, 1));
   }
 
   private setupComponentHooks(): void {
@@ -101,132 +143,135 @@ export class AdvancedECSGame {
       this.playerType,
       createComponentHooks({
         onAdd: CommonHooks.logOnAdd(this.playerType),
-        onRemove: CommonHooks.logOnRemove(this.playerType)
-      })
+        onRemove: CommonHooks.logOnRemove(this.playerType),
+      }),
     );
 
     this.hookRegistry.registerHooks(
       this.enemyType,
       createComponentHooks({
         onAdd: CommonHooks.logOnAdd(this.enemyType),
-        onRemove: CommonHooks.logOnRemove(this.enemyType)
-      })
+        onRemove: CommonHooks.logOnRemove(this.enemyType),
+      }),
     );
 
     // Add validation hooks
     this.hookRegistry.registerHooks(
       this.healthType,
       createComponentHooks({
-        onAdd: CommonHooks.validateOnAdd(this.healthType, (health) => health.current >= 0 && health.max > 0)
-      })
+        onAdd: CommonHooks.validateOnAdd(
+          this.healthType,
+          (health) => health.current >= 0 && health.max > 0,
+        ),
+      }),
     );
   }
 
   private setupSystems(): void {
     // Create system sets for organization
-    const inputSet = systemSet('input');
-    const updateSet = systemSet('update');
-    const renderSet = systemSet('render');
+    const inputSet = systemSet("input");
+    const updateSet = systemSet("update");
+    const renderSet = systemSet("render");
 
     // Add systems with conditions
     this.world.addSystem(
-      system('playerInput', this.playerInputSystem.bind(this))
+      system("playerInput", this.playerInputSystem.bind(this))
         .runIf(Conditions.resourceExists(this.inputStateType))
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('shooting', this.shootingSystem.bind(this))
+      system("shooting", this.shootingSystem.bind(this))
         .runIf(
           ConditionCombinators.and(
             Conditions.resourceExists(this.inputStateType),
-            Conditions.anyEntityWith(this.playerType, this.positionType)
-          )
+            Conditions.anyEntityWith(this.playerType, this.positionType),
+          ),
         )
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('movement', this.movementSystem.bind(this))
+      system("movement", this.movementSystem.bind(this))
         .runIf(Conditions.resourceExists(this.gameTimeType))
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('enemyAI', this.enemyAISystem.bind(this))
+      system("enemyAI", this.enemyAISystem.bind(this))
         .runIf(
           ConditionCombinators.and(
             Conditions.anyEntityWith(this.enemyType),
-            Conditions.timePassed(0.5) // Run every 0.5 seconds
-          )
+            Conditions.timePassed(0.5), // Run every 0.5 seconds
+          ),
         )
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('collision', this.collisionSystem.bind(this))
+      system("collision", this.collisionSystem.bind(this))
         .runIf(Conditions.anyEntityWith(this.playerType, this.enemyType))
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('rendering', this.renderingSystem.bind(this))
+      system("rendering", this.renderingSystem.bind(this))
         .runIf(Conditions.everyNFrames(1)) // Run every frame
-        .build()
+        .build(),
     );
 
     this.world.addSystem(
-      system('gameState', this.gameStateSystem.bind(this))
+      system("gameState", this.gameStateSystem.bind(this))
         .runIf(Conditions.resourceExists(this.gameStateType))
-        .build()
+        .build(),
     );
 
     // Create main schedule
-    const mainSchedule = schedule('main');
+    const mainSchedule = schedule("main");
     mainSchedule.addSystem(
-      system('playerInput', this.playerInputSystem.bind(this))
+      system("playerInput", this.playerInputSystem.bind(this))
         .runIf(Conditions.resourceExists(this.inputStateType))
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('shooting', this.shootingSystem.bind(this))
+      system("shooting", this.shootingSystem.bind(this))
         .runIf(
           ConditionCombinators.and(
             Conditions.resourceExists(this.inputStateType),
-            Conditions.anyEntityWith(this.playerType, this.positionType)
-          )
+            Conditions.anyEntityWith(this.playerType, this.positionType),
+          ),
         )
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('movement', this.movementSystem.bind(this))
+      system("movement", this.movementSystem.bind(this))
         .runIf(Conditions.resourceExists(this.gameTimeType))
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('enemyAI', this.enemyAISystem.bind(this))
+      system("enemyAI", this.enemyAISystem.bind(this))
         .runIf(
           ConditionCombinators.and(
             Conditions.anyEntityWith(this.enemyType),
-            Conditions.timePassed(0.5)
-          )
+            Conditions.timePassed(0.5),
+          ),
         )
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('collision', this.collisionSystem.bind(this))
+      system("collision", this.collisionSystem.bind(this))
         .runIf(Conditions.anyEntityWith(this.playerType, this.enemyType))
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('rendering', this.renderingSystem.bind(this))
+      system("rendering", this.renderingSystem.bind(this))
         .runIf(Conditions.everyNFrames(1))
-        .build()
+        .build(),
     );
     mainSchedule.addSystem(
-      system('gameState', this.gameStateSystem.bind(this))
+      system("gameState", this.gameStateSystem.bind(this))
         .runIf(Conditions.resourceExists(this.gameStateType))
-        .build()
+        .build(),
     );
   }
 
@@ -236,9 +281,9 @@ export class AdvancedECSGame {
       new Position(400, 500),
       new Velocity(0, 0),
       new Health(100, 100),
-      new Player('Player1'),
+      new Player("Player1"),
       new Color(0, 0, 1), // Blue
-      new Size(30, 30)
+      new Size(30, 30),
     );
 
     // Create some enemies
@@ -247,9 +292,9 @@ export class AdvancedECSGame {
         new Position(Math.random() * 800, Math.random() * 200),
         new Velocity(0, 0),
         new Health(50, 50),
-        new Enemy('Basic'),
+        new Enemy("Basic"),
         new Color(1, 0, 0), // Red
-        new Size(25, 25)
+        new Size(25, 25),
       );
     }
 
@@ -293,7 +338,7 @@ export class AdvancedECSGame {
     }
 
     // Run the main schedule
-    this.world.runSchedule('main');
+    this.world.runSchedule("main");
 
     // Continue the game loop
     this.gameLoop = requestAnimationFrame((time) => this.update(time));
@@ -316,16 +361,16 @@ export class AdvancedECSGame {
       velocity.y = 0;
 
       // Apply movement based on input
-      if (inputState.keys.has('ArrowLeft') || inputState.keys.has('KeyA')) {
+      if (inputState.keys.has("ArrowLeft") || inputState.keys.has("KeyA")) {
         velocity.x = -speed;
       }
-      if (inputState.keys.has('ArrowRight') || inputState.keys.has('KeyD')) {
+      if (inputState.keys.has("ArrowRight") || inputState.keys.has("KeyD")) {
         velocity.x = speed;
       }
-      if (inputState.keys.has('ArrowUp') || inputState.keys.has('KeyW')) {
+      if (inputState.keys.has("ArrowUp") || inputState.keys.has("KeyW")) {
         velocity.y = -speed;
       }
-      if (inputState.keys.has('ArrowDown') || inputState.keys.has('KeyS')) {
+      if (inputState.keys.has("ArrowDown") || inputState.keys.has("KeyS")) {
         velocity.y = speed;
       }
     });
@@ -342,14 +387,14 @@ export class AdvancedECSGame {
     const bulletSpeed = 300; // pixels per second
 
     query.forEach((entity: any, player: any, position: any) => {
-      if (inputState.keys.has('Space')) {
+      if (inputState.keys.has("Space")) {
         // Create bullet
         const bullet = world.spawn(
           new Position(position.x, position.y),
           new Velocity(0, -bulletSpeed),
           new Bullet(bulletSpeed),
           new Color(1, 1, 0), // Yellow
-          new Size(5, 10)
+          new Size(5, 10),
         );
       }
     });
@@ -363,7 +408,7 @@ export class AdvancedECSGame {
     if (!gameTime) return;
 
     const query = world.query(this.positionType, this.velocityType);
-    
+
     // Use parallel execution for better performance
     query.forEach((entity: any, position: any, velocity: any) => {
       position.x += velocity.x * gameTime.deltaTime;
@@ -375,14 +420,18 @@ export class AdvancedECSGame {
    * Enemy AI system with conditions.
    */
   private enemyAISystem(world: any): void {
-    const query = world.query(this.enemyType, this.positionType, this.velocityType);
+    const query = world.query(
+      this.enemyType,
+      this.positionType,
+      this.velocityType,
+    );
     const speed = 100; // pixels per second
 
     query.forEach((entity: any, enemy: any, position: any, velocity: any) => {
       // Simple AI: move towards player
       const playerQuery = world.query(this.playerType, this.positionType);
       let playerPosition: Position | null = null;
-      
+
       playerQuery.forEach((playerEntity: any, player: any, playerPos: any) => {
         playerPosition = playerPos;
       });
@@ -391,7 +440,7 @@ export class AdvancedECSGame {
         const dx = playerPosition.x - position.x;
         const dy = playerPosition.y - position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (distance > 0) {
           velocity.x = (dx / distance) * speed;
           velocity.y = (dy / distance) * speed;
@@ -414,14 +463,15 @@ export class AdvancedECSGame {
         const dx = playerPos.x - enemyPos.x;
         const dy = playerPos.y - enemyPos.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 30) { // Collision threshold
+
+        if (distance < 30) {
+          // Collision threshold
           // Apply damage to player
           const playerHealth = world.get(playerEntity, this.healthType);
           if (playerHealth) {
             playerHealth.current -= 10;
           }
-          
+
           // Remove enemy
           world.despawn(enemyEntity);
         }
@@ -434,12 +484,13 @@ export class AdvancedECSGame {
         const dx = bulletPos.x - enemyPos.x;
         const dy = bulletPos.y - enemyPos.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 20) { // Collision threshold
+
+        if (distance < 20) {
+          // Collision threshold
           // Remove bullet and enemy
           world.despawn(bulletEntity);
           world.despawn(enemyEntity);
-          
+
           // Update score
           const gameState = world.getResource(this.gameStateType);
           if (gameState) {
@@ -457,10 +508,12 @@ export class AdvancedECSGame {
     // This would typically interface with a rendering engine
     // For now, we'll just log the entities that need to be rendered
     const query = world.query(this.positionType, this.colorType);
-    
-    console.log('Rendering entities:');
+
+    console.log("Rendering entities:");
     query.forEach((entity: any, position: any, color: any) => {
-      console.log(`Entity ${entity.index}: pos(${position.x}, ${position.y}), color(${color.r}, ${color.g}, ${color.b})`);
+      console.log(
+        `Entity ${entity.index}: pos(${position.x}, ${position.y}), color(${color.r}, ${color.g}, ${color.b})`,
+      );
     });
   }
 
@@ -474,7 +527,7 @@ export class AdvancedECSGame {
     // Check if player is dead
     const playerQuery = world.query(this.playerType, this.healthType);
     let playerAlive = false;
-    
+
     playerQuery.forEach((entity: any, player: any, health: any) => {
       if (health.current > 0) {
         playerAlive = true;
@@ -483,7 +536,7 @@ export class AdvancedECSGame {
 
     if (!playerAlive && !gameState.isGameOver) {
       gameState.isGameOver = true;
-      console.log('Game Over! Final Score:', gameState.score);
+      console.log("Game Over! Final Score:", gameState.score);
     }
   }
 
@@ -537,9 +590,9 @@ export class AdvancedECSGame {
       new Position(Math.random() * 800, -50),
       new Velocity(0, 50),
       new Health(50, 50),
-      new Enemy('Basic'),
+      new Enemy("Basic"),
       new Color(1, 0, 0), // Red
-      new Size(25, 25)
+      new Size(25, 25),
     );
   }
 }
@@ -550,4 +603,3 @@ export class AdvancedECSGame {
 export function createAdvancedECSGame(): AdvancedECSGame {
   return new AdvancedECSGame();
 }
-

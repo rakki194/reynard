@@ -13,7 +13,7 @@ export interface UseImageViewerTransformReturn {
 
 export const useImageViewerTransform = (
   state: () => ImageViewerState,
-  enablePan: boolean
+  enablePan: boolean,
 ): UseImageViewerTransformReturn => {
   const imageClasses = () => {
     const currentState = state();

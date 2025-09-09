@@ -12,7 +12,7 @@ interface Achievement {
   name: string;
   description: string;
   icon: string;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  rarity: "common" | "rare" | "epic" | "legendary";
   unlockedAt?: Date;
 }
 
@@ -32,7 +32,7 @@ interface GamificationPanelProps {
 
 const GamificationPanel: Component<GamificationPanelProps> = (props) => {
   const [activeTab, setActiveTab] = createSignal("achievements");
-  
+
   // Mock achievements data
   const mockAchievements: Achievement[] = [
     {
@@ -42,7 +42,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       description: "Created your first note",
       unlockedAt: new Date("2024-01-15"),
       icon: "📝",
-      rarity: "common"
+      rarity: "common",
     },
     {
       id: "2",
@@ -51,7 +51,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       description: "Shared 5 notes with others",
       unlockedAt: new Date("2024-01-18"),
       icon: "🤝",
-      rarity: "rare"
+      rarity: "rare",
     },
     {
       id: "3",
@@ -60,25 +60,30 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
       description: "Used AI features 20 times",
       unlockedAt: new Date("2024-01-20"),
       icon: "🤖",
-      rarity: "epic"
-    }
+      rarity: "epic",
+    },
   ];
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return '#6B7280';
-      case 'rare': return '#3B82F6';
-      case 'epic': return '#8B5CF6';
-      case 'legendary': return '#F59E0B';
-      default: return '#6B7280';
+      case "common":
+        return "#6B7280";
+      case "rare":
+        return "#3B82F6";
+      case "epic":
+        return "#8B5CF6";
+      case "legendary":
+        return "#F59E0B";
+      default:
+        return "#6B7280";
     }
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     }).format(date);
   };
 
@@ -99,16 +104,18 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
             <div class="achievements-grid">
               <For each={mockAchievements}>
                 {(achievement) => (
-                  <Card 
+                  <Card
                     class="achievement-card"
-                    style={{ "border-color": getRarityColor(achievement.rarity) }}
+                    style={{
+                      "border-color": getRarityColor(achievement.rarity),
+                    }}
                     padding="md"
                   >
                     <div class="achievement-header">
                       <span class="achievement-icon">{achievement.icon}</span>
                       <div class="achievement-info">
                         <h4 class="achievement-name">{achievement.name}</h4>
-                        <span 
+                        <span
                           class="achievement-rarity"
                           style={{ color: getRarityColor(achievement.rarity) }}
                         >
@@ -116,9 +123,14 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
                         </span>
                       </div>
                     </div>
-                    <p class="achievement-description">{achievement.description}</p>
+                    <p class="achievement-description">
+                      {achievement.description}
+                    </p>
                     <div class="achievement-date">
-                      Earned {achievement.unlockedAt ? formatDate(achievement.unlockedAt) : 'Not earned yet'}
+                      Earned{" "}
+                      {achievement.unlockedAt
+                        ? formatDate(achievement.unlockedAt)
+                        : "Not earned yet"}
                     </div>
                   </Card>
                 )}
@@ -126,7 +138,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
             </div>
           </div>
         </TabPanel>
-        
+
         <TabPanel tabId="progress" activeTab={activeTab()}>
           <div class="progress-section">
             <h3>Your Progress</h3>
@@ -155,7 +167,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
             </div>
           </div>
         </TabPanel>
-        
+
         <TabPanel tabId="leaderboard" activeTab={activeTab()}>
           <div class="leaderboard-section">
             <h3>Weekly Leaderboard</h3>

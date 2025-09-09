@@ -16,7 +16,7 @@ They do not pollute the global namespace, so you're free to use any name you
 like. You compile them by importing or requiring them in your JavaScript file.
 
 ```js
-import styles from './style.css';
+import styles from "./style.css";
 
 export function Component(props) {
   return (

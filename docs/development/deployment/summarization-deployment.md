@@ -82,7 +82,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ENVIRONMENT=development
    DEV_PORT=7000
    ROOT_DIR=$HOME/datasets
-   
+
    # Summarization settings for development
    SUMMARIZATION_ENABLED=true
    SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
@@ -178,7 +178,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```yaml
    # docker-compose.staging.yml
-   version: '3.8'
+   version: "3.8"
    services:
      yipyap:
        image: yipyap:staging
@@ -212,10 +212,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Build staging image
    docker build -t yipyap:staging .
-   
+
    # Deploy with docker-compose
    docker-compose -f docker-compose.staging.yml up -d
-   
+
    # Check logs
    docker-compose -f docker-compose.staging.yml logs -f
    ```
@@ -262,7 +262,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```yaml
    # docker-compose.prod.yml
-   version: '3.8'
+   version: "3.8"
    services:
      yipyap:
        image: yipyap:latest
@@ -299,10 +299,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
          resources:
            limits:
              memory: 8G
-             cpus: '4.0'
+             cpus: "4.0"
            reservations:
              memory: 4G
-             cpus: '2.0'
+             cpus: "2.0"
    ```
 
 3. **Production Deployment**:
@@ -310,13 +310,13 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Build production image
    docker build -t yipyap:latest .
-   
+
    # Deploy with docker-compose
    docker-compose -f docker-compose.prod.yml up -d
-   
+
    # Monitor deployment
    docker-compose -f docker-compose.prod.yml logs -f
-   
+
    # Check health
    curl http://localhost/api/health
    ```
@@ -369,49 +369,49 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
            app: yipyap
        spec:
          containers:
-         - name: yipyap
-           image: yipyap:latest
-           ports:
-           - containerPort: 8080
-           envFrom:
-           - configMapRef:
-               name: yipyap-summarization-config
-           resources:
-             requests:
-               memory: "4Gi"
-               cpu: "2"
-             limits:
-               memory: "8Gi"
-               cpu: "4"
-           volumeMounts:
-           - name: cache-volume
-             mountPath: /var/cache/yipyap
-           - name: data-volume
-             mountPath: /var/data/yipyap
-           - name: models-volume
-             mountPath: /var/models/yipyap
-           livenessProbe:
-             httpGet:
-               path: /api/health
-               port: 8080
-             initialDelaySeconds: 60
-             periodSeconds: 15
-           readinessProbe:
-             httpGet:
-               path: /api/health
-               port: 8080
-             initialDelaySeconds: 30
-             periodSeconds: 10
+           - name: yipyap
+             image: yipyap:latest
+             ports:
+               - containerPort: 8080
+             envFrom:
+               - configMapRef:
+                   name: yipyap-summarization-config
+             resources:
+               requests:
+                 memory: "4Gi"
+                 cpu: "2"
+               limits:
+                 memory: "8Gi"
+                 cpu: "4"
+             volumeMounts:
+               - name: cache-volume
+                 mountPath: /var/cache/yipyap
+               - name: data-volume
+                 mountPath: /var/data/yipyap
+               - name: models-volume
+                 mountPath: /var/models/yipyap
+             livenessProbe:
+               httpGet:
+                 path: /api/health
+                 port: 8080
+               initialDelaySeconds: 60
+               periodSeconds: 15
+             readinessProbe:
+               httpGet:
+                 path: /api/health
+                 port: 8080
+               initialDelaySeconds: 30
+               periodSeconds: 10
          volumes:
-         - name: cache-volume
-           persistentVolumeClaim:
-             claimName: yipyap-cache-pvc
-         - name: data-volume
-           persistentVolumeClaim:
-             claimName: yipyap-data-pvc
-         - name: models-volume
-           persistentVolumeClaim:
-             claimName: yipyap-models-pvc
+           - name: cache-volume
+             persistentVolumeClaim:
+               claimName: yipyap-cache-pvc
+           - name: data-volume
+             persistentVolumeClaim:
+               claimName: yipyap-data-pvc
+           - name: models-volume
+             persistentVolumeClaim:
+               claimName: yipyap-models-pvc
    ```
 
 3. **Service Configuration**:
@@ -426,9 +426,9 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
      selector:
        app: yipyap
      ports:
-     - protocol: TCP
-       port: 80
-       targetPort: 8080
+       - protocol: TCP
+         port: 80
+         targetPort: 8080
      type: LoadBalancer
    ```
 
@@ -439,11 +439,11 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    kubectl apply -f k8s/configmap.yaml
    kubectl apply -f k8s/deployment.yaml
    kubectl apply -f k8s/service.yaml
-   
+
    # Check deployment status
    kubectl get pods -l app=yipyap
    kubectl get services -l app=yipyap
-   
+
    # Check logs
    kubectl logs -l app=yipyap -f
    ```
@@ -503,7 +503,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
            }
          },
          "healthCheck": {
-           "command": ["CMD-SHELL", "curl -f http://localhost:8080/api/health || exit 1"],
+           "command": [
+             "CMD-SHELL",
+             "curl -f http://localhost:8080/api/health || exit 1"
+           ],
            "interval": 15,
            "timeout": 5,
            "retries": 3,
@@ -519,10 +522,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Create ECS cluster
    aws ecs create-cluster --cluster-name yipyap-cluster
-   
+
    # Register task definition
    aws ecs register-task-definition --cli-input-json file://task-definition.json
-   
+
    # Create service
    aws ecs create-service \
      --cluster yipyap-cluster \
@@ -541,7 +544,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    # Build and push image
    docker build -t gcr.io/PROJECT_ID/yipyap .
    docker push gcr.io/PROJECT_ID/yipyap
-   
+
    # Deploy to Cloud Run
    gcloud run deploy yipyap \
      --image gcr.io/PROJECT_ID/yipyap \
@@ -565,7 +568,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    SUMMARIZATION_MAX_CONCURRENT=5
    SUMMARIZATION_MAX_TOKENS_PER_BATCH=8000
    SUMMARIZATION_MAX_BATCH_SIZE=8
-   
+
    # For high-throughput workloads
    SUMMARIZATION_MAX_CONCURRENT=15
    SUMMARIZATION_MAX_TOKENS_PER_BATCH=12000
@@ -577,7 +580,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Increase cache TTL for better performance
    SUMMARIZATION_CACHE_TTL_HOURS=72
-   
+
    # Use Redis for distributed caching
    SUMMARIZATION_CACHE_REDIS_URL=redis://redis:6379
    ```
@@ -600,7 +603,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Check summarization service health
    curl http://localhost:8080/api/summarize/health
-   
+
    # Expected response
    {
      "status": "healthy",
@@ -622,7 +625,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Enable metrics endpoint
    SUMMARIZATION_METRICS_ENABLED=true
-   
+
    # Access metrics
    curl http://localhost:8080/metrics
    ```
@@ -635,7 +638,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    # Enable structured logging
    SUMMARIZATION_STRUCTURED_LOGGING=true
    SUMMARIZATION_LOG_LEVEL=INFO
-   
+
    # Log to file
    SUMMARIZATION_LOG_FILE=/var/log/yipyap/summarization.log
    ```
@@ -701,7 +704,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    # Enable caching
    SUMMARIZATION_ENABLE_CACHING=true
    SUMMARIZATION_CACHE_TTL_HOURS=24
-   
+
    # Increase concurrent operations
    SUMMARIZATION_MAX_CONCURRENT=8
    ```
@@ -711,7 +714,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```bash
    # Check Ollama service
    curl http://localhost:11434/api/tags
-   
+
    # Restart summarization service
    docker-compose restart yipyap
    ```

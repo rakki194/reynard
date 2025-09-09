@@ -24,12 +24,11 @@ export const ChartsHero: Component<ChartsHeroProps> = (props) => {
   return (
     <div class="showcase-hero">
       <div class="hero-content">
-        <h1 class="hero-title">
-          Charts Showcase
-        </h1>
+        <h1 class="hero-title">Charts Showcase</h1>
         <p class="hero-subtitle">
-          Experience the power of professional data visualization with Reynard's advanced charting system.
-          Featuring OKLCH color integration, real-time capabilities, and statistical analysis tools.
+          Experience the power of professional data visualization with Reynard's
+          advanced charting system. Featuring OKLCH color integration, real-time
+          capabilities, and statistical analysis tools.
         </p>
         <div class="hero-stats">
           <div class="stat">

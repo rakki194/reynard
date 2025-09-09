@@ -26,7 +26,7 @@ from app.utils.lazy_loader import torch, transformers, tensorflow
 # Only now does torch actually get loaded
 model = torch.nn.Linear(10, 5)  # First access triggers loading
 
-# Only now does transformers get loaded  
+# Only now does transformers get loaded
 model = transformers.AutoModel.from_pretrained("bert-base-uncased")  # First access triggers loading
 ```
 
@@ -85,7 +85,7 @@ from app.utils.lazy_loader import torch, F, nn, checkpoint
 # F is torch.nn.functional
 output = F.relu(input)
 
-# nn is torch.nn  
+# nn is torch.nn
 layer = nn.Linear(10, 5)
 
 # checkpoint is torch.utils.checkpoint

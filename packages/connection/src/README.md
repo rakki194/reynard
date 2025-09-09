@@ -245,32 +245,32 @@ import {
   ConnectionType,
   WebSocketConnection,
   RecoveryStrategy,
-} from '~/src/connection';
+} from "~/src/connection";
 
 const configManager = new ConnectionConfigManager();
 // Either define VITE_WEBSOCKET_URL in env, or set one explicitly:
 const wsConfig = {
-  ...configManager.get('websocket'),
+  ...configManager.get("websocket"),
   connectionType: ConnectionType.WEBSOCKET,
-  url: 'wss://example.com/ws',
+  url: "wss://example.com/ws",
   recoveryStrategy: RecoveryStrategy.RECONNECT_BACKOFF,
 };
 
 const manager = new ConnectionManager();
 const ws = new WebSocketConnection(wsConfig);
 
-manager.addEventHandler(evt => {
+manager.addEventHandler((evt) => {
   // route to telemetry/console/notification system
-  if (evt.severity === 'error') console.warn('connection error', evt);
+  if (evt.severity === "error") console.warn("connection error", evt);
 });
 
-manager.addConnection(ws, 'realtime');
+manager.addConnection(ws, "realtime");
 await manager.start();
 await ws.connect();
 
-await ws.send({ hello: 'world' });
+await ws.send({ hello: "world" });
 const msg = await ws.receive();
-console.log('received', msg);
+console.log("received", msg);
 
 const health = await manager.healthCheckAll();
 console.log(health);
@@ -279,7 +279,7 @@ console.log(health);
 Pool WebSockets
 
 ```ts
-import { WebSocketConnectionPool } from '~/src/connection';
+import { WebSocketConnectionPool } from "~/src/connection";
 
 const pool = new WebSocketConnectionPool(
   {
@@ -291,13 +291,13 @@ const pool = new WebSocketConnectionPool(
     healthCheckInterval: 30,
     cleanupInterval: 60,
   },
-  wsConfig
+  wsConfig,
 );
 
 await pool.start();
 const conn = await pool.acquire();
 if (conn) {
-  await conn.send({ type: 'ping' });
+  await conn.send({ type: "ping" });
   await pool.release(conn);
 }
 ```
@@ -305,12 +305,12 @@ if (conn) {
 Retry an arbitrary operation
 
 ```ts
-import { ExponentialBackoffRetry } from '~/src/connection';
+import { ExponentialBackoffRetry } from "~/src/connection";
 
 const retry = new ExponentialBackoffRetry(4, 1, 2); // up to 4 attempts: 1s, 2s, 4s, 8s
 const result = await retry.execute(async () => {
-  const res = await fetch('/api/fragile');
-  if (!res.ok) throw new Error('request failed');
+  const res = await fetch("/api/fragile");
+  if (!res.ok) throw new Error("request failed");
   return res.json();
 });
 ```
@@ -318,11 +318,11 @@ const result = await retry.execute(async () => {
 Build authorization headers
 
 ```ts
-import { ConnectionSecurity } from '~/src/connection';
+import { ConnectionSecurity } from "~/src/connection";
 
 const security = new ConnectionSecurity();
-const headers = security.createAuthorizationHeaders('token-123', undefined);
-await fetch('/api/secure', { headers });
+const headers = security.createAuthorizationHeaders("token-123", undefined);
+await fetch("/api/secure", { headers });
 ```
 
 ## Notes

@@ -12,7 +12,9 @@ export interface ContextMenuBackdropProps {
 /**
  * Backdrop component for context menu
  */
-export const ContextMenuBackdrop: Component<ContextMenuBackdropProps> = (props) => {
+export const ContextMenuBackdrop: Component<ContextMenuBackdropProps> = (
+  props,
+) => {
   return (
     <div
       class="reynard-context-menu__backdrop"

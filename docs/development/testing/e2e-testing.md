@@ -106,29 +106,29 @@ npm run e2e:docker:cpu:cleanup
 
 The `scripts/e2e.sh` script provides several convenient commands:
 
-| Command | Description |
-|---------|-------------|
-| `build` | Build all E2E Docker images |
-| `test` | Run all E2E tests |
-| `test-headed` | Run E2E tests with headed browsers (for debugging) |
-| `test-filter <pattern>` | Run tests matching a specific pattern |
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `build`                  | Build all E2E Docker images                                  |
+| `test`                   | Run all E2E tests                                            |
+| `test-headed`            | Run E2E tests with headed browsers (for debugging)           |
+| `test-filter <pattern>`  | Run tests matching a specific pattern                        |
 | `test-browser <browser>` | Run tests for a specific browser (chromium, firefox, webkit) |
-| `report` | Show test reports in browser |
-| `cleanup` | Clean up E2E environment and Docker resources |
+| `report`                 | Show test reports in browser                                 |
+| `cleanup`                | Clean up E2E environment and Docker resources                |
 
 ### CPU-Only Version Commands
 
 The `scripts/e2e-cpu.sh` script provides the same commands but for CPU-only testing:
 
-| Command | Description |
-|---------|-------------|
-| `build` | Build all E2E Docker images (CPU-only) |
-| `test` | Run all E2E tests (CPU-only) |
-| `test-headed` | Run E2E tests with headed browsers (for debugging) |
-| `test-filter <pattern>` | Run tests matching a specific pattern |
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `build`                  | Build all E2E Docker images (CPU-only)                       |
+| `test`                   | Run all E2E tests (CPU-only)                                 |
+| `test-headed`            | Run E2E tests with headed browsers (for debugging)           |
+| `test-filter <pattern>`  | Run tests matching a specific pattern                        |
 | `test-browser <browser>` | Run tests for a specific browser (chromium, firefox, webkit) |
-| `report` | Show test reports in browser |
-| `cleanup` | Clean up E2E environment and Docker resources |
+| `report`                 | Show test reports in browser                                 |
+| `cleanup`                | Clean up E2E environment and Docker resources                |
 
 ## Examples
 
@@ -246,14 +246,14 @@ docker system prune -f
 
 The following environment variables can be set to customize the E2E testing environment:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PLAYWRIGHT_BASE_URL` | `http://yipyap-frontend:5173` | Base URL for the frontend application |
-| `PLAYWRIGHT_API_BASE_URL` | `http://yipyap-backend:7000` | Base URL for the backend API |
-| `CI` | `true` | Set to true in CI environment |
-| `UID` | `1000` | User ID for Docker containers |
-| `GID` | `1000` | Group ID for Docker containers |
-| `CUDA_VISIBLE_DEVICES` | `""` | Disables CUDA in CPU-only version |
+| Variable                  | Default                       | Description                           |
+| ------------------------- | ----------------------------- | ------------------------------------- |
+| `PLAYWRIGHT_BASE_URL`     | `http://yipyap-frontend:5173` | Base URL for the frontend application |
+| `PLAYWRIGHT_API_BASE_URL` | `http://yipyap-backend:7000`  | Base URL for the backend API          |
+| `CI`                      | `true`                        | Set to true in CI environment         |
+| `UID`                     | `1000`                        | User ID for Docker containers         |
+| `GID`                     | `1000`                        | Group ID for Docker containers        |
+| `CUDA_VISIBLE_DEVICES`    | `""`                          | Disables CUDA in CPU-only version     |
 
 ### Playwright Configuration
 
@@ -289,10 +289,10 @@ test.describe("Feature Name", () => {
   test("should perform expected action", async ({ page }) => {
     // Navigate to the page
     await page.goto("/");
-    
+
     // Perform actions
     await page.click("button");
-    
+
     // Assert results
     await expect(page.locator(".result")).toContainText("Expected text");
   });
@@ -413,12 +413,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Build and run E2E tests (GPU)
         run: |
           ./scripts/e2e.sh build
           ./scripts/e2e.sh test
-      
+
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
@@ -430,12 +430,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Build and run E2E tests (CPU)
         run: |
           ./scripts/e2e-cpu.sh build
           ./scripts/e2e-cpu.sh test
-      
+
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
@@ -533,14 +533,14 @@ Set up alerts for:
 
 ## Version Comparison
 
-| Feature | GPU Version | CPU-Only Version |
-|---------|-------------|------------------|
-| Base Image | NVIDIA CUDA | Ubuntu 24.04 |
-| Machine Learning | GPU-accelerated | CPU-only |
-| Hardware Requirements | NVIDIA GPU + CUDA | Any machine |
-| Build Time | Longer (larger base image) | Faster (smaller base image) |
-| Model Performance | Faster inference | Slower inference |
-| Compatibility | Limited to CUDA systems | Universal |
-| Docker Image Size | Larger (~4-6GB) | Smaller (~2-3GB) |
+| Feature               | GPU Version                | CPU-Only Version            |
+| --------------------- | -------------------------- | --------------------------- |
+| Base Image            | NVIDIA CUDA                | Ubuntu 24.04                |
+| Machine Learning      | GPU-accelerated            | CPU-only                    |
+| Hardware Requirements | NVIDIA GPU + CUDA          | Any machine                 |
+| Build Time            | Longer (larger base image) | Faster (smaller base image) |
+| Model Performance     | Faster inference           | Slower inference            |
+| Compatibility         | Limited to CUDA systems    | Universal                   |
+| Docker Image Size     | Larger (~4-6GB)            | Smaller (~2-3GB)            |
 
 Choose the version that best fits your testing environment and requirements.

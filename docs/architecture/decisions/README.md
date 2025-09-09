@@ -64,12 +64,15 @@ When making significant architectural decisions:
 ## Consequences
 
 ### Positive
+
 [List positive outcomes]
 
 ### Negative
+
 [List negative outcomes]
 
 ### Risks and Mitigations
+
 [Identify risks and how they're mitigated]
 
 ## Compliance

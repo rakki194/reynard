@@ -3,7 +3,11 @@
  * Orchestrates the initialization and management of cluster visualizations
  */
 
-import { ClusterRenderer, ThreeJSSceneManager, ThemeColorManager } from './index';
+import {
+  ClusterRenderer,
+  ThreeJSSceneManager,
+  ThemeColorManager,
+} from "./index";
 
 export interface ClusterVisualizationConfig {
   width: number;
@@ -24,28 +28,28 @@ export class ClusterVisualizationManager {
   }
 
   async initialize() {
-    const THREE = await import('three');
-    
+    const THREE = await import("three");
+
     // Initialize theme manager
     this.themeManager = new ThemeColorManager({ theme: this.config.theme });
-    
+
     // Initialize scene manager
     this.sceneManager = new ThreeJSSceneManager({
       width: this.config.width,
       height: this.config.height,
       backgroundColor: this.themeManager.getBackgroundColor(),
-      container: this.config.container
+      container: this.config.container,
     });
 
     const { scene } = await this.sceneManager.initialize(THREE as any);
-    
+
     // Initialize cluster renderer
     this.clusterRenderer = new ClusterRenderer({
       theme: this.config.theme,
       clusterCount: this.config.clusterCount,
       pointCount: 50,
       scene,
-      THREE
+      THREE,
     });
 
     this.clusterRenderer.createClusters({
@@ -53,7 +57,7 @@ export class ClusterVisualizationManager {
       clusterCount: this.config.clusterCount,
       pointCount: 50,
       scene,
-      THREE
+      THREE,
     });
 
     // Start animation
@@ -67,20 +71,24 @@ export class ClusterVisualizationManager {
   }
 
   updateTheme(newTheme: string) {
-    if (!this.sceneManager || !this.clusterRenderer || !this.themeManager) return;
+    if (!this.sceneManager || !this.clusterRenderer || !this.themeManager)
+      return;
 
-    import('three').then(THREE => {
+    import("three").then((THREE) => {
       this.themeManager!.updateTheme(newTheme);
-      
+
       this.clusterRenderer!.createClusters({
         theme: newTheme,
         clusterCount: this.config.clusterCount,
         pointCount: 50,
         scene: this.sceneManager!.scene,
-        THREE
+        THREE,
       });
 
-      this.sceneManager!.updateBackgroundColor(THREE as any, this.themeManager!.getBackgroundColor());
+      this.sceneManager!.updateBackgroundColor(
+        THREE as any,
+        this.themeManager!.getBackgroundColor(),
+      );
     });
   }
 

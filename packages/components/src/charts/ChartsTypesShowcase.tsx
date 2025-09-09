@@ -33,7 +33,9 @@ interface ChartsTypesShowcaseProps {
   selectedTheme: string;
 }
 
-export const ChartsTypesShowcase: Component<ChartsTypesShowcaseProps> = (props) => {
+export const ChartsTypesShowcase: Component<ChartsTypesShowcaseProps> = (
+  props,
+) => {
   return (
     <div class="chart-types-section">
       <h2>Chart Types</h2>
@@ -84,11 +86,13 @@ export const ChartsTypesShowcase: Component<ChartsTypesShowcaseProps> = (props) 
           <h3>Pie Chart</h3>
           <Chart
             type="pie"
-            labels={['Desktop', 'Mobile', 'Tablet']}
-            datasets={[{
-              label: 'Users',
-              data: [60, 30, 10],
-            }]}
+            labels={["Desktop", "Mobile", "Tablet"]}
+            datasets={[
+              {
+                label: "Users",
+                data: [60, 30, 10],
+              },
+            ]}
             width={300}
             height={200}
             title="User Devices"

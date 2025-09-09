@@ -53,23 +53,23 @@ Created comprehensive positional embedding implementations:
 class SineAbsolutePositionEmbedding2D(nn.Module):
     """
     Sine-based 2D absolute positional embedding.
-    
+
     Provides sine-based positional embeddings for 2D spatial features,
     similar to the original Transformer positional embeddings but
     adapted for 2D spatial data.
     """
-    
+
     def __init__(self, embedding_dim: int, num_pos: int):
         super().__init__()
         self.embedding_dim = embedding_dim
         self.num_pos = num_pos
         self.register_buffer('pos_embed', self._create_2d_pos_embed())
-    
+
     def _create_2d_pos_embed(self):
         """Create 2D positional embeddings using sine/cosine functions."""
         # Implementation creates grid-based sine/cosine embeddings
         # for both row and column positions
-    
+
     def forward(self, x):
         """Apply positional embeddings to input tensor."""
         # Implementation adds positional embeddings to 2D spatial features
@@ -79,21 +79,21 @@ class SineAbsolutePositionEmbedding2D(nn.Module):
 class PositionalEmbeddingSine1D(nn.Module):
     """
     Sine-based 1D positional embedding for temporal sequences.
-    
+
     Provides sine-based positional embeddings for 1D temporal sequences,
     similar to the original Transformer positional embeddings.
     """
-    
+
     def __init__(self, embed_dim: int, max_seq_len: int):
         super().__init__()
         self.embed_dim = embed_dim
         self.max_seq_len = max_seq_len
         self.register_buffer('pos_embed', self._create_pos_embed())
-    
+
     def _create_pos_embed(self):
         """Create 1D positional embeddings using sine/cosine functions."""
         # Implementation creates sine/cosine embeddings for temporal sequences
-    
+
     def forward(self, x):
         """Apply positional embeddings to input tensor."""
         # Implementation adds positional embeddings to 1D sequences

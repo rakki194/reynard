@@ -1,22 +1,22 @@
 /**
  * PAW Memory Pool Optimization System
- * 
+ *
  * Eliminates allocation overhead by pre-allocating and reusing data structures.
  * This addresses the primary performance bottleneck identified in PAW empirical analysis.
- * 
+ *
  * @module algorithms/memoryPool
  */
 
-import { SpatialHash } from '../spatial-hash/spatial-hash-core';
-import { UnionFind } from '../union-find/union-find-core';
-import type { AABB, CollisionPair } from '../geometry/collision/aabb-types';
+import { SpatialHash } from "../spatial-hash/spatial-hash-core";
+import { UnionFind } from "../union-find/union-find-core";
+import type { AABB, CollisionPair } from "../geometry/collision/aabb-types";
 
 export interface MemoryPoolConfig {
   spatialHashPoolSize: number;
   unionFindPoolSize: number;
   collisionArrayPoolSize: number;
   enablePoolReuse: boolean;
-  poolGrowthStrategy: 'linear' | 'exponential' | 'adaptive';
+  poolGrowthStrategy: "linear" | "exponential" | "adaptive";
   maxPoolSize: number;
   enableStatistics: boolean;
 }
@@ -70,7 +70,7 @@ export class PAWMemoryPool {
       unionFindPoolSize: 20,
       collisionArrayPoolSize: 50,
       enablePoolReuse: true,
-      poolGrowthStrategy: 'adaptive',
+      poolGrowthStrategy: "adaptive",
       maxPoolSize: 100,
       enableStatistics: true,
       ...config,
@@ -107,7 +107,11 @@ export class PAWMemoryPool {
     // Initialize union-find pool with common sizes
     const commonSizes = [10, 25, 50, 100, 200, 500];
     for (const size of commonSizes) {
-      for (let i = 0; i < Math.ceil(this.config.unionFindPoolSize / commonSizes.length); i++) {
+      for (
+        let i = 0;
+        i < Math.ceil(this.config.unionFindPoolSize / commonSizes.length);
+        i++
+      ) {
         this.unionFindPool.push({
           unionFind: new UnionFind(size),
           isInUse: false,
@@ -134,31 +138,31 @@ export class PAWMemoryPool {
    */
   getSpatialHash(config?: any): SpatialHash {
     const startTime = performance.now();
-    
+
     // Try to find an available pooled instance
-    let pooled = this.spatialHashPool.find(p => !p.isInUse);
-    
+    let pooled = this.spatialHashPool.find((p) => !p.isInUse);
+
     if (pooled) {
       // Reuse existing instance
       pooled.isInUse = true;
       pooled.lastUsed = Date.now();
       pooled.allocationCount++;
       this.stats.poolHits++;
-      
+
       // Clear and reconfigure if needed
       pooled.hash.clear();
       if (config) {
         // Note: SpatialHash doesn't support reconfiguration, so we use default
         // In a full implementation, we'd need to support reconfiguration
       }
-      
+
       this.updateStats(startTime, true);
       return pooled.hash;
     } else {
       // Pool miss - create new instance
       this.stats.poolMisses++;
       const newHash = new SpatialHash(config || { cellSize: 100 });
-      
+
       // Add to pool if we haven't exceeded max size
       if (this.spatialHashPool.length < this.config.maxPoolSize) {
         this.spatialHashPool.push({
@@ -168,7 +172,7 @@ export class PAWMemoryPool {
           allocationCount: 1,
         });
       }
-      
+
       this.updateStats(startTime, false);
       return newHash;
     }
@@ -179,27 +183,27 @@ export class PAWMemoryPool {
    */
   getUnionFind(size: number): UnionFind {
     const startTime = performance.now();
-    
+
     // Try to find an available pooled instance of the right size
-    let pooled = this.unionFindPool.find(p => !p.isInUse && p.size === size);
-    
+    let pooled = this.unionFindPool.find((p) => !p.isInUse && p.size === size);
+
     if (pooled) {
       // Reuse existing instance
       pooled.isInUse = true;
       pooled.lastUsed = Date.now();
       pooled.allocationCount++;
       this.stats.poolHits++;
-      
+
       // Reset union-find state
       pooled.unionFind = new UnionFind(size);
-      
+
       this.updateStats(startTime, true);
       return pooled.unionFind;
     } else {
       // Pool miss - create new instance
       this.stats.poolMisses++;
       const newUnionFind = new UnionFind(size);
-      
+
       // Add to pool if we haven't exceeded max size
       if (this.unionFindPool.length < this.config.maxPoolSize) {
         this.unionFindPool.push({
@@ -210,7 +214,7 @@ export class PAWMemoryPool {
           allocationCount: 1,
         });
       }
-      
+
       this.updateStats(startTime, false);
       return newUnionFind;
     }
@@ -221,27 +225,27 @@ export class PAWMemoryPool {
    */
   getCollisionArray(): CollisionPair[] {
     const startTime = performance.now();
-    
+
     // Try to find an available pooled array
-    let pooled = this.collisionArrayPool.find(p => !p.isInUse);
-    
+    let pooled = this.collisionArrayPool.find((p) => !p.isInUse);
+
     if (pooled) {
       // Reuse existing array
       pooled.isInUse = true;
       pooled.lastUsed = Date.now();
       pooled.allocationCount++;
       this.stats.poolHits++;
-      
+
       // Clear array for reuse
       pooled.array.length = 0;
-      
+
       this.updateStats(startTime, true);
       return pooled.array;
     } else {
       // Pool miss - create new array
       this.stats.poolMisses++;
       const newArray: CollisionPair[] = [];
-      
+
       // Add to pool if we haven't exceeded max size
       if (this.collisionArrayPool.length < this.config.maxPoolSize) {
         this.collisionArrayPool.push({
@@ -251,7 +255,7 @@ export class PAWMemoryPool {
           allocationCount: 1,
         });
       }
-      
+
       this.updateStats(startTime, false);
       return newArray;
     }
@@ -261,7 +265,7 @@ export class PAWMemoryPool {
    * Return a spatial hash to the pool
    */
   returnSpatialHash(hash: SpatialHash): void {
-    const pooled = this.spatialHashPool.find(p => p.hash === hash);
+    const pooled = this.spatialHashPool.find((p) => p.hash === hash);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -273,7 +277,7 @@ export class PAWMemoryPool {
    * Return a union-find to the pool
    */
   returnUnionFind(unionFind: UnionFind): void {
-    const pooled = this.unionFindPool.find(p => p.unionFind === unionFind);
+    const pooled = this.unionFindPool.find((p) => p.unionFind === unionFind);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -285,7 +289,7 @@ export class PAWMemoryPool {
    * Return a collision array to the pool
    */
   returnCollisionArray(array: CollisionPair[]): void {
-    const pooled = this.collisionArrayPool.find(p => p.array === array);
+    const pooled = this.collisionArrayPool.find((p) => p.array === array);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -299,17 +303,18 @@ export class PAWMemoryPool {
   private updateStats(startTime: number, wasPoolHit: boolean): void {
     const allocationTime = performance.now() - startTime;
     this.stats.totalAllocations++;
-    this.stats.averageAllocationTime = 
-      (this.stats.averageAllocationTime * (this.stats.totalAllocations - 1) + allocationTime) / 
+    this.stats.averageAllocationTime =
+      (this.stats.averageAllocationTime * (this.stats.totalAllocations - 1) +
+        allocationTime) /
       this.stats.totalAllocations;
-    
+
     if (wasPoolHit) {
       this.stats.memorySaved += this.estimateMemorySavings();
     }
-    
+
     this.stats.peakPoolUsage = Math.max(
       this.stats.peakPoolUsage,
-      this.getCurrentPoolUsage()
+      this.getCurrentPoolUsage(),
     );
   }
 
@@ -321,7 +326,7 @@ export class PAWMemoryPool {
     const spatialHashSize = 1024; // bytes
     const unionFindSize = 256; // bytes
     const collisionArraySize = 64; // bytes
-    
+
     return spatialHashSize + unionFindSize + collisionArraySize;
   }
 
@@ -329,10 +334,14 @@ export class PAWMemoryPool {
    * Get current pool usage statistics
    */
   getCurrentPoolUsage(): number {
-    const spatialHashInUse = this.spatialHashPool.filter(p => p.isInUse).length;
-    const unionFindInUse = this.unionFindPool.filter(p => p.isInUse).length;
-    const collisionArrayInUse = this.collisionArrayPool.filter(p => p.isInUse).length;
-    
+    const spatialHashInUse = this.spatialHashPool.filter(
+      (p) => p.isInUse,
+    ).length;
+    const unionFindInUse = this.unionFindPool.filter((p) => p.isInUse).length;
+    const collisionArrayInUse = this.collisionArrayPool.filter(
+      (p) => p.isInUse,
+    ).length;
+
     return spatialHashInUse + unionFindInUse + collisionArrayInUse;
   }
 
@@ -354,18 +363,18 @@ export class PAWMemoryPool {
     return {
       spatialHashPool: {
         total: this.spatialHashPool.length,
-        inUse: this.spatialHashPool.filter(p => p.isInUse).length,
-        available: this.spatialHashPool.filter(p => !p.isInUse).length,
+        inUse: this.spatialHashPool.filter((p) => p.isInUse).length,
+        available: this.spatialHashPool.filter((p) => !p.isInUse).length,
       },
       unionFindPool: {
         total: this.unionFindPool.length,
-        inUse: this.unionFindPool.filter(p => p.isInUse).length,
-        available: this.unionFindPool.filter(p => !p.isInUse).length,
+        inUse: this.unionFindPool.filter((p) => p.isInUse).length,
+        available: this.unionFindPool.filter((p) => !p.isInUse).length,
       },
       collisionArrayPool: {
         total: this.collisionArrayPool.length,
-        inUse: this.collisionArrayPool.filter(p => p.isInUse).length,
-        available: this.collisionArrayPool.filter(p => !p.isInUse).length,
+        inUse: this.collisionArrayPool.filter((p) => p.isInUse).length,
+        available: this.collisionArrayPool.filter((p) => !p.isInUse).length,
       },
     };
   }
@@ -387,7 +396,7 @@ export class PAWMemoryPool {
     const maxIdleTime = 300000; // 5 minutes
 
     // Clean up unused spatial hash pools
-    this.spatialHashPool = this.spatialHashPool.filter(p => {
+    this.spatialHashPool = this.spatialHashPool.filter((p) => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -395,7 +404,7 @@ export class PAWMemoryPool {
     });
 
     // Clean up unused union-find pools
-    this.unionFindPool = this.unionFindPool.filter(p => {
+    this.unionFindPool = this.unionFindPool.filter((p) => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -403,7 +412,7 @@ export class PAWMemoryPool {
     });
 
     // Clean up unused collision array pools
-    this.collisionArrayPool = this.collisionArrayPool.filter(p => {
+    this.collisionArrayPool = this.collisionArrayPool.filter((p) => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -418,7 +427,7 @@ export class PAWMemoryPool {
     if (this.poolCleanupInterval) {
       clearInterval(this.poolCleanupInterval);
     }
-    
+
     this.spatialHashPool = [];
     this.unionFindPool = [];
     this.collisionArrayPool = [];
@@ -433,7 +442,7 @@ export const globalPAWMemoryPool = new PAWMemoryPool({
   unionFindPoolSize: 50,
   collisionArrayPoolSize: 100,
   enablePoolReuse: true,
-  poolGrowthStrategy: 'adaptive',
+  poolGrowthStrategy: "adaptive",
   maxPoolSize: 200,
   enableStatistics: true,
 });

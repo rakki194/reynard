@@ -57,21 +57,45 @@ export const ThemeCard: Component<ThemeCardProps> = (props) => {
   createEffect(() => {
     const cardElement = document.getElementById(cardElementId);
     if (cardElement) {
-      cardElement.style.setProperty('--preview-primary-color', props.themeConfig.colors.primary);
-      cardElement.style.setProperty('--preview-accent-color', props.themeConfig.colors.accent);
-      cardElement.style.setProperty('--preview-background-color', props.themeConfig.colors.background);
-      cardElement.style.setProperty('--preview-surface-color', props.themeConfig.colors.surface);
-      cardElement.style.setProperty('--preview-text-color', props.themeConfig.colors.text);
-      cardElement.style.setProperty('--preview-border-color', props.themeConfig.colors.border);
-      cardElement.style.setProperty('--preview-dot-color', props.themeConfig.colors.text);
-      cardElement.style.setProperty('--preview-bg', props.themeConfig.colors.background);
+      cardElement.style.setProperty(
+        "--preview-primary-color",
+        props.themeConfig.colors.primary,
+      );
+      cardElement.style.setProperty(
+        "--preview-accent-color",
+        props.themeConfig.colors.accent,
+      );
+      cardElement.style.setProperty(
+        "--preview-background-color",
+        props.themeConfig.colors.background,
+      );
+      cardElement.style.setProperty(
+        "--preview-surface-color",
+        props.themeConfig.colors.surface,
+      );
+      cardElement.style.setProperty(
+        "--preview-text-color",
+        props.themeConfig.colors.text,
+      );
+      cardElement.style.setProperty(
+        "--preview-border-color",
+        props.themeConfig.colors.border,
+      );
+      cardElement.style.setProperty(
+        "--preview-dot-color",
+        props.themeConfig.colors.text,
+      );
+      cardElement.style.setProperty(
+        "--preview-bg",
+        props.themeConfig.colors.background,
+      );
     }
   });
 
   return (
-    <div 
+    <div
       id={cardElementId}
-      class={`theme-card ${props.isActive ? 'active' : ''} ${props.isPreviewing ? 'previewing' : ''}`}
+      class={`theme-card ${props.isActive ? "active" : ""} ${props.isPreviewing ? "previewing" : ""}`}
       onClick={() => props.onThemeChange(props.themeConfig.name)}
       onMouseEnter={() => props.onPreviewTheme(props.themeConfig.name)}
       onMouseLeave={() => props.onStopPreview()}

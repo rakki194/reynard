@@ -16,15 +16,15 @@ export function getTurkishPlural(
     singular: string;
     pluralLar: string; // for back vowels
     pluralLer: string; // for front vowels
-  }
+  },
 ): string {
   // Back vowels: a, ı, o, u
-  const backVowels = ['a', 'ı', 'o', 'u'];
+  const backVowels = ["a", "ı", "o", "u"];
   // Front vowels: e, i, ö, ü
-  const frontVowels = ['e', 'i', 'ö', 'ü'];
+  const frontVowels = ["e", "i", "ö", "ü"];
 
   // Find the last vowel in the word
-  const letters = word.toLowerCase().split('');
+  const letters = word.toLowerCase().split("");
   for (let i = letters.length - 1; i >= 0; i--) {
     if (backVowels.includes(letters[i])) {
       return forms.pluralLar;

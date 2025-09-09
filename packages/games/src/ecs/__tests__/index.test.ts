@@ -1,23 +1,23 @@
 /**
  * @fileoverview Test suite index - runs all ECS tests and provides test utilities.
- * 
+ *
  * This file serves as the main entry point for all ECS tests and provides
  * common test utilities and setup functions.
- * 
+ *
  * @author Reynard ECS Team
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from "vitest";
 
 // Import all test modules
-import './core-types.test';
-import './world.test';
-import './query.test';
-import './system.test';
-import './archetype.test';
-import './change-detection.test';
-import './integration.test';
+import "./core-types.test";
+import "./world.test";
+import "./query.test";
+import "./system.test";
+import "./archetype.test";
+import "./change-detection.test";
+import "./integration.test";
 
 // Test utilities and helpers
 export class TestUtils {
@@ -30,7 +30,7 @@ export class TestUtils {
     return {
       world: null,
       componentTypes: {},
-      resourceTypes: {}
+      resourceTypes: {},
     };
   }
 
@@ -62,8 +62,8 @@ export class TestUtils {
   }
 }
 
-describe('ECS Test Suite', () => {
-  it('should have all test modules loaded', () => {
+describe("ECS Test Suite", () => {
+  it("should have all test modules loaded", () => {
     // This test ensures all test modules are properly imported
     expect(TestUtils).toBeDefined();
     expect(TestUtils.createTestWorld).toBeDefined();
@@ -72,7 +72,7 @@ describe('ECS Test Suite', () => {
     expect(TestUtils.assertPerformance).toBeDefined();
   });
 
-  it('should provide test utilities', () => {
+  it("should provide test utilities", () => {
     // Test that utilities work correctly
     const duration = TestUtils.measurePerformance(() => {
       // Simple operation
@@ -81,7 +81,7 @@ describe('ECS Test Suite', () => {
         sum += i;
       }
     });
-    
+
     expect(duration).toBeGreaterThan(0);
     expect(duration).toBeLessThan(100); // Should complete quickly
   });

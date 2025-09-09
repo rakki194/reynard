@@ -98,11 +98,11 @@
   .renderer-info {
     grid-template-columns: 1fr;
   }
-  
+
   .renderer-controls {
     flex-direction: column;
   }
-  
+
   .renderer-stats {
     flex-direction: column;
     gap: 8px;
@@ -114,16 +114,16 @@
   .base-point-cloud-renderer {
     border-color: #000;
   }
-  
+
   .renderer-info,
   .renderer-stats {
     border-color: #000;
   }
-  
+
   .control-button {
     border-color: #000;
   }
-  
+
   .control-button.active {
     background: #000;
     border-color: #000;

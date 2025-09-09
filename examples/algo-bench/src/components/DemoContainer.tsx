@@ -34,13 +34,13 @@ export const DemoContainer: Component<DemoContainerProps> = (props) => {
           ← Back to Demos
         </button>
         <h2 class="demo-title">
-          {props.demo.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {props.demo
+            .replace("-", " ")
+            .replace(/\b\w/g, (l) => l.toUpperCase())}
         </h2>
       </div>
-      
-      <div class="demo-content">
-        {renderDemo()}
-      </div>
+
+      <div class="demo-content">{renderDemo()}</div>
     </div>
   );
 };

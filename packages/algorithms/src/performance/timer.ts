@@ -21,7 +21,7 @@ export class PerformanceTimer {
 
   stop(): number {
     if (!this.isRunning) {
-      throw new Error('Timer is not running');
+      throw new Error("Timer is not running");
     }
     this.endTime = performance.now();
     this.isRunning = false;

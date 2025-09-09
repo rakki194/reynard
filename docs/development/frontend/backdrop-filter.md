@@ -61,9 +61,9 @@ Theme-specific backdrop filters should be defined in the theme's scope and shoul
 
 ```css
 :root[data-theme="christmas"] {
-    .modal-header {
-        backdrop-filter: blur(10px);
-    }
+  .modal-header {
+    backdrop-filter: blur(10px);
+  }
 }
 ```
 
@@ -75,7 +75,7 @@ Always check for support using `@supports` and provide graceful fallbacks:
 
 ```css
 @supports (backdrop-filter: blur(10px)) {
-    /* backdrop-filter styles */
+  /* backdrop-filter styles */
 }
 ```
 

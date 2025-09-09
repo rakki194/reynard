@@ -1,12 +1,15 @@
 /**
  * Image metadata extractor
- * 
+ *
  * Handles metadata extraction for image files including EXIF data,
  * animation detection, and basic image properties.
  */
 
 import { ImageMetadata, ExifData } from "../../types";
-import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
+import {
+  BaseMetadataExtractor,
+  MetadataExtractionOptions,
+} from "./BaseMetadataExtractor";
 
 export class ImageMetadataExtractor extends BaseMetadataExtractor {
   /**

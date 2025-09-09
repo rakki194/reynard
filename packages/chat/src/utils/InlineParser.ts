@@ -47,7 +47,7 @@ export class InlineParser extends BaseMarkdownParser {
     this.incrementLine();
 
     // Set line number for all processors
-    Object.values(this.processors).forEach(processor => {
+    Object.values(this.processors).forEach((processor) => {
       processor.setLineNumber(this.state.currentLine);
     });
 
@@ -59,11 +59,13 @@ export class InlineParser extends BaseMarkdownParser {
 
     // If the line has content after processing, add as paragraph
     if (processedLine.trim()) {
-      this.addNode(this.createNode({
-        type: "paragraph",
-        content: processedLine,
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "paragraph",
+          content: processedLine,
+          line: this.state.currentLine,
+        }),
+      );
       return true;
     }
 
@@ -113,8 +115,13 @@ export class InlineParser extends BaseMarkdownParser {
    * Collect nodes from all processors
    */
   private collectProcessorNodes(): void {
-    const nodeProcessors: NodeProcessor[] = [this.processors.math, this.processors.code, this.processors.media, this.processors.link];
-    
+    const nodeProcessors: NodeProcessor[] = [
+      this.processors.math,
+      this.processors.code,
+      this.processors.media,
+      this.processors.link,
+    ];
+
     for (const processor of nodeProcessors) {
       const nodes = processor.getNodes();
       this.state.nodes.push(...nodes);

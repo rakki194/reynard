@@ -1,6 +1,6 @@
 // System conditions for conditional execution
 
-import { World, Component, ComponentType } from './types';
+import { World, Component, ComponentType } from "./types";
 
 /**
  * A system condition that determines if a system should run.
@@ -16,12 +16,12 @@ export interface SystemCondition {
  */
 export function createCondition(
   name: string,
-  run: (world: World) => boolean
+  run: (world: World) => boolean,
 ): SystemCondition {
   return {
     __condition: true,
     name,
-    run
+    run,
   };
 }
 
@@ -57,7 +57,10 @@ export const Conditions = {
   resourceEquals<T>(resourceType: any, value: T): SystemCondition {
     return createCondition(`resource_equals_${resourceType.name}`, (world) => {
       const resource = world.getResource(resourceType);
-      return resource !== undefined && JSON.stringify(resource) === JSON.stringify(value);
+      return (
+        resource !== undefined &&
+        JSON.stringify(resource) === JSON.stringify(value)
+      );
     });
   },
 
@@ -74,29 +77,42 @@ export const Conditions = {
    * Runs the system when a resource does not exist.
    */
   resourceNotExists<T>(resourceType: any): SystemCondition {
-    return createCondition(`resource_not_exists_${resourceType.name}`, (world) => {
-      return !world.hasResource(resourceType);
-    });
+    return createCondition(
+      `resource_not_exists_${resourceType.name}`,
+      (world) => {
+        return !world.hasResource(resourceType);
+      },
+    );
   },
 
   /**
    * Runs the system when any entity with specific components exists.
    */
-  anyEntityWith<T extends Component[]>(...componentTypes: ComponentType<T[number]>[]): SystemCondition {
-    return createCondition(`any_entity_with_${componentTypes.map(ct => ct.name).join('_')}`, (world) => {
-      const query = world.query(...componentTypes);
-      return query.length > 0;
-    });
+  anyEntityWith<T extends Component[]>(
+    ...componentTypes: ComponentType<T[number]>[]
+  ): SystemCondition {
+    return createCondition(
+      `any_entity_with_${componentTypes.map((ct) => ct.name).join("_")}`,
+      (world) => {
+        const query = world.query(...componentTypes);
+        return query.length > 0;
+      },
+    );
   },
 
   /**
    * Runs the system when no entities with specific components exist.
    */
-  noEntityWith<T extends Component[]>(...componentTypes: ComponentType<T[number]>[]): SystemCondition {
-    return createCondition(`no_entity_with_${componentTypes.map(ct => ct.name).join('_')}`, (world) => {
-      const query = world.query(...componentTypes);
-      return query.length === 0;
-    });
+  noEntityWith<T extends Component[]>(
+    ...componentTypes: ComponentType<T[number]>[]
+  ): SystemCondition {
+    return createCondition(
+      `no_entity_with_${componentTypes.map((ct) => ct.name).join("_")}`,
+      (world) => {
+        const query = world.query(...componentTypes);
+        return query.length === 0;
+      },
+    );
   },
 
   /**
@@ -112,9 +128,12 @@ export const Conditions = {
    * Runs the system when entity count is greater than a threshold.
    */
   entityCountGreaterThan(threshold: number): SystemCondition {
-    return createCondition(`entity_count_greater_than_${threshold}`, (world) => {
-      return world.getEntityCount() > threshold;
-    });
+    return createCondition(
+      `entity_count_greater_than_${threshold}`,
+      (world) => {
+        return world.getEntityCount() > threshold;
+      },
+    );
   },
 
   /**
@@ -203,7 +222,7 @@ export const Conditions = {
       // For now, always return false
       return false;
     });
-  }
+  },
 };
 
 /**
@@ -214,18 +233,24 @@ export const ConditionCombinators = {
    * Combines conditions with AND logic.
    */
   and(...conditions: SystemCondition[]): SystemCondition {
-    return createCondition(`and_${conditions.map(c => c.name).join('_')}`, (world) => {
-      return conditions.every(condition => condition.run(world));
-    });
+    return createCondition(
+      `and_${conditions.map((c) => c.name).join("_")}`,
+      (world) => {
+        return conditions.every((condition) => condition.run(world));
+      },
+    );
   },
 
   /**
    * Combines conditions with OR logic.
    */
   or(...conditions: SystemCondition[]): SystemCondition {
-    return createCondition(`or_${conditions.map(c => c.name).join('_')}`, (world) => {
-      return conditions.some(condition => condition.run(world));
-    });
+    return createCondition(
+      `or_${conditions.map((c) => c.name).join("_")}`,
+      (world) => {
+        return conditions.some((condition) => condition.run(world));
+      },
+    );
   },
 
   /**
@@ -241,9 +266,12 @@ export const ConditionCombinators = {
    * Combines conditions with XOR logic.
    */
   xor(...conditions: SystemCondition[]): SystemCondition {
-    return createCondition(`xor_${conditions.map(c => c.name).join('_')}`, (world) => {
-      const results = conditions.map(condition => condition.run(world));
-      return results.filter(Boolean).length === 1;
-    });
-  }
+    return createCondition(
+      `xor_${conditions.map((c) => c.name).join("_")}`,
+      (world) => {
+        const results = conditions.map((condition) => condition.run(world));
+        return results.filter(Boolean).length === 1;
+      },
+    );
+  },
 };

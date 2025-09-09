@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from 'solid-js';
+import { createSignal, onCleanup, onMount } from "solid-js";
 
 export interface PerformanceMetrics {
   // Operation metrics
@@ -40,8 +40,8 @@ export interface PerformanceMetrics {
 }
 
 export interface PerformanceWarning {
-  type: 'memory' | 'css' | 'dom' | 'rendering' | 'freeze';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type: "memory" | "css" | "dom" | "rendering" | "freeze";
+  severity: "low" | "medium" | "high" | "critical";
   message: string;
   value: number;
   threshold: number;
@@ -75,29 +75,29 @@ export interface PerformanceDebugger {
 
 /**
  * Performance monitoring composable for analyzing application performance
- * 
+ *
  * @param options Configuration options for performance monitoring
  * @returns Performance debugger with monitoring capabilities
  */
-export function usePerformanceMonitor(options: {
-  thresholds?: {
-    criticalOperationTime?: number;
-    highOperationTime?: number;
-    criticalDomUpdateTime?: number;
-    highDomUpdateTime?: number;
-    criticalStyleApplicationTime?: number;
-    highStyleApplicationTime?: number;
-    criticalFrameTime?: number;
-    highFrameTime?: number;
-    criticalMemoryUsage?: number;
-    highMemoryUsage?: number;
-    criticalFreezeTime?: number;
-    highFreezeTime?: number;
-  };
-} = {}): PerformanceDebugger {
-  const {
-    thresholds = {}
-  } = options;
+export function usePerformanceMonitor(
+  options: {
+    thresholds?: {
+      criticalOperationTime?: number;
+      highOperationTime?: number;
+      criticalDomUpdateTime?: number;
+      highDomUpdateTime?: number;
+      criticalStyleApplicationTime?: number;
+      highStyleApplicationTime?: number;
+      criticalFrameTime?: number;
+      highFrameTime?: number;
+      criticalMemoryUsage?: number;
+      highMemoryUsage?: number;
+      criticalFreezeTime?: number;
+      highFreezeTime?: number;
+    };
+  } = {},
+): PerformanceDebugger {
+  const { thresholds = {} } = options;
 
   // Performance thresholds with defaults
   const THRESHOLDS = {
@@ -105,7 +105,8 @@ export function usePerformanceMonitor(options: {
     HIGH_OPERATION_TIME: thresholds.highOperationTime ?? 1000, // 1 second
     CRITICAL_DOM_UPDATE_TIME: thresholds.criticalDomUpdateTime ?? 100, // 100ms
     HIGH_DOM_UPDATE_TIME: thresholds.highDomUpdateTime ?? 50, // 50ms
-    CRITICAL_STYLE_APPLICATION_TIME: thresholds.criticalStyleApplicationTime ?? 50, // 50ms
+    CRITICAL_STYLE_APPLICATION_TIME:
+      thresholds.criticalStyleApplicationTime ?? 50, // 50ms
     HIGH_STYLE_APPLICATION_TIME: thresholds.highStyleApplicationTime ?? 20, // 20ms
     CRITICAL_FRAME_TIME: thresholds.criticalFrameTime ?? 32, // 32ms (30fps)
     HIGH_FRAME_TIME: thresholds.highFrameTime ?? 16, // 16ms (60fps)
@@ -115,7 +116,8 @@ export function usePerformanceMonitor(options: {
     HIGH_FREEZE_TIME: thresholds.highFreezeTime ?? 100, // 100ms
   };
 
-  const [currentMetrics, setCurrentMetrics] = createSignal<PerformanceMetrics | null>(null);
+  const [currentMetrics, setCurrentMetrics] =
+    createSignal<PerformanceMetrics | null>(null);
   const [warnings, setWarnings] = createSignal<PerformanceWarning[]>([]);
   const [isMonitoring, setIsMonitoring] = createSignal(false);
 
@@ -129,16 +131,19 @@ export function usePerformanceMonitor(options: {
   let totalBrowserFreezeTime = 0;
 
   const addWarning = (warning: PerformanceWarning) => {
-    setWarnings(prev => [...prev, warning]);
-    console.warn(`[Performance Warning] ${warning.type.toUpperCase()}: ${warning.message}`, {
-      value: warning.value,
-      threshold: warning.threshold,
-      severity: warning.severity,
-    });
+    setWarnings((prev) => [...prev, warning]);
+    console.warn(
+      `[Performance Warning] ${warning.type.toUpperCase()}: ${warning.message}`,
+      {
+        value: warning.value,
+        threshold: warning.threshold,
+        severity: warning.severity,
+      },
+    );
   };
 
   const measureMemoryUsage = async (): Promise<number> => {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       const memoryInfo = (performance as any).memory;
       return memoryInfo.usedJSHeapSize;
     }
@@ -155,7 +160,7 @@ export function usePerformanceMonitor(options: {
   const checkBrowserResponsiveness = async (): Promise<number> => {
     const start = performance.now();
 
-    await new Promise(resolve => {
+    await new Promise((resolve) => {
       const measureStart = performance.now();
       setTimeout(() => {
         const delay = performance.now() - measureStart;
@@ -168,7 +173,7 @@ export function usePerformanceMonitor(options: {
 
   const startProfiling = (operationType: string, datasetSize: number) => {
     if (profiling) {
-      console.warn('Performance profiling already in progress');
+      console.warn("Performance profiling already in progress");
       return;
     }
 
@@ -190,9 +195,10 @@ export function usePerformanceMonitor(options: {
         if (freezeTime > THRESHOLDS.HIGH_FREEZE_TIME) {
           totalBrowserFreezeTime += freezeTime;
 
-          const severity = freezeTime > THRESHOLDS.CRITICAL_FREEZE_TIME ? 'critical' : 'high';
+          const severity =
+            freezeTime > THRESHOLDS.CRITICAL_FREEZE_TIME ? "critical" : "high";
           addWarning({
-            type: 'freeze',
+            type: "freeze",
             severity,
             message: `Browser freeze detected: ${freezeTime.toFixed(2)}ms`,
             value: freezeTime,
@@ -201,7 +207,7 @@ export function usePerformanceMonitor(options: {
           });
         }
 
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
     };
 
@@ -235,18 +241,22 @@ export function usePerformanceMonitor(options: {
     };
 
     // Measure initial memory usage
-    measureMemoryUsage().then(memory => {
-      setCurrentMetrics(prev => (prev ? { ...prev, memoryUsageBefore: memory } : null));
+    measureMemoryUsage().then((memory) => {
+      setCurrentMetrics((prev) =>
+        prev ? { ...prev, memoryUsageBefore: memory } : null,
+      );
     });
 
     setCurrentMetrics(initialMetrics);
 
-    console.log(`[Performance Monitor] Started profiling ${operationType} operation for ${datasetSize} items`);
+    console.log(
+      `[Performance Monitor] Started profiling ${operationType} operation for ${datasetSize} items`,
+    );
   };
 
   const endProfiling = (): PerformanceMetrics => {
     if (!profiling) {
-      throw new Error('No profiling session in progress');
+      throw new Error("No profiling session in progress");
     }
 
     profiling = false;
@@ -254,7 +264,7 @@ export function usePerformanceMonitor(options: {
 
     const metrics = currentMetrics();
     if (!metrics) {
-      throw new Error('No metrics available');
+      throw new Error("No metrics available");
     }
 
     const endTime = performance.now();
@@ -271,23 +281,31 @@ export function usePerformanceMonitor(options: {
       domUpdateDuration: domUpdateTimings.reduce((sum, time) => sum + time, 0),
       averageDomUpdateTime:
         domUpdateTimings.length > 0
-          ? domUpdateTimings.reduce((sum, time) => sum + time, 0) / domUpdateTimings.length
+          ? domUpdateTimings.reduce((sum, time) => sum + time, 0) /
+            domUpdateTimings.length
           : 0,
       styleApplicationCount: styleApplicationTimings.length,
-      styleApplicationDuration: styleApplicationTimings.reduce((sum, time) => sum + time, 0),
+      styleApplicationDuration: styleApplicationTimings.reduce(
+        (sum, time) => sum + time,
+        0,
+      ),
       averageStyleApplicationTime:
         styleApplicationTimings.length > 0
-          ? styleApplicationTimings.reduce((sum, time) => sum + time, 0) / styleApplicationTimings.length
+          ? styleApplicationTimings.reduce((sum, time) => sum + time, 0) /
+            styleApplicationTimings.length
           : 0,
       frameDropCount,
       averageFrameTime:
-        frameTimings.length > 0 ? frameTimings.reduce((sum, time) => sum + time, 0) / frameTimings.length : 0,
+        frameTimings.length > 0
+          ? frameTimings.reduce((sum, time) => sum + time, 0) /
+            frameTimings.length
+          : 0,
       worstFrameTime: frameTimings.length > 0 ? Math.max(...frameTimings) : 0,
       browserFreezeTime: totalBrowserFreezeTime,
     };
 
     // Measure final memory usage
-    measureMemoryUsage().then(memory => {
+    measureMemoryUsage().then((memory) => {
       const memoryDelta = memory - finalMetrics.memoryUsageBefore;
       const updatedMetrics = {
         ...finalMetrics,
@@ -299,9 +317,10 @@ export function usePerformanceMonitor(options: {
 
       // Check for memory warnings
       if (memoryDelta > THRESHOLDS.HIGH_MEMORY_USAGE) {
-        const severity = memoryDelta > THRESHOLDS.CRITICAL_MEMORY_USAGE ? 'critical' : 'high';
+        const severity =
+          memoryDelta > THRESHOLDS.CRITICAL_MEMORY_USAGE ? "critical" : "high";
         addWarning({
-          type: 'memory',
+          type: "memory",
           severity,
           message: `High memory usage: ${(memoryDelta / 1024 / 1024).toFixed(2)}MB`,
           value: memoryDelta,
@@ -313,9 +332,10 @@ export function usePerformanceMonitor(options: {
 
     // Check for performance warnings
     if (duration > THRESHOLDS.HIGH_OPERATION_TIME) {
-      const severity = duration > THRESHOLDS.CRITICAL_OPERATION_TIME ? 'critical' : 'high';
+      const severity =
+        duration > THRESHOLDS.CRITICAL_OPERATION_TIME ? "critical" : "high";
       addWarning({
-        type: 'dom',
+        type: "dom",
         severity,
         message: `Slow operation: ${duration.toFixed(2)}ms`,
         value: duration,
@@ -325,9 +345,12 @@ export function usePerformanceMonitor(options: {
     }
 
     if (finalMetrics.worstFrameTime > THRESHOLDS.HIGH_FRAME_TIME) {
-      const severity = finalMetrics.worstFrameTime > THRESHOLDS.CRITICAL_FRAME_TIME ? 'critical' : 'high';
+      const severity =
+        finalMetrics.worstFrameTime > THRESHOLDS.CRITICAL_FRAME_TIME
+          ? "critical"
+          : "high";
       addWarning({
-        type: 'rendering',
+        type: "rendering",
         severity,
         message: `Frame drops detected: worst frame ${finalMetrics.worstFrameTime.toFixed(2)}ms`,
         value: finalMetrics.worstFrameTime,
@@ -338,7 +361,10 @@ export function usePerformanceMonitor(options: {
 
     setCurrentMetrics(finalMetrics);
 
-    console.log(`[Performance Monitor] Completed profiling ${metrics.operationType} operation`, finalMetrics);
+    console.log(
+      `[Performance Monitor] Completed profiling ${metrics.operationType} operation`,
+      finalMetrics,
+    );
 
     return finalMetrics;
   };
@@ -349,9 +375,10 @@ export function usePerformanceMonitor(options: {
     domUpdateTimings.push(duration);
 
     if (duration > THRESHOLDS.HIGH_DOM_UPDATE_TIME) {
-      const severity = duration > THRESHOLDS.CRITICAL_DOM_UPDATE_TIME ? 'critical' : 'high';
+      const severity =
+        duration > THRESHOLDS.CRITICAL_DOM_UPDATE_TIME ? "critical" : "high";
       addWarning({
-        type: 'dom',
+        type: "dom",
         severity,
         message: `Slow DOM update (${updateType}): ${duration.toFixed(2)}ms`,
         value: duration,
@@ -360,7 +387,9 @@ export function usePerformanceMonitor(options: {
       });
     }
 
-    console.debug(`[Performance Monitor] DOM update (${updateType}): ${duration.toFixed(2)}ms`);
+    console.debug(
+      `[Performance Monitor] DOM update (${updateType}): ${duration.toFixed(2)}ms`,
+    );
   };
 
   const recordStyleApplication = (elementCount: number, duration: number) => {
@@ -369,9 +398,12 @@ export function usePerformanceMonitor(options: {
     styleApplicationTimings.push(duration);
 
     if (duration > THRESHOLDS.HIGH_STYLE_APPLICATION_TIME) {
-      const severity = duration > THRESHOLDS.CRITICAL_STYLE_APPLICATION_TIME ? 'critical' : 'high';
+      const severity =
+        duration > THRESHOLDS.CRITICAL_STYLE_APPLICATION_TIME
+          ? "critical"
+          : "high";
       addWarning({
-        type: 'css',
+        type: "css",
         severity,
         message: `Slow style application (${elementCount} elements): ${duration.toFixed(2)}ms`,
         value: duration,
@@ -380,7 +412,9 @@ export function usePerformanceMonitor(options: {
       });
     }
 
-    console.debug(`[Performance Monitor] Style application (${elementCount} elements): ${duration.toFixed(2)}ms`);
+    console.debug(
+      `[Performance Monitor] Style application (${elementCount} elements): ${duration.toFixed(2)}ms`,
+    );
   };
 
   const recordFrameDrop = (frameTime: number) => {
@@ -394,24 +428,26 @@ export function usePerformanceMonitor(options: {
   };
 
   const monitorRenderingPerformance = () => {
-    if (!('PerformanceObserver' in window)) {
-      console.warn('PerformanceObserver not supported, skipping rendering monitoring');
+    if (!("PerformanceObserver" in window)) {
+      console.warn(
+        "PerformanceObserver not supported, skipping rendering monitoring",
+      );
       return;
     }
 
     try {
-      renderingObserver = new PerformanceObserver(list => {
+      renderingObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach(entry => {
-          if (entry.entryType === 'measure' && entry.name.includes('render')) {
+        entries.forEach((entry) => {
+          if (entry.entryType === "measure" && entry.name.includes("render")) {
             recordFrameDrop(entry.duration);
           }
         });
       });
 
-      renderingObserver.observe({ entryTypes: ['measure'] });
+      renderingObserver.observe({ entryTypes: ["measure"] });
     } catch (error) {
-      console.warn('Failed to setup rendering performance monitoring:', error);
+      console.warn("Failed to setup rendering performance monitoring:", error);
     }
   };
 
@@ -425,7 +461,7 @@ export function usePerformanceMonitor(options: {
   const logPerformanceReport = () => {
     const metrics = currentMetrics();
     if (!metrics) {
-      console.log('[Performance Monitor] No metrics available');
+      console.log("[Performance Monitor] No metrics available");
       return;
     }
 
@@ -443,17 +479,17 @@ export function usePerformanceMonitor(options: {
       browserFreezes: `${metrics.browserFreezeTime.toFixed(2)}ms total`,
       warnings: warnings().length,
       severityBreakdown: {
-        critical: warnings().filter(w => w.severity === 'critical').length,
-        high: warnings().filter(w => w.severity === 'high').length,
-        medium: warnings().filter(w => w.severity === 'medium').length,
-        low: warnings().filter(w => w.severity === 'low').length,
+        critical: warnings().filter((w) => w.severity === "critical").length,
+        high: warnings().filter((w) => w.severity === "high").length,
+        medium: warnings().filter((w) => w.severity === "medium").length,
+        low: warnings().filter((w) => w.severity === "low").length,
       },
     };
 
-    console.group('[Performance Monitor] Performance Report');
+    console.group("[Performance Monitor] Performance Report");
     console.table(report);
-    console.groupCollapsed('Warnings');
-    warnings().forEach(warning => {
+    console.groupCollapsed("Warnings");
+    warnings().forEach((warning) => {
       console.warn(`[${warning.severity.toUpperCase()}] ${warning.message}`, {
         value: warning.value,
         threshold: warning.threshold,
@@ -472,9 +508,10 @@ export function usePerformanceMonitor(options: {
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
       browserInfo: {
-        memory: 'memory' in performance ? (performance as any).memory : null,
-        connection: 'connection' in navigator ? (navigator as any).connection : null,
-        hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+        memory: "memory" in performance ? (performance as any).memory : null,
+        connection:
+          "connection" in navigator ? (navigator as any).connection : null,
+        hardwareConcurrency: navigator.hardwareConcurrency || "unknown",
       },
     };
 

@@ -1,34 +1,45 @@
 /**
  * TagBubble Component
- * 
+ *
  * A component that renders an individual tag with editing and navigation capabilities.
  */
 
-import { Component, createSignal, createEffect, onMount, onCleanup, Show, For } from 'solid-js';
-import { TagBubbleProps } from '../types/index.js';
-import { useTagAutocomplete } from '../utils/tagAutocomplete.js';
-import { createTagColorGenerator } from '../utils/tagColors.js';
-import './TagBubble.css';
+import {
+  Component,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  Show,
+  For,
+} from "solid-js";
+import { TagBubbleProps } from "../types/index.js";
+import { useTagAutocomplete } from "../utils/tagAutocomplete.js";
+import { createTagColorGenerator } from "../utils/tagColors.js";
+import "./TagBubble.css";
 
 export const TagBubble: Component<TagBubbleProps> = (props) => {
   const [isEditing, setIsEditing] = createSignal(false);
   const [isHovered, setIsHovered] = createSignal(false);
   const [isFocused, setIsFocused] = createSignal(false);
-  
+
   let inputRef: HTMLInputElement | undefined;
   let contentRef: HTMLDivElement | undefined;
   let suggestionsList: HTMLDivElement | undefined;
   let tagBubbleRef: HTMLDivElement | undefined;
-  
+
   const tagColorGenerator = createTagColorGenerator();
   const tagColor = tagColorGenerator.getColor(props.tag);
 
   // Set CSS custom properties for dynamic styling
   createEffect(() => {
     if (tagBubbleRef) {
-      tagBubbleRef.style.setProperty('--tag-background-color', tagColor.background);
-      tagBubbleRef.style.setProperty('--tag-text-color', tagColor.text);
-      tagBubbleRef.style.setProperty('--tag-border-color', tagColor.border);
+      tagBubbleRef.style.setProperty(
+        "--tag-background-color",
+        tagColor.background,
+      );
+      tagBubbleRef.style.setProperty("--tag-text-color", tagColor.text);
+      tagBubbleRef.style.setProperty("--tag-border-color", tagColor.border);
     }
   });
 
@@ -53,16 +64,16 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
     clearSuggestions();
     setIsOpen(false);
     if (suggestionsList) {
-      suggestionsList.classList.remove('visible');
+      suggestionsList.classList.remove("visible");
     }
   };
 
   const startEditing = () => {
     if (props.editable === false) return;
-    
+
     setIsEditing(true);
     setQuery(props.tag);
-    
+
     // Focus input after DOM update
     setTimeout(() => {
       if (inputRef) {
@@ -74,12 +85,12 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
 
   const finishEditing = () => {
     if (!isEditing()) return;
-    
+
     const newTag = query().trim();
     if (newTag && newTag !== props.tag) {
       props.onEdit(newTag);
     }
-    
+
     setIsEditing(false);
     closeAllSuggestions();
   };
@@ -94,7 +105,7 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
     if (!isEditing()) return;
 
     switch (e.key) {
-      case 'Enter':
+      case "Enter":
         e.preventDefault();
         if (isOpen() && selectedIndex() >= 0) {
           const suggestion = getSelectedSuggestion();
@@ -106,27 +117,27 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
           finishEditing();
         }
         break;
-        
-      case 'Escape':
+
+      case "Escape":
         e.preventDefault();
         cancelEditing();
         break;
-        
-      case 'ArrowDown':
+
+      case "ArrowDown":
         if (isOpen()) {
           e.preventDefault();
           selectNextSuggestion();
         }
         break;
-        
-      case 'ArrowUp':
+
+      case "ArrowUp":
         if (isOpen()) {
           e.preventDefault();
           selectPreviousSuggestion();
         }
         break;
-        
-      case 'Tab':
+
+      case "Tab":
         e.preventDefault();
         if (isOpen() && selectedIndex() >= 0) {
           const suggestion = getSelectedSuggestion();
@@ -138,15 +149,15 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
           finishEditing();
         }
         break;
-        
-      case 'Backspace':
+
+      case "Backspace":
         if (query().length === 0) {
           e.preventDefault();
           props.onRemove();
         }
         break;
-        
-      case 'Delete':
+
+      case "Delete":
         if (query().length === 0) {
           e.preventDefault();
           props.onRemove();
@@ -204,13 +215,13 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (isFocused() && !isEditing()) {
         switch (e.key) {
-          case 'Enter':
-          case ' ':
+          case "Enter":
+          case " ":
             e.preventDefault();
             startEditing();
             break;
-          case 'Delete':
-          case 'Backspace':
+          case "Delete":
+          case "Backspace":
             if (e.ctrlKey || e.metaKey) {
               e.preventDefault();
               handleRemove();
@@ -220,9 +231,9 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
       }
     };
 
-    document.addEventListener('keydown', handleGlobalKeyDown);
+    document.addEventListener("keydown", handleGlobalKeyDown);
     onCleanup(() => {
-      document.removeEventListener('keydown', handleGlobalKeyDown);
+      document.removeEventListener("keydown", handleGlobalKeyDown);
     });
   });
 
@@ -231,12 +242,12 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
       ref={tagBubbleRef}
       class="tag-bubble"
       classList={{
-        'tag-bubble--editing': isEditing(),
-        'tag-bubble--hovered': isHovered(),
-        'tag-bubble--focused': isFocused(),
-        'tag-bubble--editable': props.editable !== false,
-        'tag-bubble--removable': props.removable !== false,
-        [`tag-bubble--${props.size || 'medium'}`]: true
+        "tag-bubble--editing": isEditing(),
+        "tag-bubble--hovered": isHovered(),
+        "tag-bubble--focused": isFocused(),
+        "tag-bubble--editable": props.editable !== false,
+        "tag-bubble--removable": props.removable !== false,
+        [`tag-bubble--${props.size || "medium"}`]: true,
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -291,11 +302,13 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
               <div
                 class="tag-suggestion"
                 classList={{
-                  'tag-suggestion--selected': index() === selectedIndex()
+                  "tag-suggestion--selected": index() === selectedIndex(),
                 }}
                 onClick={() => handleSuggestionClick(suggestion)}
                 role="option"
-                attr:aria-selected={index() === selectedIndex() ? "true" : "false"}
+                attr:aria-selected={
+                  index() === selectedIndex() ? "true" : "false"
+                }
               >
                 {suggestion}
               </div>

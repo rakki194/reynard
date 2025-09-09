@@ -17,22 +17,26 @@ The integration allows you to:
 ### Basic Integration
 
 ```typescript
-import { ServiceManager, BaseService } from 'reynard-service-manager';
-import { FeatureManager, FeatureProvider, COMMON_FEATURES } from 'reynard-features';
-import { FeatureServiceBridge } from 'reynard-service-manager/integrations';
+import { ServiceManager, BaseService } from "reynard-service-manager";
+import {
+  FeatureManager,
+  FeatureProvider,
+  COMMON_FEATURES,
+} from "reynard-features";
+import { FeatureServiceBridge } from "reynard-service-manager/integrations";
 
 // Create service manager
 const serviceManager = new ServiceManager({
   maxConcurrentStartup: 4,
   healthCheckInterval: 30000,
-  enableHealthMonitoring: true
+  enableHealthMonitoring: true,
 });
 
 // Create feature manager
 const featureManager = new FeatureManager({
   features: COMMON_FEATURES,
   autoRefresh: true,
-  refreshInterval: 30000
+  refreshInterval: 30000,
 });
 
 // Create the bridge
@@ -41,10 +45,10 @@ const bridge = new FeatureServiceBridge({
   featureManager,
   autoSync: true,
   serviceNameMapping: {
-    'FileProcessingService': 'file-processing',
-    'AuthService': 'auth',
-    'AnnotationService': 'annotation'
-  }
+    FileProcessingService: "file-processing",
+    AuthService: "auth",
+    AnnotationService: "annotation",
+  },
 });
 
 // Start services
@@ -54,27 +58,29 @@ await serviceManager.startServices();
 ### React/SolidJS Integration
 
 ```tsx
-import { FeatureProvider } from 'reynard-features';
-import { useFeatureAvailable, useFeatureStatus } from 'reynard-features';
+import { FeatureProvider } from "reynard-features";
+import { useFeatureAvailable, useFeatureStatus } from "reynard-features";
 
 function App() {
   return (
-    <FeatureProvider config={{
-      features: COMMON_FEATURES,
-      serviceChecker: (serviceName) => {
-        // This will be automatically updated by the bridge
-        return bridge.getServiceStatus(serviceName).available;
-      },
-      autoRefresh: true
-    }}>
+    <FeatureProvider
+      config={{
+        features: COMMON_FEATURES,
+        serviceChecker: (serviceName) => {
+          // This will be automatically updated by the bridge
+          return bridge.getServiceStatus(serviceName).available;
+        },
+        autoRefresh: true,
+      }}
+    >
       <MyApp />
     </FeatureProvider>
   );
 }
 
 function MyComponent() {
-  const isCaptionAvailable = useFeatureAvailable('caption-generation');
-  const captionStatus = useFeatureStatus('caption-generation');
+  const isCaptionAvailable = useFeatureAvailable("caption-generation");
+  const captionStatus = useFeatureStatus("caption-generation");
 
   return (
     <div>
@@ -99,16 +105,16 @@ The bridge supports mapping between feature system service names and actual serv
 ```typescript
 const serviceMappings = {
   // Feature system name -> Actual service name
-  'FileProcessingService': 'file-processing',
-  'AuthService': 'auth',
-  'AnnotationService': 'annotation',
-  'ServiceManager': 'service-manager'
+  FileProcessingService: "file-processing",
+  AuthService: "auth",
+  AnnotationService: "annotation",
+  ServiceManager: "service-manager",
 };
 
 const bridge = new FeatureServiceBridge({
   serviceManager,
   featureManager,
-  serviceNameMapping: serviceMappings
+  serviceNameMapping: serviceMappings,
 });
 ```
 
@@ -117,17 +123,20 @@ const bridge = new FeatureServiceBridge({
 The `reynard-features` package includes predefined service mappings:
 
 ```typescript
-import { SERVICE_MAPPINGS, getActualServiceName } from 'reynard-features/presets';
+import {
+  SERVICE_MAPPINGS,
+  getActualServiceName,
+} from "reynard-features/presets";
 
 // Use predefined mappings
 const bridge = new FeatureServiceBridge({
   serviceManager,
   featureManager,
-  serviceNameMapping: SERVICE_MAPPINGS
+  serviceNameMapping: SERVICE_MAPPINGS,
 });
 
 // Or get individual mappings
-const actualName = getActualServiceName('FileProcessingService'); // 'file-processing'
+const actualName = getActualServiceName("FileProcessingService"); // 'file-processing'
 ```
 
 ## 📊 Service Status Tracking
@@ -144,9 +153,9 @@ serviceManager.onServiceStatusChange((serviceName, status) => {
 });
 
 // Check feature status
-const featureStatus = featureManager.getFeatureStatus('caption-generation');
-console.log('Available:', featureStatus?.available);
-console.log('Health Score:', featureStatus?.healthScore);
+const featureStatus = featureManager.getFeatureStatus("caption-generation");
+console.log("Available:", featureStatus?.available);
+console.log("Health Score:", featureStatus?.healthScore);
 ```
 
 ### Health Monitoring
@@ -159,9 +168,9 @@ Services can be in different health states:
 - **UNKNOWN**: Service health is unknown
 
 ```typescript
-const status = bridge.getServiceStatus('AnnotationService');
+const status = bridge.getServiceStatus("AnnotationService");
 if (status.health === ServiceHealth.DEGRADED) {
-  console.log('Service is degraded but still available');
+  console.log("Service is degraded but still available");
 }
 ```
 
@@ -171,21 +180,21 @@ if (status.health === ServiceHealth.DEGRADED) {
 
 ```tsx
 function FeatureAwareComponent() {
-  const isAvailable = useFeatureAvailable('image-processing');
-  const isDegraded = useFeatureDegraded('image-processing');
-  const status = useFeatureStatus('image-processing');
+  const isAvailable = useFeatureAvailable("image-processing");
+  const isDegraded = useFeatureDegraded("image-processing");
+  const status = useFeatureStatus("image-processing");
 
   return (
     <div>
       {isAvailable() ? (
         <ImageProcessingPanel />
       ) : (
-        <FeatureUnavailable 
+        <FeatureUnavailable
           feature="image-processing"
           message={status()?.message}
         />
       )}
-      
+
       {isDegraded() && (
         <div class="warning">
           Image processing is degraded: {status()?.message}
@@ -212,10 +221,10 @@ function FeatureDashboard() {
         <p>Unavailable: {featureSummary().unavailable}</p>
         <p>Success Rate: {featureSummary().successRate.toFixed(1)}%</p>
       </div>
-      
+
       <div class="critical-features">
         <h3>Critical Features</h3>
-        {criticalFeatures().unavailable.map(feature => (
+        {criticalFeatures().unavailable.map((feature) => (
           <div key={feature.id} class="critical-unavailable">
             ⚠️ {feature.name} is unavailable
           </div>
@@ -236,15 +245,15 @@ const bridge = new FeatureServiceBridge({
   featureManager,
   autoSync: true,
   serviceNameMapping: {
-    'CustomService': 'my-custom-service'
-  }
+    CustomService: "my-custom-service",
+  },
 });
 
 // Add custom service mapping at runtime
-bridge.addServiceMapping('new-service', 'NewService');
+bridge.addServiceMapping("new-service", "NewService");
 
 // Remove service mapping
-bridge.removeServiceMapping('old-service');
+bridge.removeServiceMapping("old-service");
 ```
 
 ### Manual Sync
@@ -255,7 +264,7 @@ bridge.forceSync();
 
 // Get all service statuses
 const allStatuses = bridge.getAllServiceStatuses();
-console.log('All service statuses:', allStatuses);
+console.log("All service statuses:", allStatuses);
 ```
 
 ### Event Handling
@@ -264,13 +273,13 @@ console.log('All service statuses:', allStatuses);
 // Listen to service manager events
 serviceManager.addEventListener((event) => {
   switch (event.type) {
-    case 'startup':
+    case "startup":
       console.log(`Service ${event.serviceName} started`);
       break;
-    case 'shutdown':
+    case "shutdown":
       console.log(`Service ${event.serviceName} stopped`);
       break;
-    case 'health_change':
+    case "health_change":
       console.log(`Service ${event.serviceName} health changed`);
       break;
   }
@@ -282,15 +291,15 @@ serviceManager.addEventListener((event) => {
 ### Unit Tests
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { FeatureServiceBridge } from 'reynard-service-manager/integrations';
+import { describe, it, expect } from "vitest";
+import { FeatureServiceBridge } from "reynard-service-manager/integrations";
 
-describe('FeatureServiceBridge', () => {
-  it('should sync service status with features', async () => {
+describe("FeatureServiceBridge", () => {
+  it("should sync service status with features", async () => {
     const bridge = new FeatureServiceBridge({
       serviceManager,
       featureManager,
-      autoSync: true
+      autoSync: true,
     });
 
     // Test service registration
@@ -298,7 +307,7 @@ describe('FeatureServiceBridge', () => {
     await serviceManager.startServices();
 
     // Verify feature availability
-    const status = bridge.getServiceStatus('TestService');
+    const status = bridge.getServiceStatus("TestService");
     expect(status.available).toBe(true);
   });
 });
@@ -307,21 +316,23 @@ describe('FeatureServiceBridge', () => {
 ### Integration Tests
 
 ```typescript
-import { createIntegratedSystem } from 'reynard-service-manager/integrations';
+import { createIntegratedSystem } from "reynard-service-manager/integrations";
 
-describe('Service-Feature Integration', () => {
-  it('should handle service failures gracefully', async () => {
+describe("Service-Feature Integration", () => {
+  it("should handle service failures gracefully", async () => {
     const system = createIntegratedSystem();
-    
+
     // Start services
     await system.serviceManager.startServices();
-    
+
     // Simulate service failure
     const service = system.services.auth;
     await service.shutdown();
-    
+
     // Verify feature status updates
-    const authFeature = system.featureManager.getFeatureStatus('user-authentication');
+    const authFeature = system.featureManager.getFeatureStatus(
+      "user-authentication",
+    );
     expect(authFeature?.available).toBe(false);
   });
 });
@@ -377,12 +388,12 @@ interface ServiceStatus {
 const bridge = new FeatureServiceBridge({
   serviceManager,
   featureManager,
-  autoSync: true
+  autoSync: true,
 });
 
 // Enable debug logging
 bridge.forceSync();
-console.log('All service statuses:', bridge.getAllServiceStatuses());
+console.log("All service statuses:", bridge.getAllServiceStatuses());
 ```
 
 ## 🔄 Migration Guide
@@ -404,7 +415,7 @@ const isServiceAvailable = (serviceName: string) => {
 const bridge = new FeatureServiceBridge({
   serviceManager,
   featureManager,
-  autoSync: true
+  autoSync: true,
 });
 
 const isServiceAvailable = (serviceName: string) => {
@@ -419,21 +430,21 @@ const isServiceAvailable = (serviceName: string) => {
 ```typescript
 const features = [
   {
-    id: 'caption-generation',
-    dependencies: [{ services: ['CaptionService'], required: true }]
-  }
+    id: "caption-generation",
+    dependencies: [{ services: ["CaptionService"], required: true }],
+  },
 ];
 ```
 
 **After:**
 
 ```typescript
-import { COMMON_FEATURES, SERVICE_MAPPINGS } from 'reynard-features/presets';
+import { COMMON_FEATURES, SERVICE_MAPPINGS } from "reynard-features/presets";
 
 const bridge = new FeatureServiceBridge({
   serviceManager,
   featureManager,
-  serviceNameMapping: SERVICE_MAPPINGS
+  serviceNameMapping: SERVICE_MAPPINGS,
 });
 ```
 

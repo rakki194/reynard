@@ -27,7 +27,11 @@ export const ThemeComparison: Component<ThemeComparisonProps> = (props) => {
   const themeTagsRef: HTMLDivElement[] = [];
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
+  const setCSSProperty = (
+    element: HTMLElement,
+    property: string,
+    value: string,
+  ) => {
     element.style.setProperty(property, value);
   };
 
@@ -39,8 +43,16 @@ export const ThemeComparison: Component<ThemeComparisonProps> = (props) => {
       tagData.colors.forEach((colorData) => {
         const ref = themeTagsRef[tagIndex];
         if (ref) {
-          setCSSProperty(ref, '--dynamic-bg-color', formatOKLCH(colorData.color));
-          setCSSProperty(ref, '--dynamic-opacity', props.selectedTheme === colorData.theme ? '1' : '0.3');
+          setCSSProperty(
+            ref,
+            "--dynamic-bg-color",
+            formatOKLCH(colorData.color),
+          );
+          setCSSProperty(
+            ref,
+            "--dynamic-opacity",
+            props.selectedTheme === colorData.theme ? "1" : "0.3",
+          );
         }
         tagIndex++;
       });
@@ -54,7 +66,7 @@ export const ThemeComparison: Component<ThemeComparisonProps> = (props) => {
         <For each={props.availableThemes}>
           {(theme) => (
             <button
-              class={`theme-button ${props.selectedTheme === theme ? 'active' : ''}`}
+              class={`theme-button ${props.selectedTheme === theme ? "active" : ""}`}
               onClick={() => props.onThemeChange(theme)}
             >
               {theme}
@@ -62,7 +74,7 @@ export const ThemeComparison: Component<ThemeComparisonProps> = (props) => {
           )}
         </For>
       </div>
-      
+
       <div class="theme-demo">
         <h3>Tag Colors Across Themes</h3>
         <div class="tag-comparison">
@@ -73,16 +85,20 @@ export const ThemeComparison: Component<ThemeComparisonProps> = (props) => {
                 <div class="tag-colors">
                   <For each={tagData.colors}>
                     {(colorData, _colorIndex) => (
-                      <div 
+                      <div
                         ref={(el) => {
                           if (el) {
-                            const globalIndex = tagData.colors.findIndex(c => c === colorData);
+                            const globalIndex = tagData.colors.findIndex(
+                              (c) => c === colorData,
+                            );
                             themeTagsRef[globalIndex] = el;
                           }
                         }}
                         class="theme-tag"
                         data-background-color={formatOKLCH(colorData.color)}
-                        data-opacity={props.selectedTheme === colorData.theme ? 1 : 0.3}
+                        data-opacity={
+                          props.selectedTheme === colorData.theme ? 1 : 0.3
+                        }
                       >
                         {colorData.theme}
                       </div>

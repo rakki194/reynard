@@ -1,6 +1,6 @@
 /**
  * Thinking Section Validation Utilities
- * 
+ *
  * Contains validation and formatting functions for thinking sections
  */
 
@@ -11,7 +11,7 @@ export class ThinkingValidation {
   public static validateThinkingSections(
     inThinking: boolean,
     thinkingSections: string[],
-    addWarning: (message: string) => void
+    addWarning: (message: string) => void,
   ): boolean {
     if (inThinking) {
       addWarning("Unclosed thinking section detected");
@@ -38,14 +38,14 @@ export class ThinkingValidation {
     }
 
     let html = '<div class="thinking-sections">\n';
-    
+
     for (const section of thinkingSections) {
       html += '  <div class="thinking-section">\n';
       html += `    <div class="thinking-content">${section}</div>\n`;
-      html += '  </div>\n';
+      html += "  </div>\n";
     }
-    
-    html += '</div>';
+
+    html += "</div>";
     return html;
   }
 }

@@ -1,16 +1,22 @@
 /**
  * Enhanced PAW Benchmark Suite with Memory Pool Optimization Testing
- * 
+ *
  * This enhanced benchmark suite tests the memory pool optimizations and provides
  * detailed micro-benchmarks for allocation overhead analysis.
- * 
+ *
  * @module paw-enhanced-benchmark-suite
  */
 
-import { OptimizedSpatialCollisionDetector, createOptimizedCollisionDetector } from '../../../packages/algorithms/src/optimization/optimized-spatial-collision';
-import { SpatialCollisionOptimizer } from '../../../packages/algorithms/src/geometry/collision/spatial-collision-optimizer';
-import { globalPAWMemoryPool } from '../../../packages/algorithms/src/optimization/memory-pool';
-import type { AABB, CollisionResult } from '../../../packages/algorithms/src/geometry/collision/aabb-types';
+import {
+  OptimizedSpatialCollisionDetector,
+  createOptimizedCollisionDetector,
+} from "../../../packages/algorithms/src/optimization/optimized-spatial-collision";
+import { SpatialCollisionOptimizer } from "../../../packages/algorithms/src/geometry/collision/spatial-collision-optimizer";
+import { globalPAWMemoryPool } from "../../../packages/algorithms/src/optimization/memory-pool";
+import type {
+  AABB,
+  CollisionResult,
+} from "../../../packages/algorithms/src/geometry/collision/aabb-types";
 
 export interface EnhancedBenchmarkConfig {
   iterations: number;
@@ -89,23 +95,29 @@ export class EnhancedPAWBenchmarkSuite {
   /**
    * Generate test data with controlled overlap density
    */
-  private generateTestData(objectCount: number, overlapDensity: number): AABB[] {
+  private generateTestData(
+    objectCount: number,
+    overlapDensity: number,
+  ): AABB[] {
     const aabbs: AABB[] = [];
     const baseSize = 50;
     const maxSize = 150;
-    
+
     for (let i = 0; i < objectCount; i++) {
       const size = baseSize + Math.random() * (maxSize - baseSize);
       let x, y;
       let attempts = 0;
-      
+
       do {
         x = Math.random() * (800 - size);
         y = Math.random() * (600 - size);
         attempts++;
-      } while (attempts < 100 && this.shouldOverlap(overlapDensity) && 
-               this.hasOverlap(aabbs, { x, y, width: size, height: size }));
-      
+      } while (
+        attempts < 100 &&
+        this.shouldOverlap(overlapDensity) &&
+        this.hasOverlap(aabbs, { x, y, width: size, height: size })
+      );
+
       aabbs.push({
         x,
         y,
@@ -113,7 +125,7 @@ export class EnhancedPAWBenchmarkSuite {
         height: size,
       });
     }
-    
+
     return aabbs;
   }
 
@@ -122,18 +134,25 @@ export class EnhancedPAWBenchmarkSuite {
   }
 
   private hasOverlap(existing: AABB[], newBox: AABB): boolean {
-    return existing.some(box => this.checkCollision(box, newBox));
+    return existing.some((box) => this.checkCollision(box, newBox));
   }
 
   private checkCollision(a: AABB, b: AABB): boolean {
-    return !(a.x + a.width <= b.x || b.x + b.width <= a.x ||
-             a.y + a.height <= b.y || b.y + b.height <= a.y);
+    return !(
+      a.x + a.width <= b.x ||
+      b.x + b.width <= a.x ||
+      a.y + a.height <= b.y ||
+      b.y + b.height <= a.y
+    );
   }
 
   /**
    * Benchmark original PAW Spatial Collision Optimizer
    */
-  private benchmarkOriginalPAW(aabbs: AABB[], config: any): EnhancedBenchmarkResult {
+  private benchmarkOriginalPAW(
+    aabbs: AABB[],
+    config: any,
+  ): EnhancedBenchmarkResult {
     const optimizer = new SpatialCollisionOptimizer({
       cellSize: config.cellSize,
       maxObjectsPerCell: config.maxObjectsPerCell,
@@ -159,33 +178,44 @@ export class EnhancedPAWBenchmarkSuite {
       if (i === 0) {
         memoryStart = (performance as any).memory?.usedJSHeapSize || 0;
       }
-      
+
       const start = performance.now();
       const allocationStart = performance.now();
       const collisions = optimizer.detectCollisions(aabbs);
       const allocationEnd = performance.now();
       const end = performance.now();
-      
+
       collisionCount = collisions.length;
       times.push(end - start);
       allocationTimes.push(allocationEnd - allocationStart);
-      
+
       // Track peak memory
       const currentMemory = (performance as any).memory?.usedJSHeapSize || 0;
       peakMemory = Math.max(peakMemory, currentMemory);
-      
+
       if (i === this.config.iterations - 1) {
         memoryEnd = currentMemory;
       }
     }
 
-    return this.calculateEnhancedMetrics('PAW-Original', times, allocationTimes, collisionCount, memoryEnd - memoryStart, peakMemory, config);
+    return this.calculateEnhancedMetrics(
+      "PAW-Original",
+      times,
+      allocationTimes,
+      collisionCount,
+      memoryEnd - memoryStart,
+      peakMemory,
+      config,
+    );
   }
 
   /**
    * Benchmark optimized PAW with memory pooling
    */
-  private benchmarkOptimizedPAW(aabbs: AABB[], config: any): EnhancedBenchmarkResult {
+  private benchmarkOptimizedPAW(
+    aabbs: AABB[],
+    config: any,
+  ): EnhancedBenchmarkResult {
     const optimizer = createOptimizedCollisionDetector({
       cellSize: config.cellSize,
       maxObjectsPerCell: config.maxObjectsPerCell,
@@ -212,28 +242,36 @@ export class EnhancedPAWBenchmarkSuite {
       if (i === 0) {
         memoryStart = (performance as any).memory?.usedJSHeapSize || 0;
       }
-      
+
       const start = performance.now();
       const allocationStart = performance.now();
       const collisions = optimizer.detectCollisions(aabbs);
       const allocationEnd = performance.now();
       const end = performance.now();
-      
+
       collisionCount = collisions.length;
       times.push(end - start);
       allocationTimes.push(allocationEnd - allocationStart);
-      
+
       // Track peak memory
       const currentMemory = (performance as any).memory?.usedJSHeapSize || 0;
       peakMemory = Math.max(peakMemory, currentMemory);
-      
+
       if (i === this.config.iterations - 1) {
         memoryEnd = currentMemory;
       }
     }
 
-    const result = this.calculateEnhancedMetrics('PAW-Optimized', times, allocationTimes, collisionCount, memoryEnd - memoryStart, peakMemory, config);
-    
+    const result = this.calculateEnhancedMetrics(
+      "PAW-Optimized",
+      times,
+      allocationTimes,
+      collisionCount,
+      memoryEnd - memoryStart,
+      peakMemory,
+      config,
+    );
+
     // Add memory pool information
     result.memoryPoolInfo = optimizer.getMemoryPoolInfo();
     const stats = optimizer.getStatistics();
@@ -249,20 +287,24 @@ export class EnhancedPAWBenchmarkSuite {
    * Calculate enhanced statistical metrics
    */
   private calculateEnhancedMetrics(
-    algorithm: string, 
-    times: number[], 
+    algorithm: string,
+    times: number[],
     allocationTimes: number[],
-    collisionCount: number, 
+    collisionCount: number,
     memoryUsage: number,
     peakMemory: number,
-    config?: any
+    config?: any,
   ): EnhancedBenchmarkResult {
     const sortedTimes = [...times].sort((a, b) => a - b);
     const mean = times.reduce((sum, time) => sum + time, 0) / times.length;
-    const variance = times.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) / times.length;
+    const variance =
+      times.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) /
+      times.length;
     const standardDeviation = Math.sqrt(variance);
 
-    const meanAllocationTime = allocationTimes.reduce((sum, time) => sum + time, 0) / allocationTimes.length;
+    const meanAllocationTime =
+      allocationTimes.reduce((sum, time) => sum + time, 0) /
+      allocationTimes.length;
 
     return {
       algorithm,
@@ -297,7 +339,7 @@ export class EnhancedPAWBenchmarkSuite {
   private runMicroBenchmarks(): void {
     if (!this.config.enableMicroBenchmarks) return;
 
-    console.log('🦦> Running micro-benchmarks...');
+    console.log("🦦> Running micro-benchmarks...");
 
     // Test 1: Memory allocation overhead
     this.benchmarkMemoryAllocation();
@@ -339,13 +381,16 @@ export class EnhancedPAWBenchmarkSuite {
       optimizedTimes.push(end - start);
     }
 
-    const originalMean = originalTimes.reduce((sum, time) => sum + time, 0) / originalTimes.length;
-    const optimizedMean = optimizedTimes.reduce((sum, time) => sum + time, 0) / optimizedTimes.length;
+    const originalMean =
+      originalTimes.reduce((sum, time) => sum + time, 0) / originalTimes.length;
+    const optimizedMean =
+      optimizedTimes.reduce((sum, time) => sum + time, 0) /
+      optimizedTimes.length;
     const improvement = originalMean - optimizedMean;
     const improvementPercentage = (improvement / originalMean) * 100;
 
     this.microBenchmarks.push({
-      testName: 'Memory Allocation Overhead',
+      testName: "Memory Allocation Overhead",
       baselineTime: originalMean,
       optimizedTime: optimizedMean,
       improvement,
@@ -360,7 +405,7 @@ export class EnhancedPAWBenchmarkSuite {
   private benchmarkSpatialHashRebuild(): void {
     // This would test incremental vs full rebuild approaches
     // Implementation would depend on incremental spatial hash implementation
-    console.log('🦦> Spatial hash rebuild benchmark (placeholder)');
+    console.log("🦦> Spatial hash rebuild benchmark (placeholder)");
   }
 
   /**
@@ -372,7 +417,9 @@ export class EnhancedPAWBenchmarkSuite {
 
     // Test with caching disabled
     const noCacheTimes: number[] = [];
-    const noCacheOptimizer = createOptimizedCollisionDetector({ enableCaching: false });
+    const noCacheOptimizer = createOptimizedCollisionDetector({
+      enableCaching: false,
+    });
     for (let i = 0; i < iterations; i++) {
       const start = performance.now();
       noCacheOptimizer.detectCollisions(testData);
@@ -382,7 +429,9 @@ export class EnhancedPAWBenchmarkSuite {
 
     // Test with caching enabled
     const cacheTimes: number[] = [];
-    const cacheOptimizer = createOptimizedCollisionDetector({ enableCaching: true });
+    const cacheOptimizer = createOptimizedCollisionDetector({
+      enableCaching: true,
+    });
     for (let i = 0; i < iterations; i++) {
       const start = performance.now();
       cacheOptimizer.detectCollisions(testData);
@@ -390,13 +439,15 @@ export class EnhancedPAWBenchmarkSuite {
       cacheTimes.push(end - start);
     }
 
-    const noCacheMean = noCacheTimes.reduce((sum, time) => sum + time, 0) / noCacheTimes.length;
-    const cacheMean = cacheTimes.reduce((sum, time) => sum + time, 0) / cacheTimes.length;
+    const noCacheMean =
+      noCacheTimes.reduce((sum, time) => sum + time, 0) / noCacheTimes.length;
+    const cacheMean =
+      cacheTimes.reduce((sum, time) => sum + time, 0) / cacheTimes.length;
     const improvement = noCacheMean - cacheMean;
     const improvementPercentage = (improvement / noCacheMean) * 100;
 
     this.microBenchmarks.push({
-      testName: 'Cache Effectiveness',
+      testName: "Cache Effectiveness",
       baselineTime: noCacheMean,
       optimizedTime: cacheMean,
       improvement,
@@ -413,14 +464,16 @@ export class EnhancedPAWBenchmarkSuite {
     const iterations = 1000;
 
     const optimizer = createOptimizedCollisionDetector();
-    
+
     // Run multiple iterations to build up pool hit rate
     for (let i = 0; i < iterations; i++) {
       optimizer.detectCollisions(testData);
     }
 
     const stats = optimizer.getStatistics();
-    const hitRate = stats.memoryPoolHits / (stats.memoryPoolHits + stats.memoryPoolMisses) * 100;
+    const hitRate =
+      (stats.memoryPoolHits / (stats.memoryPoolHits + stats.memoryPoolMisses)) *
+      100;
 
     console.log(`🦦> Memory pool hit rate: ${hitRate.toFixed(2)}%`);
   }
@@ -429,33 +482,41 @@ export class EnhancedPAWBenchmarkSuite {
    * Run comprehensive enhanced benchmark suite
    */
   async runEnhancedBenchmarks(): Promise<EnhancedBenchmarkResult[]> {
-    console.log('🦊> Starting Enhanced PAW Algorithm Benchmark Suite...');
-    
+    console.log("🦊> Starting Enhanced PAW Algorithm Benchmark Suite...");
+
     // Run micro-benchmarks first
     this.runMicroBenchmarks();
-    
+
     for (const objectCount of this.config.objectCounts) {
       for (const overlapDensity of this.config.overlapDensities) {
-        console.log(`\n🦦> Benchmarking ${objectCount} objects with ${(overlapDensity * 100).toFixed(0)}% overlap density`);
-        
+        console.log(
+          `\n🦦> Benchmarking ${objectCount} objects with ${(overlapDensity * 100).toFixed(0)}% overlap density`,
+        );
+
         const testData = this.generateTestData(objectCount, overlapDensity);
-        
+
         // Benchmark original PAW with different configurations
         for (const spatialConfig of this.config.spatialConfigs) {
-          const originalResult = this.benchmarkOriginalPAW(testData, spatialConfig);
+          const originalResult = this.benchmarkOriginalPAW(
+            testData,
+            spatialConfig,
+          );
           originalResult.objectCount = objectCount;
           originalResult.overlapDensity = overlapDensity;
           this.results.push(originalResult);
-          
-          const optimizedResult = this.benchmarkOptimizedPAW(testData, spatialConfig);
+
+          const optimizedResult = this.benchmarkOptimizedPAW(
+            testData,
+            spatialConfig,
+          );
           optimizedResult.objectCount = objectCount;
           optimizedResult.overlapDensity = overlapDensity;
           this.results.push(optimizedResult);
         }
       }
     }
-    
-    console.log('🐺> Enhanced benchmark suite completed!');
+
+    console.log("🐺> Enhanced benchmark suite completed!");
     return this.results;
   }
 
@@ -469,10 +530,10 @@ export class EnhancedPAWBenchmarkSuite {
   } {
     const performanceComparison: any[] = [];
     const memoryComparison: any[] = [];
-    
+
     // Group results by object count and overlap density
     const groupedResults = new Map<string, EnhancedBenchmarkResult[]>();
-    
+
     for (const result of this.results) {
       const key = `${result.objectCount}-${result.overlapDensity}`;
       if (!groupedResults.has(key)) {
@@ -480,22 +541,36 @@ export class EnhancedPAWBenchmarkSuite {
       }
       groupedResults.get(key)!.push(result);
     }
-    
+
     // Generate comparisons
     for (const [key, results] of groupedResults) {
-      const originalResults = results.filter(r => r.algorithm === 'PAW-Original');
-      const optimizedResults = results.filter(r => r.algorithm === 'PAW-Optimized');
-      
+      const originalResults = results.filter(
+        (r) => r.algorithm === "PAW-Original",
+      );
+      const optimizedResults = results.filter(
+        (r) => r.algorithm === "PAW-Optimized",
+      );
+
       for (const original of originalResults) {
-        const optimized = optimizedResults.find(o => 
-          o.config?.cellSize === original.config?.cellSize
+        const optimized = optimizedResults.find(
+          (o) => o.config?.cellSize === original.config?.cellSize,
         );
-        
+
         if (optimized) {
-          const timeImprovement = ((original.metrics.meanTime - optimized.metrics.meanTime) / original.metrics.meanTime) * 100;
-          const memoryImprovement = ((original.metrics.memoryUsage - optimized.metrics.memoryUsage) / original.metrics.memoryUsage) * 100;
-          const allocationImprovement = ((original.metrics.allocationTime - optimized.metrics.allocationTime) / original.metrics.allocationTime) * 100;
-          
+          const timeImprovement =
+            ((original.metrics.meanTime - optimized.metrics.meanTime) /
+              original.metrics.meanTime) *
+            100;
+          const memoryImprovement =
+            ((original.metrics.memoryUsage - optimized.metrics.memoryUsage) /
+              original.metrics.memoryUsage) *
+            100;
+          const allocationImprovement =
+            ((original.metrics.allocationTime -
+              optimized.metrics.allocationTime) /
+              original.metrics.allocationTime) *
+            100;
+
           performanceComparison.push({
             objectCount: original.objectCount,
             overlapDensity: original.overlapDensity,
@@ -506,7 +581,7 @@ export class EnhancedPAWBenchmarkSuite {
             original: original.metrics,
             optimized: optimized.metrics,
           });
-          
+
           memoryComparison.push({
             objectCount: original.objectCount,
             overlapDensity: original.overlapDensity,
@@ -515,12 +590,14 @@ export class EnhancedPAWBenchmarkSuite {
             memoryPoolMisses: optimized.metrics.memoryPoolMisses,
             cacheHits: optimized.metrics.cacheHits,
             cacheMisses: optimized.metrics.cacheMisses,
-            peakMemoryReduction: original.metrics.peakMemoryUsage - optimized.metrics.peakMemoryUsage,
+            peakMemoryReduction:
+              original.metrics.peakMemoryUsage -
+              optimized.metrics.peakMemoryUsage,
           });
         }
       }
     }
-    
+
     return {
       performanceComparison,
       memoryComparison,
@@ -532,13 +609,17 @@ export class EnhancedPAWBenchmarkSuite {
    * Export enhanced results to JSON
    */
   exportEnhancedResults(): string {
-    return JSON.stringify({
-      config: this.config,
-      results: this.results,
-      comparisons: this.generateEnhancedComparison(),
-      memoryPoolInfo: globalPAWMemoryPool.getPoolInfo(),
-      memoryPoolStats: globalPAWMemoryPool.getStatistics(),
-      timestamp: new Date().toISOString(),
-    }, null, 2);
+    return JSON.stringify(
+      {
+        config: this.config,
+        results: this.results,
+        comparisons: this.generateEnhancedComparison(),
+        memoryPoolInfo: globalPAWMemoryPool.getPoolInfo(),
+        memoryPoolStats: globalPAWMemoryPool.getStatistics(),
+        timestamp: new Date().toISOString(),
+      },
+      null,
+      2,
+    );
   }
 }

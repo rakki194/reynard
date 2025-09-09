@@ -47,7 +47,6 @@ const DEFAULT_DURATIONS = {
 export const createNotificationsModule = (): NotificationsModule => {
   console.log("createNotificationsModule: Creating notifications module");
   const [notifications, setNotifications] = createSignal<Notification[]>([]);
-  
 
   const generateId = () =>
     `notification-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -63,7 +62,7 @@ export const createNotificationsModule = (): NotificationsModule => {
     } = {},
   ): string => {
     console.log("notify: Called with", message, type, options);
-    
+
     // Always use internal state for new NotificationToast system
     console.log("notify: Using internal state");
     const id = generateId();
@@ -142,7 +141,10 @@ export const createNotificationsModule = (): NotificationsModule => {
 
   const removeNotification = (id: string) => {
     // Use global notification container if available
-    if (typeof window !== 'undefined' && (window as any).__notificationContainer) {
+    if (
+      typeof window !== "undefined" &&
+      (window as any).__notificationContainer
+    ) {
       (window as any).__notificationContainer.removeNotification(id);
     } else {
       // Fallback to internal state if global container not available
@@ -152,9 +154,14 @@ export const createNotificationsModule = (): NotificationsModule => {
 
   const clearNotifications = (group?: string) => {
     // Use global notification container if available
-    if (typeof window !== 'undefined' && (window as any).__notificationContainer) {
+    if (
+      typeof window !== "undefined" &&
+      (window as any).__notificationContainer
+    ) {
       if (group) {
-        (window as any).__notificationContainer.removeNotificationByGroup(group);
+        (window as any).__notificationContainer.removeNotificationByGroup(
+          group,
+        );
       } else {
         (window as any).__notificationContainer.clearAllNotifications();
       }

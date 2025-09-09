@@ -27,7 +27,10 @@ import {
   Filler,
   registerables,
 } from "chart.js";
-import { VisualizationEngine, useVisualizationEngine } from "../core/VisualizationEngine";
+import {
+  VisualizationEngine,
+  useVisualizationEngine,
+} from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ChartType, ReynardTheme } from "../types";
 
 export interface ChartProps extends ChartConfig {
@@ -91,7 +94,9 @@ export const Chart: Component<ChartProps> = (props) => {
   const [isRegistered, setIsRegistered] = createSignal(false);
   const [chartData, setChartData] = createSignal<any>(null);
   const [chartOptions, setChartOptions] = createSignal<any>(null);
-  const [updateInterval, setUpdateInterval] = createSignal<NodeJS.Timeout | null>(null);
+  const [updateInterval, setUpdateInterval] =
+    createSignal<NodeJS.Timeout | null>(null);
+  const [chartInstance, setChartInstance] = createSignal<any>(null);
 
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
@@ -112,15 +117,15 @@ export const Chart: Component<ChartProps> = (props) => {
       Tooltip,
       Legend,
       Filler,
-      ...registerables
+      ...registerables,
     );
     setIsRegistered(true);
-    
+
     // Register this visualization
     if (local.enablePerformanceMonitoring) {
       visualization.registerVisualization();
     }
-    
+
     updateChart();
   });
 
@@ -128,7 +133,7 @@ export const Chart: Component<ChartProps> = (props) => {
     if (updateInterval()) {
       clearInterval(updateInterval()!);
     }
-    
+
     if (local.enablePerformanceMonitoring) {
       visualization.unregisterVisualization();
     }
@@ -145,11 +150,11 @@ export const Chart: Component<ChartProps> = (props) => {
       if (updateInterval()) {
         clearInterval(updateInterval()!);
       }
-      
+
       const interval = setInterval(() => {
         updateChart();
       }, local.updateInterval);
-      
+
       setUpdateInterval(interval);
     } else if (updateInterval()) {
       clearInterval(updateInterval()!);
@@ -163,6 +168,19 @@ export const Chart: Component<ChartProps> = (props) => {
       return;
     }
 
+    const chart = chartInstance();
+
+    // If chart instance exists and this is a real-time update, update data directly
+    if (chart && local.realTime) {
+      updateChartDataIncremental(chart);
+      return;
+    }
+
+    // Initial setup or non-real-time updates
+    setupChartData();
+  };
+
+  const setupChartData = () => {
     // Prepare datasets with enhanced color generation
     const enhancedDatasets = local.datasets.map((dataset, index) => {
       let backgroundColor: string;
@@ -176,7 +194,8 @@ export const Chart: Component<ChartProps> = (props) => {
       } else if (local.useOKLCH) {
         // Use OKLCH color generation from visualization engine
         const colors = visualization.generateColors(local.datasets.length);
-        backgroundColor = colors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
+        backgroundColor =
+          colors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
         borderColor = colors[index] || "rgba(54, 162, 235, 1)";
       } else {
         // Use default colors
@@ -188,7 +207,9 @@ export const Chart: Component<ChartProps> = (props) => {
           "rgba(153, 102, 255, 1)",
           "rgba(255, 159, 64, 1)",
         ];
-        backgroundColor = defaultColors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
+        backgroundColor =
+          defaultColors[index]?.replace("1)", "0.6)") ||
+          `rgba(54, 162, 235, 0.6)`;
         borderColor = defaultColors[index] || "rgba(54, 162, 235, 1)";
       }
 
@@ -217,13 +238,20 @@ export const Chart: Component<ChartProps> = (props) => {
     // Generate chart options
     const options = getDefaultChartOptions(local.type, {
       text: local.useOKLCH ? visualization.generateColors(1)[0] : "#ffffff",
-      background: local.useOKLCH ? visualization.generateColors(1, 0.8)[0] : "rgba(0, 0, 0, 0.8)",
-      grid: local.useOKLCH ? visualization.generateColors(1, 0.3)[0] : "rgba(255, 255, 255, 0.1)",
+      background: local.useOKLCH
+        ? visualization.generateColors(1, 0.8)[0]
+        : "rgba(0, 0, 0, 0.8)",
+      grid: local.useOKLCH
+        ? visualization.generateColors(1, 0.3)[0]
+        : "rgba(255, 255, 255, 0.1)",
     });
 
     // Apply additional options from props
     const enhancedOptions = {
       ...options,
+      animation: {
+        duration: 0, // Disable animations for real-time updates
+      },
       plugins: {
         ...options.plugins,
         title: {
@@ -239,34 +267,62 @@ export const Chart: Component<ChartProps> = (props) => {
           display: local.showLegend !== false,
         },
       },
-        scales: local.type === "doughnut" || local.type === "pie" ? undefined : {
-          ...options.scales,
-          x: {
-            ...options.scales?.x,
-            title: {
-              display: !!local.xAxisLabel,
-              text: local.xAxisLabel || "",
+      scales:
+        local.type === "doughnut" || local.type === "pie"
+          ? undefined
+          : {
+              ...options.scales,
+              x: {
+                ...options.scales?.x,
+                title: {
+                  display: !!local.xAxisLabel,
+                  text: local.xAxisLabel || "",
+                },
+                grid: {
+                  ...options.scales?.x?.grid,
+                  display: local.showGrid !== false,
+                },
+              },
+              y: {
+                ...options.scales?.y,
+                title: {
+                  display: !!local.yAxisLabel,
+                  text: local.yAxisLabel || "",
+                },
+                grid: {
+                  ...options.scales?.y?.grid,
+                  display: local.showGrid !== false,
+                },
+              },
             },
-            grid: {
-              ...options.scales?.x?.grid,
-              display: local.showGrid !== false,
-            },
-          },
-          y: {
-            ...options.scales?.y,
-            title: {
-              display: !!local.yAxisLabel,
-              text: local.yAxisLabel || "",
-            },
-            grid: {
-              ...options.scales?.y?.grid,
-              display: local.showGrid !== false,
-            },
-          },
-        },
     };
 
     setChartOptions(enhancedOptions);
+  };
+
+  const updateChartDataIncremental = (chart: any) => {
+    // Update labels directly
+    if (local.labels && local.labels.length > 0) {
+      chart.data.labels = [...local.labels];
+    }
+
+    // Update datasets directly
+    if (local.datasets && local.datasets.length > 0) {
+      local.datasets.forEach((dataset, datasetIndex) => {
+        if (chart.data.datasets[datasetIndex]) {
+          // Update data array directly
+          chart.data.datasets[datasetIndex].data = [...dataset.data];
+
+          // Update other properties if they changed
+          if (dataset.label) {
+            chart.data.datasets[datasetIndex].label = dataset.label;
+          }
+        }
+      });
+    }
+
+    // Update chart without animations to prevent reset-to-zero effect
+    chart.update("none");
   };
 
   const renderChart = () => {
@@ -277,6 +333,11 @@ export const Chart: Component<ChartProps> = (props) => {
       options: chartOptions(),
       width: others.width || 400,
       height: others.height || 300,
+      ref: (chart: any) => {
+        if (chart && local.realTime) {
+          setChartInstance(chart);
+        }
+      },
     };
 
     switch (local.type) {
@@ -313,7 +374,11 @@ export const Chart: Component<ChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={!local.loading && (!chartData() || chartData().datasets.length === 0)}>
+      <Show
+        when={
+          !local.loading && (!chartData() || chartData().datasets.length === 0)
+        }
+      >
         <div
           style={{
             display: "flex",
@@ -333,7 +398,12 @@ export const Chart: Component<ChartProps> = (props) => {
       </Show>
 
       {/* Performance monitoring overlay */}
-      <Show when={local.enablePerformanceMonitoring && visualization.stats().activeVisualizations > 0}>
+      <Show
+        when={
+          local.enablePerformanceMonitoring &&
+          visualization.stats().activeVisualizations > 0
+        }
+      >
         <div
           style={{
             position: "absolute",
@@ -347,7 +417,8 @@ export const Chart: Component<ChartProps> = (props) => {
             "z-index": "5",
           }}
         >
-          FPS: {visualization.stats().fps} | Memory: {visualization.stats().memoryUsage.toFixed(1)}MB
+          FPS: {visualization.stats().fps} | Memory:{" "}
+          {visualization.stats().memoryUsage.toFixed(1)}MB
         </div>
       </Show>
     </div>
@@ -357,7 +428,10 @@ export const Chart: Component<ChartProps> = (props) => {
 /**
  * Get default chart options for a given type
  */
-function getDefaultChartOptions(type: ChartType, theme: { text: string; background: string; grid: string }): any {
+function getDefaultChartOptions(
+  type: ChartType,
+  theme: { text: string; background: string; grid: string },
+): any {
   const baseConfig = {
     responsive: true,
     maintainAspectRatio: false,

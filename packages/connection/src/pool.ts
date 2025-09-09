@@ -1,6 +1,8 @@
-import { PoolConfig } from './types';
+import { PoolConfig } from "./types";
 
-export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolean> } = any> {
+export class ConnectionPool<
+  T extends { disconnect?: () => Promise<void | boolean> } = any,
+> {
   private pool: T[] = [];
   private inUse = new Map<string, T>();
   private factory?: () => Promise<T | null>;
@@ -19,11 +21,11 @@ export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolea
     }
     this.cleanupTimer = setInterval(
       () => this.cleanupIdle().catch(() => {}),
-      this.config.cleanupInterval * 1000
+      this.config.cleanupInterval * 1000,
     ) as unknown as number;
     this.healthTimer = setInterval(
       () => this.healthCheck().catch(() => {}),
-      this.config.healthCheckInterval * 1000
+      this.config.healthCheckInterval * 1000,
     ) as unknown as number;
   }
 
@@ -46,7 +48,7 @@ export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolea
     // Wait loop
     while (Date.now() < deadline) {
       if (this.pool.length > 0) return this.markInUse(this.pool.shift()!);
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise((r) => setTimeout(r, 100));
     }
     return null;
   }
@@ -73,7 +75,10 @@ export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolea
   }
 
   private ident(conn: any): string {
-    return conn?.connectionId ?? String((conn && conn.id) || (conn && conn._id) || conn);
+    return (
+      conn?.connectionId ??
+      String((conn && conn.id) || (conn && conn._id) || conn)
+    );
   }
 
   private markInUse(conn: T): T {
@@ -82,7 +87,7 @@ export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolea
   }
 
   private async close(conn: T) {
-    if (typeof conn?.disconnect === 'function') {
+    if (typeof conn?.disconnect === "function") {
       try {
         await conn.disconnect();
       } catch {}
@@ -112,7 +117,10 @@ export class ConnectionPool<T extends { disconnect?: () => Promise<void | boolea
       max_size: this.config.maxSize,
       min_size: this.config.minSize,
       available: this.pool.length,
-      utilization: this.config.maxSize > 0 ? (this.inUse.size / this.config.maxSize) * 100 : 0,
+      utilization:
+        this.config.maxSize > 0
+          ? (this.inUse.size / this.config.maxSize) * 100
+          : 0,
     };
   }
 }

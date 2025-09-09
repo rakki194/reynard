@@ -156,7 +156,7 @@ interface Note {
   notebookId: string;
   title: string;
   content: string;
-  contentType: 'markdown' | 'rich-text' | 'code';
+  contentType: "markdown" | "rich-text" | "code";
   isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;

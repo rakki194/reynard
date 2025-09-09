@@ -1,13 +1,13 @@
 /**
  * Service Manager
- * 
+ *
  * Main orchestrator for service lifecycle management, dependency resolution,
  * and health monitoring.
  */
 
-import { BaseService } from '../services/BaseService.js';
-import { ServiceRegistry } from './ServiceRegistry.js';
-import { DependencyGraph } from './DependencyGraph.js';
+import { BaseService } from "../services/BaseService.js";
+import { ServiceRegistry } from "./ServiceRegistry.js";
+import { DependencyGraph } from "./DependencyGraph.js";
 import {
   ServiceManagerConfig,
   ServiceManagerState,
@@ -16,8 +16,8 @@ import {
   ServiceStartupProgress,
   ServiceInfo,
   ServiceStatus,
-  ServiceHealth
-} from '../types/index.js';
+  ServiceHealth,
+} from "../types/index.js";
 
 export class ServiceManager {
   private _services: Map<string, BaseService> = new Map();
@@ -38,7 +38,7 @@ export class ServiceManager {
       startupTimeout: 300000, // 5 minutes
       shutdownTimeout: 60000, // 1 minute
       enableHealthMonitoring: true,
-      ...config
+      ...config,
     };
   }
 
@@ -55,7 +55,7 @@ export class ServiceManager {
       service.name,
       service.dependencies,
       service.startupPriority,
-      service.requiredPackages
+      service.requiredPackages,
     );
 
     // Register in registry
@@ -64,14 +64,14 @@ export class ServiceManager {
       dependencies: service.dependencies,
       startupPriority: service.startupPriority,
       requiredPackages: service.requiredPackages,
-      autoStart: service.autoStart
+      autoStart: service.autoStart,
     });
 
     this._emitEvent({
-      type: 'startup',
+      type: "startup",
       serviceName: service.name,
       timestamp: new Date(),
-      data: { action: 'registered' }
+      data: { action: "registered" },
     });
   }
 
@@ -116,11 +116,11 @@ export class ServiceManager {
   // Lifecycle management
   async startServices(): Promise<void> {
     if (this._isStarting) {
-      throw new Error('Service startup already in progress');
+      throw new Error("Service startup already in progress");
     }
 
     if (this._isShuttingDown) {
-      throw new Error('Cannot start services while shutting down');
+      throw new Error("Cannot start services while shutting down");
     }
 
     this._isStarting = true;
@@ -130,7 +130,9 @@ export class ServiceManager {
       // Validate dependencies
       const dependencyErrors = this._dependencyGraph.validateDependencies();
       if (dependencyErrors.length > 0) {
-        throw new Error(`Dependency validation failed: ${dependencyErrors.join(', ')}`);
+        throw new Error(
+          `Dependency validation failed: ${dependencyErrors.join(", ")}`,
+        );
       }
 
       // Get startup order
@@ -138,43 +140,44 @@ export class ServiceManager {
       const parallelGroups = this._dependencyGraph.getParallelGroups();
 
       this._emitEvent({
-        type: 'startup',
-        serviceName: 'system',
+        type: "startup",
+        serviceName: "system",
         timestamp: new Date(),
-        data: { 
-          action: 'startup_begin',
+        data: {
+          action: "startup_begin",
           startupOrder,
-          parallelGroups
-        }
+          parallelGroups,
+        },
       });
 
       // Start services in parallel groups
       for (const group of parallelGroups) {
-        const groupPromises = group.map(serviceName => this._startService(serviceName));
+        const groupPromises = group.map((serviceName) =>
+          this._startService(serviceName),
+        );
         await Promise.all(groupPromises);
       }
 
       this._totalStartupTime = Date.now() - this._startupTime.getTime();
 
       this._emitEvent({
-        type: 'startup',
-        serviceName: 'system',
+        type: "startup",
+        serviceName: "system",
         timestamp: new Date(),
-        data: { 
-          action: 'startup_complete',
-          totalTime: this._totalStartupTime
-        }
+        data: {
+          action: "startup_complete",
+          totalTime: this._totalStartupTime,
+        },
       });
-
     } catch (error) {
       this._emitEvent({
-        type: 'error',
-        serviceName: 'system',
+        type: "error",
+        serviceName: "system",
         timestamp: new Date(),
-        data: { 
-          action: 'startup_failed',
-          error: error instanceof Error ? error.message : String(error)
-        }
+        data: {
+          action: "startup_failed",
+          error: error instanceof Error ? error.message : String(error),
+        },
       });
       throw error;
     } finally {
@@ -195,10 +198,10 @@ export class ServiceManager {
       const stopOrder = [...startupOrder].reverse();
 
       this._emitEvent({
-        type: 'shutdown',
-        serviceName: 'system',
+        type: "shutdown",
+        serviceName: "system",
         timestamp: new Date(),
-        data: { action: 'shutdown_begin' }
+        data: { action: "shutdown_begin" },
       });
 
       for (const serviceName of stopOrder) {
@@ -206,12 +209,11 @@ export class ServiceManager {
       }
 
       this._emitEvent({
-        type: 'shutdown',
-        serviceName: 'system',
+        type: "shutdown",
+        serviceName: "system",
         timestamp: new Date(),
-        data: { action: 'shutdown_complete' }
+        data: { action: "shutdown_complete" },
       });
-
     } finally {
       this._isShuttingDown = false;
     }
@@ -251,33 +253,35 @@ export class ServiceManager {
     }
   }
 
-  private async _performServiceStartup(name: string, service: BaseService): Promise<void> {
+  private async _performServiceStartup(
+    name: string,
+    service: BaseService,
+  ): Promise<void> {
     try {
       this._emitEvent({
-        type: 'startup',
+        type: "startup",
         serviceName: name,
         timestamp: new Date(),
-        data: { action: 'starting' }
+        data: { action: "starting" },
       });
 
       await service.start();
 
       this._emitEvent({
-        type: 'startup',
+        type: "startup",
         serviceName: name,
         timestamp: new Date(),
-        data: { action: 'started' }
+        data: { action: "started" },
       });
-
     } catch (error) {
       this._emitEvent({
-        type: 'error',
+        type: "error",
         serviceName: name,
         timestamp: new Date(),
-        data: { 
-          action: 'startup_failed',
-          error: error instanceof Error ? error.message : String(error)
-        }
+        data: {
+          action: "startup_failed",
+          error: error instanceof Error ? error.message : String(error),
+        },
       });
       throw error;
     }
@@ -291,30 +295,29 @@ export class ServiceManager {
 
     try {
       this._emitEvent({
-        type: 'shutdown',
+        type: "shutdown",
         serviceName: name,
         timestamp: new Date(),
-        data: { action: 'stopping' }
+        data: { action: "stopping" },
       });
 
       await service.stop();
 
       this._emitEvent({
-        type: 'shutdown',
+        type: "shutdown",
         serviceName: name,
         timestamp: new Date(),
-        data: { action: 'stopped' }
+        data: { action: "stopped" },
       });
-
     } catch (error) {
       this._emitEvent({
-        type: 'error',
+        type: "error",
         serviceName: name,
         timestamp: new Date(),
-        data: { 
-          action: 'shutdown_failed',
-          error: error instanceof Error ? error.message : String(error)
-        }
+        data: {
+          action: "shutdown_failed",
+          error: error instanceof Error ? error.message : String(error),
+        },
       });
       throw error;
     }
@@ -335,37 +338,37 @@ export class ServiceManager {
       isShuttingDown: this._isShuttingDown,
       startupProgress: this._getStartupProgress(),
       totalStartupTime: this._totalStartupTime,
-      lastUpdate: new Date()
+      lastUpdate: new Date(),
     };
   }
 
   private _getStartupProgress(): Record<string, ServiceStartupProgress> {
     const progress: Record<string, ServiceStartupProgress> = {};
-    
+
     for (const [name, service] of this._services) {
       let progressValue = 0;
-      let status = 'stopped';
-      
+      let status = "stopped";
+
       switch (service.status) {
         case ServiceStatus.STOPPED:
           progressValue = 0;
-          status = 'stopped';
+          status = "stopped";
           break;
         case ServiceStatus.STARTING:
           progressValue = 50;
-          status = 'starting';
+          status = "starting";
           break;
         case ServiceStatus.RUNNING:
           progressValue = 100;
-          status = 'running';
+          status = "running";
           break;
         case ServiceStatus.STOPPING:
           progressValue = 75;
-          status = 'stopping';
+          status = "stopping";
           break;
         case ServiceStatus.ERROR:
           progressValue = 0;
-          status = 'error';
+          status = "error";
           break;
       }
 
@@ -373,7 +376,7 @@ export class ServiceManager {
         serviceName: name,
         progress: progressValue,
         status,
-        error: service.lastError
+        error: service.lastError,
       };
     }
 
@@ -394,7 +397,7 @@ export class ServiceManager {
       try {
         handler(event);
       } catch (error) {
-        console.error('Error in service event handler:', error);
+        console.error("Error in service event handler:", error);
       }
     }
   }

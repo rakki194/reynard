@@ -19,7 +19,9 @@ interface ChartsPerformanceSectionProps {
   };
 }
 
-export const ChartsPerformanceSection: Component<ChartsPerformanceSectionProps> = (props) => {
+export const ChartsPerformanceSection: Component<
+  ChartsPerformanceSectionProps
+> = (props) => {
   return (
     <div class="performance-section">
       <h2>Performance Monitoring</h2>
@@ -29,7 +31,9 @@ export const ChartsPerformanceSection: Component<ChartsPerformanceSectionProps> 
           <div class="stats-display">
             <div class="stat-item">
               <span class="stat-label">Active Charts:</span>
-              <span class="stat-value">{props.visualization.stats().activeVisualizations}</span>
+              <span class="stat-value">
+                {props.visualization.stats().activeVisualizations}
+              </span>
             </div>
             <div class="stat-item">
               <span class="stat-label">FPS:</span>
@@ -37,11 +41,15 @@ export const ChartsPerformanceSection: Component<ChartsPerformanceSectionProps> 
             </div>
             <div class="stat-item">
               <span class="stat-label">Memory:</span>
-              <span class="stat-value">{props.visualization.stats().memoryUsage.toFixed(1)}MB</span>
+              <span class="stat-value">
+                {props.visualization.stats().memoryUsage.toFixed(1)}MB
+              </span>
             </div>
             <div class="stat-item">
               <span class="stat-label">Cache Hit Rate:</span>
-              <span class="stat-value">{props.visualization.stats().cacheHitRate.toFixed(1)}%</span>
+              <span class="stat-value">
+                {props.visualization.stats().cacheHitRate.toFixed(1)}%
+              </span>
             </div>
           </div>
         </div>
@@ -51,12 +59,7 @@ export const ChartsPerformanceSection: Component<ChartsPerformanceSectionProps> 
           <div class="color-demo">
             <div class="color-palette">
               <For each={props.visualization.generateColors(8)}>
-                {(color) => (
-                  <div 
-                    class="color-swatch"
-                    data-bg-color={color}
-                  />
-                )}
+                {(color) => <div class="color-swatch" data-bg-color={color} />}
               </For>
             </div>
             <p>OKLCH Color Palette</p>
@@ -66,15 +69,23 @@ export const ChartsPerformanceSection: Component<ChartsPerformanceSectionProps> 
         <div class="performance-card">
           <h3>Tag Colors</h3>
           <div class="tag-demo">
-            <For each={['javascript', 'typescript', 'solidjs', 'oklch', 'charts']}>
+            <For
+              each={["javascript", "typescript", "solidjs", "oklch", "charts"]}
+            >
               {(tag) => (
-                <div 
+                <div
                   class="tag-item"
                   classList={{
-                    'tag-light': props.visualization.generateTagColors([tag])[tag].includes('oklch'),
-                    'tag-dark': !props.visualization.generateTagColors([tag])[tag].includes('oklch')
+                    "tag-light": props.visualization
+                      .generateTagColors([tag])
+                      [tag].includes("oklch"),
+                    "tag-dark": !props.visualization
+                      .generateTagColors([tag])
+                      [tag].includes("oklch"),
                   }}
-                  data-bg-color={props.visualization.generateTagColors([tag])[tag]}
+                  data-bg-color={
+                    props.visualization.generateTagColors([tag])[tag]
+                  }
                 >
                   {tag}
                 </div>

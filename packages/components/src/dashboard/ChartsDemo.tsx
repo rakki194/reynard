@@ -3,8 +3,19 @@
  * Quick demonstration of Reynard's charting capabilities
  */
 
-import { Component, createSignal, createMemo, onMount, onCleanup } from "solid-js";
-import { Chart, RealTimeChart, useVisualizationEngine, type RealTimeDataPoint } from "reynard-charts";
+import {
+  Component,
+  createSignal,
+  createMemo,
+  onMount,
+  onCleanup,
+} from "solid-js";
+import {
+  Chart,
+  RealTimeChart,
+  useVisualizationEngine,
+  type RealTimeDataPoint,
+} from "reynard-charts";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const ChartsDemo: Component = () => {
@@ -19,11 +30,13 @@ export const ChartsDemo: Component = () => {
 
   // Sample data
   const sampleData = createMemo(() => ({
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-    datasets: [{
-      label: 'Performance',
-      data: [12, 19, 3, 5, 2],
-    }]
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    datasets: [
+      {
+        label: "Performance",
+        data: [12, 19, 3, 5, 2],
+      },
+    ],
   }));
 
   // Generate real-time data
@@ -34,8 +47,8 @@ export const ChartsDemo: Component = () => {
       value: Math.random() * 100,
       label: new Date(now).toLocaleTimeString(),
     };
-    
-    setRealTimeData(prev => [...prev, newPoint].slice(-10));
+
+    setRealTimeData((prev) => [...prev, newPoint].slice(-10));
   };
 
   onMount(() => {
@@ -60,7 +73,9 @@ export const ChartsDemo: Component = () => {
             <span class="card-icon">
               <div
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={fluentIconsPackage.getIcon("chart-multiple")?.outerHTML}
+                innerHTML={
+                  fluentIconsPackage.getIcon("chart-multiple")?.outerHTML
+                }
               />
             </span>
           )}
@@ -70,7 +85,7 @@ export const ChartsDemo: Component = () => {
           View Full Showcase
         </button>
       </div>
-      
+
       <div class="charts-preview">
         <div class="chart-mini">
           <Chart
@@ -82,7 +97,7 @@ export const ChartsDemo: Component = () => {
             title="Performance"
           />
         </div>
-        
+
         <div class="chart-mini">
           <RealTimeChart
             type="line"
@@ -96,11 +111,12 @@ export const ChartsDemo: Component = () => {
           />
         </div>
       </div>
-      
+
       <div class="card-footer">
         <div class="stats-row">
           <span class="stat">
-            <strong>{visualization.stats().activeVisualizations}</strong> Active Charts
+            <strong>{visualization.stats().activeVisualizations}</strong> Active
+            Charts
           </span>
           <span class="stat">
             <strong>{visualization.stats().fps}</strong> FPS

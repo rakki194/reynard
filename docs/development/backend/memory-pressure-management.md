@@ -149,7 +149,7 @@ The system adjusts unloading behavior based on memory pressure:
 
 ```python
 # Under normal pressure: max 5 packages per cycle
-# Under high pressure: max 7-8 packages per cycle  
+# Under high pressure: max 7-8 packages per cycle
 # Under critical pressure: max 10 packages per cycle
 ```
 
@@ -466,11 +466,11 @@ if pressure_level == "critical":
     # Force garbage collection
     gc_stats = loader.force_garbage_collection()
     print(f"Freed {gc_stats['memory_freed'] / (1024**2):.1f}MB")
-    
+
     # Get urgent suggestions
     suggestions = loader.get_memory_optimization_suggestions()
     critical_suggestions = [s for s in suggestions if s["severity"] == "critical"]
-    
+
     for suggestion in critical_suggestions:
         print(f"Critical action: {suggestion['recommendation']}")
 ```

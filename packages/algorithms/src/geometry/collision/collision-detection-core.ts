@@ -7,9 +7,9 @@
  * @module algorithms/geometry/collision/collisionDetectionCore
  */
 
-import type { AABB, CollisionResult } from './aabb-types';
-import { checkCollision } from './aabb-collision';
-import type { SpatialHash } from '../../spatial-hash/spatial-hash-core';
+import type { AABB, CollisionResult } from "./aabb-types";
+import { checkCollision } from "./aabb-collision";
+import type { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 
 export interface CollisionPair {
   a: number;
@@ -27,16 +27,16 @@ export interface CollisionCache {
  * Check collision with caching support
  */
 export function checkCollisionWithCache(
-  a: AABB, 
-  b: AABB, 
-  cache: CollisionCache
+  a: AABB,
+  b: AABB,
+  cache: CollisionCache,
 ): CollisionResult {
   if (!cache.config.enableCaching) {
     return checkCollision(a, b);
   }
 
   const cacheKey = generateCacheKey(a, b);
-  
+
   if (cache.cache.has(cacheKey)) {
     cache.stats.cacheHits++;
     return cache.cache.get(cacheKey)!;
@@ -67,8 +67,8 @@ export function generateCacheKey(a: AABB, b: AABB): string {
  * Naive O(n²) collision detection for small datasets
  */
 export function naiveCollisionDetection(
-  aabbs: AABB[], 
-  cache: CollisionCache
+  aabbs: AABB[],
+  cache: CollisionCache,
 ): CollisionPair[] {
   const collisions: CollisionPair[] = [];
 
@@ -90,13 +90,13 @@ export function naiveCollisionDetection(
 export function spatialCollisionDetection(
   aabbs: AABB[],
   spatialHash: SpatialHash<{ aabb: AABB; index: number }>,
-  cache: CollisionCache
+  cache: CollisionCache,
 ): CollisionPair[] {
   const collisions: CollisionPair[] = [];
-  
+
   // Clear and rebuild spatial hash
   spatialHash.clear();
-  
+
   // Insert all AABBs
   aabbs.forEach((aabb, index) => {
     spatialHash.insert({
@@ -120,7 +120,7 @@ export function spatialCollisionDetection(
       aabb.x - aabb.width,
       aabb.y - aabb.height,
       aabb.width * 3,
-      aabb.height * 3
+      aabb.height * 3,
     );
 
     for (const obj of nearby) {

@@ -369,7 +369,7 @@ The plugin service integration provides a robust, maintainable, and performant s
 The implementation successfully addresses the original requirements:
 
 - ✅ Ultralytics moved to lazy loading/service management
-- ✅ Pillow-jxl moved to lazy loading/service management  
+- ✅ Pillow-jxl moved to lazy loading/service management
 - ✅ Pillow-avif moved to lazy loading/service management
 - ✅ Proper dependency management and error handling
 - ✅ Comprehensive test coverage

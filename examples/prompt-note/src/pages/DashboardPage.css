@@ -62,7 +62,7 @@
   .dashboard-content {
     grid-template-columns: 1fr;
   }
-  
+
   .sidebar {
     order: -1;
   }
@@ -72,17 +72,17 @@
   .dashboard-page {
     padding: var(--spacing-md);
   }
-  
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-md);
   }
-  
+
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .notebooks-grid {
     grid-template-columns: 1fr;
   }

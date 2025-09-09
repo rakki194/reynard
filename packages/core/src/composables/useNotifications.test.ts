@@ -4,12 +4,12 @@
 
 import { describe, it, expect } from "vitest";
 import { createRoot } from "solid-js";
-import { 
-  createNotifications, 
-  NotificationsProvider, 
-  useNotifications, 
-  useNotify, 
-  useNotificationValues 
+import {
+  createNotifications,
+  NotificationsProvider,
+  useNotifications,
+  useNotify,
+  useNotificationValues,
 } from "./useNotifications";
 
 describe("useNotifications Composable", () => {
@@ -82,13 +82,15 @@ describe("useNotifications Composable", () => {
   describe("useNotifications", () => {
     it("should throw error when used outside provider", () => {
       createRoot(() => {
-        expect(() => useNotifications()).toThrow("useNotifications must be used within a NotificationsProvider");
+        expect(() => useNotifications()).toThrow(
+          "useNotifications must be used within a NotificationsProvider",
+        );
       });
     });
 
     it("should return context when used within provider", () => {
       const notificationsModule = createNotifications();
-      
+
       createRoot((dispose) => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();
@@ -103,7 +105,7 @@ describe("useNotifications Composable", () => {
   describe("useNotify", () => {
     it("should return notification utilities", () => {
       const notificationsModule = createNotifications();
-      
+
       createRoot((dispose) => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();
@@ -119,7 +121,7 @@ describe("useNotifications Composable", () => {
   describe("useNotificationValues", () => {
     it("should return notification values", () => {
       const notificationsModule = createNotifications();
-      
+
       createRoot((dispose) => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();

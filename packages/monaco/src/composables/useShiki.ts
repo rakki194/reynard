@@ -1,16 +1,16 @@
 /**
  * useShiki composable - Refactored
- * 
+ *
  * Modular Shiki syntax highlighting with separated concerns:
  * - Core state management in useShiki.core
  * - Highlighting operations in useShiki.operations
  * - Main composable orchestrates the modules
  */
 
-import { onMount, onCleanup } from 'solid-js';
-import { createShikiState } from './useShiki.core';
-import { createShikiOperations } from './useShiki.operations';
-import type { ShikiOptions } from '../types';
+import { onMount, onCleanup } from "solid-js";
+import { createShikiState } from "./useShiki.core";
+import { createShikiOperations } from "./useShiki.operations";
+import type { ShikiOptions } from "../types";
 
 export interface UseShikiReturn {
   state: () => any;
@@ -24,13 +24,13 @@ export interface UseShikiReturn {
 export const useShiki = (options: ShikiOptions = {}): UseShikiReturn => {
   // Create core state
   const stateManager = createShikiState();
-  
+
   // Create operations
   const operations = createShikiOperations(
     stateManager.state,
     stateManager.setHighlighter,
     stateManager.setError,
-    stateManager.setLoading
+    stateManager.setLoading,
   );
 
   // Initialize on mount

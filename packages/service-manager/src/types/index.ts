@@ -1,23 +1,23 @@
 /**
  * Service Management Types
- * 
+ *
  * Core types for the service management system including service lifecycle,
  * health monitoring, dependency management, and service registry.
  */
 
 export enum ServiceStatus {
-  STOPPED = 'stopped',
-  STARTING = 'starting',
-  RUNNING = 'running',
-  STOPPING = 'stopping',
-  ERROR = 'error'
+  STOPPED = "stopped",
+  STARTING = "starting",
+  RUNNING = "running",
+  STOPPING = "stopping",
+  ERROR = "error",
 }
 
 export enum ServiceHealth {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown'
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }
 
 export interface ServiceInfo {
@@ -84,7 +84,7 @@ export interface ServiceManagerState {
 }
 
 export interface ServiceEvent {
-  type: 'startup' | 'shutdown' | 'health_change' | 'error' | 'progress';
+  type: "startup" | "shutdown" | "health_change" | "error" | "progress";
   serviceName: string;
   timestamp: Date;
   data?: any;
@@ -101,7 +101,12 @@ export interface ServiceRegistry {
 }
 
 export interface DependencyGraph {
-  addService(name: string, dependencies: string[], startupPriority: number, requiredPackages?: string[]): void;
+  addService(
+    name: string,
+    dependencies: string[],
+    startupPriority: number,
+    requiredPackages?: string[],
+  ): void;
   removeService(name: string): void;
   getStartupOrder(): string[];
   getParallelGroups(): string[][];

@@ -14,9 +14,15 @@ interface ColorSelectionProps {
 
 export const ColorSelection: Component<ColorSelectionProps> = (props) => {
   const themeColors = useThemeColors();
-  
+
   const colorOptions = [
-    "primary", "secondary", "accent", "success", "warning", "error", "info"
+    "primary",
+    "secondary",
+    "accent",
+    "success",
+    "warning",
+    "error",
+    "info",
   ];
 
   return (
@@ -26,10 +32,13 @@ export const ColorSelection: Component<ColorSelectionProps> = (props) => {
         <For each={colorOptions}>
           {(color) => (
             <button
-              class={`color-option ${props.selectedColor === color ? 'active' : ''}`}
+              class={`color-option ${props.selectedColor === color ? "active" : ""}`}
               ref={(el) => {
                 if (el) {
-                  el.style.setProperty('--dynamic-color', themeColors.getColor(color));
+                  el.style.setProperty(
+                    "--dynamic-color",
+                    themeColors.getColor(color),
+                  );
                 }
               }}
               onClick={() => props.onColorSelect(color)}

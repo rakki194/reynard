@@ -8,25 +8,28 @@
  * @module algorithms/geometry/collision/spatialCollisionOptimizer
  */
 
-import { SpatialHash } from '../../spatial-hash/spatial-hash-core';
-import type { AABB, CollisionResult } from './aabb-types';
-import { 
-  naiveCollisionDetection, 
+import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
+import type { AABB, CollisionResult } from "./aabb-types";
+import {
+  naiveCollisionDetection,
   spatialCollisionDetection,
   type CollisionPair,
-  type CollisionCache 
-} from './collision-detection-core';
+  type CollisionCache,
+} from "./collision-detection-core";
 import {
   type SpatialCollisionConfig,
   type SpatialCollisionStats,
   createDefaultConfig,
   createInitialStats,
-  updateAverageQueryTime
-} from './spatial-collision-stats';
+  updateAverageQueryTime,
+} from "./spatial-collision-stats";
 
 // Re-export types for external use
-export type { AABB, CollisionResult } from './aabb-types';
-export type { SpatialCollisionConfig, SpatialCollisionStats } from './spatial-collision-stats';
+export type { AABB, CollisionResult } from "./aabb-types";
+export type {
+  SpatialCollisionConfig,
+  SpatialCollisionStats,
+} from "./spatial-collision-stats";
 
 export class SpatialCollisionOptimizer {
   private spatialHash: SpatialHash<{ aabb: AABB; index: number }>;
@@ -63,9 +66,10 @@ export class SpatialCollisionOptimizer {
     this.stats.objectsProcessed = aabbs.length;
 
     // Choose algorithm based on object count
-    const collisions = aabbs.length < this.config.hybridThreshold
-      ? this.naiveCollisionDetection(aabbs)
-      : this.spatialCollisionDetection(aabbs);
+    const collisions =
+      aabbs.length < this.config.hybridThreshold
+        ? this.naiveCollisionDetection(aabbs)
+        : this.spatialCollisionDetection(aabbs);
 
     const duration = performance.now() - start;
     updateAverageQueryTime(this.stats, duration);
@@ -86,16 +90,20 @@ export class SpatialCollisionOptimizer {
    */
   private spatialCollisionDetection(aabbs: AABB[]): CollisionPair[] {
     this.stats.spatialQueries++;
-    return spatialCollisionDetection(aabbs, this.spatialHash, this.collisionCache);
+    return spatialCollisionDetection(
+      aabbs,
+      this.spatialHash,
+      this.collisionCache,
+    );
   }
 
   /**
    * Get performance statistics
    */
   getStats(): SpatialCollisionStats {
-    return { 
-      ...this.stats, 
-      cacheHits: this.collisionCache.stats.cacheHits 
+    return {
+      ...this.stats,
+      cacheHits: this.collisionCache.stats.cacheHits,
     };
   }
 
@@ -112,13 +120,13 @@ export class SpatialCollisionOptimizer {
    */
   updateConfig(newConfig: Partial<SpatialCollisionConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    
+
     // Update collision cache config
     this.collisionCache.config = {
       enableCaching: this.config.enableCaching,
       cacheSize: this.config.cacheSize,
     };
-    
+
     if (newConfig.cellSize || newConfig.maxObjectsPerCell) {
       this.spatialHash = new SpatialHash({
         cellSize: this.config.cellSize,

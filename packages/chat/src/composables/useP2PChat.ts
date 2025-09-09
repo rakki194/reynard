@@ -129,7 +129,9 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
 
   // P2P-specific state
   const [onlineUsers, setOnlineUsers] = createSignal<ChatUser[]>([]);
-  const [typingIndicators, setTypingIndicators] = createSignal<TypingIndicator[]>([]);
+  const [typingIndicators, setTypingIndicators] = createSignal<
+    TypingIndicator[]
+  >([]);
 
   // Typing timer management (for future use)
   const _typingTimers = new Map<string, number>();
@@ -154,7 +156,9 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       case "typing_start":
         if (config.enableTypingIndicators) {
           setTypingIndicators((prev) => [
-            ...prev.filter((t) => !(t.user.id === data.user.id && t.roomId === data.roomId)),
+            ...prev.filter(
+              (t) => !(t.user.id === data.user.id && t.roomId === data.roomId),
+            ),
             { roomId: data.roomId, user: data.user, startedAt: Date.now() },
           ]);
         }
@@ -162,12 +166,17 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       case "typing_stop":
         if (config.enableTypingIndicators) {
           setTypingIndicators((prev) =>
-            prev.filter((t) => !(t.user.id === data.user.id && t.roomId === data.roomId))
+            prev.filter(
+              (t) => !(t.user.id === data.user.id && t.roomId === data.roomId),
+            ),
           );
         }
         break;
       case "user_joined":
-        setOnlineUsers((prev) => [...prev.filter((u) => u.id !== data.user.id), data.user]);
+        setOnlineUsers((prev) => [
+          ...prev.filter((u) => u.id !== data.user.id),
+          data.user,
+        ]);
         break;
       case "user_left":
         setOnlineUsers((prev) => prev.filter((u) => u.id !== data.user.id));
@@ -190,13 +199,25 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     // Room actions
     joinRoom: p2pRooms.joinRoom,
     leaveRoom: p2pRooms.leaveRoom,
-    createRoom: async (name: string, type: "direct" | "group" | "public" | "private", participants?: ChatUser[]) => {
-      return await p2pRooms.createRoom({ name, type, participants: participants || [] });
+    createRoom: async (
+      name: string,
+      type: "direct" | "group" | "public" | "private",
+      participants?: ChatUser[],
+    ) => {
+      return await p2pRooms.createRoom({
+        name,
+        type,
+        participants: participants || [],
+      });
     },
     updateRoom: async (roomId: string, updates: Partial<ChatRoom>) => {
       p2pRooms.updateRoom(roomId, updates);
     },
-    getRoomMessages: async (roomId: string, _limit?: number, _before?: string) => {
+    getRoomMessages: async (
+      roomId: string,
+      _limit?: number,
+      _before?: string,
+    ) => {
       return p2pMessages.getRoomMessages(roomId);
     },
     switchRoom: (roomId: string) => {
@@ -211,21 +232,25 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       }
       return await p2pActions.sendMessageToRoom(targetRoomId, content);
     },
-    sendMessageToRoom: async (roomId: string, content: string, options?: {
-      replyTo?: string;
-      threadId?: string;
-      priority?: P2PChatMessage["priority"];
-    }) => {
+    sendMessageToRoom: async (
+      roomId: string,
+      content: string,
+      options?: {
+        replyTo?: string;
+        threadId?: string;
+        priority?: P2PChatMessage["priority"];
+      },
+    ) => {
       const message: P2PChatMessage = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      role: "user",
-      content,
+        role: "user",
+        content,
         timestamp: Date.now(),
-      roomId,
-      sender: currentUser,
-      replyTo: options?.replyTo,
-      threadId: options?.threadId,
-      priority: options?.priority || "normal",
+        roomId,
+        sender: currentUser,
+        replyTo: options?.replyTo,
+        threadId: options?.threadId,
+        priority: options?.priority || "normal",
       };
 
       // Add message locally
@@ -238,11 +263,13 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       // Send via WebSocket
       const ws = p2pConnection.websocket();
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "message_sent",
-          roomId,
-          message,
-        }));
+        ws.send(
+          JSON.stringify({
+            type: "message_sent",
+            roomId,
+            message,
+          }),
+        );
       }
     },
 
@@ -253,9 +280,9 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
         throw new Error("No room selected");
       }
 
-    if (!config.enableFileUploads) {
-      throw new Error("File uploads are disabled");
-    }
+      if (!config.enableFileUploads) {
+        throw new Error("File uploads are disabled");
+      }
 
       return await p2pFileUpload.uploadFile(file, targetRoomId);
     },
@@ -266,11 +293,13 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
 
       const ws = p2pConnection.websocket();
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "typing_start",
-          roomId,
-          user: currentUser,
-        }));
+        ws.send(
+          JSON.stringify({
+            type: "typing_start",
+            roomId,
+            user: currentUser,
+          }),
+        );
       }
     },
 
@@ -279,7 +308,9 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
 
       // Clear typing indicator
       setTypingIndicators((prev) =>
-        prev.filter((t) => !(t.user.id === currentUser.id && t.roomId === roomId))
+        prev.filter(
+          (t) => !(t.user.id === currentUser.id && t.roomId === roomId),
+        ),
       );
     },
 
@@ -296,7 +327,11 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
         p2pMessages.markMessageAsRead(room.id, messageId);
       }
     },
-    editMessage: async (messageId: string, newContent: string, _reason?: string) => {
+    editMessage: async (
+      messageId: string,
+      newContent: string,
+      _reason?: string,
+    ) => {
       const room = p2pRooms.activeRoom();
       if (room) {
         p2pMessages.updateMessage(room.id, messageId, { content: newContent });
@@ -315,11 +350,13 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     updateUserStatusViaWebSocket: async (status: ChatUser["status"]) => {
       const ws = p2pConnection.websocket();
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "user_status_update",
-          userId: currentUser.id,
-          status,
-        }));
+        ws.send(
+          JSON.stringify({
+            type: "user_status_update",
+            userId: currentUser.id,
+            status,
+          }),
+        );
       }
     },
     getUserProfile: async (_userId: string) => {
@@ -346,7 +383,10 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       // Implementation for searching messages
       return [];
     },
-    getMessageHistory: async (roomId: string, _options?: { before?: number; after?: number; limit?: number }) => {
+    getMessageHistory: async (
+      roomId: string,
+      _options?: { before?: number; after?: number; limit?: number },
+    ) => {
       return p2pMessages.getRoomMessages(roomId);
     },
 
@@ -354,12 +394,14 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     setPresence: async (status: ChatUser["status"], message?: string) => {
       const ws = p2pConnection.websocket();
       if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: "user_presence_update",
-          userId: currentUser.id,
-          status,
-          message,
-        }));
+        ws.send(
+          JSON.stringify({
+            type: "user_presence_update",
+            userId: currentUser.id,
+            status,
+            message,
+          }),
+        );
       }
     },
     getRoomPresence: async (_roomId: string) => {
@@ -391,12 +433,14 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       // Implementation for exporting conversation
       const room = p2pRooms.activeRoom();
       if (!room) return "";
-      
+
       const messages = p2pMessages.getRoomMessages(room.id);
       if (format === "json") {
         return JSON.stringify(messages, null, 2);
       }
-      return messages.map(msg => `${msg.sender?.name || 'Unknown'}: ${msg.content}`).join('\n');
+      return messages
+        .map((msg) => `${msg.sender?.name || "Unknown"}: ${msg.content}`)
+        .join("\n");
     },
     importConversation: (data: string, format: "json") => {
       // Implementation for importing conversation

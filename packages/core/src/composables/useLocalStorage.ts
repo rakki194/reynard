@@ -21,18 +21,23 @@ export interface UseLocalStorageOptions<T> {
 const safeJsonParse = (value: string): any => {
   try {
     // Basic validation to prevent prototype pollution and XSS
-    if (typeof value !== 'string' || value.length > 1000000) { // 1MB limit
-      throw new Error('Invalid JSON input');
+    if (typeof value !== "string" || value.length > 1000000) {
+      // 1MB limit
+      throw new Error("Invalid JSON input");
     }
-    
+
     // Check for dangerous patterns
-    if (value.includes('__proto__') || value.includes('constructor') || value.includes('prototype')) {
-      throw new Error('Potentially dangerous JSON detected');
+    if (
+      value.includes("__proto__") ||
+      value.includes("constructor") ||
+      value.includes("prototype")
+    ) {
+      throw new Error("Potentially dangerous JSON detected");
     }
-    
+
     return JSON.parse(value);
   } catch (error) {
-    console.warn('Failed to parse JSON from localStorage:', error);
+    console.warn("Failed to parse JSON from localStorage:", error);
     throw error;
   }
 };
@@ -56,8 +61,8 @@ export const useLocalStorage = <T>(
   } = options;
 
   // Validate key input
-  if (!key || typeof key !== 'string' || key.trim() === '') {
-    throw new Error('useLocalStorage key must be a non-empty string');
+  if (!key || typeof key !== "string" || key.trim() === "") {
+    throw new Error("useLocalStorage key must be a non-empty string");
   }
 
   // Get initial value from localStorage

@@ -1,12 +1,15 @@
 /**
  * Document metadata extractor
- * 
+ *
  * Handles metadata extraction for document files including PDFs,
  * Word documents, and other document formats.
  */
 
 import { DocumentMetadata } from "../../types";
-import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
+import {
+  BaseMetadataExtractor,
+  MetadataExtractionOptions,
+} from "./BaseMetadataExtractor";
 
 export class DocumentMetadataExtractor extends BaseMetadataExtractor {
   /**

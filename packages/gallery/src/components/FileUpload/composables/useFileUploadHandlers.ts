@@ -11,7 +11,7 @@ export interface FileUploadHandlers {
 export function useFileUploadHandlers(
   validateFiles: (files: File[]) => { validFiles: File[]; errors: string[] },
   addFiles: (files: File[]) => void,
-  handleDrop: (event: DragEvent) => void
+  handleDrop: (event: DragEvent) => void,
 ): FileUploadHandlers {
   /**
    * Handle file input change
@@ -22,14 +22,14 @@ export function useFileUploadHandlers(
     if (files.length > 0) {
       const { validFiles, errors } = validateFiles(files);
       if (errors.length > 0) {
-        console.warn('File validation errors:', errors);
+        console.warn("File validation errors:", errors);
       }
       if (validFiles.length > 0) {
         addFiles(validFiles);
       }
     }
     // Reset input
-    input.value = '';
+    input.value = "";
   };
 
   /**
@@ -40,7 +40,7 @@ export function useFileUploadHandlers(
     if (files.length > 0) {
       const { validFiles, errors } = validateFiles(files);
       if (errors.length > 0) {
-        console.warn('File validation errors:', errors);
+        console.warn("File validation errors:", errors);
       }
       if (validFiles.length > 0) {
         addFiles(validFiles);
@@ -51,6 +51,6 @@ export function useFileUploadHandlers(
 
   return {
     handleFileInput,
-    handleDropWithValidation
+    handleDropWithValidation,
   };
 }

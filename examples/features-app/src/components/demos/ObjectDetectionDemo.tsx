@@ -13,9 +13,9 @@ export default function ObjectDetectionDemo() {
     "object-detection",
     <div class="demo-content unavailable">
       <p>Object detection is currently unavailable</p>
-    </div>
+    </div>,
   );
-  
+
   const status = useFeatureStatus("object-detection");
   const [detectedObjects, setDetectedObjects] = createSignal<string[]>([]);
   const [isDetecting, setIsDetecting] = createSignal(false);
@@ -37,39 +37,84 @@ export default function ObjectDetectionDemo() {
     <div class="feature-demo">
       <h3>🎯 Object Detection</h3>
       <p>Detect and identify objects in images</p>
-      
+
       {shouldRender() ? (
         <div class="demo-content">
           <p>Object detection is fully available</p>
-          
+
           {status()?.degraded && (
-            <div class="status-message warning">
-              ⚠️ {status()?.message}
-            </div>
+            <div class="status-message warning">⚠️ {status()?.message}</div>
           )}
-          
-          <div style={{"margin-top": "var(--spacing)"}}>
-            <button 
-              class="btn" 
+
+          <div style={{ "margin-top": "var(--spacing)" }}>
+            <button
+              class="btn"
               onClick={simulateDetection}
               disabled={isDetecting()}
             >
-              {isDetecting() ? "Detecting Objects..." : "Simulate Object Detection"}
+              {isDetecting()
+                ? "Detecting Objects..."
+                : "Simulate Object Detection"}
             </button>
-            
+
             {isDetecting() && (
-              <div style={{"margin-top": "var(--spacing)", "text-align": "center"}}>
-                <div style={{"display": "inline-block", "width": "20px", "height": "20px", "border": "2px solid var(--accent)", "border-top": "2px solid transparent", "border-radius": "50%", "animation": "spin 1s linear infinite"}}></div>
-                <p style={{"margin-top": "calc(var(--spacing) / 2)", "color": "var(--text-secondary)"}}>Analyzing image...</p>
+              <div
+                style={{
+                  "margin-top": "var(--spacing)",
+                  "text-align": "center",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-block",
+                    width: "20px",
+                    height: "20px",
+                    border: "2px solid var(--accent)",
+                    "border-top": "2px solid transparent",
+                    "border-radius": "50%",
+                    animation: "spin 1s linear infinite",
+                  }}
+                ></div>
+                <p
+                  style={{
+                    "margin-top": "calc(var(--spacing) / 2)",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Analyzing image...
+                </p>
               </div>
             )}
-            
+
             {detectedObjects().length > 0 && (
-              <div style={{"margin-top": "var(--spacing)", "padding": "var(--spacing)", "background": "var(--secondary-bg)", "border-radius": "var(--border-radius)", "border": "1px solid var(--border-color)"}}>
+              <div
+                style={{
+                  "margin-top": "var(--spacing)",
+                  padding: "var(--spacing)",
+                  background: "var(--secondary-bg)",
+                  "border-radius": "var(--border-radius)",
+                  border: "1px solid var(--border-color)",
+                }}
+              >
                 <strong>Detected Objects:</strong>
-                <div style={{"display": "flex", "flex-wrap": "wrap", "gap": "calc(var(--spacing) / 2)", "margin-top": "calc(var(--spacing) / 2)"}}>
-                  {detectedObjects().map(object => (
-                    <span style={{"background": "var(--accent)", "color": "white", "padding": "2px 8px", "border-radius": "12px", "font-size": "0.8rem"}}>
+                <div
+                  style={{
+                    display: "flex",
+                    "flex-wrap": "wrap",
+                    gap: "calc(var(--spacing) / 2)",
+                    "margin-top": "calc(var(--spacing) / 2)",
+                  }}
+                >
+                  {detectedObjects().map((object) => (
+                    <span
+                      style={{
+                        background: "var(--accent)",
+                        color: "white",
+                        padding: "2px 8px",
+                        "border-radius": "12px",
+                        "font-size": "0.8rem",
+                      }}
+                    >
                       {object}
                     </span>
                   ))}
@@ -81,7 +126,7 @@ export default function ObjectDetectionDemo() {
       ) : (
         fallback
       )}
-      
+
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }

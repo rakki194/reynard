@@ -1,6 +1,6 @@
 // Resource system implementation
 
-import { Resource, ResourceType } from './types';
+import { Resource, ResourceType } from "./types";
 
 /**
  * Resource registry for managing resource types.
@@ -13,10 +13,7 @@ export class ResourceRegistry {
   /**
    * Registers a new resource type.
    */
-  register<T extends Resource>(
-    name: string,
-    create: () => T
-  ): ResourceType<T> {
+  register<T extends Resource>(name: string, create: () => T): ResourceType<T> {
     if (this.resourceTypes.has(name)) {
       throw new Error(`Resource type '${name}' is already registered`);
     }
@@ -25,7 +22,7 @@ export class ResourceRegistry {
     const resourceType: ResourceType<T> = {
       name,
       id,
-      create
+      create,
     };
 
     this.resourceTypes.set(name, resourceType);
@@ -129,11 +126,11 @@ export class ResourceStorage {
  */
 export function createResourceType<T extends Resource>(
   name: string,
-  create: () => T
+  create: () => T,
 ): ResourceType<T> {
   return {
     name,
     id: 0, // Will be set by registry
-    create
+    create,
   };
 }

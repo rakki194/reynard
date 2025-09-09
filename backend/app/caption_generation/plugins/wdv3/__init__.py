@@ -26,7 +26,7 @@ def register_plugin():
     """Register the WDv3 plugin with the Reynard system."""
     return {
         "name": "wdv3",
-        "module_path": "app.caption_generation.plugins.wdv3.generator",
+        "module_path": "app.caption_generation.plugins.wdv3",
         "default_config": {
             "threshold": 0.2,
             "force_cpu": False,

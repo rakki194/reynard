@@ -26,7 +26,7 @@ export const createAuthInitialization = (
   callbacks: AuthCallbacks,
   setupTokenRefresh: () => void,
   fetchUserProfile: () => void,
-  logout: () => Promise<void>
+  logout: () => Promise<void>,
 ): AuthInitialization => {
   const initialize = async (): Promise<void> => {
     updateAuthState({ isLoading: true });

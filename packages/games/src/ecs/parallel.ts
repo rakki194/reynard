@@ -1,8 +1,8 @@
 // Parallel execution system for multi-threaded operations
 
-import { Entity, Component, ComponentType, QueryResult } from './types';
-import { ComponentStorage } from './component';
-import { ChangeDetection } from './change-detection';
+import { Entity, Component, ComponentType, QueryResult } from "./types";
+import { ComponentStorage } from "./component";
+import { ChangeDetection } from "./change-detection";
 
 /**
  * Parallel iterator for query results.
@@ -12,15 +12,15 @@ export interface ParallelIterator<T extends Component[]> {
    * Runs a function on each query result in parallel.
    */
   forEach(callback: (entity: Entity, ...components: T) => void): void;
-  
+
   /**
    * Runs a function on each query result in parallel with initialization.
    */
   forEachInit<U>(
     init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void
+    callback: (local: U, entity: Entity, ...components: T) => void,
   ): void;
-  
+
   /**
    * Changes the batching strategy used when iterating.
    */
@@ -42,33 +42,41 @@ export interface BatchingStrategy {
 export const DEFAULT_BATCHING_STRATEGY: BatchingStrategy = {
   batchSize: 1000,
   minBatchSize: 100,
-  maxBatchSize: 10000
+  maxBatchSize: 10000,
 };
 
 /**
  * Parallel iterator implementation.
  */
-export class ParallelIteratorImpl<T extends Component[]> implements ParallelIterator<T> {
+export class ParallelIteratorImpl<T extends Component[]>
+  implements ParallelIterator<T>
+{
   private strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
 
   constructor(
     private queryResult: QueryResult<T>,
     private world: any,
-    private changeDetection?: ChangeDetection
+    private changeDetection?: ChangeDetection,
   ) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
-    this.forEachInit(() => {}, (_, entity, ...components) => {
-      callback(entity, ...components);
-    });
+    this.forEachInit(
+      () => {},
+      (_, entity, ...components) => {
+        callback(entity, ...components);
+      },
+    );
   }
 
   forEachInit<U>(
     init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void
+    callback: (local: U, entity: Entity, ...components: T) => void,
   ): void {
     // Check if we're in a web worker environment
-    if (typeof Worker !== 'undefined' && typeof (globalThis as any).importScripts === 'function') {
+    if (
+      typeof Worker !== "undefined" &&
+      typeof (globalThis as any).importScripts === "function"
+    ) {
       // We're in a web worker, use parallel execution
       this.executeParallel(init, callback);
     } else {
@@ -84,7 +92,7 @@ export class ParallelIteratorImpl<T extends Component[]> implements ParallelIter
 
   private executeSequential<U>(
     init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void
+    callback: (local: U, entity: Entity, ...components: T) => void,
   ): void {
     const local = init();
     this.queryResult.forEach((entity, ...components) => {
@@ -94,7 +102,7 @@ export class ParallelIteratorImpl<T extends Component[]> implements ParallelIter
 
   private executeParallel<U>(
     init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void
+    callback: (local: U, entity: Entity, ...components: T) => void,
   ): void {
     // For now, fallback to sequential execution
     // In a real implementation, this would use Web Workers or SharedArrayBuffer
@@ -130,7 +138,7 @@ export class ParallelCommandsImpl implements ParallelCommands {
         this.commandQueue.push(() => {
           // Commands will be applied later
         });
-      }
+      },
     };
 
     callback(scopedCommands);
@@ -163,7 +171,7 @@ export class TaskPool {
    */
   async executeParallel<T, R>(
     tasks: T[],
-    worker: (task: T) => R
+    worker: (task: T) => R,
   ): Promise<R[]> {
     if (tasks.length === 0) return [];
 
@@ -194,4 +202,3 @@ export class TaskPool {
  * Global task pool instance.
  */
 export const TASK_POOL = new TaskPool();
-

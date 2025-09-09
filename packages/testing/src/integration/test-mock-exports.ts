@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 import {
   createMockFn,
   createMockObject,
@@ -17,10 +17,10 @@ import {
   createMockMatchMedia,
   createMockRequestAnimationFrame,
   createMockCancelAnimationFrame,
-} from '../index';
+} from "../index";
 
 export function testMockExports() {
-  it('should export all mock utilities', () => {
+  it("should export all mock utilities", () => {
     expect(createMockFn).toBeDefined();
     expect(createMockObject).toBeDefined();
     expect(createMockResponse).toBeDefined();

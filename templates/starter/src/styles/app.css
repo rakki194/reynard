@@ -3,7 +3,7 @@
  * Modern design system with comprehensive component showcase
  */
 
-@import "../../packages/themes/dist/reynard-themes.css";
+@import "reynard-themes/themes.css";
 @import "./components.css";
 @import "./modern-components.css";
 
@@ -40,8 +40,16 @@
   --shadow-large: 0 8px 25px var(--shadow-color);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--accent), var(--color-accent-light, #0056b3));
-  --gradient-surface: linear-gradient(135deg, var(--card-bg), var(--secondary-bg));
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--color-accent-light, #0056b3)
+  );
+  --gradient-surface: linear-gradient(
+    135deg,
+    var(--card-bg),
+    var(--secondary-bg)
+  );
 }
 
 /* CSS Reset */
@@ -402,9 +410,15 @@
     background: var(--text-secondary);
   }
 
-  .dot:nth-child(1) { background: var(--color-error); }
-  .dot:nth-child(2) { background: var(--color-warning); }
-  .dot:nth-child(3) { background: var(--color-success); }
+  .dot:nth-child(1) {
+    background: var(--color-error);
+  }
+  .dot:nth-child(2) {
+    background: var(--color-warning);
+  }
+  .dot:nth-child(3) {
+    background: var(--color-success);
+  }
 
   .demo-title {
     font-weight: 600;
@@ -630,16 +644,16 @@
   .feature-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .charts-demo,
   .threed-demo {
     grid-column: span 1;
   }
-  
+
   .charts-preview {
     grid-template-columns: 1fr;
   }
-  
+
   .charts-demo .card-header,
   .threed-demo .card-header {
     flex-direction: column;

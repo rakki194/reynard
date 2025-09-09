@@ -16,8 +16,8 @@ CSS Modules also support adding pseudo class selectors:
 
 ```js
 /* component/text.js */
-import styles from './text.css';
-import React from 'react';
+import styles from "./text.css";
+import React from "react";
 
 export function Text() {
   return <p className={styles.text}>Text with hover</p>;

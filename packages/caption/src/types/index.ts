@@ -1,14 +1,14 @@
 /**
  * Caption UI Types
- * 
+ *
  * Types for caption editing UI components including textarea and tag bubbles.
  */
 
 export enum CaptionType {
-  CAPTION = 'caption',
-  TAGS = 'tags',
-  E621 = 'e621',
-  TOML = 'toml'
+  CAPTION = "caption",
+  TAGS = "tags",
+  E621 = "e621",
+  TOML = "toml",
 }
 
 export interface CaptionData {
@@ -21,16 +21,18 @@ export interface TagBubbleProps {
   index: number;
   onRemove: () => void;
   onEdit: (newTag: string) => void;
-  onNavigate?: (direction: 'left' | 'right' | 'up' | 'down' | 'start' | 'end') => void;
+  onNavigate?: (
+    direction: "left" | "right" | "up" | "down" | "start" | "end",
+  ) => void;
   editable?: boolean;
   removable?: boolean;
   color?: string;
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
 }
 
 export interface CaptionInputProps {
   caption: CaptionData;
-  state: 'expanded' | 'collapsed' | null;
+  state: "expanded" | "collapsed" | null;
   onClick: () => void;
   shouldAutoFocus?: boolean;
   imageInfo?: {

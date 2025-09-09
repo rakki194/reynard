@@ -20,7 +20,7 @@ export const ColorPicker: Component = () => {
   // Update CSS custom property when color changes
   createEffect(() => {
     if (colorPreviewRef) {
-      colorPreviewRef.style.setProperty('--preview-color', favoriteColor());
+      colorPreviewRef.style.setProperty("--preview-color", favoriteColor());
     }
   });
 
@@ -48,12 +48,11 @@ export const ColorPicker: Component = () => {
             class="color-picker"
             title="Choose your favorite color"
           />
-          <div 
-            ref={colorPreviewRef}
-            class="color-preview"
-          />
+          <div ref={colorPreviewRef} class="color-preview" />
         </div>
-        <p class="color-value">Selected: <code>{favoriteColor()}</code></p>
+        <p class="color-value">
+          Selected: <code>{favoriteColor()}</code>
+        </p>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
  * @fileoverview Navigation components for documentation sites
  */
 
-import { Component, JSX, createSignal, For, Show } from 'solid-js';
+import { Component, JSX, createSignal, For, Show } from "solid-js";
 // import { Button } from 'reynard-components';
 
 /**
@@ -18,17 +18,15 @@ export const DocsNav: Component<{
     badge?: string;
     color?: string;
   }>;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }> = (props) => {
   return (
-    <nav class={`docs-nav docs-nav--${props.orientation || 'horizontal'} ${props.className || ''}`}>
+    <nav
+      class={`docs-nav docs-nav--${props.orientation || "horizontal"} ${props.className || ""}`}
+    >
       <ul class="docs-nav-list">
-        <For each={props.items}>
-          {(item) => (
-            <DocsNavItem item={item} />
-          )}
-        </For>
+        <For each={props.items}>{(item) => <DocsNavItem item={item} />}</For>
       </ul>
     </nav>
   );
@@ -49,16 +47,17 @@ const DocsNavItem: Component<{
   };
 }> = (props) => {
   const [isExpanded, setIsExpanded] = createSignal(false);
-  const hasChildren = () => props.item.children && props.item.children.length > 0;
+  const hasChildren = () =>
+    props.item.children && props.item.children.length > 0;
 
   return (
     <li class="docs-nav-item">
       <Show when={props.item.href}>
-        <a 
+        <a
           href={props.item.href}
           class="docs-nav-link"
-          target={props.item.external ? '_blank' : undefined}
-          rel={props.item.external ? 'noopener noreferrer' : undefined}
+          target={props.item.external ? "_blank" : undefined}
+          rel={props.item.external ? "noopener noreferrer" : undefined}
         >
           <Show when={props.item.icon}>
             <span class="docs-nav-icon">{props.item.icon}</span>
@@ -72,9 +71,9 @@ const DocsNavItem: Component<{
           </Show>
         </a>
       </Show>
-      
+
       <Show when={!props.item.href}>
-        <button 
+        <button
           class="docs-nav-button"
           onClick={() => hasChildren() && setIsExpanded(!isExpanded())}
         >
@@ -86,7 +85,9 @@ const DocsNavItem: Component<{
             <span class="docs-nav-badge">{props.item.badge}</span>
           </Show>
           <Show when={hasChildren()}>
-            <span class={`docs-nav-arrow ${isExpanded() ? 'expanded' : ''}`}>▼</span>
+            <span class={`docs-nav-arrow ${isExpanded() ? "expanded" : ""}`}>
+              ▼
+            </span>
           </Show>
         </button>
       </Show>
@@ -94,9 +95,7 @@ const DocsNavItem: Component<{
       <Show when={hasChildren() && isExpanded()}>
         <ul class="docs-nav-sublist">
           <For each={props.item.children}>
-            {(child) => (
-              <DocsNavItem item={child} />
-            )}
+            {(child) => <DocsNavItem item={child} />}
           </For>
         </ul>
       </Show>
@@ -115,10 +114,13 @@ export const DocsBreadcrumbs: Component<{
   separator?: string;
   className?: string;
 }> = (props) => {
-  const separator = () => props.separator || '/';
+  const separator = () => props.separator || "/";
 
   return (
-    <nav class={`docs-breadcrumbs ${props.className || ''}`} aria-label="Breadcrumb">
+    <nav
+      class={`docs-breadcrumbs ${props.className || ""}`}
+      aria-label="Breadcrumb"
+    >
       <ol class="docs-breadcrumbs-list">
         <For each={props.items}>
           {(item, index) => (
@@ -160,15 +162,18 @@ export const DocsTOC: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <nav class={`docs-toc ${props.className || ''}`} aria-label="Table of contents">
+    <nav
+      class={`docs-toc ${props.className || ""}`}
+      aria-label="Table of contents"
+    >
       <h3 class="docs-toc-title">On this page</h3>
       <ul class="docs-toc-list">
         <For each={props.headings}>
           {(heading) => (
             <li class={`docs-toc-item docs-toc-item--${heading.level}`}>
-              <a 
+              <a
                 href={`#${heading.id}`}
-                class={`docs-toc-link ${props.activeId === heading.id ? 'active' : ''}`}
+                class={`docs-toc-link ${props.activeId === heading.id ? "active" : ""}`}
                 onClick={(e) => {
                   e.preventDefault();
                   props.onNavigate?.(heading.id);
@@ -228,11 +233,14 @@ export const DocsPagination: Component<{
   };
 
   return (
-    <nav class={`docs-pagination ${props.className || ''}`} aria-label="Pagination">
+    <nav
+      class={`docs-pagination ${props.className || ""}`}
+      aria-label="Pagination"
+    >
       <ul class="docs-pagination-list">
         <Show when={showFirstLast() && getVisiblePages()[0] > 1}>
           <li class="docs-pagination-item">
-            <button 
+            <button
               class="docs-pagination-button"
               onClick={() => props.onPageChange(1)}
               aria-label="Go to first page"
@@ -244,7 +252,7 @@ export const DocsPagination: Component<{
 
         <Show when={showPrevNext() && props.current > 1}>
           <li class="docs-pagination-item">
-            <button 
+            <button
               class="docs-pagination-button"
               onClick={() => props.onPageChange(props.current - 1)}
               aria-label="Go to previous page"
@@ -257,11 +265,11 @@ export const DocsPagination: Component<{
         <For each={getVisiblePages()}>
           {(page) => (
             <li class="docs-pagination-item">
-              <button 
-                class={`docs-pagination-button ${page === props.current ? 'active' : ''}`}
+              <button
+                class={`docs-pagination-button ${page === props.current ? "active" : ""}`}
                 onClick={() => props.onPageChange(page)}
                 aria-label={`Go to page ${page}`}
-                aria-current={page === props.current ? 'page' : undefined}
+                aria-current={page === props.current ? "page" : undefined}
               >
                 {page}
               </button>
@@ -271,7 +279,7 @@ export const DocsPagination: Component<{
 
         <Show when={showPrevNext() && props.current < props.total}>
           <li class="docs-pagination-item">
-            <button 
+            <button
               class="docs-pagination-button"
               onClick={() => props.onPageChange(props.current + 1)}
               aria-label="Go to next page"
@@ -281,9 +289,14 @@ export const DocsPagination: Component<{
           </li>
         </Show>
 
-        <Show when={showFirstLast() && getVisiblePages()[getVisiblePages().length - 1] < props.total}>
+        <Show
+          when={
+            showFirstLast() &&
+            getVisiblePages()[getVisiblePages().length - 1] < props.total
+          }
+        >
           <li class="docs-pagination-item">
-            <button 
+            <button
               class="docs-pagination-button"
               onClick={() => props.onPageChange(props.total)}
               aria-label="Go to last page"
@@ -310,16 +323,18 @@ export const DocsTabs: Component<{
   }>;
   activeTab: string;
   onTabChange: (tabId: string) => void;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }> = (props) => {
   return (
-    <div class={`docs-tabs docs-tabs--${props.orientation || 'horizontal'} ${props.className || ''}`}>
+    <div
+      class={`docs-tabs docs-tabs--${props.orientation || "horizontal"} ${props.className || ""}`}
+    >
       <div class="docs-tabs-list" role="tablist">
         <For each={props.tabs}>
           {(tab) => (
             <button
-              class={`docs-tab ${props.activeTab === tab.id ? 'active' : ''} ${tab.disabled ? 'disabled' : ''}`}
+              class={`docs-tab ${props.activeTab === tab.id ? "active" : ""} ${tab.disabled ? "disabled" : ""}`}
               role="tab"
               aria-selected={props.activeTab === tab.id}
               aria-controls={`panel-${tab.id}`}
@@ -355,7 +370,7 @@ export const DocsTabPanel: Component<{
 
   return (
     <div
-      class={`docs-tab-panel ${props.className || ''} ${isActive() ? 'active' : ''}`}
+      class={`docs-tab-panel ${props.className || ""} ${isActive() ? "active" : ""}`}
       role="tabpanel"
       id={`panel-${props.tabId}`}
       aria-labelledby={`tab-${props.tabId}`}

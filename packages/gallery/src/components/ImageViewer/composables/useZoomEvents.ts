@@ -14,7 +14,7 @@ export interface UseZoomEventsReturn {
 export const useZoomEvents = (
   config: ImageViewerConfig,
   state: () => ImageViewerState,
-  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void
+  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
 ): UseZoomEventsReturn => {
   const handleWheel = (event: WheelEvent) => {
     if (!config.enableZoom) return;
@@ -23,7 +23,7 @@ export const useZoomEvents = (
     const delta = event.deltaY > 0 ? 0.9 : 1.1;
     const newZoom = Math.max(
       config.minZoom,
-      Math.min(config.maxZoom, state().zoom * delta)
+      Math.min(config.maxZoom, state().zoom * delta),
     );
 
     setState((prev) => ({ ...prev, zoom: newZoom }));

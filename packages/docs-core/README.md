@@ -41,51 +41,51 @@ npm install reynard-docs-core solid-js
 ### Basic Documentation Engine
 
 ```tsx
-import { createDocEngine, defaultDocConfig } from 'reynard-docs-core';
-import { DocRenderer } from 'reynard-docs-core/renderer';
+import { createDocEngine, defaultDocConfig } from "reynard-docs-core";
+import { DocRenderer } from "reynard-docs-core/renderer";
 
 // Create documentation engine
 const docEngine = createDocEngine({
   ...defaultDocConfig,
   site: {
-    title: 'My Documentation',
-    description: 'Beautiful docs with Reynard',
-    baseUrl: '/',
+    title: "My Documentation",
+    description: "Beautiful docs with Reynard",
+    baseUrl: "/",
     theme: {
-      name: 'custom',
-      primaryColor: '#6366f1',
-      secondaryColor: '#8b5cf6',
-      backgroundColor: '#ffffff',
-      textColor: '#1f2937',
-      accentColor: '#f59e0b'
+      name: "custom",
+      primaryColor: "#6366f1",
+      secondaryColor: "#8b5cf6",
+      backgroundColor: "#ffffff",
+      textColor: "#1f2937",
+      accentColor: "#f59e0b",
     },
     navigation: {
       main: [
-        { label: 'Getting Started', href: '/getting-started' },
-        { label: 'API Reference', href: '/api' }
-      ]
-    }
+        { label: "Getting Started", href: "/getting-started" },
+        { label: "API Reference", href: "/api" },
+      ],
+    },
   },
   pages: [
     {
-      id: 'getting-started',
-      slug: 'getting-started',
-      title: 'Getting Started',
-      content: '# Welcome to Reynard\n\nThis is your documentation!',
+      id: "getting-started",
+      slug: "getting-started",
+      title: "Getting Started",
+      content: "# Welcome to Reynard\n\nThis is your documentation!",
       metadata: {
-        title: 'Getting Started',
-        description: 'Learn how to get started with Reynard'
+        title: "Getting Started",
+        description: "Learn how to get started with Reynard",
       },
-      type: 'markdown'
-    }
-  ]
+      type: "markdown",
+    },
+  ],
 });
 
 // Render documentation
 function MyDocs() {
-  const page = docEngine.getPage('getting-started');
+  const page = docEngine.getPage("getting-started");
   const Renderer = docEngine.render(page!);
-  
+
   return <Renderer />;
 }
 ```
@@ -93,12 +93,13 @@ function MyDocs() {
 ### Markdown Parsing
 
 ```tsx
-import { ContentParser } from 'reynard-docs-core/parser';
+import { ContentParser } from "reynard-docs-core/parser";
 
 const parser = new ContentParser();
 
 // Parse markdown content
-const page = parser.parse(`
+const page = parser.parse(
+  `
 ---
 title: "My Page"
 description: "A sample page"
@@ -114,7 +115,9 @@ function MyComponent() {
   return <div>Hello from Reynard!</div>;
 }
 \`\`\`
-`, 'markdown');
+`,
+  "markdown",
+);
 
 console.log(page.title); // "My Page"
 console.log(page.metadata.tags); // ["tutorial", "beginner"]
@@ -123,7 +126,7 @@ console.log(page.metadata.tags); // ["tutorial", "beginner"]
 ### Custom Renderer
 
 ```tsx
-import { DocRenderer } from 'reynard-docs-core/renderer';
+import { DocRenderer } from "reynard-docs-core/renderer";
 
 function CustomDocRenderer(props) {
   return (
@@ -134,11 +137,11 @@ function CustomDocRenderer(props) {
         type={props.type}
         onNavigate={(path) => {
           // Handle navigation
-          console.log('Navigate to:', path);
+          console.log("Navigate to:", path);
         }}
         onCodeRun={(code) => {
           // Handle code execution
-          console.log('Run code:', code);
+          console.log("Run code:", code);
         }}
       />
     </div>
@@ -149,12 +152,12 @@ function CustomDocRenderer(props) {
 ### Code Examples
 
 ```tsx
-import { CodeExampleRenderer } from 'reynard-docs-core/renderer';
+import { CodeExampleRenderer } from "reynard-docs-core/renderer";
 
 const example = {
-  id: 'button-example',
-  title: 'Button Component',
-  description: 'A simple button example',
+  id: "button-example",
+  title: "Button Component",
+  description: "A simple button example",
   code: `
 import { Button } from 'reynard-components';
 
@@ -166,14 +169,14 @@ function App() {
   );
 }
   `,
-  language: 'tsx',
+  language: "tsx",
   live: true,
-  editable: true
+  editable: true,
 };
 
 function ExamplePage() {
   return (
-    <CodeExampleRenderer 
+    <CodeExampleRenderer
       example={example}
       onRun={(code) => {
         // Execute the code
@@ -187,37 +190,37 @@ function ExamplePage() {
 ### API Documentation
 
 ```tsx
-import { ApiDocRenderer } from 'reynard-docs-core/renderer';
+import { ApiDocRenderer } from "reynard-docs-core/renderer";
 
 const apiDoc = {
-  name: 'useNotifications',
-  type: 'function',
-  description: 'Hook for managing toast notifications',
+  name: "useNotifications",
+  type: "function",
+  description: "Hook for managing toast notifications",
   parameters: [
     {
-      name: 'options',
-      type: 'NotificationOptions',
-      description: 'Configuration options for notifications',
+      name: "options",
+      type: "NotificationOptions",
+      description: "Configuration options for notifications",
       required: false,
-      default: '{}'
-    }
+      default: "{}",
+    },
   ],
   returns: {
-    type: 'NotificationManager',
-    description: 'Object with notification methods'
+    type: "NotificationManager",
+    description: "Object with notification methods",
   },
   examples: [
     {
-      id: 'basic-usage',
-      title: 'Basic Usage',
+      id: "basic-usage",
+      title: "Basic Usage",
       code: `
 const { notify } = useNotifications();
 
 notify('Hello World!', 'success');
       `,
-      language: 'tsx'
-    }
-  ]
+      language: "tsx",
+    },
+  ],
 };
 
 function ApiPage() {
@@ -228,38 +231,38 @@ function ApiPage() {
 ### Search Functionality
 
 ```tsx
-import { createDocEngine } from 'reynard-docs-core';
+import { createDocEngine } from "reynard-docs-core";
 
 const docEngine = createDocEngine(config);
 
 // Search documentation
-const results = docEngine.search('button component');
+const results = docEngine.search("button component");
 
 console.log(results); // Array of matching pages
 
 // Get related pages
-const related = docEngine.getRelatedPages('button-example', 3);
+const related = docEngine.getRelatedPages("button-example", 3);
 
 // Get breadcrumbs
-const breadcrumbs = docEngine.getBreadcrumbs('button-example');
+const breadcrumbs = docEngine.getBreadcrumbs("button-example");
 ```
 
 ### Plugin System
 
 ```tsx
-import { DocPlugin } from 'reynard-docs-core';
+import { DocPlugin } from "reynard-docs-core";
 
 const customPlugin: DocPlugin = {
-  name: 'custom-plugin',
-  version: '1.0.0',
+  name: "custom-plugin",
+  version: "1.0.0",
   install: (engine) => {
     // Add custom functionality
-    console.log('Custom plugin installed!');
+    console.log("Custom plugin installed!");
   },
   uninstall: (engine) => {
     // Cleanup
-    console.log('Custom plugin uninstalled!');
-  }
+    console.log("Custom plugin uninstalled!");
+  },
 };
 
 // Add plugin to engine
@@ -271,11 +274,11 @@ docEngine.addPlugin(customPlugin);
 The documentation engine integrates seamlessly with Reynard's theming system:
 
 ```tsx
-import { useTheme } from 'reynard-themes';
+import { useTheme } from "reynard-themes";
 
 function ThemedDocs() {
   const { theme } = useTheme();
-  
+
   return (
     <div class={`docs docs--${theme()}`}>
       <DocRenderer {...props} />
@@ -292,20 +295,20 @@ function ThemedDocs() {
 const config = {
   // ... other config
   customComponents: {
-    'MyCustomComponent': MyCustomComponent,
-    'InteractiveDemo': InteractiveDemo
-  }
+    MyCustomComponent: MyCustomComponent,
+    InteractiveDemo: InteractiveDemo,
+  },
 };
 ```
 
 ### Custom Parsers
 
 ```tsx
-import { ContentParser } from 'reynard-docs-core/parser';
+import { ContentParser } from "reynard-docs-core/parser";
 
 class CustomParser extends ContentParser {
   parse(content: string, type: DocContentType): DocPage {
-    if (type === 'custom') {
+    if (type === "custom") {
       // Handle custom content type
       return this.parseCustomContent(content);
     }

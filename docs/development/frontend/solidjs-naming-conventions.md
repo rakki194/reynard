@@ -124,8 +124,8 @@ const [isVisible, setIsVisible] = createSignal(true);
 const [isAuthenticated, setIsAuthenticated] = createSignal(false);
 
 // ✅ Derived signals use descriptive names
-const filteredItems = createMemo(() => 
-  items().filter(item => item.name.includes(searchQuery()))
+const filteredItems = createMemo(() =>
+  items().filter((item) => item.name.includes(searchQuery())),
 );
 ```
 
@@ -162,9 +162,9 @@ function useToggle(initialValue: boolean) {
 }
 
 function useEventListener(
-  event: string, 
-  handler: EventListener, 
-  target: EventTarget = window
+  event: string,
+  handler: EventListener,
+  target: EventTarget = window,
 ) {
   createEffect(() => {
     target.addEventListener(event, handler);
@@ -174,16 +174,16 @@ function useEventListener(
 
 function useMedia(query: string) {
   const [matches, setMatches] = createSignal(false);
-  
+
   createEffect(() => {
     const media = window.matchMedia(query);
     setMatches(media.matches);
-    
+
     const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
-    media.addEventListener('change', handler);
-    onCleanup(() => media.removeEventListener('change', handler));
+    media.addEventListener("change", handler);
+    onCleanup(() => media.removeEventListener("change", handler));
   });
-  
+
   return matches;
 }
 ```
@@ -196,9 +196,9 @@ Composables should return consistent, typed values:
 // ✅ Signal tuple pattern
 function useCounter(initial: number = 0) {
   const [count, setCount] = createSignal(initial);
-  const increment = () => setCount(c => c + 1);
-  const decrement = () => setCount(c => c - 1);
-  
+  const increment = () => setCount((c) => c + 1);
+  const decrement = () => setCount((c) => c - 1);
+
   return [count, { increment, decrement }] as const;
 }
 
@@ -207,22 +207,22 @@ function useForm<T>(initialValues: T) {
   const [values, setValues] = createSignal(initialValues);
   const [errors, setErrors] = createSignal({});
   const [isSubmitting, setIsSubmitting] = createSignal(false);
-  
+
   const setValue = (key: keyof T, value: any) => {
-    setValues(prev => ({ ...prev, [key]: value }));
+    setValues((prev) => ({ ...prev, [key]: value }));
   };
-  
+
   const setError = (key: keyof T, error: string) => {
-    setErrors(prev => ({ ...prev, [key]: error }));
+    setErrors((prev) => ({ ...prev, [key]: error }));
   };
-  
+
   return {
     values,
     errors,
     isSubmitting,
     setValue,
     setError,
-    setIsSubmitting
+    setIsSubmitting,
   } as const;
 }
 ```
@@ -263,18 +263,18 @@ src/
 
 ```typescript
 // components/index.ts
-export { Button } from './ui/Button';
-export { Header } from './layout/Header';
-export { Sidebar } from './layout/Sidebar';
+export { Button } from "./ui/Button";
+export { Header } from "./layout/Header";
+export { Sidebar } from "./layout/Sidebar";
 
 // composables/index.ts
-export { useAuth } from './useAuth';
-export { useApi } from './useApi';
-export { useToggle } from './useToggle';
+export { useAuth } from "./useAuth";
+export { useApi } from "./useApi";
+export { useToggle } from "./useToggle";
 
 // utils/index.ts
-export { formatDate, parseDate } from './helpers';
-export { API_ENDPOINTS, ROUTES } from './constants';
+export { formatDate, parseDate } from "./helpers";
+export { API_ENDPOINTS, ROUTES } from "./constants";
 ```
 
 ## Official Documentation References
@@ -315,8 +315,8 @@ export { API_ENDPOINTS, ROUTES } from './constants';
 // ✅ Properly typed composables
 function useCounter(initial: number = 0) {
   const [count, setCount] = createSignal<number>(initial);
-  const increment = () => setCount(c => c + 1);
-  
+  const increment = () => setCount((c) => c + 1);
+
   return [count, { increment }] as const;
 }
 
@@ -326,12 +326,12 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
     const stored = localStorage.getItem(key);
     return stored ? JSON.parse(stored) : defaultValue;
   });
-  
+
   const updateValue = (newValue: T) => {
     setValue(newValue);
     localStorage.setItem(key, JSON.stringify(newValue));
   };
-  
+
   return [value, updateValue] as const;
 }
 ```
@@ -343,7 +343,7 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
 function useEventListener(
   event: string,
   handler: EventListener,
-  target: EventTarget = window
+  target: EventTarget = window,
 ) {
   createEffect(() => {
     target.addEventListener(event, handler);
@@ -357,19 +357,19 @@ function useEventListener(
 function useWebSocket(url: string) {
   const [socket, setSocket] = createSignal<WebSocket | null>(null);
   const [isConnected, setIsConnected] = createSignal(false);
-  
+
   createEffect(() => {
     const ws = new WebSocket(url);
     setSocket(ws);
-    
+
     ws.onopen = () => setIsConnected(true);
     ws.onclose = () => setIsConnected(false);
-    
+
     onCleanup(() => {
       ws.close();
     });
   });
-  
+
   return { socket, isConnected };
 }
 ```

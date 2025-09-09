@@ -27,26 +27,26 @@ npm install reynard-boundingbox solid-js fabric
 ### Basic Usage
 
 ```tsx
-import { BoundingBoxEditor } from 'reynard-boundingbox';
-import type { BoundingBox, ImageInfo } from 'reynard-boundingbox';
+import { BoundingBoxEditor } from "reynard-boundingbox";
+import type { BoundingBox, ImageInfo } from "reynard-boundingbox";
 
 function MyApp() {
-  const imageInfo: ImageInfo = { 
-    width: 1920, 
-    height: 1080, 
-    src: '/path/to/image.jpg' 
+  const imageInfo: ImageInfo = {
+    width: 1920,
+    height: 1080,
+    src: "/path/to/image.jpg",
   };
 
   const handleAnnotationCreate = (box: BoundingBox) => {
-    console.log('Created bounding box:', box);
+    console.log("Created bounding box:", box);
   };
 
   const handleAnnotationUpdate = (id: string, box: BoundingBox) => {
-    console.log('Updated bounding box:', id, box);
+    console.log("Updated bounding box:", id, box);
   };
 
   const handleAnnotationDelete = (id: string) => {
-    console.log('Deleted bounding box:', id);
+    console.log("Deleted bounding box:", id);
   };
 
   return (
@@ -56,13 +56,13 @@ function MyApp() {
         enableCreation: true,
         enableEditing: true,
         enableDeletion: true,
-        labelClasses: ['person', 'vehicle', 'animal', 'object'],
-        defaultLabelClass: 'object'
+        labelClasses: ["person", "vehicle", "animal", "object"],
+        defaultLabelClass: "object",
       }}
       eventHandlers={{
         onAnnotationCreate: handleAnnotationCreate,
         onAnnotationUpdate: handleAnnotationUpdate,
-        onAnnotationDelete: handleAnnotationDelete
+        onAnnotationDelete: handleAnnotationDelete,
       }}
       containerWidth={800}
       containerHeight={600}
@@ -81,15 +81,15 @@ The main component for bounding box editing.
 
 **Props:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `imageInfo` | `ImageInfo` | - | **Required.** Image information including dimensions |
-| `config` | `EditorConfig` | `{}` | Configuration options for the editor |
-| `eventHandlers` | `AnnotationEventHandlers` | `{}` | Event handlers for annotation operations |
-| `initialBoxes` | `BoundingBox[]` | `[]` | Initial bounding boxes to display |
-| `containerWidth` | `number` | `800` | Width of the editor container |
-| `containerHeight` | `number` | `600` | Height of the editor container |
-| `className` | `string` | `''` | Additional CSS class names |
+| Prop              | Type                      | Default | Description                                          |
+| ----------------- | ------------------------- | ------- | ---------------------------------------------------- |
+| `imageInfo`       | `ImageInfo`               | -       | **Required.** Image information including dimensions |
+| `config`          | `EditorConfig`            | `{}`    | Configuration options for the editor                 |
+| `eventHandlers`   | `AnnotationEventHandlers` | `{}`    | Event handlers for annotation operations             |
+| `initialBoxes`    | `BoundingBox[]`           | `[]`    | Initial bounding boxes to display                    |
+| `containerWidth`  | `number`                  | `800`   | Width of the editor container                        |
+| `containerHeight` | `number`                  | `600`   | Height of the editor container                       |
+| `className`       | `string`                  | `''`    | Additional CSS class names                           |
 
 ### Types
 
@@ -97,13 +97,13 @@ The main component for bounding box editing.
 
 ```tsx
 interface BoundingBox {
-  id: string;           // Unique identifier
-  label: string;        // Class/category name
-  x: number;           // Top-left x coordinate (pixels)
-  y: number;           // Top-left y coordinate (pixels)
-  width: number;       // Width in pixels
-  height: number;      // Height in pixels
-  color?: string;      // Optional color for UI
+  id: string; // Unique identifier
+  label: string; // Class/category name
+  x: number; // Top-left x coordinate (pixels)
+  y: number; // Top-left y coordinate (pixels)
+  width: number; // Width in pixels
+  height: number; // Height in pixels
+  color?: string; // Optional color for UI
   attributes?: Record<string, any>; // Extensible metadata
 }
 ```
@@ -112,10 +112,10 @@ interface BoundingBox {
 
 ```tsx
 interface ImageInfo {
-  width: number;       // Image width in pixels
-  height: number;      // Image height in pixels
-  src?: string;        // Optional image source URL
-  alt?: string;        // Optional alt text
+  width: number; // Image width in pixels
+  height: number; // Image height in pixels
+  src?: string; // Optional image source URL
+  alt?: string; // Optional alt text
 }
 ```
 
@@ -123,19 +123,19 @@ interface ImageInfo {
 
 ```tsx
 interface EditorConfig {
-  enableCreation?: boolean;        // Enable creating new boxes
-  enableEditing?: boolean;         // Enable editing existing boxes
-  enableDeletion?: boolean;        // Enable deleting boxes
-  enableSelection?: boolean;       // Enable box selection
-  enableSnapping?: boolean;        // Enable snap-to-grid
-  enableConstraints?: boolean;     // Enable size constraints
-  showLabels?: boolean;           // Show box labels
-  showHandles?: boolean;          // Show resize handles
-  handleSize?: number;            // Size of resize handles
-  handleColor?: string;           // Color of resize handles
-  handleBorderColor?: string;     // Border color of handles
-  labelClasses?: string[];        // Available label classes
-  defaultLabelClass?: string;     // Default label class
+  enableCreation?: boolean; // Enable creating new boxes
+  enableEditing?: boolean; // Enable editing existing boxes
+  enableDeletion?: boolean; // Enable deleting boxes
+  enableSelection?: boolean; // Enable box selection
+  enableSnapping?: boolean; // Enable snap-to-grid
+  enableConstraints?: boolean; // Enable size constraints
+  showLabels?: boolean; // Show box labels
+  showHandles?: boolean; // Show resize handles
+  handleSize?: number; // Size of resize handles
+  handleColor?: string; // Color of resize handles
+  handleBorderColor?: string; // Border color of handles
+  labelClasses?: string[]; // Available label classes
+  defaultLabelClass?: string; // Default label class
 }
 ```
 
@@ -146,25 +146,25 @@ interface EditorConfig {
 Manages a collection of bounding boxes with reactive state.
 
 ```tsx
-import { useBoundingBoxes } from 'reynard-boundingbox';
+import { useBoundingBoxes } from "reynard-boundingbox";
 
 const {
-  boxes,           // Signal<BoundingBox[]>
-  addBox,          // (box: BoundingBox) => boolean
-  updateBox,       // (id: string, updates: Partial<BoundingBox>) => boolean
-  deleteBox,       // (id: string) => boolean
-  selectBox,       // (id: string | null) => void
-  selectedBoxId,   // Signal<string | null>
-  clearBoxes,      // () => void
-  getBox,          // (id: string) => BoundingBox | undefined
-  hasBox,          // (id: string) => boolean
-  boxCount,        // Signal<number>
-  selectedBox,     // Signal<BoundingBox | undefined>
-  validationErrors // Signal<Record<string, string[]>>
+  boxes, // Signal<BoundingBox[]>
+  addBox, // (box: BoundingBox) => boolean
+  updateBox, // (id: string, updates: Partial<BoundingBox>) => boolean
+  deleteBox, // (id: string) => boolean
+  selectBox, // (id: string | null) => void
+  selectedBoxId, // Signal<string | null>
+  clearBoxes, // () => void
+  getBox, // (id: string) => BoundingBox | undefined
+  hasBox, // (id: string) => boolean
+  boxCount, // Signal<number>
+  selectedBox, // Signal<BoundingBox | undefined>
+  validationErrors, // Signal<Record<string, string[]>>
 } = useBoundingBoxes({
   initialBoxes: [],
   imageInfo: { width: 1920, height: 1080 },
-  enableValidation: true
+  enableValidation: true,
 });
 ```
 
@@ -173,24 +173,24 @@ const {
 Provides resize functionality for bounding boxes.
 
 ```tsx
-import { useBoxResize } from 'reynard-boundingbox';
+import { useBoxResize } from "reynard-boundingbox";
 
 const {
-  resizeState,     // Signal<ResizeState>
-  handles,         // Signal<ResizeHandle[]>
-  startResize,     // (boxId, handle, dimensions) => void
-  updateResize,    // (dimensions) => void
-  endResize,       // () => void
-  cancelResize,    // () => void
-  isResizing,      // () => boolean
+  resizeState, // Signal<ResizeState>
+  handles, // Signal<ResizeHandle[]>
+  startResize, // (boxId, handle, dimensions) => void
+  updateResize, // (dimensions) => void
+  endResize, // () => void
+  cancelResize, // () => void
+  isResizing, // () => boolean
   getActiveHandle, // () => ResizeHandle | null
 } = useBoxResize({
   minWidth: 10,
   minHeight: 10,
   enableProportionalResizing: true,
-  onResizeStart: (boxId, handle) => console.log('Resize started'),
-  onResizeMove: (boxId, dimensions) => console.log('Resize move'),
-  onResizeEnd: (boxId, dimensions) => console.log('Resize ended')
+  onResizeStart: (boxId, handle) => console.log("Resize started"),
+  onResizeMove: (boxId, dimensions) => console.log("Resize move"),
+  onResizeEnd: (boxId, dimensions) => console.log("Resize ended"),
 });
 ```
 
@@ -199,23 +199,23 @@ const {
 Provides move functionality for bounding boxes.
 
 ```tsx
-import { useBoxMove } from 'reynard-boundingbox';
+import { useBoxMove } from "reynard-boundingbox";
 
 const {
-  moveState,       // Signal<MoveState | null>
-  isMoving,        // Signal<boolean>
-  movingBoxId,     // Signal<string | null>
-  startBoxMove,    // (boxId, box, startX, startY) => void
-  updateBoxMove,   // (currentX, currentY) => void
-  endBoxMove,      // () => void
-  cancelBoxMove,   // () => void
+  moveState, // Signal<MoveState | null>
+  isMoving, // Signal<boolean>
+  movingBoxId, // Signal<string | null>
+  startBoxMove, // (boxId, box, startX, startY) => void
+  updateBoxMove, // (currentX, currentY) => void
+  endBoxMove, // () => void
+  cancelBoxMove, // () => void
 } = useBoxMove({
   imageInfo: { width: 1920, height: 1080 },
   isEnabled: true,
   enableSnapping: true,
   enableAlignment: true,
-  onBoxMoved: (boxId, newBox) => console.log('Box moved'),
-  onBoxMoveEnd: (boxId) => console.log('Move ended')
+  onBoxMoved: (boxId, newBox) => console.log("Box moved"),
+  onBoxMoveEnd: (boxId) => console.log("Move ended"),
 });
 ```
 
@@ -224,42 +224,42 @@ const {
 #### Coordinate Transformation
 
 ```tsx
-import { 
-  imageToDisplayCoords, 
+import {
+  imageToDisplayCoords,
   displayToImageCoords,
   boundingBoxToDisplayCoords,
-  boundingBoxToImageCoords 
-} from 'reynard-boundingbox';
+  boundingBoxToImageCoords,
+} from "reynard-boundingbox";
 
 // Convert between coordinate systems
 const displayCoords = imageToDisplayCoords(
   { x: 100, y: 100, width: 200, height: 150 },
   imageInfo,
   containerWidth,
-  containerHeight
+  containerHeight,
 );
 
 const imageCoords = displayToImageCoords(
   displayCoords,
   imageInfo,
   containerWidth,
-  containerHeight
+  containerHeight,
 );
 ```
 
 #### Validation
 
 ```tsx
-import { 
-  validateBoundingBox, 
+import {
+  validateBoundingBox,
   checkBoundingBoxConstraints,
-  boundingBoxesOverlap 
-} from 'reynard-boundingbox';
+  boundingBoxesOverlap,
+} from "reynard-boundingbox";
 
 // Validate bounding box
 const validation = validateBoundingBox(box, imageInfo);
 if (!validation.isValid) {
-  console.error('Validation errors:', validation.errors);
+  console.error("Validation errors:", validation.errors);
 }
 
 // Check constraints
@@ -267,7 +267,7 @@ const constraints = checkBoundingBoxConstraints(box, {
   minWidth: 10,
   minHeight: 10,
   maxWidth: 1000,
-  maxHeight: 1000
+  maxHeight: 1000,
 });
 
 // Check overlap

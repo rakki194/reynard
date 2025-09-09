@@ -34,8 +34,5 @@
     "**/test-setup.ts",
     "dist"
   ],
-  "references": [
-    { "path": "../color-media" },
-    { "path": "../i18n" }
-  ]
+  "references": [{ "path": "../color-media" }, { "path": "../i18n" }]
 }

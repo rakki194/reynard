@@ -1,5 +1,5 @@
-import loader from '@monaco-editor/loader'
-export { loader }
+import loader from "@monaco-editor/loader";
+export { loader };
 
-export * from './MonacoEditor'
-export * from './MonacoDiffEditor'
+export * from "./MonacoEditor";
+export * from "./MonacoDiffEditor";

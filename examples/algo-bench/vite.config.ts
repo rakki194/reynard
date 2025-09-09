@@ -12,6 +12,6 @@ export default defineConfig({
     sourcemap: true,
   },
   optimizeDeps: {
-    include: ["three"]
-  }
+    include: ["three"],
+  },
 });

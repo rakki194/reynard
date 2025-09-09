@@ -1,12 +1,15 @@
 /**
  * Markdown Streaming Utilities
- * 
+ *
  * Provides markdown-aware streaming text functionality with
  * real-time syntax highlighting and parsing.
  */
 
 import { createSignal, createEffect } from "solid-js";
-import { createStreamingText, StreamingTextOptions } from "./StreamingTextRenderer";
+import {
+  createStreamingText,
+  StreamingTextOptions,
+} from "./StreamingTextRenderer";
 
 export function createMarkdownStreaming(
   markdownText: string,

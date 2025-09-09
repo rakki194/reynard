@@ -15,4 +15,4 @@
  */
 
 // Export transformation algorithms
-export * from './transformation-algorithms';
+export * from "./transformation-algorithms";

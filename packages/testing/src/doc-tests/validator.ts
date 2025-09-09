@@ -1,10 +1,10 @@
 /**
  * Documentation Example Validator
- * 
+ *
  * Validates code examples and generates reports
  */
 
-import { extractCodeExamples } from './code-parser';
+import { extractCodeExamples } from "./code-parser";
 
 export interface ValidationResult {
   valid: number;
@@ -20,48 +20,51 @@ export function validateDocExamples(docPath: string): ValidationResult {
   const errors: string[] = [];
   let valid = 0;
   let invalid = 0;
-  
+
   examples.forEach((example, index) => {
     try {
       // Basic syntax validation
       if (example.isTypeScript) {
         // For TypeScript, we'll do basic validation
         // Check for import statements - handle multi-line imports
-        const lines = example.code.split('\n');
+        const lines = example.code.split("\n");
         let hasImport = false;
         let hasFrom = false;
-        
+
         for (const line of lines) {
-          if (line.trim().startsWith('import')) {
+          if (line.trim().startsWith("import")) {
             hasImport = true;
           }
-          if (line.trim().includes('from')) {
+          if (line.trim().includes("from")) {
             hasFrom = true;
           }
         }
-        
+
         if (hasImport && !hasFrom) {
           throw new Error('Invalid import statement - missing "from" clause');
         }
-        if (example.code.includes('function') && !example.code.includes('{')) {
-          throw new Error('Invalid function syntax');
+        if (example.code.includes("function") && !example.code.includes("{")) {
+          throw new Error("Invalid function syntax");
         }
       }
-      
+
       // Check for common issues
-      if (example.code.includes('undefined') && !example.code.includes('//')) {
+      if (example.code.includes("undefined") && !example.code.includes("//")) {
         errors.push(`Example ${index + 1}: Contains undefined reference`);
         invalid++;
       } else {
         valid++;
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      errors.push(`Example ${index + 1}: ${errorMessage}\nCode: ${example.code.substring(0, 200)}...`);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      errors.push(
+        `Example ${index + 1}: ${errorMessage}\nCode: ${example.code.substring(0, 200)}...`,
+      );
       invalid++;
     }
   });
-  
+
   return { valid, invalid, errors };
 }
 
@@ -71,16 +74,23 @@ export function validateDocExamples(docPath: string): ValidationResult {
 export function generateDocTestReport(docPath: string): string {
   const examples = extractCodeExamples(docPath);
   const validation = validateDocExamples(docPath);
-  
-  const typeStats = examples.reduce((acc, example) => {
-    const type = example.isComponent ? 'Component' : example.isTypeScript ? 'TypeScript' : 'JavaScript';
-    acc[type] = (acc[type] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+
+  const typeStats = examples.reduce(
+    (acc, example) => {
+      const type = example.isComponent
+        ? "Component"
+        : example.isTypeScript
+          ? "TypeScript"
+          : "JavaScript";
+      acc[type] = (acc[type] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   const typeStatsText = Object.entries(typeStats)
     .map(([type, count]) => `- ${type}: ${count}`)
-    .join('\n');
+    .join("\n");
 
   return `
 # Documentation Test Report
@@ -95,11 +105,13 @@ export function generateDocTestReport(docPath: string): string {
 ${typeStatsText}
 
 ## Issues Found
-${validation.errors.length > 0 ? validation.errors.map(error => `- ${error}`).join('\n') : 'No issues found'}
+${validation.errors.length > 0 ? validation.errors.map((error) => `- ${error}`).join("\n") : "No issues found"}
 
 ## Recommendations
-${validation.invalid > 0 ? 
-  '- Review and fix invalid examples\n- Add proper error handling\n- Ensure all imports are correct' : 
-  '- All examples are valid and ready for testing'}
+${
+  validation.invalid > 0
+    ? "- Review and fix invalid examples\n- Add proper error handling\n- Ensure all imports are correct"
+    : "- All examples are valid and ready for testing"
+}
 `;
 }

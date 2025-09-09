@@ -144,7 +144,7 @@ python -m pytest app/tests/connection/ -v
    # For fragmented messages
    async for frame in websocket.recv_streaming():
        # Process frame
-   
+
    # For binary messages with UTF-8 decoding
    message = await websocket.recv(decode=True)
    ```

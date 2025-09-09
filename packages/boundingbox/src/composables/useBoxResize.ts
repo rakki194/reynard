@@ -1,6 +1,6 @@
 /**
  * useBoxResize composable
- * 
+ *
  * Orchestrates resize functionality for bounding boxes by coordinating:
  * - Resize handle generation
  * - Resize operations and state management
@@ -8,11 +8,14 @@
  * - Event callbacks
  */
 
-import { createSignal, createMemo } from 'solid-js';
-import type { ResizeHandle } from '../types';
-import type { ResizeDimensions } from './resize-constraints';
-import type { ResizeState, ResizeCallbacks } from './resize-operations';
-import { generateResizeHandles } from './resize-handles';
+import { createSignal, createMemo } from "solid-js";
+import type { ResizeHandle } from "../types";
+import type { ResizeDimensions } from "./resize-constraints";
+import type { ResizeState, ResizeCallbacks } from "./resize-operations";
+
+// Re-export types for external use
+export type { ResizeState };
+import { generateResizeHandles } from "./resize-handles";
 import {
   createInitialResizeState,
   startResizeOperation,
@@ -21,7 +24,7 @@ import {
   cancelResizeOperation,
   isResizing as checkIsResizing,
   getActiveHandle as getActiveResizeHandle,
-} from './resize-operations';
+} from "./resize-operations";
 
 export interface ResizeOptions {
   minWidth?: number;
@@ -40,7 +43,11 @@ export interface ResizeOptions {
 export interface UseBoxResizeReturn {
   resizeState: () => ResizeState;
   handles: () => ResizeHandle[];
-  startResize: (boxId: string, handle: ResizeHandle, startDimensions: ResizeDimensions) => void;
+  startResize: (
+    boxId: string,
+    handle: ResizeHandle,
+    startDimensions: ResizeDimensions,
+  ) => void;
   updateResize: (newDimensions: ResizeDimensions) => void;
   endResize: () => void;
   cancelResize: () => void;
@@ -65,7 +72,9 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     onResizeCancel,
   } = options;
 
-  const [resizeState, setResizeState] = createSignal<ResizeState>(createInitialResizeState());
+  const [resizeState, setResizeState] = createSignal<ResizeState>(
+    createInitialResizeState(),
+  );
   const [currentBoxId, setCurrentBoxId] = createSignal<string | null>(null);
 
   // Generate resize handles using the extracted module
@@ -89,21 +98,30 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     onResizeCancel,
   };
 
-  function startResize(boxId: string, handle: ResizeHandle, startDimensions: ResizeDimensions) {
+  function startResize(
+    boxId: string,
+    handle: ResizeHandle,
+    startDimensions: ResizeDimensions,
+  ) {
     setCurrentBoxId(boxId);
-    const newState = startResizeOperation(boxId, handle, startDimensions, callbacks);
+    const newState = startResizeOperation(
+      boxId,
+      handle,
+      startDimensions,
+      callbacks,
+    );
     setResizeState(newState);
   }
 
   function updateResize(newDimensions: ResizeDimensions) {
     const state = resizeState();
     const boxId = currentBoxId();
-    
+
     if (!boxId) return;
 
     const newState = updateResizeOperation(newDimensions, state, callbacks);
     setResizeState(newState);
-    
+
     if (newState.currentDimensions) {
       onResizeMove?.(boxId, newState.currentDimensions);
     }
@@ -112,7 +130,7 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
   function endResize() {
     const state = resizeState();
     const boxId = currentBoxId();
-    
+
     if (!boxId) return;
 
     const { state: newState } = endResizeOperation(state, boxId, callbacks);
@@ -123,8 +141,8 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
   function cancelResize() {
     const state = resizeState();
     const boxId = currentBoxId();
-    
-    const newState = cancelResizeOperation(state, boxId, callbacks);
+
+    const newState = cancelResizeOperation(state, boxId || "", callbacks);
     setResizeState(newState);
     setCurrentBoxId(null);
   }

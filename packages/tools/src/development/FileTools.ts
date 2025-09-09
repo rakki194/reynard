@@ -2,33 +2,39 @@
  * Development tools for file operations
  */
 
-import { BaseTool } from '../core/BaseTool';
-import { ToolDefinition, ToolResult, ToolExecutionContext, ToolParameter, ParameterType } from '../core/types';
+import { BaseTool } from "../core/BaseTool";
+import {
+  ToolDefinition,
+  ToolResult,
+  ToolExecutionContext,
+  ToolParameter,
+  ParameterType,
+} from "../core/types";
 
 export class ReadFileTool extends BaseTool {
   constructor() {
     const definition: ToolDefinition = {
-      name: 'read_file',
-      description: 'Read contents of a file',
+      name: "read_file",
+      description: "Read contents of a file",
       parameters: [
         {
-          name: 'path',
+          name: "path",
           type: ParameterType.STRING,
-          description: 'Path to the file to read',
+          description: "Path to the file to read",
           required: true,
         },
         {
-          name: 'encoding',
+          name: "encoding",
           type: ParameterType.STRING,
-          description: 'File encoding (default: utf8)',
+          description: "File encoding (default: utf8)",
           required: false,
-          default: 'utf8',
-          enum: ['utf8', 'ascii', 'base64', 'hex'],
+          default: "utf8",
+          enum: ["utf8", "ascii", "base64", "hex"],
         },
       ],
-      category: 'development',
-      tags: ['file', 'read', 'development'],
-      permissions: ['file.read'],
+      category: "development",
+      tags: ["file", "read", "development"],
+      permissions: ["file.read"],
     };
 
     super(definition);
@@ -36,9 +42,9 @@ export class ReadFileTool extends BaseTool {
 
   protected async executeImpl(
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<any> {
-    const { path, encoding = 'utf8' } = parameters;
+    const { path, encoding = "utf8" } = parameters;
 
     // In a real implementation, this would use Node.js fs module
     // For now, we'll simulate the operation
@@ -55,40 +61,40 @@ export class ReadFileTool extends BaseTool {
 export class WriteFileTool extends BaseTool {
   constructor() {
     const definition: ToolDefinition = {
-      name: 'write_file',
-      description: 'Write content to a file',
+      name: "write_file",
+      description: "Write content to a file",
       parameters: [
         {
-          name: 'path',
+          name: "path",
           type: ParameterType.STRING,
-          description: 'Path to the file to write',
+          description: "Path to the file to write",
           required: true,
         },
         {
-          name: 'content',
+          name: "content",
           type: ParameterType.STRING,
-          description: 'Content to write to the file',
+          description: "Content to write to the file",
           required: true,
         },
         {
-          name: 'encoding',
+          name: "encoding",
           type: ParameterType.STRING,
-          description: 'File encoding (default: utf8)',
+          description: "File encoding (default: utf8)",
           required: false,
-          default: 'utf8',
-          enum: ['utf8', 'ascii', 'base64', 'hex'],
+          default: "utf8",
+          enum: ["utf8", "ascii", "base64", "hex"],
         },
         {
-          name: 'createDirectories',
+          name: "createDirectories",
           type: ParameterType.BOOLEAN,
-          description: 'Create parent directories if they don\'t exist',
+          description: "Create parent directories if they don't exist",
           required: false,
           default: false,
         },
       ],
-      category: 'development',
-      tags: ['file', 'write', 'development'],
-      permissions: ['file.write'],
+      category: "development",
+      tags: ["file", "write", "development"],
+      permissions: ["file.write"],
     };
 
     super(definition);
@@ -96,9 +102,14 @@ export class WriteFileTool extends BaseTool {
 
   protected async executeImpl(
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<any> {
-    const { path, content, encoding = 'utf8', createDirectories = false } = parameters;
+    const {
+      path,
+      content,
+      encoding = "utf8",
+      createDirectories = false,
+    } = parameters;
 
     // In a real implementation, this would use Node.js fs module
     // For now, we'll simulate the operation
@@ -116,33 +127,33 @@ export class WriteFileTool extends BaseTool {
 export class ListDirectoryTool extends BaseTool {
   constructor() {
     const definition: ToolDefinition = {
-      name: 'list_directory',
-      description: 'List contents of a directory',
+      name: "list_directory",
+      description: "List contents of a directory",
       parameters: [
         {
-          name: 'path',
+          name: "path",
           type: ParameterType.STRING,
-          description: 'Path to the directory to list',
+          description: "Path to the directory to list",
           required: true,
         },
         {
-          name: 'recursive',
+          name: "recursive",
           type: ParameterType.BOOLEAN,
-          description: 'List contents recursively',
+          description: "List contents recursively",
           required: false,
           default: false,
         },
         {
-          name: 'includeHidden',
+          name: "includeHidden",
           type: ParameterType.BOOLEAN,
-          description: 'Include hidden files and directories',
+          description: "Include hidden files and directories",
           required: false,
           default: false,
         },
       ],
-      category: 'development',
-      tags: ['file', 'directory', 'list', 'development'],
-      permissions: ['file.read'],
+      category: "development",
+      tags: ["file", "directory", "list", "development"],
+      permissions: ["file.read"],
     };
 
     super(definition);
@@ -150,7 +161,7 @@ export class ListDirectoryTool extends BaseTool {
 
   protected async executeImpl(
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<any> {
     const { path, recursive = false, includeHidden = false } = parameters;
 
@@ -162,14 +173,14 @@ export class ListDirectoryTool extends BaseTool {
       includeHidden,
       items: [
         {
-          name: 'file1.txt',
-          type: 'file',
+          name: "file1.txt",
+          type: "file",
           size: 1024,
           lastModified: new Date().toISOString(),
         },
         {
-          name: 'subdirectory',
-          type: 'directory',
+          name: "subdirectory",
+          type: "directory",
           size: 0,
           lastModified: new Date().toISOString(),
         },

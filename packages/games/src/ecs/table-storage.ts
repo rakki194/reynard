@@ -1,6 +1,6 @@
 // Table-based component storage implementation
 
-import { Component } from './types';
+import { Component } from "./types";
 
 export class TableStorage<T extends Component> {
   private components: T[] = [];
@@ -30,7 +30,7 @@ export class TableStorage<T extends Component> {
 
     const component = this.components[index];
     const lastIndex = this.components.length - 1;
-    
+
     if (index !== lastIndex) {
       const lastEntity = this.indexToEntity.get(lastIndex)!;
       this.components[index] = this.components[lastIndex];

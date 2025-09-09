@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,17 +9,18 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         color: white;
       }
-      
+
       #root {
         width: 100%;
         height: 100vh;
       }
-      
+
       .loading {
         display: flex;
         justify-content: center;
@@ -32,16 +33,24 @@
   </head>
   <body>
     <div id="root">
-      <div class="loading" id="loading-indicator">🦊 Loading Reynard 3D Magic...</div>
+      <div class="loading" id="loading-indicator">
+        🦊 Loading Reynard 3D Magic...
+      </div>
     </div>
     <script>
-      console.log("📄 HTML loaded, root element:", document.getElementById("root"));
-      console.log("⏳ Loading indicator:", document.getElementById("loading-indicator"));
-      
+      console.log(
+        "📄 HTML loaded, root element:",
+        document.getElementById("root"),
+      );
+      console.log(
+        "⏳ Loading indicator:",
+        document.getElementById("loading-indicator"),
+      );
+
       // Monitor if the loading indicator gets replaced
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.type === 'childList') {
+          if (mutation.type === "childList") {
             console.log("🔄 Root content changed:", mutation);
             const loading = document.getElementById("loading-indicator");
             if (!loading) {
@@ -50,12 +59,12 @@
           }
         });
       });
-      
+
       observer.observe(document.getElementById("root"), {
         childList: true,
-        subtree: true
+        subtree: true,
       });
-      
+
       // Check what's actually in the root after a delay
       setTimeout(() => {
         const root = document.getElementById("root");

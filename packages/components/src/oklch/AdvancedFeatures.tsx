@@ -14,7 +14,11 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
   const cubeVoxelsRef: HTMLDivElement[] = [];
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
+  const setCSSProperty = (
+    element: HTMLElement,
+    property: string,
+    value: string,
+  ) => {
     element.style.setProperty(property, value);
   };
 
@@ -25,10 +29,14 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
         const l = Math.floor(index / 16) * 6.25;
         const c = (index % 16) * 0.025;
         const h = (index * 5.625) % 360;
-        setCSSProperty(ref, '--dynamic-bg-color', `oklch(${l}% ${c} ${h})`);
-        setCSSProperty(ref, '--dynamic-x', (index % 8).toString());
-        setCSSProperty(ref, '--dynamic-y', (Math.floor(index / 8) % 8).toString());
-        setCSSProperty(ref, '--dynamic-z', Math.floor(index / 64).toString());
+        setCSSProperty(ref, "--dynamic-bg-color", `oklch(${l}% ${c} ${h})`);
+        setCSSProperty(ref, "--dynamic-x", (index % 8).toString());
+        setCSSProperty(
+          ref,
+          "--dynamic-y",
+          (Math.floor(index / 8) % 8).toString(),
+        );
+        setCSSProperty(ref, "--dynamic-z", Math.floor(index / 64).toString());
       }
     });
   });
@@ -37,11 +45,8 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
     <>
       {/* Advanced Features Toggle */}
       <div class="advanced-toggle">
-        <button 
-          class="toggle-button"
-          onClick={props.onToggleAdvanced}
-        >
-          {props.showAdvanced ? 'Hide' : 'Show'} Advanced Features
+        <button class="toggle-button" onClick={props.onToggleAdvanced}>
+          {props.showAdvanced ? "Hide" : "Show"} Advanced Features
         </button>
       </div>
 
@@ -49,7 +54,7 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
       {props.showAdvanced && (
         <div class="advanced-features">
           <h2>Advanced OKLCH Features</h2>
-          
+
           {/* Color Space Visualization */}
           <div class="color-space-viz">
             <h3>3D Color Space Visualization</h3>
@@ -61,8 +66,8 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
                     const c = (index % 16) * 0.025;
                     const h = (index * 5.625) % 360;
                     return (
-                      <div 
-                        ref={(el) => cubeVoxelsRef[index] = el}
+                      <div
+                        ref={(el) => (cubeVoxelsRef[index] = el)}
                         class="cube-voxel"
                         data-background-color={`oklch(${l}% ${c} ${h})`}
                         data-x={index % 8}

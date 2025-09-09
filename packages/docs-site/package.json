@@ -34,9 +34,9 @@
     "reynard-core": "^0.1.1",
     "reynard-components": "^0.1.1",
     "reynard-themes": "^0.1.1",
-    "reynard-docs-core": "^0.1.0",
-    "reynard-docs-components": "^0.1.0",
-    "reynard-docs-generator": "^0.1.0"
+    "reynard-docs-core": "workspace:*",
+    "reynard-docs-components": "workspace:*",
+    "reynard-docs-generator": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

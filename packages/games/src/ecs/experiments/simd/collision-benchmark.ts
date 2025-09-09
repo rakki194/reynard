@@ -1,9 +1,9 @@
 // Collision detection benchmarks for ECS SIMD performance testing
 
-import { PositionSystem } from './position-system.js';
-import { PositionSystemSIMD } from './position-system-simd.js';
-import { BenchmarkResult } from './benchmark-types.js';
-import { TestDataGenerator } from './test-data-generator.js';
+import { PositionSystem } from "./position-system.js";
+import { PositionSystemSIMD } from "./position-system-simd.js";
+import { BenchmarkResult } from "./benchmark-types.js";
+import { TestDataGenerator } from "./test-data-generator.js";
 
 export class CollisionBenchmark {
   private nonSimdSystem: PositionSystem;
@@ -27,11 +27,16 @@ export class CollisionBenchmark {
   /**
    * Benchmark collision detection
    */
-  async benchmarkCollisionDetection(entityCount: number, iterations: number = 100): Promise<{ nonSimd: BenchmarkResult; simd: BenchmarkResult }> {
+  async benchmarkCollisionDetection(
+    entityCount: number,
+    iterations: number = 100,
+  ): Promise<{ nonSimd: BenchmarkResult; simd: BenchmarkResult }> {
     if (!this.isInitialized) {
       await this.initialize();
     }
-    console.log(`Benchmarking collision detection with ${entityCount} entities, ${iterations} iterations...`);
+    console.log(
+      `Benchmarking collision detection with ${entityCount} entities, ${iterations} iterations...`,
+    );
 
     // Generate test data
     const testData = TestDataGenerator.generateTestData(entityCount);
@@ -39,13 +44,23 @@ export class CollisionBenchmark {
     // Setup non-SIMD system
     this.nonSimdSystem.clear();
     for (const data of testData) {
-      this.nonSimdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
+      this.nonSimdSystem.addEntity(
+        data.position,
+        data.velocity,
+        data.acceleration,
+        data.mass,
+      );
     }
 
     // Setup SIMD system
     this.simdSystem.clear();
     for (const data of testData) {
-      this.simdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
+      this.simdSystem.addEntity(
+        data.position,
+        data.velocity,
+        data.acceleration,
+        data.mass,
+      );
     }
 
     const radius = 10.0;
@@ -67,19 +82,19 @@ export class CollisionBenchmark {
     const simdTime = simdEnd - simdStart;
 
     const nonSimdResult: BenchmarkResult = {
-      name: 'Collision Detection (Non-SIMD)',
+      name: "Collision Detection (Non-SIMD)",
       iterations,
       totalTime: nonSimdTime,
       averageTime: nonSimdTime / iterations,
-      operationsPerSecond: iterations / (nonSimdTime / 1000)
+      operationsPerSecond: iterations / (nonSimdTime / 1000),
     };
 
     const simdResult: BenchmarkResult = {
-      name: 'Collision Detection (SIMD)',
+      name: "Collision Detection (SIMD)",
       iterations,
       totalTime: simdTime,
       averageTime: simdTime / iterations,
-      operationsPerSecond: iterations / (simdTime / 1000)
+      operationsPerSecond: iterations / (simdTime / 1000),
     };
 
     return { nonSimd: nonSimdResult, simd: simdResult };

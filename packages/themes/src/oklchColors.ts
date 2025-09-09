@@ -4,11 +4,11 @@
  */
 
 import type { ThemeName } from "./types";
-import { 
-  createTagColorGenerator, 
-  formatOKLCH, 
+import {
+  createTagColorGenerator,
+  formatOKLCH,
   adjustLightness,
-  type OKLCHColor 
+  type OKLCHColor,
 } from "reynard-color-media";
 import { themeOKLCHPalettes } from "./oklchPalettes";
 
@@ -21,7 +21,9 @@ const colorGenerator = createTagColorGenerator();
 export function getOKLCHColor(theme: ThemeName, colorName: string): OKLCHColor {
   const palette = themeOKLCHPalettes[theme];
   if (!palette || !palette[colorName]) {
-    console.warn(`Color ${colorName} not found for theme ${theme}, using fallback`);
+    console.warn(
+      `Color ${colorName} not found for theme ${theme}, using fallback`,
+    );
     return { l: 50, c: 0.1, h: 0 }; // Fallback color
   }
   return palette[colorName];
@@ -39,26 +41,32 @@ export function getOKLCHCSSColor(theme: ThemeName, colorName: string): string {
  * Generate a color variant (lighter/darker) from base OKLCH color
  */
 export function generateColorVariant(
-  theme: ThemeName, 
-  colorName: string, 
-  variant: 'lighter' | 'darker' | 'hover' | 'active',
-  intensity: number = 0.2
+  theme: ThemeName,
+  colorName: string,
+  variant: "lighter" | "darker" | "hover" | "active",
+  intensity: number = 0.2,
 ): string {
   const baseColor = getOKLCHColor(theme, colorName);
   let adjustedColor: OKLCHColor;
 
   switch (variant) {
-    case 'lighter':
+    case "lighter":
       adjustedColor = adjustLightness(baseColor, 1 + intensity);
       break;
-    case 'darker':
+    case "darker":
       adjustedColor = adjustLightness(baseColor, 1 - intensity);
       break;
-    case 'hover':
-      adjustedColor = adjustLightness(baseColor, theme.includes('dark') ? 1.1 : 0.9);
+    case "hover":
+      adjustedColor = adjustLightness(
+        baseColor,
+        theme.includes("dark") ? 1.1 : 0.9,
+      );
       break;
-    case 'active':
-      adjustedColor = adjustLightness(baseColor, theme.includes('dark') ? 1.2 : 0.8);
+    case "active":
+      adjustedColor = adjustLightness(
+        baseColor,
+        theme.includes("dark") ? 1.2 : 0.8,
+      );
       break;
     default:
       adjustedColor = baseColor;
@@ -70,7 +78,9 @@ export function generateColorVariant(
 /**
  * Generate a complete color palette for a theme
  */
-export function generateThemeColorPalette(theme: ThemeName): Record<string, string> {
+export function generateThemeColorPalette(
+  theme: ThemeName,
+): Record<string, string> {
   const palette: Record<string, string> = {};
   const oklchPalette = themeOKLCHPalettes[theme];
 
@@ -81,11 +91,29 @@ export function generateThemeColorPalette(theme: ThemeName): Record<string, stri
 
   // Generate variants
   const baseColors = Object.keys(oklchPalette);
-  baseColors.forEach(colorName => {
-    palette[`${colorName}Hover`] = generateColorVariant(theme, colorName, 'hover');
-    palette[`${colorName}Active`] = generateColorVariant(theme, colorName, 'active');
-    palette[`${colorName}Light`] = generateColorVariant(theme, colorName, 'lighter', 0.3);
-    palette[`${colorName}Dark`] = generateColorVariant(theme, colorName, 'darker', 0.3);
+  baseColors.forEach((colorName) => {
+    palette[`${colorName}Hover`] = generateColorVariant(
+      theme,
+      colorName,
+      "hover",
+    );
+    palette[`${colorName}Active`] = generateColorVariant(
+      theme,
+      colorName,
+      "active",
+    );
+    palette[`${colorName}Light`] = generateColorVariant(
+      theme,
+      colorName,
+      "lighter",
+      0.3,
+    );
+    palette[`${colorName}Dark`] = generateColorVariant(
+      theme,
+      colorName,
+      "darker",
+      0.3,
+    );
   });
 
   return palette;
@@ -94,7 +122,11 @@ export function generateThemeColorPalette(theme: ThemeName): Record<string, stri
 /**
  * Generate dynamic tag colors using OKLCH
  */
-export function generateTagColor(theme: ThemeName, tag: string, intensity: number = 1.0): string {
+export function generateTagColor(
+  theme: ThemeName,
+  tag: string,
+  intensity: number = 1.0,
+): string {
   const oklchColor = colorGenerator.getTagColor(theme, tag, intensity);
   return formatOKLCH(oklchColor);
 }
@@ -102,7 +134,10 @@ export function generateTagColor(theme: ThemeName, tag: string, intensity: numbe
 /**
  * Generate complementary colors for a given OKLCH color
  */
-export function generateComplementaryColors(theme: ThemeName, colorName: string): string[] {
+export function generateComplementaryColors(
+  theme: ThemeName,
+  colorName: string,
+): string[] {
   const baseColor = getOKLCHColor(theme, colorName);
   const complementary = [
     baseColor,
@@ -110,21 +145,21 @@ export function generateComplementaryColors(theme: ThemeName, colorName: string)
     { ...baseColor, h: (baseColor.h + 90) % 360 },
     { ...baseColor, h: (baseColor.h + 270) % 360 },
   ];
-  
-  return complementary.map(color => formatOKLCH(color));
+
+  return complementary.map((color) => formatOKLCH(color));
 }
 
 /**
  * Generate a gradient from OKLCH colors
  */
 export function generateOKLCHGradient(
-  theme: ThemeName, 
-  startColor: string, 
-  endColor: string, 
-  direction: string = '135deg'
+  theme: ThemeName,
+  startColor: string,
+  endColor: string,
+  direction: string = "135deg",
 ): string {
   const startOKLCH = getOKLCHCSSColor(theme, startColor);
   const endOKLCH = getOKLCHCSSColor(theme, endColor);
-  
+
   return `linear-gradient(${direction}, ${startOKLCH}, ${endOKLCH})`;
 }

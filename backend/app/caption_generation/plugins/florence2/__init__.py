@@ -25,7 +25,7 @@ def register_plugin():
     """Register the Florence2 plugin with the Reynard system."""
     return {
         "name": "florence2",
-        "module_path": "app.caption_generation.plugins.florence2.generator",
+        "module_path": "app.caption_generation.plugins.florence2",
         "default_config": {
             "max_length": 256,
             "temperature": 0.7,

@@ -84,12 +84,12 @@ The `metadata` field contains JSON data with additional context:
 
 ```json
 {
-    "token_count": 25,
-    "max_new_tokens": 64,
-    "temperature": 0.2,
-    "top_p": 0.9,
-    "alg": "entropy",
-    "generation_time": 0.02
+  "token_count": 25,
+  "max_new_tokens": 64,
+  "temperature": 0.2,
+  "top_p": 0.9,
+  "alg": "entropy",
+  "generation_time": 0.02
 }
 ```
 
@@ -163,12 +163,12 @@ To integrate with Prometheus, configure a scrape job:
 
 ```yaml
 scrape_configs:
-  - job_name: 'yipyap-diffusion-llm'
+  - job_name: "yipyap-diffusion-llm"
     static_configs:
-      - targets: ['localhost:7000']
-    metrics_path: '/api/diffusion/metrics/export'
+      - targets: ["localhost:7000"]
+    metrics_path: "/api/diffusion/metrics/export"
     params:
-      format: ['prometheus']
+      format: ["prometheus"]
 ```
 
 ### InfluxDB

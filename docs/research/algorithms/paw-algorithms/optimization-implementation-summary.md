@@ -111,10 +111,10 @@ class PAWMemoryPool {
   private spatialHashPool: PooledSpatialHash[] = [];
   private unionFindPool: PooledUnionFind[] = [];
   private collisionArrayPool: PooledCollisionArray[] = [];
-  
+
   getSpatialHash(): SpatialHash {
     // Zero-allocation spatial hash retrieval
-    let pooled = this.spatialHashPool.find(p => !p.isInUse);
+    let pooled = this.spatialHashPool.find((p) => !p.isInUse);
     if (pooled) {
       pooled.isInUse = true;
       pooled.hash.clear(); // Reuse existing instance
@@ -132,7 +132,7 @@ class OptimizedSpatialCollisionDetector {
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
     const spatialHash = this.memoryPool.getSpatialHash();
     const collisions = this.memoryPool.getCollisionArray();
-    
+
     try {
       // Use pooled objects for collision detection
       // ... collision detection logic ...

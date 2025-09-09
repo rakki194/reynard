@@ -1,14 +1,14 @@
 // Complete ECS game example
 
-import { 
-  createWorld, 
-  ComponentType, 
-  ResourceType, 
+import {
+  createWorld,
+  ComponentType,
+  ResourceType,
   StorageType,
   system,
   schedule,
-  systemSet
-} from '../index';
+  systemSet,
+} from "../index";
 
 import {
   Position,
@@ -23,8 +23,8 @@ import {
   GameTime,
   GameState,
   InputState,
-  Camera
-} from './components';
+  Camera,
+} from "./components";
 
 import {
   movementSystem,
@@ -35,8 +35,8 @@ import {
   collisionSystem,
   shootingSystem,
   renderingSystem,
-  gameStateSystem
-} from './systems';
+  gameStateSystem,
+} from "./systems";
 
 /**
  * ECS Game class that demonstrates a complete game setup.
@@ -73,60 +73,108 @@ export class ECSGame {
 
   private setupComponentTypes(): void {
     const registry = this.world.getComponentRegistry();
-    
-    this.positionType = registry.register('Position', StorageType.Table, () => new Position(0, 0));
-    this.velocityType = registry.register('Velocity', StorageType.Table, () => new Velocity(0, 0));
-    this.healthType = registry.register('Health', StorageType.Table, () => new Health(100, 100));
-    this.damageType = registry.register('Damage', StorageType.Table, () => new Damage(10));
-    this.playerType = registry.register('Player', StorageType.Table, () => new Player('Player1'));
-    this.enemyType = registry.register('Enemy', StorageType.Table, () => new Enemy('Basic'));
-    this.bulletType = registry.register('Bullet', StorageType.Table, () => new Bullet(300));
-    this.colorType = registry.register('Color', StorageType.Table, () => new Color(1, 1, 1));
-    this.sizeType = registry.register('Size', StorageType.Table, () => new Size(20, 20));
+
+    this.positionType = registry.register(
+      "Position",
+      StorageType.Table,
+      () => new Position(0, 0),
+    );
+    this.velocityType = registry.register(
+      "Velocity",
+      StorageType.Table,
+      () => new Velocity(0, 0),
+    );
+    this.healthType = registry.register(
+      "Health",
+      StorageType.Table,
+      () => new Health(100, 100),
+    );
+    this.damageType = registry.register(
+      "Damage",
+      StorageType.Table,
+      () => new Damage(10),
+    );
+    this.playerType = registry.register(
+      "Player",
+      StorageType.Table,
+      () => new Player("Player1"),
+    );
+    this.enemyType = registry.register(
+      "Enemy",
+      StorageType.Table,
+      () => new Enemy("Basic"),
+    );
+    this.bulletType = registry.register(
+      "Bullet",
+      StorageType.Table,
+      () => new Bullet(300),
+    );
+    this.colorType = registry.register(
+      "Color",
+      StorageType.Table,
+      () => new Color(1, 1, 1),
+    );
+    this.sizeType = registry.register(
+      "Size",
+      StorageType.Table,
+      () => new Size(20, 20),
+    );
   }
 
   private setupResourceTypes(): void {
     const registry = this.world.getResourceRegistry();
-    
-    this.gameTimeType = registry.register('GameTime', () => new GameTime(0, 0));
-    this.gameStateType = registry.register('GameState', () => new GameState(0, 1));
-    this.inputStateType = registry.register('InputState', () => new InputState());
-    this.cameraType = registry.register('Camera', () => new Camera(0, 0, 1));
+
+    this.gameTimeType = registry.register("GameTime", () => new GameTime(0, 0));
+    this.gameStateType = registry.register(
+      "GameState",
+      () => new GameState(0, 1),
+    );
+    this.inputStateType = registry.register(
+      "InputState",
+      () => new InputState(),
+    );
+    this.cameraType = registry.register("Camera", () => new Camera(0, 0, 1));
   }
 
   private setupSystems(): void {
     // Create system sets for organization
-    const inputSet = systemSet('input');
-    const updateSet = systemSet('update');
-    const renderSet = systemSet('render');
+    const inputSet = systemSet("input");
+    const updateSet = systemSet("update");
+    const renderSet = systemSet("render");
 
     // Add systems to sets
-    inputSet.add('playerInput').add('shooting');
-    updateSet.add('movement').add('lifetime').add('damage').add('enemyAI').add('collision').add('gameState');
-    renderSet.add('rendering');
+    inputSet.add("playerInput").add("shooting");
+    updateSet
+      .add("movement")
+      .add("lifetime")
+      .add("damage")
+      .add("enemyAI")
+      .add("collision")
+      .add("gameState");
+    renderSet.add("rendering");
 
     // Create and add systems
-    this.world.addSystem(system('playerInput', playerInputSystem).build());
-    this.world.addSystem(system('shooting', shootingSystem).build());
-    this.world.addSystem(system('movement', movementSystem).build());
-    this.world.addSystem(system('lifetime', lifetimeSystem).build());
-    this.world.addSystem(system('damage', damageSystem).build());
-    this.world.addSystem(system('enemyAI', enemyAISystem).build());
-    this.world.addSystem(system('collision', collisionSystem).build());
-    this.world.addSystem(system('gameState', gameStateSystem).build());
-    this.world.addSystem(system('rendering', renderingSystem).build());
+    this.world.addSystem(system("playerInput", playerInputSystem).build());
+    this.world.addSystem(system("shooting", shootingSystem).build());
+    this.world.addSystem(system("movement", movementSystem).build());
+    this.world.addSystem(system("lifetime", lifetimeSystem).build());
+    this.world.addSystem(system("damage", damageSystem).build());
+    this.world.addSystem(system("enemyAI", enemyAISystem).build());
+    this.world.addSystem(system("collision", collisionSystem).build());
+    this.world.addSystem(system("gameState", gameStateSystem).build());
+    this.world.addSystem(system("rendering", renderingSystem).build());
 
     // Create main schedule
-    const mainSchedule = schedule('main');
-    mainSchedule.addSystem(system('playerInput', playerInputSystem).build());
-    mainSchedule.addSystem(system('shooting', shootingSystem).build());
-    mainSchedule.addSystem(system('movement', movementSystem).build());
-    mainSchedule.addSystem(system('lifetime', lifetimeSystem).build());
-    mainSchedule.addSystem(system('damage', damageSystem).build());
-    mainSchedule.addSystem(system('enemyAI', enemyAISystem).build());
-    mainSchedule.addSystem(system('collision', collisionSystem).build());
-    mainSchedule.addSystem(system('gameState', gameStateSystem).build());
-    mainSchedule.addSystem(system('rendering', renderingSystem).build());
+    const mainSchedule = schedule("main");
+    mainSchedule.addSystem(system("playerInput", playerInputSystem).build());
+    mainSchedule.addSystem(system("shooting", shootingSystem).build());
+    mainSchedule.addSystem(system("movement", movementSystem).build());
+    mainSchedule.addSystem(system("lifetime", lifetimeSystem).build());
+    mainSchedule.addSystem(system("damage", damageSystem).build());
+    mainSchedule.addSystem(system("enemyAI", enemyAISystem).build());
+    mainSchedule.addSystem(system("collision", collisionSystem).build());
+    mainSchedule.addSystem(system("gameState", gameStateSystem).build());
+    mainSchedule.addSystem(system("rendering", renderingSystem).build());
   }
 
   private setupInitialEntities(): void {
@@ -135,9 +183,9 @@ export class ECSGame {
       new Position(400, 500),
       new Velocity(0, 0),
       new Health(100, 100),
-      new Player('Player1'),
+      new Player("Player1"),
       new Color(0, 0, 1), // Blue
-      new Size(30, 30)
+      new Size(30, 30),
     );
 
     // Create some enemies
@@ -146,9 +194,9 @@ export class ECSGame {
         new Position(Math.random() * 800, Math.random() * 200),
         new Velocity(0, 0),
         new Health(50, 50),
-        new Enemy('Basic'),
+        new Enemy("Basic"),
         new Color(1, 0, 0), // Red
-        new Size(25, 25)
+        new Size(25, 25),
       );
     }
 
@@ -192,7 +240,7 @@ export class ECSGame {
     }
 
     // Run the main schedule
-    this.world.runSchedule('main');
+    this.world.runSchedule("main");
 
     // Continue the game loop
     this.gameLoop = requestAnimationFrame((time) => this.update(time));
@@ -248,9 +296,9 @@ export class ECSGame {
       new Position(Math.random() * 800, -50),
       new Velocity(0, 50),
       new Health(50, 50),
-      new Enemy('Basic'),
+      new Enemy("Basic"),
       new Color(1, 0, 0), // Red
-      new Size(25, 25)
+      new Size(25, 25),
     );
   }
 }
@@ -261,4 +309,3 @@ export class ECSGame {
 export function createECSGame(): ECSGame {
   return new ECSGame();
 }
-

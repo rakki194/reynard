@@ -2,9 +2,9 @@
  * @fileoverview Documentation renderer components for Reynard
  */
 
-import { Component, createSignal, createEffect, For, Show } from 'solid-js';
-import { DocRendererProps, CodeExample } from '../types';
-import { Button, Card } from 'reynard-components';
+import { Component, createSignal, createEffect, For, Show } from "solid-js";
+import { DocRendererProps, CodeExample } from "../types";
+import { Button, Card } from "reynard-components";
 
 /**
  * Main documentation renderer component
@@ -14,10 +14,10 @@ export const DocRenderer: Component<DocRendererProps> = (props) => {
   // const [activeTab, setActiveTab] = createSignal(0);
 
   return (
-    <div class={`doc-renderer ${props.className || ''}`}>
+    <div class={`doc-renderer ${props.className || ""}`}>
       <DocHeader metadata={props.metadata} />
-      <DocContent 
-        content={props.content} 
+      <DocContent
+        content={props.content}
         type={props.type}
         onNavigate={props.onNavigate}
         onCodeRun={props.onCodeRun}
@@ -40,9 +40,7 @@ const DocHeader: Component<{ metadata: any }> = (props) => {
         )}
         <div class="doc-tags">
           <For each={props.metadata.tags || []}>
-            {(tag) => (
-              <span class="doc-tag">{tag}</span>
-            )}
+            {(tag) => <span class="doc-tag">{tag}</span>}
           </For>
         </div>
       </div>
@@ -61,10 +59,12 @@ const DocContent: Component<{
 }> = (props) => {
   return (
     <main class="doc-content">
-      <div 
+      <div
         class="doc-content-body"
         innerHTML={props.content}
-        onClick={(e) => handleContentClick(e, props.onNavigate, props.onCodeRun)}
+        onClick={(e) =>
+          handleContentClick(e, props.onNavigate, props.onCodeRun)
+        }
       />
     </main>
   );
@@ -79,7 +79,8 @@ const DocFooter: Component<{ metadata: any }> = (props) => {
       <div class="doc-footer-content">
         {props.metadata.lastModified && (
           <p class="doc-last-modified">
-            Last updated: {new Date(props.metadata.lastModified).toLocaleDateString()}
+            Last updated:{" "}
+            {new Date(props.metadata.lastModified).toLocaleDateString()}
           </p>
         )}
         {props.metadata.author && (
@@ -98,12 +99,12 @@ export const CodeExampleRenderer: Component<{
   onRun?: (code: string) => void;
 }> = (props) => {
   const [isExpanded, setIsExpanded] = createSignal(false);
-  const [output, setOutput] = createSignal<string>('');
+  const [output, setOutput] = createSignal<string>("");
 
   const handleRun = () => {
     if (props.onRun) {
       props.onRun(props.example.code);
-      setOutput('Code executed successfully');
+      setOutput("Code executed successfully");
     }
   };
 
@@ -112,25 +113,21 @@ export const CodeExampleRenderer: Component<{
       <div class="code-example-header">
         <h4 class="code-example-title">{props.example.title}</h4>
         <div class="code-example-actions">
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             variant="secondary"
             onClick={() => setIsExpanded(!isExpanded())}
           >
-            {isExpanded() ? 'Collapse' : 'Expand'}
+            {isExpanded() ? "Collapse" : "Expand"}
           </Button>
           {props.example.live && (
-            <Button 
-              size="sm" 
-              variant="primary"
-              onClick={handleRun}
-            >
+            <Button size="sm" variant="primary" onClick={handleRun}>
               Run
             </Button>
           )}
         </div>
       </div>
-      
+
       {props.example.description && (
         <p class="code-example-description">{props.example.description}</p>
       )}
@@ -167,7 +164,7 @@ export const ApiDocRenderer: Component<{
           {props.api.type}
         </span>
       </div>
-      
+
       <p class="api-doc-description">{props.api.description}</p>
 
       <Show when={props.api.parameters && props.api.parameters.length > 0}>
@@ -184,7 +181,9 @@ export const ApiDocRenderer: Component<{
                   <div class="api-param-type">{param.type}</div>
                   <div class="api-param-description">{param.description}</div>
                   {param.default && (
-                    <div class="api-param-default">Default: {param.default}</div>
+                    <div class="api-param-default">
+                      Default: {param.default}
+                    </div>
                   )}
                 </div>
               )}
@@ -198,7 +197,9 @@ export const ApiDocRenderer: Component<{
           <h4>Returns</h4>
           <div class="api-return">
             <span class="api-return-type">{props.api.returns.type}</span>
-            <p class="api-return-description">{props.api.returns.description}</p>
+            <p class="api-return-description">
+              {props.api.returns.description}
+            </p>
           </div>
         </div>
       </Show>
@@ -207,9 +208,7 @@ export const ApiDocRenderer: Component<{
         <div class="api-doc-examples">
           <h4>Examples</h4>
           <For each={props.api.examples}>
-            {(example) => (
-              <CodeExampleRenderer example={example} />
-            )}
+            {(example) => <CodeExampleRenderer example={example} />}
           </For>
         </div>
       </Show>
@@ -228,14 +227,14 @@ export const TableOfContents: Component<{
 
   createEffect(() => {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(props.content, 'text/html');
-    const headingElements = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    
+    const doc = parser.parseFromString(props.content, "text/html");
+    const headingElements = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
     const headingList = Array.from(headingElements).map((heading, index) => ({
       id: heading.id || `heading-${index}`,
-      text: heading.textContent || '',
+      text: heading.textContent || "",
       level: parseInt(heading.tagName.charAt(1)),
-      element: heading
+      element: heading,
     }));
 
     setHeadings(headingList);
@@ -248,7 +247,7 @@ export const TableOfContents: Component<{
         <For each={headings()}>
           {(heading) => (
             <li class={`toc-item toc-item--${heading.level}`}>
-              <a 
+              <a
                 href={`#${heading.id}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -270,39 +269,39 @@ export const TableOfContents: Component<{
  * Handle clicks within documentation content
  */
 function handleContentClick(
-  event: MouseEvent, 
+  event: MouseEvent,
   onNavigate?: (path: string) => void,
-  onCodeRun?: (code: string) => void
+  onCodeRun?: (code: string) => void,
 ) {
   const target = event.target as HTMLElement;
-  
+
   // Handle copy code button clicks
-  if (target.classList.contains('copy-button')) {
-    const codeBlock = target.closest('.code-block');
-    const code = codeBlock?.querySelector('code')?.textContent;
+  if (target.classList.contains("copy-button")) {
+    const codeBlock = target.closest(".code-block");
+    const code = codeBlock?.querySelector("code")?.textContent;
     if (code) {
       navigator.clipboard.writeText(code);
-      target.textContent = 'Copied!';
+      target.textContent = "Copied!";
       setTimeout(() => {
-        target.textContent = 'Copy';
+        target.textContent = "Copy";
       }, 2000);
     }
     return;
   }
 
   // Handle internal link clicks
-  if (target.tagName === 'A' && target.classList.contains('doc-link')) {
-    const href = target.getAttribute('href');
-    if (href && !href.startsWith('http') && !href.startsWith('#')) {
+  if (target.tagName === "A" && target.classList.contains("doc-link")) {
+    const href = target.getAttribute("href");
+    if (href && !href.startsWith("http") && !href.startsWith("#")) {
       event.preventDefault();
       onNavigate?.(href);
     }
   }
 
   // Handle code run buttons
-  if (target.classList.contains('run-code-button')) {
-    const codeBlock = target.closest('.code-block');
-    const code = codeBlock?.querySelector('code')?.textContent;
+  if (target.classList.contains("run-code-button")) {
+    const codeBlock = target.closest(".code-block");
+    const code = codeBlock?.querySelector("code")?.textContent;
     if (code && onCodeRun) {
       onCodeRun(code);
     }

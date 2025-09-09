@@ -19,8 +19,8 @@ export const SearchSection: Component<SearchSectionProps> = (props) => {
     { value: "all", label: "All Categories" },
     ...Object.entries(iconCategories).map(([key, category]) => ({
       value: key,
-      label: category.name
-    }))
+      label: category.name,
+    })),
   ];
 
   return (
@@ -47,13 +47,19 @@ export const SearchSection: Component<SearchSectionProps> = (props) => {
         </select>
       </div>
       <div class="search-stats">
-        Showing {props.resultCount} icon{props.resultCount !== 1 ? 's' : ''}
+        Showing {props.resultCount} icon{props.resultCount !== 1 ? "s" : ""}
         {props.selectedCategory() !== "all" && (
-          <span> in {iconCategories[props.selectedCategory() as keyof typeof iconCategories]?.name}</span>
+          <span>
+            {" "}
+            in{" "}
+            {
+              iconCategories[
+                props.selectedCategory() as keyof typeof iconCategories
+              ]?.name
+            }
+          </span>
         )}
-        {props.searchQuery() && (
-          <span> matching "{props.searchQuery()}"</span>
-        )}
+        {props.searchQuery() && <span> matching "{props.searchQuery()}"</span>}
       </div>
     </div>
   );

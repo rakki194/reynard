@@ -11,9 +11,9 @@ export default function CaptionGenerationDemo() {
     "caption-generation",
     <div class="demo-content unavailable">
       <p>Caption generation is currently unavailable</p>
-    </div>
+    </div>,
   );
-  
+
   const status = useFeatureStatus("caption-generation");
   const [inputText, setInputText] = createSignal("");
   const [generatedCaption, setGeneratedCaption] = createSignal("");
@@ -29,23 +29,24 @@ export default function CaptionGenerationDemo() {
     <div class="feature-demo">
       <h3>📝 Caption Generation</h3>
       <p>Generate AI-powered captions for your content</p>
-      
+
       {shouldRender() ? (
-        <div class="demo-content" classList={{
-          degraded: status()?.degraded
-        }}>
+        <div
+          class="demo-content"
+          classList={{
+            degraded: status()?.degraded,
+          }}
+        >
           {status()?.available && !status()?.degraded ? (
             <p>Caption generation is fully available</p>
           ) : status()?.degraded ? (
             <p>Caption generation is running in degraded mode</p>
           ) : null}
-          
+
           {status()?.degraded && (
-            <div class="status-message warning">
-              ⚠️ {status()?.message}
-            </div>
+            <div class="status-message warning">⚠️ {status()?.message}</div>
           )}
-          
+
           <div class="caption-demo-container">
             <textarea
               class="caption-textarea"
@@ -53,15 +54,15 @@ export default function CaptionGenerationDemo() {
               value={inputText()}
               onInput={(e) => setInputText(e.target.value)}
             />
-            
-            <button 
-              class="btn caption-generate-btn" 
+
+            <button
+              class="btn caption-generate-btn"
               onClick={generateCaption}
               disabled={!inputText() || status()?.degraded}
             >
               Generate Caption
             </button>
-            
+
             {generatedCaption() && (
               <div class="caption-result">
                 <strong>Generated Caption:</strong>

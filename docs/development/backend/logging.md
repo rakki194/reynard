@@ -58,20 +58,23 @@ The frontend uses a custom logging utility that logs to both the browser console
 ### How to Use
 
 ```typescript
-import { logger } from '~/utils/logger';
+import { logger } from "~/utils/logger";
 
 // Log messages at different levels
-logger.debug('Detailed information for debugging');
-logger.info('Confirmation of expected behavior');
-logger.warn('Potential issue or unexpected event');
-logger.error('Error condition');
+logger.debug("Detailed information for debugging");
+logger.info("Confirmation of expected behavior");
+logger.warn("Potential issue or unexpected event");
+logger.error("Error condition");
 
 // Log errors with Error objects
 try {
   // code that might throw an error
-  throw new Error('Example error');
+  throw new Error("Example error");
 } catch (error) {
-  logger.error('Error occurred', error instanceof Error ? error : new Error(String(error)));
+  logger.error(
+    "Error occurred",
+    error instanceof Error ? error : new Error(String(error)),
+  );
 }
 ```
 
@@ -91,17 +94,17 @@ The frontend logger can be configured through the `LoggerConfig` interface:
 
 ```typescript
 interface LoggerConfig {
-  level: LogLevel;            // Default: LogLevel.INFO
-  enableConsole: boolean;     // Default: true
+  level: LogLevel; // Default: LogLevel.INFO
+  enableConsole: boolean; // Default: true
   enableFileLogging: boolean; // Default: true
-  maxLogEntries: number;      // Default: 1000
+  maxLogEntries: number; // Default: 1000
 }
 ```
 
 To change settings at runtime:
 
 ```typescript
-import { logger, LogLevel } from '~/utils/logger';
+import { logger, LogLevel } from "~/utils/logger";
 
 // Change log level
 logger.setLogLevel(LogLevel.DEBUG);

@@ -49,15 +49,15 @@ npm install reynard-error-boundaries reynard-core reynard-components
 ### Basic Error Boundary
 
 ```tsx
-import { ErrorBoundary } from 'reynard-error-boundaries';
-import { ErrorFallback } from 'reynard-error-boundaries';
+import { ErrorBoundary } from "reynard-error-boundaries";
+import { ErrorFallback } from "reynard-error-boundaries";
 
 function App() {
   return (
     <ErrorBoundary
       fallback={ErrorFallback}
       onError={(error, errorInfo) => {
-        console.error('Error caught:', error, errorInfo);
+        console.error("Error caught:", error, errorInfo);
       }}
     >
       <YourApp />
@@ -69,17 +69,17 @@ function App() {
 ### Error Boundary with Recovery
 
 ```tsx
-import { 
-  ErrorBoundary, 
-  builtInRecoveryStrategies 
-} from 'reynard-error-boundaries';
+import {
+  ErrorBoundary,
+  builtInRecoveryStrategies,
+} from "reynard-error-boundaries";
 
 function App() {
   return (
     <ErrorBoundary
       recoveryStrategies={builtInRecoveryStrategies}
       onRecovery={(action) => {
-        console.log('Recovery action executed:', action);
+        console.log("Recovery action executed:", action);
       }}
     >
       <YourApp />
@@ -91,7 +91,7 @@ function App() {
 ### Error Boundary with Reporting
 
 ```tsx
-import { ErrorBoundary } from 'reynard-error-boundaries';
+import { ErrorBoundary } from "reynard-error-boundaries";
 
 function App() {
   return (
@@ -99,10 +99,10 @@ function App() {
       reportErrors={true}
       errorReporting={{
         enabled: true,
-        endpoint: '/api/errors',
-        apiKey: 'your-api-key',
+        endpoint: "/api/errors",
+        apiKey: "your-api-key",
         batchSize: 10,
-        flushInterval: 30000
+        flushInterval: 30000,
       }}
     >
       <YourApp />
@@ -162,28 +162,28 @@ interface ErrorReportingConfig {
 ### Custom Recovery Strategy
 
 ```tsx
-import { createRecoveryStrategy } from 'reynard-error-boundaries';
+import { createRecoveryStrategy } from "reynard-error-boundaries";
 
 const customStrategy = createRecoveryStrategy(
-  'custom-retry',
-  'Custom Retry',
-  'Retry with custom logic',
-  (error, context) => context.category === 'network',
+  "custom-retry",
+  "Custom Retry",
+  "Retry with custom logic",
+  (error, context) => context.category === "network",
   async (error, context) => {
     // Custom recovery logic
     await customRetryLogic();
     return {
       success: true,
-      action: 'retry',
-      message: 'Custom retry successful'
+      action: "retry",
+      message: "Custom retry successful",
     };
   },
-  1 // Priority
+  1, // Priority
 );
 
 <ErrorBoundary recoveryStrategies={[customStrategy]}>
   <YourApp />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ### Error Reporting with Filters
@@ -193,11 +193,11 @@ const customStrategy = createRecoveryStrategy(
   reportErrors={true}
   errorReporting={{
     enabled: true,
-    endpoint: '/api/errors',
+    endpoint: "/api/errors",
     filters: [
-      { type: 'severity', value: 'critical', action: 'include' },
-      { type: 'category', value: 'network', action: 'exclude' }
-    ]
+      { type: "severity", value: "critical", action: "include" },
+      { type: "category", value: "network", action: "exclude" },
+    ],
   }}
 >
   <YourApp />
@@ -207,20 +207,20 @@ const customStrategy = createRecoveryStrategy(
 ### Using Error Boundary Hook
 
 ```tsx
-import { useErrorBoundary } from 'reynard-error-boundaries';
+import { useErrorBoundary } from "reynard-error-boundaries";
 
 function MyComponent() {
   const { error, handleError, retry, executeRecovery } = useErrorBoundary({
     onError: (error, context) => {
-      console.log('Error occurred:', error, context);
-    }
+      console.log("Error occurred:", error, context);
+    },
   });
 
   const handleAsyncOperation = async () => {
     try {
       await riskyOperation();
     } catch (error) {
-      handleError(error, { componentStack: 'MyComponent' });
+      handleError(error, { componentStack: "MyComponent" });
     }
   };
 
@@ -241,21 +241,21 @@ function MyComponent() {
 ## 🧪 Testing
 
 ```tsx
-import { render, screen } from 'reynard-testing';
-import { ErrorBoundary } from 'reynard-error-boundaries';
+import { render, screen } from "reynard-testing";
+import { ErrorBoundary } from "reynard-error-boundaries";
 
 const ThrowError = () => {
-  throw new Error('Test error');
+  throw new Error("Test error");
 };
 
-test('should catch and display errors', () => {
+test("should catch and display errors", () => {
   render(() => (
     <ErrorBoundary>
       <ThrowError />
     </ErrorBoundary>
   ));
-  
-  expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+
+  expect(screen.getByText("Something went wrong")).toBeInTheDocument();
 });
 ```
 
@@ -275,16 +275,16 @@ The error boundary components integrate seamlessly with Reynard's theming system
 ## 📊 Error Analytics
 
 ```tsx
-import { useErrorReporting } from 'reynard-error-boundaries';
+import { useErrorReporting } from "reynard-error-boundaries";
 
 function ErrorDashboard() {
   const { getMetrics } = useErrorReporting({
     enabled: true,
-    endpoint: '/api/errors'
+    endpoint: "/api/errors",
   });
 
   const metrics = getMetrics();
-  
+
   return (
     <div>
       <h2>Error Metrics</h2>

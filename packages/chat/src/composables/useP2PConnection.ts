@@ -44,7 +44,9 @@ export interface P2PConnectionReturn {
   isReconnecting: () => boolean;
 }
 
-export function useP2PConnection(options: P2PConnectionOptions): P2PConnectionReturn {
+export function useP2PConnection(
+  options: P2PConnectionOptions,
+): P2PConnectionReturn {
   const {
     realtimeEndpoint,
     reconnection = {
@@ -129,14 +131,14 @@ export function useP2PConnection(options: P2PConnectionOptions): P2PConnectionRe
   // Schedule reconnection
   const scheduleReconnect = () => {
     const attempts = p2pConnection().reconnectAttempts;
-    
+
     if (attempts >= reconnection.maxAttempts) {
       setP2pConnection((prev) => ({ ...prev, status: "error" }));
       return;
     }
 
-    setP2pConnection((prev) => ({ 
-      ...prev, 
+    setP2pConnection((prev) => ({
+      ...prev,
       status: "reconnecting",
       reconnectAttempts: attempts + 1,
     }));

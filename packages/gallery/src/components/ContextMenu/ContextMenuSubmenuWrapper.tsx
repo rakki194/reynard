@@ -18,7 +18,9 @@ export interface ContextMenuSubmenuWrapperProps {
 /**
  * Submenu wrapper component
  */
-export const ContextMenuSubmenuWrapper: Component<ContextMenuSubmenuWrapperProps> = (props) => {
+export const ContextMenuSubmenuWrapper: Component<
+  ContextMenuSubmenuWrapperProps
+> = (props) => {
   return (
     <Show when={props.submenuOpen !== null}>
       <div ref={props.submenuRef}>

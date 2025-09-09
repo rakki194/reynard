@@ -10,7 +10,7 @@ export function createUploadActions(
   validation: any,
   singleUpload: any,
   updateProgress: (uploadId: string, updates: Partial<UploadProgress>) => void,
-  options: any
+  options: any,
 ) {
   const uploadFiles = async (files: File[]): Promise<void> => {
     if (files.length === 0) return;
@@ -56,7 +56,7 @@ export function createUploadActions(
   return {
     uploadFiles,
     cancelUpload,
-    cancelAllUploads
+    cancelAllUploads,
   };
 }
 
@@ -64,7 +64,7 @@ async function performUpload(
   validFiles: File[],
   state: any,
   singleUpload: any,
-  options: any
+  options: any,
 ): Promise<void> {
   state.setIsUploading(true);
   options.callbacks?.onUploadStart?.(validFiles);

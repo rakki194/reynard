@@ -9,7 +9,16 @@
 /* Chat font for all messages */
 .message-content,
 .message-text {
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.5;
@@ -85,7 +94,16 @@
 /* Override MarkdownRenderer text color in message content */
 .message-content .reynard-markdown-renderer {
   color: #1f2937 !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -93,7 +111,16 @@
 
 .message-content .reynard-markdown-renderer p {
   color: #1f2937 !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -107,7 +134,16 @@
 /* Override MarkdownRenderer text color for user messages */
 .chat-message--user .message-content .reynard-markdown-renderer {
   color: white !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -115,7 +151,16 @@
 
 .chat-message--user .message-content .reynard-markdown-renderer p {
   color: white !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -298,8 +343,14 @@
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .thinking-demo {
@@ -331,7 +382,9 @@
 }
 
 @keyframes thinking {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
   40% {
@@ -630,7 +683,16 @@
 /* Override MarkdownRenderer text color in P2P message text */
 .message-text .reynard-markdown-renderer {
   color: #1f2937 !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -638,7 +700,16 @@
 
 .message-text .reynard-markdown-renderer p {
   color: #1f2937 !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -652,7 +723,16 @@
 /* Override MarkdownRenderer text color for user's own messages in P2P */
 .message.own .message-text .reynard-markdown-renderer {
   color: white !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -660,7 +740,16 @@
 
 .message.own .message-text .reynard-markdown-renderer p {
   color: white !important;
-  font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-family:
+    "Inter",
+    "SF Pro Display",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   line-height: 1.5 !important;
@@ -739,7 +828,9 @@
 }
 
 @keyframes typing {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
   40% {

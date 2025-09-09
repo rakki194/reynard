@@ -1,14 +1,14 @@
-import { Component, createSignal, createEffect, For, Show } from 'solid-js';
-import { 
-  MonacoEditor, 
-  MonacoDiffEditor, 
+import { Component, createSignal, createEffect, For, Show } from "solid-js";
+import {
+  MonacoEditor,
+  MonacoDiffEditor,
   CodeEditor,
   useLanguageDetection,
   useReynardMonaco,
-  getMonacoLanguageFromName
-} from 'reynard-monaco';
-import { useTheme } from 'reynard-themes';
-import './MonacoEditorDemo.css';
+  getMonacoLanguageFromName,
+} from "reynard-monaco";
+import { useTheme } from "reynard-themes";
+import "./MonacoEditorDemo.css";
 
 interface LanguageOption {
   value: string;
@@ -18,8 +18,8 @@ interface LanguageOption {
 
 const LANGUAGES: LanguageOption[] = [
   {
-    value: 'javascript',
-    label: 'JavaScript',
+    value: "javascript",
+    label: "JavaScript",
     sample: `// JavaScript Sample
 function fibonacci(n) {
   if (n <= 1) return n;
@@ -45,11 +45,11 @@ class Calculator {
     this.history.push(\`\${a} + \${b} = \${result}\`);
     return result;
   }
-}`
+}`,
   },
   {
-    value: 'typescript',
-    label: 'TypeScript',
+    value: "typescript",
+    label: "TypeScript",
     sample: `// TypeScript Sample
 interface User {
   id: number;
@@ -84,11 +84,11 @@ function processData<T>(data: T[]): T[] {
 // Type guards
 function isUser(obj: any): obj is User {
   return obj && typeof obj.id === 'number' && typeof obj.name === 'string';
-}`
+}`,
   },
   {
-    value: 'python',
-    label: 'Python',
+    value: "python",
+    label: "Python",
     sample: `# Python Sample
 from typing import List, Optional, Dict, Any
 from dataclasses import dataclass
@@ -126,11 +126,11 @@ async def process_users():
 
 # List comprehension with filtering
 active_users = [user for user in users if user.is_active]
-user_emails = {user.id: user.email for user in users}`
+user_emails = {user.id: user.email for user in users}`,
   },
   {
-    value: 'rust',
-    label: 'Rust',
+    value: "rust",
+    label: "Rust",
     sample: `// Rust Sample
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
@@ -186,11 +186,11 @@ async fn fetch_user_data(id: u32) -> Result<User, Box<dyn std::error::Error>> {
     let response = reqwest::get(&format!("/api/users/{}", id)).await?;
     let user: User = response.json().await?;
     Ok(user)
-}`
+}`,
   },
   {
-    value: 'go',
-    label: 'Go',
+    value: "go",
+    label: "Go",
     sample: `// Go Sample
 package main
 
@@ -256,11 +256,11 @@ func fetchUserData(ctx context.Context, id int) (*User, error) {
     case <-time.After(1 * time.Second):
         return &User{ID: id, Name: "John Doe"}, nil
     }
-}`
+}`,
   },
   {
-    value: 'json',
-    label: 'JSON',
+    value: "json",
+    label: "JSON",
     sample: `{
   "name": "Monaco Editor Demo",
   "version": "1.0.0",
@@ -298,11 +298,11 @@ func fetchUserData(ctx context.Context, id int) (*User, error) {
       "language": "typescript"
     }
   }
-}`
+}`,
   },
   {
-    value: 'yaml',
-    label: 'YAML',
+    value: "yaml",
+    label: "YAML",
     sample: `# YAML Configuration Sample
 name: Monaco Editor Demo
 version: 1.0.0
@@ -353,11 +353,11 @@ environments:
     log_level: info
   production:
     debug: false
-    log_level: error`
+    log_level: error`,
   },
   {
-    value: 'markdown',
-    label: 'Markdown',
+    value: "markdown",
+    label: "Markdown",
     sample: `# Monaco Editor Demo
 
 A comprehensive test of the **reynard-monaco** package with forked solid-monaco components.
@@ -421,27 +421,27 @@ The editor supports various configuration options:
 ---
 
 *Built with ❤️ using SolidJS and Monaco Editor*
-`
-  }
+`,
+  },
 ];
 
 export const MonacoEditorDemo: Component = () => {
-  const [selectedLanguage, setSelectedLanguage] = createSignal('typescript');
+  const [selectedLanguage, setSelectedLanguage] = createSignal("typescript");
   const { theme: currentReynardTheme } = useTheme();
-  const [editorValue, setEditorValue] = createSignal('');
-  const [diffValue1, setDiffValue1] = createSignal('');
-  const [diffValue2, setDiffValue2] = createSignal('');
+  const [editorValue, setEditorValue] = createSignal("");
+  const [diffValue1, setDiffValue1] = createSignal("");
+  const [diffValue2, setDiffValue2] = createSignal("");
   const [showDiffEditor, setShowDiffEditor] = createSignal(false);
   const [fontSize, setFontSize] = createSignal(14);
   const [showLineNumbers, setShowLineNumbers] = createSignal(true);
-  const [wordWrap, setWordWrap] = createSignal('on');
+  const [wordWrap, setWordWrap] = createSignal("on");
   const [showMinimap, setShowMinimap] = createSignal(true);
   const [readOnly, setReadOnly] = createSignal(false);
-  const [editorType, setEditorType] = createSignal<'monaco' | 'code'>('monaco');
+  const [editorType, setEditorType] = createSignal<"monaco" | "code">("monaco");
 
   // Language detection
   const languageDetection = useLanguageDetection();
-  
+
   // Reynard Monaco integration with theme sync
   const reynardMonaco = useReynardMonaco({
     reynardTheme: currentReynardTheme,
@@ -452,11 +452,12 @@ export const MonacoEditorDemo: Component = () => {
   // Initialize with sample code
   createEffect(() => {
     const language = selectedLanguage();
-    const sample = LANGUAGES.find(lang => lang.value === language)?.sample || '';
+    const sample =
+      LANGUAGES.find((lang) => lang.value === language)?.sample || "";
     setEditorValue(sample);
-    
+
     // Set diff values for comparison
-    if (language === 'typescript') {
+    if (language === "typescript") {
       setDiffValue1(`// Original TypeScript code
 interface User {
   id: number;
@@ -473,7 +474,7 @@ interface User {
 }`);
     } else {
       setDiffValue1(editorValue());
-      setDiffValue2(editorValue() + '\n\n// Added new line');
+      setDiffValue2(editorValue() + "\n\n// Added new line");
     }
   });
 
@@ -490,46 +491,52 @@ interface User {
   };
 
   const getCurrentLanguage = () => {
-    return LANGUAGES.find(lang => lang.value === selectedLanguage());
+    return LANGUAGES.find((lang) => lang.value === selectedLanguage());
   };
 
   const getMonacoOptions = () => ({
     fontSize: fontSize(),
-    lineNumbers: showLineNumbers() ? 'on' : 'off',
-    wordWrap: wordWrap() as 'on' | 'off' | 'wordWrapColumn' | 'bounded',
+    lineNumbers: showLineNumbers() ? "on" : "off",
+    wordWrap: wordWrap() as "on" | "off" | "wordWrapColumn" | "bounded",
     minimap: { enabled: showMinimap() },
     readOnly: readOnly(),
     automaticLayout: true,
     scrollBeyondLastLine: false,
-    renderWhitespace: 'selection' as const,
+    renderWhitespace: "selection" as const,
     renderControlCharacters: true,
-    cursorBlinking: 'blink' as const,
-    cursorStyle: 'line' as const,
+    cursorBlinking: "blink" as const,
+    cursorStyle: "line" as const,
     selectOnLineNumbers: true,
     roundedSelection: false,
     contextmenu: true,
     mouseWheelZoom: true,
     smoothScrolling: true,
-    ...reynardMonaco.getMonacoOptions()
+    ...reynardMonaco.getMonacoOptions(),
   });
 
   return (
     <div class="monaco-demo">
       <div class="demo-header">
         <h1>Monaco Editor Demo</h1>
-        <p>Comprehensive test of reynard-monaco with forked solid-monaco components</p>
+        <p>
+          Comprehensive test of reynard-monaco with forked solid-monaco
+          components
+        </p>
         <p class="theme-sync-note">
-          🎨 Theme automatically syncs with Reynard theme: <strong>{currentReynardTheme}</strong>
+          🎨 Theme automatically syncs with Reynard theme:{" "}
+          <strong>{currentReynardTheme}</strong>
         </p>
       </div>
 
       <div class="demo-controls">
         <div class="control-group">
           <label for="editor-type-select">Editor Type:</label>
-          <select 
+          <select
             id="editor-type-select"
-            value={editorType()} 
-            onChange={(e) => setEditorType(e.currentTarget.value as 'monaco' | 'code')}
+            value={editorType()}
+            onChange={(e) =>
+              setEditorType(e.currentTarget.value as "monaco" | "code")
+            }
           >
             <option value="monaco">Monaco Editor (Forked)</option>
             <option value="code">Code Editor (Reynard)</option>
@@ -538,9 +545,9 @@ interface User {
 
         <div class="control-group">
           <label for="language-select">Language:</label>
-          <select 
+          <select
             id="language-select"
-            value={selectedLanguage()} 
+            value={selectedLanguage()}
             onChange={(e) => setSelectedLanguage(e.currentTarget.value)}
           >
             <For each={LANGUAGES}>
@@ -549,15 +556,14 @@ interface User {
           </select>
         </div>
 
-
         <div class="control-group">
           <label for="font-size-range">Font Size:</label>
-          <input 
+          <input
             id="font-size-range"
-            type="range" 
-            min="10" 
-            max="24" 
-            value={fontSize()} 
+            type="range"
+            min="10"
+            max="24"
+            value={fontSize()}
             onChange={(e) => setFontSize(parseInt(e.currentTarget.value))}
           />
           <span>{fontSize()}px</span>
@@ -565,9 +571,9 @@ interface User {
 
         <div class="control-group">
           <label>
-            <input 
-              type="checkbox" 
-              checked={showLineNumbers()} 
+            <input
+              type="checkbox"
+              checked={showLineNumbers()}
               onChange={(e) => setShowLineNumbers(e.currentTarget.checked)}
             />
             Line Numbers
@@ -576,9 +582,9 @@ interface User {
 
         <div class="control-group">
           <label>
-            <input 
-              type="checkbox" 
-              checked={showMinimap()} 
+            <input
+              type="checkbox"
+              checked={showMinimap()}
               onChange={(e) => setShowMinimap(e.currentTarget.checked)}
             />
             Minimap
@@ -587,9 +593,9 @@ interface User {
 
         <div class="control-group">
           <label>
-            <input 
-              type="checkbox" 
-              checked={readOnly()} 
+            <input
+              type="checkbox"
+              checked={readOnly()}
               onChange={(e) => setReadOnly(e.currentTarget.checked)}
             />
             Read Only
@@ -598,9 +604,9 @@ interface User {
 
         <div class="control-group">
           <label for="word-wrap-select">Word Wrap:</label>
-          <select 
+          <select
             id="word-wrap-select"
-            value={wordWrap()} 
+            value={wordWrap()}
             onChange={(e) => setWordWrap(e.currentTarget.value)}
           >
             <option value="off">Off</option>
@@ -611,11 +617,11 @@ interface User {
         </div>
 
         <div class="control-group">
-          <button 
+          <button
             onClick={() => setShowDiffEditor(!showDiffEditor())}
             class="toggle-diff-btn"
           >
-            {showDiffEditor() ? 'Hide' : 'Show'} Diff Editor
+            {showDiffEditor() ? "Hide" : "Show"} Diff Editor
           </button>
         </div>
       </div>
@@ -624,7 +630,9 @@ interface User {
         <div class="editor-container">
           <div class="editor-header">
             <h3>
-              {editorType() === 'monaco' ? 'Monaco Editor (Forked)' : 'Code Editor (Reynard)'}
+              {editorType() === "monaco"
+                ? "Monaco Editor (Forked)"
+                : "Code Editor (Reynard)"}
             </h3>
             <div class="editor-info">
               <span class="language-info">
@@ -633,7 +641,9 @@ interface User {
               <span class="theme-info">
                 Theme: {currentReynardTheme} (Reynard)
               </span>
-              <Show when={languageDetection.isNaturalLanguageDetectionAvailable()}>
+              <Show
+                when={languageDetection.isNaturalLanguageDetectionAvailable()}
+              >
                 <span class="detection-info">
                   Auto-detection: {languageDetection.detectedNaturalLanguage()}
                 </span>
@@ -645,7 +655,7 @@ interface User {
           </div>
 
           <div class="editor-wrapper">
-            <Show when={editorType() === 'monaco'}>
+            <Show when={editorType() === "monaco"}>
               <MonacoEditor
                 value={editorValue()}
                 language={getMonacoLanguageFromName(selectedLanguage())}
@@ -653,21 +663,21 @@ interface User {
                 onChange={handleEditorChange}
                 options={getMonacoOptions()}
                 onMount={(editor: any, monaco: any) => {
-                  console.log('Monaco Editor mounted:', { editor, monaco });
+                  console.log("Monaco Editor mounted:", { editor, monaco });
                   // Register custom themes when Monaco is available
                   reynardMonaco.registerThemes(monaco);
                 }}
                 style={{
-                  width: '100%',
-                  height: '500px',
-                  'min-height': '300px',
-                  border: '1px solid var(--color-border)',
-                  'border-radius': 'var(--border-radius-sm)'
+                  width: "100%",
+                  height: "500px",
+                  "min-height": "300px",
+                  border: "1px solid var(--color-border)",
+                  "border-radius": "var(--border-radius-sm)",
                 }}
               />
             </Show>
 
-            <Show when={editorType() === 'code'}>
+            <Show when={editorType() === "code"}>
               <CodeEditor
                 value={editorValue()}
                 language={selectedLanguage()}
@@ -688,25 +698,31 @@ interface User {
               <h3>Diff Editor</h3>
               <p>Compare two versions of your code</p>
             </div>
-            
+
             <div class="diff-wrapper">
-            <div style={{
-              width: '100%',
-              height: '400px',
-              'min-height': '300px',
-              border: '1px solid var(--color-border)',
-              'border-radius': 'var(--border-radius-sm)'
-            }}>
-              <MonacoDiffEditor
-                original={diffValue1()}
-                modified={diffValue2()}
-                originalLanguage={getMonacoLanguageFromName(selectedLanguage())}
-                modifiedLanguage={getMonacoLanguageFromName(selectedLanguage())}
-                theme={reynardMonaco.monacoTheme()}
-                onChange={handleDiffChange}
-                options={getMonacoOptions()}
-              />
-            </div>
+              <div
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  "min-height": "300px",
+                  border: "1px solid var(--color-border)",
+                  "border-radius": "var(--border-radius-sm)",
+                }}
+              >
+                <MonacoDiffEditor
+                  original={diffValue1()}
+                  modified={diffValue2()}
+                  originalLanguage={getMonacoLanguageFromName(
+                    selectedLanguage(),
+                  )}
+                  modifiedLanguage={getMonacoLanguageFromName(
+                    selectedLanguage(),
+                  )}
+                  theme={reynardMonaco.monacoTheme()}
+                  onChange={handleDiffChange}
+                  options={getMonacoOptions()}
+                />
+              </div>
             </div>
           </div>
         </Show>
@@ -716,12 +732,19 @@ interface User {
         <div class="feature-list">
           <h4>Features Demonstrated:</h4>
           <ul>
-            <li>✅ Forked solid-monaco components (MonacoEditor, MonacoDiffEditor)</li>
+            <li>
+              ✅ Forked solid-monaco components (MonacoEditor, MonacoDiffEditor)
+            </li>
             <li>✅ Reynard CodeEditor with enhanced features</li>
             <li>✅ Latest Monaco Editor 0.52.2 support</li>
             <li>✅ Multiple language support with syntax highlighting</li>
-            <li>✅ Theme switching (VS, VS Dark, High Contrast, GitHub themes)</li>
-            <li>✅ Real-time configuration (font size, line numbers, minimap, etc.)</li>
+            <li>
+              ✅ Theme switching (VS, VS Dark, High Contrast, GitHub themes)
+            </li>
+            <li>
+              ✅ Real-time configuration (font size, line numbers, minimap,
+              etc.)
+            </li>
             <li>✅ Shiki integration for enhanced syntax highlighting</li>
             <li>✅ Language detection capabilities</li>
             <li>✅ Diff editor for code comparison</li>

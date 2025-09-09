@@ -287,7 +287,10 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   /**
    * Validate file security
    */
-  private validateFileSecurity(file: File | string): { isValid: boolean; error?: string } {
+  private validateFileSecurity(file: File | string): {
+    isValid: boolean;
+    error?: string;
+  } {
     if (typeof file === "string") {
       // Validate file path for directory traversal
       if (file.includes("..") || file.includes("~") || file.startsWith("/")) {
@@ -308,7 +311,11 @@ export class FileProcessingPipeline implements ProcessingPipeline {
     }
 
     // Check for path traversal in file name
-    if (file.name.includes("..") || file.name.includes("/") || file.name.includes("\\")) {
+    if (
+      file.name.includes("..") ||
+      file.name.includes("/") ||
+      file.name.includes("\\")
+    ) {
       return { isValid: false, error: "Invalid file name" };
     }
 
@@ -327,7 +334,9 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   /**
    * Validate file content for security
    */
-  private async validateFileContent(file: File): Promise<{ isValid: boolean; error?: string }> {
+  private async validateFileContent(
+    file: File,
+  ): Promise<{ isValid: boolean; error?: string }> {
     try {
       // Check file extension matches content
       const extension = this.getFileExtension(file.name);
@@ -362,16 +371,16 @@ export class FileProcessingPipeline implements ProcessingPipeline {
    */
   private isValidMimeType(extension: string, mimeType: string): boolean {
     const validMimeTypes: Record<string, string[]> = {
-      '.jpg': ['image/jpeg'],
-      '.jpeg': ['image/jpeg'],
-      '.png': ['image/png'],
-      '.gif': ['image/gif'],
-      '.webp': ['image/webp'],
-      '.svg': ['image/svg+xml'],
-      '.pdf': ['application/pdf'],
-      '.txt': ['text/plain'],
-      '.json': ['application/json'],
-      '.xml': ['application/xml', 'text/xml'],
+      ".jpg": ["image/jpeg"],
+      ".jpeg": ["image/jpeg"],
+      ".png": ["image/png"],
+      ".gif": ["image/gif"],
+      ".webp": ["image/webp"],
+      ".svg": ["image/svg+xml"],
+      ".pdf": ["application/pdf"],
+      ".txt": ["text/plain"],
+      ".json": ["application/json"],
+      ".xml": ["application/xml", "text/xml"],
     };
 
     const expectedTypes = validMimeTypes[extension.toLowerCase()];
@@ -382,7 +391,19 @@ export class FileProcessingPipeline implements ProcessingPipeline {
    * Check if file is executable
    */
   private isExecutableFile(extension: string): boolean {
-    const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.scr', '.pif', '.msi', '.app', '.deb', '.rpm', '.dmg'];
+    const executableExtensions = [
+      ".exe",
+      ".bat",
+      ".cmd",
+      ".com",
+      ".scr",
+      ".pif",
+      ".msi",
+      ".app",
+      ".deb",
+      ".rpm",
+      ".dmg",
+    ];
     return executableExtensions.includes(extension.toLowerCase());
   }
 
@@ -390,21 +411,32 @@ export class FileProcessingPipeline implements ProcessingPipeline {
    * Check if file is compressed
    */
   private isCompressedFile(extension: string): boolean {
-    const compressedExtensions = ['.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz'];
+    const compressedExtensions = [
+      ".zip",
+      ".rar",
+      ".7z",
+      ".tar",
+      ".gz",
+      ".bz2",
+      ".xz",
+    ];
     return compressedExtensions.includes(extension.toLowerCase());
   }
 
   /**
    * Validate compressed files for zip bombs
    */
-  private async validateCompressedFile(file: File): Promise<{ isValid: boolean; error?: string }> {
+  private async validateCompressedFile(
+    file: File,
+  ): Promise<{ isValid: boolean; error?: string }> {
     // Basic validation - in a real implementation, you'd want to:
     // 1. Check compression ratio
     // 2. Validate file structure
     // 3. Check for nested archives
     // 4. Limit decompression size
-    
-    if (file.size > 50 * 1024 * 1024) { // 50MB limit for compressed files
+
+    if (file.size > 50 * 1024 * 1024) {
+      // 50MB limit for compressed files
       return { isValid: false, error: "Compressed file too large" };
     }
 

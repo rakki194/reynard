@@ -12,10 +12,7 @@ import {
   createEffect,
 } from "solid-js";
 import { Router, Route, Navigate } from "@solidjs/router";
-import {
-  ReynardProvider,
-  useTheme,
-} from "reynard-themes";
+import { ReynardProvider, useTheme } from "reynard-themes";
 import {
   NotificationsProvider,
   useNotifications,
@@ -73,7 +70,7 @@ interface Note {
   notebookId: string;
   title: string;
   content: string;
-  contentType: 'markdown' | 'rich-text' | 'code';
+  contentType: "markdown" | "rich-text" | "code";
   isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -83,11 +80,12 @@ interface Note {
 // Export types for use in other components
 export type { User, Achievement, Notebook, Note };
 
-
 const App: Component = () => {
   const [user, setUser] = createSignal<User | null>(null);
   const [notebooks, setNotebooks] = createSignal<Notebook[]>([]);
-  const [currentNotebook, setCurrentNotebook] = createSignal<Notebook | null>(null);
+  const [currentNotebook, setCurrentNotebook] = createSignal<Notebook | null>(
+    null,
+  );
   const [currentNote, setCurrentNote] = createSignal<Note | null>(null);
   const [showGamification, setShowGamification] = createSignal(false);
 
@@ -100,7 +98,7 @@ const App: Component = () => {
       notify("Logged out successfully", "info");
     },
     notify: (message, type) => notify(message, type),
-    navigate: (path) => window.location.href = path
+    navigate: (path) => (window.location.href = path),
   });
 
   // Load user data when authenticated
@@ -113,13 +111,13 @@ const App: Component = () => {
   // Load user data and notebooks
   const loadUserData = async () => {
     try {
-      const response = await authFetch('/api/user/profile');
+      const response = await authFetch("/api/user/profile");
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-        
+
         // Load user's notebooks
-        const notebooksResponse = await authFetch('/api/notebooks');
+        const notebooksResponse = await authFetch("/api/notebooks");
         if (notebooksResponse.ok) {
           const notebooksData = await notebooksResponse.json();
           setNotebooks(notebooksData);
@@ -132,17 +130,21 @@ const App: Component = () => {
   };
 
   // Create new notebook
-  const createNotebook = async (title: string, description?: string, color = '#0078D4') => {
+  const createNotebook = async (
+    title: string,
+    description?: string,
+    color = "#0078D4",
+  ) => {
     try {
-      const response = await authFetch('/api/notebooks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, color })
+      const response = await authFetch("/api/notebooks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description, color }),
       });
-      
+
       if (response.ok) {
         const newNotebook = await response.json();
-        setNotebooks(prev => [...prev, newNotebook]);
+        setNotebooks((prev) => [...prev, newNotebook]);
         notify("Notebook created successfully!", "success");
         return newNotebook;
       }
@@ -153,14 +155,18 @@ const App: Component = () => {
   };
 
   // Create new note
-  const createNote = async (notebookId: string, title: string, content = '') => {
+  const createNote = async (
+    notebookId: string,
+    title: string,
+    content = "",
+  ) => {
     try {
-      const response = await authFetch('/api/notes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notebookId, title, content })
+      const response = await authFetch("/api/notes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notebookId, title, content }),
       });
-      
+
       if (response.ok) {
         const newNote = await response.json();
         notify("Note created successfully!", "success");
@@ -187,7 +193,7 @@ const App: Component = () => {
                     <span class="user-xp">{user()!.experiencePoints} XP</span>
                   </div>
                 </Show>
-                <Button 
+                <Button
                   onClick={() => setShowGamification(!showGamification())}
                   variant="secondary"
                   size="sm"

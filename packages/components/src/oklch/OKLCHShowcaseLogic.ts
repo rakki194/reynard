@@ -23,15 +23,15 @@ export interface OKLCHShowcaseState {
 export const createOKLCHShowcaseLogic = (state: OKLCHShowcaseState) => {
   // Create color variations module
   const colorVariationsModule = createColorVariations(state);
-  
+
   // Create gradient demos module
   const gradientDemosModule = createGradientDemos({
-    colorVariations: colorVariationsModule.colorVariations
+    colorVariations: colorVariationsModule.colorVariations,
   });
-  
+
   // Create theme tags module
   const themeTagsModule = createThemeTags(state);
-  
+
   // Create animated palette module
   const animatedPaletteModule = createAnimatedPalette(state);
 
@@ -42,6 +42,6 @@ export const createOKLCHShowcaseLogic = (state: OKLCHShowcaseState) => {
     colorVariations: colorVariationsModule.colorVariations,
     animatedPalette: animatedPaletteModule.animatedPalette,
     themeTagColors: themeTagsModule.themeTagColors,
-    gradientDemos: gradientDemosModule.gradientDemos
+    gradientDemos: gradientDemosModule.gradientDemos,
   };
 };

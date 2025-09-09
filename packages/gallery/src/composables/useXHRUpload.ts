@@ -9,7 +9,7 @@ export async function performXHRUpload(
   file: File,
   formData: FormData,
   uploadId: string,
-  options: SingleFileUploadOptions
+  options: SingleFileUploadOptions,
 ): Promise<void> {
   const startTime = Date.now();
   const xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ function setupProgressTracking(
   xhr: XMLHttpRequest,
   startTime: number,
   uploadId: string,
-  options: SingleFileUploadOptions
+  options: SingleFileUploadOptions,
 ) {
   xhr.upload.addEventListener("progress", (event) => {
     if (event.lengthComputable) {
@@ -48,7 +48,7 @@ function setupXHRHandlers(
   xhr: XMLHttpRequest,
   formData: FormData,
   uploadId: string,
-  options: SingleFileUploadOptions
+  options: SingleFileUploadOptions,
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     xhr.onload = () => handleXHRLoad(xhr, uploadId, options, resolve, reject);
@@ -74,7 +74,7 @@ function handleXHRLoad(
   uploadId: string,
   options: SingleFileUploadOptions,
   resolve: () => void,
-  reject: (error: Error) => void
+  reject: (error: Error) => void,
 ) {
   if (xhr.status >= 200 && xhr.status < 300) {
     options.updateProgress(uploadId, {
@@ -95,7 +95,7 @@ function handleXHRLoad(
 function handleXHRError(
   uploadId: string,
   options: SingleFileUploadOptions,
-  reject: (error: Error) => void
+  reject: (error: Error) => void,
 ) {
   const error = "Network error during upload";
   options.updateProgress(uploadId, {
@@ -108,7 +108,7 @@ function handleXHRError(
 function handleXHRAbort(
   uploadId: string,
   options: SingleFileUploadOptions,
-  reject: (error: Error) => void
+  reject: (error: Error) => void,
 ) {
   options.updateProgress(uploadId, {
     status: "cancelled",

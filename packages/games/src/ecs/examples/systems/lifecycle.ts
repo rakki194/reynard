@@ -1,16 +1,16 @@
 // Lifecycle and damage systems
 
-import { World } from '../../types';
-import { 
-  Health, 
-  Damage, 
-  Lifetime, 
+import { World } from "../../types";
+import {
+  Health,
+  Damage,
+  Lifetime,
   GameTime,
   HealthType,
   DamageType,
   LifetimeType,
-  GameTimeType
-} from '../components';
+  GameTimeType,
+} from "../components";
 
 /**
  * Lifetime system - removes entities when their lifetime expires.
@@ -47,7 +47,7 @@ export function damageSystem(world: World): void {
     const h = health as Health;
     const d = damage as Damage;
     h.current -= d.amount;
-    
+
     if (h.current <= 0) {
       entitiesToRemove.push(entity);
     }

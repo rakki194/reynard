@@ -176,4 +176,4 @@ The Reynard platform follows a sophisticated service-oriented architecture with 
 
 ---
 
-*This architecture research archive provides comprehensive insights into the system design, service patterns, and architectural decisions that form the foundation of the Reynard platform. The architecture demonstrates proven patterns for building scalable, maintainable, and secure web applications.*
+_This architecture research archive provides comprehensive insights into the system design, service patterns, and architectural decisions that form the foundation of the Reynard platform. The architecture demonstrates proven patterns for building scalable, maintainable, and secure web applications._

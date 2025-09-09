@@ -12,27 +12,41 @@ export const NotificationControls: Component = () => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error("NotificationControls: Notifications context not available", error);
+      console.error(
+        "NotificationControls: Notifications context not available",
+        error,
+      );
       return {
         notify: (message: string, type?: string) => {
           console.warn("Notifications context not available:", message, type);
-        }
+        },
       };
     }
   });
-  
+
   const notify = createMemo(() => notifications().notify);
-  
-  const [notificationMessage, setNotificationMessage] = createSignal("Hello from Reynard!");
-  const [notificationType, setNotificationType] = createSignal<"success" | "error" | "warning" | "info">("info");
+
+  const [notificationMessage, setNotificationMessage] = createSignal(
+    "Hello from Reynard!",
+  );
+  const [notificationType, setNotificationType] = createSignal<
+    "success" | "error" | "warning" | "info"
+  >("info");
   const [notificationDuration, setNotificationDuration] = createSignal(3000);
 
   const handleSendNotification = () => {
-    notify()(notificationMessage(), notificationType(), { duration: notificationDuration() });
+    notify()(notificationMessage(), notificationType(), {
+      duration: notificationDuration(),
+    });
   };
 
   const handleSendMultipleNotifications = () => {
-    const types: Array<"success" | "error" | "warning" | "info"> = ["success", "error", "warning", "info"];
+    const types: Array<"success" | "error" | "warning" | "info"> = [
+      "success",
+      "error",
+      "warning",
+      "info",
+    ];
     types.forEach((type, index) => {
       setTimeout(() => {
         notify()(`This is a ${type} notification!`, type);
@@ -55,7 +69,7 @@ export const NotificationControls: Component = () => {
             title="Notification message text"
           />
         </div>
-        
+
         <div class="control-group">
           <label>Type:</label>
           <select
@@ -70,7 +84,7 @@ export const NotificationControls: Component = () => {
             <option value="info">Info</option>
           </select>
         </div>
-        
+
         <div class="control-group">
           <label>Duration (ms):</label>
           <input
@@ -85,12 +99,15 @@ export const NotificationControls: Component = () => {
           />
         </div>
       </div>
-      
+
       <div class="playground-actions">
         <button class="button button--primary" onClick={handleSendNotification}>
           Send Notification
         </button>
-        <button class="button button--secondary" onClick={handleSendMultipleNotifications}>
+        <button
+          class="button button--secondary"
+          onClick={handleSendMultipleNotifications}
+        >
           Send Multiple
         </button>
       </div>

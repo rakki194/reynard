@@ -4,10 +4,10 @@
  */
 
 // Export basic utilities
-export * from './basic';
+export * from "./basic";
 
 // Export pluralization utilities
-export * from './pluralization';
+export * from "./pluralization";
 
 // Export grammar utilities
-export * from './grammar';
+export * from "./grammar";

@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 /**
  * Browser API mocks for testing
@@ -83,7 +83,7 @@ export const mockPerformanceObserver = vi.fn().mockImplementation(() => ({
  * Mock requestAnimationFrame
  */
 export const mockRequestAnimationFrame = vi.fn(
-  (cb: FrameRequestCallback) => setTimeout(cb, 0) as any
+  (cb: FrameRequestCallback) => setTimeout(cb, 0) as any,
 );
 
 /**
@@ -99,12 +99,12 @@ export const mockFetch = vi.fn((_url?: string) =>
     ok: true,
     status: 200,
     json: () => Promise.resolve({}),
-    text: () => Promise.resolve(''),
+    text: () => Promise.resolve(""),
     blob: () => Promise.resolve(new Blob()),
     arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
     formData: () => Promise.resolve(new FormData()),
     clone: vi.fn().mockReturnThis(),
-  })
+  }),
 );
 
 /**
@@ -113,11 +113,11 @@ export const mockFetch = vi.fn((_url?: string) =>
 export const mockWebSocket = vi.fn().mockImplementation(() => {
   const mockWs = {
     readyState: WebSocket.CONNECTING,
-    url: '',
-    protocol: '',
-    extensions: '',
+    url: "",
+    protocol: "",
+    extensions: "",
     bufferedAmount: 0,
-    binaryType: 'blob' as BinaryType,
+    binaryType: "blob" as BinaryType,
     onopen: null,
     onclose: null,
     onmessage: null,
@@ -128,15 +128,15 @@ export const mockWebSocket = vi.fn().mockImplementation(() => {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn().mockReturnValue(true),
   } as any;
-  
+
   // Simulate connection
   setTimeout(() => {
     mockWs.readyState = WebSocket.OPEN;
     if (mockWs.onopen) {
-      mockWs.onopen(new Event('open'));
+      mockWs.onopen(new Event("open"));
     }
   }, 0);
-  
+
   return mockWs;
 });
 
@@ -146,7 +146,7 @@ export const mockWebSocket = vi.fn().mockImplementation(() => {
 export const mockEventSource = vi.fn().mockImplementation(() => {
   const mockEs = {
     readyState: EventSource.CONNECTING,
-    url: '',
+    url: "",
     withCredentials: false,
     onopen: null,
     onmessage: null,
@@ -156,15 +156,15 @@ export const mockEventSource = vi.fn().mockImplementation(() => {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn().mockReturnValue(true),
   } as any;
-  
+
   // Simulate connection
   setTimeout(() => {
     mockEs.readyState = EventSource.OPEN;
     if (mockEs.onopen) {
-      mockEs.onopen(new Event('open'));
+      mockEs.onopen(new Event("open"));
     }
   }, 0);
-  
+
   return mockEs;
 });
 
@@ -172,7 +172,7 @@ export const mockEventSource = vi.fn().mockImplementation(() => {
  * Mock crypto
  */
 export const mockCrypto = {
-  randomUUID: vi.fn().mockReturnValue('00000000-0000-4000-8000-000000000000'),
+  randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
   getRandomValues: vi.fn().mockImplementation((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i] = Math.floor(Math.random() * 256);
@@ -201,63 +201,70 @@ export const mockPerformance = {
 /**
  * Mock URL
  */
-export const mockURL = vi.fn().mockImplementation((url: string, base?: string) => {
-  // Create a simple mock URL object to avoid circular references
-  const urlObj = {
-    href: url,
-    origin: 'http://localhost',
-    protocol: 'http:',
-    host: 'localhost',
-    hostname: 'localhost',
-    port: '',
-    pathname: url,
-    search: '',
-    hash: '',
-    searchParams: mockURLSearchParams(''),
-  };
-  return urlObj;
-});
+export const mockURL = vi
+  .fn()
+  .mockImplementation((url: string, base?: string) => {
+    // Create a simple mock URL object to avoid circular references
+    const urlObj = {
+      href: url,
+      origin: "http://localhost",
+      protocol: "http:",
+      host: "localhost",
+      hostname: "localhost",
+      port: "",
+      pathname: url,
+      search: "",
+      hash: "",
+      searchParams: mockURLSearchParams(""),
+    };
+    return urlObj;
+  });
 
 /**
  * Mock URLSearchParams
  */
-export const mockURLSearchParams = vi.fn().mockImplementation((init?: string | string[][] | Record<string, string>) => {
-  // Create a simple mock URLSearchParams object to avoid circular references
-  const params = new Map<string, string>();
-  if (typeof init === 'string') {
-    // Simple parsing for test purposes
-    init.split('&').forEach(pair => {
-      const [key, value] = pair.split('=');
-      if (key) params.set(key, value || '');
-    });
-  } else if (Array.isArray(init)) {
-    init.forEach(([key, value]) => {
-      if (key) params.set(key, value || '');
-    });
-  } else if (init && typeof init === 'object') {
-    Object.entries(init).forEach(([key, value]) => {
-      params.set(key, value);
-    });
-  }
-  
-  return {
-    get: (name: string) => params.get(name) || null,
-    set: (name: string, value: string) => params.set(name, value),
-    has: (name: string) => params.has(name),
-    delete: (name: string) => params.delete(name),
-    append: (name: string, value: string) => {
-      const existing = params.get(name);
-      params.set(name, existing ? `${existing},${value}` : value);
-    },
-    toString: () => Array.from(params.entries()).map(([k, v]) => `${k}=${v}`).join('&'),
-    entries: () => params.entries(),
-    keys: () => params.keys(),
-    values: () => params.values(),
-    forEach: (callback: (value: string, key: string) => void) => {
-      params.forEach(callback);
-    },
-  };
-});
+export const mockURLSearchParams = vi
+  .fn()
+  .mockImplementation((init?: string | string[][] | Record<string, string>) => {
+    // Create a simple mock URLSearchParams object to avoid circular references
+    const params = new Map<string, string>();
+    if (typeof init === "string") {
+      // Simple parsing for test purposes
+      init.split("&").forEach((pair) => {
+        const [key, value] = pair.split("=");
+        if (key) params.set(key, value || "");
+      });
+    } else if (Array.isArray(init)) {
+      init.forEach(([key, value]) => {
+        if (key) params.set(key, value || "");
+      });
+    } else if (init && typeof init === "object") {
+      Object.entries(init).forEach(([key, value]) => {
+        params.set(key, value);
+      });
+    }
+
+    return {
+      get: (name: string) => params.get(name) || null,
+      set: (name: string, value: string) => params.set(name, value),
+      has: (name: string) => params.has(name),
+      delete: (name: string) => params.delete(name),
+      append: (name: string, value: string) => {
+        const existing = params.get(name);
+        params.set(name, existing ? `${existing},${value}` : value);
+      },
+      toString: () =>
+        Array.from(params.entries())
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&"),
+      entries: () => params.entries(),
+      keys: () => params.keys(),
+      values: () => params.values(),
+      forEach: (callback: (value: string, key: string) => void) => {
+        params.forEach(callback);
+      },
+    };
+  });
 
 /**
  * Mock FormData
@@ -331,18 +338,18 @@ export const mockAbortSignal = vi.fn().mockImplementation(() => {
  * Mock navigator
  */
 export const mockNavigator = {
-  userAgent: 'Mozilla/5.0 (Test Browser)',
-  language: 'en-US',
-  languages: ['en-US', 'en'],
-  platform: 'Test Platform',
+  userAgent: "Mozilla/5.0 (Test Browser)",
+  language: "en-US",
+  languages: ["en-US", "en"],
+  platform: "Test Platform",
   onLine: true,
   cookieEnabled: true,
-  doNotTrack: '1',
+  doNotTrack: "1",
   maxTouchPoints: 0,
   hardwareConcurrency: 4,
   deviceMemory: 8,
   connection: {
-    effectiveType: '4g',
+    effectiveType: "4g",
     downlink: 10,
     rtt: 50,
   },
@@ -390,15 +397,15 @@ export const mockWindow = {
     pixelDepth: 24,
   },
   location: {
-    href: 'http://localhost:3000/',
-    origin: 'http://localhost:3000',
-    protocol: 'http:',
-    host: 'localhost:3000',
-    hostname: 'localhost',
-    port: '3000',
-    pathname: '/',
-    search: '',
-    hash: '',
+    href: "http://localhost:3000/",
+    origin: "http://localhost:3000",
+    protocol: "http:",
+    host: "localhost:3000",
+    hostname: "localhost",
+    port: "3000",
+    pathname: "/",
+    search: "",
+    hash: "",
     assign: vi.fn(),
     replace: vi.fn(),
     reload: vi.fn(),
@@ -413,7 +420,7 @@ export const mockWindow = {
     replaceState: vi.fn(),
   },
   document: {
-    title: 'Test Document',
+    title: "Test Document",
     body: {
       scrollTop: 0,
       scrollLeft: 0,
@@ -468,87 +475,87 @@ export const mockWindow = {
  */
 export function setupBrowserMocks() {
   // Mock global objects
-  Object.defineProperty(global, 'window', {
+  Object.defineProperty(global, "window", {
     value: mockWindow,
     writable: true,
   });
 
-  Object.defineProperty(global, 'document', {
+  Object.defineProperty(global, "document", {
     value: mockWindow.document,
     writable: true,
   });
 
-  Object.defineProperty(global, 'navigator', {
+  Object.defineProperty(global, "navigator", {
     value: mockNavigator,
     writable: true,
   });
 
-  Object.defineProperty(global, 'localStorage', {
+  Object.defineProperty(global, "localStorage", {
     value: mockLocalStorage,
     writable: true,
   });
 
-  Object.defineProperty(global, 'sessionStorage', {
+  Object.defineProperty(global, "sessionStorage", {
     value: mockSessionStorage,
     writable: true,
   });
 
-  Object.defineProperty(global, 'matchMedia', {
+  Object.defineProperty(global, "matchMedia", {
     value: mockMatchMedia,
     writable: true,
   });
 
-  Object.defineProperty(global, 'fetch', {
+  Object.defineProperty(global, "fetch", {
     value: mockFetch,
     writable: true,
   });
 
-  Object.defineProperty(global, 'WebSocket', {
+  Object.defineProperty(global, "WebSocket", {
     value: mockWebSocket,
     writable: true,
   });
 
-  Object.defineProperty(global, 'EventSource', {
+  Object.defineProperty(global, "EventSource", {
     value: mockEventSource,
     writable: true,
   });
 
-  Object.defineProperty(global, 'crypto', {
+  Object.defineProperty(global, "crypto", {
     value: mockCrypto,
     writable: true,
   });
 
-  Object.defineProperty(global, 'performance', {
+  Object.defineProperty(global, "performance", {
     value: mockPerformance,
     writable: true,
   });
 
-  Object.defineProperty(global, 'URL', {
+  Object.defineProperty(global, "URL", {
     value: mockURL,
     writable: true,
   });
 
-  Object.defineProperty(global, 'URLSearchParams', {
+  Object.defineProperty(global, "URLSearchParams", {
     value: mockURLSearchParams,
     writable: true,
   });
 
-  Object.defineProperty(global, 'FormData', {
+  Object.defineProperty(global, "FormData", {
     value: mockFormData,
     writable: true,
   });
 
-  Object.defineProperty(global, 'Headers', {
+  Object.defineProperty(global, "Headers", {
     value: mockHeaders,
     writable: true,
   });
 
-  Object.defineProperty(global, 'AbortController', {
+  Object.defineProperty(global, "AbortController", {
     value: mockAbortController,
     writable: true,
   });
 
-  Object.defineProperty(global, 'AbortSignal', {
+  Object.defineProperty(global, "AbortSignal", {
     value: mockAbortSignal,
     writable: true,
   });
@@ -571,7 +578,7 @@ export function resetBrowserMocks() {
   mockSessionStorage.getItem.mockReturnValue(null);
   mockMatchMedia.mockReturnValue({
     matches: false,
-    media: '',
+    media: "",
     onchange: null,
     addListener: vi.fn(),
     removeListener: vi.fn(),

@@ -1,11 +1,17 @@
 /**
  * Base Service Class
- * 
+ *
  * Abstract base class that all services must extend. Provides common
  * lifecycle management, health monitoring, and metadata handling.
  */
 
-import { ServiceStatus, ServiceHealth, ServiceInfo, ServiceHealthInfo, ServiceConfig } from '../types/index.js';
+import {
+  ServiceStatus,
+  ServiceHealth,
+  ServiceInfo,
+  ServiceHealthInfo,
+  ServiceConfig,
+} from "../types/index.js";
 
 export abstract class BaseService {
   protected _name: string;
@@ -115,7 +121,6 @@ export abstract class BaseService {
 
       // Start health monitoring
       this.startHealthMonitoring();
-
     } catch (error) {
       this._status = ServiceStatus.ERROR;
       this._lastError = error instanceof Error ? error.message : String(error);
@@ -140,7 +145,6 @@ export abstract class BaseService {
 
       // Transition to stopped
       this._status = ServiceStatus.STOPPED;
-
     } catch (error) {
       this._status = ServiceStatus.ERROR;
       this._lastError = error instanceof Error ? error.message : String(error);
@@ -161,7 +165,8 @@ export abstract class BaseService {
         this._lastHealthCheck = new Date();
       } catch (error) {
         this._health = ServiceHealth.UNHEALTHY;
-        this._lastError = error instanceof Error ? error.message : String(error);
+        this._lastError =
+          error instanceof Error ? error.message : String(error);
         this._lastHealthCheck = new Date();
       }
     }, 30000); // Check every 30 seconds
@@ -178,13 +183,19 @@ export abstract class BaseService {
   protected async verifyDependencies(): Promise<void> {
     // This should be implemented by the service manager
     // For now, we'll just log that dependencies should be verified
-    console.debug(`Service ${this._name} dependencies should be verified:`, this._dependencies);
+    console.debug(
+      `Service ${this._name} dependencies should be verified:`,
+      this._dependencies,
+    );
   }
 
   protected async verifyRequiredPackages(): Promise<void> {
     // This should be implemented by the service manager
     // For now, we'll just log that packages should be verified
-    console.debug(`Service ${this._name} required packages should be verified:`, this._requiredPackages);
+    console.debug(
+      `Service ${this._name} required packages should be verified:`,
+      this._requiredPackages,
+    );
   }
 
   // Utility methods
@@ -200,7 +211,7 @@ export abstract class BaseService {
       startupTime: this._startupTime,
       lastHealthCheck: this._lastHealthCheck,
       lastError: this._lastError,
-      metadata: this._metadata
+      metadata: this._metadata,
     };
   }
 
@@ -209,7 +220,7 @@ export abstract class BaseService {
       status: this._health,
       lastCheck: this._lastHealthCheck || new Date(),
       startupTime: this._startupTime,
-      error: this._lastError
+      error: this._lastError,
     };
   }
 

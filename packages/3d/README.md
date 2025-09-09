@@ -52,7 +52,7 @@ npm install reynard-3d
 ### Basic 3D Scene
 
 ```tsx
-import { ThreeJSVisualization } from 'reynard-3d';
+import { ThreeJSVisualization } from "reynard-3d";
 
 function My3DScene() {
   const setupScene = (scene, camera, renderer, controls) => {
@@ -78,16 +78,16 @@ function My3DScene() {
 ### Point Cloud Visualization
 
 ```tsx
-import { PointCloudVisualization } from 'reynard-3d';
+import { PointCloudVisualization } from "reynard-3d";
 
 function MyPointCloud() {
   const points = [
     {
-      id: '1',
+      id: "1",
       position: [0, 0, 0],
       color: [1, 0, 0],
       size: 2,
-      metadata: { label: 'Point 1' }
+      metadata: { label: "Point 1" },
     },
     // ... more points
   ];
@@ -98,16 +98,16 @@ function MyPointCloud() {
       width={800}
       height={600}
       settings={{
-        colorMapping: 'similarity',
-        sizeMapping: 'importance',
+        colorMapping: "similarity",
+        sizeMapping: "importance",
         enableHighlighting: true,
-        maxPoints: 10000
+        maxPoints: 10000,
       }}
       onPointClick={(point, event) => {
-        console.log('Clicked point:', point);
+        console.log("Clicked point:", point);
       }}
       onSelectionChange={(selected) => {
-        console.log('Selected points:', selected);
+        console.log("Selected points:", selected);
       }}
     />
   );
@@ -117,19 +117,19 @@ function MyPointCloud() {
 ### Using Composables
 
 ```tsx
-import { useThreeJSVisualization, usePointCloud } from 'reynard-3d';
+import { useThreeJSVisualization, usePointCloud } from "reynard-3d";
 
 function Custom3DComponent() {
   const visualization = useThreeJSVisualization({
     width: 800,
     height: 600,
-    backgroundColor: '#1a1a1a'
+    backgroundColor: "#1a1a1a",
   });
 
   const pointCloud = usePointCloud(
     () => myPoints,
-    () => ({ colorMapping: 'cluster' }),
-    () => ({ enableSearchIntegration: true })
+    () => ({ colorMapping: "cluster" }),
+    () => ({ enableSearchIntegration: true }),
   );
 
   // Use the composables to build custom 3D experiences
@@ -216,16 +216,16 @@ Composable for 3D animations and transitions.
 ### Demo Components
 
 ```tsx
-import { ThreeJSVisualizationDemo } from 'reynard-3d/demos';
+import { ThreeJSVisualizationDemo } from "reynard-3d/demos";
 
 // Complete demo showcasing all features
-<ThreeJSVisualizationDemo width={800} height={600} />
+<ThreeJSVisualizationDemo width={800} height={600} />;
 ```
 
 ### Custom Point Cloud with Clustering
 
 ```tsx
-import { PointCloudVisualization, detectClusters } from 'reynard-3d';
+import { PointCloudVisualization, detectClusters } from "reynard-3d";
 
 function ClusteredPointCloud() {
   const [points, setPoints] = createSignal([]);
@@ -233,8 +233,8 @@ function ClusteredPointCloud() {
 
   const analyzeClusters = () => {
     const detectedClusters = detectClusters(points(), {
-      algorithm: 'kmeans',
-      maxClusters: 5
+      algorithm: "kmeans",
+      maxClusters: 5,
     });
     setClusters(detectedClusters);
   };
@@ -245,8 +245,8 @@ function ClusteredPointCloud() {
       <PointCloudVisualization
         points={points()}
         settings={{
-          colorMapping: 'cluster',
-          enableHighlighting: true
+          colorMapping: "cluster",
+          enableHighlighting: true,
         }}
       />
     </div>

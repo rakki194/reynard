@@ -2,8 +2,8 @@
  * @fileoverview Code display and interactive components for documentation
  */
 
-import { Component, createSignal, Show, For } from 'solid-js';
-import { Button, Card } from 'reynard-components';
+import { Component, createSignal, Show, For } from "solid-js";
+import { Button, Card } from "reynard-components";
 
 /**
  * Code block component with syntax highlighting
@@ -27,7 +27,7 @@ export const DocsCodeBlock: Component<{
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy code:', err);
+      console.error("Failed to copy code:", err);
     }
   };
 
@@ -36,24 +36,24 @@ export const DocsCodeBlock: Component<{
   };
 
   return (
-    <div class={`docs-code-block ${props.className || ''}`}>
+    <div class={`docs-code-block ${props.className || ""}`}>
       <Show when={props.title}>
         <div class="docs-code-block-header">
           <h4 class="docs-code-block-title">{props.title}</h4>
           <div class="docs-code-block-actions">
             <Show when={props.copyable !== false}>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 variant="secondary"
                 onClick={handleCopy}
                 class="docs-code-block-copy"
               >
-                {copied() ? 'Copied!' : 'Copy'}
+                {copied() ? "Copied!" : "Copy"}
               </Button>
             </Show>
             <Show when={props.runnable}>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 variant="primary"
                 onClick={handleRun}
                 class="docs-code-block-run"
@@ -61,23 +61,21 @@ export const DocsCodeBlock: Component<{
                 Run
               </Button>
             </Show>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               variant="secondary"
               onClick={() => setIsExpanded(!isExpanded())}
               class="docs-code-block-expand"
             >
-              {isExpanded() ? 'Collapse' : 'Expand'}
+              {isExpanded() ? "Collapse" : "Expand"}
             </Button>
           </div>
         </div>
       </Show>
-      
-      <div class={`docs-code-block-content ${isExpanded() ? 'expanded' : ''}`}>
+
+      <div class={`docs-code-block-content ${isExpanded() ? "expanded" : ""}`}>
         <pre class="docs-code-block-pre">
-          <code class={`language-${props.language}`}>
-            {props.code}
-          </code>
+          <code class={`language-${props.language}`}>{props.code}</code>
         </pre>
       </div>
     </div>
@@ -96,7 +94,7 @@ export const DocsCodeEditor: Component<{
   className?: string;
 }> = (props) => {
   const [code, setCode] = createSignal(props.code);
-  const [output, setOutput] = createSignal('');
+  const [output, setOutput] = createSignal("");
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
@@ -105,15 +103,15 @@ export const DocsCodeEditor: Component<{
 
   const handleRun = () => {
     const result = props.onRun?.(code());
-    setOutput(result || '');
+    setOutput(result || "");
   };
 
   return (
-    <div class={`docs-code-editor ${props.className || ''}`}>
+    <div class={`docs-code-editor ${props.className || ""}`}>
       <div class="docs-code-editor-header">
         <span class="docs-code-editor-language">{props.language}</span>
-        <Button 
-          size="sm" 
+        <Button
+          size="sm"
           variant="primary"
           onClick={handleRun}
           class="docs-code-editor-run"
@@ -121,7 +119,7 @@ export const DocsCodeEditor: Component<{
           Run Code
         </Button>
       </div>
-      
+
       <div class="docs-code-editor-content">
         <textarea
           value={code()}
@@ -131,7 +129,7 @@ export const DocsCodeEditor: Component<{
           spellcheck={false}
         />
       </div>
-      
+
       <Show when={output()}>
         <div class="docs-code-editor-output">
           <h5>Output:</h5>
@@ -154,16 +152,16 @@ export const DocsCodeExample: Component<{
   onRun?: (code: string) => void;
   className?: string;
 }> = (props) => {
-  const [activeTab, setActiveTab] = createSignal<'code' | 'preview'>('preview');
-  const [output, setOutput] = createSignal('');
+  const [activeTab, setActiveTab] = createSignal<"code" | "preview">("preview");
+  const [output, setOutput] = createSignal("");
 
   const handleRun = () => {
     const result = props.onRun?.(props.code);
-    setOutput(result || '');
+    setOutput(result || "");
   };
 
   return (
-    <Card class={`docs-code-example ${props.className || ''}`}>
+    <Card class={`docs-code-example ${props.className || ""}`}>
       <div class="docs-code-example-header">
         <h4 class="docs-code-example-title">{props.title}</h4>
         <Show when={props.description}>
@@ -173,21 +171,21 @@ export const DocsCodeExample: Component<{
 
       <div class="docs-code-example-tabs">
         <button
-          class={`docs-code-example-tab ${activeTab() === 'preview' ? 'active' : ''}`}
-          onClick={() => setActiveTab('preview')}
+          class={`docs-code-example-tab ${activeTab() === "preview" ? "active" : ""}`}
+          onClick={() => setActiveTab("preview")}
         >
           Preview
         </button>
         <button
-          class={`docs-code-example-tab ${activeTab() === 'code' ? 'active' : ''}`}
-          onClick={() => setActiveTab('code')}
+          class={`docs-code-example-tab ${activeTab() === "code" ? "active" : ""}`}
+          onClick={() => setActiveTab("code")}
         >
           Code
         </button>
       </div>
 
       <div class="docs-code-example-content">
-        <Show when={activeTab() === 'preview'}>
+        <Show when={activeTab() === "preview"}>
           <div class="docs-code-example-preview">
             <Show when={props.preview}>
               <div innerHTML={props.preview} />
@@ -201,7 +199,7 @@ export const DocsCodeExample: Component<{
           </div>
         </Show>
 
-        <Show when={activeTab() === 'code'}>
+        <Show when={activeTab() === "code"}>
           <DocsCodeBlock
             code={props.code}
             language={props.language}
@@ -238,11 +236,11 @@ export const DocsCodeComparison: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <div class={`docs-code-comparison ${props.className || ''}`}>
+    <div class={`docs-code-comparison ${props.className || ""}`}>
       <div class="docs-code-comparison-header">
         <h4>Code Comparison</h4>
       </div>
-      
+
       <div class="docs-code-comparison-content">
         <div class="docs-code-comparison-left">
           <h5 class="docs-code-comparison-title">{props.left.title}</h5>
@@ -252,11 +250,11 @@ export const DocsCodeComparison: Component<{
             copyable={true}
           />
         </div>
-        
+
         <div class="docs-code-comparison-separator">
           <span>vs</span>
         </div>
-        
+
         <div class="docs-code-comparison-right">
           <h5 class="docs-code-comparison-title">{props.right.title}</h5>
           <DocsCodeBlock
@@ -287,20 +285,20 @@ export const DocsCodeSnippet: Component<{
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy code:', err);
+      console.error("Failed to copy code:", err);
     }
   };
 
   return (
-    <code class={`docs-code-snippet ${props.className || ''}`}>
+    <code class={`docs-code-snippet ${props.className || ""}`}>
       {props.code}
       <Show when={props.copyable}>
-        <button 
+        <button
           class="docs-code-snippet-copy"
           onClick={handleCopy}
           title="Copy code"
         >
-          {copied() ? '✓' : '📋'}
+          {copied() ? "✓" : "📋"}
         </button>
       </Show>
     </code>
@@ -319,10 +317,10 @@ export const DocsTerminal: Component<{
   prompt?: string;
   className?: string;
 }> = (props) => {
-  const prompt = () => props.prompt || '$';
+  const prompt = () => props.prompt || "$";
 
   return (
-    <div class={`docs-terminal ${props.className || ''}`}>
+    <div class={`docs-terminal ${props.className || ""}`}>
       <div class="docs-terminal-header">
         <div class="docs-terminal-controls">
           <span class="docs-terminal-control"></span>
@@ -331,7 +329,7 @@ export const DocsTerminal: Component<{
         </div>
         <span class="docs-terminal-title">Terminal</span>
       </div>
-      
+
       <div class="docs-terminal-content">
         <For each={props.commands}>
           {(cmd) => (

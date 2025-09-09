@@ -1,7 +1,7 @@
 // Entity implementation with generational indexing
 
-import { Entity } from './types';
-import { ArchetypeId, ArchetypeRow } from './archetype';
+import { Entity } from "./types";
+import { ArchetypeId, ArchetypeRow } from "./archetype";
 
 /**
  * Location of an entity within the world.
@@ -21,7 +21,7 @@ export function createEntityLocation(
   archetypeId: ArchetypeId,
   archetypeRow: ArchetypeRow,
   tableId: number,
-  tableRow: number
+  tableRow: number,
 ): EntityLocation {
   return { archetypeId, archetypeRow, tableId, tableRow };
 }
@@ -33,7 +33,7 @@ export const ENTITY_LOCATION_INVALID: EntityLocation = {
   archetypeId: { index: Number.MAX_SAFE_INTEGER },
   archetypeRow: { index: Number.MAX_SAFE_INTEGER },
   tableId: Number.MAX_SAFE_INTEGER,
-  tableRow: Number.MAX_SAFE_INTEGER
+  tableRow: Number.MAX_SAFE_INTEGER,
 };
 
 /**
@@ -62,7 +62,7 @@ export function isPlaceholderEntity(entity: Entity): boolean {
  */
 export function entityToString(entity: Entity): string {
   if (isPlaceholderEntity(entity)) {
-    return 'PLACEHOLDER';
+    return "PLACEHOLDER";
   }
   return `${entity.index}v${entity.generation}`;
 }
@@ -80,8 +80,8 @@ export function entityToBits(entity: Entity): number {
  * Reconstructs entity from bits.
  */
 export function entityFromBits(bits: number): Entity {
-  const index = bits & 0xFFFF;
-  const generation = (bits >>> 16) & 0xFFFF;
+  const index = bits & 0xffff;
+  const generation = (bits >>> 16) & 0xffff;
   return { index, generation };
 }
 
@@ -142,9 +142,9 @@ export class EntityManager {
     const entity = createEntity(index, generation);
     const meta: EntityMeta = {
       generation,
-      location: ENTITY_LOCATION_INVALID
+      location: ENTITY_LOCATION_INVALID,
     };
-    
+
     this.entities.set(index, entity);
     this.entityMeta.set(index, meta);
     return entity;
@@ -197,7 +197,9 @@ export class EntityManager {
   setEntityMeta(entity: Entity, meta: EntityMeta): void {
     const existing = this.entities.get(entity.index);
     if (!existing || existing.generation !== entity.generation) {
-      throw new Error(`Entity ${entity.index}v${entity.generation} does not exist`);
+      throw new Error(
+        `Entity ${entity.index}v${entity.generation} does not exist`,
+      );
     }
     this.entityMeta.set(entity.index, meta);
   }

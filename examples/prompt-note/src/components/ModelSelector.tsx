@@ -32,7 +32,7 @@ export const ModelSelector: Component<ModelSelectorProps> = (props) => {
     setIsLoading(true);
     try {
       const generators = props.annotationManager.getAvailableGenerators();
-      const models: ModelInfo[] = generators.map(gen => ({
+      const models: ModelInfo[] = generators.map((gen) => ({
         name: gen.name,
         description: gen.description,
         captionType: gen.captionType,
@@ -79,8 +79,11 @@ export const ModelSelector: Component<ModelSelectorProps> = (props) => {
     <div class="model-selector">
       <Card class="model-selection" padding="lg">
         <h3>AI Model Selection</h3>
-        <p>Choose the AI model for caption generation. Different models have different strengths and capabilities.</p>
-        
+        <p>
+          Choose the AI model for caption generation. Different models have
+          different strengths and capabilities.
+        </p>
+
         <div class="model-controls">
           <div class="model-dropdown">
             <label for="model-select">Select Model:</label>
@@ -92,20 +95,20 @@ export const ModelSelector: Component<ModelSelectorProps> = (props) => {
               <For each={availableModels()}>
                 {(model) => (
                   <option value={model.name} disabled={!model.isAvailable}>
-                    {model.name} {!model.isAvailable ? '(Not Available)' : ''}
+                    {model.name} {!model.isAvailable ? "(Not Available)" : ""}
                   </option>
                 )}
               </For>
             </select>
           </div>
-          
+
           <div class="model-actions">
             <Button
               variant="primary"
               onClick={() => preloadModel(props.selectedModel)}
               disabled={isLoading()}
             >
-              {isLoading() ? 'Loading...' : 'Preload Model'}
+              {isLoading() ? "Loading..." : "Preload Model"}
             </Button>
             <Button
               variant="secondary"
@@ -122,15 +125,21 @@ export const ModelSelector: Component<ModelSelectorProps> = (props) => {
         <div class="models-list">
           <For each={availableModels()}>
             {(model) => (
-              <div class={`model-item ${model.name === props.selectedModel ? 'selected' : ''}`}>
+              <div
+                class={`model-item ${model.name === props.selectedModel ? "selected" : ""}`}
+              >
                 <div class="model-header">
                   <h4>{model.name}</h4>
                   <div class="model-status">
-                    <span class={`status-badge ${model.isAvailable ? 'available' : 'unavailable'}`}>
-                      {model.isAvailable ? 'Available' : 'Unavailable'}
+                    <span
+                      class={`status-badge ${model.isAvailable ? "available" : "unavailable"}`}
+                    >
+                      {model.isAvailable ? "Available" : "Unavailable"}
                     </span>
-                    <span class={`status-badge ${model.isLoaded ? 'loaded' : 'unloaded'}`}>
-                      {model.isLoaded ? 'Loaded' : 'Unloaded'}
+                    <span
+                      class={`status-badge ${model.isLoaded ? "loaded" : "unloaded"}`}
+                    >
+                      {model.isLoaded ? "Loaded" : "Unloaded"}
                     </span>
                   </div>
                 </div>
@@ -147,12 +156,26 @@ export const ModelSelector: Component<ModelSelectorProps> = (props) => {
       <Card class="model-tips" padding="lg">
         <h3>Model Tips</h3>
         <ul>
-          <li><strong>Florence2:</strong> Best for general image descriptions and detailed captions</li>
-          <li><strong>JTP2:</strong> Good for artistic and creative content</li>
-          <li><strong>JoyCaption:</strong> Optimized for joyful and positive content</li>
-          <li><strong>WDv3:</strong> Excellent for technical and detailed descriptions</li>
+          <li>
+            <strong>Florence2:</strong> Best for general image descriptions and
+            detailed captions
+          </li>
+          <li>
+            <strong>JTP2:</strong> Good for artistic and creative content
+          </li>
+          <li>
+            <strong>JoyCaption:</strong> Optimized for joyful and positive
+            content
+          </li>
+          <li>
+            <strong>WDv3:</strong> Excellent for technical and detailed
+            descriptions
+          </li>
         </ul>
-        <p>Preloading models improves generation speed but uses more memory. Unload models you're not using to free up resources.</p>
+        <p>
+          Preloading models improves generation speed but uses more memory.
+          Unload models you're not using to free up resources.
+        </p>
       </Card>
     </div>
   );

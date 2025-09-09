@@ -14,17 +14,23 @@ export const NotificationToast: Component = () => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error("NotificationToast: Notifications context not available", error);
+      console.error(
+        "NotificationToast: Notifications context not available",
+        error,
+      );
       return {
         notifications: [],
         removeNotification: (id: string) => {
-          console.warn("Notifications context not available, cannot remove notification:", id);
-        }
+          console.warn(
+            "Notifications context not available, cannot remove notification:",
+            id,
+          );
+        },
       };
     }
   });
   const { removeNotification } = notificationModule();
-  
+
   // Access notifications as a reactive signal
   const notifications = () => notificationModule().notifications;
 

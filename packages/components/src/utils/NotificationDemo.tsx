@@ -12,15 +12,18 @@ export const NotificationDemo: Component = () => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error("NotificationDemo: Notifications context not available", error);
+      console.error(
+        "NotificationDemo: Notifications context not available",
+        error,
+      );
       return {
         notify: (message: string, type?: string) => {
           console.warn("Notifications context not available:", message, type);
-        }
+        },
       };
     }
   });
-  
+
   const notify = createMemo(() => notifications().notify);
 
   const showSuccess = () => {

@@ -4,9 +4,7 @@
  */
 
 import { Component, createSignal, Show } from "solid-js";
-import { 
-  ErrorBoundary
-} from "reynard-error-boundaries";
+import { ErrorBoundary } from "reynard-error-boundaries";
 // Simple icon components for demo
 const ArrowClockwise = (props: any) => <span {...props}>🔄</span>;
 const Refresh = (props: any) => <span {...props}>🔄</span>;
@@ -28,28 +26,32 @@ const RetryStrategyDemo: Component = () => {
     setLoading(true);
     setResult("");
     setAttempts(0);
-    
+
     let attempt = 0;
     const maxAttempts = 3;
-    
+
     while (attempt < maxAttempts) {
       attempt++;
       setAttempts(attempt);
-      
+
       try {
         const response = await fetch("/api/recovery/retry", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ strategy: "retry", context: { attempt } })
+          body: JSON.stringify({ strategy: "retry", context: { attempt } }),
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           if (data.success) {
-            setResult(`✅ Retry successful after ${attempt} attempts: ${data.message}`);
+            setResult(
+              `✅ Retry successful after ${attempt} attempts: ${data.message}`,
+            );
             break;
           } else {
-            setResult(`❌ Retry failed after ${attempt} attempts: ${data.message}`);
+            setResult(
+              `❌ Retry failed after ${attempt} attempts: ${data.message}`,
+            );
           }
         } else {
           setResult(`❌ Retry request failed: ${response.statusText}`);
@@ -57,12 +59,12 @@ const RetryStrategyDemo: Component = () => {
       } catch (error) {
         setResult(`❌ Retry error: ${(error as Error).message}`);
       }
-      
+
       if (attempt < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second between attempts
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second between attempts
       }
     }
-    
+
     setLoading(false);
   };
 
@@ -73,31 +75,37 @@ const RetryStrategyDemo: Component = () => {
         Retry Strategy Demo
       </h3>
       <p>Demonstrates automatic retry logic with exponential backoff.</p>
-      
+
       <div style="margin: 1rem 0;">
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
           <span>Attempts: {attempts()}</span>
           <div style="display: flex; gap: 0.25rem;">
             {Array.from({ length: 3 }, (_, i) => (
-              <div 
-                style={`width: 20px; height: 4px; background: ${i < attempts() ? '#10b981' : '#e5e7eb'}; border-radius: 2px;`}
+              <div
+                style={`width: 20px; height: 4px; background: ${i < attempts() ? "#10b981" : "#e5e7eb"}; border-radius: 2px;`}
               />
             ))}
           </div>
         </div>
       </div>
-      
-      <button 
-        class="btn btn-primary" 
+
+      <button
+        class="btn btn-primary"
         onClick={executeRetryStrategy}
         disabled={loading()}
       >
         {loading() ? "Retrying..." : "Execute Retry Strategy"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -112,14 +120,17 @@ const ResetStrategyDemo: Component = () => {
   const executeResetStrategy = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/recovery/reset", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strategy: "reset", context: { component: "demo" } })
+        body: JSON.stringify({
+          strategy: "reset",
+          context: { component: "demo" },
+        }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setResult(`✅ ${data.message}`);
@@ -140,18 +151,24 @@ const ResetStrategyDemo: Component = () => {
         Reset Strategy Demo
       </h3>
       <p>Demonstrates component reset to initial state.</p>
-      
-      <button 
-        class="btn btn-secondary" 
+
+      <button
+        class="btn btn-secondary"
         onClick={executeResetStrategy}
         disabled={loading()}
       >
         {loading() ? "Resetting..." : "Execute Reset Strategy"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -167,14 +184,14 @@ const FallbackStrategyDemo: Component = () => {
   const executeFallbackStrategy = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/recovery/fallback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strategy: "fallback", context: { ui: "demo" } })
+        body: JSON.stringify({ strategy: "fallback", context: { ui: "demo" } }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setResult(`✅ ${data.message}`);
@@ -201,30 +218,39 @@ const FallbackStrategyDemo: Component = () => {
         Fallback UI Strategy Demo
       </h3>
       <p>Demonstrates switching to fallback UI when primary UI fails.</p>
-      
+
       <Show when={!fallbackActive()}>
-        <button 
-          class="btn btn-warning" 
+        <button
+          class="btn btn-warning"
           onClick={executeFallbackStrategy}
           disabled={loading()}
         >
           {loading() ? "Activating..." : "Execute Fallback Strategy"}
         </button>
       </Show>
-      
+
       <Show when={fallbackActive()}>
         <div class="status-message status-warning">
           <AlertTriangle size={16} />
-          <span>Fallback UI is now active. This is a simplified version of the interface.</span>
+          <span>
+            Fallback UI is now active. This is a simplified version of the
+            interface.
+          </span>
         </div>
         <button class="btn btn-primary" onClick={exitFallback}>
           Exit Fallback Mode
         </button>
       </Show>
-      
+
       <Show when={result() && !fallbackActive()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -239,17 +265,22 @@ const RedirectStrategyDemo: Component = () => {
   const executeRedirectStrategy = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/recovery/redirect", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strategy: "redirect", context: { target: "/safe-page" } })
+        body: JSON.stringify({
+          strategy: "redirect",
+          context: { target: "/safe-page" },
+        }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        setResult(`✅ ${data.message} - Would redirect to: ${data.data.redirect_url}`);
+        setResult(
+          `✅ ${data.message} - Would redirect to: ${data.data.redirect_url}`,
+        );
       } else {
         setResult(`❌ Redirect failed: ${response.statusText}`);
       }
@@ -267,18 +298,24 @@ const RedirectStrategyDemo: Component = () => {
         Redirect Strategy Demo
       </h3>
       <p>Demonstrates redirecting users to a safe page when errors occur.</p>
-      
-      <button 
-        class="btn btn-info" 
+
+      <button
+        class="btn btn-info"
         onClick={executeRedirectStrategy}
         disabled={loading()}
       >
         {loading() ? "Redirecting..." : "Execute Redirect Strategy"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -293,17 +330,19 @@ const ReloadStrategyDemo: Component = () => {
   const executeReloadStrategy = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/recovery/reload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strategy: "reload", context: { app: "demo" } })
+        body: JSON.stringify({ strategy: "reload", context: { app: "demo" } }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        setResult(`✅ ${data.message} - Application would reload at: ${new Date(data.data.reload_time).toLocaleTimeString()}`);
+        setResult(
+          `✅ ${data.message} - Application would reload at: ${new Date(data.data.reload_time).toLocaleTimeString()}`,
+        );
       } else {
         setResult(`❌ Reload failed: ${response.statusText}`);
       }
@@ -320,19 +359,28 @@ const ReloadStrategyDemo: Component = () => {
         <Refresh size={20} />
         Reload Strategy Demo
       </h3>
-      <p>Demonstrates reloading the entire application when critical errors occur.</p>
-      
-      <button 
-        class="btn btn-danger" 
+      <p>
+        Demonstrates reloading the entire application when critical errors
+        occur.
+      </p>
+
+      <button
+        class="btn btn-danger"
         onClick={executeReloadStrategy}
         disabled={loading()}
       >
         {loading() ? "Reloading..." : "Execute Reload Strategy"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -347,7 +395,10 @@ const RecoveryDemo: Component = () => {
         <ArrowClockwise size={32} />
         <div>
           <h2>Recovery Strategy Demonstrations</h2>
-          <p>Test various recovery strategies and see how they handle different error scenarios</p>
+          <p>
+            Test various recovery strategies and see how they handle different
+            error scenarios
+          </p>
         </div>
       </div>
 
@@ -376,9 +427,11 @@ const RecoveryDemo: Component = () => {
               <span>Reload Strategy</span>
             </div>
           </div>
-          
+
           <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-            <h4 style="margin: 0 0 0.5rem 0; color: #667eea;">Strategy Priority</h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #667eea;">
+              Strategy Priority
+            </h4>
             <div style="font-size: 0.9rem; color: #64748b;">
               <div>1. Retry (highest priority)</div>
               <div>2. Fallback UI</div>

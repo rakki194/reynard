@@ -121,5 +121,3 @@ Uses Reynard's CSS conventions:
 ## License
 
 Part of the Reynard framework ecosystem.
-
-

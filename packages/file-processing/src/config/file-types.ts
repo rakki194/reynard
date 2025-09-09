@@ -15,12 +15,12 @@ import { TEXT_EXTENSIONS, getTextMimeType } from "./text-types";
 import { CODE_EXTENSIONS, getCodeMimeType } from "./code-types";
 import { DOCUMENT_EXTENSIONS, getDocumentMimeType } from "./document-types";
 import { ARCHIVE_EXTENSIONS, getArchiveMimeType } from "./archive-types";
-import { 
-  LORA_EXTENSIONS, 
-  OCR_EXTENSIONS, 
-  CAPTION_EXTENSIONS, 
+import {
+  LORA_EXTENSIONS,
+  OCR_EXTENSIONS,
+  CAPTION_EXTENSIONS,
   METADATA_EXTENSIONS,
-  getSpecialMimeType
+  getSpecialMimeType,
 } from "./special-types";
 
 // Re-export all extensions for backward compatibility

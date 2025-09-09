@@ -1,6 +1,6 @@
 /**
  * Security utilities for the Reynard Auth system.
- * 
+ *
  * This module contains security-focused utility functions including
  * input sanitization, CSRF protection, and secure string generation.
  */
@@ -9,36 +9,40 @@
  * Comprehensive input sanitization for security
  */
 export function sanitizeInput(input: string): string {
-  if (!input || typeof input !== 'string') {
-    return '';
+  if (!input || typeof input !== "string") {
+    return "";
   }
-  
-  return input
-    .trim()
-    // Remove HTML tags and entities
-    .replace(/<[^>]*>/g, '')
-    .replace(/&[^;]+;/g, '')
-    // Remove dangerous protocols
-    .replace(/javascript:/gi, '')
-    .replace(/data:/gi, '')
-    .replace(/vbscript:/gi, '')
-    .replace(/file:/gi, '')
-    .replace(/ftp:/gi, '')
-    // Remove event handlers
-    .replace(/on\w+\s*=/gi, '')
-    // Remove script tags and content
-    .replace(/<script[^>]*>.*?<\/script>/gi, '')
-    // Remove style tags and content
-    .replace(/<style[^>]*>.*?<\/style>/gi, '')
-    // Remove dangerous characters
-    .replace(/[<>'"&]/g, '')
-    // Remove control characters (except newlines and tabs)
-    .split('').filter(char => {
-      const code = char.charCodeAt(0);
-      return code >= 32 || code === 9 || code === 10 || code === 13;
-    }).join('')
-    // Limit length to prevent buffer overflow
-    .substring(0, 10000);
+
+  return (
+    input
+      .trim()
+      // Remove HTML tags and entities
+      .replace(/<[^>]*>/g, "")
+      .replace(/&[^;]+;/g, "")
+      // Remove dangerous protocols
+      .replace(/javascript:/gi, "")
+      .replace(/data:/gi, "")
+      .replace(/vbscript:/gi, "")
+      .replace(/file:/gi, "")
+      .replace(/ftp:/gi, "")
+      // Remove event handlers
+      .replace(/on\w+\s*=/gi, "")
+      // Remove script tags and content
+      .replace(/<script[^>]*>.*?<\/script>/gi, "")
+      // Remove style tags and content
+      .replace(/<style[^>]*>.*?<\/style>/gi, "")
+      // Remove dangerous characters
+      .replace(/[<>'"&]/g, "")
+      // Remove control characters (except newlines and tabs)
+      .split("")
+      .filter((char) => {
+        const code = char.charCodeAt(0);
+        return code >= 32 || code === 9 || code === 10 || code === 13;
+      })
+      .join("")
+      // Limit length to prevent buffer overflow
+      .substring(0, 10000)
+  );
 }
 
 /**
@@ -46,14 +50,17 @@ export function sanitizeInput(input: string): string {
  */
 export function generateSecureString(length: number = 32): string {
   // Use crypto.getRandomValues if available (more secure)
-  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     const array = new Uint8Array(length);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
+      "",
+    );
   }
-  
+
   // Fallback to Math.random (less secure but functional)
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -71,21 +78,24 @@ export function generateCSRFToken(): string {
 /**
  * Validate CSRF token
  */
-export function validateCSRFToken(token: string, expectedToken: string): boolean {
+export function validateCSRFToken(
+  token: string,
+  expectedToken: string,
+): boolean {
   if (!token || !expectedToken) {
     return false;
   }
-  
+
   // Use constant-time comparison to prevent timing attacks
   if (token.length !== expectedToken.length) {
     return false;
   }
-  
+
   let result = 0;
   for (let i = 0; i < token.length; i++) {
     result |= token.charCodeAt(i) ^ expectedToken.charCodeAt(i);
   }
-  
+
   return result === 0;
 }
 

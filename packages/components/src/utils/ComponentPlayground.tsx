@@ -20,7 +20,7 @@ export const ComponentPlayground: Component = () => {
     { id: "notifications", name: "Notifications", icon: "service-bell" },
     { id: "icons", name: "Icons", icon: "grid" },
     { id: "themes", name: "Themes", icon: "palette" },
-    { id: "storage", name: "Storage", icon: "save" }
+    { id: "storage", name: "Storage", icon: "save" },
   ];
 
   return (
@@ -28,10 +28,10 @@ export const ComponentPlayground: Component = () => {
       <PlaygroundHeader />
 
       <div class="playground-container">
-        <PlaygroundTabs 
-          tabs={tabs} 
-          activeTab={activeTab()} 
-          onTabChange={setActiveTab} 
+        <PlaygroundTabs
+          tabs={tabs}
+          activeTab={activeTab()}
+          onTabChange={setActiveTab}
         />
 
         <div class="playground-content">
@@ -41,10 +41,10 @@ export const ComponentPlayground: Component = () => {
           {activeTab() === "storage" && <StorageDemo />}
         </div>
 
-        <PlaygroundCodeSection 
-          activeTab={activeTab()} 
-          showCode={showCode()} 
-          onToggleCode={() => setShowCode(!showCode())} 
+        <PlaygroundCodeSection
+          activeTab={activeTab()}
+          showCode={showCode()}
+          onToggleCode={() => setShowCode(!showCode())}
         />
       </div>
     </section>

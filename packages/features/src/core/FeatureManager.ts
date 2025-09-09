@@ -1,12 +1,12 @@
-import { createSignal, onCleanup } from 'solid-js';
-import type { 
-  FeatureDefinition, 
-  FeatureStatus, 
-  FeatureConfig, 
+import { createSignal, onCleanup } from "solid-js";
+import type {
+  FeatureDefinition,
+  FeatureStatus,
+  FeatureConfig,
   FeatureManager as IFeatureManager,
-  FeatureRegistry
-} from './types';
-import { FeatureRegistry as FeatureRegistryImpl } from './FeatureRegistry';
+  FeatureRegistry,
+} from "./types";
+import { FeatureRegistry as FeatureRegistryImpl } from "./FeatureRegistry";
 
 /**
  * Feature manager implementation
@@ -14,8 +14,12 @@ import { FeatureRegistry as FeatureRegistryImpl } from './FeatureRegistry';
 export class FeatureManager implements IFeatureManager {
   public registry: FeatureRegistry;
   private config: FeatureConfig;
-  private featureStatusesSignal = createSignal<Record<string, FeatureStatus>>({});
-  private featureConfigsSignal = createSignal<Record<string, Record<string, any>>>({});
+  private featureStatusesSignal = createSignal<Record<string, FeatureStatus>>(
+    {},
+  );
+  private featureConfigsSignal = createSignal<
+    Record<string, Record<string, any>>
+  >({});
   private refreshTimer: number | undefined;
 
   constructor(config: FeatureConfig) {
@@ -24,11 +28,11 @@ export class FeatureManager implements IFeatureManager {
 
     // Register features from config
     if (config.features) {
-      config.features.forEach(feature => this.registry.register(feature));
+      config.features.forEach((feature) => this.registry.register(feature));
     }
 
     // Initialize feature configurations
-    config.features?.forEach(feature => {
+    config.features?.forEach((feature) => {
       if (feature.defaultConfig) {
         this.configureFeature(feature.id, feature.defaultConfig);
       }
@@ -65,7 +69,7 @@ export class FeatureManager implements IFeatureManager {
 
     // Check each dependency
     for (const dependency of feature.dependencies) {
-      const unavailableServices = dependency.services.filter(serviceName => {
+      const unavailableServices = dependency.services.filter((serviceName) => {
         if (this.config.serviceChecker) {
           return !this.config.serviceChecker(serviceName);
         }
@@ -79,14 +83,16 @@ export class FeatureManager implements IFeatureManager {
           missingServices.push(...unavailableServices);
           available = false;
           healthScore = 0;
-          message = dependency.message || `Required services unavailable: ${unavailableServices.join(', ')}`;
+          message =
+            dependency.message ||
+            `Required services unavailable: ${unavailableServices.join(", ")}`;
         } else {
           // Optional dependency - feature is degraded
           degradedServices.push(...unavailableServices);
           degraded = true;
           healthScore = Math.max(0, healthScore - 20);
           if (!message) {
-            message = `Some services unavailable: ${unavailableServices.join(', ')}`;
+            message = `Some services unavailable: ${unavailableServices.join(", ")}`;
           }
         }
       }
@@ -102,7 +108,7 @@ export class FeatureManager implements IFeatureManager {
       degradedServices,
       config: this.getFeatureConfig(feature.id),
       lastUpdated: Date.now(),
-      healthScore
+      healthScore,
     };
   }
 
@@ -161,14 +167,18 @@ export class FeatureManager implements IFeatureManager {
    * Get all available features
    */
   public getAvailableFeatures(): FeatureDefinition[] {
-    return this.registry.getAll().filter(feature => this.isFeatureAvailable(feature.id));
+    return this.registry
+      .getAll()
+      .filter((feature) => this.isFeatureAvailable(feature.id));
   }
 
   /**
    * Get all degraded features
    */
   public getDegradedFeatures(): FeatureDefinition[] {
-    return this.registry.getAll().filter(feature => this.isFeatureDegraded(feature.id));
+    return this.registry
+      .getAll()
+      .filter((feature) => this.isFeatureDegraded(feature.id));
   }
 
   /**
@@ -189,18 +199,26 @@ export class FeatureManager implements IFeatureManager {
    * Get unavailable critical features
    */
   public getUnavailableCriticalFeatures(): FeatureDefinition[] {
-    return this.registry.getAll().filter(feature => 
-      feature.priority === 'critical' && !this.isFeatureAvailable(feature.id)
-    );
+    return this.registry
+      .getAll()
+      .filter(
+        (feature) =>
+          feature.priority === "critical" &&
+          !this.isFeatureAvailable(feature.id),
+      );
   }
 
   /**
    * Get features that depend on a specific service
    */
-  public getFeaturesDependentOnService(serviceName: string): FeatureDefinition[] {
-    return this.registry.getAll().filter(feature => 
-      feature.dependencies.some(dep => dep.services.includes(serviceName))
-    );
+  public getFeaturesDependentOnService(
+    serviceName: string,
+  ): FeatureDefinition[] {
+    return this.registry
+      .getAll()
+      .filter((feature) =>
+        feature.dependencies.some((dep) => dep.services.includes(serviceName)),
+      );
   }
 
   /**
@@ -209,11 +227,11 @@ export class FeatureManager implements IFeatureManager {
   public getCriticalServices(): string[] {
     const criticalServices = new Set<string>();
 
-    this.registry.getAll().forEach(feature => {
-      if (feature.priority === 'critical') {
-        feature.dependencies.forEach(dep => {
+    this.registry.getAll().forEach((feature) => {
+      if (feature.priority === "critical") {
+        feature.dependencies.forEach((dep) => {
           if (dep.required !== false) {
-            dep.services.forEach(service => criticalServices.add(service));
+            dep.services.forEach((service) => criticalServices.add(service));
           }
         });
       }
@@ -226,8 +244,10 @@ export class FeatureManager implements IFeatureManager {
    * Check if critical features are available
    */
   public areCriticalFeaturesAvailable(): boolean {
-    const criticalFeatures = this.getFeaturesByPriority('critical');
-    return criticalFeatures.every(feature => this.isFeatureAvailable(feature.id));
+    const criticalFeatures = this.getFeaturesByPriority("critical");
+    return criticalFeatures.every((feature) =>
+      this.isFeatureAvailable(feature.id),
+    );
   }
 
   /**
@@ -260,14 +280,17 @@ export class FeatureManager implements IFeatureManager {
   /**
    * Configure a feature
    */
-  public configureFeature(featureId: string, config: Record<string, any>): void {
+  public configureFeature(
+    featureId: string,
+    config: Record<string, any>,
+  ): void {
     const currentConfigs = this.featureConfigsSignal[0]();
     this.featureConfigsSignal[1]({
       ...currentConfigs,
       [featureId]: {
         ...currentConfigs[featureId],
-        ...config
-      }
+        ...config,
+      },
     });
 
     // Update feature status to reflect new configuration
@@ -312,9 +335,10 @@ export class FeatureManager implements IFeatureManager {
   /**
    * Update service checker
    */
-  public updateServiceChecker(serviceChecker: (serviceName: string) => boolean): void {
+  public updateServiceChecker(
+    serviceChecker: (serviceName: string) => boolean,
+  ): void {
     this.config.serviceChecker = serviceChecker;
     this.updateFeatureStatuses();
   }
-
 }

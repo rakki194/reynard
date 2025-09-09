@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,12 +63,12 @@ export declare const fluentIconsPackage: IconPackage;
 `;
 
 // Write the main declaration file
-const distDir = path.join(__dirname, '../dist');
+const distDir = path.join(__dirname, "../dist");
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
 }
 
-fs.writeFileSync(path.join(distDir, 'index.d.ts'), indexDeclaration);
+fs.writeFileSync(path.join(distDir, "index.d.ts"), indexDeclaration);
 
 // Create registry.d.ts
 const registryDeclaration = `export interface IconPackage {
@@ -115,7 +115,7 @@ export declare function getIconPackages(): IconPackage[];
 export declare function searchIcons(query: string): IconSearchResult[];
 `;
 
-fs.writeFileSync(path.join(distDir, 'registry.d.ts'), registryDeclaration);
+fs.writeFileSync(path.join(distDir, "registry.d.ts"), registryDeclaration);
 
 // Create fluentIcons.d.ts
 const fluentIconsDeclaration = `export interface IconPackage {
@@ -139,10 +139,13 @@ export interface IconMetadata {
 export declare const fluentIconsPackage: IconPackage;
 `;
 
-fs.writeFileSync(path.join(distDir, 'fluentIcons.d.ts'), fluentIconsDeclaration);
+fs.writeFileSync(
+  path.join(distDir, "fluentIcons.d.ts"),
+  fluentIconsDeclaration,
+);
 
-console.log('✅ Generated clean TypeScript declaration files successfully!');
-console.log('📁 Files created:');
-console.log('   - dist/index.d.ts');
-console.log('   - dist/registry.d.ts');
-console.log('   - dist/fluentIcons.d.ts');
+console.log("✅ Generated clean TypeScript declaration files successfully!");
+console.log("📁 Files created:");
+console.log("   - dist/index.d.ts");
+console.log("   - dist/registry.d.ts");
+console.log("   - dist/fluentIcons.d.ts");

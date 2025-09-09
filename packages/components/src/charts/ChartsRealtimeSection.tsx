@@ -14,7 +14,9 @@ interface ChartsRealtimeSectionProps {
   performanceMonitoring: boolean;
 }
 
-export const ChartsRealtimeSection: Component<ChartsRealtimeSectionProps> = (props) => {
+export const ChartsRealtimeSection: Component<ChartsRealtimeSectionProps> = (
+  props,
+) => {
   return (
     <div class="realtime-section">
       <h2>Real-time Data Visualization</h2>

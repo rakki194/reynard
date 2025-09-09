@@ -20,22 +20,63 @@ from typing import Any, Dict, List, Optional
 
 import torch
 from PIL import Image
+from transformers import AutoProcessor, AutoModelForCausalLM
 
 from ...base import CaptionGenerator, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
-# Add the Yipyap JoyCaption plugin to the path
-yipyap_plugin_path = Path(__file__).parent.parent.parent.parent.parent / "third_party" / "yipyap" / "app" / "caption_generation" / "plugins" / "joycaption"
-if yipyap_plugin_path.exists():
-    sys.path.insert(0, str(yipyap_plugin_path))
+# Self-contained JoyCaption implementation - no external dependencies
+JOYCAPTION_AVAILABLE = True
 
-try:
-    from generator import JoyCaptionGenerator as YipyapJoyCaptionGenerator
-    JOYCAPTION_AVAILABLE = True
-except ImportError:
-    logger.warning("Yipyap JoyCaption generator not available, using mock implementation")
-    JOYCAPTION_AVAILABLE = False
+# Caption type mappings with prompts
+CAPTION_TYPE_MAP = {
+    "descriptive": [
+        "Write a descriptive caption for this image in a formal tone.",
+        "Write a descriptive caption for this image in a formal tone within {word_count} words.",
+        "Write a {length} descriptive caption for this image in a formal tone.",
+    ],
+    "descriptive (informal)": [
+        "Write a descriptive caption for this image in a casual tone.",
+        "Write a descriptive caption for this image in a casual tone within {word_count} words.",
+        "Write a {length} descriptive caption for this image in a casual tone.",
+    ],
+    "training prompt": [
+        "Write a stable diffusion prompt for this image.",
+        "Write a stable diffusion prompt for this image within {word_count} words.",
+        "Write a {length} stable diffusion prompt for this image.",
+    ],
+    "midjourney": [
+        "Write a MidJourney prompt for this image.",
+        "Write a MidJourney prompt for this image within {word_count} words.",
+        "Write a {length} MidJourney prompt for this image.",
+    ],
+    "booru tag list": [
+        "Write a list of Booru tags for this image.",
+        "Write a list of Booru tags for this image within {word_count} words.",
+        "Write a {length} list of Booru tags for this image.",
+    ],
+    "booru-like tag list": [
+        "Write a list of Booru-like tags for this image.",
+        "Write a list of Booru-like tags for this image within {word_count} words.",
+        "Write a {length} list of Booru-like tags for this image.",
+    ],
+    "art critic": [
+        "Analyze this image like an art critic would with information about its composition, style, symbolism, the use of color, light, any artistic movement it might belong to, etc.",
+        "Analyze this image like an art critic would with information about its composition, style, symbolism, the use of color, light, any artistic movement it might belong to, etc. Keep it within {word_count} words.",
+        "Analyze this image like an art critic would with information about its composition, style, symbolism, the use of color, light, any artistic movement it might belong to, etc. Keep it {length}.",
+    ],
+    "product listing": [
+        "Write a caption for this image as though it were a product listing.",
+        "Write a caption for this image as though it were a product listing. Keep it under {word_count} words.",
+        "Write a {length} caption for this image as though it were a product listing.",
+    ],
+    "social media post": [
+        "Write a caption for this image as if it were being used for a social media post.",
+        "Write a caption for this image as if it were being used for a social media post. Limit the caption to {word_count} words.",
+        "Write a {length} caption for this image as if it were being used for a social media post.",
+    ],
+}
 
 
 class JoyCaptionGenerator(CaptionGenerator):
@@ -49,9 +90,10 @@ class JoyCaptionGenerator(CaptionGenerator):
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self._config = config or {}
         self._model = None
+        self._processor = None
         self._device = None
         self._is_loaded = False
-        self._model_path = self._config.get("model_path")
+        self._model_name = self._config.get("model_name", "llava-hf/llava-1.5-7b-hf")
 
     @property
     def name(self) -> str:
@@ -117,9 +159,16 @@ class JoyCaptionGenerator(CaptionGenerator):
                     "default": 1.0,
                     "description": "Repetition penalty"
                 },
-                "model_path": {
+                "model_name": {
                     "type": "string",
-                    "description": "Path to the JoyCaption model file"
+                    "default": "llava-hf/llava-1.5-7b-hf",
+                    "description": "HuggingFace model name for JoyCaption"
+                },
+                "caption_type": {
+                    "type": "string",
+                    "enum": list(CAPTION_TYPE_MAP.keys()),
+                    "default": "descriptive",
+                    "description": "Type of caption to generate"
                 }
             }
         }
@@ -134,13 +183,10 @@ class JoyCaptionGenerator(CaptionGenerator):
         if not JOYCAPTION_AVAILABLE:
             return False
 
-        # Check if required files exist
-        if self._model_path and not Path(self._model_path).exists():
-            return False
-
-        # Check if PyTorch is available
+        # Check if required dependencies are available
         try:
             import torch
+            import transformers
             return True
         except ImportError:
             return False
@@ -166,20 +212,9 @@ class JoyCaptionGenerator(CaptionGenerator):
                 self._device = torch.device("cuda")
                 logger.info("JoyCaption using GPU")
 
-            # Initialize the Yipyap JoyCaption generator
-            yipyap_config = {
-                "max_length": self._config.get("max_length", 256),
-                "temperature": self._config.get("temperature", 0.7),
-                "top_p": self._config.get("top_p", 0.9),
-                "repetition_penalty": self._config.get("repetition_penalty", 1.0),
-                "model_path": self._model_path
-            }
-
-            self._model = YipyapJoyCaptionGenerator(yipyap_config)
-            
-            # Load the model
+            # Load model and processor in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._model.load
+                None, self._load_model_and_processor
             )
 
             self._is_loaded = True
@@ -196,13 +231,9 @@ class JoyCaptionGenerator(CaptionGenerator):
             return
 
         try:
-            if self._model:
-                # Unload the model
-                await asyncio.get_event_loop().run_in_executor(
-                    None, self._model.unload
-                )
-                self._model = None
-
+            # Clear model from memory
+            self._model = None
+            self._processor = None
             self._is_loaded = False
             logger.info("JoyCaption model unloaded successfully")
 
@@ -219,9 +250,9 @@ class JoyCaptionGenerator(CaptionGenerator):
             # Merge kwargs with config
             config = {**self._config, **kwargs}
 
-            # Generate caption using the Yipyap generator
+            # Generate caption using self-contained implementation
             caption = await asyncio.get_event_loop().run_in_executor(
-                None, self._model.generate, str(image_path)
+                None, self._generate_caption, str(image_path), config
             )
 
             return caption
@@ -235,7 +266,81 @@ class JoyCaptionGenerator(CaptionGenerator):
         info = super().get_info()
         info.update({
             "device": str(self._device) if self._device else None,
-            "model_path": self._model_path,
-            "yipyap_available": JOYCAPTION_AVAILABLE
+            "model_name": self._model_name,
+            "self_contained": True
         })
         return info
+
+    def _load_model_and_processor(self) -> None:
+        """Load JoyCaption model and processor from HuggingFace."""
+        # Load processor
+        self._processor = AutoProcessor.from_pretrained(self._model_name)
+        
+        # Load model
+        self._model = AutoModelForCausalLM.from_pretrained(
+            self._model_name,
+            torch_dtype=torch.float16 if self._device.type == "cuda" else torch.float32,
+            device_map="auto" if self._device.type == "cuda" else None
+        )
+        
+        # Move to device if not using device_map
+        if self._device.type == "cpu":
+            self._model.to(self._device)
+
+    def _generate_caption(self, image_path: str, config: Dict[str, Any]) -> str:
+        """Generate caption for an image using JoyCaption."""
+        if not self._model or not self._processor:
+            raise RuntimeError("JoyCaption model components not loaded")
+
+        # Load and process image
+        image = Image.open(image_path)
+        
+        # Get caption type and build prompt
+        caption_type = config.get("caption_type", "descriptive")
+        max_length = config.get("max_length", 256)
+        
+        # Select appropriate prompt based on caption type
+        prompts = CAPTION_TYPE_MAP.get(caption_type, CAPTION_TYPE_MAP["descriptive"])
+        
+        # Choose prompt based on length
+        if max_length <= 50:
+            prompt_template = prompts[1] if len(prompts) > 1 else prompts[0]
+            word_count = max_length // 2  # Rough word count estimation
+            prompt = prompt_template.format(word_count=word_count)
+        elif max_length <= 150:
+            prompt_template = prompts[2] if len(prompts) > 2 else prompts[0]
+            length = "medium-length"
+            prompt = prompt_template.format(length=length)
+        else:
+            prompt = prompts[0]
+        
+        # Process inputs
+        inputs = self._processor(text=prompt, images=image, return_tensors="pt")
+        
+        # Move inputs to device
+        inputs = {k: v.to(self._device) for k, v in inputs.items()}
+        
+        # Generate caption
+        temperature = config.get("temperature", 0.7)
+        top_p = config.get("top_p", 0.9)
+        repetition_penalty = config.get("repetition_penalty", 1.0)
+        
+        with torch.no_grad():
+            generated_ids = self._model.generate(
+                inputs["input_ids"],
+                pixel_values=inputs["pixel_values"],
+                max_length=max_length,
+                temperature=temperature,
+                top_p=top_p,
+                repetition_penalty=repetition_penalty,
+                do_sample=True,
+                pad_token_id=self._processor.tokenizer.eos_token_id
+            )
+        
+        # Decode the generated text
+        generated_text = self._processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        
+        # Extract caption from the generated text
+        caption = generated_text.replace(prompt, "").strip()
+        
+        return caption if caption else "Unable to generate caption for this image."

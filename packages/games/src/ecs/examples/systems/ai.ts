@@ -1,16 +1,16 @@
 // AI and enemy behavior systems
 
-import { World } from '../../types';
-import { 
-  Position, 
-  Velocity, 
+import { World } from "../../types";
+import {
+  Position,
+  Velocity,
   Player,
   Enemy,
   PositionType,
   VelocityType,
   PlayerType,
-  EnemyType
-} from '../components';
+  EnemyType,
+} from "../components";
 
 /**
  * Enemy AI system - simple AI for enemy movement.
@@ -25,7 +25,7 @@ export function enemyAISystem(world: World): void {
     // Simple AI: move towards player
     const playerQuery = world.query(PlayerType, PositionType);
     let playerPosition: Position | null = null;
-    
+
     playerQuery.forEach((playerEntity, player, playerPos) => {
       playerPosition = playerPos as Position;
     });
@@ -34,7 +34,7 @@ export function enemyAISystem(world: World): void {
       const dx = playerPosition.x - pos.x;
       const dy = playerPosition.y - pos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (distance > 0) {
         vel.x = (dx / distance) * speed;
         vel.y = (dy / distance) * speed;

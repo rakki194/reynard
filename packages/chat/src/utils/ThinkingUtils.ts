@@ -1,6 +1,6 @@
 /**
  * Thinking Section Utilities
- * 
+ *
  * Contains static utility functions for working with thinking sections
  */
 
@@ -12,22 +12,22 @@ export class ThinkingUtils {
    */
   public static extractThinkingSections(text: string): string[] {
     const sections: string[] = [];
-    const lines = text.split('\n');
+    const lines = text.split("\n");
     let inThinking = false;
-    let thinkingBuffer = '';
+    let thinkingBuffer = "";
 
     for (const line of lines) {
       if (line.match(MARKDOWN_PATTERNS.thinkingStart)) {
         inThinking = true;
-        thinkingBuffer = '';
+        thinkingBuffer = "";
       } else if (line.match(MARKDOWN_PATTERNS.thinkingEnd)) {
         if (inThinking && thinkingBuffer.trim()) {
           sections.push(thinkingBuffer.trim());
         }
         inThinking = false;
-        thinkingBuffer = '';
+        thinkingBuffer = "";
       } else if (inThinking) {
-        thinkingBuffer += line + '\n';
+        thinkingBuffer += line + "\n";
       }
     }
 
@@ -41,16 +41,10 @@ export class ThinkingUtils {
     let processed = text;
 
     // Remove block thinking sections
-    processed = processed.replace(
-      /<think>[\s\S]*?<\/think>/g,
-      ''
-    );
+    processed = processed.replace(/<think>[\s\S]*?<\/think>/g, "");
 
     // Remove inline thinking sections
-    processed = processed.replace(
-      MARKDOWN_PATTERNS.thinkingInline,
-      ''
-    );
+    processed = processed.replace(MARKDOWN_PATTERNS.thinkingInline, "");
 
     return processed;
   }

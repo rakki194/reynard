@@ -114,11 +114,11 @@
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
   }
-  
+
   .login-header h1 {
     font-size: 2rem;
   }
-  
+
   .feature-grid {
     grid-template-columns: 1fr;
   }

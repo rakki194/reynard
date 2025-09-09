@@ -39,7 +39,7 @@ Each content type has specialized prompts optimized for its characteristics:
 **Good Example:**
 
 ```plaintext
-You are an expert summarizer specializing in technical documentation. 
+You are an expert summarizer specializing in technical documentation.
 Your task is to create a comprehensive summary that:
 - Preserves technical accuracy
 - Maintains logical structure
@@ -139,7 +139,7 @@ Please summarize the following article:
 
 {text}
 
-Provide a {summary_level} summary that captures the main points, key arguments, and important insights. 
+Provide a {summary_level} summary that captures the main points, key arguments, and important insights.
 Include relevant quotes and maintain the article's structure and tone.
 """
 ```
@@ -223,7 +223,7 @@ Please summarize the following document:
 
 {text}
 
-Provide a {summary_level} summary that preserves the document's structure, key findings, and formal tone. 
+Provide a {summary_level} summary that preserves the document's structure, key findings, and formal tone.
 Include relevant methodology, data, and conclusions.
 """
 ```

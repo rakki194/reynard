@@ -13,12 +13,14 @@ export class LinkProcessor extends InlineProcessor {
     // Process markdown links
     text = text.replace(MARKDOWN_PATTERNS.link, (match, text, url) => {
       if (validateUrl(url)) {
-        this.nodes.push(this.createTrackingNode({
-          type: "link",
-          content: "",
-          url: url.trim(),
-          text: text.trim(),
-        }));
+        this.nodes.push(
+          this.createTrackingNode({
+            type: "link",
+            content: "",
+            url: url.trim(),
+            text: text.trim(),
+          }),
+        );
         return `<a href="${url}">${text}</a>`;
       }
       return match; // Return original if invalid URL
@@ -27,12 +29,14 @@ export class LinkProcessor extends InlineProcessor {
     // Process auto-links
     text = text.replace(MARKDOWN_PATTERNS.autoLink, (match, url) => {
       if (validateUrl(url)) {
-        this.nodes.push(this.createTrackingNode({
-          type: "link",
-          content: "",
-          url: url.trim(),
-          text: url.trim(),
-        }));
+        this.nodes.push(
+          this.createTrackingNode({
+            type: "link",
+            content: "",
+            url: url.trim(),
+            text: url.trim(),
+          }),
+        );
         return `<a href="${url}">${url}</a>`;
       }
       return match; // Return original if invalid URL

@@ -3,7 +3,13 @@
  * High-dimensional embedding visualization with similarity-based color mapping
  */
 
-import { Component, createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import {
+  Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  createEffect,
+} from "solid-js";
 import { EmbeddingVisualizationManager } from "./modules";
 
 interface EmbeddingVisualizationProps {
@@ -13,10 +19,12 @@ interface EmbeddingVisualizationProps {
   embeddingCount?: number;
 }
 
-export const EmbeddingVisualization: Component<EmbeddingVisualizationProps> = (props) => {
+export const EmbeddingVisualization: Component<EmbeddingVisualizationProps> = (
+  props,
+) => {
   const [container, setContainer] = createSignal<HTMLDivElement>();
   const [isInitialized, setIsInitialized] = createSignal(false);
-  
+
   let visualizationManager: EmbeddingVisualizationManager | null = null;
 
   const initializeThreeJS = async () => {
@@ -28,13 +36,13 @@ export const EmbeddingVisualization: Component<EmbeddingVisualizationProps> = (p
         height: props.height || 300,
         theme: props.theme,
         embeddingCount: props.embeddingCount || 800,
-        container: container()!
+        container: container()!,
       });
 
       await visualizationManager.initialize();
       setIsInitialized(true);
     } catch (error) {
-      console.error('Failed to initialize Three.js:', error);
+      console.error("Failed to initialize Three.js:", error);
     }
   };
 
@@ -54,10 +62,5 @@ export const EmbeddingVisualization: Component<EmbeddingVisualizationProps> = (p
     }
   });
 
-  return (
-    <div 
-      ref={setContainer}
-      class="simple-threed-container"
-    />
-  );
+  return <div ref={setContainer} class="simple-threed-container" />;
 };

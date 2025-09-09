@@ -1,9 +1,9 @@
 // Collision detection and physics systems
 
-import { World } from '../../types';
-import { 
-  Position, 
-  Health, 
+import { World } from "../../types";
+import {
+  Position,
+  Health,
   GameState,
   Player,
   Enemy,
@@ -13,8 +13,8 @@ import {
   PlayerType,
   EnemyType,
   BulletType,
-  GameStateType
-} from '../components';
+  GameStateType,
+} from "../components";
 
 /**
  * Collision system - detects collisions between entities.
@@ -32,14 +32,15 @@ export function collisionSystem(world: World): void {
       const dx = pp.x - ep.x;
       const dy = pp.y - ep.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 30) { // Collision threshold
+
+      if (distance < 30) {
+        // Collision threshold
         // Apply damage to player
         const playerHealth = world.get(playerEntity, HealthType) as Health;
         if (playerHealth) {
           playerHealth.current -= 10;
         }
-        
+
         // Remove enemy
         world.despawn(enemyEntity);
       }
@@ -54,12 +55,13 @@ export function collisionSystem(world: World): void {
       const dx = bp.x - ep.x;
       const dy = bp.y - ep.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 20) { // Collision threshold
+
+      if (distance < 20) {
+        // Collision threshold
         // Remove bullet and enemy
         world.despawn(bulletEntity);
         world.despawn(enemyEntity);
-        
+
         // Update score
         const gameState = world.getResource(GameStateType) as GameState;
         if (gameState) {

@@ -7,8 +7,8 @@
  * Generate cryptographically secure random bytes
  */
 export function generateSecureBytes(length: number): Uint8Array {
-  if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
-    throw new Error('Crypto API not available');
+  if (typeof crypto === "undefined" || !crypto.getRandomValues) {
+    throw new Error("Crypto API not available");
   }
 
   const array = new Uint8Array(length);
@@ -19,23 +19,26 @@ export function generateSecureBytes(length: number): Uint8Array {
 /**
  * Generate cryptographically secure random string
  */
-export function generateSecureString(length: number = 32, charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): string {
+export function generateSecureString(
+  length: number = 32,
+  charset: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+): string {
   if (charset.length === 0) {
-    return ''; // Return empty string for empty charset
+    return ""; // Return empty string for empty charset
   }
-  
+
   try {
     const bytes = generateSecureBytes(length);
-    let result = '';
-    
+    let result = "";
+
     for (let i = 0; i < length; i++) {
       result += charset[bytes[i] % charset.length];
     }
-    
+
     return result;
   } catch (error) {
     // Fallback to Math.random when crypto is not available
-    let result = '';
+    let result = "";
     for (let i = 0; i < length; i++) {
       result += charset[Math.floor(Math.random() * charset.length)];
     }
@@ -48,7 +51,9 @@ export function generateSecureString(length: number = 32, charset: string = 'ABC
  */
 export function generateSecureHex(length: number = 32): string {
   const bytes = generateSecureBytes(Math.ceil(length / 2));
-  return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('').substring(0, length);
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .substring(0, length);
 }
 
 /**
@@ -62,16 +67,19 @@ export function generateSecureBase64(length: number = 32): string {
 /**
  * Hash a string using Web Crypto API
  */
-export async function hashString(input: string, algorithm: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' = 'SHA-256'): Promise<string> {
-  if (typeof crypto === 'undefined' || !crypto.subtle) {
-    throw new Error('Web Crypto API not available');
+export async function hashString(
+  input: string,
+  algorithm: "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512" = "SHA-256",
+): Promise<string> {
+  if (typeof crypto === "undefined" || !crypto.subtle) {
+    throw new Error("Web Crypto API not available");
   }
 
   const encoder = new TextEncoder();
   const data = encoder.encode(input);
   const hashBuffer = await crypto.subtle.digest(algorithm, data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 /**
@@ -79,20 +87,22 @@ export async function hashString(input: string, algorithm: 'SHA-1' | 'SHA-256' |
  */
 export function generateSecureUUID(): string {
   const bytes = generateSecureBytes(16);
-  
+
   // Set version (4) and variant bits
   bytes[6] = (bytes[6] & 0x0f) | 0x40;
   bytes[8] = (bytes[8] & 0x3f) | 0x80;
-  
-  const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
-  
+
+  const hex = Array.from(bytes, (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("");
+
   return [
     hex.substring(0, 8),
     hex.substring(8, 12),
     hex.substring(12, 16),
     hex.substring(16, 20),
-    hex.substring(20, 32)
-  ].join('-');
+    hex.substring(20, 32),
+  ].join("-");
 }
 
 /**
@@ -128,7 +138,10 @@ export function generateCSRFToken(): string {
 /**
  * Validate CSRF token with constant-time comparison
  */
-export function validateCSRFToken(token: string, expectedToken: string): boolean {
+export function validateCSRFToken(
+  token: string,
+  expectedToken: string,
+): boolean {
   if (!token && !expectedToken) {
     return true; // Both empty strings are equal
   }
@@ -148,7 +161,7 @@ export function generateSessionID(): string {
 /**
  * Generate a secure API key
  */
-export function generateAPIKey(prefix: string = 'rk'): string {
+export function generateAPIKey(prefix: string = "rk"): string {
   const randomPart = generateSecureHex(64);
   return `${prefix}_${randomPart}`;
 }
@@ -174,15 +187,15 @@ export function secureRandomInt(min: number, max: number): number {
   if (min > max) {
     return min; // Return min value for invalid range
   }
-  
+
   if (min === max) {
     return min;
   }
-  
+
   const range = max - min + 1;
   const bytesNeeded = Math.ceil(Math.log2(range) / 8);
   const maxValidValue = Math.floor(256 ** bytesNeeded / range) * range - 1;
-  
+
   let randomValue: number;
   do {
     const bytes = generateSecureBytes(bytesNeeded);
@@ -191,48 +204,55 @@ export function secureRandomInt(min: number, max: number): number {
       randomValue = (randomValue << 8) + bytes[i];
     }
   } while (randomValue > maxValidValue);
-  
+
   return min + (randomValue % range);
 }
 
 /**
  * Generate a secure random password
  */
-export function generateSecurePassword(length: number = 16, options: {
-  includeUppercase?: boolean;
-  includeLowercase?: boolean;
-  includeNumbers?: boolean;
-  includeSymbols?: boolean;
-  excludeSimilar?: boolean;
-} = {}): string {
+export function generateSecurePassword(
+  length: number = 16,
+  options: {
+    includeUppercase?: boolean;
+    includeLowercase?: boolean;
+    includeNumbers?: boolean;
+    includeSymbols?: boolean;
+    excludeSimilar?: boolean;
+  } = {},
+): string {
   const {
     includeUppercase = true,
     includeLowercase = true,
     includeNumbers = true,
     includeSymbols = true,
-    excludeSimilar = true
+    excludeSimilar = true,
   } = options;
 
-  let charset = '';
-  
+  let charset = "";
+
   if (includeUppercase) {
-    charset += excludeSimilar ? 'ABCDEFGHJKLMNPQRSTUVWXYZ' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    charset += excludeSimilar
+      ? "ABCDEFGHJKLMNPQRSTUVWXYZ"
+      : "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   }
-  
+
   if (includeLowercase) {
-    charset += excludeSimilar ? 'abcdefghijkmnpqrstuvwxyz' : 'abcdefghijklmnopqrstuvwxyz';
+    charset += excludeSimilar
+      ? "abcdefghijkmnpqrstuvwxyz"
+      : "abcdefghijklmnopqrstuvwxyz";
   }
-  
+
   if (includeNumbers) {
-    charset += excludeSimilar ? '23456789' : '0123456789';
+    charset += excludeSimilar ? "23456789" : "0123456789";
   }
-  
+
   if (includeSymbols) {
-    charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+    charset += "!@#$%^&*()_+-=[]{}|;:,.<>?";
   }
 
   if (charset.length === 0) {
-    throw new Error('At least one character type must be included');
+    throw new Error("At least one character type must be included");
   }
 
   return generateSecureString(length, charset);

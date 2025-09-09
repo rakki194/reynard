@@ -17,13 +17,13 @@ graph TB
     %% Service Layer
     subgraph SERVICE["🔧 Service Layer"]
         TTS_SERVICE[["🎯 TTSService<br/>• Lifecycle Management<br/>• Backend Orchestration<br/>• Health Monitoring<br/>• Configuration Management"]]
-        
+
         subgraph CHUNKING["📝 Text Processing"]
             VALIDATE[["✅ Validation<br/>• Text Length Check<br/>• Language Validation<br/>• Voice Compatibility"]]
             CHUNK[["✂️ Chunking Engine<br/>• Sentence Boundary Detection<br/>• Character-based Fallback<br/>• Overlap Management"]]
             RECHUNK[["🔄 Rechunking Logic<br/>• Oversized Chunk Detection<br/>• Automatic Resizing<br/>• Backend Preservation"]]
         end
-        
+
         subgraph QUEUE["📋 Queue Management"]
             RATE_LIMIT[["⏱️ Rate Limiting<br/>• Per-minute Limits<br/>• Backend-specific Limits<br/>• User Quotas"]]
             PRIORITY[["🎯 Priority Queue<br/>• High-priority Requests<br/>• Background Processing<br/>• Resource Allocation"]]
@@ -33,45 +33,45 @@ graph TB
     %% Backend Layer
     subgraph BACKENDS["🎵 TTS Backends"]
         KOKORO[["🦊 Kokoro Backend<br/>• High-quality Synthesis<br/>• Multiple Voices<br/>• Performance Modes<br/>• GPU Acceleration"]]
-        
+
         COQUI[["🐸 Coqui Backend<br/>• Open-source TTS<br/>• Multiple Languages<br/>• Custom Models<br/>• CPU/GPU Support"]]
-        
+
         XTTS[["🤖 XTTS Backend<br/>• Voice Cloning<br/>• Multi-language Support<br/>• High Fidelity<br/>• Real-time Synthesis"]]
     end
 
     %% Processing Pipeline
     subgraph PIPELINE["⚙️ Processing Pipeline"]
         SYNTHESIS[["🎤 Synthesis Engine<br/>• Chunk Processing<br/>• Backend Selection<br/>• Voice Mapping<br/>• Speed Control"]]
-        
+
         CONCAT[["🔗 Audio Concatenation<br/>• FFmpeg Integration<br/>• Multiple Methods<br/>• Fallback Strategies<br/>• Error Recovery"]]
-        
+
         CONVERT[["🔄 Format Conversion<br/>• WAV to OGG<br/>• WAV to OPUS<br/>• Quality Optimization<br/>• Compression"]]
     end
 
     %% Storage Layer
     subgraph STORAGE["💾 Storage Layer"]
         AUDIO_DIR[["📁 Audio Directory<br/>• Generated Files<br/>• Temporary Storage<br/>• Cleanup Management<br/>• Path Management"]]
-        
+
         CACHE[["🗄️ Cache System<br/>• Metadata Caching<br/>• Result Caching<br/>• Invalidation<br/>• Performance"]]
-        
+
         METRICS[["📊 Metrics Database<br/>• Usage Tracking<br/>• Performance Metrics<br/>• Error Logging<br/>• Analytics"]]
     end
 
     %% Integration Layer
     subgraph INTEGRATION["🔗 Integration Layer"]
         RVC[["🎭 RVC Integration<br/>• Voice Conversion<br/>• Real-time Processing<br/>• Model Management<br/>• Quality Control"]]
-        
+
         PROTECTION[["🛡️ TTS Protection<br/>• PyTorch Memory<br/>• Model Loading<br/>• Resource Management<br/>• Conflict Resolution"]]
-        
+
         HEALTH[["❤️ Health Monitoring<br/>• Backend Status<br/>• Resource Usage<br/>• Error Detection<br/>• Recovery"]]
     end
 
     %% Error Handling
     subgraph ERROR["⚠️ Error Handling"]
         FALLBACK[["🔄 Fallback System<br/>• Backend Switching<br/>• Graceful Degradation<br/>• Error Recovery<br/>• User Notification"]]
-        
+
         RETRY[["🔄 Retry Logic<br/>• Exponential Backoff<br/>• Max Retries<br/>• Error Classification<br/>• Recovery Strategies"]]
-        
+
         LOGGING[["📝 Logging System<br/>• Structured Logging<br/>• Correlation IDs<br/>• Error Tracking<br/>• Debug Information"]]
     end
 
@@ -136,35 +136,35 @@ sequenceDiagram
 
     U->>API: Submit TTS Request
     API->>TS: synthesize_text()
-    
+
     Note over TS: Initial Text Processing
     TS->>TS: _chunk_text_for_tts()
     TS->>TS: Validate text length & language
-    
+
     Note over TS: Chunk Processing Loop
     loop For each chunk
         TS->>SC: _synthesize_chunk()
-        
+
         alt Chunk is oversized (>2000 chars)
             Note over SC: 🔄 Rechunking Logic
             SC->>CT: _chunk_text_for_tts()
             CT-->>SC: Return sub-chunks
             SC->>SC: _synthesize_chunked_text()
-            
+
             loop For each sub-chunk
                 SC->>KB: synthesize()
                 KB-->>SC: Audio file
             end
-            
+
             SC->>AC: _concatenate_audio_files()
-            
+
         else Chunk is normal size
             Note over SC: ✅ Normal Processing
             SC->>KB: synthesize()
             KB-->>SC: Audio file
         end
     end
-    
+
     Note over AC: Audio Concatenation
     alt Multiple files to concatenate
         AC->>FF: Try concat demuxer
@@ -181,7 +181,7 @@ sequenceDiagram
     else Single file
         AC->>FS: Copy file directly
     end
-    
+
     AC-->>TS: Final audio file
     TS->>FS: Store audio file
     TS-->>API: Return audio path

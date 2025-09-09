@@ -82,18 +82,22 @@ export class StreamingCoordinator {
    */
   processBuffer(chunk: string): string[] {
     this.state.buffer += chunk;
-    const lines = this.state.buffer.split('\n');
-    
+    const lines = this.state.buffer.split("\n");
+
     // Keep the last line in buffer (might be incomplete)
-    this.state.buffer = lines.pop() || '';
-    
+    this.state.buffer = lines.pop() || "";
+
     return lines;
   }
 
   /**
    * Finalize and create result
    */
-  finalize(allNodes: any[], allErrors: any[], allWarnings: string[]): ParseResult {
+  finalize(
+    allNodes: any[],
+    allErrors: any[],
+    allWarnings: string[],
+  ): ParseResult {
     // Process any remaining buffer content
     if (this.state.buffer.trim()) {
       this.state.currentLine++;

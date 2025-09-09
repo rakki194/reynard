@@ -26,7 +26,7 @@ export function getPortuguesePlural(
     singular: string;
     plural: string;
     pluralAlt?: string; // For words with alternative plural forms
-  }
+  },
 ): string {
   // Handle zero case
   if (num === 0) return forms.plural;

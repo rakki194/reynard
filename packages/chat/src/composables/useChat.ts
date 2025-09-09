@@ -5,20 +5,11 @@
  * and streaming functionality for chat applications.
  */
 
-import {
-  createSignal,
-  createResource,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { createSignal, createResource, onCleanup, onMount } from "solid-js";
 import { useChatMessages } from "./useChatMessages";
 import { useChatStreaming } from "./useChatStreaming";
 import { useChatTools } from "./useChatTools";
-import type {
-  ChatState,
-  ChatActions,
-  UseChatReturn,
-} from "../types";
+import type { ChatState, ChatActions, UseChatReturn } from "../types";
 
 export interface UseChatOptions {
   /** Chat service endpoint */
@@ -75,7 +66,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Core state
   const [availableModels] = createSignal<string[]>([]);
   const [selectedModel] = createSignal<string>();
-  const [connectionState, setConnectionState] = createSignal<ChatState["connectionState"]>("disconnected");
+  const [connectionState, setConnectionState] =
+    createSignal<ChatState["connectionState"]>("disconnected");
   const [error, setError] = createSignal<ChatState["error"]>();
   const [config, setConfig] = createSignal<ChatState["config"]>({
     ...DEFAULT_CONFIG,
@@ -95,15 +87,18 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     tools,
   });
 
-  const streamingComposable = useChatStreaming({
-    fetchFn,
-    authHeaders,
-    endpoint,
-  }, {
-    addMessage: messagesComposable.addMessage,
-    updateMessage: messagesComposable.updateMessage,
-    messages: messagesComposable.messages,
-  });
+  const streamingComposable = useChatStreaming(
+    {
+      fetchFn,
+      authHeaders,
+      endpoint,
+    },
+    {
+      addMessage: messagesComposable.addMessage,
+      updateMessage: messagesComposable.updateMessage,
+      messages: messagesComposable.messages,
+    },
+  );
 
   // Resource for checking connection
   const [connectionCheck] = createResource(

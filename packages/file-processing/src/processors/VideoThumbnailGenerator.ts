@@ -67,7 +67,8 @@ export class VideoThumbnailGenerator {
       ctx.fillRect(0, 0, targetWidth, targetHeight);
 
       // Seek to a specific time for thumbnail
-      const captureTime = mergedOptions.captureTime ?? Math.min(video.duration / 2, 5);
+      const captureTime =
+        mergedOptions.captureTime ?? Math.min(video.duration / 2, 5);
       video.currentTime = captureTime;
 
       // Wait for video to be ready
@@ -105,7 +106,9 @@ export class VideoThumbnailGenerator {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : "Failed to generate video thumbnail",
+          error instanceof Error
+            ? error.message
+            : "Failed to generate video thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

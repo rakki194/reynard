@@ -19,12 +19,16 @@ export function largeFunction() {
 }
 
 // After: Modular approach
-export function createModuleA() { /* focused functionality */ }
-export function createModuleB() { /* focused functionality */ }
+export function createModuleA() {
+  /* focused functionality */
+}
+export function createModuleB() {
+  /* focused functionality */
+}
 export function createMainModule() {
   return {
     ...createModuleA(),
-    ...createModuleB()
+    ...createModuleB(),
   };
 }
 ```
@@ -37,14 +41,16 @@ export function createMainModule() {
 
 ```typescript
 // ❌ Bad
-function process(data: any) { return data.property; }
+function process(data: any) {
+  return data.property;
+}
 
 // ✅ Good
 function process(data: unknown) {
-  if (typeof data === 'object' && data !== null && 'property' in data) {
+  if (typeof data === "object" && data !== null && "property" in data) {
     return (data as { property: string }).property;
   }
-  throw new Error('Invalid data');
+  throw new Error("Invalid data");
 }
 ```
 
@@ -57,7 +63,7 @@ function process(data: unknown) {
 ```typescript
 // ✅ Use globalThis.AbortSignal (2025 best practice)
 function fetchData(signal?: globalThis.AbortSignal) {
-  return fetch('/api/data', { signal });
+  return fetch("/api/data", { signal });
 }
 ```
 
@@ -83,10 +89,10 @@ function fetchData(signal?: globalThis.AbortSignal) {
 
 ```typescript
 // Before
-import { used, unused1, unused2 } from 'module';
+import { used, unused1, unused2 } from "module";
 
 // After
-import { used } from 'module';
+import { used } from "module";
 ```
 
 ## Type Safety Patterns
@@ -106,10 +112,12 @@ interface Data<T = Record<string, unknown>> {
 ```typescript
 // ✅ Type guard for unknown data
 function isUserData(data: unknown): data is { name: string; email: string } {
-  return typeof data === 'object' && 
-         data !== null && 
-         'name' in data && 
-         'email' in data;
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "name" in data &&
+    "email" in data
+  );
 }
 ```
 
@@ -135,10 +143,14 @@ function createService(config: ServiceConfig) {
 ```typescript
 export function createModule(options: ModuleOptions) {
   const privateState = {};
-  
+
   return {
-    publicMethod: () => { /* implementation */ },
-    anotherMethod: () => { /* implementation */ }
+    publicMethod: () => {
+      /* implementation */
+    },
+    anotherMethod: () => {
+      /* implementation */
+    },
   };
 }
 ```
@@ -149,11 +161,13 @@ export function createModule(options: ModuleOptions) {
 export function createMainModule(options: MainOptions) {
   const subModuleA = createSubModuleA(options.a);
   const subModuleB = createSubModuleB(options.b);
-  
+
   return {
     ...subModuleA,
     ...subModuleB,
-    mainMethod: () => { /* orchestration */ }
+    mainMethod: () => {
+      /* orchestration */
+    },
   };
 }
 ```
@@ -162,9 +176,9 @@ export function createMainModule(options: MainOptions) {
 
 ```typescript
 // index.ts
-export * from './module-a';
-export * from './module-b';
-export * from './module-c';
+export * from "./module-a";
+export * from "./module-b";
+export * from "./module-c";
 ```
 
 ## ESLint Configuration
@@ -209,7 +223,7 @@ src/
 ```typescript
 // ✅ Lazy load heavy modules
 export const loadHeavyModule = async () => {
-  const { HeavyModule } = await import('./heavy-module');
+  const { HeavyModule } = await import("./heavy-module");
   return new HeavyModule();
 };
 ```
@@ -220,9 +234,9 @@ export const loadHeavyModule = async () => {
 // ✅ Clean up resources
 export class ResourceManager {
   private resources = new Set<Resource>();
-  
+
   dispose() {
-    this.resources.forEach(resource => resource.cleanup());
+    this.resources.forEach((resource) => resource.cleanup());
     this.resources.clear();
   }
 }
@@ -233,12 +247,12 @@ export class ResourceManager {
 ### Unit Testing
 
 ```typescript
-import { createModule } from './module';
+import { createModule } from "./module";
 
-describe('Module', () => {
-  it('should create module with correct interface', () => {
-    const module = createModule({ option: 'value' });
-    expect(module).toHaveProperty('publicMethod');
+describe("Module", () => {
+  it("should create module with correct interface", () => {
+    const module = createModule({ option: "value" });
+    expect(module).toHaveProperty("publicMethod");
   });
 });
 ```
@@ -246,10 +260,10 @@ describe('Module', () => {
 ### Integration Testing
 
 ```typescript
-import { createMainModule } from './main-module';
+import { createMainModule } from "./main-module";
 
-describe('MainModule Integration', () => {
-  it('should compose sub-modules correctly', () => {
+describe("MainModule Integration", () => {
+  it("should compose sub-modules correctly", () => {
     const main = createMainModule({ a: {}, b: {} });
     expect(main.subMethodA).toBeDefined();
     expect(main.subMethodB).toBeDefined();
@@ -282,10 +296,18 @@ function process(data: any) {
 ```typescript
 // Don't do this
 class UserService {
-  validateUser() { /* validation */ }
-  hashPassword() { /* security */ }
-  saveUser() { /* persistence */ }
-  sendEmail() { /* notification */ }
+  validateUser() {
+    /* validation */
+  }
+  hashPassword() {
+    /* security */
+  }
+  saveUser() {
+    /* persistence */
+  }
+  sendEmail() {
+    /* notification */
+  }
 }
 ```
 
@@ -293,7 +315,7 @@ class UserService {
 
 ```typescript
 // Don't do this
-import { SpecificImplementation } from './specific-impl';
+import { SpecificImplementation } from "./specific-impl";
 
 function useService() {
   return new SpecificImplementation(); // Hard to test/mock

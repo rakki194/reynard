@@ -19,7 +19,7 @@ A complete Entity-Component-System (ECS) implementation for TypeScript, inspired
 Lightweight identifiers that group components together. Entities use generational indexing to prevent bugs when reusing entity IDs.
 
 ```typescript
-import { createEntity, entityToString } from './ecs';
+import { createEntity, entityToString } from "./ecs";
 
 const entity = createEntity(0, 1);
 console.log(entityToString(entity)); // "0v1"
@@ -30,16 +30,22 @@ console.log(entityToString(entity)); // "0v1"
 Data containers that can be attached to entities. Components implement the `Component` interface.
 
 ```typescript
-import { Component } from './ecs';
+import { Component } from "./ecs";
 
 class Position implements Component {
   readonly __component = true;
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 
 class Velocity implements Component {
   readonly __component = true;
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 ```
 
@@ -48,11 +54,14 @@ class Velocity implements Component {
 Global singleton data accessible to all systems. Resources implement the `Resource` interface.
 
 ```typescript
-import { Resource } from './ecs';
+import { Resource } from "./ecs";
 
 class GameTime implements Resource {
   readonly __resource = true;
-  constructor(public deltaTime: number, public totalTime: number) {}
+  constructor(
+    public deltaTime: number,
+    public totalTime: number,
+  ) {}
 }
 ```
 
@@ -61,7 +70,7 @@ class GameTime implements Resource {
 Functions that operate on components and resources. Systems are the behavior layer of the ECS.
 
 ```typescript
-import { World } from './ecs';
+import { World } from "./ecs";
 
 function movementSystem(world: World): void {
   const gameTime = world.getResource(GameTime);
@@ -80,41 +89,49 @@ function movementSystem(world: World): void {
 ### Basic Setup
 
 ```typescript
-import { 
-  createWorld, 
-  ComponentType, 
-  ResourceType, 
+import {
+  createWorld,
+  ComponentType,
+  ResourceType,
   StorageType,
   system,
-  schedule 
-} from './ecs';
+  schedule,
+} from "./ecs";
 
 // Create world
 const world = createWorld();
 
 // Register component types
 const registry = world.getComponentRegistry();
-const positionType = registry.register('Position', StorageType.Table, () => new Position(0, 0));
-const velocityType = registry.register('Velocity', StorageType.Table, () => new Velocity(0, 0));
+const positionType = registry.register(
+  "Position",
+  StorageType.Table,
+  () => new Position(0, 0),
+);
+const velocityType = registry.register(
+  "Velocity",
+  StorageType.Table,
+  () => new Velocity(0, 0),
+);
 
 // Register resource types
 const resourceRegistry = world.getResourceRegistry();
-const gameTimeType = resourceRegistry.register('GameTime', () => new GameTime(0, 0));
+const gameTimeType = resourceRegistry.register(
+  "GameTime",
+  () => new GameTime(0, 0),
+);
 
 // Add systems
-world.addSystem(system('movement', movementSystem).build());
+world.addSystem(system("movement", movementSystem).build());
 
 // Create entities
-const player = world.spawn(
-  new Position(100, 100),
-  new Velocity(50, 0)
-);
+const player = world.spawn(new Position(100, 100), new Velocity(50, 0));
 
 // Add resources
 world.insertResource(new GameTime(0.016, 0));
 
 // Run systems
-world.runSystem('movement');
+world.runSystem("movement");
 ```
 
 ### Advanced Features
@@ -122,12 +139,12 @@ world.runSystem('movement');
 #### Query Filtering
 
 ```typescript
-import { QueryFilter } from './ecs';
+import { QueryFilter } from "./ecs";
 
 // Query entities with Position but without Velocity
 const filter: QueryFilter = {
   with: [positionType],
-  without: [velocityType]
+  without: [velocityType],
 };
 
 const query = world.queryFiltered([positionType], filter);
@@ -137,11 +154,11 @@ const query = world.queryFiltered([positionType], filter);
 
 ```typescript
 // Create systems with dependencies
-const movementSystem = system('movement', movementSystemFn)
-  .after('input')
+const movementSystem = system("movement", movementSystemFn)
+  .after("input")
   .build();
 
-const inputSystem = system('input', inputSystemFn).build();
+const inputSystem = system("input", inputSystemFn).build();
 
 // Systems will run in order: input -> movement
 ```
@@ -151,14 +168,14 @@ const inputSystem = system('input', inputSystemFn).build();
 ```typescript
 function spawnBulletSystem(world: World): void {
   const commands = world.commands();
-  
+
   // Deferred operations
   commands.spawn(
     new Position(100, 100),
     new Velocity(0, -300),
-    new Bullet(300)
+    new Bullet(300),
   );
-  
+
   // Commands are applied at the end of the system
 }
 ```
@@ -172,7 +189,11 @@ function spawnBulletSystem(world: World): void {
 - Best for frequently accessed components
 
 ```typescript
-const positionType = registry.register('Position', StorageType.Table, () => new Position(0, 0));
+const positionType = registry.register(
+  "Position",
+  StorageType.Table,
+  () => new Position(0, 0),
+);
 ```
 
 ### SparseSet Storage (Sparse)
@@ -182,7 +203,11 @@ const positionType = registry.register('Position', StorageType.Table, () => new 
 - Best for optional components
 
 ```typescript
-const powerUpType = registry.register('PowerUp', StorageType.SparseSet, () => new PowerUp());
+const powerUpType = registry.register(
+  "PowerUp",
+  StorageType.SparseSet,
+  () => new PowerUp(),
+);
 ```
 
 ## Performance Considerations
@@ -237,4 +262,3 @@ This ECS system is designed to integrate seamlessly with the Reynard framework:
 ## License
 
 Part of the Reynard framework. See main project license for details.
-

@@ -3,7 +3,7 @@
  * Global test configuration and utilities
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Mock global error handlers
 
@@ -15,46 +15,46 @@ global.console = {
   ...console,
   error: vi.fn(),
   warn: vi.fn(),
-  log: vi.fn()
+  log: vi.fn(),
 };
 
 // Mock sessionStorage
-Object.defineProperty(window, 'sessionStorage', {
+Object.defineProperty(window, "sessionStorage", {
   value: {
     getItem: vi.fn(),
     setItem: vi.fn(),
     removeItem: vi.fn(),
-    clear: vi.fn()
+    clear: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Mock localStorage
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: {
     getItem: vi.fn(),
     setItem: vi.fn(),
     removeItem: vi.fn(),
-    clear: vi.fn()
+    clear: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Mock location
-Object.defineProperty(window, 'location', {
+Object.defineProperty(window, "location", {
   value: {
-    href: 'http://localhost:3000/test',
-    reload: vi.fn()
+    href: "http://localhost:3000/test",
+    reload: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Mock navigator
-Object.defineProperty(window, 'navigator', {
+Object.defineProperty(window, "navigator", {
   value: {
-    userAgent: 'Mozilla/5.0 (Test Browser)'
+    userAgent: "Mozilla/5.0 (Test Browser)",
   },
-  writable: true
+  writable: true,
 });
 
 // Clean up after each test

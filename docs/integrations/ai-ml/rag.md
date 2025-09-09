@@ -97,7 +97,7 @@ Similarity search uses pgvector cosine distance and returns a normalized score a
 
 ## Hybrid Retrieval
 
-For text, code, and captions, hybrid ranking combines vector similarity with a text ranking signal, normalized per cohort. The combined score follows \( score = w_{vec} \cdot (1 - dist) + w_{text} \cdot rank \), with defaults favoring vector similarity. Weights are configurable per modality.
+For text, code, and captions, hybrid ranking combines vector similarity with a text ranking signal, normalized per cohort. The combined score follows \( score = w*{vec} \cdot (1 - dist) + w*{text} \cdot rank \), with defaults favoring vector similarity. Weights are configurable per modality.
 
 ## API Contracts and Examples
 
@@ -118,7 +118,18 @@ Content-Type: application/json
 ```
 
 ```json
-{ "hits": [{ "id": 123, "score": 0.82, "highlights": ["vector search"], "extra": { "chunk_id": 123 } }], "total": 1, "correlation_id": "..." }
+{
+  "hits": [
+    {
+      "id": 123,
+      "score": 0.82,
+      "highlights": ["vector search"],
+      "extra": { "chunk_id": 123 }
+    }
+  ],
+  "total": 1,
+  "correlation_id": "..."
+}
 ```
 
 ## Vector Indexing and Tuning (pgvector)
@@ -151,7 +162,7 @@ The administrative reindex placeholder at `POST /api/rag/reindex` streams `{"typ
 
 Queries use `POST /api/rag/query` with `{ q, modality, top_k, correlation_id? }` and return `{ hits, total, correlation_id? }`. When `modality` is `images`, the service performs CLIP text→image search and returns hits containing a `score` and additional image metadata under `extra`. For `docs`, `code`, and `captions`, the service embeds the query using the configured model, performs hybrid retrieval with vector‑first ranking, and returns hits with `id` (chunk id), `score`, optional `highlights` when redaction is disabled, and `extra` containing row details.
 
-Administrative controls for the ingestion queue are exposed under ` /api/rag/admin/* `, including `pause`, `resume`, `drain`, `status`, `dead_letter`, and `dead_letter/requeue`. Operational controls for the vector database live under ` /api/rag/ops/* ` and include `metrics`, `set_ef_search`, `analyze`, `vacuum`, `reindex`, and a `recall_sample` endpoint that compares index results to a brute‑force scan to estimate recall for a given query and stores a sample row for later analysis.
+Administrative controls for the ingestion queue are exposed under `/api/rag/admin/*`, including `pause`, `resume`, `drain`, `status`, `dead_letter`, and `dead_letter/requeue`. Operational controls for the vector database live under `/api/rag/ops/*` and include `metrics`, `set_ef_search`, `analyze`, `vacuum`, `reindex`, and a `recall_sample` endpoint that compares index results to a brute‑force scan to estimate recall for a given query and stores a sample row for later analysis.
 
 ## Chunking Implementation Details
 
@@ -187,12 +198,16 @@ const rag = useRAG();
 const app = useAppContext();
 const group = "rag-ingest";
 app.notify("Starting ingest…", "info", group, "spinner", 0);
-await rag.ingestDocuments([{ source: "manual", content: "Some text" }], "mxbai-embed-large", (evt) => {
-  const processed = evt.processed ?? 0;
-  const total = evt.total ?? 0;
-  const pct = total > 0 ? Math.round((processed / total) * 100) : undefined;
-  app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", pct);
-});
+await rag.ingestDocuments(
+  [{ source: "manual", content: "Some text" }],
+  "mxbai-embed-large",
+  (evt) => {
+    const processed = evt.processed ?? 0;
+    const total = evt.total ?? 0;
+    const pct = total > 0 ? Math.round((processed / total) * 100) : undefined;
+    app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", pct);
+  },
+);
 app.notify("Ingest complete", "success", group);
 ```
 

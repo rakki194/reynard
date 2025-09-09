@@ -31,7 +31,7 @@ export interface OKLCHState {
  */
 export const useOKLCHState = (): OKLCHState => {
   const themeContext = useTheme();
-  
+
   // Interactive state
   const [selectedHue, setSelectedHue] = createSignal(240);
   const [selectedLightness, setSelectedLightness] = createSignal(60);
@@ -59,6 +59,6 @@ export const useOKLCHState = (): OKLCHState => {
     setCustomTag,
     tagIntensity,
     setTagIntensity,
-    themeContext
+    themeContext,
   };
 };

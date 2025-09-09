@@ -1,12 +1,15 @@
 /**
  * Streaming Sequence Utilities
- * 
+ *
  * Provides functionality for managing multiple streaming text sequences
  * with different configurations.
  */
 
 import { createSignal } from "solid-js";
-import { createStreamingText, StreamingTextOptions } from "./StreamingTextRenderer";
+import {
+  createStreamingText,
+  StreamingTextOptions,
+} from "./StreamingTextRenderer";
 
 export function createStreamingSequence(
   sequences: Array<{ text: string; options?: StreamingTextOptions }>,

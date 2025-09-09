@@ -1,8 +1,8 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
-import { 
-  batchCollisionDetection, 
+import {
+  batchCollisionDetection,
   batchCollisionWithSpatialHash,
-  type AABB 
+  type AABB,
 } from "reynard-algorithms";
 
 interface SpatialOptimizationDemoProps {
@@ -17,7 +17,9 @@ interface PerformanceStats {
   collisionCount: number;
 }
 
-export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = (props) => {
+export const SpatialOptimizationDemo: Component<
+  SpatialOptimizationDemoProps
+> = (props) => {
   const [objectCount, setObjectCount] = createSignal(50);
   const [isRunning, setIsRunning] = createSignal(false);
   const [stats, setStats] = createSignal<PerformanceStats>({
@@ -25,7 +27,7 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     spatialTime: 0,
     speedup: 0,
     objectCount: 0,
-    collisionCount: 0
+    collisionCount: 0,
   });
   const [canvasRef, setCanvasRef] = createSignal<HTMLCanvasElement>();
   const [objects, setObjects] = createSignal<AABB[]>([]);
@@ -40,7 +42,7 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
         x: Math.random() * 700 + 50,
         y: Math.random() * 400 + 50,
         width: 20 + Math.random() * 30,
-        height: 20 + Math.random() * 30
+        height: 20 + Math.random() * 30,
       });
     }
     setObjects(newObjects);
@@ -54,7 +56,7 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     // Benchmark naive algorithm
     const naiveStart = performance.now();
     const naiveCollisions = batchCollisionDetection(currentObjects, {
-      spatialHash: { enableOptimization: false }
+      spatialHash: { enableOptimization: false },
     });
     const naiveEnd = performance.now();
     const naiveTime = naiveEnd - naiveStart;
@@ -62,10 +64,10 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     // Benchmark spatial hash algorithm
     const spatialStart = performance.now();
     const spatialCollisions = batchCollisionDetection(currentObjects, {
-      spatialHash: { 
+      spatialHash: {
         enableOptimization: true,
-        cellSize: 50
-      }
+        cellSize: 50,
+      },
     });
     const spatialEnd = performance.now();
     const spatialTime = spatialEnd - spatialStart;
@@ -77,7 +79,7 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
       spatialTime,
       speedup,
       objectCount: currentObjects.length,
-      collisionCount: spatialCollisions.length
+      collisionCount: spatialCollisions.length,
     });
 
     props.onStatsUpdate({
@@ -85,7 +87,7 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
       spatialTime: spatialTime.toFixed(2),
       speedup: speedup.toFixed(2),
       objectCount: currentObjects.length,
-      collisionCount: spatialCollisions.length
+      collisionCount: spatialCollisions.length,
     });
   };
 
@@ -94,15 +96,15 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     const canvas = canvasRef();
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Clear canvas
-    ctx.fillStyle = '#1a1a1a';
+    ctx.fillStyle = "#1a1a1a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw spatial hash grid
-    ctx.strokeStyle = '#333333';
+    ctx.strokeStyle = "#333333";
     ctx.lineWidth = 1;
     const cellSize = 50;
     for (let x = 0; x < canvas.width; x += cellSize) {
@@ -122,15 +124,15 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     objects().forEach((obj, index) => {
       ctx.fillStyle = `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
       ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
-      
-      ctx.strokeStyle = '#ffffff';
+
+      ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 2;
       ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
     });
 
     // Draw performance info
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '16px monospace';
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "16px monospace";
     ctx.fillText(`Objects: ${stats().objectCount}`, 10, 30);
     ctx.fillText(`Naive Time: ${stats().naiveTime.toFixed(2)}ms`, 10, 50);
     ctx.fillText(`Spatial Time: ${stats().spatialTime.toFixed(2)}ms`, 10, 70);
@@ -173,30 +175,29 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
     <div class="spatial-demo">
       <div class="demo-controls">
         <div class="control-group">
-          <label for="spatial-object-count-slider">Object Count: {objectCount()}</label>
-          <input 
+          <label for="spatial-object-count-slider">
+            Object Count: {objectCount()}
+          </label>
+          <input
             id="spatial-object-count-slider"
-            type="range" 
-            min="10" 
-            max="200" 
+            type="range"
+            min="10"
+            max="200"
             value={objectCount()}
             onInput={(e) => setObjectCount(parseInt(e.currentTarget.value))}
             title="Adjust the number of objects for performance comparison"
           />
         </div>
-        
+
         <div class="control-group">
-          <button 
-            class={`control-button ${isRunning() ? 'active' : ''}`}
+          <button
+            class={`control-button ${isRunning() ? "active" : ""}`}
             onClick={() => setIsRunning(!isRunning())}
           >
-            {isRunning() ? '⏸️ Pause' : '▶️ Start Benchmark'}
+            {isRunning() ? "⏸️ Pause" : "▶️ Start Benchmark"}
           </button>
-          
-          <button 
-            class="control-button"
-            onClick={generateObjects}
-          >
+
+          <button class="control-button" onClick={generateObjects}>
             🔄 Regenerate
           </button>
         </div>
@@ -247,7 +248,9 @@ export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = 
           </div>
           <div class="metric">
             <span class="metric-label">Efficiency Gain:</span>
-            <span class="metric-value">{((stats().speedup - 1) * 100).toFixed(1)}%</span>
+            <span class="metric-value">
+              {((stats().speedup - 1) * 100).toFixed(1)}%
+            </span>
           </div>
         </div>
       </div>

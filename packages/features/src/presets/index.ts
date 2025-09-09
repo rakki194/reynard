@@ -1,8 +1,8 @@
-export { 
-  COMMON_FEATURES, 
-  FEATURE_CATEGORIES, 
-  FEATURE_PRIORITIES 
-} from './commonFeatures';
+export {
+  COMMON_FEATURES,
+  FEATURE_CATEGORIES,
+  FEATURE_PRIORITIES,
+} from "./commonFeatures";
 
 export {
   SERVICE_MAPPINGS,
@@ -10,5 +10,5 @@ export {
   getActualServiceName,
   getFeatureServiceName,
   getAllServiceMappings,
-  getAllReverseServiceMappings
-} from './serviceMappings';
+  getAllReverseServiceMappings,
+} from "./serviceMappings";

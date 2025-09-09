@@ -2,18 +2,18 @@
  * @fileoverview Type definitions for Reynard documentation system
  */
 
-import { Component } from 'solid-js';
+import { Component } from "solid-js";
 
 /**
  * Documentation content types
  */
-export type DocContentType = 
-  | 'markdown'
-  | 'mdx'
-  | 'html'
-  | 'component'
-  | 'api'
-  | 'example';
+export type DocContentType =
+  | "markdown"
+  | "mdx"
+  | "html"
+  | "component"
+  | "api"
+  | "example";
 
 /**
  * Documentation metadata
@@ -124,7 +124,7 @@ export interface DocFooter {
  */
 export interface DocSearchConfig {
   enabled: boolean;
-  provider: 'local' | 'algolia' | 'custom';
+  provider: "local" | "algolia" | "custom";
   apiKey?: string;
   indexName?: string;
   placeholder?: string;
@@ -134,7 +134,7 @@ export interface DocSearchConfig {
  * Analytics configuration
  */
 export interface DocAnalytics {
-  provider: 'google' | 'plausible' | 'custom';
+  provider: "google" | "plausible" | "custom";
   trackingId?: string;
   domain?: string;
 }
@@ -171,7 +171,7 @@ export interface CodeExample {
  */
 export interface ApiDoc {
   name: string;
-  type: 'function' | 'class' | 'interface' | 'type' | 'enum';
+  type: "function" | "class" | "interface" | "type" | "enum";
   description: string;
   parameters?: ApiParameter[];
   returns?: ApiReturn;

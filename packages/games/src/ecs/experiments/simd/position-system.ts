@@ -28,9 +28,14 @@ export class PositionSystem {
 
   constructor(private maxEntities: number = 100000) {}
 
-  addEntity(position: Position, velocity: Velocity, acceleration: Acceleration, mass: Mass): void {
+  addEntity(
+    position: Position,
+    velocity: Velocity,
+    acceleration: Acceleration,
+    mass: Mass,
+  ): void {
     if (this.entityCount >= this.maxEntities) return;
-    
+
     this.positions.push(position);
     this.velocities.push(velocity);
     this.accelerations.push(acceleration);
@@ -43,11 +48,11 @@ export class PositionSystem {
       const pos = this.positions[i];
       const vel = this.velocities[i];
       const acc = this.accelerations[i];
-      
+
       // Update velocity
       vel.vx += acc.ax * deltaTime;
       vel.vy += acc.ay * deltaTime;
-      
+
       // Update position
       pos.x += vel.vx * deltaTime;
       pos.y += vel.vy * deltaTime;

@@ -16,10 +16,10 @@
  */
 
 // Re-export all types and interfaces
-export type { UnionFindNode, UnionFindStats } from './union-find-types';
+export type { UnionFindNode, UnionFindStats } from "./union-find-types";
 
 // Re-export the main UnionFind class
-export { UnionFind } from './union-find-core';
+export { UnionFind } from "./union-find-core";
 
 // Re-export utility functions
-export { detectCycle, findConnectedComponents } from './union-find-utils';
+export { detectCycle, findConnectedComponents } from "./union-find-utils";

@@ -29,7 +29,8 @@ export const themeIcons = {
       name: "sun",
       tags: ["theme", "weather", "light"],
       description: "Sun icon",
-      caption: "A sun icon representing light mode, sunny weather, or bright themes",
+      caption:
+        "A sun icon representing light mode, sunny weather, or bright themes",
       keywords: ["sun", "sunny", "light", "weather"],
     },
   },
@@ -39,7 +40,8 @@ export const themeIcons = {
       name: "cloud",
       tags: ["theme", "weather", "cloudy"],
       description: "Cloud icon",
-      caption: "A cloud icon representing cloudy weather, overcast themes, or cloud services",
+      caption:
+        "A cloud icon representing cloudy weather, overcast themes, or cloud services",
       keywords: ["cloud", "cloudy", "weather", "gray"],
     },
   },
@@ -59,7 +61,8 @@ export const themeIcons = {
       name: "contrast",
       tags: ["theme", "accessibility", "contrast"],
       description: "High contrast icon",
-      caption: "A high contrast icon for accessibility features or enhanced visibility themes",
+      caption:
+        "A high contrast icon for accessibility features or enhanced visibility themes",
       keywords: ["contrast", "accessibility", "high", "filled"],
     },
   },
@@ -69,7 +72,8 @@ export const themeIcons = {
       name: "contrast-inverse",
       tags: ["theme", "accessibility", "contrast"],
       description: "High contrast inverse icon",
-      caption: "An inverse high contrast icon for alternative accessibility or contrast settings",
+      caption:
+        "An inverse high contrast icon for alternative accessibility or contrast settings",
       keywords: ["contrast", "accessibility", "inverse", "regular"],
     },
   },
@@ -79,7 +83,8 @@ export const themeIcons = {
       name: "sparkle",
       tags: ["theme", "effect", "magic"],
       description: "Sparkle icon",
-      caption: "A sparkle icon for magical effects, highlights, or special visual elements",
+      caption:
+        "A sparkle icon for magical effects, highlights, or special visual elements",
       keywords: ["sparkle", "magic", "effect", "star"],
     },
   },
@@ -89,7 +94,8 @@ export const themeIcons = {
       name: "star-filled",
       tags: ["theme", "star", "rating"],
       description: "Star filled icon",
-      caption: "A filled star icon for ratings, favorites, or highlighted content",
+      caption:
+        "A filled star icon for ratings, favorites, or highlighted content",
       keywords: ["star", "filled", "rating", "favorite"],
     },
   },
@@ -99,7 +105,8 @@ export const themeIcons = {
       name: "star",
       tags: ["theme", "star", "rating"],
       description: "Star icon",
-      caption: "A star icon for ratings, favorites, or marking important content",
+      caption:
+        "A star icon for ratings, favorites, or marking important content",
       keywords: ["star", "rating", "favorite", "regular"],
     },
   },
@@ -109,7 +116,8 @@ export const themeIcons = {
       name: "star-half",
       tags: ["theme", "star", "rating"],
       description: "Star half icon",
-      caption: "A half-filled star icon for partial ratings or intermediate scores",
+      caption:
+        "A half-filled star icon for partial ratings or intermediate scores",
       keywords: ["star", "half", "rating", "partial"],
     },
   },
@@ -119,7 +127,8 @@ export const themeIcons = {
       name: "star-half-filled",
       tags: ["theme", "star", "rating"],
       description: "Star half filled icon",
-      caption: "A half-filled star icon for partial ratings or intermediate scores",
+      caption:
+        "A half-filled star icon for partial ratings or intermediate scores",
       keywords: ["star", "half", "filled", "rating"],
     },
   },
@@ -129,7 +138,8 @@ export const themeIcons = {
       name: "star-emphasis-filled",
       tags: ["theme", "star", "emphasis"],
       description: "Star emphasis filled icon",
-      caption: "A filled star with emphasis icon for highlighting important or featured content",
+      caption:
+        "A filled star with emphasis icon for highlighting important or featured content",
       keywords: ["star", "emphasis", "filled", "highlight"],
     },
   },
@@ -139,7 +149,8 @@ export const themeIcons = {
       name: "star-emphasis",
       tags: ["theme", "star", "emphasis"],
       description: "Star emphasis icon",
-      caption: "A star with emphasis icon for highlighting important or featured content",
+      caption:
+        "A star with emphasis icon for highlighting important or featured content",
       keywords: ["star", "emphasis", "highlight", "regular"],
     },
   },
@@ -149,7 +160,8 @@ export const themeIcons = {
       name: "star-off",
       tags: ["theme", "star", "off"],
       description: "Star off icon",
-      caption: "A disabled star icon for inactive ratings or unavailable favorites",
+      caption:
+        "A disabled star icon for inactive ratings or unavailable favorites",
       keywords: ["star", "off", "disabled", "filled"],
     },
   },
@@ -159,7 +171,8 @@ export const themeIcons = {
       name: "star-one-quarter",
       tags: ["theme", "star", "rating"],
       description: "Star one quarter icon",
-      caption: "A one-quarter filled star icon for low ratings or minimal scores",
+      caption:
+        "A one-quarter filled star icon for low ratings or minimal scores",
       keywords: ["star", "one", "quarter", "rating"],
     },
   },
@@ -169,7 +182,8 @@ export const themeIcons = {
       name: "star-three-quarter",
       tags: ["theme", "star", "rating"],
       description: "Star three quarter icon",
-      caption: "A three-quarter filled star icon for high ratings or excellent scores",
+      caption:
+        "A three-quarter filled star icon for high ratings or excellent scores",
       keywords: ["star", "three", "quarter", "rating"],
     },
   },
@@ -179,7 +193,8 @@ export const themeIcons = {
       name: "christmas",
       tags: ["theme", "holiday", "tree"],
       description: "Christmas tree icon",
-      caption: "A Christmas tree icon for holiday themes, festive decorations, or seasonal content",
+      caption:
+        "A Christmas tree icon for holiday themes, festive decorations, or seasonal content",
       keywords: ["christmas", "tree", "holiday", "evergreen"],
     },
   },

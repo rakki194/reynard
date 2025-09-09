@@ -1,5 +1,5 @@
-import { Component, For } from 'solid-js';
-import { useI18n, languages, type LanguageCode } from 'reynard-themes';
+import { Component, For } from "solid-js";
+import { useI18n, languages, type LanguageCode } from "reynard-themes";
 
 const LanguageSelector: Component = () => {
   // Use real i18n system
@@ -7,12 +7,10 @@ const LanguageSelector: Component = () => {
 
   return (
     <div class="language-selector">
-      <label for="language-select">
-        {t('common.language')}:
-      </label>
-      <select 
+      <label for="language-select">{t("common.language")}:</label>
+      <select
         id="language-select"
-        value={locale} 
+        value={locale}
         onChange={(e) => setLocale(e.currentTarget.value as LanguageCode)}
         class="select"
       >

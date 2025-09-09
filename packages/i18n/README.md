@@ -67,7 +67,7 @@ function App() {
 
 function MyComponent() {
   const { t, locale, setLocale, languages } = useI18n();
-  
+
   return (
     <div>
       <h1>{t('common.welcome')}</h1>
@@ -114,47 +114,47 @@ function MyComponent() {
 #### Russian Pluralization (3 Forms)
 
 ```typescript
-import { getRussianPlural } from 'reynard-i18n';
+import { getRussianPlural } from "reynard-i18n";
 
-const forms: [string, string, string] = ['файл', 'файла', 'файлов'];
-getRussianPlural(1, forms);   // "файл" (singular)
-getRussianPlural(2, forms);   // "файла" (few)
-getRussianPlural(5, forms);   // "файлов" (many)
-getRussianPlural(21, forms);  // "файл" (singular)
-getRussianPlural(22, forms);  // "файла" (few)
+const forms: [string, string, string] = ["файл", "файла", "файлов"];
+getRussianPlural(1, forms); // "файл" (singular)
+getRussianPlural(2, forms); // "файла" (few)
+getRussianPlural(5, forms); // "файлов" (many)
+getRussianPlural(21, forms); // "файл" (singular)
+getRussianPlural(22, forms); // "файла" (few)
 ```
 
 #### Arabic Pluralization (4 Forms)
 
 ```typescript
-import { getArabicPlural } from 'reynard-i18n';
+import { getArabicPlural } from "reynard-i18n";
 
 const forms = {
-  singular: 'كتاب',
-  dual: 'كتابان',
-  plural: 'كتب',
-  pluralLarge: 'كتاب'
+  singular: "كتاب",
+  dual: "كتابان",
+  plural: "كتب",
+  pluralLarge: "كتاب",
 };
-getArabicPlural(1, forms);   // "كتاب" (singular)
-getArabicPlural(2, forms);   // "كتابان" (dual)
-getArabicPlural(3, forms);   // "كتب" (plural)
-getArabicPlural(11, forms);  // "كتاب" (large plural)
+getArabicPlural(1, forms); // "كتاب" (singular)
+getArabicPlural(2, forms); // "كتابان" (dual)
+getArabicPlural(3, forms); // "كتب" (plural)
+getArabicPlural(11, forms); // "كتاب" (large plural)
 ```
 
 #### Polish Pluralization (Special Teen Handling)
 
 ```typescript
-import { getPolishPlural } from 'reynard-i18n';
+import { getPolishPlural } from "reynard-i18n";
 
 const forms = {
-  singular: 'plik',
-  plural2_4: 'pliki',
-  plural5_: 'plików'
+  singular: "plik",
+  plural2_4: "pliki",
+  plural5_: "plików",
 };
-getPolishPlural(1, forms);   // "plik" (singular)
-getPolishPlural(2, forms);   // "pliki" (2-4)
-getPolishPlural(5, forms);   // "plików" (5+)
-getPolishPlural(12, forms);  // "plików" (teens)
+getPolishPlural(1, forms); // "plik" (singular)
+getPolishPlural(2, forms); // "pliki" (2-4)
+getPolishPlural(5, forms); // "plików" (5+)
+getPolishPlural(12, forms); // "plików" (teens)
 ```
 
 ### Grammar Helpers
@@ -162,47 +162,47 @@ getPolishPlural(12, forms);  // "plików" (teens)
 #### Hungarian Articles
 
 ```typescript
-import { getHungarianArticle } from 'reynard-i18n';
+import { getHungarianArticle } from "reynard-i18n";
 
-getHungarianArticle('alma');    // "az" (vowel)
-getHungarianArticle('ház');     // "a" (consonant)
-getHungarianArticle('egy');     // "az" (special case)
-getHungarianArticle(1);         // "az" (egy)
-getHungarianArticle(2);         // "a" (kettő)
+getHungarianArticle("alma"); // "az" (vowel)
+getHungarianArticle("ház"); // "a" (consonant)
+getHungarianArticle("egy"); // "az" (special case)
+getHungarianArticle(1); // "az" (egy)
+getHungarianArticle(2); // "a" (kettő)
 ```
 
 #### Hungarian Vowel Harmony
 
 ```typescript
-import { getHungarianSuffix } from 'reynard-i18n';
+import { getHungarianSuffix } from "reynard-i18n";
 
-getHungarianSuffix('ház', 'ban', 'ben');    // "ban" (back vowel)
-getHungarianSuffix('ember', 'ban', 'ben');  // "ben" (front vowel)
-getHungarianSuffix('kert', 'nak', 'nek');   // "nak" (back vowel)
-getHungarianSuffix('iskola', 'nak', 'nek'); // "nek" (front vowel)
+getHungarianSuffix("ház", "ban", "ben"); // "ban" (back vowel)
+getHungarianSuffix("ember", "ban", "ben"); // "ben" (front vowel)
+getHungarianSuffix("kert", "nak", "nek"); // "nak" (back vowel)
+getHungarianSuffix("iskola", "nak", "nek"); // "nek" (front vowel)
 ```
 
 #### Turkish Vowel Harmony
 
 ```typescript
-import { getTurkishPlural } from 'reynard-i18n';
+import { getTurkishPlural } from "reynard-i18n";
 
 const forms = {
-  singular: 'kitap',
-  pluralLar: 'kitaplar',  // back vowels
-  pluralLer: 'kitapler'   // front vowels
+  singular: "kitap",
+  pluralLar: "kitaplar", // back vowels
+  pluralLer: "kitapler", // front vowels
 };
-getTurkishPlural('kitap', forms);  // "kitaplar" (back vowel)
-getTurkishPlural('ev', forms);     // "kitapler" (front vowel)
+getTurkishPlural("kitap", forms); // "kitaplar" (back vowel)
+getTurkishPlural("ev", forms); // "kitapler" (front vowel)
 ```
 
 ### Dynamic Translation Loading
 
 ```typescript
-import { loadTranslations, translations } from 'reynard-i18n';
+import { loadTranslations, translations } from "reynard-i18n";
 
 // Load specific locale
-const englishTranslations = await loadTranslations('en');
+const englishTranslations = await loadTranslations("en");
 
 // Access all available translations
 console.log(Object.keys(translations)); // ['en', 'fr', 'de', ...]
@@ -211,14 +211,14 @@ console.log(Object.keys(translations)); // ['en', 'fr', 'de', ...]
 ### Formatting Utilities
 
 ```typescript
-import { formatNumber, formatDate, formatCurrency } from 'reynard-i18n';
+import { formatNumber, formatDate, formatCurrency } from "reynard-i18n";
 
-formatNumber(1234.56, 'en');           // "1,234.56"
-formatNumber(1234.56, 'de');           // "1.234,56"
-formatDate(new Date(), 'en');          // "12/25/2023"
-formatDate(new Date(), 'de');          // "25.12.2023"
-formatCurrency(99.99, 'en', 'USD');    // "$99.99"
-formatCurrency(99.99, 'de', 'EUR');    // "99,99 €"
+formatNumber(1234.56, "en"); // "1,234.56"
+formatNumber(1234.56, "de"); // "1.234,56"
+formatDate(new Date(), "en"); // "12/25/2023"
+formatDate(new Date(), "de"); // "25.12.2023"
+formatCurrency(99.99, "en", "USD"); // "$99.99"
+formatCurrency(99.99, "de", "EUR"); // "99,99 €"
 ```
 
 ## 🎯 API Reference
@@ -244,9 +244,9 @@ Dynamically loads translations for a specific locale with fallback support.
 Translates a key with optional parameter interpolation.
 
 ```typescript
-t('common.welcome');                           // "Welcome"
-t('common.greeting', { name: 'John' });       // "Hello, John!"
-t('common.itemCount', { count: 5 });          // "You have 5 items"
+t("common.welcome"); // "Welcome"
+t("common.greeting", { name: "John" }); // "Hello, John!"
+t("common.itemCount", { count: 5 }); // "You have 5 items"
 ```
 
 ### Language Management
@@ -334,14 +334,47 @@ interface Translations {
   auth: AuthTranslations;
   chat: ChatTranslations;
   monaco: MonacoTranslations;
-  settings: SettingsTranslations;  // Enhanced from Yipyap
+  settings: SettingsTranslations; // Enhanced from Yipyap
 }
 
-type LanguageCode = 
-  | 'en' | 'ja' | 'fr' | 'ru' | 'zh' | 'sv' | 'pl' | 'uk' | 'fi' | 'de'
-  | 'es' | 'it' | 'pt' | 'pt-BR' | 'ko' | 'nl' | 'tr' | 'vi' | 'th' | 'ar'
-  | 'he' | 'hi' | 'id' | 'cs' | 'el' | 'hu' | 'ro' | 'bg' | 'da' | 'nb'
-  | 'sk' | 'sl' | 'hr' | 'et' | 'lv' | 'lt' | 'mt';
+type LanguageCode =
+  | "en"
+  | "ja"
+  | "fr"
+  | "ru"
+  | "zh"
+  | "sv"
+  | "pl"
+  | "uk"
+  | "fi"
+  | "de"
+  | "es"
+  | "it"
+  | "pt"
+  | "pt-BR"
+  | "ko"
+  | "nl"
+  | "tr"
+  | "vi"
+  | "th"
+  | "ar"
+  | "he"
+  | "hi"
+  | "id"
+  | "cs"
+  | "el"
+  | "hu"
+  | "ro"
+  | "bg"
+  | "da"
+  | "nb"
+  | "sk"
+  | "sl"
+  | "hr"
+  | "et"
+  | "lv"
+  | "lt"
+  | "mt";
 
 interface Language {
   code: LanguageCode;

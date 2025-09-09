@@ -1,11 +1,11 @@
 /**
  * Label Selector Component
- * 
+ *
  * Provides label selection and management for bounding box annotations
  */
 
-import type { Component } from 'solid-js';
-import { createSignal, For, Show } from 'solid-js';
+import type { Component } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 
 export interface LabelSelectorProps {
   availableLabels: string[];
@@ -16,7 +16,7 @@ export interface LabelSelectorProps {
 }
 
 export const LabelSelector: Component<LabelSelectorProps> = (props) => {
-  const [newLabel, setNewLabel] = createSignal('');
+  const [newLabel, setNewLabel] = createSignal("");
   const [showAddForm, setShowAddForm] = createSignal(false);
 
   const handleLabelSelect = (label: string) => {
@@ -27,23 +27,23 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
     const label = newLabel().trim();
     if (label && !props.availableLabels.includes(label)) {
       props.onAddLabel?.(label);
-      setNewLabel('');
+      setNewLabel("");
       setShowAddForm(false);
     }
   };
 
   const handleCancelAdd = () => {
-    setNewLabel('');
+    setNewLabel("");
     setShowAddForm(false);
   };
 
   return (
-    <div class={`label-selector ${props.className || ''}`}>
+    <div class={`label-selector ${props.className || ""}`}>
       <div class="label-list">
         <For each={props.availableLabels}>
           {(label) => (
             <button
-              class={`label-button ${props.selectedLabel === label ? 'selected' : ''}`}
+              class={`label-button ${props.selectedLabel === label ? "selected" : ""}`}
               onClick={() => handleLabelSelect(label)}
             >
               {label}
@@ -51,7 +51,7 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
           )}
         </For>
       </div>
-      
+
       <Show when={props.onAddLabel}>
         <div class="add-label-section">
           <Show when={!showAddForm()}>
@@ -62,7 +62,7 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
               + Add Label
             </button>
           </Show>
-          
+
           <Show when={showAddForm()}>
             <div class="add-label-form">
               <input
@@ -79,10 +79,7 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
               >
                 Save
               </button>
-              <button
-                class="cancel-label-button"
-                onClick={handleCancelAdd}
-              >
+              <button class="cancel-label-button" onClick={handleCancelAdd}>
                 Cancel
               </button>
             </div>

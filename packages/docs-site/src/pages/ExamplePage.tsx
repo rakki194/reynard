@@ -2,14 +2,14 @@
  * @fileoverview Examples page
  */
 
-import { Component, createSignal, onMount } from 'solid-js';
-import { useParams } from 'solid-router';
-import { 
-  DocsPage, 
-  DocsSection, 
-  DocsBreadcrumbs
-} from 'reynard-docs-components';
-import { CodeExampleRenderer } from 'reynard-docs-core';
+import { Component, createSignal, onMount } from "solid-js";
+import { useParams } from "solid-router";
+import {
+  DocsPage,
+  DocsSection,
+  DocsBreadcrumbs,
+} from "reynard-docs-components";
+import { CodeExampleRenderer } from "reynard-docs-core";
 
 /**
  * Examples page component
@@ -22,16 +22,18 @@ export const ExamplePage: Component = () => {
   onMount(async () => {
     try {
       const packageName = params.package;
-      const response = await fetch(`/docs-generated/pages/${packageName}-examples.json`);
-      
+      const response = await fetch(
+        `/docs-generated/pages/${packageName}-examples.json`,
+      );
+
       if (response.ok) {
         const data = await response.json();
         setExampleData(data);
       } else {
-        console.error('Examples not found');
+        console.error("Examples not found");
       }
     } catch (error) {
-      console.error('Failed to load examples data:', error);
+      console.error("Failed to load examples data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -40,10 +42,10 @@ export const ExamplePage: Component = () => {
   const breadcrumbs = () => {
     const packageName = params.package;
     return [
-      { label: 'Home', href: '/' },
-      { label: 'Packages', href: '/packages' },
+      { label: "Home", href: "/" },
+      { label: "Packages", href: "/packages" },
       { label: packageName, href: `/packages/${packageName}` },
-      { label: 'Examples', href: `/packages/${packageName}/examples` }
+      { label: "Examples", href: `/packages/${packageName}/examples` },
     ];
   };
 
@@ -64,7 +66,9 @@ export const ExamplePage: Component = () => {
         <div class="docs-error">
           <h1>Examples Not Found</h1>
           <p>No examples found for "{params.package}".</p>
-          <a href={`/packages/${params.package}`} class="docs-error-link">← Back to Package</a>
+          <a href={`/packages/${params.package}`} class="docs-error-link">
+            ← Back to Package
+          </a>
         </div>
       </DocsPage>
     );
@@ -75,7 +79,7 @@ export const ExamplePage: Component = () => {
   return (
     <DocsPage>
       <DocsBreadcrumbs items={breadcrumbs()} />
-      
+
       <DocsSection>
         <h1 class="docs-examples-title">{examples.title}</h1>
         <p class="docs-examples-description">{examples.metadata.description}</p>
@@ -85,9 +89,9 @@ export const ExamplePage: Component = () => {
         <div class="docs-examples-content">
           <CodeExampleRenderer
             example={{
-              id: 'basic-usage',
-              title: 'Basic Usage',
-              description: 'A simple example showing basic usage',
+              id: "basic-usage",
+              title: "Basic Usage",
+              description: "A simple example showing basic usage",
               code: `import { Button } from 'reynard-components';
 
 function App() {
@@ -97,12 +101,12 @@ function App() {
     </Button>
   );
 }`,
-              language: 'tsx',
+              language: "tsx",
               live: true,
-              editable: true
+              editable: true,
             }}
             onRun={(code) => {
-              console.log('Running code:', code);
+              console.log("Running code:", code);
             }}
           />
         </div>

@@ -17,10 +17,11 @@ export const ThemeInfo: Component = () => {
           <strong>Theme:</strong> {themeContext.theme}
         </div>
         <div class="info-item">
-          <strong>Is Dark:</strong> {themeContext.isDark ? 'Yes' : 'No'}
+          <strong>Is Dark:</strong> {themeContext.isDark ? "Yes" : "No"}
         </div>
         <div class="info-item">
-          <strong>Is High Contrast:</strong> {themeContext.isHighContrast ? 'Yes' : 'No'}
+          <strong>Is High Contrast:</strong>{" "}
+          {themeContext.isHighContrast ? "Yes" : "No"}
         </div>
         <div class="info-item">
           <strong>Color Space:</strong> OKLCH (Perceptually Uniform)

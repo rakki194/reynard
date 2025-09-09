@@ -605,7 +605,7 @@ Get the current WebSocket configuration.
 
 - Current configuration object
 
-#### update_websocket_config(**kwargs) -> bool
+#### update_websocket_config(\*\*kwargs) -> bool
 
 Update WebSocket configuration values.
 

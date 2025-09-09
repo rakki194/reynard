@@ -10,7 +10,7 @@ export interface GameStats {
 }
 
 export interface GameState {
-  state: 'playing' | 'won' | 'lost' | 'game-over' | 'paused';
+  state: "playing" | "won" | "lost" | "game-over" | "paused";
   isAnimating?: boolean;
 }
 
@@ -48,7 +48,7 @@ export interface QueryRect {
 
 export interface Shape {
   id: number;
-  type: 'point' | 'line' | 'rectangle' | 'circle' | 'polygon';
+  type: "point" | "line" | "rectangle" | "circle" | "polygon";
   data: any;
   color: string;
 }

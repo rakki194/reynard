@@ -2,11 +2,8 @@
  * @fileoverview 404 Not Found page
  */
 
-import { Component } from 'solid-js';
-import { 
-  DocsPage, 
-  DocsSection
-} from 'reynard-docs-components';
+import { Component } from "solid-js";
+import { DocsPage, DocsSection } from "reynard-docs-components";
 
 /**
  * 404 Not Found page component
@@ -26,7 +23,10 @@ export const NotFoundPage: Component = () => {
               <a href="/" class="docs-404-button docs-404-button--primary">
                 Go Home
               </a>
-              <a href="/search" class="docs-404-button docs-404-button--secondary">
+              <a
+                href="/search"
+                class="docs-404-button docs-404-button--secondary"
+              >
                 Search Documentation
               </a>
             </div>

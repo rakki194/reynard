@@ -26,7 +26,7 @@ export const useChartsLifecycle = (props: UseChartsLifecycleProps) => {
   // Animation loop
   onMount(() => {
     const animate = () => {
-      props.setAnimationFrame(prev => prev + props.animationSpeed());
+      props.setAnimationFrame((prev) => prev + props.animationSpeed());
       const id = window.requestAnimationFrame(animate);
       props.setAnimationId(id);
     };
@@ -36,7 +36,9 @@ export const useChartsLifecycle = (props: UseChartsLifecycleProps) => {
     // Start real-time data generation
     if (props.realTimeEnabled()) {
       props.setRealTimeInterval(setInterval(props.generateRealTimeData, 1000));
-      props.setPerformanceInterval(setInterval(props.generatePerformanceData, 2000));
+      props.setPerformanceInterval(
+        setInterval(props.generatePerformanceData, 2000),
+      );
       props.setMemoryInterval(setInterval(props.generateMemoryData, 3000));
     }
   });
@@ -60,11 +62,14 @@ export const useChartsLifecycle = (props: UseChartsLifecycleProps) => {
   createEffect(() => {
     if (props.realTimeEnabled()) {
       props.setRealTimeInterval(setInterval(props.generateRealTimeData, 1000));
-      props.setPerformanceInterval(setInterval(props.generatePerformanceData, 2000));
+      props.setPerformanceInterval(
+        setInterval(props.generatePerformanceData, 2000),
+      );
       props.setMemoryInterval(setInterval(props.generateMemoryData, 3000));
     } else {
       if (props.realTimeInterval()) clearInterval(props.realTimeInterval()!);
-      if (props.performanceInterval()) clearInterval(props.performanceInterval()!);
+      if (props.performanceInterval())
+        clearInterval(props.performanceInterval()!);
       if (props.memoryInterval()) clearInterval(props.memoryInterval()!);
     }
   });

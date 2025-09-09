@@ -64,7 +64,7 @@ const featureConfig = {
   refreshInterval: 5000,
   onStatusChange: (featureId: string, status: FeatureStatus) => {
     console.log(`Feature ${featureId} status changed:`, status);
-  }
+  },
 };
 ```
 
@@ -140,36 +140,36 @@ return (
 ```typescript
 const customFeatures = [
   {
-    id: 'my-custom-feature',
-    name: 'Custom Feature',
-    description: 'A custom feature for my application',
+    id: "my-custom-feature",
+    name: "Custom Feature",
+    description: "A custom feature for my application",
     dependencies: [
-      { services: ['MyService'], required: true },
-      { services: ['OptionalService'], required: false }
+      { services: ["MyService"], required: true },
+      { services: ["OptionalService"], required: false },
     ],
-    category: 'utility',
-    priority: 'medium',
+    category: "utility",
+    priority: "medium",
     defaultConfig: {
       enabled: true,
-      timeout: 5000
-    }
-  }
+      timeout: 5000,
+    },
+  },
 ];
 ```
 
 ### Feature Configuration Management
 
 ```typescript
-const { config, setConfigValue } = useFeatureConfiguration('image-processing');
-setConfigValue('threshold', 0.8);
-setConfigValue('timeout', 5000);
+const { config, setConfigValue } = useFeatureConfiguration("image-processing");
+setConfigValue("threshold", 0.8);
+setConfigValue("timeout", 5000);
 ```
 
 ### Service Availability Monitoring
 
 ```typescript
 const { getFeaturesDependentOnService } = useFeatures();
-const affectedFeatures = getFeaturesDependentOnService('MyService');
+const affectedFeatures = getFeaturesDependentOnService("MyService");
 ```
 
 ## 🦦 Testing the System

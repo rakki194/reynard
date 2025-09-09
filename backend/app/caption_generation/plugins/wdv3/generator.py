@@ -13,29 +13,31 @@ The implementation includes:
 """
 
 import asyncio
+import json
 import logging
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import torch
+import timm
+import safetensors
 from PIL import Image
+from huggingface_hub import hf_hub_download
 
 from ...base import CaptionGenerator, CaptionType, ModelCategory
 
 logger = logging.getLogger("uvicorn")
 
-# Add the Yipyap WDv3 plugin to the path
-yipyap_plugin_path = Path(__file__).parent.parent.parent.parent.parent / "third_party" / "yipyap" / "app" / "caption_generation" / "plugins" / "wdv3"
-if yipyap_plugin_path.exists():
-    sys.path.insert(0, str(yipyap_plugin_path))
+# Self-contained WDv3 implementation - no external dependencies
+WDV3_AVAILABLE = True
 
-try:
-    from generator import WDv3Generator as YipyapWDv3Generator
-    WDV3_AVAILABLE = True
-except ImportError:
-    logger.warning("Yipyap WDv3 generator not available, using mock implementation")
-    WDV3_AVAILABLE = False
+# Map of model names to HuggingFace repositories
+MODEL_REPO_MAP = {
+    "vit": "SmilingWolf/wd-vit-tagger-v3",
+    "swinv2": "SmilingWolf/wd-swinv2-tagger-v3",
+    "convnext": "SmilingWolf/wd-convnext-tagger-v3",
+}
 
 
 class WDv3Generator(CaptionGenerator):
@@ -49,10 +51,15 @@ class WDv3Generator(CaptionGenerator):
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self._config = config or {}
         self._model = None
+        self._labels = None
+        self._transform = None
         self._device = None
         self._is_loaded = False
-        self._model_path = self._config.get("model_path")
-        self._tags_path = self._config.get("tags_path")
+        self._architecture = self._config.get("architecture", "vit")
+        self._gen_threshold = self._config.get("gen_threshold", 0.35)
+        self._char_threshold = self._config.get("char_threshold", 0.75)
+        self._downloaded_model_path = None
+        self._downloaded_labels_path = None
 
     @property
     def name(self) -> str:
@@ -90,12 +97,19 @@ class WDv3Generator(CaptionGenerator):
         return {
             "type": "object",
             "properties": {
-                "threshold": {
+                "gen_threshold": {
                     "type": "number",
                     "minimum": 0.0,
                     "maximum": 1.0,
-                    "default": 0.2,
-                    "description": "Confidence threshold for tags"
+                    "default": 0.35,
+                    "description": "Confidence threshold for general tags"
+                },
+                "char_threshold": {
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "default": 0.75,
+                    "description": "Confidence threshold for character tags"
                 },
                 "force_cpu": {
                     "type": "boolean",
@@ -108,14 +122,6 @@ class WDv3Generator(CaptionGenerator):
                     "default": "vit",
                     "description": "Model architecture to use"
                 },
-                "model_path": {
-                    "type": "string",
-                    "description": "Path to the WDv3 model file"
-                },
-                "tags_path": {
-                    "type": "string",
-                    "description": "Path to the tags file"
-                }
             }
         }
 
@@ -129,16 +135,11 @@ class WDv3Generator(CaptionGenerator):
         if not WDV3_AVAILABLE:
             return False
 
-        # Check if required files exist
-        if self._model_path and not Path(self._model_path).exists():
-            return False
-
-        if self._tags_path and not Path(self._tags_path).exists():
-            return False
-
-        # Check if PyTorch is available
+        # Check if required dependencies are available
         try:
             import torch
+            import timm
+            import safetensors
             return True
         except ImportError:
             return False
@@ -165,20 +166,9 @@ class WDv3Generator(CaptionGenerator):
                 self._device = torch.device("cuda")
                 logger.info("WDv3 using GPU")
 
-            # Initialize the Yipyap WDv3 generator
-            yipyap_config = {
-                "threshold": self._config.get("threshold", 0.2),
-                "force_cpu": force_cpu,
-                "architecture": self._config.get("architecture", "vit"),
-                "model_path": self._model_path,
-                "tags_path": self._tags_path
-            }
-
-            self._model = YipyapWDv3Generator(yipyap_config)
-            
-            # Load the model
+            # Load model and labels in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._model.load
+                None, self._load_model_and_labels
             )
 
             self._is_loaded = True
@@ -195,13 +185,10 @@ class WDv3Generator(CaptionGenerator):
             return
 
         try:
-            if self._model:
-                # Unload the model
-                await asyncio.get_event_loop().run_in_executor(
-                    None, self._model.unload
-                )
-                self._model = None
-
+            # Clear model from memory
+            self._model = None
+            self._labels = None
+            self._transform = None
             self._is_loaded = False
             logger.info("WDv3 model unloaded successfully")
 
@@ -218,9 +205,9 @@ class WDv3Generator(CaptionGenerator):
             # Merge kwargs with config
             config = {**self._config, **kwargs}
 
-            # Generate tags using the Yipyap generator
+            # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._model.generate, str(image_path)
+                None, self._generate_tags, str(image_path), config
             )
 
             return tags
@@ -234,8 +221,142 @@ class WDv3Generator(CaptionGenerator):
         info = super().get_info()
         info.update({
             "device": str(self._device) if self._device else None,
-            "model_path": self._model_path,
-            "tags_path": self._tags_path,
-            "yipyap_available": WDV3_AVAILABLE
+            "architecture": self._architecture,
+            "gen_threshold": self._gen_threshold,
+            "char_threshold": self._char_threshold,
+            "self_contained": True
         })
         return info
+
+    def _load_model_and_labels(self) -> None:
+        """Load WDv3 model and labels from HuggingFace Hub."""
+        model_path, labels_path = self._ensure_files_available()
+        
+        # Load labels
+        with open(labels_path, 'r') as f:
+            self._labels = json.load(f)
+
+        # Load model
+        self._model = self._load_model_from_file(model_path)
+
+        # Create transform
+        self._transform = self._create_transform()
+
+    def _ensure_files_available(self) -> tuple[Path, Path]:
+        """Ensure model and labels files are available, downloading from HuggingFace Hub if needed."""
+        # If we already have downloaded paths, return them
+        if self._downloaded_model_path and self._downloaded_labels_path:
+            return self._downloaded_model_path, self._downloaded_labels_path
+
+        # Download from HuggingFace Hub
+        return self._download_from_huggingface()
+
+    def _download_from_huggingface(self) -> tuple[Path, Path]:
+        """Download model and labels from HuggingFace Hub."""
+        try:
+            repo_id = MODEL_REPO_MAP[self._architecture]
+            
+            # Download model file
+            model_path = hf_hub_download(
+                repo_id=repo_id,
+                filename="model.safetensors",
+                local_files_only=False
+            )
+
+            # Download labels file
+            labels_path = hf_hub_download(
+                repo_id=repo_id,
+                filename="selected_tags.csv",
+                local_files_only=False
+            )
+
+            self._downloaded_model_path = Path(model_path)
+            self._downloaded_labels_path = Path(labels_path)
+            
+            logger.info(f"Downloaded WDv3 {self._architecture} model files from HuggingFace Hub")
+            return self._downloaded_model_path, self._downloaded_labels_path
+
+        except Exception as e:
+            logger.error(f"Failed to download WDv3 model from HuggingFace: {e}")
+            raise
+
+    def _load_model_from_file(self, model_path: Path) -> torch.nn.Module:
+        """Load model from safetensors file."""
+        # Create model architecture based on type
+        if self._architecture == "vit":
+            model = timm.create_model('vit_base_patch16_224', pretrained=False, num_classes=len(self._labels))
+        elif self._architecture == "swinv2":
+            model = timm.create_model('swin_base_patch4_window12_384', pretrained=False, num_classes=len(self._labels))
+        elif self._architecture == "convnext":
+            model = timm.create_model('convnext_base', pretrained=False, num_classes=len(self._labels))
+        else:
+            raise ValueError(f"Unsupported architecture: {self._architecture}")
+        
+        # Load weights from safetensors
+        weights = safetensors.torch.load_file(str(model_path))
+        model.load_state_dict(weights)
+        
+        # Set to evaluation mode
+        model.eval()
+        
+        # Move to appropriate device
+        model.to(self._device)
+        
+        return model
+
+    def _create_transform(self) -> torch.nn.Module:
+        """Create image transform for preprocessing."""
+        import torchvision.transforms as transforms
+        
+        return transforms.Compose([
+            transforms.Resize((448, 448)),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.5, 0.5, 0.5],
+                std=[0.5, 0.5, 0.5]
+            )
+        ])
+
+    def _generate_tags(self, image_path: str, config: Dict[str, Any]) -> str:
+        """Generate tags for an image using WDv3."""
+        if not self._model or not self._labels or not self._transform:
+            raise RuntimeError("WDv3 model components not loaded")
+
+        # Load and preprocess image
+        image = Image.open(image_path)
+        input_tensor = self._transform(image).unsqueeze(0)
+
+        # Move to device
+        input_tensor = input_tensor.to(self._device)
+
+        # Run inference
+        with torch.no_grad():
+            outputs = self._model(input_tensor)
+            probabilities = torch.sigmoid(outputs)
+
+        # Get tags above thresholds
+        gen_threshold = config.get("gen_threshold", self._gen_threshold)
+        char_threshold = config.get("char_threshold", self._char_threshold)
+        
+        # Apply different thresholds for general and character tags
+        # This is a simplified approach - in practice, you'd need to know which tags are character tags
+        general_tags = []
+        character_tags = []
+        
+        for i, prob in enumerate(probabilities[0]):
+            if prob > gen_threshold:
+                tag = self._labels[i]
+                if prob > char_threshold:
+                    character_tags.append((tag, prob.item()))
+                else:
+                    general_tags.append((tag, prob.item()))
+        
+        # Sort by probability and format output
+        general_tags.sort(key=lambda x: x[1], reverse=True)
+        character_tags.sort(key=lambda x: x[1], reverse=True)
+        
+        # Combine tags
+        all_tags = character_tags + general_tags
+        tag_names = [tag[0] for tag in all_tags[:20]]  # Limit to top 20 tags
+        
+        return ", ".join(tag_names)

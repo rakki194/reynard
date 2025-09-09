@@ -7,15 +7,21 @@
  * @module algorithms/aabbCollision
  */
 
-import type { AABB, CollisionResult } from './aabb-types';
-import { pointInAABB, areAABBsTouching } from './aabb-operations';
+import type { AABB, CollisionResult } from "./aabb-types";
+import { pointInAABB, areAABBsTouching } from "./aabb-operations";
 
 /**
  * Check if two AABBs overlap
  */
 export function checkCollision(a: AABB, b: AABB): CollisionResult {
-  const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
-  const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
+  const overlapX = Math.max(
+    0,
+    Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
+  );
+  const overlapY = Math.max(
+    0,
+    Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
+  );
 
   // AABBs are colliding if they overlap OR if they are touching (edge contact)
   // OR if one AABB is a point inside the other AABB
@@ -45,7 +51,9 @@ export function checkCollision(a: AABB, b: AABB): CollisionResult {
   const centerAY = a.y + a.height / 2;
   const centerBX = b.x + b.width / 2;
   const centerBY = b.y + b.height / 2;
-  const distance = Math.sqrt((centerBX - centerAX) ** 2 + (centerBY - centerAY) ** 2);
+  const distance = Math.sqrt(
+    (centerBX - centerAX) ** 2 + (centerBY - centerAY) ** 2,
+  );
 
   return {
     colliding,
@@ -54,4 +62,3 @@ export function checkCollision(a: AABB, b: AABB): CollisionResult {
     distance,
   };
 }
-

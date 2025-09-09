@@ -5,18 +5,20 @@ import solid from "vite-plugin-solid";
  * Base Vitest configuration for all Reynard packages
  * Provides common settings and can be extended by individual packages
  */
-export const createBaseVitestConfig = (options: {
-  packageName: string;
-  setupFiles?: string[];
-  additionalPlugins?: any[];
-  coverageThresholds?: {
-    branches?: number;
-    functions?: number;
-    lines?: number;
-    statements?: number;
-  };
-  excludeFromCoverage?: string[];
-} = { packageName: "unknown" }) => {
+export const createBaseVitestConfig = (
+  options: {
+    packageName: string;
+    setupFiles?: string[];
+    additionalPlugins?: any[];
+    coverageThresholds?: {
+      branches?: number;
+      functions?: number;
+      lines?: number;
+      statements?: number;
+    };
+    excludeFromCoverage?: string[];
+  } = { packageName: "unknown" },
+) => {
   const {
     packageName,
     setupFiles = ["./src/test-setup.ts"],

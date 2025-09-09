@@ -108,7 +108,7 @@ class UvicornConfig:
         self.reload = os.getenv("UVICORN_RELOAD", "true").lower() == "true"
         self.reload_dirs = self._parse_reload_dirs()
         self.log_level = os.getenv("UVICORN_LOG_LEVEL", "info")
-    
+
     def _parse_reload_dirs(self) -> List[str]:
         dirs = os.getenv("UVICORN_RELOAD_DIRS", "app")
         return [d.strip() for d in dirs.split(",")]
@@ -167,13 +167,13 @@ async def lifespan(app: FastAPI):
         # Skip heavy initialization during reload
         yield
         return
-    
+
     # Full initialization for normal startup
     print("🚀 Full application startup")
     await initialize_services()
-    
+
     yield
-    
+
     # Cleanup
     await cleanup_services()
 ```
@@ -193,20 +193,20 @@ cache_client = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global database_pool, cache_client
-    
+
     # Skip heavy initialization during reload
     if IS_RELOAD_MODE:
         print("🔄 Skipping heavy initialization during reload")
         yield
         return
-    
+
     # Initialize services only on full startup
     print("🔧 Initializing services...")
     database_pool = await create_database_pool()
     cache_client = await create_cache_client()
-    
+
     yield
-    
+
     # Cleanup
     if database_pool:
         await database_pool.close()
@@ -230,10 +230,10 @@ async def start_background_service():
     if IS_RELOAD_MODE:
         print("🔄 Skipping background service during reload")
         return
-    
+
     task = asyncio.create_task(background_worker())
     background_tasks.add(task)
-    
+
     # Clean up completed tasks
     task.add_done_callback(background_tasks.discard)
 
@@ -259,7 +259,7 @@ def signal_handler(signum, frame):
     if IS_RELOAD_MODE:
         print(f"🔄 Received signal {signum} during reload, letting uvicorn handle it")
         return
-    
+
     print(f"🛑 Received signal {signum}, shutting down gracefully")
     # Custom shutdown logic here
     sys.exit(0)
@@ -322,7 +322,7 @@ import gc
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
-    
+
     # Force garbage collection during reload
     if IS_RELOAD_MODE:
         gc.collect()
@@ -383,19 +383,19 @@ async def get_data():
 ```json
 // .vscode/launch.json
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "FastAPI Debug",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/main.py",
-            "console": "integratedTerminal",
-            "env": {
-                "UVICORN_RELOAD": "true"
-            }
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI Debug",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "console": "integratedTerminal",
+      "env": {
+        "UVICORN_RELOAD": "true"
+      }
+    }
+  ]
 }
 ```
 
@@ -419,7 +419,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 ```yaml
 # docker-compose.dev.yml
-version: '3.8'
+version: "3.8"
 services:
   api:
     build:
@@ -428,7 +428,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/app  # Mount source code for reload
+      - .:/app # Mount source code for reload
     environment:
       - UVICORN_RELOAD=true
       - UVICORN_LOG_LEVEL=debug
@@ -451,7 +451,7 @@ LOGGING_CONFIG["formatters"]["default"]["format"] = (
 class ReloadLogger:
     def __init__(self):
         self.logger = logging.getLogger("reload")
-    
+
     def log_reload_event(self, event_type: str, file_path: str):
         self.logger.info(f"Reload event: {event_type} - {file_path}")
 
@@ -471,10 +471,10 @@ def monitor_reload_time(func):
         start_time = time.time()
         result = await func(*args, **kwargs)
         reload_time = time.time() - start_time
-        
+
         if IS_RELOAD_MODE:
             print(f"🔄 Reload completed in {reload_time:.2f}s")
-        
+
         return result
     return wrapper
 ```
@@ -485,14 +485,14 @@ See the `examples/basic-backend` directory for a complete example of a modular F
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `UVICORN_HOST` | `127.0.0.1` | Host to bind to |
-| `UVICORN_PORT` | `8000` | Port to bind to |
-| `UVICORN_RELOAD` | `false` | Enable auto-reload |
-| `UVICORN_LOG_LEVEL` | `info` | Logging level |
-| `UVICORN_RELOAD_DIRS` | `.` | Comma-separated directories to watch |
-| `UVICORN_RELOAD_DELAY` | `0.25` | Delay between file checks |
+| Variable               | Default     | Description                          |
+| ---------------------- | ----------- | ------------------------------------ |
+| `UVICORN_HOST`         | `127.0.0.1` | Host to bind to                      |
+| `UVICORN_PORT`         | `8000`      | Port to bind to                      |
+| `UVICORN_RELOAD`       | `false`     | Enable auto-reload                   |
+| `UVICORN_LOG_LEVEL`    | `info`      | Logging level                        |
+| `UVICORN_RELOAD_DIRS`  | `.`         | Comma-separated directories to watch |
+| `UVICORN_RELOAD_DELAY` | `0.25`      | Delay between file checks            |
 
 ## Summary
 

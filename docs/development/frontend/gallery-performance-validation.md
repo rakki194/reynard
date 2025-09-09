@@ -106,17 +106,17 @@ function PerformanceOptimizer() {
   const analyzeAndOptimize = async () => {
     // Run benchmark
     const report = await benchmark.runBenchmark(gallery);
-    
+
     // Analyze performance
     const result = optimizer.analyzePerformance(report);
-    
+
     // Apply optimizations
     result.optimizations.forEach(optimization => {
       if (optimization.priority === 'critical') {
         optimizer.applyOptimization(optimization.id);
       }
     });
-    
+
     // Export optimization report
     const optimizationReport = optimizer.exportOptimizationReport(result);
     console.log('Optimization Report:', optimizationReport);
@@ -187,15 +187,15 @@ function GalleryPage() {
 
 ### Default Thresholds
 
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Navigation Time | 100ms | 200ms |
-| Selection Time | 200ms | 400ms |
-| View Time | 150ms | 300ms |
-| Operation Time | 500ms | 1000ms |
-| Caption Time | 1000ms | 2000ms |
-| Memory Usage | 100MB | 200MB |
-| Render Time | 16.67ms | 33.33ms |
+| Metric          | Warning | Critical |
+| --------------- | ------- | -------- |
+| Navigation Time | 100ms   | 200ms    |
+| Selection Time  | 200ms   | 400ms    |
+| View Time       | 150ms   | 300ms    |
+| Operation Time  | 500ms   | 1000ms   |
+| Caption Time    | 1000ms  | 2000ms   |
+| Memory Usage    | 100MB   | 200MB    |
+| Render Time     | 16.67ms | 33.33ms  |
 
 ### Customizing Thresholds
 
@@ -264,8 +264,11 @@ const calculateScore = (metrics) => {
     selection: Math.max(0, 100 - (metrics.selectionTime / threshold) * 100),
     // ... other metrics
   };
-  
-  return Object.values(scores).reduce((sum, score) => sum + score, 0) / Object.keys(scores).length;
+
+  return (
+    Object.values(scores).reduce((sum, score) => sum + score, 0) /
+    Object.keys(scores).length
+  );
 };
 ```
 
@@ -382,7 +385,7 @@ const benchmark = useGalleryPerformanceBenchmark({
 ```typescript
 const report = await benchmark.runBenchmark(gallery);
 const reportData = benchmark.exportReport(report);
-console.log('Performance Report:', reportData);
+console.log("Performance Report:", reportData);
 ```
 
 #### Monitor Memory Usage
@@ -411,15 +414,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - run: npm install
       - run: npm run build
-      
+
       - name: Run Performance Tests
         run: |
           npm run test:performance
-          
+
       - name: Upload Performance Report
         uses: actions/upload-artifact@v2
         with:
@@ -431,21 +434,26 @@ jobs:
 
 ```typescript
 // scripts/performance-regression.js
-import { useGalleryPerformanceBenchmark } from './src/composables/useGalleryPerformanceBenchmark';
+import { useGalleryPerformanceBenchmark } from "./src/composables/useGalleryPerformanceBenchmark";
 
 async function detectRegressions() {
   const benchmark = useGalleryPerformanceBenchmark();
   const report = await benchmark.runBenchmark(gallery);
-  
-  const criticalIssues = report.warnings.filter(w => w.severity === 'critical');
-  
+
+  const criticalIssues = report.warnings.filter(
+    (w) => w.severity === "critical",
+  );
+
   if (criticalIssues.length > 0) {
-    console.error('Performance regression detected:', criticalIssues);
+    console.error("Performance regression detected:", criticalIssues);
     process.exit(1);
   }
-  
+
   if (report.metrics.performanceScore < 80) {
-    console.warn('Performance score below threshold:', report.metrics.performanceScore);
+    console.warn(
+      "Performance score below threshold:",
+      report.metrics.performanceScore,
+    );
   }
 }
 

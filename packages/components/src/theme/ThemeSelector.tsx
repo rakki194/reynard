@@ -14,7 +14,10 @@ export const ThemeSelector: Component = () => {
   createEffect(() => {
     console.log("ThemeSelector - Current theme:", themeContext.theme);
     console.log("ThemeSelector - Available themes:", availableThemes);
-    console.log("ThemeSelector - localStorage theme:", localStorage.getItem("reynard-theme"));
+    console.log(
+      "ThemeSelector - localStorage theme:",
+      localStorage.getItem("reynard-theme"),
+    );
   });
 
   return (

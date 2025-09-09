@@ -35,7 +35,9 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="lightness-slider">Lightness: {props.selectedLightness}%</label>
+          <label for="lightness-slider">
+            Lightness: {props.selectedLightness}%
+          </label>
           <input
             id="lightness-slider"
             type="range"
@@ -48,7 +50,9 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="chroma-slider">Chroma: {props.selectedChroma.toFixed(2)}</label>
+          <label for="chroma-slider">
+            Chroma: {props.selectedChroma.toFixed(2)}
+          </label>
           <input
             id="chroma-slider"
             type="range"
@@ -62,7 +66,9 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="speed-slider">Animation Speed: {props.animationSpeed}</label>
+          <label for="speed-slider">
+            Animation Speed: {props.animationSpeed}
+          </label>
           <input
             id="speed-slider"
             type="range"

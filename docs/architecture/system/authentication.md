@@ -248,22 +248,22 @@ If you are logged in as an admin but still receive `401 Unauthorized` errors for
 
 1. **Verify `useAuthFetch` Usage:** Ensure that any component or composable making API calls (especially GET requests to protected endpoints like `/api/index/status` or `/api/ollama/status`) is explicitly using the `authFetch` function provided by the `useAuthFetch` composable. Direct `fetch` calls will bypass the authentication header injection.
 
-    ```typescript
-    // Incorrect: Bypasses authentication
-    // const response = await fetch('/api/index/status');
+   ```typescript
+   // Incorrect: Bypasses authentication
+   // const response = await fetch('/api/index/status');
 
-    // Correct: Uses the authenticated fetch wrapper
-    import { useAuthFetch } from '~/composables/useAuthFetch';
-    // ...
-    const authFetch = useAuthFetch();
-    const response = await authFetch('/api/index/status');
-    ```
+   // Correct: Uses the authenticated fetch wrapper
+   import { useAuthFetch } from "~/composables/useAuthFetch";
+   // ...
+   const authFetch = useAuthFetch();
+   const response = await authFetch("/api/index/status");
+   ```
 
 2. **Hard Refresh Browser:** After making changes to your frontend code, perform a hard refresh in your browser (Ctrl + Shift + R or Cmd + Shift + R). This ensures that the browser loads the latest JavaScript files and bypasses any cached versions that might not include your code updates.
 3. **Inspect Network Tab:** Use your browser's developer tools (F12) and go to the "Network" tab.
-    - Inspect the failing GET request.
-    - Under "Request Headers," confirm that an `Authorization: Bearer <your_jwt_token>` header is present. If it's missing, the frontend is not correctly attaching it.
-    - Check the "Response" tab for the exact status code and body returned by the server.
+   - Inspect the failing GET request.
+   - Under "Request Headers," confirm that an `Authorization: Bearer <your_jwt_token>` header is present. If it's missing, the frontend is not correctly attaching it.
+   - Check the "Response" tab for the exact status code and body returned by the server.
 
 ## Migration from Previous Versions
 

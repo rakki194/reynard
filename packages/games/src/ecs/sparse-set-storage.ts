@@ -1,6 +1,6 @@
 // Sparse set-based component storage implementation
 
-import { Component } from './types';
+import { Component } from "./types";
 
 export class SparseSetStorage<T extends Component> {
   private components: Map<number, T> = new Map();

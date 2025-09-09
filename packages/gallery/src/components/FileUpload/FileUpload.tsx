@@ -46,13 +46,21 @@ function createFileUploadComponent(props: FileUploadProps) {
   ]);
 
   // Composables
-  const { uploadItems, isUploading, addFiles, startUpload, removeFile, clearFiles } = useFileUpload(local);
-  const { isDragOver, handleDragOver, handleDragLeave, handleDrop } = useDragDrop(local, addFiles);
+  const {
+    uploadItems,
+    isUploading,
+    addFiles,
+    startUpload,
+    removeFile,
+    clearFiles,
+  } = useFileUpload(local);
+  const { isDragOver, handleDragOver, handleDragLeave, handleDrop } =
+    useDragDrop(local, addFiles);
   const { validateFiles } = useFileValidation(local);
   const { handleFileInput, handleDropWithValidation } = useFileUploadHandlers(
     validateFiles,
     addFiles,
-    handleDrop
+    handleDrop,
   );
 
   return {
@@ -66,7 +74,7 @@ function createFileUploadComponent(props: FileUploadProps) {
     handleFileInput,
     removeFile,
     clearFiles,
-    startUpload
+    startUpload,
   };
 }
 
@@ -82,11 +90,11 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
     handleFileInput,
     removeFile,
     clearFiles,
-    startUpload
+    startUpload,
   } = createFileUploadComponent(props);
 
   return (
-    <div class={`reynard-file-upload ${local.class || ''}`}>
+    <div class={`reynard-file-upload ${local.class || ""}`}>
       <DropZone
         isDragOver={isDragOver}
         handleDragOver={handleDragOver}
@@ -97,10 +105,10 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
           multiple: local.multiple,
           accept: local.accept,
           maxFileSize: local.maxFileSize,
-          maxFiles: local.maxFiles
+          maxFiles: local.maxFiles,
         }}
       />
-      
+
       <FileList
         uploadItems={uploadItems}
         showFileList={local.showFileList}
@@ -108,7 +116,7 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
         removeFile={removeFile}
         clearFiles={clearFiles}
       />
-      
+
       <UploadControls
         autoUpload={local.autoUpload}
         hasFiles={uploadItems().length > 0}
@@ -120,4 +128,4 @@ export const FileUpload: Component<FileUploadProps> = (props) => {
 };
 
 // Export types for external use
-export type { FileUploadProps, FileUploadItem } from './types';
+export type { FileUploadProps, FileUploadItem } from "./types";

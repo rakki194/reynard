@@ -1,39 +1,48 @@
 /**
  * @fileoverview Integration tests for the complete ECS system - end-to-end game scenarios.
- * 
+ *
  * These tests verify that all ECS components work together correctly in realistic
  * game scenarios, including entity management, component systems, and system scheduling.
- * 
+ *
  * @author Reynard ECS Team
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
-import { 
+import { describe, it, expect, beforeEach } from "vitest";
+import {
   World,
   ComponentType,
   ResourceType,
   StorageType,
   Component,
-  Resource
-} from '../types';
-import { createWorld } from '../world';
-import { system, schedule, systemSet } from '../system';
+  Resource,
+} from "../types";
+import { createWorld } from "../world";
+import { system, schedule, systemSet } from "../system";
 
 // Game components
 class Position implements Component {
   readonly __component = true;
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 
 class Velocity implements Component {
   readonly __component = true;
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 
 class Health implements Component {
   readonly __component = true;
-  constructor(public current: number, public maximum: number) {}
+  constructor(
+    public current: number,
+    public maximum: number,
+  ) {}
 }
 
 class Player implements Component {
@@ -53,18 +62,25 @@ class Bullet implements Component {
 
 class Renderable implements Component {
   readonly __component = true;
-  constructor(public shape: 'circle' | 'rectangle' | 'triangle') {}
+  constructor(public shape: "circle" | "rectangle" | "triangle") {}
 }
 
 // Game resources
 class GameTime implements Resource {
   readonly __resource = true;
-  constructor(public deltaTime: number, public totalTime: number) {}
+  constructor(
+    public deltaTime: number,
+    public totalTime: number,
+  ) {}
 }
 
 class GameState implements Resource {
   readonly __resource = true;
-  constructor(public score: number, public level: number, public isRunning: boolean = true) {}
+  constructor(
+    public score: number,
+    public level: number,
+    public isRunning: boolean = true,
+  ) {}
 }
 
 class InputState implements Resource {
@@ -72,80 +88,80 @@ class InputState implements Resource {
   constructor(
     public keys: Set<string> = new Set(),
     public mouseX: number = 0,
-    public mouseY: number = 0
+    public mouseY: number = 0,
   ) {}
 }
 
 // Component types
 const PositionType: ComponentType<Position> = {
-  name: 'Position',
+  name: "Position",
   id: 0,
   storage: StorageType.Table,
-  create: () => new Position(0, 0)
+  create: () => new Position(0, 0),
 };
 
 const VelocityType: ComponentType<Velocity> = {
-  name: 'Velocity',
+  name: "Velocity",
   id: 1,
   storage: StorageType.Table,
-  create: () => new Velocity(0, 0)
+  create: () => new Velocity(0, 0),
 };
 
 const HealthType: ComponentType<Health> = {
-  name: 'Health',
+  name: "Health",
   id: 2,
   storage: StorageType.SparseSet,
-  create: () => new Health(100, 100)
+  create: () => new Health(100, 100),
 };
 
 const PlayerType: ComponentType<Player> = {
-  name: 'Player',
+  name: "Player",
   id: 3,
   storage: StorageType.SparseSet,
-  create: () => new Player('Player')
+  create: () => new Player("Player"),
 };
 
 const EnemyType: ComponentType<Enemy> = {
-  name: 'Enemy',
+  name: "Enemy",
   id: 4,
   storage: StorageType.SparseSet,
-  create: () => new Enemy('basic')
+  create: () => new Enemy("basic"),
 };
 
 const BulletType: ComponentType<Bullet> = {
-  name: 'Bullet',
+  name: "Bullet",
   id: 5,
   storage: StorageType.SparseSet,
-  create: () => new Bullet(300)
+  create: () => new Bullet(300),
 };
 
 const RenderableType: ComponentType<Renderable> = {
-  name: 'Renderable',
+  name: "Renderable",
   id: 6,
   storage: StorageType.Table,
-  create: () => new Renderable('circle')
+  create: () => new Renderable("circle"),
 };
 
 // Resource types
 const GameTimeType: ResourceType<GameTime> = {
-  name: 'GameTime',
+  name: "GameTime",
   id: 0,
-  create: () => new GameTime(0, 0)
+  create: () => new GameTime(0, 0),
 };
 
 const GameStateType: ResourceType<GameState> = {
-  name: 'GameState',
+  name: "GameState",
   id: 1,
-  create: () => new GameState(0, 1, true)
+  create: () => new GameState(0, 1, true),
 };
 
 const InputStateType: ResourceType<InputState> = {
-  name: 'InputState',
+  name: "InputState",
   id: 2,
-  create: () => new InputState()
+  create: () => new InputState(),
 };
 
-describe('ECS Integration Tests', () => {
+describe("ECS Integration Tests", () => {
   let world: World;
   let gameTime: GameTime;
   let gameState: GameState;
@@ -153,7 +169,7 @@ describe('ECS Integration Tests', () => {
 
   beforeEach(() => {
     world = createWorld();
-    
+
     // Register component types
     world.getComponentRegistry().register(PositionType);
     world.getComponentRegistry().register(VelocityType);
@@ -162,60 +178,60 @@ describe('ECS Integration Tests', () => {
     world.getComponentRegistry().register(EnemyType);
     world.getComponentRegistry().register(BulletType);
     world.getComponentRegistry().register(RenderableType);
-    
+
     // Register resource types
     world.getResourceRegistry().register(GameTimeType);
     world.getResourceRegistry().register(GameStateType);
     world.getResourceRegistry().register(InputStateType);
-    
+
     // Add resources
     gameTime = new GameTime(16.67, 1000);
     gameState = new GameState(0, 1, true);
     inputState = new InputState();
-    
+
     world.addResource(GameTimeType, gameTime);
     world.addResource(GameStateType, gameState);
     world.addResource(InputStateType, inputState);
   });
 
-  describe('Complete Game Loop', () => {
-    it('should run a complete game loop with all systems', () => {
+  describe("Complete Game Loop", () => {
+    it("should run a complete game loop with all systems", () => {
       // Create game entities
       const player = world.spawn();
       world.add(player, PositionType, new Position(100, 100));
       world.add(player, VelocityType, new Velocity(0, 0));
       world.add(player, HealthType, new Health(100, 100));
-      world.add(player, PlayerType, new Player('TestPlayer'));
-      world.add(player, RenderableType, new Renderable('circle'));
+      world.add(player, PlayerType, new Player("TestPlayer"));
+      world.add(player, RenderableType, new Renderable("circle"));
 
       const enemy = world.spawn();
       world.add(enemy, PositionType, new Position(200, 200));
       world.add(enemy, VelocityType, new Velocity(10, 10));
       world.add(enemy, HealthType, new Health(50, 50));
-      world.add(enemy, EnemyType, new Enemy('basic'));
-      world.add(enemy, RenderableType, new Renderable('rectangle'));
+      world.add(enemy, EnemyType, new Enemy("basic"));
+      world.add(enemy, RenderableType, new Renderable("rectangle"));
 
       // Define game systems
       const inputSystem = system((world: World) => {
         const inputState = world.getResource(InputStateType) as InputState;
         const playerQuery = world.query(PlayerType, VelocityType);
-        
+
         playerQuery.forEach((entity, player, velocity) => {
           const vel = velocity as Velocity;
           vel.x = 0;
           vel.y = 0;
-          
-          if (inputState.keys.has('ArrowUp')) vel.y = -100;
-          if (inputState.keys.has('ArrowDown')) vel.y = 100;
-          if (inputState.keys.has('ArrowLeft')) vel.x = -100;
-          if (inputState.keys.has('ArrowRight')) vel.x = 100;
+
+          if (inputState.keys.has("ArrowUp")) vel.y = -100;
+          if (inputState.keys.has("ArrowDown")) vel.y = 100;
+          if (inputState.keys.has("ArrowLeft")) vel.x = -100;
+          if (inputState.keys.has("ArrowRight")) vel.x = 100;
         });
       });
 
       const movementSystem = system((world: World) => {
         const gameTime = world.getResource(GameTimeType) as GameTime;
         const query = world.query(PositionType, VelocityType);
-        
+
         query.forEach((entity, position, velocity) => {
           const pos = position as Position;
           const vel = velocity as Velocity;
@@ -227,12 +243,12 @@ describe('ECS Integration Tests', () => {
       const enemyAISystem = system((world: World) => {
         const enemyQuery = world.query(EnemyType, PositionType, VelocityType);
         const playerQuery = world.query(PlayerType, PositionType);
-        
+
         let playerPosition: Position | null = null;
         playerQuery.forEach((entity, player, position) => {
           playerPosition = position as Position;
         });
-        
+
         if (playerPosition) {
           enemyQuery.forEach((entity, enemy, position, velocity) => {
             const pos = position as Position;
@@ -240,7 +256,7 @@ describe('ECS Integration Tests', () => {
             const dx = playerPosition.x - pos.x;
             const dy = playerPosition.y - pos.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance > 0) {
               vel.x = (dx / distance) * 50;
               vel.y = (dy / distance) * 50;
@@ -252,17 +268,17 @@ describe('ECS Integration Tests', () => {
       const collisionSystem = system((world: World) => {
         const playerQuery = world.query(PlayerType, PositionType, HealthType);
         const enemyQuery = world.query(EnemyType, PositionType);
-        
+
         playerQuery.forEach((playerEntity, player, playerPos, playerHealth) => {
           const pp = playerPos as Position;
           const ph = playerHealth as Health;
-          
+
           enemyQuery.forEach((enemyEntity, enemy, enemyPos) => {
             const ep = enemyPos as Position;
             const dx = pp.x - ep.x;
             const dy = pp.y - ep.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance < 30) {
               ph.current -= 10;
               world.despawn(enemyEntity);
@@ -274,11 +290,11 @@ describe('ECS Integration Tests', () => {
       const renderSystem = system((world: World) => {
         const query = world.query(PositionType, RenderableType);
         let renderCount = 0;
-        
+
         query.forEach((entity, position, renderable) => {
           renderCount++;
         });
-        
+
         // Just verify rendering happened
         expect(renderCount).toBeGreaterThan(0);
       });
@@ -292,7 +308,7 @@ describe('ECS Integration Tests', () => {
         .addSystem(renderSystem);
 
       // Simulate input
-      inputState.keys.add('ArrowRight');
+      inputState.keys.add("ArrowRight");
 
       // Run game loop
       gameSchedule.run(world);
@@ -307,16 +323,16 @@ describe('ECS Integration Tests', () => {
       expect(enemyPos.y).toBeLessThan(200);
     });
 
-    it('should handle entity lifecycle correctly', () => {
+    it("should handle entity lifecycle correctly", () => {
       // Create entities
       const player = world.spawn();
       world.add(player, PositionType, new Position(100, 100));
       world.add(player, HealthType, new Health(100, 100));
-      world.add(player, PlayerType, new Player('TestPlayer'));
+      world.add(player, PlayerType, new Player("TestPlayer"));
 
       const enemy = world.spawn();
       world.add(enemy, PositionType, new Position(100, 100));
-      world.add(enemy, EnemyType, new Enemy('basic'));
+      world.add(enemy, EnemyType, new Enemy("basic"));
 
       // System that removes entities
       const cleanupSystem = system((world: World) => {
@@ -342,24 +358,24 @@ describe('ECS Integration Tests', () => {
     });
   });
 
-  describe('System Dependencies and Ordering', () => {
-    it('should execute systems in correct dependency order', () => {
+  describe("System Dependencies and Ordering", () => {
+    it("should execute systems in correct dependency order", () => {
       const executionOrder: string[] = [];
 
       const inputSystem = system((world: World) => {
-        executionOrder.push('input');
+        executionOrder.push("input");
         const inputState = world.getResource(InputStateType) as InputState;
-        inputState.keys.add('ArrowUp');
+        inputState.keys.add("ArrowUp");
       });
 
       const movementSystem = system((world: World) => {
-        executionOrder.push('movement');
+        executionOrder.push("movement");
         const inputState = world.getResource(InputStateType) as InputState;
-        expect(inputState.keys.has('ArrowUp')).toBe(true);
+        expect(inputState.keys.has("ArrowUp")).toBe(true);
       });
 
       const renderSystem = system((world: World) => {
-        executionOrder.push('render');
+        executionOrder.push("render");
       });
 
       // Set up dependencies
@@ -373,32 +389,29 @@ describe('ECS Integration Tests', () => {
 
       gameSchedule.run(world);
 
-      expect(executionOrder).toEqual(['input', 'movement', 'render']);
+      expect(executionOrder).toEqual(["input", "movement", "render"]);
     });
 
-    it('should handle system sets with dependencies', () => {
+    it("should handle system sets with dependencies", () => {
       const executionOrder: string[] = [];
 
       const inputSystem = system((world: World) => {
-        executionOrder.push('input');
+        executionOrder.push("input");
       });
 
       const physicsSystem = system((world: World) => {
-        executionOrder.push('physics');
+        executionOrder.push("physics");
       });
 
       const renderSystem = system((world: World) => {
-        executionOrder.push('render');
+        executionOrder.push("render");
       });
 
-      const inputSet = systemSet('input')
-        .addSystem(inputSystem);
+      const inputSet = systemSet("input").addSystem(inputSystem);
 
-      const physicsSet = systemSet('physics')
-        .addSystem(physicsSystem);
+      const physicsSet = systemSet("physics").addSystem(physicsSystem);
 
-      const renderSet = systemSet('render')
-        .addSystem(renderSystem);
+      const renderSet = systemSet("render").addSystem(renderSystem);
 
       // Set up dependencies
       physicsSet.addDependency(inputSet);
@@ -411,17 +424,17 @@ describe('ECS Integration Tests', () => {
 
       gameSchedule.run(world);
 
-      const inputIndex = executionOrder.indexOf('input');
-      const physicsIndex = executionOrder.indexOf('physics');
-      const renderIndex = executionOrder.indexOf('render');
+      const inputIndex = executionOrder.indexOf("input");
+      const physicsIndex = executionOrder.indexOf("physics");
+      const renderIndex = executionOrder.indexOf("render");
 
       expect(inputIndex).toBeLessThan(physicsIndex);
       expect(physicsIndex).toBeLessThan(renderIndex);
     });
   });
 
-  describe('Resource Management', () => {
-    it('should share resources between systems', () => {
+  describe("Resource Management", () => {
+    it("should share resources between systems", () => {
       const system1 = system((world: World) => {
         const gameState = world.getResource(GameStateType) as GameState;
         gameState.score += 10;
@@ -432,16 +445,14 @@ describe('ECS Integration Tests', () => {
         gameState.score += 20;
       });
 
-      const gameSchedule = schedule()
-        .addSystem(system1)
-        .addSystem(system2);
+      const gameSchedule = schedule().addSystem(system1).addSystem(system2);
 
       gameSchedule.run(world);
 
       expect(gameState.score).toBe(30);
     });
 
-    it('should handle resource updates across multiple frames', () => {
+    it("should handle resource updates across multiple frames", () => {
       const timeSystem = system((world: World) => {
         const gameTime = world.getResource(GameTimeType) as GameTime;
         gameTime.totalTime += gameTime.deltaTime;
@@ -456,16 +467,16 @@ describe('ECS Integration Tests', () => {
     });
   });
 
-  describe('Performance and Scalability', () => {
-    it('should handle many entities efficiently', () => {
+  describe("Performance and Scalability", () => {
+    it("should handle many entities efficiently", () => {
       // Create many entities
       const entities: any[] = [];
-      
+
       for (let i = 0; i < 1000; i++) {
         const entity = world.spawn();
         world.add(entity, PositionType, new Position(i, i));
         world.add(entity, VelocityType, new Velocity(1, 1));
-        world.add(entity, RenderableType, new Renderable('circle'));
+        world.add(entity, RenderableType, new Renderable("circle"));
         entities.push(entity);
       }
 
@@ -500,26 +511,26 @@ describe('ECS Integration Tests', () => {
       expect(duration).toBeLessThan(100); // Should complete in under 100ms
     });
 
-    it('should handle complex queries efficiently', () => {
+    it("should handle complex queries efficiently", () => {
       // Create entities with various component combinations
       for (let i = 0; i < 500; i++) {
         const entity = world.spawn();
         world.add(entity, PositionType, new Position(i, i));
-        
+
         if (i % 2 === 0) {
           world.add(entity, VelocityType, new Velocity(i, i));
         }
-        
+
         if (i % 3 === 0) {
           world.add(entity, HealthType, new Health(100, 100));
         }
-        
+
         if (i % 5 === 0) {
           world.add(entity, PlayerType, new Player(`Player${i}`));
         }
-        
+
         if (i % 7 === 0) {
-          world.add(entity, EnemyType, new Enemy('basic'));
+          world.add(entity, EnemyType, new Enemy("basic"));
         }
       }
 
@@ -532,7 +543,10 @@ describe('ECS Integration Tests', () => {
         });
 
         // Query with filters
-        const query2 = world.query(PositionType).with(PlayerType).without(EnemyType);
+        const query2 = world
+          .query(PositionType)
+          .with(PlayerType)
+          .without(EnemyType);
         let count2 = 0;
         query2.forEach(() => {
           count2++;
@@ -559,10 +573,10 @@ describe('ECS Integration Tests', () => {
     });
   });
 
-  describe('Error Handling and Recovery', () => {
-    it('should handle system errors gracefully', () => {
+  describe("Error Handling and Recovery", () => {
+    it("should handle system errors gracefully", () => {
       const errorSystem = system((world: World) => {
-        throw new Error('System error');
+        throw new Error("System error");
       });
 
       const normalSystem = system((world: World) => {
@@ -575,15 +589,15 @@ describe('ECS Integration Tests', () => {
 
       expect(() => {
         gameSchedule.run(world);
-      }).toThrow('System error');
+      }).toThrow("System error");
     });
 
-    it('should handle entity operations on despawned entities', () => {
+    it("should handle entity operations on despawned entities", () => {
       const entity = world.spawn();
       world.add(entity, PositionType, new Position(10, 20));
-      
+
       world.despawn(entity);
-      
+
       // Operations on despawned entities should be safe
       expect(() => {
         world.add(entity, VelocityType, new Velocity(5, 10));
@@ -593,15 +607,18 @@ describe('ECS Integration Tests', () => {
       }).not.toThrow();
     });
 
-    it('should handle resource operations gracefully', () => {
+    it("should handle resource operations gracefully", () => {
       const unregisteredResourceType = {
-        name: 'Unregistered',
+        name: "Unregistered",
         id: 999,
-        create: () => ({ __resource: true, value: 42 })
+        create: () => ({ __resource: true, value: 42 }),
       };
 
       expect(() => {
-        world.addResource(unregisteredResourceType as any, { __resource: true, value: 42 });
+        world.addResource(unregisteredResourceType as any, {
+          __resource: true,
+          value: 42,
+        });
         world.getResource(unregisteredResourceType as any);
         world.hasResource(unregisteredResourceType as any);
         world.removeResource(unregisteredResourceType as any);
@@ -609,15 +626,15 @@ describe('ECS Integration Tests', () => {
     });
   });
 
-  describe('Real-World Game Scenarios', () => {
-    it('should simulate a complete shooter game', () => {
+  describe("Real-World Game Scenarios", () => {
+    it("should simulate a complete shooter game", () => {
       // Create player
       const player = world.spawn();
       world.add(player, PositionType, new Position(400, 300));
       world.add(player, VelocityType, new Velocity(0, 0));
       world.add(player, HealthType, new Health(100, 100));
-      world.add(player, PlayerType, new Player('Player'));
-      world.add(player, RenderableType, new Renderable('circle'));
+      world.add(player, PlayerType, new Player("Player"));
+      world.add(player, RenderableType, new Renderable("circle"));
 
       // Create enemies
       const enemies: any[] = [];
@@ -626,8 +643,8 @@ describe('ECS Integration Tests', () => {
         world.add(enemy, PositionType, new Position(100 + i * 50, 100));
         world.add(enemy, VelocityType, new Velocity(0, 0));
         world.add(enemy, HealthType, new Health(50, 50));
-        world.add(enemy, EnemyType, new Enemy('basic'));
-        world.add(enemy, RenderableType, new Renderable('rectangle'));
+        world.add(enemy, EnemyType, new Enemy("basic"));
+        world.add(enemy, RenderableType, new Renderable("rectangle"));
         enemies.push(enemy);
       }
 
@@ -638,7 +655,7 @@ describe('ECS Integration Tests', () => {
         world.add(bullet, PositionType, new Position(400, 300));
         world.add(bullet, VelocityType, new Velocity(0, -200));
         world.add(bullet, BulletType, new Bullet(300));
-        world.add(bullet, RenderableType, new Renderable('triangle'));
+        world.add(bullet, RenderableType, new Renderable("triangle"));
         bullets.push(bullet);
       }
 
@@ -646,23 +663,23 @@ describe('ECS Integration Tests', () => {
       const playerInputSystem = system((world: World) => {
         const inputState = world.getResource(InputStateType) as InputState;
         const playerQuery = world.query(PlayerType, VelocityType);
-        
+
         playerQuery.forEach((entity, player, velocity) => {
           const vel = velocity as Velocity;
           vel.x = 0;
           vel.y = 0;
-          
-          if (inputState.keys.has('ArrowUp')) vel.y = -100;
-          if (inputState.keys.has('ArrowDown')) vel.y = 100;
-          if (inputState.keys.has('ArrowLeft')) vel.x = -100;
-          if (inputState.keys.has('ArrowRight')) vel.x = 100;
+
+          if (inputState.keys.has("ArrowUp")) vel.y = -100;
+          if (inputState.keys.has("ArrowDown")) vel.y = 100;
+          if (inputState.keys.has("ArrowLeft")) vel.x = -100;
+          if (inputState.keys.has("ArrowRight")) vel.x = 100;
         });
       });
 
       const movementSystem = system((world: World) => {
         const gameTime = world.getResource(GameTimeType) as GameTime;
         const query = world.query(PositionType, VelocityType);
-        
+
         query.forEach((entity, position, velocity) => {
           const pos = position as Position;
           const vel = velocity as Velocity;
@@ -674,12 +691,12 @@ describe('ECS Integration Tests', () => {
       const enemyAISystem = system((world: World) => {
         const enemyQuery = world.query(EnemyType, PositionType, VelocityType);
         const playerQuery = world.query(PlayerType, PositionType);
-        
+
         let playerPosition: Position | null = null;
         playerQuery.forEach((entity, player, position) => {
           playerPosition = position as Position;
         });
-        
+
         if (playerPosition) {
           enemyQuery.forEach((entity, enemy, position, velocity) => {
             const pos = position as Position;
@@ -687,7 +704,7 @@ describe('ECS Integration Tests', () => {
             const dx = playerPosition.x - pos.x;
             const dy = playerPosition.y - pos.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance > 0) {
               vel.x = (dx / distance) * 30;
               vel.y = (dy / distance) * 30;
@@ -698,40 +715,40 @@ describe('ECS Integration Tests', () => {
 
       const collisionSystem = system((world: World) => {
         const gameState = world.getResource(GameStateType) as GameState;
-        
+
         // Player-enemy collisions
         const playerQuery = world.query(PlayerType, PositionType, HealthType);
         const enemyQuery = world.query(EnemyType, PositionType);
-        
+
         playerQuery.forEach((playerEntity, player, playerPos, playerHealth) => {
           const pp = playerPos as Position;
           const ph = playerHealth as Health;
-          
+
           enemyQuery.forEach((enemyEntity, enemy, enemyPos) => {
             const ep = enemyPos as Position;
             const dx = pp.x - ep.x;
             const dy = pp.y - ep.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance < 25) {
               ph.current -= 20;
               world.despawn(enemyEntity);
             }
           });
         });
-        
+
         // Bullet-enemy collisions
         const bulletQuery = world.query(BulletType, PositionType);
-        
+
         bulletQuery.forEach((bulletEntity, bullet, bulletPos) => {
           const bp = bulletPos as Position;
-          
+
           enemyQuery.forEach((enemyEntity, enemy, enemyPos) => {
             const ep = enemyPos as Position;
             const dx = bp.x - ep.x;
             const dy = bp.y - ep.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance < 20) {
               world.despawn(bulletEntity);
               world.despawn(enemyEntity);
@@ -753,7 +770,7 @@ describe('ECS Integration Tests', () => {
       });
 
       // Set up input
-      inputState.keys.add('ArrowRight');
+      inputState.keys.add("ArrowRight");
 
       // Create game schedule
       const gameSchedule = schedule()
@@ -769,7 +786,7 @@ describe('ECS Integration Tests', () => {
       // Verify game state
       const playerPos = world.get(player, PositionType) as Position;
       const playerHealth = world.get(player, HealthType) as Health;
-      
+
       expect(playerPos.x).toBeGreaterThan(400); // Player moved right
       expect(playerHealth.current).toBeLessThanOrEqual(100); // Health may have decreased
       expect(gameState.score).toBeGreaterThanOrEqual(0); // Score may have increased

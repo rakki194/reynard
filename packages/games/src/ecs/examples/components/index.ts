@@ -1,16 +1,16 @@
 // Barrel exports for all ECS components and resources
 
 // Basic components
-export * from './basic';
+export * from "./basic";
 
 // Combat components
-export * from './combat';
+export * from "./combat";
 
 // Entity components
-export * from './entities';
+export * from "./entities";
 
 // Marker components
-export * from './markers';
+export * from "./markers";
 
 // Resources
-export * from './resources';
+export * from "./resources";

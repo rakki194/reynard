@@ -183,23 +183,23 @@ This document compares our TypeScript ECS implementation with Bevy's Rust ECS to
 
 ## 📊 Feature Completeness
 
-| Feature | Bevy | Reynard | Status |
-|---------|------|---------|--------|
-| Core ECS | ✅ | ✅ | Complete |
-| Storage Strategies | ✅ | ✅ | Complete |
-| Query System | ✅ | ✅ | Complete |
-| System Scheduling | ✅ | ✅ | Complete |
-| Archetypes | ✅ | ✅ | Complete |
-| Change Detection | ✅ | ✅ | Complete |
-| Bundles | ✅ | ✅ | Complete |
-| Events | ✅ | ✅ | Complete |
-| Parallel Execution | ✅ | ✅ | Complete |
-| Query Caching | ✅ | ✅ | Complete |
-| System Conditions | ✅ | ✅ | Complete |
-| Component Hooks | ✅ | ✅ | Complete |
-| Dynamic Queries | ✅ | ❌ | Missing |
-| System Stepping | ✅ | ❌ | Missing |
-| SIMD Operations | ✅ | ❌ | Missing |
+| Feature            | Bevy | Reynard | Status   |
+| ------------------ | ---- | ------- | -------- |
+| Core ECS           | ✅   | ✅      | Complete |
+| Storage Strategies | ✅   | ✅      | Complete |
+| Query System       | ✅   | ✅      | Complete |
+| System Scheduling  | ✅   | ✅      | Complete |
+| Archetypes         | ✅   | ✅      | Complete |
+| Change Detection   | ✅   | ✅      | Complete |
+| Bundles            | ✅   | ✅      | Complete |
+| Events             | ✅   | ✅      | Complete |
+| Parallel Execution | ✅   | ✅      | Complete |
+| Query Caching      | ✅   | ✅      | Complete |
+| System Conditions  | ✅   | ✅      | Complete |
+| Component Hooks    | ✅   | ✅      | Complete |
+| Dynamic Queries    | ✅   | ❌      | Missing  |
+| System Stepping    | ✅   | ❌      | Missing  |
+| SIMD Operations    | ✅   | ❌      | Missing  |
 
 ## 🎉 Conclusion
 

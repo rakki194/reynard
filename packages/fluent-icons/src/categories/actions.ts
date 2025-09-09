@@ -32,7 +32,8 @@ export const actionIcons = {
       name: "add-circle-filled",
       tags: ["action", "add", "create"],
       description: "Add circle icon (filled)",
-      caption: "A filled circular plus sign icon used to add or create new items",
+      caption:
+        "A filled circular plus sign icon used to add or create new items",
       keywords: ["add", "create", "new", "plus", "circle", "filled"],
     },
   },
@@ -42,7 +43,8 @@ export const actionIcons = {
       name: "add-circle",
       tags: ["action", "add", "create"],
       description: "Add circle icon",
-      caption: "An outlined circular plus sign icon for adding or creating new items",
+      caption:
+        "An outlined circular plus sign icon for adding or creating new items",
       keywords: ["add", "create", "new", "plus", "circle"],
     },
   },
@@ -92,7 +94,8 @@ export const actionIcons = {
       name: "download",
       tags: ["action", "file", "transfer"],
       description: "Download icon",
-      caption: "A downward arrow icon for downloading files or content from the internet",
+      caption:
+        "A downward arrow icon for downloading files or content from the internet",
       keywords: ["download", "save", "get", "arrow down"],
     },
   },
@@ -102,7 +105,8 @@ export const actionIcons = {
       name: "upload",
       tags: ["action", "file", "transfer"],
       description: "Upload icon",
-      caption: "A folder with upward arrow icon for uploading files to a server or cloud",
+      caption:
+        "A folder with upward arrow icon for uploading files to a server or cloud",
       keywords: ["upload", "send", "put", "arrow up"],
     },
   },
@@ -142,7 +146,8 @@ export const actionIcons = {
       name: "refresh",
       tags: ["action", "update", "reload"],
       description: "Refresh icon",
-      caption: "A clockwise circular arrow icon for refreshing or reloading content",
+      caption:
+        "A clockwise circular arrow icon for refreshing or reloading content",
       keywords: ["refresh", "reload", "update", "arrow clockwise"],
     },
   },
@@ -152,7 +157,8 @@ export const actionIcons = {
       name: "shuffle",
       tags: ["action", "random", "mix"],
       description: "Shuffle icon",
-      caption: "A crossed arrow icon for shuffling or randomizing content order",
+      caption:
+        "A crossed arrow icon for shuffling or randomizing content order",
       keywords: ["shuffle", "random", "mix", "arrow"],
     },
   },
@@ -212,7 +218,8 @@ export const actionIcons = {
       name: "clean",
       tags: ["action", "cleanup", "sparkle"],
       description: "Clean icon",
-      caption: "A broom with sparkles icon for cleaning up or organizing content",
+      caption:
+        "A broom with sparkles icon for cleaning up or organizing content",
       keywords: ["clean", "broom", "sparkle", "cleanup"],
     },
   },
@@ -222,7 +229,8 @@ export const actionIcons = {
       name: "clear-formatting",
       tags: ["action", "text", "format"],
       description: "Clear formatting icon",
-      caption: "A text formatting icon with strikethrough for removing text formatting",
+      caption:
+        "A text formatting icon with strikethrough for removing text formatting",
       keywords: ["clear", "formatting", "text", "remove"],
     },
   },

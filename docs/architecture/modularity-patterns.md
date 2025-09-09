@@ -1,6 +1,6 @@
 # 🦊 Reynard Modularity Patterns
 
-*Strategic architecture patterns for maintainable, scalable code*
+_Strategic architecture patterns for maintainable, scalable code_
 
 ## Overview
 
@@ -19,12 +19,12 @@ Every source file should be under 140 lines (excluding blank lines and comments)
 
 ### Modularity Standards
 
-| File Type | Max Lines | Max Function Lines | Purpose |
-|-----------|-----------|-------------------|---------|
-| Source Files | 140 | 50 | Core business logic |
-| Test Files | 200 | 100 | Comprehensive testing |
-| Configuration | 50 | 25 | Setup and configuration |
-| Documentation | 200 | N/A | Guides and references |
+| File Type     | Max Lines | Max Function Lines | Purpose                 |
+| ------------- | --------- | ------------------ | ----------------------- |
+| Source Files  | 140       | 50                 | Core business logic     |
+| Test Files    | 200       | 100                | Comprehensive testing   |
+| Configuration | 50        | 25                 | Setup and configuration |
+| Documentation | 200       | N/A                | Guides and references   |
 
 ## Proven Refactoring Patterns
 
@@ -38,17 +38,29 @@ Every source file should be under 140 lines (excluding blank lines and comments)
 // geometry.ts - Monolithic geometry operations
 export class GeometryOps {
   // Point operations
-  static createPoint(x: number, y: number) { /* ... */ }
-  static addPoints(a: Point, b: Point) { /* ... */ }
-  
-  // Vector operations  
-  static createVector(x: number, y: number) { /* ... */ }
-  static dotProduct(a: Vector, b: Vector) { /* ... */ }
-  
+  static createPoint(x: number, y: number) {
+    /* ... */
+  }
+  static addPoints(a: Point, b: Point) {
+    /* ... */
+  }
+
+  // Vector operations
+  static createVector(x: number, y: number) {
+    /* ... */
+  }
+  static dotProduct(a: Vector, b: Vector) {
+    /* ... */
+  }
+
   // Line operations
-  static createLine(start: Point, end: Point) { /* ... */ }
-  static lineIntersection(a: Line, b: Line) { /* ... */ }
-  
+  static createLine(start: Point, end: Point) {
+    /* ... */
+  }
+  static lineIntersection(a: Line, b: Line) {
+    /* ... */
+  }
+
   // ... 600+ more lines
 }
 ```
@@ -57,20 +69,30 @@ export class GeometryOps {
 
 ```typescript
 // vector-algorithms.ts (150 lines)
-export class PointOps { /* ... */ }
-export class VectorOps { /* ... */ }
+export class PointOps {
+  /* ... */
+}
+export class VectorOps {
+  /* ... */
+}
 
-// collision-algorithms.ts (150 lines)  
-export class LineOps { /* ... */ }
-export class RectangleOps { /* ... */ }
+// collision-algorithms.ts (150 lines)
+export class LineOps {
+  /* ... */
+}
+export class RectangleOps {
+  /* ... */
+}
 
 // transformation-algorithms.ts (150 lines)
-export class TransformOps { /* ... */ }
+export class TransformOps {
+  /* ... */
+}
 
 // geometry.ts (24 lines) - Orchestrator
-export { PointOps, VectorOps } from './vector-algorithms';
-export { LineOps, RectangleOps } from './collision-algorithms';
-export { TransformOps } from './transformation-algorithms';
+export { PointOps, VectorOps } from "./vector-algorithms";
+export { LineOps, RectangleOps } from "./collision-algorithms";
+export { TransformOps } from "./transformation-algorithms";
 ```
 
 **Benefits**:
@@ -101,16 +123,24 @@ export function useP2PChat() {
 
 ```typescript
 // useP2PConnection.ts (200 lines)
-export function useP2PConnection() { /* ... */ }
+export function useP2PConnection() {
+  /* ... */
+}
 
 // useP2PMessages.ts (200 lines)
-export function useP2PMessages() { /* ... */ }
+export function useP2PMessages() {
+  /* ... */
+}
 
 // useP2PRooms.ts (150 lines)
-export function useP2PRooms() { /* ... */ }
+export function useP2PRooms() {
+  /* ... */
+}
 
 // useP2PFileUpload.ts (150 lines)
-export function useP2PFileUpload() { /* ... */ }
+export function useP2PFileUpload() {
+  /* ... */
+}
 
 // useP2PChat.ts (370 lines) - Orchestrator
 export function useP2PChat() {
@@ -118,7 +148,7 @@ export function useP2PChat() {
   const messages = useP2PMessages();
   const rooms = useP2PRooms();
   const fileUpload = useP2PFileUpload();
-  
+
   return { connection, messages, rooms, fileUpload };
 }
 ```
@@ -138,11 +168,19 @@ export function useP2PChat() {
 
 ```typescript
 // i18n-core.test.ts - Monolithic test suite
-describe('i18n-core', () => {
-  describe('core functionality', () => { /* 200 lines */ });
-  describe('translation logic', () => { /* 200 lines */ });
-  describe('pluralization', () => { /* 200 lines */ });
-  describe('integration tests', () => { /* 175 lines */ });
+describe("i18n-core", () => {
+  describe("core functionality", () => {
+    /* 200 lines */
+  });
+  describe("translation logic", () => {
+    /* 200 lines */
+  });
+  describe("pluralization", () => {
+    /* 200 lines */
+  });
+  describe("integration tests", () => {
+    /* 175 lines */
+  });
 });
 ```
 
@@ -150,16 +188,24 @@ describe('i18n-core', () => {
 
 ```typescript
 // i18n-core.test.ts (150 lines)
-describe('i18n-core', () => { /* core functionality */ });
+describe("i18n-core", () => {
+  /* core functionality */
+});
 
 // i18n-translations.test.ts (150 lines)
-describe('i18n-translations', () => { /* translation logic */ });
+describe("i18n-translations", () => {
+  /* translation logic */
+});
 
 // i18n-pluralization.test.ts (150 lines)
-describe('i18n-pluralization', () => { /* pluralization */ });
+describe("i18n-pluralization", () => {
+  /* pluralization */
+});
 
 // i18n-integration.test.ts (150 lines)
-describe('i18n-integration', () => { /* integration tests */ });
+describe("i18n-integration", () => {
+  /* integration tests */
+});
 ```
 
 **Benefits**:
@@ -177,42 +223,70 @@ describe('i18n-integration', () => { /* integration tests */ });
 
 ```typescript
 // file-types.ts - Monolithic configuration
-export const IMAGE_TYPES = { /* 100 lines */ };
-export const VIDEO_TYPES = { /* 100 lines */ };
-export const AUDIO_TYPES = { /* 100 lines */ };
-export const DOCUMENT_TYPES = { /* 100 lines */ };
-export const CODE_TYPES = { /* 100 lines */ };
-export const TEXT_TYPES = { /* 100 lines */ };
-export const ARCHIVE_TYPES = { /* 73 lines */ };
+export const IMAGE_TYPES = {
+  /* 100 lines */
+};
+export const VIDEO_TYPES = {
+  /* 100 lines */
+};
+export const AUDIO_TYPES = {
+  /* 100 lines */
+};
+export const DOCUMENT_TYPES = {
+  /* 100 lines */
+};
+export const CODE_TYPES = {
+  /* 100 lines */
+};
+export const TEXT_TYPES = {
+  /* 100 lines */
+};
+export const ARCHIVE_TYPES = {
+  /* 73 lines */
+};
 ```
 
 **After** (Modular):
 
 ```typescript
 // image-types.ts (150 lines)
-export const IMAGE_TYPES = { /* ... */ };
+export const IMAGE_TYPES = {
+  /* ... */
+};
 
 // video-types.ts (150 lines)
-export const VIDEO_TYPES = { /* ... */ };
+export const VIDEO_TYPES = {
+  /* ... */
+};
 
 // audio-types.ts (100 lines)
-export const AUDIO_TYPES = { /* ... */ };
+export const AUDIO_TYPES = {
+  /* ... */
+};
 
 // document-types.ts (150 lines)
-export const DOCUMENT_TYPES = { /* ... */ };
+export const DOCUMENT_TYPES = {
+  /* ... */
+};
 
 // code-types.ts (100 lines)
-export const CODE_TYPES = { /* ... */ };
+export const CODE_TYPES = {
+  /* ... */
+};
 
 // text-types.ts (100 lines)
-export const TEXT_TYPES = { /* ... */ };
+export const TEXT_TYPES = {
+  /* ... */
+};
 
 // archive-types.ts (100 lines)
-export const ARCHIVE_TYPES = { /* ... */ };
+export const ARCHIVE_TYPES = {
+  /* ... */
+};
 
 // file-types.ts (50 lines) - Aggregator
-export { IMAGE_TYPES } from './image-types';
-export { VIDEO_TYPES } from './video-types';
+export { IMAGE_TYPES } from "./image-types";
+export { VIDEO_TYPES } from "./video-types";
 // ... other exports
 ```
 
@@ -264,17 +338,33 @@ export { VIDEO_TYPES } from './video-types';
 ```typescript
 // Before: Single large class
 class FileProcessor {
-  processImage() { /* ... */ }
-  processVideo() { /* ... */ }
-  processAudio() { /* ... */ }
-  processDocument() { /* ... */ }
+  processImage() {
+    /* ... */
+  }
+  processVideo() {
+    /* ... */
+  }
+  processAudio() {
+    /* ... */
+  }
+  processDocument() {
+    /* ... */
+  }
 }
 
 // After: Specialized processors
-class ImageProcessor { /* ... */ }
-class VideoProcessor { /* ... */ }
-class AudioProcessor { /* ... */ }
-class DocumentProcessor { /* ... */ }
+class ImageProcessor {
+  /* ... */
+}
+class VideoProcessor {
+  /* ... */
+}
+class AudioProcessor {
+  /* ... */
+}
+class DocumentProcessor {
+  /* ... */
+}
 ```
 
 #### Strategy 2: Extract by Layer
@@ -282,17 +372,33 @@ class DocumentProcessor { /* ... */ }
 ```typescript
 // Before: Mixed concerns
 class UserService {
-  validateUser() { /* validation logic */ }
-  hashPassword() { /* security logic */ }
-  saveUser() { /* persistence logic */ }
-  sendEmail() { /* notification logic */ }
+  validateUser() {
+    /* validation logic */
+  }
+  hashPassword() {
+    /* security logic */
+  }
+  saveUser() {
+    /* persistence logic */
+  }
+  sendEmail() {
+    /* notification logic */
+  }
 }
 
 // After: Separated concerns
-class UserValidator { /* ... */ }
-class PasswordUtils { /* ... */ }
-class UserRepository { /* ... */ }
-class EmailService { /* ... */ }
+class UserValidator {
+  /* ... */
+}
+class PasswordUtils {
+  /* ... */
+}
+class UserRepository {
+  /* ... */
+}
+class EmailService {
+  /* ... */
+}
 ```
 
 #### Strategy 3: Extract by Type
@@ -300,10 +406,18 @@ class EmailService { /* ... */ }
 ```typescript
 // Before: Mixed types
 const CONFIG = {
-  imageTypes: { /* ... */ },
-  videoTypes: { /* ... */ },
-  audioTypes: { /* ... */ },
-  documentTypes: { /* ... */ }
+  imageTypes: {
+    /* ... */
+  },
+  videoTypes: {
+    /* ... */
+  },
+  audioTypes: {
+    /* ... */
+  },
+  documentTypes: {
+    /* ... */
+  },
 };
 
 // After: Type-specific modules
@@ -320,15 +434,15 @@ const CONFIG = {
 ```javascript
 // eslint.config.js
 rules: {
-  "max-lines": ["error", { 
-    max: 140, 
-    skipBlankLines: true, 
-    skipComments: true 
+  "max-lines": ["error", {
+    max: 140,
+    skipBlankLines: true,
+    skipComments: true
   }],
-  "max-lines-per-function": ["error", { 
-    max: 50, 
-    skipBlankLines: true, 
-    skipComments: true 
+  "max-lines-per-function": ["error", {
+    max: 50,
+    skipBlankLines: true,
+    skipComments: true
   }],
 }
 ```
@@ -418,4 +532,4 @@ By following these patterns and guidelines, teams can create code that stands th
 
 ---
 
-*"The cunning fox knows that small, focused modules are the key to outfoxing complexity."* 🦊
+_"The cunning fox knows that small, focused modules are the key to outfoxing complexity."_ 🦊

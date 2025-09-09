@@ -171,7 +171,7 @@ The `scripts/nlweb_rollout.sh` script provides a command-line interface for mana
 ### Tool Execution Budgets
 
 - **git_status**: 5 seconds
-- **list_files**: 3 seconds  
+- **list_files**: 3 seconds
 - **read_file**: 2 seconds
 - **generate_captions**: 30 seconds
 - **Default**: 10 seconds

@@ -116,7 +116,9 @@ export abstract class BaseMarkdownParser {
    * Close any open sections
    */
   protected closeOpenSections(): void {
-    SectionCloser.closeAllSections(this.state, (node) => this.addNode(this.createNode(node)));
+    SectionCloser.closeAllSections(this.state, (node) =>
+      this.addNode(this.createNode(node)),
+    );
   }
 
   /**

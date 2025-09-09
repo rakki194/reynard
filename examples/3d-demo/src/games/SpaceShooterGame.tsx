@@ -24,7 +24,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
   const [enemies, setEnemies] = createSignal<Enemy[]>([]);
   const [gameStarted, setGameStarted] = createSignal(false);
   const [playerHealth, setPlayerHealth] = createSignal(100);
-  
+
   let gameLoop: number;
   let scene: any;
   let camera: any;
@@ -35,23 +35,28 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
   let nextEnemyId = 0;
   let lastEnemySpawn = 0;
 
-  const setupGameScene = async (_scene: any, _camera: any, _renderer: any, _controls: any) => {
+  const setupGameScene = async (
+    _scene: any,
+    _camera: any,
+    _renderer: any,
+    _controls: any,
+  ) => {
     scene = _scene;
     camera = _camera;
     renderer = _renderer;
     controls = _controls;
 
     // Lazy load Three.js
-    const THREE = await import('three') as any;
-    const { 
-      BoxGeometry, 
+    const THREE = (await import("three")) as any;
+    const {
+      BoxGeometry,
       SphereGeometry,
-      MeshStandardMaterial, 
-      Mesh, 
-      AmbientLight, 
+      MeshStandardMaterial,
+      Mesh,
+      AmbientLight,
       DirectionalLight,
       PointLight,
-      Fog
+      Fog,
     } = THREE;
 
     // Setup space environment
@@ -83,176 +88,184 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
 
     // Setup controls
     setupControls();
-    
+
     setGameStarted(true);
   };
 
   const setupControls = () => {
     const keys: { [key: string]: boolean } = {};
-    
+
     const onKeyDown = (event: KeyboardEvent) => {
       keys[event.code] = true;
     };
-    
+
     const onKeyUp = (event: KeyboardEvent) => {
       keys[event.code] = false;
     };
-    
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
-    
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+
     // Update player position based on keys
     const updatePlayer = () => {
       if (!player) return;
-      
+
       const speed = 0.2;
-      if (keys['KeyA'] || keys['ArrowLeft']) {
+      if (keys["KeyA"] || keys["ArrowLeft"]) {
         player.position.x = Math.max(-8, player.position.x - speed);
       }
-      if (keys['KeyD'] || keys['ArrowRight']) {
+      if (keys["KeyD"] || keys["ArrowRight"]) {
         player.position.x = Math.min(8, player.position.x + speed);
       }
-      if (keys['KeyW'] || keys['ArrowUp']) {
+      if (keys["KeyW"] || keys["ArrowUp"]) {
         player.position.y = Math.min(4, player.position.y + speed);
       }
-      if (keys['KeyS'] || keys['ArrowDown']) {
+      if (keys["KeyS"] || keys["ArrowDown"]) {
         player.position.y = Math.max(-4, player.position.y - speed);
       }
-      if (keys['Space']) {
+      if (keys["Space"]) {
         shoot();
       }
     };
-    
+
     // Store update function for game loop
     (window as any).updatePlayer = updatePlayer;
   };
 
   const shoot = () => {
     if (!player || !scene) return;
-    
-    const THREE = require('three') as any;
+
+    const THREE = require("three") as any;
     const bulletGeometry = new SphereGeometry(0.1, 8, 8);
     const bulletMaterial = new MeshStandardMaterial({
       color: 0xffff00,
       emissive: 0xffff00,
       emissiveIntensity: 0.5,
     });
-    
+
     const bullet = new Mesh(bulletGeometry, bulletMaterial);
     bullet.position.copy(player.position);
     bullet.position.z += 1;
-    
+
     scene.add(bullet);
-    
+
     const newBullet: Bullet = {
       id: nextBulletId++,
       mesh: bullet,
-      velocity: { x: 0, y: 0, z: 0.5 }
+      velocity: { x: 0, y: 0, z: 0.5 },
     };
-    
-    setBullets(prev => [...prev, newBullet]);
+
+    setBullets((prev) => [...prev, newBullet]);
   };
 
   const spawnEnemy = () => {
     if (!scene) return;
-    
-    const THREE = require('three') as any;
+
+    const THREE = require("three") as any;
     const enemyGeometry = new BoxGeometry(0.8, 0.3, 0.6);
     const enemyMaterial = new MeshStandardMaterial({
       color: 0xff0000,
       metalness: 0.5,
       roughness: 0.5,
     });
-    
+
     const enemy = new Mesh(enemyGeometry, enemyMaterial);
     enemy.position.set(
       (Math.random() - 0.5) * 16,
       (Math.random() - 0.5) * 8,
-      10
+      10,
     );
-    
+
     scene.add(enemy);
-    
+
     const newEnemy: Enemy = {
       id: nextEnemyId++,
       mesh: enemy,
-      velocity: { x: (Math.random() - 0.5) * 0.1, y: (Math.random() - 0.5) * 0.1, z: -0.05 },
-      health: 2
+      velocity: {
+        x: (Math.random() - 0.5) * 0.1,
+        y: (Math.random() - 0.5) * 0.1,
+        z: -0.05,
+      },
+      health: 2,
     };
-    
-    setEnemies(prev => [...prev, newEnemy]);
+
+    setEnemies((prev) => [...prev, newEnemy]);
   };
 
   const gameUpdate = () => {
     if (!gameStarted()) return;
-    
+
     const now = Date.now();
-    
+
     // Spawn enemies periodically
     if (now - lastEnemySpawn > 2000) {
       spawnEnemy();
       lastEnemySpawn = now;
     }
-    
+
     // Update player
     if ((window as any).updatePlayer) {
       (window as any).updatePlayer();
     }
-    
+
     // Update bullets
-    setBullets(prev => prev.filter(bullet => {
-      bullet.mesh.position.z += bullet.velocity.z;
-      
-      // Remove bullets that are too far
-      if (bullet.mesh.position.z > 15) {
-        scene.remove(bullet.mesh);
-        return false;
-      }
-      
-      return true;
-    }));
-    
+    setBullets((prev) =>
+      prev.filter((bullet) => {
+        bullet.mesh.position.z += bullet.velocity.z;
+
+        // Remove bullets that are too far
+        if (bullet.mesh.position.z > 15) {
+          scene.remove(bullet.mesh);
+          return false;
+        }
+
+        return true;
+      }),
+    );
+
     // Update enemies
-    setEnemies(prev => prev.filter(enemy => {
-      enemy.mesh.position.x += enemy.velocity.x;
-      enemy.mesh.position.y += enemy.velocity.y;
-      enemy.mesh.position.z += enemy.velocity.z;
-      
-      // Remove enemies that are too far
-      if (enemy.mesh.position.z < -15) {
-        scene.remove(enemy.mesh);
-        return false;
-      }
-      
-      // Check collision with player
-      if (enemy.mesh.position.distanceTo(player.position) < 1) {
-        setPlayerHealth(prev => {
-          const newHealth = prev - 10;
-          if (newHealth <= 0) {
-            alert(`💥 Game Over! Final Score: ${score()}`);
-          }
-          return newHealth;
-        });
-        scene.remove(enemy.mesh);
-        return false;
-      }
-      
-      return true;
-    }));
-    
+    setEnemies((prev) =>
+      prev.filter((enemy) => {
+        enemy.mesh.position.x += enemy.velocity.x;
+        enemy.mesh.position.y += enemy.velocity.y;
+        enemy.mesh.position.z += enemy.velocity.z;
+
+        // Remove enemies that are too far
+        if (enemy.mesh.position.z < -15) {
+          scene.remove(enemy.mesh);
+          return false;
+        }
+
+        // Check collision with player
+        if (enemy.mesh.position.distanceTo(player.position) < 1) {
+          setPlayerHealth((prev) => {
+            const newHealth = prev - 10;
+            if (newHealth <= 0) {
+              alert(`💥 Game Over! Final Score: ${score()}`);
+            }
+            return newHealth;
+          });
+          scene.remove(enemy.mesh);
+          return false;
+        }
+
+        return true;
+      }),
+    );
+
     // Check bullet-enemy collisions
-    bullets().forEach(bullet => {
-      enemies().forEach(enemy => {
+    bullets().forEach((bullet) => {
+      enemies().forEach((enemy) => {
         if (bullet.mesh.position.distanceTo(enemy.mesh.position) < 0.5) {
           // Hit!
           enemy.health--;
           scene.remove(bullet.mesh);
-          setBullets(prev => prev.filter(b => b.id !== bullet.id));
-          
+          setBullets((prev) => prev.filter((b) => b.id !== bullet.id));
+
           if (enemy.health <= 0) {
             scene.remove(enemy.mesh);
-            setEnemies(prev => prev.filter(e => e.id !== enemy.id));
-            setScore(prev => {
+            setEnemies((prev) => prev.filter((e) => e.id !== enemy.id));
+            setScore((prev) => {
               const newScore = prev + 100;
               props.onScoreUpdate(newScore);
               return newScore;
@@ -287,13 +300,13 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
           <span class="hud-value">{enemies().length}</span>
         </div>
       </div>
-      
+
       <div class="game-instructions">
         <h3>🚀 Space Shooter</h3>
         <p>Use WASD or Arrow Keys to move your ship. Press SPACE to shoot!</p>
         <p>Destroy red enemy ships to score points. Avoid collisions!</p>
       </div>
-      
+
       <div class="game-viewport">
         <ThreeJSVisualization
           backgroundColor="#000011"

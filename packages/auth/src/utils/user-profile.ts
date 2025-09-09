@@ -3,16 +3,12 @@
  * Handles user profile operations and data fetching
  */
 
-import { createResource } from "solid-js";
-import type {
-  User,
-  AuthState,
-  AuthConfiguration,
-} from "../types";
+import { createResource, type ResourceReturn } from "solid-js";
+import type { User, AuthState, AuthConfiguration } from "../types";
 import { parseApiResponse } from "./api-utils";
 
 export interface UserProfileManager {
-  userProfile: ReturnType<typeof createResource<User | null, boolean>>;
+  userProfile: ResourceReturn<User | null, unknown>;
   updateProfile: (profileData: Partial<User>) => Promise<void>;
 }
 
@@ -23,10 +19,10 @@ export const createUserProfileManager = (
   config: AuthConfiguration,
   authState: () => AuthState,
   updateAuthState: (updates: Partial<AuthState>) => void,
-  authFetch: ReturnType<typeof import("./api-utils").createAuthFetch>
+  authFetch: ReturnType<typeof import("./api-utils").createAuthFetch>,
 ): UserProfileManager => {
   // Get current user profile
-  const [userProfile] = createResource(
+  const userProfile = createResource(
     () => authState().isAuthenticated,
     async (isAuthenticated) => {
       if (!isAuthenticated) return null;

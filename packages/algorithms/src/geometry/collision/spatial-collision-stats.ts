@@ -27,7 +27,9 @@ export interface SpatialCollisionStats {
 /**
  * Create default configuration
  */
-export function createDefaultConfig(overrides: Partial<SpatialCollisionConfig> = {}): SpatialCollisionConfig {
+export function createDefaultConfig(
+  overrides: Partial<SpatialCollisionConfig> = {},
+): SpatialCollisionConfig {
   return {
     cellSize: 100,
     maxObjectsPerCell: 50,
@@ -56,10 +58,10 @@ export function createInitialStats(): SpatialCollisionStats {
  * Update average query time
  */
 export function updateAverageQueryTime(
-  stats: SpatialCollisionStats, 
-  duration: number
+  stats: SpatialCollisionStats,
+  duration: number,
 ): void {
-  stats.averageQueryTime = 
-    (stats.averageQueryTime * (stats.totalQueries - 1) + duration) / 
+  stats.averageQueryTime =
+    (stats.averageQueryTime * (stats.totalQueries - 1) + duration) /
     stats.totalQueries;
 }

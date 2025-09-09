@@ -26,7 +26,7 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
       value={locale}
       onChange={(e) => {
         const newLocale = e.currentTarget.value as LanguageCode;
-        console.log('Language selector changing locale to:', newLocale);
+        console.log("Language selector changing locale to:", newLocale);
         setLocale(newLocale);
       }}
       aria-label="Select language"
@@ -36,9 +36,7 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
         {(lang) => (
           <option value={lang.code}>
             <span class="language-option">
-              <span class="language-icon">
-                🌐
-              </span>
+              <span class="language-icon">🌐</span>
               {lang.name}
             </span>
           </option>

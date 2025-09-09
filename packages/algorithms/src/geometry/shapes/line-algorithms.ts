@@ -7,8 +7,8 @@
  * @module algorithms/line-algorithms
  */
 
-import { Point, PointOps } from './point-algorithms';
-import { Line } from './shapes';
+import { Point, PointOps } from "./point-algorithms";
+import { Line } from "./shapes";
 
 /**
  * Line operations
@@ -30,11 +30,11 @@ export class LineOps {
     return PointOps.midpoint(line.start, line.end);
   }
 
-  static direction(line: Line): import('../vectors/vector-algorithms').Vector {
+  static direction(line: Line): import("../vectors/vector-algorithms").Vector {
     return { x: line.end.x - line.start.x, y: line.end.y - line.start.y };
   }
 
-  static normal(line: Line): import('../vectors/vector-algorithms').Vector {
+  static normal(line: Line): import("../vectors/vector-algorithms").Vector {
     const dir = this.direction(line);
     const mag = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
     if (mag === 0) return { x: 0, y: 0 };

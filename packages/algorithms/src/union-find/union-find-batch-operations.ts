@@ -8,16 +8,16 @@
  * @module algorithms/unionFindBatchOperations
  */
 
-import { UnionFind } from './union-find-core';
-import { UnionFindNode, UnionFindStats } from './union-find-types';
+import { UnionFind } from "./union-find-core";
+import { UnionFindNode, UnionFindStats } from "./union-find-types";
 
 export interface BatchOperation {
-  type: 'union' | 'find' | 'connected';
+  type: "union" | "find" | "connected";
   args: [number, number] | [number];
 }
 
 export interface BatchResult {
-  type: 'union' | 'find' | 'connected';
+  type: "union" | "find" | "connected";
   result: boolean | number;
   args: [number, number] | [number];
 }
@@ -94,13 +94,13 @@ export class BatchUnionFind extends UnionFind {
       let result: boolean | number;
 
       switch (op.type) {
-        case 'union':
+        case "union":
           result = this.union(op.args[0], op.args[1]);
           break;
-        case 'find':
+        case "find":
           result = this.find(op.args[0]);
           break;
-        case 'connected':
+        case "connected":
           result = this.connected(op.args[0], op.args[1]);
           break;
         default:
@@ -137,10 +137,10 @@ export class BatchUnionFind extends UnionFind {
 
       const result = this.union(x, y);
       results.push(result);
-      
+
       // Cache the result
       this.operationCache.set(cacheKey, result ? 1 : 0);
-      
+
       // Limit cache size
       if (this.operationCache.size > 1000) {
         const firstKey = this.operationCache.keys().next().value;
@@ -157,9 +157,10 @@ export class BatchUnionFind extends UnionFind {
   getBatchStats() {
     return {
       ...this.batchStats,
-      cacheHitRate: this.batchStats.totalOperations > 0 
-        ? this.batchStats.cacheHits / this.batchStats.totalOperations 
-        : 0,
+      cacheHitRate:
+        this.batchStats.totalOperations > 0
+          ? this.batchStats.cacheHits / this.batchStats.totalOperations
+          : 0,
     };
   }
 

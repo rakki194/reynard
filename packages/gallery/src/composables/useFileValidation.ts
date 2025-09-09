@@ -34,13 +34,13 @@ export function useFileValidation(config: UploadConfiguration) {
 
   const checkTotalSizeLimit = (files: File[]): boolean => {
     if (!config.maxTotalSize) return true;
-    
+
     const totalSize = files.reduce((sum, file) => sum + file.size, 0);
     return totalSize <= config.maxTotalSize;
   };
 
   return {
     validateFiles,
-    checkTotalSizeLimit
+    checkTotalSizeLimit,
   };
 }

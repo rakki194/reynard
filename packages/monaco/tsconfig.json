@@ -12,9 +12,7 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "exclude": [
     "dist",
     "node_modules",
@@ -24,5 +22,3 @@
     "**/*.spec.tsx"
   ]
 }
-
-

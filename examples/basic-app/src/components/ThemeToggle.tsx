@@ -10,11 +10,11 @@ import { useCustomTranslation } from "../App";
 export const ThemeToggle: Component = () => {
   const themeContext = useTheme();
   const t = useCustomTranslation();
-  
+
   const theme = () => themeContext.theme;
-  
+
   const nextTheme = () => {
-    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
+    const themes = getAvailableThemes().map((theme) => theme.name as ThemeName);
     const currentIndex = themes.indexOf(theme());
     const nextIndex = (currentIndex + 1) % themes.length;
     themeContext.setTheme(themes[nextIndex]);

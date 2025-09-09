@@ -1,12 +1,15 @@
 /**
  * Video metadata extractor
- * 
+ *
  * Handles metadata extraction for video files including dimensions,
  * duration, codec information, and frame data.
  */
 
 import { VideoMetadata } from "../../types";
-import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
+import {
+  BaseMetadataExtractor,
+  MetadataExtractionOptions,
+} from "./BaseMetadataExtractor";
 
 export class VideoMetadataExtractor extends BaseMetadataExtractor {
   /**

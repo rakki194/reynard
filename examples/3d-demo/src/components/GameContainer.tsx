@@ -28,20 +28,20 @@ export const GameContainer: Component<GameContainerProps> = (props) => {
           Score: <span class="score-value">0</span>
         </div>
       </div>
-      
+
       <div class="game-viewport">
         <Show when={props.game === "cube-collector"}>
           <CubeCollectorGame onScoreUpdate={props.onScoreUpdate} />
         </Show>
-        
+
         <Show when={props.game === "space-shooter"}>
           <SpaceShooterGame onScoreUpdate={props.onScoreUpdate} />
         </Show>
-        
+
         <Show when={props.game === "maze-explorer"}>
           <MazeExplorerGame onScoreUpdate={props.onScoreUpdate} />
         </Show>
-        
+
         <Show when={props.game === "particle-demo"}>
           <ParticleDemo onScoreUpdate={props.onScoreUpdate} />
         </Show>

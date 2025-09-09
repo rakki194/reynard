@@ -113,7 +113,7 @@ Add these settings to your `config.json`:
 The RAG settings page now includes controls for:
 
 - Max Tokens per Chunk
-- Min Tokens per Chunk  
+- Min Tokens per Chunk
 - Chunk Overlap Ratio
 - Text Model Token Limit
 - Code Model Token Limit
@@ -143,7 +143,7 @@ The system supports model-specific token limits that override the general `rag_c
 The system automatically detects model types:
 
 - **Text Models**: Models containing "text", "nomic", or "mxbai" in the name
-- **Code Models**: Models containing "code" or "bge" in the name  
+- **Code Models**: Models containing "code" or "bge" in the name
 - **Caption Models**: Models containing "caption" or "clip" in the name
 
 You can also explicitly specify the model type when calling embedding functions.
@@ -154,9 +154,9 @@ You can also explicitly specify the model type when calling embedding functions.
 
 ```json
 {
-  "rag_text_model_max_tokens": 512,    // Text documents
-  "rag_code_model_max_tokens": 1024,   // Code files (longer context)
-  "rag_caption_model_max_tokens": 256  // Captions (shorter context)
+  "rag_text_model_max_tokens": 512, // Text documents
+  "rag_code_model_max_tokens": 1024, // Code files (longer context)
+  "rag_caption_model_max_tokens": 256 // Captions (shorter context)
 }
 ```
 
@@ -197,14 +197,14 @@ chunks = chunk_document_for_embeddings(
 
 The system now supports various embedding models with their specific token limits:
 
-| Model | Dimension | Token Limit | Notes |
-|-------|-----------|-------------|-------|
-| mxbai-embed-large | 1024 | 512 | Default text model |
-| nomic-embed-text | 768 | 512 | Default caption model |
-| bge-m3 | 1024 | 512 | Default code model |
-| all-MiniLM-L6-v2 | 384 | 256 | Compact model |
-| text-embedding-ada-002 | 1536 | 8191 | OpenAI model |
-| text-embedding-3-small | 1536 | 8191 | OpenAI model |
+| Model                  | Dimension | Token Limit | Notes                 |
+| ---------------------- | --------- | ----------- | --------------------- |
+| mxbai-embed-large      | 1024      | 512         | Default text model    |
+| nomic-embed-text       | 768       | 512         | Default caption model |
+| bge-m3                 | 1024      | 512         | Default code model    |
+| all-MiniLM-L6-v2       | 384       | 256         | Compact model         |
+| text-embedding-ada-002 | 1536      | 8191        | OpenAI model          |
+| text-embedding-3-small | 1536      | 8191        | OpenAI model          |
 
 ## Monitoring
 

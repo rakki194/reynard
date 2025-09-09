@@ -3,9 +3,13 @@
  * Hook for managing error reporting and analytics
  */
 
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { ErrorReport, ErrorReportingConfig, ErrorFilter } from '../types/ErrorTypes';
-import { createErrorReport } from '../utils/ErrorSerializer';
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import {
+  ErrorReport,
+  ErrorReportingConfig,
+  ErrorFilter,
+} from "../types/ErrorTypes";
+import { createErrorReport } from "../utils/ErrorSerializer";
 
 interface UseErrorReportingOptions extends ErrorReportingConfig {
   onReport?: (report: ErrorReport) => void;
@@ -14,7 +18,11 @@ interface UseErrorReportingOptions extends ErrorReportingConfig {
 
 interface UseErrorReportingReturn {
   reports: () => ErrorReport[];
-  reportError: (error: Error, context: any, userReport?: string) => Promise<void>;
+  reportError: (
+    error: Error,
+    context: any,
+    userReport?: string,
+  ) => Promise<void>;
   flushReports: () => Promise<void>;
   clearReports: () => void;
   getMetrics: () => ErrorMetrics;
@@ -28,7 +36,9 @@ interface ErrorMetrics {
   lastReportTime?: number;
 }
 
-export function useErrorReporting(options: UseErrorReportingOptions = { enabled: true }): UseErrorReportingReturn {
+export function useErrorReporting(
+  options: UseErrorReportingOptions = { enabled: true },
+): UseErrorReportingReturn {
   const [reports, setReports] = createSignal<ErrorReport[]>([]);
 
   // Default options
@@ -38,12 +48,12 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
     includeStackTrace: true,
     includeUserContext: true,
     filters: [],
-    ...options
+    ...options,
   };
 
   // Auto-flush reports at intervals
   let flushInterval: NodeJS.Timeout | undefined;
-  
+
   createEffect(() => {
     if (config.enabled && config.flushInterval && config.flushInterval > 0) {
       flushInterval = setInterval(() => {
@@ -61,36 +71,42 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
   });
 
   // Check if report should be included based on filters
-  const shouldReport = (report: ErrorReport, filters: ErrorFilter[]): boolean => {
+  const shouldReport = (
+    report: ErrorReport,
+    filters: ErrorFilter[],
+  ): boolean => {
     if (filters.length === 0) return true;
 
     for (const filter of filters) {
       let value: any;
-      
+
       switch (filter.type) {
-        case 'severity':
+        case "severity":
           value = report.context.severity;
           break;
-        case 'category':
+        case "category":
           value = report.context.category;
           break;
-        case 'message':
+        case "message":
           value = report.error.message;
           break;
-        case 'component':
-          value = report.context.componentStack.join(' ');
+        case "component":
+          value = report.context.componentStack.join(" ");
           break;
         default:
           continue;
       }
 
-      const matches = value === filter.value || 
-                     (typeof value === 'string' && typeof filter.value === 'string' && value.includes(filter.value));
+      const matches =
+        value === filter.value ||
+        (typeof value === "string" &&
+          typeof filter.value === "string" &&
+          value.includes(filter.value));
 
-      if (filter.action === 'include' && !matches) {
+      if (filter.action === "include" && !matches) {
         return false;
       }
-      if (filter.action === 'exclude' && matches) {
+      if (filter.action === "exclude" && matches) {
         return false;
       }
     }
@@ -99,19 +115,23 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
   };
 
   // Report an error
-  const reportError = async (error: Error, context: any, userReport?: string): Promise<void> => {
+  const reportError = async (
+    error: Error,
+    context: any,
+    userReport?: string,
+  ): Promise<void> => {
     if (!config.enabled) return;
 
     try {
       const report = createErrorReport(error, context, userReport);
-      
+
       // Apply filters
       if (!shouldReport(report, config.filters || [])) {
         return;
       }
 
       // Add to reports
-      setReports(prev => [...prev, report]);
+      setReports((prev) => [...prev, report]);
 
       // Call user callback
       options.onReport?.(report);
@@ -121,7 +141,7 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
         await flushReports();
       }
     } catch (reportError) {
-      console.warn('Failed to create error report:', reportError);
+      console.warn("Failed to create error report:", reportError);
     }
   };
 
@@ -133,19 +153,19 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
     try {
       if (config.endpoint) {
         const response = await fetch(config.endpoint, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             ...(config.apiKey && {
-              'Authorization': `Bearer ${config.apiKey}`
-            })
+              Authorization: `Bearer ${config.apiKey}`,
+            }),
           },
           body: JSON.stringify({
             reports: currentReports,
             timestamp: Date.now(),
             userAgent: navigator.userAgent,
-            url: window.location.href
-          })
+            url: window.location.href,
+          }),
         });
 
         if (!response.ok) {
@@ -159,7 +179,7 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
       // Clear reports after successful flush
       setReports([]);
     } catch (error) {
-      console.warn('Failed to flush error reports:', error);
+      console.warn("Failed to flush error reports:", error);
       // Keep reports for retry
     }
   };
@@ -173,33 +193,36 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
   const getMetrics = (): ErrorMetrics => {
     const currentReports = reports();
     const now = Date.now();
-    const oneHourAgo = now - (60 * 60 * 1000);
-    
+    const oneHourAgo = now - 60 * 60 * 1000;
+
     // Filter reports from last hour
-    const recentReports = currentReports.filter(report => report.timestamp > oneHourAgo);
-    
+    const recentReports = currentReports.filter(
+      (report) => report.timestamp > oneHourAgo,
+    );
+
     // Calculate metrics
     const reportsByCategory: Record<string, number> = {};
     const reportsBySeverity: Record<string, number> = {};
-    
-    currentReports.forEach(report => {
+
+    currentReports.forEach((report) => {
       const category = report.context.category;
       const severity = report.context.severity;
-      
+
       reportsByCategory[category] = (reportsByCategory[category] || 0) + 1;
       reportsBySeverity[severity] = (reportsBySeverity[severity] || 0) + 1;
     });
 
-    const lastReport = currentReports.length > 0 
-      ? Math.max(...currentReports.map(r => r.timestamp))
-      : undefined;
+    const lastReport =
+      currentReports.length > 0
+        ? Math.max(...currentReports.map((r) => r.timestamp))
+        : undefined;
 
     return {
       totalReports: currentReports.length,
       reportsByCategory,
       reportsBySeverity,
       averageReportsPerHour: recentReports.length,
-      lastReportTime: lastReport
+      lastReportTime: lastReport,
     };
   };
 
@@ -215,6 +238,6 @@ export function useErrorReporting(options: UseErrorReportingOptions = { enabled:
     reportError,
     flushReports,
     clearReports,
-    getMetrics
+    getMetrics,
   };
 }

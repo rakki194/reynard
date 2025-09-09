@@ -1,7 +1,14 @@
-import { Component, createEffect, onMount, onCleanup, createSignal, type JSX } from 'solid-js';
-import loader from '@monaco-editor/loader';
-import type * as monaco from 'monaco-editor';
-import './MonacoEditor.css';
+import {
+  Component,
+  createEffect,
+  onMount,
+  onCleanup,
+  createSignal,
+  type JSX,
+} from "solid-js";
+import loader from "@monaco-editor/loader";
+import type * as monaco from "monaco-editor";
+import "./MonacoEditor.css";
 
 export interface MonacoEditorProps {
   value?: string;
@@ -9,7 +16,10 @@ export interface MonacoEditorProps {
   theme?: string;
   options?: monaco.editor.IStandaloneEditorConstructionOptions;
   onChange?: (value: string | undefined) => void;
-  onMount?: (editor: monaco.editor.IStandaloneCodeEditor, monaco: typeof import('monaco-editor')) => void;
+  onMount?: (
+    editor: monaco.editor.IStandaloneCodeEditor,
+    monaco: typeof import("monaco-editor"),
+  ) => void;
   onValidate?: (markers: monaco.editor.IMarker[]) => void;
   width?: string | number;
   height?: string | number;
@@ -19,8 +29,9 @@ export interface MonacoEditorProps {
 
 export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
-  const [editor, setEditor] = createSignal<monaco.editor.IStandaloneCodeEditor>();
-  const [monaco, setMonaco] = createSignal<typeof import('monaco-editor')>();
+  const [editor, setEditor] =
+    createSignal<monaco.editor.IStandaloneCodeEditor>();
+  const [monaco, setMonaco] = createSignal<typeof import("monaco-editor")>();
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
 
@@ -31,8 +42,10 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
       setMonaco(monacoInstance);
       setIsLoading(false);
     } catch (err) {
-      console.error('Failed to load Monaco Editor:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load Monaco Editor');
+      console.error("Failed to load Monaco Editor:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to load Monaco Editor",
+      );
       setIsLoading(false);
     }
   });
@@ -41,13 +54,13 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
   createEffect(() => {
     const container = containerRef();
     const monacoInstance = monaco();
-    
+
     if (container && monacoInstance && !editor()) {
       try {
         const editorInstance = monacoInstance.editor.create(container, {
-          value: props.value || '',
-          language: props.language || 'javascript',
-          theme: props.theme || 'vs',
+          value: props.value || "",
+          language: props.language || "javascript",
+          theme: props.theme || "vs",
           ...props.options,
         });
 
@@ -57,17 +70,20 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
         if (props.onValidate) {
           const model = editorInstance.getModel();
           if (model) {
-            const markers = monacoInstance.editor.getModelMarkers({ resource: model.uri });
+            const markers = monacoInstance.editor.getModelMarkers({
+              resource: model.uri,
+            });
             props.onValidate?.(markers);
           }
         }
 
         // Call onMount callback
         props.onMount?.(editorInstance, monacoInstance);
-
       } catch (err) {
-        console.error('Failed to create Monaco editor:', err);
-        setError(err instanceof Error ? err.message : 'Failed to create editor');
+        console.error("Failed to create Monaco editor:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to create editor",
+        );
       }
     }
   });
@@ -81,7 +97,7 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
         const value = editorInstance.getValue();
         onChange(value);
       });
-      
+
       // Return cleanup function
       return () => disposable.dispose();
     }
@@ -137,26 +153,22 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
   return (
     <div
       ref={setContainerRef}
-      class={`monaco-editor-wrapper ${props.height ? 'monaco-editor-wrapper--custom-height' : ''} ${props.width ? 'monaco-editor-wrapper--custom-width' : ''} ${props.className || ''}`}
-      style={{
-        '--editor-height': props.height || '400px',
-        '--editor-width': props.width || '100%',
-        height: props.height || '400px',
-        width: props.width || '100%',
-        'min-height': '200px',
-        ...props.style,
-      } as JSX.CSSProperties}
+      class={`monaco-editor-wrapper ${props.height ? "monaco-editor-wrapper--custom-height" : ""} ${props.width ? "monaco-editor-wrapper--custom-width" : ""} ${props.className || ""}`}
+      style={
+        {
+          "--editor-height": props.height || "400px",
+          "--editor-width": props.width || "100%",
+          height: props.height || "400px",
+          width: props.width || "100%",
+          "min-height": "200px",
+          ...props.style,
+        } as JSX.CSSProperties
+      }
     >
       {isLoading() && (
-        <div class="monaco-editor-loading">
-          Loading Monaco Editor...
-        </div>
+        <div class="monaco-editor-loading">Loading Monaco Editor...</div>
       )}
-      {error() && (
-        <div class="monaco-editor-error">
-          Error: {error()}
-        </div>
-      )}
+      {error() && <div class="monaco-editor-error">Error: {error()}</div>}
     </div>
   );
 };

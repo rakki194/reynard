@@ -7,6 +7,7 @@ This document provides a comprehensive overview of the testing strategy and impl
 The test suite is organized into several categories:
 
 ### 1. Component Tests (`BoundingBoxEditor.test.tsx`)
+
 - **Purpose**: Unit tests for the main BoundingBoxEditor component
 - **Coverage**: Component rendering, props handling, user interactions, configuration options
 - **Key Areas**:
@@ -18,11 +19,13 @@ The test suite is organized into several categories:
   - Error handling
 
 ### 2. Composable Tests
+
 - **`useBoxResize.test.ts`**: Tests for the resize functionality
 - **`useBoxMove.test.ts`**: Tests for the move functionality
 - **Coverage**: State management, constraints, event handling, configuration
 
 ### 3. Integration Tests (`BoundingBoxEditor.integration.test.tsx`)
+
 - **Purpose**: End-to-end user workflows and complex scenarios
 - **Coverage**:
   - Complete user workflows (create, edit, delete)
@@ -32,6 +35,7 @@ The test suite is organized into several categories:
   - Error recovery
 
 ### 4. Accessibility Tests (`BoundingBoxEditor.accessibility.test.tsx`)
+
 - **Purpose**: WCAG compliance and accessibility features
 - **Coverage**:
   - ARIA labels and roles
@@ -43,13 +47,16 @@ The test suite is organized into several categories:
 ## Test Configuration
 
 ### Dependencies
+
 - **Vitest**: Test runner and assertion library
 - **@solidjs/testing-library**: SolidJS component testing utilities
 - **@testing-library/jest-dom**: Additional DOM matchers
 - **jsdom**: DOM environment for testing
 
 ### Setup
+
 The test setup (`src/test-setup.ts`) includes:
+
 - Fabric.js mocking for canvas operations
 - Jest DOM matchers for better assertions
 - Global test configuration
@@ -57,6 +64,7 @@ The test setup (`src/test-setup.ts`) includes:
 ## Running Tests
 
 ### Available Scripts
+
 ```bash
 # Run all tests in watch mode
 npm run test
@@ -75,6 +83,7 @@ npm run test:watch
 ```
 
 ### Test Categories
+
 ```bash
 # Run only component tests
 npm run test -- --grep "BoundingBoxEditor"
@@ -92,6 +101,7 @@ npm run test -- --grep "Accessibility"
 ## Test Coverage
 
 ### Current Coverage Areas
+
 - ✅ Component rendering and initialization
 - ✅ User interactions (click, keyboard)
 - ✅ Event handling and callbacks
@@ -102,6 +112,7 @@ npm run test -- --grep "Accessibility"
 - ✅ Performance scenarios
 
 ### Coverage Goals
+
 - **Statements**: 90%+
 - **Branches**: 85%+
 - **Functions**: 90%+
@@ -110,14 +121,18 @@ npm run test -- --grep "Accessibility"
 ## Mocking Strategy
 
 ### Fabric.js Mocking
+
 The test suite includes comprehensive mocking for Fabric.js:
+
 - Canvas operations (add, remove, clear, render)
 - Event handling (mouse events, object selection)
 - Object creation and manipulation
 - Pointer and coordinate calculations
 
 ### Event Handler Mocking
+
 All event handlers are mocked using Vitest's `vi.fn()` to:
+
 - Track function calls and arguments
 - Verify event propagation
 - Test callback behavior
@@ -125,6 +140,7 @@ All event handlers are mocked using Vitest's `vi.fn()` to:
 ## Testing Patterns
 
 ### Component Testing
+
 ```typescript
 // Render component with props
 render(() => (
@@ -148,6 +164,7 @@ await waitFor(() => {
 ```
 
 ### Composable Testing
+
 ```typescript
 // Initialize composable
 const resizeEngine = useBoxResize({
@@ -155,18 +172,19 @@ const resizeEngine = useBoxResize({
   minHeight: 10,
   maxWidth: 1920,
   maxHeight: 1080,
-  onResizeStart: mockCallback
+  onResizeStart: mockCallback,
 });
 
 // Test functionality
-resizeEngine.startResize('box-1', 'se', { x: 100, y: 100 });
-expect(mockCallback).toHaveBeenCalledWith('box-1');
+resizeEngine.startResize("box-1", "se", { x: 100, y: 100 });
+expect(mockCallback).toHaveBeenCalledWith("box-1");
 ```
 
 ### Integration Testing
+
 ```typescript
 // Test complete workflows
-it('should handle complete box creation workflow', async () => {
+it("should handle complete box creation workflow", async () => {
   // Simulate canvas interactions
   fireEvent.mouseDown(canvas, { clientX: 100, clientY: 100 });
   fireEvent.mouseMove(canvas, { clientX: 200, clientY: 200 });
@@ -182,26 +200,31 @@ it('should handle complete box creation workflow', async () => {
 ## Best Practices
 
 ### 1. Test Organization
+
 - Group related tests using `describe` blocks
 - Use descriptive test names that explain the expected behavior
 - Keep tests focused on single responsibilities
 
 ### 2. Mocking
+
 - Mock external dependencies (Fabric.js, DOM APIs)
 - Use realistic mock data that matches production scenarios
 - Reset mocks between tests to avoid interference
 
 ### 3. Assertions
+
 - Use specific assertions that test the exact behavior
 - Test both positive and negative cases
 - Verify side effects and state changes
 
 ### 4. Async Testing
+
 - Use `waitFor` for async operations
 - Test loading states and error conditions
 - Handle timing issues with proper async/await patterns
 
 ### 5. Accessibility Testing
+
 - Test keyboard navigation paths
 - Verify ARIA labels and roles
 - Check focus management
@@ -210,24 +233,29 @@ it('should handle complete box creation workflow', async () => {
 ## Common Issues and Solutions
 
 ### 1. Canvas Testing
+
 **Issue**: Fabric.js canvas operations are difficult to test
 **Solution**: Comprehensive mocking of Fabric.js APIs with realistic behavior
 
 ### 2. Event Timing
+
 **Issue**: Canvas events may not fire in the expected order
 **Solution**: Use `waitFor` and proper async/await patterns
 
 ### 3. State Synchronization
+
 **Issue**: Component state may not update immediately
 **Solution**: Test state changes with `waitFor` and verify final state
 
 ### 4. Mock Cleanup
+
 **Issue**: Mocks may interfere between tests
 **Solution**: Use `beforeEach` and `afterEach` to reset mocks
 
 ## Performance Testing
 
 ### Large Dataset Testing
+
 ```typescript
 it('should handle large numbers of boxes efficiently', async () => {
   const manyBoxes = Array.from({ length: 100 }, (_, i) => ({
@@ -253,8 +281,9 @@ it('should handle large numbers of boxes efficiently', async () => {
 ```
 
 ### Rapid Interaction Testing
+
 ```typescript
-it('should handle rapid user interactions', async () => {
+it("should handle rapid user interactions", async () => {
   // Simulate rapid clicks
   for (let i = 0; i < 10; i++) {
     fireEvent.click(editButton);
@@ -269,13 +298,17 @@ it('should handle rapid user interactions', async () => {
 ## Continuous Integration
 
 ### GitHub Actions
+
 The test suite is designed to run in CI environments:
+
 - Fast execution with parallel test runs
 - Comprehensive coverage reporting
 - Linting and type checking integration
 
 ### Pre-commit Hooks
+
 Recommended pre-commit hooks:
+
 - Run tests before committing
 - Check test coverage thresholds
 - Lint test files
@@ -283,12 +316,14 @@ Recommended pre-commit hooks:
 ## Future Enhancements
 
 ### Planned Improvements
+
 1. **Visual Regression Testing**: Screenshot comparisons for UI changes
 2. **E2E Testing**: Full browser automation with Playwright
 3. **Performance Benchmarking**: Automated performance regression detection
 4. **Accessibility Auditing**: Automated WCAG compliance checking
 
 ### Test Data Management
+
 - Centralized test data factories
 - Realistic image data for testing
 - Edge case data sets
@@ -296,16 +331,17 @@ Recommended pre-commit hooks:
 ## Contributing
 
 ### Adding New Tests
+
 1. Follow the existing test structure and naming conventions
 2. Add tests for new features and bug fixes
 3. Ensure tests are deterministic and don't depend on external state
 4. Update this documentation when adding new test categories
 
 ### Test Review Checklist
+
 - [ ] Tests cover the main functionality
 - [ ] Edge cases and error conditions are tested
 - [ ] Accessibility features are verified
 - [ ] Performance implications are considered
 - [ ] Tests are maintainable and readable
 - [ ] Mocking is appropriate and realistic
-

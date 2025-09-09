@@ -1,15 +1,15 @@
 // Three.js animation composable for SolidJS
 // Adapted from yipyap's animation system
 
-import { createSignal, onCleanup, createMemo } from 'solid-js';
-import type { 
-  PointAnimation, 
-  CameraAnimation, 
-  ClusterAnimation, 
+import { createSignal, onCleanup, createMemo } from "solid-js";
+import type {
+  PointAnimation,
+  CameraAnimation,
+  ClusterAnimation,
   EasingType,
-  EmbeddingPoint
-} from '../types';
-import { Easing, applyEasing } from '../utils/easing';
+  EmbeddingPoint,
+} from "../types";
+import { Easing, applyEasing } from "../utils/easing";
 
 // Animation state interface
 interface AnimationState {
@@ -22,13 +22,21 @@ interface AnimationState {
 
 export function useThreeJSAnimations() {
   // Animation state
-  const [currentAnimation, setCurrentAnimation] = createSignal<AnimationState | null>(null);
-  const [pointAnimations, setPointAnimations] = createSignal<PointAnimation[]>([]);
-  const [cameraAnimation, setCameraAnimation] = createSignal<CameraAnimation | null>(null);
-  const [clusterAnimations, setClusterAnimations] = createSignal<ClusterAnimation[]>([]);
+  const [currentAnimation, setCurrentAnimation] =
+    createSignal<AnimationState | null>(null);
+  const [pointAnimations, setPointAnimations] = createSignal<PointAnimation[]>(
+    [],
+  );
+  const [cameraAnimation, setCameraAnimation] =
+    createSignal<CameraAnimation | null>(null);
+  const [clusterAnimations, setClusterAnimations] = createSignal<
+    ClusterAnimation[]
+  >([]);
 
   // Animation frame ID
-  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(null);
+  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(
+    null,
+  );
 
   // Check if animations are disabled
   const isAnimationsDisabled = createMemo(() => false); // Can be connected to app settings
@@ -40,25 +48,28 @@ export function useThreeJSAnimations() {
     startPoints: EmbeddingPoint[],
     endPoints: EmbeddingPoint[],
     duration: number = 1000,
-    easing: EasingType = 'easeInOutCubic'
+    easing: EasingType = "easeInOutCubic",
   ): Promise<void> => {
     if (isAnimationsDisabled()) {
       return Promise.resolve();
     }
 
-    const animations: PointAnimation[] = startPoints.map((startPoint, _index) => {
-      const endPoint = endPoints.find(p => p.id === startPoint.id) || startPoint;
-      return {
-        id: startPoint.id,
-        startPosition: startPoint.position,
-        endPosition: endPoint.position,
-        startColor: startPoint.color || [1, 1, 1],
-        endColor: endPoint.color || [1, 1, 1],
-        startSize: startPoint.size || 1,
-        endSize: endPoint.size || 1,
-        delay: Math.random() * 200, // Stagger animation start
-      };
-    });
+    const animations: PointAnimation[] = startPoints.map(
+      (startPoint, _index) => {
+        const endPoint =
+          endPoints.find((p) => p.id === startPoint.id) || startPoint;
+        return {
+          id: startPoint.id,
+          startPosition: startPoint.position,
+          endPosition: endPoint.position,
+          startColor: startPoint.color || [1, 1, 1],
+          endColor: endPoint.color || [1, 1, 1],
+          startSize: startPoint.size || 1,
+          endSize: endPoint.size || 1,
+          delay: Math.random() * 200, // Stagger animation start
+        };
+      },
+    );
 
     setPointAnimations(animations);
 
@@ -72,7 +83,7 @@ export function useThreeJSAnimations() {
 
     setCurrentAnimation(animationState);
 
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       const animate = (currentTime: number) => {
         const elapsed = currentTime - animationState.startTime;
         const progress = Math.min(elapsed / duration, 1);
@@ -105,7 +116,7 @@ export function useThreeJSAnimations() {
     center: [number, number, number],
     expansionRadius: number = 2,
     duration: number = 800,
-    easing: EasingType = 'easeOutElastic'
+    easing: EasingType = "easeOutElastic",
   ): Promise<void> => {
     if (isAnimationsDisabled()) {
       return Promise.resolve();
@@ -138,9 +149,9 @@ export function useThreeJSAnimations() {
       easing,
     };
 
-    setClusterAnimations(prev => [...prev, clusterAnimation]);
+    setClusterAnimations((prev) => [...prev, clusterAnimation]);
 
-    return new Promise<void>(resolve => {
+    return new Promise<void>((resolve) => {
       const startTime = performance.now();
 
       const animate = (currentTime: number) => {
@@ -149,19 +160,21 @@ export function useThreeJSAnimations() {
         const easedProgress = applyEasing(progress, easing);
 
         // Update cluster animation progress
-        setClusterAnimations(prev =>
-          prev.map(cluster => 
-            cluster.clusterId === clusterId 
-              ? { ...cluster, progress: easedProgress } 
-              : cluster
-          )
+        setClusterAnimations((prev) =>
+          prev.map((cluster) =>
+            cluster.clusterId === clusterId
+              ? { ...cluster, progress: easedProgress }
+              : cluster,
+          ),
         );
 
         if (progress < 1) {
           const id = requestAnimationFrame(animate);
           setAnimationFrameId(id);
         } else {
-          setClusterAnimations(prev => prev.filter(c => c.clusterId !== clusterId));
+          setClusterAnimations((prev) =>
+            prev.filter((c) => c.clusterId !== clusterId),
+          );
           resolve();
         }
       };
@@ -178,7 +191,7 @@ export function useThreeJSAnimations() {
     targetPosition: [number, number, number],
     targetLookAt: [number, number, number],
     duration: number = 1500,
-    easing: EasingType = 'easeInOutCubic'
+    easing: EasingType = "easeInOutCubic",
   ): Promise<CameraAnimation> => {
     if (isAnimationsDisabled()) {
       return Promise.resolve({
@@ -191,7 +204,7 @@ export function useThreeJSAnimations() {
       });
     }
 
-    return new Promise<CameraAnimation>(resolve => {
+    return new Promise<CameraAnimation>((resolve) => {
       const animation: CameraAnimation = {
         startPosition: [0, 0, 0], // Will be set by component
         endPosition: targetPosition,
@@ -218,43 +231,74 @@ export function useThreeJSAnimations() {
       return originalPoints;
     }
 
-    return originalPoints.map(point => {
+    return originalPoints.map((point) => {
       // Check for point animation
-      const pointAnim = pointAnims.find(pa => pa.id === point.id);
+      const pointAnim = pointAnims.find((pa) => pa.id === point.id);
       if (pointAnim && currentAnim) {
-        const progress = Math.max(0, currentAnim.progress - pointAnim.delay / currentAnim.duration);
-        const easedProgress = applyEasing(Math.max(0, Math.min(1, progress)), currentAnim.easing);
+        const progress = Math.max(
+          0,
+          currentAnim.progress - pointAnim.delay / currentAnim.duration,
+        );
+        const easedProgress = applyEasing(
+          Math.max(0, Math.min(1, progress)),
+          currentAnim.easing,
+        );
 
         return {
           ...point,
           position: [
-            pointAnim.startPosition[0] + (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
-            pointAnim.startPosition[1] + (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
-            pointAnim.startPosition[2] + (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
+            pointAnim.startPosition[0] +
+              (pointAnim.endPosition[0] - pointAnim.startPosition[0]) *
+                easedProgress,
+            pointAnim.startPosition[1] +
+              (pointAnim.endPosition[1] - pointAnim.startPosition[1]) *
+                easedProgress,
+            pointAnim.startPosition[2] +
+              (pointAnim.endPosition[2] - pointAnim.startPosition[2]) *
+                easedProgress,
           ],
           color: [
-            pointAnim.startColor[0] + (pointAnim.endColor[0] - pointAnim.startColor[0]) * easedProgress,
-            pointAnim.startColor[1] + (pointAnim.endColor[1] - pointAnim.startColor[1]) * easedProgress,
-            pointAnim.startColor[2] + (pointAnim.endColor[2] - pointAnim.startColor[2]) * easedProgress,
+            pointAnim.startColor[0] +
+              (pointAnim.endColor[0] - pointAnim.startColor[0]) * easedProgress,
+            pointAnim.startColor[1] +
+              (pointAnim.endColor[1] - pointAnim.startColor[1]) * easedProgress,
+            pointAnim.startColor[2] +
+              (pointAnim.endColor[2] - pointAnim.startColor[2]) * easedProgress,
           ],
-          size: pointAnim.startSize + (pointAnim.endSize - pointAnim.startSize) * easedProgress,
+          size:
+            pointAnim.startSize +
+            (pointAnim.endSize - pointAnim.startSize) * easedProgress,
         };
       }
 
       // Check for cluster animation
-      const clusterAnim = clusterAnims.find(ca => ca.points.some(pa => pa.id === point.id));
+      const clusterAnim = clusterAnims.find((ca) =>
+        ca.points.some((pa) => pa.id === point.id),
+      );
       if (clusterAnim && clusterAnim.progress !== undefined) {
-        const pointAnim = clusterAnim.points.find(pa => pa.id === point.id);
+        const pointAnim = clusterAnim.points.find((pa) => pa.id === point.id);
         if (pointAnim) {
-          const progress = Math.max(0, clusterAnim.progress - pointAnim.delay / clusterAnim.duration);
-          const easedProgress = applyEasing(Math.max(0, Math.min(1, progress)), clusterAnim.easing);
+          const progress = Math.max(
+            0,
+            clusterAnim.progress - pointAnim.delay / clusterAnim.duration,
+          );
+          const easedProgress = applyEasing(
+            Math.max(0, Math.min(1, progress)),
+            clusterAnim.easing,
+          );
 
           return {
             ...point,
             position: [
-              pointAnim.startPosition[0] + (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
-              pointAnim.startPosition[1] + (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
-              pointAnim.startPosition[2] + (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
+              pointAnim.startPosition[0] +
+                (pointAnim.endPosition[0] - pointAnim.startPosition[0]) *
+                  easedProgress,
+              pointAnim.startPosition[1] +
+                (pointAnim.endPosition[1] - pointAnim.startPosition[1]) *
+                  easedProgress,
+              pointAnim.startPosition[2] +
+                (pointAnim.endPosition[2] - pointAnim.startPosition[2]) *
+                  easedProgress,
             ],
           };
         }
@@ -278,14 +322,20 @@ export function useThreeJSAnimations() {
 
     return {
       position: [
-        anim.startPosition[0] + (anim.endPosition[0] - anim.startPosition[0]) * progress,
-        anim.startPosition[1] + (anim.endPosition[1] - anim.startPosition[1]) * progress,
-        anim.startPosition[2] + (anim.endPosition[2] - anim.startPosition[2]) * progress,
+        anim.startPosition[0] +
+          (anim.endPosition[0] - anim.startPosition[0]) * progress,
+        anim.startPosition[1] +
+          (anim.endPosition[1] - anim.startPosition[1]) * progress,
+        anim.startPosition[2] +
+          (anim.endPosition[2] - anim.startPosition[2]) * progress,
       ],
       target: [
-        anim.startTarget[0] + (anim.endTarget[0] - anim.startTarget[0]) * progress,
-        anim.startTarget[1] + (anim.endTarget[1] - anim.startTarget[1]) * progress,
-        anim.startTarget[2] + (anim.endTarget[2] - anim.startTarget[2]) * progress,
+        anim.startTarget[0] +
+          (anim.endTarget[0] - anim.startTarget[0]) * progress,
+        anim.startTarget[1] +
+          (anim.endTarget[1] - anim.startTarget[1]) * progress,
+        anim.startTarget[2] +
+          (anim.endTarget[2] - anim.startTarget[2]) * progress,
       ],
     };
   };
@@ -342,7 +392,7 @@ export function useThreeJSAnimations() {
         setClusterAnimations([]);
       } else {
         // Update animation progress
-        setCurrentAnimation(prev => prev ? { ...prev, progress } : null);
+        setCurrentAnimation((prev) => (prev ? { ...prev, progress } : null));
       }
     },
 

@@ -103,11 +103,11 @@
     left: 10px;
     max-width: none;
   }
-  
+
   .notification-toast {
     padding: 12px;
   }
-  
+
   .notification-toast__message {
     font-size: 13px;
   }

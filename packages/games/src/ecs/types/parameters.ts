@@ -1,10 +1,10 @@
 /**
  * @fileoverview System parameter types for dependency injection.
- * 
+ *
  * System parameters allow systems to declare their dependencies
  * in a type-safe way, enabling automatic dependency injection
  * and parallel execution analysis.
- * 
+ *
  * @example
  * ```typescript
  * function movementSystem(
@@ -15,23 +15,23 @@
  *   // System implementation
  * }
  * ```
- * 
+ *
  * @performance Parameters enable automatic dependency resolution and parallel execution
  * @author Reynard ECS Team
  * @since 1.0.0
  */
 
-import { Component, Resource } from './core';
-import { ComponentType, ResourceType } from './storage';
-import { QueryFilter } from './query';
+import { Component, Resource } from "./core";
+import { ComponentType, ResourceType } from "./storage";
+import { QueryFilter } from "./query";
 
 /**
  * System parameter types for dependency injection.
- * 
+ *
  * System parameters allow systems to declare their dependencies
  * in a type-safe way, enabling automatic dependency injection
  * and parallel execution analysis.
- * 
+ *
  * @since 1.0.0
  */
 export interface SystemParam {
@@ -41,9 +41,9 @@ export interface SystemParam {
 
 /**
  * Query parameter for systems that need to query components.
- * 
+ *
  * @template T Tuple of component types to query
- * 
+ *
  * @since 1.0.0
  */
 export interface QueryParam<T extends Component[]> extends SystemParam {
@@ -55,9 +55,9 @@ export interface QueryParam<T extends Component[]> extends SystemParam {
 
 /**
  * Resource parameter for systems that need read-only access to a resource.
- * 
+ *
  * @template T The resource type
- * 
+ *
  * @since 1.0.0
  */
 export interface ResParam<T extends Resource> extends SystemParam {
@@ -67,9 +67,9 @@ export interface ResParam<T extends Resource> extends SystemParam {
 
 /**
  * Mutable resource parameter for systems that need to modify a resource.
- * 
+ *
  * @template T The resource type
- * 
+ *
  * @since 1.0.0
  */
 export interface ResMutParam<T extends Resource> extends SystemParam {
@@ -79,7 +79,7 @@ export interface ResMutParam<T extends Resource> extends SystemParam {
 
 /**
  * Commands parameter for systems that need to modify the world.
- * 
+ *
  * @since 1.0.0
  */
 export interface CommandsParam extends SystemParam {
@@ -89,9 +89,9 @@ export interface CommandsParam extends SystemParam {
 
 /**
  * Local parameter for systems that need local state.
- * 
+ *
  * @template T The type of local state
- * 
+ *
  * @since 1.0.0
  */
 export interface LocalParam<T> extends SystemParam {
@@ -101,9 +101,9 @@ export interface LocalParam<T> extends SystemParam {
 
 /**
  * Event reader parameter for systems that need to read events.
- * 
+ *
  * @template T The event data type
- * 
+ *
  * @since 1.0.0
  */
 export interface EventReaderParam<T = unknown> extends SystemParam {
@@ -115,9 +115,9 @@ export interface EventReaderParam<T = unknown> extends SystemParam {
 
 /**
  * Event writer parameter for systems that need to send events.
- * 
+ *
  * @template T The event data type
- * 
+ *
  * @since 1.0.0
  */
 export interface EventWriterParam<T = unknown> extends SystemParam {

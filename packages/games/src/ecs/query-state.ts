@@ -1,8 +1,8 @@
 // Query state management for caching and optimization
 
-import { Entity, Component, ComponentType, QueryFilter } from './types';
-import { ComponentStorage } from './component';
-import { ChangeDetection } from './change-detection';
+import { Entity, Component, ComponentType, QueryFilter } from "./types";
+import { ComponentStorage } from "./component";
+import { ChangeDetection } from "./change-detection";
 
 /**
  * Query state for caching query results and optimizing performance.
@@ -27,10 +27,10 @@ export class QueryStateManager {
    */
   getOrCreateQueryState<T extends Component[]>(
     componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter
+    filter: QueryFilter,
   ): QueryState<T> {
     const key = this.getQueryKey(componentTypes, filter);
-    
+
     let state = this.queryStates.get(key);
     if (!state) {
       state = {
@@ -38,7 +38,7 @@ export class QueryStateManager {
         filter,
         lastUpdate: 0,
         cachedResults: [],
-        isDirty: true
+        isDirty: true,
       };
       this.queryStates.set(key, state);
     }
@@ -51,7 +51,7 @@ export class QueryStateManager {
    */
   updateQueryState<T extends Component[]>(
     state: QueryState<T>,
-    results: Entity[]
+    results: Entity[],
   ): void {
     state.cachedResults.length = 0;
     state.cachedResults.push(...results);
@@ -110,9 +110,12 @@ export class QueryStateManager {
    */
   private getQueryKey<T extends Component[]>(
     componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter
+    filter: QueryFilter,
   ): string {
-    const componentIds = componentTypes.map(ct => ct.id).sort().join(',');
+    const componentIds = componentTypes
+      .map((ct) => ct.id)
+      .sort()
+      .join(",");
     const filterKey = this.getFilterKey(filter);
     return `${componentIds}:${filterKey}`;
   }
@@ -122,24 +125,44 @@ export class QueryStateManager {
    */
   private getFilterKey(filter: QueryFilter): string {
     const parts: string[] = [];
-    
+
     if (filter.with) {
-      parts.push(`with:${filter.with.map(ct => ct.id).sort().join(',')}`);
+      parts.push(
+        `with:${filter.with
+          .map((ct) => ct.id)
+          .sort()
+          .join(",")}`,
+      );
     }
-    
+
     if (filter.without) {
-      parts.push(`without:${filter.without.map(ct => ct.id).sort().join(',')}`);
+      parts.push(
+        `without:${filter.without
+          .map((ct) => ct.id)
+          .sort()
+          .join(",")}`,
+      );
     }
-    
+
     if (filter.added) {
-      parts.push(`added:${filter.added.map(ct => ct.id).sort().join(',')}`);
+      parts.push(
+        `added:${filter.added
+          .map((ct) => ct.id)
+          .sort()
+          .join(",")}`,
+      );
     }
-    
+
     if (filter.changed) {
-      parts.push(`changed:${filter.changed.map(ct => ct.id).sort().join(',')}`);
+      parts.push(
+        `changed:${filter.changed
+          .map((ct) => ct.id)
+          .sort()
+          .join(",")}`,
+      );
     }
-    
-    return parts.join('|');
+
+    return parts.join("|");
   }
 }
 
@@ -153,7 +176,9 @@ export class QueryStateBuilder<T extends Component[]> {
   /**
    * Adds a component type to the query.
    */
-  with<U extends Component>(componentType: ComponentType<U>): QueryStateBuilder<[...T, U]> {
+  with<U extends Component>(
+    componentType: ComponentType<U>,
+  ): QueryStateBuilder<[...T, U]> {
     this.componentTypes.push(componentType as ComponentType<T[number]>);
     return this as unknown as QueryStateBuilder<[...T, U]>;
   }
@@ -170,7 +195,10 @@ export class QueryStateBuilder<T extends Component[]> {
    * Builds the query state.
    */
   build(manager: QueryStateManager): QueryState<T> {
-    return manager.getOrCreateQueryState(this.componentTypes as ComponentType<T[number]>[], this.filter);
+    return manager.getOrCreateQueryState(
+      this.componentTypes as ComponentType<T[number]>[],
+      this.filter,
+    );
   }
 }
 
@@ -180,4 +208,3 @@ export class QueryStateBuilder<T extends Component[]> {
 export function queryState<T extends Component[] = []>(): QueryStateBuilder<T> {
   return new QueryStateBuilder<T>();
 }
-

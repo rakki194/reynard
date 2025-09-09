@@ -10,7 +10,11 @@ export class TableUtils {
   /**
    * Validate table structure
    */
-  static validateTable(state: StreamingParserState, addError: (error: ParserError) => void, addWarning: (warning: string) => void): boolean {
+  static validateTable(
+    state: StreamingParserState,
+    addError: (error: ParserError) => void,
+    addWarning: (warning: string) => void,
+  ): boolean {
     if (!state.inTable) {
       return true;
     }
@@ -30,7 +34,9 @@ export class TableUtils {
     for (let i = 0; i < state.tableRows.length; i++) {
       const row = state.tableRows[i];
       if (row.length !== headerCount) {
-        addWarning(`Row ${i + 1} has ${row.length} cells, expected ${headerCount}`);
+        addWarning(
+          `Row ${i + 1} has ${row.length} cells, expected ${headerCount}`,
+        );
       }
     }
 
@@ -51,7 +57,9 @@ export class TableUtils {
     if (state.tableHeaders.length > 0) {
       html += "  <thead>\n    <tr>\n";
       for (const header of state.tableHeaders) {
-        const align = header.alignment ? ` style="text-align: ${header.alignment}"` : "";
+        const align = header.alignment
+          ? ` style="text-align: ${header.alignment}"`
+          : "";
         html += `      <th${align}>${header.content}</th>\n`;
       }
       html += "    </tr>\n  </thead>\n";
@@ -65,7 +73,9 @@ export class TableUtils {
         for (let i = 0; i < row.length; i++) {
           const cell = row[i];
           const header = state.tableHeaders[i];
-          const align = header?.alignment ? ` style="text-align: ${header.alignment}"` : "";
+          const align = header?.alignment
+            ? ` style="text-align: ${header.alignment}"`
+            : "";
           html += `      <td${align}>${cell.content}</td>\n`;
         }
         html += "    </tr>\n";

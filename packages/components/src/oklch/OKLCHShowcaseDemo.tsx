@@ -5,10 +5,7 @@
 
 import { Component } from "solid-js";
 import { GoldenSpiralColors, GoldenAngleDemo } from "../utils";
-import {
-  OKLCHHeroSection as HeroSection,
-  TechnicalInfo
-} from ".";
+import { OKLCHHeroSection as HeroSection, TechnicalInfo } from ".";
 
 interface ColorVariations {
   base: string;

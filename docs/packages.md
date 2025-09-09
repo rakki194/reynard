@@ -30,11 +30,7 @@ The foundation of the Reynard framework, providing essential utilities, composab
 #### Core Example Usage
 
 ```tsx
-import {
-  useNotifications,
-  useLocalStorage,
-  useDebounce,
-} from "reynard-core";
+import { useNotifications, useLocalStorage, useDebounce } from "reynard-core";
 
 function MyComponent() {
   const { notify } = useNotifications();
@@ -47,8 +43,8 @@ function MyComponent() {
         Show Notification
       </button>
       <p>Count: {count()}</p>
-      <input 
-        value={searchTerm()} 
+      <input
+        value={searchTerm()}
         onInput={(e) => setSearchTerm(e.target.value)}
         placeholder="Search..."
       />
@@ -85,7 +81,7 @@ function App() {
 
 function MyComponent() {
   const { theme, setTheme } = useTheme();
-  
+
   return (
     <div>
       <p>Current theme: {theme}</p>
@@ -114,13 +110,7 @@ Production-ready SolidJS component library with comprehensive theming and access
 #### Components Example Usage
 
 ```tsx
-import {
-  Button,
-  Card,
-  TextField,
-  Modal,
-  Tabs,
-} from "reynard-components";
+import { Button, Card, TextField, Modal, Tabs } from "reynard-components";
 
 function MyApp() {
   const [isModalOpen, setIsModalOpen] = createSignal(false);
@@ -207,7 +197,7 @@ function ChatApp() {
         onMessageSent={(message) => console.log("Sent:", message)}
         onMessageReceived={(message) => console.log("Received:", message)}
       />
-      
+
       <P2PChatContainer
         currentUser={{ id: "user1", name: "Alice", status: "online" }}
         realtimeEndpoint="ws://localhost:8080"
@@ -356,12 +346,7 @@ Advanced data visualization components built on Chart.js with real-time updates 
 #### Charts Example Usage
 
 ```tsx
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  TimeSeriesChart,
-} from "reynard-charts";
+import { LineChart, BarChart, PieChart, TimeSeriesChart } from "reynard-charts";
 
 function Dashboard() {
   const salesData = {
@@ -510,11 +495,7 @@ Comprehensive configuration management system with validation, persistence, and 
 #### Settings Example Usage
 
 ```tsx
-import {
-  SettingsPanel,
-  SettingsProvider,
-  useSettings,
-} from "reynard-settings";
+import { SettingsPanel, SettingsProvider, useSettings } from "reynard-settings";
 
 const settingsSchema = {
   appearance: {
@@ -600,7 +581,7 @@ function AlgorithmDemo() {
 
   // Spatial hashing
   const spatialHash = new SpatialHash({ cellSize: 100 });
-  spatialHash.insert({ id: '1', x: 50, y: 50, data: { name: 'object1' } });
+  spatialHash.insert({ id: "1", x: 50, y: 50, data: { name: "object1" } });
   const nearby = spatialHash.queryRadius(0, 0, 100);
 
   // Performance monitoring
@@ -673,55 +654,91 @@ function FileProcessor() {
 
 ### reynard-annotating
 
-AI/ML-powered caption generation engine with multiple model support, batch processing, and comprehensive lifecycle management.
+Unified annotation system for Reynard with production features and modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
+
+> **💡 Architecture Note**: The annotating system follows a modular plugin architecture where each generator (JTP2, JoyCaption, WDv3, Florence2) is a separate package that can be used independently or through the unified interface.
 
 #### Annotating Features
 
+- **Unified Interface** - Single manager for all caption generators
+- **Production Features** - Usage tracking, health monitoring, circuit breakers
+- **Modular Architecture** - Individual packages for each generator
+- **Type Safety** - Full TypeScript support
+- **Event System** - Comprehensive event handling
+- **Smart Model Management** - Automatic loading, unloading, and coordination
 - **Multiple AI Models** - Support for JTP2, JoyCaption, WDv3, Florence2, and other caption generation models
 - **Batch Processing** - Efficient batch caption generation with progress tracking
 - **Model Management** - Dynamic model loading, switching, and lifecycle management
 - **Confidence Scoring** - Confidence threshold management and quality assessment
-- **Event System** - Comprehensive event system for annotation lifecycle tracking
-- **TypeScript First** - Complete type safety with excellent IntelliSense
+- **Plugin Architecture** - Extensible plugin system for adding new generators
+- **Simulation Support** - Development/testing simulation for all generators
+
+#### Annotating Package Structure
+
+The annotating system consists of multiple specialized packages:
+
+- **reynard-annotating-core** - Core functionality, types, and services
+- **reynard-annotating-jtp2** - JTP2 generator (furry artwork tagging)
+- **reynard-annotating-joy** - JoyCaption generator (multilingual LLM)
+- **reynard-annotating-florence2** - Florence2 generator (general purpose)
+- **reynard-annotating-wdv3** - WDv3 generator (Danbooru-style tagging)
+- **reynard-annotating** - Unified interface (this package)
 
 #### Annotating Components
 
-- **AnnotationManager** - Main orchestrator for caption generation workflows
+- **UnifiedAnnotationManager** - Main orchestrator for caption generation workflows
 - **AnnotationService** - Core caption generation service with model integration
 - **BaseCaptionGenerator** - Abstract base class for implementing custom generators
-- **ModelRegistry** - Dynamic model registration and management system
+- **Plugin System** - Dynamic model registration and management system
+- **Health Monitoring** - Real-time health checks and performance metrics
+- **Circuit Breakers** - Fault tolerance and error handling
+- **Usage Tracking** - Model usage statistics and performance monitoring
 
 #### Annotating Example Usage
 
 ```tsx
-import { AnnotationManager, AnnotationService } from "reynard-annotating";
+import {
+  createUnifiedAnnotationManager,
+  PRODUCTION_CONFIG,
+  type CaptionTask,
+} from "reynard-annotating";
 
 function CaptionGenerator() {
-  const annotationManager = new AnnotationManager();
-  const annotationService = new AnnotationService();
+  const [manager, setManager] = createSignal(null);
+
+  onMount(async () => {
+    // Create unified manager with production features
+    const annotationManager = createUnifiedAnnotationManager(PRODUCTION_CONFIG);
+    await annotationManager.initialize();
+    setManager(annotationManager);
+  });
 
   const generateCaptions = async (images: File[]) => {
-    // Configure annotation service
-    await annotationService.configure({
-      model: "florence2",
-      confidenceThreshold: 0.8,
-      batchSize: 5,
-    });
+    if (!manager()) return;
 
-    // Generate captions with progress tracking
-    const results = await annotationService.generateCaptions(images, {
-      onProgress: (progress) => console.log(`Progress: ${progress}%`),
-      onComplete: (result) => console.log("Generation complete:", result),
-    });
+    const service = manager().getService();
+
+    // Generate captions using different generators
+    const results = await Promise.all(
+      images.map(async (image) => {
+        const task: CaptionTask = {
+          imagePath: image.name,
+          generatorName: "jtp2",
+          config: { threshold: 0.2 },
+        };
+
+        return await service.generateCaption(task);
+      }),
+    );
 
     return results;
   };
 
   return (
     <div>
-      <input 
-        type="file" 
-        multiple 
+      <input
+        type="file"
+        multiple
         accept="image/*"
         onChange={(e) => generateCaptions(Array.from(e.target.files))}
       />
@@ -768,14 +785,14 @@ function CaptionEditor() {
         captionType="CAPTION"
         placeholder="Enter your caption..."
       />
-      
+
       <TagBubble
         tags={tags()}
         onTagsChange={setTags}
         suggestions={["portrait", "landscape", "abstract", "nature"]}
         maxTags={10}
       />
-      
+
       <CaptionValidator
         caption={caption()}
         tags={tags()}
@@ -804,13 +821,13 @@ function CompleteCaptionWorkflow() {
   const [editedCaption, setEditedCaption] = createSignal("");
   const [tags, setTags] = createSignal<string[]>([]);
   const [isGenerating, setIsGenerating] = createSignal(false);
-  
+
   const { notify } = useNotifications();
   const annotationService = new AnnotationService();
 
   const generateCaption = async () => {
     if (!image()) return;
-    
+
     setIsGenerating(true);
     try {
       // Use reynard-annotating for AI caption generation
@@ -818,15 +835,17 @@ function CompleteCaptionWorkflow() {
         model: "florence2",
         confidenceThreshold: 0.8,
       });
-      
+
       const caption = result[0]?.caption || "";
       setGeneratedCaption(caption);
       setEditedCaption(caption);
-      
+
       // Extract tags from generated caption
-      const extractedTags = caption.split(/[,\s]+/).filter(tag => tag.length > 2);
+      const extractedTags = caption
+        .split(/[,\s]+/)
+        .filter((tag) => tag.length > 2);
       setTags(extractedTags);
-      
+
       notify("Caption generated successfully!", "success");
     } catch (error) {
       notify("Failed to generate caption", "error");
@@ -842,7 +861,7 @@ function CompleteCaptionWorkflow() {
       tags: tags(),
       image: image()?.name,
     };
-    
+
     console.log("Saving caption data:", finalData);
     notify("Caption saved!", "success");
   };
@@ -850,7 +869,7 @@ function CompleteCaptionWorkflow() {
   return (
     <Card padding="lg">
       <h3>Complete Caption Workflow</h3>
-      
+
       {/* Image Upload */}
       <div style="margin-bottom: 1rem;">
         <input
@@ -858,14 +877,12 @@ function CompleteCaptionWorkflow() {
           accept="image/*"
           onChange={(e) => setImage(e.target.files?.[0] || null)}
         />
-        {image() && (
-          <p>Selected: {image()!.name}</p>
-        )}
+        {image() && <p>Selected: {image()!.name}</p>}
       </div>
 
       {/* AI Generation */}
       <div style="margin-bottom: 1rem;">
-        <Button 
+        <Button
           onClick={generateCaption}
           disabled={!image() || isGenerating()}
           loading={isGenerating()}
@@ -900,7 +917,14 @@ function CompleteCaptionWorkflow() {
         <TagBubble
           tags={tags()}
           onTagsChange={setTags}
-          suggestions={["portrait", "landscape", "abstract", "nature", "art", "photography"]}
+          suggestions={[
+            "portrait",
+            "landscape",
+            "abstract",
+            "nature",
+            "art",
+            "photography",
+          ]}
           maxTags={15}
           label="Tags"
         />
@@ -918,7 +942,7 @@ function CompleteCaptionWorkflow() {
       />
 
       {/* Save Button */}
-      <Button 
+      <Button
         onClick={saveCaption}
         disabled={!editedCaption().trim()}
         variant="primary"
@@ -966,7 +990,7 @@ describe("Button Component", () => {
   it("handles click events", async () => {
     const handleClick = vi.fn();
     render(() => <Button onClick={handleClick}>Click me</Button>);
-    
+
     await userEvent.click(screen.getByText("Click me"));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -1045,4 +1069,4 @@ npm install reynard-3d reynard-games reynard-monaco reynard-boundingbox
 
 ---
 
-*Explore the full power of Reynard's modular architecture!* 🦊
+_Explore the full power of Reynard's modular architecture!_ 🦊

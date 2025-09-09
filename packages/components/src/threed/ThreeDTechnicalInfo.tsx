@@ -12,11 +12,11 @@ export const ThreeDTechnicalInfo: Component = () => {
     <>
       {/* Advanced Features Toggle */}
       <div class="advanced-toggle">
-        <button 
+        <button
           class="toggle-button"
           onClick={() => setShowAdvanced(!showAdvanced())}
         >
-          {showAdvanced() ? 'Hide' : 'Show'} Advanced Features
+          {showAdvanced() ? "Hide" : "Show"} Advanced Features
         </button>
       </div>
 
@@ -24,26 +24,38 @@ export const ThreeDTechnicalInfo: Component = () => {
       <Show when={showAdvanced()}>
         <div class="advanced-features">
           <h2>Advanced 3D Features</h2>
-          
+
           {/* Technical Details */}
           <div class="technical-details">
             <h3>Technical Implementation</h3>
             <div class="details-grid">
               <div class="detail-card">
                 <h4>Three.js Integration</h4>
-                <p>Full Three.js integration with WebGL rendering, camera controls, and scene management.</p>
+                <p>
+                  Full Three.js integration with WebGL rendering, camera
+                  controls, and scene management.
+                </p>
               </div>
               <div class="detail-card">
                 <h4>OKLCH Color Space</h4>
-                <p>Perceptually uniform colors for consistent visual representation across all 3D elements.</p>
+                <p>
+                  Perceptually uniform colors for consistent visual
+                  representation across all 3D elements.
+                </p>
               </div>
               <div class="detail-card">
                 <h4>Performance Optimization</h4>
-                <p>Level-of-detail rendering, frustum culling, and efficient memory management.</p>
+                <p>
+                  Level-of-detail rendering, frustum culling, and efficient
+                  memory management.
+                </p>
               </div>
               <div class="detail-card">
                 <h4>Interactive Controls</h4>
-                <p>OrbitControls for camera manipulation, raycasting for point selection, and real-time updates.</p>
+                <p>
+                  OrbitControls for camera manipulation, raycasting for point
+                  selection, and real-time updates.
+                </p>
               </div>
             </div>
           </div>
@@ -54,19 +66,31 @@ export const ThreeDTechnicalInfo: Component = () => {
             <div class="use-cases-grid">
               <div class="use-case">
                 <h4>Machine Learning</h4>
-                <p>Visualize high-dimensional embeddings, cluster analysis, and model outputs in 3D space.</p>
+                <p>
+                  Visualize high-dimensional embeddings, cluster analysis, and
+                  model outputs in 3D space.
+                </p>
               </div>
               <div class="use-case">
                 <h4>Scientific Visualization</h4>
-                <p>Explore complex datasets, molecular structures, and scientific simulations.</p>
+                <p>
+                  Explore complex datasets, molecular structures, and scientific
+                  simulations.
+                </p>
               </div>
               <div class="use-case">
                 <h4>Data Analytics</h4>
-                <p>Interactive exploration of multi-dimensional data with intuitive 3D navigation.</p>
+                <p>
+                  Interactive exploration of multi-dimensional data with
+                  intuitive 3D navigation.
+                </p>
               </div>
               <div class="use-case">
                 <h4>Real-time Monitoring</h4>
-                <p>Live 3D visualization of streaming data with performance optimization.</p>
+                <p>
+                  Live 3D visualization of streaming data with performance
+                  optimization.
+                </p>
               </div>
             </div>
           </div>
@@ -79,19 +103,31 @@ export const ThreeDTechnicalInfo: Component = () => {
         <div class="info-grid">
           <div class="info-card">
             <h3>WebGL Rendering</h3>
-            <p>Hardware-accelerated 3D graphics with efficient GPU utilization and modern WebGL features.</p>
+            <p>
+              Hardware-accelerated 3D graphics with efficient GPU utilization
+              and modern WebGL features.
+            </p>
           </div>
           <div class="info-card">
             <h3>OKLCH Integration</h3>
-            <p>Seamless integration with Reynard's OKLCH color system for consistent, accessible 3D visualizations.</p>
+            <p>
+              Seamless integration with Reynard's OKLCH color system for
+              consistent, accessible 3D visualizations.
+            </p>
           </div>
           <div class="info-card">
             <h3>Performance Optimization</h3>
-            <p>Advanced optimization techniques including LOD, instancing, and memory management for smooth 60fps rendering.</p>
+            <p>
+              Advanced optimization techniques including LOD, instancing, and
+              memory management for smooth 60fps rendering.
+            </p>
           </div>
           <div class="info-card">
             <h3>Interactive Controls</h3>
-            <p>Intuitive camera controls, point selection, and real-time interaction for immersive data exploration.</p>
+            <p>
+              Intuitive camera controls, point selection, and real-time
+              interaction for immersive data exploration.
+            </p>
           </div>
         </div>
       </div>

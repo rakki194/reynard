@@ -5,14 +5,14 @@
 
 import { Component } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { 
-  CounterDemo, 
-  StorageDemo, 
-  SystemStatus, 
-  ColorPicker, 
+import {
+  CounterDemo,
+  StorageDemo,
+  SystemStatus,
+  ColorPicker,
   AdvancedFeatures,
   ChartsDemo,
-  ThreeDDemo
+  ThreeDDemo,
 } from ".";
 
 export const InteractiveDashboard: Component = () => {

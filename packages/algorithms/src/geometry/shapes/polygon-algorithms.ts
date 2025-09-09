@@ -7,8 +7,8 @@
  * @module algorithms/polygon-algorithms
  */
 
-import { Point, PointOps } from './point-algorithms';
-import { Polygon } from './shapes';
+import { Point, PointOps } from "./point-algorithms";
+import { Polygon } from "./shapes";
 
 /**
  * Polygon operations
@@ -58,20 +58,27 @@ export class PolygonOps {
     if (polygon.points.length < 3) return false;
 
     let inside = false;
-    for (let i = 0, j = polygon.points.length - 1; i < polygon.points.length; j = i++) {
+    for (
+      let i = 0, j = polygon.points.length - 1;
+      i < polygon.points.length;
+      j = i++
+    ) {
       const xi = polygon.points[i].x,
         yi = polygon.points[i].y;
       const xj = polygon.points[j].x,
         yj = polygon.points[j].y;
 
-      if (yi > point.y !== yj > point.y && point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi) {
+      if (
+        yi > point.y !== yj > point.y &&
+        point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi
+      ) {
         inside = !inside;
       }
     }
     return inside;
   }
 
-  static boundingBox(polygon: Polygon): import('./shapes').Rectangle {
+  static boundingBox(polygon: Polygon): import("./shapes").Rectangle {
     if (polygon.points.length === 0) {
       return { x: 0, y: 0, width: 0, height: 0 };
     }
@@ -91,9 +98,12 @@ export class PolygonOps {
     return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
   }
 
-  static translate(polygon: Polygon, offset: import('../vectors/vector-algorithms').Vector): Polygon {
+  static translate(
+    polygon: Polygon,
+    offset: import("../vectors/vector-algorithms").Vector,
+  ): Polygon {
     return {
-      points: polygon.points.map(point => PointOps.add(point, offset)),
+      points: polygon.points.map((point) => PointOps.add(point, offset)),
     };
   }
 
@@ -101,7 +111,7 @@ export class PolygonOps {
     if (center) {
       // Scale around specified center
       return {
-        points: polygon.points.map(point => {
+        points: polygon.points.map((point) => {
           const offset = PointOps.subtract(point, center);
           const scaled = PointOps.multiply(offset, factor);
           return PointOps.add(center, scaled);
@@ -110,7 +120,7 @@ export class PolygonOps {
     } else {
       // Scale from origin (0,0)
       return {
-        points: polygon.points.map(point => PointOps.multiply(point, factor)),
+        points: polygon.points.map((point) => PointOps.multiply(point, factor)),
       };
     }
   }

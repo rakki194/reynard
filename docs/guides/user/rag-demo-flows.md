@@ -34,17 +34,25 @@ await rag.ingestDocuments(
   (evt) => {
     const processed = evt.processed ?? 0;
     const total = evt.total ?? 0;
-    const percent = total > 0 ? Math.round((processed / total) * 100) : undefined;
-    app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", percent);
-    if (evt.type === "error") app.notify(evt.error || "Ingest error", "error", group);
-  }
+    const percent =
+      total > 0 ? Math.round((processed / total) * 100) : undefined;
+    app.notify(
+      `Ingest ${processed}/${total}`,
+      "info",
+      group,
+      "spinner",
+      percent,
+    );
+    if (evt.type === "error")
+      app.notify(evt.error || "Ingest error", "error", group);
+  },
 );
 app.notify("Ingest complete", "success", group);
 ```
 
 ## Hybrid Ranking Explanation
 
-For text, code, and captions, hybrid ranking combines vector similarity from pgvector with a textual ranking signal. Scores are normalized per modality and combined as \( score = w_{vec} \cdot (1 - dist) + w_{text} \cdot rank \). In the current implementation, the text term is a placeholder set to zero while preserving the interface, and vector similarity dominates. The default weights favor vector similarity (docs/code `w_vec=0.7`, `w_text=0.3`; captions `0.8/0.2`). These weights are configurable in `AppConfig` and can be tuned per deployment without changing API contracts.
+For text, code, and captions, hybrid ranking combines vector similarity from pgvector with a textual ranking signal. Scores are normalized per modality and combined as \( score = w*{vec} \cdot (1 - dist) + w*{text} \cdot rank \). In the current implementation, the text term is a placeholder set to zero while preserving the interface, and vector similarity dominates. The default weights favor vector similarity (docs/code `w_vec=0.7`, `w_text=0.3`; captions `0.8/0.2`). These weights are configurable in `AppConfig` and can be tuned per deployment without changing API contracts.
 
 Vector similarity uses cosine distance and returns a normalized score in \([0,1]\). HNSW indexes accelerate nearest‑neighbor search; recall and latency can be traded by setting `hnsw.ef_search` at session time. When textual ranking (e.g., BM25 or `ts_rank`) is introduced, the API shape will remain compatible and weights will blend both signals coherently.
 

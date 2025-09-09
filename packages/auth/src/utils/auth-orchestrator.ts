@@ -3,11 +3,7 @@
  * Main orchestrator that sets up all auth modules and provides the main interface
  */
 
-import type {
-  AuthState,
-  AuthConfiguration,
-  AuthCallbacks,
-} from "../types";
+import type { AuthState, AuthConfiguration, AuthCallbacks } from "../types";
 import { TokenManager } from "./token-utils";
 import { createAuthFetch } from "./api-utils";
 import { createAuthActions } from "./auth-actions";
@@ -32,7 +28,7 @@ export const createAuthOrchestrator = (
   config: AuthConfiguration,
   callbacks: AuthCallbacks,
   authState: () => AuthState,
-  updateAuthState: (updates: Partial<AuthState>) => void
+  updateAuthState: (updates: Partial<AuthState>) => void,
 ): AuthOrchestrator => {
   // Token manager instance
   const tokenManager = TokenManager.getInstance(
@@ -55,13 +51,16 @@ export const createAuthOrchestrator = (
       updateAuthState({ isRefreshing: true });
 
       try {
-        const response = await fetch(`${config.apiBaseUrl}${config.refreshEndpoint}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${config.apiBaseUrl}${config.refreshEndpoint}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refreshToken }),
           },
-          body: JSON.stringify({ refreshToken }),
-        });
+        );
 
         const result = await response.json();
 
@@ -77,7 +76,7 @@ export const createAuthOrchestrator = (
         updateAuthState({ isRefreshing: false });
         throw error;
       }
-    }
+    },
   );
 
   // Create token refresh manager
@@ -99,7 +98,7 @@ export const createAuthOrchestrator = (
         isRefreshing: false,
       });
       callbacks.onLogout?.();
-    }
+    },
   );
 
   // Create authentication actions
@@ -110,7 +109,7 @@ export const createAuthOrchestrator = (
     updateAuthState,
     callbacks,
     () => tokenRefreshManager.setupTokenRefresh(),
-    authFetch
+    authFetch,
   );
 
   // Create user profile manager
@@ -118,7 +117,7 @@ export const createAuthOrchestrator = (
     config,
     authState,
     updateAuthState,
-    authFetch
+    authFetch,
   );
 
   // Create authentication initialization
@@ -130,7 +129,7 @@ export const createAuthOrchestrator = (
     callbacks,
     () => tokenRefreshManager.setupTokenRefresh(),
     () => userProfileManager.userProfile[0](),
-    authActions.logout
+    authActions.logout,
   );
 
   return {

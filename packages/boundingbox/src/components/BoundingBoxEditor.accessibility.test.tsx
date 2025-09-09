@@ -1,6 +1,6 @@
 /**
  * BoundingBoxEditor Accessibility Tests
- * 
+ *
  * Comprehensive accessibility tests for the BoundingBoxEditor component covering:
  * - ARIA labels and roles
  * - Keyboard navigation
@@ -10,38 +10,43 @@
  * - WCAG compliance
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { BoundingBoxEditor } from './BoundingBoxEditor';
-import type { BoundingBox, ImageInfo, EditorConfig, AnnotationEventHandlers } from '../types';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
+import { BoundingBoxEditor } from "./BoundingBoxEditor";
+import type {
+  BoundingBox,
+  ImageInfo,
+  EditorConfig,
+  AnnotationEventHandlers,
+} from "../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {
   width: 1920,
   height: 1080,
-  src: '/test-image.jpg',
-  alt: 'Test image'
+  src: "/test-image.jpg",
+  alt: "Test image",
 };
 
 const mockBoundingBox: BoundingBox = {
-  id: 'test-box-1',
-  label: 'person',
+  id: "test-box-1",
+  label: "person",
   x: 100,
   y: 100,
   width: 200,
   height: 150,
-  color: '#007acc'
+  color: "#007acc",
 };
 
 const defaultConfig: EditorConfig = {
   enableCreation: true,
   enableEditing: true,
   enableDeletion: true,
-  labelClasses: ['person', 'vehicle', 'animal', 'object'],
-  defaultLabelClass: 'person'
+  labelClasses: ["person", "vehicle", "animal", "object"],
+  defaultLabelClass: "person",
 };
 
-describe('BoundingBoxEditor Accessibility', () => {
+describe("BoundingBoxEditor Accessibility", () => {
   let mockEventHandlers: AnnotationEventHandlers;
 
   beforeEach(() => {
@@ -52,12 +57,12 @@ describe('BoundingBoxEditor Accessibility', () => {
       onAnnotationSelect: vi.fn(),
       onEditingStart: vi.fn(),
       onEditingEnd: vi.fn(),
-      onEditingCancel: vi.fn()
+      onEditingCancel: vi.fn(),
     };
   });
 
-  describe('ARIA Labels and Roles', () => {
-    it('should have proper ARIA labels for form controls', () => {
+  describe("ARIA Labels and Roles", () => {
+    it("should have proper ARIA labels for form controls", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -67,12 +72,17 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Label class select should have proper ARIA label
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
       expect(select).toBeInTheDocument();
-      expect(select).toHaveAttribute('aria-label', 'Select label class for new bounding boxes');
+      expect(select).toHaveAttribute(
+        "aria-label",
+        "Select label class for new bounding boxes",
+      );
     });
 
-    it('should have proper button labels', () => {
+    it("should have proper button labels", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -83,11 +93,13 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // All buttons should have accessible names
-      expect(screen.getByRole('button', { name: /edit/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /delete/i }),
+      ).toBeInTheDocument();
     });
 
-    it('should have proper region roles', () => {
+    it("should have proper region roles", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -97,15 +109,17 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Canvas container should be identifiable
-      const canvasContainer = screen.getByRole('img', { name: /bounding box editor canvas/i });
+      const canvasContainer = screen.getByRole("img", {
+        name: /bounding box editor canvas/i,
+      });
       expect(canvasContainer).toBeInTheDocument();
 
       // Controls panel should be identifiable
-      const controlsPanel = screen.getByText('Label Class:').closest('div');
+      const controlsPanel = screen.getByText("Label Class:").closest("div");
       expect(controlsPanel).toBeInTheDocument();
     });
 
-    it('should provide descriptive text for box information', () => {
+    it("should provide descriptive text for box information", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -116,15 +130,17 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Box coordinates should be readable
-      expect(screen.getByText('(100, 100) 200×150')).toBeInTheDocument();
-      
+      expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
+
       // Box label should be clear
-      expect(screen.getByText('person', { selector: '.box-label' })).toBeInTheDocument();
+      expect(
+        screen.getByText("person", { selector: ".box-label" }),
+      ).toBeInTheDocument();
     });
   });
 
-  describe('Keyboard Navigation', () => {
-    it('should support tab navigation through controls', async () => {
+  describe("Keyboard Navigation", () => {
+    it("should support tab navigation through controls", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -134,9 +150,11 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
 
       // Focus should move through elements in logical order
       select.focus();
@@ -150,7 +168,7 @@ describe('BoundingBoxEditor Accessibility', () => {
       expect(document.activeElement).toBe(deleteButton);
     });
 
-    it('should support Enter key activation for buttons', async () => {
+    it("should support Enter key activation for buttons", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -160,7 +178,7 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const editButton = screen.getByRole('button', { name: /edit/i });
+      const editButton = screen.getByRole("button", { name: /edit/i });
       editButton.focus();
 
       fireEvent.click(editButton);
@@ -170,7 +188,7 @@ describe('BoundingBoxEditor Accessibility', () => {
       });
     });
 
-    it('should support Space key activation for buttons', async () => {
+    it("should support Space key activation for buttons", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -180,7 +198,7 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
       deleteButton.focus();
 
       fireEvent.click(deleteButton);
@@ -190,7 +208,7 @@ describe('BoundingBoxEditor Accessibility', () => {
       });
     });
 
-    it('should support arrow keys for select element', async () => {
+    it("should support arrow keys for select element", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -199,20 +217,22 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
       select.focus();
 
       // Test arrow key navigation
-      fireEvent.keyDown(select, { key: 'ArrowDown' });
-      fireEvent.keyDown(select, { key: 'ArrowUp' });
+      fireEvent.keyDown(select, { key: "ArrowDown" });
+      fireEvent.keyDown(select, { key: "ArrowUp" });
 
       // Should not throw errors
       expect(select).toBeInTheDocument();
     });
   });
 
-  describe('Focus Management', () => {
-    it('should manage focus when editing starts and ends', async () => {
+  describe("Focus Management", () => {
+    it("should manage focus when editing starts and ends", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -222,24 +242,24 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const editButton = screen.getByRole('button', { name: /edit/i });
+      const editButton = screen.getByRole("button", { name: /edit/i });
       editButton.focus();
 
       // Start editing
       fireEvent.click(editButton);
 
       await waitFor(() => {
-        const saveButton = screen.getByRole('button', { name: /save/i });
+        const saveButton = screen.getByRole("button", { name: /save/i });
         expect(saveButton).toBeInTheDocument();
       });
 
       // Focus should be managed appropriately
-      const saveButton = screen.getByRole('button', { name: /save/i });
+      const saveButton = screen.getByRole("button", { name: /save/i });
       saveButton.focus();
       expect(document.activeElement).toBe(saveButton);
     });
 
-    it('should restore focus after canceling edit', async () => {
+    it("should restore focus after canceling edit", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -249,23 +269,25 @@ describe('BoundingBoxEditor Accessibility', () => {
         />
       ));
 
-      const editButton = screen.getByRole('button', { name: /edit/i });
+      const editButton = screen.getByRole("button", { name: /edit/i });
       editButton.focus();
 
       // Start editing
       fireEvent.click(editButton);
 
       // Cancel editing
-      const cancelButton = screen.getByRole('button', { name: /cancel/i });
+      const cancelButton = screen.getByRole("button", { name: /cancel/i });
       fireEvent.click(cancelButton);
 
       await waitFor(() => {
         // Edit button should be available again
-        expect(screen.getByRole('button', { name: /edit/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole("button", { name: /edit/i }),
+        ).toBeInTheDocument();
       });
     });
 
-    it('should handle focus when buttons are disabled', () => {
+    it("should handle focus when buttons are disabled", () => {
       const config = { ...defaultConfig, enableEditing: false };
 
       render(() => (
@@ -278,12 +300,14 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Edit button should not be present when disabled
-      expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /edit/i }),
+      ).not.toBeInTheDocument();
     });
   });
 
-  describe('Screen Reader Compatibility', () => {
-    it('should provide meaningful text for screen readers', () => {
+  describe("Screen Reader Compatibility", () => {
+    it("should provide meaningful text for screen readers", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -294,14 +318,16 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Box count should be announced
-      expect(screen.getByText('Bounding Boxes (1)')).toBeInTheDocument();
+      expect(screen.getByText("Bounding Boxes (1)")).toBeInTheDocument();
 
       // Box details should be readable
-      expect(screen.getByText('person', { selector: '.box-label' })).toBeInTheDocument();
-      expect(screen.getByText('(100, 100) 200×150')).toBeInTheDocument();
+      expect(
+        screen.getByText("person", { selector: ".box-label" }),
+      ).toBeInTheDocument();
+      expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
     });
 
-    it('should announce state changes', async () => {
+    it("should announce state changes", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -312,16 +338,16 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Delete a box
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
         // Box count should update
-        expect(screen.getByText('Bounding Boxes (0)')).toBeInTheDocument();
+        expect(screen.getByText("Bounding Boxes (0)")).toBeInTheDocument();
       });
     });
 
-    it('should provide context for interactive elements', () => {
+    it("should provide context for interactive elements", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -332,21 +358,23 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Each button should have clear context
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
 
       expect(editButton).toBeInTheDocument();
       expect(deleteButton).toBeInTheDocument();
 
       // Buttons should be associated with their respective boxes
-      const boxItem = screen.getByText('person', { selector: '.box-label' }).closest('.box-item');
+      const boxItem = screen
+        .getByText("person", { selector: ".box-label" })
+        .closest(".box-item");
       expect(boxItem).toContainElement(editButton);
       expect(boxItem).toContainElement(deleteButton);
     });
   });
 
-  describe('Visual Accessibility', () => {
-    it('should have sufficient color contrast for text', () => {
+  describe("Visual Accessibility", () => {
+    it("should have sufficient color contrast for text", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -357,18 +385,18 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Text elements should be visible
-      const boxLabel = screen.getByText('person', { selector: '.box-label' });
-      const boxCoords = screen.getByText('(100, 100) 200×150');
+      const boxLabel = screen.getByText("person", { selector: ".box-label" });
+      const boxCoords = screen.getByText("(100, 100) 200×150");
 
       expect(boxLabel).toBeInTheDocument();
       expect(boxCoords).toBeInTheDocument();
 
       // Elements should have proper styling (tested via CSS)
-      expect(boxLabel).toHaveClass('box-label');
-      expect(boxCoords).toHaveClass('box-coords');
+      expect(boxLabel).toHaveClass("box-label");
+      expect(boxCoords).toHaveClass("box-coords");
     });
 
-    it('should provide visual feedback for interactive states', () => {
+    it("should provide visual feedback for interactive states", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -379,16 +407,18 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Selected box should have visual indication
-      const boxItem = screen.getByText('person', { selector: '.box-label' }).closest('.box-item');
-      expect(boxItem).toHaveClass('selected');
+      const boxItem = screen
+        .getByText("person", { selector: ".box-label" })
+        .closest(".box-item");
+      expect(boxItem).toHaveClass("selected");
 
       // Buttons should have hover states (tested via CSS)
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const boxActions = editButton.closest('.box-actions');
-      expect(boxActions).toHaveClass('box-actions');
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const boxActions = editButton.closest(".box-actions");
+      expect(boxActions).toHaveClass("box-actions");
     });
 
-    it('should support high contrast mode', () => {
+    it("should support high contrast mode", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -399,16 +429,18 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Elements should be styled for high contrast
-      const boxItem = screen.getByText('person', { selector: '.box-label' }).closest('.box-item');
-      expect(boxItem).toHaveClass('box-item');
+      const boxItem = screen
+        .getByText("person", { selector: ".box-label" })
+        .closest(".box-item");
+      expect(boxItem).toHaveClass("box-item");
 
       // CSS should handle high contrast media queries
       expect(boxItem).toBeInTheDocument();
     });
   });
 
-  describe('WCAG Compliance', () => {
-    it('should meet WCAG 2.1 AA standards for form controls', () => {
+  describe("WCAG Compliance", () => {
+    it("should meet WCAG 2.1 AA standards for form controls", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -418,12 +450,14 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Form control should have proper label
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
       expect(select).toBeInTheDocument();
-      expect(select).toHaveAttribute('aria-label');
+      expect(select).toHaveAttribute("aria-label");
     });
 
-    it('should provide alternative text for images', () => {
+    it("should provide alternative text for images", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -433,10 +467,10 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Image info should include alt text
-      expect(mockImageInfo.alt).toBe('Test image');
+      expect(mockImageInfo.alt).toBe("Test image");
     });
 
-    it('should support keyboard-only navigation', async () => {
+    it("should support keyboard-only navigation", async () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -447,9 +481,11 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // All interactive elements should be keyboard accessible
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
 
       // Test keyboard navigation
       select.focus();
@@ -463,7 +499,7 @@ describe('BoundingBoxEditor Accessibility', () => {
       expect(document.activeElement).toBe(deleteButton);
     });
 
-    it('should provide clear error states and feedback', () => {
+    it("should provide clear error states and feedback", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -474,8 +510,8 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Disabled buttons should be clearly indicated
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      
+      const editButton = screen.getByRole("button", { name: /edit/i });
+
       // Start editing to disable the button
       fireEvent.click(editButton);
 
@@ -484,8 +520,8 @@ describe('BoundingBoxEditor Accessibility', () => {
     });
   });
 
-  describe('Assistive Technology Support', () => {
-    it('should work with screen readers', () => {
+  describe("Assistive Technology Support", () => {
+    it("should work with screen readers", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -496,12 +532,14 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // All text should be accessible to screen readers
-      expect(screen.getByText('Label Class:')).toBeInTheDocument();
-      expect(screen.getByText('Bounding Boxes (1)')).toBeInTheDocument();
-      expect(screen.getByText('person', { selector: '.box-label' })).toBeInTheDocument();
+      expect(screen.getByText("Label Class:")).toBeInTheDocument();
+      expect(screen.getByText("Bounding Boxes (1)")).toBeInTheDocument();
+      expect(
+        screen.getByText("person", { selector: ".box-label" }),
+      ).toBeInTheDocument();
     });
 
-    it('should support voice control software', () => {
+    it("should support voice control software", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -512,14 +550,14 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // Buttons should have clear, voice-commandable labels
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
 
-      expect(editButton).toHaveTextContent('Edit');
-      expect(deleteButton).toHaveTextContent('Delete');
+      expect(editButton).toHaveTextContent("Edit");
+      expect(deleteButton).toHaveTextContent("Delete");
     });
 
-    it('should support switch navigation', () => {
+    it("should support switch navigation", () => {
       render(() => (
         <BoundingBoxEditor
           imageInfo={mockImageInfo}
@@ -530,9 +568,11 @@ describe('BoundingBoxEditor Accessibility', () => {
       ));
 
       // All interactive elements should be focusable
-      const select = screen.getByLabelText('Select label class for new bounding boxes');
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      const deleteButton = screen.getByRole('button', { name: /delete/i });
+      const select = screen.getByLabelText(
+        "Select label class for new bounding boxes",
+      );
+      const editButton = screen.getByRole("button", { name: /edit/i });
+      const deleteButton = screen.getByRole("button", { name: /delete/i });
 
       expect(select).toBeInTheDocument();
       expect(editButton).toBeInTheDocument();

@@ -6,11 +6,7 @@
  */
 
 import { createSignal, createMemo } from "solid-js";
-import type {
-  P2PChatMessage,
-  ChatRoom,
-  MessageAttachment,
-} from "../types/p2p";
+import type { P2PChatMessage, ChatRoom, MessageAttachment } from "../types/p2p";
 
 export interface P2PMessagesOptions {
   /** Initial rooms */
@@ -22,10 +18,17 @@ export interface P2PMessagesOptions {
 export interface P2PMessagesReturn {
   messagesByRoom: () => Record<string, P2PChatMessage[]>;
   addMessageToRoom: (roomId: string, message: P2PChatMessage) => void;
-  updateMessage: (roomId: string, messageId: string, updates: Partial<P2PChatMessage>) => void;
+  updateMessage: (
+    roomId: string,
+    messageId: string,
+    updates: Partial<P2PChatMessage>,
+  ) => void;
   deleteMessage: (roomId: string, messageId: string) => void;
   getRoomMessages: (roomId: string) => P2PChatMessage[];
-  getMessageById: (roomId: string, messageId: string) => P2PChatMessage | undefined;
+  getMessageById: (
+    roomId: string,
+    messageId: string,
+  ) => P2PChatMessage | undefined;
   clearRoomMessages: (roomId: string) => void;
   markMessageAsRead: (roomId: string, messageId: string) => void;
   markAllMessagesAsRead: (roomId: string) => void;
@@ -36,7 +39,9 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   const { initialRooms = [], currentUserId } = options;
 
   // Messages organized by room ID
-  const [messagesByRoom, setMessagesByRoom] = createSignal<Record<string, P2PChatMessage[]>>({});
+  const [messagesByRoom, setMessagesByRoom] = createSignal<
+    Record<string, P2PChatMessage[]>
+  >({});
 
   // Add message to a specific room
   const addMessageToRoom = (roomId: string, message: P2PChatMessage) => {
@@ -47,11 +52,15 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   };
 
   // Update an existing message
-  const updateMessage = (roomId: string, messageId: string, updates: Partial<P2PChatMessage>) => {
+  const updateMessage = (
+    roomId: string,
+    messageId: string,
+    updates: Partial<P2PChatMessage>,
+  ) => {
     setMessagesByRoom((prev) => {
       const roomMessages = prev[roomId] || [];
       const updatedMessages = roomMessages.map((msg) =>
-        msg.id === messageId ? { ...msg, ...updates } : msg
+        msg.id === messageId ? { ...msg, ...updates } : msg,
       );
       return {
         ...prev,
@@ -64,7 +73,9 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   const deleteMessage = (roomId: string, messageId: string) => {
     setMessagesByRoom((prev) => {
       const roomMessages = prev[roomId] || [];
-      const filteredMessages = roomMessages.filter((msg) => msg.id !== messageId);
+      const filteredMessages = roomMessages.filter(
+        (msg) => msg.id !== messageId,
+      );
       return {
         ...prev,
         [roomId]: filteredMessages,
@@ -78,7 +89,10 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   };
 
   // Get a specific message by ID
-  const getMessageById = (roomId: string, messageId: string): P2PChatMessage | undefined => {
+  const getMessageById = (
+    roomId: string,
+    messageId: string,
+  ): P2PChatMessage | undefined => {
     const roomMessages = messagesByRoom()[roomId] || [];
     return roomMessages.find((msg) => msg.id === messageId);
   };
@@ -100,7 +114,7 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   const markAllMessagesAsRead = (roomId: string) => {
     const roomMessages = messagesByRoom()[roomId] || [];
     const now = new Date();
-    
+
     setMessagesByRoom((prev) => ({
       ...prev,
       [roomId]: roomMessages.map((msg) => ({
@@ -114,8 +128,8 @@ export function useP2PMessages(options: P2PMessagesOptions): P2PMessagesReturn {
   // Get unread message count for a room
   const getUnreadCount = (roomId: string): number => {
     const roomMessages = messagesByRoom()[roomId] || [];
-    return roomMessages.filter((msg) => 
-      !msg.read && msg.senderId !== currentUserId
+    return roomMessages.filter(
+      (msg) => !msg.read && msg.senderId !== currentUserId,
     ).length;
   };
 

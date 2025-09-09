@@ -3,15 +3,8 @@
  * A comprehensive clock, timer, alarm, and countdown application
  */
 
-import {
-  Component,
-  createSignal,
-  Show,
-} from "solid-js";
-import {
-  NotificationsProvider,
-  createNotifications,
-} from "reynard-core";
+import { Component, createSignal, Show } from "solid-js";
+import { NotificationsProvider, createNotifications } from "reynard-core";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import "reynard-themes/themes.css";
 import { Clock } from "./components/Clock";
@@ -54,9 +47,7 @@ const ClockApp: Component = () => {
         <h1>🦊 Reynard Clock App</h1>
         <p>Clock, Timer, Alarm & Countdown - Built with Reynard Framework</p>
         <div class="header-controls">
-          <div class="theme-info">
-            Current theme: {theme}
-          </div>
+          <div class="theme-info">Current theme: {theme}</div>
           <ThemeToggle />
         </div>
       </header>
@@ -74,9 +65,7 @@ const ClockApp: Component = () => {
           ))}
         </div>
 
-        <Show when={activeTab()}>
-          {renderActiveTab()}
-        </Show>
+        <Show when={activeTab()}>{renderActiveTab()}</Show>
       </main>
     </div>
   );

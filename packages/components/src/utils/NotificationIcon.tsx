@@ -13,11 +13,16 @@ interface NotificationIconProps {
 export const NotificationIcon: Component<NotificationIconProps> = (props) => {
   const getIconName = () => {
     switch (props.type) {
-      case "success": return "checkmark";
-      case "error": return "error";
-      case "warning": return "warning";
-      case "info": return "info";
-      default: return "info";
+      case "success":
+        return "checkmark";
+      case "error":
+        return "error";
+      case "warning":
+        return "warning";
+      case "info":
+        return "info";
+      default:
+        return "info";
     }
   };
 

@@ -22,24 +22,27 @@ export const useThemeShowcase = () => {
         },
         getTagStyle: () => ({}),
         isDark: false,
-        isHighContrast: false
+        isHighContrast: false,
       };
     }
   });
-  
+
   const notifications = createMemo(() => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error("useThemeShowcase: Notifications context not available", error);
+      console.error(
+        "useThemeShowcase: Notifications context not available",
+        error,
+      );
       return {
         notify: (message: string, type?: string) => {
           console.warn("Notifications context not available:", message, type);
-        }
+        },
       };
     }
   });
-  
+
   const notify = createMemo(() => notifications().notify);
   const [previewTheme, setPreviewTheme] = createSignal<string | null>(null);
   const [showColorDetails, setShowColorDetails] = createSignal(false);
@@ -64,8 +67,10 @@ export const useThemeShowcase = () => {
     notify()(`Color ${color} copied to clipboard!`, "info");
   };
 
-  const currentTheme = () => getCurrentTheme(previewTheme(), themeContext().theme);
-  const currentThemeConfig = () => availableThemes.find(t => t.name === currentTheme());
+  const currentTheme = () =>
+    getCurrentTheme(previewTheme(), themeContext().theme);
+  const currentThemeConfig = () =>
+    availableThemes.find((t) => t.name === currentTheme());
 
   return {
     availableThemes,
@@ -78,6 +83,6 @@ export const useThemeShowcase = () => {
     copyColorValue,
     currentTheme,
     currentThemeConfig,
-    themeContext
+    themeContext,
   };
 };

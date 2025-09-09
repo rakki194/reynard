@@ -11,8 +11,16 @@ export interface BaseEvent3D {
 // Global type declarations for browser APIs
 declare global {
   interface EventTarget {
-    addEventListener(type: string, listener: any, options?: boolean | any): void;
-    removeEventListener(type: string, listener: any, options?: boolean | any): void;
+    addEventListener(
+      type: string,
+      listener: any,
+      options?: boolean | any,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: any,
+      options?: boolean | any,
+    ): void;
     dispatchEvent(event: Event): boolean;
   }
 }
@@ -76,7 +84,7 @@ export interface CameraSettings {
 }
 
 export interface LightSettings {
-  type: 'ambient' | 'directional' | 'point' | 'spot';
+  type: "ambient" | "directional" | "point" | "spot";
   color?: Color;
   intensity?: number;
   position?: Vector3;
@@ -88,16 +96,16 @@ export interface RendererSettings {
   antialias?: boolean;
   alpha?: boolean;
   preserveDrawingBuffer?: boolean;
-  powerPreference?: 'default' | 'high-performance' | 'low-power';
+  powerPreference?: "default" | "high-performance" | "low-power";
   shadowMap?: {
     enabled?: boolean;
-    type?: 'basic' | 'pcf' | 'pcfsoft' | 'vsm';
+    type?: "basic" | "pcf" | "pcfsoft" | "vsm";
   };
   toneMapping?: {
-    type?: 'linear' | 'reinhard' | 'cineon' | 'aces' | 'acesfilmic';
+    type?: "linear" | "reinhard" | "cineon" | "aces" | "acesfilmic";
     exposure?: number;
   };
-  outputColorSpace?: 'srgb' | 'srgb-linear' | 'display-p3';
+  outputColorSpace?: "srgb" | "srgb-linear" | "display-p3";
 }
 
 export interface ControlsSettings {
@@ -130,7 +138,7 @@ export interface Point3D {
   imageUrl?: string;
   imageThumbnail?: string;
   textContent?: string;
-  contentType?: 'image' | 'text' | 'mixed';
+  contentType?: "image" | "text" | "mixed";
   thumbnailDataUrl?: string;
 }
 
@@ -142,8 +150,13 @@ export interface PointCloudSettings {
   enableCulling?: boolean;
   lodDistance?: number;
   lodLevels?: number;
-  colorMapping?: 'similarity' | 'cluster' | 'importance' | 'confidence' | 'custom';
-  sizeMapping?: 'importance' | 'confidence' | 'uniform';
+  colorMapping?:
+    | "similarity"
+    | "cluster"
+    | "importance"
+    | "confidence"
+    | "custom";
+  sizeMapping?: "importance" | "confidence" | "uniform";
   enableHighlighting?: boolean;
   highlightColor?: [number, number, number];
   highlightSize?: number;
@@ -159,16 +172,16 @@ export interface AnimationSettings {
 }
 
 export type EasingType =
-  | 'linear'
-  | 'easeInQuad'
-  | 'easeOutQuad'
-  | 'easeInOutQuad'
-  | 'easeInCubic'
-  | 'easeOutCubic'
-  | 'easeInOutCubic'
-  | 'easeInElastic'
-  | 'easeOutElastic'
-  | 'easeInOutElastic';
+  | "linear"
+  | "easeInQuad"
+  | "easeOutQuad"
+  | "easeInOutQuad"
+  | "easeInCubic"
+  | "easeOutCubic"
+  | "easeInOutCubic"
+  | "easeInElastic"
+  | "easeOutElastic"
+  | "easeInOutElastic";
 
 export interface PointAnimation {
   id: string;
@@ -201,7 +214,7 @@ export interface ClusterAnimation {
 
 // Geometry types
 export interface Geometry3D {
-  type: 'box' | 'sphere' | 'cylinder' | 'plane' | 'torus' | 'custom';
+  type: "box" | "sphere" | "cylinder" | "plane" | "torus" | "custom";
   parameters?: Record<string, number | string | boolean>;
   vertices?: number[];
   indices?: number[];
@@ -210,7 +223,7 @@ export interface Geometry3D {
 }
 
 export interface Material3D {
-  type: 'basic' | 'standard' | 'physical' | 'phong' | 'lambert';
+  type: "basic" | "standard" | "physical" | "phong" | "lambert";
   color?: Color;
   metalness?: number;
   roughness?: number;
@@ -241,7 +254,7 @@ export interface Scene3D {
   name: string;
   backgroundColor?: Color;
   fog?: {
-    type: 'linear' | 'exponential';
+    type: "linear" | "exponential";
     color: Color;
     near?: number;
     far?: number;
@@ -274,14 +287,14 @@ export interface RenderStats {
 
 // Event types
 export interface PointCloudEvent {
-  type: 'click' | 'hover' | 'select' | 'deselect';
+  type: "click" | "hover" | "select" | "deselect";
   point: Point3D;
   event: MouseEvent3D | TouchEvent3D;
   selectedPoints?: Point3D[];
 }
 
 export interface SceneEvent {
-  type: 'ready' | 'resize' | 'dispose';
+  type: "ready" | "resize" | "dispose";
   scene?: unknown;
   camera?: unknown;
   renderer?: unknown;
@@ -328,24 +341,38 @@ export interface ThreeJSVisualizationProps {
   maxDistance?: number;
   maxPolarAngle?: number;
   className?: string;
-  onSceneReady?: (scene: unknown, camera: unknown, renderer: unknown, controls: unknown) => void;
-  onRender?: (scene: unknown, camera: unknown, renderer: unknown, controls: unknown) => void;
+  onSceneReady?: (
+    scene: unknown,
+    camera: unknown,
+    renderer: unknown,
+    controls: unknown,
+  ) => void;
+  onRender?: (
+    scene: unknown,
+    camera: unknown,
+    renderer: unknown,
+    controls: unknown,
+  ) => void;
   onControlsChange?: (event: unknown) => void;
   enableCameraAnimations?: boolean;
   onCameraAnimationStart?: () => void;
   onCameraAnimationEnd?: () => void;
 }
 
-export interface PointCloudVisualizationProps extends ThreeJSVisualizationProps {
+export interface PointCloudVisualizationProps
+  extends ThreeJSVisualizationProps {
   points: Point3D[];
   settings?: PointCloudSettings;
   animationSettings?: AnimationSettings;
   searchIntegration?: SearchIntegrationSettings;
   onPointClick?: (point: Point3D, event: MouseEvent3D | TouchEvent3D) => void;
-  onPointHover?: (point: Point3D | null, event: MouseEvent3D | TouchEvent3D) => void;
+  onPointHover?: (
+    point: Point3D | null,
+    event: MouseEvent3D | TouchEvent3D,
+  ) => void;
   onSelectionChange?: (selectedPoints: Point3D[]) => void;
   onSearchIntegrationReady?: (data: unknown) => void;
 }
 
 // Export rendering types
-export * from './rendering';
+export * from "./rendering";

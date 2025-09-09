@@ -3,15 +3,15 @@
  * Comprehensive recovery strategy definitions for error handling
  */
 
-import type { ErrorContext } from './ErrorTypes';
+import type { ErrorContext } from "./ErrorTypes";
 
 export enum RecoveryActionType {
-  RETRY = 'retry',
-  RESET = 'reset',
-  FALLBACK = 'fallback',
-  REDIRECT = 'redirect',
-  RELOAD = 'reload',
-  CUSTOM = 'custom'
+  RETRY = "retry",
+  RESET = "reset",
+  FALLBACK = "fallback",
+  REDIRECT = "redirect",
+  RELOAD = "reload",
+  CUSTOM = "custom",
 }
 
 export interface RecoveryStrategy {

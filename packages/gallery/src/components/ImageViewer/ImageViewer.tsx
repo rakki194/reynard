@@ -33,7 +33,7 @@ export const ImageViewer: Component<ImageViewerProps> = (props) => {
   const { config, state, events, imageClasses } = useImageViewer(
     local,
     () => containerRef,
-    () => imageRef
+    () => imageRef,
   );
 
   return (

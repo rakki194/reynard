@@ -1,6 +1,6 @@
 /**
  * Token utilities for the Reynard Auth system.
- * 
+ *
  * This module contains JWT token management, validation, and
  * user information extraction functions.
  */
@@ -46,7 +46,7 @@ export class TokenManager {
       } else if (typeof localStorage !== "undefined") {
         localStorage.setItem(this.tokenKey, accessToken);
       }
-      
+
       // Store refresh token in localStorage (persists across sessions)
       if (refreshToken && typeof localStorage !== "undefined") {
         localStorage.setItem(this.refreshTokenKey, refreshToken);
@@ -62,21 +62,21 @@ export class TokenManager {
    */
   getAccessToken(): string | null {
     if (typeof window === "undefined") return null;
-    
+
     try {
       // Try sessionStorage first, then localStorage
       if (typeof sessionStorage !== "undefined") {
         const token = sessionStorage.getItem(this.tokenKey);
         if (token) return token;
       }
-      
+
       if (typeof localStorage !== "undefined") {
         return localStorage.getItem(this.tokenKey);
       }
     } catch (error) {
       console.warn("Failed to retrieve access token:", error);
     }
-    
+
     return null;
   }
 
@@ -238,24 +238,24 @@ export class TokenManager {
 export function decodeToken(token: string): DecodedToken | null {
   try {
     // Basic format validation
-    if (!token || typeof token !== 'string') {
+    if (!token || typeof token !== "string") {
       return null;
     }
-    
+
     // Check JWT format (3 parts separated by dots)
-    const parts = token.split('.');
+    const parts = token.split(".");
     if (parts.length !== 3) {
       return null;
     }
-    
+
     // Decode without verification (client-side only)
     const decoded = jwtDecode<DecodedToken>(token);
-    
+
     // Validate required fields
     if (!decoded || !decoded.sub || !decoded.role) {
       return null;
     }
-    
+
     return decoded;
   } catch (error) {
     // Don't log sensitive token information

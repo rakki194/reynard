@@ -327,30 +327,30 @@ If formatting doesn't work in your editor:
 
 ### EditorConfig Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `charset` | File encoding | `utf-8` |
-| `end_of_line` | Line ending style | `lf` |
-| `insert_final_newline` | Add newline at end | `true` |
-| `trim_trailing_whitespace` | Remove trailing spaces | `true` |
-| `indent_style` | Indentation type | `space` |
-| `indent_size` | Indentation size | `2` |
-| `max_line_length` | Maximum line length | `120` |
+| Option                     | Description            | Default |
+| -------------------------- | ---------------------- | ------- |
+| `charset`                  | File encoding          | `utf-8` |
+| `end_of_line`              | Line ending style      | `lf`    |
+| `insert_final_newline`     | Add newline at end     | `true`  |
+| `trim_trailing_whitespace` | Remove trailing spaces | `true`  |
+| `indent_style`             | Indentation type       | `space` |
+| `indent_size`              | Indentation size       | `2`     |
+| `max_line_length`          | Maximum line length    | `120`   |
 
 ### Prettier Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `semi` | Add semicolons | `true` |
-| `trailingComma` | Trailing comma style | `es5` |
-| `singleQuote` | Use single quotes | `true` |
-| `printWidth` | Line length | `120` |
-| `tabWidth` | Tab width | `2` |
-| `useTabs` | Use tabs instead of spaces | `false` |
-| `bracketSpacing` | Spaces in object literals | `true` |
-| `bracketSameLine` | JSX bracket placement | `false` |
-| `arrowParens` | Arrow function parentheses | `avoid` |
-| `endOfLine` | Line ending | `lf` |
+| Option            | Description                | Default |
+| ----------------- | -------------------------- | ------- |
+| `semi`            | Add semicolons             | `true`  |
+| `trailingComma`   | Trailing comma style       | `es5`   |
+| `singleQuote`     | Use single quotes          | `true`  |
+| `printWidth`      | Line length                | `120`   |
+| `tabWidth`        | Tab width                  | `2`     |
+| `useTabs`         | Use tabs instead of spaces | `false` |
+| `bracketSpacing`  | Spaces in object literals  | `true`  |
+| `bracketSameLine` | JSX bracket placement      | `false` |
+| `arrowParens`     | Arrow function parentheses | `avoid` |
+| `endOfLine`       | Line ending                | `lf`    |
 
 ## Migration Guide
 

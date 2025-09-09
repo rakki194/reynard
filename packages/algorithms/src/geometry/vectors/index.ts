@@ -14,4 +14,4 @@
  */
 
 // Export vector algorithms
-export * from './vector-algorithms';
+export * from "./vector-algorithms";

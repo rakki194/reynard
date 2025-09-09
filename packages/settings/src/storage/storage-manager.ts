@@ -116,7 +116,7 @@ export class StorageManager {
       ? await adapter.keys()
       : adapter.keys());
 
-    const settings: SettingsExportData['settings'] = {};
+    const settings: SettingsExportData["settings"] = {};
 
     for (const key of keys) {
       try {

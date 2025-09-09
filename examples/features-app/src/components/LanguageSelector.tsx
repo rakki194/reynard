@@ -26,11 +26,7 @@ export default function LanguageSelector() {
       aria-label="Select language"
     >
       <For each={availableLanguages}>
-        {(lang) => (
-          <option value={lang.code}>
-            🌐 {lang.name}
-          </option>
-        )}
+        {(lang) => <option value={lang.code}>🌐 {lang.name}</option>}
       </For>
     </select>
   );

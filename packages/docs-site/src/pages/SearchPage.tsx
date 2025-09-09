@@ -2,21 +2,21 @@
  * @fileoverview Search page
  */
 
-import { Component, createSignal, onMount } from 'solid-js';
-import { useSearchParams } from 'solid-router';
-import { 
-  DocsPage, 
-  DocsSection, 
+import { Component, createSignal, onMount } from "solid-js";
+import { useSearchParams } from "solid-router";
+import {
+  DocsPage,
+  DocsSection,
   DocsSearch,
-  DocsSearchResults
-} from 'reynard-docs-components';
+  DocsSearchResults,
+} from "reynard-docs-components";
 
 /**
  * Search page component
  */
 export const SearchPage: Component = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = createSignal(searchParams.q || '');
+  const [searchQuery, setSearchQuery] = createSignal(searchParams.q || "");
   const [searchResults, setSearchResults] = createSignal<any[]>([]);
   const [isSearching, setIsSearching] = createSignal(false);
 
@@ -35,13 +35,15 @@ export const SearchPage: Component = () => {
     setIsSearching(true);
     try {
       // Simulate search API call
-      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch(
+        `/api/search?q=${encodeURIComponent(query)}`,
+      );
       if (response.ok) {
         const results = await response.json();
         setSearchResults(results);
       }
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
       setSearchResults([]);
     } finally {
       setIsSearching(false);
@@ -71,7 +73,7 @@ export const SearchPage: Component = () => {
         <div class="docs-search-form">
           <DocsSearch
             onSearch={handleSearch}
-            onClear={() => handleSearch('')}
+            onClear={() => handleSearch("")}
             placeholder="Search documentation..."
             class="docs-search-input-large"
           />
@@ -97,7 +99,10 @@ export const SearchPage: Component = () => {
         {!isSearching() && !searchQuery() && (
           <div class="docs-search-empty">
             <h3>Start searching</h3>
-            <p>Enter a search term above to find documentation, examples, and API references.</p>
+            <p>
+              Enter a search term above to find documentation, examples, and API
+              references.
+            </p>
           </div>
         )}
       </DocsSection>

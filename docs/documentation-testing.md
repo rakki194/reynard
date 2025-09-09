@@ -7,7 +7,7 @@
 The Reynard Documentation Testing System ensures that all code examples in our documentation are not just syntactically correct, but actually executable and working. This system embodies all three aspects of the Reynard philosophy:
 
 - **🦊 Strategic**: Automatically validates documentation quality
-- **🦦 Playful**: Makes testing documentation examples fun and interactive  
+- **🦦 Playful**: Makes testing documentation examples fun and interactive
 - **🐺 Adversarial**: Catches broken examples before they reach users
 
 ## 🚀 Quick Start
@@ -38,10 +38,10 @@ npm run test:docs
 
 The system automatically extracts code examples from markdown documentation:
 
-```typescript
+````typescript
 // Extracts from ```tsx, ```ts, ```js blocks
-const examples = extractCodeExamples('README.md');
-```
+const examples = extractCodeExamples("README.md");
+````
 
 ### 2. **Test Generation** 🦦
 
@@ -67,12 +67,12 @@ Examples are validated for syntax and then executed as tests:
 
 ```typescript
 // Validates syntax and imports
-const validation = validateDocExamples('README.md');
+const validation = validateDocExamples("README.md");
 
 // Runs as actual tests
 runDocTests({
-  docPath: 'README.md',
-  packageName: 'reynard-core'
+  docPath: "README.md",
+  packageName: "reynard-core",
 });
 ```
 
@@ -106,13 +106,13 @@ Each package can customize its documentation testing:
 export default defineConfig({
   plugins: [solid()],
   test: {
-    environment: 'jsdom',
-    include: ['src/**/*.doc-tests.test.ts'],
-    setupFiles: ['./src/test-setup.ts'],
+    environment: "jsdom",
+    include: ["src/**/*.doc-tests.test.ts"],
+    setupFiles: ["./src/test-setup.ts"],
   },
   resolve: {
     alias: {
-      'reynard-core': new URL('./src', import.meta.url).pathname,
+      "reynard-core": new URL("./src", import.meta.url).pathname,
     },
   },
 });
@@ -122,8 +122,8 @@ export default defineConfig({
 
 ```typescript
 // packages/core/src/test-setup.ts
-import { cleanup } from '@solidjs/testing-library';
-import { afterEach } from 'vitest';
+import { cleanup } from "@solidjs/testing-library";
+import { afterEach } from "vitest";
 
 afterEach(() => {
   cleanup();
@@ -138,14 +138,11 @@ afterEach(() => {
 // Component with testable elements
 function ThemeDemo() {
   const { theme, setTheme } = useTheme();
-  
+
   return (
     <div data-testid="theme-demo">
       <span data-testid="current-theme">{theme()}</span>
-      <button 
-        data-testid="theme-button"
-        onClick={() => setTheme("dark")}
-      >
+      <button data-testid="theme-button" onClick={() => setTheme("dark")}>
         Switch to Dark
       </button>
     </div>
@@ -155,7 +152,7 @@ function ThemeDemo() {
 
 ```typescript
 // Utility function example
-import { validateEmail } from 'reynard-core';
+import { validateEmail } from "reynard-core";
 
 const email = "user@example.com";
 const isValid = validateEmail(email);
@@ -181,18 +178,18 @@ const result = someFunction(/* ... */);
 
 ```typescript
 // packages/auth/src/doc-tests.test.ts
-import { runDocTests } from 'reynard-testing/doc-tests';
+import { runDocTests } from "reynard-testing/doc-tests";
 
 runDocTests({
-  docPath: 'packages/auth/README.md',
-  packageName: 'reynard-auth',
+  docPath: "packages/auth/README.md",
+  packageName: "reynard-auth",
   setup: `
     import { AuthProvider, useAuth } from 'reynard-auth';
     import { mockFetch } from 'reynard-testing/mocks';
     
     // Mock authentication responses
     mockFetch('/api/auth/login', { token: 'mock-token' });
-  `
+  `,
 });
 ```
 
@@ -200,10 +197,10 @@ runDocTests({
 
 ```typescript
 // Custom validation for specific packages
-const validation = validateDocExamples('README.md', {
+const validation = validateDocExamples("README.md", {
   allowUndefined: false,
   requireImports: true,
-  checkSyntax: true
+  checkSyntax: true,
 });
 ```
 
@@ -215,21 +212,25 @@ The system generates comprehensive reports:
 # Documentation Test Report
 
 ## Summary
+
 - **Total Examples**: 45
 - **Valid Examples**: 43
 - **Invalid Examples**: 2
 - **Success Rate**: 95.6%
 
 ## Examples by Type
+
 - Component: 25
 - TypeScript: 15
 - JavaScript: 5
 
 ## Issues Found
+
 - Example 12: Contains undefined reference
 - Example 23: Invalid import statement
 
 ## Recommendations
+
 - Review and fix invalid examples
 - Add proper error handling
 - Ensure all imports are correct
@@ -252,7 +253,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm install
       - run: npm run doc-tests
 ```

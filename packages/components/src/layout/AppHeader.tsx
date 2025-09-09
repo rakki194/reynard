@@ -3,7 +3,13 @@
  * Modern header with navigation and theme selector
  */
 
-import { Component, createSignal, For, createEffect, createMemo } from "solid-js";
+import {
+  Component,
+  createSignal,
+  For,
+  createEffect,
+  createMemo,
+} from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { useTheme, getAvailableThemes } from "reynard-themes";
 import { useNotifications } from "reynard-core";
@@ -24,11 +30,11 @@ export const AppHeader: Component = () => {
         },
         getTagStyle: () => ({}),
         isDark: false,
-        isHighContrast: false
+        isHighContrast: false,
       };
     }
   });
-  
+
   const notifications = createMemo(() => {
     try {
       return useNotifications();
@@ -37,14 +43,14 @@ export const AppHeader: Component = () => {
       return {
         notify: (message: string, type?: string) => {
           console.warn("Notifications context not available:", message, type);
-        }
+        },
       };
     }
   });
-  
+
   const notify = createMemo(() => notifications().notify);
   const [isMenuOpen, setIsMenuOpen] = createSignal(false);
-  
+
   const availableThemes = getAvailableThemes();
 
   // Debug logging to track theme changes
@@ -59,7 +65,11 @@ export const AppHeader: Component = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    if (sectionId === "oklch-showcase" || sectionId === "charts-showcase" || sectionId === "threed-showcase") {
+    if (
+      sectionId === "oklch-showcase" ||
+      sectionId === "charts-showcase" ||
+      sectionId === "threed-showcase"
+    ) {
       // Navigate to dedicated showcase pages
       window.location.hash = sectionId;
       setIsMenuOpen(false);
@@ -93,7 +103,7 @@ export const AppHeader: Component = () => {
         </div>
 
         <nav class="header-nav">
-          <button 
+          <button
             class="nav-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen())}
             aria-label="Toggle navigation menu"
@@ -101,16 +111,22 @@ export const AppHeader: Component = () => {
             {fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu") && (
               <span
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")?.outerHTML}
+                innerHTML={
+                  fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")
+                    ?.outerHTML
+                }
               />
             )}
           </button>
-          
-          <div class={`nav-menu ${isMenuOpen() ? 'open' : ''}`}>
+
+          <div class={`nav-menu ${isMenuOpen() ? "open" : ""}`}>
             <button class="nav-link" onClick={() => scrollToSection("hero")}>
               Home
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("dashboard")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("dashboard")}
+            >
               Dashboard
             </button>
             <button class="nav-link" onClick={() => scrollToSection("icons")}>
@@ -119,19 +135,34 @@ export const AppHeader: Component = () => {
             <button class="nav-link" onClick={() => scrollToSection("themes")}>
               Themes
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("oklch-demo")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("oklch-demo")}
+            >
               OKLCH Colors
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("oklch-showcase")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("oklch-showcase")}
+            >
               OKLCH Showcase
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("charts-showcase")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("charts-showcase")}
+            >
               Charts Showcase
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("threed-showcase")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("threed-showcase")}
+            >
               3D Showcase
             </button>
-            <button class="nav-link" onClick={() => scrollToSection("playground")}>
+            <button
+              class="nav-link"
+              onClick={() => scrollToSection("playground")}
+            >
               Playground
             </button>
           </div>
@@ -147,7 +178,9 @@ export const AppHeader: Component = () => {
             >
               <For each={availableThemes}>
                 {(themeConfig) => (
-                  <option value={themeConfig.name}>{themeConfig.displayName}</option>
+                  <option value={themeConfig.name}>
+                    {themeConfig.displayName}
+                  </option>
                 )}
               </For>
             </select>
@@ -157,4 +190,3 @@ export const AppHeader: Component = () => {
     </header>
   );
 };
-

@@ -7,10 +7,13 @@
  * @module algorithms/unionFindSetOperations
  */
 
-import { UnionFindNode, UnionFindStats } from './union-find-types';
+import { UnionFindNode, UnionFindStats } from "./union-find-types";
 
 export class UnionFindSetOperations {
-  constructor(private nodes: UnionFindNode[], private stats: { compressionCount: number; unionCount: number }) {}
+  constructor(
+    private nodes: UnionFindNode[],
+    private stats: { compressionCount: number; unionCount: number },
+  ) {}
 
   /**
    * Find the root of a node with path compression
@@ -28,7 +31,9 @@ export class UnionFindSetOperations {
    */
   getSetSize(x: number): number {
     const root = this.find(x);
-    return this.nodes.filter(node => this.find(this.nodes.indexOf(node)) === root).length;
+    return this.nodes.filter(
+      (node) => this.find(this.nodes.indexOf(node)) === root,
+    ).length;
   }
 
   /**
@@ -36,7 +41,9 @@ export class UnionFindSetOperations {
    */
   getSetMembers(x: number): number[] {
     const root = this.find(x);
-    return this.nodes.map((_, index) => index).filter(index => this.find(index) === root);
+    return this.nodes
+      .map((_, index) => index)
+      .filter((index) => this.find(index) === root);
   }
 
   /**

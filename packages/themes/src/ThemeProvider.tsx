@@ -9,22 +9,17 @@ import {
   createSignal,
   createEffect,
 } from "solid-js";
-import type {
-  ThemeName,
-  ReynardContext,
-  ThemeProviderProps,
-} from "./types";
+import type { ThemeName, ReynardContext, ThemeProviderProps } from "./types";
 import type { TranslationContext } from "reynard-i18n";
-import {
-  I18nProvider,
-  createI18nModule,
-} from "reynard-i18n";
+import { I18nProvider, createI18nModule } from "reynard-i18n";
 import { getInitialTheme } from "./themeInitialization";
 import { createThemeContext } from "./themeContext";
 import { setupThemeLifecycle } from "./themeLifecycle";
 
 // Create contexts with default value to prevent context not found errors
-export const ReynardContextInstance = createContext<ReynardContext | undefined>(undefined);
+export const ReynardContextInstance = createContext<ReynardContext | undefined>(
+  undefined,
+);
 
 // Theme Provider Component
 export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
@@ -81,9 +76,4 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
 };
 
 // Re-export hooks from themeHooks module
-export {
-  useReynard,
-  useTheme,
-  useTranslation,
-  useI18n,
-} from "./themeHooks";
+export { useReynard, useTheme, useTranslation, useI18n } from "./themeHooks";

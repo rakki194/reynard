@@ -3,16 +3,8 @@
  * A comprehensive icon showcase and demo application
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  Show,
-} from "solid-js";
-import {
-  NotificationsProvider,
-  createNotifications,
-} from "reynard-core";
+import { Component, createSignal, createMemo, Show } from "solid-js";
+import { NotificationsProvider, createNotifications } from "reynard-core";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import "reynard-themes/themes.css";
 import { IconGrid } from "./components/IconGrid";
@@ -20,11 +12,7 @@ import { SearchSection } from "./components/SearchSection";
 import { IconModal } from "./components/IconModal";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { CategoryStats } from "./components/CategoryStats";
-import { 
-  iconCategories, 
-  allIcons,
-  getIcon
-} from "reynard-fluent-icons";
+import { iconCategories, allIcons, getIcon } from "reynard-fluent-icons";
 
 type TabType = "browse" | "search" | "categories" | "stats";
 
@@ -45,13 +33,16 @@ const IconsDemo: Component = () => {
   // Filter icons based on search and category
   const filteredIcons = createMemo(() => {
     let icons = Object.entries(allIcons);
-    
+
     // Filter by category
     if (selectedCategory() !== "all") {
-      const categoryIcons = Object.keys(iconCategories[selectedCategory() as keyof typeof iconCategories]?.icons || {});
+      const categoryIcons = Object.keys(
+        iconCategories[selectedCategory() as keyof typeof iconCategories]
+          ?.icons || {},
+      );
       icons = icons.filter(([name]) => categoryIcons.includes(name));
     }
-    
+
     // Filter by search query
     const query = searchQuery().toLowerCase();
     if (query) {
@@ -60,12 +51,14 @@ const IconsDemo: Component = () => {
         return (
           name.toLowerCase().includes(query) ||
           metadata.description?.toLowerCase().includes(query) ||
-          metadata.keywords?.some(keyword => keyword.toLowerCase().includes(query)) ||
-          metadata.tags?.some(tag => tag.toLowerCase().includes(query))
+          metadata.keywords?.some((keyword) =>
+            keyword.toLowerCase().includes(query),
+          ) ||
+          metadata.tags?.some((tag) => tag.toLowerCase().includes(query))
         );
       });
     }
-    
+
     return icons;
   });
 
@@ -73,25 +66,19 @@ const IconsDemo: Component = () => {
     switch (activeTab()) {
       case "browse":
         return (
-          <IconGrid 
-            icons={filteredIcons()} 
-            onIconClick={setSelectedIcon}
-          />
+          <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />
         );
       case "search":
         return (
           <>
-            <SearchSection 
+            <SearchSection
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
               resultCount={filteredIcons().length}
             />
-            <IconGrid 
-              icons={filteredIcons()} 
-              onIconClick={setSelectedIcon}
-            />
+            <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />
           </>
         );
       case "categories":
@@ -106,7 +93,7 @@ const IconsDemo: Component = () => {
                   <div class="category-icon-count">
                     {Object.keys(category.icons).length} icons
                   </div>
-                  <button 
+                  <button
                     class="view-category-btn"
                     onClick={() => {
                       setSelectedCategory(key);
@@ -124,10 +111,7 @@ const IconsDemo: Component = () => {
         return <CategoryStats />;
       default:
         return (
-          <IconGrid 
-            icons={filteredIcons()} 
-            onIconClick={setSelectedIcon}
-          />
+          <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />
         );
     }
   };
@@ -139,11 +123,12 @@ const IconsDemo: Component = () => {
           <span class="reynard-logo"></span>
           Reynard Icons Demo
         </h1>
-        <p>Comprehensive Fluent UI Icons Collection - Built with Reynard Framework</p>
+        <p>
+          Comprehensive Fluent UI Icons Collection - Built with Reynard
+          Framework
+        </p>
         <div class="header-controls">
-          <div class="theme-info">
-            Current theme: {theme()}
-          </div>
+          <div class="theme-info">Current theme: {theme()}</div>
           <ThemeToggle />
         </div>
       </header>
@@ -158,9 +143,7 @@ const IconsDemo: Component = () => {
                 onClick={() => setActiveTab(tab.id)}
               >
                 <span class="icon">
-                  {iconElement && (
-                    <div innerHTML={iconElement} />
-                  )}
+                  {iconElement && <div innerHTML={iconElement} />}
                 </span>
                 {tab.label}
               </button>
@@ -168,15 +151,13 @@ const IconsDemo: Component = () => {
           })}
         </div>
 
-        <Show when={activeTab()}>
-          {renderActiveTab()}
-        </Show>
+        <Show when={activeTab()}>{renderActiveTab()}</Show>
       </main>
 
       <Show when={selectedIcon()}>
-        <IconModal 
-          iconName={selectedIcon()!} 
-          onClose={() => setSelectedIcon(null)} 
+        <IconModal
+          iconName={selectedIcon()!}
+          onClose={() => setSelectedIcon(null)}
         />
       </Show>
     </div>

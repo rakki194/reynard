@@ -2,8 +2,13 @@
  * Central registry for managing tools
  */
 
-import { BaseTool } from './BaseTool';
-import { ToolDefinition, ToolResult, ToolExecutionContext, ToolRegistryStats } from './types';
+import { BaseTool } from "./BaseTool";
+import {
+  ToolDefinition,
+  ToolResult,
+  ToolExecutionContext,
+  ToolRegistryStats,
+} from "./types";
 
 export class ToolRegistry {
   private tools: Map<string, BaseTool> = new Map();
@@ -108,7 +113,7 @@ export class ToolRegistry {
       return [];
     }
     return Array.from(toolNames)
-      .map(name => this.tools.get(name))
+      .map((name) => this.tools.get(name))
       .filter((tool): tool is BaseTool => tool !== undefined);
   }
 
@@ -121,7 +126,7 @@ export class ToolRegistry {
       return [];
     }
     return Array.from(toolNames)
-      .map(name => this.tools.get(name))
+      .map((name) => this.tools.get(name))
       .filter((tool): tool is BaseTool => tool !== undefined);
   }
 
@@ -130,10 +135,11 @@ export class ToolRegistry {
    */
   searchTools(query: string): BaseTool[] {
     const lowerQuery = query.toLowerCase();
-    return this.getAllTools().filter(tool => 
-      tool.name.toLowerCase().includes(lowerQuery) ||
-      tool.description.toLowerCase().includes(lowerQuery) ||
-      tool.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+    return this.getAllTools().filter(
+      (tool) =>
+        tool.name.toLowerCase().includes(lowerQuery) ||
+        tool.description.toLowerCase().includes(lowerQuery) ||
+        tool.tags.some((tag) => tag.toLowerCase().includes(lowerQuery)),
     );
   }
 
@@ -143,7 +149,7 @@ export class ToolRegistry {
   async executeTool(
     toolName: string,
     parameters: Record<string, any>,
-    context: ToolExecutionContext
+    context: ToolExecutionContext,
   ): Promise<ToolResult> {
     const tool = this.tools.get(toolName);
     if (!tool) {
@@ -155,13 +161,13 @@ export class ToolRegistry {
 
     try {
       const result = await tool.execute(parameters, context);
-      
+
       if (result.success) {
         this.metrics.successfulCalls++;
       } else {
         this.metrics.failedCalls++;
       }
-      
+
       this.metrics.totalExecutionTime += result.executionTime;
       return result;
     } catch (error) {
@@ -191,28 +197,31 @@ export class ToolRegistry {
   getStats(): ToolRegistryStats {
     const tools = this.getAllTools();
     const topTools = tools
-      .map(tool => ({
+      .map((tool) => ({
         name: tool.name,
         calls: tool.metrics.totalCalls,
-        successRate: tool.metrics.totalCalls > 0 
-          ? tool.metrics.successfulCalls / tool.metrics.totalCalls 
-          : 0,
+        successRate:
+          tool.metrics.totalCalls > 0
+            ? tool.metrics.successfulCalls / tool.metrics.totalCalls
+            : 0,
       }))
       .sort((a, b) => b.calls - a.calls)
       .slice(0, 10);
 
     return {
       totalTools: this.tools.size,
-      activeTools: tools.filter(tool => tool.metrics.totalCalls > 0).length,
+      activeTools: tools.filter((tool) => tool.metrics.totalCalls > 0).length,
       totalCalls: this.metrics.totalCalls,
       successfulCalls: this.metrics.successfulCalls,
       failedCalls: this.metrics.failedCalls,
-      averageExecutionTime: this.metrics.totalCalls > 0 
-        ? this.metrics.totalExecutionTime / this.metrics.totalCalls 
-        : 0,
-      errorRate: this.metrics.totalCalls > 0 
-        ? this.metrics.failedCalls / this.metrics.totalCalls 
-        : 0,
+      averageExecutionTime:
+        this.metrics.totalCalls > 0
+          ? this.metrics.totalExecutionTime / this.metrics.totalCalls
+          : 0,
+      errorRate:
+        this.metrics.totalCalls > 0
+          ? this.metrics.failedCalls / this.metrics.totalCalls
+          : 0,
       topTools,
     };
   }
@@ -221,7 +230,7 @@ export class ToolRegistry {
    * Get tools as JSON schema for AI tool calling
    */
   getToolsAsJSONSchema(): any[] {
-    return this.getAllTools().map(tool => tool.toJSONSchema());
+    return this.getAllTools().map((tool) => tool.toJSONSchema());
   }
 
   /**

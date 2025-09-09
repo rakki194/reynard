@@ -10,36 +10,46 @@ import "./TagComponents.css";
 export const SampleTags: Component = () => {
   const themeContext = useTheme();
   const tagColors = useTagColors();
-  
-  const sampleTags = ["react", "solidjs", "typescript", "oklch", "design-system", "accessibility"];
+
+  const sampleTags = [
+    "react",
+    "solidjs",
+    "typescript",
+    "oklch",
+    "design-system",
+    "accessibility",
+  ];
 
   // Create reactive tag styles that update when theme changes
   const tagStyles = createMemo(() => {
     const currentTheme = themeContext.theme;
     console.log(`Computing tag styles for theme: ${currentTheme}`);
-    return sampleTags.map(tag => ({
+    return sampleTags.map((tag) => ({
       tag,
-      style: tagColors.getTagStyle(tag)
+      style: tagColors.getTagStyle(tag),
     }));
   });
 
   return (
     <div class="sample-tags">
       <h4>Sample Tags</h4>
-      
+
       <div class="tag-list">
         <For each={tagStyles()}>
           {(tagData) => {
             // Debug logging
             console.log(`Tag: ${tagData.tag}, Style:`, tagData.style);
-            
+
             return (
-              <div 
+              <div
                 class="tag"
                 ref={(el) => {
                   if (el) {
-                    el.style.setProperty('--tag-bg', tagData.style['--tag-bg']);
-                    el.style.setProperty('--tag-color', tagData.style['--tag-color']);
+                    el.style.setProperty("--tag-bg", tagData.style["--tag-bg"]);
+                    el.style.setProperty(
+                      "--tag-color",
+                      tagData.style["--tag-color"],
+                    );
                   }
                 }}
               >

@@ -18,9 +18,15 @@ export const OKLCHButtonsDemo: Component = () => {
         <OKLCHButton variant="warning">Warning</OKLCHButton>
         <OKLCHButton variant="error">Error</OKLCHButton>
         <OKLCHButton variant="info">Info</OKLCHButton>
-        <OKLCHButton variant="primary" size="small">Small</OKLCHButton>
-        <OKLCHButton variant="primary" size="large">Large</OKLCHButton>
-        <OKLCHButton variant="primary" disabled>Disabled</OKLCHButton>
+        <OKLCHButton variant="primary" size="small">
+          Small
+        </OKLCHButton>
+        <OKLCHButton variant="primary" size="large">
+          Large
+        </OKLCHButton>
+        <OKLCHButton variant="primary" disabled>
+          Disabled
+        </OKLCHButton>
       </div>
     </div>
   );

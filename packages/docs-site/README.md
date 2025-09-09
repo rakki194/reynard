@@ -91,7 +91,7 @@ import { useTheme } from 'reynard-themes';
 
 function MyComponent() {
   const { theme, setTheme } = useTheme();
-  
+
   return (
     <div class={`docs-component docs-component--${theme()}`}>
       <button onClick={() => setTheme(theme() === 'light' ? 'dark' : 'light')}>
@@ -120,14 +120,14 @@ Override CSS variables to customize the appearance:
 Register custom components for documentation:
 
 ```typescript
-import { createDocEngine } from 'reynard-docs-core';
+import { createDocEngine } from "reynard-docs-core";
 
 const engine = createDocEngine({
   // ... other config
   customComponents: {
-    'MyCustomComponent': MyCustomComponent,
-    'InteractiveDemo': InteractiveDemo
-  }
+    MyCustomComponent: MyCustomComponent,
+    InteractiveDemo: InteractiveDemo,
+  },
 });
 ```
 
@@ -228,7 +228,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm ci
       - run: npm run build
       - uses: peaceiris/actions-gh-pages@v3

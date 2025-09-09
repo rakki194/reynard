@@ -4,12 +4,12 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import { 
-  formatOKLCH, 
-  createTagColorGenerator, 
+import {
+  formatOKLCH,
+  createTagColorGenerator,
   generateColorsWithCache,
   oklchToCSSWithAlpha,
-  type ThemeName 
+  type ThemeName,
 } from "reynard-color-media";
 
 export interface VisualizationConfig {
@@ -115,36 +115,39 @@ export class VisualizationEngine {
       this.config.lightness!,
       opacity,
       this.config.useOKLCH,
-      this.colorCache
+      this.colorCache,
     );
-    
+
     // Update cache stats for performance monitoring
     const cacheKey = `${count}-${this.config.baseHue}-${this.config.saturation}-${this.config.lightness}-${opacity}-${this.config.useOKLCH}`;
     this.updateCacheStats(this.colorCache.has(cacheKey));
-    
+
     return colors;
   }
 
   /**
    * Generate colors for a specific tag/label
    */
-  public generateTagColors(tags: string[], opacity: number = 1): Record<string, string> {
+  public generateTagColors(
+    tags: string[],
+    opacity: number = 1,
+  ): Record<string, string> {
     const result: Record<string, string> = {};
-    
+
     for (const tag of tags) {
       const oklchColor = this.tagColorGenerator.getTagColor(
         this.config.theme!,
         tag,
-        1.0
+        1.0,
       );
-      
+
       if (opacity < 1) {
         result[tag] = oklchToCSSWithAlpha(formatOKLCH(oklchColor), opacity);
       } else {
         result[tag] = formatOKLCH(oklchColor);
       }
     }
-    
+
     return result;
   }
 
@@ -166,7 +169,6 @@ export class VisualizationEngine {
       accent,
     };
   }
-
 
   /**
    * Update configuration
@@ -201,7 +203,10 @@ export class VisualizationEngine {
    * Unregister a visualization
    */
   public unregisterVisualization(): void {
-    this.stats.activeVisualizations = Math.max(0, this.stats.activeVisualizations - 1);
+    this.stats.activeVisualizations = Math.max(
+      0,
+      this.stats.activeVisualizations - 1,
+    );
   }
 
   /**
@@ -210,7 +215,7 @@ export class VisualizationEngine {
   private updateCacheStats(hit: boolean): void {
     // Simple cache hit rate calculation
     const totalRequests = this.stats.activeVisualizations * 10; // Estimate
-    const hits = this.stats.cacheHitRate * totalRequests / 100;
+    const hits = (this.stats.cacheHitRate * totalRequests) / 100;
     const newHits = hit ? hits + 1 : hits;
     this.stats.cacheHitRate = (newHits / (totalRequests + 1)) * 100;
   }
@@ -219,7 +224,7 @@ export class VisualizationEngine {
    * Initialize performance monitoring
    */
   private initializePerformanceMonitoring(): void {
-    if (typeof window !== 'undefined' && 'performance' in window) {
+    if (typeof window !== "undefined" && "performance" in window) {
       setInterval(() => {
         this.updatePerformanceStats();
       }, 1000);
@@ -230,7 +235,7 @@ export class VisualizationEngine {
    * Update performance statistics
    */
   private updatePerformanceStats(): void {
-    if (typeof window !== 'undefined' && 'performance' in window) {
+    if (typeof window !== "undefined" && "performance" in window) {
       const memory = (performance as any).memory;
       if (memory) {
         this.stats.memoryUsage = memory.usedJSHeapSize / 1024 / 1024; // Convert to MB
@@ -250,7 +255,7 @@ export class VisualizationEngine {
    * Get memory usage
    */
   public getMemoryUsage(): number {
-    if (typeof window !== 'undefined' && 'performance' in window) {
+    if (typeof window !== "undefined" && "performance" in window) {
       const memory = (performance as any).memory;
       if (memory) {
         return memory.usedJSHeapSize / 1024 / 1024; // Convert to MB
@@ -279,7 +284,7 @@ class PerformanceMonitor {
   public startFrame(): void {
     this.frameCount++;
     const now = performance.now();
-    
+
     if (now - this.lastTime >= 1000) {
       this.fps = Math.round((this.frameCount * 1000) / (now - this.lastTime));
       this.frameCount = 0;
@@ -297,25 +302,28 @@ class PerformanceMonitor {
  */
 export function useVisualizationEngine(config?: VisualizationConfig) {
   const engine = VisualizationEngine.getInstance(config);
-  
+
   const [stats, setStats] = createSignal<VisualizationStats>(engine.getStats());
-  
+
   // Update stats periodically
   createEffect(() => {
     const interval = setInterval(() => {
       setStats(engine.getStats());
     }, 1000);
-    
+
     onCleanup(() => clearInterval(interval));
   });
 
   return {
     engine,
     stats,
-    generateColors: (count: number, opacity?: number) => engine.generateColors(count, opacity),
-    generateTagColors: (tags: string[], opacity?: number) => engine.generateTagColors(tags, opacity),
+    generateColors: (count: number, opacity?: number) =>
+      engine.generateColors(count, opacity),
+    generateTagColors: (tags: string[], opacity?: number) =>
+      engine.generateTagColors(tags, opacity),
     generatePalette: (count: number) => engine.generatePalette(count),
-    updateConfig: (newConfig: Partial<VisualizationConfig>) => engine.updateConfig(newConfig),
+    updateConfig: (newConfig: Partial<VisualizationConfig>) =>
+      engine.updateConfig(newConfig),
     getConfig: () => engine.getConfig(),
     registerVisualization: () => engine.registerVisualization(),
     unregisterVisualization: () => engine.unregisterVisualization(),

@@ -1,7 +1,7 @@
 /**
  * Type definitions for Reynard i18n system
  * Based on yipyap's comprehensive translation architecture
- * 
+ *
  * This module aggregates all type definitions from specialized modules.
  */
 
@@ -49,15 +49,10 @@ export type {
   LanguageStatistics,
 } from "./language-types";
 
-export type {
-  SettingsTranslations,
-} from "./settings-translation-types";
+export type { SettingsTranslations } from "./settings-translation-types";
 
 // Import types needed for the main Translations interface
-import type {
-  CommonTranslations,
-  ThemeTranslations,
-} from "./common-types";
+import type { CommonTranslations, ThemeTranslations } from "./common-types";
 import type {
   CoreTranslations,
   ComponentTranslations,

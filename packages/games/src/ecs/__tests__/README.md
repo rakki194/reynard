@@ -231,4 +231,3 @@ When adding new tests:
 2. **Check test coverage** to ensure all code paths are tested
 3. **Run tests individually** to isolate issues
 4. **Use test utilities** for common testing patterns
-

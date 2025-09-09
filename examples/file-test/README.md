@@ -17,7 +17,7 @@ A comprehensive test application for the Reynard file processing and thumbnail g
 
 - JPEG, PNG, GIF, WebP, SVG, BMP
 
-### Videos  
+### Videos
 
 - MP4, AVI, MOV, WMV, FLV, WebM, MKV
 

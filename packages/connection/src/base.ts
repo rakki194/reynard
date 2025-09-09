@@ -1,4 +1,4 @@
-export * from './types';
+export * from "./types";
 
 import {
   ConnectionState,
@@ -7,7 +7,7 @@ import {
   ConnectionStatus,
   ConnectionMetrics,
   ConnectionEvent,
-} from './types';
+} from "./types";
 
 function nowMs(): number {
   return Date.now();
@@ -18,7 +18,7 @@ function nowMs(): number {
 function randomUUIDSafe(): string {
   const g: any = globalThis as any;
   const webCrypto = g?.crypto;
-  if (webCrypto && typeof webCrypto.randomUUID === 'function') {
+  if (webCrypto && typeof webCrypto.randomUUID === "function") {
     try {
       return webCrypto.randomUUID.call(webCrypto);
     } catch {
@@ -27,15 +27,16 @@ function randomUUIDSafe(): string {
   }
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const nodeCrypto = require('crypto');
-    if (typeof nodeCrypto?.randomUUID === 'function') return nodeCrypto.randomUUID();
+    const nodeCrypto = require("crypto");
+    if (typeof nodeCrypto?.randomUUID === "function")
+      return nodeCrypto.randomUUID();
   } catch {
     // ignore
   }
   // RFC4122 v4-ish polyfill fallback
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -75,7 +76,7 @@ export abstract class BaseConnection {
   // Circuit breaker
   private cbFailures = 0;
   private cbLastFailure?: number;
-  private cbState: 'closed' | 'open' | 'half-open' = 'closed';
+  private cbState: "closed" | "open" | "half-open" = "closed";
 
   constructor(config: ConnectionConfig) {
     this.config = config;
@@ -118,8 +119,8 @@ export abstract class BaseConnection {
   protected emitEvent(
     eventType: string,
     data?: Record<string, unknown>,
-    severity: 'info' | 'warning' | 'error' = 'info',
-    message?: string
+    severity: "info" | "warning" | "error" = "info",
+    message?: string,
   ) {
     const evt: ConnectionEvent = {
       eventId: randomUUIDSafe(),
@@ -144,7 +145,7 @@ export abstract class BaseConnection {
       const old = this.state;
       this.state = newState;
       this.updatedAt = nowMs();
-      this.emitEvent('state_changed', { old_state: old, new_state: newState });
+      this.emitEvent("state_changed", { old_state: old, new_state: newState });
       for (const h of this.stateHandlers)
         try {
           h(newState);
@@ -157,7 +158,10 @@ export abstract class BaseConnection {
       const old = this.health;
       this.health = newHealth;
       this.updatedAt = nowMs();
-      this.emitEvent('health_changed', { old_health: old, new_health: newHealth });
+      this.emitEvent("health_changed", {
+        old_health: old,
+        new_health: newHealth,
+      });
       for (const h of this.healthHandlers)
         try {
           h(newHealth);
@@ -167,7 +171,7 @@ export abstract class BaseConnection {
 
   protected updateMetrics(responseTime?: number, success = true) {
     const now = nowMs();
-    if (typeof responseTime === 'number') {
+    if (typeof responseTime === "number") {
       this.metrics.responseTime = responseTime;
       this.metrics.lastResponseTime = now;
     }
@@ -181,14 +185,16 @@ export abstract class BaseConnection {
       this.errorCount += 1;
     }
     this.metrics.errorRate =
-      this.metrics.totalRequests > 0 ? (this.metrics.errorCount / this.metrics.totalRequests) * 100 : 0;
+      this.metrics.totalRequests > 0
+        ? (this.metrics.errorCount / this.metrics.totalRequests) * 100
+        : 0;
     this.metrics.lastRequestTime = now;
 
     // Approx throughput: assume at least 1 req per second if active
     this.metrics.throughput = Math.max(this.metrics.throughput, 1);
 
     // Emit metrics event for analytics
-    this.emitEvent('metrics', {
+    this.emitEvent("metrics", {
       response_time: responseTime ?? 0,
       success,
       error_rate: this.metrics.errorRate,
@@ -196,29 +202,39 @@ export abstract class BaseConnection {
     });
   }
 
-  protected handleError(error: unknown, context = 'unknown') {
+  protected handleError(error: unknown, context = "unknown") {
     const message = error instanceof Error ? error.message : String(error);
     this.lastError = message;
     this.updatedAt = nowMs();
-    this.emitEvent('error', { error: message, context, error_type: (error as any)?.name ?? 'Error' }, 'error', message);
+    this.emitEvent(
+      "error",
+      { error: message, context, error_type: (error as any)?.name ?? "Error" },
+      "error",
+      message,
+    );
 
     // Circuit breaker
     if (this.config.circuitBreakerEnabled) {
       this.cbFailures += 1;
       this.cbLastFailure = nowMs();
-      if (this.cbFailures >= (this.config.circuitBreakerThreshold ?? 5) && this.cbState === 'closed') {
-        this.cbState = 'open';
+      if (
+        this.cbFailures >= (this.config.circuitBreakerThreshold ?? 5) &&
+        this.cbState === "closed"
+      ) {
+        this.cbState = "open";
       }
     }
   }
 
   protected checkCircuitBreaker(): boolean {
     if (!this.config.circuitBreakerEnabled) return true;
-    if (this.cbState === 'open') {
+    if (this.cbState === "open") {
       const timeoutSec = this.config.circuitBreakerTimeout ?? 60;
-      const elapsedSec = this.cbLastFailure ? (nowMs() - this.cbLastFailure) / 1000 : 0;
+      const elapsedSec = this.cbLastFailure
+        ? (nowMs() - this.cbLastFailure) / 1000
+        : 0;
       if (elapsedSec >= timeoutSec) {
-        this.cbState = 'half-open';
+        this.cbState = "half-open";
         return true;
       }
       return false;
@@ -228,7 +244,7 @@ export abstract class BaseConnection {
 
   protected resetCircuitBreaker() {
     this.cbFailures = 0;
-    this.cbState = 'closed';
+    this.cbState = "closed";
     this.cbLastFailure = undefined;
   }
 
@@ -248,10 +264,10 @@ export abstract class BaseConnection {
     try {
       await this.disconnect();
       const delay = (this.config.retryDelay ?? 1) * 1000;
-      await new Promise(r => setTimeout(r, delay));
+      await new Promise((r) => setTimeout(r, delay));
       return await this.connect();
     } catch (e) {
-      this.handleError(e, 'reconnect');
+      this.handleError(e, "reconnect");
       return false;
     }
   }
@@ -265,7 +281,7 @@ export abstract class BaseConnection {
       if (ok) this.resetCircuitBreaker();
       return ok;
     } catch (e) {
-      this.handleError(e, 'send');
+      this.handleError(e, "send");
       this.updateMetrics(undefined, false);
       return false;
     }
@@ -280,7 +296,7 @@ export abstract class BaseConnection {
       if (result != null) this.resetCircuitBreaker();
       return result;
     } catch (e) {
-      this.handleError(e, 'receive');
+      this.handleError(e, "receive");
       this.updateMetrics(undefined, false);
       return null;
     }

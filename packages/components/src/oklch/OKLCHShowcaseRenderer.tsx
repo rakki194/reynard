@@ -33,12 +33,17 @@ interface OKLCHShowcaseRendererProps {
     currentOKLCH: () => string;
     colorVariations: () => ColorVariations;
     animatedPalette: () => string[];
-    themeTagColors: () => { tag: string; colors: { theme: any; color: any; }[]; }[];
+    themeTagColors: () => {
+      tag: string;
+      colors: { theme: any; color: any }[];
+    }[];
     gradientDemos: () => GradientDemoItem[];
   };
 }
 
-export const OKLCHShowcaseRenderer: Component<OKLCHShowcaseRendererProps> = (props) => {
+export const OKLCHShowcaseRenderer: Component<OKLCHShowcaseRendererProps> = (
+  props,
+) => {
   return (
     <section class="oklch-showcase">
       <ShowcaseSections

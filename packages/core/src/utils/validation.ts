@@ -8,7 +8,7 @@
  */
 export function isValidEmail(email: string): boolean {
   // Handle null/undefined/empty input
-  if (!email || typeof email !== 'string') {
+  if (!email || typeof email !== "string") {
     return false;
   }
 
@@ -22,7 +22,7 @@ export function isValidEmail(email: string): boolean {
  */
 export function isValidUrl(url: string): boolean {
   // Handle null/undefined/empty input
-  if (!url || typeof url !== 'string') {
+  if (!url || typeof url !== "string") {
     return false;
   }
 
@@ -39,7 +39,7 @@ export function isValidUrl(url: string): boolean {
  */
 export function isValidPhoneNumber(phone: string): boolean {
   // Handle null/undefined/empty input
-  if (!phone || typeof phone !== 'string') {
+  if (!phone || typeof phone !== "string") {
     return false;
   }
 
@@ -151,7 +151,12 @@ export function isValidPostalCode(
   country: string = "US",
 ): boolean {
   // Handle null/undefined/empty input
-  if (!postalCode || typeof postalCode !== 'string' || !country || typeof country !== 'string') {
+  if (
+    !postalCode ||
+    typeof postalCode !== "string" ||
+    !country ||
+    typeof country !== "string"
+  ) {
     return false;
   }
 
@@ -174,7 +179,7 @@ export function isValidPostalCode(
  */
 export function isValidSSN(ssn: string): boolean {
   // Handle null/undefined/empty input
-  if (!ssn || typeof ssn !== 'string') {
+  if (!ssn || typeof ssn !== "string") {
     return false;
   }
 

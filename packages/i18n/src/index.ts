@@ -3,55 +3,71 @@
  * Comprehensive internationalization system with 37 language support
  */
 
-import { createSignal, createEffect, createContext, useContext } from 'solid-js';
-import type { 
-  LanguageCode, 
-  Translations, 
-  TranslationParams, 
+import {
+  createSignal,
+  createEffect,
+  createContext,
+  useContext,
+} from "solid-js";
+import type {
+  LanguageCode,
+  Translations,
+  TranslationParams,
   TranslationFunction,
   I18nModule,
-  TranslationContext 
-} from './types';
-import { 
-  languages, 
-  getInitialLocale, 
-  isRTL, 
-  getTranslationValue
-} from './utils';
+  TranslationContext,
+} from "./types";
+import {
+  languages,
+  getInitialLocale,
+  isRTL,
+  getTranslationValue,
+} from "./utils";
 
 // Dynamic import of translation files using import.meta.glob (like Yipyap)
-export const translations: Record<string, () => Promise<Translations>> = Object.fromEntries(
-  Object.entries((import.meta as any).glob('./lang/*.ts', { import: 'default' })).map(([key, value]) => [
-    key.replace(/^\.\/lang\/(.+)\.ts$/, '$1'),
-    value as () => Promise<Translations>,
-  ])
-);
+export const translations: Record<string, () => Promise<Translations>> =
+  Object.fromEntries(
+    Object.entries(
+      (import.meta as any).glob("./lang/*.ts", { import: "default" }),
+    ).map(([key, value]) => [
+      key.replace(/^\.\/lang\/(.+)\.ts$/, "$1"),
+      value as () => Promise<Translations>,
+    ]),
+  );
 
 // Translation loading function with enhanced error handling
-export async function loadTranslations(locale: LanguageCode): Promise<Translations> {
+export async function loadTranslations(
+  locale: LanguageCode,
+): Promise<Translations> {
   try {
     // Use dynamic imports with fallback
     const translationLoader = translations[locale];
     if (translationLoader) {
       return await translationLoader();
     }
-    
+
     // Fallback to dynamic import if not in glob
     const translationModule = await import(`./lang/${locale}.js`);
     return translationModule.default;
   } catch (error) {
-    console.warn(`Failed to load translations for ${locale}, falling back to English:`, error);
+    console.warn(
+      `Failed to load translations for ${locale}, falling back to English:`,
+      error,
+    );
     // Fallback to English
-    if (locale !== 'en') {
+    if (locale !== "en") {
       try {
-        const englishLoader = translations['en'];
+        const englishLoader = translations["en"];
         if (englishLoader) {
           return await englishLoader();
         }
-        const englishModule = await import('./lang/en.js');
+        const englishModule = await import("./lang/en.js");
         return englishModule.default;
       } catch (fallbackError) {
-        console.error('Failed to load English fallback translations:', fallbackError);
+        console.error(
+          "Failed to load English fallback translations:",
+          fallbackError,
+        );
         throw fallbackError;
       }
     }
@@ -68,29 +84,37 @@ export const I18nProvider = I18nContext.Provider;
 export function useI18n(): TranslationContext {
   const context = useContext(I18nContext);
   if (!context) {
-    throw new Error('useI18n must be used within an I18nProvider');
+    throw new Error("useI18n must be used within an I18nProvider");
   }
   return context;
 }
 
 // Create i18n module
-export function createI18nModule(initialTranslations?: Partial<Translations>): I18nModule {
-  const [locale, setLocaleSignal] = createSignal<LanguageCode>(getInitialLocale());
-  const [translations, _setTranslationsSignal] = createSignal<Translations>(initialTranslations as Translations || {} as Translations);
+export function createI18nModule(
+  initialTranslations?: Partial<Translations>,
+): I18nModule {
+  const [locale, setLocaleSignal] =
+    createSignal<LanguageCode>(getInitialLocale());
+  const [translations, _setTranslationsSignal] = createSignal<Translations>(
+    (initialTranslations as Translations) || ({} as Translations),
+  );
 
   // Initialize with initial locale from localStorage/browser if available
   const initialLocale = getInitialLocale();
-  if (initialLocale !== 'en') {
+  if (initialLocale !== "en") {
     setLocaleSignal(initialLocale);
   }
 
   // Persist locale changes and apply RTL
   createEffect(() => {
     const currentLocale = locale();
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('reynard-locale', currentLocale);
-      document.documentElement.setAttribute('lang', currentLocale);
-      document.documentElement.setAttribute('dir', isRTL(currentLocale) ? 'rtl' : 'ltr');
+    if (typeof window !== "undefined") {
+      localStorage.setItem("reynard-locale", currentLocale);
+      document.documentElement.setAttribute("lang", currentLocale);
+      document.documentElement.setAttribute(
+        "dir",
+        isRTL(currentLocale) ? "rtl" : "ltr",
+      );
     }
   });
 
@@ -98,9 +122,12 @@ export function createI18nModule(initialTranslations?: Partial<Translations>): I
     setLocaleSignal(newLocale);
   };
 
-
   const t: TranslationFunction = (key: string, params?: TranslationParams) => {
-    return getTranslationValue(translations() as unknown as Record<string, unknown>, key, params);
+    return getTranslationValue(
+      translations() as unknown as Record<string, unknown>,
+      key,
+      params,
+    );
   };
 
   return {
@@ -116,21 +143,21 @@ export function createI18nModule(initialTranslations?: Partial<Translations>): I
 }
 
 // Export types and utilities
-export type { 
-  LanguageCode, 
-  Language, 
-  Translations, 
-  TranslationParams, 
+export type {
+  LanguageCode,
+  Language,
+  Translations,
+  TranslationParams,
   TranslationFunction,
   I18nModule,
   TranslationContext,
-  PluralForms 
-} from './types';
+  PluralForms,
+} from "./types";
 
-export { 
-  languages, 
-  getInitialLocale, 
-  isRTL, 
+export {
+  languages,
+  getInitialLocale,
+  isRTL,
   getTranslationValue,
   formatNumber,
   formatDate,
@@ -152,11 +179,7 @@ export {
   // Grammar helpers
   getHungarianArticle,
   getHungarianArticleForWord,
-  getHungarianSuffix
-} from './utils';
+  getHungarianSuffix,
+} from "./utils";
 
-export { 
-  getPlural, 
-  createPluralTranslation,
-  pluralRules 
-} from './plurals';
+export { getPlural, createPluralTranslation, pluralRules } from "./plurals";

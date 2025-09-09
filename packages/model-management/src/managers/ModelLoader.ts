@@ -1,12 +1,17 @@
 /**
  * Model Loader
- * 
+ *
  * Handles model loading, unloading, and lifecycle management.
  */
 
-import { ModelLoader as IModelLoader, ModelInstance, ModelStatus, ModelHealth } from '../types/index.js';
-import { BaseModel } from '../models/BaseModel.js';
-import { ModelRegistry } from './ModelRegistry.js';
+import {
+  ModelLoader as IModelLoader,
+  ModelInstance,
+  ModelStatus,
+  ModelHealth,
+} from "../types/index.js";
+import { BaseModel } from "../models/BaseModel.js";
+import { ModelRegistry } from "./ModelRegistry.js";
 
 export class ModelLoader implements IModelLoader {
   private _registry: ModelRegistry;
@@ -15,13 +20,20 @@ export class ModelLoader implements IModelLoader {
   private _maxConcurrentLoads: number = 2;
   private _loadTimeout: number = 120000; // 2 minutes
 
-  constructor(registry: ModelRegistry, maxConcurrentLoads = 2, loadTimeout = 120000) {
+  constructor(
+    registry: ModelRegistry,
+    maxConcurrentLoads = 2,
+    loadTimeout = 120000,
+  ) {
     this._registry = registry;
     this._maxConcurrentLoads = maxConcurrentLoads;
     this._loadTimeout = loadTimeout;
   }
 
-  async loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance> {
+  async loadModel(
+    modelId: string,
+    config?: Record<string, any>,
+  ): Promise<ModelInstance> {
     // Check if model is registered
     const modelInfo = this._registry.getModelInfo(modelId);
     if (!modelInfo) {
@@ -40,16 +52,23 @@ export class ModelLoader implements IModelLoader {
     }
 
     // Check concurrent load limit
-    const loadingCount = Array.from(this._loadedModels.values())
-      .filter(instance => instance.status === ModelStatus.LOADING).length;
-    
+    const loadingCount = Array.from(this._loadedModels.values()).filter(
+      (instance) => instance.status === ModelStatus.LOADING,
+    ).length;
+
     if (loadingCount >= this._maxConcurrentLoads) {
-      throw new Error(`Maximum concurrent loads (${this._maxConcurrentLoads}) reached`);
+      throw new Error(
+        `Maximum concurrent loads (${this._maxConcurrentLoads}) reached`,
+      );
     }
 
     // Create model instance
-    const modelInstance = this._createModelInstance(modelId, modelInfo.modelType, config || {});
-    
+    const modelInstance = this._createModelInstance(
+      modelId,
+      modelInfo.modelType,
+      config || {},
+    );
+
     // Initialize model instance
     const instance: ModelInstance = {
       modelId,
@@ -58,7 +77,7 @@ export class ModelLoader implements IModelLoader {
       health: ModelHealth.UNKNOWN,
       config: config || {},
       loadedAt: new Date(),
-      lastUsed: new Date()
+      lastUsed: new Date(),
     };
 
     this._loadedModels.set(modelId, instance);
@@ -67,7 +86,7 @@ export class ModelLoader implements IModelLoader {
     try {
       // Load the model
       await modelInstance.initialize();
-      
+
       // Update instance with loaded status
       instance.status = ModelStatus.LOADED;
       instance.health = modelInstance.health;
@@ -75,7 +94,6 @@ export class ModelLoader implements IModelLoader {
       this._loadedModels.set(modelId, instance);
 
       return { ...instance };
-
     } catch (error) {
       // Update instance with error status
       instance.status = ModelStatus.ERROR;
@@ -162,7 +180,7 @@ export class ModelLoader implements IModelLoader {
 
     try {
       const health = await modelInstance.healthCheck();
-      
+
       // Update instance health
       const instance = this._loadedModels.get(modelId);
       if (instance) {
@@ -173,7 +191,7 @@ export class ModelLoader implements IModelLoader {
       return health;
     } catch (error) {
       const health = ModelHealth.UNHEALTHY;
-      
+
       // Update instance health
       const instance = this._loadedModels.get(modelId);
       if (instance) {
@@ -188,7 +206,7 @@ export class ModelLoader implements IModelLoader {
 
   async performAllHealthChecks(): Promise<Record<string, ModelHealth>> {
     const results: Record<string, ModelHealth> = {};
-    
+
     for (const modelId of this._loadedModels.keys()) {
       results[modelId] = await this.performHealthCheck(modelId);
     }
@@ -212,10 +230,10 @@ export class ModelLoader implements IModelLoader {
 
   // Cleanup
   async unloadAllModels(): Promise<void> {
-    const unloadPromises = Array.from(this._loadedModels.keys()).map(modelId => 
-      this.unloadModel(modelId)
+    const unloadPromises = Array.from(this._loadedModels.keys()).map(
+      (modelId) => this.unloadModel(modelId),
     );
-    
+
     await Promise.all(unloadPromises);
   }
 
@@ -254,11 +272,15 @@ export class ModelLoader implements IModelLoader {
       loading,
       loaded,
       error,
-      totalMemoryUsage
+      totalMemoryUsage,
     };
   }
 
-  private _createModelInstance(modelId: string, modelType: any, config: Record<string, any>): BaseModel {
+  private _createModelInstance(
+    modelId: string,
+    modelType: any,
+    config: Record<string, any>,
+  ): BaseModel {
     // This is a simplified factory method
     // In a real implementation, this would create specific model instances based on type
     return new (class extends BaseModel {

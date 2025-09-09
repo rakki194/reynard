@@ -15,7 +15,7 @@
  */
 export function formatFileSize(bytes: number): string {
   // Handle edge cases
-  if (typeof bytes !== 'number' || !isFinite(bytes)) {
+  if (typeof bytes !== "number" || !isFinite(bytes)) {
     return "0 B";
   }
 
@@ -40,7 +40,8 @@ export function formatFileSize(bytes: number): string {
     size = Math.round(size * 1000) / 1000;
   }
 
-  const formatted = unitIndex === 0 ? Math.round(size).toString() : size.toFixed(1);
+  const formatted =
+    unitIndex === 0 ? Math.round(size).toString() : size.toFixed(1);
   return `${formatted} ${units[unitIndex]}`;
 }
 
@@ -58,11 +59,16 @@ export function formatFileSize(bytes: number): string {
  */
 export function formatBytes(bytes: number, precision: number = 1): string {
   // Handle edge cases
-  if (typeof bytes !== 'number' || !isFinite(bytes)) {
+  if (typeof bytes !== "number" || !isFinite(bytes)) {
     return "0 B";
   }
 
-  if (typeof precision !== 'number' || !isFinite(precision) || precision < 0 || precision > 10) {
+  if (
+    typeof precision !== "number" ||
+    !isFinite(precision) ||
+    precision < 0 ||
+    precision > 10
+  ) {
     precision = 1;
   }
 
@@ -87,7 +93,8 @@ export function formatBytes(bytes: number, precision: number = 1): string {
     size = Math.round(size * Math.pow(10, precision)) / Math.pow(10, precision);
   }
 
-  const formatted = unitIndex === 0 ? Math.round(size).toString() : size.toFixed(precision);
+  const formatted =
+    unitIndex === 0 ? Math.round(size).toString() : size.toFixed(precision);
   return `${formatted} ${units[unitIndex]}`;
 }
 
@@ -148,11 +155,11 @@ export function formatDateTime(date: Date | number | string): string {
  */
 export function formatNumber(num: number, locale: string = "en-US"): string {
   // Handle edge cases
-  if (typeof num !== 'number' || !isFinite(num)) {
+  if (typeof num !== "number" || !isFinite(num)) {
     return "0";
   }
 
-  if (typeof locale !== 'string' || locale.trim() === '') {
+  if (typeof locale !== "string" || locale.trim() === "") {
     locale = "en-US";
   }
 

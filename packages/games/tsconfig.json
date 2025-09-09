@@ -32,7 +32,5 @@
     "**/*.spec.ts",
     "**/*.spec.tsx"
   ],
-  "references": [
-    { "path": "./tsconfig.test.json" }
-  ]
+  "references": [{ "path": "./tsconfig.test.json" }]
 }

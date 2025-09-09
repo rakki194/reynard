@@ -41,10 +41,10 @@ The `ImageProcessor` class has been enhanced with:
 ```python
 def generate_thumbnail(self, path: Path) -> bytes:
     """Generate WebP thumbnail from image, preserving animation for animated images."""
-    
+
 def _generate_animated_thumbnail(self, img: Image.Image, animation_info: Dict[str, Any]) -> bytes:
     """Generate animated WebP thumbnail from animated image."""
-    
+
 def _generate_static_thumbnail(self, img: Image.Image) -> bytes:
     """Generate static WebP thumbnail from image."""
 ```
@@ -63,7 +63,7 @@ The frontend automatically supports animated WebP thumbnails through:
 ### Input Formats (Animated)
 
 - **GIF**: Animated GIF files
-- **APNG**: Animated PNG files  
+- **APNG**: Animated PNG files
 - **WebP**: Animated WebP files
 
 ### Output Format

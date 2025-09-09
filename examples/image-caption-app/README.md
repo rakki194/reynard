@@ -1,15 +1,17 @@
-# 🦊 Image Caption App - Reynard Framework Example
+# 🦊 Enhanced Image Caption App - Reynard Framework Example
 
-A comprehensive AI-powered image caption generation application demonstrating the full capabilities of the Reynard framework, including AI/ML integration, file management, and advanced UI components.
+A comprehensive AI-powered image caption generation application demonstrating the new modular annotation system with production features, including usage tracking, health monitoring, circuit breakers, and real-time event logging.
 
 ## ✨ Features Demonstrated
 
-### 🤖 AI-Powered Caption Generation
+### 🤖 Enhanced AI-Powered Caption Generation
 
-- **Multiple AI Models**: Support for Florence2, JTP2, JoyCaption, WDv3, and other caption generation models
-- **Model Management**: Dynamic model loading, preloading, and lifecycle management
-- **Batch Processing**: Efficient caption generation with progress tracking
-- **Confidence Scoring**: Configurable confidence thresholds for quality control
+- **Modular Generator System**: Individual packages for JTP2, JoyCaption, Florence2, and WDv3
+- **Production Features**: Usage tracking, health monitoring, circuit breakers, and request queuing
+- **Smart Model Management**: Automatic loading, unloading, and lifecycle coordination
+- **Batch Processing**: Efficient caption generation with real-time progress tracking
+- **Event System**: Comprehensive event logging and monitoring
+- **System Statistics**: Real-time performance metrics and health status
 
 ### 📁 Advanced File Management
 
@@ -32,10 +34,13 @@ A comprehensive AI-powered image caption generation application demonstrating th
 - **Responsive Design**: Mobile-first layout that works on all devices
 - **Accessibility**: WCAG 2.1 compliance with keyboard navigation
 
-### 🔧 Advanced Features
+### 🔧 Production Features
 
-- **Tabbed Interface**: Organized workflow with Gallery, Models, and Editor tabs
-- **Model Configuration**: Detailed model information and status tracking
+- **Tabbed Interface**: Organized workflow with Gallery, Model Monitor, System Stats, Event Log, and Editor tabs
+- **Real-time Monitoring**: Live system statistics, health status, and performance metrics
+- **Event Logging**: Comprehensive event tracking with real-time updates
+- **Model Management**: Advanced model loading, usage statistics, and health monitoring
+- **Batch Processing**: Efficient multi-image processing with progress tracking
 - **Notification System**: Toast notifications for user feedback
 - **State Management**: Comprehensive state management with SolidJS signals
 
@@ -62,19 +67,20 @@ Visit `http://localhost:3001` to see the image caption app in action!
 - Or click "Choose Files" to browse for images
 - Supports all common image formats (JPG, PNG, GIF, WebP, etc.)
 
-### 2. **Select AI Model**
+### 2. **Monitor AI Models**
 
-- Navigate to the "🤖 AI Models" tab
-- Choose from available caption generation models
-- Preload models for faster generation
-- View model descriptions and capabilities
+- Navigate to the "🤖 Model Monitor" tab
+- View all available generators (JTP2, JoyCaption, Florence2, WDv3)
+- Monitor model health, usage statistics, and performance
+- Preload/unload models for optimal resource management
 
 ### 3. **Generate Captions**
 
-- Click on any image in the gallery
-- Click "🤖 Generate Caption" to create AI-powered captions
-- View generated captions and extracted tags
-- See generation metadata (model used, timestamp)
+- Select your preferred model from the dropdown (JTP2, JoyCaption, Florence2, WDv3)
+- Click "🤖 Generate Caption" on individual images
+- Use "Batch Generate All" for processing multiple images
+- Monitor real-time progress and processing statistics
+- View generated captions with processing time and model information
 
 ### 4. **Edit Captions**
 
@@ -84,7 +90,14 @@ Visit `http://localhost:3001` to see the image caption app in action!
 - Add, remove, and reorder tags
 - Save your changes
 
-### 5. **Manage Your Gallery**
+### 5. **Monitor System Performance**
+
+- Navigate to "📊 System Stats" to view comprehensive metrics
+- Check "📝 Event Log" for real-time system events
+- Monitor model usage statistics and health status
+- Track processing performance and system resources
+
+### 6. **Manage Your Gallery**
 
 - View all uploaded images in a responsive grid
 - See caption previews and generation status
@@ -95,10 +108,12 @@ Visit `http://localhost:3001` to see the image caption app in action!
 
 ### Core Components
 
-- **`App.tsx`** - Main application with state management and workflow orchestration
-- **`ImageGallery.tsx`** - File upload and image display with drag-and-drop
+- **`App.tsx`** - Main application with enhanced state management and production features
+- **`ImageGallery.tsx`** - File upload and image display with batch processing support
 - **`CaptionEditor.tsx`** - Caption editing interface with modal support
-- **`ModelSelector.tsx`** - AI model selection and configuration
+- **`ModelSelector.tsx`** - Enhanced AI model monitoring and management
+- **`SystemStats.tsx`** - Real-time system statistics and performance metrics
+- **`EventLog.tsx`** - Comprehensive event logging and monitoring
 - **`ThemeToggle.tsx`** - Theme switching with emoji indicators
 - **`LanguageSelector.tsx`** - Language selection for internationalization
 
@@ -107,8 +122,12 @@ Visit `http://localhost:3001` to see the image caption app in action!
 - **`reynard-core`** - Notifications, state management, and core utilities
 - **`reynard-themes`** - Theme system and internationalization
 - **`reynard-components`** - UI components (Button, Card, Modal, Tabs)
-- **`reynard-gallery`** - File management and gallery functionality
-- **`reynard-annotating`** - AI/ML caption generation engine
+- **`reynard-annotating`** - **NEW!** Unified annotation system with production features
+  - `reynard-annotating-core` - Core functionality and types
+  - `reynard-annotating-jtp2` - JTP2 generator package
+  - `reynard-annotating-joy` - JoyCaption generator package
+  - `reynard-annotating-florence2` - Florence2 generator package
+  - `reynard-annotating-wdv3` - WDv3 generator package
 - **`reynard-caption`** - Caption editing UI components
 - **`reynard-fluent-icons`** - Icon system for visual elements
 
@@ -164,21 +183,23 @@ Built-in support for multiple languages:
 
 Language selection persists across sessions and updates the entire interface.
 
-## 🤖 AI Models
+## 🤖 Enhanced AI Models
 
 ### Available Models
 
-- **Florence2** - Best for general image descriptions and detailed captions
-- **JTP2** - Good for artistic and creative content
-- **JoyCaption** - Optimized for joyful and positive content
-- **WDv3** - Excellent for technical and detailed descriptions
+- **JTP2** - Specialized for furry artwork tagging with high accuracy
+- **JoyCaption** - Large language model for detailed, multilingual captions
+- **Florence2** - General purpose captioning with multiple tasks
+- **WDv3** - Danbooru-style tagging optimized for anime/manga content
 
-### Model Management
+### Production Features
 
-- **Preloading** - Load models in advance for faster generation
-- **Unloading** - Free up memory by unloading unused models
-- **Status Tracking** - See which models are available and loaded
-- **Configuration** - Adjust model parameters and thresholds
+- **Usage Tracking** - Comprehensive statistics for each model
+- **Health Monitoring** - Real-time health checks and performance metrics
+- **Circuit Breakers** - Automatic fault tolerance and recovery
+- **Request Queuing** - Smart queue management with priority handling
+- **Event Logging** - Complete audit trail of all operations
+- **Model Management** - Automatic loading, unloading, and lifecycle coordination
 
 ## 📦 Bundle Size
 
@@ -188,21 +209,26 @@ Language selection persists across sessions and updates the entire interface.
 
 ## 🎯 Learning Objectives
 
-This example teaches:
+This enhanced example teaches:
 
-1. **AI/ML Integration** - How to integrate AI models with SolidJS applications
-2. **File Management** - Advanced file upload and gallery management
-3. **State Management** - Complex state management with multiple signals
-4. **Component Architecture** - Building reusable, composable components
-5. **User Experience** - Creating intuitive workflows for complex operations
-6. **Performance** - Optimizing for large file collections and AI processing
-7. **Accessibility** - Building accessible interfaces for all users
+1. **Modular Architecture** - Building with the new modular annotation system
+2. **Production Features** - Implementing usage tracking, health monitoring, and circuit breakers
+3. **Event Systems** - Real-time event logging and monitoring
+4. **AI/ML Integration** - Advanced AI model management with production features
+5. **Batch Processing** - Efficient multi-image processing with progress tracking
+6. **System Monitoring** - Real-time statistics and performance metrics
+7. **File Management** - Advanced file upload and gallery management
+8. **State Management** - Complex state management with multiple signals
+9. **Component Architecture** - Building reusable, composable components
+10. **User Experience** - Creating intuitive workflows for complex operations
+11. **Performance** - Optimizing for large file collections and AI processing
+12. **Accessibility** - Building accessible interfaces for all users
 
 ## 🔄 Next Steps
 
-Try modifying the app to:
+Try modifying the enhanced app to:
 
-- Add batch caption generation for multiple images
+- Add custom model configurations and presets
 - Implement caption export (JSON, CSV, etc.)
 - Add image filtering and search capabilities
 - Integrate with cloud storage services
@@ -210,6 +236,10 @@ Try modifying the app to:
 - Implement caption history and versioning
 - Add collaborative editing features
 - Create custom AI model configurations
+- Add advanced monitoring dashboards
+- Implement model performance analytics
+- Add custom event filters and alerts
+- Create model comparison tools
 
 ## 🧪 Development
 
@@ -234,9 +264,9 @@ Found a bug or have an improvement? This example is part of the Reynard framewor
 ## 📚 Related Documentation
 
 - [Reynard Framework Documentation](../../README.md)
-- [reynard-annotating Package](../../packages/annotating/README.md)
+- [reynard-annotating Package](../../packages/annotating/README.md) - **NEW!** Unified annotation system
+- [reynard-annotating-core Package](../../packages/annotating-core/README.md) - Core functionality
 - [reynard-caption Package](../../packages/caption/README.md)
-- [reynard-gallery Package](../../packages/gallery/README.md)
 - [reynard-components Package](../../packages/components/README.md)
 
 ---

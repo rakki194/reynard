@@ -17,7 +17,7 @@ export default function FeatureDemos() {
     <div class="feature-demo">
       <h3>🎯 Feature Demonstrations</h3>
       <p>Interactive examples of feature-aware components</p>
-      
+
       <div class="feature-demo-grid">
         <ImageProcessingDemo />
         <CaptionGenerationDemo />

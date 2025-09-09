@@ -7,11 +7,7 @@
 
 import { StreamingCoordinator } from "./streaming/StreamingCoordinator";
 import { ParserOrchestrator } from "./streaming/ParserOrchestrator";
-import type {
-  MarkdownNode,
-  StreamingParserState,
-  ParseResult,
-} from "../types";
+import type { MarkdownNode, StreamingParserState, ParseResult } from "../types";
 
 export class StreamingMarkdownParser {
   private coordinator: StreamingCoordinator;
@@ -112,7 +108,6 @@ export class StreamingMarkdownParser {
     // Delegate to orchestrator for other parsing
     this.orchestrator.parseLine(line);
   }
-
 
   /**
    * Finalize parsing and return result

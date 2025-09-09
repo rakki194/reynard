@@ -1,6 +1,6 @@
 /**
  * Thinking Section Core Logic
- * 
+ *
  * Contains the core parsing logic for thinking sections
  */
 
@@ -21,7 +21,7 @@ export class ThinkingCore {
     },
     addWarning: (message: string) => void,
     addNode: (node: any) => void,
-    createNode: (data: any) => any
+    createNode: (data: any) => any,
   ): boolean {
     // Start of thinking section
     const startMatch = matches(line, MARKDOWN_PATTERNS.thinkingStart);
@@ -39,11 +39,13 @@ export class ThinkingCore {
     if (endMatch && state.inThinking) {
       if (state.thinkingBuffer.trim()) {
         state.thinkingSections.push(state.thinkingBuffer.trim());
-        addNode(createNode({
-          type: "thinking",
-          content: state.thinkingBuffer.trim(),
-          line: state.currentLine,
-        }));
+        addNode(
+          createNode({
+            type: "thinking",
+            content: state.thinkingBuffer.trim(),
+            line: state.currentLine,
+          }),
+        );
       }
       state.thinkingBuffer = "";
       state.inThinking = false;
@@ -60,7 +62,7 @@ export class ThinkingCore {
     line: string,
     state: { currentLine: number },
     addNode: (node: any) => void,
-    createNode: (data: any) => any
+    createNode: (data: any) => any,
   ): string {
     let processedLine = line;
 
@@ -69,16 +71,18 @@ export class ThinkingCore {
       MARKDOWN_PATTERNS.thinkingInline,
       (match, content) => {
         // Add inline thinking node
-        addNode(createNode({
-          type: "thinking",
-          content: content.trim(),
-          line: state.currentLine,
-          inline: true,
-        }));
+        addNode(
+          createNode({
+            type: "thinking",
+            content: content.trim(),
+            line: state.currentLine,
+            inline: true,
+          }),
+        );
 
         // Replace with placeholder or remove entirely
         return "";
-      }
+      },
     );
 
     return processedLine;

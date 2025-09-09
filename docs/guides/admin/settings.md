@@ -60,7 +60,7 @@ const [store, setStore] = createStaticStore<{
   newSetting: boolean;
 }>({
   // ... existing initial values ...
-  newSetting: localStorage.getItem('newSetting') === 'true',
+  newSetting: localStorage.getItem("newSetting") === "true",
 });
 ```
 
@@ -70,7 +70,7 @@ Add a persistence effect to save the setting to localStorage:
 
 ```typescript
 createRenderEffect(() =>
-  localStorage.setItem('newSetting', store.newSetting.toString())
+  localStorage.setItem("newSetting", store.newSetting.toString()),
 );
 ```
 
@@ -84,7 +84,7 @@ const appContext = {
   get newSetting() {
     return store.newSetting;
   },
-  setNewSetting: (value: boolean) => setStore('newSetting', value),
+  setNewSetting: (value: boolean) => setStore("newSetting", value),
 };
 ```
 
@@ -179,11 +179,11 @@ and functionality of the settings interface in those language contexts.
 ### 1. State Tests
 
 ```typescript
-describe('Settings State', () => {
-  it('should persist setting value', () => {
+describe("Settings State", () => {
+  it("should persist setting value", () => {
     const app = useAppContext();
     app.setNewSetting(true);
-    expect(localStorage.getItem('newSetting')).toBe('true');
+    expect(localStorage.getItem("newSetting")).toBe("true");
   });
 });
 ```
@@ -204,10 +204,10 @@ describe("Settings UI", () => {
 ### 3. Translation Tests
 
 ```typescript
-describe('Settings Translations', () => {
-  it('should have all required keys', () => {
-    const keys = ['newSetting', 'newSettingTooltip'];
-    keys.forEach(key => {
+describe("Settings Translations", () => {
+  it("should have all required keys", () => {
+    const keys = ["newSetting", "newSettingTooltip"];
+    keys.forEach((key) => {
       expect(translations.settings[key]).toBeDefined();
     });
   });
@@ -276,11 +276,11 @@ normalized value. Use a similar approach when evolving your settings.
 
 ```ts
 // Example: tolerant read with fallback and normalization
-const stored = localStorage.getItem('myNewSetting');
+const stored = localStorage.getItem("myNewSetting");
 const value = (() => {
   if (!stored) return 0.5; // default
   try {
-    return stored.startsWith('{')
+    return stored.startsWith("{")
       ? (JSON.parse(stored).value ?? 0.5)
       : parseFloat(stored);
   } catch {
@@ -288,7 +288,7 @@ const value = (() => {
   }
 })();
 // ... later, persist normalized representation
-localStorage.setItem('myNewSetting', value.toString());
+localStorage.setItem("myNewSetting", value.toString());
 ```
 
 ## UI Control Patterns
@@ -351,8 +351,8 @@ export interface SettingsTranslations {
 // en.ts (and other languages)
 export default {
   settings: {
-    myNewSetting: 'My new setting',
-    myNewSettingTooltip: 'Explains what this setting does.',
+    myNewSetting: "My new setting",
+    myNewSettingTooltip: "Explains what this setting does.",
   },
 } satisfies Translations;
 ```

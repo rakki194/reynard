@@ -59,21 +59,21 @@ python -m app
 
 1. **Create a `.env` file** with your cache configuration:
 
-    ```bash
-    # .env
-    HF_HOME=/app/hf_cache
-    HF_CACHE_VOLUME=./hf_cache
-    ```
+   ```bash
+   # .env
+   HF_HOME=/app/hf_cache
+   HF_CACHE_VOLUME=./hf_cache
+   ```
 
 2. **Use the provided Docker Compose configuration**:
 
-    ```bash
-    # Use the HF cache configuration
-    docker-compose -f docker-compose.hf-cache.yml up
+   ```bash
+   # Use the HF cache configuration
+   docker-compose -f docker-compose.hf-cache.yml up
 
-    # Or for development
-    docker-compose -f docker-compose.hf-cache.yml up yipyap-backend
-    ```
+   # Or for development
+   docker-compose -f docker-compose.hf-cache.yml up yipyap-backend
+   ```
 
 ### Manual Docker Run
 

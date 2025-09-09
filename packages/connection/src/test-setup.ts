@@ -2,18 +2,18 @@
  * Test setup for reynard-connection
  */
 
-import '@testing-library/jest-dom';
-import { vi, beforeEach, afterEach } from 'vitest';
-import { cleanup } from '@solidjs/testing-library';
+import "@testing-library/jest-dom";
+import { vi, beforeEach, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
 
 // Mock WebSocket
 global.WebSocket = vi.fn().mockImplementation(() => ({
   readyState: WebSocket.CONNECTING,
-  url: '',
-  protocol: '',
-  extensions: '',
+  url: "",
+  protocol: "",
+  extensions: "",
   bufferedAmount: 0,
-  binaryType: 'blob' as BinaryType,
+  binaryType: "blob" as BinaryType,
   onopen: null,
   onclose: null,
   onmessage: null,
@@ -28,7 +28,7 @@ global.WebSocket = vi.fn().mockImplementation(() => ({
 // Mock EventSource
 global.EventSource = vi.fn().mockImplementation(() => ({
   readyState: EventSource.CONNECTING,
-  url: '',
+  url: "",
   withCredentials: false,
   onopen: null,
   onmessage: null,
@@ -44,17 +44,17 @@ global.fetch = vi.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({}),
-    text: () => Promise.resolve(''),
+    text: () => Promise.resolve(""),
     blob: () => Promise.resolve(new Blob()),
     arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
     formData: () => Promise.resolve(new FormData()),
     clone: vi.fn().mockReturnThis(),
-  })
+  }),
 );
 
 // Mock crypto
 global.crypto = {
-  randomUUID: vi.fn().mockReturnValue('00000000-0000-4000-8000-000000000000'),
+  randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
   getRandomValues: vi.fn().mockImplementation((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i] = Math.floor(Math.random() * 256);

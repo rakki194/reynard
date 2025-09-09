@@ -1,2 +1,2 @@
-export { PointCloudMaterialManager } from './PointCloudMaterialManager';
-export { PointCloudGeometryManager } from './PointCloudGeometryManager';
+export { PointCloudMaterialManager } from "./PointCloudMaterialManager";
+export { PointCloudGeometryManager } from "./PointCloudGeometryManager";

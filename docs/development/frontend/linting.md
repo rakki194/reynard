@@ -93,7 +93,7 @@ Type '{ type: string; ... }' is not assignable to type 'Transformation'.
 Use const assertions or explicit type annotations:
 
 ```typescript
-type: "searchReplace" as const
+type: "searchReplace" as const;
 ```
 
 ## Context Provider Errors

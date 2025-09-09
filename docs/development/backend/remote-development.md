@@ -29,21 +29,21 @@ The yipyap frontend can be configured to connect to a backend running on a diffe
 
 1. Create a `.env.local` file in the project root:
 
-    ```bash
-    # Copy the example file
-    cp env-remote.example .env.local
+   ```bash
+   # Copy the example file
+   cp env-remote.example .env.local
 
-    # Edit the file to match your remote backend
-    VITE_API_BASE_URL=http://otter_den:7000
-    DEV_PORT=5173
-    NODE_ENV=development
-    ```
+   # Edit the file to match your remote backend
+   VITE_API_BASE_URL=http://otter_den:7000
+   DEV_PORT=5173
+   NODE_ENV=development
+   ```
 
 2. Start the development server:
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 ### Method 3: Direct Command Line
 

@@ -53,12 +53,12 @@ The configuration enforces the use of z-index tokens instead of raw numbers:
 
 ```css
 /* ✅ Allowed */
-z-index: var(--z-base);      /* 0 */
-z-index: var(--z-dropdown);  /* 10 */
-z-index: var(--z-sticky);    /* 20 */
-z-index: var(--z-tooltip);   /* 30 */
-z-index: var(--z-modal);     /* 40 */
-z-index: var(--z-toast);     /* 50 */
+z-index: var(--z-base); /* 0 */
+z-index: var(--z-dropdown); /* 10 */
+z-index: var(--z-sticky); /* 20 */
+z-index: var(--z-tooltip); /* 30 */
+z-index: var(--z-modal); /* 40 */
+z-index: var(--z-toast); /* 50 */
 
 /* ❌ Not allowed */
 z-index: 1000;
@@ -141,7 +141,7 @@ Most modern IDEs support Stylelint integration:
 The current configuration uses warnings for most rules to avoid breaking existing code:
 
 - `!important` usage → Warning
-- Hex colors → Warning  
+- Hex colors → Warning
 - Named colors → Warning
 - Raw z-index values → Warning
 
@@ -240,12 +240,12 @@ Use the defined z-index scale:
 
 ```css
 :root {
-  --z-base: 0;          /* base content */
-  --z-dropdown: 10;     /* menus, dropdowns */
-  --z-sticky: 20;       /* sticky headers/footers */
-  --z-tooltip: 30;      /* tooltips */
-  --z-modal: 40;        /* modals/dialogs */
-  --z-toast: 50;        /* toasts/notifications */
+  --z-base: 0; /* base content */
+  --z-dropdown: 10; /* menus, dropdowns */
+  --z-sticky: 20; /* sticky headers/footers */
+  --z-tooltip: 30; /* tooltips */
+  --z-modal: 40; /* modals/dialogs */
+  --z-toast: 50; /* toasts/notifications */
 }
 ```
 

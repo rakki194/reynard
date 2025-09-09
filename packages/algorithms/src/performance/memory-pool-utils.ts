@@ -7,14 +7,20 @@
  * @module algorithms/performance/memoryPoolUtils
  */
 
-import { MemoryPool, PerformanceMemoryPoolConfig, PooledObject } from './memory-pool-core';
+import {
+  MemoryPool,
+  PerformanceMemoryPoolConfig,
+  PooledObject,
+} from "./memory-pool-core";
 
 /**
  * Create a memory pool for spatial objects
  */
-export function createSpatialObjectPool(config: PerformanceMemoryPoolConfig = {}) {
+export function createSpatialObjectPool(
+  config: PerformanceMemoryPoolConfig = {},
+) {
   class SpatialObject implements PooledObject {
-    id: string | number = '';
+    id: string | number = "";
     x: number = 0;
     y: number = 0;
     width: number = 0;
@@ -22,7 +28,7 @@ export function createSpatialObjectPool(config: PerformanceMemoryPoolConfig = {}
     data: any = null;
 
     reset(): void {
-      this.id = '';
+      this.id = "";
       this.x = 0;
       this.y = 0;
       this.width = 0;
@@ -100,7 +106,7 @@ export class MemoryPoolManager {
   createPool<T extends PooledObject>(
     name: string,
     createFn: () => T,
-    config: PerformanceMemoryPoolConfig = {}
+    config: PerformanceMemoryPoolConfig = {},
   ): MemoryPool<T> {
     const pool = new MemoryPool(createFn, config);
     this.pools.set(name, pool);
@@ -124,7 +130,7 @@ export class MemoryPoolManager {
   }
 
   clearAllPools(): void {
-    this.pools.forEach(pool => {
+    this.pools.forEach((pool) => {
       pool.clear();
     });
   }

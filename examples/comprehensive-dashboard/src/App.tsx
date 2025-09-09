@@ -5,19 +5,9 @@ import {
   createSignal,
 } from "solid-js";
 import { Route } from "@solidjs/router";
-import {
-  createNotificationsModule,
-  NotificationsProvider,
-} from "reynard-core";
-import {
-  ReynardProvider,
-  useTheme,
-} from "reynard-themes";
-import {
-  useI18n,
-  I18nProvider,
-  createI18nModule,
-} from "reynard-i18n";
+import { createNotificationsModule, NotificationsProvider } from "reynard-core";
+import { ReynardProvider, useTheme } from "reynard-themes";
+import { useI18n, I18nProvider, createI18nModule } from "reynard-i18n";
 import { AuthProvider } from "reynard-auth";
 import { AppLayout } from "reynard-ui";
 import { useSettings } from "reynard-settings";
@@ -143,39 +133,37 @@ const App: Component = () => {
   return (
     <ReynardProvider>
       <NotificationsProvider value={notifications}>
-          <AuthProvider
-            config={{
-              apiBaseUrl: "http://localhost:3002/api",
-              enableRememberMe: true,
-              autoRefresh: false, // Disable auto-refresh for demo
-            }}
+        <AuthProvider
+          config={{
+            apiBaseUrl: "http://localhost:3002/api",
+            enableRememberMe: true,
+            autoRefresh: false, // Disable auto-refresh for demo
+          }}
+        >
+          <AppLayout
+            sidebar={
+              <Sidebar
+                collapsed={sidebarCollapsed()}
+                onToggle={() => setSidebarCollapsed(!sidebarCollapsed())}
+              />
+            }
+            header={
+              <Header
+                onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed())}
+                sidebarCollapsed={sidebarCollapsed()}
+              />
+            }
+            class="dashboard-layout"
           >
-            <AppLayout
-              sidebar={
-                <Sidebar
-                  collapsed={sidebarCollapsed()}
-                  onToggle={() => setSidebarCollapsed(!sidebarCollapsed())}
-                />
-              }
-              header={
-                <Header
-                  onToggleSidebar={() =>
-                    setSidebarCollapsed(!sidebarCollapsed())
-                  }
-                  sidebarCollapsed={sidebarCollapsed()}
-                />
-              }
-              class="dashboard-layout"
-            >
-              <Route path="/" component={Dashboard} />
-              <Route path="/charts" component={Charts} />
-              <Route path="/components" component={Components} />
-              <Route path="/gallery" component={Gallery} />
-              <Route path="/auth" component={Auth} />
-              <Route path="/settings" component={Settings} />
-            </AppLayout>
-          </AuthProvider>
-        </NotificationsProvider>
+            <Route path="/" component={Dashboard} />
+            <Route path="/charts" component={Charts} />
+            <Route path="/components" component={Components} />
+            <Route path="/gallery" component={Gallery} />
+            <Route path="/auth" component={Auth} />
+            <Route path="/settings" component={Settings} />
+          </AppLayout>
+        </AuthProvider>
+      </NotificationsProvider>
     </ReynardProvider>
   );
 };

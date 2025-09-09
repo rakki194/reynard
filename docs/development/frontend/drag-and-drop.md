@@ -55,8 +55,8 @@ const MyComponent = () => {
     setShowDropOverlay(isDragging);
   };
 
-  const { uploadFiles } = useDragAndDrop({ 
-    onDragStateChange: handleDragStateChange 
+  const { uploadFiles } = useDragAndDrop({
+    onDragStateChange: handleDragStateChange
   });
 
   return (
@@ -102,11 +102,11 @@ The multi-selection integration maintains proper selection state throughout drag
 
 The `onDragStateChange` callback is triggered in the following scenarios:
 
-| Event | State | Description |
-|-------|-------|-------------|
-| Drag Enter | `true` | Files are dragged over the application |
-| Drag Leave | `false` | Files leave the drop zone |
-| Drop | `false` | Files are dropped |
+| Event      | State   | Description                            |
+| ---------- | ------- | -------------------------------------- |
+| Drag Enter | `true`  | Files are dragged over the application |
+| Drag Leave | `false` | Files leave the drop zone              |
+| Drop       | `false` | Files are dropped                      |
 
 ### Visual Feedback
 
@@ -166,11 +166,11 @@ interface DragAndDropProps {
 
 The system uses several CSS classes for visual feedback:
 
-| Class | Purpose |
-|-------|---------|
-| `.being-dragged` | Applied to items currently being dragged |
-| `.drag-target` | Applied to valid drop targets |
-| `.move-failed` | Applied briefly to items that failed to move |
+| Class            | Purpose                                      |
+| ---------------- | -------------------------------------------- |
+| `.being-dragged` | Applied to items currently being dragged     |
+| `.drag-target`   | Applied to valid drop targets                |
+| `.move-failed`   | Applied briefly to items that failed to move |
 
 ## Examples
 
@@ -183,12 +183,12 @@ const DropZone = () => {
   const [isDropTarget, setIsDropTarget] = createSignal(false);
 
   const { uploadFiles } = useDragAndDrop({
-    onDragStateChange: (isDragging) => setIsDropTarget(isDragging)
+    onDragStateChange: (isDragging) => setIsDropTarget(isDragging),
   });
 
   return (
-    <div class={isDropTarget() ? 'drop-zone active' : 'drop-zone'}>
-      {isDropTarget() ? 'Drop files here' : 'Drag files here'}
+    <div class={isDropTarget() ? "drop-zone active" : "drop-zone"}>
+      {isDropTarget() ? "Drop files here" : "Drag files here"}
     </div>
   );
 };
@@ -201,14 +201,11 @@ const DirectoryItem = (props: { path: string }) => {
   const { uploadFiles } = useDragAndDrop({
     onDragStateChange: (isDragging) => {
       // Update directory visual state
-    }
+    },
   });
 
   return (
-    <div 
-      class="directory" 
-      data-path={props.path}
-    >
+    <div class="directory" data-path={props.path}>
       {/* Directory contents */}
     </div>
   );

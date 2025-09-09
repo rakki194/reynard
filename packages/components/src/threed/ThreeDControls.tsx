@@ -17,9 +17,11 @@ interface ThreeDControlsProps {
 
 export const ThreeDControls: Component<ThreeDControlsProps> = (props) => {
   const themeContext = useTheme();
-  
+
   // Available themes for demonstration
-  const availableThemes = getAvailableThemes().map(theme => theme.name as ThemeName);
+  const availableThemes = getAvailableThemes().map(
+    (theme) => theme.name as ThemeName,
+  );
   const visualizationTypes = ["point-cloud", "clusters", "embeddings"];
 
   return (
@@ -32,10 +34,18 @@ export const ThreeDControls: Component<ThreeDControlsProps> = (props) => {
             <For each={availableThemes}>
               {(theme) => (
                 <button
-                  class={`theme-button ${props.selectedTheme === theme ? 'active' : ''}`}
+                  class={`theme-button ${props.selectedTheme === theme ? "active" : ""}`}
                   onClick={() => {
                     props.onThemeChange(theme);
-                    themeContext.setTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
+                    themeContext.setTheme(
+                      theme as
+                        | "light"
+                        | "dark"
+                        | "gray"
+                        | "banana"
+                        | "strawberry"
+                        | "peanut",
+                    );
                   }}
                 >
                   {theme}
@@ -44,17 +54,19 @@ export const ThreeDControls: Component<ThreeDControlsProps> = (props) => {
             </For>
           </div>
         </div>
-        
+
         <div class="control-group">
           <label>Visualization Type</label>
           <div class="viz-buttons">
             <For each={visualizationTypes}>
               {(viz) => (
                 <button
-                  class={`viz-button ${props.selectedVisualization === viz ? 'active' : ''}`}
+                  class={`viz-button ${props.selectedVisualization === viz ? "active" : ""}`}
                   onClick={() => props.onVisualizationChange(viz)}
                 >
-                  {viz.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  {viz
+                    .replace("-", " ")
+                    .replace(/\b\w/g, (l) => l.toUpperCase())}
                 </button>
               )}
             </For>

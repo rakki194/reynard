@@ -24,7 +24,7 @@ def register_plugin():
     """Register the JTP2 plugin with the Reynard system."""
     return {
         "name": "jtp2",
-        "module_path": "app.caption_generation.plugins.jtp2.generator",
+        "module_path": "app.caption_generation.plugins.jtp2",
         "default_config": {
             "threshold": 0.2,
             "force_cpu": False,

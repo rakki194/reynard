@@ -10,10 +10,7 @@ import {
   useContext,
   ParentComponent,
 } from "solid-js";
-import {
-  ReynardProvider,
-  useTheme,
-} from "reynard-themes";
+import { ReynardProvider, useTheme } from "reynard-themes";
 import {
   NotificationsProvider,
   useNotifications,
@@ -25,10 +22,10 @@ import { GameContainer } from "./components/GameContainer";
 import { GameInfo } from "./components/GameInfo";
 
 // Game types
-export type GameType = 
-  | "cube-collector" 
-  | "space-shooter" 
-  | "maze-explorer" 
+export type GameType =
+  | "cube-collector"
+  | "space-shooter"
+  | "maze-explorer"
   | "particle-demo"
   | "none";
 
@@ -73,7 +70,7 @@ const GameApp: Component = () => {
   const handleGameSelect = (game: GameType) => {
     setCurrentGame(game);
     setGameScore(0);
-    notify(`🦊 Starting ${game.replace('-', ' ')} game!`, "success");
+    notify(`🦊 Starting ${game.replace("-", " ")} game!`, "success");
   };
 
   const handleScoreUpdate = (score: number) => {
@@ -106,8 +103,8 @@ const GameApp: Component = () => {
               <GameInfo />
             </div>
           ) : (
-            <GameContainer 
-              game={currentGame()} 
+            <GameContainer
+              game={currentGame()}
               onScoreUpdate={handleScoreUpdate}
               onBackToMenu={() => setCurrentGame("none")}
             />
@@ -116,8 +113,12 @@ const GameApp: Component = () => {
 
         <footer class="app-footer">
           <p>
-            Built with 🦊 Reynard Framework • 
-            <a href="https://github.com/your-org/reynard" target="_blank" rel="noopener noreferrer">
+            Built with 🦊 Reynard Framework •
+            <a
+              href="https://github.com/your-org/reynard"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               View on GitHub
             </a>
           </p>

@@ -4,7 +4,11 @@
  */
 
 import { Component, Show, Accessor } from "solid-js";
-import type { ContextMenuProps, ContextMenuItem, ContextMenuState } from "./types";
+import type {
+  ContextMenuProps,
+  ContextMenuItem,
+  ContextMenuState,
+} from "./types";
 import { ContextMenuBackdrop } from "./ContextMenuBackdrop";
 import { ContextMenuContainer } from "./ContextMenuContainer";
 import { ContextMenuSubmenuWrapper } from "./ContextMenuSubmenuWrapper";
@@ -22,12 +26,14 @@ export interface ContextMenuRendererProps {
 /**
  * Renders the context menu UI
  */
-export const ContextMenuRenderer: Component<ContextMenuRendererProps> = (componentProps) => {
+export const ContextMenuRenderer: Component<ContextMenuRendererProps> = (
+  componentProps,
+) => {
   return (
     <Show when={componentProps.props.visible}>
       <>
         <ContextMenuBackdrop onClose={componentProps.props.onClose} />
-        
+
         <ContextMenuContainer
           items={componentProps.props.items}
           selectedIndex={componentProps.state().selectedIndex}
@@ -38,7 +44,7 @@ export const ContextMenuRenderer: Component<ContextMenuRendererProps> = (compone
           handleItemMouseEnter={componentProps.handleItemMouseEnter}
           handleItemMouseLeave={componentProps.handleItemMouseLeave}
         />
-        
+
         <ContextMenuSubmenuWrapper
           submenuOpen={componentProps.state().submenuOpen}
           items={componentProps.props.items}

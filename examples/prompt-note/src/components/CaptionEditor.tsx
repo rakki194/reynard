@@ -30,10 +30,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
       <div class="editor-header">
         <h3>Caption Editor</h3>
         <div class="editor-actions">
-          <Button
-            variant="primary"
-            onClick={props.onGenerate}
-          >
+          <Button variant="primary" onClick={props.onGenerate}>
             🤖 Generate Caption
           </Button>
           <Button
@@ -53,17 +50,21 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
         </div>
 
         <div class="caption-display">
-          <Show when={props.image.caption} fallback={
-            <div class="no-caption">
-              <p>No caption generated yet. Click "Generate Caption" to create one with AI!</p>
-            </div>
-          }>
+          <Show
+            when={props.image.caption}
+            fallback={
+              <div class="no-caption">
+                <p>
+                  No caption generated yet. Click "Generate Caption" to create
+                  one with AI!
+                </p>
+              </div>
+            }
+          >
             <div class="caption-content">
               <h4>Current Caption:</h4>
-              <div class="caption-text">
-                {props.image.caption}
-              </div>
-              
+              <div class="caption-text">{props.image.caption}</div>
+
               <Show when={props.image.tags && props.image.tags.length > 0}>
                 <div class="tags-display">
                   <h4>Tags:</h4>
@@ -83,12 +84,12 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
                   </div>
                 </div>
               </Show>
-              
+
               <Show when={props.image.generatedAt}>
                 <div class="generation-meta">
                   <small>
-                    Generated with <strong>{props.image.model}</strong> on{' '}
-                    {props.image.generatedAt?.toLocaleDateString()} at{' '}
+                    Generated with <strong>{props.image.model}</strong> on{" "}
+                    {props.image.generatedAt?.toLocaleDateString()} at{" "}
                     {props.image.generatedAt?.toLocaleTimeString()}
                   </small>
                 </div>

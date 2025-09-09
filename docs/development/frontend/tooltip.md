@@ -18,10 +18,10 @@ The Tooltip system in yipyap provides a reusable, accessible, and customizable w
 
 ```typescript
 interface TooltipProps {
-  content: string;          // The text content to display in the tooltip
-  children: JSX.Element;    // The element that triggers the tooltip
-  position?: "top" | "bottom" | "left" | "right";  // Position (currently fixed to bottom right)
-  class?: string;          // Optional additional CSS classes
+  content: string; // The text content to display in the tooltip
+  children: JSX.Element; // The element that triggers the tooltip
+  position?: "top" | "bottom" | "left" | "right"; // Position (currently fixed to bottom right)
+  class?: string; // Optional additional CSS classes
 }
 ```
 
@@ -47,7 +47,7 @@ let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
 const showTooltip = () => {
   if (timeoutId) clearTimeout(timeoutId);
-  timeoutId = setTimeout(() => setIsVisible(true), 1500);  // 1.5s delay
+  timeoutId = setTimeout(() => setIsVisible(true), 1500); // 1.5s delay
 };
 
 const hideTooltip = () => {
@@ -80,14 +80,18 @@ The tooltip's styling uses a modern approach with CSS transitions:
      opacity: 0;
      visibility: hidden;
      transform: scale(0.98);
-     transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+     transition:
+       opacity 0.2s ease-out,
+       transform 0.2s ease-out;
    }
 
    .tooltip-content[aria-hidden="false"] {
      opacity: 1;
      visibility: visible;
      transform: scale(1);
-     transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+     transition:
+       opacity 0.4s ease-out,
+       transform 0.4s ease-out;
    }
    ```
 

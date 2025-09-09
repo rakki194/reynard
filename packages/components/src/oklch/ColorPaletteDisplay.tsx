@@ -10,19 +10,22 @@ interface ColorPaletteDisplayProps {
   selectedColor: string;
 }
 
-export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (props) => {
+export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (
+  props,
+) => {
   const colorPalette = useColorPalette();
-  
+
   const palette = () => colorPalette.generatePalette(props.selectedColor, 5);
-  const monochromaticPalette = () => colorPalette.generateMonochromaticPalette(props.selectedColor, 5);
+  const monochromaticPalette = () =>
+    colorPalette.generateMonochromaticPalette(props.selectedColor, 5);
 
   // Apply colors to elements using data attributes
   createEffect(() => {
-    const colorElements = document.querySelectorAll('[data-bg-color]');
+    const colorElements = document.querySelectorAll("[data-bg-color]");
     colorElements.forEach((element) => {
-      const color = element.getAttribute('data-bg-color');
+      const color = element.getAttribute("data-bg-color");
       if (color) {
-        (element as HTMLElement).style.setProperty('--dynamic-bg-color', color);
+        (element as HTMLElement).style.setProperty("--dynamic-bg-color", color);
       }
     });
   });
@@ -36,26 +39,18 @@ export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (props) 
           <div class="color-swatches">
             <For each={palette()}>
               {(color) => (
-                <div 
-                  class="color-swatch"
-                  data-bg-color={color}
-                  title={color}
-                />
+                <div class="color-swatch" data-bg-color={color} title={color} />
               )}
             </For>
           </div>
         </div>
-        
+
         <div class="palette-group">
           <h4>Monochromatic Palette</h4>
           <div class="color-swatches">
             <For each={monochromaticPalette()}>
               {(color) => (
-                <div 
-                  class="color-swatch"
-                  data-bg-color={color}
-                  title={color}
-                />
+                <div class="color-swatch" data-bg-color={color} title={color} />
               )}
             </For>
           </div>

@@ -21,16 +21,16 @@ npm install reynard-gallery-ai
 ### Basic Setup
 
 ```tsx
-import { AIGalleryProvider, useGalleryAI } from 'reynard-gallery-ai';
-import { Gallery } from 'reynard-gallery';
+import { AIGalleryProvider, useGalleryAI } from "reynard-gallery-ai";
+import { Gallery } from "reynard-gallery";
 
 function MyAIGallery() {
   return (
     <AIGalleryProvider
       initialConfig={{
-        defaultGenerator: 'jtp2',
+        defaultGenerator: "jtp2",
         autoGenerateOnUpload: true,
-        aiEnabled: true
+        aiEnabled: true,
       }}
     >
       <Gallery
@@ -48,29 +48,29 @@ function MyAIGallery() {
 ### Using AI Features
 
 ```tsx
-import { useGalleryAI } from 'reynard-gallery-ai';
+import { useGalleryAI } from "reynard-gallery-ai";
 
 function MyComponent() {
   const ai = useGalleryAI();
-  
+
   const handleGenerateCaption = async (item) => {
     try {
-      const result = await ai.generateCaption(item, 'jtp2');
-      console.log('Generated caption:', result.caption);
+      const result = await ai.generateCaption(item, "jtp2");
+      console.log("Generated caption:", result.caption);
     } catch (error) {
-      console.error('Caption generation failed:', error);
+      console.error("Caption generation failed:", error);
     }
   };
-  
+
   const handleBatchAnnotate = async (items) => {
     try {
-      const results = await ai.batchAnnotate(items, 'joycaption');
-      console.log('Batch processing complete:', results);
+      const results = await ai.batchAnnotate(items, "joycaption");
+      console.log("Batch processing complete:", results);
     } catch (error) {
-      console.error('Batch processing failed:', error);
+      console.error("Batch processing failed:", error);
     }
   };
-  
+
   return (
     <div>
       <button onClick={() => handleGenerateCaption(selectedItem)}>
@@ -123,8 +123,14 @@ interface UseGalleryAIOptions {
 ```typescript
 interface UseGalleryAIReturn {
   aiState: () => AIGalleryState;
-  generateCaption: (item: FileItem, generator: string) => Promise<CaptionResult>;
-  batchAnnotate: (items: FileItem[], generator: string) => Promise<CaptionResult[]>;
+  generateCaption: (
+    item: FileItem,
+    generator: string,
+  ) => Promise<CaptionResult>;
+  batchAnnotate: (
+    items: FileItem[],
+    generator: string,
+  ) => Promise<CaptionResult[]>;
   updateAIConfig: (config: Partial<AIGalleryConfig>) => void;
   getAvailableGenerators: () => string[];
   isGeneratorAvailable: (generator: string) => boolean;

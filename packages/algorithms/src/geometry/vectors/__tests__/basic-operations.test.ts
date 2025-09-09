@@ -1,18 +1,18 @@
-import { describe, it, expect } from 'vitest';
-import { VectorOps, type Vector } from './vector-algorithms';
-import { PointOps } from '../../shapes/point-algorithms';
+import { describe, it, expect } from "vitest";
+import { VectorOps, type Vector } from "./vector-algorithms";
+import { PointOps } from "../../shapes/point-algorithms";
 
-describe('VectorOps - Basic Operations', () => {
-  describe('create', () => {
-    it('should create a vector with given components', () => {
+describe("VectorOps - Basic Operations", () => {
+  describe("create", () => {
+    it("should create a vector with given components", () => {
       const vector = VectorOps.create(3, 4);
       expect(vector.x).toBe(3);
       expect(vector.y).toBe(4);
     });
   });
 
-  describe('fromPoints', () => {
-    it('should create vector from two points', () => {
+  describe("fromPoints", () => {
+    it("should create vector from two points", () => {
       const start = PointOps.create(1, 2);
       const end = PointOps.create(4, 6);
       const vector = VectorOps.fromPoints(start, end);
@@ -21,8 +21,8 @@ describe('VectorOps - Basic Operations', () => {
     });
   });
 
-  describe('add', () => {
-    it('should add two vectors', () => {
+  describe("add", () => {
+    it("should add two vectors", () => {
       const a = VectorOps.create(1, 2);
       const b = VectorOps.create(3, 4);
       const result = VectorOps.add(a, b);
@@ -31,8 +31,8 @@ describe('VectorOps - Basic Operations', () => {
     });
   });
 
-  describe('subtract', () => {
-    it('should subtract two vectors', () => {
+  describe("subtract", () => {
+    it("should subtract two vectors", () => {
       const a = VectorOps.create(5, 8);
       const b = VectorOps.create(2, 3);
       const result = VectorOps.subtract(a, b);

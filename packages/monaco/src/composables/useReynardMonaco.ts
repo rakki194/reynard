@@ -3,16 +3,16 @@
  * Provides seamless theme synchronization between Reynard and Monaco Editor
  */
 
-import { createSignal, createEffect } from 'solid-js';
-import { useMonacoShiki } from './useMonacoShiki';
-import { 
-  getMonacoThemeFromReynard, 
+import { createSignal, createEffect } from "solid-js";
+import { useMonacoShiki } from "./useMonacoShiki";
+import {
+  getMonacoThemeFromReynard,
   getShikiThemeFromReynard,
-  isReynardThemeDark
-} from '../utils/themeMapping';
-import { registerCustomMonacoTheme } from '../utils/customThemes';
+  isReynardThemeDark,
+} from "../utils/themeMapping";
+import { registerCustomMonacoTheme } from "../utils/customThemes";
 // Define ThemeName locally to avoid dependency issues
-type ThemeName = 
+type ThemeName =
   | "light"
   | "dark"
   | "gray"
@@ -51,11 +51,15 @@ export interface ReynardMonacoState {
 export const useReynardMonaco = (options: ReynardMonacoOptions) => {
   // Helper functions to get reactive values
   const getReynardTheme = (): ThemeName => {
-    return typeof options.reynardTheme === 'function' ? options.reynardTheme() : options.reynardTheme;
+    return typeof options.reynardTheme === "function"
+      ? options.reynardTheme()
+      : options.reynardTheme;
   };
-  
+
   const getLang = (): string => {
-    return typeof options.lang === 'function' ? options.lang() : (options.lang || 'javascript');
+    return typeof options.lang === "function"
+      ? options.lang()
+      : options.lang || "javascript";
   };
 
   const [state, setState] = createSignal<ReynardMonacoState>({
@@ -76,12 +80,15 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
   const registerThemes = (monaco: any) => {
     if (monaco && monaco.editor) {
       const reynardTheme = getReynardTheme();
-      console.log('Registering custom Monaco theme for Reynard theme:', reynardTheme);
+      console.log(
+        "Registering custom Monaco theme for Reynard theme:",
+        reynardTheme,
+      );
       registerCustomMonacoTheme(monaco, reynardTheme);
-      
+
       // Also set the theme immediately after registration
       const themeName = `reynard-${reynardTheme}`;
-      console.log('Setting Monaco theme to:', themeName);
+      console.log("Setting Monaco theme to:", themeName);
       monaco.editor.setTheme(themeName);
     }
   };
@@ -112,33 +119,33 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
       automaticLayout: true,
       minimap: {
         enabled: true,
-        side: 'right',
-        size: 'proportional',
-        showSlider: 'mouseover',
+        side: "right",
+        size: "proportional",
+        showSlider: "mouseover",
         renderCharacters: false,
         maxColumn: 120,
         scale: 1,
       },
       scrollBeyondLastLine: false,
       fontSize: 14,
-      fontFamily: 'var(--font-family-mono)',
+      fontFamily: "var(--font-family-mono)",
       lineHeight: 20,
-      lineNumbers: 'on',
+      lineNumbers: "on",
       roundedSelection: false,
       scrollbar: {
-        vertical: 'visible',
-        horizontal: 'visible',
+        vertical: "visible",
+        horizontal: "visible",
         verticalScrollbarSize: 12,
         horizontalScrollbarSize: 12,
       },
       folding: true,
-      wordWrap: 'on',
-      acceptSuggestionOnEnter: 'on',
-      tabCompletion: 'on',
+      wordWrap: "on",
+      acceptSuggestionOnEnter: "on",
+      tabCompletion: "on",
       parameterHints: {
         enabled: true,
       },
-      autoIndent: 'full',
+      autoIndent: "full",
       formatOnPaste: true,
       formatOnType: true,
       dragAndDrop: true,
@@ -160,14 +167,14 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
     shikiTheme: () => state().shikiTheme,
     isDark: () => state().isDark,
     isShikiEnabled: () => state().isShikiEnabled,
-    
+
     // Monaco Shiki integration
     monacoShiki,
-    
+
     // Utilities
     getMonacoOptions,
     registerThemes,
-    
+
     // Theme utilities
     getMonacoThemeFromReynard,
     getShikiThemeFromReynard,

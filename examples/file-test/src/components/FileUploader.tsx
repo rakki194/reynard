@@ -1,5 +1,5 @@
-import { createSignal } from 'solid-js';
-import './FileUploader.css';
+import { createSignal } from "solid-js";
+import "./FileUploader.css";
 
 interface FileUploaderProps {
   onFilesSelected: (files: FileList) => void;
@@ -19,9 +19,9 @@ export default function FileUploader(props: FileUploaderProps) {
   const handleDrop = (event: DragEvent) => {
     event.preventDefault();
     setIsDragOver(false);
-    
+
     if (props.disabled) return;
-    
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       props.onFilesSelected(files);
@@ -42,14 +42,14 @@ export default function FileUploader(props: FileUploaderProps) {
 
   const openFileDialog = () => {
     if (!props.disabled) {
-      const input = document.getElementById('file-input') as HTMLInputElement;
+      const input = document.getElementById("file-input") as HTMLInputElement;
       input?.click();
     }
   };
 
   return (
     <div
-      class={`file-uploader ${isDragOver() ? 'dragover' : ''}`}
+      class={`file-uploader ${isDragOver() ? "dragover" : ""}`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -65,20 +65,16 @@ export default function FileUploader(props: FileUploaderProps) {
         disabled={props.disabled}
         aria-label="Choose files to upload"
       />
-      
+
       <div class="upload-text">
         <p>📁 Drop files here or click to browse</p>
         <p class="file-types">
           Supports: Images, Videos, Audio, Text, Code, Documents
         </p>
       </div>
-      
-      <button 
-        class="upload-button" 
-        type="button"
-        disabled={props.disabled}
-      >
-        {props.disabled ? 'Processing...' : 'Choose Files'}
+
+      <button class="upload-button" type="button" disabled={props.disabled}>
+        {props.disabled ? "Processing..." : "Choose Files"}
       </button>
     </div>
   );

@@ -8,7 +8,10 @@ import { BreadcrumbItem } from "./BreadcrumbItem";
 import { BreadcrumbActions } from "./BreadcrumbActions";
 import { BreadcrumbSummary } from "./BreadcrumbSummary";
 import { HomeButton } from "./HomeButton";
-import type { BreadcrumbItem as BreadcrumbItemType, BreadcrumbNavigationState } from "./types";
+import type {
+  BreadcrumbItem as BreadcrumbItemType,
+  BreadcrumbNavigationState,
+} from "./types";
 
 export interface BreadcrumbRendererProps {
   items: BreadcrumbItemType[];
@@ -28,7 +31,9 @@ export interface BreadcrumbRendererProps {
   toggleFullPaths: () => void;
 }
 
-export const BreadcrumbRenderer: Component<BreadcrumbRendererProps> = (props) => {
+export const BreadcrumbRenderer: Component<BreadcrumbRendererProps> = (
+  props,
+) => {
   return (
     <div class={`reynard-breadcrumb-navigation ${props.class || ""}`}>
       {/* Breadcrumb Path */}

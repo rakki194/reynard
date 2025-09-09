@@ -1,6 +1,6 @@
 // Marker components (zero-sized)
 
-import { Component, ComponentType, StorageType } from '../../types';
+import { Component, ComponentType, StorageType } from "../../types";
 
 export class Static implements Component {
   readonly __component = true;
@@ -20,29 +20,29 @@ export class Collectible implements Component {
 
 // Component Type Definitions
 export const StaticType: ComponentType<Static> = {
-  name: 'Static',
+  name: "Static",
   id: 14,
   storage: StorageType.SparseSet,
-  create: () => new Static()
+  create: () => new Static(),
 };
 
 export const DynamicType: ComponentType<Dynamic> = {
-  name: 'Dynamic',
+  name: "Dynamic",
   id: 15,
   storage: StorageType.SparseSet,
-  create: () => new Dynamic()
+  create: () => new Dynamic(),
 };
 
 export const DestructibleType: ComponentType<Destructible> = {
-  name: 'Destructible',
+  name: "Destructible",
   id: 16,
   storage: StorageType.SparseSet,
-  create: () => new Destructible()
+  create: () => new Destructible(),
 };
 
 export const CollectibleType: ComponentType<Collectible> = {
-  name: 'Collectible',
+  name: "Collectible",
   id: 17,
   storage: StorageType.SparseSet,
-  create: () => new Collectible()
+  create: () => new Collectible(),
 };

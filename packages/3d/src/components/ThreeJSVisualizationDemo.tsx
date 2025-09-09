@@ -1,6 +1,6 @@
-import { Component, createSignal } from 'solid-js';
-import { ThreeJSVisualization } from './ThreeJSVisualization';
-import './ThreeJSVisualizationDemo.css';
+import { Component, createSignal } from "solid-js";
+import { ThreeJSVisualization } from "./ThreeJSVisualization";
+import "./ThreeJSVisualizationDemo.css";
 
 interface ThreeJSVisualizationDemoProps {
   width?: number;
@@ -8,15 +8,22 @@ interface ThreeJSVisualizationDemoProps {
   className?: string;
 }
 
-export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> = props => {
+export const ThreeJSVisualizationDemo: Component<
+  ThreeJSVisualizationDemoProps
+> = (props) => {
   const [_scene, setScene] = createSignal<unknown>(null);
   const [_camera, setCamera] = createSignal<unknown>(null);
   const [_renderer, setRenderer] = createSignal<unknown>(null);
   const [_controls, setControls] = createSignal<unknown>(null);
-  const [cameraInfo, setCameraInfo] = createSignal<string>('');
+  const [cameraInfo, setCameraInfo] = createSignal<string>("");
 
   // Demo scene setup
-  const setupDemoScene = async (_scene: unknown, _camera: unknown, _renderer: unknown, _controls: unknown) => {
+  const setupDemoScene = async (
+    _scene: unknown,
+    _camera: unknown,
+    _renderer: unknown,
+    _controls: unknown,
+  ) => {
     try {
       // Store references
       setScene(_scene);
@@ -25,7 +32,7 @@ export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> 
       setControls(_controls);
 
       // Lazy load Three.js components
-      const THREE = await import('three') as any;
+      const THREE = (await import("three")) as any;
       const {
         BoxGeometry,
         SphereGeometry,
@@ -94,9 +101,9 @@ export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> 
       updateCameraInfo();
 
       // Add controls change listener
-      (_controls as any).addEventListener('change', updateCameraInfo);
+      (_controls as any).addEventListener("change", updateCameraInfo);
     } catch (err) {
-      console.error('Failed to setup demo scene:', err);
+      console.error("Failed to setup demo scene:", err);
     }
   };
 
@@ -105,7 +112,12 @@ export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> 
     const currentCamera = _camera();
     const currentControls = _controls();
 
-    if (currentCamera && currentControls && (currentCamera as any).position && (currentControls as any).target) {
+    if (
+      currentCamera &&
+      currentControls &&
+      (currentCamera as any).position &&
+      (currentControls as any).target
+    ) {
       const pos = (currentCamera as any).position;
       const target = (currentControls as any).target;
 
@@ -115,26 +127,31 @@ export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> 
         : Math.sqrt(
             Math.pow((pos.x || 0) - (target.x || 0), 2) +
               Math.pow((pos.y || 0) - (target.y || 0), 2) +
-              Math.pow((pos.z || 0) - (target.z || 0), 2)
+              Math.pow((pos.z || 0) - (target.z || 0), 2),
           );
 
       setCameraInfo(
         `Camera: (${(pos.x || 0).toFixed(2)}, ${(pos.y || 0).toFixed(2)}, ${(pos.z || 0).toFixed(2)}) | ` +
           `Target: (${(target.x || 0).toFixed(2)}, ${(target.y || 0).toFixed(2)}, ${(target.z || 0).toFixed(2)}) | ` +
-          `Distance: ${distance.toFixed(2)}`
+          `Distance: ${distance.toFixed(2)}`,
       );
     }
   };
 
   // Custom render function for animations
-  const onRender = (_scene: any, _camera: any, _renderer: any, _controls: any) => {
+  const onRender = (
+    _scene: any,
+    _camera: any,
+    _renderer: any,
+    _controls: any,
+  ) => {
     // Add any custom rendering logic here
     // For now, just update camera info
     updateCameraInfo();
   };
 
   return (
-    <div class={`threejs-demo ${props.className || ''}`}>
+    <div class={`threejs-demo ${props.className || ""}`}>
       <div class="demo-header">
         <h3>3D Scene Management Demo</h3>
         <p>Enhanced camera controls, lighting system, and responsive canvas</p>

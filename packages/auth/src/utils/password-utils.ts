@@ -1,6 +1,6 @@
 /**
  * Password utilities for the Reynard Auth system.
- * 
+ *
  * This module contains password-related utility functions including
  * strength calculation and validation.
  */

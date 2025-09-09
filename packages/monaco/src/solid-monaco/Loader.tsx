@@ -1,14 +1,10 @@
-import { JSX } from 'solid-js'
-import './Loader.css'
+import { JSX } from "solid-js";
+import "./Loader.css";
 
 interface LoaderProps {
-  children: JSX.Element
+  children: JSX.Element;
 }
 
 export const Loader = (props: LoaderProps) => {
-  return (
-    <div class="monaco-loader">
-      {props.children}
-    </div>
-  )
-}
+  return <div class="monaco-loader">{props.children}</div>;
+};

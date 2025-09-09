@@ -1,14 +1,14 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 import {
   renderWithTestProviders,
   useTestAppContext,
   createMockTestResource,
   mockFns,
   mockAppContext,
-} from '../index';
+} from "../index";
 
 export function testUtilityExports() {
-  it('should export all test utilities', () => {
+  it("should export all test utilities", () => {
     expect(renderWithTestProviders).toBeDefined();
     expect(useTestAppContext).toBeDefined();
     expect(createMockTestResource).toBeDefined();

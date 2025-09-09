@@ -1,6 +1,6 @@
 /**
  * Pluralization type definitions for the Reynard i18n system.
- * 
+ *
  * This module contains types and interfaces related to pluralization
  * rules and forms for different languages.
  */
@@ -47,7 +47,11 @@ export interface PluralizationConfig {
 // Enhanced pluralization with context
 export interface EnhancedPluralization {
   getPluralForm: (count: number, language: string) => keyof PluralForms;
-  getPluralValue: (count: number, forms: PluralForms, language: string) => string;
+  getPluralValue: (
+    count: number,
+    forms: PluralForms,
+    language: string,
+  ) => string;
   validatePluralForms: (forms: PluralForms, language: string) => boolean;
   getSupportedLanguages: () => string[];
 }

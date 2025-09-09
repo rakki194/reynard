@@ -68,44 +68,44 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be independently useful while working seamlessly together. All packages are published to npm and ready for production use!
 
-| Package                    | Description                        | Version |
-| -------------------------- | ---------------------------------- | ------- |
-| `reynard-core`             | Core utilities and modules for Reynard framework | `0.1.1` |
-| `reynard-components`       | Production-ready SolidJS component library | `0.1.1` |
-| `reynard-chat`             | Production-ready chat messaging system for SolidJS | `0.1.0` |
-| `reynard-rag`              | Retrieval-Augmented Generation components for SolidJS | `0.1.1` |
-| `reynard-auth`             | Authentication and user management for SolidJS | `0.1.0` |
-| `reynard-charts`           | Data visualization components for SolidJS | `0.1.0` |
-| `reynard-gallery`          | File and media management components for SolidJS | `0.1.0` |
-| `reynard-settings`         | Comprehensive settings and preferences management for SolidJS | `0.1.0` |
-| `reynard-file-processing`  | Advanced file processing, thumbnail generation, and media analysis for SolidJS applications | `0.1.0` |
-| `reynard-algorithms`       | Algorithm primitives and data structures for Reynard applications | `0.1.0` |
-| `reynard-color-media`      | Color generation utilities and media handling components using OKLCH color space | `1.0.0` |
-| `reynard-ui`               | Advanced layout and navigation components | `0.1.0` |
-| `reynard-themes`           | Comprehensive theming system for Reynard applications with translation support | `0.1.1` |
-| `reynard-monaco`           | Monaco code editor and text editing components for Reynard | `0.1.1` |
+| Package                    | Description                                                                                                        | Version |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------- |
+| `reynard-core`             | Core utilities and modules for Reynard framework                                                                   | `0.1.1` |
+| `reynard-components`       | Production-ready SolidJS component library                                                                         | `0.1.1` |
+| `reynard-chat`             | Production-ready chat messaging system for SolidJS                                                                 | `0.1.0` |
+| `reynard-rag`              | Retrieval-Augmented Generation components for SolidJS                                                              | `0.1.1` |
+| `reynard-auth`             | Authentication and user management for SolidJS                                                                     | `0.1.0` |
+| `reynard-charts`           | Data visualization components for SolidJS                                                                          | `0.1.0` |
+| `reynard-gallery`          | File and media management components for SolidJS                                                                   | `0.1.0` |
+| `reynard-settings`         | Comprehensive settings and preferences management for SolidJS                                                      | `0.1.0` |
+| `reynard-file-processing`  | Advanced file processing, thumbnail generation, and media analysis for SolidJS applications                        | `0.1.0` |
+| `reynard-algorithms`       | Algorithm primitives and data structures for Reynard applications                                                  | `0.1.0` |
+| `reynard-color-media`      | Color generation utilities and media handling components using OKLCH color space                                   | `1.0.0` |
+| `reynard-ui`               | Advanced layout and navigation components                                                                          | `0.1.0` |
+| `reynard-themes`           | Comprehensive theming system for Reynard applications with translation support                                     | `0.1.1` |
+| `reynard-monaco`           | Monaco code editor and text editing components for Reynard                                                         | `0.1.1` |
 | `reynard-annotating`       | Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows | `0.1.0` |
-| `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard | `0.1.0` |
-| `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing | `0.1.0` |
-| `reynard-composables`      | Reusable reactive logic for Reynard applications | `0.1.0` |
-| `reynard-connection`       | Enterprise-grade networking for Reynard applications | `0.1.0` |
-| `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities | `0.1.0` |
-| `reynard-fluent-icons`     | Fluent UI icons for Reynard design system | `0.1.1` |
-| `reynard-games`            | Interactive games and visualizations for Reynard framework | `0.1.0` |
-| `reynard-model-management` | Model management system for Reynard - handles ML model loading, downloading, and lifecycle management | `0.1.0` |
-| `reynard-service-manager`  | Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring | `0.1.0` |
-| `reynard-tools`            | Development and runtime tools for Reynard applications | `0.1.0` |
-| `reynard-testing`          | Unified testing framework for Reynard packages | `0.1.0` |
-| `reynard-3d`               | 3D graphics and visualization components for Reynard framework using Three.js | `0.1.0` |
-| `reynard-error-boundaries` | Comprehensive error boundary system for Reynard framework | `0.1.1` |
-| `reynard-i18n`             | Comprehensive internationalization system for Reynard framework with 37 language support | `1.0.0` |
-| `reynard-docs-components`  | Beautiful UI components for Reynard documentation sites | `0.1.0` |
-| `reynard-docs-core`        | Core documentation rendering engine for Reynard framework | `0.1.0` |
-| `reynard-docs-generator`   | Automated documentation generator for Reynard packages | `0.1.0` |
-| `reynard-docs-site`        | Beautiful documentation site application for Reynard framework | `0.1.0` |
-| `reynard-basic-app`        | Basic Todo App - Minimal Reynard framework example | `0.1.0` |
-| `reynard-clock-app`        | A comprehensive clock, timer, alarm, and countdown application built with Reynard framework | `1.0.0` |
-| `reynard-test-app`         | Comprehensive test application showcasing Reynard framework features | `1.0.0` |
+| `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard                                                | `0.1.0` |
+| `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing                           | `0.1.0` |
+| `reynard-composables`      | Reusable reactive logic for Reynard applications                                                                   | `0.1.0` |
+| `reynard-connection`       | Enterprise-grade networking for Reynard applications                                                               | `0.1.0` |
+| `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities                          | `0.1.0` |
+| `reynard-fluent-icons`     | Fluent UI icons for Reynard design system                                                                          | `0.1.1` |
+| `reynard-games`            | Interactive games and visualizations for Reynard framework                                                         | `0.1.0` |
+| `reynard-model-management` | Model management system for Reynard - handles ML model loading, downloading, and lifecycle management              | `0.1.0` |
+| `reynard-service-manager`  | Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring             | `0.1.0` |
+| `reynard-tools`            | Development and runtime tools for Reynard applications                                                             | `0.1.0` |
+| `reynard-testing`          | Unified testing framework for Reynard packages                                                                     | `0.1.0` |
+| `reynard-3d`               | 3D graphics and visualization components for Reynard framework using Three.js                                      | `0.1.0` |
+| `reynard-error-boundaries` | Comprehensive error boundary system for Reynard framework                                                          | `0.1.1` |
+| `reynard-i18n`             | Comprehensive internationalization system for Reynard framework with 37 language support                           | `1.0.0` |
+| `reynard-docs-components`  | Beautiful UI components for Reynard documentation sites                                                            | `0.1.0` |
+| `reynard-docs-core`        | Core documentation rendering engine for Reynard framework                                                          | `0.1.0` |
+| `reynard-docs-generator`   | Automated documentation generator for Reynard packages                                                             | `0.1.0` |
+| `reynard-docs-site`        | Beautiful documentation site application for Reynard framework                                                     | `0.1.0` |
+| `reynard-basic-app`        | Basic Todo App - Minimal Reynard framework example                                                                 | `0.1.0` |
+| `reynard-clock-app`        | A comprehensive clock, timer, alarm, and countdown application built with Reynard framework                        | `1.0.0` |
+| `reynard-test-app`         | Comprehensive test application showcasing Reynard framework features                                               | `1.0.0` |
 
 ## 🚀 The Future of Reynard
 
@@ -137,4 +137,4 @@ Reynard is more than a framework - it's a movement toward smarter, more intuitiv
 
 ---
 
-*Built with ❤️, 🐺 and 🤖!*
+_Built with ❤️, 🐺 and 🤖!_

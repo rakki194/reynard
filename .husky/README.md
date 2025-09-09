@@ -121,13 +121,13 @@ The validator can be configured by modifying the `CONFIG` object in `validate-cs
 const CONFIG = {
   // Directories to scan for CSS files
   scanDirs: ['packages', 'examples', 'templates', 'src', 'styles'],
-  
+
   // Files to ignore
   ignorePatterns: [/node_modules/, /dist/, /build/, /\.git/],
-  
+
   // Critical variables that must be consistent
   criticalVariables: ['accent', 'bg-color', 'text-primary', ...],
-  
+
   // Theme-specific variables
   themeVariables: ['accent', 'bg-color', 'secondary-bg', ...]
 };

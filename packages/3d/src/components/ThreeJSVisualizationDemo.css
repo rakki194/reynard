@@ -131,25 +131,25 @@
     padding: 16px;
     gap: 16px;
   }
-  
+
   .demo-header h3 {
     font-size: 20px;
   }
-  
+
   .demo-controls {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .demo-info {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .control-info span {
     font-size: 11px;
   }
-  
+
   .camera-info {
     font-size: 11px;
   }
@@ -160,19 +160,19 @@
     padding: 12px;
     gap: 12px;
   }
-  
+
   .demo-header h3 {
     font-size: 18px;
   }
-  
+
   .demo-header p {
     font-size: 12px;
   }
-  
+
   .demo-controls {
     padding: 12px;
   }
-  
+
   .info-panel {
     padding: 12px;
   }
@@ -183,7 +183,7 @@
   .threejs-demo {
     background: #0a0a0a;
   }
-  
+
   .demo-controls,
   .info-panel {
     background: rgba(0, 0, 0, 0.6);
@@ -195,12 +195,12 @@
   .threejs-demo {
     border: 2px solid #ffffff;
   }
-  
+
   .demo-controls,
   .info-panel {
     border: 2px solid #ffffff;
   }
-  
+
   .control-info span {
     border-left: 4px solid #007acc;
   }

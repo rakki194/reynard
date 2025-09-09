@@ -2,8 +2,8 @@
  * @fileoverview Search components for documentation sites
  */
 
-import { Component, createSignal, createEffect, For, Show } from 'solid-js';
-import { Button, TextField } from 'reynard-components';
+import { Component, createSignal, createEffect, For, Show } from "solid-js";
+import { Button, TextField } from "reynard-components";
 
 /**
  * Search input component
@@ -14,7 +14,7 @@ export const DocsSearch: Component<{
   onClear?: () => void;
   className?: string;
 }> = (props) => {
-  const [query, setQuery] = createSignal('');
+  const [query, setQuery] = createSignal("");
   const [isFocused, setIsFocused] = createSignal(false);
 
   const handleSearch = (value: string) => {
@@ -28,16 +28,18 @@ export const DocsSearch: Component<{
   // };
 
   return (
-    <div class={`docs-search ${props.className || ''} ${isFocused() ? 'focused' : ''}`}>
+    <div
+      class={`docs-search ${props.className || ""} ${isFocused() ? "focused" : ""}`}
+    >
       <div class="docs-search-input-wrapper">
         <TextField
           value={query()}
           onInput={(e) => handleSearch(e.currentTarget.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={props.placeholder || 'Search documentation...'}
+          placeholder={props.placeholder || "Search documentation..."}
           leftIcon="🔍"
-          rightIcon={query() ? '✕' : undefined}
+          rightIcon={query() ? "✕" : undefined}
           class="docs-search-input"
         />
       </div>
@@ -63,31 +65,36 @@ export const DocsSearchResults: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <div class={`docs-search-results ${props.className || ''}`}>
+    <div class={`docs-search-results ${props.className || ""}`}>
       <Show when={props.results.length > 0}>
         <div class="docs-search-results-header">
           <h3>Search Results</h3>
           <span class="docs-search-count">
-            {props.results.length} result{props.results.length !== 1 ? 's' : ''} for "{props.query}"
+            {props.results.length} result{props.results.length !== 1 ? "s" : ""}{" "}
+            for "{props.query}"
           </span>
         </div>
-        
+
         <ul class="docs-search-results-list">
           <For each={props.results}>
             {(result) => (
               <li class="docs-search-result">
-                <button 
+                <button
                   class="docs-search-result-button"
                   onClick={() => props.onResultClick(result)}
                 >
                   <div class="docs-search-result-content">
                     <h4 class="docs-search-result-title">{result.title}</h4>
                     <Show when={result.description}>
-                      <p class="docs-search-result-description">{result.description}</p>
+                      <p class="docs-search-result-description">
+                        {result.description}
+                      </p>
                     </Show>
                     <div class="docs-search-result-meta">
                       <Show when={result.category}>
-                        <span class="docs-search-result-category">{result.category}</span>
+                        <span class="docs-search-result-category">
+                          {result.category}
+                        </span>
                       </Show>
                       <Show when={result.tags && result.tags.length > 0}>
                         <div class="docs-search-result-tags">
@@ -111,7 +118,7 @@ export const DocsSearchResults: Component<{
           </For>
         </ul>
       </Show>
-      
+
       <Show when={props.results.length === 0 && props.query}>
         <div class="docs-search-no-results">
           <h3>No results found</h3>
@@ -131,14 +138,14 @@ export const DocsSearchSuggestions: Component<{
   className?: string;
 }> = (props) => {
   return (
-    <div class={`docs-search-suggestions ${props.className || ''}`}>
+    <div class={`docs-search-suggestions ${props.className || ""}`}>
       <Show when={props.suggestions.length > 0}>
         <h4>Popular searches</h4>
         <ul class="docs-search-suggestions-list">
           <For each={props.suggestions}>
             {(suggestion) => (
               <li class="docs-search-suggestion">
-                <button 
+                <button
                   class="docs-search-suggestion-button"
                   onClick={() => props.onSuggestionClick(suggestion)}
                 >
@@ -167,35 +174,38 @@ export const DocsAdvancedSearch: Component<{
   tags?: string[];
   className?: string;
 }> = (props) => {
-  const [query, setQuery] = createSignal('');
-  const [category, setCategory] = createSignal('');
+  const [query, setQuery] = createSignal("");
+  const [category, setCategory] = createSignal("");
   const [selectedTags, setSelectedTags] = createSignal<string[]>([]);
-  const [dateStart, setDateStart] = createSignal('');
-  const [dateEnd, setDateEnd] = createSignal('');
+  const [dateStart, setDateStart] = createSignal("");
+  const [dateEnd, setDateEnd] = createSignal("");
 
   const handleSearch = () => {
     props.onSearch({
       query: query(),
       category: category() || undefined,
       tags: selectedTags().length > 0 ? selectedTags() : undefined,
-      dateRange: dateStart() && dateEnd() ? {
-        start: dateStart(),
-        end: dateEnd()
-      } : undefined
+      dateRange:
+        dateStart() && dateEnd()
+          ? {
+              start: dateStart(),
+              end: dateEnd(),
+            }
+          : undefined,
     });
   };
 
   const toggleTag = (tag: string) => {
     const tags = selectedTags();
     if (tags.includes(tag)) {
-      setSelectedTags(tags.filter(t => t !== tag));
+      setSelectedTags(tags.filter((t) => t !== tag));
     } else {
       setSelectedTags([...tags, tag]);
     }
   };
 
   return (
-    <div class={`docs-advanced-search ${props.className || ''}`}>
+    <div class={`docs-advanced-search ${props.className || ""}`}>
       <div class="docs-advanced-search-form">
         <div class="docs-advanced-search-field">
           <TextField
@@ -209,16 +219,14 @@ export const DocsAdvancedSearch: Component<{
         <Show when={props.categories && props.categories.length > 0}>
           <div class="docs-advanced-search-field">
             <label class="docs-advanced-search-label">Category</label>
-            <select 
+            <select
               value={category()}
               onChange={(e) => setCategory(e.currentTarget.value)}
               class="docs-advanced-search-select"
             >
               <option value="">All categories</option>
               <For each={props.categories}>
-                {(cat) => (
-                  <option value={cat}>{cat}</option>
-                )}
+                {(cat) => <option value={cat}>{cat}</option>}
               </For>
             </select>
           </div>
@@ -231,7 +239,7 @@ export const DocsAdvancedSearch: Component<{
               <For each={props.tags}>
                 {(tag) => (
                   <button
-                    class={`docs-advanced-search-tag ${selectedTags().includes(tag) ? 'selected' : ''}`}
+                    class={`docs-advanced-search-tag ${selectedTags().includes(tag) ? "selected" : ""}`}
                     onClick={() => toggleTag(tag)}
                   >
                     {tag}
@@ -267,14 +275,14 @@ export const DocsAdvancedSearch: Component<{
           <Button variant="primary" onClick={handleSearch}>
             Search
           </Button>
-          <Button 
-            variant="secondary" 
+          <Button
+            variant="secondary"
             onClick={() => {
-              setQuery('');
-              setCategory('');
+              setQuery("");
+              setCategory("");
               setSelectedTags([]);
-              setDateStart('');
-              setDateEnd('');
+              setDateStart("");
+              setDateEnd("");
             }}
           >
             Clear
@@ -297,12 +305,14 @@ export const DocsSearchModal: Component<{
   suggestions?: string[];
   className?: string;
 }> = (props) => {
-  const [query, setQuery] = createSignal('');
+  const [query, setQuery] = createSignal("");
 
   createEffect(() => {
     if (props.isOpen) {
       // Focus search input when modal opens
-      const input = document.querySelector('.docs-search-modal-input input') as HTMLInputElement;
+      const input = document.querySelector(
+        ".docs-search-modal-input input",
+      ) as HTMLInputElement;
       input?.focus();
     }
   });
@@ -319,16 +329,16 @@ export const DocsSearchModal: Component<{
 
   return (
     <Show when={props.isOpen}>
-      <div class={`docs-search-modal ${props.className || ''}`}>
+      <div class={`docs-search-modal ${props.className || ""}`}>
         <div class="docs-search-modal-backdrop" onClick={props.onClose} />
         <div class="docs-search-modal-content">
           <div class="docs-search-modal-header">
             <DocsSearch
               onSearch={handleSearch}
-              onClear={() => handleSearch('')}
+              onClear={() => handleSearch("")}
               className="docs-search-modal-input"
             />
-            <button 
+            <button
               class="docs-search-modal-close"
               onClick={props.onClose}
               aria-label="Close search"
@@ -336,7 +346,7 @@ export const DocsSearchModal: Component<{
               ✕
             </button>
           </div>
-          
+
           <div class="docs-search-modal-body">
             <Show when={query()}>
               <DocsSearchResults
@@ -345,7 +355,7 @@ export const DocsSearchModal: Component<{
                 onResultClick={handleResultClick}
               />
             </Show>
-            
+
             <Show when={!query() && props.suggestions}>
               <DocsSearchSuggestions
                 suggestions={props.suggestions || []}

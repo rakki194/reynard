@@ -83,15 +83,24 @@ Get the current status of the strategy configuration system.
   "data": {
     "configuration_summary": {
       "total_configurations": 5,
-      "strategy_distribution": {"lazy": 3, "eager": 1, "preload": 1},
-      "configuration_type_distribution": {"package_specific": 4, "auto_optimized": 1},
+      "strategy_distribution": { "lazy": 3, "eager": 1, "preload": 1 },
+      "configuration_type_distribution": {
+        "package_specific": 4,
+        "auto_optimized": 1
+      },
       "active_ab_tests": 2,
       "total_ab_tests": 3,
       "performance_records": 150,
       "global_default_strategy": "lazy"
     },
     "available_strategies": ["eager", "lazy", "preload", "on_demand"],
-    "configuration_types": ["global", "package_specific", "user_preference", "auto_optimized", "a_b_test"],
+    "configuration_types": [
+      "global",
+      "package_specific",
+      "user_preference",
+      "auto_optimized",
+      "a_b_test"
+    ],
     "system_status": "active"
   }
 }
@@ -425,7 +434,7 @@ Get all A/B tests.
       }
     ],
     "total_tests": 1,
-    "filter": {"status": "active"}
+    "filter": { "status": "active" }
   }
 }
 ```
@@ -453,8 +462,8 @@ Get specific A/B test information.
     "started_at": "2024-01-01T00:00:00",
     "completed_at": null,
     "results": {
-      "strategy_a_performance": {"avg_load_time": 1.5},
-      "strategy_b_performance": {"avg_load_time": 0.8},
+      "strategy_a_performance": { "avg_load_time": 1.5 },
+      "strategy_b_performance": { "avg_load_time": 0.8 },
       "statistical_significance": 0.95,
       "winner": "eager",
       "recommendation": "Switch to eager strategy"
@@ -474,8 +483,8 @@ Complete an A/B test and analyze results.
   "status": "success",
   "data": {
     "test_id": "test_1",
-    "strategy_a_performance": {"avg_load_time": 1.5},
-    "strategy_b_performance": {"avg_load_time": 0.8},
+    "strategy_a_performance": { "avg_load_time": 1.5 },
+    "strategy_b_performance": { "avg_load_time": 0.8 },
     "statistical_significance": 0.95,
     "winner": "eager",
     "recommendation": "Switch to eager strategy",

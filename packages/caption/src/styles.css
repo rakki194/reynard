@@ -4,8 +4,8 @@
  * Main stylesheet for the caption package components.
  */
 
-@import './components/TagBubble.css';
-@import './components/CaptionInput.css';
+@import "./components/TagBubble.css";
+@import "./components/CaptionInput.css";
 
 /* CSS Custom Properties for theming */
 :root {
@@ -21,48 +21,52 @@
   --caption-warning-hover: #d97706;
   --caption-error: #ef4444;
   --caption-error-hover: #dc2626;
-  
+
   /* Background colors */
   --caption-bg: #ffffff;
   --caption-bg-secondary: #f9fafb;
   --caption-bg-tertiary: #f3f4f6;
   --caption-bg-hover: #f9fafb;
-  
+
   /* Text colors */
   --caption-text: #374151;
   --caption-text-secondary: #6b7280;
   --caption-text-muted: #9ca3af;
-  
+
   /* Border colors */
   --caption-border: #d1d5db;
   --caption-border-hover: #9ca3af;
   --caption-border-focus: #3b82f6;
-  
+
   /* Spacing */
   --caption-spacing-xs: 0.25rem;
   --caption-spacing-sm: 0.5rem;
   --caption-spacing-md: 0.75rem;
   --caption-spacing-lg: 1rem;
   --caption-spacing-xl: 1.5rem;
-  
+
   /* Border radius */
   --caption-radius-sm: 0.25rem;
   --caption-radius-md: 0.375rem;
   --caption-radius-lg: 0.5rem;
-  
+
   /* Shadows */
   --caption-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --caption-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --caption-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+  --caption-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --caption-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
   /* Typography */
-  --caption-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --caption-font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --caption-font-size-xs: 0.75rem;
   --caption-font-size-sm: 0.875rem;
   --caption-font-size-md: 1rem;
   --caption-font-size-lg: 1.125rem;
   --caption-font-size-xl: 1.25rem;
-  
+
   /* Transitions */
   --caption-transition: all 0.2s ease;
   --caption-transition-fast: all 0.15s ease;
@@ -84,18 +88,18 @@
     --caption-warning-hover: #f59e0b;
     --caption-error: #f87171;
     --caption-error-hover: #ef4444;
-    
+
     /* Background colors */
     --caption-bg: #1f2937;
     --caption-bg-secondary: #111827;
     --caption-bg-tertiary: #0f172a;
     --caption-bg-hover: #374151;
-    
+
     /* Text colors */
     --caption-text: #d1d5db;
     --caption-text-secondary: #9ca3af;
     --caption-text-muted: #6b7280;
-    
+
     /* Border colors */
     --caption-border: #374151;
     --caption-border-hover: #6b7280;
@@ -225,14 +229,14 @@
     color: #000000 !important;
     background-color: #ffffff !important;
   }
-  
+
   .tag-bubble,
   .caption-input {
     border: 1px solid #000000 !important;
     background-color: #ffffff !important;
     color: #000000 !important;
   }
-  
+
   .caption-icon {
     display: none !important;
   }

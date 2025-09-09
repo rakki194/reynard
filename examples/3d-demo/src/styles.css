@@ -29,7 +29,11 @@
 /* Base App Styles */
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: var(--text-color);
   display: flex;
   flex-direction: column;
@@ -175,7 +179,7 @@
 }
 
 .game-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -256,7 +260,11 @@
 }
 
 .play-button {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -348,7 +356,7 @@
 }
 
 .features-list li::before {
-  content: '✨';
+  content: "✨";
   position: absolute;
   left: 0;
   top: 0.5rem;
@@ -540,7 +548,7 @@
   .game-container {
     max-width: 1600px;
   }
-  
+
   .game-viewport {
     height: 75vh;
     min-height: 700px;
@@ -551,24 +559,24 @@
   .app-header {
     padding: 1rem;
   }
-  
+
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .games-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .game-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .game-hud {
     flex-direction: column;
     gap: 0.75rem;
@@ -576,40 +584,40 @@
     left: 1rem;
     right: 1rem;
   }
-  
+
   .hud-item {
     padding: 0.75rem 1rem;
     font-size: 1rem;
   }
-  
+
   .hud-value {
     font-size: 1.1rem;
   }
-  
+
   .controls-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .game-viewport {
     height: 60vh;
     min-height: 400px;
   }
-  
+
   .game-viewport .threejs-visualization {
     min-height: 350px;
   }
-  
+
   .game-instructions {
     bottom: 1rem;
     left: 1rem;
     right: 1rem;
     padding: 1rem;
   }
-  
+
   .game-instructions h3 {
     font-size: 1.2rem;
   }
-  
+
   .game-instructions p {
     font-size: 0.9rem;
   }
@@ -619,15 +627,15 @@
   .header-content h1 {
     font-size: 1.5rem;
   }
-  
+
   .reynard-logo {
     font-size: 1.5rem;
   }
-  
+
   .game-card {
     padding: 1rem;
   }
-  
+
   .game-icon {
     font-size: 2rem;
   }

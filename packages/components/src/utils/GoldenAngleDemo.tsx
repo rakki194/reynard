@@ -28,9 +28,9 @@ export const GoldenAngleDemo: Component = () => {
     const maxRadius = 250;
 
     for (let i = 0; i < count; i++) {
-      const hue = (i * GOLDEN_ANGLE * 180 / Math.PI) % 360;
+      const hue = ((i * GOLDEN_ANGLE * 180) / Math.PI) % 360;
       const angle = (i * GOLDEN_ANGLE) % (2 * Math.PI);
-      
+
       // Choose pattern based on mode
       let radius;
       if (sunflowerMode()) {
@@ -41,19 +41,19 @@ export const GoldenAngleDemo: Component = () => {
         radius = maxRadius;
       }
       const clampedRadius = Math.min(radius, maxRadius);
-      
+
       const x = centerX + Math.cos(angle) * clampedRadius;
       const y = centerY + Math.sin(angle) * clampedRadius;
-      
+
       points.push({
         index: i,
         hue,
         x,
         y,
-        color: `hsl(${hue}, 70%, 60%)`
+        color: `hsl(${hue}, 70%, 60%)`,
       });
     }
-    
+
     return points;
   };
 
@@ -67,12 +67,13 @@ export const GoldenAngleDemo: Component = () => {
 
   return (
     <div class="golden-angle-demo">
-        <h3>🦊 Golden Angle Color Distribution</h3>
-        <p>
-          Each dot represents a color generated using the golden angle (137.507°).
-          The sunflower pattern shows how colors are distributed with perfect mathematical spacing!
-        </p>
-      
+      <h3>🦊 Golden Angle Color Distribution</h3>
+      <p>
+        Each dot represents a color generated using the golden angle (137.507°).
+        The sunflower pattern shows how colors are distributed with perfect
+        mathematical spacing!
+      </p>
+
       <div class="demo-controls">
         <div class="control-group">
           <label for="point-count">Points: {pointCount()}</label>
@@ -89,7 +90,7 @@ export const GoldenAngleDemo: Component = () => {
             }}
           />
         </div>
-        
+
         <div class="control-group">
           <label>
             <input
@@ -100,7 +101,7 @@ export const GoldenAngleDemo: Component = () => {
             Show Index Numbers
           </label>
         </div>
-        
+
         <div class="control-group">
           <label>
             <input
@@ -127,7 +128,7 @@ export const GoldenAngleDemo: Component = () => {
             stroke-width="2"
             opacity="0.3"
           />
-          
+
           <For each={colorPoints()}>
             {(point) => (
               <g>
@@ -161,31 +162,39 @@ export const GoldenAngleDemo: Component = () => {
         <div class="explanation-grid">
           <div class="explanation-card">
             <h4>🎯 Maximum Separation</h4>
-            <p>Each new color is positioned as far as possible from all previous colors in hue space.</p>
+            <p>
+              Each new color is positioned as far as possible from all previous
+              colors in hue space.
+            </p>
           </div>
           <div class="explanation-card">
             <h4>♾️ No Repetition</h4>
-            <p>The irrational golden angle ensures the sequence never repeats, even with millions of colors.</p>
+            <p>
+              The irrational golden angle ensures the sequence never repeats,
+              even with millions of colors.
+            </p>
           </div>
           <div class="explanation-card">
             <h4>🌻 Natural Distribution</h4>
-            <p>Same principle used in nature for optimal packing (sunflower seeds, pinecones).</p>
+            <p>
+              Same principle used in nature for optimal packing (sunflower
+              seeds, pinecones).
+            </p>
           </div>
           <div class="explanation-card">
             <h4>🎨 Visual Harmony</h4>
-            <p>Creates aesthetically pleasing color palettes with perfect visual balance.</p>
+            <p>
+              Creates aesthetically pleasing color palettes with perfect visual
+              balance.
+            </p>
           </div>
         </div>
       </div>
 
       <div class="math-formula">
         <h4>Mathematical Formula:</h4>
-        <code>
-          hue = (index × 137.507°) mod 360°
-        </code>
-        <p>
-          Where 137.507° = 360° / φ² (golden ratio squared)
-        </p>
+        <code>hue = (index × 137.507°) mod 360°</code>
+        <p>Where 137.507° = 360° / φ² (golden ratio squared)</p>
       </div>
     </div>
   );

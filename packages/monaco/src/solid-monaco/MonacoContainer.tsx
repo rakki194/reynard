@@ -1,10 +1,10 @@
-import { JSX } from 'solid-js'
+import { JSX } from "solid-js";
 
 interface MonacoContainerProps {
-  width?: string
-  height?: string
-  class?: string
-  children?: JSX.Element
+  width?: string;
+  height?: string;
+  class?: string;
+  children?: JSX.Element;
 }
 
 export const MonacoContainer = (props: MonacoContainerProps) => {
@@ -12,14 +12,14 @@ export const MonacoContainer = (props: MonacoContainerProps) => {
     <div
       class={props.class}
       style={{
-        display: 'flex',
-        position: 'relative',
-        'text-align': 'initial',
+        display: "flex",
+        position: "relative",
+        "text-align": "initial",
         width: props.width,
         height: props.height,
       }}
     >
       {props.children}
     </div>
-  )
-}
+  );
+};

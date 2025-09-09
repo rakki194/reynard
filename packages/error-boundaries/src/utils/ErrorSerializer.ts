@@ -3,7 +3,7 @@
  * Safe error serialization for reporting and storage
  */
 
-import { ErrorReport, ErrorContext } from '../types/ErrorTypes';
+import { ErrorReport, ErrorContext } from "../types/ErrorTypes";
 
 /**
  * Safely serialize an error for reporting
@@ -14,16 +14,18 @@ export function serializeError(error: Error): {
   stack?: string;
 } {
   return {
-    name: error.name || 'Error',
-    message: error.message || 'Unknown error',
-    stack: error.stack || undefined
+    name: error.name || "Error",
+    message: error.message || "Unknown error",
+    stack: error.stack || undefined,
   };
 }
 
 /**
  * Safely serialize error context
  */
-export function serializeErrorContext(context: ErrorContext): Partial<ErrorContext> {
+export function serializeErrorContext(
+  context: ErrorContext,
+): Partial<ErrorContext> {
   return {
     componentStack: context.componentStack,
     errorBoundaryId: context.errorBoundaryId,
@@ -36,7 +38,7 @@ export function serializeErrorContext(context: ErrorContext): Partial<ErrorConte
     category: context.category,
     recoverable: context.recoverable,
     metadata: sanitizeMetadata(context.metadata),
-    errorBoundaryStack: context.errorBoundaryStack
+    errorBoundaryStack: context.errorBoundaryStack,
   };
 }
 
@@ -45,23 +47,23 @@ export function serializeErrorContext(context: ErrorContext): Partial<ErrorConte
  */
 function sanitizeMetadata(metadata: Record<string, any>): Record<string, any> {
   const sanitized: Record<string, any> = {};
-  
+
   for (const [key, value] of Object.entries(metadata)) {
     // Skip sensitive keys
     if (isSensitiveKey(key)) {
       continue;
     }
-    
+
     // Sanitize sensitive values
-    if (typeof value === 'string' && isSensitiveValue(value)) {
-      sanitized[key] = '[REDACTED]';
-    } else if (typeof value === 'object' && value !== null) {
+    if (typeof value === "string" && isSensitiveValue(value)) {
+      sanitized[key] = "[REDACTED]";
+    } else if (typeof value === "object" && value !== null) {
       sanitized[key] = sanitizeMetadata(value);
     } else {
       sanitized[key] = value;
     }
   }
-  
+
   return sanitized;
 }
 
@@ -70,18 +72,18 @@ function sanitizeMetadata(metadata: Record<string, any>): Record<string, any> {
  */
 function isSensitiveKey(key: string): boolean {
   const sensitiveKeys = [
-    'password',
-    'token',
-    'secret',
-    'key',
-    'auth',
-    'credential',
-    'private',
-    'sensitive'
+    "password",
+    "token",
+    "secret",
+    "key",
+    "auth",
+    "credential",
+    "private",
+    "sensitive",
   ];
-  
-  return sensitiveKeys.some(sensitive => 
-    key.toLowerCase().includes(sensitive)
+
+  return sensitiveKeys.some((sensitive) =>
+    key.toLowerCase().includes(sensitive),
   );
 }
 
@@ -99,10 +101,10 @@ function isSensitiveValue(value: string): boolean {
     /private/i,
     /sensitive/i,
     /bearer\s+/i,
-    /basic\s+/i
+    /basic\s+/i,
   ];
-  
-  return sensitivePatterns.some(pattern => pattern.test(value));
+
+  return sensitivePatterns.some((pattern) => pattern.test(value));
 }
 
 /**
@@ -111,7 +113,7 @@ function isSensitiveValue(value: string): boolean {
 export function createErrorReport(
   error: Error,
   context: ErrorContext,
-  userReport?: string
+  userReport?: string,
 ): ErrorReport {
   return {
     id: generateReportId(),
@@ -122,7 +124,7 @@ export function createErrorReport(
     url: context.url,
     userId: context.userId,
     sessionId: context.sessionId,
-    userReport
+    userReport,
   };
 }
 
@@ -145,10 +147,10 @@ export function serializeErrorReport(report: ErrorReport): string {
       id: report.id,
       error: {
         name: report.error.name,
-        message: report.error.message
+        message: report.error.message,
       },
       timestamp: report.timestamp,
-      url: report.url
+      url: report.url,
     });
   }
 }
@@ -160,7 +162,7 @@ export function deserializeErrorReport(serialized: string): ErrorReport | null {
   try {
     return JSON.parse(serialized) as ErrorReport;
   } catch (error) {
-    console.warn('Failed to deserialize error report:', error);
+    console.warn("Failed to deserialize error report:", error);
     return null;
   }
 }

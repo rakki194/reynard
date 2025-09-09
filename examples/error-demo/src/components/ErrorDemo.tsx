@@ -4,9 +4,7 @@
  */
 
 import { Component, createSignal, Show } from "solid-js";
-import { 
-  ErrorBoundary
-} from "reynard-error-boundaries";
+import { ErrorBoundary } from "reynard-error-boundaries";
 
 // Icon props interface
 interface IconProps {
@@ -38,7 +36,7 @@ const NetworkErrorComponent: Component = () => {
   const simulateNetworkError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/network");
       if (response.ok) {
@@ -62,18 +60,24 @@ const NetworkErrorComponent: Component = () => {
         Network Error Simulation
       </h3>
       <p>Simulates network connectivity issues and API failures.</p>
-      
-      <button 
-        class="btn btn-primary" 
+
+      <button
+        class="btn btn-primary"
         onClick={simulateNetworkError}
         disabled={loading()}
       >
         {loading() ? "Testing..." : "Simulate Network Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -88,7 +92,7 @@ const TimeoutErrorComponent: Component = () => {
   const simulateTimeoutError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/timeout");
       if (response.ok) {
@@ -112,18 +116,24 @@ const TimeoutErrorComponent: Component = () => {
         Timeout Error Simulation
       </h3>
       <p>Simulates request timeouts and slow server responses.</p>
-      
-      <button 
-        class="btn btn-warning" 
+
+      <button
+        class="btn btn-warning"
         onClick={simulateTimeoutError}
         disabled={loading()}
       >
         {loading() ? "Waiting..." : "Simulate Timeout"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <AlertTriangle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <AlertTriangle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -138,7 +148,7 @@ const ValidationErrorComponent: Component = () => {
   const simulateValidationError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/validation");
       if (response.ok) {
@@ -162,18 +172,24 @@ const ValidationErrorComponent: Component = () => {
         Validation Error Simulation
       </h3>
       <p>Simulates data validation failures and input errors.</p>
-      
-      <button 
-        class="btn btn-info" 
+
+      <button
+        class="btn btn-info"
         onClick={simulateValidationError}
         disabled={loading()}
       >
         {loading() ? "Validating..." : "Simulate Validation Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <AlertTriangle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <AlertTriangle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -188,7 +204,7 @@ const AuthErrorComponent: Component = () => {
   const simulateAuthError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/authentication");
       if (response.ok) {
@@ -212,18 +228,24 @@ const AuthErrorComponent: Component = () => {
         Authentication Error Simulation
       </h3>
       <p>Simulates authentication failures and session issues.</p>
-      
-      <button 
-        class="btn btn-danger" 
+
+      <button
+        class="btn btn-danger"
         onClick={simulateAuthError}
         disabled={loading()}
       >
         {loading() ? "Authenticating..." : "Simulate Auth Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -238,7 +260,7 @@ const PermissionErrorComponent: Component = () => {
   const simulatePermissionError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/permission");
       if (response.ok) {
@@ -262,18 +284,24 @@ const PermissionErrorComponent: Component = () => {
         Permission Error Simulation
       </h3>
       <p>Simulates access control violations and permission denials.</p>
-      
-      <button 
-        class="btn btn-danger" 
+
+      <button
+        class="btn btn-danger"
         onClick={simulatePermissionError}
         disabled={loading()}
       >
         {loading() ? "Checking..." : "Simulate Permission Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -288,7 +316,7 @@ const ResourceErrorComponent: Component = () => {
   const simulateResourceError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/resource");
       if (response.ok) {
@@ -312,18 +340,24 @@ const ResourceErrorComponent: Component = () => {
         Resource Error Simulation
       </h3>
       <p>Simulates missing resources and data not found errors.</p>
-      
-      <button 
-        class="btn btn-warning" 
+
+      <button
+        class="btn btn-warning"
         onClick={simulateResourceError}
         disabled={loading()}
       >
         {loading() ? "Searching..." : "Simulate Resource Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <AlertTriangle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-warning"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <AlertTriangle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -338,7 +372,7 @@ const CriticalErrorComponent: Component = () => {
   const simulateCriticalError = async () => {
     setLoading(true);
     setResult("");
-    
+
     try {
       const response = await fetch("/api/errors/critical");
       if (response.ok) {
@@ -362,18 +396,24 @@ const CriticalErrorComponent: Component = () => {
         Critical Error Simulation
       </h3>
       <p>Simulates critical system failures and unexpected errors.</p>
-      
-      <button 
-        class="btn btn-danger" 
+
+      <button
+        class="btn btn-danger"
         onClick={simulateCriticalError}
         disabled={loading()}
       >
         {loading() ? "Testing..." : "Simulate Critical Error"}
       </button>
-      
+
       <Show when={result()}>
-        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
-          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
+        <div
+          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
+        >
+          {result().startsWith("✅") ? (
+            <CheckmarkCircle size={16} />
+          ) : (
+            <XCircle size={16} />
+          )}
           <span>{result()}</span>
         </div>
       </Show>
@@ -391,23 +431,26 @@ const RenderingErrorComponent: Component = () => {
         Rendering Error Simulation
       </h3>
       <p>Simulates component rendering failures and React errors.</p>
-      
-      <button 
-        class="btn btn-danger" 
-        onClick={() => setShouldError(true)}
-      >
+
+      <button class="btn btn-danger" onClick={() => setShouldError(true)}>
         Trigger Rendering Error
       </button>
-      
+
       <div class="status-message status-info">
         <Info size={16} />
-        <span>This will trigger a component rendering error that will be caught by the error boundary.</span>
+        <span>
+          This will trigger a component rendering error that will be caught by
+          the error boundary.
+        </span>
       </div>
-      
+
       {/* This will throw an error when shouldError is true - now properly within JSX */}
-      {shouldError() && (() => {
-        throw new Error("Simulated rendering error - component failed to render");
-      })()}
+      {shouldError() &&
+        (() => {
+          throw new Error(
+            "Simulated rendering error - component failed to render",
+          );
+        })()}
     </div>
   );
 };
@@ -419,7 +462,10 @@ const ErrorDemo: Component = () => {
         <Bug size={32} />
         <div>
           <h2>Error Boundary Demonstrations</h2>
-          <p>Test various error scenarios and see how the error boundary system handles them</p>
+          <p>
+            Test various error scenarios and see how the error boundary system
+            handles them
+          </p>
         </div>
       </div>
 

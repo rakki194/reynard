@@ -1,1 +1,1 @@
-export { UnionFindGame } from './UnionFindGame';
+export { UnionFindGame } from "./UnionFindGame";

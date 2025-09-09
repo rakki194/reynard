@@ -6,7 +6,7 @@
  * @module algorithms/performance/framerate
  */
 
-import type { FrameRateMetrics } from './types';
+import type { FrameRateMetrics } from "./types";
 
 /**
  * Frame rate monitor
@@ -64,7 +64,10 @@ export class FrameRateMonitor {
 
   getMetrics(): FrameRateMetrics {
     const averageFrameTime =
-      this.frameTimes.length > 0 ? this.frameTimes.reduce((sum, time) => sum + time, 0) / this.frameTimes.length : 0;
+      this.frameTimes.length > 0
+        ? this.frameTimes.reduce((sum, time) => sum + time, 0) /
+          this.frameTimes.length
+        : 0;
 
     const fps = averageFrameTime > 0 ? 1000 / averageFrameTime : 0;
 

@@ -4,7 +4,11 @@
  */
 
 import { Component } from "solid-js";
-import { StatisticalChart, type StatisticalData, type QualityData } from "reynard-charts";
+import {
+  StatisticalChart,
+  type StatisticalData,
+  type QualityData,
+} from "reynard-charts";
 
 interface ChartsStatisticalSectionProps {
   statisticalData: StatisticalData;
@@ -12,7 +16,9 @@ interface ChartsStatisticalSectionProps {
   selectedTheme: string;
 }
 
-export const ChartsStatisticalSection: Component<ChartsStatisticalSectionProps> = (props) => {
+export const ChartsStatisticalSection: Component<
+  ChartsStatisticalSectionProps
+> = (props) => {
   return (
     <div class="statistical-section">
       <h2>Statistical Analysis</h2>

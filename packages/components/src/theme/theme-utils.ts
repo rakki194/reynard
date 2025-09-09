@@ -14,14 +14,26 @@ export interface ThemeColor {
  * Get color palette for a specific theme
  */
 export const getThemeColors = (themeName: string): ThemeColor[] => {
-  const themeConfig = getAvailableThemes().find(t => t.name === themeName);
+  const themeConfig = getAvailableThemes().find((t) => t.name === themeName);
   if (!themeConfig) return [];
-  
+
   return [
-    { name: "Primary", value: themeConfig.colors.primary, var: "--color-primary" },
+    {
+      name: "Primary",
+      value: themeConfig.colors.primary,
+      var: "--color-primary",
+    },
     { name: "Accent", value: themeConfig.colors.accent, var: "--color-accent" },
-    { name: "Background", value: themeConfig.colors.background, var: "--color-background" },
-    { name: "Surface", value: themeConfig.colors.surface, var: "--color-surface" },
+    {
+      name: "Background",
+      value: themeConfig.colors.background,
+      var: "--color-background",
+    },
+    {
+      name: "Surface",
+      value: themeConfig.colors.surface,
+      var: "--color-surface",
+    },
     { name: "Text", value: themeConfig.colors.text, var: "--color-text" },
     { name: "Border", value: themeConfig.colors.border, var: "--color-border" },
   ];
@@ -30,6 +42,9 @@ export const getThemeColors = (themeName: string): ThemeColor[] => {
 /**
  * Get current theme name (preview or active)
  */
-export const getCurrentTheme = (previewTheme: string | null, activeTheme: string): string => {
+export const getCurrentTheme = (
+  previewTheme: string | null,
+  activeTheme: string,
+): string => {
   return previewTheme || activeTheme;
 };

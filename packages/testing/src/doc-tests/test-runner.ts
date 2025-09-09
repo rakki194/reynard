@@ -1,14 +1,14 @@
 /**
  * Documentation Test Runner
- * 
+ *
  * Executes tests from documentation examples
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, cleanup } from '@solidjs/testing-library';
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { extractCodeExamples } from './code-parser';
-import { createTestableCode } from './test-generator';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { render, screen, cleanup } from "@solidjs/testing-library";
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import { extractCodeExamples } from "./code-parser";
+import { createTestableCode } from "./test-generator";
 
 export interface DocTestConfig {
   /** Path to the documentation file */
@@ -18,45 +18,45 @@ export interface DocTestConfig {
   /** Additional setup code to run before each test */
   setup?: string;
   /** Custom test environment setup */
-  environment?: 'jsdom' | 'node';
+  environment?: "jsdom" | "node";
 }
 
 /**
  * Run documentation tests for a package
  */
 export function runDocTests(config: DocTestConfig) {
-  const { docPath, packageName, setup = '' } = config;
-  
+  const { docPath, packageName, setup = "" } = config;
+
   describe(`Documentation Examples - ${packageName}`, () => {
     const examples = extractCodeExamples(docPath);
-    
+
     beforeEach(() => {
       cleanup();
     });
-    
+
     examples.forEach((example, index) => {
       const testableCode = createTestableCode(example, packageName);
-      
+
       if (testableCode) {
         it(`Example ${index + 1}: ${example.description}`, async () => {
           try {
             // Create a dynamic test function
             const testFunction = new Function(
-              'expect',
-              'render',
-              'screen',
-              'createSignal',
-              'createEffect',
-              'onCleanup',
-              'vi',
-              'describe',
-              'it',
-              'beforeEach',
-              'afterEach',
+              "expect",
+              "render",
+              "screen",
+              "createSignal",
+              "createEffect",
+              "onCleanup",
+              "vi",
+              "describe",
+              "it",
+              "beforeEach",
+              "afterEach",
               setup,
-              testableCode
+              testableCode,
             );
-            
+
             // Execute the test
             await testFunction(
               expect,
@@ -69,7 +69,7 @@ export function runDocTests(config: DocTestConfig) {
               describe,
               it,
               beforeEach,
-              afterEach
+              afterEach,
             );
           } catch (error) {
             // Log the error but don't fail the test
@@ -87,8 +87,8 @@ export function runDocTests(config: DocTestConfig) {
  * Create a documentation test file for a package
  */
 export function createDocTestFile(config: DocTestConfig): string {
-  const { docPath, packageName, setup = '' } = config;
-  
+  const { docPath, packageName, setup = "" } = config;
+
   return `
 /**
  * Auto-generated documentation tests for ${packageName}

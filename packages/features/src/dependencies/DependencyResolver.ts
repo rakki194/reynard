@@ -1,4 +1,4 @@
-import type { FeatureDefinition } from '../core/types';
+import type { FeatureDefinition } from "../core/types";
 
 /**
  * Dependency resolution result
@@ -74,7 +74,7 @@ export class DependencyResolver {
 
     for (const dependency of feature.dependencies) {
       const unavailableServices = dependency.services.filter(
-        service => !this.isServiceAvailable(service)
+        (service) => !this.isServiceAvailable(service),
       );
 
       if (unavailableServices.length > 0) {
@@ -89,7 +89,7 @@ export class DependencyResolver {
     return {
       satisfied: missingRequired.length === 0,
       missingRequired,
-      missingOptional
+      missingOptional,
     };
   }
 
@@ -98,25 +98,29 @@ export class DependencyResolver {
    */
   public resolveDependencies(): DependencyResolutionResult {
     const resolvable: FeatureDefinition[] = [];
-    const unresolvable: { feature: FeatureDefinition; missingDependencies: string[] }[] = [];
+    const unresolvable: {
+      feature: FeatureDefinition;
+      missingDependencies: string[];
+    }[] = [];
     const dependencyGraph = new Map<string, string[]>();
 
     // Build dependency graph and check resolvability
     for (const feature of this.features.values()) {
-      const { satisfied, missingRequired } = this.areDependenciesSatisfied(feature);
-      
+      const { satisfied, missingRequired } =
+        this.areDependenciesSatisfied(feature);
+
       if (satisfied) {
         resolvable.push(feature);
       } else {
         unresolvable.push({
           feature,
-          missingDependencies: missingRequired
+          missingDependencies: missingRequired,
         });
       }
 
       // Build dependency graph
       const dependencies: string[] = [];
-      feature.dependencies.forEach(dep => {
+      feature.dependencies.forEach((dep) => {
         if (dep.required !== false) {
           dependencies.push(...dep.services);
         }
@@ -131,21 +135,23 @@ export class DependencyResolver {
       resolvable,
       unresolvable,
       dependencyGraph,
-      resolutionOrder
+      resolutionOrder,
     };
   }
 
   /**
    * Get features that depend on a specific service
    */
-  public getFeaturesDependentOnService(serviceName: string): FeatureDefinition[] {
+  public getFeaturesDependentOnService(
+    serviceName: string,
+  ): FeatureDefinition[] {
     const dependentFeatures: FeatureDefinition[] = [];
 
     for (const feature of this.features.values()) {
-      const hasDependency = feature.dependencies.some(dep => 
-        dep.services.includes(serviceName)
+      const hasDependency = feature.dependencies.some((dep) =>
+        dep.services.includes(serviceName),
       );
-      
+
       if (hasDependency) {
         dependentFeatures.push(feature);
       }
@@ -161,10 +167,10 @@ export class DependencyResolver {
     const criticalServices = new Set<string>();
 
     for (const feature of this.features.values()) {
-      if (feature.priority === 'critical') {
-        feature.dependencies.forEach(dep => {
+      if (feature.priority === "critical") {
+        feature.dependencies.forEach((dep) => {
           if (dep.required !== false) {
-            dep.services.forEach(service => criticalServices.add(service));
+            dep.services.forEach((service) => criticalServices.add(service));
           }
         });
       }
@@ -187,9 +193,9 @@ export class DependencyResolver {
       const feature = this.features.get(id);
       if (!feature) return;
 
-      feature.dependencies.forEach(dep => {
+      feature.dependencies.forEach((dep) => {
         if (dep.required !== false) {
-          dep.services.forEach(service => {
+          dep.services.forEach((service) => {
             if (!chain.includes(service)) {
               chain.push(service);
             }
@@ -234,10 +240,10 @@ export class DependencyResolver {
           if (dependency.required !== false) {
             for (const service of dependency.services) {
               // Check if this service is provided by another feature
-              const providingFeature = Array.from(this.features.values()).find(f => 
-                f.tags?.includes(`provides:${service}`)
+              const providingFeature = Array.from(this.features.values()).find(
+                (f) => f.tags?.includes(`provides:${service}`),
               );
-              
+
               if (providingFeature) {
                 if (dfs(providingFeature.id, [...path, featureId])) {
                   return true;
@@ -281,14 +287,14 @@ export class DependencyResolver {
       }
 
       temp.add(node);
-      
+
       const dependencies = graph.get(node) || [];
       for (const dep of dependencies) {
         // Find features that provide this service
-        const providingFeatures = Array.from(this.features.values()).filter(f => 
-          f.tags?.includes(`provides:${dep}`)
+        const providingFeatures = Array.from(this.features.values()).filter(
+          (f) => f.tags?.includes(`provides:${dep}`),
         );
-        
+
         for (const feature of providingFeatures) {
           visit(feature.id);
         }
@@ -322,7 +328,7 @@ export class DependencyResolver {
   } {
     const features = Array.from(this.features.values());
     const totalFeatures = features.length;
-    
+
     let totalDependencies = 0;
     let mostDependentFeature: FeatureDefinition | null = null;
     let leastDependentFeature: FeatureDefinition | null = null;
@@ -333,7 +339,7 @@ export class DependencyResolver {
     const requiredServices = new Set<string>();
     const optionalServices = new Set<string>();
 
-    features.forEach(feature => {
+    features.forEach((feature) => {
       const dependencyCount = feature.dependencies.length;
       totalDependencies += dependencyCount;
 
@@ -347,8 +353,8 @@ export class DependencyResolver {
         leastDependentFeature = feature;
       }
 
-      feature.dependencies.forEach(dep => {
-        dep.services.forEach(service => {
+      feature.dependencies.forEach((dep) => {
+        dep.services.forEach((service) => {
           allServices.add(service);
           if (dep.required !== false) {
             requiredServices.add(service);
@@ -362,11 +368,12 @@ export class DependencyResolver {
     return {
       totalFeatures,
       totalDependencies,
-      averageDependenciesPerFeature: totalFeatures > 0 ? totalDependencies / totalFeatures : 0,
+      averageDependenciesPerFeature:
+        totalFeatures > 0 ? totalDependencies / totalFeatures : 0,
       mostDependentFeature,
       leastDependentFeature,
       criticalServices: this.getCriticalServices(),
-      optionalServices: Array.from(optionalServices)
+      optionalServices: Array.from(optionalServices),
     };
   }
 }

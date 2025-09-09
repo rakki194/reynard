@@ -5,7 +5,10 @@
  */
 
 import { Component } from "solid-js";
-import { createOKLCHShowcaseLogic, type OKLCHShowcaseState } from "./OKLCHShowcaseLogic";
+import {
+  createOKLCHShowcaseLogic,
+  type OKLCHShowcaseState,
+} from "./OKLCHShowcaseLogic";
 import { useAnimation } from "./useAnimation";
 import { useOKLCHState } from "./useOKLCHState";
 import { OKLCHShowcaseRenderer } from "./OKLCHShowcaseRenderer";
@@ -13,7 +16,7 @@ import { OKLCHShowcaseRenderer } from "./OKLCHShowcaseRenderer";
 export const OKLCHShowcase: Component = () => {
   // State management
   const state = useOKLCHState();
-  
+
   // Animation state
   const animationFrame = useAnimation(state.animationSpeed);
 
@@ -25,7 +28,7 @@ export const OKLCHShowcase: Component = () => {
     animationFrame,
     animationSpeed: state.animationSpeed,
     customTag: state.customTag,
-    tagIntensity: state.tagIntensity
+    tagIntensity: state.tagIntensity,
   };
 
   // Get computed values from logic module

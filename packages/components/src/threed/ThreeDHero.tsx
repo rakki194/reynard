@@ -9,7 +9,11 @@ import { PointCloudVisualization } from "./PointCloudVisualization";
 import type { Scene, PerspectiveCamera, WebGLRenderer } from "three";
 
 interface ThreeDHeroProps {
-  onSceneReady: (scene: Scene | null, camera: PerspectiveCamera | null, renderer: WebGLRenderer | null) => void;
+  onSceneReady: (
+    scene: Scene | null,
+    camera: PerspectiveCamera | null,
+    renderer: WebGLRenderer | null,
+  ) => void;
 }
 
 export const ThreeDHero: Component<ThreeDHeroProps> = (props) => {
@@ -24,12 +28,11 @@ export const ThreeDHero: Component<ThreeDHeroProps> = (props) => {
   return (
     <div class="showcase-hero">
       <div class="hero-content">
-        <h1 class="hero-title">
-          3D Visualization Showcase
-        </h1>
+        <h1 class="hero-title">3D Visualization Showcase</h1>
         <p class="hero-subtitle">
-          Experience the power of immersive 3D data visualization with Reynard's Three.js integration.
-          Featuring interactive point clouds, cluster analysis, and OKLCH color management.
+          Experience the power of immersive 3D data visualization with Reynard's
+          Three.js integration. Featuring interactive point clouds, cluster
+          analysis, and OKLCH color management.
         </p>
         <div class="hero-stats">
           <div class="stat">

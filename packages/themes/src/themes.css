@@ -43,7 +43,8 @@
   /* Focus Outline Tokens */
   --focus-ring-color: var(--accent);
   --focus-ring-width: 2px;
-  --focus-ring-offset: 0 0 0 2px hsl(0deg 0% 100%), 0 0 0 4px hsl(270deg 60% 60% / 0.5);
+  --focus-ring-offset:
+    0 0 0 2px hsl(0deg 0% 100%), 0 0 0 4px hsl(270deg 60% 60% / 0.5);
 
   /* Opacity Ramp */
   --opacity-0: 0;
@@ -63,7 +64,9 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
   --font-family-secondary: Georgia, "Times New Roman", Times, serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-family-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
 
   /* Spacing */
   --spacing-xs: 0.25rem;

@@ -1,6 +1,6 @@
 // Bundle system for grouped component operations
 
-import { Component, ComponentType } from './types';
+import { Component, ComponentType } from "./types";
 
 /**
  * A bundle represents a collection of components that can be added or removed together.
@@ -26,7 +26,7 @@ export interface BundleInfo {
 export function createBundleInfo(
   id: number,
   name: string,
-  componentTypes: ComponentType<Component>[]
+  componentTypes: ComponentType<Component>[],
 ): BundleInfo {
   return { id, name, componentTypes };
 }
@@ -42,7 +42,10 @@ export class BundleRegistry {
   /**
    * Registers a new bundle type.
    */
-  register(name: string, componentTypes: ComponentType<Component>[]): BundleInfo {
+  register(
+    name: string,
+    componentTypes: ComponentType<Component>[],
+  ): BundleInfo {
     if (this.bundles.has(name)) {
       throw new Error(`Bundle type '${name}' is already registered`);
     }
@@ -51,7 +54,7 @@ export class BundleRegistry {
     const bundleInfo: BundleInfo = {
       id,
       name,
-      componentTypes
+      componentTypes,
     };
 
     this.bundles.set(name, bundleInfo);
@@ -94,14 +97,16 @@ export class BundleRegistry {
 export function createBundle(components: Component[]): Bundle {
   return {
     __bundle: true,
-    components
+    components,
   };
 }
 
 /**
  * Helper function to create a bundle from component types with default values.
  */
-export function createBundleFromTypes(componentTypes: ComponentType<Component>[]): Bundle {
-  const components = componentTypes.map(ct => ct.create());
+export function createBundleFromTypes(
+  componentTypes: ComponentType<Component>[],
+): Bundle {
+  const components = componentTypes.map((ct) => ct.create());
   return createBundle(components);
 }

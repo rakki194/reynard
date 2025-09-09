@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect } from "vitest";
 
 /**
  * Custom assertion utilities for testing
@@ -16,7 +16,7 @@ export function expectComponentToRender(component: () => any) {
  */
 export function expectComponentToThrow(
   component: () => any,
-  expectedError?: string | RegExp | Error
+  expectedError?: string | RegExp | Error,
 ) {
   if (expectedError) {
     expect(() => component()).toThrow(expectedError);
@@ -30,7 +30,7 @@ export function expectComponentToThrow(
  */
 export async function expectPromiseToResolve<T>(
   promise: Promise<T>,
-  expectedValue?: T
+  expectedValue?: T,
 ): Promise<T> {
   const result = await expect(promise).resolves;
   if (expectedValue !== undefined) {
@@ -44,7 +44,7 @@ export async function expectPromiseToResolve<T>(
  */
 export async function expectPromiseToReject(
   promise: Promise<any>,
-  expectedError?: string | RegExp | Error
+  expectedError?: string | RegExp | Error,
 ): Promise<any> {
   if (expectedError) {
     return expect(promise).rejects.toThrow(expectedError);
@@ -90,7 +90,7 @@ export function expectFunctionToBeCalled(mockFn: any) {
 export function expectValueToBeInRange(
   value: number,
   min: number,
-  max: number
+  max: number,
 ) {
   expect(value).toBeGreaterThanOrEqual(min);
   expect(value).toBeLessThanOrEqual(max);
@@ -102,7 +102,7 @@ export function expectValueToBeInRange(
 export function expectValueToBeApproximately(
   actual: number,
   expected: number,
-  precision: number = 2
+  precision: number = 2,
 ) {
   expect(actual).toBeCloseTo(expected, precision);
 }
@@ -111,7 +111,7 @@ export function expectValueToBeApproximately(
  * Assert that an array contains specific items
  */
 export function expectArrayToContain<T>(array: T[], ...items: T[]) {
-  items.forEach(item => {
+  items.forEach((item) => {
     expect(array).toContain(item);
   });
 }
@@ -130,7 +130,7 @@ export function expectObjectToHaveProperties(
   obj: any,
   ...properties: string[]
 ) {
-  properties.forEach(prop => {
+  properties.forEach((prop) => {
     expect(obj).toHaveProperty(prop);
   });
 }
@@ -138,7 +138,10 @@ export function expectObjectToHaveProperties(
 /**
  * Assert that an object has specific values
  */
-export function expectObjectToHaveValues(obj: any, values: Record<string, any>) {
+export function expectObjectToHaveValues(
+  obj: any,
+  values: Record<string, any>,
+) {
   Object.entries(values).forEach(([key, value]) => {
     expect(obj).toHaveProperty(key, value);
   });
@@ -163,7 +166,7 @@ export function expectStringToContain(str: string, substring: string) {
  */
 export function expectElementToHaveAttributes(
   element: Element,
-  attributes: Record<string, string>
+  attributes: Record<string, string>,
 ) {
   Object.entries(attributes).forEach(([name, value]) => {
     expect(element).toHaveAttribute(name, value);
@@ -173,8 +176,11 @@ export function expectElementToHaveAttributes(
 /**
  * Assert that a DOM element has specific classes
  */
-export function expectElementToHaveClasses(element: Element, ...classes: string[]) {
-  classes.forEach(className => {
+export function expectElementToHaveClasses(
+  element: Element,
+  ...classes: string[]
+) {
+  classes.forEach((className) => {
     expect(element).toHaveClass(className);
   });
 }
@@ -301,13 +307,19 @@ export function expectElementToHaveRole(element: Element, role: string) {
 /**
  * Assert that a DOM element has a specific accessible name
  */
-export function expectElementToHaveAccessibleName(element: Element, name: string) {
+export function expectElementToHaveAccessibleName(
+  element: Element,
+  name: string,
+) {
   expect(element).toHaveAccessibleName(name);
 }
 
 /**
  * Assert that a DOM element has a specific accessible description
  */
-export function expectElementToHaveAccessibleDescription(element: Element, description: string) {
+export function expectElementToHaveAccessibleDescription(
+  element: Element,
+  description: string,
+) {
   expect(element).toHaveAccessibleDescription(description);
 }

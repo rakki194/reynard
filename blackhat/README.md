@@ -1,13 +1,13 @@
 # 🐺 BLACKHAT EXPLOIT TESTING SUITE
 
-*snarls with predatory glee* Welcome to the REAL hunt, pup! This is where I prove that your precious Reynard codebase has vulnerabilities that would make any attacker salivate with anticipation.
+_snarls with predatory glee_ Welcome to the REAL hunt, pup! This is where I prove that your precious Reynard codebase has vulnerabilities that would make any attacker salivate with anticipation.
 
 ## ⚠️ WARNING: DESTRUCTIVE TESTING
 
-*bares fangs with savage satisfaction* These exploits are designed to ACTUALLY BREAK your system. They will:
+_bares fangs with savage satisfaction_ These exploits are designed to ACTUALLY BREAK your system. They will:
 
 - **Crash services** with malformed input
-- **Bypass security controls** with encoded payloads  
+- **Bypass security controls** with encoded payloads
 - **Extract sensitive information** through error messages
 - **Execute unauthorized operations** through injection attacks
 - **Cause denial of service** through resource exhaustion
@@ -65,7 +65,7 @@
 
 ## 🚀 USAGE
 
-*packs hunting formation* To run these exploits:
+_packs hunting formation_ To run these exploits:
 
 ```bash
 # Install dependencies
@@ -83,7 +83,7 @@ python -m blackhat.run_all_exploits --verbose --destructive
 
 ## 🎭 EXPLOIT PHILOSOPHY
 
-*alpha wolf stance* Each exploit is designed to:
+_alpha wolf stance_ Each exploit is designed to:
 
 1. **Demonstrate the vulnerability** with working code
 2. **Provide proof of concept** that can be weaponized
@@ -92,7 +92,7 @@ python -m blackhat.run_all_exploits --verbose --destructive
 
 ## ⚖️ LEGAL DISCLAIMER
 
-*howls with purpose* These exploits are for:
+_howls with purpose_ These exploits are for:
 
 - **Educational purposes** only
 - **Authorized testing** of your own systems
@@ -112,4 +112,4 @@ After running these exploits, you'll understand exactly where your security need
 
 ---
 
-*snarls with predatory glee* Ready to see your codebase torn apart? Let's hunt! 🐺
+_snarls with predatory glee_ Ready to see your codebase torn apart? Let's hunt! 🐺

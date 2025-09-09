@@ -56,11 +56,11 @@ data: {"type":"step","step":2,"text":" a time"}
 data: {"type":"complete","text":"Once upon a time","generation_time":0.02,"model_used":"llada"}
 ```
 
-Events are formatted as JSON frames in `data:` lines.  
+Events are formatted as JSON frames in `data:` lines.
 
-- **Status frames** indicate startup state.  
-- **Step frames** carry incremental text.  
-- **Complete frames** contain the final text, `model_used`, and `generation_time`.  
+- **Status frames** indicate startup state.
+- **Step frames** carry incremental text.
+- **Complete frames** contain the final text, `model_used`, and `generation_time`.
 - **Error frames** contain `error_type`, `message`, and `retryable`.
 
 ## Error Handling and Redaction

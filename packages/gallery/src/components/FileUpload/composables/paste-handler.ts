@@ -3,7 +3,7 @@
  * Handles paste events for file uploads
  */
 
-import { onCleanup } from 'solid-js';
+import { onCleanup } from "solid-js";
 
 export interface PasteHandler {
   setupEventListeners: () => void;
@@ -14,7 +14,7 @@ export interface PasteHandler {
  * Creates paste event handler for file upload
  */
 export function createPasteHandler(
-  onFilesDropped: (files: File[]) => void
+  onFilesDropped: (files: File[]) => void,
 ): PasteHandler {
   /**
    * Handle paste events for file uploads
@@ -31,31 +31,33 @@ export function createPasteHandler(
    * Set up global event listeners
    */
   const setupEventListeners = () => {
-    document.addEventListener('paste', handlePaste);
+    document.addEventListener("paste", handlePaste);
   };
 
   /**
    * Clean up event listeners
    */
   const cleanupEventListeners = () => {
-    document.removeEventListener('paste', handlePaste);
+    document.removeEventListener("paste", handlePaste);
   };
 
   return {
     setupEventListeners,
-    cleanupEventListeners
+    cleanupEventListeners,
   };
 }
 
 /**
  * Composable for managing paste event listeners
  */
-export function createPasteHandlerWithCleanup(onFilesDropped: (files: File[]) => void) {
+export function createPasteHandlerWithCleanup(
+  onFilesDropped: (files: File[]) => void,
+) {
   const pasteHandler = createPasteHandler(onFilesDropped);
-  
+
   // Set up event listeners on mount
   pasteHandler.setupEventListeners();
   onCleanup(pasteHandler.cleanupEventListeners);
-  
+
   return pasteHandler;
 }

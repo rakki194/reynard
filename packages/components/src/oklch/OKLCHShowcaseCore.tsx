@@ -4,12 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import {
-  ColorControls,
-  ColorPreview,
-  ColorWheel,
-  GradientDemo
-} from "./";
+import { ColorControls, ColorPreview, ColorWheel, GradientDemo } from "./";
 import type { OKLCHState } from "./useOKLCHState";
 
 interface ColorVariations {

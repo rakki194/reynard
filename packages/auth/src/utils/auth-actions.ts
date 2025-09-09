@@ -13,7 +13,8 @@ import type {
   PasswordChangeData,
   AuthTokens,
 } from "../types";
-import { TokenManager, retryWithBackoff } from "./token-utils";
+import { TokenManager } from "./token-utils";
+import { retryWithBackoff } from "./password-utils";
 import { createAuthFetch, parseApiResponse } from "./api-utils";
 
 export interface AuthActions {
@@ -33,7 +34,7 @@ export const createAuthActions = (
   updateAuthState: (updates: Partial<AuthState>) => void,
   callbacks: AuthCallbacks,
   setupTokenRefresh: () => void,
-  authFetch: ReturnType<typeof createAuthFetch>
+  authFetch: ReturnType<typeof createAuthFetch>,
 ): AuthActions => {
   const login = async (credentials: LoginCredentials): Promise<void> => {
     updateAuthState({ isLoading: true, error: null });

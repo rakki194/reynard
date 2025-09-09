@@ -1,28 +1,51 @@
 /**
  * Box Move Operations
- * 
+ *
  * Handles the actual movement logic and constraints
  */
 
-import type { BoundingBox, ImageInfo } from '../types';
-import type { MoveState, MoveConstraints } from './useBoxMove.core';
+import type { BoundingBox, ImageInfo } from "../types";
+import type { MoveState, MoveConstraints } from "./useBoxMove.core";
 
 export interface MoveOperations {
-  startMove: (boxId: string, box: BoundingBox, startX: number, startY: number) => void;
-  updateMove: (currentX: number, currentY: number, imageInfo?: ImageInfo) => BoundingBox | null;
+  startMove: (
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
+  ) => void;
+  updateMove: (
+    currentX: number,
+    currentY: number,
+    imageInfo?: ImageInfo,
+  ) => BoundingBox | null;
   endMove: () => BoundingBox | null;
-  canMove: (box: BoundingBox, deltaX: number, deltaY: number, imageInfo?: ImageInfo) => boolean;
+  canMove: (
+    box: BoundingBox,
+    deltaX: number,
+    deltaY: number,
+    imageInfo?: ImageInfo,
+  ) => boolean;
 }
 
 export function createMoveOperations(
   state: () => MoveState,
-  constraints: MoveConstraints
+  constraints: MoveConstraints,
 ): MoveOperations {
-  const startMove = (_boxId: string, _box: BoundingBox, _startX: number, _startY: number) => {
+  const startMove = (
+    _boxId: string,
+    _box: BoundingBox,
+    _startX: number,
+    _startY: number,
+  ) => {
     // Implementation would be here - simplified for brevity
   };
 
-  const updateMove = (currentX: number, currentY: number, imageInfo?: ImageInfo): BoundingBox | null => {
+  const updateMove = (
+    currentX: number,
+    currentY: number,
+    imageInfo?: ImageInfo,
+  ): BoundingBox | null => {
     const currentState = state();
     if (!currentState.isMoving || !currentState.originalBox) return null;
 
@@ -37,8 +60,14 @@ export function createMoveOperations(
 
     // Apply constraints
     if (constraints.enableBoundaryCheck && imageInfo) {
-      newBox.x = Math.max(0, Math.min(newBox.x, imageInfo.width - newBox.width));
-      newBox.y = Math.max(0, Math.min(newBox.y, imageInfo.height - newBox.height));
+      newBox.x = Math.max(
+        0,
+        Math.min(newBox.x, imageInfo.width - newBox.width),
+      );
+      newBox.y = Math.max(
+        0,
+        Math.min(newBox.y, imageInfo.height - newBox.height),
+      );
     }
 
     return newBox;
@@ -51,7 +80,12 @@ export function createMoveOperations(
     return updateMove(currentState.currentX, currentState.currentY);
   };
 
-  const canMove = (box: BoundingBox, deltaX: number, deltaY: number, imageInfo?: ImageInfo): boolean => {
+  const canMove = (
+    box: BoundingBox,
+    deltaX: number,
+    deltaY: number,
+    imageInfo?: ImageInfo,
+  ): boolean => {
     if (!constraints.enableBoundaryCheck || !imageInfo) return true;
 
     const newX = box.x + deltaX;

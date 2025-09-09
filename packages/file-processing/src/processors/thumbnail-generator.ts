@@ -7,7 +7,10 @@
 
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { getFileTypeInfo } from "../config/file-types";
-import { ThumbnailGeneratorFactory, ThumbnailGeneratorFactoryOptions } from "./ThumbnailGeneratorFactory";
+import {
+  ThumbnailGeneratorFactory,
+  ThumbnailGeneratorFactoryOptions,
+} from "./ThumbnailGeneratorFactory";
 
 export interface ThumbnailGeneratorOptions extends ThumbnailOptions {
   /** Whether to enable Web Workers for background processing */
@@ -39,7 +42,9 @@ export class ThumbnailGenerator {
       ...options,
     };
 
-    this.factory = new ThumbnailGeneratorFactory(this.options as ThumbnailGeneratorFactoryOptions);
+    this.factory = new ThumbnailGeneratorFactory(
+      this.options as ThumbnailGeneratorFactoryOptions,
+    );
   }
 
   /**
@@ -89,11 +94,6 @@ export class ThumbnailGenerator {
       };
     }
   }
-
-
-
-
-
 
   /**
    * Get file information
@@ -146,8 +146,6 @@ export class ThumbnailGenerator {
       ? filename.substring(lastDotIndex).toLowerCase()
       : "";
   }
-
-
 
   /**
    * Clean up resources

@@ -1,3 +1,3 @@
-import loader from '@monaco-editor/loader'
+import loader from "@monaco-editor/loader";
 
-export type LoaderParams = Parameters<typeof loader.config>[0]
+export type LoaderParams = Parameters<typeof loader.config>[0];

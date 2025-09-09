@@ -7,9 +7,13 @@
  * @module algorithms/aabbBatchCollision
  */
 
-import type { AABB, AABBSpatialHashConfig, CollisionResult } from './aabb-types';
-import { SpatialHash } from './aabb-spatial-hash';
-import { checkCollision } from './aabb-collision';
+import type {
+  AABB,
+  AABBSpatialHashConfig,
+  CollisionResult,
+} from "./aabb-types";
+import { SpatialHash } from "./aabb-spatial-hash";
+import { checkCollision } from "./aabb-collision";
 
 /**
  * Batch collision detection for multiple AABBs
@@ -20,10 +24,14 @@ export function batchCollisionDetection(
     maxDistance?: number;
     includeSelf?: boolean;
     spatialHash?: AABBSpatialHashConfig;
-  } = {}
+  } = {},
 ): Array<{ index1: number; index2: number; result: CollisionResult }> {
   const { maxDistance, includeSelf = false, spatialHash } = options;
-  const collisions: Array<{ index1: number; index2: number; result: CollisionResult }> = [];
+  const collisions: Array<{
+    index1: number;
+    index2: number;
+    result: CollisionResult;
+  }> = [];
 
   if (spatialHash?.enableOptimization && aabbs.length > 100) {
     return batchCollisionWithSpatialHash(aabbs, options);
@@ -33,7 +41,10 @@ export function batchCollisionDetection(
     for (let j = includeSelf ? i : i + 1; j < aabbs.length; j++) {
       const result = checkCollision(aabbs[i], aabbs[j]);
 
-      if (result.colliding && (!maxDistance || result.distance <= maxDistance)) {
+      if (
+        result.colliding &&
+        (!maxDistance || result.distance <= maxDistance)
+      ) {
         collisions.push({
           index1: i,
           index2: j,
@@ -55,10 +66,14 @@ export function batchCollisionWithSpatialHash(
     maxDistance?: number;
     includeSelf?: boolean;
     spatialHash?: AABBSpatialHashConfig;
-  }
+  },
 ): Array<{ index1: number; index2: number; result: CollisionResult }> {
   const { maxDistance, includeSelf = false, spatialHash } = options;
-  const collisions: Array<{ index1: number; index2: number; result: CollisionResult }> = [];
+  const collisions: Array<{
+    index1: number;
+    index2: number;
+    result: CollisionResult;
+  }> = [];
 
   if (!spatialHash) {
     return batchCollisionDetection(aabbs, options);
@@ -80,7 +95,10 @@ export function batchCollisionWithSpatialHash(
 
       const result = checkCollision(aabbs[i], aabbs[j]);
 
-      if (result.colliding && (!maxDistance || result.distance <= maxDistance)) {
+      if (
+        result.colliding &&
+        (!maxDistance || result.distance <= maxDistance)
+      ) {
         collisions.push({
           index1: i,
           index2: j,

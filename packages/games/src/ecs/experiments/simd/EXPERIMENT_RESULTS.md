@@ -29,13 +29,13 @@ This experiment compares SIMD-accelerated ECS operations against their non-SIMD 
 
 ### Performance Characteristics
 
-| Operation | Expected SIMD Speedup | Reason |
-|-----------|----------------------|---------|
-| Position Updates | 2-4x | Vectorizable, memory-bound |
-| Velocity Updates | 2-4x | Vectorizable, memory-bound |
-| Collision Detection | 1.5-2x | Limited by O(n²) complexity |
-| Spatial Queries | 2-3x | Vectorizable distance calculations |
-| Vector Operations | 3-5x | Pure SIMD operations |
+| Operation           | Expected SIMD Speedup | Reason                             |
+| ------------------- | --------------------- | ---------------------------------- |
+| Position Updates    | 2-4x                  | Vectorizable, memory-bound         |
+| Velocity Updates    | 2-4x                  | Vectorizable, memory-bound         |
+| Collision Detection | 1.5-2x                | Limited by O(n²) complexity        |
+| Spatial Queries     | 2-3x                  | Vectorizable distance calculations |
+| Vector Operations   | 3-5x                  | Pure SIMD operations               |
 
 ### Memory Usage
 
@@ -71,21 +71,21 @@ To get real SIMD performance:
 ### Quick Test
 
 ```typescript
-import { quickStart } from './index';
+import { quickStart } from "./index";
 await quickStart();
 ```
 
 ### Full Benchmark
 
 ```typescript
-import { fullBenchmark } from './index';
+import { fullBenchmark } from "./index";
 await fullBenchmark();
 ```
 
 ### Custom Benchmark
 
 ```typescript
-import { ECSBenchmark } from './index';
+import { ECSBenchmark } from "./index";
 
 const benchmark = new ECSBenchmark(10000);
 await benchmark.initialize();

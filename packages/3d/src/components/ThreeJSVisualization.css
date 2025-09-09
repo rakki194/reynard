@@ -39,8 +39,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .threejs-error {
@@ -93,12 +97,12 @@
   .threejs-visualization {
     border-radius: 4px;
   }
-  
+
   .threejs-loading,
   .threejs-error {
     font-size: 14px;
   }
-  
+
   .loading-spinner {
     width: 32px;
     height: 32px;
@@ -117,7 +121,7 @@
   .threejs-visualization {
     border: 2px solid #ffffff;
   }
-  
+
   .threejs-error {
     border: 2px solid #ff6b6b;
   }

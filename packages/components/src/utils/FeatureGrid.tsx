@@ -16,7 +16,10 @@ export const FeatureGrid: Component = () => {
   const [count, setCount] = createSignal(0);
 
   const handleWelcome = () => {
-    notify(`Welcome to Reynard! Current theme: ${themeContext.theme}`, "success");
+    notify(
+      `Welcome to Reynard! Current theme: ${themeContext.theme}`,
+      "success",
+    );
   };
 
   return (
@@ -59,4 +62,3 @@ export const FeatureGrid: Component = () => {
     </div>
   );
 };
-

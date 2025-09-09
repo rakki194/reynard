@@ -5,22 +5,23 @@
 
 import { Component, createSignal, createMemo } from "solid-js";
 import { useTheme } from "reynard-themes";
-import { 
+import {
   ThreeDHero,
   ThreeDControls,
   ThreeDVisualizations,
   ThreeDPerformance,
-  ThreeDTechnicalInfo
+  ThreeDTechnicalInfo,
 } from ".";
 
 export const ThreeDShowcaseSimple: Component = () => {
   const themeContext = useTheme();
-  
+
   // Interactive state
   const [selectedTheme, setSelectedTheme] = createSignal(themeContext.theme);
-  const [selectedVisualization, setSelectedVisualization] = createSignal("point-cloud");
+  const [selectedVisualization, setSelectedVisualization] =
+    createSignal("point-cloud");
   const [animationEnabled, setAnimationEnabled] = createSignal(true);
-  
+
   // Handle scene ready from hero component (for compatibility)
   const handleSceneReady = () => {
     // Simple scene ready handler - not needed for SimpleThreeDVisualization
@@ -44,7 +45,7 @@ export const ThreeDShowcaseSimple: Component = () => {
   return (
     <section class="threed-showcase">
       <ThreeDHero onSceneReady={handleSceneReady} />
-      
+
       <ThreeDControls
         selectedTheme={selectedTheme()}
         onThemeChange={setSelectedTheme}
@@ -53,17 +54,14 @@ export const ThreeDShowcaseSimple: Component = () => {
         animationEnabled={animationEnabled()}
         onAnimationToggle={setAnimationEnabled}
       />
-      
+
       <ThreeDVisualizations
         selectedVisualization={selectedVisualization()}
         theme={selectedTheme()}
       />
-      
-      <ThreeDPerformance
-        theme={selectedTheme()}
-        pointCount={pointCount()}
-      />
-      
+
+      <ThreeDPerformance theme={selectedTheme()} pointCount={pointCount()} />
+
       <ThreeDTechnicalInfo />
     </section>
   );

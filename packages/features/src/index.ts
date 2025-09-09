@@ -1,5 +1,5 @@
 // Core feature system
-export { FeatureRegistry, FeatureManager } from './core';
+export { FeatureRegistry, FeatureManager } from "./core";
 export type {
   FeatureDefinition,
   FeatureStatus,
@@ -9,8 +9,8 @@ export type {
   FeatureConfig,
   FeatureRegistry as IFeatureRegistry,
   FeatureManager as IFeatureManager,
-  FeatureContext
-} from './core';
+  FeatureContext,
+} from "./core";
 
 // Registry and hooks
 export {
@@ -25,13 +25,13 @@ export {
   useCriticalFeatures,
   useFeaturesByService,
   useFeatureAware,
-  useFeatureConfiguration
-} from './registry';
-export type { FeatureProviderProps } from './registry';
+  useFeatureConfiguration,
+} from "./registry";
+export type { FeatureProviderProps } from "./registry";
 
 // Dependency management
-export { DependencyResolver } from './dependencies';
-export type { DependencyResolutionResult } from './dependencies';
+export { DependencyResolver } from "./dependencies";
+export type { DependencyResolutionResult } from "./dependencies";
 
 // Presets
 export {
@@ -43,5 +43,5 @@ export {
   getActualServiceName,
   getFeatureServiceName,
   getAllServiceMappings,
-  getAllReverseServiceMappings
-} from './presets';
+  getAllReverseServiceMappings,
+} from "./presets";

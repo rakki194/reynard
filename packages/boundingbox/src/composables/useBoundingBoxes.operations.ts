@@ -1,12 +1,12 @@
 /**
  * Bounding Box Operations
- * 
+ *
  * Handles CRUD operations for bounding boxes
  */
 
-import type { BoundingBox, ImageInfo } from '../types';
-import type { BoundingBoxState } from './useBoundingBoxes.core';
-import { createValidationOperations } from './useBoundingBoxes.validation';
+import type { BoundingBox, ImageInfo } from "../types";
+import type { BoundingBoxState } from "./useBoundingBoxes.core";
+import { createValidationOperations } from "./useBoundingBoxes.validation";
 
 export interface BoundingBoxOperations {
   addBox: (box: BoundingBox) => boolean;
@@ -20,15 +20,15 @@ export interface BoundingBoxOperations {
 export function createBoundingBoxOperations(
   state: BoundingBoxState,
   imageInfo?: ImageInfo,
-  enableValidation = true
+  enableValidation = true,
 ): BoundingBoxOperations {
   const validation = createValidationOperations(enableValidation);
 
   const addBox = (box: BoundingBox): boolean => {
     const currentBoxes = state.boxes();
-    
+
     if (!validation.canAddBox(box, currentBoxes, imageInfo)) {
-      console.warn('Cannot add box:', box.id);
+      console.warn("Cannot add box:", box.id);
       return false;
     }
 
@@ -38,15 +38,15 @@ export function createBoundingBoxOperations(
 
   const updateBox = (id: string, updates: Partial<BoundingBox>): boolean => {
     const currentBoxes = state.boxes();
-    const boxIndex = currentBoxes.findIndex(box => box.id === id);
-    
+    const boxIndex = currentBoxes.findIndex((box) => box.id === id);
+
     if (boxIndex === -1) {
-      console.warn('Box not found:', id);
+      console.warn("Box not found:", id);
       return false;
     }
 
     if (!validation.canUpdateBox(id, updates, currentBoxes, imageInfo)) {
-      console.warn('Cannot update box:', id);
+      console.warn("Cannot update box:", id);
       return false;
     }
 
@@ -59,30 +59,30 @@ export function createBoundingBoxOperations(
 
   const deleteBox = (id: string): boolean => {
     const currentBoxes = state.boxes();
-    const boxIndex = currentBoxes.findIndex(box => box.id === id);
-    
+    const boxIndex = currentBoxes.findIndex((box) => box.id === id);
+
     if (boxIndex === -1) {
-      console.warn('Box not found:', id);
+      console.warn("Box not found:", id);
       return false;
     }
 
-    const newBoxes = currentBoxes.filter(box => box.id !== id);
+    const newBoxes = currentBoxes.filter((box) => box.id !== id);
     state.setBoxes(newBoxes);
-    
+
     // Clear selection if deleted box was selected
     if (state.selectedBoxId() === id) {
       state.setSelectedBoxId(newBoxes.length > 0 ? newBoxes[0].id : null);
     }
-    
+
     return true;
   };
 
   const getBox = (id: string): BoundingBox | undefined => {
-    return state.boxes().find(box => box.id === id);
+    return state.boxes().find((box) => box.id === id);
   };
 
   const hasBox = (id: string): boolean => {
-    return state.boxes().some(box => box.id === id);
+    return state.boxes().some((box) => box.id === id);
   };
 
   const clearBoxes = (): void => {

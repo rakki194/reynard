@@ -3,7 +3,7 @@
  * Enhanced with Yipyap's sophisticated language-specific pluralization system
  */
 
-import type { LanguageCode, PluralForms, TranslationParams } from './types';
+import type { LanguageCode, PluralForms, TranslationParams } from "./types";
 import {
   getArabicPlural,
   getCzechPlural,
@@ -11,7 +11,7 @@ import {
   getRussianPlural,
   getSpanishPlural,
   getRomanianPlural,
-} from './utils';
+} from "./utils";
 
 // Plural rule function type
 type PluralRule = (n: number, forms: PluralForms) => string;
@@ -19,7 +19,8 @@ type PluralRule = (n: number, forms: PluralForms) => string;
 // Plural rules for different language families
 export const pluralRules: Record<string, PluralRule> = {
   // English and similar (singular and plural only)
-  default: (n: number, forms: PluralForms) => (n === 1 ? forms.one : forms.other),
+  default: (n: number, forms: PluralForms) =>
+    n === 1 ? forms.one : forms.other,
 
   // Arabic (has singular, dual, and plural forms)
   ar: (n: number, forms: PluralForms) => {
@@ -53,7 +54,8 @@ export const pluralRules: Record<string, PluralRule> = {
   },
 
   // Spanish (similar to default but using specific function)
-  es: (n: number, forms: PluralForms) => getSpanishPlural(n, { singular: forms.one, plural: forms.other }),
+  es: (n: number, forms: PluralForms) =>
+    getSpanishPlural(n, { singular: forms.one, plural: forms.other }),
 
   // Japanese, Chinese, Korean, Vietnamese (no plurals)
   ja: (_n: number, forms: PluralForms) => forms.other,
@@ -73,11 +75,11 @@ export const pluralRules: Record<string, PluralRule> = {
 
   // Romanian
   ro: (count, forms) => {
-    if (!forms || typeof forms !== 'object') return '';
+    if (!forms || typeof forms !== "object") return "";
     return getRomanianPlural(count, {
-      one: forms.one || '',
-      few: forms.few || '',
-      many: forms.many || '',
+      one: forms.one || "",
+      few: forms.few || "",
+      many: forms.many || "",
     });
   },
 };
@@ -110,7 +112,7 @@ const languageToRule: Record<LanguageCode, PluralRule> = {
   nl: pluralRules.default,
   pl: pluralRules.pl,
   pt: pluralRules.default,
-  'pt-BR': pluralRules.default,
+  "pt-BR": pluralRules.default,
   ro: pluralRules.ro,
   ru: pluralRules.ru,
   sk: pluralRules.default,
@@ -123,13 +125,16 @@ const languageToRule: Record<LanguageCode, PluralRule> = {
   zh: pluralRules.zh,
 };
 
-function interpolate(template: string, params: TranslationParams | null | undefined): string {
-  if (!params || typeof params !== 'object') {
-    return template.replace(/\${count}/g, 'some');
+function interpolate(
+  template: string,
+  params: TranslationParams | null | undefined,
+): string {
+  if (!params || typeof params !== "object") {
+    return template.replace(/\${count}/g, "some");
   }
   return template.replace(/\${(\w+)}/g, (_, key) => {
     const value = params[key];
-    if (typeof value === 'undefined' || value === null) return 'some';
+    if (typeof value === "undefined" || value === null) return "some";
     return String(value);
   });
 }
@@ -141,7 +146,11 @@ function interpolate(template: string, params: TranslationParams | null | undefi
  * @param lang The language code
  * @returns The appropriate plural form string
  */
-export function getPlural(count: number, forms: PluralForms, lang: LanguageCode): string {
+export function getPlural(
+  count: number,
+  forms: PluralForms,
+  lang: LanguageCode,
+): string {
   const rule = languageToRule[lang] || pluralRules.default;
   return rule(count, forms);
 }
@@ -152,12 +161,15 @@ export function getPlural(count: number, forms: PluralForms, lang: LanguageCode)
  * @param lang The language code
  * @returns A function that takes a count and returns the appropriate plural form
  */
-export function createPluralTranslation(forms: PluralForms, lang: LanguageCode) {
+export function createPluralTranslation(
+  forms: PluralForms,
+  lang: LanguageCode,
+) {
   return (params: TranslationParams | null | undefined = {}) => {
-    if (!params || typeof params !== 'object') {
+    if (!params || typeof params !== "object") {
       return interpolate(forms.other, null);
     }
-    if (typeof params.count !== 'number') {
+    if (typeof params.count !== "number") {
       return interpolate(forms.other, null);
     }
     const text = getPlural(params.count, forms, lang);

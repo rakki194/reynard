@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 import {
   mockLocalStorage,
   mockSessionStorage,
@@ -24,10 +24,10 @@ import {
   mockWindow,
   setupBrowserMocks,
   resetBrowserMocks,
-} from '../index';
+} from "../index";
 
 export function testBrowserExports() {
-  it('should export all browser mocks', () => {
+  it("should export all browser mocks", () => {
     expect(mockLocalStorage).toBeDefined();
     expect(mockSessionStorage).toBeDefined();
     expect(mockMatchMedia).toBeDefined();
@@ -54,4 +54,3 @@ export function testBrowserExports() {
     expect(resetBrowserMocks).toBeDefined();
   });
 }
-

@@ -14,7 +14,11 @@ export function AlgorithmsDemo() {
   const [activeDemo, setActiveDemo] = createSignal("union-find");
 
   const demos = [
-    { id: "union-find", label: "Union-Find Game", icon: getIcon("puzzle-piece") },
+    {
+      id: "union-find",
+      label: "Union-Find Game",
+      icon: getIcon("puzzle-piece"),
+    },
     { id: "collision", label: "Collision Detection", icon: getIcon("target") },
     { id: "spatial-hash", label: "Spatial Hashing", icon: getIcon("grid") },
     { id: "geometry", label: "Geometry Operations", icon: getIcon("ruler") },
@@ -25,7 +29,10 @@ export function AlgorithmsDemo() {
     <div class="algorithms-demo">
       <div class="demo-header">
         <h2>🧮 Algorithms Demonstration</h2>
-        <p>Interactive games and visualizations showcasing Reynard's algorithm primitives</p>
+        <p>
+          Interactive games and visualizations showcasing Reynard's algorithm
+          primitives
+        </p>
       </div>
 
       <Tabs
@@ -41,25 +48,25 @@ export function AlgorithmsDemo() {
             <UnionFindGame />
           </Card>
         </TabPanel>
-        
+
         <TabPanel tabId="collision" activeTab={activeDemo()}>
           <Card>
             <CollisionGame />
           </Card>
         </TabPanel>
-        
+
         <TabPanel tabId="spatial-hash" activeTab={activeDemo()}>
           <Card>
             <SpatialHashDemo />
           </Card>
         </TabPanel>
-        
+
         <TabPanel tabId="geometry" activeTab={activeDemo()}>
           <Card>
             <GeometryDemo />
           </Card>
         </TabPanel>
-        
+
         <TabPanel tabId="performance" activeTab={activeDemo()}>
           <Card>
             <PerformanceDemo />

@@ -50,7 +50,7 @@ The 0.5 second delay is intentionally designed to provide an optimal user experi
 
 ```css
 .tooltip-content {
-  transition: opacity 0.2s ease-out;  /* Too short */
+  transition: opacity 0.2s ease-out; /* Too short */
 }
 ```
 
@@ -73,7 +73,7 @@ To properly handle tooltip visibility, use CSS visibility and opacity properties
 
 ```typescript
 // Correct approach
-<div 
+<div
   class="tooltip-content"
   aria-hidden={!isVisible()}
 >
@@ -85,7 +85,7 @@ To properly handle tooltip visibility, use CSS visibility and opacity properties
 
 ```css
 .tooltip-content {
-  background: rgba(0, 0, 0, 0.5);  /* Missing blur */
+  background: rgba(0, 0, 0, 0.5); /* Missing blur */
 }
 ```
 
@@ -122,7 +122,7 @@ Proper accessibility requires setting the aria-hidden attribute to control when 
 
 ```css
 .tooltip-content {
-  transition: all 0.3s;  /* Too generic */
+  transition: all 0.3s; /* Too generic */
 }
 ```
 
@@ -133,7 +133,9 @@ For optimal animation performance, it's important to be specific about which pro
 .tooltip-content {
   transform: scale(0.98);
   opacity: 0;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.2s ease-out;
   will-change: transform, opacity;
 }
 ```
@@ -230,13 +232,13 @@ describe("Tooltip", () => {
         <button>Hover</button>
       </Tooltip>
     ));
-    
+
     const trigger = getByText("Hover");
     fireEvent.mouseEnter(trigger);
-    
+
     // Wait for the 1.5s delay
     await new Promise(r => setTimeout(r, 1500));
-    
+
     expect(screen.getByRole("tooltip")).not.toHaveAttribute("aria-hidden", "true");
   });
 });
@@ -252,14 +254,14 @@ test("tooltip transitions properly", async () => {
       <button>Hover</button>
     </Tooltip>
   ));
-  
+
   const trigger = getByText("Hover");
   fireEvent.mouseEnter(trigger);
-  
+
   // Check initial state
   let tooltip = screen.getByRole("tooltip");
   expect(tooltip).toHaveStyle({ opacity: "0" });
-  
+
   // Wait for delay and transition
   await new Promise(r => setTimeout(r, 1900)); // 1.5s delay + 0.4s transition
   expect(tooltip).toHaveStyle({ opacity: "1" });

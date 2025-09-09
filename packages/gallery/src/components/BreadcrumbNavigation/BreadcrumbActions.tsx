@@ -20,9 +20,7 @@ export const BreadcrumbActions: Component<BreadcrumbActionsProps> = (props) => {
         size="sm"
         variant="secondary"
         onClick={props.onToggleFullPaths}
-        title={
-          props.showFullPaths ? "Show short paths" : "Show full paths"
-        }
+        title={props.showFullPaths ? "Show short paths" : "Show full paths"}
       >
         {props.showFullPaths ? "Short" : "Full"}
       </Button>

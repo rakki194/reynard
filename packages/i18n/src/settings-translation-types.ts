@@ -1,6 +1,6 @@
 /**
  * Settings translation type definitions for the Reynard i18n system.
- * 
+ *
  * This module contains the comprehensive settings translation interfaces
  * inspired by Yipyap's comprehensive system.
  */

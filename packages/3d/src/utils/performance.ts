@@ -1,6 +1,6 @@
 // Performance monitoring and optimization utilities
 
-import type { PerformanceStats, RenderStats } from '../types';
+import type { PerformanceStats, RenderStats } from "../types";
 
 // Type definitions for performance utilities
 interface RenderInfo {
@@ -53,7 +53,7 @@ export class PerformanceMonitor {
    */
   update(currentTime: number, renderInfo?: RenderInfo): PerformanceStats {
     this.frameCount++;
-    
+
     if (this.lastTime === 0) {
       this.lastTime = currentTime;
       return this.getStats();
@@ -72,8 +72,14 @@ export class PerformanceMonitor {
     }
 
     // Update memory usage if available (Chrome only)
-    if ((performance as unknown as { memory?: { usedJSHeapSize: number } }).memory) {
-      this.memoryUsage = (performance as unknown as { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize / 1024 / 1024; // MB
+    if (
+      (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory
+    ) {
+      this.memoryUsage =
+        (performance as unknown as { memory: { usedJSHeapSize: number } })
+          .memory.usedJSHeapSize /
+        1024 /
+        1024; // MB
     }
 
     this.lastTime = currentTime;
@@ -171,7 +177,7 @@ export class FrustumCuller {
    */
   filterVisible(objects: RenderObject[]): RenderObject[] {
     if (!this.frustum) return objects;
-    return objects.filter(obj => this.isVisible(obj.boundingBox));
+    return objects.filter((obj) => this.isVisible(obj.boundingBox));
   }
 }
 
@@ -215,7 +221,11 @@ export class OcclusionCuller {
   /**
    * Check if object is behind occluder from camera perspective
    */
-  private isObjectBehindOccluder(object: RenderObject, occluder: RenderObject, camera: Camera): boolean {
+  private isObjectBehindOccluder(
+    object: RenderObject,
+    occluder: RenderObject,
+    camera: Camera,
+  ): boolean {
     // This is a simplified implementation
     // In practice, you'd use proper depth testing and ray casting
     const objectDistance = this.getDistanceToCamera(object, camera);
@@ -347,7 +357,7 @@ export function createRenderStats(
   memoryUsage: number,
   lodLevel: number = 0,
   frustumCulled: number = 0,
-  occlusionCulled: number = 0
+  occlusionCulled: number = 0,
 ): RenderStats {
   return {
     totalPoints,
@@ -366,7 +376,7 @@ export function createRenderStats(
  */
 export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
   return (...args: Parameters<T>) => {
@@ -380,7 +390,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  */
 export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
-  limit: number
+  limit: number,
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {

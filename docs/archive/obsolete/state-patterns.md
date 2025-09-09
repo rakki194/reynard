@@ -28,7 +28,7 @@ Use ARIA attributes for states that have accessibility implications:
 
 ```tsx
 // ✅ Good: Using ARIA for semantic states
-<button 
+<button
   aria-expanded={isExpanded()}
   aria-pressed={isPressed()}
   aria-selected={isSelected()}
@@ -191,7 +191,7 @@ details[open] .content {
 
 ```tsx
 // Component
-<input 
+<input
   data-error={hasError() ? '' : undefined}
   aria-invalid={hasError()}
   aria-describedby={hasError() ? 'error-message' : undefined}
@@ -214,7 +214,7 @@ details[open] .content {
 
 ```tsx
 // Component
-<button 
+<button
   data-active={isActive() ? '' : undefined}
   data-loading={isLoading() ? '' : undefined}
   disabled={isLoading()}
@@ -242,7 +242,7 @@ details[open] .content {
 
 ```tsx
 // Component
-<div 
+<div
   data-variant={variant()}
   data-size={size()}
   data-disabled={isDisabled() ? '' : undefined}
@@ -279,7 +279,7 @@ details[open] .content {
 
 ```tsx
 // Component
-<button 
+<button
   aria-pressed={isPressed()}
   aria-describedby="button-description"
 >
@@ -299,7 +299,7 @@ details[open] .content {
 
 ```tsx
 // Component
-<div 
+<div
   data-focus-visible={isFocusVisible() ? '' : undefined}
   tabindex="0"
 >
@@ -335,7 +335,8 @@ details[open] .content {
 ```css
 /* State transitions with reduced motion support */
 .button {
-  transition: background-color var(--transition-duration) var(--transition-timing);
+  transition: background-color var(--transition-duration)
+    var(--transition-timing);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -400,14 +401,14 @@ details[open] .content {
 
 ```tsx
 // Test state attributes
-test('applies active state', () => {
+test("applies active state", () => {
   render(<Button active={true} />);
-  expect(screen.getByRole('button')).toHaveAttribute('data-active');
+  expect(screen.getByRole("button")).toHaveAttribute("data-active");
 });
 
-test('removes active state', () => {
+test("removes active state", () => {
   render(<Button active={false} />);
-  expect(screen.getByRole('button')).not.toHaveAttribute('data-active');
+  expect(screen.getByRole("button")).not.toHaveAttribute("data-active");
 });
 ```
 
@@ -415,11 +416,11 @@ test('removes active state', () => {
 
 ```tsx
 // Test state combinations
-test('renders loading and active states together', () => {
+test("renders loading and active states together", () => {
   render(<Button active={true} loading={true} />);
-  const button = screen.getByRole('button');
-  expect(button).toHaveAttribute('data-active');
-  expect(button).toHaveAttribute('data-loading');
+  const button = screen.getByRole("button");
+  expect(button).toHaveAttribute("data-active");
+  expect(button).toHaveAttribute("data-loading");
 });
 ```
 

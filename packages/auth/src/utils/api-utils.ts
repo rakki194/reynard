@@ -10,7 +10,7 @@ import { handleUnauthorizedResponse } from "./auth-retry";
 
 export interface AuthFetchOptions {
   method?: string;
-  headers?: Record<string, string>;
+  headers?: Record<string, string> | Headers;
   body?: string | FormData | URLSearchParams | ReadableStream | null;
   credentials?: "omit" | "same-origin" | "include";
   mode?: "cors" | "no-cors" | "same-origin";
@@ -44,9 +44,12 @@ export const createAuthFetch = (
   config: AuthConfiguration,
   tokenManager: TokenManager,
   onUnauthorized: () => void,
-  onTokenRefresh: () => Promise<void>
+  onTokenRefresh: () => Promise<void>,
 ) => {
-  return async (url: string, options: AuthFetchOptions = {}): Promise<Response> => {
+  return async (
+    url: string,
+    options: AuthFetchOptions = {},
+  ): Promise<Response> => {
     const token = tokenManager.getAccessToken();
     const headers = buildAuthHeaders({ token: token || undefined, options });
 
@@ -57,12 +60,13 @@ export const createAuthFetch = (
 
     // Handle unauthorized responses
     if (response.status === 401) {
-      const retryResponse = await handleUnauthorizedResponse(
-        url,
-        options,
-        { config, tokenManager, onUnauthorized, onTokenRefresh }
-      );
-      
+      const retryResponse = await handleUnauthorizedResponse(url, options, {
+        config,
+        tokenManager,
+        onUnauthorized,
+        onTokenRefresh,
+      });
+
       if (retryResponse) {
         return retryResponse;
       }

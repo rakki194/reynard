@@ -21,7 +21,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
     canvasWidth: 600,
     canvasHeight: 400,
     ballCount: 15,
-    ...props.config
+    ...props.config,
   };
 
   const CANVAS_WIDTH = config.canvasWidth!;
@@ -52,8 +52,8 @@ export function CollisionGame(props: CollisionGameProps = {}) {
   const updateBalls = () => {
     if (!isRunning()) return;
 
-    setBalls(prevBalls => {
-      const newBalls = prevBalls.map(ball => {
+    setBalls((prevBalls) => {
+      const newBalls = prevBalls.map((ball) => {
         let newX = ball.x + ball.vx;
         let newY = ball.y + ball.vy;
         let newVx = ball.vx;
@@ -67,7 +67,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
           newVx = -Math.abs(newVx) * 0.9;
           newX = CANVAS_WIDTH - ball.radius;
         }
-        
+
         if (newY - ball.radius <= 0) {
           newVy = Math.abs(newVy) * 0.9;
           newY = ball.radius;
@@ -87,18 +87,18 @@ export function CollisionGame(props: CollisionGameProps = {}) {
         for (let j = i + 1; j < newBalls.length; j++) {
           const ball1 = newBalls[i];
           const ball2 = newBalls[j];
-          
+
           const dx = ball2.x - ball1.x;
           const dy = ball2.y - ball1.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           const minDistance = ball1.radius + ball2.radius;
-          
+
           if (distance < minDistance && distance > 0) {
             // Collision detected - resolve it
             const overlap = minDistance - distance;
             const separationX = (dx / distance) * overlap * 0.5;
             const separationY = (dy / distance) * overlap * 0.5;
-            
+
             // Separate the balls
             newBalls[i] = {
               ...ball1,
@@ -110,24 +110,24 @@ export function CollisionGame(props: CollisionGameProps = {}) {
               x: ball2.x + separationX,
               y: ball2.y + separationY,
             };
-            
+
             // Calculate collision response
             const nx = dx / distance;
             const ny = dy / distance;
-            
+
             // Relative velocity
             const dvx = ball2.vx - ball1.vx;
             const dvy = ball2.vy - ball1.vy;
-            
+
             // Relative velocity in collision normal direction
             const dvn = dvx * nx + dvy * ny;
-            
+
             // Do not resolve if velocities are separating
             if (dvn > 0) continue;
-            
+
             // Collision impulse (elastic collision)
-            const impulse = 2 * dvn / 2; // Simplified for equal mass
-            
+            const impulse = (2 * dvn) / 2; // Simplified for equal mass
+
             // Update velocities
             newBalls[i] = {
               ...newBalls[i],
@@ -139,7 +139,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
               vx: ball2.vx - impulse * nx,
               vy: ball2.vy - impulse * ny,
             };
-            
+
             newCollisions.push({
               ball1: ball1.id,
               ball2: ball2.id,
@@ -152,13 +152,14 @@ export function CollisionGame(props: CollisionGameProps = {}) {
 
       // Keep only recent collisions
       const recentCollisions = newCollisions.filter(
-        c => Date.now() - c.timestamp < 1000
+        (c) => Date.now() - c.timestamp < 1000,
       );
       setCollisions(recentCollisions);
 
       // Update stats
-      const totalSpeed = newBalls.reduce((sum, ball) => 
-        sum + Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy), 0
+      const totalSpeed = newBalls.reduce(
+        (sum, ball) => sum + Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy),
+        0,
       );
       setStats({
         totalCollisions: stats().totalCollisions! + collisionCount,
@@ -209,7 +210,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
       <div class="game-header">
         <h3>⚽ Bouncing Balls Collision Demo</h3>
         <div class="game-controls">
-          <Button 
+          <Button
             onClick={() => setIsRunning(!isRunning())}
             variant={isRunning() ? "danger" : "primary"}
             size="sm"
@@ -226,10 +227,10 @@ export function CollisionGame(props: CollisionGameProps = {}) {
           <span>Avg Speed: {stats().averageSpeed?.toFixed(1)}</span>
         </div>
       </div>
-      
+
       <div class="collision-canvas">
         <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} class="balls-svg">
-          {balls().map(ball => (
+          {balls().map((ball) => (
             <circle
               cx={ball.x}
               cy={ball.y}
@@ -239,11 +240,11 @@ export function CollisionGame(props: CollisionGameProps = {}) {
               stroke-width="2"
             />
           ))}
-          {collisions().map(collision => {
-            const ball1 = balls().find(b => b.id === collision.ball1);
-            const ball2 = balls().find(b => b.id === collision.ball2);
+          {collisions().map((collision) => {
+            const ball1 = balls().find((b) => b.id === collision.ball1);
+            const ball2 = balls().find((b) => b.id === collision.ball2);
             if (!ball1 || !ball2) return null;
-            
+
             return (
               <line
                 x1={ball1.x}
@@ -258,10 +259,16 @@ export function CollisionGame(props: CollisionGameProps = {}) {
           })}
         </svg>
       </div>
-      
+
       <div class="game-instructions">
-        <p>🎯 <strong>Watch:</strong> AABB collision detection in real-time with elastic collisions</p>
-        <p>💡 <strong>Algorithm:</strong> Batch collision detection with spatial optimization</p>
+        <p>
+          🎯 <strong>Watch:</strong> AABB collision detection in real-time with
+          elastic collisions
+        </p>
+        <p>
+          💡 <strong>Algorithm:</strong> Batch collision detection with spatial
+          optimization
+        </p>
       </div>
     </div>
   );

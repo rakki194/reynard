@@ -1,1 +1,1 @@
-export { CollisionGame } from './CollisionGame';
+export { CollisionGame } from "./CollisionGame";

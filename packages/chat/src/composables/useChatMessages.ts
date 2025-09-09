@@ -1,6 +1,6 @@
 /**
  * Chat Messages Composable
- * 
+ *
  * Handles message management including adding, updating, and clearing messages
  */
 
@@ -25,15 +25,16 @@ export interface UseChatMessagesReturn {
   importConversation: (data: string, format: "json") => void;
 }
 
-export function useChatMessages(options: UseChatMessagesOptions = {}): UseChatMessagesReturn {
-  const {
-    initialMessages = [],
-    maxHistoryLength = 100,
-  } = options;
+export function useChatMessages(
+  options: UseChatMessagesOptions = {},
+): UseChatMessagesReturn {
+  const { initialMessages = [], maxHistoryLength = 100 } = options;
 
   // Core message state
   const [messages, setMessages] = createSignal<ChatMessage[]>(initialMessages);
-  const [currentMessage, setCurrentMessage] = createSignal<ChatMessage | undefined>();
+  const [currentMessage, setCurrentMessage] = createSignal<
+    ChatMessage | undefined
+  >();
 
   // Generate unique message ID
   const generateMessageId = (): string => {
@@ -53,7 +54,9 @@ export function useChatMessages(options: UseChatMessagesOptions = {}): UseChatMe
     batch(() => {
       setMessages((prev) => {
         const updated = [...prev, newMessage];
-        return updated.length > maxHistoryLength ? updated.slice(-maxHistoryLength) : updated;
+        return updated.length > maxHistoryLength
+          ? updated.slice(-maxHistoryLength)
+          : updated;
       });
     });
 

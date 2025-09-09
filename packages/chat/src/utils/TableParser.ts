@@ -12,7 +12,6 @@ import { TableUtils } from "./TableUtils";
 import type { ParseResult } from "../types";
 
 export class TableParser extends BaseMarkdownParser {
-
   /**
    * Parse a single line for table elements
    */
@@ -109,28 +108,31 @@ export class TableParser extends BaseMarkdownParser {
 
     // If we have headers, apply alignment
     if (this.state.tableHeaders.length > 0) {
-      this.state.tableHeaders = this.state.tableHeaders.map((header, index) => ({
-        ...header,
-        alignment: alignment[index] || "left",
-      }));
+      this.state.tableHeaders = this.state.tableHeaders.map(
+        (header, index) => ({
+          ...header,
+          alignment: alignment[index] || "left",
+        }),
+      );
     }
 
     return true;
   }
-
 
   /**
    * Flush the current table
    */
   protected flushCurrentNode(): void {
     if (this.state.inTable) {
-      this.addNode(this.createNode({
-        type: "table",
-        content: "",
-        headers: this.state.tableHeaders,
-        rows: this.state.tableRows,
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "table",
+          content: "",
+          headers: this.state.tableHeaders,
+          rows: this.state.tableRows,
+          line: this.state.currentLine,
+        }),
+      );
 
       this.state.inTable = false;
       this.state.tableHeaders = [];
@@ -142,7 +144,11 @@ export class TableParser extends BaseMarkdownParser {
    * Validate table structure
    */
   private validateTable(): boolean {
-    return TableUtils.validateTable(this.state, this.addError.bind(this), this.addWarning.bind(this));
+    return TableUtils.validateTable(
+      this.state,
+      this.addError.bind(this),
+      this.addWarning.bind(this),
+    );
   }
 
   /**

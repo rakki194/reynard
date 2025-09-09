@@ -3,21 +3,24 @@
  */
 
 // Solid-Monaco Components (Forked and Updated)
-export { MonacoEditor, MonacoDiffEditor } from './solid-monaco';
-export type { MonacoEditorProps } from './solid-monaco/MonacoEditor';
-export { loader } from './solid-monaco';
+export { MonacoEditor, MonacoDiffEditor } from "./solid-monaco";
+export type { MonacoEditorProps } from "./solid-monaco/MonacoEditor";
+export { loader } from "./solid-monaco";
 
 // Reynard Components
-export { CodeEditor } from './components/CodeEditor';
+export { CodeEditor } from "./components/CodeEditor";
 
 // Composables
-export { useShiki } from './composables/useShiki';
-export { useMonacoShiki } from './composables/useMonacoShiki';
-export { useReynardMonaco } from './composables/useReynardMonaco';
-export { useLanguageDetection } from './composables/useLanguageDetection';
+export { useShiki } from "./composables/useShiki";
+export { useMonacoShiki } from "./composables/useMonacoShiki";
+export { useReynardMonaco } from "./composables/useReynardMonaco";
+export { useLanguageDetection } from "./composables/useLanguageDetection";
 
 // Services
-export { LanguageDetectionService, languageDetectionService } from './services/LanguageDetectionService';
+export {
+  LanguageDetectionService,
+  languageDetectionService,
+} from "./services/LanguageDetectionService";
 
 // Utils
 export {
@@ -27,7 +30,7 @@ export {
   getLanguageInfo,
   getMonacoLanguageFromName,
   getDisplayNameFromLanguage,
-} from './utils/languageUtils';
+} from "./utils/languageUtils";
 
 // Theme utilities
 export {
@@ -38,14 +41,14 @@ export {
   getAvailableShikiThemes,
   REYNARD_TO_MONACO_THEME_MAP,
   REYNARD_TO_SHIKI_THEME_MAP,
-} from './utils/themeMapping';
+} from "./utils/themeMapping";
 
 // Custom Monaco themes
 export {
   getCustomMonacoTheme,
   registerCustomMonacoTheme,
   getMonacoThemeName,
-} from './utils/customThemes';
+} from "./utils/customThemes";
 
 // Types
 export type {
@@ -61,10 +64,13 @@ export type {
   ShikiState,
   NaturalLanguageDetectionResult,
   UseLanguageDetectionReturn,
-} from './types';
+} from "./types";
 
 // Reynard Monaco types
-export type { ReynardMonacoOptions, ReynardMonacoState } from './composables/useReynardMonaco';
+export type {
+  ReynardMonacoOptions,
+  ReynardMonacoState,
+} from "./composables/useReynardMonaco";
 
 // Styles
-import './components/CodeEditor.css';
+import "./components/CodeEditor.css";

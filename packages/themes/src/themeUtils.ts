@@ -6,10 +6,10 @@
 
 import type { ThemeName } from "./types";
 import { themes } from "./themes";
-import { 
-  createTagColorGenerator, 
-  formatOKLCH, 
-  type OKLCHColor 
+import {
+  createTagColorGenerator,
+  formatOKLCH,
+  type OKLCHColor,
 } from "reynard-color-media";
 
 // Create a cached tag color generator for performance
@@ -26,9 +26,10 @@ export function computeTagBackground(theme: ThemeName, tag: string): string {
   // Adjust lightness based on theme for better contrast
   const adjustedColor: OKLCHColor = {
     ...baseColor,
-    l: theme === "dark" || theme === "high-contrast-black" 
-      ? baseColor.l * 0.7  // Darker for dark themes
-      : baseColor.l * 1.1  // Slightly lighter for light themes
+    l:
+      theme === "dark" || theme === "high-contrast-black"
+        ? baseColor.l * 0.7 // Darker for dark themes
+        : baseColor.l * 1.1, // Slightly lighter for light themes
   };
 
   return formatOKLCH(adjustedColor);
@@ -44,11 +45,12 @@ export function computeTagColor(theme: ThemeName, tag: string): string {
 
   // Generate high-contrast text color based on background lightness
   const textColor: OKLCHColor = {
-    l: baseColor.l > 50 
-      ? 20  // Dark text for light backgrounds
-      : 90, // Light text for dark backgrounds
+    l:
+      baseColor.l > 50
+        ? 20 // Dark text for light backgrounds
+        : 90, // Light text for dark backgrounds
     c: 0.02, // Very low chroma for text readability
-    h: baseColor.h // Keep the same hue for color harmony
+    h: baseColor.h, // Keep the same hue for color harmony
   };
 
   return formatOKLCH(textColor);
@@ -200,4 +202,3 @@ export function applyTheme(themeName: ThemeName): void {
     }
   }
 }
-

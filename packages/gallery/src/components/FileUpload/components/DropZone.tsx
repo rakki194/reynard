@@ -3,9 +3,9 @@
  * Handles drag and drop file selection
  */
 
-import { Component } from 'solid-js';
-import type { FileUploadProps } from '../types';
-import { formatFileSize } from '../utils/file-utils';
+import { Component } from "solid-js";
+import type { FileUploadProps } from "../types";
+import { formatFileSize } from "../utils/file-utils";
 
 export interface DropZoneProps {
   isDragOver: () => boolean;
@@ -13,13 +13,16 @@ export interface DropZoneProps {
   handleDragLeave: (event: DragEvent) => void;
   handleDrop: (event: DragEvent) => void;
   handleFileInput: (event: Event) => void;
-  props: Pick<FileUploadProps, 'multiple' | 'accept' | 'maxFileSize' | 'maxFiles'>;
+  props: Pick<
+    FileUploadProps,
+    "multiple" | "accept" | "maxFileSize" | "maxFiles"
+  >;
 }
 
 export const DropZone: Component<DropZoneProps> = (props) => {
   return (
     <div
-      class={`reynard-file-upload__drop-zone ${props.isDragOver() ? 'reynard-file-upload__drop-zone--drag-over' : ''}`}
+      class={`reynard-file-upload__drop-zone ${props.isDragOver() ? "reynard-file-upload__drop-zone--drag-over" : ""}`}
       onDragOver={props.handleDragOver}
       onDragLeave={props.handleDragLeave}
       onDrop={props.handleDrop}
@@ -35,7 +38,9 @@ export const DropZone: Component<DropZoneProps> = (props) => {
       <label for="file-input" class="reynard-file-upload__drop-zone-content">
         <div class="reynard-file-upload__drop-zone-icon">📁</div>
         <div class="reynard-file-upload__drop-zone-title">
-          {props.isDragOver() ? 'Drop files here' : 'Click to select files or drag and drop'}
+          {props.isDragOver()
+            ? "Drop files here"
+            : "Click to select files or drag and drop"}
         </div>
         <div class="reynard-file-upload__drop-zone-subtitle">
           Max file size: {formatFileSize(props.props.maxFileSize!)}

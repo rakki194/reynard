@@ -58,12 +58,12 @@ query_position = base_position + offset
 The improved implementation uses a hierarchical strategy:
 
 ```python
-async def _transform_query_point(reducer, query_embedding, reduction_method, 
+async def _transform_query_point(reducer, query_embedding, reduction_method,
                                 transformed_data, original_indices):
     # Strategy 1: Use fitted model transform (ideal)
     if hasattr(reducer, 'transform'):
         return reducer.transform([query_embedding])[0]
-    
+
     # Strategy 2: Similarity-based fallback
     return similarity_based_positioning(query_embedding, transformed_data)
 ```
@@ -76,20 +76,20 @@ When the fitted model is unavailable, we use a theoretically sound fallback:
 def similarity_based_positioning(query_emb, transformed_data):
     # 1. Project query to 3D space for comparison
     query_3d = query_emb[:3] if len(query_emb) >= 3 else np.append(query_emb, [0] * (3 - len(query_emb)))
-    
+
     # 2. Calculate similarities to existing points
     similarities = []
     for i, point in enumerate(transformed_data):
         similarity = cosine_similarity(query_3d, point)
         similarities.append((i, similarity))
-    
+
     # 3. Weighted average of top-k most similar points
     top_k = sorted(similarities, key=lambda x: x[1], reverse=True)[:5]
     weighted_position = weighted_average(top_k, transformed_data)
-    
+
     # 4. Deterministic offset based on query characteristics
     offset = deterministic_offset(query_3d)
-    
+
     return weighted_position + offset
 ```
 
@@ -244,4 +244,3 @@ def deterministic_offset(query_vector, magnitude=0.1):
     direction = query_vector / (np.linalg.norm(query_vector) + 1e-8)
     return direction * magnitude
 ```
-

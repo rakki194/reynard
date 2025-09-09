@@ -1,9 +1,14 @@
 // Mock implementation for SIMD position system
 
-import { Position, Velocity, Acceleration, Mass } from './position-system.js';
+import { Position, Velocity, Acceleration, Mass } from "./position-system.js";
 
 export interface MockPositionSystemInterface {
-  addEntity(position: { x: number; y: number }, velocity: { vx: number; vy: number }, acceleration: { ax: number; ay: number }, mass: { mass: number }): void;
+  addEntity(
+    position: { x: number; y: number },
+    velocity: { vx: number; vy: number },
+    acceleration: { ax: number; ay: number },
+    mass: { mass: number },
+  ): void;
   updatePositions(deltaTime: number): void;
   detectCollisions(radius: number): number[];
   spatialQuery(queryX: number, queryY: number, radius: number): number[];
@@ -20,9 +25,14 @@ export class MockPositionSystem implements MockPositionSystemInterface {
 
   constructor(private maxEntities: number = 100000) {}
 
-  addEntity(position: { x: number; y: number }, velocity: { vx: number; vy: number }, acceleration: { ax: number; ay: number }, mass: { mass: number }): void {
+  addEntity(
+    position: { x: number; y: number },
+    velocity: { vx: number; vy: number },
+    acceleration: { ax: number; ay: number },
+    mass: { mass: number },
+  ): void {
     if (this.entityCount >= this.maxEntities) return;
-    
+
     this.positions.push({ x: position.x, y: position.y });
     this.velocities.push({ vx: velocity.vx, vy: velocity.vy });
     this.accelerations.push({ ax: acceleration.ax, ay: acceleration.ay });
@@ -35,11 +45,11 @@ export class MockPositionSystem implements MockPositionSystemInterface {
       const pos = this.positions[i];
       const vel = this.velocities[i];
       const acc = this.accelerations[i];
-      
+
       // Update velocity
       vel.vx += acc.ax * deltaTime;
       vel.vy += acc.ay * deltaTime;
-      
+
       // Update position
       pos.x += vel.vx * deltaTime;
       pos.y += vel.vy * deltaTime;

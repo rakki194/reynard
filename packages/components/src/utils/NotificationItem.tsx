@@ -26,7 +26,7 @@ export const NotificationItem: Component<NotificationItemProps> = (props) => {
   };
 
   return (
-    <div 
+    <div
       class={`notification-toast notification-toast--${props.notification.type}`}
       onClick={handleClick}
     >
@@ -36,10 +36,7 @@ export const NotificationItem: Component<NotificationItemProps> = (props) => {
           {props.notification.message}
         </div>
       </div>
-      <button 
-        class="notification-toast__close"
-        onClick={handleCloseClick}
-      >
+      <button class="notification-toast__close" onClick={handleCloseClick}>
         ×
       </button>
     </div>

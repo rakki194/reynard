@@ -1,16 +1,16 @@
-import { describe, it, expect } from 'vitest';
-import { PointOps, type Point } from '../point-algorithms';
+import { describe, it, expect } from "vitest";
+import { PointOps, type Point } from "../point-algorithms";
 
-describe('PointOps - Geometry Operations', () => {
-  describe('distance', () => {
-    it('should calculate distance between two points', () => {
+describe("PointOps - Geometry Operations", () => {
+  describe("distance", () => {
+    it("should calculate distance between two points", () => {
       const a = PointOps.create(0, 0);
       const b = PointOps.create(3, 4);
       const result = PointOps.distance(a, b);
       expect(result).toBe(5);
     });
 
-    it('should return 0 for same points', () => {
+    it("should return 0 for same points", () => {
       const a = PointOps.create(5, 5);
       const b = PointOps.create(5, 5);
       const result = PointOps.distance(a, b);
@@ -18,8 +18,8 @@ describe('PointOps - Geometry Operations', () => {
     });
   });
 
-  describe('distanceSquared', () => {
-    it('should calculate squared distance between two points', () => {
+  describe("distanceSquared", () => {
+    it("should calculate squared distance between two points", () => {
       const a = PointOps.create(0, 0);
       const b = PointOps.create(3, 4);
       const result = PointOps.distanceSquared(a, b);
@@ -27,8 +27,8 @@ describe('PointOps - Geometry Operations', () => {
     });
   });
 
-  describe('midpoint', () => {
-    it('should calculate midpoint between two points', () => {
+  describe("midpoint", () => {
+    it("should calculate midpoint between two points", () => {
       const a = PointOps.create(0, 0);
       const b = PointOps.create(4, 6);
       const result = PointOps.midpoint(a, b);
@@ -37,8 +37,8 @@ describe('PointOps - Geometry Operations', () => {
     });
   });
 
-  describe('lerp', () => {
-    it('should interpolate between two points', () => {
+  describe("lerp", () => {
+    it("should interpolate between two points", () => {
       const a = PointOps.create(0, 0);
       const b = PointOps.create(10, 20);
       const result = PointOps.lerp(a, b, 0.5);
@@ -46,7 +46,7 @@ describe('PointOps - Geometry Operations', () => {
       expect(result.y).toBe(10);
     });
 
-    it('should return first point at t=0', () => {
+    it("should return first point at t=0", () => {
       const a = PointOps.create(1, 2);
       const b = PointOps.create(5, 6);
       const result = PointOps.lerp(a, b, 0);
@@ -54,7 +54,7 @@ describe('PointOps - Geometry Operations', () => {
       expect(result.y).toBe(2);
     });
 
-    it('should return second point at t=1', () => {
+    it("should return second point at t=1", () => {
       const a = PointOps.create(1, 2);
       const b = PointOps.create(5, 6);
       const result = PointOps.lerp(a, b, 1);

@@ -11,11 +11,13 @@ export class MathProcessor extends InlineProcessor {
   process(text: string): string {
     return text.replace(MARKDOWN_PATTERNS.mathInline, (match, content) => {
       // Create a math node for tracking
-      this.nodes.push(this.createTrackingNode({
-        type: "math",
-        content: content.trim(),
-        inline: true,
-      }));
+      this.nodes.push(
+        this.createTrackingNode({
+          type: "math",
+          content: content.trim(),
+          inline: true,
+        }),
+      );
       return `<span class="math-inline">${content}</span>`;
     });
   }

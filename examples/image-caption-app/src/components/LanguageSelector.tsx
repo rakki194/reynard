@@ -22,13 +22,18 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
   );
 
   const nextLanguage = () => {
-    const currentIndex = availableLanguages.findIndex(lang => lang.code === i18nContext.locale);
+    const currentIndex = availableLanguages.findIndex(
+      (lang) => lang.code === i18nContext.locale,
+    );
     const nextIndex = (currentIndex + 1) % availableLanguages.length;
     setLocale(availableLanguages[nextIndex].code);
   };
 
   const getCurrentLanguage = () => {
-    return availableLanguages.find(lang => lang.code === i18nContext.locale) || availableLanguages[0];
+    return (
+      availableLanguages.find((lang) => lang.code === i18nContext.locale) ||
+      availableLanguages[0]
+    );
   };
 
   return (

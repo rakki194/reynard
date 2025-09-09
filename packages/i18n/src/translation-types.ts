@@ -1,6 +1,6 @@
 /**
  * Translation interface definitions for the Reynard i18n system.
- * 
+ *
  * This module contains all the specific translation interfaces for
  * different packages and components in the Reynard ecosystem.
  */

@@ -27,9 +27,7 @@ export const ChartsShowcasePage: Component = () => {
             )}
             Back to Home
           </button>
-          <h1 class="page-title">
-            Charts Showcase
-          </h1>
+          <h1 class="page-title">Charts Showcase</h1>
         </div>
       </header>
       <main class="showcase-main">

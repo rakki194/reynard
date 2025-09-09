@@ -26,40 +26,91 @@ export const IconGallery: Component = () => {
     { id: "theme", name: "Theme", icon: "palette" },
     { id: "animals", name: "Animals", icon: "fox" },
     { id: "security", name: "Security", icon: "lock" },
-    { id: "custom", name: "Custom", icon: "yipyap" }
+    { id: "custom", name: "Custom", icon: "yipyap" },
   ];
 
   // Get all available icons
   const allIcons = createMemo(() => {
-    const icons: Array<{ name: string; svg: string; category: string; metadata?: any }> = [];
-    
+    const icons: Array<{
+      name: string;
+      svg: string;
+      category: string;
+      metadata?: any;
+    }> = [];
+
     // This is a simplified approach - in a real implementation, you'd iterate through all icon packages
     const iconNames = [
       // Actions
-      "add", "delete", "edit", "save", "copy", "undo", "refresh", "checkmark",
+      "add",
+      "delete",
+      "edit",
+      "save",
+      "copy",
+      "undo",
+      "refresh",
+      "checkmark",
       // Interface
-      "settings", "search", "filter", "grid", "list", "eye", "dashboard", "chart",
+      "settings",
+      "search",
+      "filter",
+      "grid",
+      "list",
+      "eye",
+      "dashboard",
+      "chart",
       // Navigation
-      "home", "back", "forward", "menu", "breadcrumb",
+      "home",
+      "back",
+      "forward",
+      "menu",
+      "breadcrumb",
       // Files
-      "file", "folder", "upload", "download", "link",
+      "file",
+      "folder",
+      "upload",
+      "download",
+      "link",
       // Status
-      "success", "error", "warning", "info", "loading",
+      "success",
+      "error",
+      "warning",
+      "info",
+      "loading",
       // Media
-      "play", "pause", "stop", "volume", "camera",
+      "play",
+      "pause",
+      "stop",
+      "volume",
+      "camera",
       // Development
-      "code", "debug", "build", "git", "terminal",
+      "code",
+      "debug",
+      "build",
+      "git",
+      "terminal",
       // Theme
-      "light", "dark", "color", "palette", "contrast",
+      "light",
+      "dark",
+      "color",
+      "palette",
+      "contrast",
       // Animals
-      "fox", "cat", "dog", "bird",
+      "fox",
+      "cat",
+      "dog",
+      "bird",
       // Security
-      "lock", "unlock", "shield", "key",
+      "lock",
+      "unlock",
+      "shield",
+      "key",
       // Custom
-      "yipyap", "favicon", "reynard-logo"
+      "yipyap",
+      "favicon",
+      "reynard-logo",
     ];
 
-    iconNames.forEach(name => {
+    iconNames.forEach((name) => {
       const svgElement = fluentIconsPackage.getIcon(name);
       const metadata = fluentIconsPackage.getIconMetadata?.(name);
       if (svgElement) {
@@ -67,7 +118,7 @@ export const IconGallery: Component = () => {
           name,
           svg: svgElement.outerHTML, // Convert SVGElement to HTML string
           category: "interface",
-          metadata
+          metadata,
         });
       }
     });
@@ -78,20 +129,25 @@ export const IconGallery: Component = () => {
   // Filter icons based on search and category
   const filteredIcons = createMemo(() => {
     let filtered = allIcons();
-    
+
     if (selectedCategory() !== "all") {
-      filtered = filtered.filter(icon => icon.category === selectedCategory());
-    }
-    
-    if (searchTerm()) {
-      const term = searchTerm().toLowerCase();
-      filtered = filtered.filter(icon => 
-        icon.name.toLowerCase().includes(term) ||
-        icon.metadata?.description?.toLowerCase().includes(term) ||
-        icon.metadata?.keywords?.some((keyword: string) => keyword.toLowerCase().includes(term))
+      filtered = filtered.filter(
+        (icon) => icon.category === selectedCategory(),
       );
     }
-    
+
+    if (searchTerm()) {
+      const term = searchTerm().toLowerCase();
+      filtered = filtered.filter(
+        (icon) =>
+          icon.name.toLowerCase().includes(term) ||
+          icon.metadata?.description?.toLowerCase().includes(term) ||
+          icon.metadata?.keywords?.some((keyword: string) =>
+            keyword.toLowerCase().includes(term),
+          ),
+      );
+    }
+
     return filtered;
   });
 
@@ -154,9 +210,11 @@ export const IconGallery: Component = () => {
               class="category-select"
               title="Filter icons by category"
             >
-              <For each={categories}>{category => (
-                <option value={category.id}>{category.name}</option>
-              )}</For>
+              <For each={categories}>
+                {(category) => (
+                  <option value={category.id}>{category.name}</option>
+                )}
+              </For>
             </select>
           </div>
 
@@ -190,43 +248,49 @@ export const IconGallery: Component = () => {
       </div>
 
       <div class="gallery-stats">
-        <p>Showing {filteredIcons().length} of {allIcons().length} icons</p>
+        <p>
+          Showing {filteredIcons().length} of {allIcons().length} icons
+        </p>
       </div>
 
       <div class={`icon-gallery ${viewMode()}`}>
-        <For each={filteredIcons()}>{icon => (
-          <div 
-            class="icon-item"
-            onClick={() => handleIconClick(icon.name)}
-            title={icon.metadata?.description || icon.name}
-          >
-            <div class="icon-preview">
-              <div
-                class="icon-svg"
-                // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={icon.svg}
-              />
-            </div>
-            <div class="icon-info">
-              <span class="icon-name">{icon.name}</span>
-              {viewMode() === "list" && icon.metadata?.description && (
-                <span class="icon-description">{icon.metadata.description}</span>
-              )}
-            </div>
-            <button
-              class="icon-copy"
-              onClick={(e) => handleCopyIcon(icon.name, e)}
-              title="Copy SVG"
+        <For each={filteredIcons()}>
+          {(icon) => (
+            <div
+              class="icon-item"
+              onClick={() => handleIconClick(icon.name)}
+              title={icon.metadata?.description || icon.name}
             >
-              {fluentIconsPackage.getIcon("copy") && (
-                <span
+              <div class="icon-preview">
+                <div
+                  class="icon-svg"
                   // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={fluentIconsPackage.getIcon("copy")?.outerHTML}
+                  innerHTML={icon.svg}
                 />
-              )}
-            </button>
-          </div>
-        )}</For>
+              </div>
+              <div class="icon-info">
+                <span class="icon-name">{icon.name}</span>
+                {viewMode() === "list" && icon.metadata?.description && (
+                  <span class="icon-description">
+                    {icon.metadata.description}
+                  </span>
+                )}
+              </div>
+              <button
+                class="icon-copy"
+                onClick={(e) => handleCopyIcon(icon.name, e)}
+                title="Copy SVG"
+              >
+                {fluentIconsPackage.getIcon("copy") && (
+                  <span
+                    // eslint-disable-next-line solid/no-innerhtml
+                    innerHTML={fluentIconsPackage.getIcon("copy")?.outerHTML}
+                  />
+                )}
+              </button>
+            </div>
+          )}
+        </For>
       </div>
 
       {filteredIcons().length === 0 && (

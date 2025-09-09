@@ -1,24 +1,31 @@
 /**
  * Canvas Event Handlers for BoundingBoxEditor
- * 
+ *
  * Orchestrates all canvas interaction events by delegating to specialized handlers:
  * - Mouse events handled by mouseHandlers
  * - Object events handled by objectHandlers
  */
 
-import type { BoundingBox, EditorConfig, AnnotationEventHandlers } from '../types';
-import type { Setter, Accessor } from 'solid-js';
-import * as fabric from 'fabric';
-import { setupMouseHandlers } from './mouseHandlers';
-import { setupObjectHandlers } from './objectHandlers';
+import type {
+  BoundingBox,
+  EditorConfig,
+  AnnotationEventHandlers,
+} from "../types";
+import type { Setter, Accessor } from "solid-js";
+import * as fabric from "fabric";
+import { setupMouseHandlers } from "./mouseHandlers";
+import { setupObjectHandlers } from "./objectHandlers";
 
 export interface CanvasEventHandlersConfig {
   config: EditorConfig;
   eventHandlers: AnnotationEventHandlers;
+  scale?: number;
   boundingBoxes: {
     selectBox: (id: string) => void;
     addBox: (box: BoundingBox) => void;
     updateBox: (id: string, updates: Partial<BoundingBox>) => void;
+    removeBox: (id: string) => void;
+    getBox: (id: string) => BoundingBox | undefined;
   };
   isDrawing: Accessor<boolean>;
   setIsDrawing: Setter<boolean>;
@@ -33,11 +40,11 @@ export interface CanvasEventHandlersConfig {
 
 export function setupCanvasEventHandlers(
   canvas: fabric.Canvas,
-  config: CanvasEventHandlersConfig
+  config: CanvasEventHandlersConfig,
 ) {
   // Setup mouse event handlers
   setupMouseHandlers(canvas, config);
-  
+
   // Setup object event handlers
   setupObjectHandlers(canvas, config);
 }

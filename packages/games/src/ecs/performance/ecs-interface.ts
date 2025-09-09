@@ -1,32 +1,32 @@
 /**
  * @fileoverview Unified ECS Interface for WASM SIMD and TypeScript implementations.
- * 
+ *
  * This interface provides a common API that both WASM SIMD and TypeScript ECS
  * implementations must follow, enabling seamless switching between implementations
  * based on availability and performance requirements.
- * 
+ *
  * @example
  * ```typescript
  * import { createECSSystem } from './ecs-factory';
- * 
+ *
  * const ecs = await createECSSystem();
  * // Automatically uses WASM SIMD if available, falls back to TypeScript
- * 
+ *
  * const entity = ecs.spawn(new Position(0, 0), new Velocity(1, 1));
  * ecs.runSystems();
  * ```
- * 
+ *
  * @performance
  * - WASM SIMD: 4.2x speedup for position updates
  * - TypeScript: Full compatibility, no performance penalty for fallback
  * - Automatic detection and switching
- * 
+ *
  * @author Reynard ECS Team
  * @since 1.0.0
  */
 
-import { Entity, Component, Resource, World } from '../types';
-import { ComponentType, ResourceType } from '../types/storage';
+import { Entity, Component, Resource, World } from "../types";
+import { ComponentType, ResourceType } from "../types/storage";
 
 /**
  * Performance metrics for ECS operations.
@@ -41,7 +41,7 @@ export interface ECSPerformanceMetrics {
   /** Total memory usage (bytes) */
   memoryUsage: number;
   /** Performance mode currently active */
-  performanceMode: 'wasm-simd' | 'typescript' | 'hybrid';
+  performanceMode: "wasm-simd" | "typescript" | "hybrid";
 }
 
 /**
@@ -55,36 +55,36 @@ export interface ECSConfig {
   /** Enable performance monitoring */
   enableMetrics?: boolean;
   /** Preferred performance mode */
-  preferredMode?: 'wasm-simd' | 'typescript' | 'auto';
+  preferredMode?: "wasm-simd" | "typescript" | "auto";
   /** Fallback behavior when WASM fails */
-  fallbackBehavior?: 'silent' | 'warn' | 'error';
+  fallbackBehavior?: "silent" | "warn" | "error";
 }
 
 /**
  * Unified ECS interface that abstracts implementation details.
- * 
+ *
  * This interface provides a common API for both WASM SIMD and TypeScript
  * implementations, allowing seamless switching based on availability.
  */
 export interface UnifiedECS {
   /** The underlying world instance */
   readonly world: World;
-  
+
   /** Performance metrics for the current session */
   readonly metrics: ECSPerformanceMetrics;
-  
+
   /** Whether WASM SIMD acceleration is currently active */
   readonly isWASMActive: boolean;
-  
+
   /** The current performance mode */
-  readonly performanceMode: 'wasm-simd' | 'typescript' | 'hybrid';
-  
+  readonly performanceMode: "wasm-simd" | "typescript" | "hybrid";
+
   /**
    * Spawn a new entity with the given components.
-   * 
+   *
    * @param components - Components to attach to the new entity
    * @returns The newly created entity
-   * 
+   *
    * @example
    * ```typescript
    * const entity = ecs.spawn(
@@ -95,43 +95,43 @@ export interface UnifiedECS {
    * ```
    */
   spawn<T extends Component[]>(...components: T): Entity;
-  
+
   /**
    * Spawn an empty entity.
-   * 
+   *
    * @returns The newly created empty entity
    */
   spawnEmpty(): Entity;
-  
+
   /**
    * Despawn an entity and all its components.
-   * 
+   *
    * @param entity - The entity to despawn
    */
   despawn(entity: Entity): void;
-  
+
   /**
    * Insert components into an existing entity.
-   * 
+   *
    * @param entity - The entity to modify
    * @param components - Components to insert
    */
   insert<T extends Component[]>(entity: Entity, ...components: T): void;
-  
+
   /**
    * Remove components from an entity.
-   * 
+   *
    * @param entity - The entity to modify
    * @param componentTypes - Types of components to remove
    */
   remove(entity: Entity, ...componentTypes: ComponentType<Component>[]): void;
-  
+
   /**
    * Query entities with specific component combinations.
-   * 
+   *
    * @param componentTypes - Types of components to query for
    * @returns Query result with matching entities
-   * 
+   *
    * @example
    * ```typescript
    * const query = ecs.query(Position, Velocity);
@@ -141,26 +141,28 @@ export interface UnifiedECS {
    * }
    * ```
    */
-  query<T extends Component[]>(...componentTypes: ComponentType<Component>[]): IterableIterator<[Entity, ...T]>;
-  
+  query<T extends Component[]>(
+    ...componentTypes: ComponentType<Component>[]
+  ): IterableIterator<[Entity, ...T]>;
+
   /**
    * Add a resource to the world.
-   * 
+   *
    * @param resource - The resource to add
-   * 
+   *
    * @example
    * ```typescript
    * ecs.addResource(new GameTime(0.016, 1000));
    * ```
    */
   addResource<T extends Resource>(resource: T): void;
-  
+
   /**
    * Get a resource from the world.
-   * 
+   *
    * @param resourceType - The type of resource to get
    * @returns The resource instance
-   * 
+   *
    * @example
    * ```typescript
    * const gameTime = ecs.getResource(GameTime);
@@ -168,13 +170,13 @@ export interface UnifiedECS {
    * ```
    */
   getResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined;
-  
+
   /**
    * Register a system function.
-   * 
+   *
    * @param system - The system function to register
    * @param name - Optional name for the system
-   * 
+   *
    * @example
    * ```typescript
    * ecs.addSystem((world) => {
@@ -187,12 +189,12 @@ export interface UnifiedECS {
    * ```
    */
   addSystem(system: (world: World) => void, name?: string): void;
-  
+
   /**
    * Run all registered systems.
-   * 
+   *
    * @param deltaTime - Time elapsed since last frame
-   * 
+   *
    * @example
    * ```typescript
    * function gameLoop(deltaTime: number) {
@@ -202,30 +204,30 @@ export interface UnifiedECS {
    * ```
    */
   runSystems(deltaTime?: number): void;
-  
+
   /**
    * Clear all entities and resources from the world.
    */
   clear(): void;
-  
+
   /**
    * Get performance metrics for the current session.
-   * 
+   *
    * @returns Current performance metrics
    */
   getMetrics(): ECSPerformanceMetrics;
-  
+
   /**
    * Force switch to a specific performance mode.
-   * 
+   *
    * @param mode - The performance mode to switch to
    * @returns Whether the switch was successful
-   * 
+   *
    * @example
    * ```typescript
    * // Force TypeScript mode (useful for debugging)
    * ecs.setPerformanceMode('typescript');
-   * 
+   *
    * // Try to enable WASM SIMD
    * const success = ecs.setPerformanceMode('wasm-simd');
    * if (!success) {
@@ -233,8 +235,8 @@ export interface UnifiedECS {
    * }
    * ```
    */
-  setPerformanceMode(mode: 'wasm-simd' | 'typescript' | 'auto'): boolean;
-  
+  setPerformanceMode(mode: "wasm-simd" | "typescript" | "auto"): boolean;
+
   /**
    * Dispose of the ECS system and clean up resources.
    */
@@ -270,13 +272,13 @@ export type ECSFactory = (config?: ECSConfig) => Promise<UnifiedECS>;
 export interface WASMDetector {
   /** Check if WASM SIMD is supported */
   isWASMSupported(): boolean;
-  
+
   /** Check if WASM SIMD is available and ready */
   isWASMAvailable(): Promise<boolean>;
-  
+
   /** Get WASM SIMD capabilities */
   getCapabilities(): Promise<WASMSIMDCapabilities>;
-  
+
   /** Load WASM SIMD module */
   loadWASMModule(): Promise<boolean>;
 }

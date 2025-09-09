@@ -8,32 +8,18 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardErrorBoundaries",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format === "es" ? "js" : format}`,
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "reynard-core",
-        "reynard-components",
-      ],
+      external: ["solid-js"],
       output: {
         globals: {
-          "solid-js": "solid",
-          "solid-js/web": "solidWeb",
-          "reynard-core": "ReynardCore",
-          "reynard-components": "ReynardComponents",
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name && assetInfo.name.includes("css")) {
-            return "styles.css";
-          }
-          return assetInfo.name || "asset";
+          "solid-js": "SolidJS",
         },
       },
     },
-    target: "esnext",
     sourcemap: true,
-    cssCodeSplit: false,
+    target: "esnext",
   },
 });

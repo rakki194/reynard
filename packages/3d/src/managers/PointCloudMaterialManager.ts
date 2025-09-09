@@ -1,5 +1,10 @@
-import type { EmbeddingRenderingConfig, MaterialManager, MaterialLike, ThreeJSInterface } from '../types/rendering';
-import { generateMaterialCacheKey } from '../utils/rendering';
+import type {
+  EmbeddingRenderingConfig,
+  MaterialManager,
+  MaterialLike,
+  ThreeJSInterface,
+} from "../types/rendering";
+import { generateMaterialCacheKey } from "../utils/rendering";
 
 export class PointCloudMaterialManager implements MaterialManager {
   public threeJS: ThreeJSInterface;
@@ -77,11 +82,14 @@ export class PointCloudMaterialManager implements MaterialManager {
     return material;
   }
 
-  updateMaterial(material: MaterialLike, config: EmbeddingRenderingConfig): void {
+  updateMaterial(
+    material: MaterialLike,
+    config: EmbeddingRenderingConfig,
+  ): void {
     if (!material || !material.userData) return;
 
     const userData = material.userData;
-    
+
     // Update point material properties
     if (userData.isPointMaterial) {
       material.size = config.pointSize;
@@ -142,7 +150,7 @@ export class PointCloudMaterialManager implements MaterialManager {
   getOrCreatePointMaterial(config: EmbeddingRenderingConfig): MaterialLike {
     const cacheKey = generateMaterialCacheKey(config);
     const cached = this.materialCache.get(cacheKey);
-    
+
     if (cached && !this.disposedMaterials.has(cached)) {
       return cached;
     }
@@ -156,7 +164,7 @@ export class PointCloudMaterialManager implements MaterialManager {
   getStats(): { cached: number; disposed: number } {
     return {
       cached: this.materialCache.size,
-      disposed: this.disposedMaterials.size
+      disposed: this.disposedMaterials.size,
     };
   }
 

@@ -11,5 +11,15 @@ export { TimeSeriesChart, type TimeSeriesChartProps } from "./TimeSeriesChart";
 
 // New unified components with OKLCH integration
 export { Chart, type ChartProps } from "./Chart";
-export { RealTimeChart, type RealTimeChartProps, type RealTimeDataPoint } from "./RealTimeChart";
-export { StatisticalChart, type StatisticalChartProps, type StatisticalData, type QualityData, type QualityMetric } from "./StatisticalChart";
+export {
+  RealTimeChart,
+  type RealTimeChartProps,
+  type RealTimeDataPoint,
+} from "./RealTimeChart";
+export {
+  StatisticalChart,
+  type StatisticalChartProps,
+  type StatisticalData,
+  type QualityData,
+  type QualityMetric,
+} from "./StatisticalChart";

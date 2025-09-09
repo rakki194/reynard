@@ -3,10 +3,7 @@
  * Dynamic context menu with positioning and action handling
  */
 
-import {
-  Component,
-  splitProps,
-} from "solid-js";
+import { Component, splitProps } from "solid-js";
 import "./ContextMenu.css";
 import type { ContextMenuProps } from "./types";
 import { useContextMenu } from "./useContextMenu";
@@ -31,12 +28,8 @@ export const ContextMenu: Component<ContextMenuProps> = (props) => {
   ]);
 
   // Main composable
-  const {
-    state,
-    handleItemClick,
-    handleItemMouseEnter,
-    handleItemMouseLeave,
-  } = useContextMenu(local);
+  const { state, handleItemClick, handleItemMouseEnter, handleItemMouseLeave } =
+    useContextMenu(local);
 
   // Refs
   let menuRef: HTMLDivElement | undefined;

@@ -6,12 +6,16 @@
  * @module algorithms/performance/throttle
  */
 
-import type { ThrottleOptions, DebounceOptions } from './types';
+import type { ThrottleOptions, DebounceOptions } from "./types";
 
 /**
  * Throttle function execution
  */
-export function throttle<T extends (...args: any[]) => any>(func: T, wait: number, options: ThrottleOptions = {}): T {
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number,
+  options: ThrottleOptions = {},
+): T {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
   let lastArgs: any[] | null = null;
@@ -34,7 +38,9 @@ export function throttle<T extends (...args: any[]) => any>(func: T, wait: numbe
 
     if (trailing) {
       lastArgs = args;
-      const delay = maxWait ? Math.min(wait, maxWait - timeSinceLastExec) : wait;
+      const delay = maxWait
+        ? Math.min(wait, maxWait - timeSinceLastExec)
+        : wait;
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
@@ -50,7 +56,11 @@ export function throttle<T extends (...args: any[]) => any>(func: T, wait: numbe
 /**
  * Debounce function execution
  */
-export function debounce<T extends (...args: any[]) => any>(func: T, wait: number, options: DebounceOptions = {}): T {
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number,
+  options: DebounceOptions = {},
+): T {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
   let lastArgs: any[] | null = null;
@@ -73,7 +83,9 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 
     if (trailing) {
       lastArgs = args;
-      const delay = maxWait ? Math.min(wait, maxWait - timeSinceLastExec) : wait;
+      const delay = maxWait
+        ? Math.min(wait, maxWait - timeSinceLastExec)
+        : wait;
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {

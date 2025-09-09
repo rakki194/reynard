@@ -9,7 +9,7 @@ After analyzing the codebase and documentation, I discovered that the **caption 
 ### **Caption Generation System** (packages/annotating)
 
 - ✅ **AnnotationManager** - Complete orchestrator for caption generation
-- ✅ **AnnotationService** - Full service layer for caption operations  
+- ✅ **AnnotationService** - Full service layer for caption operations
 - ✅ **BaseCaptionGenerator** - Abstract base class for all generators
 - ✅ **Multiple Generators** - JTP2, WDv3, Florence2, JoyCaption support
 - ✅ **Batch Processing** - Efficient batch processing with progress tracking
@@ -108,7 +108,7 @@ class CaptionResult(Base):
 
 ```typescript
 // Test the existing caption generation
-import { AnnotationManager } from 'reynard-annotating';
+import { AnnotationManager } from "reynard-annotating";
 const manager = new AnnotationManager();
 await manager.start();
 // Test caption generation

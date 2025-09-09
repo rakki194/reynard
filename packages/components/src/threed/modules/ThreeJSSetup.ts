@@ -17,10 +17,10 @@ export interface ThreeJSObjects {
 
 export const createThreeJSSetup = async (
   container: HTMLDivElement,
-  config: ThreeJSSetupConfig
+  config: ThreeJSSetupConfig,
 ): Promise<ThreeJSObjects> => {
-  const THREE = await import('three');
-  
+  const THREE = await import("three");
+
   // Create scene
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(config.backgroundColor);
@@ -30,7 +30,7 @@ export const createThreeJSSetup = async (
     75,
     config.width / config.height,
     0.1,
-    1000
+    1000,
   );
   camera.position.z = 5;
 

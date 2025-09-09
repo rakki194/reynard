@@ -2,32 +2,32 @@
  * @fileoverview Main documentation site application
  */
 
-import { Component, createSignal, createEffect, onMount } from 'solid-js';
-import { Router, Route, Routes } from 'solid-router';
-import { useTheme } from 'reynard-themes';
-import { 
-  DocsLayout, 
-  DocsHeader, 
-  DocsSidebar, 
+import { Component, createSignal, createEffect, onMount } from "solid-js";
+import { Router, Route, Routes } from "solid-router";
+import { useTheme } from "reynard-themes";
+import {
+  DocsLayout,
+  DocsHeader,
+  DocsSidebar,
   DocsContent,
   DocsFooter,
   DocsNav,
   DocsSearch,
-  DocsSearchModal
-} from 'reynard-docs-components';
-import { createDocEngine, DocEngineConfig } from 'reynard-docs-core';
+  DocsSearchModal,
+} from "reynard-docs-components";
+import { createDocEngine, DocEngineConfig } from "reynard-docs-core";
 
 // Import pages
-import { HomePage } from './pages/HomePage';
-import { PackagePage } from './pages/PackagePage';
-import { ApiPage } from './pages/ApiPage';
-import { ExamplePage } from './pages/ExamplePage';
-import { SearchPage } from './pages/SearchPage';
-import { NotFoundPage } from './pages/NotFoundPage';
+import { HomePage } from "./pages/HomePage";
+import { PackagePage } from "./pages/PackagePage";
+import { ApiPage } from "./pages/ApiPage";
+import { ExamplePage } from "./pages/ExamplePage";
+import { SearchPage } from "./pages/SearchPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 // Import styles
-import 'reynard-docs-components/styles';
-import './App.css';
+import "reynard-docs-components/styles";
+import "./App.css";
 
 /**
  * Main application component
@@ -35,7 +35,7 @@ import './App.css';
 const App: Component = () => {
   const { theme, setTheme } = useTheme();
   const [docEngine, setDocEngine] = createSignal<any>(null);
-  const [searchQuery, setSearchQuery] = createSignal('');
+  const [searchQuery, setSearchQuery] = createSignal("");
   const [searchResults, setSearchResults] = createSignal<any[]>([]);
   const [isSearchModalOpen, setIsSearchModalOpen] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(true);
@@ -48,7 +48,7 @@ const App: Component = () => {
       setDocEngine(engine);
       setIsLoading(false);
     } catch (error) {
-      console.error('Failed to load documentation:', error);
+      console.error("Failed to load documentation:", error);
       setIsLoading(false);
     }
   });
@@ -71,7 +71,7 @@ const App: Component = () => {
   // Navigation items
   const navigationItems = () => {
     if (!docEngine()) return [];
-    
+
     const config = docEngine().config;
     return config.site.navigation.main || [];
   };
@@ -85,13 +85,13 @@ const App: Component = () => {
 
     return (
       <div class="docs-sidebar-content">
-        <DocsNav 
-          items={sections.map(section => ({
+        <DocsNav
+          items={sections.map((section) => ({
             label: section.title,
-            children: section.pages.map(page => ({
+            children: section.pages.map((page) => ({
               label: page.title,
-              href: `/${page.slug}`
-            }))
+              href: `/${page.slug}`,
+            })),
           }))}
           orientation="vertical"
         />
@@ -104,16 +104,16 @@ const App: Component = () => {
     <div class="docs-header-actions">
       <DocsSearch
         onSearch={handleSearch}
-        onClear={() => handleSearch('')}
+        onClear={() => handleSearch("")}
         placeholder="Search documentation..."
         class="docs-header-search"
       />
-      <button 
+      <button
         class="docs-theme-toggle"
-        onClick={() => setTheme(theme() === 'light' ? 'dark' : 'light')}
+        onClick={() => setTheme(theme() === "light" ? "dark" : "light")}
         aria-label="Toggle theme"
       >
-        {theme() === 'light' ? '🌙' : '☀️'}
+        {theme() === "light" ? "🌙" : "☀️"}
       </button>
     </div>
   );
@@ -138,7 +138,9 @@ const App: Component = () => {
             actions={headerActions()}
           />
         }
-        sidebar={<DocsSidebar title="Documentation">{sidebarContent()}</DocsSidebar>}
+        sidebar={
+          <DocsSidebar title="Documentation">{sidebarContent()}</DocsSidebar>
+        }
         footer={
           <DocsFooter>
             <div class="docs-footer-content">
@@ -169,11 +171,11 @@ const App: Component = () => {
         results={searchResults()}
         onResultClick={handleSearchResultClick}
         suggestions={[
-          'Getting Started',
-          'API Reference',
-          'Components',
-          'Themes',
-          'Examples'
+          "Getting Started",
+          "API Reference",
+          "Components",
+          "Themes",
+          "Examples",
         ]}
       />
     </Router>
@@ -186,44 +188,44 @@ const App: Component = () => {
 async function loadDocConfig(): Promise<DocEngineConfig> {
   try {
     // Try to load from generated docs
-    const response = await fetch('/docs-generated/docs-config.json');
+    const response = await fetch("/docs-generated/docs-config.json");
     if (response.ok) {
       return await response.json();
     }
   } catch (error) {
-    console.warn('Failed to load generated docs, using default config');
+    console.warn("Failed to load generated docs, using default config");
   }
 
   // Fallback to default configuration
   return {
     site: {
-      title: 'Reynard Documentation',
-      description: 'Beautiful documentation powered by Reynard framework',
-      baseUrl: '/',
+      title: "Reynard Documentation",
+      description: "Beautiful documentation powered by Reynard framework",
+      baseUrl: "/",
       theme: {
-        name: 'reynard-default',
-        primaryColor: '#6366f1',
-        secondaryColor: '#8b5cf6',
-        backgroundColor: '#ffffff',
-        textColor: '#1f2937',
-        accentColor: '#f59e0b'
+        name: "reynard-default",
+        primaryColor: "#6366f1",
+        secondaryColor: "#8b5cf6",
+        backgroundColor: "#ffffff",
+        textColor: "#1f2937",
+        accentColor: "#f59e0b",
       },
       navigation: {
         main: [
-          { label: 'Getting Started', href: '/getting-started' },
-          { label: 'Packages', href: '/packages' },
-          { label: 'API Reference', href: '/api' }
+          { label: "Getting Started", href: "/getting-started" },
+          { label: "Packages", href: "/packages" },
+          { label: "API Reference", href: "/api" },
         ],
         breadcrumbs: true,
-        sidebar: true
-      }
+        sidebar: true,
+      },
     },
     pages: [],
     sections: [],
     examples: [],
     api: [],
     customComponents: {},
-    plugins: []
+    plugins: [],
   };
 }
 

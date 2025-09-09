@@ -109,7 +109,7 @@ const app = useAppContext();
 // Theme management
 app.setTheme(nextTheme());
 // Translations
-const message = t('gallery.deleteSuccess');
+const message = t("gallery.deleteSuccess");
 // Notifications
 app.notify(message, "success");
 ```

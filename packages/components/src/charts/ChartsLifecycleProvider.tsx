@@ -12,7 +12,9 @@ interface ChartsLifecycleProviderProps {
   children: any;
 }
 
-export const ChartsLifecycleProvider: Component<ChartsLifecycleProviderProps> = (props) => {
+export const ChartsLifecycleProvider: Component<
+  ChartsLifecycleProviderProps
+> = (props) => {
   useChartsLifecycle({
     animationSpeed: props.state.animationSpeed,
     realTimeEnabled: props.state.realTimeEnabled,

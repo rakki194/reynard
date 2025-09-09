@@ -5,70 +5,77 @@
  * Based on the English template with placeholder translations
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // All 37 supported languages
 const languages = [
-  { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語' },
-  { code: 'fr', name: 'French', nativeName: 'Français' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский' },
-  { code: 'zh', name: 'Chinese', nativeName: '简体中文' },
-  { code: 'sv', name: 'Swedish', nativeName: 'Svenska' },
-  { code: 'pl', name: 'Polish', nativeName: 'Polski' },
-  { code: 'uk', name: 'Ukrainian', nativeName: 'Українська' },
-  { code: 'fi', name: 'Finnish', nativeName: 'Suomi' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español' },
-  { code: 'it', name: 'Italian', nativeName: 'Italiano' },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português' },
-  { code: 'pt-BR', name: 'Portuguese (Brazil)', nativeName: 'Português (Brasil)' },
-  { code: 'ko', name: 'Korean', nativeName: '한국어' },
-  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands' },
-  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe' },
-  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt' },
-  { code: 'th', name: 'Thai', nativeName: 'ไทย' },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
-  { code: 'he', name: 'Hebrew', nativeName: 'עברית' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
-  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' },
-  { code: 'cs', name: 'Czech', nativeName: 'Čeština' },
-  { code: 'el', name: 'Greek', nativeName: 'Ελληνικά' },
-  { code: 'hu', name: 'Hungarian', nativeName: 'Magyar' },
-  { code: 'ro', name: 'Romanian', nativeName: 'Română' },
-  { code: 'bg', name: 'Bulgarian', nativeName: 'Български' },
-  { code: 'da', name: 'Danish', nativeName: 'Dansk' },
-  { code: 'nb', name: 'Norwegian', nativeName: 'Norsk' },
-  { code: 'sk', name: 'Slovak', nativeName: 'Slovenčina' },
-  { code: 'sl', name: 'Slovenian', nativeName: 'Slovenščina' },
-  { code: 'hr', name: 'Croatian', nativeName: 'Hrvatski' },
-  { code: 'et', name: 'Estonian', nativeName: 'Eesti' },
-  { code: 'lv', name: 'Latvian', nativeName: 'Latviešu' },
-  { code: 'lt', name: 'Lithuanian', nativeName: 'Lietuvių' },
-  { code: 'mt', name: 'Maltese', nativeName: 'Malti' },
+  { code: "en", name: "English", nativeName: "English" },
+  { code: "ja", name: "Japanese", nativeName: "日本語" },
+  { code: "fr", name: "French", nativeName: "Français" },
+  { code: "ru", name: "Russian", nativeName: "Русский" },
+  { code: "zh", name: "Chinese", nativeName: "简体中文" },
+  { code: "sv", name: "Swedish", nativeName: "Svenska" },
+  { code: "pl", name: "Polish", nativeName: "Polski" },
+  { code: "uk", name: "Ukrainian", nativeName: "Українська" },
+  { code: "fi", name: "Finnish", nativeName: "Suomi" },
+  { code: "de", name: "German", nativeName: "Deutsch" },
+  { code: "es", name: "Spanish", nativeName: "Español" },
+  { code: "it", name: "Italian", nativeName: "Italiano" },
+  { code: "pt", name: "Portuguese", nativeName: "Português" },
+  {
+    code: "pt-BR",
+    name: "Portuguese (Brazil)",
+    nativeName: "Português (Brasil)",
+  },
+  { code: "ko", name: "Korean", nativeName: "한국어" },
+  { code: "nl", name: "Dutch", nativeName: "Nederlands" },
+  { code: "tr", name: "Turkish", nativeName: "Türkçe" },
+  { code: "vi", name: "Vietnamese", nativeName: "Tiếng Việt" },
+  { code: "th", name: "Thai", nativeName: "ไทย" },
+  { code: "ar", name: "Arabic", nativeName: "العربية" },
+  { code: "he", name: "Hebrew", nativeName: "עברית" },
+  { code: "hi", name: "Hindi", nativeName: "हिन्दी" },
+  { code: "id", name: "Indonesian", nativeName: "Bahasa Indonesia" },
+  { code: "cs", name: "Czech", nativeName: "Čeština" },
+  { code: "el", name: "Greek", nativeName: "Ελληνικά" },
+  { code: "hu", name: "Hungarian", nativeName: "Magyar" },
+  { code: "ro", name: "Romanian", nativeName: "Română" },
+  { code: "bg", name: "Bulgarian", nativeName: "Български" },
+  { code: "da", name: "Danish", nativeName: "Dansk" },
+  { code: "nb", name: "Norwegian", nativeName: "Norsk" },
+  { code: "sk", name: "Slovak", nativeName: "Slovenčina" },
+  { code: "sl", name: "Slovenian", nativeName: "Slovenščina" },
+  { code: "hr", name: "Croatian", nativeName: "Hrvatski" },
+  { code: "et", name: "Estonian", nativeName: "Eesti" },
+  { code: "lv", name: "Latvian", nativeName: "Latviešu" },
+  { code: "lt", name: "Lithuanian", nativeName: "Lietuvių" },
+  { code: "mt", name: "Maltese", nativeName: "Malti" },
 ];
 
 // Read the English template
-const englishTemplate = fs.readFileSync(path.join(__dirname, '../src/lang/en.ts'), 'utf8');
+const englishTemplate = fs.readFileSync(
+  path.join(__dirname, "../src/lang/en.ts"),
+  "utf8",
+);
 
 // Generate placeholder translations for each language
-languages.forEach(lang => {
-  if (lang.code === 'en') return; // Skip English, already exists
-  
-  const langDir = path.join(__dirname, '../src/lang');
+languages.forEach((lang) => {
+  if (lang.code === "en") return; // Skip English, already exists
+
+  const langDir = path.join(__dirname, "../src/lang");
   const langFile = path.join(langDir, `${lang.code}.ts`);
-  
+
   // Skip if file already exists (manually created)
   if (fs.existsSync(langFile)) {
     console.log(`Skipping ${lang.code} - file already exists`);
     return;
   }
-  
+
   // Generate placeholder content
   const placeholderContent = `/**
  * ${lang.name} translations for Reynard framework
@@ -377,20 +384,20 @@ export default {
   },
 } as const satisfies Translations;
 `;
-  
+
   // Ensure directory exists
   if (!fs.existsSync(langDir)) {
     fs.mkdirSync(langDir, { recursive: true });
   }
-  
+
   // Write the file
   fs.writeFileSync(langFile, placeholderContent);
   console.log(`Generated placeholder for ${lang.code} (${lang.nativeName})`);
 });
 
-console.log('\\n🎉 Generated placeholder translation files for all languages!');
-console.log('\\n📝 Next steps:');
-console.log('1. Translate the placeholder content to the respective languages');
-console.log('2. Test the translations in your application');
-console.log('3. Update any language-specific pluralization rules if needed');
-console.log('\\n🦦> Happy translating with Reynard i18n!');
+console.log("\\n🎉 Generated placeholder translation files for all languages!");
+console.log("\\n📝 Next steps:");
+console.log("1. Translate the placeholder content to the respective languages");
+console.log("2. Test the translations in your application");
+console.log("3. Update any language-specific pluralization rules if needed");
+console.log("\\n🦦> Happy translating with Reynard i18n!");

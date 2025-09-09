@@ -15,7 +15,7 @@ export interface UseImageViewerStateReturn {
 export const useImageViewerState = (
   config: ImageViewerConfig,
   onZoomChange?: (zoom: number) => void,
-  onPanChange?: (x: number, y: number) => void
+  onPanChange?: (x: number, y: number) => void,
 ): UseImageViewerStateReturn => {
   const [state, setState] = createSignal<ImageViewerState>({
     zoom: config.initialZoom,

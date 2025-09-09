@@ -27,9 +27,7 @@ export const OKLCHShowcasePage: Component = () => {
             )}
             Back to Home
           </button>
-          <h1 class="page-title">
-            OKLCH Color Showcase
-          </h1>
+          <h1 class="page-title">OKLCH Color Showcase</h1>
         </div>
       </header>
       <main class="showcase-main">

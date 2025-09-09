@@ -3,7 +3,13 @@
  * Interactive point cloud with theme-aware colors
  */
 
-import { Component, createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import {
+  Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  createEffect,
+} from "solid-js";
 import { useVisualizationEngine } from "reynard-charts";
 
 interface PointCloudVisualizationProps {
@@ -13,10 +19,12 @@ interface PointCloudVisualizationProps {
   pointCount?: number;
 }
 
-export const PointCloudVisualization: Component<PointCloudVisualizationProps> = (props) => {
+export const PointCloudVisualization: Component<
+  PointCloudVisualizationProps
+> = (props) => {
   const [container, setContainer] = createSignal<HTMLDivElement>();
   const [isInitialized, setIsInitialized] = createSignal(false);
-  
+
   let scene: any = null;
   let camera: any = null;
   let renderer: any = null;
@@ -26,22 +34,24 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
   // Get theme-based color palette
   const getThemeColors = (theme: string): string[] => {
     const colorPalettes = {
-      light: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
-      dark: ['#60a5fa', '#f87171', '#34d399', '#fbbf24'],
-      gray: ['#9ca3af', '#ef4444', '#10b981', '#f59e0b'],
-      banana: ['#fbbf24', '#f59e0b', '#d97706', '#92400e'],
-      strawberry: ['#f87171', '#ef4444', '#dc2626', '#991b1b'],
-      peanut: ['#d97706', '#b45309', '#92400e', '#78350f']
+      light: ["#3b82f6", "#ef4444", "#10b981", "#f59e0b"],
+      dark: ["#60a5fa", "#f87171", "#34d399", "#fbbf24"],
+      gray: ["#9ca3af", "#ef4444", "#10b981", "#f59e0b"],
+      banana: ["#fbbf24", "#f59e0b", "#d97706", "#92400e"],
+      strawberry: ["#f87171", "#ef4444", "#dc2626", "#991b1b"],
+      peanut: ["#d97706", "#b45309", "#92400e", "#78350f"],
     };
-    return colorPalettes[theme as keyof typeof colorPalettes] || colorPalettes.dark;
+    return (
+      colorPalettes[theme as keyof typeof colorPalettes] || colorPalettes.dark
+    );
   };
 
   const initializeThreeJS = async () => {
     if (!container() || isInitialized()) return;
 
     try {
-      const THREE = await import('three');
-      
+      const THREE = await import("three");
+
       // Create scene with theme-aware background
       scene = new THREE.Scene();
       const bgColor = getThemeBackgroundColor();
@@ -52,7 +62,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
         75,
         (props.width || 400) / (props.height || 300),
         0.1,
-        1000
+        1000,
       );
       camera.position.z = 5;
 
@@ -77,19 +87,26 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       animate();
       setIsInitialized(true);
     } catch (error) {
-      console.error('Failed to initialize Three.js:', error);
+      console.error("Failed to initialize Three.js:", error);
     }
   };
 
   const getThemeBackgroundColor = () => {
     switch (props.theme) {
-      case 'light': return '#ffffff';
-      case 'dark': return '#1a1a1a';
-      case 'gray': return '#2a2a2a';
-      case 'banana': return '#fff8dc';
-      case 'strawberry': return '#ffe4e1';
-      case 'peanut': return '#f5deb3';
-      default: return '#1a1a1a';
+      case "light":
+        return "#ffffff";
+      case "dark":
+        return "#1a1a1a";
+      case "gray":
+        return "#2a2a2a";
+      case "banana":
+        return "#fff8dc";
+      case "strawberry":
+        return "#ffe4e1";
+      case "peanut":
+        return "#f5deb3";
+      default:
+        return "#1a1a1a";
     }
   };
 
@@ -110,7 +127,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       // Create 3 clusters
       const cluster = Math.floor(i / (pointCount / 3));
       const clusterOffset = (cluster - 1) * 3;
-      
+
       const angle = (i / (pointCount / 3)) * Math.PI * 2;
       const radius = Math.random() * 1.5;
       const x = Math.cos(angle) * radius + clusterOffset;
@@ -130,14 +147,14 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       colors[i * 3 + 2] = color.b;
     }
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
       size: 0.03,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8
+      opacity: 0.8,
     });
 
     points = new THREE.Points(geometry, material);
@@ -160,21 +177,21 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
   // Update colors when theme changes
   createEffect(() => {
     if (isInitialized() && points) {
-      import('three').then(THREE => {
+      import("three").then((THREE) => {
         const colorPalette = getThemeColors(props.theme);
         const colors = points.geometry.attributes.color.array;
-        
+
         for (let i = 0; i < colors.length; i += 3) {
-          const cluster = Math.floor((i / 3) / (colors.length / 3 / 3));
+          const cluster = Math.floor(i / 3 / (colors.length / 3 / 3));
           const colorIndex = cluster % colorPalette.length;
           const color = new THREE.Color(colorPalette[colorIndex]);
           colors[i] = color.r;
           colors[i + 1] = color.g;
           colors[i + 2] = color.b;
         }
-        
+
         points.geometry.attributes.color.needsUpdate = true;
-        
+
         // Update background color
         if (scene) {
           scene.background = new THREE.Color(getThemeBackgroundColor());
@@ -196,10 +213,5 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
     }
   });
 
-  return (
-    <div 
-      ref={setContainer}
-      class="simple-threed-container"
-    />
-  );
+  return <div ref={setContainer} class="simple-threed-container" />;
 };

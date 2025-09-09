@@ -11,11 +11,13 @@ export class CodeProcessor extends InlineProcessor {
   process(text: string): string {
     return text.replace(MARKDOWN_PATTERNS.code, (match, content) => {
       // Create a code node for tracking
-      this.nodes.push(this.createTrackingNode({
-        type: "code",
-        content: content.trim(),
-        inline: true,
-      }));
+      this.nodes.push(
+        this.createTrackingNode({
+          type: "code",
+          content: content.trim(),
+          inline: true,
+        }),
+      );
       return `<code>${content}</code>`;
     });
   }

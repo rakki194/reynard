@@ -228,10 +228,7 @@ console.log(`Processed ${results.length} files`);
 ### File Type Detection
 
 ```typescript
-import {
-  getFileTypeInfo,
-  isSupportedExtension,
-} from "reynard-file-processing";
+import { getFileTypeInfo, isSupportedExtension } from "reynard-file-processing";
 
 const fileInfo = getFileTypeInfo(".jpg");
 console.log(fileInfo);

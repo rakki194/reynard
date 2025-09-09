@@ -59,7 +59,7 @@ export interface QualityData {
   metrics: QualityMetric[];
   /** Quality assessment */
   assessment: {
-    status: 'excellent' | 'good' | 'fair' | 'poor';
+    status: "excellent" | "good" | "fair" | "poor";
     issues: string[];
     recommendations: string[];
   };
@@ -67,7 +67,7 @@ export interface QualityData {
 
 export interface StatisticalChartProps extends ChartConfig {
   /** Chart type */
-  type: 'histogram' | 'boxplot' | 'quality-bar' | 'quality-gauge';
+  type: "histogram" | "boxplot" | "quality-bar" | "quality-gauge";
   /** Statistical data */
   data: StatisticalData | QualityData;
   /** Number of bins for histogram (auto-calculated if not provided) */
@@ -77,7 +77,7 @@ export interface StatisticalChartProps extends ChartConfig {
   /** Whether to show assessment details */
   showAssessment?: boolean;
   /** Color scheme */
-  colorScheme?: 'default' | 'gradient' | 'status';
+  colorScheme?: "default" | "gradient" | "status";
   /** Custom class name */
   class?: string;
   /** Loading state */
@@ -96,7 +96,7 @@ const defaultProps = {
   numBins: 20,
   showStatistics: true,
   showAssessment: true,
-  colorScheme: 'default',
+  colorScheme: "default",
   loading: false,
   emptyMessage: "No data available",
 };
@@ -141,16 +141,16 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     }
 
     switch (local.type) {
-      case 'histogram':
+      case "histogram":
         setChartData(processHistogramData(local.data as StatisticalData));
         break;
-      case 'boxplot':
+      case "boxplot":
         setChartData(processBoxPlotData(local.data as StatisticalData));
         break;
-      case 'quality-bar':
+      case "quality-bar":
         setChartData(processQualityBarData(local.data as QualityData));
         break;
-      case 'quality-gauge':
+      case "quality-gauge":
         setChartData(processQualityGaugeData(local.data as QualityData));
         break;
       default:
@@ -164,7 +164,8 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     }
 
     const values = data.values;
-    const numBins = local.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
+    const numBins =
+      local.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
 
     // Calculate bin edges
     const min = Math.min(...values);
@@ -182,7 +183,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     for (let i = 0; i < numBins; i++) {
       const binStart = bins[i];
       const binEnd = bins[i + 1];
-      const count = values.filter(v => v >= binStart && v < binEnd).length;
+      const count = values.filter((v) => v >= binStart && v < binEnd).length;
       binCounts.push(count);
     }
 
@@ -194,18 +195,21 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     });
 
     const colors = visualization.generateColors(1);
-    const backgroundColor = colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
+    const backgroundColor =
+      colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
     const borderColor = colors[0] || "rgba(54, 162, 235, 1)";
 
     return {
       labels,
-      datasets: [{
-        label: 'Frequency',
-        data: binCounts,
-        backgroundColor,
-        borderColor,
-        borderWidth: 1,
-      }],
+      datasets: [
+        {
+          label: "Frequency",
+          data: binCounts,
+          backgroundColor,
+          borderColor,
+          borderWidth: 1,
+        },
+      ],
     };
   };
 
@@ -227,49 +231,54 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
 
     // Create box plot data points
     const boxPlotPoints = [
-      { label: 'Min', value: min },
-      { label: 'Q1', value: q1 },
-      { label: 'Median', value: median },
-      { label: 'Q3', value: q3 },
-      { label: 'Max', value: max },
-      { label: 'Mean', value: mean },
+      { label: "Min", value: min },
+      { label: "Q1", value: q1 },
+      { label: "Median", value: median },
+      { label: "Q3", value: q3 },
+      { label: "Max", value: max },
+      { label: "Mean", value: mean },
     ];
 
     const colors = visualization.generateColors(1);
-    const backgroundColor = colors[0]?.replace("1)", "0.6)") || "rgba(255, 99, 132, 0.6)";
+    const backgroundColor =
+      colors[0]?.replace("1)", "0.6)") || "rgba(255, 99, 132, 0.6)";
     const borderColor = colors[0] || "rgba(255, 99, 132, 1)";
 
     return {
-      labels: boxPlotPoints.map(p => p.label),
-      datasets: [{
-        label: 'Value',
-        data: boxPlotPoints.map(p => p.value),
-        backgroundColor,
-        borderColor,
-        borderWidth: 2,
-        pointBackgroundColor: borderColor,
-        pointBorderColor: '#fff',
-        pointBorderWidth: 1,
-        pointRadius: 6,
-        pointHoverRadius: 8,
-      }],
+      labels: boxPlotPoints.map((p) => p.label),
+      datasets: [
+        {
+          label: "Value",
+          data: boxPlotPoints.map((p) => p.value),
+          backgroundColor,
+          borderColor,
+          borderWidth: 2,
+          pointBackgroundColor: borderColor,
+          pointBorderColor: "#fff",
+          pointBorderWidth: 1,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+        },
+      ],
     };
   };
 
   const processQualityBarData = (data: QualityData) => {
-    const labels = data.metrics.map(m => m.name);
-    const values = data.metrics.map(m => m.value);
-    const colors = data.metrics.map(m => getMetricColor(m));
+    const labels = data.metrics.map((m) => m.name);
+    const values = data.metrics.map((m) => m.value);
+    const colors = data.metrics.map((m) => getMetricColor(m));
 
     return {
       labels,
-      datasets: [{
-        label: 'Quality Score',
-        data: values,
-        backgroundColor: colors.map(c => c.replace('1)', '0.6)')),
-        borderColor: colors,
-        borderWidth: 2,
-      }],
+      datasets: [
+        {
+          label: "Quality Score",
+          data: values,
+          backgroundColor: colors.map((c) => c.replace("1)", "0.6)")),
+          borderColor: colors,
+          borderWidth: 2,
+        },
+      ],
     };
   };
 
@@ -278,45 +287,54 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     const remaining = 100 - score;
 
     // Determine color based on score
-    let color = 'rgba(255, 99, 132, 1)'; // Red
+    let color = "rgba(255, 99, 132, 1)"; // Red
     if (score >= 80) {
-      color = 'rgba(75, 192, 192, 1)'; // Green
+      color = "rgba(75, 192, 192, 1)"; // Green
     } else if (score >= 60) {
-      color = 'rgba(255, 205, 86, 1)'; // Yellow
+      color = "rgba(255, 205, 86, 1)"; // Yellow
     }
 
     return {
-      labels: ['Quality Score', 'Remaining'],
-      datasets: [{
-        label: 'Quality Score',
-        data: [score, remaining],
-        backgroundColor: [color, 'rgba(200, 200, 200, 0.3)'],
-        borderColor: [color, 'rgba(200, 200, 200, 0.5)'],
-        borderWidth: 2,
-      }],
+      labels: ["Quality Score", "Remaining"],
+      datasets: [
+        {
+          label: "Quality Score",
+          data: [score, remaining],
+          backgroundColor: [color, "rgba(200, 200, 200, 0.3)"],
+          borderColor: [color, "rgba(200, 200, 200, 0.5)"],
+          borderWidth: 2,
+        },
+      ],
     };
   };
 
   const getMetricColor = (metric: QualityMetric) => {
     if (metric.color) return metric.color;
 
-    if (metric.goodThreshold !== undefined && metric.warningThreshold !== undefined) {
+    if (
+      metric.goodThreshold !== undefined &&
+      metric.warningThreshold !== undefined
+    ) {
       if (metric.higherIsBetter) {
-        if (metric.value >= metric.goodThreshold) return 'rgba(75, 192, 192, 1)'; // Green
-        if (metric.value >= metric.warningThreshold) return 'rgba(255, 205, 86, 1)'; // Yellow
-        return 'rgba(255, 99, 132, 1)'; // Red
+        if (metric.value >= metric.goodThreshold)
+          return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value >= metric.warningThreshold)
+          return "rgba(255, 205, 86, 1)"; // Yellow
+        return "rgba(255, 99, 132, 1)"; // Red
       } else {
-        if (metric.value <= metric.goodThreshold) return 'rgba(75, 192, 192, 1)'; // Green
-        if (metric.value <= metric.warningThreshold) return 'rgba(255, 205, 86, 1)'; // Yellow
-        return 'rgba(255, 99, 132, 1)'; // Red
+        if (metric.value <= metric.goodThreshold)
+          return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value <= metric.warningThreshold)
+          return "rgba(255, 205, 86, 1)"; // Yellow
+        return "rgba(255, 99, 132, 1)"; // Red
       }
     }
 
-    return 'rgba(54, 162, 235, 1)'; // Default blue
+    return "rgba(54, 162, 235, 1)"; // Default blue
   };
 
   const renderStatisticsOverlay = () => {
-    if (!local.showStatistics || !('statistics' in local.data)) return null;
+    if (!local.showStatistics || !("statistics" in local.data)) return null;
 
     const stats = (local.data as StatisticalData).statistics;
     if (!stats) return null;
@@ -344,14 +362,14 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
   };
 
   const renderQualityAssessment = () => {
-    if (!local.showAssessment || !('assessment' in local.data)) return null;
+    if (!local.showAssessment || !("assessment" in local.data)) return null;
 
     const assessment = (local.data as QualityData).assessment;
     const statusColors = {
-      excellent: 'rgba(75, 192, 192, 1)',
-      good: 'rgba(54, 162, 235, 1)',
-      fair: 'rgba(255, 205, 86, 1)',
-      poor: 'rgba(255, 99, 132, 1)',
+      excellent: "rgba(75, 192, 192, 1)",
+      good: "rgba(54, 162, 235, 1)",
+      fair: "rgba(255, 205, 86, 1)",
+      poor: "rgba(255, 99, 132, 1)",
     };
 
     return (
@@ -361,12 +379,12 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           <div
             class="status-badge"
             style={{
-              'background-color': statusColors[assessment.status],
-              color: 'white',
-              padding: '4px 8px',
-              'border-radius': '4px',
-              'font-size': '12px',
-              'font-weight': 'bold',
+              "background-color": statusColors[assessment.status],
+              color: "white",
+              padding: "4px 8px",
+              "border-radius": "4px",
+              "font-size": "12px",
+              "font-weight": "bold",
             }}
           >
             {assessment.status.toUpperCase()}
@@ -377,7 +395,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           <div class="issues-section">
             <h5>Issues Found:</h5>
             <ul>
-              {assessment.issues.map(issue => (
+              {assessment.issues.map((issue) => (
                 <li>{issue}</li>
               ))}
             </ul>
@@ -388,7 +406,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           <div class="recommendations-section">
             <h5>Recommendations:</h5>
             <ul>
-              {assessment.recommendations.map(rec => (
+              {assessment.recommendations.map((rec) => (
                 <li>{rec}</li>
               ))}
             </ul>
@@ -399,7 +417,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
   };
 
   return (
-    <div class={`reynard-statistical-chart ${local.class || ''}`}>
+    <div class={`reynard-statistical-chart ${local.class || ""}`}>
       <Show when={local.loading}>
         <div
           style={{
@@ -411,7 +429,9 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           }}
         >
           <div class="loading-spinner"></div>
-          <span style={{ "margin-left": "10px" }}>Loading statistical data...</span>
+          <span style={{ "margin-left": "10px" }}>
+            Loading statistical data...
+          </span>
         </div>
       </Show>
 
@@ -432,20 +452,26 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
 
       <Show when={!local.loading && chartData()}>
         <Chart
-          type={local.type === 'quality-gauge' ? 'doughnut' : 'bar'}
+          type={local.type === "quality-gauge" ? "doughnut" : "bar"}
           labels={chartData()!.labels}
           datasets={chartData()!.datasets}
           width={others.width}
           height={others.height}
           title={others.title}
-          xAxisLabel={others.xAxisLabel || (local.type === 'histogram' ? 'Value Range' : 'Metric')}
-          yAxisLabel={others.yAxisLabel || (local.type === 'histogram' ? 'Frequency' : 'Value')}
+          xAxisLabel={
+            others.xAxisLabel ||
+            (local.type === "histogram" ? "Value Range" : "Metric")
+          }
+          yAxisLabel={
+            others.yAxisLabel ||
+            (local.type === "histogram" ? "Frequency" : "Value")
+          }
           showGrid={others.showGrid}
           showLegend={others.showLegend}
           useOKLCH={true}
           colorTheme={local.theme}
         />
-        
+
         {renderStatisticsOverlay()}
         {renderQualityAssessment()}
       </Show>

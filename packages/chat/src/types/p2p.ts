@@ -3,7 +3,7 @@
  *
  * Extends the base chat types to support direct messaging between users
  * while sharing core infrastructure with assistant chat.
- * 
+ *
  * This file now serves as a backward-compatible re-export of modular type definitions.
  * All types are organized into focused modules under the p2p/ directory.
  */

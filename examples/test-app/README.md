@@ -40,7 +40,7 @@ reynard-test-app/
 ```json
 {
   "reynard-core": "file:../reynard/packages/core",
-  "reynard-components": "file:../reynard/packages/components", 
+  "reynard-components": "file:../reynard/packages/components",
   "solid-js": "1.9.9"
 }
 ```
@@ -71,7 +71,7 @@ reynard-test-app/
 The test application demonstrates 8 comprehensive themes:
 
 1. **Light** - Clean, bright default theme
-2. **Dark** - Easy-on-eyes dark theme  
+2. **Dark** - Easy-on-eyes dark theme
 3. **Gray** - Professional neutral theme
 4. **Banana** - Warm, cheerful yellow theme
 5. **Strawberry** - Vibrant, energetic red theme
@@ -134,7 +134,7 @@ Each theme overrides these variables using the `data-theme` attribute selector:
 - **Variants**: Multiple button styles and states
 - **Accessibility**: Full keyboard navigation and screen reader support
 
-#### Card Component  
+#### Card Component
 
 - **Source**: `reynard-components`
 - **Features**: Flexible container with consistent styling
@@ -150,13 +150,11 @@ import { useTheme } from "reynard-themes";
 
 function App() {
   const { setTheme } = useTheme();
-  
+
   return (
     <ReynardProvider>
       <Card>
-        <Button onClick={() => setTheme("dark")}>
-          Switch Theme
-        </Button>
+        <Button onClick={() => setTheme("dark")}>Switch Theme</Button>
       </Card>
     </ReynardProvider>
   );
@@ -195,14 +193,14 @@ function App() {
 ### Vite Configuration
 
 ```typescript
-import { defineConfig } from 'vite';
-import solid from 'vite-plugin-solid';
+import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
   plugins: [solid()],
   server: {
-    port: 3001
-  }
+    port: 3001,
+  },
 });
 ```
 

@@ -1,16 +1,15 @@
-# reynard-annotating
+# Reynard Annotating
 
-A comprehensive annotation and caption generation system for Reynard applications that handles image captioning, tagging, and annotation workflows.
+Unified annotation system for Reynard with production features and modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
 
 ## Features
 
-- **Caption Generation**: Support for multiple caption generation models (JTP2, JoyCaption, WDv3, Florence2)
-- **Tag Generation**: Specialized taggers for different types of content
-- **Batch Processing**: Efficient batch processing with progress tracking
-- **Model Management**: Automatic model loading, unloading, and lifecycle management
-- **Post-Processing**: Configurable post-processing rules for caption cleanup
-- **Event System**: Comprehensive event system for annotation lifecycle events
-- **TypeScript Support**: Full TypeScript support with comprehensive type definitions
+- **Backend Integration**: Interfaces with FastAPI backend for caption generation
+- **Simplified Architecture**: No complex local model management
+- **Type Safety**: Full TypeScript support with comprehensive types
+- **Event System**: Real-time event handling for caption lifecycle
+- **Configuration Packages**: Individual packages for generator configurations
+- **Easy Migration**: Simple migration from legacy local mode
 
 ## Installation
 
@@ -20,287 +19,274 @@ npm install reynard-annotating
 
 ## Quick Start
 
+### Backend Mode (Recommended)
+
 ```typescript
-import { AnnotationManager, CaptionType, CaptionTask } from 'reynard-annotating';
+import {
+  createBackendAnnotationManager,
+  DEFAULT_BACKEND_CONFIG,
+  type CaptionTask,
+} from "reynard-annotating";
 
-// Create annotation manager with backend integration
-const annotationManager = new AnnotationManager();
-
-// Start the manager
-await annotationManager.start();
-
-// Get available generators (now async)
-const generators = await annotationManager.getAvailableGenerators();
-console.log('Available generators:', generators);
-
-// Generate a caption
-const task: CaptionTask = {
-  imagePath: '/path/to/image.jpg',
-  generatorName: 'jtp2',
-  config: { threshold: 0.2 },
-  postProcess: true
-};
-
-const service = annotationManager.getService();
-const result = await service.generateCaption(task);
-
-console.log('Generated caption:', result.caption);
-console.log('Caption type:', result.captionType);
-console.log('Processing time:', result.processingTime);
-
-// Generate captions in batch
-const tasks: CaptionTask[] = [
-  { imagePath: '/path/to/image1.jpg', generatorName: 'jtp2' },
-  { imagePath: '/path/to/image2.jpg', generatorName: 'joycaption' }
-];
-
-const results = await service.generateBatchCaptions(tasks, (progress) => {
-  console.log(`Progress: ${progress.progress}% (${progress.completed}/${progress.total})`);
+// Create backend manager that interfaces with FastAPI backend
+const manager = createBackendAnnotationManager({
+  ...DEFAULT_BACKEND_CONFIG,
+  baseUrl: "http://localhost:8000", // Your FastAPI backend URL
 });
 
-// Stop the manager
-await annotationManager.stop();
+// Initialize connection to backend
+await manager.initialize();
+
+// Generate captions using different generators
+const furryTags = await manager.generateFurryTags("/path/to/image.jpg");
+const detailedCaption =
+  await manager.generateDetailedCaption("/path/to/image.jpg");
+const animeTags = await manager.generateAnimeTags("/path/to/image.jpg");
+
+// Or use the service directly
+const service = manager.getService();
+const task: CaptionTask = {
+  imagePath: "/path/to/image.jpg",
+  generatorName: "jtp2",
+  config: { threshold: 0.2 },
+};
+
+const result = await service.generateCaption(task);
+console.log("Generated caption:", result.caption);
+
+// Monitor system health
+const health = manager.getHealthStatus();
+console.log("System healthy:", health.isHealthy);
+
+// Cleanup
+await manager.shutdown();
 ```
 
-## API Reference
+## Architecture
 
-### AnnotationManager
+The Reynard Annotating system now uses a clean backend-integrated architecture:
 
-The main orchestrator for the annotation system.
-
-#### Constructor
-
-```typescript
-new AnnotationManager()
+```
+reynard-annotating/
+├── annotating-core/          # Core functionality and FastAPI client
+│   ├── clients/             # FastAPI client for backend communication
+│   ├── services/            # Backend annotation services
+│   ├── types/               # TypeScript definitions and interfaces
+│   └── utils/               # Shared utilities
+├── annotating-jtp2/          # JTP2 configuration package
+│   └── config/              # Configuration schemas and defaults
+├── annotating-joy/           # JoyCaption configuration package
+│   └── config/              # Configuration schemas and defaults
+├── annotating-florence2/     # Florence2 configuration package
+│   └── config/              # Configuration schemas and defaults
+├── annotating-wdv3/          # WDv3 configuration package
+│   └── config/              # Configuration schemas and defaults
+└── annotating/               # Unified interface (this package)
+    ├── BackendAnnotationManager.ts  # Main backend manager
+    └── MIGRATION.md          # Migration guide from legacy system
 ```
 
-#### Methods
+## Available Generators
 
-- `start(): Promise<void>` - Start the annotation manager
-- `stop(): Promise<void>` - Stop the annotation manager
-- `getService(): AnnotationService` - Get the annotation service
-- `registerGenerator(generator: BaseCaptionGenerator): void` - Register a caption generator
-- `unregisterGenerator(name: string): void` - Unregister a caption generator
-- `getAvailableGenerators(): CaptionGenerator[]` - Get all available generators
-- `getGenerator(name: string): CaptionGenerator | undefined` - Get a specific generator
-- `isGeneratorAvailable(name: string): boolean` - Check if a generator is available
-- `preloadModel(name: string): Promise<void>` - Preload a model
-- `unloadModel(name: string): Promise<void>` - Unload a model
-- `updateGeneratorConfig(name: string, config: CaptionGeneratorConfig): void` - Update generator configuration
-- `getGeneratorConfig(name: string): CaptionGeneratorConfig | undefined` - Get generator configuration
+### JTP2 (Joint Tagger Project PILOT2)
 
-### AnnotationService
+- **Purpose**: Furry artwork tagging
+- **Category**: Lightweight
+- **Specialization**: High accuracy for furry content
+- **Usage**: `manager.generateFurryTags(imagePath)`
 
-The main service for caption generation.
+### JoyCaption
 
-#### Methods
+- **Purpose**: Detailed image captioning
+- **Category**: Heavy
+- **Specialization**: Multilingual, detailed descriptions
+- **Usage**: `manager.generateDetailedCaption(imagePath)`
 
-- `generateCaption(task: CaptionTask): Promise<CaptionResult>` - Generate a single caption
-- `generateBatchCaptions(tasks: CaptionTask[], progressCallback?: (progress: AnnotationProgress) => void): Promise<CaptionResult[]>` - Generate captions in batch
-- `getAvailableGenerators(): CaptionGenerator[]` - Get available generators
-- `getGenerator(name: string): CaptionGenerator | undefined` - Get a specific generator
-- `isGeneratorAvailable(name: string): boolean` - Check if a generator is available
-- `isModelLoaded(name: string): boolean` - Check if a model is loaded
-- `updateGeneratorConfig(name: string, config: CaptionGeneratorConfig): void` - Update generator configuration
-- `getGeneratorConfig(name: string): CaptionGeneratorConfig | undefined` - Get generator configuration
-- `preloadModel(name: string): Promise<void>` - Preload a model
-- `unloadModel(name: string): Promise<void>` - Unload a model
+### Florence2
 
-### BaseCaptionGenerator
+- **Purpose**: General purpose captioning
+- **Category**: Heavy
+- **Specialization**: Multiple tasks, versatile
+- **Usage**: `manager.generateGeneralCaption(imagePath)`
 
-Abstract base class that all caption generators must extend.
+### WDv3 (Waifu Diffusion v3)
 
-#### Constructor
+- **Purpose**: Anime/manga tagging
+- **Category**: Lightweight
+- **Specialization**: Danbooru-style tags
+- **Usage**: `manager.generateAnimeTags(imagePath)`
+
+## Production Features
+
+### Usage Tracking
 
 ```typescript
-constructor(
-  name: string,
-  description: string,
-  version: string,
-  captionType: CaptionType,
-  configSchema: Record<string, any> = {},
-  features: string[] = []
-)
+// Get usage statistics for any model
+const stats = manager.getModelUsageStats("jtp2");
+console.log("Total requests:", stats?.totalRequests);
+console.log("Success rate:", stats?.successfulRequests / stats?.totalRequests);
+console.log("Average processing time:", stats?.averageProcessingTime);
 ```
 
-#### Abstract Methods
-
-- `generate(imagePath: string, config?: CaptionGeneratorConfig): Promise<string>` - Generate caption for an image
-- `isAvailable(): Promise<boolean>` - Check if the generator is available
-- `load(config?: CaptionGeneratorConfig): Promise<void>` - Load the generator
-- `unload(): Promise<void>` - Unload the generator
-
-#### Properties
-
-- `name: string` - Generator name
-- `description: string` - Generator description
-- `version: string` - Generator version
-- `captionType: CaptionType` - Type of caption this generator produces
-- `isAvailable: boolean` - Whether the generator is available
-- `isLoaded: boolean` - Whether the generator is loaded
-- `configSchema: Record<string, any>` - Configuration schema
-- `features: string[]` - List of features this generator supports
-
-### Types
-
-#### CaptionType
+### Health Monitoring
 
 ```typescript
-enum CaptionType {
-  CAPTION = 'caption',
-  TAGS = 'tags',
-  E621 = 'e621',
-  TOML = 'toml'
-}
+// Get system health
+const health = manager.getHealthStatus();
+console.log("System healthy:", health.isHealthy);
+console.log("Performance metrics:", health.performance);
+
+// Get model-specific health
+const modelHealth = manager.getModelManager().getHealthStatus("jtp2");
+console.log("Model healthy:", modelHealth?.isHealthy);
 ```
 
-#### CaptionTask
+### Event System
 
 ```typescript
-interface CaptionTask {
-  imagePath: string;
-  generatorName: string;
-  config?: Record<string, any>;
-  postProcess?: boolean;
-  force?: boolean;
-}
+// Listen to all annotation events
+manager.addEventListener((event) => {
+  switch (event.type) {
+    case "model_loaded":
+      console.log("Model loaded:", event.data.modelName);
+      break;
+    case "caption_completed":
+      console.log("Caption generated:", event.data.result.caption);
+      break;
+    case "batch_progress":
+      console.log("Batch progress:", event.data.progress + "%");
+      break;
+  }
+});
 ```
 
-#### CaptionResult
+### System Statistics
 
 ```typescript
-interface CaptionResult {
-  imagePath: string;
-  generatorName: string;
-  success: boolean;
-  caption: string;
-  processingTime: number;
-  captionType: CaptionType;
-  error?: string;
-  metadata?: Record<string, any>;
-}
+// Get comprehensive system statistics
+const stats = manager.getSystemStatistics();
+console.log("Total processed:", stats.totalProcessed);
+console.log("Loaded models:", stats.loadedModels);
+console.log("Queue status:", stats.queueStatus);
+console.log("Health status:", stats.healthStatus);
+```
+
+## Configuration
+
+```typescript
+const config = {
+  maxConcurrentDownloads: 2, // Max concurrent model downloads
+  maxConcurrentLoads: 4, // Max concurrent model loads
+  downloadTimeout: 300000, // Download timeout (5 minutes)
+  loadTimeout: 60000, // Load timeout (1 minute)
+  autoUnloadDelay: 300000, // Auto-unload delay (5 minutes)
+  healthCheckInterval: 30000, // Health check interval (30 seconds)
+  usageTrackingEnabled: true, // Enable usage tracking
+  preloadEnabled: true, // Enable model preloading
+  preloadModels: ["jtp2", "wdv3"], // Models to preload
+};
+
+const manager = createUnifiedAnnotationManager(config);
 ```
 
 ## Advanced Usage
 
-### Custom Caption Generator
+### Custom Generator Integration
 
 ```typescript
-import { BaseCaptionGenerator, CaptionType, CaptionGeneratorConfig } from 'reynard-annotating';
+import { registerJTP2Plugin } from "reynard-annotating-jtp2";
 
-class MyCustomGenerator extends BaseCaptionGenerator {
-  constructor() {
-    super(
-      'my-custom-generator',
-      'My custom caption generator',
-      '1.0.0',
-      CaptionType.CAPTION,
-      {
-        type: 'object',
-        properties: {
-          customParam: { type: 'string', default: 'default-value' }
-        }
-      },
-      ['custom_feature']
-    );
-  }
+// Get specific generator
+const jtp2Generator = await manager.getJTP2Generator();
+console.log("JTP2 features:", jtp2Generator?.features);
 
-  async generate(imagePath: string, config?: CaptionGeneratorConfig): Promise<string> {
-    // Implement your caption generation logic
-    return 'Generated caption from my custom generator';
-  }
-
-  async isAvailable(): Promise<boolean> {
-    // Check if your generator is available
-    return true;
-  }
-
-  async load(config?: CaptionGeneratorConfig): Promise<void> {
-    // Load your model
-    console.log('Loading custom generator...');
-  }
-
-  async unload(): Promise<void> {
-    // Unload your model
-    console.log('Unloading custom generator...');
-  }
+// Use generator directly
+if (jtp2Generator) {
+  await jtp2Generator.load();
+  const caption = await jtp2Generator.generate("/path/to/image.jpg");
+  await jtp2Generator.unload();
 }
-
-// Register the custom generator
-const annotationManager = new AnnotationManager();
-const customGenerator = new MyCustomGenerator();
-annotationManager.registerGenerator(customGenerator);
 ```
 
-### Event Handling
+### Batch Processing
 
 ```typescript
-annotationManager.addEventListener((event) => {
-  console.log('Annotation event:', event);
-  
-  switch (event.type) {
-    case 'generation_start':
-      console.log(`Starting generation with ${event.generatorName}`);
-      break;
-    case 'generation_complete':
-      console.log(`Generation completed for ${event.generatorName}`);
-      break;
-    case 'generation_error':
-      console.error(`Generation failed: ${event.data.error}`);
-      break;
-  }
-});
-```
-
-### Batch Processing with Progress
-
-```typescript
-const tasks: CaptionTask[] = [
-  { imagePath: '/path/to/image1.jpg', generatorName: 'jtp2' },
-  { imagePath: '/path/to/image2.jpg', generatorName: 'joycaption' },
-  { imagePath: '/path/to/image3.jpg', generatorName: 'jtp2' }
+const tasks = [
+  { imagePath: "/path/to/image1.jpg", generatorName: "jtp2" },
+  { imagePath: "/path/to/image2.jpg", generatorName: "joycaption" },
+  { imagePath: "/path/to/image3.jpg", generatorName: "wdv3" },
 ];
 
 const results = await service.generateBatchCaptions(tasks, (progress) => {
-  console.log(`Progress: ${progress.progress}%`);
-  console.log(`Completed: ${progress.completed}/${progress.total}`);
-  console.log(`Failed: ${progress.failed}`);
-  console.log(`Current: ${progress.current}`);
-  
-  if (progress.estimatedTimeRemaining) {
-    console.log(`ETA: ${Math.round(progress.estimatedTimeRemaining / 1000)}s`);
-  }
+  console.log(
+    `Progress: ${progress.progress}% (${progress.completed}/${progress.total})`,
+  );
 });
-
-// Process results
-for (const result of results) {
-  if (result.success) {
-    console.log(`Generated caption for ${result.imagePath}: ${result.caption}`);
-  } else {
-    console.error(`Failed to generate caption for ${result.imagePath}: ${result.error}`);
-  }
-}
 ```
 
-### Configuration Management
+### Model Management
 
 ```typescript
-// Update generator configuration
-annotationManager.updateGeneratorConfig('jtp2', {
-  threshold: 0.3,
-  forceCpu: false
-});
+// Preload specific models
+await manager.preloadModel("jtp2");
+await manager.preloadModel("joycaption");
 
-// Get generator configuration
-const config = annotationManager.getGeneratorConfig('jtp2');
-console.log('JTP2 config:', config);
+// Check if models are loaded
+const loadedModels = manager.getModelManager().getLoadedModels();
+console.log("Loaded models:", loadedModels);
 
-// Preload a model for faster generation
-await annotationManager.preloadModel('joycaption');
-
-// Unload a model to free memory
-await annotationManager.unloadModel('jtp2');
+// Unload models when done
+await manager.unloadModel("jtp2");
 ```
+
+## API Reference
+
+### UnifiedAnnotationManager
+
+Main entry point for the unified annotation system.
+
+#### Methods
+
+- `initialize()`: Initialize the manager with all generators
+- `shutdown()`: Shutdown the manager and cleanup resources
+- `getService()`: Get the annotation service
+- `getAvailableGenerators()`: Get all available generators
+- `isGeneratorAvailable(name)`: Check if a generator is available
+- `preloadModel(name)`: Preload a specific model
+- `unloadModel(name)`: Unload a specific model
+- `getModelUsageStats(name)`: Get usage statistics for a model
+- `getHealthStatus()`: Get system health status
+- `getConfiguration()`: Get current configuration
+- `updateConfiguration(config)`: Update configuration
+- `getSystemStatistics()`: Get comprehensive system statistics
+- `addEventListener(listener)`: Add event listener
+- `removeEventListener(listener)`: Remove event listener
+
+#### Convenience Methods
+
+- `generateFurryTags(imagePath, config?)`: Generate furry tags using JTP2
+- `generateDetailedCaption(imagePath, config?)`: Generate detailed caption using JoyCaption
+- `generateAnimeTags(imagePath, config?)`: Generate anime tags using WDv3
+- `generateGeneralCaption(imagePath, config?)`: Generate general caption using Florence2
+- `getJTP2Generator()`: Get JTP2 generator instance
+- `getJoyCaptionGenerator()`: Get JoyCaption generator instance
+- `getFlorence2Generator()`: Get Florence2 generator instance
+- `getWDv3Generator()`: Get WDv3 generator instance
+
+### Package Dependencies
+
+- **annotating-core**: Base package with FastAPI client and shared utilities
+- **annotating-{generator}**: Each generator package provides only configuration schemas
+- **annotating**: Main package that provides the BackendAnnotationManager
+
+### Key Architectural Principles
+
+1. **Backend Integration**: All actual model processing happens on the FastAPI backend
+2. **Configuration Only**: Frontend packages only provide configuration schemas
+3. **Clean Separation**: Clear separation between frontend configuration and backend processing
+4. **Production Features**: Built-in health monitoring, circuit breakers, and usage tracking
+5. **Type Safety**: Full TypeScript support with comprehensive type definitions
+6. **Event-Driven**: Comprehensive event system for monitoring and debugging
 
 ## License
 

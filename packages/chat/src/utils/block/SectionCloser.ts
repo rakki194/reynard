@@ -10,7 +10,10 @@ export class SectionCloser {
   /**
    * Close all open sections
    */
-  static closeAllSections(state: StreamingParserState, addNode: (node: any) => void): void {
+  static closeAllSections(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     this.closeThinkingSections(state);
     this.closeCodeBlocks(state, addNode);
     this.closeTables(state, addNode);
@@ -28,7 +31,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeCodeBlocks(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeCodeBlocks(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inCodeBlock) {
       addNode({
         type: "code",
@@ -42,7 +48,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeTables(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeTables(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inTable) {
       addNode({
         type: "table",
@@ -57,7 +66,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeBlockquotes(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeBlockquotes(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inBlockquote) {
       addNode({
         type: "blockquote",
@@ -69,7 +81,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeLists(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeLists(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inList) {
       addNode({
         type: "list",
@@ -85,7 +100,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeMathBlocks(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeMathBlocks(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inMathBlock) {
       addNode({
         type: "math",
@@ -97,7 +115,10 @@ export class SectionCloser {
     }
   }
 
-  private static closeHtmlBlocks(state: StreamingParserState, addNode: (node: any) => void): void {
+  private static closeHtmlBlocks(
+    state: StreamingParserState,
+    addNode: (node: any) => void,
+  ): void {
     if (state.inHtmlBlock) {
       addNode({
         type: "html",

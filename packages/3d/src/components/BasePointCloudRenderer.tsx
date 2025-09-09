@@ -1,27 +1,35 @@
-import { Component, createSignal, createEffect, onCleanup } from 'solid-js';
-import type { 
-  BasePointCloudRendererProps, 
-  ThreeJSInterface, 
+import { Component, createSignal, createEffect, onCleanup } from "solid-js";
+import type {
+  BasePointCloudRendererProps,
+  ThreeJSInterface,
   ThreeJSModule,
-  PointsLike, 
-  SpriteLike, 
+  PointsLike,
+  SpriteLike,
   ThreeJSSpriteLike,
   RaycasterLike,
   Vector2Like,
-  EmbeddingRenderingConfig
-} from '../types/rendering';
-import { PointCloudMaterialManager } from '../managers/PointCloudMaterialManager';
-import { PointCloudGeometryManager } from '../managers/PointCloudGeometryManager';
-import { useThreeJSAnimations } from '../composables/useThreeJSAnimations';
-import './BasePointCloudRenderer.css';
+  EmbeddingRenderingConfig,
+} from "../types/rendering";
+import { PointCloudMaterialManager } from "../managers/PointCloudMaterialManager";
+import { PointCloudGeometryManager } from "../managers/PointCloudGeometryManager";
+import { useThreeJSAnimations } from "../composables/useThreeJSAnimations";
+import "./BasePointCloudRenderer.css";
 
-export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = props => {
+export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = (
+  props,
+) => {
   const animations = useThreeJSAnimations();
-  
-  const [materialManager] = createSignal(new PointCloudMaterialManager({} as ThreeJSInterface));
-  const [geometryManager] = createSignal(new PointCloudGeometryManager({} as ThreeJSInterface));
+
+  const [materialManager] = createSignal(
+    new PointCloudMaterialManager({} as ThreeJSInterface),
+  );
+  const [geometryManager] = createSignal(
+    new PointCloudGeometryManager({} as ThreeJSInterface),
+  );
   const [pointCloud, setPointCloud] = createSignal<PointsLike | null>(null);
-  const [thumbnailSprites, setThumbnailSprites] = createSignal<SpriteLike[]>([]);
+  const [thumbnailSprites, setThumbnailSprites] = createSignal<SpriteLike[]>(
+    [],
+  );
   const [textSprites, setTextSprites] = createSignal<SpriteLike[]>([]);
   const [isInitialized, setIsInitialized] = createSignal(false);
 
@@ -36,11 +44,12 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
     const initializeRenderer = async () => {
       // Initialize Three.js
       if (!threeJS) {
-        const THREE = (await import('three')).default as unknown as ThreeJSModule;
+        const THREE = (await import("three"))
+          .default as unknown as ThreeJSModule;
         threeJS = THREE as unknown as ThreeJSInterface;
         materialManager().threeJS = threeJS;
         geometryManager().threeJS = threeJS;
-        
+
         // Initialize raycaster and mouse
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
@@ -74,19 +83,21 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
     const currentPointCloud = pointCloud();
     if (currentPointCloud) {
       props.scene.remove(currentPointCloud);
-      if (currentPointCloud.geometry?.dispose) currentPointCloud.geometry.dispose();
-      if (currentPointCloud.material?.dispose) currentPointCloud.material.dispose();
+      if (currentPointCloud.geometry?.dispose)
+        currentPointCloud.geometry.dispose();
+      if (currentPointCloud.material?.dispose)
+        currentPointCloud.material.dispose();
     }
 
     // Remove thumbnail sprites
-    thumbnailSprites().forEach(sprite => {
+    thumbnailSprites().forEach((sprite) => {
       props.scene.remove(sprite);
       if (sprite.material?.dispose) sprite.material.dispose();
     });
     setThumbnailSprites([]);
 
     // Remove text sprites
-    textSprites().forEach(sprite => {
+    textSprites().forEach((sprite) => {
       props.scene.remove(sprite);
       if (sprite.material?.dispose) sprite.material.dispose();
     });
@@ -99,17 +110,20 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
     const { Points } = threeJS;
 
     // Create geometry
-    const geometry = geometryManager().createPointGeometry(props.points, props.config);
-    
+    const geometry = geometryManager().createPointGeometry(
+      props.points,
+      props.config,
+    );
+
     // Create material
     const material = materialManager().createPointMaterial(props.config);
 
     // Create points object
     const points = new Points(geometry, material) as PointsLike;
     points.userData = {
-      type: 'pointCloud',
+      type: "pointCloud",
       pointCount: props.points.length,
-      config: props.config
+      config: props.config,
     };
 
     // Add to scene
@@ -144,7 +158,7 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
         map: texture,
         transparent: true,
         opacity: 0.8,
-        sizeAttenuation: true
+        sizeAttenuation: true,
       });
 
       // Create sprite
@@ -152,9 +166,9 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
       sprite.position.set(...point.position);
       sprite.scale.setScalar(props.config.thumbnailSize);
       sprite.userData = {
-        type: 'thumbnail',
+        type: "thumbnail",
         pointId: point.id,
-        point: point
+        point: point,
       };
 
       // Add hover effect
@@ -178,21 +192,21 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
       if (!point.textContent) continue;
 
       // Create canvas for text
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
       if (!context) continue;
 
       canvas.width = 256;
       canvas.height = 64;
 
       // Draw text
-      context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      context.fillStyle = "rgba(0, 0, 0, 0.8)";
       context.fillRect(0, 0, canvas.width, canvas.height);
-      
-      context.fillStyle = 'white';
-      context.font = '16px Arial';
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
+
+      context.fillStyle = "white";
+      context.font = "16px Arial";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
       context.fillText(point.textContent, canvas.width / 2, canvas.height / 2);
 
       // Create texture and sprite
@@ -200,7 +214,7 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
       const material = new SpriteMaterial({
         map: texture,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.9,
       });
 
       const sprite = new Sprite(material) as ThreeJSSpriteLike;
@@ -208,9 +222,9 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
       sprite.position.y += 0.5; // Offset above point
       sprite.scale.setScalar(props.config.textSpriteSize);
       sprite.userData = {
-        type: 'text',
+        type: "text",
         pointId: point.id,
-        point: point
+        point: point,
       };
 
       props.scene.add(sprite);
@@ -297,36 +311,57 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = pr
         </div>
         <div class="info-item">
           <span class="label">Instancing:</span>
-          <span class="value">{props.config.enableInstancing ? 'Enabled' : 'Disabled'}</span>
+          <span class="value">
+            {props.config.enableInstancing ? "Enabled" : "Disabled"}
+          </span>
         </div>
         <div class="info-item">
           <span class="label">LOD:</span>
-          <span class="value">{props.config.enableLOD ? 'Enabled' : 'Disabled'}</span>
+          <span class="value">
+            {props.config.enableLOD ? "Enabled" : "Disabled"}
+          </span>
         </div>
         <div class="info-item">
           <span class="label">Culling:</span>
-          <span class="value">{props.config.enableCulling ? 'Enabled' : 'Disabled'}</span>
+          <span class="value">
+            {props.config.enableCulling ? "Enabled" : "Disabled"}
+          </span>
         </div>
       </div>
 
       <div class="renderer-controls">
-        <button 
-          onClick={() => updateConfiguration({ ...props.config, enableInstancing: !props.config.enableInstancing })}
-          class={`control-button ${props.config.enableInstancing ? 'active' : ''}`}
+        <button
+          onClick={() =>
+            updateConfiguration({
+              ...props.config,
+              enableInstancing: !props.config.enableInstancing,
+            })
+          }
+          class={`control-button ${props.config.enableInstancing ? "active" : ""}`}
         >
           Toggle Instancing
         </button>
-        
-        <button 
-          onClick={() => updateConfiguration({ ...props.config, enableLOD: !props.config.enableLOD })}
-          class={`control-button ${props.config.enableLOD ? 'active' : ''}`}
+
+        <button
+          onClick={() =>
+            updateConfiguration({
+              ...props.config,
+              enableLOD: !props.config.enableLOD,
+            })
+          }
+          class={`control-button ${props.config.enableLOD ? "active" : ""}`}
         >
           Toggle LOD
         </button>
-        
-        <button 
-          onClick={() => updateConfiguration({ ...props.config, enableCulling: !props.config.enableCulling })}
-          class={`control-button ${props.config.enableCulling ? 'active' : ''}`}
+
+        <button
+          onClick={() =>
+            updateConfiguration({
+              ...props.config,
+              enableCulling: !props.config.enableCulling,
+            })
+          }
+          class={`control-button ${props.config.enableCulling ? "active" : ""}`}
         >
           Toggle Culling
         </button>

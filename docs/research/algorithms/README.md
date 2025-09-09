@@ -199,4 +199,4 @@ The Reynard platform incorporates sophisticated algorithms across multiple domai
 
 ---
 
-*This algorithms research archive provides comprehensive insights into the computational approaches, optimization techniques, and performance characteristics that power the Reynard platform. The algorithms demonstrate sophisticated approaches to complex computational challenges in modern web applications.*
+_This algorithms research archive provides comprehensive insights into the computational approaches, optimization techniques, and performance characteristics that power the Reynard platform. The algorithms demonstrate sophisticated approaches to complex computational challenges in modern web applications._

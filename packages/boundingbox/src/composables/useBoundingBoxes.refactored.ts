@@ -1,15 +1,18 @@
 /**
  * useBoundingBoxes composable - Refactored
- * 
+ *
  * Modular bounding box management with separated concerns:
  * - Core state management in useBoundingBoxes.core
  * - CRUD operations in useBoundingBoxes.operations
  * - Main composable orchestrates the modules
  */
 
-import type { BoundingBox, ImageInfo } from '../types';
-import { createBoundingBoxState, createBoundingBoxComputed } from './useBoundingBoxes.core';
-import { createBoundingBoxOperations } from './useBoundingBoxes.operations';
+import type { BoundingBox, ImageInfo } from "../types";
+import {
+  createBoundingBoxState,
+  createBoundingBoxComputed,
+} from "./useBoundingBoxes.core";
+import { createBoundingBoxOperations } from "./useBoundingBoxes.operations";
 
 export interface UseBoundingBoxesOptions {
   initialBoxes?: BoundingBox[];
@@ -33,22 +36,28 @@ export interface UseBoundingBoxesReturn {
   validationErrors: () => Record<string, string[]>;
 }
 
-export function useBoundingBoxes(options: UseBoundingBoxesOptions = {}): UseBoundingBoxesReturn {
+export function useBoundingBoxes(
+  options: UseBoundingBoxesOptions = {},
+): UseBoundingBoxesReturn {
   const { initialBoxes = [], imageInfo, enableValidation = true } = options;
 
   // Create core state
   const state = createBoundingBoxState(initialBoxes);
-  
+
   // Create computed values
   const computed = createBoundingBoxComputed(state);
-  
+
   // Create operations
-  const operations = createBoundingBoxOperations(state, imageInfo, enableValidation);
+  const operations = createBoundingBoxOperations(
+    state,
+    imageInfo,
+    enableValidation,
+  );
 
   // Selection management
   const selectBox = (id: string | null) => {
     if (id && !operations.hasBox(id)) {
-      console.warn('Cannot select non-existent box:', id);
+      console.warn("Cannot select non-existent box:", id);
       return;
     }
     state.setSelectedBoxId(id);
@@ -60,7 +69,7 @@ export function useBoundingBoxes(options: UseBoundingBoxesOptions = {}): UseBoun
     setBoxes: state.setBoxes,
     selectedBoxId: state.selectedBoxId,
     validationErrors: state.validationErrors,
-    
+
     // Operations
     addBox: operations.addBox,
     updateBox: operations.updateBox,
@@ -68,11 +77,11 @@ export function useBoundingBoxes(options: UseBoundingBoxesOptions = {}): UseBoun
     getBox: operations.getBox,
     hasBox: operations.hasBox,
     clearBoxes: operations.clearBoxes,
-    
+
     // Selection
     selectBox,
     selectedBox: computed.selectedBox,
-    
+
     // Computed
     boxCount: computed.boxCount,
   };

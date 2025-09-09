@@ -97,8 +97,8 @@ cache_manager = DependencyCacheManager(max_size_bytes=100 * 1024 * 1024)  # 100M
 
 # Store a cache entry
 cache_key = cache_manager.set(
-    "topological_sort", 
-    result_data, 
+    "topological_sort",
+    result_data,
     ttl=3600.0,  # 1 hour TTL
     packages=["pkg1", "pkg2", "pkg3"],
     algorithm="kahn"

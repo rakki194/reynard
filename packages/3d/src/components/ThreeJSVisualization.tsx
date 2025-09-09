@@ -1,11 +1,21 @@
-import { Component, createSignal, createEffect, onMount, onCleanup, Show, createMemo } from 'solid-js';
-import type { ThreeJSVisualizationProps } from '../types';
-import { useThreeJSVisualization } from '../composables/useThreeJSVisualization';
-import './ThreeJSVisualization.css';
+import {
+  Component,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  Show,
+  createMemo,
+} from "solid-js";
+import type { ThreeJSVisualizationProps } from "../types";
+import { useThreeJSVisualization } from "../composables/useThreeJSVisualization";
+import "./ThreeJSVisualization.css";
 
-export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = props => {
+export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = (
+  props,
+) => {
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
-  
+
   const visualization = useThreeJSVisualization(props);
 
   // Initialize scene on mount
@@ -25,13 +35,17 @@ export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = props 
       });
       resizeObserver.observe(container);
 
-      window.addEventListener('resize', () => {
-        visualization.handleResize(container);
-      }, { passive: true });
+      window.addEventListener(
+        "resize",
+        () => {
+          visualization.handleResize(container);
+        },
+        { passive: true },
+      );
 
       return () => {
         resizeObserver.disconnect();
-        window.removeEventListener('resize', () => {
+        window.removeEventListener("resize", () => {
           visualization.handleResize(container);
         });
       };
@@ -41,7 +55,7 @@ export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = props 
   return (
     <div
       ref={setContainerRef}
-      class={`threejs-visualization threejs-container ${props.className || ''}`}
+      class={`threejs-visualization threejs-container ${props.className || ""}`}
     >
       <Show when={visualization.isLoading()}>
         <div class="threejs-loading">
@@ -53,12 +67,16 @@ export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = props 
       <Show when={visualization.error()}>
         <div class="threejs-error">
           <span>Error: {visualization.error()}</span>
-          <button onClick={() => {
-            const container = containerRef();
-            if (container) {
-              visualization.initializeScene(container);
-            }
-          }}>Retry</button>
+          <button
+            onClick={() => {
+              const container = containerRef();
+              if (container) {
+                visualization.initializeScene(container);
+              }
+            }}
+          >
+            Retry
+          </button>
         </div>
       </Show>
     </div>

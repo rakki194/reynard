@@ -1,8 +1,8 @@
 // Cluster detection algorithms for 3D point clouds
 // Adapted from yipyap's cluster detection utilities
 
-import type { Point3D } from '../types';
-import { distanceVector3, createVector3 } from './geometry';
+import type { Point3D } from "../types";
+import { distanceVector3, createVector3 } from "./geometry";
 
 export interface Cluster {
   id: string;
@@ -14,7 +14,7 @@ export interface Cluster {
 }
 
 export interface ClusterDetectionOptions {
-  algorithm: 'kmeans' | 'dbscan' | 'hierarchical' | 'gaussian-mixture';
+  algorithm: "kmeans" | "dbscan" | "hierarchical" | "gaussian-mixture";
   minPoints?: number;
   maxDistance?: number;
   maxClusters?: number;
@@ -29,7 +29,7 @@ export function kmeansClustering(
   points: Point3D[],
   k: number,
   maxIterations: number = 100,
-  tolerance: number = 0.001
+  tolerance: number = 0.001,
 ): Cluster[] {
   if (points.length === 0 || k <= 0) return [];
 
@@ -48,25 +48,27 @@ export function kmeansClustering(
 
   while (iterations < maxIterations && !converged) {
     // Assign points to nearest centroid
-    const clusters: Point3D[][] = Array(k).fill(null).map(() => []);
-    
+    const clusters: Point3D[][] = Array(k)
+      .fill(null)
+      .map(() => []);
+
     for (const point of points) {
       let minDistance = Infinity;
       let closestCentroid = 0;
-      
+
       for (let i = 0; i < k; i++) {
         const centroid = centroids[i];
         if (!centroid) continue;
         const distance = distanceVector3(
           createVector3(...point.position),
-          createVector3(...centroid)
+          createVector3(...centroid),
         );
         if (distance < minDistance) {
           minDistance = distance;
           closestCentroid = i;
         }
       }
-      
+
       const targetCluster = clusters[closestCentroid];
       if (targetCluster) {
         targetCluster.push(point);
@@ -81,7 +83,7 @@ export function kmeansClustering(
       const cluster = clusters[i];
       const centroid = centroids[i];
       if (!cluster || !centroid) continue;
-      
+
       if (cluster.length === 0) {
         newCentroids.push(centroid);
         continue;
@@ -101,7 +103,7 @@ export function kmeansClustering(
       // Calculate change in centroid position
       const change = distanceVector3(
         createVector3(...centroid),
-        createVector3(...newCentroid)
+        createVector3(...newCentroid),
       );
       maxChange = Math.max(maxChange, change);
 
@@ -118,10 +120,10 @@ export function kmeansClustering(
   for (let i = 0; i < k; i++) {
     const centroid = centroids[i];
     if (centroid) {
-      const clusterPoints = points.filter(point => {
+      const clusterPoints = points.filter((point) => {
         const distance = distanceVector3(
           createVector3(...point.position),
-          createVector3(...centroid)
+          createVector3(...centroid),
         );
         return distance < tolerance * 10; // Assign points to clusters
       });
@@ -132,7 +134,9 @@ export function kmeansClustering(
           points: clusterPoints,
           center: centroid,
           radius: calculateClusterRadius(clusterPoints, centroid),
-          density: clusterPoints.length / (4/3 * Math.PI * Math.pow(centroid[0], 3)),
+          density:
+            clusterPoints.length /
+            ((4 / 3) * Math.PI * Math.pow(centroid[0], 3)),
           color: generateClusterColor(i),
         });
       }
@@ -148,7 +152,7 @@ export function kmeansClustering(
 export function dbscanClustering(
   points: Point3D[],
   minPoints: number = 5,
-  maxDistance: number = 1.0
+  maxDistance: number = 1.0,
 ): Cluster[] {
   if (points.length === 0) return [];
 
@@ -173,17 +177,21 @@ export function dbscanClustering(
 
     while (seedSet.length > 0) {
       const currentPoint = seedSet.shift()!;
-      
+
       if (!visited.has(currentPoint.id)) {
         visited.add(currentPoint.id);
-        const currentNeighbors = getNeighbors(currentPoint, points, maxDistance);
-        
+        const currentNeighbors = getNeighbors(
+          currentPoint,
+          points,
+          maxDistance,
+        );
+
         if (currentNeighbors.length >= minPoints) {
           seedSet.push(...currentNeighbors);
         }
       }
 
-      if (!clusterPoints.some(p => p.id === currentPoint.id)) {
+      if (!clusterPoints.some((p) => p.id === currentPoint.id)) {
         clusterPoints.push(currentPoint);
       }
     }
@@ -195,7 +203,8 @@ export function dbscanClustering(
         points: clusterPoints,
         center,
         radius: calculateClusterRadius(clusterPoints, center),
-        density: clusterPoints.length / (4/3 * Math.PI * Math.pow(center[0], 3)),
+        density:
+          clusterPoints.length / ((4 / 3) * Math.PI * Math.pow(center[0], 3)),
         color: generateClusterColor(clusterId),
       });
     }
@@ -209,7 +218,7 @@ export function dbscanClustering(
  */
 export function hierarchicalClustering(
   points: Point3D[],
-  maxClusters: number = 10
+  maxClusters: number = 10,
 ): Cluster[] {
   if (points.length === 0) return [];
 
@@ -234,10 +243,10 @@ export function hierarchicalClustering(
         const cluster1 = clusters[i];
         const cluster2 = clusters[j];
         if (!cluster1 || !cluster2) continue;
-        
+
         const distance = distanceVector3(
           createVector3(...cluster1.center),
-          createVector3(...cluster2.center)
+          createVector3(...cluster2.center),
         );
         if (distance < minDistance) {
           minDistance = distance;
@@ -251,11 +260,13 @@ export function hierarchicalClustering(
     const cluster1 = clusters[cluster1Index];
     const cluster2 = clusters[cluster2Index];
     if (!cluster1 || !cluster2) continue;
-    
+
     const mergedCluster = mergeClusters(cluster1, cluster2);
-    
+
     // Remove the two original clusters and add the merged one
-    clusters = clusters.filter((_, index) => index !== cluster1Index && index !== cluster2Index);
+    clusters = clusters.filter(
+      (_, index) => index !== cluster1Index && index !== cluster2Index,
+    );
     clusters.push(mergedCluster);
   }
 
@@ -268,13 +279,13 @@ export function hierarchicalClustering(
 function getNeighbors(
   point: Point3D,
   allPoints: Point3D[],
-  maxDistance: number
+  maxDistance: number,
 ): Point3D[] {
-  return allPoints.filter(p => {
+  return allPoints.filter((p) => {
     if (p.id === point.id) return false;
     const distance = distanceVector3(
       createVector3(...point.position),
-      createVector3(...p.position)
+      createVector3(...p.position),
     );
     return distance <= maxDistance;
   });
@@ -299,7 +310,7 @@ function calculateClusterCenter(points: Point3D[]): [number, number, number] {
  */
 function calculateClusterRadius(
   points: Point3D[],
-  center: [number, number, number]
+  center: [number, number, number],
 ): number {
   if (points.length === 0) return 0;
 
@@ -307,7 +318,7 @@ function calculateClusterRadius(
   for (const point of points) {
     const distance = distanceVector3(
       createVector3(...point.position),
-      createVector3(...center)
+      createVector3(...center),
     );
     maxDistance = Math.max(maxDistance, distance);
   }
@@ -321,13 +332,13 @@ function calculateClusterRadius(
 function mergeClusters(cluster1: Cluster, cluster2: Cluster): Cluster {
   const mergedPoints = [...cluster1.points, ...cluster2.points];
   const center = calculateClusterCenter(mergedPoints);
-  
+
   return {
     id: `merged_${cluster1.id}_${cluster2.id}`,
     points: mergedPoints,
     center,
     radius: calculateClusterRadius(mergedPoints, center),
-    density: mergedPoints.length / (4/3 * Math.PI * Math.pow(center[0], 3)),
+    density: mergedPoints.length / ((4 / 3) * Math.PI * Math.pow(center[0], 3)),
     color: cluster1.color || generateClusterColor(0),
   };
 }
@@ -339,28 +350,42 @@ function generateClusterColor(index: number): [number, number, number] {
   const hue = (index * 137.5) % 360; // Golden angle for good distribution
   const saturation = 0.7;
   const lightness = 0.6;
-  
+
   // Convert HSL to RGB
   const c = (1 - Math.abs(2 * lightness - 1)) * saturation;
   const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
   const m = lightness - c / 2;
-  
-  let r = 0, g = 0, b = 0;
-  
+
+  let r = 0,
+    g = 0,
+    b = 0;
+
   if (hue >= 0 && hue < 60) {
-    r = c; g = x; b = 0;
+    r = c;
+    g = x;
+    b = 0;
   } else if (hue >= 60 && hue < 120) {
-    r = x; g = c; b = 0;
+    r = x;
+    g = c;
+    b = 0;
   } else if (hue >= 120 && hue < 180) {
-    r = 0; g = c; b = x;
+    r = 0;
+    g = c;
+    b = x;
   } else if (hue >= 180 && hue < 240) {
-    r = 0; g = x; b = c;
+    r = 0;
+    g = x;
+    b = c;
   } else if (hue >= 240 && hue < 300) {
-    r = x; g = 0; b = c;
+    r = x;
+    g = 0;
+    b = c;
   } else if (hue >= 300 && hue < 360) {
-    r = c; g = 0; b = x;
+    r = c;
+    g = 0;
+    b = x;
   }
-  
+
   return [r + m, g + m, b + m];
 }
 
@@ -369,30 +394,27 @@ function generateClusterColor(index: number): [number, number, number] {
  */
 export function detectClusters(
   points: Point3D[],
-  options: ClusterDetectionOptions
+  options: ClusterDetectionOptions,
 ): Cluster[] {
   switch (options.algorithm) {
-    case 'kmeans':
+    case "kmeans":
       return kmeansClustering(
         points,
         options.maxClusters || 5,
         options.iterations || 100,
-        options.tolerance || 0.001
+        options.tolerance || 0.001,
       );
-    
-    case 'dbscan':
+
+    case "dbscan":
       return dbscanClustering(
         points,
         options.minPoints || 5,
-        options.maxDistance || 1.0
+        options.maxDistance || 1.0,
       );
-    
-    case 'hierarchical':
-      return hierarchicalClustering(
-        points,
-        options.maxClusters || 10
-      );
-    
+
+    case "hierarchical":
+      return hierarchicalClustering(points, options.maxClusters || 10);
+
     default:
       throw new Error(`Unsupported clustering algorithm: ${options.algorithm}`);
   }
@@ -418,10 +440,17 @@ export function calculateClusterStats(clusters: Cluster[]): {
     };
   }
 
-  const totalPoints = clusters.reduce((sum, cluster) => sum + cluster.points.length, 0);
+  const totalPoints = clusters.reduce(
+    (sum, cluster) => sum + cluster.points.length,
+    0,
+  );
   const averageClusterSize = totalPoints / clusters.length;
-  const averageDensity = clusters.reduce((sum, cluster) => sum + cluster.density, 0) / clusters.length;
-  const averageRadius = clusters.reduce((sum, cluster) => sum + cluster.radius, 0) / clusters.length;
+  const averageDensity =
+    clusters.reduce((sum, cluster) => sum + cluster.density, 0) /
+    clusters.length;
+  const averageRadius =
+    clusters.reduce((sum, cluster) => sum + cluster.radius, 0) /
+    clusters.length;
 
   return {
     totalClusters: clusters.length,

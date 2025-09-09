@@ -1,7 +1,7 @@
 // SIMD position system implementation - main orchestrator
 
-import { WasmLoader, WasmSystemInterface } from './wasm-loader.js';
-import { MockPositionSystem } from './mock-position-system.js';
+import { WasmLoader, WasmSystemInterface } from "./wasm-loader.js";
+import { MockPositionSystem } from "./mock-position-system.js";
 
 export class PositionSystemSIMD {
   private wasmSystem: WasmSystemInterface | null = null;
@@ -17,26 +17,43 @@ export class PositionSystemSIMD {
 
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
-    
+
     try {
-      console.log('Initializing SIMD Position System...');
-      
+      console.log("Initializing SIMD Position System...");
+
       this.wasmSystem = await this.wasmLoader.initializeWasm(this.maxEntities);
-      console.log(`SIMD System initialized with ${this.maxEntities} max entities`);
-      
+      console.log(
+        `SIMD System initialized with ${this.maxEntities} max entities`,
+      );
     } catch (error) {
-      console.warn('Failed to initialize WASM SIMD, falling back to mock:', error);
+      console.warn(
+        "Failed to initialize WASM SIMD, falling back to mock:",
+        error,
+      );
       this.useMock = true;
     }
-    
+
     this.isInitialized = true;
   }
 
-  addEntity(position: { x: number; y: number }, velocity: { vx: number; vy: number }, acceleration: { ax: number; ay: number }, mass: { mass: number }): void {
+  addEntity(
+    position: { x: number; y: number },
+    velocity: { vx: number; vy: number },
+    acceleration: { ax: number; ay: number },
+    mass: { mass: number },
+  ): void {
     if (this.useMock) {
       this.mockSystem.addEntity(position, velocity, acceleration, mass);
     } else if (this.wasmSystem) {
-      this.wasmSystem.add_entity(position.x, position.y, velocity.vx, velocity.vy, acceleration.ax, acceleration.ay, mass.mass);
+      this.wasmSystem.add_entity(
+        position.x,
+        position.y,
+        velocity.vx,
+        velocity.vy,
+        acceleration.ax,
+        acceleration.ay,
+        mass.mass,
+      );
     }
   }
 
@@ -76,7 +93,7 @@ export class PositionSystemSIMD {
 
   simdVectorAdd(a: Float32Array, b: Float32Array): Float32Array {
     const simdVectorAdd = this.wasmLoader.getSimdVectorAdd();
-    
+
     if (simdVectorAdd && !this.useMock) {
       const result = new Float32Array(a.length);
       simdVectorAdd(a, b, result);

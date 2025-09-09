@@ -1,19 +1,19 @@
 /**
  * Mouse Event Handlers for Canvas
- * 
+ *
  * Handles mouse down, move, and up events for drawing and selection
  */
 
-import type { BoundingBox } from '../types';
-import type { CanvasEventHandlersConfig } from './canvasEventHandlers';
-import * as fabric from 'fabric';
+import type { BoundingBox } from "../types";
+import type { CanvasEventHandlersConfig } from "./canvasEventHandlers";
+import * as fabric from "fabric";
 
 export function setupMouseHandlers(
   canvas: fabric.Canvas,
-  config: CanvasEventHandlersConfig
+  config: CanvasEventHandlersConfig,
 ) {
   // Mouse down - start drawing or select box
-  canvas.on('mouse:down', (event) => {
+  canvas.on("mouse:down", (event) => {
     if (!config.config.enableCreation) return;
 
     const pointer = canvas.getPointer(event.e);
@@ -43,7 +43,7 @@ export function setupMouseHandlers(
   });
 
   // Mouse move - update drawing box
-  canvas.on('mouse:move', (event) => {
+  canvas.on("mouse:move", (event) => {
     if (!config.isDrawing() || !config.newBox() || !config.startPoint()) return;
 
     const pointer = canvas.getPointer(event.e);
@@ -63,7 +63,7 @@ export function setupMouseHandlers(
   });
 
   // Mouse up - finish drawing
-  canvas.on('mouse:up', () => {
+  canvas.on("mouse:up", () => {
     if (!config.isDrawing() || !config.newBox()) return;
 
     const newBox = config.newBox()!;
@@ -75,8 +75,8 @@ export function setupMouseHandlers(
         label: newBox.label!,
         x: imageCoords.x,
         y: imageCoords.y,
-        width: (newBox.width! / config.config.scale || 1),
-        height: (newBox.height! / config.config.scale || 1),
+        width: newBox.width! / (config.scale || 1),
+        height: newBox.height! / (config.scale || 1),
       };
 
       const clampedBox = config.clampBoundingBoxToImage(imageBox);

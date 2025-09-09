@@ -2,7 +2,7 @@
 // This should have Node.js globals available
 const config = {
   port: process.env.PORT || 3000,
-  nodeEnv: process.env.NODE_ENV || 'development',
+  nodeEnv: process.env.NODE_ENV || "development",
   globalVar: global,
   nodeVersion: process.version,
   requireTest: require,

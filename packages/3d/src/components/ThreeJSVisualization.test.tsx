@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor } from '@solidjs/testing-library';
-import { ThreeJSVisualization } from './ThreeJSVisualization';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { render, screen, waitFor } from "@solidjs/testing-library";
+import { ThreeJSVisualization } from "./ThreeJSVisualization";
 
 // Mock Three.js
-vi.mock('three', () => ({
+vi.mock("three", () => ({
   Scene: vi.fn().mockImplementation(() => ({
     background: null,
     add: vi.fn(),
@@ -22,7 +22,7 @@ vi.mock('three', () => ({
     toneMapping: 1,
     toneMappingExposure: 1,
     outputColorSpace: 1,
-    domElement: document.createElement('canvas'),
+    domElement: document.createElement("canvas"),
     render: vi.fn(),
     dispose: vi.fn(),
   })),
@@ -32,7 +32,14 @@ vi.mock('three', () => ({
     castShadow: false,
     shadow: {
       mapSize: { width: 2048, height: 2048 },
-      camera: { near: 0.5, far: 50, left: -10, right: 10, top: 10, bottom: -10 },
+      camera: {
+        near: 0.5,
+        far: 50,
+        left: -10,
+        right: 10,
+        top: 10,
+        bottom: -10,
+      },
     },
   })),
   PointLight: vi.fn().mockImplementation(() => ({
@@ -53,7 +60,7 @@ vi.mock('three', () => ({
 }));
 
 // Mock OrbitControls
-vi.mock('three/examples/jsm/controls/OrbitControls.js', () => ({
+vi.mock("three/examples/jsm/controls/OrbitControls.js", () => ({
   OrbitControls: vi.fn().mockImplementation(() => ({
     enableDamping: false,
     dampingFactor: 0.05,
@@ -77,86 +84,91 @@ vi.mock('three/examples/jsm/controls/OrbitControls.js', () => ({
   })),
 }));
 
-describe('ThreeJSVisualization', () => {
+describe("ThreeJSVisualization", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders the visualization component', () => {
+  it("renders the visualization component", () => {
     render(() => <ThreeJSVisualization />);
-    
-    const container = document.querySelector('.threejs-visualization');
+
+    const container = document.querySelector(".threejs-visualization");
     expect(container).toBeInTheDocument();
   });
 
-  it('shows loading state initially', () => {
+  it("shows loading state initially", () => {
     render(() => <ThreeJSVisualization />);
-    
-    expect(screen.getByText('Loading 3D visualization...')).toBeInTheDocument();
+
+    expect(screen.getByText("Loading 3D visualization...")).toBeInTheDocument();
   });
 
-  it('applies custom className', () => {
+  it("applies custom className", () => {
     render(() => <ThreeJSVisualization className="custom-class" />);
-    
-    const container = document.querySelector('.threejs-visualization.custom-class');
+
+    const container = document.querySelector(
+      ".threejs-visualization.custom-class",
+    );
     expect(container).toBeInTheDocument();
   });
 
-  it('sets custom dimensions', () => {
+  it("sets custom dimensions", () => {
     render(() => <ThreeJSVisualization width={1200} height={800} />);
-    
-    const container = document.querySelector('.threejs-visualization');
+
+    const container = document.querySelector(".threejs-visualization");
     expect(container).toHaveStyle({
-      width: '1200px',
-      height: '800px',
+      width: "1200px",
+      height: "800px",
     });
   });
 
-  it('sets custom background color', () => {
+  it("sets custom background color", () => {
     render(() => <ThreeJSVisualization backgroundColor="#ff0000" />);
-    
-    const container = document.querySelector('.threejs-visualization');
+
+    const container = document.querySelector(".threejs-visualization");
     expect(container).toHaveStyle({
-      'background-color': '#ff0000',
+      "background-color": "#ff0000",
     });
   });
 
-  it('calls onSceneReady when scene is initialized', async () => {
+  it("calls onSceneReady when scene is initialized", async () => {
     const onSceneReady = vi.fn();
-    
+
     render(() => <ThreeJSVisualization onSceneReady={onSceneReady} />);
-    
+
     // Wait for the scene to be initialized
-    await waitFor(() => {
-      expect(onSceneReady).toHaveBeenCalled();
-    }, { timeout: 1000 });
+    await waitFor(
+      () => {
+        expect(onSceneReady).toHaveBeenCalled();
+      },
+      { timeout: 1000 },
+    );
   });
 
-  it('handles error state', async () => {
+  it("handles error state", async () => {
     // Mock a failure in Three.js initialization
-    vi.doMock('three', () => {
-      throw new Error('Three.js failed to load');
+    vi.doMock("three", () => {
+      throw new Error("Three.js failed to load");
     });
 
     render(() => <ThreeJSVisualization />);
-    
+
     // The component should handle the error gracefully
     await waitFor(() => {
-      const errorElement = document.querySelector('.threejs-error');
+      const errorElement = document.querySelector(".threejs-error");
       expect(errorElement).toBeInTheDocument();
     });
   });
 
-  it('provides retry functionality on error', async () => {
+  it("provides retry functionality on error", async () => {
     // Mock a failure in Three.js initialization
-    vi.doMock('three', () => {
-      throw new Error('Three.js failed to load');
+    vi.doMock("three", () => {
+      throw new Error("Three.js failed to load");
     });
 
     render(() => <ThreeJSVisualization />);
-    
+
     await waitFor(() => {
-      const retryButton = screen.getByText('Retry');
+      const retryButton = screen.getByText("Retry");
       expect(retryButton).toBeInTheDocument();
     });
   });

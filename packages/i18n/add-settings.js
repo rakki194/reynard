@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Basic settings object to add to all language files
 const basicSettings = `  settings: {
@@ -281,25 +281,32 @@ const basicSettings = `  settings: {
     },
   },`;
 
-const langDir = path.join(__dirname, 'src', 'lang');
-const files = fs.readdirSync(langDir).filter(file => file.endsWith('.ts') && file !== 'en.ts');
+const langDir = path.join(__dirname, "src", "lang");
+const files = fs
+  .readdirSync(langDir)
+  .filter((file) => file.endsWith(".ts") && file !== "en.ts");
 
 console.log(`Adding settings to ${files.length} language files...`);
 
-files.forEach(file => {
+files.forEach((file) => {
   const filePath = path.join(langDir, file);
-  const content = fs.readFileSync(filePath, 'utf8');
-  
+  const content = fs.readFileSync(filePath, "utf8");
+
   // Find the last closing brace before "} as const satisfies Translations;"
-  const lastBraceIndex = content.lastIndexOf('  },\n} as const satisfies Translations;');
-  
+  const lastBraceIndex = content.lastIndexOf(
+    "  },\n} as const satisfies Translations;",
+  );
+
   if (lastBraceIndex !== -1) {
-    const newContent = content.slice(0, lastBraceIndex) + basicSettings + '\n} as const satisfies Translations;';
-    fs.writeFileSync(filePath, newContent, 'utf8');
+    const newContent =
+      content.slice(0, lastBraceIndex) +
+      basicSettings +
+      "\n} as const satisfies Translations;";
+    fs.writeFileSync(filePath, newContent, "utf8");
     console.log(`✓ Added settings to ${file}`);
   } else {
     console.log(`✗ Could not find insertion point in ${file}`);
   }
 });
 
-console.log('Done!');
+console.log("Done!");

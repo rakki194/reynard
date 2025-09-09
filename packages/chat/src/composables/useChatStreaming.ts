@@ -1,6 +1,6 @@
 /**
  * Chat Streaming Composable
- * 
+ *
  * Handles streaming functionality including response processing,
  * chunk handling, and streaming state management
  */
@@ -10,12 +10,7 @@ import {
   StreamingMarkdownParser,
   createStreamingMarkdownParser,
 } from "../utils/StreamingMarkdownParser";
-import type {
-  ChatMessage,
-  ChatRequest,
-  StreamChunk,
-  ToolCall,
-} from "../types";
+import type { ChatMessage, ChatRequest, StreamChunk, ToolCall } from "../types";
 
 export interface UseChatStreamingOptions {
   /** Custom fetch function */
@@ -33,9 +28,16 @@ export interface UseChatStreamingReturn {
   currentThinking: () => string;
   streamController: () => AbortController | null;
   streamingParser: () => StreamingMarkdownParser | null;
-  sendMessage: (content: string, requestOptions?: Partial<ChatRequest>) => Promise<void>;
+  sendMessage: (
+    content: string,
+    requestOptions?: Partial<ChatRequest>,
+  ) => Promise<void>;
   streamResponse: (request: ChatRequest) => Promise<void>;
-  processStreamChunk: (chunk: StreamChunk, parser: StreamingMarkdownParser, messageId: string) => Promise<void>;
+  processStreamChunk: (
+    chunk: StreamChunk,
+    parser: StreamingMarkdownParser,
+    messageId: string,
+  ) => Promise<void>;
   finalizeStreaming: (messageId: string) => Promise<void>;
   cancelStreaming: () => void;
   retryLastMessage: () => Promise<void>;
@@ -47,19 +49,17 @@ export function useChatStreaming(
     addMessage: (message: Omit<ChatMessage, "id" | "timestamp">) => ChatMessage;
     updateMessage: (id: string, updates: Partial<ChatMessage>) => void;
     messages: () => ChatMessage[];
-  }
+  },
 ): UseChatStreamingReturn {
-  const {
-    fetchFn = fetch,
-    authHeaders = {},
-    endpoint = "/api/chat",
-  } = options;
+  const { fetchFn = fetch, authHeaders = {}, endpoint = "/api/chat" } = options;
 
   // Streaming state
   const [isStreaming, setIsStreaming] = createSignal(false);
   const [isThinking, setIsThinking] = createSignal(false);
-  const [streamController, setStreamController] = createSignal<AbortController | null>(null);
-  const [streamingParser, setStreamingParser] = createSignal<StreamingMarkdownParser | null>(null);
+  const [streamController, setStreamController] =
+    createSignal<AbortController | null>(null);
+  const [streamingParser, setStreamingParser] =
+    createSignal<StreamingMarkdownParser | null>(null);
   const [currentResponse, setCurrentResponse] = createSignal("");
   const [currentThinking, setCurrentThinking] = createSignal("");
 
@@ -99,11 +99,12 @@ export function useChatStreaming(
       await streamResponse(request);
     } catch (error) {
       console.error("Failed to send message:", error);
-      
+
       // Add error message
       messageHandlers.addMessage({
         role: "assistant",
-        content: "I apologize, but I encountered an error processing your message. Please try again.",
+        content:
+          "I apologize, but I encountered an error processing your message. Please try again.",
         error: {
           type: "request_failed",
           message: error instanceof Error ? error.message : "Unknown error",

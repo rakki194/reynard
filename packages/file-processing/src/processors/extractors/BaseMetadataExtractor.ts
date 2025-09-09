@@ -1,6 +1,6 @@
 /**
  * Base metadata extractor interface
- * 
+ *
  * Provides common functionality for all metadata extractors
  */
 
@@ -36,7 +36,10 @@ export abstract class BaseMetadataExtractor {
   /**
    * Extract metadata from a file
    */
-  abstract extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<FileMetadata>;
+  abstract extractMetadata(
+    file: File | string,
+    options?: Partial<MetadataExtractionOptions>,
+  ): Promise<FileMetadata>;
 
   /**
    * Get basic file information
@@ -68,9 +71,11 @@ export abstract class BaseMetadataExtractor {
   /**
    * Get file information
    */
-  protected async getFileInfo(
-    file: File | string,
-  ): Promise<{ success: boolean; data?: { name: string; size: number; type: string }; error?: string }> {
+  protected async getFileInfo(file: File | string): Promise<{
+    success: boolean;
+    data?: { name: string; size: number; type: string };
+    error?: string;
+  }> {
     try {
       if (typeof file === "string") {
         return {

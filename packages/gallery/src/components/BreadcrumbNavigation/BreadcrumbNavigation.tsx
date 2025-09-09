@@ -17,16 +17,21 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
   const { local } = useBreadcrumbProps(props);
 
   // State management
-  const { state, toggleExpanded, toggleFullPaths, isExpanded } = useBreadcrumbState();
+  const { state, toggleExpanded, toggleFullPaths, isExpanded } =
+    useBreadcrumbState();
 
   // Event handlers
-  const { handleItemClick, handleHomeClick, handleRefreshClick, handleSettingsClick } = 
-    useBreadcrumbHandlers({
-      onItemClick: local.onItemClick,
-      onHomeClick: local.onHomeClick,
-      onRefreshClick: local.onRefreshClick,
-      onSettingsClick: local.onSettingsClick,
-    });
+  const {
+    handleItemClick,
+    handleHomeClick,
+    handleRefreshClick,
+    handleSettingsClick,
+  } = useBreadcrumbHandlers({
+    onItemClick: local.onItemClick,
+    onHomeClick: local.onHomeClick,
+    onRefreshClick: local.onRefreshClick,
+    onSettingsClick: local.onSettingsClick,
+  });
 
   return (
     <BreadcrumbRenderer

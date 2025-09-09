@@ -16,19 +16,19 @@
  */
 
 // Re-export all types and interfaces
-export type { UnionFindNode, UnionFindStats } from './union-find-types';
+export type { UnionFindNode, UnionFindStats } from "./union-find-types";
 
 // Re-export core implementation
-export { UnionFind } from './union-find-core';
+export { UnionFind } from "./union-find-core";
 
 // Re-export utility functions
-export * from './union-find-utils';
+export * from "./union-find-utils";
 
 // Re-export set operations
-export * from './union-find-set-operations';
+export * from "./union-find-set-operations";
 
 // Re-export batch operations
-export * from './union-find-batch-operations';
+export * from "./union-find-batch-operations";
 
 // Re-export main class
-export { UnionFind as default } from './union-find';
+export { UnionFind as default } from "./union-find";

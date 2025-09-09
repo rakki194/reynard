@@ -113,7 +113,9 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       local.onMessageSent?.(chat().messages()[chat().messages().length - 1]);
     } catch (error) {
       console.error("Failed to send message:", error);
-      local.onError?.(error instanceof Error ? error : new Error(String(error)));
+      local.onError?.(
+        error instanceof Error ? error : new Error(String(error)),
+      );
     }
   };
 

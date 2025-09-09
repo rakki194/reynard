@@ -3,4 +3,4 @@
  * Re-export from modular utils structure
  */
 
-export * from './utils/index';
+export * from "./utils/index";

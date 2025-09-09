@@ -1,17 +1,27 @@
-import { Component, createSignal, createEffect, onMount, onCleanup, Show, createMemo } from 'solid-js';
-import type { PointCloudVisualizationProps, Point3D } from '../types';
-import { ThreeJSVisualization } from './ThreeJSVisualization';
-import { usePointCloud } from '../composables/usePointCloud';
-import { useThreeJSAnimations } from '../composables/useThreeJSAnimations';
-import './PointCloudVisualization.css';
+import {
+  Component,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  Show,
+  createMemo,
+} from "solid-js";
+import type { PointCloudVisualizationProps, Point3D } from "../types";
+import { ThreeJSVisualization } from "./ThreeJSVisualization";
+import { usePointCloud } from "../composables/usePointCloud";
+import { useThreeJSAnimations } from "../composables/useThreeJSAnimations";
+import "./PointCloudVisualization.css";
 
-export const PointCloudVisualization: Component<PointCloudVisualizationProps> = props => {
+export const PointCloudVisualization: Component<
+  PointCloudVisualizationProps
+> = (props) => {
   const animations = useThreeJSAnimations();
-  
+
   const pointCloud = usePointCloud(
     () => props.points,
     () => props.settings || {},
-    () => props.searchIntegration || {}
+    () => props.searchIntegration || {},
   );
 
   // Scene state
@@ -28,7 +38,12 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
   /**
    * Handle scene ready callback
    */
-  const handleSceneReady = (scene: any, camera: any, renderer: any, controls: any) => {
+  const handleSceneReady = (
+    scene: any,
+    camera: any,
+    renderer: any,
+    controls: any,
+  ) => {
     setScene(scene);
     setCamera(camera);
     setRenderer(renderer);
@@ -38,14 +53,17 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
     if (points.length === 0) return;
 
     // Clear existing point cloud
-    const existingPointCloud = scene.children.find((child: any) => child.userData?.isPointCloud);
+    const existingPointCloud = scene.children.find(
+      (child: any) => child.userData?.isPointCloud,
+    );
     if (existingPointCloud) {
       scene.remove(existingPointCloud);
     }
 
     // Create point cloud geometry
     const threeJS = pointCloud.threeJS() as any;
-    const { BufferGeometry, Float32BufferAttribute, Points, PointsMaterial } = threeJS;
+    const { BufferGeometry, Float32BufferAttribute, Points, PointsMaterial } =
+      threeJS;
 
     const geometry = new BufferGeometry();
     const positions = new Float32Array(points.length * 3);
@@ -70,7 +88,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       let size = point.size || pointCloud.pointSize();
 
       if (pointCloud.enableHighlighting()) {
-        const isSelected = pointCloud.selectedPoints().some(p => p.id === point.id);
+        const isSelected = pointCloud
+          .selectedPoints()
+          .some((p) => p.id === point.id);
         const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
         if (isSelected || isHovered) {
@@ -86,9 +106,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       sizes[i] = size;
     }
 
-    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
-    geometry.setAttribute('size', new Float32BufferAttribute(sizes, 1));
+    geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
+    geometry.setAttribute("size", new Float32BufferAttribute(sizes, 1));
 
     // Create material with enhanced features
     const material = new PointsMaterial({
@@ -133,13 +153,13 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
 
     // Add event listeners to renderer
     const canvas = renderer.domElement;
-    canvas.addEventListener('click', handleClick);
-    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener("click", handleClick);
+    canvas.addEventListener("mousemove", handleMouseMove);
 
     // Store cleanup function
     pointsMesh.userData.cleanup = () => {
-      canvas.removeEventListener('click', handleClick);
-      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener("click", handleClick);
+      canvas.removeEventListener("mousemove", handleMouseMove);
     };
   };
 
@@ -158,7 +178,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       const interpolatedPoints = animations.getInterpolatedPoints(props.points);
       if (interpolatedPoints !== props.points) {
         // Update point cloud geometry with new positions
-        const pointCloudMesh = currentScene.children.find((child: any) => child.userData?.isPointCloud);
+        const pointCloudMesh = currentScene.children.find(
+          (child: any) => child.userData?.isPointCloud,
+        );
         if (pointCloudMesh) {
           const positions = pointCloudMesh.geometry.attributes.position.array;
           for (let i = 0; i < interpolatedPoints.length; i++) {
@@ -184,21 +206,23 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       // Force a re-render by updating the scene
       const currentScene = scene();
       if (currentScene) {
-        const pointCloudMesh = currentScene.children.find((child: any) => child.userData?.isPointCloud);
+        const pointCloudMesh = currentScene.children.find(
+          (child: any) => child.userData?.isPointCloud,
+        );
         if (pointCloudMesh) {
           // Update colors for highlighting
           const colors = pointCloudMesh.geometry.attributes.color.array;
           const points = pointCloudMesh.userData.points;
-          
+
           for (let i = 0; i < points.length; i++) {
             const point = points[i];
             const index = i * 3;
-            
+
             let color = point.color || [1, 1, 1];
             let size = point.size || pointCloud.pointSize();
 
             if (pointCloud.enableHighlighting()) {
-              const isSelected = selected.some(p => p.id === point.id);
+              const isSelected = selected.some((p) => p.id === point.id);
               const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
               if (isSelected || isHovered) {
@@ -211,7 +235,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             colors[index + 1] = color[1];
             colors[index + 2] = color[2];
           }
-          
+
           pointCloudMesh.geometry.attributes.color.needsUpdate = true;
         }
       }
@@ -224,19 +248,23 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
       // Force a re-render to update highlighting
       const currentScene = scene();
       if (currentScene) {
-        const pointCloudMesh = currentScene.children.find((child: any) => child.userData?.isPointCloud);
+        const pointCloudMesh = currentScene.children.find(
+          (child: any) => child.userData?.isPointCloud,
+        );
         if (pointCloudMesh) {
           const colors = pointCloudMesh.geometry.attributes.color.array;
           const points = pointCloudMesh.userData.points;
-          
+
           for (let i = 0; i < points.length; i++) {
             const point = points[i];
             const index = i * 3;
-            
+
             let color = point.color || [1, 1, 1];
 
             if (pointCloud.enableHighlighting()) {
-              const isSelected = pointCloud.selectedPoints().some(p => p.id === point.id);
+              const isSelected = pointCloud
+                .selectedPoints()
+                .some((p) => p.id === point.id);
               const isHovered = pointCloud.hoveredPoint()?.id === point.id;
 
               if (isSelected || isHovered) {
@@ -248,7 +276,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             colors[index + 1] = color[1];
             colors[index + 2] = color[2];
           }
-          
+
           pointCloudMesh.geometry.attributes.color.needsUpdate = true;
         }
       }
@@ -256,7 +284,7 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
   });
 
   return (
-    <div class={`point-cloud-visualization ${props.className || ''}`}>
+    <div class={`point-cloud-visualization ${props.className || ""}`}>
       <Show when={pointCloud.isLoading()}>
         <div class="point-cloud-loading">
           <div class="loading-spinner"></div>
@@ -275,11 +303,13 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
         <ThreeJSVisualization
           width={props.width || 800}
           height={props.height || 600}
-          backgroundColor={props.backgroundColor || '#1a1a1a'}
+          backgroundColor={props.backgroundColor || "#1a1a1a"}
           onSceneReady={handleSceneReady}
           onRender={onRender}
           className="point-cloud-canvas"
-          enableCameraAnimations={props.animationSettings?.enableAnimations ?? true}
+          enableCameraAnimations={
+            props.animationSettings?.enableAnimations ?? true
+          }
           onCameraAnimationStart={props.animationSettings?.onAnimationStart}
           onCameraAnimationEnd={props.animationSettings?.onAnimationEnd}
         />
@@ -287,11 +317,15 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
         <div class="point-cloud-stats">
           <div class="stat-item">
             <span class="stat-label">Total Points:</span>
-            <span class="stat-value">{pointCloud.renderStats().totalPoints.toLocaleString()}</span>
+            <span class="stat-value">
+              {pointCloud.renderStats().totalPoints.toLocaleString()}
+            </span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Visible Points:</span>
-            <span class="stat-value">{pointCloud.renderStats().visiblePoints.toLocaleString()}</span>
+            <span class="stat-value">
+              {pointCloud.renderStats().visiblePoints.toLocaleString()}
+            </span>
           </div>
           <div class="stat-item">
             <span class="stat-label">LOD Level:</span>
@@ -299,7 +333,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
           </div>
           <div class="stat-item">
             <span class="stat-label">Frustum Culled:</span>
-            <span class="stat-value">{pointCloud.frustumCulled().toLocaleString()}</span>
+            <span class="stat-value">
+              {pointCloud.frustumCulled().toLocaleString()}
+            </span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Selected:</span>
@@ -308,7 +344,12 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
           <Show when={animations.currentAnimation()}>
             <div class="stat-item">
               <span class="stat-label">Animation:</span>
-              <span class="stat-value">{(animations.currentAnimation()?.progress || 0 * 100).toFixed(1)}%</span>
+              <span class="stat-value">
+                {(animations.currentAnimation()?.progress || 0 * 100).toFixed(
+                  1,
+                )}
+                %
+              </span>
             </div>
           </Show>
         </div>
@@ -317,10 +358,10 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
           <div class="control-group">
             <label class="control-label">Color Mapping:</label>
             <select
-              value={props.settings?.colorMapping || 'similarity'}
-              onChange={e => {
+              value={props.settings?.colorMapping || "similarity"}
+              onChange={(e) => {
                 // This would need to be handled by parent component
-                console.log('Color mapping:', e.currentTarget.value);
+                console.log("Color mapping:", e.currentTarget.value);
               }}
               class="control-select"
               title="Select color mapping method"
@@ -336,9 +377,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
           <div class="control-group">
             <label class="control-label">Size Mapping:</label>
             <select
-              value={props.settings?.sizeMapping || 'uniform'}
-              onChange={e => {
-                console.log('Size mapping:', e.currentTarget.value);
+              value={props.settings?.sizeMapping || "uniform"}
+              onChange={(e) => {
+                console.log("Size mapping:", e.currentTarget.value);
               }}
               class="control-select"
               title="Select size mapping method"
@@ -353,8 +394,8 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <input
               type="checkbox"
               checked={pointCloud.enableInstancing()}
-              onChange={e => {
-                console.log('Instancing:', e.currentTarget.checked);
+              onChange={(e) => {
+                console.log("Instancing:", e.currentTarget.checked);
               }}
             />
             <span>Enable Instancing</span>
@@ -364,8 +405,8 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <input
               type="checkbox"
               checked={pointCloud.enableLOD()}
-              onChange={e => {
-                console.log('LOD:', e.currentTarget.checked);
+              onChange={(e) => {
+                console.log("LOD:", e.currentTarget.checked);
               }}
             />
             <span>Enable LOD</span>
@@ -375,8 +416,8 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <input
               type="checkbox"
               checked={pointCloud.enableCulling()}
-              onChange={e => {
-                console.log('Culling:', e.currentTarget.checked);
+              onChange={(e) => {
+                console.log("Culling:", e.currentTarget.checked);
               }}
             />
             <span>Enable Culling</span>
@@ -386,8 +427,8 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <input
               type="checkbox"
               checked={pointCloud.enableHighlighting()}
-              onChange={e => {
-                console.log('Highlighting:', e.currentTarget.checked);
+              onChange={(e) => {
+                console.log("Highlighting:", e.currentTarget.checked);
               }}
             />
             <span>Enable Highlighting</span>
@@ -398,8 +439,14 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
         <Show when={pointCloud.selectedPoints().length > 0}>
           <div class="selection-groups">
             <div class="selection-header">
-              <strong>Selected Points ({pointCloud.selectedPoints().length})</strong>
-              <button class="clear-selection" onClick={() => pointCloud.setSelectedPoints([])} title="Clear selection">
+              <strong>
+                Selected Points ({pointCloud.selectedPoints().length})
+              </strong>
+              <button
+                class="clear-selection"
+                onClick={() => pointCloud.setSelectedPoints([])}
+                title="Clear selection"
+              >
                 ×
               </button>
             </div>
@@ -418,7 +465,9 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
                   <button
                     class="remove-selection"
                     onClick={() => {
-                      pointCloud.setSelectedPoints(prev => prev.filter(p => p.id !== point.id));
+                      pointCloud.setSelectedPoints((prev) =>
+                        prev.filter((p) => p.id !== point.id),
+                      );
                     }}
                     title="Remove from selection"
                   >
@@ -431,18 +480,24 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
         </Show>
 
         <Show when={pointCloud.hoveredPoint() && pointCloud.tooltipPosition()}>
-          <div
-            class="point-tooltip point-tooltip-positioned"
-          >
+          <div class="point-tooltip point-tooltip-positioned">
             <div class="tooltip-header">
               <strong>Point: {pointCloud.hoveredPoint()?.id}</strong>
             </div>
 
             {/* Image thumbnail */}
-            <Show when={pointCloud.hoveredPoint()?.imageThumbnail || pointCloud.hoveredPoint()?.imageUrl}>
+            <Show
+              when={
+                pointCloud.hoveredPoint()?.imageThumbnail ||
+                pointCloud.hoveredPoint()?.imageUrl
+              }
+            >
               <div class="tooltip-image">
                 <img
-                  src={pointCloud.hoveredPoint()?.imageThumbnail || pointCloud.hoveredPoint()?.imageUrl}
+                  src={
+                    pointCloud.hoveredPoint()?.imageThumbnail ||
+                    pointCloud.hoveredPoint()?.imageUrl
+                  }
                   alt="Point thumbnail"
                   class="tooltip-thumbnail"
                 />
@@ -452,24 +507,30 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
             <div class="tooltip-content">
               <div class="tooltip-item">
                 <span>Position:</span>
-                <span>[{pointCloud.hoveredPoint()?.position.join(', ')}]</span>
+                <span>[{pointCloud.hoveredPoint()?.position.join(", ")}]</span>
               </div>
               <Show when={pointCloud.hoveredPoint()?.importance !== undefined}>
                 <div class="tooltip-item">
                   <span>Importance:</span>
-                  <span>{(pointCloud.hoveredPoint()?.importance || 0).toFixed(3)}</span>
+                  <span>
+                    {(pointCloud.hoveredPoint()?.importance || 0).toFixed(3)}
+                  </span>
                 </div>
               </Show>
               <Show when={pointCloud.hoveredPoint()?.confidence !== undefined}>
                 <div class="tooltip-item">
                   <span>Confidence:</span>
-                  <span>{(pointCloud.hoveredPoint()?.confidence || 0).toFixed(3)}</span>
+                  <span>
+                    {(pointCloud.hoveredPoint()?.confidence || 0).toFixed(3)}
+                  </span>
                 </div>
               </Show>
               <Show when={pointCloud.hoveredPoint()?.similarity !== undefined}>
                 <div class="tooltip-item">
                   <span>Similarity:</span>
-                  <span>{(pointCloud.hoveredPoint()?.similarity || 0).toFixed(3)}</span>
+                  <span>
+                    {(pointCloud.hoveredPoint()?.similarity || 0).toFixed(3)}
+                  </span>
                 </div>
               </Show>
               <Show when={pointCloud.hoveredPoint()?.clusterId}>
@@ -480,10 +541,18 @@ export const PointCloudVisualization: Component<PointCloudVisualizationProps> = 
               </Show>
 
               {/* Additional metadata */}
-              <Show when={pointCloud.hoveredPoint()?.metadata && Object.keys(pointCloud.hoveredPoint()?.metadata || {}).length > 0}>
+              <Show
+                when={
+                  pointCloud.hoveredPoint()?.metadata &&
+                  Object.keys(pointCloud.hoveredPoint()?.metadata || {})
+                    .length > 0
+                }
+              >
                 <div class="tooltip-metadata">
                   <div class="tooltip-section-title">Metadata:</div>
-                  {Object.entries(pointCloud.hoveredPoint()?.metadata || {}).map(([key, value]) => (
+                  {Object.entries(
+                    pointCloud.hoveredPoint()?.metadata || {},
+                  ).map(([key, value]) => (
                     <div class="tooltip-item">
                       <span>{key}:</span>
                       <span>{String(value)}</span>

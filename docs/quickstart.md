@@ -214,9 +214,7 @@ function MyComponent() {
   return (
     <div>
       <p>Count: {count()}</p>
-      <button onClick={() => setCount(count() + 1)}>
-        Increment
-      </button>
+      <button onClick={() => setCount(count() + 1)}>Increment</button>
     </div>
   );
 }
@@ -249,11 +247,7 @@ import { Button, Card, TextField } from "reynard-components";
 function MyForm() {
   return (
     <Card padding="lg">
-      <TextField 
-        label="Email" 
-        type="email" 
-        placeholder="Enter your email" 
-      />
+      <TextField label="Email" type="email" placeholder="Enter your email" />
       <Button variant="primary" type="submit">
         Submit
       </Button>
@@ -289,4 +283,4 @@ Now that you have a basic Reynard application running:
 
 ---
 
-*Ready to build something amazing with Reynard? Let's get started!* 🦊
+_Ready to build something amazing with Reynard? Let's get started!_ 🦊

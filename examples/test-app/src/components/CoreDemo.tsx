@@ -1,29 +1,33 @@
 import { createSignal, createEffect, For } from "solid-js";
 import { Button, Card, TextField } from "reynard-components";
-import { 
-  useLocalStorage, 
-  useDebounce, 
+import {
+  useLocalStorage,
+  useDebounce,
   useMediaQuery,
   formatDateTime,
   formatNumber,
   formatCurrency,
   isValidEmail,
-  isValidUrl
+  isValidUrl,
 } from "reynard-core";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export function CoreDemo() {
   const { theme, setTheme } = useTheme();
-  
+
   // LocalStorage demo
-  const [counter, setCounter, removeCounter] = useLocalStorage("demo-counter", { defaultValue: 0 });
-  const [userName, setUserName] = useLocalStorage("demo-username", { defaultValue: "" });
+  const [counter, setCounter, removeCounter] = useLocalStorage("demo-counter", {
+    defaultValue: 0,
+  });
+  const [userName, setUserName] = useLocalStorage("demo-username", {
+    defaultValue: "",
+  });
   const [preferences, setPreferences] = useLocalStorage("demo-preferences", {
     defaultValue: {
       notifications: true,
       theme: "light",
-      language: "en"
-    }
+      language: "en",
+    },
   });
 
   // Debounce demo
@@ -64,19 +68,18 @@ export function CoreDemo() {
     }
   });
 
-
   return (
     <div class="core-demo">
       <Card class="demo-section">
         <h3>Theme Management</h3>
         <p>Demonstrates the theme system with reactive theme switching.</p>
-        
+
         <div class="demo-subsection">
           <h4>Current Theme: {theme}</h4>
           <div class="theme-grid">
             <For each={getAvailableThemes()}>
               {(themeConfig) => (
-                <Button 
+                <Button
                   variant={themeConfig.name === theme ? "primary" : "secondary"}
                   onClick={() => setTheme(themeConfig.name as ThemeName)}
                 >
@@ -91,16 +94,14 @@ export function CoreDemo() {
       <Card class="demo-section">
         <h3>LocalStorage Integration</h3>
         <p>Demonstrates reactive localStorage with automatic persistence.</p>
-        
+
         <div class="demo-subsection">
           <h4>Counter (Persistent)</h4>
           <div class="counter-demo">
             <Button onClick={() => setCounter(counter() + 1)}>
               Increment: {counter()}
             </Button>
-            <Button onClick={() => setCounter(counter() - 1)}>
-              Decrement
-            </Button>
+            <Button onClick={() => setCounter(counter() - 1)}>Decrement</Button>
             <Button onClick={removeCounter} variant="danger">
               Reset
             </Button>
@@ -118,24 +119,28 @@ export function CoreDemo() {
             />
             <div class="preference-controls">
               <label>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={preferences().notifications}
-                  onChange={(e) => setPreferences({
-                    ...preferences(),
-                    notifications: e.currentTarget.checked
-                  })}
+                  onChange={(e) =>
+                    setPreferences({
+                      ...preferences(),
+                      notifications: e.currentTarget.checked,
+                    })
+                  }
                 />
                 Enable Notifications
               </label>
               <label>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={preferences().language === "es"}
-                  onChange={(e) => setPreferences({
-                    ...preferences(),
-                    language: e.currentTarget.checked ? "es" : "en"
-                  })}
+                  onChange={(e) =>
+                    setPreferences({
+                      ...preferences(),
+                      language: e.currentTarget.checked ? "es" : "en",
+                    })
+                  }
                 />
                 Spanish Language
               </label>
@@ -150,8 +155,10 @@ export function CoreDemo() {
 
       <Card class="demo-section">
         <h3>Debounced Values</h3>
-        <p>Demonstrates debounced reactive values for performance optimization.</p>
-        
+        <p>
+          Demonstrates debounced reactive values for performance optimization.
+        </p>
+
         <div class="demo-subsection">
           <TextField
             label="Search Term"
@@ -161,9 +168,18 @@ export function CoreDemo() {
             helperText="Search is debounced by 500ms"
           />
           <div class="search-results">
-            <p><strong>Current Input:</strong> {searchTerm()}</p>
-            <p><strong>Debounced Value:</strong> {debouncedSearchTerm()}</p>
-            <p><strong>Search Results:</strong> {debouncedSearchTerm() ? `Found results for "${debouncedSearchTerm()}"` : "No search term"}</p>
+            <p>
+              <strong>Current Input:</strong> {searchTerm()}
+            </p>
+            <p>
+              <strong>Debounced Value:</strong> {debouncedSearchTerm()}
+            </p>
+            <p>
+              <strong>Search Results:</strong>{" "}
+              {debouncedSearchTerm()
+                ? `Found results for "${debouncedSearchTerm()}"`
+                : "No search term"}
+            </p>
           </div>
         </div>
       </Card>
@@ -171,17 +187,19 @@ export function CoreDemo() {
       <Card class="demo-section">
         <h3>Media Query Detection</h3>
         <p>Demonstrates responsive breakpoint detection.</p>
-        
+
         <div class="media-query-demo">
           <div class="breakpoint-indicators">
-            <div class={`indicator ${isMobile() ? 'active' : ''}`}>
-              Mobile: {isMobile() ? 'Active' : 'Inactive'}
+            <div class={`indicator ${isMobile() ? "active" : ""}`}>
+              Mobile: {isMobile() ? "Active" : "Inactive"}
             </div>
-            <div class={`indicator ${isTablet() && !isMobile() ? 'active' : ''}`}>
-              Tablet: {isTablet() && !isMobile() ? 'Active' : 'Inactive'}
+            <div
+              class={`indicator ${isTablet() && !isMobile() ? "active" : ""}`}
+            >
+              Tablet: {isTablet() && !isMobile() ? "Active" : "Inactive"}
             </div>
-            <div class={`indicator ${isDesktop() ? 'active' : ''}`}>
-              Desktop: {isDesktop() ? 'Active' : 'Inactive'}
+            <div class={`indicator ${isDesktop() ? "active" : ""}`}>
+              Desktop: {isDesktop() ? "Active" : "Inactive"}
             </div>
           </div>
           <p>Resize your browser window to see the breakpoints change.</p>
@@ -191,7 +209,7 @@ export function CoreDemo() {
       <Card class="demo-section">
         <h3>Validation Utilities</h3>
         <p>Demonstrates built-in validation functions.</p>
-        
+
         <div class="validation-demo">
           <TextField
             label="Email Validation"
@@ -203,7 +221,7 @@ export function CoreDemo() {
             errorMessage={emailError()}
             helperText="Email will be validated in real-time"
           />
-          
+
           <TextField
             label="URL Validation"
             type="url"
@@ -220,7 +238,7 @@ export function CoreDemo() {
       <Card class="demo-section">
         <h3>Formatting Utilities</h3>
         <p>Demonstrates built-in formatting functions.</p>
-        
+
         <div class="formatting-demo">
           <div class="format-controls">
             <TextField
@@ -234,10 +252,12 @@ export function CoreDemo() {
               type="number"
               step="0.01"
               value={currency()}
-              onInput={(e) => setCurrency(parseFloat(e.currentTarget.value) || 0)}
+              onInput={(e) =>
+                setCurrency(parseFloat(e.currentTarget.value) || 0)
+              }
             />
           </div>
-          
+
           <div class="format-results">
             <div class="format-item">
               <strong>Date (Current):</strong> {formatDateTime(new Date())}
@@ -246,13 +266,16 @@ export function CoreDemo() {
               <strong>Number:</strong> {formatNumber(number())}
             </div>
             <div class="format-item">
-              <strong>Currency (USD):</strong> {formatCurrency(currency(), 'USD')}
+              <strong>Currency (USD):</strong>{" "}
+              {formatCurrency(currency(), "USD")}
             </div>
             <div class="format-item">
-              <strong>Currency (EUR):</strong> {formatCurrency(currency(), 'EUR')}
+              <strong>Currency (EUR):</strong>{" "}
+              {formatCurrency(currency(), "EUR")}
             </div>
             <div class="format-item">
-              <strong>Currency (GBP):</strong> {formatCurrency(currency(), 'GBP')}
+              <strong>Currency (GBP):</strong>{" "}
+              {formatCurrency(currency(), "GBP")}
             </div>
           </div>
         </div>

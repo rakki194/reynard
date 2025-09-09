@@ -3,8 +3,8 @@
  * Handles upload action controls
  */
 
-import { Component, Show } from 'solid-js';
-import { Button } from 'reynard-components';
+import { Component, Show } from "solid-js";
+import { Button } from "reynard-components";
 
 export interface UploadControlsProps {
   autoUpload: boolean;
@@ -17,12 +17,12 @@ export const UploadControls: Component<UploadControlsProps> = (props) => {
   return (
     <Show when={!props.autoUpload && props.hasFiles}>
       <div class="upload-controls">
-        <Button 
+        <Button
           onClick={() => props.startUpload()}
           disabled={props.isUploading()}
           loading={props.isUploading()}
         >
-          {props.isUploading() ? 'Uploading...' : 'Upload Files'}
+          {props.isUploading() ? "Uploading..." : "Upload Files"}
         </Button>
       </div>
     </Show>

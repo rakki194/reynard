@@ -7,7 +7,7 @@ import { Component } from "solid-js";
 import {
   ThemeComparison,
   CustomTagGenerator,
-  OKLCHAdvancedFeatures as AdvancedFeatures
+  OKLCHAdvancedFeatures as AdvancedFeatures,
 } from "./";
 import type { OKLCHState } from "./useOKLCHState";
 import type { OKLCHColor } from "reynard-color-media";
@@ -30,7 +30,9 @@ interface AdvancedComponentsProps {
   };
 }
 
-export const AdvancedComponents: Component<AdvancedComponentsProps> = (props) => {
+export const AdvancedComponents: Component<AdvancedComponentsProps> = (
+  props,
+) => {
   return (
     <>
       <ThemeComparison
@@ -38,8 +40,24 @@ export const AdvancedComponents: Component<AdvancedComponentsProps> = (props) =>
         selectedTheme={props.state.selectedTheme()}
         themeTagColors={props.computedValues.themeTagColors()}
         onThemeChange={(theme) => {
-          props.state.setSelectedTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
-          props.state.themeContext.setTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
+          props.state.setSelectedTheme(
+            theme as
+              | "light"
+              | "dark"
+              | "gray"
+              | "banana"
+              | "strawberry"
+              | "peanut",
+          );
+          props.state.themeContext.setTheme(
+            theme as
+              | "light"
+              | "dark"
+              | "gray"
+              | "banana"
+              | "strawberry"
+              | "peanut",
+          );
         }}
       />
 
@@ -53,7 +71,9 @@ export const AdvancedComponents: Component<AdvancedComponentsProps> = (props) =>
 
       <AdvancedFeatures
         showAdvanced={props.state.showAdvanced()}
-        onToggleAdvanced={() => props.state.setShowAdvanced(!props.state.showAdvanced())}
+        onToggleAdvanced={() =>
+          props.state.setShowAdvanced(!props.state.showAdvanced())
+        }
       />
     </>
   );

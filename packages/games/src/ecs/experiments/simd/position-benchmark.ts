@@ -1,9 +1,9 @@
 // Position update benchmarks for ECS SIMD performance testing
 
-import { PositionSystem } from './position-system.js';
-import { PositionSystemSIMD } from './position-system-simd.js';
-import { BenchmarkResult } from './benchmark-types.js';
-import { TestDataGenerator } from './test-data-generator.js';
+import { PositionSystem } from "./position-system.js";
+import { PositionSystemSIMD } from "./position-system-simd.js";
+import { BenchmarkResult } from "./benchmark-types.js";
+import { TestDataGenerator } from "./test-data-generator.js";
 
 export class PositionBenchmark {
   private nonSimdSystem: PositionSystem;
@@ -27,11 +27,16 @@ export class PositionBenchmark {
   /**
    * Benchmark position updates
    */
-  async benchmarkPositionUpdates(entityCount: number, iterations: number = 1000): Promise<{ nonSimd: BenchmarkResult; simd: BenchmarkResult }> {
+  async benchmarkPositionUpdates(
+    entityCount: number,
+    iterations: number = 1000,
+  ): Promise<{ nonSimd: BenchmarkResult; simd: BenchmarkResult }> {
     if (!this.isInitialized) {
       await this.initialize();
     }
-    console.log(`Benchmarking position updates with ${entityCount} entities, ${iterations} iterations...`);
+    console.log(
+      `Benchmarking position updates with ${entityCount} entities, ${iterations} iterations...`,
+    );
 
     // Generate test data
     const testData = TestDataGenerator.generateTestData(entityCount);
@@ -39,13 +44,23 @@ export class PositionBenchmark {
     // Setup non-SIMD system
     this.nonSimdSystem.clear();
     for (const data of testData) {
-      this.nonSimdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
+      this.nonSimdSystem.addEntity(
+        data.position,
+        data.velocity,
+        data.acceleration,
+        data.mass,
+      );
     }
 
     // Setup SIMD system
     this.simdSystem.clear();
     for (const data of testData) {
-      this.simdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
+      this.simdSystem.addEntity(
+        data.position,
+        data.velocity,
+        data.acceleration,
+        data.mass,
+      );
     }
 
     const deltaTime = 0.016; // 60 FPS
@@ -67,19 +82,19 @@ export class PositionBenchmark {
     const simdTime = simdEnd - simdStart;
 
     const nonSimdResult: BenchmarkResult = {
-      name: 'Position Updates (Non-SIMD)',
+      name: "Position Updates (Non-SIMD)",
       iterations,
       totalTime: nonSimdTime,
       averageTime: nonSimdTime / iterations,
-      operationsPerSecond: (iterations * entityCount) / (nonSimdTime / 1000)
+      operationsPerSecond: (iterations * entityCount) / (nonSimdTime / 1000),
     };
 
     const simdResult: BenchmarkResult = {
-      name: 'Position Updates (SIMD)',
+      name: "Position Updates (SIMD)",
       iterations,
       totalTime: simdTime,
       averageTime: simdTime / iterations,
-      operationsPerSecond: (iterations * entityCount) / (simdTime / 1000)
+      operationsPerSecond: (iterations * entityCount) / (simdTime / 1000),
     };
 
     return { nonSimd: nonSimdResult, simd: simdResult };

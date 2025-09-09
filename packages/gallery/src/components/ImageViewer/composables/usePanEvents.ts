@@ -14,7 +14,7 @@ export interface UsePanEventsReturn {
 export const usePanEvents = (
   config: ImageViewerConfig,
   state: () => ImageViewerState,
-  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void
+  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
 ): UsePanEventsReturn => {
   const handleMouseDown = (event: MouseEvent) => {
     if (!config.enablePan) return;

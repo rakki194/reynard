@@ -1,23 +1,13 @@
 /**
  * Feature Service Bridge
- * 
+ *
  * Bridges the service manager with the reynard-features system to provide
  * real-time service availability updates to the feature management system.
  */
 
-import type { 
-  ServiceEvent, 
-  ServiceEventHandler
-} from '../types/index.js';
-import { 
-  ServiceManager,
-  ServiceStatus,
-  ServiceHealth
-} from '../index.js';
-import type { 
-  FeatureManager, 
-  FeatureConfig 
-} from 'reynard-features';
+import type { ServiceEvent, ServiceEventHandler } from "../types/index.js";
+import { ServiceManager, ServiceStatus, ServiceHealth } from "../index.js";
+import type { FeatureManager, FeatureConfig } from "reynard-features";
 
 export interface FeatureServiceBridgeConfig {
   /** Service manager instance */
@@ -93,16 +83,16 @@ export class FeatureServiceBridge {
    */
   private handleServiceEvent(event: ServiceEvent): void {
     switch (event.type) {
-      case 'startup':
+      case "startup":
         this.updateServiceAvailability(event.serviceName, true);
         break;
-      case 'shutdown':
+      case "shutdown":
         this.updateServiceAvailability(event.serviceName, false);
         break;
-      case 'health_change':
+      case "health_change":
         this.updateServiceHealth(event.serviceName, event.data?.health);
         break;
-      case 'error':
+      case "error":
         this.updateServiceAvailability(event.serviceName, false);
         break;
     }
@@ -111,9 +101,12 @@ export class FeatureServiceBridge {
   /**
    * Update service availability in feature manager
    */
-  private updateServiceAvailability(serviceName: string, available: boolean): void {
+  private updateServiceAvailability(
+    serviceName: string,
+    available: boolean,
+  ): void {
     const mappedName = this.mapServiceName(serviceName);
-    
+
     // Update the service checker in feature manager
     this.featureManager.updateServiceChecker((name: string) => {
       if (name === mappedName) {
@@ -127,10 +120,14 @@ export class FeatureServiceBridge {
   /**
    * Update service health in feature manager
    */
-  private updateServiceHealth(serviceName: string, health?: ServiceHealth): void {
+  private updateServiceHealth(
+    serviceName: string,
+    health?: ServiceHealth,
+  ): void {
     const mappedName = this.mapServiceName(serviceName);
-    const isHealthy = health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED;
-    
+    const isHealthy =
+      health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED;
+
     this.updateServiceAvailability(serviceName, isHealthy);
   }
 
@@ -139,7 +136,7 @@ export class FeatureServiceBridge {
    */
   private syncAllServiceStatuses(): void {
     const services = this.serviceManager.getServices();
-    
+
     // Create a comprehensive service checker
     this.featureManager.updateServiceChecker((serviceName: string) => {
       return this.getServiceAvailability(serviceName);
@@ -153,7 +150,7 @@ export class FeatureServiceBridge {
     // Check if it's a mapped service name
     const originalName = this.getOriginalServiceName(serviceName);
     const service = this.serviceManager.getService(originalName);
-    
+
     if (!service) {
       return false;
     }
@@ -161,9 +158,11 @@ export class FeatureServiceBridge {
     // Service is available if it's running and healthy
     const status = service.status;
     const health = service.health;
-    
-    return status === ServiceStatus.RUNNING && 
-           (health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED);
+
+    return (
+      status === ServiceStatus.RUNNING &&
+      (health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED)
+    );
   }
 
   /**
@@ -191,7 +190,9 @@ export class FeatureServiceBridge {
    */
   private getMappedServiceName(originalName: string): string {
     // Find the key (mapped name) for this original service name
-    for (const [mappedName, originalServiceName] of Object.entries(this.serviceNameMapping)) {
+    for (const [mappedName, originalServiceName] of Object.entries(
+      this.serviceNameMapping,
+    )) {
       if (originalServiceName === originalName) {
         return mappedName;
       }
@@ -210,35 +211,40 @@ export class FeatureServiceBridge {
   } {
     const originalName = this.getOriginalServiceName(serviceName);
     const service = this.serviceManager.getService(originalName);
-    
+
     if (!service) {
       return {
         available: false,
         status: ServiceStatus.STOPPED,
-        health: ServiceHealth.UNKNOWN
+        health: ServiceHealth.UNKNOWN,
       };
     }
 
-    const available = service.status === ServiceStatus.RUNNING && 
-                     (service.health === ServiceHealth.HEALTHY || service.health === ServiceHealth.DEGRADED);
+    const available =
+      service.status === ServiceStatus.RUNNING &&
+      (service.health === ServiceHealth.HEALTHY ||
+        service.health === ServiceHealth.DEGRADED);
 
     return {
       available,
       status: service.status,
       health: service.health,
-      lastError: service.lastError
+      lastError: service.lastError,
     };
   }
 
   /**
    * Get all service statuses
    */
-  public getAllServiceStatuses(): Record<string, {
-    available: boolean;
-    status: ServiceStatus;
-    health: ServiceHealth;
-    lastError?: string;
-  }> {
+  public getAllServiceStatuses(): Record<
+    string,
+    {
+      available: boolean;
+      status: ServiceStatus;
+      health: ServiceHealth;
+      lastError?: string;
+    }
+  > {
     const services = this.serviceManager.getServices();
     const statuses: Record<string, any> = {};
 

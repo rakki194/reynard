@@ -9,7 +9,7 @@ YipYap now includes a built-in AI assistant (🦊) powered by Ollama that can he
 - Image dataset organization and management
 - Tagging and captioning workflows
 - Dataset cleaning and preparation
-- Understanding YipYap features and functionality  
+- Understanding YipYap features and functionality
 - Git-based dataset version control
 - General dataset best practices
 
@@ -76,18 +76,23 @@ The yipyap assistant (🦊) appears as a floating chat interface in the bottom-r
 ### Example Use Cases
 
 **Dataset Organization:**
+
 > "How should I organize my training images for a Stable Diffusion model?"
 
 **Tagging Help:**
+
 > "What tags would be appropriate for this fantasy art collection?"
 
 **Git Workflow:**
+
 > "I have 500 new images in my dataset. What's the best way to commit them?"
 
 **Caption Generation:**
+
 > "Should I use JTP2 or WDv3 for tagging anime-style artwork?"
 
 **Technical Issues:**
+
 > "My thumbnails are generating slowly. How can I speed this up?"
 
 ## API Endpoints
@@ -152,8 +157,8 @@ function MyPage() {
   return (
     <div>
       {/* Your page content */}
-      
-      <YipYapAssistant 
+
+      <YipYapAssistant
         currentPath="/current/dataset/path"
         selectedImages={["selected1.jpg", "selected2.png"]}
       />
@@ -244,12 +249,12 @@ You can create custom prompts for specific use cases:
 # In YipYapAssistant class
 def create_specialized_prompt(self, task_type: str) -> str:
     base_prompt = self.system_prompt
-    
+
     if task_type == "tagging":
         return base_prompt + "\n\nFocus specifically on image tagging best practices..."
     elif task_type == "organization":
         return base_prompt + "\n\nProvide detailed dataset organization strategies..."
-    
+
     return base_prompt
 ```
 

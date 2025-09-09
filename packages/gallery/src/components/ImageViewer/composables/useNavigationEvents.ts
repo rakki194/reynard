@@ -15,7 +15,7 @@ export const useNavigationEvents = (
   state: () => ImageViewerState,
   setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
   containerRef: () => HTMLDivElement | undefined,
-  imageRef: () => HTMLImageElement | undefined
+  imageRef: () => HTMLImageElement | undefined,
 ): UseNavigationEventsReturn => {
   const handleReset = () => {
     setState((prev) => ({

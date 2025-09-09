@@ -1,6 +1,6 @@
 /**
  * Reynard Core Utilities
- * Comprehensive utility functions extracted from yipyap
+ * Comprehensive utility functions for the Reynard framework
  */
 
 // Date utilities
@@ -17,3 +17,6 @@ export * from "./validation";
 
 // Async utilities
 export * from "./async";
+
+// Package management utilities
+export * from "./package-exports";

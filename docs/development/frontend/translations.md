@@ -93,29 +93,29 @@ const value = getTranslationValue(translations, "gallery.multiSelect.selected");
 
 1. Create a new language file in `/src/i18n/lang/`:
 
-    ```typescript
-    // ja.ts
-    export default {
-      common: {
-        ok: "OK",
-        cancel: "キャンセル"
-      },
-      settings: {
-        title: "設定",
-        // ... other translations
-      }
-    } satisfies Translations;
-    ```
+   ```typescript
+   // ja.ts
+   export default {
+     common: {
+       ok: "OK",
+       cancel: "キャンセル",
+     },
+     settings: {
+       title: "設定",
+       // ... other translations
+     },
+   } satisfies Translations;
+   ```
 
 2. Add the language to the supported languages array in `/src/i18n/index.ts`:
 
-    ```typescript
-    export const languages = [
-      { code: "en", name: "English" },
-      { code: "ja", name: "日本語" },
-      // Add new language here
-    ] as const;
-    ```
+   ```typescript
+   export const languages = [
+     { code: "en", name: "English" },
+     { code: "ja", name: "日本語" },
+     // Add new language here
+   ] as const;
+   ```
 
 ### Pluralization Support
 
@@ -125,12 +125,12 @@ The system provides comprehensive pluralization support for different language f
 
 ```typescript
 type PluralForms = {
-  zero?: string;    // Optional, for languages that have a special zero form (e.g., Arabic)
-  one: string;      // Required, singular form (e.g., "1 book")
-  two?: string;     // Optional, dual form (e.g., Arabic: "كتابان")
-  few?: string;     // Optional, for languages with special few form (e.g., Polish: "2 książki")
-  many?: string;    // Optional, for languages with special many form (e.g., Polish: "5 książek")
-  other: string;    // Required, default plural form (e.g., "books")
+  zero?: string; // Optional, for languages that have a special zero form (e.g., Arabic)
+  one: string; // Required, singular form (e.g., "1 book")
+  two?: string; // Optional, dual form (e.g., Arabic: "كتابان")
+  few?: string; // Optional, for languages with special few form (e.g., Polish: "2 książki")
+  many?: string; // Optional, for languages with special many form (e.g., Polish: "5 książek")
+  other: string; // Required, default plural form (e.g., "books")
 };
 ```
 
@@ -143,7 +143,7 @@ The system includes specialized plural rules for different language families:
    - Example: "1 book" vs "2 books"
 
    ```typescript
-   default: (n: number, forms: PluralForms) => 
+   default: (n: number, forms: PluralForms) =>
      n === 1 ? forms.one : forms.other
    ```
 
@@ -162,7 +162,7 @@ The system includes specialized plural rules for different language families:
      if (lastDigit === 1) return forms.one;
      if (lastDigit >= 2 && lastDigit <= 4) return forms.few;
      return forms.many;
-   }
+   };
    ```
 
 3. **Arabic**:
@@ -181,46 +181,46 @@ The system includes specialized plural rules for different language families:
      if (n === 2) return forms.two;
      if (n >= 3 && n <= 10) return forms.few;
      return forms.many || forms.other;
-   }
+   };
    ```
 
 4. **East Asian Languages (Japanese, Chinese, Korean, Vietnamese)**:
    - No grammatical plurals, always use the base form
 
    ```typescript
-   ja: (_n: number, forms: PluralForms) => forms.other
+   ja: (_n: number, forms: PluralForms) => forms.other;
    ```
 
 #### Usage in Translations
 
 1. **Define Plural Forms**:
 
-    ```typescript
-    const bookTranslations = {
-      en: {
-        one: "${count} book",
-        other: "${count} books"
-      },
-      ru: {
-        one: "${count} книга",
-        few: "${count} книги",
-        many: "${count} книг"
-      },
-      ar: {
-        zero: "لا كتب",
-        one: "كتاب واحد",
-        two: "كتابان",
-        few: "${count} كتب",
-        many: "${count} كتابًا"
-      }
-    };
-    ```
+   ```typescript
+   const bookTranslations = {
+     en: {
+       one: "${count} book",
+       other: "${count} books",
+     },
+     ru: {
+       one: "${count} книга",
+       few: "${count} книги",
+       many: "${count} книг",
+     },
+     ar: {
+       zero: "لا كتب",
+       one: "كتاب واحد",
+       two: "كتابان",
+       few: "${count} كتب",
+       many: "${count} كتابًا",
+     },
+   };
+   ```
 
 2. **Use in Components**:
 
-    ```typescript
-    const message = t("books.count", { count: 5 });
-    ```
+   ```typescript
+   const message = t("books.count", { count: 5 });
+   ```
 
 #### Helper Functions
 
@@ -239,7 +239,7 @@ describe("Pluralization", () => {
     const forms = {
       one: "${count} книга",
       few: "${count} книги",
-      many: "${count} книг"
+      many: "${count} книг",
     };
     expect(getPlural(1, forms, "ru")).toBe("1 книга");
     expect(getPlural(2, forms, "ru")).toBe("2 книги");
@@ -256,55 +256,58 @@ The system provides comprehensive RTL (right-to-left) support for languages like
 
 1. Automatic Direction Setting:
 
-    ```typescript
-    // In app context
-    createRenderEffect(() => {
-      document.documentElement.lang = store.locale;
-      document.documentElement.dir = ["ar", "he", "fa"].includes(store.locale) ? "rtl" : "ltr";
-    });
-    ```
+   ```typescript
+   // In app context
+   createRenderEffect(() => {
+     document.documentElement.lang = store.locale;
+     document.documentElement.dir = ["ar", "he", "fa"].includes(store.locale)
+       ? "rtl"
+       : "ltr";
+   });
+   ```
 
 2. CSS Logical Properties:
 
-    ```css
-    :root[dir="rtl"] {
-      --start: right;
-      --end: left;
-      --font-family-base: "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, 
-        "Segoe UI", Roboto, sans-serif;
-    }
+   ```css
+   :root[dir="rtl"] {
+     --start: right;
+     --end: left;
+     --font-family-base:
+       "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI",
+       Roboto, sans-serif;
+   }
 
-    :root[dir="ltr"] {
-      --start: left;
-      --end: right;
-    }
-    ```
+   :root[dir="ltr"] {
+     --start: left;
+     --end: right;
+   }
+   ```
 
 3. Language-Specific Font Support:
 
-    ```css
-    body:lang(he) {
-      font-family: "Noto Sans Hebrew", var(--font-family-base);
-      line-height: 1.7;
-    }
+   ```css
+   body:lang(he) {
+     font-family: "Noto Sans Hebrew", var(--font-family-base);
+     line-height: 1.7;
+   }
 
-    body:lang(ar) {
-      font-family: "Noto Sans Arabic", var(--font-family-base);
-      line-height: 1.8;
-    }
+   body:lang(ar) {
+     font-family: "Noto Sans Arabic", var(--font-family-base);
+     line-height: 1.8;
+   }
 
-    body:lang(fa) {
-      font-family: "Noto Sans Arabic", var(--font-family-base);
-      line-height: 1.8;
-    }
-    ```
+   body:lang(fa) {
+     font-family: "Noto Sans Arabic", var(--font-family-base);
+     line-height: 1.8;
+   }
+   ```
 
 4. Font Loading:
 
-    ```css
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew&display=swap');
-    ```
+   ```css
+   @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap");
+   @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew&display=swap");
+   ```
 
 ### Best Practices for RTL Support
 
@@ -344,7 +347,7 @@ Regular maintenance is crucial for keeping translations synchronized across all 
 describe("Translation Keys", () => {
   it("should have all required keys", () => {
     const required = ["common.ok", "common.cancel"];
-    required.forEach(key => {
+    required.forEach((key) => {
       expect(getTranslationValue(en, key)).toBeDefined();
       expect(getTranslationValue(ja, key)).toBeDefined();
     });
@@ -360,7 +363,7 @@ describe("Pluralization", () => {
     const forms = {
       one: "файл",
       few: "файла",
-      many: "файлов"
+      many: "файлов",
     };
     expect(getRussianPlural(1, forms)).toBe("файл");
     expect(getRussianPlural(2, forms)).toBe("файла");

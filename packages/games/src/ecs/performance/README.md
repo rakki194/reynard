@@ -14,7 +14,7 @@ A high-performance ECS implementation with automatic WASM SIMD acceleration and 
 ## 📦 Installation
 
 ```typescript
-import { createECSSystem } from './performance';
+import { createECSSystem } from "./performance";
 ```
 
 ## 🎯 Quick Start
@@ -22,13 +22,13 @@ import { createECSSystem } from './performance';
 ### Basic Usage
 
 ```typescript
-import { createECSSystem } from './performance';
+import { createECSSystem } from "./performance";
 
 // Automatically selects the best available implementation
 const ecs = await createECSSystem({
   maxEntities: 10000,
   enableWASM: true,
-  enableMetrics: true
+  enableMetrics: true,
 });
 
 // Use the ECS system
@@ -42,7 +42,7 @@ console.log(`WASM SIMD active: ${ecs.isWASMActive}`);
 ### Quick Start Function
 
 ```typescript
-import { quickStartECS } from './performance';
+import { quickStartECS } from "./performance";
 
 // Quick start with default configuration
 const ecs = await quickStartECS(10000);
@@ -52,11 +52,11 @@ const ecs = await quickStartECS(10000);
 
 ```typescript
 interface ECSConfig {
-  maxEntities?: number;           // Maximum number of entities (default: 10000)
-  enableWASM?: boolean;          // Enable WASM SIMD acceleration (default: true)
-  enableMetrics?: boolean;       // Enable performance monitoring (default: false)
-  preferredMode?: 'wasm-simd' | 'typescript' | 'auto'; // Preferred implementation
-  fallbackBehavior?: 'silent' | 'warn' | 'error';      // Fallback behavior
+  maxEntities?: number; // Maximum number of entities (default: 10000)
+  enableWASM?: boolean; // Enable WASM SIMD acceleration (default: true)
+  enableMetrics?: boolean; // Enable performance monitoring (default: false)
+  preferredMode?: "wasm-simd" | "typescript" | "auto"; // Preferred implementation
+  fallbackBehavior?: "silent" | "warn" | "error"; // Fallback behavior
 }
 ```
 
@@ -71,11 +71,13 @@ interface UnifiedECS {
   readonly world: World;
   readonly metrics: ECSPerformanceMetrics;
   readonly isWASMActive: boolean;
-  readonly performanceMode: 'wasm-simd' | 'typescript' | 'hybrid';
-  
+  readonly performanceMode: "wasm-simd" | "typescript" | "hybrid";
+
   spawn<T extends Component[]>(...components: T): Entity;
   despawn(entity: Entity): void;
-  query<T extends Component[]>(...componentTypes: any[]): IterableIterator<[Entity, ...T]>;
+  query<T extends Component[]>(
+    ...componentTypes: any[]
+  ): IterableIterator<[Entity, ...T]>;
   addSystem(system: (world: World) => void, name?: string): void;
   runSystems(deltaTime?: number): void;
   // ... more methods
@@ -106,18 +108,18 @@ graph TD
 
 ## 📊 Performance Comparison
 
-| Operation | TypeScript | WASM SIMD | Speedup |
-|-----------|------------|-----------|---------|
-| Position Updates | 1.0x | 4.2x | 4.2x |
-| Collision Detection | 1.0x | 3.4x | 3.4x |
-| Spatial Queries | 1.0x | 3.8x | 3.8x |
+| Operation           | TypeScript | WASM SIMD | Speedup |
+| ------------------- | ---------- | --------- | ------- |
+| Position Updates    | 1.0x       | 4.2x      | 4.2x    |
+| Collision Detection | 1.0x       | 3.4x      | 3.4x    |
+| Spatial Queries     | 1.0x       | 3.8x      | 3.8x    |
 
 ## 🧪 Examples
 
 ### Complete Game Example
 
 ```typescript
-import { runECSExample } from './example';
+import { runECSExample } from "./example";
 
 // Run the complete example
 await runECSExample();
@@ -126,7 +128,7 @@ await runECSExample();
 ### Performance Benchmark
 
 ```typescript
-import { benchmarkECS } from './performance';
+import { benchmarkECS } from "./performance";
 
 const results = await benchmarkECS(1000, 100);
 console.log(`WASM SIMD speedup: ${results.wasmSpeedup}x`);
@@ -135,10 +137,10 @@ console.log(`WASM SIMD speedup: ${results.wasmSpeedup}x`);
 ### Diagnostics
 
 ```typescript
-import { diagnoseECS } from './performance';
+import { diagnoseECS } from "./performance";
 
 const diagnostics = await diagnoseECS();
-console.log('ECS Diagnostics:', diagnostics);
+console.log("ECS Diagnostics:", diagnostics);
 ```
 
 ## 🔍 Diagnostics and Troubleshooting
@@ -146,11 +148,11 @@ console.log('ECS Diagnostics:', diagnostics);
 ### Environment Diagnostics
 
 ```typescript
-import { getECSDiagnostics } from './performance';
+import { getECSDiagnostics } from "./performance";
 
 const diagnostics = getECSDiagnostics();
-console.log('Environment:', diagnostics.environment);
-console.log('WASM Support:', diagnostics.wasm);
+console.log("Environment:", diagnostics.environment);
+console.log("WASM Support:", diagnostics.wasm);
 ```
 
 ### Performance Monitoring
@@ -160,9 +162,9 @@ const ecs = await createECSSystem({ enableMetrics: true });
 
 // Get current metrics
 const metrics = ecs.getMetrics();
-console.log('Entity Count:', metrics.entityCount);
-console.log('Average System Time:', metrics.averageSystemTime);
-console.log('Memory Usage:', metrics.memoryUsage);
+console.log("Entity Count:", metrics.entityCount);
+console.log("Average System Time:", metrics.averageSystemTime);
+console.log("Memory Usage:", metrics.memoryUsage);
 ```
 
 ## 🛠️ Advanced Usage
@@ -170,21 +172,21 @@ console.log('Memory Usage:', metrics.memoryUsage);
 ### Explicit Implementation Selection
 
 ```typescript
-import { 
+import {
   createWASMSIMDECSSystem,
-  createTypeScriptECSSystem 
-} from './performance';
+  createTypeScriptECSSystem,
+} from "./performance";
 
 // Force WASM SIMD implementation
 const wasmECS = await createWASMSIMDECSSystem({
   maxEntities: 10000,
-  enableMetrics: true
+  enableMetrics: true,
 });
 
 // Force TypeScript implementation
 const tsECS = await createTypeScriptECSSystem({
   maxEntities: 10000,
-  enableMetrics: true
+  enableMetrics: true,
 });
 ```
 
@@ -198,7 +200,7 @@ ecs.addSystem((world) => {
     position.x += velocity.vx * 0.016;
     position.y += velocity.vy * 0.016;
   }
-}, 'movement');
+}, "movement");
 
 // Run systems
 ecs.runSystems(0.016);
@@ -210,10 +212,10 @@ ecs.runSystems(0.016);
 
 ```typescript
 // In packages/games/src/ecs/index.ts
-export * from './performance';
+export * from "./performance";
 
 // Users can now import from the main ECS package
-import { createECSSystem } from 'reynard-games/ecs';
+import { createECSSystem } from "reynard-games/ecs";
 ```
 
 ### Component Compatibility
@@ -221,12 +223,12 @@ import { createECSSystem } from 'reynard-games/ecs';
 The performance package is fully compatible with existing Reynard ECS components:
 
 ```typescript
-import { Position, Velocity, Health } from '../types';
+import { Position, Velocity, Health } from "../types";
 
 const entity = ecs.spawn(
   new Position(0, 0),
   new Velocity(1, 1),
-  new Health(100, 100)
+  new Health(100, 100),
 );
 ```
 
@@ -251,8 +253,8 @@ const entity = ecs.spawn(
 
 ```typescript
 const ecs = await createECSSystem({
-  fallbackBehavior: 'warn', // Show warnings for fallbacks
-  enableMetrics: true       // Enable performance monitoring
+  fallbackBehavior: "warn", // Show warnings for fallbacks
+  enableMetrics: true, // Enable performance monitoring
 });
 ```
 

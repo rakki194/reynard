@@ -1,6 +1,6 @@
 /**
  * Validation utilities for the Reynard Auth system.
- * 
+ *
  * This module contains validation functions for user inputs,
  * email addresses, usernames, and other authentication data.
  */
@@ -89,4 +89,3 @@ export function validatePassword(
     suggestions: errors,
   };
 }
-

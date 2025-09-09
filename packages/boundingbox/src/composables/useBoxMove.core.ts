@@ -1,11 +1,11 @@
 /**
  * Core Box Move State Management
- * 
+ *
  * Handles the fundamental state for box movement operations
  */
 
-import { createSignal } from 'solid-js';
-import type { BoundingBox } from '../types';
+import { createSignal } from "solid-js";
+import type { BoundingBox } from "../types";
 
 export interface MoveConstraints {
   minX: number;
@@ -54,27 +54,27 @@ export function createMoveState(): {
   });
 
   const setIsMoving = (moving: boolean) => {
-    setState(prev => ({ ...prev, isMoving: moving }));
+    setState((prev) => ({ ...prev, isMoving: moving }));
   };
 
   const setBoxId = (id: string | null) => {
-    setState(prev => ({ ...prev, boxId: id }));
+    setState((prev) => ({ ...prev, boxId: id }));
   };
 
   const setOriginalBox = (box: BoundingBox | null) => {
-    setState(prev => ({ ...prev, originalBox: box }));
+    setState((prev) => ({ ...prev, originalBox: box }));
   };
 
   const setStartPosition = (x: number, y: number) => {
-    setState(prev => ({ ...prev, startX: x, startY: y }));
+    setState((prev) => ({ ...prev, startX: x, startY: y }));
   };
 
   const setCurrentPosition = (x: number, y: number) => {
-    setState(prev => ({ ...prev, currentX: x, currentY: y }));
+    setState((prev) => ({ ...prev, currentX: x, currentY: y }));
   };
 
   const setDelta = (deltaX: number, deltaY: number) => {
-    setState(prev => ({ ...prev, deltaX, deltaY }));
+    setState((prev) => ({ ...prev, deltaX, deltaY }));
   };
 
   const reset = () => {

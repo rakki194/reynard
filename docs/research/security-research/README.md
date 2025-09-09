@@ -263,4 +263,4 @@ Request 6: Status Code: 429, Response: {'detail': 'Too many login attempts. Plea
 
 ---
 
-*This security research archive represents a comprehensive security assessment of the YipYap backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities, resulting in a robust and secure web application platform.*
+_This security research archive represents a comprehensive security assessment of the YipYap backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities, resulting in a robust and secure web application platform._

@@ -1,4 +1,4 @@
-import { Component } from 'solid-js';
+import { Component } from "solid-js";
 
 /**
  * Feature dependency definition
@@ -31,9 +31,9 @@ export interface FeatureDefinition {
   /** Dependencies required for this feature */
   dependencies: FeatureDependency[];
   /** Feature category */
-  category: 'core' | 'ml' | 'integration' | 'utility' | 'ui' | 'data';
+  category: "core" | "ml" | "integration" | "utility" | "ui" | "data";
   /** Feature priority level */
-  priority: 'critical' | 'high' | 'medium' | 'low';
+  priority: "critical" | "high" | "medium" | "low";
   /** Feature version */
   version?: string;
   /** Whether the feature is enabled by default */
@@ -99,7 +99,7 @@ export interface FeatureCapability {
   /** Whether this capability is available */
   available: boolean;
   /** Capability priority */
-  priority: 'critical' | 'high' | 'medium' | 'low';
+  priority: "critical" | "high" | "medium" | "low";
 }
 
 /**

@@ -12,14 +12,19 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
   const [objects, setObjects] = createSignal<SpatialObject[]>([]);
   const [spatialHash, setSpatialHash] = createSignal<SpatialHash | null>(null);
   const [queryResults, setQueryResults] = createSignal<number[]>([]);
-  const [queryRect, setQueryRect] = createSignal<QueryRect>({ x: 0, y: 0, width: 100, height: 100 });
+  const [queryRect, setQueryRect] = createSignal<QueryRect>({
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+  });
   const [stats, setStats] = createSignal<any>(null);
 
   const config = {
     canvasWidth: 600,
     canvasHeight: 400,
     objectCount: 50,
-    ...props.config
+    ...props.config,
   };
 
   const CANVAS_WIDTH = config.canvasWidth!;
@@ -36,9 +41,11 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
   });
 
   const initializeDemo = () => {
-    const newObjects = Array.from({ length: OBJECT_COUNT }, (_, i) => createObject(i));
+    const newObjects = Array.from({ length: OBJECT_COUNT }, (_, i) =>
+      createObject(i),
+    );
     setObjects(newObjects);
-    
+
     const hash = new SpatialHash({ cellSize: 50 });
     newObjects.forEach((obj: SpatialObject) => {
       hash.insert({ ...obj, data: { name: `Object ${obj.id}` } });
@@ -51,14 +58,24 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
     const rect = (event.target as SVGElement).getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    
-    const newQueryRect: QueryRect = { x: x - 50, y: y - 50, width: 100, height: 100 };
+
+    const newQueryRect: QueryRect = {
+      x: x - 50,
+      y: y - 50,
+      width: 100,
+      height: 100,
+    };
     setQueryRect(newQueryRect);
-    
+
     const hash = spatialHash();
     if (hash) {
-      const results = hash.queryRect(newQueryRect.x, newQueryRect.y, newQueryRect.width, newQueryRect.height);
-      setQueryResults(results.map(obj => obj.id as number));
+      const results = hash.queryRect(
+        newQueryRect.x,
+        newQueryRect.y,
+        newQueryRect.width,
+        newQueryRect.height,
+      );
+      setQueryResults(results.map((obj) => obj.id as number));
     }
   };
 
@@ -79,11 +96,11 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
           <span>Cells: {stats()?.totalCells || 0}</span>
         </div>
       </div>
-      
+
       <div class="spatial-canvas">
-        <svg 
-          width={CANVAS_WIDTH} 
-          height={CANVAS_HEIGHT} 
+        <svg
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
           class="spatial-svg"
           onClick={handleCanvasClick}
         >
@@ -108,9 +125,9 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
               stroke-width="1"
             />
           ))}
-          
+
           {/* Objects */}
-          {objects().map(obj => (
+          {objects().map((obj) => (
             <rect
               x={obj.x}
               y={obj.y}
@@ -122,7 +139,7 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
               opacity={queryResults().includes(obj.id) ? "0.8" : "0.6"}
             />
           ))}
-          
+
           {/* Query rectangle */}
           <rect
             x={queryRect().x}
@@ -136,12 +153,17 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
           />
         </svg>
       </div>
-      
+
       <div class="demo-instructions">
-        <p>🎯 <strong>Click</strong> anywhere to query objects in a 100x100 area</p>
-        <p>💡 <strong>Algorithm:</strong> Spatial hashing for O(1) average case queries</p>
+        <p>
+          🎯 <strong>Click</strong> anywhere to query objects in a 100x100 area
+        </p>
+        <p>
+          💡 <strong>Algorithm:</strong> Spatial hashing for O(1) average case
+          queries
+        </p>
       </div>
-      
+
       {stats() && (
         <div class="demo-stats-detail">
           <h4>Spatial Hash Statistics:</h4>

@@ -1,4 +1,4 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 import {
   expectComponentToRender,
   expectComponentToThrow,
@@ -37,10 +37,10 @@ import {
   expectElementToHaveRole,
   expectElementToHaveAccessibleName,
   expectElementToHaveAccessibleDescription,
-} from '../index';
+} from "../index";
 
 export function testAssertionExports() {
-  it('should export all assertion utilities', () => {
+  it("should export all assertion utilities", () => {
     expect(expectComponentToRender).toBeDefined();
     expect(expectComponentToThrow).toBeDefined();
     expect(expectPromiseToResolve).toBeDefined();

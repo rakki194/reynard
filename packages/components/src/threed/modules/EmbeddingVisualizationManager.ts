@@ -3,7 +3,11 @@
  * Orchestrates the initialization and management of embedding visualizations
  */
 
-import { EmbeddingRenderer, ThreeJSSceneManager, ThemeColorManager } from './index';
+import {
+  EmbeddingRenderer,
+  ThreeJSSceneManager,
+  ThemeColorManager,
+} from "./index";
 
 export interface EmbeddingVisualizationConfig {
   width: number;
@@ -24,34 +28,34 @@ export class EmbeddingVisualizationManager {
   }
 
   async initialize() {
-    const THREE = await import('three');
-    
+    const THREE = await import("three");
+
     // Initialize theme manager
     this.themeManager = new ThemeColorManager({ theme: this.config.theme });
-    
+
     // Initialize scene manager
     this.sceneManager = new ThreeJSSceneManager({
       width: this.config.width,
       height: this.config.height,
       backgroundColor: this.themeManager.getBackgroundColor(),
-      container: this.config.container
+      container: this.config.container,
     });
 
     const { scene } = await this.sceneManager.initialize(THREE as any);
-    
+
     // Initialize embedding renderer
     this.embeddingRenderer = new EmbeddingRenderer({
       theme: this.config.theme,
       embeddingCount: this.config.embeddingCount,
       scene,
-      THREE
+      THREE,
     });
 
     this.embeddingRenderer.createEmbeddingVisualization({
       theme: this.config.theme,
       embeddingCount: this.config.embeddingCount,
       scene,
-      THREE
+      THREE,
     });
 
     // Start animation
@@ -65,12 +69,16 @@ export class EmbeddingVisualizationManager {
   }
 
   updateTheme(newTheme: string) {
-    if (!this.sceneManager || !this.embeddingRenderer || !this.themeManager) return;
+    if (!this.sceneManager || !this.embeddingRenderer || !this.themeManager)
+      return;
 
-    import('three').then(THREE => {
+    import("three").then((THREE) => {
       this.themeManager!.updateTheme(newTheme);
       this.embeddingRenderer!.updateTheme(newTheme, THREE);
-      this.sceneManager!.updateBackgroundColor(THREE as any, this.themeManager!.getBackgroundColor());
+      this.sceneManager!.updateBackgroundColor(
+        THREE as any,
+        this.themeManager!.getBackgroundColor(),
+      );
     });
   }
 

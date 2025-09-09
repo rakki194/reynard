@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 /**
  * SolidJS-specific mocks for testing
@@ -9,15 +9,15 @@ import { vi } from 'vitest';
  */
 export const mockRouter = {
   location: {
-    pathname: '/',
-    search: '',
-    hash: '',
-    href: '/',
-    origin: 'http://localhost',
-    protocol: 'http:',
-    host: 'localhost',
-    hostname: 'localhost',
-    port: '',
+    pathname: "/",
+    search: "",
+    hash: "",
+    href: "/",
+    origin: "http://localhost",
+    protocol: "http:",
+    host: "localhost",
+    hostname: "localhost",
+    port: "",
     state: null,
   },
   navigate: vi.fn(),
@@ -29,7 +29,7 @@ export const mockRouter = {
  * Mock SolidJS context
  */
 export const mockContext = {
-  theme: { name: 'light', colors: {} },
+  theme: { name: "light", colors: {} },
   notifications: [],
   addNotification: vi.fn(),
   removeNotification: vi.fn(),
@@ -44,7 +44,7 @@ export function createMockSolidResource<T>(data: T) {
     loading: false,
     error: undefined,
     latest: data,
-    state: 'ready' as const,
+    state: "ready" as const,
     mutate: vi.fn(),
     refetch: vi.fn().mockResolvedValue(data),
   };

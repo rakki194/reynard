@@ -19,55 +19,70 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
       <h3>Color Variants</h3>
       <div class="variant-grid">
         <div class="variant-item">
-          <div 
+          <div
             class="variant-swatch"
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--dynamic-bg-color', themeColors.getColor(props.selectedColor));
+                el.style.setProperty(
+                  "--dynamic-bg-color",
+                  themeColors.getColor(props.selectedColor),
+                );
               }
             }}
           />
           <span>Base</span>
         </div>
         <div class="variant-item">
-          <div 
+          <div
             class="variant-swatch"
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--dynamic-bg-color', themeColors.getColorVariant(props.selectedColor, 'lighter'));
+                el.style.setProperty(
+                  "--dynamic-bg-color",
+                  themeColors.getColorVariant(props.selectedColor, "lighter"),
+                );
               }
             }}
           />
           <span>Lighter</span>
         </div>
         <div class="variant-item">
-          <div 
+          <div
             class="variant-swatch"
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--dynamic-bg-color', themeColors.getColorVariant(props.selectedColor, 'darker'));
+                el.style.setProperty(
+                  "--dynamic-bg-color",
+                  themeColors.getColorVariant(props.selectedColor, "darker"),
+                );
               }
             }}
           />
           <span>Darker</span>
         </div>
         <div class="variant-item">
-          <div 
+          <div
             class="variant-swatch"
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--dynamic-bg-color', themeColors.getColorVariant(props.selectedColor, 'hover'));
+                el.style.setProperty(
+                  "--dynamic-bg-color",
+                  themeColors.getColorVariant(props.selectedColor, "hover"),
+                );
               }
             }}
           />
           <span>Hover</span>
         </div>
         <div class="variant-item">
-          <div 
+          <div
             class="variant-swatch"
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--dynamic-bg-color', themeColors.getColorVariant(props.selectedColor, 'active'));
+                el.style.setProperty(
+                  "--dynamic-bg-color",
+                  themeColors.getColorVariant(props.selectedColor, "active"),
+                );
               }
             }}
           />

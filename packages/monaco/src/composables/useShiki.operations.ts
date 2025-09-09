@@ -1,11 +1,11 @@
 /**
  * Shiki Operations
- * 
+ *
  * Handles the actual syntax highlighting operations
  */
 
-import { codeToHtml, createHighlighter } from 'shiki';
-import type { ShikiOptions } from '../types';
+import { codeToHtml, createHighlighter } from "shiki";
+import type { ShikiOptions } from "../types";
 
 export interface ShikiOperations {
   initializeHighlighter: (options: ShikiOptions) => Promise<void>;
@@ -18,17 +18,27 @@ export function createShikiOperations(
   state: () => any,
   setHighlighter: (highlighter: any) => void,
   setError: (error: string | null) => void,
-  setLoading: (loading: boolean) => void
+  setLoading: (loading: boolean) => void,
 ): ShikiOperations {
   const initializeHighlighter = async (options: ShikiOptions) => {
     try {
       setLoading(true);
       setError(null);
 
-      const themes = options.themes || ['github-dark', 'github-light'];
+      const themes = options.themes || ["github-dark", "github-light"];
       const langs = options.langs || [
-        'javascript', 'typescript', 'jsx', 'tsx', 'html', 'css',
-        'python', 'json', 'markdown', 'bash', 'yaml', 'xml'
+        "javascript",
+        "typescript",
+        "jsx",
+        "tsx",
+        "html",
+        "css",
+        "python",
+        "json",
+        "markdown",
+        "bash",
+        "yaml",
+        "xml",
       ];
 
       const highlighter = await createHighlighter({
@@ -38,24 +48,31 @@ export function createShikiOperations(
 
       setHighlighter(highlighter);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to initialize Shiki');
+      setError(
+        error instanceof Error ? error.message : "Failed to initialize Shiki",
+      );
     }
   };
 
-  const highlightCode = async (code: string, lang: string, theme: string): Promise<string> => {
+  const highlightCode = async (
+    code: string,
+    lang: string,
+    theme: string,
+  ): Promise<string> => {
     const currentState = state();
     if (!currentState.highlighter) {
-      throw new Error('Shiki highlighter not initialized');
+      throw new Error("Shiki highlighter not initialized");
     }
 
     try {
       return await codeToHtml(code, {
         lang,
         theme,
-        highlighter: currentState.highlighter,
       });
     } catch (error) {
-      throw new Error(`Failed to highlight code: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to highlight code: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   };
 

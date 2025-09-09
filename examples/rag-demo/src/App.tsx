@@ -53,24 +53,28 @@ interface _RAGStats {
 }
 
 const RAGDemoApp: Component = () => {
-  const [selectedResult, setSelectedResult] = createSignal<RAGResult | null>(null);
-  const [apiStatus, setApiStatus] = createSignal<'checking' | 'connected' | 'error'>('checking');
+  const [selectedResult, setSelectedResult] = createSignal<RAGResult | null>(
+    null,
+  );
+  const [apiStatus, setApiStatus] = createSignal<
+    "checking" | "connected" | "error"
+  >("checking");
   const [apiError, setApiError] = createSignal<string | null>(null);
   const { theme: _theme } = useTheme();
 
   // Check API connection on mount
   onMount(async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/rag/health');
+      const response = await fetch("http://localhost:8000/api/rag/health");
       if (response.ok) {
-        setApiStatus('connected');
+        setApiStatus("connected");
       } else {
-        setApiStatus('error');
+        setApiStatus("error");
         setApiError(`HTTP ${response.status}: ${response.statusText}`);
       }
     } catch (err) {
-      setApiStatus('error');
-      setApiError(err instanceof Error ? err.message : 'Connection failed');
+      setApiStatus("error");
+      setApiError(err instanceof Error ? err.message : "Connection failed");
     }
   });
 
@@ -79,25 +83,30 @@ const RAGDemoApp: Component = () => {
   };
 
   const handleDocumentUpload = (document: RAGDocument) => {
-    console.log('Document uploaded:', document);
+    console.log("Document uploaded:", document);
   };
 
   const getStatusColor = () => {
     switch (apiStatus()) {
-      case 'connected': return 'status-connected';
-      case 'error': return 'status-error';
-      default: return 'status-checking';
+      case "connected":
+        return "status-connected";
+      case "error":
+        return "status-error";
+      default:
+        return "status-checking";
     }
   };
 
   const getStatusText = () => {
     switch (apiStatus()) {
-      case 'connected': return 'Connected';
-      case 'error': return 'Connection Error';
-      default: return 'Checking...';
+      case "connected":
+        return "Connected";
+      case "error":
+        return "Connection Error";
+      default:
+        return "Checking...";
     }
   };
-
 
   return (
     <div class="rag-demo-app">
@@ -105,13 +114,13 @@ const RAGDemoApp: Component = () => {
       <header class="app-header">
         <div class="header-content">
           <div class="header-title">
-            <div class="header-icon">{getIcon('server')}</div>
+            <div class="header-icon">{getIcon("server")}</div>
             <h1>RAG Demo</h1>
           </div>
           <p class="header-subtitle">
             Retrieval-Augmented Generation with EmbeddingGemma
           </p>
-          
+
           {/* API Status */}
           <div class="api-status">
             <div class={`status-indicator ${getStatusColor()}`} />
@@ -120,7 +129,7 @@ const RAGDemoApp: Component = () => {
             </span>
           </div>
 
-          <Show when={apiStatus() === 'error'}>
+          <Show when={apiStatus() === "error"}>
             <div class="error-alert">
               <strong>API Connection Failed:</strong> {apiError()}
               <br />
@@ -135,25 +144,34 @@ const RAGDemoApp: Component = () => {
         <div class="features-grid">
           <Card variant="elevated" padding="lg" class="feature-card">
             <div class="feature-content">
-              <div class="feature-icon brain-icon">{getIcon('server')}</div>
+              <div class="feature-icon brain-icon">{getIcon("server")}</div>
               <h3>EmbeddingGemma</h3>
-              <p>Google's 300M parameter embedding model for state-of-the-art semantic search</p>
+              <p>
+                Google's 300M parameter embedding model for state-of-the-art
+                semantic search
+              </p>
             </div>
           </Card>
-          
+
           <Card variant="elevated" padding="lg" class="feature-card">
             <div class="feature-content">
-              <div class="feature-icon database-icon">{getIcon('server')}</div>
+              <div class="feature-icon database-icon">{getIcon("server")}</div>
               <h3>Vector Database</h3>
-              <p>Integrated with PawPrint's existing vector storage and similarity search</p>
+              <p>
+                Integrated with PawPrint's existing vector storage and
+                similarity search
+              </p>
             </div>
           </Card>
-          
+
           <Card variant="elevated" padding="lg" class="feature-card">
             <div class="feature-content">
-              <div class="feature-icon code-icon">{getIcon('server')}</div>
+              <div class="feature-icon code-icon">{getIcon("server")}</div>
               <h3>CodeWolf Integration</h3>
-              <p>Enhanced code understanding with semantic code search and analysis</p>
+              <p>
+                Enhanced code understanding with semantic code search and
+                analysis
+              </p>
             </div>
           </Card>
         </div>
@@ -182,10 +200,10 @@ const RAGDemoApp: Component = () => {
             <Show when={selectedResult()}>
               <Card variant="elevated" padding="lg" class="result-details-card">
                 <div class="card-header">
-                  <div class="card-icon">{getIcon('box')}</div>
+                  <div class="card-icon">{getIcon("box")}</div>
                   <h3>Result Details</h3>
                 </div>
-                
+
                 <div class="result-details">
                   <div class="detail-item">
                     <div class="detail-label">Similarity Score</div>
@@ -193,29 +211,29 @@ const RAGDemoApp: Component = () => {
                       {(selectedResult()!.similarity_score * 100).toFixed(1)}%
                     </div>
                   </div>
-                  
+
                   <div class="detail-item">
                     <div class="detail-label">Rank</div>
                     <div class="rank-value">#{selectedResult()!.rank}</div>
                   </div>
-                  
+
                   <div class="detail-item">
                     <div class="detail-label">Document Source</div>
                     <div class="source-code">
-                      {selectedResult()!.metadata.document_source || 'Unknown'}
+                      {selectedResult()!.metadata.document_source || "Unknown"}
                     </div>
                   </div>
-                  
+
                   <div class="detail-item">
                     <div class="detail-label">Chunk ID</div>
-                    <div class="chunk-id">
-                      {selectedResult()!.chunk_id}
-                    </div>
+                    <div class="chunk-id">{selectedResult()!.chunk_id}</div>
                   </div>
-                  
+
                   <div class="detail-item">
                     <div class="detail-label">Embedding Model</div>
-                    <div class="model-name">{selectedResult()!.metadata.embedding_model || 'Unknown'}</div>
+                    <div class="model-name">
+                      {selectedResult()!.metadata.embedding_model || "Unknown"}
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -224,34 +242,43 @@ const RAGDemoApp: Component = () => {
             {/* Quick Actions */}
             <Card variant="elevated" padding="lg" class="actions-card">
               <div class="card-header">
-                <div class="card-icon">{getIcon('refresh')}</div>
+                <div class="card-icon">{getIcon("refresh")}</div>
                 <h3>Quick Actions</h3>
               </div>
-              
+
               <div class="actions-list">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   fullWidth
-                  leftIcon={getIcon('open')}
-                  onClick={() => window.open('http://localhost:8000/docs', '_blank')}
+                  leftIcon={getIcon("open")}
+                  onClick={() =>
+                    window.open("http://localhost:8000/docs", "_blank")
+                  }
                 >
                   API Documentation
                 </Button>
-                
-                <Button 
-                  variant="secondary" 
+
+                <Button
+                  variant="secondary"
                   fullWidth
-                  leftIcon={getIcon('settings')}
-                  onClick={() => window.open('http://localhost:8000/api/rag/health', '_blank')}
+                  leftIcon={getIcon("settings")}
+                  onClick={() =>
+                    window.open(
+                      "http://localhost:8000/api/rag/health",
+                      "_blank",
+                    )
+                  }
                 >
                   Health Check
                 </Button>
-                
-                <Button 
-                  variant="secondary" 
+
+                <Button
+                  variant="secondary"
                   fullWidth
-                  leftIcon={getIcon('open')}
-                  onClick={() => window.open('https://github.com/ollama/ollama', '_blank')}
+                  leftIcon={getIcon("open")}
+                  onClick={() =>
+                    window.open("https://github.com/ollama/ollama", "_blank")
+                  }
                 >
                   Ollama Setup
                 </Button>
@@ -263,7 +290,7 @@ const RAGDemoApp: Component = () => {
               <div class="card-header">
                 <h3>Getting Started</h3>
               </div>
-              
+
               <div class="steps-list">
                 <div class="step-item">
                   <div class="step-number">1</div>
@@ -272,15 +299,17 @@ const RAGDemoApp: Component = () => {
                     <div class="step-description">Download from ollama.ai</div>
                   </div>
                 </div>
-                
+
                 <div class="step-item">
                   <div class="step-number">2</div>
                   <div class="step-content">
                     <div class="step-title">Pull EmbeddingGemma</div>
-                    <div class="step-description">Run: ollama pull embeddinggemma:latest</div>
+                    <div class="step-description">
+                      Run: ollama pull embeddinggemma:latest
+                    </div>
                   </div>
                 </div>
-                
+
                 <div class="step-item">
                   <div class="step-number">3</div>
                   <div class="step-content">
@@ -288,12 +317,14 @@ const RAGDemoApp: Component = () => {
                     <div class="step-description">Run the PawPrint RAG API</div>
                   </div>
                 </div>
-                
+
                 <div class="step-item">
                   <div class="step-number">4</div>
                   <div class="step-content">
                     <div class="step-title">Upload & Search</div>
-                    <div class="step-description">Upload documents and start searching!</div>
+                    <div class="step-description">
+                      Upload documents and start searching!
+                    </div>
                   </div>
                 </div>
               </div>
@@ -305,7 +336,8 @@ const RAGDemoApp: Component = () => {
       {/* Footer */}
       <footer class="app-footer">
         <p>
-          Built with <span class="heart">♥</span> using Reynard, SolidJS, and EmbeddingGemma
+          Built with <span class="heart">♥</span> using Reynard, SolidJS, and
+          EmbeddingGemma
         </p>
       </footer>
     </div>

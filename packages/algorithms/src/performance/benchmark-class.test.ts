@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { PerformanceBenchmark } from './benchmark';
-import { 
-  mockPerformanceNow, 
-  originalPerformance, 
-  setupPerformanceMock, 
-  teardownPerformanceMock, 
-  resetPerformanceMock 
-} from './__tests__/test-utils';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { PerformanceBenchmark } from "./benchmark";
+import {
+  mockPerformanceNow,
+  originalPerformance,
+  setupPerformanceMock,
+  teardownPerformanceMock,
+  resetPerformanceMock,
+} from "./__tests__/test-utils";
 
 beforeEach(() => {
   setupPerformanceMock();
@@ -16,18 +16,18 @@ afterEach(() => {
   teardownPerformanceMock();
 });
 
-describe('PerformanceBenchmark Class', () => {
+describe("PerformanceBenchmark Class", () => {
   beforeEach(() => {
     resetPerformanceMock();
   });
 
-  it('should measure async operations', async () => {
+  it("should measure async operations", async () => {
     const benchmark = new PerformanceBenchmark();
     let callCount = 0;
-    
+
     const asyncOperation = async () => {
       callCount++;
-      return 'result';
+      return "result";
     };
 
     // Set up mock sequence: each iteration gets start=0, end=100
@@ -49,13 +49,13 @@ describe('PerformanceBenchmark Class', () => {
     expect(metrics.standardDeviation).toBe(0);
   });
 
-  it('should measure sync operations', async () => {
+  it("should measure sync operations", async () => {
     const benchmark = new PerformanceBenchmark();
     let callCount = 0;
-    
+
     const syncOperation = () => {
       callCount++;
-      return 'result';
+      return "result";
     };
 
     // Set up mock sequence: iteration 1: 50ms, iteration 2: 150ms
@@ -76,17 +76,20 @@ describe('PerformanceBenchmark Class', () => {
     expect(metrics.maxTime).toBe(150);
   });
 
-  it('should calculate standard deviation correctly', async () => {
+  it("should calculate standard deviation correctly", async () => {
     const benchmark = new PerformanceBenchmark();
-    
-    const operation = () => 'result';
+
+    const operation = () => "result";
 
     // Mock times: [10, 20, 30] - average 20, variance 66.67, std dev ~8.16
     mockPerformanceNow
       .mockReturnValueOnce(0) // timer start
-      .mockReturnValueOnce(0).mockReturnValueOnce(10) // iteration 1
-      .mockReturnValueOnce(0).mockReturnValueOnce(20) // iteration 2
-      .mockReturnValueOnce(0).mockReturnValueOnce(30) // iteration 3
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(10) // iteration 1
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(20) // iteration 2
+      .mockReturnValueOnce(0)
+      .mockReturnValueOnce(30) // iteration 3
       .mockReturnValueOnce(60); // timer end
 
     const metrics = await benchmark.run(operation, 3);
@@ -98,11 +101,11 @@ describe('PerformanceBenchmark Class', () => {
     expect(metrics.standardDeviation).toBeCloseTo(8.16, 1);
   });
 
-  it('should handle performance budget warnings', async () => {
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  it("should handle performance budget warnings", async () => {
+    const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const benchmark = new PerformanceBenchmark();
-    
-    const slowOperation = () => 'result';
+
+    const slowOperation = () => "result";
 
     mockPerformanceNow
       .mockReturnValueOnce(0) // timer start
@@ -114,30 +117,32 @@ describe('PerformanceBenchmark Class', () => {
     await benchmark.run(slowOperation, 1, budget);
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Performance budget exceeded: 200ms > 100ms'
+      "Performance budget exceeded: 200ms > 100ms",
     );
 
     consoleSpy.mockRestore();
   });
 
-  it('should handle operations that throw errors', async () => {
+  it("should handle operations that throw errors", async () => {
     const benchmark = new PerformanceBenchmark();
-    
+
     const failingOperation = () => {
-      throw new Error('Test error');
+      throw new Error("Test error");
     };
 
     mockPerformanceNow
       .mockReturnValueOnce(0) // start
       .mockReturnValueOnce(100); // end
 
-    await expect(benchmark.run(failingOperation, 1)).rejects.toThrow('Test error');
+    await expect(benchmark.run(failingOperation, 1)).rejects.toThrow(
+      "Test error",
+    );
   });
 
-  it('should measure memory usage', async () => {
+  it("should measure memory usage", async () => {
     const benchmark = new PerformanceBenchmark();
-    
-    const operation = () => 'result';
+
+    const operation = () => "result";
 
     mockPerformanceNow
       .mockReturnValueOnce(0) // start

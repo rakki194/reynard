@@ -1,15 +1,15 @@
 /**
  * reynard-boundingbox
- * 
+ *
  * Reusable bounding box and annotation editing components for Reynard.
- * 
+ *
  * This package provides a comprehensive set of tools for creating, editing,
  * and managing bounding box annotations in web applications. It's designed
  * to be reusable across different projects and extensible for future
  * annotation types like polygon segmentation.
- * 
+ *
  * ## Features
- * 
+ *
  * - **Bounding Box Editing**: Create, resize, move, and delete bounding boxes
  * - **Interactive Canvas**: Fabric.js integration for smooth editing experience
  * - **Coordinate Transformation**: Automatic conversion between image and display coordinates
@@ -17,15 +17,15 @@
  * - **Extensible Architecture**: Designed to support future annotation types
  * - **TypeScript Support**: Full type safety and IntelliSense support
  * - **Accessibility**: WCAG compliant with keyboard navigation support
- * 
+ *
  * ## Usage
- * 
+ *
  * ```tsx
  * import { BoundingBoxEditor } from 'reynard-boundingbox';
- * 
+ *
  * function MyApp() {
  *   const imageInfo = { width: 1920, height: 1080, src: '/image.jpg' };
- *   
+ *
  *   return (
  *     <BoundingBoxEditor
  *       imageInfo={imageInfo}
@@ -44,16 +44,16 @@
  *   );
  * }
  * ```
- * 
+ *
  * ## Architecture
- * 
+ *
  * The package is organized into several layers:
- * 
+ *
  * - **Types**: Core type definitions shared across all components
  * - **Utils**: Utility functions for coordinate transformation and validation
  * - **Composables**: Reactive state management and business logic
  * - **Components**: UI components for annotation editing
- * 
+ *
  * This architecture allows for easy extension to support polygon annotations
  * and other annotation types in the future.
  */
@@ -76,7 +76,7 @@ export type {
   CanvasConfig,
   AnnotationExportFormat,
   ExportConfig,
-} from './types';
+} from "./types";
 
 // Utility functions
 export {
@@ -87,7 +87,7 @@ export {
   boundingBoxToImageCoords,
   clampToImageBounds,
   clampBoundingBoxToImage,
-} from './utils/coordinateTransform';
+} from "./utils/coordinateTransform";
 
 export {
   validateBoundingBox,
@@ -98,21 +98,21 @@ export {
   calculatePolygonArea,
   boundingBoxesOverlap,
   calculateBoundingBoxIoU,
-} from './utils/validation';
+} from "./utils/validation";
 
 // Composables
 export {
   useBoundingBoxes,
   type UseBoundingBoxesOptions,
   type UseBoundingBoxesReturn,
-} from './composables/useBoundingBoxes';
+} from "./composables/useBoundingBoxes";
 
 export {
   useBoxResize,
   type ResizeState,
   type ResizeOptions,
   type UseBoxResizeReturn,
-} from './composables/useBoxResize';
+} from "./composables/useBoxResize";
 
 export {
   useBoxMove,
@@ -120,13 +120,13 @@ export {
   type MoveState,
   type MoveOptions,
   type UseBoxMoveReturn,
-} from './composables/useBoxMove';
+} from "./composables/useBoxMove";
 
 // Components
 export {
   BoundingBoxEditor,
   type BoundingBoxEditorProps,
-} from './components/BoundingBoxEditor';
+} from "./components/BoundingBoxEditor";
 
 // Re-export commonly used types for convenience
-export type { Component } from 'solid-js';
+export type { Component } from "solid-js";

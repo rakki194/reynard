@@ -18,7 +18,9 @@ export const ColorInfo: Component<ColorInfoProps> = (props) => {
     <div class="color-info">
       <h3>{props.title || "Current Color"}</h3>
       <code>{props.color}</code>
-      <p>L: {props.lightness}% | C: {props.chroma.toFixed(2)} | H: {props.hue}°</p>
+      <p>
+        L: {props.lightness}% | C: {props.chroma.toFixed(2)} | H: {props.hue}°
+      </p>
     </div>
   );
 };

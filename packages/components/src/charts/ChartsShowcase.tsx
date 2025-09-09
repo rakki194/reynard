@@ -10,7 +10,7 @@ import {
   ChartsContent,
   useChartsData,
   useChartsCSS,
-  useChartsState
+  useChartsState,
 } from ".";
 
 export const ChartsShowcase: Component = () => {

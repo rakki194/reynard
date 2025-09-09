@@ -3,13 +3,15 @@
  * Handles file upload state and basic operations
  */
 
-import { createSignal } from 'solid-js';
-import type { FileUploadItem } from '../types';
+import { createSignal } from "solid-js";
+import type { FileUploadItem } from "../types";
 
 export interface UploadState {
   uploadItems: () => FileUploadItem[];
   isUploading: () => boolean;
-  setUploadItems: (items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[])) => void;
+  setUploadItems: (
+    items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[]),
+  ) => void;
   setIsUploading: (uploading: boolean | ((prev: boolean) => boolean)) => void;
 }
 
@@ -21,6 +23,6 @@ export function useUploadState(): UploadState {
     uploadItems,
     isUploading,
     setUploadItems,
-    setIsUploading
+    setIsUploading,
   };
 }

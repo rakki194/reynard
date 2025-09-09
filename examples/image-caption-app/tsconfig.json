@@ -20,8 +20,8 @@
     "paths": {
       "reynard-core": ["../../packages/core/src"],
       "reynard-components": ["../../packages/components/src"],
-      "reynard-gallery": ["../../packages/gallery/src"],
       "reynard-annotating": ["../../packages/annotating/src"],
+      "reynard-annotating-core": ["../../packages/annotating-core/src"],
       "reynard-caption": ["../../packages/caption/src"]
     }
   },

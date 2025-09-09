@@ -27,7 +27,7 @@ export const useThemeContext = () => {
         },
         getTagStyle: () => ({}),
         isDark: false,
-        isHighContrast: false
+        isHighContrast: false,
       } as ThemeContextFallback;
     }
   });

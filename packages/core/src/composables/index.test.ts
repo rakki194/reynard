@@ -25,5 +25,4 @@ describe("Composables Index Exports", () => {
   it("should export useMediaQuery composable", () => {
     expect(Composables).toHaveProperty("useMediaQuery");
   });
-
 });

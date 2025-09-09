@@ -3,135 +3,176 @@
  * A comprehensive demonstration of Reynard's advanced charting capabilities
  */
 
-import { Component, For, createSignal, createMemo, onMount, onCleanup, createEffect } from "solid-js";
+import {
+  Component,
+  For,
+  createSignal,
+  createMemo,
+  onMount,
+  onCleanup,
+  createEffect,
+} from "solid-js";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
-import { 
-  Chart, 
-  RealTimeChart, 
+import {
+  Chart,
+  RealTimeChart,
   StatisticalChart,
   useVisualizationEngine,
   type RealTimeDataPoint,
   type StatisticalData,
-  type QualityData
+  type QualityData,
 } from "reynard-charts";
+import { useChartsData } from "./useChartsData";
+import { useChartsLifecycle } from "./useChartsLifecycle";
 
 export const ChartsShowcaseSimple: Component = () => {
   const themeContext = useTheme();
-  
+
   // Interactive state
   const [selectedTheme, setSelectedTheme] = createSignal(themeContext.theme);
   const [realTimeEnabled, setRealTimeEnabled] = createSignal(true);
-  
-  // Real-time data state
-  const [realTimeData, setRealTimeData] = createSignal<RealTimeDataPoint[]>([]);
-  
+
+  // Use centralized data management
+  const chartsData = useChartsData();
+
   // Animation state
-  let realTimeInterval: NodeJS.Timeout | undefined;
   let colorSwatchRefs: HTMLDivElement[] = [];
 
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
-    theme: selectedTheme() as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut",
+    theme: selectedTheme() as
+      | "light"
+      | "dark"
+      | "gray"
+      | "banana"
+      | "strawberry"
+      | "peanut",
     useOKLCH: true,
     performance: {
       lazyLoading: true,
       memoryLimit: 512,
       targetFPS: 60,
-    }
+    },
   });
 
   // Available themes for demonstration
-  const availableThemes = getAvailableThemes().map(theme => theme.name as ThemeName);
+  const availableThemes = getAvailableThemes().map(
+    (theme) => theme.name as ThemeName,
+  );
 
   // Sample data for different chart types
   const sampleData = createMemo(() => ({
     sales: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      datasets: [{
-        label: 'Sales',
-        data: [12, 19, 3, 5, 2, 3],
-      }, {
-        label: 'Marketing',
-        data: [2, 3, 20, 5, 1, 4],
-      }]
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      datasets: [
+        {
+          label: "Sales",
+          data: [12, 19, 3, 5, 2, 3],
+        },
+        {
+          label: "Marketing",
+          data: [2, 3, 20, 5, 1, 4],
+        },
+      ],
     },
     revenue: {
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-      datasets: [{
-        label: 'Revenue',
-        data: [65, 59, 80, 81],
-      }]
+      labels: ["Q1", "Q2", "Q3", "Q4"],
+      datasets: [
+        {
+          label: "Revenue",
+          data: [65, 59, 80, 81],
+        },
+      ],
     },
     distribution: {
-      labels: ['Desktop', 'Mobile', 'Tablet', 'Other'],
-      datasets: [{
-        label: 'Traffic',
-        data: [45, 35, 15, 5],
-      }]
-    }
+      labels: ["Desktop", "Mobile", "Tablet", "Other"],
+      datasets: [
+        {
+          label: "Traffic",
+          data: [45, 35, 15, 5],
+        },
+      ],
+    },
   }));
 
   // Statistical data for analysis
-  const statisticalData = createMemo((): StatisticalData => ({
-    values: Array.from({ length: 100 }, () => Math.random() * 100),
-    statistics: {
-      min: 0,
-      q1: 25,
-      median: 50,
-      q3: 75,
-      max: 100,
-      mean: 50,
-      std: 28.87
-    }
-  }));
+  const statisticalData = createMemo(
+    (): StatisticalData => ({
+      values: Array.from({ length: 100 }, () => Math.random() * 100),
+      statistics: {
+        min: 0,
+        q1: 25,
+        median: 50,
+        q3: 75,
+        max: 100,
+        mean: 50,
+        std: 28.87,
+      },
+    }),
+  );
 
   // Quality metrics data
-  const qualityData = createMemo((): QualityData => ({
-    overallScore: 87,
-    metrics: [
-      { name: 'Performance', value: 92, unit: '%', higherIsBetter: true, goodThreshold: 80, warningThreshold: 60 },
-      { name: 'Accessibility', value: 88, unit: '%', higherIsBetter: true, goodThreshold: 85, warningThreshold: 70 },
-      { name: 'SEO', value: 76, unit: '%', higherIsBetter: true, goodThreshold: 80, warningThreshold: 60 },
-      { name: 'Security', value: 95, unit: '%', higherIsBetter: true, goodThreshold: 90, warningThreshold: 75 },
-    ],
-    assessment: {
-      status: 'good',
-      issues: ['SEO score could be improved'],
-      recommendations: ['Optimize meta tags', 'Implement lazy loading']
-    }
-  }));
+  const qualityData = createMemo(
+    (): QualityData => ({
+      overallScore: 87,
+      metrics: [
+        {
+          name: "Performance",
+          value: 92,
+          unit: "%",
+          higherIsBetter: true,
+          goodThreshold: 80,
+          warningThreshold: 60,
+        },
+        {
+          name: "Accessibility",
+          value: 88,
+          unit: "%",
+          higherIsBetter: true,
+          goodThreshold: 85,
+          warningThreshold: 70,
+        },
+        {
+          name: "SEO",
+          value: 76,
+          unit: "%",
+          higherIsBetter: true,
+          goodThreshold: 80,
+          warningThreshold: 60,
+        },
+        {
+          name: "Security",
+          value: 95,
+          unit: "%",
+          higherIsBetter: true,
+          goodThreshold: 90,
+          warningThreshold: 75,
+        },
+      ],
+      assessment: {
+        status: "good",
+        issues: ["SEO score could be improved"],
+        recommendations: ["Optimize meta tags", "Implement lazy loading"],
+      },
+    }),
+  );
 
-  // Generate real-time data
-  const generateRealTimeData = () => {
-    const now = Date.now();
-    const newPoint: RealTimeDataPoint = {
-      timestamp: now,
-      value: Math.random() * 100,
-      label: new Date(now).toLocaleTimeString(),
-    };
-    
-    setRealTimeData(prev => [...prev, newPoint].slice(-30));
-  };
-
-  onMount(() => {
-    if (realTimeEnabled()) {
-      realTimeInterval = setInterval(generateRealTimeData, 1000);
-    }
-  });
-
-  onCleanup(() => {
-    if (realTimeInterval) {
-      clearInterval(realTimeInterval);
-    }
-  });
-
-  // Update real-time data when enabled/disabled
-  createEffect(() => {
-    if (realTimeEnabled()) {
-      realTimeInterval = setInterval(generateRealTimeData, 1000);
-    } else {
-      if (realTimeInterval) clearInterval(realTimeInterval);
-    }
+  // Set up lifecycle management for real-time data
+  useChartsLifecycle({
+    realTimeEnabled,
+    generateRealTimeData: chartsData.generateRealTimeData,
+    generatePerformanceData: chartsData.generatePerformanceData,
+    generateMemoryData: chartsData.generateMemoryData,
+    animationSpeed: () => 1,
+    setAnimationFrame: chartsData.setAnimationFrame,
+    animationId: chartsData.animationId,
+    setAnimationId: chartsData.setAnimationId,
+    realTimeInterval: chartsData.realTimeInterval,
+    setRealTimeInterval: chartsData.setRealTimeInterval,
+    performanceInterval: chartsData.performanceInterval,
+    setPerformanceInterval: chartsData.setPerformanceInterval,
+    memoryInterval: chartsData.memoryInterval,
+    setMemoryInterval: chartsData.setMemoryInterval,
   });
 
   // Update color swatches when colors change
@@ -151,8 +192,9 @@ export const ChartsShowcaseSimple: Component = () => {
         <div class="hero-content">
           <h1 class="hero-title">Charts Showcase</h1>
           <p class="hero-subtitle">
-            Experience the power of professional data visualization with Reynard's advanced charting system.
-            Featuring OKLCH color integration, real-time capabilities, and statistical analysis tools.
+            Experience the power of professional data visualization with
+            Reynard's advanced charting system. Featuring OKLCH color
+            integration, real-time capabilities, and statistical analysis tools.
           </p>
         </div>
         <div class="hero-visualization">
@@ -179,10 +221,26 @@ export const ChartsShowcaseSimple: Component = () => {
               <For each={availableThemes}>
                 {(theme) => (
                   <button
-                    class={`theme-button ${selectedTheme() === theme ? 'active' : ''}`}
+                    class={`theme-button ${selectedTheme() === theme ? "active" : ""}`}
                     onClick={() => {
-                      setSelectedTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
-                      themeContext.setTheme(theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut");
+                      setSelectedTheme(
+                        theme as
+                          | "light"
+                          | "dark"
+                          | "gray"
+                          | "banana"
+                          | "strawberry"
+                          | "peanut",
+                      );
+                      themeContext.setTheme(
+                        theme as
+                          | "light"
+                          | "dark"
+                          | "gray"
+                          | "banana"
+                          | "strawberry"
+                          | "peanut",
+                      );
                     }}
                   >
                     {theme}
@@ -191,7 +249,7 @@ export const ChartsShowcaseSimple: Component = () => {
               </For>
             </div>
           </div>
-          
+
           <div class="control-group">
             <label class="checkbox-label">
               <input
@@ -255,11 +313,38 @@ export const ChartsShowcaseSimple: Component = () => {
             <h3>Live Performance Metrics</h3>
             <RealTimeChart
               type="line"
-              data={realTimeData()}
+              data={chartsData.realTimeData()}
               title="System Performance"
               maxDataPoints={30}
               updateInterval={1000}
               autoScroll={true}
+              enablePerformanceMonitoring={true}
+            />
+          </div>
+
+          <div class="realtime-card">
+            <h3>FPS Monitoring</h3>
+            <RealTimeChart
+              type="line"
+              data={chartsData.performanceData()}
+              title="Frame Rate"
+              maxDataPoints={20}
+              updateInterval={2000}
+              autoScroll={true}
+              yAxisLabel="FPS"
+            />
+          </div>
+
+          <div class="realtime-card">
+            <h3>Memory Usage</h3>
+            <RealTimeChart
+              type="bar"
+              data={chartsData.memoryData()}
+              title="Memory Consumption"
+              maxDataPoints={15}
+              updateInterval={3000}
+              autoScroll={true}
+              yAxisLabel="MB"
             />
           </div>
         </div>
@@ -301,7 +386,9 @@ export const ChartsShowcaseSimple: Component = () => {
             <div class="stats-display">
               <div class="stat-item">
                 <span class="stat-label">Active Charts:</span>
-                <span class="stat-value">{visualization.stats().activeVisualizations}</span>
+                <span class="stat-value">
+                  {visualization.stats().activeVisualizations}
+                </span>
               </div>
               <div class="stat-item">
                 <span class="stat-label">FPS:</span>
@@ -309,7 +396,9 @@ export const ChartsShowcaseSimple: Component = () => {
               </div>
               <div class="stat-item">
                 <span class="stat-label">Memory:</span>
-                <span class="stat-value">{visualization.stats().memoryUsage.toFixed(1)}MB</span>
+                <span class="stat-value">
+                  {visualization.stats().memoryUsage.toFixed(1)}MB
+                </span>
               </div>
             </div>
           </div>
@@ -320,8 +409,8 @@ export const ChartsShowcaseSimple: Component = () => {
               <div class="color-palette">
                 <For each={visualization.generateColors(8)}>
                   {(color, index) => (
-                    <div 
-                      ref={(el) => colorSwatchRefs[index()] = el}
+                    <div
+                      ref={(el) => (colorSwatchRefs[index()] = el)}
                       class="color-swatch"
                     />
                   )}
@@ -339,19 +428,31 @@ export const ChartsShowcaseSimple: Component = () => {
         <div class="info-grid">
           <div class="info-card">
             <h3>OKLCH Integration</h3>
-            <p>Seamless integration with Reynard's OKLCH color system ensures perceptually uniform colors across all chart types.</p>
+            <p>
+              Seamless integration with Reynard's OKLCH color system ensures
+              perceptually uniform colors across all chart types.
+            </p>
           </div>
           <div class="info-card">
             <h3>Real-time Performance</h3>
-            <p>Optimized for live data streaming with automatic memory management and performance monitoring.</p>
+            <p>
+              Optimized for live data streaming with automatic memory management
+              and performance monitoring.
+            </p>
           </div>
           <div class="info-card">
             <h3>Statistical Analysis</h3>
-            <p>Advanced statistical visualization tools including histograms, box plots, and quality metrics.</p>
+            <p>
+              Advanced statistical visualization tools including histograms, box
+              plots, and quality metrics.
+            </p>
           </div>
           <div class="info-card">
             <h3>Theme Integration</h3>
-            <p>Automatic adaptation to Reynard themes with intelligent color generation and caching.</p>
+            <p>
+              Automatic adaptation to Reynard themes with intelligent color
+              generation and caching.
+            </p>
           </div>
         </div>
       </div>

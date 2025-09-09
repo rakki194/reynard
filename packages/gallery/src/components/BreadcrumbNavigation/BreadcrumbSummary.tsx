@@ -16,10 +16,10 @@ export interface BreadcrumbSummaryProps {
 
 export const BreadcrumbSummary: Component<BreadcrumbSummaryProps> = (props) => {
   const hasMetadata = () => props.items.some((item) => item.metadata);
-  
+
   const totalItems = () =>
     props.items.reduce((sum, item) => sum + (item.metadata?.itemCount || 0), 0);
-  
+
   const totalSize = () => {
     const sizes = props.items
       .map((item) => item.metadata?.size)

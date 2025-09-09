@@ -11,7 +11,7 @@ The ClipEmbeddingService now supports multiple CLIP model variants with intellig
 A comprehensive model registry containing 6 different CLIP model variants:
 
 - **ViT-L-14/openai**: Large Vision Transformer (768d) - OpenAI weights
-- **ViT-L-14/laion2b_s32b_b82k**: Large Vision Transformer (768d) - LAION-2B weights  
+- **ViT-L-14/laion2b_s32b_b82k**: Large Vision Transformer (768d) - LAION-2B weights
 - **ViT-B-32/openai**: Base Vision Transformer (512d) - OpenAI weights
 - **ViT-B-32/laion2b_s34b_b79k**: Base Vision Transformer (512d) - LAION-2B weights
 - **ViT-H-14/laion2b_s32b_b79k**: Huge Vision Transformer (1024d) - LAION-2B weights
@@ -188,7 +188,7 @@ clip_service._concurrent_models_limit = 2  # Default value
 ### Memory Usage
 
 - **ViT-L-14 models**: ~1.2GB GPU memory
-- **ViT-B-32 models**: ~0.6GB GPU memory  
+- **ViT-B-32 models**: ~0.6GB GPU memory
 - **ViT-H-14 models**: ~2.4GB GPU memory
 - **336px models**: ~1.8GB GPU memory
 

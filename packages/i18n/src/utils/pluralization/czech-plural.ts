@@ -16,7 +16,7 @@ export function getCzechPlural(
     singular: string;
     plural2_4: string;
     plural5_: string;
-  }
+  },
 ): string {
   // Get absolute value and last digit
   const absCount = Math.abs(Math.floor(count));
@@ -29,7 +29,11 @@ export function getCzechPlural(
   }
 
   // 2-4 case (but not 12-14)
-  if (lastDigit >= 2 && lastDigit <= 4 && (lastTwoDigits < 12 || lastTwoDigits > 14)) {
+  if (
+    lastDigit >= 2 &&
+    lastDigit <= 4 &&
+    (lastTwoDigits < 12 || lastTwoDigits > 14)
+  ) {
     return forms.plural2_4;
   }
 

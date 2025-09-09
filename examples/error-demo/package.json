@@ -11,12 +11,10 @@
     "dev:full": "concurrently \"npm run backend\" \"npm run dev\""
   },
   "dependencies": {
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
-    "reynard-core": "workspace:*", "reynard-themes": "workspace:*", "reynard-fluent-icons": "workspace:*", "reynard-3d": "workspace:*", "reynard-algorithms": "workspace:*", "reynard-components": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-error-boundaries": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

@@ -95,13 +95,13 @@ function CustomRAGApp() {
 
 ### RAGSearch Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `endpoint` | `string` | - | API endpoint for RAG search |
-| `config` | `RAGConfig` | `{}` | Configuration options |
-| `height` | `string` | `"400px"` | Container height |
-| `onSearch` | `(query: string) => void` | - | Search callback |
-| `onResultClick` | `(result: RAGResult) => void` | - | Result click callback |
+| Prop            | Type                          | Default   | Description                 |
+| --------------- | ----------------------------- | --------- | --------------------------- |
+| `endpoint`      | `string`                      | -         | API endpoint for RAG search |
+| `config`        | `RAGConfig`                   | `{}`      | Configuration options       |
+| `height`        | `string`                      | `"400px"` | Container height            |
+| `onSearch`      | `(query: string) => void`     | -         | Search callback             |
+| `onResultClick` | `(result: RAGResult) => void` | -         | Result click callback       |
 
 ### RAGConfig
 

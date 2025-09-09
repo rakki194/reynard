@@ -107,24 +107,19 @@ function CustomChatApp() {
 import { ChatContainer, useStreamingChat } from "reynard-components";
 
 function StreamingChatApp() {
-  const { 
-    messages, 
-    sendMessage, 
-    isStreaming, 
-    streamStatus,
-    thinkingContent 
-  } = useStreamingChat({
-    endpoint: "/api/chat/stream",
-    config: {
-      enableThinking: true,
-      enableTools: true,
-      streamMode: "real-time",
-      bufferSize: 1024,
-    },
-    onStreamStart: () => console.log("Stream started"),
-    onStreamEnd: () => console.log("Stream ended"),
-    onThinkingUpdate: (content) => console.log("Thinking:", content),
-  });
+  const { messages, sendMessage, isStreaming, streamStatus, thinkingContent } =
+    useStreamingChat({
+      endpoint: "/api/chat/stream",
+      config: {
+        enableThinking: true,
+        enableTools: true,
+        streamMode: "real-time",
+        bufferSize: 1024,
+      },
+      onStreamStart: () => console.log("Stream started"),
+      onStreamEnd: () => console.log("Stream ended"),
+      onThinkingUpdate: (content) => console.log("Thinking:", content),
+    });
 
   return (
     <div class="streaming-chat">
@@ -135,14 +130,12 @@ function StreamingChatApp() {
           {streamStatus() && <span class="status">{streamStatus()}</span>}
         </div>
       </div>
-      
+
       <div class="messages-container">
         <For each={messages()}>
           {(message) => (
             <div class={`message ${message.role}`}>
-              <div class="message-content">
-                {message.content}
-              </div>
+              <div class="message-content">{message.content}</div>
               {message.timestamp && (
                 <div class="timestamp">
                   {new Date(message.timestamp).toLocaleTimeString()}
@@ -151,7 +144,7 @@ function StreamingChatApp() {
             </div>
           )}
         </For>
-        
+
         {thinkingContent() && (
           <div class="thinking-section">
             <div class="thinking-header">🤔 Thinking...</div>
@@ -159,7 +152,7 @@ function StreamingChatApp() {
           </div>
         )}
       </div>
-      
+
       <div class="input-area">
         <MessageInput
           onSend={sendMessage}
@@ -179,19 +172,19 @@ function StreamingChatApp() {
 import { P2PChatContainer, useP2PChat } from "reynard-components";
 
 function P2PChatApp() {
-  const { 
-    messages, 
-    sendMessage, 
-    isConnected, 
+  const {
+    messages,
+    sendMessage,
+    isConnected,
     connectionStatus,
     participants,
     joinRoom,
-    leaveRoom 
+    leaveRoom,
   } = useP2PChat({
     signalingServer: "wss://signaling.example.com",
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
-      { urls: "turn:turn.example.com", username: "user", credential: "pass" }
+      { urls: "turn:turn.example.com", username: "user", credential: "pass" },
     ],
     config: {
       enableFileSharing: true,
@@ -220,27 +213,27 @@ function P2PChatApp() {
         <div class="connection-status">
           Status: <span class={connectionStatus()}>{connectionStatus()}</span>
         </div>
-        <div class="participants">
-          Participants: {participants().length}
-        </div>
+        <div class="participants">Participants: {participants().length}</div>
       </div>
-      
+
       <div class="room-controls">
-        <input 
-          type="text" 
-          placeholder="Room ID" 
-          id="roomId"
-        />
-        <button onClick={() => handleJoinRoom(document.getElementById('roomId')?.value || '')}>
+        <input type="text" placeholder="Room ID" id="roomId" />
+        <button
+          onClick={() =>
+            handleJoinRoom(document.getElementById("roomId")?.value || "")
+          }
+        >
           Join Room
         </button>
         <button onClick={leaveRoom}>Leave Room</button>
       </div>
-      
+
       <div class="messages-container">
         <For each={messages()}>
           {(message) => (
-            <div class={`message ${message.senderId === 'me' ? 'own' : 'other'}`}>
+            <div
+              class={`message ${message.senderId === "me" ? "own" : "other"}`}
+            >
               <div class="sender">{message.senderName}</div>
               <div class="content">{message.content}</div>
               <div class="timestamp">
@@ -250,7 +243,7 @@ function P2PChatApp() {
           )}
         </For>
       </div>
-      
+
       <div class="input-area">
         <MessageInput
           onSend={sendMessage}
@@ -269,66 +262,72 @@ function P2PChatApp() {
 import { ChatContainer, useChatWithTools } from "reynard-components";
 
 function ChatWithToolsApp() {
-  const { 
-    messages, 
-    sendMessage, 
-    isStreaming,
-    activeTools,
-    toolResults 
-  } = useChatWithTools({
-    endpoint: "/api/chat/tools",
-    tools: [
-      {
-        name: "search_web",
-        description: "Search the web for information",
-        parameters: {
-          type: "object",
-          properties: {
-            query: { type: "string", description: "Search query" },
-            limit: { type: "number", description: "Number of results", default: 5 }
+  const { messages, sendMessage, isStreaming, activeTools, toolResults } =
+    useChatWithTools({
+      endpoint: "/api/chat/tools",
+      tools: [
+        {
+          name: "search_web",
+          description: "Search the web for information",
+          parameters: {
+            type: "object",
+            properties: {
+              query: { type: "string", description: "Search query" },
+              limit: {
+                type: "number",
+                description: "Number of results",
+                default: 5,
+              },
+            },
+            required: ["query"],
           },
-          required: ["query"]
-        }
+        },
+        {
+          name: "get_weather",
+          description: "Get current weather for a location",
+          parameters: {
+            type: "object",
+            properties: {
+              location: { type: "string", description: "City name" },
+              units: {
+                type: "string",
+                enum: ["celsius", "fahrenheit"],
+                default: "celsius",
+              },
+            },
+            required: ["location"],
+          },
+        },
+        {
+          name: "calculate",
+          description: "Perform mathematical calculations",
+          parameters: {
+            type: "object",
+            properties: {
+              expression: {
+                type: "string",
+                description: "Mathematical expression",
+              },
+            },
+            required: ["expression"],
+          },
+        },
+      ],
+      config: {
+        enableToolExecution: true,
+        showToolProgress: true,
+        allowToolSelection: true,
       },
-      {
-        name: "get_weather",
-        description: "Get current weather for a location",
-        parameters: {
-          type: "object",
-          properties: {
-            location: { type: "string", description: "City name" },
-            units: { type: "string", enum: ["celsius", "fahrenheit"], default: "celsius" }
-          },
-          required: ["location"]
-        }
+      onToolStart: (toolName, parameters) => {
+        console.log(`Tool started: ${toolName}`, parameters);
       },
-      {
-        name: "calculate",
-        description: "Perform mathematical calculations",
-        parameters: {
-          type: "object",
-          properties: {
-            expression: { type: "string", description: "Mathematical expression" }
-          },
-          required: ["expression"]
-        }
-      }
-    ],
-    config: {
-      enableToolExecution: true,
-      showToolProgress: true,
-      allowToolSelection: true,
-    },
-    onToolStart: (toolName, parameters) => {
-      console.log(`Tool started: ${toolName}`, parameters);
-    },
-    onToolComplete: (toolName, result) => {
-      console.log(`Tool completed: ${toolName}`, result);
-    },
-    onToolError: (toolName, error) => {
-      console.error(`Tool error: ${toolName}`, error);
-    },
-  });
+      onToolComplete: (toolName, result) => {
+        console.log(`Tool completed: ${toolName}`, result);
+      },
+      onToolError: (toolName, error) => {
+        console.error(`Tool error: ${toolName}`, error);
+      },
+    });
 
   return (
     <div class="chat-with-tools">
@@ -337,20 +336,21 @@ function ChatWithToolsApp() {
         <div class="active-tools">
           {activeTools().length > 0 && (
             <div class="tools-status">
-              Active tools: {activeTools().map(t => t.name).join(", ")}
+              Active tools:{" "}
+              {activeTools()
+                .map((t) => t.name)
+                .join(", ")}
             </div>
           )}
         </div>
       </div>
-      
+
       <div class="messages-container">
         <For each={messages()}>
           {(message) => (
             <div class={`message ${message.role}`}>
-              <div class="message-content">
-                {message.content}
-              </div>
-              
+              <div class="message-content">{message.content}</div>
+
               {message.toolCalls && (
                 <div class="tool-calls">
                   <For each={message.toolCalls}>
@@ -361,9 +361,7 @@ function ChatWithToolsApp() {
                           {JSON.stringify(toolCall.parameters, null, 2)}
                         </div>
                         {toolCall.result && (
-                          <div class="tool-result">
-                            {toolCall.result}
-                          </div>
+                          <div class="tool-result">{toolCall.result}</div>
                         )}
                       </div>
                     )}
@@ -374,7 +372,7 @@ function ChatWithToolsApp() {
           )}
         </For>
       </div>
-      
+
       <div class="input-area">
         <MessageInput
           onSend={sendMessage}
@@ -505,8 +503,13 @@ function ChatWithToolsApp() {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 ```
 
@@ -525,29 +528,29 @@ function AdvancedChatApp() {
         enableStreaming: true,
         streamBufferSize: 2048,
         streamTimeout: 30000,
-        
+
         // Thinking configuration
         enableThinking: true,
         thinkingDelay: 1000,
         maxThinkingTime: 10000,
-        
+
         // Tool configuration
         enableTools: true,
         toolTimeout: 15000,
         maxConcurrentTools: 3,
-        
+
         // UI configuration
         showTimestamps: true,
         showTypingIndicator: true,
         showMessageStatus: true,
         enableMarkdown: true,
         enableCodeHighlighting: true,
-        
+
         // Performance configuration
         maxMessages: 100,
         messageRetention: "session",
         enableVirtualization: true,
-        
+
         // Accessibility configuration
         enableKeyboardNavigation: true,
         announceMessages: true,
@@ -559,9 +562,9 @@ function AdvancedChatApp() {
       }}
       onMessageReceived={(message) => {
         console.log("Message received:", message);
-        analytics.track("chat_message_received", { 
+        analytics.track("chat_message_received", {
           type: message.type,
-          hasTools: !!message.toolCalls 
+          hasTools: !!message.toolCalls
         });
       }}
       onStreamStart={() => {
@@ -666,7 +669,7 @@ import { ChatContainer } from "reynard-components";
   onError={(error) => console.error("Chat error:", error)}
   onStreamingStart={() => console.log("Streaming started")}
   onStreamingEnd={() => console.log("Streaming ended")}
-/>
+/>;
 ```
 
 ### ChatMessage
@@ -1083,7 +1086,7 @@ The markdown renderer automatically sanitizes HTML:
 import { MarkdownRenderer } from "reynard-components";
 
 // Content is automatically escaped
-<MarkdownRenderer content="<script>alert('xss')</script>" />
+<MarkdownRenderer content="<script>alert('xss')</script>" />;
 // Renders as: &lt;script&gt;alert('xss')&lt;/script&gt;
 ```
 

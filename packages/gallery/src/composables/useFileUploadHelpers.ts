@@ -6,9 +6,11 @@
 import type { UploadProgress, GalleryCallbacks } from "../types";
 
 export function createUpdateProgressFunction(
-  setUploads: (uploads: UploadProgress[] | ((prev: UploadProgress[]) => UploadProgress[])) => void,
+  setUploads: (
+    uploads: UploadProgress[] | ((prev: UploadProgress[]) => UploadProgress[]),
+  ) => void,
   getUploads: () => UploadProgress[],
-  callbacks?: Pick<GalleryCallbacks, "onUploadProgress">
+  callbacks?: Pick<GalleryCallbacks, "onUploadProgress">,
 ) {
   return (uploadId: string, updates: Partial<UploadProgress>) => {
     setUploads((prev) =>

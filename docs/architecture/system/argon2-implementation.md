@@ -199,7 +199,7 @@ from app.data_access import get_data_source
 async def migrate_all_passwords():
     data_source = get_data_source()
     users = await data_source.get_all_users()
-    
+
     for user in users:
         # This will trigger migration if needed
         is_valid, updated_hash = verify_and_update_password(

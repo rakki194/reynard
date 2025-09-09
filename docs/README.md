@@ -138,4 +138,4 @@ When updating documentation:
 
 ---
 
-*This documentation reflects the Reynard framework - a cunning SolidJS ecosystem with modular architecture, providing comprehensive guidance for development, architecture, integrations, and usage.*
+_This documentation reflects the Reynard framework - a cunning SolidJS ecosystem with modular architecture, providing comprehensive guidance for development, architecture, integrations, and usage._

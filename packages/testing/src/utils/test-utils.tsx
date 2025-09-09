@@ -1,29 +1,35 @@
-import { Component, JSX, createComponent, createContext, useContext } from 'solid-js';
-import { render } from '@solidjs/testing-library';
-import { vi } from 'vitest';
+import {
+  Component,
+  JSX,
+  createComponent,
+  createContext,
+  useContext,
+} from "solid-js";
+import { render } from "@solidjs/testing-library";
+import { vi } from "vitest";
 
 /**
  * Test-specific app context that doesn't use router primitives
  */
 const TestAppContext = createContext<any>();
 
-const TestAppProvider: Component<{ children: JSX.Element }> = props => {
+const TestAppProvider: Component<{ children: JSX.Element }> = (props) => {
   // Create a mock app context that provides all the necessary properties
   const mockContext = {
     prevRoute: undefined,
     location: {
-      pathname: '/test',
-      search: '',
-      hash: '',
-      href: '/test',
-      origin: 'http://localhost',
-      protocol: 'http:',
-      host: 'localhost',
-      hostname: 'localhost',
-      port: '',
+      pathname: "/test",
+      search: "",
+      hash: "",
+      href: "/test",
+      origin: "http://localhost",
+      protocol: "http:",
+      host: "localhost",
+      hostname: "localhost",
+      port: "",
       state: null,
     },
-    theme: 'light',
+    theme: "light",
     setTheme: vi.fn(),
     instantDelete: false,
     setInstantDelete: vi.fn(),
@@ -40,7 +46,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
       setForceCpu: vi.fn(),
     },
     wdv3: {
-      modelName: '',
+      modelName: "",
       genThreshold: 0.5,
       charThreshold: 0.5,
       forceCpu: false,
@@ -49,7 +55,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
       setCharThreshold: vi.fn(),
       setForceCpu: vi.fn(),
     },
-    wdv3ModelName: '',
+    wdv3ModelName: "",
     wdv3GenThreshold: 0.5,
     wdv3CharThreshold: 0.5,
     setWdv3ModelName: vi.fn(),
@@ -59,21 +65,21 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     enableMinimap: true,
     setEnableZoom: vi.fn(),
     setEnableMinimap: vi.fn(),
-    locale: 'en',
+    locale: "en",
     setLocale: vi.fn(),
     t: (key: string) => {
       const translations: Record<string, string> = {
-        'tools.undo': 'Undo',
-        'tools.removeCommas': 'Remove commas',
-        'tools.replaceNewlinesWithCommas': 'Replace newlines with commas',
-        'tools.replaceUnderscoresWithSpaces': 'Replace underscores with spaces',
-        'Add a tag...': 'Add a tag...',
-        'Remove tag': 'Remove tag',
-        'Add tag': 'Add tag',
-        'Delete tags caption': 'Delete tags caption',
-        'Undo last change': 'Undo last change',
-        'gallery.addCaption': 'Add caption',
-        'gallery.addTag': 'Add a tag...',
+        "tools.undo": "Undo",
+        "tools.removeCommas": "Remove commas",
+        "tools.replaceNewlinesWithCommas": "Replace newlines with commas",
+        "tools.replaceUnderscoresWithSpaces": "Replace underscores with spaces",
+        "Add a tag...": "Add a tag...",
+        "Remove tag": "Remove tag",
+        "Add tag": "Add tag",
+        "Delete tags caption": "Delete tags caption",
+        "Undo last change": "Undo last change",
+        "gallery.addCaption": "Add caption",
+        "gallery.addTag": "Add a tag...",
       };
       return translations[key] || key;
     },
@@ -85,7 +91,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     setAlwaysShowCaptionEditor: vi.fn(),
     replaceUnderscoresInTags: false,
     setReplaceUnderscoresInTags: vi.fn(),
-    tagSuggestionsPath: '',
+    tagSuggestionsPath: "",
     setTagSuggestionsPath: vi.fn(),
     updateTagSuggestionsPath: vi.fn(),
     tagBubbleFontSize: 12,
@@ -106,7 +112,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     setMinCharactersForSuggestions: vi.fn(),
     maxSuggestions: 10,
     setMaxSuggestions: vi.fn(),
-    boundingBoxExportFormat: 'yolo' as any,
+    boundingBoxExportFormat: "yolo" as any,
     setBoundingBoxExportFormat: vi.fn(),
     boundingBoxShowLabels: true,
     setBoundingBoxShowLabels: vi.fn(),
@@ -128,7 +134,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     setBoundingBoxGridSize: vi.fn(),
     boundingBoxMinSize: 10,
     setBoundingBoxMinSize: vi.fn(),
-    boundingBoxDefaultLabel: '',
+    boundingBoxDefaultLabel: "",
     setBoundingBoxDefaultLabel: vi.fn(),
     segmentationMaskOpacity: 0.5,
     setSegmentationMaskOpacity: vi.fn(),
@@ -147,15 +153,15 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     setFastIndexingMode: vi.fn(),
     indexingEnabled: true,
     setIndexingEnabled: vi.fn(),
-    defaultGitignore: '',
+    defaultGitignore: "",
     setDefaultGitignore: vi.fn(),
     gitLfsEnabled: false,
     setGitLfsEnabled: vi.fn(),
     gitLfsPatterns: [],
     setGitLfsPatterns: vi.fn(),
-    gitAuthorName: '',
+    gitAuthorName: "",
     setGitAuthorName: vi.fn(),
-    gitAuthorEmail: '',
+    gitAuthorEmail: "",
     setGitAuthorEmail: vi.fn(),
     setPath: vi.fn(),
     captioners: {},
@@ -173,7 +179,9 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
     setThumbnailSize: vi.fn(),
   };
 
-  return <TestAppContext.Provider value={mockContext} children={props.children} />;
+  return (
+    <TestAppContext.Provider value={mockContext} children={props.children} />
+  );
 };
 
 /**
@@ -182,7 +190,7 @@ const TestAppProvider: Component<{ children: JSX.Element }> = props => {
 export const useTestAppContext = () => {
   const context = useContext(TestAppContext);
   if (!context) {
-    throw new Error('useTestAppContext must be used within TestAppProvider');
+    throw new Error("useTestAppContext must be used within TestAppProvider");
   }
   return context;
 };
@@ -192,7 +200,7 @@ export const useTestAppContext = () => {
  */
 export function renderWithTestProviders(
   ui: () => JSX.Element,
-  options?: Parameters<typeof render>[1]
+  options?: Parameters<typeof render>[1],
 ): ReturnType<typeof render> {
   return render(() => <TestAppProvider children={ui()} />, options);
 }
@@ -205,7 +213,7 @@ export function createMockTestResource<T>(data: T): any {
   resource.loading = false;
   resource.error = undefined;
   resource.latest = data;
-  resource.state = 'ready';
+  resource.state = "ready";
   return resource;
 }
 
@@ -215,19 +223,19 @@ export function createMockTestResource<T>(data: T): any {
 export const mockFns = {
   saveCaption: Object.assign(
     vi.fn(async () => new Response()),
-    { mockClear: vi.fn() }
+    { mockClear: vi.fn() },
   ),
   deleteCaption: Object.assign(
     vi.fn(async () => new Response()),
-    { mockClear: vi.fn() }
+    { mockClear: vi.fn() },
   ),
   saveWithHistory: Object.assign(
     vi.fn(async () => new Response()),
-    { mockClear: vi.fn() }
+    { mockClear: vi.fn() },
   ),
   undo: Object.assign(
     vi.fn(async () => new Response()),
-    { mockClear: vi.fn() }
+    { mockClear: vi.fn() },
   ),
 };
 
@@ -237,20 +245,20 @@ export const mockFns = {
 export const mockAppContext = {
   t: (key: string) => {
     const translations: Record<string, string> = {
-      'tools.undo': 'Undo',
-      'tools.removeCommas': 'Remove commas',
-      'tools.replaceNewlinesWithCommas': 'Replace newlines with commas',
-      'tools.replaceUnderscoresWithSpaces': 'Replace underscores with spaces',
-      'Add a tag...': 'Add a tag...',
-      'Remove tag': 'Remove tag',
-      'Add tag': 'Add tag',
-      'Delete tags caption': 'Delete tags caption',
-      'Undo last change': 'Undo last change',
-      'gallery.addCaption': 'Add caption',
+      "tools.undo": "Undo",
+      "tools.removeCommas": "Remove commas",
+      "tools.replaceNewlinesWithCommas": "Replace newlines with commas",
+      "tools.replaceUnderscoresWithSpaces": "Replace underscores with spaces",
+      "Add a tag...": "Add a tag...",
+      "Remove tag": "Remove tag",
+      "Add tag": "Add tag",
+      "Delete tags caption": "Delete tags caption",
+      "Undo last change": "Undo last change",
+      "gallery.addCaption": "Add caption",
     };
     return translations[key] || key;
   },
-  theme: 'light',
+  theme: "light",
   setTheme: vi.fn(),
   preserveLatents: false,
   preserveTxt: false,
@@ -283,7 +291,7 @@ export const mockAppContext = {
     setForceCpu: vi.fn(),
   },
   wdv3: {
-    modelName: '',
+    modelName: "",
     genThreshold: 0.5,
     charThreshold: 0.5,
     forceCpu: false,
@@ -292,7 +300,7 @@ export const mockAppContext = {
     setCharThreshold: vi.fn(),
     setForceCpu: vi.fn(),
   },
-  wdv3ModelName: '',
+  wdv3ModelName: "",
   wdv3GenThreshold: 0.5,
   wdv3CharThreshold: 0.5,
   setWdv3ModelName: vi.fn(),
@@ -300,7 +308,7 @@ export const mockAppContext = {
   setWdv3CharThreshold: vi.fn(),
   setEnableZoom: vi.fn(),
   setEnableMinimap: vi.fn(),
-  locale: 'en' as any,
+  locale: "en" as any,
   setLocale: vi.fn(),
   setPreserveLatents: vi.fn(),
   setPreserveTxt: vi.fn(),
@@ -309,7 +317,7 @@ export const mockAppContext = {
   setThumbnailSize: vi.fn(),
   replaceUnderscoresInTags: false,
   setReplaceUnderscoresInTags: vi.fn(),
-  tagSuggestionsPath: '',
+  tagSuggestionsPath: "",
   setTagSuggestionsPath: vi.fn(),
   updateTagSuggestionsPath: vi.fn(),
   tagBubbleFontSize: 12,
@@ -330,7 +338,7 @@ export const mockAppContext = {
   setMinCharactersForSuggestions: vi.fn(),
   maxSuggestions: 10,
   setMaxSuggestions: vi.fn(),
-  boundingBoxExportFormat: 'yolo' as any,
+  boundingBoxExportFormat: "yolo" as any,
   setBoundingBoxExportFormat: vi.fn(),
   boundingBoxShowLabels: true,
   setBoundingBoxShowLabels: vi.fn(),
@@ -352,7 +360,7 @@ export const mockAppContext = {
   setBoundingBoxGridSize: vi.fn(),
   boundingBoxMinSize: 10,
   setBoundingBoxMinSize: vi.fn(),
-  boundingBoxDefaultLabel: '',
+  boundingBoxDefaultLabel: "",
   setBoundingBoxDefaultLabel: vi.fn(),
   thumbnailThreads: 4,
   imageInfoThreads: 4,
@@ -365,15 +373,15 @@ export const mockAppContext = {
   setFastIndexingMode: vi.fn(),
   indexingEnabled: true,
   setIndexingEnabled: vi.fn(),
-  defaultGitignore: '',
+  defaultGitignore: "",
   setDefaultGitignore: vi.fn(),
   gitLfsEnabled: false,
   setGitLfsEnabled: vi.fn(),
   gitLfsPatterns: [],
   setGitLfsPatterns: vi.fn(),
-  gitAuthorName: '',
+  gitAuthorName: "",
   setGitAuthorName: vi.fn(),
-  gitAuthorEmail: '',
+  gitAuthorEmail: "",
   setGitAuthorEmail: vi.fn(),
   setPath: vi.fn(),
   captioners: {

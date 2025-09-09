@@ -19,7 +19,7 @@ export const ThemeDemo: Component = () => {
         },
         getTagStyle: () => ({}),
         isDark: false,
-        isHighContrast: false
+        isHighContrast: false,
       };
     }
   });

@@ -34,7 +34,8 @@ export const fileIcons = {
       name: "folder",
       tags: ["file", "directory", "folder"],
       description: "Folder icon",
-      caption: "A folder icon representing a directory or container for organizing files",
+      caption:
+        "A folder icon representing a directory or container for organizing files",
       keywords: ["folder", "directory", "file", "container"],
     },
   },
@@ -44,7 +45,8 @@ export const fileIcons = {
       name: "folder-add",
       tags: ["file", "directory", "add"],
       description: "Add folder icon",
-      caption: "A folder with plus sign icon for creating new directories or folders",
+      caption:
+        "A folder with plus sign icon for creating new directories or folders",
       keywords: ["folder", "add", "new", "directory"],
     },
   },
@@ -54,7 +56,8 @@ export const fileIcons = {
       name: "folder-arrow-up",
       tags: ["file", "directory", "upload"],
       description: "Folder arrow up icon",
-      caption: "A folder with upward arrow icon for uploading files to a directory",
+      caption:
+        "A folder with upward arrow icon for uploading files to a directory",
       keywords: ["folder", "upload", "arrow up", "directory"],
     },
   },
@@ -64,7 +67,8 @@ export const fileIcons = {
       name: "document-text",
       tags: ["file", "document", "text"],
       description: "Text document icon",
-      caption: "A document icon with text lines representing a text file or document",
+      caption:
+        "A document icon with text lines representing a text file or document",
       keywords: ["document", "text", "file", "page"],
     },
   },
@@ -74,7 +78,8 @@ export const fileIcons = {
       name: "document-py",
       tags: ["file", "document", "python"],
       description: "Python document icon",
-      caption: "A document icon with Python logo representing a Python code file",
+      caption:
+        "A document icon with Python logo representing a Python code file",
       keywords: ["document", "python", "file", "code"],
     },
   },
@@ -124,7 +129,8 @@ export const fileIcons = {
       name: "book",
       tags: ["file", "document", "book"],
       description: "Book icon",
-      caption: "An open book icon representing reading material or documentation",
+      caption:
+        "An open book icon representing reading material or documentation",
       keywords: ["book", "document", "read", "pages"],
     },
   },
@@ -134,7 +140,8 @@ export const fileIcons = {
       name: "book-question-mark",
       tags: ["file", "document", "help"],
       description: "Book question mark icon",
-      caption: "A book with question mark icon representing help documentation or FAQ",
+      caption:
+        "A book with question mark icon representing help documentation or FAQ",
       keywords: ["book", "question", "help", "document"],
     },
   },
@@ -164,7 +171,8 @@ export const fileIcons = {
       name: "text",
       tags: ["file", "text", "paragraph"],
       description: "Text paragraph icon",
-      caption: "A text paragraph icon representing written content or text blocks",
+      caption:
+        "A text paragraph icon representing written content or text blocks",
       keywords: ["text", "paragraph", "content", "words"],
     },
   },
@@ -204,7 +212,8 @@ export const fileIcons = {
       name: "text-align-distributed",
       tags: ["file", "text", "alignment"],
       description: "Text align distributed evenly icon",
-      caption: "A text alignment icon for distributing text evenly across lines",
+      caption:
+        "A text alignment icon for distributing text evenly across lines",
       keywords: ["text", "align", "distributed", "evenly"],
     },
   },
@@ -234,7 +243,8 @@ export const fileIcons = {
       name: "text-sort-ascending",
       tags: ["file", "text", "sort"],
       description: "Text sort ascending icon",
-      caption: "A text sorting icon for arranging text content in ascending order",
+      caption:
+        "A text sorting icon for arranging text content in ascending order",
       keywords: ["text", "sort", "ascending", "order"],
     },
   },
@@ -244,7 +254,8 @@ export const fileIcons = {
       name: "text-sort-descending",
       tags: ["file", "text", "sort"],
       description: "Text sort descending icon",
-      caption: "A text sorting icon for arranging text content in descending order",
+      caption:
+        "A text sorting icon for arranging text content in descending order",
       keywords: ["text", "sort", "descending", "order"],
     },
   },

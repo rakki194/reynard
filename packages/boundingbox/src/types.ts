@@ -1,6 +1,6 @@
 /**
  * Core types for annotation editing in Reynard
- * 
+ *
  * This module defines the foundational types that can be shared between
  * bounding box editing and future polygon/segmentation editing.
  */
@@ -79,9 +79,15 @@ export interface TransformConstraints {
 /**
  * Handle types for interactive editing
  */
-export type ResizeHandlePosition = 
-  | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-  | 'top' | 'right' | 'bottom' | 'left';
+export type ResizeHandlePosition =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right"
+  | "top"
+  | "right"
+  | "bottom"
+  | "left";
 
 export interface ResizeHandle {
   id: string;
@@ -96,7 +102,7 @@ export interface ResizeHandle {
 export interface EditingState {
   isEditing: boolean;
   activeAnnotationId: string | null;
-  operation: 'create' | 'resize' | 'move' | 'rotate' | null;
+  operation: "create" | "resize" | "move" | "rotate" | null;
   startCoordinates: DisplayCoordinates | null;
   currentCoordinates: DisplayCoordinates | null;
 }
@@ -112,6 +118,7 @@ export interface AnnotationEventHandlers {
   onEditingStart?: (id: string, operation: string) => void;
   onEditingEnd?: (id: string, operation: string) => void;
   onEditingCancel?: (id: string) => void;
+  onClearAll?: () => void;
 }
 
 /**
@@ -131,6 +138,17 @@ export interface EditorConfig {
   handleBorderColor?: string;
   labelClasses?: string[];
   defaultLabelClass?: string;
+  // Additional properties needed by the components
+  defaultLabel?: string;
+  availableLabels?: string[];
+  scale?: number;
+  selectionColor?: string;
+  selectionBorderColor?: string;
+  selectionLineWidth?: number;
+  boxStrokeColor?: string;
+  boxStrokeWidth?: number;
+  labelFontSize?: number;
+  labelColor?: string;
 }
 
 /**
@@ -148,11 +166,11 @@ export interface CanvasConfig {
  * Export formats for annotations
  */
 export enum AnnotationExportFormat {
-  COCO = 'COCO',
-  VOC = 'VOC', 
-  YOLO = 'YOLO',
-  LabelMe = 'LabelMe',
-  Custom = 'Custom'
+  COCO = "COCO",
+  VOC = "VOC",
+  YOLO = "YOLO",
+  LabelMe = "LabelMe",
+  Custom = "Custom",
 }
 
 /**

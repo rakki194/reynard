@@ -1,11 +1,14 @@
 /**
  * Metadata Extractor Factory
- * 
+ *
  * Creates appropriate metadata extractors based on file type
  */
 
 import { getFileCategory } from "../../config/file-types";
-import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
+import {
+  BaseMetadataExtractor,
+  MetadataExtractionOptions,
+} from "./BaseMetadataExtractor";
 import { ImageMetadataExtractor } from "./ImageMetadataExtractor";
 import { VideoMetadataExtractor } from "./VideoMetadataExtractor";
 import { AudioMetadataExtractor } from "./AudioMetadataExtractor";

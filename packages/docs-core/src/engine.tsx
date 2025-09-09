@@ -3,16 +3,16 @@
  */
 
 // import { createSignal, createEffect } from 'solid-js';
-import { ContentParser } from './parser';
-import { DocRenderer } from './renderer';
-import type { 
-  DocEngine, 
-  DocEngineConfig, 
-  DocPage, 
-  DocSection, 
+import { ContentParser } from "./parser";
+import { DocRenderer } from "./renderer";
+import type {
+  DocEngine,
+  DocEngineConfig,
+  DocPage,
+  DocSection,
   DocPlugin,
-  DocContentType 
-} from './types';
+  DocContentType,
+} from "./types";
 
 /**
  * Main documentation engine class
@@ -34,7 +34,7 @@ export class ReynardDocEngine implements DocEngine {
   private initializeEngine(): void {
     // Install default plugins
     this.installDefaultPlugins();
-    
+
     // Initialize custom components
     this.initializeCustomComponents();
   }
@@ -84,10 +84,12 @@ export class ReynardDocEngine implements DocEngine {
     for (const page of this.config.pages) {
       const searchableText = [
         page.title,
-        page.metadata.description || '',
+        page.metadata.description || "",
         page.content,
-        ...(page.metadata.tags || [])
-      ].join(' ').toLowerCase();
+        ...(page.metadata.tags || []),
+      ]
+        .join(" ")
+        .toLowerCase();
 
       if (searchableText.includes(searchTerm)) {
         results.push(page);
@@ -98,10 +100,10 @@ export class ReynardDocEngine implements DocEngine {
       // Sort by relevance (title matches first, then content)
       const aTitleMatch = a.title.toLowerCase().includes(searchTerm);
       const bTitleMatch = b.title.toLowerCase().includes(searchTerm);
-      
+
       if (aTitleMatch && !bTitleMatch) return -1;
       if (!aTitleMatch && bTitleMatch) return 1;
-      
+
       return 0;
     });
   }
@@ -110,14 +112,14 @@ export class ReynardDocEngine implements DocEngine {
    * Get a page by ID
    */
   getPage(id: string): DocPage | undefined {
-    return this.config.pages.find(page => page.id === id);
+    return this.config.pages.find((page) => page.id === id);
   }
 
   /**
    * Get a section by ID
    */
   getSection(id: string): DocSection | undefined {
-    return this.config.sections.find(section => section.id === id);
+    return this.config.sections.find((section) => section.id === id);
   }
 
   /**
@@ -168,7 +170,7 @@ export class ReynardDocEngine implements DocEngine {
     while (currentPage) {
       breadcrumbs.unshift({
         label: currentPage.title,
-        href: `/${currentPage.slug}`
+        href: `/${currentPage.slug}`,
       });
 
       // Find parent page
@@ -179,13 +181,13 @@ export class ReynardDocEngine implements DocEngine {
         }
       } else {
         // Find parent section
-        const parentSection = this.config.sections.find(section =>
-          section.pages.some(p => p.id === currentPage.id)
+        const parentSection = this.config.sections.find((section) =>
+          section.pages.some((p) => p.id === currentPage.id),
         );
         if (parentSection) {
           breadcrumbs.unshift({
             label: parentSection.title,
-            href: `/sections/${parentSection.id}`
+            href: `/sections/${parentSection.id}`,
           });
         }
         break;
@@ -210,7 +212,7 @@ export class ReynardDocEngine implements DocEngine {
       if (otherPage.id === pageId) continue;
 
       const otherTags = otherPage.metadata.tags || [];
-      const commonTags = pageTags.filter(tag => otherTags.includes(tag));
+      const commonTags = pageTags.filter((tag) => otherTags.includes(tag));
 
       if (commonTags.length > 0) {
         related.push(otherPage);
@@ -219,13 +221,13 @@ export class ReynardDocEngine implements DocEngine {
 
     // Sort by number of common tags
     related.sort((a, b) => {
-      const aCommonTags = (a.metadata.tags || []).filter(tag => 
-        pageTags.includes(tag)
+      const aCommonTags = (a.metadata.tags || []).filter((tag) =>
+        pageTags.includes(tag),
       ).length;
-      const bCommonTags = (b.metadata.tags || []).filter(tag => 
-        pageTags.includes(tag)
+      const bCommonTags = (b.metadata.tags || []).filter((tag) =>
+        pageTags.includes(tag),
       ).length;
-      
+
       return bCommonTags - aCommonTags;
     });
 
@@ -248,7 +250,7 @@ export class ReynardDocEngine implements DocEngine {
       totalSections: this.config.sections.length,
       totalExamples: this.config.examples.length,
       totalApiDocs: this.config.api.length,
-      installedPlugins: Array.from(this.plugins.keys())
+      installedPlugins: Array.from(this.plugins.keys()),
     };
   }
 }
@@ -265,26 +267,26 @@ export function createDocEngine(config: DocEngineConfig): DocEngine {
  */
 export const defaultDocConfig: Partial<DocEngineConfig> = {
   site: {
-    title: 'Reynard Documentation',
-    description: 'Beautiful documentation powered by Reynard framework',
-    baseUrl: '/',
+    title: "Reynard Documentation",
+    description: "Beautiful documentation powered by Reynard framework",
+    baseUrl: "/",
     theme: {
-      name: 'reynard-default',
-      primaryColor: '#6366f1',
-      secondaryColor: '#8b5cf6',
-      backgroundColor: '#ffffff',
-      textColor: '#1f2937',
-      accentColor: '#f59e0b'
+      name: "reynard-default",
+      primaryColor: "#6366f1",
+      secondaryColor: "#8b5cf6",
+      backgroundColor: "#ffffff",
+      textColor: "#1f2937",
+      accentColor: "#f59e0b",
     },
     navigation: {
       main: [],
       breadcrumbs: true,
-      sidebar: true
-    }
+      sidebar: true,
+    },
   },
   pages: [],
   sections: [],
   examples: [],
   api: [],
-  plugins: []
+  plugins: [],
 };

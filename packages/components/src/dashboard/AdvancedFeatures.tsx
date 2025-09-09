@@ -13,7 +13,10 @@ export const AdvancedFeatures: Component = () => {
 
   const handleAdvancedToggle = () => {
     setShowAdvanced(!showAdvanced());
-    notify(showAdvanced() ? "Advanced features hidden" : "Advanced features shown", "info");
+    notify(
+      showAdvanced() ? "Advanced features hidden" : "Advanced features shown",
+      "info",
+    );
   };
 
   return (
@@ -32,17 +35,17 @@ export const AdvancedFeatures: Component = () => {
         </h3>
       </div>
       <div class="card-content">
-        <button 
-          class="button button--secondary" 
-          onClick={handleAdvancedToggle}
-        >
+        <button class="button button--secondary" onClick={handleAdvancedToggle}>
           {fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye") && (
             <span
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye")?.outerHTML}
+              innerHTML={
+                fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye")
+                  ?.outerHTML
+              }
             />
           )}
-          {showAdvanced() ? 'Hide' : 'Show'} Advanced
+          {showAdvanced() ? "Hide" : "Show"} Advanced
         </button>
         {showAdvanced() && (
           <div class="advanced-features">

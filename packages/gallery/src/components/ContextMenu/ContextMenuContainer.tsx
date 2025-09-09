@@ -21,7 +21,9 @@ export interface ContextMenuContainerProps {
 /**
  * Main menu container component
  */
-export const ContextMenuContainer: Component<ContextMenuContainerProps> = (props) => {
+export const ContextMenuContainer: Component<ContextMenuContainerProps> = (
+  props,
+) => {
   return (
     <div
       ref={props.menuRef}

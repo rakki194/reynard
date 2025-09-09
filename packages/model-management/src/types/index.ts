@@ -1,32 +1,32 @@
 /**
  * Model Management Types
- * 
+ *
  * Core types for the model management system including model lifecycle,
  * download management, and model registry.
  */
 
 export enum ModelType {
-  CAPTION_GENERATOR = 'caption_generator',
-  DETECTION_MODEL = 'detection_model',
-  EMBEDDING_MODEL = 'embedding_model',
-  DIFFUSION_LM = 'diffusion_lm',
-  CLASSIFICATION_MODEL = 'classification_model'
+  CAPTION_GENERATOR = "caption_generator",
+  DETECTION_MODEL = "detection_model",
+  EMBEDDING_MODEL = "embedding_model",
+  DIFFUSION_LM = "diffusion_lm",
+  CLASSIFICATION_MODEL = "classification_model",
 }
 
 export enum ModelStatus {
-  NOT_DOWNLOADED = 'not_downloaded',
-  DOWNLOADING = 'downloading',
-  DOWNLOADED = 'downloaded',
-  LOADING = 'loading',
-  LOADED = 'loaded',
-  ERROR = 'error'
+  NOT_DOWNLOADED = "not_downloaded",
+  DOWNLOADING = "downloading",
+  DOWNLOADED = "downloaded",
+  LOADING = "loading",
+  LOADED = "loaded",
+  ERROR = "error",
 }
 
 export enum ModelHealth {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown'
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }
 
 export interface ModelInfo {
@@ -97,7 +97,10 @@ export interface ModelRegistry {
 }
 
 export interface ModelDownloadManager {
-  downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void>;
+  downloadModel(
+    modelId: string,
+    progressCallback?: (progress: ModelDownloadProgress) => void,
+  ): Promise<void>;
   cancelDownload(modelId: string): void;
   getDownloadProgress(modelId: string): ModelDownloadProgress | undefined;
   getAllDownloadProgress(): Record<string, ModelDownloadProgress>;
@@ -106,7 +109,10 @@ export interface ModelDownloadManager {
 }
 
 export interface ModelLoader {
-  loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance>;
+  loadModel(
+    modelId: string,
+    config?: Record<string, any>,
+  ): Promise<ModelInstance>;
   unloadModel(modelId: string): Promise<void>;
   getLoadedModel(modelId: string): ModelInstance | undefined;
   getAllLoadedModels(): Record<string, ModelInstance>;
@@ -116,8 +122,14 @@ export interface ModelLoader {
 
 export interface ModelManager {
   registerModel(modelInfo: ModelInfo): void;
-  downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void>;
-  loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance>;
+  downloadModel(
+    modelId: string,
+    progressCallback?: (progress: ModelDownloadProgress) => void,
+  ): Promise<void>;
+  loadModel(
+    modelId: string,
+    config?: Record<string, any>,
+  ): Promise<ModelInstance>;
   unloadModel(modelId: string): Promise<void>;
   getModelInfo(modelId: string): ModelInfo | undefined;
   getModelInstance(modelId: string): ModelInstance | undefined;
@@ -132,8 +144,17 @@ export interface ModelManager {
 }
 
 export interface ModelEvent {
-  type: 'download_start' | 'download_progress' | 'download_complete' | 'download_error' |
-        'load_start' | 'load_complete' | 'load_error' | 'unload' | 'health_change' | 'config_update';
+  type:
+    | "download_start"
+    | "download_progress"
+    | "download_complete"
+    | "download_error"
+    | "load_start"
+    | "load_complete"
+    | "load_error"
+    | "unload"
+    | "health_change"
+    | "config_update";
   modelId: string;
   timestamp: Date;
   data?: any;

@@ -82,18 +82,26 @@ export function createRAGClient(options: RAGClientOptions) {
 
 ```typescript
 // useRAG.ts (263 lines)
-export interface RAGConfig { /* 50+ lines of types */ }
-export function useRAG() { /* implementation */ }
+export interface RAGConfig {
+  /* 50+ lines of types */
+}
+export function useRAG() {
+  /* implementation */
+}
 ```
 
 **After** (Separated concerns):
 
 ```typescript
 // rag-types.ts (141 lines) - Pure type definitions
-export interface RAGConfig { /* all type definitions */ }
+export interface RAGConfig {
+  /* all type definitions */
+}
 
 // useRAG.ts (55 lines) - Implementation only
-export function useRAG() { /* focused implementation */ }
+export function useRAG() {
+  /* focused implementation */
+}
 ```
 
 ### Strategy 3: Factory Pattern Implementation
@@ -102,12 +110,12 @@ export function useRAG() { /* focused implementation */ }
 
 ```typescript
 export function createRAGQueryClient(
-  authFetch: RAGClientOptions['authFetch'], 
-  queryUrl: string
+  authFetch: RAGClientOptions["authFetch"],
+  queryUrl: string,
 ) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal
+    signal?: globalThis.AbortSignal,
   ): Promise<RAGQueryResponse<TExtra>> => {
     // Implementation
   };
@@ -136,10 +144,10 @@ function processData(data: any) {
 
 ```typescript
 function processData(data: unknown) {
-  if (typeof data === 'object' && data !== null && 'someProperty' in data) {
+  if (typeof data === "object" && data !== null && "someProperty" in data) {
     return (data as { someProperty: string }).someProperty;
   }
-  throw new Error('Invalid data structure');
+  throw new Error("Invalid data structure");
 }
 ```
 
@@ -160,7 +168,7 @@ export interface RAGQueryHit<TExtra = Record<string, unknown>> {
 // Usage
 const hit: RAGQueryHit<{ source: string }> = {
   score: 0.95,
-  extra: { source: 'document.pdf' }
+  extra: { source: "document.pdf" },
 };
 ```
 
@@ -196,20 +204,20 @@ Use `globalThis.AbortSignal` to explicitly reference the global AbortSignal inte
 ```typescript
 // Correct approach
 export function createRAGQueryClient(
-  authFetch: RAGClientOptions['authFetch'], 
-  queryUrl: string
+  authFetch: RAGClientOptions["authFetch"],
+  queryUrl: string,
 ) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal  // Proper type reference
+    signal?: globalThis.AbortSignal, // Proper type reference
   ): Promise<RAGQueryResponse<TExtra>> => {
     const res = await authFetch(queryUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
       signal, // No type casting needed
     });
-    
+
     if (!res.ok) throw new Error(`RAG query failed (${res.status})`);
     return (await res.json()) as RAGQueryResponse<TExtra>;
   };
@@ -246,7 +254,7 @@ type AbortControllerSignal = {
 #### ❌ Type Casting
 
 ```typescript
-signal: signal as any  // Bypasses type checking
+signal: signal as any; // Bypasses type checking
 ```
 
 ## Common Issues and Solutions
@@ -295,10 +303,16 @@ signal: signal as any  // Bypasses type checking
 
 ```typescript
 // Before
-import { Accessor, createResource, createSignal, createEffect, onCleanup } from 'solid-js';
+import {
+  Accessor,
+  createResource,
+  createSignal,
+  createEffect,
+  onCleanup,
+} from "solid-js";
 
 // After
-import { Accessor, createResource } from 'solid-js';
+import { Accessor, createResource } from "solid-js";
 ```
 
 ## Implementation Examples
@@ -335,15 +349,15 @@ packages/composables/src/ai/
 
 ```typescript
 // rag.ts - Clean API boundaries
-export * from './rag-types';
-export * from './useRAG';
-export * from './rag-client';
-export * from './rag-query';
-export * from './rag-ingest';
-export * from './rag-config';
-export * from './rag-admin';
-export * from './rag-search-resource';
-export * from './rag-auto-refresh';
+export * from "./rag-types";
+export * from "./useRAG";
+export * from "./rag-client";
+export * from "./rag-query";
+export * from "./rag-ingest";
+export * from "./rag-config";
+export * from "./rag-admin";
+export * from "./rag-search-resource";
+export * from "./rag-auto-refresh";
 ```
 
 ### Factory Pattern Usage
@@ -353,11 +367,11 @@ export * from './rag-auto-refresh';
 export function createRAGClient(options: RAGClientOptions) {
   const {
     authFetch,
-    configUrl = '/api/config',
-    queryUrl = '/api/rag/query',
-    ingestUrl = '/api/rag/ingest',
-    adminUrl = '/api/rag/admin',
-    metricsUrl = '/api/rag/ops/metrics'
+    configUrl = "/api/config",
+    queryUrl = "/api/rag/query",
+    ingestUrl = "/api/rag/ingest",
+    adminUrl = "/api/rag/admin",
+    metricsUrl = "/api/rag/ops/metrics",
   } = options;
 
   // Create specialized clients

@@ -75,16 +75,19 @@ This would require reimplementing all the sophisticated model logic that already
 // packages/rag/src/services/EmbeddingService.ts
 export class EmbeddingService {
   private models: Map<string, any> = new Map();
-  
+
   async loadModel(modelId: string): Promise<void> {
     // Load embedding model
   }
-  
+
   async generateEmbeddings(texts: string[]): Promise<number[][]> {
     // Generate embeddings for texts
   }
-  
-  async searchSimilar(query: string, topK: number = 10): Promise<SearchResult[]> {
+
+  async searchSimilar(
+    query: string,
+    topK: number = 10,
+  ): Promise<SearchResult[]> {
     // Search for similar content
   }
 }
@@ -100,15 +103,15 @@ from pgvector.asyncpg import register_vector
 class VectorDatabase:
     def __init__(self, connection_string: str):
         self.connection_string = connection_string
-    
+
     async def connect(self):
         self.conn = await asyncpg.connect(self.connection_string)
         await register_vector(self.conn)
-    
+
     async def insert_embeddings(self, embeddings: List[Embedding]):
         # Insert embeddings into vector database
         pass
-    
+
     async def search_similar(self, query_vector: List[float], top_k: int = 10):
         # Search for similar embeddings
         pass
@@ -180,7 +183,7 @@ Base = declarative_base()
 
 class Model(Base):
     __tablename__ = "models"
-    
+
     id = Column(Integer, primary_key=True)
     model_id = Column(String, unique=True, nullable=False)
     name = Column(String, nullable=False)
@@ -211,10 +214,13 @@ mkdir -p packages/diffusion-llm/src/{models,services,types}
 ```typescript
 // packages/diffusion-llm/src/models/DreamOnModel.ts
 export class DreamOnModel {
-  async generateText(prompt: string, options: GenerationOptions): Promise<GenerationResult> {
+  async generateText(
+    prompt: string,
+    options: GenerationOptions,
+  ): Promise<GenerationResult> {
     // Generate text using DreamOn model
   }
-  
+
   async infillText(text: string, mask: string): Promise<string> {
     // Infill masked text
   }
@@ -222,7 +228,10 @@ export class DreamOnModel {
 
 // packages/diffusion-llm/src/models/LLaDAModel.ts
 export class LLaDAModel {
-  async generateStreaming(prompt: string, options: GenerationOptions): Promise<AsyncIterable<string>> {
+  async generateStreaming(
+    prompt: string,
+    options: GenerationOptions,
+  ): Promise<AsyncIterable<string>> {
     // Generate streaming text
   }
 }
@@ -240,11 +249,17 @@ export class LLaDAModel {
 ```typescript
 // packages/tts/src/services/TTSService.ts
 export class TTSService {
-  async generateSpeech(text: string, options: TTSOptions): Promise<AudioBuffer> {
+  async generateSpeech(
+    text: string,
+    options: TTSOptions,
+  ): Promise<AudioBuffer> {
     // Generate speech from text
   }
-  
-  async batchGenerate(texts: string[], options: TTSOptions): Promise<AudioBuffer[]> {
+
+  async batchGenerate(
+    texts: string[],
+    options: TTSOptions,
+  ): Promise<AudioBuffer[]> {
     // Generate multiple audio files
   }
 }
@@ -265,11 +280,11 @@ export class ComfyService {
   async queueWorkflow(workflow: Workflow): Promise<JobId> {
     // Queue a ComfyUI workflow
   }
-  
+
   async getJobStatus(jobId: JobId): Promise<JobStatus> {
     // Get job status
   }
-  
+
   async getResult(jobId: JobId): Promise<JobResult> {
     // Get job result
   }
@@ -293,12 +308,18 @@ export class OllamaService {
   async listModels(): Promise<Model[]> {
     // List available Ollama models
   }
-  
-  async chatWithModel(model: string, messages: Message[]): Promise<ChatResponse> {
+
+  async chatWithModel(
+    model: string,
+    messages: Message[],
+  ): Promise<ChatResponse> {
     // Chat with Ollama model
   }
-  
-  async streamChat(model: string, messages: Message[]): Promise<AsyncIterable<string>> {
+
+  async streamChat(
+    model: string,
+    messages: Message[],
+  ): Promise<AsyncIterable<string>> {
     // Stream chat responses
   }
 }
@@ -319,7 +340,7 @@ export class CrawlingService {
   async crawlUrl(url: string): Promise<CrawlResult> {
     // Crawl a URL and extract content
   }
-  
+
   async summarizeContent(content: string): Promise<Summary> {
     // Summarize crawled content
   }

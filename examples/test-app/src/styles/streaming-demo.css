@@ -46,7 +46,13 @@
 }
 
 .streaming-text {
-  font-family: var(--font-family-mono, 'Monaco', 'Menlo', 'Ubuntu Mono', monospace);
+  font-family: var(
+    --font-family-mono,
+    "Monaco",
+    "Menlo",
+    "Ubuntu Mono",
+    monospace
+  );
   font-size: 0.875rem;
   color: var(--color-text-primary, #333);
 }
@@ -60,8 +66,14 @@
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* P2P Chat Demo Styles */
@@ -305,12 +317,24 @@
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+.typing-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 @keyframes typing {
-  0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-  40% { transform: scale(1); opacity: 1; }
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .message-input-area {
@@ -388,10 +412,18 @@
   color: var(--color-text-secondary, #666);
 }
 
-.user-status.online { color: var(--color-success, #4caf50); }
-.user-status.away { color: var(--color-warning, #ff9800); }
-.user-status.busy { color: var(--color-error, #f44336); }
-.user-status.offline { color: var(--color-text-secondary, #666); }
+.user-status.online {
+  color: var(--color-success, #4caf50);
+}
+.user-status.away {
+  color: var(--color-warning, #ff9800);
+}
+.user-status.busy {
+  color: var(--color-error, #f44336);
+}
+.user-status.offline {
+  color: var(--color-text-secondary, #666);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -400,17 +432,17 @@
     grid-template-rows: auto 1fr auto;
     height: auto;
   }
-  
+
   .room-list,
   .user-list {
     max-height: 200px;
   }
-  
+
   .streaming-controls {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .streaming-info {
     flex-direction: column;
     align-items: flex-start;

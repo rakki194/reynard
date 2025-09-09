@@ -80,7 +80,9 @@ export class DocumentThumbnailGenerator {
       return {
         success: false,
         error:
-          error instanceof Error ? error.message : "Failed to generate document thumbnail",
+          error instanceof Error
+            ? error.message
+            : "Failed to generate document thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };
@@ -136,7 +138,10 @@ export class DocumentThumbnailGenerator {
   /**
    * Get colors for different document types
    */
-  private getDocumentColors(documentType: string): { primary: string; secondary: string } {
+  private getDocumentColors(documentType: string): {
+    primary: string;
+    secondary: string;
+  } {
     const colorMap: Record<string, { primary: string; secondary: string }> = {
       pdf: { primary: "#dc2626", secondary: "#b91c1c" }, // Red
       docx: { primary: "#2563eb", secondary: "#1d4ed8" }, // Blue
@@ -174,7 +179,7 @@ export class DocumentThumbnailGenerator {
     ctx.font = `bold ${indicatorSize * 0.6}px Arial, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    
+
     const abbreviation = documentType.toUpperCase().slice(0, 2);
     ctx.fillText(abbreviation, indicatorX, indicatorY);
   }

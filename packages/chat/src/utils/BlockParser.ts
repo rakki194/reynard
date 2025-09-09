@@ -13,7 +13,6 @@ import { CodeBlockHandler } from "./block/CodeBlockHandler";
 import type { ParseResult } from "../types";
 
 export class BlockParser extends BaseMarkdownParser {
-
   /**
    * Parse a single line for block elements
    */
@@ -67,11 +66,13 @@ export class BlockParser extends BaseMarkdownParser {
   private handleHorizontalRule(line: string): boolean {
     const match = matches(line, MARKDOWN_PATTERNS.horizontalRule);
     if (match) {
-      this.addNode(this.createNode({
-        type: "horizontalRule",
-        content: "",
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "horizontalRule",
+          content: "",
+          line: this.state.currentLine,
+        }),
+      );
       return true;
     }
     return false;
@@ -86,12 +87,14 @@ export class BlockParser extends BaseMarkdownParser {
     if (hashMatch) {
       const level = hashMatch[1].length;
       const text = hashMatch[2].trim();
-      this.addNode(this.createNode({
-        type: "heading",
-        level,
-        content: text,
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "heading",
+          level,
+          content: text,
+          line: this.state.currentLine,
+        }),
+      );
       return true;
     }
 
@@ -118,7 +121,9 @@ export class BlockParser extends BaseMarkdownParser {
    * Handle code blocks
    */
   private handleCodeBlock(line: string): boolean {
-    return CodeBlockHandler.handleCodeBlock(line, this.state, (node) => this.addNode(this.createNode(node)));
+    return CodeBlockHandler.handleCodeBlock(line, this.state, (node) =>
+      this.addNode(this.createNode(node)),
+    );
   }
 
   /**
@@ -150,13 +155,15 @@ export class BlockParser extends BaseMarkdownParser {
    */
   protected flushCurrentNode(): void {
     if (this.state.inList) {
-      this.addNode(this.createNode({
-        type: "list",
-        content: "",
-        listType: this.state.listType,
-        items: this.state.listItems,
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "list",
+          content: "",
+          listType: this.state.listType,
+          items: this.state.listItems,
+          line: this.state.currentLine,
+        }),
+      );
       this.state.inList = false;
       this.state.listItems = [];
       this.state.listType = "unordered";
@@ -164,11 +171,13 @@ export class BlockParser extends BaseMarkdownParser {
     }
 
     if (this.state.inBlockquote) {
-      this.addNode(this.createNode({
-        type: "blockquote",
-        content: this.state.blockquoteContent.join("\n"),
-        line: this.state.currentLine,
-      }));
+      this.addNode(
+        this.createNode({
+          type: "blockquote",
+          content: this.state.blockquoteContent.join("\n"),
+          line: this.state.currentLine,
+        }),
+      );
       this.state.inBlockquote = false;
       this.state.blockquoteContent = [];
     }

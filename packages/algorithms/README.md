@@ -7,7 +7,7 @@ A comprehensive collection of reusable algorithmic building blocks including Uni
 ## Features
 
 - **Union-Find Algorithm** - Efficient set operations and cycle detection
-- **AABB Collision Detection** - Spatial queries and overlap detection  
+- **AABB Collision Detection** - Spatial queries and overlap detection
 - **Spatial Hashing** - Efficient spatial partitioning and nearest neighbor queries
 - **Performance Utilities** - Benchmarking, profiling, and monitoring tools
 - **Geometry Operations** - 2D geometric calculations and transformations
@@ -29,7 +29,7 @@ import {
   PerformanceTimer,
   PointOps,
   VectorOps,
-} from 'reynard-algorithms';
+} from "reynard-algorithms";
 
 // Union-Find for connected components
 const uf = new UnionFind(10);
@@ -45,7 +45,7 @@ console.log(collision.colliding); // true
 
 // Spatial hashing
 const spatialHash = new SpatialHash({ cellSize: 100 });
-spatialHash.insert({ id: '1', x: 50, y: 50, data: { name: 'object1' } });
+spatialHash.insert({ id: "1", x: 50, y: 50, data: { name: "object1" } });
 const nearby = spatialHash.queryRadius(0, 0, 100);
 
 // Performance monitoring
@@ -65,7 +65,11 @@ const distance = PointOps.distance(point1, point2); // 5
 ### Union-Find Algorithm
 
 ```typescript
-import { UnionFind, detectCycle, findConnectedComponents } from 'reynard-algorithms';
+import {
+  UnionFind,
+  detectCycle,
+  findConnectedComponents,
+} from "reynard-algorithms";
 
 const uf = new UnionFind(10);
 uf.union(0, 1);
@@ -74,14 +78,25 @@ uf.getSetSize(0); // 2
 uf.getStats(); // Performance statistics
 
 // Utility functions
-const hasCycle = detectCycle([[0, 1], [1, 2], [2, 0]]); // true
-const components = findConnectedComponents([[0, 1], [2, 3]]); // [[0, 1], [2, 3]]
+const hasCycle = detectCycle([
+  [0, 1],
+  [1, 2],
+  [2, 0],
+]); // true
+const components = findConnectedComponents([
+  [0, 1],
+  [2, 3],
+]); // [[0, 1], [2, 3]]
 ```
 
 ### AABB Collision Detection
 
 ```typescript
-import { checkCollision, batchCollisionDetection, AABB } from 'reynard-algorithms';
+import {
+  checkCollision,
+  batchCollisionDetection,
+  AABB,
+} from "reynard-algorithms";
 
 const aabb1: AABB = { x: 0, y: 0, width: 100, height: 100 };
 const aabb2: AABB = { x: 50, y: 50, width: 100, height: 100 };
@@ -98,7 +113,7 @@ const collisions = batchCollisionDetection(aabbs);
 ### Spatial Hashing
 
 ```typescript
-import { SpatialHash, createOptimizedSpatialHash } from 'reynard-algorithms';
+import { SpatialHash, createOptimizedSpatialHash } from "reynard-algorithms";
 
 const spatialHash = new SpatialHash<{ name: string }>({
   cellSize: 100,
@@ -106,10 +121,10 @@ const spatialHash = new SpatialHash<{ name: string }>({
 });
 
 spatialHash.insert({
-  id: '1',
+  id: "1",
   x: 50,
   y: 50,
-  data: { name: 'object1' },
+  data: { name: "object1" },
 });
 
 const objectsInRect = spatialHash.queryRect(0, 0, 100, 100);
@@ -126,7 +141,7 @@ import {
   throttle,
   debounce,
   PerformanceBenchmark,
-} from 'reynard-algorithms';
+} from "reynard-algorithms";
 
 // Performance timing
 const timer = new PerformanceTimer();
@@ -139,8 +154,8 @@ const monitor = new MemoryMonitor();
 const usage = monitor.measure();
 
 // Throttling and debouncing
-const throttledFn = throttle(() => console.log('throttled'), 1000);
-const debouncedFn = debounce(() => console.log('debounced'), 500);
+const throttledFn = throttle(() => console.log("throttled"), 1000);
+const debouncedFn = debounce(() => console.log("debounced"), 500);
 
 // Performance benchmarking
 const benchmark = new PerformanceBenchmark();
@@ -160,7 +175,7 @@ import {
   CircleOps,
   PolygonOps,
   TransformOps,
-} from 'reynard-algorithms';
+} from "reynard-algorithms";
 
 // Point operations
 const point1 = PointOps.create(0, 0);
@@ -182,7 +197,7 @@ const center = RectangleOps.center(rect); // { x: 50, y: 25 }
 // Transform operations
 const transform = TransformOps.combine(
   TransformOps.translate(10, 20),
-  TransformOps.scale(2, 2)
+  TransformOps.scale(2, 2),
 );
 const transformedPoint = TransformOps.applyToPoint(transform, point1);
 ```

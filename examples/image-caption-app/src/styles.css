@@ -571,6 +571,279 @@
   border-top: 1px solid var(--border-color);
 }
 
+/* Gallery Controls */
+.gallery-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.gallery-controls select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+/* Progress Card */
+.progress-card {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.progress-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* System Stats */
+.stats-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.stat-value.healthy {
+  color: var(--success);
+}
+
+.stat-value.unhealthy {
+  color: var(--danger);
+}
+
+/* Events Section */
+.events-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.event-item {
+  border-left: 4px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.event-item.error {
+  border-left-color: var(--danger);
+}
+
+.event-item.success {
+  border-left-color: var(--success);
+}
+
+.event-item.info {
+  border-left-color: var(--info);
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-icon {
+  font-size: 1.2rem;
+}
+
+.event-info {
+  flex: 1;
+}
+
+.event-type {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.event-time {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.event-data {
+  background-color: var(--secondary-bg);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  overflow-x: auto;
+}
+
+.event-data pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Model Stats */
+.model-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.model-stat-item {
+  background-color: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.model-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.model-header h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.model-status {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.loaded {
+  background-color: var(--success);
+  color: white;
+}
+
+.status-badge.unloaded {
+  background-color: var(--text-secondary);
+  color: white;
+}
+
+.status-badge.healthy {
+  background-color: var(--success);
+  color: white;
+}
+
+.status-badge.unhealthy {
+  background-color: var(--danger);
+  color: white;
+}
+
+.usage-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.usage-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.usage-item span:first-child {
+  color: var(--text-secondary);
+}
+
+.usage-item span:last-child {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Queue Stats */
+.queue-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.queue-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.queue-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.queue-item span:first-child {
+  color: var(--text-secondary);
+}
+
+.queue-item span:last-child {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-header {

@@ -33,7 +33,7 @@ A comprehensive demonstration of the Reynard Error Boundary System, showcasing a
    cd backend
    pip3 install -r requirements.txt
    cd ..
-   
+
    # Install Node.js dependencies
    npm install
    ```
@@ -194,7 +194,7 @@ const customStrategy = createRecoveryStrategy({
     return { success: true, message: "Recovered" };
   },
   priority: 1,
-  timeout: 5000
+  timeout: 5000,
 });
 ```
 

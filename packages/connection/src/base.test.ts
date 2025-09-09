@@ -1,10 +1,19 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from "vitest";
 // Ensure crypto.randomUUID exists and is callable without wrong this binding
-if (!(globalThis as any).crypto || typeof (globalThis as any).crypto.randomUUID !== 'function') {
-  (globalThis as any).crypto = { randomUUID: vi.fn(() => '00000000-0000-4000-8000-000000000000') } as any;
+if (
+  !(globalThis as any).crypto ||
+  typeof (globalThis as any).crypto.randomUUID !== "function"
+) {
+  (globalThis as any).crypto = {
+    randomUUID: vi.fn(() => "00000000-0000-4000-8000-000000000000"),
+  } as any;
 }
-import { BaseConnection } from './base';
-import { ConnectionType, ConnectionHealth, type ConnectionConfig } from './types';
+import { BaseConnection } from "./base";
+import {
+  ConnectionType,
+  ConnectionHealth,
+  type ConnectionConfig,
+} from "./types";
 
 class TestConnection extends BaseConnection {
   public sent: unknown[] = [];
@@ -13,18 +22,23 @@ class TestConnection extends BaseConnection {
     super(cfg);
   }
   async connect(): Promise<boolean> {
-    (this as any)['isActive'] = true;
+    (this as any)["isActive"] = true;
     return true;
   }
   async disconnect(): Promise<boolean> {
-    (this as any)['isActive'] = false;
+    (this as any)["isActive"] = false;
     return true;
   }
   async isConnected(): Promise<boolean> {
-    return (this as any)['isActive'];
+    return (this as any)["isActive"];
   }
   async healthCheck() {
-    return { connectionId: this.connectionId, timestamp: Date.now(), isHealthy: true, responseTime: 1 };
+    return {
+      connectionId: this.connectionId,
+      timestamp: Date.now(),
+      isHealthy: true,
+      responseTime: 1,
+    };
   }
   protected async sendImpl(data: unknown): Promise<boolean> {
     this.sent.push(data);
@@ -37,38 +51,41 @@ class TestConnection extends BaseConnection {
 
 class FailingConnection extends TestConnection {
   protected async sendImpl(): Promise<boolean> {
-    throw new Error('send failed');
+    throw new Error("send failed");
   }
 }
 
-const baseCfg: ConnectionConfig = { name: 'test', connectionType: ConnectionType.HTTP };
+const baseCfg: ConnectionConfig = {
+  name: "test",
+  connectionType: ConnectionType.HTTP,
+};
 
-describe('BaseConnection', () => {
+describe("BaseConnection", () => {
   beforeEach(() => {
     vi.useRealTimers();
   });
 
-  it('reports initial status and updates metrics on send/receive', async () => {
+  it("reports initial status and updates metrics on send/receive", async () => {
     const c = new TestConnection(baseCfg);
     const events: string[] = [];
-    c.onEvent(e => events.push(e.eventType));
+    c.onEvent((e) => events.push(e.eventType));
     expect(c.getStatus().health).toBe(ConnectionHealth.UNKNOWN);
     await c.connect();
     const ok = await c.send({ a: 1 });
     expect(ok).toBe(true);
-    c.recv.push({ hello: 'world' });
+    c.recv.push({ hello: "world" });
     const r = await c.receive();
-    expect(r).toEqual({ hello: 'world' });
+    expect(r).toEqual({ hello: "world" });
     const st = c.getStatus();
     expect(st.metrics.totalRequests).toBe(2);
-    expect(events.includes('metrics')).toBe(true);
+    expect(events.includes("metrics")).toBe(true);
     await c.disconnect();
   });
 
-  it('opens circuit breaker on failures and blocks subsequent send/receive until timeout', async () => {
+  it("opens circuit breaker on failures and blocks subsequent send/receive until timeout", async () => {
     vi.useFakeTimers();
     const cfg: ConnectionConfig = {
-      name: 'cb',
+      name: "cb",
       connectionType: ConnectionType.HTTP,
       circuitBreakerEnabled: true,
       circuitBreakerThreshold: 1,

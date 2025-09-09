@@ -34,7 +34,7 @@ module.
 
 ```jsx
 // component.jsx
-import styles from 'styles.module.css';
+import styles from "styles.module.css";
 ```
 
 ### Applying styles
@@ -58,7 +58,7 @@ If you only need one style from the module, import and apply it directly:
 
 ```jsx
 // component.jsx
-import styles from 'styles.module.css';
+import styles from "styles.module.css";
 
 function Component() {
   return (
@@ -75,7 +75,7 @@ You can combine CSS module syntax with regular string class names, as well:
 
 ```jsx
 // component.jsx
-import styles from 'styles.module.css';
+import styles from "styles.module.css";
 
 function Component() {
   return (
@@ -89,5 +89,5 @@ function Component() {
 **Note:** If your styles have dashes in their names, use bracket notation:
 
 ```jsx
-const className = styles['foo-with-dash'];
+const className = styles["foo-with-dash"];
 ```

@@ -1,11 +1,11 @@
 /**
  * Resize Handles Module
- * 
+ *
  * Handles generation and configuration of resize handles for bounding boxes.
  * Supports corner and edge handles with customizable constraints.
  */
 
-import type { ResizeHandle } from '../types';
+import type { ResizeHandle } from "../types";
 
 export interface HandleGenerationOptions {
   minWidth?: number;
@@ -19,10 +19,10 @@ export interface HandleGenerationOptions {
 
 /**
  * Generates resize handles based on configuration options
- * 
+ *
  * @param options - Configuration for handle generation
  * @returns Array of configured resize handles
- * 
+ *
  * @example
  * ```typescript
  * const handles = generateResizeHandles({
@@ -33,7 +33,9 @@ export interface HandleGenerationOptions {
  * });
  * ```
  */
-export function generateResizeHandles(options: HandleGenerationOptions = {}): ResizeHandle[] {
+export function generateResizeHandles(
+  options: HandleGenerationOptions = {},
+): ResizeHandle[] {
   const {
     minWidth = 10,
     minHeight = 10,
@@ -47,22 +49,26 @@ export function generateResizeHandles(options: HandleGenerationOptions = {}): Re
   const handleList: ResizeHandle[] = [];
 
   if (enableCornerHandles) {
-    handleList.push(...generateCornerHandles({
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-      maintainAspectRatio: enableProportionalResizing,
-    }));
+    handleList.push(
+      ...generateCornerHandles({
+        minWidth,
+        minHeight,
+        maxWidth,
+        maxHeight,
+        maintainAspectRatio: enableProportionalResizing,
+      }),
+    );
   }
 
   if (enableEdgeHandles) {
-    handleList.push(...generateEdgeHandles({
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-    }));
+    handleList.push(
+      ...generateEdgeHandles({
+        minWidth,
+        minHeight,
+        maxWidth,
+        maxHeight,
+      }),
+    );
   }
 
   return handleList;
@@ -80,27 +86,27 @@ function generateCornerHandles(constraints: {
 }): ResizeHandle[] {
   return [
     {
-      id: 'top-left',
-      position: 'top-left',
-      cursor: 'nw-resize',
+      id: "top-left",
+      position: "top-left",
+      cursor: "nw-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'top-right',
-      position: 'top-right',
-      cursor: 'ne-resize',
+      id: "top-right",
+      position: "top-right",
+      cursor: "ne-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'bottom-left',
-      position: 'bottom-left',
-      cursor: 'sw-resize',
+      id: "bottom-left",
+      position: "bottom-left",
+      cursor: "sw-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'bottom-right',
-      position: 'bottom-right',
-      cursor: 'se-resize',
+      id: "bottom-right",
+      position: "bottom-right",
+      cursor: "se-resize",
       constraints: { ...constraints },
     },
   ];
@@ -117,27 +123,27 @@ function generateEdgeHandles(constraints: {
 }): ResizeHandle[] {
   return [
     {
-      id: 'top',
-      position: 'top',
-      cursor: 'n-resize',
+      id: "top",
+      position: "top",
+      cursor: "n-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'right',
-      position: 'right',
-      cursor: 'e-resize',
+      id: "right",
+      position: "right",
+      cursor: "e-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'bottom',
-      position: 'bottom',
-      cursor: 's-resize',
+      id: "bottom",
+      position: "bottom",
+      cursor: "s-resize",
       constraints: { ...constraints },
     },
     {
-      id: 'left',
-      position: 'left',
-      cursor: 'w-resize',
+      id: "left",
+      position: "left",
+      cursor: "w-resize",
       constraints: { ...constraints },
     },
   ];
@@ -145,31 +151,36 @@ function generateEdgeHandles(constraints: {
 
 /**
  * Finds a resize handle by ID
- * 
+ *
  * @param handles - Array of resize handles
  * @param id - The handle ID to find
  * @returns The handle if found, undefined otherwise
  */
-export function findResizeHandle(handles: ResizeHandle[], id: string): ResizeHandle | undefined {
-  return handles.find(handle => handle.id === id);
+export function findResizeHandle(
+  handles: ResizeHandle[],
+  id: string,
+): ResizeHandle | undefined {
+  return handles.find((handle) => handle.id === id);
 }
 
 /**
  * Updates handle constraints with aspect ratio
- * 
+ *
  * @param handle - The handle to update
  * @param aspectRatio - The aspect ratio to apply
  * @returns Updated handle with aspect ratio constraint
  */
 export function updateHandleWithAspectRatio(
   handle: ResizeHandle,
-  aspectRatio: number
+  aspectRatio: number,
 ): ResizeHandle {
   return {
     ...handle,
     constraints: {
       ...handle.constraints,
-      aspectRatio: handle.constraints.maintainAspectRatio ? aspectRatio : undefined,
+      aspectRatio: handle.constraints.maintainAspectRatio
+        ? aspectRatio
+        : undefined,
     },
   };
 }

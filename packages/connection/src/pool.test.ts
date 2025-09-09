@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { ConnectionPool } from './pool';
+import { describe, it, expect } from "vitest";
+import { ConnectionPool } from "./pool";
 
 class Dummy {
   id: string;
@@ -11,8 +11,8 @@ class Dummy {
   }
 }
 
-describe('ConnectionPool', () => {
-  it('acquires and releases items respecting max size', async () => {
+describe("ConnectionPool", () => {
+  it("acquires and releases items respecting max size", async () => {
     let counter = 0;
     const pool = new ConnectionPool<Dummy>({
       maxSize: 2,
@@ -34,7 +34,7 @@ describe('ConnectionPool', () => {
     const d = await pool.acquire();
     expect(d).not.toBeNull();
     const stats = pool.stats();
-    expect(typeof stats.utilization).toBe('number');
+    expect(typeof stats.utilization).toBe("number");
     await pool.stop();
   });
 });

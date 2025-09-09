@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import { ConnectionMetricsTracker } from './metrics';
+import { describe, it, expect } from "vitest";
+import { ConnectionMetricsTracker } from "./metrics";
 
-describe('ConnectionMetricsTracker', () => {
-  it('records successes and failures, computes aggregates', () => {
+describe("ConnectionMetricsTracker", () => {
+  it("records successes and failures, computes aggregates", () => {
     const t = new ConnectionMetricsTracker(5);
     t.record(10, true);
-    t.record(20, false, 'TimeoutError');
+    t.record(20, false, "TimeoutError");
     t.record(30, true);
     expect(t.averageResponseTime()).toBeGreaterThan(0);
     expect(t.errorRate()).toBeGreaterThanOrEqual(0);

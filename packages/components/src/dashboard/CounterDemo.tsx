@@ -48,8 +48,8 @@ export const CounterDemo: Component = () => {
           <span class="counter-value">{counter()}</span>
         </div>
         <div class="button-group">
-          <button 
-            class="button button--small" 
+          <button
+            class="button button--small"
             onClick={() => handleCounterAction("decrement")}
           >
             {fluentIconsPackage.getIcon("subtract") && (
@@ -59,8 +59,8 @@ export const CounterDemo: Component = () => {
               />
             )}
           </button>
-          <button 
-            class="button button--small" 
+          <button
+            class="button button--small"
             onClick={() => handleCounterAction("reset")}
           >
             {fluentIconsPackage.getIcon("refresh") && (
@@ -70,8 +70,8 @@ export const CounterDemo: Component = () => {
               />
             )}
           </button>
-          <button 
-            class="button button--small" 
+          <button
+            class="button button--small"
             onClick={() => handleCounterAction("increment")}
           >
             {fluentIconsPackage.getIcon("add") && (

@@ -10,7 +10,7 @@ export interface LanguageInfo {
 
 export interface AnalysisIssue {
   id: string;
-  type: 'error' | 'warning' | 'info' | 'hint';
+  type: "error" | "warning" | "info" | "hint";
   message: string;
   line: number;
   column: number;
@@ -18,7 +18,7 @@ export interface AnalysisIssue {
   endColumn?: number;
   source?: string;
   code?: string;
-  severity: 'error' | 'warning' | 'info' | 'hint';
+  severity: "error" | "warning" | "info" | "hint";
   category?: string;
   fixable?: boolean;
   suggestions?: string[];
@@ -45,7 +45,7 @@ export interface AnalysisResult {
 
 export interface ExecutionOutput {
   id: string;
-  type: 'stdout' | 'stderr' | 'info' | 'error';
+  type: "stdout" | "stderr" | "info" | "error";
   content: string;
   timestamp: number;
   lineNumber?: number;
@@ -65,7 +65,7 @@ export interface BuildCommand {
   command: string;
   description: string;
   language: string;
-  category: 'build' | 'run' | 'test' | 'debug' | 'custom';
+  category: "build" | "run" | "test" | "debug" | "custom";
   default?: boolean;
 }
 
@@ -119,5 +119,3 @@ export interface UseLanguageDetectionReturn {
   detectNaturalLanguage: (text: string) => Promise<void>;
   detectProgrammingLanguageFromFile: (fileName: string) => string;
 }
-
-

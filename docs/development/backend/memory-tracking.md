@@ -70,7 +70,7 @@ Memory tracking is integrated into the `PackageInfo` class:
 class PackageInfo:
     # ... existing fields
     memory_metrics: MemoryMetrics = field(default_factory=MemoryMetrics)
-    
+
     def update_memory_metrics(self) -> None
     def get_memory_summary(self) -> Dict[str, Any]
 ```
@@ -100,8 +100,13 @@ Returns a comprehensive memory usage summary for all packages.
         "growth_rate": 1048576
       }
     ],
-    "memory_trends": {"increasing": 1, "decreasing": 0, "stable": 2},
-    "memory_pressure_levels": {"low": 2, "medium": 1, "high": 0, "critical": 0},
+    "memory_trends": { "increasing": 1, "decreasing": 0, "stable": 2 },
+    "memory_pressure_levels": {
+      "low": 2,
+      "medium": 1,
+      "high": 0,
+      "critical": 0
+    },
     "system_memory_pressure": "low",
     "total_packages": 3,
     "loaded_packages": 2

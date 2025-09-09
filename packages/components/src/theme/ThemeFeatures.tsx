@@ -12,7 +12,7 @@ export const ThemeFeatures: Component = () => {
     "CSS Custom Properties for dynamic switching",
     "Accessibility support with high contrast themes",
     "System theme detection and automatic switching",
-    "Reduced motion support for accessibility"
+    "Reduced motion support for accessibility",
   ];
 
   return (
@@ -26,7 +26,9 @@ export const ThemeFeatures: Component = () => {
                 <span class="feature-icon">
                   <div
                     // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={fluentIconsPackage.getIcon("checkmark")?.outerHTML}
+                    innerHTML={
+                      fluentIconsPackage.getIcon("checkmark")?.outerHTML
+                    }
                   />
                 </span>
               )}

@@ -13,7 +13,7 @@ export class MemoryMonitor {
   private measurements: Array<{ timestamp: number; usage: number }> = [];
 
   measure(): number {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       const memory = (performance as any).memory;
       const usage = memory.usedJSHeapSize;
       this.measurements.push({ timestamp: Date.now(), usage });
@@ -44,7 +44,11 @@ export class MemoryMonitor {
  * Memory leak detector
  */
 export class MemoryLeakDetector {
-  private snapshots: Array<{ timestamp: number; usage: number; count: number }> = [];
+  private snapshots: Array<{
+    timestamp: number;
+    usage: number;
+    count: number;
+  }> = [];
   private objectCount = 0;
   private lastSnapshot = 0;
 
@@ -81,13 +85,20 @@ export class MemoryLeakDetector {
       growthRates.push(rate);
     }
 
-    const averageGrowthRate = growthRates.reduce((sum, rate) => sum + rate, 0) / growthRates.length;
+    const averageGrowthRate =
+      growthRates.reduce((sum, rate) => sum + rate, 0) / growthRates.length;
     const isLeaking = averageGrowthRate > 1000; // 1KB per second threshold
 
     // Calculate confidence based on consistency of growth
     const variance =
-      growthRates.reduce((sum, rate) => sum + Math.pow(rate - averageGrowthRate, 2), 0) / growthRates.length;
-    const confidence = Math.max(0, 1 - Math.sqrt(variance) / Math.abs(averageGrowthRate));
+      growthRates.reduce(
+        (sum, rate) => sum + Math.pow(rate - averageGrowthRate, 2),
+        0,
+      ) / growthRates.length;
+    const confidence = Math.max(
+      0,
+      1 - Math.sqrt(variance) / Math.abs(averageGrowthRate),
+    );
 
     return {
       isLeaking,
@@ -97,7 +108,7 @@ export class MemoryLeakDetector {
   }
 
   private getMemoryUsage(): number {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       return (performance as any).memory.usedJSHeapSize;
     }
     return 0;

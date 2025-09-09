@@ -5,45 +5,56 @@ All notable changes to the Reynard framework are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.3] (unreleased) - 2025-01-09
 
 ### Added
 
-- OKLCH color system implementation with modern color palettes
-- Comprehensive security hardening with enhanced validation and rate limiting
-- Advanced algorithm optimization with performance benchmarks
-- ECS (Entity Component System) architecture improvements
-- Gallery-AI package for AI-powered image gallery functionality
-- Comprehensive backend infrastructure with caption generation
-- Blackhat security testing framework with exploit modules
-- Enhanced documentation structure and research papers
+- Comprehensive Backend API enhancements: new monitoring endpoints for system statistics, health status, and model usage metrics
+- Advanced chart system: professional unified chart component with OKLCH color integration and real-time capabilities
+- Enhanced AI/ML type system: comprehensive type definitions for caption generation, chat LLM, ComfyUI, model management, and performance monitoring
+- 3D visualization components: point cloud visualization, cluster visualization, and embedding visualization with Three.js integration
+- OKLCH color system: advanced color management with OKLCH color space, gradient demos, and theme comparison tools
+- Service management integration: feature service bridge, integration examples, and comprehensive service mappings
+- RAG system overhaul: complete RAG client, admin interface, auto-refresh, and query management
+- Documentation architecture: TypeScript modularity standards, SolidJS naming conventions, and development guidelines
+- Memory pool optimization: enhanced algorithm optimization with collision detection improvements and memory pool utilities
 
 ### Changed
 
-- Updated themes package with OKLCH color system
-- Major package restructuring and modularization
-- Enhanced ECS query system with improved type safety
-- Refactored authentication system with better security
-- Improved file processing with modular thumbnail generators
-- Updated testing infrastructure with comprehensive coverage
+- Package version bumps: comprehensive version updates across all packages (0.1.0 → 0.1.1 → 0.1.2, 1.0.0 → 1.0.1)
+- Bounding box editor refactoring: updated API to accept object parameters with imageInfo, enhanced validation with image dimension constraints
+- Chart component architecture: new unified chart system with real-time data updates, animation control, and OKLCH color integration
+- Image caption app simplification: streamlined architecture with composable-based state management and workflow separation
+- Documentation restructuring: removed outdated API.md, EXAMPLES.md, and PERFORMANCE.md files, added comprehensive development guides
+- Annotating package cleanup: removed deprecated services and generators, streamlined to core functionality
+- Monaco editor optimization: enhanced composables with better separation of concerns and improved performance
+- Theme system enhancement: improved OKLCH color conversion, theme showcase components, and color utilities
 
 ### Fixed
 
-- Path traversal vulnerabilities in file validation
-- SQL injection protection with enhanced regex patterns
-- Input sanitization across core security modules
-- Memory allocation issues in algorithm optimization
-- Type safety improvements across multiple packages
+- Backend API stability: enhanced error handling and logging for caption generation endpoints
+- Type safety improvements: comprehensive TypeScript definitions across AI/ML packages and service integrations
+- Chart rendering issues: fixed real-time data updates and animation control problems
+- Bounding box validation: improved coordinate transformation and image constraint validation
+- Component architecture: better separation of concerns in complex components like BoundingBoxEditor
+- Package dependencies: resolved version conflicts and updated all package.json files with correct versions
 
-### Security
+### Removed
 
-- Enhanced file validation with comprehensive path traversal prevention
-- Upgraded SQL injection protection with ultra-enhanced regex patterns
-- Improved input sanitization and validation across core security modules
-- Added rate limiting and trusted host middleware to backend
-- Comprehensive security testing framework with exploit modules
+- Deprecated documentation: removed outdated API.md (965 lines), EXAMPLES.md (507 lines), and PERFORMANCE.md (759 lines)
+- Legacy annotating services: removed deprecated AnnotationManager, AnnotationService, and BackendIntegrationService
+- Obsolete generators: removed BaseCaptionGenerator and related generator infrastructure
+- Redundant components: cleaned up duplicate and unused components across multiple packages
 
-## [0.1.2] - 2025-01-27
+### Technical Details
+
+- New architecture decisions: added comprehensive TypeScript modularity refactoring documentation
+- Enhanced development workflow: new SolidJS naming conventions and TypeScript quick reference guides
+- Performance optimizations: memory pool utilities, collision detection improvements, and algorithm optimization
+- Comprehensive testing: enhanced test coverage for color conversion, OKLCH utilities, and service integrations
+- Modular architecture: continued adherence to 140-line axiom with strategic code decomposition
+
+## [0.1.2] - 2025-09-08
 
 ### Added
 
@@ -86,13 +97,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 150+ files modified across all packages
 - Version bumps: 0.1.0 → 0.1.1, 0.1.1 → 0.1.2, 1.0.0 → 1.0.1
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 - Comprehensive modularization following 140-line axiom
 
-## [0.1.1] - 2025-09-08
+## [0.1.1] - 2025-09-07
 
 ### Added
 
@@ -120,12 +130,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 33 files modified, 1401 insertions, 1102 deletions
 - Added 30+ new files including tests, documentation, and optimization modules
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
-## [0.1.0] - 2025-09-08
+## [0.1.0] - 2025-09-06
 
 ### Added
 
@@ -157,8 +166,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 186 files changed, 1766 insertions, 19147 deletions
-- 66 new files added
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -183,7 +190,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 40 files changed, 4148 insertions, 634 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -205,7 +211,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 14 files changed, 1630 insertions, 313 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -229,7 +234,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 159 files changed, 8883 insertions, 4577 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -259,7 +263,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 98 files changed, 8775 insertions, 5287 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -268,7 +271,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Restructure algorithms package and enhance prompt-note example
-- New test structure in __tests__ directories
+- New test structure in **tests** directories
 - New collision detection core and spatial optimization modules
 - Enhanced prompt-note example with new backend routes and types
 - New algo-bench example directory
@@ -283,7 +286,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 127 files changed, 9598 insertions, 2221 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -311,7 +313,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 366 files changed, 36907 insertions, 10682 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -336,7 +337,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 148 files changed, 13029 insertions, 4160 deletions
 - Enhanced TypeScript configurations and package dependencies
 - Improved error handling and validation across multiple packages
 
@@ -374,7 +374,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical Details
 
-- 36 files changed, 6670 insertions
 - Initial framework setup with core functionality
 - Basic TypeScript configurations and package dependencies
 
@@ -382,12 +381,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Legend
 
-- __Added__ for new features
-- __Changed__ for changes in existing functionality
-- __Deprecated__ for soon-to-be removed features
-- __Removed__ for now removed features
-- __Fixed__ for any bug fixes
-- __Security__ for security-related changes
+- **Added** for new features
+- **Changed** for changes in existing functionality
+- **Deprecated** for soon-to-be removed features
+- **Removed** for now removed features
+- **Fixed** for any bug fixes
+- **Security** for security-related changes
 
 ## Development Notes
 
@@ -395,16 +394,16 @@ This changelog is automatically generated based on actual git commit diffs and f
 
 The Reynard framework follows a modular architecture with packages for different functionalities:
 
-- __Core__: Base utilities, composables, and modules
-- __UI__: User interface components and layouts
-- __Auth__: Authentication and authorization
-- __Chat__: Chat functionality with P2P support
-- __Gallery__: Image gallery and file management
-- __Games__: Game development with ECS architecture
-- __Algorithms__: Mathematical and geometric algorithms
-- __Themes__: Theme system with OKLCH color support
-- __Testing__: Comprehensive testing utilities
-- __Security__: Security utilities and validation
+- **Core**: Base utilities, composables, and modules
+- **UI**: User interface components and layouts
+- **Auth**: Authentication and authorization
+- **Chat**: Chat functionality with P2P support
+- **Gallery**: Image gallery and file management
+- **Games**: Game development with ECS architecture
+- **Algorithms**: Mathematical and geometric algorithms
+- **Themes**: Theme system with OKLCH color support
+- **Testing**: Comprehensive testing utilities
+- **Security**: Security utilities and validation
 
 ## Contributing
 

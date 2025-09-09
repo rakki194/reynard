@@ -111,9 +111,12 @@ export class ThumbnailGeneratorFactory {
   /**
    * Get appropriate generator for file category
    */
-  private getGenerator(category: string, options: ThumbnailGeneratorFactoryOptions): any {
+  private getGenerator(
+    category: string,
+    options: ThumbnailGeneratorFactoryOptions,
+  ): any {
     const cacheKey = `${category}-${JSON.stringify(options)}`;
-    
+
     if (this.generators.has(cacheKey)) {
       return this.generators.get(cacheKey);
     }

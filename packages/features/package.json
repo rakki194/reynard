@@ -41,7 +41,7 @@
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",
-        "lint": "eslint src",
+    "lint": "eslint src",
     "clean": "rm -rf dist .turbo node_modules"
   },
   "keywords": [

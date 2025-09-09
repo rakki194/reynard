@@ -453,15 +453,15 @@ const bruteForceProtection = new BruteForceProtection({
 // Usage in login handler
 const handleLogin = async (credentials) => {
   const clientId = getClientIdentifier(); // IP + User-Agent hash
-  
+
   if (await rateLimiter.isBlocked(clientId)) {
     throw new Error("Too many login attempts. Please try again later.");
   }
-  
+
   if (await bruteForceProtection.isLocked(credentials.identifier)) {
     throw new Error("Account temporarily locked due to failed attempts.");
   }
-  
+
   try {
     const result = await authenticate(credentials);
     await rateLimiter.reset(clientId);
@@ -487,7 +487,7 @@ const csrfToken = CSRFProtection.generateToken();
 <form onSubmit={handleSubmit}>
   <input type="hidden" name="csrf_token" value={csrfToken} />
   {/* form fields */}
-</form>
+</form>;
 
 // Validate in API calls
 const validateCSRF = (token: string) => {

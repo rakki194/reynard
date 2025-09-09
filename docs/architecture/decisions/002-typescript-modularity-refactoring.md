@@ -43,9 +43,9 @@ Break down monolithic functions into focused, single-responsibility modules:
 
 ```plaintext
 Before: createRAGClient (172 lines)
-After: 
+After:
 ├── rag-query.ts (33 lines)
-├── rag-ingest.ts (77 lines) 
+├── rag-ingest.ts (77 lines)
 ├── rag-config.ts (74 lines)
 ├── rag-admin.ts (67 lines)
 └── rag-client.ts (39 lines) - Orchestrator
@@ -101,7 +101,7 @@ packages/composables/src/ai/
 // Correct approach (2025 best practice)
 const query = async (
   params: RAGQueryParams,
-  signal?: globalThis.AbortSignal
+  signal?: globalThis.AbortSignal,
 ): Promise<RAGQueryResponse<TExtra>> => {
   // Implementation with full type safety
 };
@@ -137,12 +137,12 @@ Each module exports a factory function for clean instantiation:
 
 ```typescript
 export function createRAGQueryClient(
-  authFetch: RAGClientOptions['authFetch'], 
-  queryUrl: string
+  authFetch: RAGClientOptions["authFetch"],
+  queryUrl: string,
 ) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal
+    signal?: globalThis.AbortSignal,
   ): Promise<RAGQueryResponse<TExtra>> => {
     // Focused implementation
   };
@@ -196,12 +196,12 @@ export function createRAGClient(options: RAGClientOptions) {
 
 ### Risks and Mitigations
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Breaking Changes | High | Maintain backward compatibility through proper exports |
-| Performance Impact | Low | Factory pattern has minimal overhead |
-| Developer Confusion | Medium | Comprehensive documentation and examples |
-| Type Complexity | Low | Clear interfaces and proper generic constraints |
+| Risk                | Impact | Mitigation                                             |
+| ------------------- | ------ | ------------------------------------------------------ |
+| Breaking Changes    | High   | Maintain backward compatibility through proper exports |
+| Performance Impact  | Low    | Factory pattern has minimal overhead                   |
+| Developer Confusion | Medium | Comprehensive documentation and examples               |
+| Type Complexity     | Low    | Clear interfaces and proper generic constraints        |
 
 ## Compliance
 

@@ -20,27 +20,32 @@ npm install reynard-service-manager
 ## Quick Start
 
 ```typescript
-import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from 'reynard-service-manager';
+import {
+  ServiceManager,
+  BaseService,
+  ServiceStatus,
+  ServiceHealth,
+} from "reynard-service-manager";
 
 // Create a custom service
 class MyService extends BaseService {
   constructor() {
     super({
-      name: 'my-service',
-      dependencies: ['database'],
+      name: "my-service",
+      dependencies: ["database"],
       startupPriority: 50,
-      autoStart: true
+      autoStart: true,
     });
   }
 
   async initialize(): Promise<void> {
     // Initialize your service
-    console.log('MyService initialized');
+    console.log("MyService initialized");
   }
 
   async shutdown(): Promise<void> {
     // Cleanup your service
-    console.log('MyService shutdown');
+    console.log("MyService shutdown");
   }
 
   async healthCheck(): Promise<ServiceHealth> {
@@ -55,7 +60,7 @@ const serviceManager = new ServiceManager({
   healthCheckInterval: 30000,
   startupTimeout: 300000,
   shutdownTimeout: 60000,
-  enableHealthMonitoring: true
+  enableHealthMonitoring: true,
 });
 
 // Register services
@@ -66,8 +71,8 @@ serviceManager.registerService(myService);
 await serviceManager.startServices();
 
 // Get service status
-const status = serviceManager.getServiceInfo('my-service');
-console.log('Service status:', status);
+const status = serviceManager.getServiceInfo("my-service");
+console.log("Service status:", status);
 
 // Stop all services
 await serviceManager.stopServices();
@@ -125,11 +130,11 @@ constructor(config: ServiceConfig)
 
 ```typescript
 enum ServiceStatus {
-  STOPPED = 'stopped',
-  STARTING = 'starting',
-  RUNNING = 'running',
-  STOPPING = 'stopping',
-  ERROR = 'error'
+  STOPPED = "stopped",
+  STARTING = "starting",
+  RUNNING = "running",
+  STOPPING = "stopping",
+  ERROR = "error",
 }
 ```
 
@@ -137,10 +142,10 @@ enum ServiceStatus {
 
 ```typescript
 enum ServiceHealth {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  UNKNOWN = 'unknown'
+  HEALTHY = "healthy",
+  DEGRADED = "degraded",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }
 ```
 
@@ -150,7 +155,7 @@ enum ServiceHealth {
 
 ```typescript
 serviceManager.addEventListener((event) => {
-  console.log('Service event:', event);
+  console.log("Service event:", event);
 });
 ```
 
@@ -160,15 +165,15 @@ serviceManager.addEventListener((event) => {
 class DatabaseService extends BaseService {
   constructor() {
     super({
-      name: 'database',
+      name: "database",
       dependencies: [],
       startupPriority: 10, // Start early
-      requiredPackages: ['pg', 'redis'],
+      requiredPackages: ["pg", "redis"],
       autoStart: true,
       config: {
-        host: 'localhost',
-        port: 5432
-      }
+        host: "localhost",
+        port: 5432,
+      },
     });
   }
 
@@ -200,9 +205,9 @@ Services can declare dependencies on other services. The service manager will au
 class ApiService extends BaseService {
   constructor() {
     super({
-      name: 'api',
-      dependencies: ['database', 'cache'], // Depends on database and cache
-      startupPriority: 100
+      name: "api",
+      dependencies: ["database", "cache"], // Depends on database and cache
+      startupPriority: 100,
     });
   }
 }

@@ -1,6 +1,6 @@
 /**
  * Chat Composables
- * 
+ *
  * Exports all chat composable functions
  */
 

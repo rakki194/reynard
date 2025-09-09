@@ -1,6 +1,6 @@
 /**
  * Special file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported special file extensions, MIME types, and
  * processing capabilities for specialized file types like LoRA models,
  * OCR files, captions, and metadata.

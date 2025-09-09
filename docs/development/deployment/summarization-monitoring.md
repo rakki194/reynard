@@ -411,66 +411,66 @@ groups:
 #### 2. High Response Time Alert
 
 ```yaml
-      - alert: HighSummarizationResponseTime
-        expr: histogram_quantile(0.95, rate(summarization_response_time_seconds_bucket[5m])) > 10
-        for: 2m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High summarization response time"
-          description: "95th percentile response time is {{ $value }}s over the last 5 minutes"
+- alert: HighSummarizationResponseTime
+  expr: histogram_quantile(0.95, rate(summarization_response_time_seconds_bucket[5m])) > 10
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "High summarization response time"
+    description: "95th percentile response time is {{ $value }}s over the last 5 minutes"
 ```
 
 #### 3. Service Unavailable Alert
 
 ```yaml
-      - alert: SummarizationServiceDown
-        expr: up{job="yipyap"} == 0
-        for: 1m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Summarization service is down"
-          description: "The summarization service has been down for more than 1 minute"
+- alert: SummarizationServiceDown
+  expr: up{job="yipyap"} == 0
+  for: 1m
+  labels:
+    severity: critical
+  annotations:
+    summary: "Summarization service is down"
+    description: "The summarization service has been down for more than 1 minute"
 ```
 
 #### 4. Low Cache Hit Rate Alert
 
 ```yaml
-      - alert: LowSummarizationCacheHitRate
-        expr: rate(summarization_cache_hits_total[5m]) / (rate(summarization_cache_hits_total[5m]) + rate(summarization_cache_misses_total[5m])) < 0.7
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Low summarization cache hit rate"
-          description: "Cache hit rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+- alert: LowSummarizationCacheHitRate
+  expr: rate(summarization_cache_hits_total[5m]) / (rate(summarization_cache_hits_total[5m]) + rate(summarization_cache_misses_total[5m])) < 0.7
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Low summarization cache hit rate"
+    description: "Cache hit rate is {{ $value | humanizePercentage }} over the last 5 minutes"
 ```
 
 #### 5. High Memory Usage Alert
 
 ```yaml
-      - alert: HighSummarizationMemoryUsage
-        expr: summarization_memory_usage_bytes / 1024 / 1024 / 1024 > 6
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "High summarization memory usage"
-          description: "Memory usage is {{ $value }}GB"
+- alert: HighSummarizationMemoryUsage
+  expr: summarization_memory_usage_bytes / 1024 / 1024 / 1024 > 6
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: "High summarization memory usage"
+    description: "Memory usage is {{ $value }}GB"
 ```
 
 #### 6. Queue Overflow Alert
 
 ```yaml
-      - alert: SummarizationQueueOverflow
-        expr: summarization_queue_size > 50
-        for: 2m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Summarization queue overflow"
-          description: "Queue size is {{ $value }} items"
+- alert: SummarizationQueueOverflow
+  expr: summarization_queue_size > 50
+  for: 2m
+  labels:
+    severity: critical
+  annotations:
+    summary: "Summarization queue overflow"
+    description: "Queue size is {{ $value }} items"
 ```
 
 ### Alert Configuration

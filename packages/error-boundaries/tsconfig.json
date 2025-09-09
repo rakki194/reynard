@@ -12,15 +12,8 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx"],
   "references": [
     {
       "path": "../core"

@@ -18,11 +18,17 @@ export const createAnimatedPalette = (state: AnimatedPaletteState) => {
   // Generate animated color palette
   const animatedPalette = createMemo(() => {
     const frame = state.animationFrame();
-    const baseHue = (state.selectedHue() + frame * state.animationSpeed()) % 360;
-    return generateColorPalette(12, baseHue, state.selectedChroma(), state.selectedLightness() / 100);
+    const baseHue =
+      (state.selectedHue() + frame * state.animationSpeed()) % 360;
+    return generateColorPalette(
+      12,
+      baseHue,
+      state.selectedChroma(),
+      state.selectedLightness() / 100,
+    );
   });
 
   return {
-    animatedPalette
+    animatedPalette,
   };
 };

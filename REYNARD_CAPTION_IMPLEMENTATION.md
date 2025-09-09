@@ -147,7 +147,7 @@ results = await service.generate_batch_captions(tasks)
 ### Frontend Usage
 
 ```typescript
-import { AnnotationManager, CaptionTask } from 'reynard-annotating';
+import { AnnotationManager, CaptionTask } from "reynard-annotating";
 
 // Create annotation manager with backend integration
 const annotationManager = new AnnotationManager();
@@ -160,9 +160,9 @@ const generators = await annotationManager.getAvailableGenerators();
 
 // Generate a caption
 const task: CaptionTask = {
-  imagePath: '/path/to/image.jpg',
-  generatorName: 'jtp2',
-  config: { threshold: 0.2 }
+  imagePath: "/path/to/image.jpg",
+  generatorName: "jtp2",
+  config: { threshold: 0.2 },
 };
 
 const service = annotationManager.getService();
@@ -247,8 +247,8 @@ The frontend can be configured when creating the AnnotationManager:
 
 ```typescript
 const annotationManager = new AnnotationManager(
-  'http://localhost:8000/api',  // Backend URL
-  'your-api-key'                // Optional API key
+  "http://localhost:8000/api", // Backend URL
+  "your-api-key", // Optional API key
 );
 ```
 

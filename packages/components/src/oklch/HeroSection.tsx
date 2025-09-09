@@ -17,29 +17,44 @@ export const HeroSection: Component<HeroSectionProps> = (props) => {
   let colorOrbRef: HTMLDivElement | undefined;
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
+  const setCSSProperty = (
+    element: HTMLElement,
+    property: string,
+    value: string,
+  ) => {
     element.style.setProperty(property, value);
   };
 
   // Update color orb styles when values change
   createEffect(() => {
     if (colorOrbRef) {
-      setCSSProperty(colorOrbRef, '--base-color', props.colorVariations.base);
-      setCSSProperty(colorOrbRef, '--complementary-color', props.colorVariations.complementary);
-      setCSSProperty(colorOrbRef, '--rotation', `${props.animationFrame * 2}deg`);
-      setCSSProperty(colorOrbRef, '--scale', (1 + Math.sin(props.animationFrame * 0.1) * 0.1).toString());
+      setCSSProperty(colorOrbRef, "--base-color", props.colorVariations.base);
+      setCSSProperty(
+        colorOrbRef,
+        "--complementary-color",
+        props.colorVariations.complementary,
+      );
+      setCSSProperty(
+        colorOrbRef,
+        "--rotation",
+        `${props.animationFrame * 2}deg`,
+      );
+      setCSSProperty(
+        colorOrbRef,
+        "--scale",
+        (1 + Math.sin(props.animationFrame * 0.1) * 0.1).toString(),
+      );
     }
   });
 
   return (
     <div class="showcase-hero">
       <div class="hero-content">
-        <h1 class="hero-title">
-          OKLCH Color Showcase
-        </h1>
+        <h1 class="hero-title">OKLCH Color Showcase</h1>
         <p class="hero-subtitle">
-          Experience the power of perceptually uniform color space with Reynard's advanced OKLCH implementation.
-          Watch as colors dance with mathematical precision and visual harmony.
+          Experience the power of perceptually uniform color space with
+          Reynard's advanced OKLCH implementation. Watch as colors dance with
+          mathematical precision and visual harmony.
         </p>
         <div class="hero-stats">
           <div class="stat">
@@ -57,10 +72,7 @@ export const HeroSection: Component<HeroSectionProps> = (props) => {
         </div>
       </div>
       <div class="hero-visualization">
-        <div 
-          ref={colorOrbRef}
-          class="color-orb"
-        />
+        <div ref={colorOrbRef} class="color-orb" />
       </div>
     </div>
   );

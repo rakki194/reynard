@@ -8,8 +8,8 @@
  * @module algorithms/unionFindCore
  */
 
-import { UnionFindNode, UnionFindStats } from './union-find-types';
-import { UnionFindSetOperations } from './union-find-set-operations';
+import { UnionFindNode, UnionFindStats } from "./union-find-types";
+import { UnionFindSetOperations } from "./union-find-set-operations";
 
 export class UnionFind {
   private nodes: UnionFindNode[];
@@ -79,7 +79,7 @@ export class UnionFind {
 
   clone(): UnionFind {
     const clone = new UnionFind(this.nodes.length);
-    clone.nodes = this.nodes.map(node => ({ ...node }));
+    clone.nodes = this.nodes.map((node) => ({ ...node }));
     clone.stats = { ...this.stats };
     clone.setOps = new UnionFindSetOperations(clone.nodes, clone.stats);
     return clone;

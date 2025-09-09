@@ -359,7 +359,7 @@ status = response.json()
 print(f"System enabled: {status['enabled']}")
 
 # Set package strategy
-response = requests.put("/api/package-unloading/packages/torch/strategy", 
+response = requests.put("/api/package-unloading/packages/torch/strategy",
                        json={"strategy": "aggressive"})
 result = response.json()
 print(f"Strategy set: {result['success']}")

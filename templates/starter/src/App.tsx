@@ -4,12 +4,9 @@
  */
 
 import { Component, createSignal, createEffect } from "solid-js";
-import {
-  NotificationsProvider,
-  createNotifications,
-} from "reynard-core";
+import { NotificationsProvider, createNotifications } from "reynard-core";
 import { ReynardProvider } from "reynard-themes";
-import { 
+import {
   AppHeader,
   HeroSection,
   InteractiveDashboard,
@@ -18,7 +15,7 @@ import {
   OKLCHColorDemo,
   ComponentPlayground,
   AppFooter,
-  NotificationToast
+  NotificationToast,
 } from "reynard-components";
 import { OKLCHShowcasePage } from "./pages/OKLCHShowcasePage";
 import { ChartsShowcasePage } from "./pages/ChartsShowcasePage";
@@ -44,7 +41,7 @@ const AppContent: Component = () => {
 
     // Listen for hash changes
     window.addEventListener("hashchange", handleHashChange);
-    
+
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };

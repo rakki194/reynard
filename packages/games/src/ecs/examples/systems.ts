@@ -1,3 +1,3 @@
 // Example systems for ECS games - Barrel exports
 
-export * from './systems/index';
+export * from "./systems/index";

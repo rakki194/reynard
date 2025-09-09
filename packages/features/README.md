@@ -57,7 +57,7 @@ function MyComponent() {
       {isImageProcessingAvailable() && (
         <ImageProcessor />
       )}
-      
+
       {captionStatus()?.degraded && (
         <div class="warning">
           Caption generation is degraded: {captionStatus()?.message}
@@ -107,8 +107,8 @@ function FeatureSettings() {
     <div>
       <label>
         Processing Threshold:
-        <input 
-          type="range" 
+        <input
+          type="range"
           value={config()?.threshold || 0.5}
           onInput={(e) => handleThresholdChange(parseFloat(e.target.value))}
         />
@@ -157,7 +157,7 @@ function App() {
 ### Dependency Resolution
 
 ```typescript
-import { DependencyResolver } from 'reynard-features';
+import { DependencyResolver } from "reynard-features";
 
 const resolver = new DependencyResolver();
 
@@ -165,24 +165,24 @@ const resolver = new DependencyResolver();
 resolver.addFeature(myFeature);
 
 // Set service availability
-resolver.setServiceAvailability('MyService', true);
+resolver.setServiceAvailability("MyService", true);
 
 // Resolve dependencies
 const result = resolver.resolveDependencies();
 
-console.log('Resolvable features:', result.resolvable);
-console.log('Unresolvable features:', result.unresolvable);
-console.log('Resolution order:', result.resolutionOrder);
+console.log("Resolvable features:", result.resolvable);
+console.log("Unresolvable features:", result.unresolvable);
+console.log("Resolution order:", result.resolutionOrder);
 ```
 
 ### Feature Categories and Priorities
 
 ```typescript
-import { 
-  FEATURE_CATEGORIES, 
+import {
+  FEATURE_CATEGORIES,
   FEATURE_PRIORITIES,
   useFeaturesByCategory,
-  useFeaturesByPriority 
+  useFeaturesByPriority
 } from 'reynard-features';
 
 function FeatureDashboard() {
@@ -195,7 +195,7 @@ function FeatureDashboard() {
       {coreFeatures().map(feature => (
         <FeatureCard key={feature.id} feature={feature} />
       ))}
-      
+
       <h2>Critical Features</h2>
       {criticalFeatures().map(feature => (
         <FeatureCard key={feature.id} feature={feature} />

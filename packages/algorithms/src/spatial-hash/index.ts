@@ -16,13 +16,13 @@
  */
 
 // Export all types and interfaces
-export * from './spatial-hash-types';
+export * from "./spatial-hash-types";
 
 // Export core implementation
-export { SpatialHash } from './spatial-hash-core';
+export { SpatialHash } from "./spatial-hash-core";
 
 // Export utility functions
-export * from './spatial-hash-utils';
+export * from "./spatial-hash-utils";
 
 // Export main class
-export { SpatialHash as default } from './spatial-hash';
+export { SpatialHash as default } from "./spatial-hash";

@@ -1,4 +1,4 @@
-import { ConnectionMetrics as Metrics } from './types';
+import { ConnectionMetrics as Metrics } from "./types";
 
 export class ConnectionMetricsTracker {
   private windowSize: number;
@@ -23,13 +23,16 @@ export class ConnectionMetricsTracker {
       this.lastResponse = Date.now();
     } else {
       this.failed += 1;
-      if (errorType) this.errorCounts[errorType] = (this.errorCounts[errorType] ?? 0) + 1;
+      if (errorType)
+        this.errorCounts[errorType] = (this.errorCounts[errorType] ?? 0) + 1;
     }
   }
 
   averageResponseTime(): number {
     if (this.responseTimes.length === 0) return 0;
-    return this.responseTimes.reduce((a, b) => a + b, 0) / this.responseTimes.length;
+    return (
+      this.responseTimes.reduce((a, b) => a + b, 0) / this.responseTimes.length
+    );
   }
 
   errorRate(): number {
@@ -62,8 +65,12 @@ export class ConnectionMetricsTracker {
       failed_requests: this.failed,
       error_breakdown: { ...this.errorCounts },
       start_time: new Date(this.startTime).toISOString(),
-      last_request: this.lastRequest ? new Date(this.lastRequest).toISOString() : null,
-      last_response: this.lastResponse ? new Date(this.lastResponse).toISOString() : null,
+      last_request: this.lastRequest
+        ? new Date(this.lastRequest).toISOString()
+        : null,
+      last_response: this.lastResponse
+        ? new Date(this.lastResponse).toISOString()
+        : null,
     };
   }
 }

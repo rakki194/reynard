@@ -44,21 +44,21 @@ paw-algorithms/
 
 ### Empirical Benchmarks
 
-| Metric | NEXUS Baseline | PAW Optimized | Improvement |
-|--------|----------------|---------------|-------------|
-| Collision Detection (100 objects) | 14.56ms | 2.34ms | **83.9%** |
-| Memory Usage (100 objects) | 18.7MB | 7.2MB | **61.5%** |
-| Cache Hit Rate | 23.4% | 87.3% | **273.1%** |
-| Scalability (500 objects) | O(n²) | O(n log n) | **Asymptotic** |
+| Metric                            | NEXUS Baseline | PAW Optimized | Improvement    |
+| --------------------------------- | -------------- | ------------- | -------------- |
+| Collision Detection (100 objects) | 14.56ms        | 2.34ms        | **83.9%**      |
+| Memory Usage (100 objects)        | 18.7MB         | 7.2MB         | **61.5%**      |
+| Cache Hit Rate                    | 23.4%          | 87.3%         | **273.1%**     |
+| Scalability (500 objects)         | O(n²)          | O(n log n)    | **Asymptotic** |
 
 ### Algorithm Selection Effectiveness
 
-| Workload Type | Selected Algorithm | Performance Gain | Selection Accuracy |
-|---------------|-------------------|------------------|-------------------|
-| Sparse (10-25 objects) | Naive | 12.3% | 98.7% |
-| Medium (25-100 objects) | Spatial | 67.4% | 94.2% |
-| Dense (100+ objects) | Union-Find | 89.3% | 96.8% |
-| Mixed Density | Hybrid | 78.9% | 95.1% |
+| Workload Type           | Selected Algorithm | Performance Gain | Selection Accuracy |
+| ----------------------- | ------------------ | ---------------- | ------------------ |
+| Sparse (10-25 objects)  | Naive              | 12.3%            | 98.7%              |
+| Medium (25-100 objects) | Spatial            | 67.4%            | 94.2%              |
+| Dense (100+ objects)    | Union-Find         | 89.3%            | 96.8%              |
+| Mixed Density           | Hybrid             | 78.9%            | 95.1%              |
 
 ## Running Benchmarks
 
@@ -83,11 +83,12 @@ The benchmark suite can be configured through the `config` object:
 
 ```javascript
 const config = {
-  iterations: 100,           // Number of benchmark iterations
-  warmupRounds: 10,         // Warmup rounds before timing
-  objectCounts: [10, 25, 50, 100, 200],  // Object count scenarios
+  iterations: 100, // Number of benchmark iterations
+  warmupRounds: 10, // Warmup rounds before timing
+  objectCounts: [10, 25, 50, 100, 200], // Object count scenarios
   overlapDensities: [0.1, 0.3, 0.5, 0.7], // Overlap density scenarios
-  spatialConfigs: [         // Spatial hash configurations
+  spatialConfigs: [
+    // Spatial hash configurations
     { cellSize: 50, maxObjectsPerCell: 25 },
     { cellSize: 100, maxObjectsPerCell: 50 },
     { cellSize: 200, maxObjectsPerCell: 100 },
@@ -122,9 +123,10 @@ pdflatex paw_paper.tex  # Run twice for references
 ```typescript
 export class SpatialCollisionOptimizer {
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
-    const collisions = aabbs.length < this.config.hybridThreshold
-      ? this.naiveCollisionDetection(aabbs)
-      : this.spatialCollisionDetection(aabbs);
+    const collisions =
+      aabbs.length < this.config.hybridThreshold
+        ? this.naiveCollisionDetection(aabbs)
+        : this.spatialCollisionDetection(aabbs);
     return collisions;
   }
 }
@@ -147,7 +149,10 @@ export class BatchUnionFind extends UnionFind {
 
 ```typescript
 function selectOptimalAlgorithm(objects: AABB[]): AlgorithmType {
-  const complexity = estimateComplexity(objects.length, calculateDensity(objects));
+  const complexity = estimateComplexity(
+    objects.length,
+    calculateDensity(objects),
+  );
   if (complexity < T_naive) return AlgorithmType.Naive;
   if (complexity < T_spatial) return AlgorithmType.Spatial;
   return AlgorithmType.UnionFind;

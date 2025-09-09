@@ -109,7 +109,11 @@
 
 @supports (color: color-mix(in srgb, red, blue)) {
   .reynard-button--primary:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--accent) 85%, var(--text-primary));
+    background-color: color-mix(
+      in srgb,
+      var(--accent) 85%,
+      var(--text-primary)
+    );
     border-color: color-mix(in srgb, var(--accent) 85%, var(--text-primary));
   }
 }
@@ -194,7 +198,11 @@
 
 @supports (color: color-mix(in srgb, red, blue)) {
   .reynard-button--success:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--success) 85%, var(--text-primary));
+    background-color: color-mix(
+      in srgb,
+      var(--success) 85%,
+      var(--text-primary)
+    );
     border-color: color-mix(in srgb, var(--success) 85%, var(--text-primary));
   }
 }
@@ -215,7 +223,11 @@
 
 @supports (color: color-mix(in srgb, red, blue)) {
   .reynard-button--warning:hover:not(:disabled) {
-    background-color: color-mix(in srgb, var(--warning) 85%, var(--text-primary));
+    background-color: color-mix(
+      in srgb,
+      var(--warning) 85%,
+      var(--text-primary)
+    );
     border-color: color-mix(in srgb, var(--warning) 85%, var(--text-primary));
   }
 }
@@ -497,7 +509,8 @@
 }
 
 @supports (color: color-mix(in srgb, red, blue)) {
-  .reynard-textfield--error.reynard-textfield--focused .reynard-textfield__input {
+  .reynard-textfield--error.reynard-textfield--focused
+    .reynard-textfield__input {
     box-shadow: 0 0 0 2px
       color-mix(in srgb, var(--danger, #ef4444) 20%, transparent);
   }

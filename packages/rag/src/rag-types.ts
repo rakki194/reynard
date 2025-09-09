@@ -1,4 +1,4 @@
-export type RAGModality = 'docs' | 'code' | 'captions' | 'images';
+export type RAGModality = "docs" | "code" | "captions" | "images";
 
 export interface RAGQueryParams {
   q: string;

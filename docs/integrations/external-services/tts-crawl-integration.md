@@ -447,13 +447,13 @@ const { speak, speakSummary, getVoices } = useTTS();
 // Synthesize text
 const result = await speak("Hello world", {
   backend: "kokoro",
-  voice: "en_female_1"
+  voice: "en_female_1",
 });
 
 // Synthesize summary
 const result = await speakSummary("summary_1234567890", {
   backend: "kokoro",
-  voice: "en_female_1"
+  voice: "en_female_1",
 });
 
 // Get available voices
@@ -475,7 +475,7 @@ interface TTSAndCrawlSettings {
   tts: {
     enabled: boolean;
     defaultBackend: string;
-    kokoroMode: 'performance' | 'normal' | 'powersave';
+    kokoroMode: "performance" | "normal" | "powersave";
     defaultVoice: string;
   };
 }

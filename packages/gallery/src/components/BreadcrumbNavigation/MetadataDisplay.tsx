@@ -72,9 +72,7 @@ export const MetadataDisplay: Component<MetadataDisplayProps> = (props) => {
           </Show>
 
           <Show
-            when={
-              props.showLastModified && props.item.metadata?.lastModified
-            }
+            when={props.showLastModified && props.item.metadata?.lastModified}
           >
             <div class="reynard-breadcrumb-navigation__metadata-item">
               <span class="reynard-breadcrumb-navigation__metadata-label">

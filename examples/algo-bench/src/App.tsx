@@ -10,10 +10,7 @@ import {
   useContext,
   ParentComponent,
 } from "solid-js";
-import {
-  ReynardProvider,
-  useTheme,
-} from "reynard-themes";
+import { ReynardProvider, useTheme } from "reynard-themes";
 import {
   NotificationsProvider,
   useNotifications,
@@ -25,10 +22,10 @@ import { DemoContainer } from "./components/DemoContainer";
 import { DemoInfo } from "./components/DemoInfo";
 
 // Demo types
-export type DemoType = 
-  | "aabb-collision" 
-  | "spatial-optimization" 
-  | "performance-benchmark" 
+export type DemoType =
+  | "aabb-collision"
+  | "spatial-optimization"
+  | "performance-benchmark"
   | "interactive-physics"
   | "none";
 
@@ -73,7 +70,7 @@ const DemoApp: Component = () => {
   const handleDemoSelect = (demo: DemoType) => {
     setCurrentDemo(demo);
     setDemoStats({});
-    notify(`🦦 Starting ${demo.replace('-', ' ')} demo!`, "success");
+    notify(`🦦 Starting ${demo.replace("-", " ")} demo!`, "success");
   };
 
   const handleStatsUpdate = (stats: any) => {
@@ -107,8 +104,8 @@ const DemoApp: Component = () => {
               <DemoInfo />
             </div>
           ) : (
-            <DemoContainer 
-              demo={currentDemo()} 
+            <DemoContainer
+              demo={currentDemo()}
               onStatsUpdate={handleStatsUpdate}
               onBackToMenu={() => setCurrentDemo("none")}
             />
@@ -117,8 +114,12 @@ const DemoApp: Component = () => {
 
         <footer class="app-footer">
           <p>
-            Built with 🦊 Reynard Framework • 
-            <a href="https://github.com/your-org/reynard" target="_blank" rel="noopener noreferrer">
+            Built with 🦊 Reynard Framework •
+            <a
+              href="https://github.com/your-org/reynard"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               View on GitHub
             </a>
           </p>

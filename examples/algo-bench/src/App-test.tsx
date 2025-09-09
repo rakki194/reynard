@@ -2,7 +2,7 @@ import { Component } from "solid-js";
 
 const TestApp: Component = () => {
   console.log("🎮 TestApp component created");
-  
+
   return (
     <div style="padding: 20px; color: white; background: #333;">
       <h1>🦊 Test App</h1>

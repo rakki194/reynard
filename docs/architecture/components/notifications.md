@@ -116,13 +116,13 @@ Notifications can be created through the app context:
 const { notify } = useAppContext();
 
 // Basic usage
-notify('Operation completed', 'success');
+notify("Operation completed", "success");
 
 // With custom icon and group
-notify('Processing...', 'info', 'upload', 'spinner');
+notify("Processing...", "info", "upload", "spinner");
 
 // With progress tracking
-notify('Uploading...', 'info', 'upload', 'spinner', 45);
+notify("Uploading...", "info", "upload", "spinner", 45);
 ```
 
 ### Advanced updates and grouping
@@ -133,15 +133,15 @@ update an existing grouped notification rather than creating a new one.
 ```ts
 const group = `upload-${file.id}`;
 // Start
-notify(`Uploading ${file.name}...`, 'info', group, 'spinner', 0);
+notify(`Uploading ${file.name}...`, "info", group, "spinner", 0);
 
 // Progress updates (call as progress arrives)
-notify(`Uploading ${file.name}...`, 'info', group, 'spinner', percent);
+notify(`Uploading ${file.name}...`, "info", group, "spinner", percent);
 
 // Complete or error
-notify(`${file.name} uploaded`, 'success', group);
+notify(`${file.name} uploaded`, "success", group);
 // or
-notify(`Upload failed: ${reason}`, 'error', group);
+notify(`Upload failed: ${reason}`, "error", group);
 ```
 
 ### Streaming examples (Diffusion LLM)
@@ -154,32 +154,32 @@ per-item subgroups:
 ```typescript
 const group = `diffusion-generate-${Date.now()}`;
 notify(
-  t('notifications.generatingCaption') || 'Generating...',
-  'info',
+  t("notifications.generatingCaption") || "Generating...",
+  "info",
   group,
-  'spinner'
+  "spinner",
 );
 
 await llm.generateStream(request, {
-  onStep: (_i, text) => setOutput(prev => prev + text),
-  onComplete: async final => {
-    setOutput(p => (p || '') + final);
+  onStep: (_i, text) => setOutput((prev) => prev + text),
+  onComplete: async (final) => {
+    setOutput((p) => (p || "") + final);
     try {
       await navigator.clipboard?.writeText(final);
-      notify('Generation complete (copied)', 'success', group);
+      notify("Generation complete (copied)", "success", group);
     } catch {
-      notify('Generation complete', 'success', group);
+      notify("Generation complete", "success", group);
     }
   },
-  onError: message => notify(message || 'Generation failed', 'error', group),
+  onError: (message) => notify(message || "Generation failed", "error", group),
 });
 
 // Batch mode example
 const batchGroup = `diffusion-batch-${Date.now()}`;
-notify(`Starting batch (${items.length})`, 'info', batchGroup, 'spinner');
+notify(`Starting batch (${items.length})`, "info", batchGroup, "spinner");
 for (let i = 0; i < items.length; i++) {
   const itemGroup = `${batchGroup}:${i}`;
-  notify(`Item ${i + 1}...`, 'info', itemGroup, 'spinner');
+  notify(`Item ${i + 1}...`, "info", itemGroup, "spinner");
 }
 ```
 
@@ -193,22 +193,22 @@ queries:
 ```typescript
 // Router selection notifications (optional)
 notify(
-  'Analyzing query for tool suggestions...',
-  'info',
-  'nlweb-router',
-  'info'
+  "Analyzing query for tool suggestions...",
+  "info",
+  "nlweb-router",
+  "info",
 );
 
 // Tool execution notifications
-notify('Executing git status...', 'info', 'nlweb-tools', 'info');
-notify('Git status completed', 'success', 'nlweb-tools');
+notify("Executing git status...", "info", "nlweb-tools", "info");
+notify("Git status completed", "success", "nlweb-tools");
 
 // Error notifications for failed tool suggestions
-notify('No suitable tools found for query', 'warning', 'nlweb-router');
+notify("No suitable tools found for query", "warning", "nlweb-router");
 
 // Tool execution progress
-notify('Processing image captions...', 'info', 'nlweb-tools', 'spinner');
-notify('Caption generation complete', 'success', 'nlweb-tools');
+notify("Processing image captions...", "info", "nlweb-tools", "spinner");
+notify("Caption generation complete", "success", "nlweb-tools");
 ```
 
 The NLWeb integration uses specific notification groups (`nlweb-router` and
@@ -225,56 +225,56 @@ processing and any issues that arise:
 ```typescript
 // Crawl progress notifications
 const crawlGroup = `crawl-${url}`;
-notify('Starting web crawl...', 'info', crawlGroup, 'spinner', 0);
+notify("Starting web crawl...", "info", crawlGroup, "spinner", 0);
 
 // Crawl progress updates (from SSE stream)
-notify('Crawling webpage...', 'info', crawlGroup, 'spinner', 25);
-notify('Extracting content...', 'info', crawlGroup, 'spinner', 75);
-notify('Crawl completed', 'success', crawlGroup);
+notify("Crawling webpage...", "info", crawlGroup, "spinner", 25);
+notify("Extracting content...", "info", crawlGroup, "spinner", 75);
+notify("Crawl completed", "success", crawlGroup);
 
 // Summarization progress notifications
 const summaryGroup = `summary-${summaryId}`;
-notify('Summarizing content...', 'info', summaryGroup, 'spinner', 0);
+notify("Summarizing content...", "info", summaryGroup, "spinner", 0);
 
 // Summarization progress updates
-notify('Cleaning markdown...', 'info', summaryGroup, 'spinner', 20);
-notify('Generating summary...', 'info', summaryGroup, 'spinner', 60);
-notify('Creating outline...', 'info', summaryGroup, 'spinner', 80);
-notify('Summary completed', 'success', summaryGroup);
+notify("Cleaning markdown...", "info", summaryGroup, "spinner", 20);
+notify("Generating summary...", "info", summaryGroup, "spinner", 60);
+notify("Creating outline...", "info", summaryGroup, "spinner", 80);
+notify("Summary completed", "success", summaryGroup);
 
 // TTS synthesis notifications
 const ttsGroup = `tts-${summaryId}`;
-notify('Synthesizing speech...', 'info', ttsGroup, 'spinner', 0);
+notify("Synthesizing speech...", "info", ttsGroup, "spinner", 0);
 
 // TTS progress updates (for chunked synthesis)
-notify('Processing text chunks...', 'info', ttsGroup, 'spinner', 30);
-notify('Generating audio...', 'info', ttsGroup, 'spinner', 70);
-notify('TTS completed', 'success', ttsGroup);
+notify("Processing text chunks...", "info", ttsGroup, "spinner", 30);
+notify("Generating audio...", "info", ttsGroup, "spinner", 70);
+notify("TTS completed", "success", ttsGroup);
 
 // Audio ingestion notifications
 const ingestGroup = `ingest-${audioId}`;
-notify('Ingesting audio...', 'info', ingestGroup, 'spinner');
-notify('Audio ingested successfully', 'success', ingestGroup);
+notify("Ingesting audio...", "info", ingestGroup, "spinner");
+notify("Audio ingested successfully", "success", ingestGroup);
 
 // Error notifications for each stage
-notify('Crawl failed: URL not accessible', 'error', crawlGroup);
-notify('Summarization failed: Content too large', 'error', summaryGroup);
-notify('TTS failed: Backend unavailable', 'error', ttsGroup);
-notify('Ingestion failed: File not found', 'error', ingestGroup);
+notify("Crawl failed: URL not accessible", "error", crawlGroup);
+notify("Summarization failed: Content too large", "error", summaryGroup);
+notify("TTS failed: Backend unavailable", "error", ttsGroup);
+notify("Ingestion failed: File not found", "error", ingestGroup);
 
 // Batch processing notifications
 const batchGroup = `batch-${Date.now()}`;
-notify('Processing 5 URLs...', 'info', batchGroup, 'spinner', 0);
+notify("Processing 5 URLs...", "info", batchGroup, "spinner", 0);
 
 // Individual item progress within batch
 for (let i = 0; i < urls.length; i++) {
   const itemGroup = `${batchGroup}:${i}`;
-  notify(`URL ${i + 1}: Crawling...`, 'info', itemGroup, 'spinner');
+  notify(`URL ${i + 1}: Crawling...`, "info", itemGroup, "spinner");
   // ... processing ...
-  notify(`URL ${i + 1}: Completed`, 'success', itemGroup);
+  notify(`URL ${i + 1}: Completed`, "success", itemGroup);
 }
 
-notify('Batch processing completed', 'success', batchGroup);
+notify("Batch processing completed", "success", batchGroup);
 ```
 
 The TTS and Crawl integration uses hierarchical notification groups to organize
@@ -296,37 +296,37 @@ notification `group` and update it as events arrive. Prefer a spinner icon and
 optional `progress` percentage derived from `processed/total`.
 
 ```typescript
-import { useAppContext } from '~/contexts/app';
-import { useRAG } from '~/composables/useRAG';
+import { useAppContext } from "~/contexts/app";
+import { useRAG } from "~/composables/useRAG";
 
 const app = useAppContext();
 const rag = useRAG();
 
-const group = 'rag-ingest';
-app.notify('Starting ingest…', 'info', group, 'spinner', 0);
+const group = "rag-ingest";
+app.notify("Starting ingest…", "info", group, "spinner", 0);
 
 await rag.ingestDocuments(
-  [{ source: 'manual', content: 'Some text' }],
-  'mxbai-embed-large',
-  evt => {
+  [{ source: "manual", content: "Some text" }],
+  "mxbai-embed-large",
+  (evt) => {
     const processed = evt.processed ?? 0;
     const total = evt.total ?? 0;
     const percent =
       total > 0 ? Math.round((processed / total) * 100) : undefined;
     app.notify(
       `Ingest ${processed}/${total}`,
-      'info',
+      "info",
       group,
-      'spinner',
-      percent
+      "spinner",
+      percent,
     );
-    if (evt.type === 'error') {
-      app.notify(evt.error || 'Ingest error', 'error', group);
+    if (evt.type === "error") {
+      app.notify(evt.error || "Ingest error", "error", group);
     }
-  }
+  },
 );
 
-app.notify('Ingest complete', 'success', group);
+app.notify("Ingest complete", "success", group);
 ```
 
 For CLIP image ingestion, reuse the same approach and group (or a
@@ -404,7 +404,7 @@ export const createNotification = (notification: NotificationProps) => {
 // Updating notifications
 export const updateNotification = (
   id: string,
-  updates: Partial<NotificationProps>
+  updates: Partial<NotificationProps>,
 ) => {
   const notification = notifications.get(id);
   if (notification) {

@@ -1,7 +1,7 @@
 // System implementation for ECS behavior
 
-import { System, SystemFunction, Schedule, World } from './types';
-import { SystemCondition } from './conditions';
+import { System, SystemFunction, Schedule, World } from "./types";
+import { SystemCondition } from "./conditions";
 
 /**
  * System implementation.
@@ -12,7 +12,7 @@ export class SystemImpl implements System {
     public readonly run: SystemFunction,
     public readonly dependencies: string[] = [],
     public readonly exclusive: boolean = false,
-    public readonly condition?: SystemCondition
+    public readonly condition?: SystemCondition,
   ) {}
 }
 
@@ -26,17 +26,21 @@ export class ScheduleImpl implements Schedule {
 
   addSystem(system: System): void {
     // Check for duplicate system names
-    if (this.systems.some(s => s.name === system.name)) {
-      throw new Error(`System '${system.name}' is already in schedule '${this.name}'`);
+    if (this.systems.some((s) => s.name === system.name)) {
+      throw new Error(
+        `System '${system.name}' is already in schedule '${this.name}'`,
+      );
     }
 
     this.systems.push(system);
   }
 
   removeSystem(systemName: string): void {
-    const index = this.systems.findIndex(s => s.name === systemName);
+    const index = this.systems.findIndex((s) => s.name === systemName);
     if (index === -1) {
-      throw new Error(`System '${systemName}' not found in schedule '${this.name}'`);
+      throw new Error(
+        `System '${systemName}' not found in schedule '${this.name}'`,
+      );
     }
     this.systems.splice(index, 1);
   }
@@ -44,7 +48,7 @@ export class ScheduleImpl implements Schedule {
   run(world: World): void {
     // Sort systems by dependencies
     const sortedSystems = this.topologicalSort();
-    
+
     // Run systems in order
     for (const system of sortedSystems) {
       try {
@@ -52,7 +56,7 @@ export class ScheduleImpl implements Schedule {
         if (system.condition && !system.condition.run(world)) {
           continue; // Skip system if condition is not met
         }
-        
+
         system.run(world);
       } catch (error) {
         console.error(`Error running system '${system.name}':`, error);
@@ -72,24 +76,26 @@ export class ScheduleImpl implements Schedule {
 
     const visit = (systemName: string) => {
       if (visiting.has(systemName)) {
-        throw new Error(`Circular dependency detected involving system '${systemName}'`);
+        throw new Error(
+          `Circular dependency detected involving system '${systemName}'`,
+        );
       }
       if (visited.has(systemName)) {
         return;
       }
 
       visiting.add(systemName);
-      
-      const system = this.systems.find(s => s.name === systemName);
+
+      const system = this.systems.find((s) => s.name === systemName);
       if (system) {
         // Visit dependencies first
         for (const dependency of system.dependencies) {
           visit(dependency);
         }
-        
+
         result.push(system);
       }
-      
+
       visiting.delete(systemName);
       visited.add(systemName);
     };
@@ -148,7 +154,13 @@ export class SystemBuilder {
    * Builds the system.
    */
   build(): System {
-    return new SystemImpl(this.name, this.run, this.dependencies, this.exclusive, this.condition);
+    return new SystemImpl(
+      this.name,
+      this.run,
+      this.dependencies,
+      this.exclusive,
+      this.condition,
+    );
   }
 }
 
@@ -193,14 +205,14 @@ export class SystemSet {
    * Configures this set to run before another set.
    */
   before(otherSet: SystemSet): SystemSetConfig {
-    return new SystemSetConfig(this, otherSet, 'before');
+    return new SystemSetConfig(this, otherSet, "before");
   }
 
   /**
    * Configures this set to run after another set.
    */
   after(otherSet: SystemSet): SystemSetConfig {
-    return new SystemSetConfig(this, otherSet, 'after');
+    return new SystemSetConfig(this, otherSet, "after");
   }
 }
 
@@ -211,7 +223,7 @@ export class SystemSetConfig {
   constructor(
     public readonly set: SystemSet,
     public readonly otherSet: SystemSet,
-    public readonly order: 'before' | 'after'
+    public readonly order: "before" | "after",
   ) {}
 }
 

@@ -175,7 +175,7 @@ interface IconMetadata {
   name: string;
   category: string;
   description?: string;
-  caption?: string;  // Natural language caption for AI/LLM understanding
+  caption?: string; // Natural language caption for AI/LLM understanding
   tags?: string[];
   keywords?: string[];
 }
@@ -188,7 +188,11 @@ Every icon in the Reynard icon system includes a natural language caption design
 ### Using Captions
 
 ```tsx
-import { getIcon, getAllCaptions, searchIconsByCaption } from "reynard-fluent-icons";
+import {
+  getIcon,
+  getAllCaptions,
+  searchIconsByCaption,
+} from "reynard-fluent-icons";
 
 // Get an icon's caption
 const saveIcon = getIcon("save");
@@ -211,7 +215,7 @@ import {
   generateCaption,
   validateCaption,
   suggestCaptionImprovements,
-  exportCaptions
+  exportCaptions,
 } from "reynard-fluent-icons";
 
 // Generate a caption for an icon without one
@@ -224,8 +228,8 @@ const isValid = validateCaption(iconMetadata);
 const suggestions = suggestCaptionImprovements(iconMetadata);
 
 // Export all captions for AI training
-const captionsJson = exportCaptions(allIcons, 'json');
-const captionsMarkdown = exportCaptions(allIcons, 'markdown');
+const captionsJson = exportCaptions(allIcons, "json");
+const captionsMarkdown = exportCaptions(allIcons, "markdown");
 ```
 
 ### Example Captions

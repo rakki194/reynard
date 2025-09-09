@@ -3,7 +3,7 @@
  * Handles drag and drop event logic for file uploads
  */
 
-import type { FileUploadProps } from '../types';
+import type { FileUploadProps } from "../types";
 
 export interface DragHandlers {
   handleDragOver: (event: DragEvent) => void;
@@ -17,14 +17,14 @@ export interface DragHandlers {
 export function createDragHandlers(
   props: FileUploadProps,
   setIsDragOver: (value: boolean) => void,
-  onFilesDropped: (files: File[]) => void
+  onFilesDropped: (files: File[]) => void,
 ): DragHandlers {
   /**
    * Handle drag over events
    */
   const handleDragOver = (event: DragEvent) => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
     setIsDragOver(true);
@@ -35,15 +35,15 @@ export function createDragHandlers(
    */
   const handleDragLeave = (event: DragEvent) => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     // Only set drag over to false if we're leaving the drop zone entirely
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const x = event.clientX;
     const y = event.clientY;
-    
+
     if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
       setIsDragOver(false);
     }
@@ -54,7 +54,7 @@ export function createDragHandlers(
    */
   const handleDrop = (event: DragEvent) => {
     if (!props.enableDragDrop) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
     setIsDragOver(false);
@@ -69,6 +69,6 @@ export function createDragHandlers(
   return {
     handleDragOver,
     handleDragLeave,
-    handleDrop
+    handleDrop,
   };
 }

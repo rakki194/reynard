@@ -4,10 +4,7 @@
  */
 
 import { createSignal } from "solid-js";
-import { 
-  FeatureProvider, 
-  COMMON_FEATURES
-} from "reynard-features";
+import { FeatureProvider, COMMON_FEATURES } from "reynard-features";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import "reynard-themes/themes.css";
 import FeatureDashboard from "./components/FeatureDashboard";
@@ -17,7 +14,9 @@ import ThemeToggle from "./components/ThemeToggle";
 import LanguageSelector from "./components/LanguageSelector";
 
 // Service availability simulation
-const [serviceAvailability, setServiceAvailability] = createSignal<Record<string, boolean>>({
+const [serviceAvailability, setServiceAvailability] = createSignal<
+  Record<string, boolean>
+>({
   DataSourceService: true,
   AuthService: true,
   DatabaseService: true,
@@ -56,7 +55,7 @@ const featureConfig = {
   },
   onAvailabilityChange: (featureId: string, available: boolean) => {
     console.log(`Feature ${featureId} availability changed:`, available);
-  }
+  },
 };
 
 function App() {
@@ -71,19 +70,21 @@ function App() {
 
 function AppContent() {
   const { theme } = useTheme();
-  
+
   return (
     <div class="app">
       <header class="app-header">
         <h1>
           <div class="reynard-logo">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
           Reynard Features Demo
         </h1>
-        <p>Interactive demonstration of the Reynard feature management system</p>
+        <p>
+          Interactive demonstration of the Reynard feature management system
+        </p>
         <div class="header-controls">
           <div class="theme-info">
             Current theme: <strong>{theme}</strong>
@@ -93,22 +94,23 @@ function AppContent() {
         </div>
       </header>
 
-          <main class="app-main">
-            <FeatureDashboard />
-            <ServiceControls 
-              serviceAvailability={serviceAvailability}
-              setServiceAvailability={setServiceAvailability}
-            />
-            <FeatureDemos />
-          </main>
+      <main class="app-main">
+        <FeatureDashboard />
+        <ServiceControls
+          serviceAvailability={serviceAvailability}
+          setServiceAvailability={setServiceAvailability}
+        />
+        <FeatureDemos />
+      </main>
 
-          <footer class="app-footer">
-            <p>
-              This demo showcases how the Reynard features package manages application capabilities, 
-              dependencies, and graceful degradation. Toggle services above to see features adapt in real-time!
-            </p>
-          </footer>
-        </div>
+      <footer class="app-footer">
+        <p>
+          This demo showcases how the Reynard features package manages
+          application capabilities, dependencies, and graceful degradation.
+          Toggle services above to see features adapt in real-time!
+        </p>
+      </footer>
+    </div>
   );
 }
 

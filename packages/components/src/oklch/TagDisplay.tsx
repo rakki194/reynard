@@ -14,20 +14,20 @@ interface TagDisplayProps {
 
 export const TagDisplay: Component<TagDisplayProps> = (props) => {
   const tagColors = useTagColors();
-  
+
   const tagStyle = createMemo(() => {
     return tagColors.getTagStyle(props.tagName(), props.intensity());
   });
-  
+
   return (
     <div class="tag-display">
-      <div 
+      <div
         class="tag"
         ref={(el) => {
           if (el) {
             const style = tagStyle();
-            el.style.setProperty('--tag-bg', style['--tag-bg']);
-            el.style.setProperty('--tag-color', style['--tag-color']);
+            el.style.setProperty("--tag-bg", style["--tag-bg"]);
+            el.style.setProperty("--tag-color", style["--tag-color"]);
           }
         }}
       >

@@ -335,34 +335,34 @@
   .oklch-demo-section {
     padding: var(--double-spacing) var(--spacing);
   }
-  
+
   .color-options {
     justify-content: center;
   }
-  
+
   .color-option {
     flex: 1;
     min-width: 100px;
     text-align: center;
   }
-  
+
   .palette-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .variant-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .tag-input-section {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .gradient-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }

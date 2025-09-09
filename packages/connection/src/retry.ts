@@ -1,7 +1,7 @@
 export abstract class RetryStrategy {
   constructor(
     public maxAttempts = 3,
-    public baseDelaySec = 1
+    public baseDelaySec = 1,
   ) {}
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
@@ -13,7 +13,7 @@ export abstract class RetryStrategy {
         lastErr = e;
         if (attempt < this.maxAttempts) {
           const delayMs = this.calculateDelayMs(attempt);
-          await new Promise(r => setTimeout(r, delayMs));
+          await new Promise((r) => setTimeout(r, delayMs));
         }
       }
     }
@@ -27,7 +27,7 @@ export class ExponentialBackoffRetry extends RetryStrategy {
   constructor(
     maxAttempts = 3,
     baseDelaySec = 1,
-    private multiplier = 2
+    private multiplier = 2,
   ) {
     super(maxAttempts, baseDelaySec);
   }
@@ -40,7 +40,7 @@ export class LinearBackoffRetry extends RetryStrategy {
   constructor(
     maxAttempts = 3,
     baseDelaySec = 1,
-    private incrementSec = 1
+    private incrementSec = 1,
   ) {
     super(maxAttempts, baseDelaySec);
   }
@@ -53,7 +53,7 @@ export class JitterRetry extends RetryStrategy {
   constructor(
     maxAttempts = 3,
     baseDelaySec = 1,
-    private jitterFactor = 0.1
+    private jitterFactor = 0.1,
   ) {
     super(maxAttempts, baseDelaySec);
   }

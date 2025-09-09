@@ -1,6 +1,6 @@
 /**
  * Video file type definitions for the Reynard File Processing system.
- * 
+ *
  * This module defines supported video file extensions, MIME types, and
  * processing capabilities for video files.
  */

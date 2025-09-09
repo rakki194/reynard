@@ -1,11 +1,17 @@
 /**
  * Base Model Class
- * 
+ *
  * Abstract base class that all model implementations must extend.
  * Provides common model lifecycle management and interface.
  */
 
-import { ModelType, ModelStatus, ModelHealth, ModelInstance, ModelCapabilities } from '../types/index.js';
+import {
+  ModelType,
+  ModelStatus,
+  ModelHealth,
+  ModelInstance,
+  ModelCapabilities,
+} from "../types/index.js";
 
 export abstract class BaseModel {
   protected _modelId: string;
@@ -19,7 +25,11 @@ export abstract class BaseModel {
   protected _metadata: Record<string, any> = {};
   protected _isInitialized = false;
 
-  constructor(modelId: string, modelType: ModelType, config: Record<string, any> = {}) {
+  constructor(
+    modelId: string,
+    modelType: ModelType,
+    config: Record<string, any> = {},
+  ) {
     this._modelId = modelId;
     this._modelType = modelType;
     this._config = { ...config };
@@ -98,7 +108,6 @@ export abstract class BaseModel {
 
       // Perform initial health check
       this._health = await this.healthCheck();
-
     } catch (error) {
       this._status = ModelStatus.ERROR;
       this._error = error instanceof Error ? error.message : String(error);
@@ -165,7 +174,7 @@ export abstract class BaseModel {
       loadedAt: this._loadedAt,
       lastUsed: this._lastUsed,
       error: this._error,
-      metadata: this._metadata
+      metadata: this._metadata,
     };
   }
 
@@ -177,7 +186,7 @@ export abstract class BaseModel {
       streaming: false,
       realTime: false,
       multilingual: false,
-      customWeights: false
+      customWeights: false,
     };
   }
 

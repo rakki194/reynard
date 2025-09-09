@@ -12,7 +12,9 @@ interface IconModalProps {
 }
 
 export const IconModal: Component<IconModalProps> = (props) => {
-  const iconData = createMemo(() => allIcons[props.iconName as keyof typeof allIcons]);
+  const iconData = createMemo(
+    () => allIcons[props.iconName as keyof typeof allIcons],
+  );
   const iconElement = createMemo(() => getIcon(props.iconName));
   const metadata = createMemo(() => iconData()?.metadata);
 
@@ -25,33 +27,31 @@ export const IconModal: Component<IconModalProps> = (props) => {
             ×
           </button>
         </div>
-        
+
         <div class="modal-icon-display">
-          {iconElement() && (
-            <div innerHTML={iconElement()!} />
-          )}
+          {iconElement() && <div innerHTML={iconElement()!} />}
         </div>
-        
+
         <div class="modal-details">
           <div class="detail-row">
             <span class="detail-label">Description:</span>
             <span class="detail-value">{metadata()?.description}</span>
           </div>
-          
+
           <div class="detail-row">
             <span class="detail-label">Tags:</span>
             <span class="detail-value">
               {metadata()?.tags?.join(", ") || "None"}
             </span>
           </div>
-          
+
           <div class="detail-row">
             <span class="detail-label">Keywords:</span>
             <span class="detail-value">
               {metadata()?.keywords?.join(", ") || "None"}
             </span>
           </div>
-          
+
           <div class="detail-row">
             <span class="detail-label">Icon Name:</span>
             <span class="detail-value">{props.iconName}</span>

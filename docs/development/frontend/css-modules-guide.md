@@ -49,27 +49,27 @@ ComponentName.module.css
 
 ```tsx
 // Button.tsx
-import { Component, JSX, createMemo } from 'solid-js';
-import styles from './Button.module.css';
+import { Component, JSX, createMemo } from "solid-js";
+import styles from "./Button.module.css";
 
 interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'error';
-  size?: 'small' | 'medium' | 'large';
+  variant?: "primary" | "secondary" | "error";
+  size?: "small" | "medium" | "large";
 }
 
-export const Button: Component<ButtonProps> = props => {
+export const Button: Component<ButtonProps> = (props) => {
   const {
-    variant = 'primary',
-    size = 'medium',
+    variant = "primary",
+    size = "medium",
     class: className,
     children,
     ...restProps
   } = props;
 
   const buttonClasses = createMemo(() => {
-    return [styles.button, styles[variant], styles[size], className || '']
+    return [styles.button, styles[variant], styles[size], className || ""]
       .filter(Boolean)
-      .join(' ');
+      .join(" ");
   });
 
   return (
@@ -251,7 +251,7 @@ Compose styles from other CSS modules:
 ```css
 /* Card.module.css */
 .card {
-  composes: baseCard from './primitives/Card.module.css';
+  composes: baseCard from "./primitives/Card.module.css";
   /* Additional card-specific styles */
 }
 ```
@@ -433,12 +433,12 @@ Use efficient selectors and avoid expensive operations:
 
 ```tsx
 // Component.test.tsx
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
-vi.mock('./Component.module.css', () => ({
-  component: 'component-class',
-  active: 'active-class',
-  disabled: 'disabled-class',
+vi.mock("./Component.module.css", () => ({
+  component: "component-class",
+  active: "active-class",
+  disabled: "disabled-class",
 }));
 
 // Test component with mocked styles
@@ -458,15 +458,15 @@ const classes = createMemo(() => {
     className,
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 });
 ```
 
 ### Multiple Style Imports
 
 ```tsx
-import baseStyles from './Base.module.css';
-import variantStyles from './Variants.module.css';
+import baseStyles from "./Base.module.css";
+import variantStyles from "./Variants.module.css";
 
 const styles = { ...baseStyles, ...variantStyles };
 ```
@@ -482,7 +482,7 @@ const styles = { ...baseStyles, ...variantStyles };
 }
 
 /* Theme-specific overrides */
-:root[data-theme='dark'] .component {
+:root[data-theme="dark"] .component {
   background: var(--card-bg);
   border-color: var(--border-secondary);
 }

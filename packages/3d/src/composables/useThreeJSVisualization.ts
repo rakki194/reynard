@@ -1,14 +1,12 @@
 // Three.js visualization composable for SolidJS
 // Adapted from yipyap's ThreeJSVisualization component
 
-import { createSignal, createEffect, onCleanup, createMemo } from 'solid-js';
-import type { 
-  ThreeJSVisualizationProps
-} from '../types';
+import { createSignal, createEffect, onCleanup, createMemo } from "solid-js";
+import type { ThreeJSVisualizationProps } from "../types";
 
 // Lazy load Three.js for performance optimization
 const loadThreeJS = async () => {
-  const THREE = await import('three') as any;
+  const THREE = (await import("three")) as any;
   const {
     Scene,
     PerspectiveCamera,
@@ -25,7 +23,9 @@ const loadThreeJS = async () => {
   } = THREE;
 
   // Lazy load OrbitControls
-  const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js');
+  const { OrbitControls } = await import(
+    "three/examples/jsm/controls/OrbitControls.js"
+  );
 
   return {
     Scene,
@@ -46,7 +46,7 @@ const loadThreeJS = async () => {
 
 export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
   const [isLoading, setIsLoading] = createSignal(true);
-  const [error, setError] = createSignal<string>('');
+  const [error, setError] = createSignal<string>("");
   const [threeJS, setThreeJS] = createSignal<any>(null);
 
   // Scene state
@@ -60,7 +60,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
   // Responsive dimensions
   const width = createMemo(() => props.width || 800);
   const height = createMemo(() => props.height || 600);
-  const backgroundColor = createMemo(() => props.backgroundColor || '#1a1a1a');
+  const backgroundColor = createMemo(() => props.backgroundColor || "#1a1a1a");
 
   // Camera control settings
   const enableDamping = createMemo(() => props.enableDamping ?? true);
@@ -71,7 +71,9 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
   const minDistance = createMemo(() => props.minDistance ?? 0.1);
   const maxDistance = createMemo(() => props.maxDistance ?? 1000);
   const maxPolarAngle = createMemo(() => props.maxPolarAngle ?? Math.PI);
-  const enableCameraAnimations = createMemo(() => props.enableCameraAnimations ?? true);
+  const enableCameraAnimations = createMemo(
+    () => props.enableCameraAnimations ?? true,
+  );
 
   /**
    * Initialize Three.js scene
@@ -79,7 +81,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
   const initializeScene = async (container: HTMLDivElement) => {
     try {
       setIsLoading(true);
-      setError('');
+      setError("");
 
       // Lazy load Three.js
       const threeJSModules = await loadThreeJS();
@@ -95,7 +97,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
         75, // Field of view
         width() / height(), // Aspect ratio
         0.1, // Near clipping plane
-        1000 // Far clipping plane
+        1000, // Far clipping plane
       );
       newCamera.position.set(5, 5, 5);
       newCamera.lookAt(0, 0, 0);
@@ -106,7 +108,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
         antialias: true,
         alpha: true,
         preserveDrawingBuffer: true,
-        powerPreference: 'high-performance',
+        powerPreference: "high-performance",
       });
 
       // Enhanced responsive canvas sizing
@@ -140,7 +142,10 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
       newScene.add(ambientLight);
 
       // Main directional light (sun-like)
-      const directionalLight = new threeJSModules.DirectionalLight(0xffffff, 0.8);
+      const directionalLight = new threeJSModules.DirectionalLight(
+        0xffffff,
+        0.8,
+      );
       directionalLight.position.set(10, 10, 5);
       directionalLight.castShadow = true;
       directionalLight.shadow.mapSize.width = 2048;
@@ -165,7 +170,10 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
       newScene.add(pointLight);
 
       // Create OrbitControls for smooth camera controls
-      const newControls = new threeJSModules.OrbitControls(newCamera, newRenderer.domElement);
+      const newControls = new threeJSModules.OrbitControls(
+        newCamera,
+        newRenderer.domElement,
+      );
       newControls.enableDamping = enableDamping();
       newControls.dampingFactor = dampingFactor();
       newControls.enableZoom = enableZoom();
@@ -192,7 +200,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
         (newControls as any).flyTo = (
           targetPosition: [number, number, number],
           targetLookAt: [number, number, number],
-          duration: number = 1500
+          duration: number = 1500,
         ) => {
           if (props.onCameraAnimationStart) {
             props.onCameraAnimationStart();
@@ -212,13 +220,23 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
 
             // Use easeInOutCubic easing
             const easedProgress =
-              progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+              progress < 0.5
+                ? 4 * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
             // Interpolate position
-            newCamera.position.lerpVectors(startPosition, new threeJSModules.Vector3(...targetPosition), easedProgress);
+            newCamera.position.lerpVectors(
+              startPosition,
+              new threeJSModules.Vector3(...targetPosition),
+              easedProgress,
+            );
 
             // Interpolate target
-            newControls.target.lerpVectors(startTarget, new threeJSModules.Vector3(...targetLookAt), easedProgress);
+            newControls.target.lerpVectors(
+              startTarget,
+              new threeJSModules.Vector3(...targetLookAt),
+              easedProgress,
+            );
 
             if (progress < 1) {
               requestAnimationFrame(animate);
@@ -241,7 +259,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
 
       // Handle controls change events
       if (props.onControlsChange) {
-        newControls.addEventListener('change', props.onControlsChange);
+        newControls.addEventListener("change", props.onControlsChange);
       }
 
       // Call onSceneReady callback
@@ -251,8 +269,10 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
 
       setIsLoading(false);
     } catch (err) {
-      console.error('Failed to initialize Three.js scene:', err);
-      setError(err instanceof Error ? err.message : 'Failed to initialize 3D scene');
+      console.error("Failed to initialize Three.js scene:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to initialize 3D scene",
+      );
       setIsLoading(false);
     }
   };
@@ -267,7 +287,14 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
     const currentControls = controls();
     const currentClock = clock();
 
-    if (!currentScene || !currentCamera || !currentRenderer || !currentControls || !currentClock) return;
+    if (
+      !currentScene ||
+      !currentCamera ||
+      !currentRenderer ||
+      !currentControls ||
+      !currentClock
+    )
+      return;
 
     const _deltaTime = currentClock.getDelta();
 
@@ -276,7 +303,12 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
 
     // Call onRender callback for custom rendering logic
     if (props.onRender) {
-      props.onRender(currentScene, currentCamera, currentRenderer, currentControls);
+      props.onRender(
+        currentScene,
+        currentCamera,
+        currentRenderer,
+        currentControls,
+      );
     }
 
     // Render the scene

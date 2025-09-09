@@ -10,10 +10,10 @@ export interface PointCloudConfig {
 
 export const createPointCloud = async (
   scene: any,
-  config: PointCloudConfig
+  config: PointCloudConfig,
 ): Promise<any> => {
-  const THREE = await import('three');
-  
+  const THREE = await import("three");
+
   const geometry = new THREE.BufferGeometry();
   const positions = new Float32Array(config.pointCount * 3);
   const colors = new Float32Array(config.pointCount * 3);
@@ -36,18 +36,18 @@ export const createPointCloud = async (
     colors[i * 3 + 2] = color.b;
   }
 
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
   const material = new THREE.PointsMaterial({
     size: 0.02,
     vertexColors: true,
     transparent: true,
-    opacity: 0.8
+    opacity: 0.8,
   });
 
   const points = new THREE.Points(geometry, material);
   scene.add(points);
-  
+
   return points;
 };
