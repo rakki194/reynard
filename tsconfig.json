@@ -26,7 +26,7 @@
     { "path": "./packages/settings" },
     { "path": "./packages/gallery" },
     { "path": "./packages/themes" },
-    { "path": "./packages/color-media" },
+    { "path": "./packages/colors" },
     { "path": "./packages/i18n" }
   ],
   "include": ["packages/**/*"],

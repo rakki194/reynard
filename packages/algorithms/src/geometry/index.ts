@@ -27,8 +27,6 @@ export * from "./transformations";
 
 // Re-export all types and classes from specialized modules
 export type { Point } from "./shapes/point-algorithms";
+export type { Circle, Line, Polygon, Rectangle } from "./shapes/shapes";
 export type { Vector } from "./vectors/vector-algorithms";
-export type { Line } from "./shapes/line-algorithms";
-export type { Rectangle } from "./shapes/rectangle-algorithms";
-export type { Circle } from "./shapes/circle-algorithms";
-export type { Polygon } from "./shapes/polygon-algorithms";
+

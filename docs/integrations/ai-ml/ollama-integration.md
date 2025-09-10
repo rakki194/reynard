@@ -1,15 +1,15 @@
-# Ollama Integration & YipYap Assistant 🦊
+# Ollama Integration & Reynard Assistant 🦊
 
-This document covers the Ollama integration in YipYap, including the custom yipyap assistant that helps with dataset management tasks.
+This document covers the Ollama integration in Reynard, including the custom Reynard assistant that helps with dataset management tasks.
 
 ## Overview
 
-YipYap now includes a built-in AI assistant (🦊) powered by Ollama that can help you with:
+Reynard now includes a built-in AI assistant (🦊) powered by Ollama that can help you with:
 
 - Image dataset organization and management
 - Tagging and captioning workflows
 - Dataset cleaning and preparation
-- Understanding YipYap features and functionality
+- Understanding Reynard features and functionality
 - Git-based dataset version control
 - General dataset best practices
 
@@ -42,17 +42,17 @@ Configure your Ollama settings by setting these environment variables:
 # Ollama server URL (default: http://localhost:11434)
 OLLAMA_BASE_URL=http://localhost:11434
 
-# Default model for the yipyap assistant (default: qwen3:8b)
-YIPYAP_ASSISTANT_MODEL=qwen3:8b
+# Default model for the Reynard assistant (default: qwen3:8b)
+REYNARD_ASSISTANT_MODEL=qwen3:8b
 ```
 
 You can also set these in your `.env` file in the project root.
 
-## Using the YipYap Assistant
+## Using the Reynard Assistant
 
 ### Accessing the Assistant
 
-The yipyap assistant (🦊) appears as a floating chat interface in the bottom-right corner of the application when Ollama is connected and running.
+The Reynard assistant (🦊) appears as a floating chat interface in the bottom-right corner of the application when Ollama is connected and running.
 
 ### Features
 
@@ -151,14 +151,14 @@ function MyComponent() {
 ### Adding the Assistant Component
 
 ```typescript
-import { YipYapAssistant } from "../components/YipYapAssistant";
+import { ReynardAssistant } from "../components/ReynardAssistant";
 
 function MyPage() {
   return (
     <div>
       {/* Your page content */}
 
-      <YipYapAssistant
+      <ReynardAssistant
         currentPath="/current/dataset/path"
         selectedImages={["selected1.jpg", "selected2.png"]}
       />
@@ -171,13 +171,13 @@ function MyPage() {
 
 ### Assistant Personality
 
-The yipyap assistant is configured with a custom system prompt that:
+The Reynard assistant is configured with a custom system prompt that:
 
 - Identifies as 🦊 (fox emoji)
 - Specializes in dataset management tasks
 - Provides helpful, technical guidance
 - Maintains a friendly but professional tone
-- Focuses on yipyap-specific workflows
+- Focuses on Reynard-specific workflows
 
 ### Model Recommendations
 
@@ -246,7 +246,7 @@ The Ollama integration is modular and extensible:
 You can create custom prompts for specific use cases:
 
 ```python
-# In YipYapAssistant class
+# In ReynardAssistant class
 def create_specialized_prompt(self, task_type: str) -> str:
     base_prompt = self.system_prompt
 
@@ -263,7 +263,7 @@ def create_specialized_prompt(self, task_type: str) -> str:
 1. **Local Processing:** All data stays on your local machine
 2. **No API Keys:** No external service dependencies
 3. **Privacy:** Conversations are not logged or transmitted
-4. **Access Control:** Uses existing yipyap authentication
+4. **Access Control:** Uses existing Reynard authentication
 
 ## Future Enhancements
 
@@ -289,4 +289,4 @@ To contribute to the Ollama integration:
 
 ## License
 
-The Ollama integration follows the same MIT license as the rest of YipYap.
+The Ollama integration follows the same MIT license as the rest of Reynard.

@@ -1,9 +1,9 @@
-# Semantic Diffusion-Aware Prompting Guide for YipYap
+# Semantic Diffusion-Aware Prompting Guide for Reynard
 
 ## Overview
 
 This guide applies the insights from the SEMANTIC research paper on semantic
-diffusion to create effective prompting strategies for working with the YipYap
+diffusion to create effective prompting strategies for working with the Reynard
 codebase. The goal is to preserve definitional precision and avoid the
 "telephone game" effect that leads to meaning erosion in technical
 communication.
@@ -17,7 +17,7 @@ diffusion. Terms that are precise, memorable, and relevant are more likely to be
 adopted widely, but widespread adoption increases exposure to the mechanisms of
 semantic diffusion.
 
-**Application**: When creating prompts for YipYap development, recognize that
+**Application**: When creating prompts for Reynard development, recognize that
 popular patterns and terminology will naturally evolve. Design prompts that are
 robust against semantic drift while remaining clear and actionable.
 
@@ -27,7 +27,7 @@ robust against semantic drift while remaining clear and actionable.
 are used in diverse contexts without clear definitional anchors, the original
 meaning becomes increasingly difficult to preserve.
 
-**Application**: Always anchor technical terms in their specific YipYap context.
+**Application**: Always anchor technical terms in their specific Reynard context.
 Reference specific files, modules, or architectural patterns rather than using
 generic terminology.
 
@@ -41,14 +41,14 @@ language.
 catch-all terms that can be easily misinterpreted or expanded beyond their
 intended scope.
 
-## YipYap-Specific Prompting Strategies
+## Reynard-Specific Prompting Strategies
 
 ### 1. Architecture-Aware Prompting
 
 **Context Anchoring Pattern**:
 
 ```markdown
-You are working with the YipYap codebase, which follows these architectural
+You are working with the Reynard codebase, which follows these architectural
 principles:
 
 - **Backend**: Python service-oriented architecture with modular services in
@@ -72,7 +72,7 @@ decisions or code generation.
 **Definitional Robustness Pattern**:
 
 ```markdown
-In YipYap, use these precise terms:
+In Reynard, use these precise terms:
 
 - **Module**: A focused, single-responsibility unit under 100 lines in
   `src/modules/`
@@ -85,7 +85,7 @@ In YipYap, use these precise terms:
 - **Processor**: Data processing logic in `app/data_access/` for specific
   content types
 
-Avoid generic terms like "component" or "utility" - use the specific YipYap
+Avoid generic terms like "component" or "utility" - use the specific Reynard
 terminology.
 ```
 
@@ -126,7 +126,7 @@ Optimize the performance of the application.
 **After (Context-Anchored)**:
 
 ```markdown
-Optimize the performance of the YipYap gallery system by:
+Optimize the performance of the Reynard gallery system by:
 
 - Reducing re-renders in the Gallery component (`src/components/Gallery/`)
 - Optimizing the `useScrollCoordinator` composable for large datasets
@@ -145,7 +145,7 @@ Add error handling to the system.
 **After (Bounded)**:
 
 ```markdown
-Add error handling to the YipYap caption generation system by:
+Add error handling to the Reynard caption generation system by:
 
 - Extending the `useUnifiedCaptionGeneration` composable with error states
 - Adding error boundaries to the Captioners context
@@ -161,7 +161,7 @@ Add error handling to the YipYap caption generation system by:
 #### A. Module Creation
 
 ```markdown
-Create a new YipYap module following these precise requirements:
+Create a new Reynard module following these precise requirements:
 
 **Location**: `src/modules/[moduleName].ts` **Purpose**: [Specific, single
 responsibility] **Constraints**:
@@ -190,7 +190,7 @@ responsibility] **Constraints**:
 #### B. Composable Creation
 
 ```markdown
-Create a new YipYap composable following these precise requirements:
+Create a new Reynard composable following these precise requirements:
 
 **Location**: `src/composables/use[FeatureName].ts` **Purpose**: [Specific,
 single responsibility] **Constraints**:
@@ -219,7 +219,7 @@ single responsibility] **Constraints**:
 #### C. Service Creation
 
 ```markdown
-Create a new YipYap backend service following these precise requirements:
+Create a new Reynard backend service following these precise requirements:
 
 **Location**: `app/services/[serviceName].py` **Purpose**: [Specific, single
 responsibility] **Constraints**:
@@ -249,7 +249,7 @@ responsibility] **Constraints**:
 #### A. Module Testing
 
 ```markdown
-Create comprehensive tests for the YipYap module following these precise
+Create comprehensive tests for the Reynard module following these precise
 requirements:
 
 **Location**: `src/modules/[moduleName].test.ts` **Coverage Target**: 95%+
@@ -278,7 +278,7 @@ requirements:
 #### B. Composable Testing
 
 ```markdown
-Create comprehensive tests for the YipYap composable following these precise
+Create comprehensive tests for the Reynard composable following these precise
 requirements:
 
 **Location**: `src/composables/use[FeatureName].test.tsx` **Coverage Target**:
@@ -309,7 +309,7 @@ requirements:
 #### A. Module Documentation
 
 ```markdown
-Create comprehensive documentation for the YipYap module following these precise
+Create comprehensive documentation for the Reynard module following these precise
 requirements:
 
 **Location**: Update `src/modules/README.md` **Documentation Structure**:
@@ -367,13 +367,13 @@ Create comprehensive API documentation following these precise requirements:
 
 ### Before Writing Prompts
 
-- [ ] **Context Anchoring**: Have I anchored all terms in specific YipYap
+- [ ] **Context Anchoring**: Have I anchored all terms in specific Reynard
       contexts?
 - [ ] **Definitional Boundaries**: Have I set clear, bounded definitions for all
       concepts?
-- [ ] **Architecture Alignment**: Does the prompt align with YipYap's modular
+- [ ] **Architecture Alignment**: Does the prompt align with Reynard's modular
       architecture?
-- [ ] **Terminology Precision**: Am I using YipYap-specific terminology rather
+- [ ] **Terminology Precision**: Am I using Reynard-specific terminology rather
       than generic terms?
 - [ ] **Scope Limitation**: Have I avoided broad, catch-all language that could
       be misinterpreted?
@@ -394,7 +394,7 @@ Create comprehensive API documentation following these precise requirements:
 
 - [ ] **Definitional Consistency**: Does the implementation match the original
       prompt intent?
-- [ ] **Architecture Compliance**: Does the code follow YipYap's architectural
+- [ ] **Architecture Compliance**: Does the code follow Reynard's architectural
       principles?
 - [ ] **Documentation Alignment**: Does the documentation preserve the original
       definitions?
@@ -406,9 +406,9 @@ Create comprehensive API documentation following these precise requirements:
 ### 1. Generic Terminology
 
 **Trap**: Using generic terms like "component," "utility," or "service" without
-YipYap context.
+Reynard context.
 
-**Prevention**: Always specify the exact YipYap pattern: "SolidJS composable,"
+**Prevention**: Always specify the exact Reynard pattern: "SolidJS composable,"
 "modular service," "BaseService implementation."
 
 ### 2. Broad Scope Definitions
@@ -420,7 +420,7 @@ examples.
 
 ### 3. Context Fragmentation
 
-**Trap**: Referencing concepts without anchoring them in specific YipYap
+**Trap**: Referencing concepts without anchoring them in specific Reynard
 contexts.
 
 **Prevention**: Always reference specific files, modules, or architectural
@@ -436,14 +436,14 @@ patterns.
 
 **Trap**: Failing to specify architectural constraints and quality requirements.
 
-**Prevention**: Always include YipYap-specific constraints like the 100-line
+**Prevention**: Always include Reynard-specific constraints like the 100-line
 rule, zero dependencies, and 95%+ test coverage.
 
 ## Conclusion
 
-By applying the insights from semantic diffusion research to YipYap development,
+By applying the insights from semantic diffusion research to Reynard development,
 we can create prompts that preserve definitional precision and avoid the
-"telephone game" effect. The key is to anchor all terminology in specific YipYap
+"telephone game" effect. The key is to anchor all terminology in specific Reynard
 contexts, use precise, bounded definitions, and maintain clear architectural
 constraints.
 
@@ -451,7 +451,7 @@ Remember: The most useful prompts are also the most vulnerable to semantic
 diffusion. By designing prompts with diffusion resistance in mind, we can
 maintain clarity and precision throughout the development process.
 
-**Core Takeaway**: In YipYap development, precision is not just a
+**Core Takeaway**: In Reynard development, precision is not just a
 preference—it's a necessity for maintaining the integrity of our modular,
 composable architecture. Every prompt should be designed to withstand the
 pressures of interpretation drift while remaining clear and actionable.

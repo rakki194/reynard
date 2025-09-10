@@ -39,7 +39,7 @@ via keyboard shortcuts or the theme switcher in the settings panel.
 
 ---
 
-The frontend of yipyap is built with SolidJS and follows this structure:
+The frontend of Reynard is built with SolidJS and follows this structure:
 
 ### Core Files
 

@@ -58,7 +58,7 @@ export type {
   ECSConfig,
   ECSPerformanceMetrics,
   WASMSIMDCapabilities,
-  ECSFactory,
+  ECSFactoryFunction,
 } from "./ecs-interface";
 
 // Implementation classes (for advanced usage)

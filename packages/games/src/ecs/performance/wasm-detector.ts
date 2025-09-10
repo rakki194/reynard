@@ -197,8 +197,8 @@ export class WASMDetector implements IWASMDetector {
       // Try to import the WASM module
       const wasmModule = await import("../experiments/simd/wasm-loader.js");
 
-      if (wasmModule && wasmModule.WASMLoader) {
-        const loader = new wasmModule.WASMLoader();
+      if (wasmModule && wasmModule.WasmLoader) {
+        const loader = new wasmModule.WasmLoader();
         await loader.initialize();
 
         this.wasmModule = loader;

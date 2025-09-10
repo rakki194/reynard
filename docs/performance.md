@@ -37,7 +37,7 @@ _All bundle sizes are measured from production builds and include gzipped compre
 | `reynard-file-processing` | 44K  | 8.6 kB  | File processing       |
 | `reynard-testing`         | 4.0K | 0.1 kB  | Testing utilities     |
 | `reynard-3d`              | 92K  | 23.7 kB | 3D graphics           |
-| `reynard-color-media`     | 16K  | 4.0 kB  | Color utilities       |
+| `reynard-colors`          | 16K  | 4.0 kB  | Color utilities       |
 | `reynard-service-manager` | 20K  | 4.3 kB  | Service management    |
 
 ### Development and Tools

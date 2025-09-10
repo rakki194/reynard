@@ -1,10 +1,10 @@
 # RAG Chunking & Ingestion
 
-This document outlines the recommended chunking strategies and ingestion pipeline for Retrieval-Augmented Generation (RAG) in YipYap.
+This document outlines the recommended chunking strategies and ingestion pipeline for Retrieval-Augmented Generation (RAG) in Reynard.
 
 ## Architecture Overview
 
-YipYap's RAG subsystem is composed of a streaming-friendly indexing service, dedicated embedding services for text and images, a vector database layer backed by Postgres and pgvector, and a thin API. The indexing service coordinates chunking, batching, embedding, and vector upserts with progress events. The text embedding service talks to Ollama's `/api/embed` and preserves input ordering with simple caching, while the OpenCLIP service lazily loads a CLIP backbone and encodes images or text for cross-modal retrieval. The vector database service manages the SQLAlchemy engine, idempotent migrations for enabling the `vector` extension and provisioning tables, and helper queries for both pure vector search and hybrid ranking. The API exposes ingestion, query, and administrative endpoints and enforces rate limits and privacy redaction governed by `AppConfig` and environment overrides.
+Reynard's RAG subsystem is composed of a streaming-friendly indexing service, dedicated embedding services for text and images, a vector database layer backed by Postgres and pgvector, and a thin API. The indexing service coordinates chunking, batching, embedding, and vector upserts with progress events. The text embedding service talks to Ollama's `/api/embed` and preserves input ordering with simple caching, while the OpenCLIP service lazily loads a CLIP backbone and encodes images or text for cross-modal retrieval. The vector database service manages the SQLAlchemy engine, idempotent migrations for enabling the `vector` extension and provisioning tables, and helper queries for both pure vector search and hybrid ranking. The API exposes ingestion, query, and administrative endpoints and enforces rate limits and privacy redaction governed by `AppConfig` and environment overrides.
 
 ## Document Chunking
 
@@ -59,7 +59,7 @@ Captions: per-item chunking plus optional summary chunk.
 
 ## System Overview
 
-YipYap's RAG stack consists of an ingestion orchestrator, embedding services for text and images, a vector database service backed by Postgres + pgvector, and a thin API layer. Content is chunked according to the presets above, embedded in batches, and upserted into Postgres where HNSW indexes provide fast approximate nearest-neighbor search. Queries embed the input text and retrieve relevant chunks; for images, CLIP text→image retrieval is supported.
+Reynard's RAG stack consists of an ingestion orchestrator, embedding services for text and images, a vector database service backed by Postgres + pgvector, and a thin API layer. Content is chunked according to the presets above, embedded in batches, and upserted into Postgres where HNSW indexes provide fast approximate nearest-neighbor search. Queries embed the input text and retrieve relevant chunks; for images, CLIP text→image retrieval is supported.
 
 Files:
 
@@ -190,7 +190,7 @@ Common API errors include `400` when RAG is disabled, `429` when hitting per‑u
 
 ## Demo Flows
 
-Ingestion can be exercised directly from the SolidJS client or via `curl`. From the UI, use a small helper that calls `ingestDocuments` with a grouped notification for progress and success or error. The streamed events update a single toast with a spinner until completion. For queries, use `createRAGSearchResource` to embed a search box that reactively issues requests and renders results by score, or call `query` imperatively. Screenshots of the query UI and ingest progress can be captured from the RAG panel and included in release notes; the demo GIF at `docs/yipyap_demo_optimized.gif` illustrates the general interaction pattern.
+Ingestion can be exercised directly from the SolidJS client or via `curl`. From the UI, use a small helper that calls `ingestDocuments` with a grouped notification for progress and success or error. The streamed events update a single toast with a spinner until completion. For queries, use `createRAGSearchResource` to embed a search box that reactively issues requests and renders results by score, or call `query` imperatively. Screenshots of the query UI and ingest progress can be captured from the RAG panel and included in release notes; the demo GIF at `docs/reynard_demo_optimized.gif` illustrates the general interaction pattern.
 
 ```ts
 // Example: streaming ingest with grouped notifications

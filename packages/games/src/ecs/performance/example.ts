@@ -97,20 +97,20 @@ function movementSystem(world: any): void {
 
   if (!gameTime) return;
 
-  for (const [entity, position, velocity] of query) {
+  query.forEach((entity: any, position: any, velocity: any) => {
     position.x += velocity.vx * gameTime.deltaTime;
     position.y += velocity.vy * gameTime.deltaTime;
-  }
+  });
 }
 
 function healthSystem(world: any): void {
   const query = world.query(Health);
 
-  for (const [entity, health] of query) {
+  query.forEach((entity: any, health: any) => {
     if (health.current <= 0) {
       world.despawn(entity);
     }
-  }
+  });
 }
 
 function gameStateSystem(world: any): void {
@@ -215,7 +215,7 @@ export async function runECSExample(): Promise<void> {
 
   for (let frame = 0; frame < gameLoopIterations; frame++) {
     // Update game time
-    const gameTime = ecs.getResource(GameTime);
+    const gameTime = ecs.getResource(GameTime) as GameTime;
     if (gameTime) {
       gameTime.deltaTime = deltaTime;
       gameTime.totalTime = frame * deltaTime;
@@ -226,7 +226,7 @@ export async function runECSExample(): Promise<void> {
 
     // Log progress every 20 frames
     if (frame % 20 === 0) {
-      const gameState = ecs.getResource(GameState);
+      const gameState = ecs.getResource(GameState) as GameState;
       console.log(
         `   Frame ${frame}: ${ecs.metrics.entityCount} entities, Score: ${gameState?.score || 0}`,
       );
@@ -286,11 +286,11 @@ export async function runQuickStartExample(): Promise<void> {
 
   // Add a simple system
   ecs.addSystem((world) => {
-    const query = world.query(Position, Velocity);
-    for (const [entity, position, velocity] of query) {
+    const query = world.query(Position as any, Velocity as any);
+    query.forEach((entity: any, position: any, velocity: any) => {
       position.x += velocity.vx * 0.016;
       position.y += velocity.vy * 0.016;
-    }
+    });
   }, "movement");
 
   // Spawn some entities

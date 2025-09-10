@@ -6,15 +6,22 @@
 import {
   Component,
   createSignal,
-  createEffect,
-  onMount,
-  Show,
+  JSX,
+  onMount
 } from "solid-js";
-import { Tabs, TabItem } from "reynard-components";
-import { ModelUsageChart, ModelUsageData } from "./ModelUsageChart";
-import { EmbeddingDistributionChart, EmbeddingDistributionData } from "./EmbeddingDistributionChart";
-import { PCAVarianceChart, PCAVarianceData } from "./PCAVarianceChart";
 import { ChartConfig } from "../types";
+import { EmbeddingDistributionChart, EmbeddingDistributionData } from "./EmbeddingDistributionChart";
+import { ModelUsageChart, ModelUsageData } from "./ModelUsageChart";
+import { PCAVarianceChart, PCAVarianceData } from "./PCAVarianceChart";
+// Temporarily removed to break circular dependency
+// import { Tabs, TabItem } from "reynard-components";
+
+// Temporary interface to replace TabItem
+interface TabItem {
+  id: string;
+  label: string;
+  content: JSX.Element;
+}
 
 export interface AdvancedChartingDashboardProps {
   /** Dashboard title */
@@ -199,14 +206,23 @@ export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps
           </label>
         </div>
       </div>
-      
-      <Tabs
-        items={tabs}
-        activeTab={activeTab()}
-        onTabChange={setActiveTab}
-        variant="underline"
-        size="lg"
-      />
+
+      {/* Temporary simple tabs implementation */}
+      <div class="simple-tabs">
+        <div class="tab-headers">
+          {tabs.map((tab) => (
+            <button
+              class={`tab-header ${activeTab() === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <div class="tab-content">
+          {tabs.find(tab => tab.id === activeTab())?.content}
+        </div>
+      </div>
     </div>
   );
 };

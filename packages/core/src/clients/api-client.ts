@@ -5,9 +5,9 @@
  * like health checks, configuration management, and error handling.
  */
 
-import { HttpClient, HttpClientConfig } from "./http-client.js";
+import { HTTPClient, HTTPClientConfig } from "./http-client.js";
 
-export interface ApiClientConfig extends HttpClientConfig {
+export interface ApiClientConfig extends HTTPClientConfig {
   serviceName?: string;
   version?: string;
 }
@@ -30,7 +30,7 @@ export interface ApiClientInfo {
 }
 
 export abstract class ApiClient {
-  protected httpClient: HttpClient;
+  protected httpClient: HTTPClient;
   protected config: ApiClientConfig;
   protected lastHealthCheck?: number;
   protected healthCheckInterval?: number;
@@ -42,7 +42,7 @@ export abstract class ApiClient {
       ...config,
     };
 
-    this.httpClient = new HttpClient(this.config);
+    this.httpClient = new HTTPClient(this.config);
   }
 
   /**
@@ -86,7 +86,7 @@ export abstract class ApiClient {
         timestamp: this.lastHealthCheck,
         version: this.config.version,
         serviceName: this.config.serviceName,
-        details: response,
+        details: response.data,
       };
     } catch (error) {
       return {

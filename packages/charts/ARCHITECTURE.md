@@ -15,7 +15,7 @@
    - Theme integration with Reynard themes
    - Dependencies: `chart.js@4.5.0`, `solid-chartjs`, `reynard-core`
 
-3. **`reynard-color-media`** - OKLCH color generation
+3. **`reynard-colors`** - OKLCH color generation
    - Advanced color palette generation
    - Theme-aware color management
    - Multiple color schemes and utilities
@@ -37,7 +37,7 @@
 ### Core Visualization Engine (`reynard-visualization-core`)
 
 **Purpose**: Central engine for all visualization types
-**Dependencies**: `reynard-color-media`, `reynard-core`
+**Dependencies**: `reynard-colors`, `reynard-core`
 
 ```typescript
 // Core visualization engine
@@ -92,7 +92,7 @@ export class VisualizationEngine {
 
 ```
 reynard-core
-├── reynard-color-media (OKLCH colors)
+├── reynard-colors (OKLCH colors)
 ├── reynard-themes (theme system)
 └── reynard-testing (testing utilities)
 ```
@@ -102,7 +102,7 @@ reynard-core
 ```
 reynard-visualization-core
 ├── reynard-core
-├── reynard-color-media
+├── reynard-colors
 └── reynard-themes
 ```
 

@@ -2,6 +2,93 @@
 
 Welcome to the comprehensive documentation for the Reynard framework - a cunning SolidJS framework with modular architecture, built for modern web applications. This documentation reflects the current state of the Reynard ecosystem with its 25+ specialized packages.
 
+> _From dataset editor to multi-modal CMS: The evolution of a cunning framework_
+
+Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content management system. The framework extracts and modularizes yipyap's proven architectural patterns into reusable packages for modern web development.
+
+## 🦦 Architecture Evolution
+
+### **yipyap: Full-Stack Multi-Modal CMS**
+
+**yipyap** (Your Intuitive Platform for Yielding, Annotating, and Processing) is a complete full-stack content management system. Its backend is built with Python and FastAPI, providing robust AI/ML services, a RAG system, vector databases, NLWeb routing, and Diffusion LLM integration. The frontend leverages SolidJS, offering a comprehensive suite of UI components, theming capabilities, and real-time features.
+
+For content processing, yipyap supports a wide range of formats, including images, videos, audio, documents, and other specialized types. Model integration is a core strength, with support for JTP2, WDv3, Florence-2, JoyCaption, YOLO, OWLv2, and custom model implementations. Enterprise-level services such as text-to-speech (TTS), web crawling, vector databases, and various API integrations are also included.
+
+yipyap employs a monolithic architecture, featuring a tightly integrated frontend and backend with shared state management for seamless operation.
+
+### **Reynard: Modular Framework Extraction**
+
+Reynard extracts yipyap's proven patterns into a highly modular framework where each component can be used independently:
+
+The current Reynard frontend is built on a modular architecture, comprising over 25 specialized packages with minimal dependencies. Performance is a key focus, achieved through bundle splitting, lazy loading, and intelligent caching strategies. The theming system leverages CSS custom properties, offering eight built-in themes as well as support for custom themes. Internationalization is robust, with support for 37 languages, right-to-left (RTL) capabilities, and locale-aware formatting. Accessibility is prioritized, ensuring WCAG 2.1 compliance, ARIA labels, and full keyboard navigation. Type safety is enforced throughout the codebase, with comprehensive TypeScript coverage and detailed type definitions.
+
+On the backend, Reynard is planning a modular suite of services. Each core function—AI/ML, content processing, and database management—will be delivered as an independent, installable package. The architecture will allow for flexible API composition, enabling developers to mix and match services according to their application's needs. Service discovery will be dynamic, supporting automatic registration and health monitoring. Each service will be able to scale independently, allowing the system to efficiently handle varying workloads and demand.
+
+## ✨ Core Capabilities
+
+### **🎯 Multi-Modal Content Management**
+
+Reynard inherits yipyap's sophisticated content management capabilities, offering advanced solutions for a wide range of media types. For images, Reynard provides powerful processing features such as advanced thumbnail generation, metadata extraction, and seamless format conversion. Video support is equally comprehensive, enabling detailed video processing with preview generation and in-depth metadata analysis.
+
+Audio handling in Reynard is robust, supporting multiple formats and offering features like waveform visualization and thorough metadata extraction. Document processing is also a core strength, with the ability to handle PDFs, Office documents, and text files, all while performing intelligent content analysis.
+
+At the heart of these capabilities is AI-powered analysis, which enables automatic content analysis, tagging, and classification, ensuring that all types of content are organized and discoverable with cunning efficiency.
+
+### **🤖 AI/ML Integration**
+
+Reynard is built on yipyap's proven AI infrastructure, offering a robust suite of intelligent features. Caption generation is powered by multiple AI models—including JTP2, WDv3, Florence-2, and JoyCaption—with support for efficient batch processing. Smart tagging enables automatic tag generation, complete with confidence scoring and the flexibility to incorporate custom models.
+
+The framework includes a Retrieval-Augmented Generation (RAG) system, leveraging vector databases and semantic search to enhance content discovery and analysis. For object detection, Reynard integrates models such as YOLO, OWLv2, and Florence-2, providing advanced bounding box annotation capabilities.
+
+Text-to-speech (TTS) functionality is also available, supporting multiple voice options and a wide range of languages to ensure accessibility and versatility.
+
+## 🎯 Philosophy
+
+Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while maximizing functionality, and maintains a professional standard with high expectations for code quality and naming conventions.
+
+## 📦 Package Ecosystem
+
+Reynard's package ecosystem is built on the foundation of yipyap's proven architecture, with each package designed to be independently useful while working seamlessly together. All packages are published to npm and ready for production use!
+
+| Package                    | Description                                                                                                        | Version |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------- |
+| `reynard-core`             | Core utilities and modules for Reynard framework                                                                   | `0.1.1` |
+| `reynard-components`       | Production-ready SolidJS component library                                                                         | `0.1.1` |
+| `reynard-chat`             | Production-ready chat messaging system for SolidJS                                                                 | `0.1.0` |
+| `reynard-rag`              | Retrieval-Augmented Generation components for SolidJS                                                              | `0.1.1` |
+| `reynard-auth`             | Authentication and user management for SolidJS                                                                     | `0.1.0` |
+| `reynard-charts`           | Data visualization components for SolidJS                                                                          | `0.1.0` |
+| `reynard-gallery`          | File and media management components for SolidJS                                                                   | `0.1.0` |
+| `reynard-settings`         | Comprehensive settings and preferences management for SolidJS                                                      | `0.1.0` |
+| `reynard-file-processing`  | Advanced file processing, thumbnail generation, and media analysis for SolidJS applications                        | `0.1.0` |
+| `reynard-algorithms`       | Algorithm primitives and data structures for Reynard applications                                                  | `0.1.0` |
+| `reynard-colors`           | Color generation utilities and media handling components using OKLCH color space                                   | `1.0.0` |
+| `reynard-ui`               | Advanced layout and navigation components                                                                          | `0.1.0` |
+| `reynard-themes`           | Comprehensive theming system for Reynard applications with translation support                                     | `0.1.1` |
+| `reynard-monaco`           | Monaco code editor and text editing components for Reynard                                                         | `0.1.1` |
+| `reynard-annotating`       | Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows | `0.1.0` |
+| `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard                                                | `0.1.0` |
+| `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing                           | `0.1.0` |
+| `reynard-composables`      | Reusable reactive logic for Reynard applications                                                                   | `0.1.0` |
+| `reynard-connection`       | Enterprise-grade networking for Reynard applications                                                               | `0.1.0` |
+| `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities                          | `0.1.0` |
+| `reynard-fluent-icons`     | Fluent UI icons for Reynard design system                                                                          | `0.1.1` |
+| `reynard-games`            | Interactive games and visualizations for Reynard framework                                                         | `0.1.0` |
+| `reynard-model-management` | Model management system for Reynard - handles ML model loading, downloading, and lifecycle management              | `0.1.0` |
+| `reynard-service-manager`  | Service management system for Reynard - handles service lifecycle, dependencies, and health monitoring             | `0.1.0` |
+| `reynard-tools`            | Development and runtime tools for Reynard applications                                                             | `0.1.0` |
+| `reynard-testing`          | Unified testing framework for Reynard packages                                                                     | `0.1.0` |
+| `reynard-3d`               | 3D graphics and visualization components for Reynard framework using Three.js                                      | `0.1.0` |
+| `reynard-error-boundaries` | Comprehensive error boundary system for Reynard framework                                                          | `0.1.1` |
+| `reynard-i18n`             | Comprehensive internationalization system for Reynard framework with 37 language support                           | `1.0.0` |
+| `reynard-docs-components`  | Beautiful UI components for Reynard documentation sites                                                            | `0.1.0` |
+| `reynard-docs-core`        | Core documentation rendering engine for Reynard framework                                                          | `0.1.0` |
+| `reynard-docs-generator`   | Automated documentation generator for Reynard packages                                                             | `0.1.0` |
+| `reynard-docs-site`        | Beautiful documentation site application for Reynard framework                                                     | `0.1.0` |
+| `reynard-basic-app`        | Basic Todo App - Minimal Reynard framework example                                                                 | `0.1.0` |
+| `reynard-clock-app`        | A comprehensive clock, timer, alarm, and countdown application built with Reynard framework                        | `1.0.0` |
+| `reynard-test-app`         | Comprehensive test application showcasing Reynard framework features                                               | `1.0.0` |
+
 ## 📚 Documentation Structure
 
 ### 🛠️ [Development](./development/)
@@ -58,21 +145,19 @@ Archived documentation from the previous monolithic architecture.
 
 ### For Developers
 
-1. **Frontend Development**: Start with [Reynard Core](./development/frontend/composables.md)
-2. **Backend Development**: Begin with [FastAPI Backend](./development/backend/environment-configuration.md)
-3. **Architecture**: Review [Package Architecture](./architecture/system/authentication.md)
+1. **[Quick Start Guide](./quickstart.md)** - Get up and running in minutes
+2. **[Complete Tutorial](./tutorial.md)** - Build your first application
+3. **[Shared Configuration](./shared/configuration-examples.md)** - Common setup patterns
 
 ### For Users
 
-1. **Gallery System**: Check [Gallery Usage](./guides/user/caption-generation-user-guide.md)
-2. **RAG System**: Review [RAG Features](./guides/user/rag-demo-flows.md)
-3. **Chat Features**: See [Chat System](./guides/user/rag-file-navigation.md)
+1. **[User Guides](./guides/user/)** - Feature usage and navigation
+2. **[Examples](./examples.md)** - Real-world applications and templates
 
 ### For Administrators
 
-1. **System Setup**: Start with [Package Configuration](./guides/admin/settings.md)
-2. **Data Management**: Review [RAG Operations](./guides/admin/rag-ops.md)
-3. **Maintenance**: Check [System Maintenance](./guides/admin/rag-clear-data.md)
+1. **[Admin Guides](./guides/admin/)** - System configuration and maintenance
+2. **[Backend Services](./rag-backend.md)** - Service setup and management
 
 ## 🔄 Reynard Framework Overview
 
@@ -136,6 +221,34 @@ When updating documentation:
 - **User Support**: Refer to [User Guides](./guides/user/)
 - **Admin Tasks**: Check [Admin Guides](./guides/admin/)
 
+## 🚀 The Future of Reynard
+
+Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and refine the framework, we're building toward a future where:
+
+- **🤖 AI-First Development**: Every component is designed with AI integration in mind
+- **🌐 Universal Content**: Seamless handling of any content type, from images to 3D models
+- **⚡ Real-Time Collaboration**: Live editing and collaboration across all content types
+- **🔮 Predictive Interfaces**: AI-powered UI that adapts to user behavior and content
+- **🌍 Global Scale**: Built for worldwide deployment with edge computing support
+
+### **🦊 Join the Evolution**
+
+Reynard is more than a framework - it's a movement toward smarter, more intuitive web development. Whether you're building the next generation of content management systems, AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects, Reynard provides the foundation you need.
+
+**From dataset editor to multi-modal CMS to universal framework - the journey continues!**
+
+## 📚 Next Steps
+
+- **[Quick Start Guide](./quickstart.md)** - Get up and running with Reynard
+- **[Complete Tutorial](./tutorial.md)** - Build your first Reynard application
+- **[Package Documentation](./packages.md)** - Detailed package documentation
+- **[Examples and Templates](./examples.md)** - Real-world applications and templates
+- **[API Reference](./api.md)** - Complete API documentation
+- **[Performance Guide](./performance.md)** - Optimization and performance tips
+- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to Reynard
+
 ---
 
 _This documentation reflects the Reynard framework - a cunning SolidJS ecosystem with modular architecture, providing comprehensive guidance for development, architecture, integrations, and usage._
+
+_Built with ❤️, 🐺 and 🤖!_

@@ -1,6 +1,6 @@
 # Tooltip System Documentation
 
-The Tooltip system in yipyap provides a reusable, accessible, and customizable way to display contextual information when users hover over or focus on elements. The system is built with SolidJS and follows modern accessibility guidelines.
+The Tooltip system in Reynard provides a reusable, accessible, and customizable way to display contextual information when users hover over or focus on elements. The system is built with SolidJS and follows modern accessibility guidelines.
 
 ## Features
 

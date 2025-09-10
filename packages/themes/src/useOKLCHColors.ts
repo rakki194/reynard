@@ -3,18 +3,18 @@
  * React hooks for using OKLCH colors in components
  */
 
+import { createTagColorGenerator } from "reynard-colors";
 import { createMemo } from "solid-js";
 import { useTheme } from "./ThemeProvider";
+import { oklchStringToCSS } from "./colorConversion";
 import {
-  getOKLCHCSSColor,
   generateColorVariant,
-  generateThemeColorPalette,
-  generateTagColor,
   generateComplementaryColors,
   generateOKLCHGradient,
+  generateTagColor,
+  generateThemeColorPalette,
+  getOKLCHCSSColor,
 } from "./oklchColors";
-import { oklchStringToCSS } from "./colorConversion";
-import { createTagColorGenerator } from "reynard-colors";
 
 /**
  * Hook to get OKLCH colors for the current theme
@@ -146,7 +146,7 @@ export function useTagColors() {
  * Hook for color palette generation
  */
 export function useColorPalette() {
-  const generatePalette = (baseColor: string, count: number = 5): string[] => {
+  const generatePalette = (_baseColor: string, count: number = 5): string[] => {
     const colors: string[] = [];
 
     // Generate variations of the base color
@@ -162,7 +162,7 @@ export function useColorPalette() {
   };
 
   const generateMonochromaticPalette = (
-    baseColor: string,
+    _baseColor: string,
     count: number = 5,
   ): string[] => {
     const colors: string[] = [];

@@ -1,5 +1,5 @@
+import { Button, Card, TabPanel, Tabs } from "reynard-components";
 import { createSignal, For, Show } from "solid-js";
-import { Card, Button, Tabs, TabPanel } from "reynard-components";
 import { CodeBlock } from "./CodeBlock";
 import "./ReynardAdventure.css";
 
@@ -85,7 +85,7 @@ Reynard follows a modular architecture where each package has a specific respons
 - **reynard-gallery**: File and media management
 - **reynard-settings**: Configuration management
 - **reynard-file-processing**: Advanced file processing pipeline
-- **reynard-color-media**: Color and media utilities
+- **reynard-colors**: Color and media utilities
 - **reynard-ui**: Additional UI components
 - **reynard-themes**: Theme system and built-in themes`,
       },
@@ -220,13 +220,11 @@ export default function ReynardTutorial() {
           <For each={tutorialData}>
             {(section, index) => (
               <div
-                class={`tutorial-section-item ${
-                  section.id === tutorialState().currentSection ? "active" : ""
-                } ${
-                  tutorialState().completedSections.includes(section.id)
+                class={`tutorial-section-item ${section.id === tutorialState().currentSection ? "active" : ""
+                  } ${tutorialState().completedSections.includes(section.id)
                     ? "completed"
                     : ""
-                }`}
+                  }`}
                 onClick={() =>
                   setTutorialState((prev) => ({
                     ...prev,

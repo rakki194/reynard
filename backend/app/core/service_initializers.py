@@ -21,15 +21,18 @@ Each service initializer follows the same pattern:
 """
 
 import logging
-from typing import Dict, Any
+from typing import Any, Dict
+
+# Authentication
+from gatekeeper.api.dependencies import set_auth_manager
 
 # Service initializers
 from app.gatekeeper_config import initialize_gatekeeper, shutdown_gatekeeper
 from app.services.comfy import initialize_comfy_service, shutdown_comfy_service
-from app.services.nlweb.service_initializer import initialize_nlweb_service, shutdown_nlweb_service
-
-# Authentication
-from gatekeeper.api.dependencies import set_auth_manager
+from app.services.nlweb.service_initializer import (
+    initialize_nlweb_service,
+    shutdown_nlweb_service,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -167,9 +170,15 @@ async def init_ollama_service(service_config: Dict[str, Any]) -> bool:
         Exception: Logged and returned as False for graceful error handling.
     """
     try:
-        # Ollama service initialization would go here
-        logger.info("🦙 Ollama service initialized")
-        return True
+        from app.api.ollama.service import initialize_ollama_service
+        
+        # Initialize the actual Ollama service
+        success = await initialize_ollama_service(service_config)
+        if success:
+            logger.info("🦙 Ollama service initialized successfully")
+        else:
+            logger.warning("⚠️ Ollama service initialization failed")
+        return success
     except Exception as e:
         logger.error(f"❌ Ollama initialization failed: {e}")
         return False

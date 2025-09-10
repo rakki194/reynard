@@ -29,16 +29,30 @@ export interface MoveOperations {
 }
 
 export function createMoveOperations(
-  state: () => MoveState,
+  state: {
+    state: () => MoveState;
+    setIsMoving: (moving: boolean) => void;
+    setBoxId: (id: string | null) => void;
+    setOriginalBox: (box: BoundingBox | null) => void;
+    setStartPosition: (x: number, y: number) => void;
+    setCurrentPosition: (x: number, y: number) => void;
+    setDelta: (deltaX: number, deltaY: number) => void;
+    reset: () => void;
+  },
   constraints: MoveConstraints,
 ): MoveOperations {
   const startMove = (
-    _boxId: string,
-    _box: BoundingBox,
-    _startX: number,
-    _startY: number,
+    boxId: string,
+    box: BoundingBox,
+    startX: number,
+    startY: number,
   ) => {
-    // Implementation would be here - simplified for brevity
+    state.setIsMoving(true);
+    state.setBoxId(boxId);
+    state.setOriginalBox(box);
+    state.setStartPosition(startX, startY);
+    state.setCurrentPosition(startX, startY);
+    state.setDelta(0, 0);
   };
 
   const updateMove = (
@@ -46,7 +60,7 @@ export function createMoveOperations(
     currentY: number,
     imageInfo?: ImageInfo,
   ): BoundingBox | null => {
-    const currentState = state();
+    const currentState = state.state();
     if (!currentState.isMoving || !currentState.originalBox) return null;
 
     const deltaX = currentX - currentState.startX;
@@ -70,14 +84,23 @@ export function createMoveOperations(
       );
     }
 
+    // Update state with current position
+    state.setCurrentPosition(currentX, currentY);
+    state.setDelta(deltaX, deltaY);
+
     return newBox;
   };
 
   const endMove = (): BoundingBox | null => {
-    const currentState = state();
+    const currentState = state.state();
     if (!currentState.isMoving || !currentState.originalBox) return null;
 
-    return updateMove(currentState.currentX, currentState.currentY);
+    const result = updateMove(currentState.currentX, currentState.currentY);
+    
+    // Reset the state after ending the move
+    state.reset();
+    
+    return result;
   };
 
   const canMove = (

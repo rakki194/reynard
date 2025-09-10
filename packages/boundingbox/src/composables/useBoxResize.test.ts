@@ -9,6 +9,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { createRoot } from "solid-js";
 import { useBoxResize } from "./useBoxResize";
 import type { BoundingBox, ImageInfo } from "../types";
 
@@ -47,18 +48,20 @@ describe("useBoxResize", () => {
 
   describe("Initialization", () => {
     it("should initialize with default configuration", () => {
-      const resizeEngine = useBoxResize({
-        minWidth: 10,
-        minHeight: 10,
-        maxWidth: mockImageInfo.width,
-        maxHeight: mockImageInfo.height,
-      });
+      createRoot(() => {
+        const resizeEngine = useBoxResize({
+          minWidth: 10,
+          minHeight: 10,
+          maxWidth: mockImageInfo.width,
+          maxHeight: mockImageInfo.height,
+        });
 
-      expect(resizeEngine).toBeDefined();
-      expect(typeof resizeEngine.startResize).toBe("function");
-      expect(typeof resizeEngine.updateResize).toBe("function");
-      expect(typeof resizeEngine.endResize).toBe("function");
-      expect(typeof resizeEngine.isResizing).toBe("function");
+        expect(resizeEngine).toBeDefined();
+        expect(typeof resizeEngine.startResize).toBe("function");
+        expect(typeof resizeEngine.updateResize).toBe("function");
+        expect(typeof resizeEngine.endResize).toBe("function");
+        expect(typeof resizeEngine.isResizing).toBe("function");
+      });
     });
 
     it("should initialize with custom configuration", () => {

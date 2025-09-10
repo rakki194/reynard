@@ -22,8 +22,8 @@
  * @since 1.0.0
  */
 
+import { Acceleration, Mass, Position, Velocity } from "../examples/components";
 import { Component } from "../types";
-import { Position, Velocity, Acceleration, Mass } from "../examples/components";
 
 /**
  * Type guard to check if an object is a valid component.
@@ -42,10 +42,12 @@ function isComponent(obj: unknown): obj is Component {
  */
 function isPositionComponent(component: Component): component is Position {
   return (
-    "x" in component &&
-    "y" in component &&
-    typeof (component as Position).x === "number" &&
-    typeof (component as Position).y === "number"
+    component instanceof Position ||
+    (component.constructor.name === "Position" &&
+      "x" in component &&
+      "y" in component &&
+      typeof (component as Position).x === "number" &&
+      typeof (component as Position).y === "number")
   );
 }
 
@@ -54,10 +56,12 @@ function isPositionComponent(component: Component): component is Position {
  */
 function isVelocityComponent(component: Component): component is Velocity {
   return (
-    "x" in component &&
-    "y" in component &&
-    typeof (component as Velocity).x === "number" &&
-    typeof (component as Velocity).y === "number"
+    component instanceof Velocity ||
+    (component.constructor.name === "Velocity" &&
+      "x" in component &&
+      "y" in component &&
+      typeof (component as Velocity).x === "number" &&
+      typeof (component as Velocity).y === "number")
   );
 }
 
@@ -68,10 +72,12 @@ function isAccelerationComponent(
   component: Component,
 ): component is Acceleration {
   return (
-    "ax" in component &&
-    "ay" in component &&
-    typeof (component as Acceleration).ax === "number" &&
-    typeof (component as Acceleration).ay === "number"
+    component instanceof Acceleration ||
+    (component.constructor.name === "Acceleration" &&
+      "ax" in component &&
+      "ay" in component &&
+      typeof (component as Acceleration).ax === "number" &&
+      typeof (component as Acceleration).ay === "number")
   );
 }
 
@@ -79,7 +85,12 @@ function isAccelerationComponent(
  * Type guard to check if a component is a Mass component.
  */
 function isMassComponent(component: Component): component is Mass {
-  return "mass" in component && typeof (component as Mass).mass === "number";
+  return (
+    component instanceof Mass ||
+    (component.constructor.name === "Mass" &&
+      "mass" in component &&
+      typeof (component as Mass).mass === "number")
+  );
 }
 
 /**

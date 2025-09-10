@@ -1,41 +1,10 @@
-import { vi } from "vitest";
+/**
+ * Test setup for reynard-annotating-core
+ * 
+ * @deprecated Use setupCoreTest from reynard-testing instead
+ */
 
-// Mock console methods to reduce noise in tests
-global.console = {
-  ...console,
-  debug: vi.fn(),
-  log: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
+import { setupCoreTest } from "reynard-testing";
 
-// Mock timers
-vi.useFakeTimers();
-
-// Mock fetch for API client tests
-global.fetch = vi.fn();
-
-// Mock AbortController for request cancellation tests
-global.AbortController = vi.fn().mockImplementation(() => ({
-  abort: vi.fn(),
-  signal: {
-    aborted: false,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-  },
-}));
-
-// Mock performance.now for timing tests
-global.performance = {
-  ...global.performance,
-  now: vi.fn(() => Date.now()),
-};
-
-// Mock crypto for ID generation tests
-Object.defineProperty(global, 'crypto', {
-  value: {
-    ...global.crypto,
-    randomUUID: vi.fn(() => 'mock-uuid-1234-5678-9abc-def012345678'),
-  },
-  writable: true,
-});
+// Use unified core test setup
+setupCoreTest();

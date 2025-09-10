@@ -1,13 +1,13 @@
 # E2E Testing with Docker Playwright
 
-This document describes how to set up and run end-to-end (E2E) tests for yipyap using Docker and Playwright.
+This document describes how to set up and run end-to-end (E2E) tests for Reynard using Docker and Playwright.
 
 ## Overview
 
 The E2E testing setup uses Docker Compose to orchestrate three main services:
 
-1. **Backend Service** (`yipyap-backend`) - Runs the Python Flask backend
-2. **Frontend Service** (`yipyap-frontend`) - Runs the SolidJS development server
+1. **Backend Service** (`reynard-backend`) - Runs the Python Flask backend
+2. **Frontend Service** (`reynard-frontend`) - Runs the SolidJS development server
 3. **Playwright Tests** (`playwright-tests`) - Runs the E2E tests against the running services
 
 ## Available Versions
@@ -170,10 +170,10 @@ The `scripts/e2e-cpu.sh` script provides the same commands but for CPU-only test
 
 ```bash
 # Start backend and frontend services
-docker-compose -f docker-compose.e2e.yml --profile e2e up -d yipyap-backend yipyap-frontend
+docker-compose -f docker-compose.e2e.yml --profile e2e up -d reynard-backend reynard-frontend
 
 # Wait for services to be ready (check logs if needed)
-docker-compose -f docker-compose.e2e.yml logs -f yipyap-backend yipyap-frontend
+docker-compose -f docker-compose.e2e.yml logs -f reynard-backend reynard-frontend
 ```
 
 #### Run Tests
@@ -195,10 +195,10 @@ docker-compose -f docker-compose.e2e.yml --profile e2e run --rm playwright-tests
 
 ```bash
 # Start backend and frontend services
-docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu up -d yipyap-backend yipyap-frontend
+docker-compose -f docker-compose.e2e.cpu.yml --profile e2e-cpu up -d reynard-backend reynard-frontend
 
 # Wait for services to be ready (check logs if needed)
-docker-compose -f docker-compose.e2e.cpu.yml logs -f yipyap-backend yipyap-frontend
+docker-compose -f docker-compose.e2e.cpu.yml logs -f reynard-backend reynard-frontend
 ```
 
 #### Run Tests
@@ -248,8 +248,8 @@ The following environment variables can be set to customize the E2E testing envi
 
 | Variable                  | Default                       | Description                           |
 | ------------------------- | ----------------------------- | ------------------------------------- |
-| `PLAYWRIGHT_BASE_URL`     | `http://yipyap-frontend:5173` | Base URL for the frontend application |
-| `PLAYWRIGHT_API_BASE_URL` | `http://yipyap-backend:7000`  | Base URL for the backend API          |
+| `PLAYWRIGHT_BASE_URL`     | `http://reynard-frontend:5173` | Base URL for the frontend application |
+| `PLAYWRIGHT_API_BASE_URL` | `http://reynard-backend:7000`  | Base URL for the backend API          |
 | `CI`                      | `true`                        | Set to true in CI environment         |
 | `UID`                     | `1000`                        | User ID for Docker containers         |
 | `GID`                     | `1000`                        | Group ID for Docker containers        |
@@ -325,12 +325,12 @@ The E2E setup includes several utilities:
 
 ```bash
 # Check service logs
-docker-compose -f docker-compose.e2e.yml logs yipyap-backend
-docker-compose -f docker-compose.e2e.yml logs yipyap-frontend
+docker-compose -f docker-compose.e2e.yml logs reynard-backend
+docker-compose -f docker-compose.e2e.yml logs reynard-frontend
 
 # CPU version
-docker-compose -f docker-compose.e2e.cpu.yml logs yipyap-backend
-docker-compose -f docker-compose.e2e.cpu.yml logs yipyap-frontend
+docker-compose -f docker-compose.e2e.cpu.yml logs reynard-backend
+docker-compose -f docker-compose.e2e.cpu.yml logs reynard-frontend
 
 # Check if ports are available
 netstat -tulpn | grep :7000

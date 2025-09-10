@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
-🦊 Reynard Development Server - The Sexy Edition
-
-Enhanced development server with watchfiles support, beautiful logging,
-and comprehensive monitoring. This is how you run Reynard in style.
+🦊 Reynard Development Server
 """
 
 import asyncio
@@ -30,23 +27,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
-
-def print_banner():
-    """Print the sexy Reynard banner."""
-    banner = """
-    ╔══════════════════════════════════════════════════════════════╗
-    ║                                                              ║
-    ║  🦊 REYNARD API - THE SEXY EDITION 🦊                        ║
-    ║                                                              ║
-    ║  Built with the cunning of a fox, the thoroughness of an    ║
-    ║  otter, and the predatory precision of a wolf.              ║
-    ║                                                              ║
-    ║  This is not just code - it's a masterpiece.                ║
-    ║                                                              ║
-    ╚══════════════════════════════════════════════════════════════╝
-    """
-    print(banner)
 
 
 def check_dependencies():
@@ -87,7 +67,6 @@ def get_environment_config():
 
 def main():
     """Main development server function."""
-    print_banner()
     
     # Check dependencies
     if not check_dependencies():

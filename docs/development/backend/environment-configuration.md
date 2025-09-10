@@ -99,7 +99,7 @@ The system includes several configuration templates:
 
 The system automatically detects the current environment based on environment variables:
 
-1. **YIPYAP_ENVIRONMENT**: Explicit environment setting
+1. **REYNARD_ENVIRONMENT**: Explicit environment setting
 2. **NODE_ENV**: Node.js environment variable
 3. **PRODUCTION**: Production flag
 4. **STAGING**: Staging flag

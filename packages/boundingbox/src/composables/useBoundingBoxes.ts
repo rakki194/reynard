@@ -63,6 +63,15 @@ export function useBoundingBoxes(
     state.setSelectedBoxId(id);
   };
 
+  // Wrapper for addBox that also selects the box
+  const addBox = (box: BoundingBox): boolean => {
+    const success = operations.addBox(box);
+    if (success) {
+      state.setSelectedBoxId(box.id);
+    }
+    return success;
+  };
+
   return {
     // State accessors
     boxes: state.boxes,
@@ -71,7 +80,7 @@ export function useBoundingBoxes(
     validationErrors: state.validationErrors,
 
     // Operations
-    addBox: operations.addBox,
+    addBox,
     updateBox: operations.updateBox,
     removeBox: operations.deleteBox,
     getBox: operations.getBox,

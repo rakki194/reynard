@@ -3,21 +3,22 @@
  * Main orchestrator for performance monitoring dashboard
  */
 
+import { usePerformanceMonitor } from "reynard-composables";
 import {
   Component,
   Show,
-  createSignal,
   createEffect,
-  onMount,
+  createSignal,
   onCleanup,
+  onMount,
 } from "solid-js";
-import { Button, Tabs, TabItem } from "reynard-components";
-import { usePerformanceMonitor } from "reynard-composables";
-import { PerformanceOverviewTab } from "./PerformanceOverviewTab";
-import { PerformanceMetricsTab } from "./PerformanceMetricsTab";
-import { PerformanceMemoryTab } from "./PerformanceMemoryTab";
+import { Button } from "../primitives/Button";
+import { Tabs } from "../Tabs";
 import { PerformanceAlertsTab } from "./PerformanceAlertsTab";
 import { PerformanceExportTab } from "./PerformanceExportTab";
+import { PerformanceMemoryTab } from "./PerformanceMemoryTab";
+import { PerformanceMetricsTab } from "./PerformanceMetricsTab";
+import { PerformanceOverviewTab } from "./PerformanceOverviewTab";
 
 export interface PerformanceDashboardProps {
   isVisible: boolean;

@@ -7,9 +7,9 @@
  * @module algorithms/optimization/enhancedMemoryPool
  */
 
+import type { CollisionPair } from "../../geometry/collision/aabb-types";
 import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 import { UnionFind } from "../../union-find/union-find-core";
-import type { AABB, CollisionPair } from "../../geometry/collision/aabb-types";
 
 export interface MemoryPoolConfig {
   spatialHashPoolSize: number;
@@ -61,7 +61,7 @@ export class EnhancedMemoryPool {
   private processedSetPool: PooledObject[] = [];
   private config: MemoryPoolConfig;
   private stats: MemoryPoolStats;
-  private cleanupInterval: number;
+  private cleanupInterval: number | undefined;
   private performanceHistory: Array<{
     timestamp: number;
     poolUsage: number;

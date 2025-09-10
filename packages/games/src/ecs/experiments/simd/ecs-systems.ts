@@ -1,6 +1,6 @@
 // ECS system definitions for benchmark
 
-import { createComponentType, system } from "../../index.js";
+import { createComponentType, system, Entity } from "../../index.js";
 
 // Define components for Reynard ECS
 const Position = createComponentType<{
@@ -49,10 +49,16 @@ export class ECSSystems {
 
   static createCollisionSystem() {
     return system("collisionSystem", (world) => {
-      const queryResult = world.query(Position);
+      const query = world.query(Position);
       const collisions: number[] = [];
-      const entities = queryResult.entities;
-      const positions = queryResult.components as PositionData[];
+      const entities: Entity[] = [];
+      const positions: PositionData[] = [];
+
+      // Collect entities and positions
+      query.forEach((entity, position) => {
+        entities.push(entity);
+        positions.push(position as PositionData);
+      });
 
       for (let i = 0; i < entities.length; i++) {
         for (let j = i + 1; j < entities.length; j++) {
@@ -70,13 +76,19 @@ export class ECSSystems {
 
   static createSpatialQuerySystem() {
     return system("spatialQuerySystem", (world) => {
-      const queryResult = world.query(Position);
+      const query = world.query(Position);
       const results: number[] = [];
-      const entities = queryResult.entities;
-      const positions = queryResult.components as PositionData[];
+      const entities: Entity[] = [];
+      const positions: PositionData[] = [];
       const queryX = 0;
       const queryY = 0;
       const radius = 100;
+
+      // Collect entities and positions
+      query.forEach((entity, position) => {
+        entities.push(entity);
+        positions.push(position as PositionData);
+      });
 
       for (let i = 0; i < entities.length; i++) {
         const dx = positions[i].x - queryX;

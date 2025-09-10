@@ -1,6 +1,6 @@
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
-import { resolve } from "path";
 
 export default defineConfig({
   plugins: [solid()],
@@ -18,6 +18,8 @@ export default defineConfig({
         "chart.js",
         "solid-chartjs",
         "chartjs-adapter-date-fns",
+        "three",
+        "three/examples/jsm/controls/OrbitControls.js",
       ],
       output: {
         globals: {

@@ -8,8 +8,8 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
-import { World, ComponentType, StorageType, Component } from "../types";
+import { beforeEach, describe, expect, it } from "vitest";
+import { Component, ComponentType, StorageType, World } from "../types";
 import { createWorld } from "../world";
 
 // Test components
@@ -18,7 +18,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -26,7 +26,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -34,27 +34,27 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) {}
+  constructor(public name: string) { }
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) {}
+  constructor(public type: string) { }
 }
 
 class Bullet implements Component {
   readonly __component = true;
-  constructor(public speed: number) {}
+  constructor(public speed: number) { }
 }
 
 class Renderable implements Component {
   readonly __component = true;
-  constructor(public shape: "circle" | "rectangle" | "triangle") {}
+  constructor(public shape: "circle" | "rectangle" | "triangle") { }
 }
 
 // Component types
@@ -168,7 +168,7 @@ describe("Query System", () => {
         results.push({ entity, position, velocity });
       });
 
-      expect(results).toHaveLength(4); // Player, enemy1, enemy2, bullet1, bullet2
+      expect(results).toHaveLength(5); // Player, enemy1, enemy2, bullet1, bullet2
       expect(results.every((r) => r.position instanceof Position)).toBe(true);
       expect(results.every((r) => r.velocity instanceof Velocity)).toBe(true);
     });
@@ -274,14 +274,17 @@ describe("Query System", () => {
   describe("Change Detection Queries", () => {
     it("should query entities with added components", () => {
       // First, run a query to establish baseline
-      world.query(PositionType).forEach(() => {});
+      world.query(PositionType).forEach(() => { });
+
+      // Advance tick to establish baseline for change detection
+      world.getChangeDetection().advanceTick();
 
       // Add a new component to an existing entity
       const staticEntity = world
         .queryFiltered([PositionType], { without: [VelocityType] })
         .first();
       if (staticEntity) {
-        world.insert(staticEntity.entity, new Velocity(5, 5));
+        world.add(staticEntity.entity, VelocityType, new Velocity(5, 5));
       }
 
       const addedQuery = world.query(PositionType).added(VelocityType);
@@ -297,7 +300,10 @@ describe("Query System", () => {
 
     it("should query entities with changed components", () => {
       // First, run a query to establish baseline
-      world.query(PositionType).forEach(() => {});
+      world.query(PositionType).forEach(() => { });
+
+      // Advance tick to establish baseline for change detection
+      world.getChangeDetection().advanceTick();
 
       // Modify a component
       const player = world
@@ -307,6 +313,9 @@ describe("Query System", () => {
         const position = world.get(player.entity, PositionType);
         position.x = 150;
         position.y = 150;
+
+        // Mark component as changed
+        world.getChangeDetection().markChanged(player.entity, PositionType);
       }
 
       const changedQuery = world.query(PositionType).changed(PositionType);
@@ -332,8 +341,8 @@ describe("Query System", () => {
         velocities.push(velocity.x);
       });
 
-      expect(positions).toHaveLength(4);
-      expect(velocities).toHaveLength(4);
+      expect(positions).toHaveLength(5);
+      expect(velocities).toHaveLength(5);
       expect(positions).toEqual([100, 200, 300, 150, 250]);
       expect(velocities).toEqual([0, 10, 15, 20, 0]);
     });
@@ -421,8 +430,8 @@ describe("Query System", () => {
       const duration = endTime - startTime;
 
       expect(positionCount).toBe(1006); // 1000 new + 6 existing
-      expect(velocityCount).toBe(504); // 500 new + 4 existing
-      expect(healthCount).toBe(338); // 334 new + 4 existing
+      expect(velocityCount).toBe(505); // 500 new + 5 existing
+      expect(healthCount).toBe(336); // 334 new + 2 existing
       expect(duration).toBeLessThan(100); // Should complete in under 100ms
     });
 

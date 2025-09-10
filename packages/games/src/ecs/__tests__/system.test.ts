@@ -8,20 +8,19 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { schedule, system, systemSet } from "../system";
 import {
-  World,
+  Component,
   ComponentType,
+  Resource,
   ResourceType,
   StorageType,
-  Component,
-  Resource,
   System,
-  SystemSet,
   SystemCondition,
+  World
 } from "../types";
 import { createWorld } from "../world";
-import { system, schedule, systemSet } from "../system";
 
 // Test components
 class Position implements Component {
@@ -29,7 +28,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -37,7 +36,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -45,7 +44,7 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 // Test resources
@@ -54,7 +53,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) {}
+  ) { }
 }
 
 class GameState implements Resource {
@@ -63,43 +62,17 @@ class GameState implements Resource {
     public score: number,
     public level: number,
     public isRunning: boolean = true,
-  ) {}
+  ) { }
 }
 
-// Component types
-const PositionType: ComponentType<Position> = {
-  name: "Position",
-  id: 0,
-  storage: StorageType.Table,
-  create: () => new Position(0, 0),
-};
+// Component types - will be initialized in beforeEach
+let PositionType: ComponentType<Position>;
+let VelocityType: ComponentType<Velocity>;
+let HealthType: ComponentType<Health>;
 
-const VelocityType: ComponentType<Velocity> = {
-  name: "Velocity",
-  id: 1,
-  storage: StorageType.Table,
-  create: () => new Velocity(0, 0),
-};
-
-const HealthType: ComponentType<Health> = {
-  name: "Health",
-  id: 2,
-  storage: StorageType.SparseSet,
-  create: () => new Health(100, 100),
-};
-
-// Resource types
-const GameTimeType: ResourceType<GameTime> = {
-  name: "GameTime",
-  id: 0,
-  create: () => new GameTime(0, 0),
-};
-
-const GameStateType: ResourceType<GameState> = {
-  name: "GameState",
-  id: 1,
-  create: () => new GameState(0, 1, true),
-};
+// Resource types - will be initialized in beforeEach
+let GameTimeType: ResourceType<GameTime>;
+let GameStateType: ResourceType<GameState>;
 
 describe("System System", () => {
   let world: World;
@@ -109,14 +82,24 @@ describe("System System", () => {
   beforeEach(() => {
     world = createWorld();
 
-    // Register component types
-    world.getComponentRegistry().register(PositionType);
-    world.getComponentRegistry().register(VelocityType);
-    world.getComponentRegistry().register(HealthType);
+    // Register component types and get the type objects
+    PositionType = world
+      .getComponentRegistry()
+      .register("Position", StorageType.Table, () => new Position(0, 0));
+    VelocityType = world
+      .getComponentRegistry()
+      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    HealthType = world
+      .getComponentRegistry()
+      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
 
-    // Register resource types
-    world.getResourceRegistry().register(GameTimeType);
-    world.getResourceRegistry().register(GameStateType);
+    // Register resource types and get the type objects
+    GameTimeType = world
+      .getResourceRegistry()
+      .register("GameTime", () => new GameTime(0, 0));
+    GameStateType = world
+      .getResourceRegistry()
+      .register("GameState", () => new GameState(0, 1, true));
 
     // Add resources
     gameTime = new GameTime(16.67, 1000);
@@ -249,8 +232,9 @@ describe("System System", () => {
       });
 
       // Set up dependencies: movement -> collision -> render
-      movementSystem.addDependency(collisionSystem);
-      collisionSystem.addDependency(renderSystem);
+      // (collision depends on movement, render depends on collision)
+      collisionSystem.addDependency(movementSystem);
+      renderSystem.addDependency(collisionSystem);
 
       // Create schedule and run
       const gameSchedule = schedule()

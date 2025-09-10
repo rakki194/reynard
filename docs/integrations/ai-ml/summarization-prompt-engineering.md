@@ -1,6 +1,6 @@
 # Summarization Prompt Engineering Best Practices
 
-This guide covers best practices for designing and optimizing prompts for the summarization system in YipYap. Effective prompt engineering is crucial for generating high-quality, relevant, and useful summaries.
+This guide covers best practices for designing and optimizing prompts for the summarization system in Reynard. Effective prompt engineering is crucial for generating high-quality, relevant, and useful summaries.
 
 ## Overview
 

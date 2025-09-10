@@ -74,10 +74,10 @@ render(
 );
 ```
 
-**Advanced Router Setup with Layout (Yipyap Pattern):**
+**Advanced Router Setup with Layout (Reynard Pattern):**
 
 ```tsx
-// third_party/yipyap/src/main.tsx
+// third_party/reynard/src/main.tsx
 import { Router } from "@solidjs/router";
 import { routes } from "./router";
 
@@ -179,12 +179,12 @@ const App: Component = () => {
 
 Configure routes programmatically for better organization and performance optimization. This approach is preferred for larger applications with complex routing requirements.
 
-### Yipyap CMS Route Configuration
+### Reynard CMS Route Configuration
 
-**Real-world example from Yipyap CMS:**
+**Real-world example from Reynard CMS:**
 
 ```tsx
-// third_party/yipyap/src/router.ts
+// third_party/reynard/src/router.ts
 import { lazy } from "solid-js";
 import { RouteDefinition } from "@solidjs/router";
 import { NotFound } from "./pages/not_found";
@@ -282,10 +282,10 @@ Optimize application performance through strategic component loading. Lazy loadi
 
 ### Production Lazy Loading Patterns
 
-**Yipyap CMS Implementation:**
+**Reynard CMS Implementation:**
 
 ```tsx
-// third_party/yipyap/src/router.ts
+// third_party/reynard/src/router.ts
 import { lazy } from "solid-js";
 
 // Lazy load components for code splitting
@@ -427,10 +427,9 @@ Control navigation programmatically for dynamic user interactions. This is essen
 
 #### useNavigate Hook
 
-**Real-world example from Yipyap CMS:**
+**Real-world example from Reynard CMS:**
 
 ```tsx
-// third_party/yipyap/src/components/Video/VideoGrid.tsx
 import { useNavigate } from "@solidjs/router";
 
 export const VideoGrid: Component<VideoGridProps> = (props) => {
@@ -777,7 +776,7 @@ const App = () => (
 **Comprehensive 404 Handling:**
 
 ```tsx
-// Yipyap CMS 404 pattern
+// Reynard CMS 404 pattern
 const routes: RouteDefinition[] = [
   {
     path: "/",
@@ -908,7 +907,7 @@ test("navigates between routes", () => {
 **Testing Components with Router Dependencies:**
 
 ```tsx
-// third_party/yipyap/src/composables/useConnectionStatus.test.tsx
+// third_party/reynard/src/composables/useConnectionStatus.test.tsx
 import { vi } from "vitest";
 
 // Mock router hooks
@@ -956,7 +955,7 @@ test("navigates through application routes", async ({ page }) => {
 
 ## Best Practices
 
-Follow established patterns for maintainable and performant routing. These practices are derived from real-world implementations in the Reynard and Yipyap ecosystems.
+Follow established patterns for maintainable and performant routing. These practices are derived from real-world implementations in the Reynard ecosystem.
 
 ### Route Organization
 
@@ -1178,7 +1177,7 @@ const PerformanceMonitor: Component = () => {
 
 ## Conclusion
 
-Solid Router provides a comprehensive routing solution for SolidJS applications with excellent performance and developer experience. Through real-world implementations in the Reynard and Yipyap ecosystems, we've demonstrated how to build scalable, maintainable routing architectures.
+Solid Router provides a comprehensive routing solution for SolidJS applications with excellent performance and developer experience. Through real-world implementations in the Reynard ecosystem, we've demonstrated how to build scalable, maintainable routing architectures.
 
 ### Key Implementation Patterns
 
@@ -1215,7 +1214,7 @@ Solid Router provides a comprehensive routing solution for SolidJS applications 
 The patterns demonstrated in this guide are actively used in:
 
 - **Reynard Documentation Site**: Complex documentation routing with search and navigation
-- **Yipyap CMS**: Media gallery routing with authentication and file handling
+- **Reynard CMS**: Media gallery routing with authentication and file handling
 - **Reynard Dashboard**: Multi-page application with settings and analytics
 
 These implementations showcase how Solid Router scales from simple single-page applications to complex enterprise solutions while maintaining excellent performance and developer experience.

@@ -1,63 +1,10 @@
 /**
- * Test Setup for Error Boundaries
- * Global test configuration and utilities
+ * Test setup for reynard-error-boundaries
+ * 
+ * @deprecated Use setupBrowserTest from reynard-testing instead
  */
 
-import { vi } from "vitest";
+import { setupBrowserTest } from "reynard-testing";
 
-// Mock global error handlers
-
-// Mock fetch for error reporting tests
-global.fetch = vi.fn();
-
-// Mock console methods to avoid noise in tests
-global.console = {
-  ...console,
-  error: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-};
-
-// Mock sessionStorage
-Object.defineProperty(window, "sessionStorage", {
-  value: {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
-  writable: true,
-});
-
-// Mock localStorage
-Object.defineProperty(window, "localStorage", {
-  value: {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
-  writable: true,
-});
-
-// Mock location
-Object.defineProperty(window, "location", {
-  value: {
-    href: "http://localhost:3000/test",
-    reload: vi.fn(),
-  },
-  writable: true,
-});
-
-// Mock navigator
-Object.defineProperty(window, "navigator", {
-  value: {
-    userAgent: "Mozilla/5.0 (Test Browser)",
-  },
-  writable: true,
-});
-
-// Clean up after each test
-afterEach(() => {
-  vi.clearAllMocks();
-});
+// Use unified browser test setup
+setupBrowserTest();

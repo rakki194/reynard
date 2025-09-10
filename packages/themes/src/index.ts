@@ -5,86 +5,52 @@
 
 // Export types
 export type {
-  ThemeName,
-  LanguageCode,
-  Locale,
-  ThemeConfig,
-  ThemeColors,
-  ThemeAnimations,
-  ThemeTypography,
-  ThemeSpacing,
-  ThemeShadows,
-  ThemeBorders,
-  ThemeContext,
-  ReynardContext,
-  ThemeProviderProps,
-  Language,
+  Language, LanguageCode,
+  Locale, ReynardContext, ThemeAnimations, ThemeBorders, ThemeColors, ThemeConfig, ThemeContext, ThemeName, ThemeProviderProps, ThemeShadows, ThemeSpacing, ThemeTypography
 } from "./types";
 
 // Export theme configurations
 export {
-  themes,
-  getTheme,
-  getAvailableThemes,
-  isDarkTheme,
-  isHighContrastTheme,
+  getAvailableThemes, getTheme, isDarkTheme,
+  isHighContrastTheme, themes
 } from "./themes";
 
 // Export theme utilities
 export {
-  computeTagBackground,
-  computeTagColor,
-  computeHoverStyles,
-  computeAnimation,
-  generateThemeCSS,
-  applyTheme,
+  applyTheme, computeAnimation, computeHoverStyles, computeTagBackground,
+  computeTagColor, generateThemeCSS
 } from "./themeUtils";
 
 // Export system theme utilities
 export {
-  getThemeIcon,
-  supportsReducedMotion,
-  getSystemThemePreference,
-  onSystemThemeChange,
+  getSystemThemePreference, getThemeIcon, onSystemThemeChange, supportsReducedMotion
 } from "./systemThemeUtils";
 
-// Re-export OKLCH utilities from color-media for advanced color manipulation
+// Re-export OKLCH utilities from colors for advanced color manipulation
 export {
-  createTagColorGenerator,
-  formatOKLCH,
-  generateColorPalette,
   adjustLightness,
-  adjustSaturation,
-  type OKLCHColor,
+  adjustSaturation, createTagColorGenerator,
+  formatOKLCH,
+  generateColorPalette, type OKLCHColor
 } from "reynard-colors";
 
 // Re-export i18n system from reynard-i18n
 export {
-  languages,
-  isRTL,
-  useI18n as useI18nCore,
   I18nProvider,
-  createI18nModule,
+  createI18nModule, isRTL, languages, useI18n as useI18nCore
 } from "reynard-i18n";
 
 // Export providers and hooks
 export {
-  ReynardProvider,
-  useReynard,
+  ReynardProvider, useI18n, useReynard,
   useTheme,
-  useTranslation,
-  useI18n,
+  useTranslation
 } from "./ThemeProvider";
 
 // Export OKLCH color system
 export {
-  getOKLCHColor,
-  getOKLCHCSSColor,
-  generateColorVariant,
-  generateThemeColorPalette,
-  generateTagColor,
-  generateComplementaryColors,
-  generateOKLCHGradient,
+  generateColorVariant, generateComplementaryColors,
+  generateOKLCHGradient, generateTagColor, generateThemeColorPalette, getOKLCHCSSColor, getOKLCHColor
 } from "./oklchColors";
 
 // Export OKLCH palettes
@@ -92,25 +58,22 @@ export { themeOKLCHPalettes } from "./oklchPalettes";
 
 // Export OKLCH hooks
 export {
-  useOKLCHColors,
-  useTagColors,
-  useColorPalette,
-  useThemeColors,
+  useColorPalette, useOKLCHColors,
+  useTagColors, useThemeColors
 } from "./useOKLCHColors";
 
 // Export color conversion utilities
 export {
   // Native OKLCH CSS functions (preferred for modern browsers)
   oklchStringToCSS,
-  oklchStringToCSSWithAlpha,
+  oklchStringToCSSWithAlpha, oklchStringToHex,
   // Legacy RGB conversion functions (for non-CSS use cases)
-  oklchStringToRgb,
-  oklchStringToHex,
-  oklchToRgb,
+  oklchStringToRgb, oklchToRgb,
   type OKLCH,
-  type RGB,
+  type RGB
 } from "./colorConversion";
 
 // Export CSS
-import "./themes.css";
 import "./oklch-themes.css";
+import "./themes.css";
+

@@ -10,7 +10,7 @@ class OllamaConfig(BaseModel):
     """Configuration for Ollama service."""
     enabled: bool = Field(True, description="Whether Ollama service is enabled")
     base_url: str = Field("http://localhost:11434", description="Ollama server URL")
-    default_model: str = Field("llama3.1", description="Default model for generation")
+    default_model: str = Field("qwen3:latest", description="Default model for generation")
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
     assistant_enabled: bool = Field(True, description="Enable ReynardAssistant")
@@ -21,7 +21,7 @@ class OllamaConfig(BaseModel):
 class OllamaChatParams(BaseModel):
     """Parameters for Ollama chat."""
     message: str = Field(..., description="User message")
-    model: str = Field("llama3.1", description="Ollama model to use")
+    model: str = Field("qwen3:latest", description="Ollama model to use")
     system_prompt: Optional[str] = Field(None, description="System prompt for context")
     temperature: float = Field(0.7, description="Sampling temperature")
     max_tokens: int = Field(2048, description="Maximum tokens to generate")
@@ -34,7 +34,7 @@ class OllamaAssistantParams(BaseModel):
     """Parameters for ReynardAssistant."""
     message: str = Field(..., description="User message")
     assistant_type: str = Field("reynard", description="Assistant type")
-    model: str = Field("llama3.1", description="Ollama model to use")
+    model: str = Field("qwen3:latest", description="Ollama model to use")
     temperature: float = Field(0.7, description="Sampling temperature")
     max_tokens: int = Field(2048, description="Maximum tokens to generate")
     stream: bool = Field(True, description="Enable streaming response")

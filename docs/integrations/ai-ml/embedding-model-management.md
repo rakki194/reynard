@@ -1,6 +1,6 @@
 # Embedding Model Management
 
-This document provides comprehensive guidance for managing embedding models in the YipYap RAG system, including automatic unloading, memory optimization, configuration options, and operational best practices.
+This document provides comprehensive guidance for managing embedding models in the Reynard RAG system, including automatic unloading, memory optimization, configuration options, and operational best practices.
 
 ## Overview
 

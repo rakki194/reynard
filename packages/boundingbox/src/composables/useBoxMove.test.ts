@@ -53,6 +53,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       expect(moveEngine).toBeDefined();
@@ -85,6 +86,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -102,6 +104,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -125,6 +128,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -145,6 +149,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       // Try to move box beyond image bounds
@@ -172,10 +177,14 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
+        constraints: {
+          enableBoundaryCheck: false,
+        },
       });
 
       // Try to move box beyond image bounds
-      moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 2000, 2000);
+      moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 0, 0);
       moveEngine.updateBoxMove(2000, 2000);
 
       const callArgs = mockCallbacks.onBoxMoved.mock.calls[0];
@@ -193,6 +202,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 200, 200);
@@ -214,6 +224,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       // Move to a position that should snap
@@ -235,6 +246,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       // Move to a position that would normally snap
@@ -256,6 +268,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       // Move to align with image center
@@ -279,6 +292,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 200, 200);
@@ -295,6 +309,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       expect(() => {
@@ -313,6 +328,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       const invalidBox = {
@@ -355,6 +371,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       expect(() => {
@@ -369,6 +386,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       expect(() => {
@@ -385,6 +403,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       expect(moveEngine.isMoving()).toBe(false);
@@ -403,6 +422,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -419,6 +439,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -430,7 +451,9 @@ describe("useBoxMove", () => {
       expect(moveState?.startY).toBe(100);
 
       moveEngine.endBoxMove();
-      expect(moveEngine.moveState()).toBe(null);
+      const finalState = moveEngine.moveState();
+      expect(finalState.isMoving).toBe(false);
+      expect(finalState.boxId).toBe(null);
     });
   });
 
@@ -442,6 +465,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
@@ -464,6 +488,7 @@ describe("useBoxMove", () => {
 
       const moveEngine = useBoxMove(mockBoundingBoxes, {
         imageInfo: mockImageInfo,
+        callbacks: mockCallbacks,
       });
 
       const boxes = Array.from({ length: 10 }, (_, i) => ({

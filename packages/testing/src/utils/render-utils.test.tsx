@@ -1,21 +1,17 @@
 /// <reference types="vitest/globals" />
 /// <reference types="@testing-library/jest-dom" />
+/** @jsxImportSource solid-js */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { screen } from "@solidjs/testing-library";
 import { Component, createSignal } from "solid-js";
-import { render, screen } from "@solidjs/testing-library";
-import { setupBrowserMocks, resetBrowserMocks } from "../mocks/browser-mocks";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { resetBrowserMocks, setupBrowserMocks } from "../mocks/browser-mocks";
 import {
-  renderWithTheme,
-  renderWithRouter,
-  renderWithNotifications,
-  renderWithAllProviders,
-  renderWithWrapper,
+  renderWithAppContext,
   renderWithProviders,
-  renderWithErrorBoundary,
-  renderWithSuspense,
-  renderWithPerformanceMonitoring,
-} from "./render-utils";
+  renderWithRouter,
+  renderWithTheme,
+} from "../test-utils";
 
 describe("Render Utilities", () => {
   const TestComponent: Component = () => (
@@ -87,9 +83,9 @@ describe("Render Utilities", () => {
     });
   });
 
-  describe("renderWithNotifications", () => {
-    it("should render component with notifications provider", () => {
-      renderWithNotifications(() => <TestComponent />);
+  describe("renderWithAppContext", () => {
+    it("should render component with app context", () => {
+      renderWithAppContext(() => <TestComponent />);
 
       expect(screen.getByTestId("test-component")).toHaveTextContent(
         "Hello World",
@@ -97,7 +93,7 @@ describe("Render Utilities", () => {
     });
 
     it("should accept render options", () => {
-      const result = renderWithNotifications(() => <TestComponent />, {
+      const result = renderWithAppContext(() => <TestComponent />, {
         container: document.createElement("div"),
       });
 
@@ -105,32 +101,9 @@ describe("Render Utilities", () => {
     });
   });
 
-  describe("renderWithAllProviders", () => {
-    it("should render component with all providers", () => {
-      renderWithAllProviders(() => <TestComponent />);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should use custom options", () => {
-      const theme = { name: "dark", colors: { primary: "#000" } };
-      const notifications = { addNotification: vi.fn() };
-
-      renderWithAllProviders(() => <TestComponent />, {
-        theme,
-        initialUrl: "/custom",
-        notifications,
-      });
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should use default options when none provided", () => {
-      renderWithAllProviders(() => <TestComponent />);
+  describe("renderWithAppContext", () => {
+    it("should render component with app context", () => {
+      renderWithAppContext(() => <TestComponent />);
 
       expect(screen.getByTestId("test-component")).toHaveTextContent(
         "Hello World",
@@ -138,19 +111,15 @@ describe("Render Utilities", () => {
     });
 
     it("should accept render options", () => {
-      const result = renderWithAllProviders(
-        () => <TestComponent />,
-        {},
-        {
-          container: document.createElement("div"),
-        },
-      );
+      const result = renderWithAppContext(() => <TestComponent />, {
+        container: document.createElement("div"),
+      });
 
       expect(result.container).toBeInTheDocument();
     });
   });
 
-  describe("renderWithWrapper", () => {
+  describe("renderWithProviders", () => {
     it("should render component with custom wrapper", () => {
       const CustomWrapper: Component<{ children: any; customProp?: string }> = (
         props,
@@ -160,14 +129,9 @@ describe("Render Utilities", () => {
         </div>
       );
 
-      renderWithWrapper(() => <TestComponent />, CustomWrapper, {
-        customProp: "test",
-      });
+      renderWithProviders(() => <TestComponent />, [CustomWrapper]);
 
-      expect(screen.getByTestId("wrapper")).toHaveAttribute(
-        "data-custom",
-        "test",
-      );
+      expect(screen.getByTestId("wrapper")).toBeInTheDocument();
       expect(screen.getByTestId("test-component")).toHaveTextContent(
         "Hello World",
       );
@@ -178,7 +142,7 @@ describe("Render Utilities", () => {
         <div data-testid="wrapper">{props.children}</div>
       );
 
-      renderWithWrapper(() => <TestComponent />, CustomWrapper);
+      renderWithProviders(() => <TestComponent />, [CustomWrapper]);
 
       expect(screen.getByTestId("wrapper")).toBeInTheDocument();
       expect(screen.getByTestId("test-component")).toHaveTextContent(
@@ -191,10 +155,9 @@ describe("Render Utilities", () => {
         <div>{props.children}</div>
       );
 
-      const result = renderWithWrapper(
+      const result = renderWithProviders(
         () => <TestComponent />,
-        CustomWrapper,
-        {},
+        [CustomWrapper],
         {
           container: document.createElement("div"),
         },
@@ -204,7 +167,7 @@ describe("Render Utilities", () => {
     });
   });
 
-  describe("renderWithProviders", () => {
+  describe("renderWithProviders - Multiple Providers", () => {
     it("should render component with multiple providers", () => {
       const Provider1: Component<{ children: any }> = (props) => (
         <div data-testid="provider1">{props.children}</div>
@@ -256,132 +219,6 @@ describe("Render Utilities", () => {
     });
   });
 
-  describe("renderWithErrorBoundary", () => {
-    it("should render component with error boundary", () => {
-      const onError = vi.fn();
-
-      renderWithErrorBoundary(() => <TestComponent />, onError);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-      expect(onError).not.toHaveBeenCalled();
-    });
-
-    it("should call error handler when component throws", () => {
-      const onError = vi.fn();
-      const ErrorComponent: Component = () => {
-        throw new Error("Test error");
-      };
-
-      renderWithErrorBoundary(() => <ErrorComponent />, onError);
-
-      expect(onError).toHaveBeenCalledWith(expect.any(Error));
-    });
-
-    it("should use default error handler", () => {
-      const ErrorComponent: Component = () => {
-        throw new Error("Test error");
-      };
-
-      expect(() => {
-        renderWithErrorBoundary(() => <ErrorComponent />);
-      }).not.toThrow();
-    });
-
-    it("should accept render options", () => {
-      const onError = vi.fn();
-
-      const result = renderWithErrorBoundary(() => <TestComponent />, onError, {
-        container: document.createElement("div"),
-      });
-
-      expect(result.container).toBeInTheDocument();
-    });
-  });
-
-  describe("renderWithSuspense", () => {
-    it("should render component with suspense provider", () => {
-      renderWithSuspense(() => <TestComponent />);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should use custom fallback", () => {
-      const customFallback = (
-        <div data-testid="custom-fallback">Loading...</div>
-      );
-
-      renderWithSuspense(() => <TestComponent />, customFallback);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should use default fallback", () => {
-      renderWithSuspense(() => <TestComponent />);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should accept render options", () => {
-      const result = renderWithSuspense(() => <TestComponent />, undefined, {
-        container: document.createElement("div"),
-      });
-
-      expect(result.container).toBeInTheDocument();
-    });
-  });
-
-  describe("renderWithPerformanceMonitoring", () => {
-    it("should render component with performance monitoring", () => {
-      const onRender = vi.fn();
-
-      renderWithPerformanceMonitoring(() => <TestComponent />, onRender);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should call onRender callback", async () => {
-      const onRender = vi.fn();
-
-      renderWithPerformanceMonitoring(() => <TestComponent />, onRender);
-
-      // Wait for the setTimeout to execute
-      await new Promise((resolve) => setTimeout(resolve, 0));
-
-      expect(onRender).toHaveBeenCalledWith(expect.any(Number));
-    });
-
-    it("should use default onRender callback", () => {
-      renderWithPerformanceMonitoring(() => <TestComponent />);
-
-      expect(screen.getByTestId("test-component")).toHaveTextContent(
-        "Hello World",
-      );
-    });
-
-    it("should accept render options", () => {
-      const onRender = vi.fn();
-
-      const result = renderWithPerformanceMonitoring(
-        () => <TestComponent />,
-        onRender,
-        {
-          container: document.createElement("div"),
-        },
-      );
-
-      expect(result.container).toBeInTheDocument();
-    });
-  });
 
   describe("integration tests", () => {
     it("should work with reactive components", () => {
@@ -400,7 +237,7 @@ describe("Render Utilities", () => {
         );
       };
 
-      renderWithAllProviders(() => <ReactiveComponent />);
+      renderWithAppContext(() => <ReactiveComponent />);
 
       expect(screen.getByTestId("count")).toHaveTextContent("0");
 

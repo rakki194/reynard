@@ -1,6 +1,6 @@
 # Stylelint Setup for CSS Cleanup Quest
 
-This document describes the Stylelint configuration and tooling setup for the CSS cleanup quest in YipYap.
+This document describes the Stylelint configuration and tooling setup for the CSS cleanup quest in Reynard.
 
 ## Overview
 

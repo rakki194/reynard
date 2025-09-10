@@ -8,17 +8,17 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
+import { schedule, system, systemSet } from "../system";
 import {
-  World,
+  Component,
   ComponentType,
+  Resource,
   ResourceType,
   StorageType,
-  Component,
-  Resource,
+  World,
 } from "../types";
 import { createWorld } from "../world";
-import { system, schedule, systemSet } from "../system";
 
 // Game components
 class Position implements Component {
@@ -26,7 +26,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -34,7 +34,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -42,27 +42,27 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) {}
+  constructor(public name: string) { }
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) {}
+  constructor(public type: string) { }
 }
 
 class Bullet implements Component {
   readonly __component = true;
-  constructor(public speed: number) {}
+  constructor(public speed: number) { }
 }
 
 class Renderable implements Component {
   readonly __component = true;
-  constructor(public shape: "circle" | "rectangle" | "triangle") {}
+  constructor(public shape: "circle" | "rectangle" | "triangle") { }
 }
 
 // Game resources
@@ -71,7 +71,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) {}
+  ) { }
 }
 
 class GameState implements Resource {
@@ -80,7 +80,7 @@ class GameState implements Resource {
     public score: number,
     public level: number,
     public isRunning: boolean = true,
-  ) {}
+  ) { }
 }
 
 class InputState implements Resource {
@@ -89,77 +89,22 @@ class InputState implements Resource {
     public keys: Set<string> = new Set(),
     public mouseX: number = 0,
     public mouseY: number = 0,
-  ) {}
+  ) { }
 }
 
-// Component types
-const PositionType: ComponentType<Position> = {
-  name: "Position",
-  id: 0,
-  storage: StorageType.Table,
-  create: () => new Position(0, 0),
-};
+// Component types - will be initialized in beforeEach
+let PositionType: ComponentType<Position>;
+let VelocityType: ComponentType<Velocity>;
+let HealthType: ComponentType<Health>;
+let PlayerType: ComponentType<Player>;
+let EnemyType: ComponentType<Enemy>;
+let BulletType: ComponentType<Bullet>;
+let RenderableType: ComponentType<Renderable>;
 
-const VelocityType: ComponentType<Velocity> = {
-  name: "Velocity",
-  id: 1,
-  storage: StorageType.Table,
-  create: () => new Velocity(0, 0),
-};
-
-const HealthType: ComponentType<Health> = {
-  name: "Health",
-  id: 2,
-  storage: StorageType.SparseSet,
-  create: () => new Health(100, 100),
-};
-
-const PlayerType: ComponentType<Player> = {
-  name: "Player",
-  id: 3,
-  storage: StorageType.SparseSet,
-  create: () => new Player("Player"),
-};
-
-const EnemyType: ComponentType<Enemy> = {
-  name: "Enemy",
-  id: 4,
-  storage: StorageType.SparseSet,
-  create: () => new Enemy("basic"),
-};
-
-const BulletType: ComponentType<Bullet> = {
-  name: "Bullet",
-  id: 5,
-  storage: StorageType.SparseSet,
-  create: () => new Bullet(300),
-};
-
-const RenderableType: ComponentType<Renderable> = {
-  name: "Renderable",
-  id: 6,
-  storage: StorageType.Table,
-  create: () => new Renderable("circle"),
-};
-
-// Resource types
-const GameTimeType: ResourceType<GameTime> = {
-  name: "GameTime",
-  id: 0,
-  create: () => new GameTime(0, 0),
-};
-
-const GameStateType: ResourceType<GameState> = {
-  name: "GameState",
-  id: 1,
-  create: () => new GameState(0, 1, true),
-};
-
-const InputStateType: ResourceType<InputState> = {
-  name: "InputState",
-  id: 2,
-  create: () => new InputState(),
-};
+// Resource types - will be initialized in beforeEach
+let GameTimeType: ResourceType<GameTime>;
+let GameStateType: ResourceType<GameState>;
+let InputStateType: ResourceType<InputState>;
 
 describe("ECS Integration Tests", () => {
   let world: World;
@@ -171,18 +116,32 @@ describe("ECS Integration Tests", () => {
     world = createWorld();
 
     // Register component types
-    world.getComponentRegistry().register(PositionType);
-    world.getComponentRegistry().register(VelocityType);
-    world.getComponentRegistry().register(HealthType);
-    world.getComponentRegistry().register(PlayerType);
-    world.getComponentRegistry().register(EnemyType);
-    world.getComponentRegistry().register(BulletType);
-    world.getComponentRegistry().register(RenderableType);
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
+    world.getComponentRegistry().register("Bullet", StorageType.SparseSet, () => new Bullet(300));
+    world.getComponentRegistry().register("Renderable", StorageType.Table, () => new Renderable("circle"));
+
+    // Get the registered component types
+    PositionType = world.getComponentRegistry().getByName("Position")!;
+    VelocityType = world.getComponentRegistry().getByName("Velocity")!;
+    HealthType = world.getComponentRegistry().getByName("Health")!;
+    PlayerType = world.getComponentRegistry().getByName("Player")!;
+    EnemyType = world.getComponentRegistry().getByName("Enemy")!;
+    BulletType = world.getComponentRegistry().getByName("Bullet")!;
+    RenderableType = world.getComponentRegistry().getByName("Renderable")!;
 
     // Register resource types
-    world.getResourceRegistry().register(GameTimeType);
-    world.getResourceRegistry().register(GameStateType);
-    world.getResourceRegistry().register(InputStateType);
+    world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
+    world.getResourceRegistry().register("GameState", () => new GameState(0, 1, true));
+    world.getResourceRegistry().register("InputState", () => new InputState());
+
+    // Get the registered resource types
+    GameTimeType = world.getResourceRegistry().getByName("GameTime")!;
+    GameStateType = world.getResourceRegistry().getByName("GameState")!;
+    InputStateType = world.getResourceRegistry().getByName("InputState")!;
 
     // Add resources
     gameTime = new GameTime(16.67, 1000);
@@ -302,8 +261,8 @@ describe("ECS Integration Tests", () => {
       // Create game schedule
       const gameSchedule = schedule()
         .addSystem(inputSystem)
-        .addSystem(movementSystem)
         .addSystem(enemyAISystem)
+        .addSystem(movementSystem)
         .addSystem(collisionSystem)
         .addSystem(renderSystem);
 
@@ -463,7 +422,7 @@ describe("ECS Integration Tests", () => {
         timeSystem.run(world);
       }
 
-      expect(gameTime.totalTime).toBeCloseTo(166.7, 1); // 10 * 16.67
+      expect(gameTime.totalTime).toBeCloseTo(1166.7, 1); // 1000 + 10 * 16.67
     });
   });
 

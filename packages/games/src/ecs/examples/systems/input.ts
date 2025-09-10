@@ -1,17 +1,16 @@
 // Input and player control systems
 
-import { World } from "../../types";
+import { Entity, World } from "../../types";
 import {
-  Position,
-  Velocity,
-  InputState,
-  Player,
   Bullet,
-  Lifetime,
-  PositionType,
-  VelocityType,
-  PlayerType,
+  InputState,
   InputStateType,
+  Lifetime,
+  PlayerType,
+  Position,
+  PositionType,
+  Velocity,
+  VelocityType,
 } from "../components";
 
 /**
@@ -24,7 +23,7 @@ export function playerInputSystem(world: World): void {
   const query = world.query(PlayerType, VelocityType);
   const speed = 200; // pixels per second
 
-  query.forEach((entity, player, velocity) => {
+  query.forEach((_entity: Entity, _player: any, velocity: any) => {
     const vel = velocity as Velocity;
     // Reset velocity
     vel.x = 0;
@@ -56,11 +55,11 @@ export function shootingSystem(world: World): void {
   const query = world.query(PlayerType, PositionType);
   const bulletSpeed = 300; // pixels per second
 
-  query.forEach((entity, player, position) => {
+  query.forEach((_entity: Entity, _player: any, position: any) => {
     const pos = position as Position;
     if (inputState.keys.has("Space")) {
       // Create bullet
-      const bullet = world.spawn(
+      world.spawn(
         new Position(pos.x, pos.y),
         new Velocity(0, -bulletSpeed),
         new Bullet(bulletSpeed),

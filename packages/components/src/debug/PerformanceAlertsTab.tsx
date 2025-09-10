@@ -3,8 +3,8 @@
  * Performance alerts tab for performance dashboard
  */
 
-import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components";
+import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { Button } from "../primitives/Button";
 
 export interface PerformanceAlertsTabProps {
   warnings: Array<{

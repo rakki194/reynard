@@ -1,9 +1,9 @@
-import { beforeAll, afterEach } from "vitest";
-import { cleanup } from "@solidjs/testing-library";
+import { afterEach, beforeAll } from "vitest";
+// import { cleanup } from "@solidjs/testing-library";
 
 // Cleanup after each test case
 afterEach(() => {
-  cleanup();
+  // cleanup();
 });
 
 // Mock Monaco Editor for testing

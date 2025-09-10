@@ -1,6 +1,6 @@
 # Streaming Tool Execution
 
-This document describes the streaming tool execution functionality in yipyap, which allows tools to emit progress updates and intermediate results during execution.
+This document describes the streaming tool execution functionality in Reynard, which allows tools to emit progress updates and intermediate results during execution.
 
 ## Overview
 

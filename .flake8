@@ -32,6 +32,7 @@ per-file-ignores =
     # Allow some flexibility in scripts
     scripts/*:E501,F401
 max-complexity = 10
+max-file-length = 250
 select = 
     C,  # Complexity
     E,  # pycodestyle errors

@@ -1,19 +1,19 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  expectPromiseToResolve,
-  expectPromiseToReject,
-  expectFunctionToBeCalledWith,
-  expectFunctionToBeCalledTimes,
-  expectFunctionNotToBeCalled,
-  expectFunctionToBeCalled,
-  expectValueToBeInRange,
-  expectValueToBeApproximately,
   expectArrayToContain,
   expectArrayToHaveLength,
+  expectFunctionNotToBeCalled,
+  expectFunctionToBeCalled,
+  expectFunctionToBeCalledTimes,
+  expectFunctionToBeCalledWith,
   expectObjectToHaveProperties,
   expectObjectToHaveValues,
-  expectStringToMatch,
+  expectPromiseToReject,
+  expectPromiseToResolve,
   expectStringToContain,
+  expectStringToMatch,
+  expectValueToBeApproximately,
+  expectValueToBeInRange,
 } from "./assertion-utils";
 
 describe("Async and Value Assertions", () => {
@@ -38,20 +38,26 @@ describe("Async and Value Assertions", () => {
 
       it("should throw when promise rejects", async () => {
         const promise = Promise.reject(new Error("Rejected"));
+        // Add catch to prevent unhandled rejection
+        promise.catch(() => { });
 
-        await expect(() => expectPromiseToResolve(promise)).rejects.toThrow();
+        await expect(expectPromiseToResolve(promise)).rejects.toThrow();
       });
     });
 
     describe("expectPromiseToReject", () => {
       it("should reject successfully", async () => {
         const promise = Promise.reject(new Error("Expected error"));
+        // Add catch to prevent unhandled rejection
+        promise.catch(() => { });
 
         await expectPromiseToReject(promise);
       });
 
       it("should reject with expected error", async () => {
         const promise = Promise.reject(new Error("Expected error"));
+        // Add catch to prevent unhandled rejection
+        promise.catch(() => { });
 
         await expectPromiseToReject(promise, "Expected error");
       });
@@ -59,7 +65,7 @@ describe("Async and Value Assertions", () => {
       it("should throw when promise resolves", async () => {
         const promise = Promise.resolve("value");
 
-        await expect(() => expectPromiseToReject(promise)).rejects.toThrow();
+        await expect(expectPromiseToReject(promise)).rejects.toThrow();
       });
     });
   });

@@ -91,8 +91,8 @@ export default {
       priority: 13,
     },
     {
-      name: "color-media",
-      path: "/home/kade/runeset/reynard/packages/color-media",
+      name: "colors",
+      path: "/home/kade/runeset/reynard/packages/colors",
       category: "Media Processing",
       priority: 14,
     },

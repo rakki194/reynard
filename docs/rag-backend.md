@@ -60,6 +60,8 @@ WITH (m=16, ef_construction=200);
 
 ## API Endpoints
 
+See [Shared API Patterns](./shared/api-patterns.md) for common request/response structures and error handling.
+
 ### Core Search Operations
 
 #### `POST /api/rag/query`
@@ -114,21 +116,12 @@ Stream document ingestion with real-time progress updates.
 
 ### Administrative Operations
 
-#### `GET /api/rag/admin/stats`
+Standard admin endpoints following [Shared API Patterns](./shared/api-patterns.md):
 
-Get comprehensive system statistics including document counts, embedding coverage, and performance metrics.
-
-#### `GET /api/rag/admin/indexing-status`
-
-Monitor indexing queue depth, processing rates, and estimated completion times.
-
-#### `POST /api/rag/admin/rebuild-index`
-
-Rebuild vector indexes for optimal performance.
-
-#### `POST /api/rag/admin/clear-cache`
-
-Clear system caches and reset performance counters.
+- `GET /api/rag/admin/stats` - System statistics
+- `GET /api/rag/admin/indexing-status` - Indexing queue status
+- `POST /api/rag/admin/rebuild-index` - Rebuild vector indexes
+- `POST /api/rag/admin/clear-cache` - Clear system caches
 
 ## Configuration
 
@@ -255,30 +248,13 @@ async def get_stats(self) -> Dict[str, Any]:
 
 ## Installation and Setup
 
+See [Shared Installation Guides](./shared/installation-guides.md) for detailed setup instructions.
+
 ### Prerequisites
 
-1. **PostgreSQL with pgvector**:
-
-   ```bash
-   # Install PostgreSQL and pgvector
-   sudo apt-get install postgresql postgresql-contrib
-   # Install pgvector extension (see pgvector documentation)
-   ```
-
-2. **Ollama** (for embedding generation):
-
-   ```bash
-   # Install Ollama
-   curl -fsSL https://ollama.ai/install.sh | sh
-   
-   # Start Ollama service
-   ollama serve
-   
-   # Pull embedding models
-   ollama pull mxbai-embed-large
-   ollama pull bge-m3
-   ollama pull nomic-embed-text
-   ```
+1. **PostgreSQL with pgvector** - See shared installation guide
+2. **Ollama** - See shared installation guide for embedding generation
+3. **Python environment** - See shared installation guide
 
 ### Database Setup
 
@@ -296,23 +272,15 @@ async def get_stats(self) -> Dict[str, Any]:
 
 ### Configuration
 
-1. **Copy configuration template**:
+See [Shared Configuration Examples](./shared/configuration-examples.md) for environment setup.
 
-   ```bash
-   cp rag_config_example.env .env
-   ```
+**Key environment variables:**
 
-2. **Update database connection**:
-
-   ```env
-   PG_DSN=postgresql://username:password@localhost:5432/reynard_rag
-   ```
-
-3. **Install dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+```env
+PG_DSN=postgresql://username:password@localhost:5432/reynard_rag
+OLLAMA_BASE_URL=http://localhost:11434
+RAG_ENABLED=true
+```
 
 ### Running the Backend
 

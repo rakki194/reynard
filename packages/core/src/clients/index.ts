@@ -5,14 +5,13 @@
  */
 
 export {
-  HttpClient,
-  type HttpClientConfig,
-  type RequestOptions,
-  type UploadOptions,
-} from "./http-client.js";
-export {
   ApiClient,
-  type ApiClientConfig,
-  type HealthStatus,
-  type ApiClientInfo,
+  type ApiClientConfig, type ApiClientInfo, type HealthStatus
 } from "./api-client.js";
+export {
+  HTTPClient,
+  type HTTPClientConfig,
+  type RequestOptions,
+  type UploadOptions
+} from "./http-client.js";
+

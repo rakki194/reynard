@@ -1,10 +1,10 @@
 # Summarization User Guide
 
-This guide covers how to use the summarization features in YipYap, including text summarization, URL summarization, and advanced features like streaming and batch processing.
+This guide covers how to use the summarization features in Reynard, including text summarization, URL summarization, and advanced features like streaming and batch processing.
 
 ## Overview
 
-The summarization system in YipYap provides intelligent text summarization powered by Ollama models. You can summarize text files, web articles, code files, and other content with different levels of detail and customization options.
+The summarization system in Reynard provides intelligent text summarization powered by Ollama models. You can summarize text files, web articles, code files, and other content with different levels of detail and customization options.
 
 ## Getting Started
 
@@ -426,4 +426,4 @@ Configure integration with other systems:
 - **Caching Policy**: Configure cache duration and behavior
 - **Batch Limits**: Set maximum batch sizes
 
-This user guide covers the essential features and best practices for using the summarization system in YipYap. For technical details and API usage, refer to the [Summarization API Documentation](summarization-api.md).
+This user guide covers the essential features and best practices for using the summarization system in Reynard. For technical details and API usage, refer to the [Summarization API Documentation](summarization-api.md).

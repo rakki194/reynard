@@ -1,6 +1,6 @@
 # Tooltip System: Troubleshooting and Best Practices
 
-This document covers common issues, solutions, and best practices for working with the Tooltip system in yipyap.
+This document covers common issues, solutions, and best practices for working with the Tooltip system in Reynard.
 
 ## Table of Contents
 

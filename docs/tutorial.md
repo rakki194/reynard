@@ -794,6 +794,14 @@ Now that you have a solid foundation, try:
 - **Testing** - Write unit and integration tests
 - **Performance** - Optimize bundle size and loading
 
+## 📚 Additional Resources
+
+- **[Framework Overview](../README.md)** - Learn about Reynard's architecture and evolution
+- **[Package Documentation](./packages.md)** - Explore all available packages
+- **[Examples and Templates](./examples.md)** - See real-world applications
+- **[API Reference](./api.md)** - Detailed API documentation
+- **[Performance Guide](./performance.md)** - Optimization tips
+
 ---
 
 _Ready to build something amazing? Check out the [Package Documentation](./packages.md) to explore all available features!_ 🦊

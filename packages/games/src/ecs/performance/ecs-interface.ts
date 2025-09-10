@@ -169,7 +169,7 @@ export interface UnifiedECS {
    * console.log(gameTime.deltaTime);
    * ```
    */
-  getResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined;
+  getResource<T extends Resource>(resourceType: any): T | undefined;
 
   /**
    * Register a system function.
@@ -264,7 +264,7 @@ export interface WASMSIMDCapabilities {
 /**
  * ECS system factory function type.
  */
-export type ECSFactory = (config?: ECSConfig) => Promise<UnifiedECS>;
+export type ECSFactoryFunction = (config?: ECSConfig) => Promise<UnifiedECS>;
 
 /**
  * WASM SIMD detection and capability checking.

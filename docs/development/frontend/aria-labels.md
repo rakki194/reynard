@@ -1,12 +1,12 @@
-# ARIA Labeling Guide for yipyap
+# ARIA Labeling Guide for Reynard
 
-This document outlines best practices for ARIA labeling in the yipyap project, focusing on our specific components and use cases.
+This document outlines best practices for ARIA labeling in the Reynard project, focusing on our specific components and use cases.
 
 ## Table of Contents
 
 ---
 
-- [ARIA Labeling Guide for yipyap](#aria-labeling-guide-for-yipyap)
+- [ARIA Labeling Guide for Reynard](#aria-labeling-guide-for-reynard)
   - [Table of Contents](#table-of-contents)
   - [Component-Specific Guidelines](#component-specific-guidelines)
     - [Gallery Components](#gallery-components)
@@ -31,7 +31,7 @@ This document outlines best practices for ARIA labeling in the yipyap project, f
 
 ### Gallery Components
 
-The Gallery is a core feature of yipyap that requires careful attention to accessibility. Key considerations include:
+The Gallery is a core feature of Reynard that requires careful attention to accessibility. Key considerations include:
 
 - Image Grid Items:
 
@@ -141,7 +141,7 @@ The Upload Overlay needs clear status and instruction communication:
 
 ### Label Text Guidelines
 
-In yipyap, labels should:
+In Reynard, labels should:
 
 - Be concise and action-oriented
 - Describe the purpose or result of interaction
@@ -175,7 +175,7 @@ Test the following scenarios:
 
 ### Automated Testing
 
-Use these tools in the yipyap development workflow:
+Use these tools in the Reynard development workflow:
 
 1. ESLint with jsx-a11y plugin
 2. Automated accessibility tests in component test suites
@@ -214,7 +214,7 @@ Use these tools in the yipyap development workflow:
 </div>
 ```
 
-When implementing ARIA labels in yipyap, always consider:
+When implementing ARIA labels in Reynard, always consider:
 
 1. The component's role in the larger application flow
 2. How the component's state affects the user experience

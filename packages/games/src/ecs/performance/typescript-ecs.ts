@@ -29,10 +29,10 @@ import {
   Component,
   Resource,
   World,
-  createWorld,
   ComponentType,
   ResourceType,
 } from "../types";
+import { createWorld } from "../world";
 
 /**
  * TypeScript ECS Implementation.
@@ -88,10 +88,10 @@ export class TypeScriptECS implements UnifiedECS {
    * Start performance monitoring.
    */
   private startPerformanceMonitoring(): void {
-    // Monitor memory usage
-    if (typeof performance !== "undefined" && performance.memory) {
+    // Monitor memory usage (if available in browser)
+    if (typeof performance !== "undefined" && (performance as any).memory) {
       setInterval(() => {
-        this.metrics.memoryUsage = performance.memory.usedJSHeapSize;
+        this.metrics.memoryUsage = (performance as any).memory.usedJSHeapSize;
       }, 1000);
     }
   }
@@ -124,12 +124,9 @@ export class TypeScriptECS implements UnifiedECS {
    * Despawn an entity and all its components.
    */
   despawn(entity: Entity): void {
-    // Count components before despawning
-    const components = this.world.getComponents(entity);
-    this.componentCount -= components.length;
-
     this.world.despawn(entity);
     this.entityCount--;
+    // Note: Component count tracking would require additional world methods
     this.updateMetrics();
   }
 
@@ -149,12 +146,8 @@ export class TypeScriptECS implements UnifiedECS {
     entity: Entity,
     ...componentTypes: any[]
   ): void {
-    // Count components before removal
-    const components = this.world.getComponents(entity);
-    const removedCount = Math.min(components.length, componentTypes.length);
-
     this.world.remove(entity, ...componentTypes);
-    this.componentCount -= removedCount;
+    // Note: Component count tracking would require additional world methods
     this.updateMetrics();
   }
 
@@ -163,7 +156,7 @@ export class TypeScriptECS implements UnifiedECS {
    */
   query<T extends Component[]>(
     ...componentTypes: any[]
-  ): IterableIterator<[Entity, ...T]> {
+  ): any {
     return this.world.query(...componentTypes);
   }
 
@@ -171,7 +164,7 @@ export class TypeScriptECS implements UnifiedECS {
    * Add a resource to the world.
    */
   addResource<T extends Resource>(resource: T): void {
-    this.world.addResource(resource);
+    this.world.insertResource(resource);
   }
 
   /**

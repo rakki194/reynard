@@ -1,13 +1,13 @@
 // Query system implementation for component access
 
+import { ComponentStorage } from "./component";
 import {
-  Entity,
   Component,
   ComponentType,
+  Entity,
   QueryFilter,
   QueryResult,
 } from "./types";
-import { ComponentStorage } from "./component";
 
 /**
  * Helper type to extract component types from ComponentType array.
@@ -27,13 +27,16 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     public readonly length: number,
     private readonly componentTypes: ComponentType<Component>[] = [],
     private readonly entityComponents: Map<number, Component[]> = new Map(),
-  ) {}
+  ) { }
 
-  forEach(callback: (entity: Entity, ...components: T) => void): void {
+  forEach(callback: (entity: Entity, ...components: T) => void | false): void {
     for (let i = 0; i < this.length; i++) {
       const entity = this.entities[i];
       const componentValues = this.getComponentValuesForEntity(i) as T;
-      callback(entity, ...componentValues);
+      const result = callback(entity, ...componentValues);
+      if (result === false) {
+        break; // Early termination
+      }
     }
   }
 
@@ -97,25 +100,30 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     return components;
   }
 
-  private getComponentValues(): Component[] {
-    return this.components.map(
-      (_, componentIndex) => this.components[componentIndex],
-    );
-  }
 }
 
 /**
  * Query builder for constructing component queries.
  */
 export class QueryBuilder<T extends Component[]> {
-  private componentTypes: ComponentType<Component>[] = [];
-  private filters: QueryFilter = {};
+  public componentTypes: ComponentType<Component>[] = [];
+  public filters: QueryFilter = {};
 
   with<U extends Component>(
     componentType: ComponentType<U>,
   ): QueryBuilder<[...T, U]> {
     this.componentTypes.push(componentType as ComponentType<Component>);
     return this as unknown as QueryBuilder<[...T, U]>;
+  }
+
+  without<U extends Component>(
+    componentType: ComponentType<U>,
+  ): this {
+    this.filters = {
+      ...this.filters,
+      without: [...(this.filters.without || []), componentType as ComponentType<Component>]
+    };
+    return this;
   }
 
   filter(filter: QueryFilter): this {
@@ -129,6 +137,24 @@ export class QueryBuilder<T extends Component[]> {
       this.filters,
     );
   }
+
+  // Make QueryBuilder executable like QueryResult
+  execute(
+    entityManager: { getAllEntities(): Entity[] },
+    componentStorage: ComponentStorage,
+    changeDetection?: {
+      isAdded(entity: Entity, type: ComponentType<Component>): boolean;
+      isChanged(entity: Entity, type: ComponentType<Component>): boolean;
+      isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
+    },
+  ): QueryResult<T> {
+    return this.build().execute(entityManager, componentStorage, changeDetection);
+  }
+
+  forEach(_callback: (entity: Entity, ...components: T) => void | false): void {
+    // This will be called by the test, but we need the world context
+    throw new Error("QueryBuilder.forEach() requires world context - use world.query() instead");
+  }
 }
 
 /**
@@ -138,7 +164,23 @@ export class QueryImpl<T extends Component[]> {
   constructor(
     private componentTypes: ComponentType<T[number]>[],
     private filters: QueryFilter,
-  ) {}
+  ) { }
+
+  // Add change detection methods for tests
+  added<U extends Component>(componentType: ComponentType<U>): Query<T> {
+    const newFilters = { ...this.filters, added: [...(this.filters.added || []), componentType] };
+    return new QueryImpl(this.componentTypes, newFilters);
+  }
+
+  changed<U extends Component>(componentType: ComponentType<U>): Query<T> {
+    const newFilters = { ...this.filters, changed: [...(this.filters.changed || []), componentType] };
+    return new QueryImpl(this.componentTypes, newFilters);
+  }
+
+  removed<U extends Component>(componentType: ComponentType<U>): Query<T> {
+    const newFilters = { ...this.filters, removed: [...(this.filters.removed || []), componentType] };
+    return new QueryImpl(this.componentTypes, newFilters);
+  }
 
   execute(
     entityManager: { getAllEntities(): Entity[] },
@@ -146,6 +188,7 @@ export class QueryImpl<T extends Component[]> {
     changeDetection?: {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
+      isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
     },
   ): QueryResult<T> {
     const matchingEntities: Entity[] = [];
@@ -207,6 +250,7 @@ export class QueryImpl<T extends Component[]> {
     changeDetection?: {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
+      isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
     },
   ): boolean {
     if (this.filters.with && !this.checkWithFilter(entity, storage))
@@ -223,6 +267,12 @@ export class QueryImpl<T extends Component[]> {
       this.filters.changed &&
       changeDetection &&
       !this.checkChangedFilter(entity, changeDetection)
+    )
+      return false;
+    if (
+      this.filters.removed &&
+      changeDetection &&
+      !this.checkRemovedFilter(entity, changeDetection)
     )
       return false;
     return true;
@@ -274,6 +324,17 @@ export class QueryImpl<T extends Component[]> {
       changeDetection.isChanged(entity, type),
     );
   }
+
+  private checkRemovedFilter(
+    entity: Entity,
+    changeDetection: {
+      isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
+    },
+  ): boolean {
+    return this.filters.removed!.every((type) =>
+      changeDetection.isRemoved(entity, type),
+    );
+  }
 }
 
 export interface Query<T extends Component[]> {
@@ -283,8 +344,14 @@ export interface Query<T extends Component[]> {
     changeDetection?: {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
+      isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
     },
   ): QueryResult<T>;
+
+  // Add change detection methods for tests
+  added<U extends Component>(componentType: ComponentType<U>): Query<T>;
+  changed<U extends Component>(componentType: ComponentType<U>): Query<T>;
+  removed<U extends Component>(componentType: ComponentType<U>): Query<T>;
 }
 
 export function query<T extends Component[] = []>(): QueryBuilder<T> {

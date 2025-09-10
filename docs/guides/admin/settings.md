@@ -1,6 +1,6 @@
 # Adding New Settings
 
-This document outlines the process of adding new settings to the yipyap
+This document outlines the process of adding new settings to the Reynard
 application.
 
 ## Table of Contents
@@ -228,7 +228,7 @@ those that might affect the application's responsiveness or resource usage.
 
 ## Architecture Overview
 
-Settings in yipyap are managed in the global app context and, for some domains,
+Settings in Reynard are managed in the global app context and, for some domains,
 in dedicated modules. The primary source of truth for app-wide, theme, gallery,
 and performance preferences is the app context in `src/contexts/app.tsx`. It
 uses a static store created via `createStaticStore` and persists values to

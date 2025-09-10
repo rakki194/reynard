@@ -1,6 +1,6 @@
 // Archetype system implementation - groups entities with same component layout
 
-import { Entity, Component, ComponentType } from "./types";
+import { Component, ComponentType, Entity } from "./types";
 
 /**
  * An opaque location within an archetype.
@@ -129,6 +129,13 @@ export class Archetype {
   }
 
   /**
+   * Checks if an entity is in this archetype.
+   */
+  hasEntity(entity: Entity): boolean {
+    return this.entityToRow.has(entity.index);
+  }
+
+  /**
    * Checks if this archetype contains a specific component type.
    */
   hasComponentType(componentType: ComponentType<Component>): boolean {
@@ -161,6 +168,21 @@ export class Archetype {
    */
   isEmpty(): boolean {
     return this.entities.length === 0;
+  }
+
+  /**
+   * Gets the number of component types in this archetype.
+   */
+  getComponentCount(): number {
+    return this.componentTypes.length;
+  }
+
+  /**
+   * Checks if this archetype has a specific component type.
+   * Alias for hasComponentType for test compatibility.
+   */
+  hasComponent(componentType: ComponentType<Component>): boolean {
+    return this.hasComponentType(componentType);
   }
 }
 

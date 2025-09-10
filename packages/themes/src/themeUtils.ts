@@ -1,16 +1,16 @@
 /**
  * Theme utilities for the Reynard theming system
  * Based on yipyap's theme utility functions
- * Now using OKLCH color space from reynard-color-media for better perceptual uniformity
+ * Now using OKLCH color space from reynard-colors for better perceptual uniformity
  */
 
-import type { ThemeName } from "./types";
-import { themes } from "./themes";
 import {
   createTagColorGenerator,
   formatOKLCH,
   type OKLCHColor,
 } from "reynard-colors";
+import { themes } from "./themes";
+import type { ThemeName } from "./types";
 
 // Create a cached tag color generator for performance
 const tagColorGenerator = createTagColorGenerator();

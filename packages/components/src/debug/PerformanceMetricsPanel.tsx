@@ -3,18 +3,18 @@
  * Real-time performance metrics visualization and analysis
  */
 
+import { PerformanceChart } from "reynard-charts";
+import { Button } from "reynard-components";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 import {
   Component,
   For,
   Show,
-  createSignal,
   createEffect,
-  onMount,
+  createSignal,
   onCleanup,
+  onMount,
 } from "solid-js";
-import { Button } from "reynard-components";
-import { fluentIconsPackage } from "reynard-fluent-icons";
-import { PerformanceChart, MultiDatasetChart } from "reynard-charts";
 
 export interface PerformanceMetricsPanelProps {
   /** Performance history data */
@@ -131,7 +131,7 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
         averageFrameRate,
         averageBrowserResponsiveness,
         totalFrameDrops,
-        filteredHistory.length,
+        dataPoints: filteredHistory.length,
       });
 
       const newMetrics: PerformanceMetrics = {

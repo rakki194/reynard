@@ -1017,7 +1017,7 @@ describe("Button Component", () => {
 - **reynard-games** - Interactive games and visualizations
 - **reynard-monaco** - Monaco code editor and text editing components
 - **reynard-boundingbox** - Reusable bounding box and annotation editing components
-- **reynard-color-media** - Color generation utilities and media handling components
+- **reynard-colors** - Color generation utilities and media handling components
 
 ### Model and Service Management
 

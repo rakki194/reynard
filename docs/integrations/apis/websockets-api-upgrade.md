@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the successful upgrade of the yipyap WebSocket implementation from the legacy websockets API to the new asyncio implementation.
+This document describes the successful upgrade of the Reynard WebSocket implementation from the legacy websockets API to the new asyncio implementation.
 
 ## Background
 
@@ -169,7 +169,7 @@ The WebSockets API upgrade has been successfully completed with:
 - ✅ No breaking changes to existing functionality
 - ✅ Access to new features and performance improvements
 
-The upgrade positions yipyap for long-term maintainability and provides access to the latest WebSocket features and performance improvements.
+The upgrade positions Reynard for long-term maintainability and provides access to the latest WebSocket features and performance improvements.
 
 ---
 

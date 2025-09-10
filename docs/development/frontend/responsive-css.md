@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines modern CSS patterns for responsive design, performance optimization, and accessibility in YipYap. We focus on container queries, reduced motion support, and avoiding expensive animations outside of overlays.
+This document outlines modern CSS patterns for responsive design, performance optimization, and accessibility in Reynard. We focus on container queries, reduced motion support, and avoiding expensive animations outside of overlays.
 
 ## Container Queries
 

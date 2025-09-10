@@ -11,8 +11,7 @@ export function createMockFn<T extends (...args: any[]) => any>(
   implementation?: T,
 ): T & { mockClear: () => void; mockReset: () => void } {
   const mockFn = vi.fn(implementation) as any;
-  mockFn.mockClear = () => vi.clearAllMocks();
-  mockFn.mockReset = () => vi.resetAllMocks();
+  // vi.fn() already provides mockClear and mockReset methods
   return mockFn;
 }
 
@@ -22,14 +21,14 @@ export function createMockFn<T extends (...args: any[]) => any>(
 export function createMockObject<T extends Record<string, any>>(
   methods: (keyof T)[],
 ): {
-  [K in keyof T]: T[K] extends (...args: any[]) => any
+    [K in keyof T]: T[K] extends (...args: any[]) => any
     ? T[K] & {
-        mockClear: () => void;
-        mockReset: () => void;
-        mockReturnValue: (value: ReturnType<T[K]>) => any;
-      }
+      mockClear: () => void;
+      mockReset: () => void;
+      mockReturnValue: (value: ReturnType<T[K]>) => any;
+    }
     : T[K];
-} {
+  } {
   const mockObj = {} as any;
   methods.forEach((method) => {
     mockObj[method] = createMockFn();
@@ -93,7 +92,7 @@ export function createMockFetch(
  */
 export function createMockWebSocket(): WebSocket {
   const mockWs = {
-    readyState: WebSocket.CONNECTING,
+    readyState: 0, // CONNECTING
     url: "",
     protocol: "",
     extensions: "",
@@ -112,7 +111,7 @@ export function createMockWebSocket(): WebSocket {
 
   // Simulate connection
   setTimeout(() => {
-    mockWs.readyState = WebSocket.OPEN;
+    mockWs.readyState = 1; // OPEN
     if (mockWs.onopen) {
       mockWs.onopen(new Event("open"));
     }
@@ -126,7 +125,7 @@ export function createMockWebSocket(): WebSocket {
  */
 export function createMockEventSource(): EventSource {
   const mockEs = {
-    readyState: EventSource.CONNECTING,
+    readyState: 0, // CONNECTING
     url: "",
     withCredentials: false,
     onopen: null,
@@ -140,7 +139,7 @@ export function createMockEventSource(): EventSource {
 
   // Simulate connection
   setTimeout(() => {
-    mockEs.readyState = EventSource.OPEN;
+    mockEs.readyState = 1; // OPEN
     if (mockEs.onopen) {
       mockEs.onopen(new Event("open"));
     }

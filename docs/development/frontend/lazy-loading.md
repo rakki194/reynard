@@ -1,10 +1,23 @@
 # Lazy Loading System
 
-The lazy loading system is a project-wide solution for managing heavy Python packages that can significantly slow down application startup. It provides a way to import packages only when they are actually needed, allowing the application to start quickly while loading heavy dependencies in the background.
+The lazy loading system is a project-wide solution for managing heavy Python packages that slow down startup. Instead of importing everything at once, it lets you import packages only when they're actually needed, so the application starts quickly and loads heavy dependencies in the background.
+
+## Quick Start
+
+Lazy loading delays importing heavy packages until first use, avoiding the 5–10 second startup penalty from packages like `torch`, `transformers`, and `tensorflow`:
+
+```python
+# This is fast - no packages are loaded yet
+from app.utils.lazy_loader import torch, transformers, tensorflow
+
+# Only now does torch actually get loaded
+model = torch.nn.Linear(10, 5)  # First access triggers loading
+
+# Only now does transformers get loaded
+model = transformers.AutoModel.from_pretrained("bert-base-uncased")  # First access triggers loading
+```
 
 ## Overview
-
-Heavy packages like `torch`, `transformers`, `tensorflow`, `sklearn`, and `tslearn` can take several seconds to import, which can make the application startup feel sluggish. The lazy loading system addresses this by:
 
 - **Deferred Loading**: Packages are only imported when first accessed
 - **Background Loading**: Common packages are loaded in the background during startup
@@ -164,9 +177,28 @@ def apply_pca(matrix: pd.DataFrame, n_components: int = 2) -> pd.DataFrame:
     # ...
 ```
 
-## API Endpoints
+## Monitoring
 
 ### Lazy Loading Status
+
+Check the status of lazy loading:
+
+```python
+from app.utils.lazy_loader import get_lazy_loading_status
+
+status = get_lazy_loading_status()
+print(f"Loaded {status['progress']['loaded_packages']} of {status['progress']['total_packages']} packages")
+```
+
+Or via HTTP endpoint:
+
+```bash
+curl http://localhost:7000/api/debug/lazy-loading-status
+```
+
+### API Endpoints
+
+#### Lazy Loading Status
 
 Monitor the status of lazy loading:
 
@@ -306,6 +338,43 @@ Avoid lazy loading for:
 3. **Update aliases**: Replace `import torch.nn.functional as F` with `from app.utils.lazy_loader import F`
 4. **Test thoroughly**: Ensure all functionality works with lazy loading
 5. **Monitor performance**: Use the status endpoint to track load times
+
+### What Packages Are Available?
+
+The system pre-registers these common packages:
+
+#### Core ML Packages
+
+- `torch` - PyTorch
+- `torchvision` - PyTorch vision models
+- `transformers` - Hugging Face transformers
+- `timm` - Image models
+- `tensorflow` - TensorFlow
+- `sklearn` - Scikit-learn
+- `ultralytics` - YOLO models
+
+#### Data Science
+
+- `numpy` - Numerical computing
+- `pandas` - Data manipulation
+- `matplotlib` - Plotting
+- `seaborn` - Statistical plotting
+- `tslearn` - Time series learning
+
+#### Image Processing
+
+- `PIL` - Python Imaging Library
+- `cv2` - OpenCV
+- `pillow_jxl` - JPEG XL support
+- `pillow_avif` - AVIF support
+
+#### Utilities
+
+- `safetensors` - Safe tensor serialization
+- `einops` - Einstein operations
+- `pygit2` - Git operations
+- `watchfiles` - File watching
+- `sqlalchemy` - Database ORM
 
 ### Common Patterns
 

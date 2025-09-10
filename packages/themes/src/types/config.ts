@@ -3,7 +3,6 @@
  */
 
 import type { ThemeColors } from "./colors";
-import type { ThemeName, LanguageCode } from "./theme";
 
 // Animation configuration
 export interface ThemeAnimations {

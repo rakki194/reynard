@@ -1,6 +1,6 @@
-# YipYap Logging System
+# Reynard Logging System
 
-The YipYap application includes a comprehensive logging system for both frontend and backend components. This document explains how to use the logging system effectively.
+The Reynard application includes a comprehensive logging system for both frontend and backend components. This document explains how to use the logging system effectively.
 
 ## Overview
 

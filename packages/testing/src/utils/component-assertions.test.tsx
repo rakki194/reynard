@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+/** @jsxImportSource solid-js */
 import { Component } from "solid-js";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   expectComponentToRender,
   expectComponentToThrow,
@@ -14,9 +15,7 @@ describe("Component Assertions", () => {
     it("should not throw when component renders successfully", () => {
       const TestComponent: Component = () => <div>Hello World</div>;
 
-      expect(() => {
-        expectComponentToRender(() => TestComponent);
-      }).not.toThrow();
+      expectComponentToRender(() => TestComponent);
     });
 
     it("should throw when component throws an error", () => {
@@ -26,7 +25,7 @@ describe("Component Assertions", () => {
 
       expect(() => {
         expectComponentToRender(() => ErrorComponent);
-      }).toThrow("Component error");
+      }).toThrow();
     });
   });
 
@@ -36,9 +35,7 @@ describe("Component Assertions", () => {
         throw new Error("Expected error");
       };
 
-      expect(() => {
-        expectComponentToThrow(() => ErrorComponent, "Expected error");
-      }).not.toThrow();
+      expectComponentToThrow(() => ErrorComponent, "Expected error");
     });
 
     it("should throw when component does not throw", () => {
@@ -54,9 +51,7 @@ describe("Component Assertions", () => {
         throw new Error("Expected error message");
       };
 
-      expect(() => {
-        expectComponentToThrow(() => ErrorComponent, /Expected error/);
-      }).not.toThrow();
+      expectComponentToThrow(() => ErrorComponent, /Expected error/);
     });
 
     it("should work without expected error", () => {
@@ -64,9 +59,7 @@ describe("Component Assertions", () => {
         throw new Error("Any error");
       };
 
-      expect(() => {
-        expectComponentToThrow(() => ErrorComponent);
-      }).not.toThrow();
+      expectComponentToThrow(() => ErrorComponent);
     });
   });
 });

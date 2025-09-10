@@ -168,7 +168,7 @@ export interface Schedule {
    * Adds a system to this schedule.
    * @param system The system to add
    */
-  addSystem(system: System): void;
+  addSystem(system: System): this;
 
   /**
    * Removes a system from this schedule.

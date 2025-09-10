@@ -1,6 +1,6 @@
 # Unified WebSocket Configuration System
 
-The Unified WebSocket Configuration System provides comprehensive configuration management for all WebSocket implementations in yipyap. It offers environment-based configuration with defaults, runtime configuration updates with hot-reloading, and extensive validation capabilities.
+The Unified WebSocket Configuration System provides comprehensive configuration management for all WebSocket implementations in Reynard. It offers environment-based configuration with defaults, runtime configuration updates with hot-reloading, and extensive validation capabilities.
 
 ## Overview
 
@@ -1061,7 +1061,7 @@ curl http://localhost:7000/api/websocket-config/validation
 
 ## Conclusion
 
-The Unified WebSocket Configuration System provides a comprehensive, flexible, and robust solution for managing WebSocket configuration across all components of the yipyap application. With its environment-based configuration, runtime updates, validation, and monitoring capabilities, it ensures that WebSocket communication is optimized, secure, and maintainable.
+The Unified WebSocket Configuration System provides a comprehensive, flexible, and robust solution for managing WebSocket configuration across all components of the Reynard application. With its environment-based configuration, runtime updates, validation, and monitoring capabilities, it ensures that WebSocket communication is optimized, secure, and maintainable.
 
 For more information about specific WebSocket components, see:
 

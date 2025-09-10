@@ -31,8 +31,9 @@ export function enemyAISystem(world: World): void {
     });
 
     if (playerPosition) {
-      const dx = playerPosition.x - pos.x;
-      const dy = playerPosition.y - pos.y;
+      const playerPos = playerPosition as Position;
+      const dx = playerPos.x - pos.x;
+      const dy = playerPos.y - pos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance > 0) {

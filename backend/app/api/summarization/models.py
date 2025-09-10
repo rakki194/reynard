@@ -2,16 +2,17 @@
 Pydantic models for summarization API endpoints.
 """
 
-from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field, validator, ConfigDict
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class SummarizationRequest(BaseModel):
     """Request model for text summarization."""
-    
+
     text: str = Field(..., description="Text to summarize", min_length=50, max_length=100000)
     content_type: str = Field(
-        default="general", 
+        default="general",
         description="Type of content",
         pattern="^(article|code|document|technical|general)$"
     )
@@ -51,8 +52,9 @@ class SummarizationRequest(BaseModel):
         le=1.0
     )
 
-    @validator('text')
-    def validate_text(cls, v):
+    @field_validator('text')
+    @classmethod
+    def validate_text(cls, v: str) -> str:
         if not v or not v.strip():
             raise ValueError('Text cannot be empty or whitespace only')
         return v.strip()
@@ -61,7 +63,7 @@ class SummarizationRequest(BaseModel):
 class SummarizationResponse(BaseModel):
     """Response model for text summarization."""
     model_config = ConfigDict(protected_namespaces=())
-    
+
     success: bool = Field(..., description="Whether summarization was successful")
     result: Optional[Dict[str, Any]] = Field(
         default=None,
@@ -80,20 +82,21 @@ class SummarizationResponse(BaseModel):
 
 class BatchSummarizationRequest(BaseModel):
     """Request model for batch summarization."""
-    
+
     requests: List[Dict[str, Any]] = Field(
         ...,
         description="List of summarization requests",
-        min_items=1,
-        max_items=50
+        min_length=1,
+        max_length=50
     )
     enable_streaming: bool = Field(
         default=False,
         description="Whether to stream progress updates"
     )
 
-    @validator('requests')
-    def validate_requests(cls, v):
+    @field_validator('requests')
+    @classmethod
+    def validate_requests(cls, v: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         for i, req in enumerate(v):
             if 'text' not in req:
                 raise ValueError(f'Request {i} missing required field: text')
@@ -104,11 +107,12 @@ class BatchSummarizationRequest(BaseModel):
 
 class ContentTypeDetectionRequest(BaseModel):
     """Request model for content type detection."""
-    
+
     text: str = Field(..., description="Text to analyze", min_length=10, max_length=10000)
 
-    @validator('text')
-    def validate_text(cls, v):
+    @field_validator('text')
+    @classmethod
+    def validate_text(cls, v: str) -> str:
         if not v or not v.strip():
             raise ValueError('Text cannot be empty or whitespace only')
         return v.strip()
@@ -116,7 +120,7 @@ class ContentTypeDetectionRequest(BaseModel):
 
 class ContentTypeDetectionResponse(BaseModel):
     """Response model for content type detection."""
-    
+
     content_type: str = Field(..., description="Detected content type")
     confidence: float = Field(
         default=0.0,
@@ -128,7 +132,7 @@ class ContentTypeDetectionResponse(BaseModel):
 
 class SummarizationConfigRequest(BaseModel):
     """Request model for summarization configuration."""
-    
+
     default_model: Optional[str] = Field(
         default=None,
         description="Default model for summarization"
@@ -157,7 +161,7 @@ class SummarizationConfigRequest(BaseModel):
 
 class SummarizationConfigResponse(BaseModel):
     """Response model for summarization configuration."""
-    
+
     success: bool = Field(..., description="Whether configuration was successful")
     message: str = Field(..., description="Configuration result message")
     config: Dict[str, Any] = Field(..., description="Current configuration")
@@ -166,7 +170,7 @@ class SummarizationConfigResponse(BaseModel):
 class SummarizationStatsResponse(BaseModel):
     """Response model for summarization statistics."""
     model_config = ConfigDict(protected_namespaces=())
-    
+
     total_requests: int = Field(..., description="Total number of requests processed")
     cache_hits: int = Field(..., description="Number of cache hits")
     cache_misses: int = Field(..., description="Number of cache misses")
@@ -182,7 +186,7 @@ class SummarizationStatsResponse(BaseModel):
 
 class HealthCheckResponse(BaseModel):
     """Response model for health check."""
-    
+
     status: str = Field(..., description="Service status")
     message: str = Field(..., description="Status message")
     details: Dict[str, Any] = Field(..., description="Detailed status information")

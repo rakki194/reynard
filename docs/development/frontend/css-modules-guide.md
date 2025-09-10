@@ -1,12 +1,12 @@
-# CSS Modules Guide for YipYap
+# CSS Modules Guide for Reynard
 
-This guide covers how to write CSS for YipYap using CSS Modules, following the
+This guide covers how to write CSS for Reynard using CSS Modules, following the
 established patterns and best practices used throughout the codebase.
 
 ## Overview
 
 CSS Modules provide local scoping for CSS class names, preventing global
-conflicts and enabling component-based styling. In YipYap, we use CSS Modules
+conflicts and enabling component-based styling. In Reynard, we use CSS Modules
 for all component-specific styles, with global styles reserved for resets,
 layout primitives, and design tokens.
 
@@ -520,6 +520,6 @@ src/
 └── themes.css          # Theme variables and tokens
 ```
 
-This guide provides a comprehensive overview of CSS Modules usage in YipYap,
+This guide provides a comprehensive overview of CSS Modules usage in Reynard,
 following the established patterns and best practices used throughout the
 codebase.

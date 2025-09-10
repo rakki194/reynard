@@ -1,11 +1,15 @@
+import solid from "vite-plugin-solid";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [],
+  plugins: [solid()],
   test: {
     environment: "happy-dom",
     globals: true,
     setupFiles: ["./src/test-setup.ts"],
+    typecheck: {
+      tsconfig: "./tsconfig.test.json",
+    },
     environmentOptions: {
       happyDOM: {
         // Fast, modern DOM environment for SolidJS

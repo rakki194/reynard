@@ -8,10 +8,10 @@ from fastapi import APIRouter, HTTPException
 from sse_starlette import EventSourceResponse
 
 from .models import (
-    OllamaChatRequest,
-    OllamaChatResponse,
     OllamaAssistantRequest,
     OllamaAssistantResponse,
+    OllamaChatRequest,
+    OllamaChatResponse,
 )
 from .service import get_ollama_service
 
@@ -43,11 +43,18 @@ async def chat(request: OllamaChatRequest):
         response_text = ""
         tokens_generated = 0
         processing_time = 0.0
+        tool_calls = []
         
         async for event in service.chat_stream(params):
             if event.type == "token":
                 response_text += event.data
                 tokens_generated += 1
+            elif event.type == "tool_call":
+                tool_calls.append({
+                    "name": event.metadata.get("tool_name", "unknown"),
+                    "args": event.metadata.get("tool_args", {}),
+                    "id": event.metadata.get("tool_call_id", "")
+                })
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)
             elif event.type == "error":
@@ -58,7 +65,9 @@ async def chat(request: OllamaChatRequest):
             response=response_text,
             model=request.model,
             processing_time=processing_time,
-            tokens_generated=tokens_generated
+            tokens_generated=tokens_generated,
+            tool_calls=tool_calls,
+            tools_used=[tc["name"] for tc in tool_calls]
         )
         
     except Exception as e:
@@ -124,6 +133,7 @@ async def assistant_chat(request: OllamaAssistantRequest):
         response_text = ""
         tokens_generated = 0
         tools_used = []
+        tool_calls = []
         processing_time = 0.0
         
         async for event in service.assistant_stream(params):
@@ -133,6 +143,11 @@ async def assistant_chat(request: OllamaAssistantRequest):
             elif event.type == "tool_call":
                 tool_name = event.metadata.get("tool_name", "unknown")
                 tools_used.append(tool_name)
+                tool_calls.append({
+                    "name": tool_name,
+                    "args": event.metadata.get("tool_args", {}),
+                    "id": event.metadata.get("tool_call_id", "")
+                })
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)
             elif event.type == "error":
@@ -145,7 +160,8 @@ async def assistant_chat(request: OllamaAssistantRequest):
             model=request.model,
             processing_time=processing_time,
             tokens_generated=tokens_generated,
-            tools_used=tools_used
+            tools_used=tools_used,
+            tool_calls=tool_calls
         )
         
     except Exception as e:

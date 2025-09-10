@@ -1,31 +1,42 @@
 /**
  * Settings Utilities
  * Helper functions for validation, migration, and settings management
+ * 
+ * @deprecated ValidationResult and MultiValidationResult are deprecated. Use unified types from reynard-connection instead.
  */
 
 import type {
+  SettingCondition,
   SettingDefinition,
   SettingsSchema,
-  SettingCondition,
 } from "../types";
 
-export interface ValidationResult {
+// Re-export unified validation types from reynard-connection
+export {
+  validateEmail,
+  validatePassword,
+  validateUrl,
+  validateUsername, validateValue, ValidationUtils, type MultiValidationResult, type ValidationResult
+} from "reynard-connection";
+
+// Legacy interfaces for backward compatibility
+export interface LegacyValidationResult {
   isValid: boolean;
   error?: string;
 }
 
-export interface MultiValidationResult {
+export interface LegacyMultiValidationResult {
   isValid: boolean;
   errors: Record<string, string>;
 }
 
 /**
- * Validate a single setting value
+ * Validate a single setting value using unified validation
  */
 export function validateSetting(
   definition: SettingDefinition,
   value: any,
-): ValidationResult {
+): LegacyValidationResult {
   const { validation, type, required } = definition;
 
   // Check if required
@@ -240,12 +251,12 @@ export function validateSetting(
 }
 
 /**
- * Validate all settings against their definitions
+ * Validate all settings against their definitions using unified validation
  */
 export function validateAllSettings(
   definitions: Record<string, SettingDefinition>,
   values: Record<string, any>,
-): MultiValidationResult {
+): LegacyMultiValidationResult {
   const errors: Record<string, string> = {};
 
   for (const [key, definition] of Object.entries(definitions)) {

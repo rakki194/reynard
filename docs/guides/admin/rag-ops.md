@@ -1,6 +1,6 @@
 # RAG Operations Guide
 
-This document summarizes operational knobs, metrics, and playbooks for YipYap's RAG stack (Postgres + pgvector + embeddings).
+This document summarizes operational knobs, metrics, and playbooks for Reynard's RAG stack (Postgres + pgvector + embeddings).
 
 Overview
 

@@ -29,6 +29,14 @@ export function createBoundingBoxOperations(
 
     if (!validation.canAddBox(box, currentBoxes, imageInfo)) {
       console.warn("Cannot add box:", box.id);
+      // Store validation errors
+      const errors = validation.validateBox(box, imageInfo);
+      if (errors.length > 0) {
+        state.setValidationErrors({
+          ...state.validationErrors(),
+          [box.id]: errors,
+        });
+      }
       return false;
     }
 

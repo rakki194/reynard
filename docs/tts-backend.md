@@ -1,6 +1,6 @@
 # 🦊> Reynard TTS Backend Implementation
 
-A complete Text-to-Speech (TTS) backend system for Reynard, ported from Yipyap's battle-tested implementation with multi-backend support.
+A complete Text-to-Speech (TTS) backend system for Reynard, built with multi-backend support and comprehensive audio processing capabilities.
 
 ## ✨ Features
 
@@ -16,10 +16,17 @@ A complete Text-to-Speech (TTS) backend system for Reynard, ported from Yipyap's
 
 ### 🎯 **API Endpoints**
 
+See [Shared API Patterns](./shared/api-patterns.md) for common request/response structures.
+
+**Core Endpoints:**
+
 - `POST /api/tts/synthesize` - Single text synthesis
 - `POST /api/tts/synthesize/batch` - Batch text synthesis
 - `POST /api/tts/voice-clone` - Voice cloning synthesis
 - `GET /api/tts/audio/{filename}` - Audio file retrieval
+
+**Admin Endpoints:**
+
 - `GET /api/tts/config` - Get configuration
 - `POST /api/tts/config` - Update configuration
 - `GET /api/tts/admin/stats` - Service statistics
@@ -64,55 +71,30 @@ backend/app/api/tts/
 
 ## 🚀 Quick Start
 
+See [Shared Installation Guides](./shared/installation-guides.md) for detailed setup instructions.
+
 ### **Prerequisites**
 
 1. **TTS Libraries** (optional, for full functionality):
 
    ```bash
-   # Install Kokoro TTS
-   pip install kokoro
-   
-   # Install Coqui TTS
-   pip install TTS
-   
-   # XTTS is included with Coqui TTS
+   pip install kokoro TTS  # XTTS included with Coqui TTS
    ```
 
-2. **FFmpeg** (for audio processing):
-
-   ```bash
-   # Ubuntu/Debian
-   sudo apt-get install ffmpeg
-   
-   # macOS
-   brew install ffmpeg
-   
-   # Windows
-   # Download from https://ffmpeg.org/download.html
-   ```
+2. **FFmpeg** (for audio processing) - See shared installation guide
 
 ### **Configuration**
 
-1. **Copy configuration template**:
+See [Shared Configuration Examples](./shared/configuration-examples.md) for environment setup.
 
-   ```bash
-   cp tts_config_example.env .env
-   ```
+**Key environment variables:**
 
-2. **Update TTS settings**:
-
-   ```env
-   TTS_ENABLED=true
-   TTS_DEFAULT_BACKEND=kokoro
-   TTS_AUDIO_DIR=generated/audio
-   TTS_MAX_TEXT_LENGTH=10000
-   ```
-
-3. **Install dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+```env
+TTS_ENABLED=true
+TTS_DEFAULT_BACKEND=kokoro
+TTS_AUDIO_DIR=generated/audio
+TTS_MAX_TEXT_LENGTH=10000
+```
 
 ### **Running the Backend**
 

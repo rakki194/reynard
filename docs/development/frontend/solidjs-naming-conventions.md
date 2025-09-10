@@ -439,6 +439,8 @@ This document complements the existing [composables.md](./composables.md) docume
 
 For specific Reynard composable implementations and patterns, refer to the [composables.md](./composables.md) document.
 
+For TypeScript modularity standards and quick reference, see the [TypeScript Modularity Standards](./typescript-modularity-standards.md) document.
+
 ## Conclusion
 
 Following SolidJS naming conventions ensures:

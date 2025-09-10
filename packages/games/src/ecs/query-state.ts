@@ -1,8 +1,6 @@
 // Query state management for caching and optimization
 
-import { Entity, Component, ComponentType, QueryFilter } from "./types";
-import { ComponentStorage } from "./component";
-import { ChangeDetection } from "./change-detection";
+import { Component, ComponentType, Entity, QueryFilter } from "./types";
 
 /**
  * Query state for caching query results and optimizing performance.

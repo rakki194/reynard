@@ -4,7 +4,7 @@ This guide explains how to run the frontend locally while connecting to a backen
 
 ## Overview
 
-The yipyap frontend can be configured to connect to a backend running on a different machine (e.g., over SSH). This is useful for development scenarios where you want to:
+The Reynard frontend can be configured to connect to a backend running on a different machine (e.g., over SSH). This is useful for development scenarios where you want to:
 
 - Run the frontend on your local machine for fast development
 - Connect to a powerful remote machine for backend processing

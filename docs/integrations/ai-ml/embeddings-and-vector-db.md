@@ -1,6 +1,6 @@
 # Embeddings & Vector DB Operations
 
-This note collects recommended settings and practices for embeddings and pgvector in YipYap.
+This note collects recommended settings and practices for embeddings and pgvector in Reynard.
 
 Device and Batching
 

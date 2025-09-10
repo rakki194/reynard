@@ -1,5 +1,4 @@
 """
-"""
 Reynard FastAPI Backend - Production-Ready Service Orchestration Platform
 
 A comprehensive FastAPI application implementing advanced service orchestration

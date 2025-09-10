@@ -57,6 +57,8 @@ export class WasmLoader {
     }
 
     try {
+      // This module needs to be built with wasm-pack first
+      // TypeScript error is expected until the WASM module is built
       const wasmModule = await import("./pkg/ecs_simd.js");
       this.wasmModule = {
         init: () => wasmModule.default() as unknown as Promise<void>,

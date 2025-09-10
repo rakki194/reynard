@@ -45,21 +45,21 @@ export class AdvancedECSGame {
   private taskPool: TaskPool;
 
   // Component types
-  private positionType: ComponentType<Position>;
-  private velocityType: ComponentType<Velocity>;
-  private healthType: ComponentType<Health>;
-  private damageType: ComponentType<Damage>;
-  private playerType: ComponentType<Player>;
-  private enemyType: ComponentType<Enemy>;
-  private bulletType: ComponentType<Bullet>;
-  private colorType: ComponentType<Color>;
-  private sizeType: ComponentType<Size>;
+  private positionType!: ComponentType<Position>;
+  private velocityType!: ComponentType<Velocity>;
+  private healthType!: ComponentType<Health>;
+  private damageType!: ComponentType<Damage>;
+  private playerType!: ComponentType<Player>;
+  private enemyType!: ComponentType<Enemy>;
+  private bulletType!: ComponentType<Bullet>;
+  private colorType!: ComponentType<Color>;
+  private sizeType!: ComponentType<Size>;
 
   // Resource types
-  private gameTimeType: ResourceType<GameTime>;
-  private gameStateType: ResourceType<GameState>;
-  private inputStateType: ResourceType<InputState>;
-  private cameraType: ResourceType<Camera>;
+  private gameTimeType!: ResourceType<GameTime>;
+  private gameStateType!: ResourceType<GameState>;
+  private inputStateType!: ResourceType<InputState>;
+  private cameraType!: ResourceType<Camera>;
 
   constructor() {
     this.world = createWorld();
@@ -429,21 +429,24 @@ export class AdvancedECSGame {
 
     query.forEach((entity: any, enemy: any, position: any, velocity: any) => {
       // Simple AI: move towards player
+      const pos = position as Position;
+      const vel = velocity as Velocity;
       const playerQuery = world.query(this.playerType, this.positionType);
       let playerPosition: Position | null = null;
 
       playerQuery.forEach((playerEntity: any, player: any, playerPos: any) => {
-        playerPosition = playerPos;
+        playerPosition = playerPos as Position;
       });
 
       if (playerPosition) {
-        const dx = playerPosition.x - position.x;
-        const dy = playerPosition.y - position.y;
+        const playerPos = playerPosition as Position;
+        const dx = playerPos.x - pos.x;
+        const dy = playerPos.y - pos.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance > 0) {
-          velocity.x = (dx / distance) * speed;
-          velocity.y = (dy / distance) * speed;
+          vel.x = (dx / distance) * speed;
+          vel.y = (dy / distance) * speed;
         }
       }
     });

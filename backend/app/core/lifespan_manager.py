@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
         app: The FastAPI application instance requiring service orchestration.
         
     Yields:
-        ServiceRegistry: The initialized service registry containing all operational services.
+        Dict[str, Any]: A dictionary containing the initialized service registry.
         
     Raises:
         RuntimeError: If critical service initialization fails and prevents application startup.
@@ -150,7 +150,8 @@ async def lifespan(app: FastAPI):
         total_time = time.time() - start_time
         logger.info(f"✅ All services initialized successfully in {total_time:.2f}s")
         
-        yield registry
+        # FastAPI expects a mapping/dictionary, not a ServiceRegistry object
+        yield {"service_registry": registry}
         
     except Exception as e:
         logger.error(f"❌ Service initialization failed: {e}")

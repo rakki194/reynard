@@ -2,12 +2,12 @@
 
 import { World } from "../../types";
 import {
-  Position,
-  Velocity,
   GameTime,
-  PositionType,
-  VelocityType,
   GameTimeType,
+  Position,
+  PositionType,
+  Velocity,
+  VelocityType,
 } from "../components";
 
 /**
@@ -18,7 +18,7 @@ export function movementSystem(world: World): void {
   if (!gameTime) return;
 
   const query = world.query(PositionType, VelocityType);
-  query.forEach((entity, position, velocity) => {
+  query.forEach((_entity, position, velocity) => {
     const pos = position as Position;
     const vel = velocity as Velocity;
     pos.x += vel.x * gameTime.deltaTime;

@@ -4,22 +4,14 @@ Get up and running with Reynard in minutes! This guide will help you install the
 
 ## Installation
 
-### Core Package Installation
+See [Shared Installation Guides](./shared/installation-guides.md) for detailed setup instructions.
+
+### Quick Install
 
 ```bash
-# Install core package
-pnpm install reynard-core solid-js
+# Install core packages
+pnpm install reynard-core reynard-components solid-js
 
-# Install additional packages as needed
-pnpm install reynard-components reynard-chat reynard-rag reynard-auth reynard-charts
-
-# For caption generation workflows
-pnpm install reynard-annotating reynard-caption
-```
-
-### Development Dependencies
-
-```bash
 # Install development dependencies
 pnpm install -D vite vite-plugin-solid typescript @types/node
 ```
@@ -56,112 +48,17 @@ function App() {
 }
 ```
 
-### Vite Configuration
+### Configuration Files
 
-Create a `vite.config.ts` file:
+See [Shared Configuration Examples](./shared/configuration-examples.md) for complete configuration templates.
 
-```typescript
-import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
+**Required files:**
 
-export default defineConfig({
-  plugins: [solid()],
-  server: {
-    port: 3001,
-  },
-});
-```
-
-### TypeScript Configuration
-
-Create a `tsconfig.json` file:
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src"]
-}
-```
-
-### HTML Entry Point
-
-Create an `index.html` file:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Reynard App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-```
-
-### Application Entry Point
-
-Create `src/main.tsx`:
-
-```tsx
-import { render } from "solid-js/web";
-import "./themes.css";
-import App from "./App";
-
-render(() => <App />, document.getElementById("root")!);
-```
-
-### Basic Theme Setup
-
-Create `src/themes.css`:
-
-```css
-/* Light Theme (Default) */
-:root {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(220deg 20% 95%);
-  --secondary-bg: hsl(220deg 15% 90%);
-  --card-bg: hsl(220deg 15% 85%);
-  --text-primary: hsl(240deg 15% 12%);
-  --text-secondary: hsl(240deg 10% 45%);
-  --border-color: hsl(220deg 15% 75%);
-  --success: hsl(140deg 60% 45%);
-  --warning: hsl(45deg 70% 50%);
-  --danger: hsl(0deg 70% 50%);
-  --info: hsl(200deg 60% 50%);
-}
-
-/* Dark Theme */
-:root[data-theme="dark"] {
-  --accent: hsl(270deg 60% 70%);
-  --bg-color: hsl(220deg 15% 8%);
-  --secondary-bg: hsl(220deg 15% 12%);
-  --card-bg: hsl(220deg 15% 16%);
-  --text-primary: hsl(220deg 20% 95%);
-  --text-secondary: hsl(220deg 15% 70%);
-  --border-color: hsl(220deg 15% 24%);
-}
-```
+- `vite.config.ts` - Vite configuration
+- `tsconfig.json` - TypeScript configuration  
+- `index.html` - HTML entry point
+- `src/main.tsx` - Application entry point
+- `src/themes.css` - Theme variables
 
 ## Running Your Application
 
@@ -178,108 +75,32 @@ pnpm run preview
 
 ## Common Patterns
 
-### Using Notifications
+See [Complete Tutorial](./tutorial.md) for comprehensive examples and patterns.
+
+### Quick Examples
 
 ```tsx
-import { useNotifications } from "reynard-core";
+// Notifications
+const { notify } = useNotifications();
+notify("Hello from Reynard!", "success");
 
-function MyComponent() {
-  const { notify } = useNotifications();
+// Local Storage
+const [count, setCount] = useLocalStorage("counter", 0);
 
-  const handleSuccess = () => {
-    notify("Operation completed successfully!", "success");
-  };
-
-  const handleError = () => {
-    notify("Something went wrong!", "error");
-  };
-
-  return (
-    <div>
-      <button onClick={handleSuccess}>Success</button>
-      <button onClick={handleError}>Error</button>
-    </div>
-  );
-}
-```
-
-### Using Local Storage
-
-```tsx
-import { useLocalStorage } from "reynard-core";
-
-function MyComponent() {
-  const [count, setCount] = useLocalStorage("counter", 0);
-
-  return (
-    <div>
-      <p>Count: {count()}</p>
-      <button onClick={() => setCount(count() + 1)}>Increment</button>
-    </div>
-  );
-}
-```
-
-### Using Themes
-
-```tsx
-import { useTheme } from "reynard-themes";
-
-function ThemeToggle() {
-  const { theme, setTheme, nextTheme } = useTheme();
-
-  return (
-    <div>
-      <p>Current theme: {theme()}</p>
-      <button onClick={() => setTheme("dark")}>Dark</button>
-      <button onClick={() => setTheme("light")}>Light</button>
-      <button onClick={nextTheme}>Next Theme</button>
-    </div>
-  );
-}
-```
-
-### Using Components
-
-```tsx
-import { Button, Card, TextField } from "reynard-components";
-
-function MyForm() {
-  return (
-    <Card padding="lg">
-      <TextField label="Email" type="email" placeholder="Enter your email" />
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Card>
-  );
-}
+// Themes
+const { theme, setTheme, nextTheme } = useTheme();
 ```
 
 ## Next Steps
 
-Now that you have a basic Reynard application running:
-
-1. **[Complete Tutorial](./tutorial.md)** - Build a comprehensive todo application
+1. **[Complete Tutorial](./tutorial.md)** - Build a comprehensive application
 2. **[Package Documentation](./packages.md)** - Explore all available packages
 3. **[Examples and Templates](./examples.md)** - See real-world applications
-4. **[API Reference](./api.md)** - Detailed API documentation
+4. **[Framework Overview](./README.md)** - Learn about Reynard's architecture
 
 ## Troubleshooting
 
-### Common Issues
-
-**Build Errors**: Make sure you have the correct TypeScript configuration and all dependencies installed.
-
-**Theme Not Working**: Ensure you've imported the theme CSS file and are using the `ReynardProvider`.
-
-**Components Not Rendering**: Check that you've installed the required packages and imported them correctly.
-
-### Getting Help
-
-- Check the [API Reference](./api.md) for detailed documentation
-- Look at [Examples](./examples.md) for working code samples
-- Review the [Contributing Guide](./contributing.md) for development setup
+See [Shared Installation Guides](./shared/installation-guides.md) for common issues and solutions.
 
 ---
 

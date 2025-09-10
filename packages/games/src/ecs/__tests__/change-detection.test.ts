@@ -8,16 +8,15 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
-  World,
+  Component,
   ComponentType,
+  Resource,
   ResourceType,
   StorageType,
-  Component,
-  Resource,
   Tick,
-  ComponentTicks,
+  World
 } from "../types";
 import { createWorld } from "../world";
 
@@ -27,7 +26,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -35,7 +34,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -43,12 +42,12 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) {}
+  constructor(public name: string) { }
 }
 
 // Test resources
@@ -57,44 +56,17 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) {}
+  ) { }
 }
 
-// Component types
-const PositionType: ComponentType<Position> = {
-  name: "Position",
-  id: 0,
-  storage: StorageType.Table,
-  create: () => new Position(0, 0),
-};
+// Component types - will be initialized in beforeEach
+let PositionType: ComponentType<Position>;
+let VelocityType: ComponentType<Velocity>;
+let HealthType: ComponentType<Health>;
+let PlayerType: ComponentType<Player>;
 
-const VelocityType: ComponentType<Velocity> = {
-  name: "Velocity",
-  id: 1,
-  storage: StorageType.Table,
-  create: () => new Velocity(0, 0),
-};
-
-const HealthType: ComponentType<Health> = {
-  name: "Health",
-  id: 2,
-  storage: StorageType.SparseSet,
-  create: () => new Health(100, 100),
-};
-
-const PlayerType: ComponentType<Player> = {
-  name: "Player",
-  id: 3,
-  storage: StorageType.SparseSet,
-  create: () => new Player("Player"),
-};
-
-// Resource types
-const GameTimeType: ResourceType<GameTime> = {
-  name: "GameTime",
-  id: 0,
-  create: () => new GameTime(0, 0),
-};
+// Resource types - will be initialized in beforeEach
+let GameTimeType: ResourceType<GameTime>;
 
 describe("Change Detection System", () => {
   let world: World;
@@ -104,13 +76,22 @@ describe("Change Detection System", () => {
     world = createWorld();
 
     // Register component types
-    world.getComponentRegistry().register(PositionType);
-    world.getComponentRegistry().register(VelocityType);
-    world.getComponentRegistry().register(HealthType);
-    world.getComponentRegistry().register(PlayerType);
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+
+    // Get the registered component types
+    PositionType = world.getComponentRegistry().getByName("Position")!;
+    VelocityType = world.getComponentRegistry().getByName("Velocity")!;
+    HealthType = world.getComponentRegistry().getByName("Health")!;
+    PlayerType = world.getComponentRegistry().getByName("Player")!;
 
     // Register resource types
-    world.getResourceRegistry().register(GameTimeType);
+    world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
+
+    // Get the registered resource types
+    GameTimeType = world.getResourceRegistry().getByName("GameTime")!;
 
     // Add resources
     gameTime = new GameTime(16.67, 1000);
@@ -181,9 +162,10 @@ describe("Change Detection System", () => {
       const componentTicks = world
         .getChangeDetection()
         .getComponentTicks(entity, PositionType);
+
       expect(componentTicks).toBeDefined();
-      expect(componentTicks.addedTick.isNewerThan(tick1)).toBe(true);
-      expect(componentTicks.addedTick.isNewerThan(tick2)).toBe(false);
+      expect(componentTicks.added.isNewerThan(tick1)).toBe(true);
+      expect(componentTicks.added.isNewerThan(tick2)).toBe(false);
     });
 
     it("should track component modifications", () => {
@@ -199,6 +181,9 @@ describe("Change Detection System", () => {
       position.x = 30;
       position.y = 40;
 
+      // Mark component as changed
+      world.getChangeDetection().markChanged(entity, PositionType);
+
       const tick2 = world.getChangeDetection().createTick();
 
       // Check that component was modified in tick2
@@ -206,8 +191,8 @@ describe("Change Detection System", () => {
         .getChangeDetection()
         .getComponentTicks(entity, PositionType);
       expect(componentTicks).toBeDefined();
-      expect(componentTicks.changedTick.isNewerThan(tick1)).toBe(true);
-      expect(componentTicks.changedTick.isNewerThan(tick2)).toBe(false);
+      expect(componentTicks.changed.isNewerThan(tick1)).toBe(true);
+      expect(componentTicks.changed.isNewerThan(tick2)).toBe(false);
     });
 
     it("should track component removals", () => {
@@ -223,14 +208,13 @@ describe("Change Detection System", () => {
       world.remove(entity, PositionType);
 
       const tick2 = world.getChangeDetection().createTick();
+      world.getChangeDetection().advanceTick();
 
-      // Check that component was removed in tick2
+      // Check that component was removed - ticks should be deleted
       const componentTicks = world
         .getChangeDetection()
         .getComponentTicks(entity, PositionType);
-      expect(componentTicks).toBeDefined();
-      expect(componentTicks.removedTick.isNewerThan(tick1)).toBe(true);
-      expect(componentTicks.removedTick.isNewerThan(tick2)).toBe(false);
+      expect(componentTicks).toBeUndefined();
     });
 
     it("should handle multiple component changes", () => {
@@ -251,6 +235,10 @@ describe("Change Detection System", () => {
       position.x = 30;
       velocity.x = 15;
 
+      // Mark components as changed
+      world.getChangeDetection().markChanged(entity, PositionType);
+      world.getChangeDetection().markChanged(entity, VelocityType);
+
       const tick2 = world.getChangeDetection().createTick();
 
       // Check that only modified components have changed ticks
@@ -264,9 +252,9 @@ describe("Change Detection System", () => {
         .getChangeDetection()
         .getComponentTicks(entity, HealthType);
 
-      expect(positionTicks.changedTick.isNewerThan(tick1)).toBe(true);
-      expect(velocityTicks.changedTick.isNewerThan(tick1)).toBe(true);
-      expect(healthTicks.changedTick.isNewerThan(tick1)).toBe(false);
+      expect(positionTicks.changed.isNewerThan(tick1)).toBe(true);
+      expect(velocityTicks.changed.isNewerThan(tick1)).toBe(true);
+      expect(healthTicks.changed.isNewerThan(tick1)).toBe(false);
     });
   });
 
@@ -317,12 +305,13 @@ describe("Change Detection System", () => {
       world.getChangeDetection().advanceTick();
 
       // Modify existing components
-      const position = world.get(
-        world.query(PositionType).first().entity,
-        PositionType,
-      );
+      const entity = world.query(PositionType).first().entity;
+      const position = world.get(entity, PositionType);
       position.x = 100;
       position.y = 200;
+
+      // Mark component as changed
+      world.getChangeDetection().markChanged(entity, PositionType);
 
       const tick2 = world.getChangeDetection().createTick();
 

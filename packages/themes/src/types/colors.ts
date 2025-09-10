@@ -2,7 +2,6 @@
  * Color system types for theming
  */
 
-import type { ThemeName } from "./theme";
 
 // Color system interface
 export interface ThemeColors {

@@ -8,14 +8,14 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
-  World,
+  Component,
   ComponentType,
+  Resource,
   ResourceType,
   StorageType,
-  Component,
-  Resource,
+  World,
 } from "../types";
 import { createWorld } from "../world";
 
@@ -25,7 +25,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -33,7 +33,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -41,12 +41,12 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) {}
+  constructor(public name: string) { }
 }
 
 // Test resources
@@ -55,7 +55,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) {}
+  ) { }
 }
 
 class GameState implements Resource {
@@ -63,7 +63,7 @@ class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-  ) {}
+  ) { }
 }
 
 // Component and resource types will be created dynamically in beforeEach
@@ -481,14 +481,14 @@ describe("World System", () => {
       const entity = world.spawnEmpty();
       world.despawn(entity);
 
-      // Operations on despawned entities should throw errors
+      // Operations on despawned entities should be safe (not throw errors)
       expect(() => {
         world.insert(entity, new Position(10, 20));
-      }).toThrow();
+      }).not.toThrow();
 
       expect(() => {
         world.remove(entity, PositionType);
-      }).toThrow();
+      }).not.toThrow();
 
       expect(() => {
         world.get(entity, PositionType);

@@ -1,6 +1,6 @@
 {
   "name": "reynard",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
   "type": "module",
   "description": "Reynard - A cunning SolidJS framework and UI library",
@@ -82,6 +82,8 @@
     "python:typecheck": "bash -c \"source ~/venv/bin/activate && mypy .\"",
     "python:security": "bash -c \"source ~/venv/bin/activate && bandit -r .\"",
     "python:check": "bash -c \"source ~/venv/bin/activate && black --check . && isort --check-only . && flake8 . && mypy .\"",
+    "python:linecheck": "python3 .husky/validate-python.py",
+    "python:validate": "bash -c \"source ~/venv/bin/activate && black --check . && isort --check-only . && flake8 . && mypy . && python3 .husky/validate-python.py\"",
     "python:test": "bash -c \"source ~/venv/bin/activate && pytest\"",
     "python:test:coverage": "bash -c \"source ~/venv/bin/activate && pytest --cov=. --cov-report=html --cov-report=term-missing\""
   },

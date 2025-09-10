@@ -1,6 +1,6 @@
 // System conditions for conditional execution
 
-import { World, Component, ComponentType } from "./types";
+import { Component, ComponentType, World } from "./types";
 
 /**
  * A system condition that determines if a system should run.
@@ -95,7 +95,12 @@ export const Conditions = {
       `any_entity_with_${componentTypes.map((ct) => ct.name).join("_")}`,
       (world) => {
         const query = world.query(...componentTypes);
-        return query.length > 0;
+        let hasResults = false;
+        query.forEach(() => {
+          hasResults = true;
+          return false; // Stop iteration
+        });
+        return hasResults;
       },
     );
   },
@@ -110,7 +115,12 @@ export const Conditions = {
       `no_entity_with_${componentTypes.map((ct) => ct.name).join("_")}`,
       (world) => {
         const query = world.query(...componentTypes);
-        return query.length === 0;
+        let hasResults = false;
+        query.forEach(() => {
+          hasResults = true;
+          return false; // Stop iteration
+        });
+        return !hasResults;
       },
     );
   },

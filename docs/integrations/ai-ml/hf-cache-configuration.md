@@ -1,10 +1,10 @@
 # HuggingFace Cache Configuration
 
-This document explains how to configure HuggingFace cache paths for yipyap, including Docker support and environment variable configuration.
+This document explains how to configure HuggingFace cache paths for Reynard, including Docker support and environment variable configuration.
 
 ## Overview
 
-yipyap uses HuggingFace Hub for downloading and caching machine learning models. The cache location can be configured using environment variables to support different deployment scenarios, including Docker containers.
+Reynard uses HuggingFace Hub for downloading and caching machine learning models. The cache location can be configured using environment variables to support different deployment scenarios, including Docker containers.
 
 ## Environment Variables
 
@@ -44,12 +44,12 @@ export HF_CACHE=/path/to/your/hf_cache
 
 ```bash
 # Create a custom cache directory
-mkdir -p ~/yipyap_hf_cache
+mkdir -p ~/reynard_hf_cache
 
 # Set environment variable
-export HF_HOME=~/yipyap_hf_cache
+export HF_HOME=~/reynard_hf_cache
 
-# Run yipyap
+# Run Reynard
 python -m app
 ```
 
@@ -72,7 +72,7 @@ python -m app
    docker-compose -f docker-compose.hf-cache.yml up
 
    # Or for development
-   docker-compose -f docker-compose.hf-cache.yml up yipyap-backend
+   docker-compose -f docker-compose.hf-cache.yml up reynard-backend
    ```
 
 ### Manual Docker Run
@@ -87,7 +87,7 @@ docker run -d \
   -v $(pwd)/data:/app/images \
   -v $(pwd)/hf_cache:/app/hf_cache \
   -e HF_HOME=/app/hf_cache \
-  yipyap:latest
+  reynard:latest
 ```
 
 ### Docker Compose Examples
@@ -97,7 +97,7 @@ docker run -d \
 ```yaml
 # docker-compose.override.yml
 services:
-  yipyap-backend:
+  reynard-backend:
     environment:
       HF_HOME: /app/hf_cache
       HF_CACHE: /app/hf_cache
@@ -110,7 +110,7 @@ services:
 ```yaml
 # docker-compose.prod.yml
 services:
-  yipyap:
+  reynard:
     environment:
       HF_HOME: /app/hf_cache
     volumes:

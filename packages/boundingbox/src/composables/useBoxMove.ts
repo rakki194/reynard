@@ -21,6 +21,11 @@ export type { MoveConstraints, MoveState };
 export interface UseBoxMoveOptions {
   constraints?: Partial<MoveConstraints>;
   imageInfo?: ImageInfo;
+  callbacks?: {
+    onBoxMoveStart?: (boxId: string) => void;
+    onBoxMoved?: (boxId: string, box: BoundingBox) => void;
+    onBoxMoveEnd?: (boxId: string) => void;
+  };
 }
 
 // Alias for compatibility
@@ -57,7 +62,7 @@ export function useBoxMove(
   },
   options: UseBoxMoveOptions = {},
 ): UseBoxMoveReturn {
-  const { constraints = {}, imageInfo } = options;
+  const { constraints = {}, imageInfo, callbacks = {} } = options;
 
   // Default constraints
   const defaultConstraints: MoveConstraints = {
@@ -76,7 +81,7 @@ export function useBoxMove(
 
   // Create state and operations
   const state = createMoveState();
-  const operations = createMoveOperations(state.state, finalConstraints);
+  const operations = createMoveOperations(state, finalConstraints);
 
   const startMove = (
     boxId: string,
@@ -85,17 +90,26 @@ export function useBoxMove(
     startY: number,
   ) => {
     operations.startMove(boxId, box, startX, startY);
+    callbacks.onBoxMoveStart?.(boxId);
   };
 
   const updateMove = (
     currentX: number,
     currentY: number,
   ): BoundingBox | null => {
-    return operations.updateMove(currentX, currentY, imageInfo);
+    const result = operations.updateMove(currentX, currentY, imageInfo);
+    if (result) {
+      callbacks.onBoxMoved?.(result.id, result);
+    }
+    return result;
   };
 
   const endMove = (): BoundingBox | null => {
-    return operations.endMove();
+    const result = operations.endMove();
+    if (result) {
+      callbacks.onBoxMoveEnd?.(result.id);
+    }
+    return result;
   };
 
   const canMove = (

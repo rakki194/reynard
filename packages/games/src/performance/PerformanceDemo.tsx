@@ -1,11 +1,11 @@
-import { createSignal } from "solid-js";
-import { Button } from "reynard-components";
 import {
-  PerformanceTimer,
-  MemoryMonitor,
-  throttle,
   debounce,
+  MemoryMonitor,
+  PerformanceTimer,
+  throttle,
 } from "reynard-algorithms";
+import { Button } from "reynard-components";
+import { createSignal } from "solid-js";
 import { Measurement } from "../types";
 import "./PerformanceDemo.css";
 
@@ -20,7 +20,7 @@ interface PerformanceDemoProps {
   config?: PerformanceDemoConfig;
 }
 
-export function PerformanceDemo(props: PerformanceDemoProps = {}) {
+export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
   const [memoryMonitor, setMemoryMonitor] = createSignal<MemoryMonitor | null>(
     null,
   );

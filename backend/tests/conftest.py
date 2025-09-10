@@ -7,12 +7,12 @@ This module provides shared fixtures and configuration for all test modules.
 import asyncio
 import os
 import sys
-from datetime import datetime, timedelta
 from pathlib import Path
-from typing import AsyncGenerator, Dict, Any, Generator
+from typing import AsyncGenerator, Dict, Generator
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
@@ -20,8 +20,13 @@ from httpx import AsyncClient
 sys.path.insert(0, str(Path(__file__).parent.parent / "app"))
 
 from main import create_app
-from app.auth.user_service import users_db, refresh_tokens_db
-from app.auth.jwt_utils import create_access_token, create_refresh_token
+
+sys.modules['gatekeeper'] = __import__('tests.mocks.gatekeeper', fromlist=[''])
+sys.modules['gatekeeper.api'] = sys.modules['gatekeeper']
+sys.modules['gatekeeper.api.routes'] = sys.modules['gatekeeper']
+sys.modules['gatekeeper.api.dependencies'] = sys.modules['gatekeeper']
+sys.modules['gatekeeper.models'] = sys.modules['gatekeeper']
+sys.modules['gatekeeper.models.user'] = sys.modules['gatekeeper']
 
 
 @pytest.fixture(scope="session")
@@ -33,17 +38,7 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 
 
 @pytest.fixture(scope="function")
-def clean_databases():
-    """Clean up in-memory databases before each test."""
-    users_db.clear()
-    refresh_tokens_db.clear()
-    yield
-    users_db.clear()
-    refresh_tokens_db.clear()
-
-
-@pytest.fixture(scope="function")
-def test_app(clean_databases):
+def test_app() -> FastAPI:
     """Create a test FastAPI application."""
     app = create_app()
     return app
@@ -63,61 +58,15 @@ async def async_client(test_app) -> AsyncGenerator[AsyncClient, None]:
 
 
 @pytest.fixture
-def test_user_data() -> Dict[str, Any]:
-    """Provide test user data."""
-    return {
-        "username": "testuser",
-        "email": "test@example.com",
-        "password": "testpassword123",
-        "full_name": "Test User"
-    }
+def mock_auth_token() -> str:
+    """Provide a mock authentication token."""
+    return "mock_bearer_token"
 
 
 @pytest.fixture
-def test_user_credentials() -> Dict[str, str]:
-    """Provide test user credentials."""
-    return {
-        "username": "testuser",
-        "password": "testpassword123"
-    }
-
-
-@pytest.fixture
-def test_token_data() -> Dict[str, str]:
-    """Provide test token data."""
-    return {
-        "sub": "testuser",
-        "username": "testuser"
-    }
-
-
-@pytest.fixture
-def access_token(test_token_data) -> str:
-    """Create a test access token."""
-    return create_access_token(data=test_token_data)
-
-
-@pytest.fixture
-def refresh_token(test_token_data) -> str:
-    """Create a test refresh token."""
-    return create_refresh_token(data=test_token_data)
-
-
-@pytest.fixture
-def expired_token(test_token_data) -> str:
-    """Create an expired test token."""
-    from datetime import timezone
-    expired_time = datetime.now(timezone.utc) - timedelta(minutes=1)
-    return create_access_token(
-        data=test_token_data,
-        expires_delta=timedelta(minutes=-1)
-    )
-
-
-@pytest.fixture
-def invalid_token() -> str:
-    """Provide an invalid token."""
-    return "invalid.token.here"
+def auth_headers(mock_auth_token) -> Dict[str, str]:
+    """Provide authentication headers."""
+    return {"Authorization": f"Bearer {mock_auth_token}"}
 
 
 @pytest.fixture

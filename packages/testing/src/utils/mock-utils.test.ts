@@ -1,22 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  createMockFn,
-  createMockObject,
-  createMockResponse,
-  createMockFetch,
-  createMockWebSocket,
+  createMockCancelAnimationFrame,
+  createMockCrypto,
+  createMockDataTransfer,
   createMockEventSource,
+  createMockFetch,
   createMockFile,
   createMockFileList,
-  createMockDataTransfer,
+  createMockFn,
   createMockIntersectionObserver,
-  createMockResizeObserver,
-  createMockMutationObserver,
-  createMockPerformanceObserver,
-  createMockCrypto,
   createMockMatchMedia,
+  createMockMutationObserver,
+  createMockObject,
+  createMockPerformanceObserver,
   createMockRequestAnimationFrame,
-  createMockCancelAnimationFrame,
+  createMockResizeObserver,
+  createMockResponse,
+  createMockWebSocket,
 } from "./mock-utils";
 
 describe("Mock Utilities", () => {
@@ -169,21 +169,23 @@ describe("Mock Utilities", () => {
     it("should create a mock WebSocket", () => {
       const mockWs = createMockWebSocket();
 
-      expect(mockWs.readyState).toBe(WebSocket.CONNECTING);
+      expect(mockWs.readyState).toBe(0); // CONNECTING
       expect(mockWs.close).toBeDefined();
       expect(mockWs.send).toBeDefined();
       expect(mockWs.addEventListener).toBeDefined();
       expect(mockWs.removeEventListener).toBeDefined();
     });
 
-    it("should simulate connection after creation", (done: () => void) => {
+    it("should simulate connection after creation", async () => {
       const mockWs = createMockWebSocket();
 
-      mockWs.onopen = (event) => {
-        expect(mockWs.readyState).toBe(WebSocket.OPEN);
-        expect(event.type).toBe("open");
-        done();
-      };
+      await new Promise<void>((resolve) => {
+        mockWs.onopen = (event) => {
+          expect(mockWs.readyState).toBe(1); // OPEN
+          expect(event.type).toBe("open");
+          resolve();
+        };
+      });
     });
 
     it("should provide all required WebSocket properties", () => {
@@ -201,20 +203,22 @@ describe("Mock Utilities", () => {
     it("should create a mock EventSource", () => {
       const mockEs = createMockEventSource();
 
-      expect(mockEs.readyState).toBe(EventSource.CONNECTING);
+      expect(mockEs.readyState).toBe(0); // CONNECTING
       expect(mockEs.close).toBeDefined();
       expect(mockEs.addEventListener).toBeDefined();
       expect(mockEs.removeEventListener).toBeDefined();
     });
 
-    it("should simulate connection after creation", (done: () => void) => {
+    it("should simulate connection after creation", async () => {
       const mockEs = createMockEventSource();
 
-      mockEs.onopen = (event) => {
-        expect(mockEs.readyState).toBe(EventSource.OPEN);
-        expect(event.type).toBe("open");
-        done();
-      };
+      await new Promise<void>((resolve) => {
+        mockEs.onopen = (event) => {
+          expect(mockEs.readyState).toBe(1); // OPEN
+          expect(event.type).toBe("open");
+          resolve();
+        };
+      });
     });
 
     it("should provide all required EventSource properties", () => {
@@ -331,7 +335,7 @@ describe("Mock Utilities", () => {
   describe("createMockIntersectionObserver", () => {
     it("should create a mock IntersectionObserver", () => {
       const MockIntersectionObserver = createMockIntersectionObserver();
-      const observer = new MockIntersectionObserver(() => {});
+      const observer = new MockIntersectionObserver(() => { });
 
       expect(observer.observe).toBeDefined();
       expect(observer.unobserve).toBeDefined();
@@ -344,14 +348,14 @@ describe("Mock Utilities", () => {
     it("should be callable as constructor", () => {
       const MockIntersectionObserver = createMockIntersectionObserver();
 
-      expect(() => new MockIntersectionObserver(() => {})).not.toThrow();
+      expect(() => new MockIntersectionObserver(() => { })).not.toThrow();
     });
   });
 
   describe("createMockResizeObserver", () => {
     it("should create a mock ResizeObserver", () => {
       const MockResizeObserver = createMockResizeObserver();
-      const observer = new MockResizeObserver(() => {});
+      const observer = new MockResizeObserver(() => { });
 
       expect(observer.observe).toBeDefined();
       expect(observer.unobserve).toBeDefined();
@@ -361,14 +365,14 @@ describe("Mock Utilities", () => {
     it("should be callable as constructor", () => {
       const MockResizeObserver = createMockResizeObserver();
 
-      expect(() => new MockResizeObserver(() => {})).not.toThrow();
+      expect(() => new MockResizeObserver(() => { })).not.toThrow();
     });
   });
 
   describe("createMockMutationObserver", () => {
     it("should create a mock MutationObserver", () => {
       const MockMutationObserver = createMockMutationObserver();
-      const observer = new MockMutationObserver(() => {});
+      const observer = new MockMutationObserver(() => { });
 
       expect(observer.observe).toBeDefined();
       expect(observer.disconnect).toBeDefined();
@@ -377,7 +381,7 @@ describe("Mock Utilities", () => {
 
     it("should return empty records from takeRecords", () => {
       const MockMutationObserver = createMockMutationObserver();
-      const observer = new MockMutationObserver(() => {});
+      const observer = new MockMutationObserver(() => { });
 
       expect(observer.takeRecords()).toEqual([]);
     });
@@ -386,7 +390,7 @@ describe("Mock Utilities", () => {
   describe("createMockPerformanceObserver", () => {
     it("should create a mock PerformanceObserver", () => {
       const MockPerformanceObserver = createMockPerformanceObserver();
-      const observer = new MockPerformanceObserver(() => {});
+      const observer = new MockPerformanceObserver(() => { });
 
       expect(observer.observe).toBeDefined();
       expect(observer.disconnect).toBeDefined();
@@ -395,7 +399,7 @@ describe("Mock Utilities", () => {
 
     it("should return empty records from takeRecords", () => {
       const MockPerformanceObserver = createMockPerformanceObserver();
-      const observer = new MockPerformanceObserver(() => {});
+      const observer = new MockPerformanceObserver(() => { });
 
       expect(observer.takeRecords()).toEqual([]);
     });
@@ -471,19 +475,21 @@ describe("Mock Utilities", () => {
       expect(typeof mockRAF).toBe("function");
     });
 
-    it("should call callback asynchronously", (done: () => void) => {
+    it("should call callback asynchronously", async () => {
       const mockRAF = createMockRequestAnimationFrame();
 
-      mockRAF((timestamp) => {
-        expect(typeof timestamp).toBe("number");
-        done();
+      await new Promise<void>((resolve) => {
+        mockRAF((timestamp) => {
+          expect(typeof timestamp).toBe("number");
+          resolve();
+        });
       });
     });
 
     it("should return a number", () => {
       const mockRAF = createMockRequestAnimationFrame();
 
-      const id = mockRAF(() => {});
+      const id = mockRAF(() => { });
       expect(typeof id).toBe("number");
     });
   });

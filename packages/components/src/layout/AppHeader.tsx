@@ -3,17 +3,17 @@
  * Modern header with navigation and theme selector
  */
 
+import { useNotifications } from "reynard-core";
+import { fluentIconsPackage } from "reynard-fluent-icons";
+import type { ThemeName } from "reynard-themes";
+import { getAvailableThemes, useTheme } from "reynard-themes";
 import {
   Component,
-  createSignal,
-  For,
   createEffect,
   createMemo,
+  createSignal,
+  For,
 } from "solid-js";
-import { fluentIconsPackage } from "reynard-fluent-icons";
-import { useTheme, getAvailableThemes } from "reynard-themes";
-import { useNotifications } from "reynard-core";
-import type { ThemeName } from "reynard-themes";
 
 export const AppHeader: Component = () => {
   // Use createMemo to defer context access and handle errors gracefully
@@ -158,6 +158,15 @@ export const AppHeader: Component = () => {
               onClick={() => scrollToSection("threed-showcase")}
             >
               3D Showcase
+            </button>
+            <button
+              class="nav-link"
+              onClick={() => {
+                window.location.hash = "#roguelike-game";
+                setIsMenuOpen(false);
+              }}
+            >
+              🦊 Rogue-like Game
             </button>
             <button
               class="nav-link"

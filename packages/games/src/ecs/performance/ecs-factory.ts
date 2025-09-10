@@ -29,7 +29,7 @@
  * @since 1.0.0
  */
 
-import { UnifiedECS, ECSConfig, ECSFactory } from "./ecs-interface";
+import { UnifiedECS, ECSConfig, ECSFactoryFunction } from "./ecs-interface";
 
 import { wasmDetector } from "./wasm-detector";
 import { TypeScriptECS, createTypeScriptECS } from "./typescript-ecs";
@@ -192,7 +192,7 @@ export class ECSFactory {
   /**
    * Check if WASM SIMD is available.
    */
-  private async isWASMAvailable(): Promise<boolean> {
+  async isWASMAvailable(): Promise<boolean> {
     const cacheKey = "wasm-available";
     if (this.detectionCache.has(cacheKey)) {
       return this.detectionCache.get(cacheKey)!;
@@ -317,7 +317,7 @@ export class ECSFactory {
  * ecs.runSystems(0.016);
  * ```
  */
-export const createECSSystem: ECSFactory = async (
+export const createECSSystem: ECSFactoryFunction = async (
   config?: ECSConfig,
 ): Promise<UnifiedECS> => {
   const factory = ECSFactory.getInstance();
@@ -396,7 +396,7 @@ export const createWASMSIMDECSSystem = async (
  */
 export const isWASMSIMDAvailable = async (): Promise<boolean> => {
   const factory = ECSFactory.getInstance();
-  return await factory["isWASMAvailable"]();
+  return await factory.isWASMAvailable();
 };
 
 /**

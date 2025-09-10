@@ -1,6 +1,6 @@
 # Diffusion LLM Metrics
 
-This document describes the metrics collection and export functionality for the Diffusion LLM integration in YipYap.
+This document describes the metrics collection and export functionality for the Diffusion LLM integration in Reynard.
 
 ## Overview
 
@@ -163,7 +163,7 @@ To integrate with Prometheus, configure a scrape job:
 
 ```yaml
 scrape_configs:
-  - job_name: "yipyap-diffusion-llm"
+  - job_name: "reynard-diffusion-llm"
     static_configs:
       - targets: ["localhost:7000"]
     metrics_path: "/api/diffusion/metrics/export"
@@ -177,7 +177,7 @@ To send metrics to InfluxDB, use the line protocol endpoint:
 
 ```bash
 curl "http://localhost:7000/api/diffusion/metrics/export?format=influxdb" | \
-  curl -i -XPOST "http://influxdb:8086/write?db=yipyap" --data-binary @-
+  curl -i -XPOST "http://influxdb:8086/write?db=reynard" --data-binary @-
 ```
 
 ### Grafana

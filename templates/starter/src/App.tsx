@@ -3,27 +3,29 @@
  * Modern showcase of the Reynard framework's capabilities
  */
 
-import { Component, createSignal, createEffect } from "solid-js";
+import {
+  AppFooter,
+  AppHeader,
+  ComponentPlayground,
+  HeroSection,
+  IconGallery,
+  InteractiveDashboard,
+  NotificationToast,
+  OKLCHColorDemo,
+  ThemeShowcase,
+} from "reynard-components";
 import { NotificationsProvider, createNotifications } from "reynard-core";
 import { ReynardProvider } from "reynard-themes";
-import {
-  AppHeader,
-  HeroSection,
-  InteractiveDashboard,
-  IconGallery,
-  ThemeShowcase,
-  OKLCHColorDemo,
-  ComponentPlayground,
-  AppFooter,
-  NotificationToast,
-} from "reynard-components";
-import { OKLCHShowcasePage } from "./pages/OKLCHShowcasePage";
+import { Component, createEffect, createSignal } from "solid-js";
 import { ChartsShowcasePage } from "./pages/ChartsShowcasePage";
+import { OKLCHShowcasePage } from "./pages/OKLCHShowcasePage";
+import { RoguelikeGamePage } from "./pages/RoguelikeGamePage";
 import { ThreeDShowcasePage } from "./pages/ThreeDShowcasePage";
 import "./styles/app.css";
+import "./styles/charts-showcase.css";
 import "./styles/oklch-demo.css";
 import "./styles/oklch-showcase.css";
-import "./styles/charts-showcase.css";
+import "./styles/roguelike-game.css";
 import "./styles/threed-showcase.css";
 
 const AppContent: Component = () => {
@@ -55,6 +57,8 @@ const AppContent: Component = () => {
         <ChartsShowcasePage />
       ) : currentPage() === "threed-showcase" ? (
         <ThreeDShowcasePage />
+      ) : currentPage() === "roguelike-game" ? (
+        <RoguelikeGamePage />
       ) : (
         <>
           <AppHeader />

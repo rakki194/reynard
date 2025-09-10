@@ -31,7 +31,7 @@ export const mockSessionStorage = {
 /**
  * Mock matchMedia
  */
-export const mockMatchMedia = vi.fn().mockImplementation((query: string) => ({
+export const mockMatchMedia = vi.fn((query: string) => ({
   matches: false,
   media: query,
   onchange: null,
@@ -84,7 +84,7 @@ export const mockPerformanceObserver = vi.fn().mockImplementation(() => ({
  */
 export const mockRequestAnimationFrame = vi.fn(
   (cb: FrameRequestCallback) => {
-    setTimeout(cb, 0);
+    setTimeout(() => cb(performance.now()), 0);
     return 1; // Return a proper frame ID
   },
 );
@@ -115,7 +115,7 @@ export const mockFetch = vi.fn((_url?: string) =>
  */
 export const mockWebSocket = vi.fn().mockImplementation(() => {
   const mockWs = {
-    readyState: WebSocket.CONNECTING,
+    readyState: 0, // CONNECTING
     url: "",
     protocol: "",
     extensions: "",
@@ -134,7 +134,7 @@ export const mockWebSocket = vi.fn().mockImplementation(() => {
 
   // Simulate connection
   setTimeout(() => {
-    mockWs.readyState = WebSocket.OPEN;
+    mockWs.readyState = 1; // OPEN
     if (mockWs.onopen) {
       mockWs.onopen(new Event("open"));
     }
@@ -148,7 +148,7 @@ export const mockWebSocket = vi.fn().mockImplementation(() => {
  */
 export const mockEventSource = vi.fn().mockImplementation(() => {
   const mockEs = {
-    readyState: EventSource.CONNECTING,
+    readyState: 0, // CONNECTING
     url: "",
     withCredentials: false,
     onopen: null,
@@ -162,7 +162,7 @@ export const mockEventSource = vi.fn().mockImplementation(() => {
 
   // Simulate connection
   setTimeout(() => {
-    mockEs.readyState = EventSource.OPEN;
+    mockEs.readyState = 1; // OPEN
     if (mockEs.onopen) {
       mockEs.onopen(new Event("open"));
     }
@@ -207,18 +207,34 @@ export const mockPerformance = {
 export const mockURL = vi
   .fn()
   .mockImplementation((url: string, base?: string) => {
-    // Create a simple mock URL object to avoid circular references
+    // Simple URL parsing without circular dependencies
+    let fullUrl = url;
+    if (base && !url.startsWith('http') && !url.startsWith('//')) {
+      // Parse base URL manually to avoid circular dependency
+      const baseMatch = base.match(/^(https?:)\/\/([^\/]+)/) || [];
+      const baseOrigin = baseMatch[0] || 'http://localhost';
+      fullUrl = baseOrigin + (url.startsWith('/') ? '' : '/') + url;
+    }
+
+    // Parse URL parts
+    const match = fullUrl.match(/^(https?:)\/\/([^\/]+)(\/[^?]*)?(\?[^#]*)?(#.*)?$/) || [];
+    const protocol = match[1] || 'http:';
+    const host = match[2] || 'localhost';
+    const pathname = match[3] || '/';
+    const search = match[4] || '';
+    const hash = match[5] || '';
+
     const urlObj = {
-      href: url,
-      origin: "http://localhost",
-      protocol: "http:",
-      host: "localhost",
-      hostname: "localhost",
-      port: "",
-      pathname: url,
-      search: "",
-      hash: "",
-      searchParams: mockURLSearchParams(""),
+      href: fullUrl,
+      origin: `${protocol}//${host}`,
+      protocol,
+      host,
+      hostname: host.split(':')[0],
+      port: host.includes(':') ? host.split(':')[1] : '',
+      pathname,
+      search,
+      hash,
+      searchParams: mockURLSearchParams(search.slice(1)),
     };
     return urlObj;
   });
@@ -291,16 +307,34 @@ export const mockFormData = vi.fn().mockImplementation(() => {
  * Mock Headers
  */
 export const mockHeaders = vi.fn().mockImplementation((init?: HeadersInit) => {
+  const headers = new Map<string, string>();
+
+  // Initialize with provided headers
+  if (init) {
+    if (Array.isArray(init)) {
+      init.forEach(([key, value]) => headers.set(key.toLowerCase(), value));
+    } else if (init instanceof Map) {
+      init.forEach((value, key) => headers.set(key.toLowerCase(), value));
+    } else {
+      Object.entries(init).forEach(([key, value]) => headers.set(key.toLowerCase(), value));
+    }
+  }
+
   return {
-    append: vi.fn(),
-    delete: vi.fn(),
-    get: vi.fn(),
-    has: vi.fn(),
-    set: vi.fn(),
-    entries: vi.fn(),
-    keys: vi.fn(),
-    values: vi.fn(),
-    forEach: vi.fn(),
+    append: vi.fn((name: string, value: string) => {
+      const existing = headers.get(name.toLowerCase());
+      headers.set(name.toLowerCase(), existing ? `${existing}, ${value}` : value);
+    }),
+    delete: vi.fn((name: string) => headers.delete(name.toLowerCase())),
+    get: vi.fn((name: string) => headers.get(name.toLowerCase()) || null),
+    has: vi.fn((name: string) => headers.has(name.toLowerCase())),
+    set: vi.fn((name: string, value: string) => headers.set(name.toLowerCase(), value)),
+    entries: vi.fn(() => headers.entries()),
+    keys: vi.fn(() => headers.keys()),
+    values: vi.fn(() => headers.values()),
+    forEach: vi.fn((callback: (value: string, key: string) => void) => {
+      headers.forEach((value, key) => callback(value, key));
+    }),
   };
 });
 

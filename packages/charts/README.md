@@ -9,7 +9,7 @@ Reynard Charts provides a comprehensive suite of data visualization components b
 ## Installation
 
 ```bash
-npm install reynard-charts reynard-core reynard-color-media chart.js solid-chartjs solid-js
+npm install reynard-charts reynard-core reynard-colors chart.js solid-chartjs solid-js
 ```
 
 ## Quick Start
@@ -375,7 +375,7 @@ function MonitoredChart() {
 
 **Color issues:**
 
-- Verify `reynard-color-media` is installed
+- Verify `reynard-colors` is installed
 - Check theme configuration
 - Ensure OKLCH support in target browsers
 

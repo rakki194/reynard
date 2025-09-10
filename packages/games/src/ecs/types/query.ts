@@ -23,7 +23,7 @@
  * @since 1.0.0
  */
 
-import { Entity, Component } from "./core";
+import { Component, Entity } from "./core";
 import { ComponentType } from "./storage";
 
 /**
@@ -63,6 +63,8 @@ export interface QueryFilter {
   readonly added?: ComponentType<Component>[];
   /** Entities that had these components changed this frame */
   readonly changed?: ComponentType<Component>[];
+  /** Entities that had these components removed this frame */
+  readonly removed?: ComponentType<Component>[];
 }
 
 /**

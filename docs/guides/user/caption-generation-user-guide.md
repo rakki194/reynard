@@ -1,6 +1,6 @@
 # Unified Caption Generation – User Guide
 
-This guide explains how to generate captions and tags in yipyap using the unified caption system, how to adjust post‑processing, and how to resolve common issues.
+This guide explains how to generate captions and tags in Reynard using the unified caption system, how to adjust post‑processing, and how to resolve common issues.
 
 ## What it does
 

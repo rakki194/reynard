@@ -1,6 +1,6 @@
 # Diffusion LLM Integration (DreamOn, LLaDA)
 
-This document describes how diffusion-based language models are integrated into YipYap for text generation and infilling, providing real-time streaming, robust model management, and a polished user experience.
+This document describes how diffusion-based language models are integrated into Reynard for text generation and infilling, providing real-time streaming, robust model management, and a polished user experience.
 
 ## Architecture and Services
 

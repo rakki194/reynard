@@ -30,7 +30,7 @@
     - [Pluralization Tests](#pluralization-tests)
     - [RTL Tests](#rtl-tests)
 
-The translation system in yipyap provides comprehensive internationalization support with type-safe translations, pluralization rules, and RTL language support.
+The translation system in Reynard provides comprehensive internationalization support with type-safe translations, pluralization rules, and RTL language support.
 
 ## Directory Structure
 

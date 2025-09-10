@@ -47,21 +47,21 @@ export class ECSGame {
   private lastTime = 0;
 
   // Component types
-  private positionType: ComponentType<Position>;
-  private velocityType: ComponentType<Velocity>;
-  private healthType: ComponentType<Health>;
-  private damageType: ComponentType<Damage>;
-  private playerType: ComponentType<Player>;
-  private enemyType: ComponentType<Enemy>;
-  private bulletType: ComponentType<Bullet>;
-  private colorType: ComponentType<Color>;
-  private sizeType: ComponentType<Size>;
+  private positionType!: ComponentType<Position>;
+  private velocityType!: ComponentType<Velocity>;
+  private healthType!: ComponentType<Health>;
+  private damageType!: ComponentType<Damage>;
+  private playerType!: ComponentType<Player>;
+  private enemyType!: ComponentType<Enemy>;
+  private bulletType!: ComponentType<Bullet>;
+  private colorType!: ComponentType<Color>;
+  private sizeType!: ComponentType<Size>;
 
   // Resource types
-  private gameTimeType: ResourceType<GameTime>;
-  private gameStateType: ResourceType<GameState>;
-  private inputStateType: ResourceType<InputState>;
-  private cameraType: ResourceType<Camera>;
+  private gameTimeType!: ResourceType<GameTime>;
+  private gameStateType!: ResourceType<GameState>;
+  private inputStateType!: ResourceType<InputState>;
+  private cameraType!: ResourceType<Camera>;
 
   constructor() {
     this.world = createWorld();

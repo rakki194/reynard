@@ -1,6 +1,50 @@
 # 🦊> Reynard Ollama Backend Implementation
 
-A complete Ollama local LLM backend system for Reynard, ported from Yipyap's battle-tested implementation with ReynardAssistant, tool calling, streaming responses, and context awareness.
+A complete Ollama local LLM backend system for Reynard, built with ReynardAssistant, tool calling, streaming responses, and context awareness.
+
+## Table of Contents
+
+- [🦊\> Reynard Ollama Backend Implementation](#-reynard-ollama-backend-implementation)
+  - [Table of Contents](#table-of-contents)
+  - [✨ Features](#-features)
+    - [🚀 **Core Capabilities**](#-core-capabilities)
+    - [🎯 **API Endpoints**](#-api-endpoints)
+  - [📦 Architecture](#-architecture)
+    - [**Service Layer**](#service-layer)
+    - [**API Layer**](#api-layer)
+  - [🚀 Quick Start](#-quick-start)
+    - [**Prerequisites**](#prerequisites)
+    - [**Configuration**](#configuration)
+    - [**Running the Backend**](#running-the-backend)
+  - [🔧 Configuration Options](#-configuration-options)
+    - [**Core Settings**](#core-settings)
+    - [**Performance Tuning**](#performance-tuning)
+    - [**Model Configuration**](#model-configuration)
+  - [🤖 Assistant Details](#-assistant-details)
+    - [**ReynardAssistant**](#reynardassistant)
+    - [**CodeWolf Assistant**](#codewolf-assistant)
+  - [📊 Usage Examples](#-usage-examples)
+    - [**Basic Chat**](#basic-chat)
+    - [**Streaming Chat**](#streaming-chat)
+    - [**ReynardAssistant Chat**](#reynardassistant-chat)
+    - [**Streaming Assistant Chat**](#streaming-assistant-chat)
+  - [🔍 Monitoring and Administration](#-monitoring-and-administration)
+    - [**Service Statistics**](#service-statistics)
+    - [**Health Check**](#health-check)
+    - [**Available Models**](#available-models)
+    - [**Pull New Model**](#pull-new-model)
+  - [🛠️ Development](#️-development)
+    - [**Adding New Tools**](#adding-new-tools)
+    - [**Adding New Assistants**](#adding-new-assistants)
+    - [**Testing**](#testing)
+  - [🚨 Troubleshooting](#-troubleshooting)
+    - [**Common Issues**](#common-issues)
+    - [**Performance Optimization**](#performance-optimization)
+  - [📈 Performance Metrics](#-performance-metrics)
+    - [**Benchmarks**](#benchmarks)
+    - [**Resource Usage**](#resource-usage)
+  - [🔒 Security Considerations](#-security-considerations)
+  - [🎉 Conclusion](#-conclusion)
 
 ## ✨ Features
 
@@ -16,11 +60,18 @@ A complete Ollama local LLM backend system for Reynard, ported from Yipyap's bat
 
 ### 🎯 **API Endpoints**
 
+See [Shared API Patterns](./shared/api-patterns.md) for common request/response structures.
+
+**Core Endpoints:**
+
 - `POST /api/ollama/chat` - Single chat with Ollama model
 - `POST /api/ollama/chat/stream` - Streaming chat with Ollama model
 - `POST /api/ollama/assistant` - Chat with ReynardAssistant
 - `POST /api/ollama/assistant/stream` - Streaming chat with ReynardAssistant
 - `GET /api/ollama/models` - Available models
+
+**Admin Endpoints:**
+
 - `GET /api/ollama/config` - Get configuration
 - `POST /api/ollama/config` - Update configuration
 - `GET /api/ollama/admin/stats` - Service statistics
@@ -33,7 +84,7 @@ A complete Ollama local LLM backend system for Reynard, ported from Yipyap's bat
 
 ### **Service Layer**
 
-```
+```text
 backend/app/services/ollama/
 ├── __init__.py
 ├── ollama_service.py      # Main Ollama orchestrator
@@ -42,7 +93,7 @@ backend/app/services/ollama/
 
 ### **API Layer**
 
-```
+```text
 backend/app/api/ollama/
 ├── __init__.py
 ├── router.py              # Main router
@@ -54,51 +105,27 @@ backend/app/api/ollama/
 
 ## 🚀 Quick Start
 
+See [Shared Installation Guides](./shared/installation-guides.md) for detailed setup instructions.
+
 ### **Prerequisites**
 
-1. **Ollama Server** (required):
-
-   ```bash
-   # Install Ollama
-   curl -fsSL https://ollama.ai/install.sh | sh
-   
-   # Start Ollama server
-   ollama serve
-   
-   # Pull a model (e.g., Llama 3.1)
-   ollama pull llama3.1
-   ```
-
-2. **Python Dependencies**:
-
-   ```bash
-   pip install aiohttp httpx
-   ```
+1. **Ollama Server** (required) - See shared installation guide
+2. **Python Dependencies** - See shared installation guide
 
 ### **Configuration**
 
-1. **Copy configuration template**:
+See [Shared Configuration Examples](./shared/configuration-examples.md) for environment setup.
 
-   ```bash
-   cp ollama_config_example.env .env
-   ```
+**Key environment variables:**
 
-2. **Update Ollama settings**:
-
-   ```env
-   OLLAMA_ENABLED=true
-   OLLAMA_BASE_URL=http://localhost:11434
-   OLLAMA_DEFAULT_MODEL=llama3.1
-   OLLAMA_TIMEOUT_SECONDS=300
-   OLLAMA_ASSISTANT_ENABLED=true
-   OLLAMA_TOOLS_ENABLED=true
-   ```
-
-3. **Install dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+```env
+OLLAMA_ENABLED=true
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_DEFAULT_MODEL=llama3.1
+OLLAMA_TIMEOUT_SECONDS=300
+OLLAMA_ASSISTANT_ENABLED=true
+OLLAMA_TOOLS_ENABLED=true
+```
 
 ### **Running the Backend**
 

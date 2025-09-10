@@ -1,5 +1,5 @@
-import { defineConfig } from "vitest/config";
 import solid from "vite-plugin-solid";
+import { defineConfig } from "vitest/config";
 
 /**
  * Base Vitest configuration for all Reynard packages
@@ -38,6 +38,7 @@ export const createBaseVitestConfig = (
       environment: "happy-dom",
       globals: true,
       setupFiles,
+      reporters: [["default", { summary: false }]],
       environmentOptions: {
         happyDOM: {
           // Fast, modern DOM environment for SolidJS

@@ -12,7 +12,7 @@ export * from "reynard-boundingbox";
 export * from "reynard-caption";
 export * from "reynard-charts";
 export * from "reynard-chat";
-export * from "reynard-color-media";
+export * from "reynard-colors";
 export * from "reynard-components";
 export * from "reynard-composables";
 export * from "reynard-connection";
@@ -32,3 +32,4 @@ export * from "reynard-testing";
 export * from "reynard-themes";
 export * from "reynard-tools";
 export * from "reynard-ui";
+

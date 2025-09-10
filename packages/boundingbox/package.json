@@ -1,6 +1,6 @@
 {
   "name": "reynard-boundingbox",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Reusable bounding box and annotation editing components for Reynard",
   "type": "module",
   "main": "./dist/index.js",
@@ -51,6 +51,7 @@
     "@typescript-eslint/parser": "8.42.0",
     "eslint": "9.35.0",
     "happy-dom": "^18.0.1",
+    "reynard-testing": "workspace:*",
     "typescript": "5.9.2",
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8",

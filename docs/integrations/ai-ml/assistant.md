@@ -1,4 +1,4 @@
-# YipYap Assistant
+# Reynard Assistant
 
 The assistant streams typed chunks, routes tool calls with validation, and
 integrates with Ollama for chat and embeddings.

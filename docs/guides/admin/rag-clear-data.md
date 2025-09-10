@@ -1,7 +1,7 @@
 # Clearing RAG Data
 
 This document explains how to clear all RAG data while preserving the database
-structure in YipYap.
+structure in Reynard.
 
 ## Overview
 
@@ -65,11 +65,11 @@ standalone script:
 
 ```bash
 # Using environment variable
-export PG_DSN="postgresql://yipyap:yipyap@localhost:5432/yipyap"
+export PG_DSN="postgresql://reynard:reynard@localhost:5432/reynard"
 python scripts/clear_rag_data.py
 
 # Using command line argument
-python scripts/clear_rag_data.py --dsn "postgresql://yipyap:yipyap@localhost:5432/yipyap"
+python scripts/clear_rag_data.py --dsn "postgresql://reynard:reynard@localhost:5432/reynard"
 
 # Using config file
 python scripts/clear_rag_data.py --config config.json
@@ -86,7 +86,7 @@ python scripts/clear_rag_data.py --dsn "postgresql://..." --force
 
 **Script Features:**
 
-- **No backend required**: Works independently of the YipYap application
+- **No backend required**: Works independently of the Reynard application
 - **Multiple config sources**: Supports DSN, config files, and environment files
 - **Safety features**: Confirmation prompts and dry-run mode
 - **Comprehensive logging**: Detailed output of all operations

@@ -1,6 +1,6 @@
 # Summarization System Deployment Guide
 
-This guide covers deploying the YipYap summarization system across different environments, including development, staging, and production configurations.
+This guide covers deploying the Reynard summarization system across different environments, including development, staging, and production configurations.
 
 ## Overview
 
@@ -67,8 +67,8 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 1. **Clone and Setup**:
 
    ```bash
-   git clone https://github.com/rakki194/yipyap
-   cd yipyap
+   git clone https://github.com/rakki194/reynard
+   cd reynard
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
@@ -113,7 +113,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ```yaml
    # docker-compose.dev.yml
    services:
-     yipyap-backend:
+     reynard-backend:
        build:
          context: .
          dockerfile: Dockerfile
@@ -152,7 +152,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ENVIRONMENT=staging
    SUMMARIZATION_ENABLED=true
    SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
-   SUMMARIZATION_CACHE_DIR=/var/cache/yipyap/summarization
+   SUMMARIZATION_CACHE_DIR=/var/cache/reynard/summarization
    SUMMARIZATION_CACHE_TTL_HOURS=12
    SUMMARIZATION_MAX_CONCURRENT=5
    SUMMARIZATION_MAX_TOKENS_PER_BATCH=15000
@@ -180,13 +180,13 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    # docker-compose.staging.yml
    version: "3.8"
    services:
-     yipyap:
-       image: yipyap:staging
+     reynard:
+       image: reynard:staging
        environment:
          ENVIRONMENT: staging
          SUMMARIZATION_ENABLED: true
          SUMMARIZATION_DEFAULT_MODEL: qwen3:8b
-         SUMMARIZATION_CACHE_DIR: /var/cache/yipyap/summarization
+         SUMMARIZATION_CACHE_DIR: /var/cache/reynard/summarization
          SUMMARIZATION_MAX_CONCURRENT: 5
          SUMMARIZATION_RATE_LIMIT_PER_MINUTE: 200
          SUMMARIZATION_ENABLE_STREAMING: true
@@ -194,9 +194,9 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
          SUMMARIZATION_ENABLE_PARALLEL_PROCESSING: true
          SUMMARIZATION_QUALITY_METRICS_ENABLED: true
        volumes:
-         - /var/cache/yipyap:/var/cache/yipyap
-         - /var/log/yipyap:/var/log/yipyap
-         - /var/data/yipyap:/var/data/yipyap
+         - /var/cache/reynard:/var/cache/reynard
+         - /var/log/reynard:/var/log/reynard
+         - /var/data/reynard:/var/data/reynard
        ports:
          - "8080:8080"
        restart: unless-stopped
@@ -211,7 +211,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```bash
    # Build staging image
-   docker build -t yipyap:staging .
+   docker build -t reynard:staging .
 
    # Deploy with docker-compose
    docker-compose -f docker-compose.staging.yml up -d
@@ -231,7 +231,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    ENVIRONMENT=production
    SUMMARIZATION_ENABLED=true
    SUMMARIZATION_DEFAULT_MODEL=qwen3:8b
-   SUMMARIZATION_CACHE_DIR=/var/cache/yipyap/summarization
+   SUMMARIZATION_CACHE_DIR=/var/cache/reynard/summarization
    SUMMARIZATION_CACHE_TTL_HOURS=48
    SUMMARIZATION_MAX_CONCURRENT=10
    SUMMARIZATION_MAX_TOKENS_PER_BATCH=20000
@@ -264,13 +264,13 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    # docker-compose.prod.yml
    version: "3.8"
    services:
-     yipyap:
-       image: yipyap:latest
+     reynard:
+       image: reynard:latest
        environment:
          ENVIRONMENT: production
          SUMMARIZATION_ENABLED: true
          SUMMARIZATION_DEFAULT_MODEL: qwen3:8b
-         SUMMARIZATION_CACHE_DIR: /var/cache/yipyap/summarization
+         SUMMARIZATION_CACHE_DIR: /var/cache/reynard/summarization
          SUMMARIZATION_MAX_CONCURRENT: 10
          SUMMARIZATION_RATE_LIMIT_PER_MINUTE: 500
          SUMMARIZATION_ENABLE_STREAMING: true
@@ -281,10 +281,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
          SUMMARIZATION_ENABLE_CROSS_LANGUAGE: true
          SUMMARIZATION_ENABLE_CONTEXTUAL: true
        volumes:
-         - /var/cache/yipyap:/var/cache/yipyap
-         - /var/log/yipyap:/var/log/yipyap
-         - /var/data/yipyap:/var/data/yipyap
-         - /var/models/yipyap:/var/models/yipyap
+         - /var/cache/reynard:/var/cache/reynard
+         - /var/log/reynard:/var/log/reynard
+         - /var/data/reynard:/var/data/reynard
+         - /var/models/reynard:/var/models/reynard
        ports:
          - "80:8080"
          - "443:8443"
@@ -309,7 +309,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```bash
    # Build production image
-   docker build -t yipyap:latest .
+   docker build -t reynard:latest .
 
    # Deploy with docker-compose
    docker-compose -f docker-compose.prod.yml up -d
@@ -332,11 +332,11 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    apiVersion: v1
    kind: ConfigMap
    metadata:
-     name: yipyap-summarization-config
+     name: reynard-summarization-config
    data:
      SUMMARIZATION_ENABLED: "true"
      SUMMARIZATION_DEFAULT_MODEL: "qwen3:8b"
-     SUMMARIZATION_CACHE_DIR: "/var/cache/yipyap/summarization"
+     SUMMARIZATION_CACHE_DIR: "/var/cache/reynard/summarization"
      SUMMARIZATION_MAX_CONCURRENT: "10"
      SUMMARIZATION_RATE_LIMIT_PER_MINUTE: "500"
      SUMMARIZATION_ENABLE_STREAMING: "true"
@@ -355,27 +355,27 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    apiVersion: apps/v1
    kind: Deployment
    metadata:
-     name: yipyap
+     name: reynard
      labels:
-       app: yipyap
+       app: reynard
    spec:
      replicas: 3
      selector:
        matchLabels:
-         app: yipyap
+         app: reynard
      template:
        metadata:
          labels:
-           app: yipyap
+           app: reynard
        spec:
          containers:
-           - name: yipyap
-             image: yipyap:latest
+           - name: reynard
+             image: reynard:latest
              ports:
                - containerPort: 8080
              envFrom:
                - configMapRef:
-                   name: yipyap-summarization-config
+                   name: reynard-summarization-config
              resources:
                requests:
                  memory: "4Gi"
@@ -385,11 +385,11 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
                  cpu: "4"
              volumeMounts:
                - name: cache-volume
-                 mountPath: /var/cache/yipyap
+                 mountPath: /var/cache/reynard
                - name: data-volume
-                 mountPath: /var/data/yipyap
+                 mountPath: /var/data/reynard
                - name: models-volume
-                 mountPath: /var/models/yipyap
+                 mountPath: /var/models/reynard
              livenessProbe:
                httpGet:
                  path: /api/health
@@ -405,13 +405,13 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
          volumes:
            - name: cache-volume
              persistentVolumeClaim:
-               claimName: yipyap-cache-pvc
+               claimName: reynard-cache-pvc
            - name: data-volume
              persistentVolumeClaim:
-               claimName: yipyap-data-pvc
+               claimName: reynard-data-pvc
            - name: models-volume
              persistentVolumeClaim:
-               claimName: yipyap-models-pvc
+               claimName: reynard-models-pvc
    ```
 
 3. **Service Configuration**:
@@ -421,10 +421,10 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    apiVersion: v1
    kind: Service
    metadata:
-     name: yipyap-service
+     name: reynard-service
    spec:
      selector:
-       app: yipyap
+       app: reynard
      ports:
        - protocol: TCP
          port: 80
@@ -441,11 +441,11 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    kubectl apply -f k8s/service.yaml
 
    # Check deployment status
-   kubectl get pods -l app=yipyap
-   kubectl get services -l app=yipyap
+   kubectl get pods -l app=reynard
+   kubectl get services -l app=reynard
 
    # Check logs
-   kubectl logs -l app=yipyap -f
+   kubectl logs -l app=reynard -f
    ```
 
 ## Cloud Deployment
@@ -456,7 +456,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```json
    {
-     "family": "yipyap",
+     "family": "reynard",
      "networkMode": "awsvpc",
      "requiresCompatibilities": ["FARGATE"],
      "cpu": "2048",
@@ -464,8 +464,8 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
      "executionRoleArn": "arn:aws:iam::account:role/ecsTaskExecutionRole",
      "containerDefinitions": [
        {
-         "name": "yipyap",
-         "image": "yipyap:latest",
+         "name": "reynard",
+         "image": "reynard:latest",
          "portMappings": [
            {
              "containerPort": 8080,
@@ -497,7 +497,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
          "logConfiguration": {
            "logDriver": "awslogs",
            "options": {
-             "awslogs-group": "/ecs/yipyap",
+             "awslogs-group": "/ecs/reynard",
              "awslogs-region": "us-west-2",
              "awslogs-stream-prefix": "ecs"
            }
@@ -521,16 +521,16 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```bash
    # Create ECS cluster
-   aws ecs create-cluster --cluster-name yipyap-cluster
+   aws ecs create-cluster --cluster-name reynard-cluster
 
    # Register task definition
    aws ecs register-task-definition --cli-input-json file://task-definition.json
 
    # Create service
    aws ecs create-service \
-     --cluster yipyap-cluster \
-     --service-name yipyap-service \
-     --task-definition yipyap:1 \
+     --cluster reynard-cluster \
+     --service-name reynard-service \
+     --task-definition reynard:1 \
      --desired-count 3 \
      --launch-type FARGATE \
      --network-configuration "awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}"
@@ -542,12 +542,12 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
 
    ```bash
    # Build and push image
-   docker build -t gcr.io/PROJECT_ID/yipyap .
-   docker push gcr.io/PROJECT_ID/yipyap
+   docker build -t gcr.io/PROJECT_ID/reynard .
+   docker push gcr.io/PROJECT_ID/reynard
 
    # Deploy to Cloud Run
-   gcloud run deploy yipyap \
-     --image gcr.io/PROJECT_ID/yipyap \
+   gcloud run deploy reynard \
+     --image gcr.io/PROJECT_ID/reynard \
      --platform managed \
      --region us-central1 \
      --allow-unauthenticated \
@@ -640,21 +640,21 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    SUMMARIZATION_LOG_LEVEL=INFO
 
    # Log to file
-   SUMMARIZATION_LOG_FILE=/var/log/yipyap/summarization.log
+   SUMMARIZATION_LOG_FILE=/var/log/reynard/summarization.log
    ```
 
 2. **Log Rotation**:
 
    ```bash
    # Configure log rotation
-   /var/log/yipyap/summarization.log {
+   /var/log/reynard/summarization.log {
      daily
      rotate 30
      compress
      delaycompress
      missingok
      notifempty
-     create 644 yipyap yipyap
+     create 644 reynard reynard
    }
    ```
 
@@ -716,7 +716,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    curl http://localhost:11434/api/tags
 
    # Restart summarization service
-   docker-compose restart yipyap
+   docker-compose restart reynard
    ```
 
 ### Debug Mode

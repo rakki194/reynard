@@ -296,61 +296,178 @@ class OllamaService:
             logger.error(f"Error during cleanup: {e}")
 
 
-# Placeholder classes - these would be implemented in separate files
+import aiohttp
+import json
+from typing import Dict, Any, List, Optional
+
+
 class OllamaClient:
     """Ollama HTTP client for model interaction."""
 
     def __init__(self, base_url: str, timeout: int):
         self.base_url = base_url
         self.timeout = timeout
+        self.session: Optional[aiohttp.ClientSession] = None
+
+    async def _ensure_session(self):
+        """Ensure HTTP session is available."""
+        if self.session is None or self.session.closed:
+            timeout = aiohttp.ClientTimeout(total=self.timeout)
+            self.session = aiohttp.ClientSession(timeout=timeout)
 
     async def is_model_available(self, model_name: str) -> bool:
         """Check if a model is available."""
-        return True  # Mock implementation
+        try:
+            await self._ensure_session()
+            async with self.session.get(f"{self.base_url}/api/tags") as response:
+                if response.status == 200:
+                    data = await response.json()
+                    models = data.get("models", [])
+                    return any(model.get("name") == model_name for model in models)
+                return False
+        except Exception as e:
+            logger.error(f"Error checking model availability: {e}")
+            return False
 
     async def chat_stream(self, params: OllamaChatParams) -> AsyncIterable[OllamaStreamEvent]:
         """Stream chat response."""
-        # Mock streaming response
-        yield OllamaStreamEvent(
-            type="token",
-            data="Hello! I'm an Ollama model. ",
-            timestamp=time.time(),
-        )
-        yield OllamaStreamEvent(
-            type="token",
-            data="How can I help you today?",
-            timestamp=time.time(),
-        )
+        try:
+            await self._ensure_session()
+            
+            payload = {
+                "model": params.model,
+                "messages": [
+                    {"role": "user", "content": params.message}
+                ],
+                "stream": True,
+                "options": {
+                    "temperature": params.temperature,
+                    "num_predict": params.max_tokens
+                }
+            }
+            
+            # Add tools if provided
+            if params.tools:
+                payload["tools"] = params.tools
+            
+            # Add system prompt if provided
+            if params.system_prompt:
+                payload["messages"].insert(0, {"role": "system", "content": params.system_prompt})
+            
+            async with self.session.post(
+                f"{self.base_url}/api/chat",
+                json=payload
+            ) as response:
+                if response.status == 200:
+                    async for line in response.content:
+                        if line:
+                            try:
+                                data = json.loads(line.decode('utf-8'))
+                                
+                                # Handle content tokens
+                                if data.get('message', {}).get('content'):
+                                    yield OllamaStreamEvent(
+                                        type="token",
+                                        data=data['message']['content'],
+                                        timestamp=time.time()
+                                    )
+                                
+                                # Handle tool calls
+                                if data.get('message', {}).get('tool_calls'):
+                                    for tool_call in data['message']['tool_calls']:
+                                        yield OllamaStreamEvent(
+                                            type="tool_call",
+                                            data="",
+                                            timestamp=time.time(),
+                                            metadata={
+                                                "tool_name": tool_call['function']['name'],
+                                                "tool_args": tool_call['function']['arguments'],
+                                                "tool_call_id": tool_call.get('id')
+                                            }
+                                        )
+                                
+                                # Handle completion
+                                if data.get('done'):
+                                    yield OllamaStreamEvent(
+                                        type="complete",
+                                        data="",
+                                        timestamp=time.time(),
+                                        metadata={"done": True}
+                                    )
+                                    break
+                                    
+                            except json.JSONDecodeError:
+                                continue
+                else:
+                    error_text = await response.text()
+                    yield OllamaStreamEvent(
+                        type="error",
+                        data=f"HTTP {response.status}: {error_text}",
+                        timestamp=time.time()
+                    )
+        except Exception as e:
+            logger.error(f"Error in chat_stream: {e}")
+            yield OllamaStreamEvent(
+                type="error",
+                data=str(e),
+                timestamp=time.time()
+            )
 
     async def get_models(self) -> List[OllamaModelInfo]:
         """Get available models."""
-        return [
-            OllamaModelInfo(
-                name="llama3.1",
-                size=4000000000,
-                digest="sha256:abc123",
-                modified_at="2024-01-01T00:00:00Z",
-                is_available=True,
-                context_length=8192,
-                capabilities=["chat", "completion"]
-            )
-        ]
+        try:
+            await self._ensure_session()
+            async with self.session.get(f"{self.base_url}/api/tags") as response:
+                if response.status == 200:
+                    data = await response.json()
+                    models = []
+                    for model_data in data.get("models", []):
+                        models.append(OllamaModelInfo(
+                            name=model_data.get("name", "unknown"),
+                            size=model_data.get("size", 0),
+                            digest=model_data.get("digest", ""),
+                            modified_at=model_data.get("modified_at", ""),
+                            is_available=True,
+                            context_length=model_data.get("details", {}).get("parameter_size", 4096),
+                            capabilities=["chat", "completion"]
+                        ))
+                    return models
+                return []
+        except Exception as e:
+            logger.error(f"Error getting models: {e}")
+            return []
 
     async def health_check(self) -> bool:
         """Check Ollama server health."""
-        return True  # Mock implementation
+        try:
+            await self._ensure_session()
+            async with self.session.get(f"{self.base_url}/api/tags") as response:
+                return response.status == 200
+        except Exception:
+            return False
 
     async def pull_model(self, model_name: str) -> bool:
         """Pull a model."""
-        return True  # Mock implementation
+        try:
+            await self._ensure_session()
+            async with self.session.post(
+                f"{self.base_url}/api/pull",
+                json={"name": model_name}
+            ) as response:
+                return response.status == 200
+        except Exception as e:
+            logger.error(f"Error pulling model {model_name}: {e}")
+            return False
 
     def update_config(self, config: OllamaConfig) -> None:
         """Update client configuration."""
-        pass
+        self.base_url = config.base_url
+        self.timeout = config.timeout_seconds
 
     async def cleanup(self) -> None:
         """Cleanup client resources."""
-        pass
+        if self.session and not self.session.closed:
+            await self.session.close()
 
 
 class ReynardAssistant:
@@ -362,26 +479,78 @@ class ReynardAssistant:
 
     async def chat_stream(self, params: OllamaAssistantParams) -> AsyncIterable[OllamaStreamEvent]:
         """Stream assistant response with tool calling."""
-        # Mock assistant response with tool calling
-        yield OllamaStreamEvent(
-            type="token",
-            data="I'm ReynardAssistant, ",
-            timestamp=time.time(),
-        )
-        
-        if params.tools_enabled:
-            yield OllamaStreamEvent(
-                type="tool_call",
-                data="",
-                timestamp=time.time(),
-                metadata={"tool_name": "search", "tool_args": {"query": "example"}}
+        try:
+            # Create chat params for the underlying client
+            chat_params = OllamaChatParams(
+                message=params.message,
+                model=params.model,
+                system_prompt=self._get_system_prompt(params.assistant_type),
+                temperature=params.temperature,
+                max_tokens=params.max_tokens,
+                stream=True,
+                tools=self._get_available_tools() if params.tools_enabled else None,
+                context=params.context
             )
-        
-        yield OllamaStreamEvent(
-            type="token",
-            data="ready to help with tools and context awareness!",
-            timestamp=time.time(),
-        )
+            
+            # Stream from the underlying client
+            async for event in self.client.chat_stream(chat_params):
+                yield event
+                
+        except Exception as e:
+            logger.error(f"Error in ReynardAssistant chat_stream: {e}")
+            yield OllamaStreamEvent(
+                type="error",
+                data=str(e),
+                timestamp=time.time()
+            )
+
+    def _get_system_prompt(self, assistant_type: str) -> str:
+        """Get system prompt based on assistant type."""
+        prompts = {
+            "reynard": "You are Reynard, a helpful AI assistant with access to various tools. You can help with coding, analysis, and general tasks.",
+            "codewolf": "You are CodeWolf, a specialized coding assistant. You excel at code analysis, debugging, and development tasks.",
+            "default": "You are a helpful AI assistant with access to tools and context awareness."
+        }
+        return prompts.get(assistant_type, prompts["default"])
+
+    def _get_available_tools(self) -> List[Dict[str, Any]]:
+        """Get available tools for the assistant."""
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": "file_list",
+                    "description": "List files in a directory",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "string",
+                                "description": "Directory path to list"
+                            }
+                        },
+                        "required": ["path"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "search_web",
+                    "description": "Search the web for information",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "Search query"
+                            }
+                        },
+                        "required": ["query"]
+                    }
+                }
+            }
+        ]
 
     def update_config(self, config: OllamaConfig) -> None:
         """Update assistant configuration."""

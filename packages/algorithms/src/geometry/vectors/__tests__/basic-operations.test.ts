@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { VectorOps, type Vector } from "./vector-algorithms";
+import { describe, expect, it } from "vitest";
 import { PointOps } from "../../shapes/point-algorithms";
+import { VectorOps } from "../vector-algorithms";
 
 describe("VectorOps - Basic Operations", () => {
   describe("create", () => {

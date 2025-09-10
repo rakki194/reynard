@@ -3,16 +3,15 @@
  * Handles theme context creation and management
  */
 
-import { createSignal } from "solid-js";
-import type { ThemeName, ThemeContext } from "./types";
 import {
+  applyTheme,
+  computeAnimation,
+  computeHoverStyles,
   computeTagBackground,
   computeTagColor,
-  computeHoverStyles,
-  computeAnimation,
-  applyTheme,
 } from "./themeUtils";
 import { isDarkTheme, isHighContrastTheme } from "./themes";
+import type { ThemeContext, ThemeName } from "./types";
 
 /**
  * Creates a theme context with reactive theme state

@@ -2,16 +2,15 @@
 
 import { World } from "../../types";
 import {
-  Position,
   Color,
-  Health,
-  GameState,
-  Player,
-  PositionType,
   ColorType,
+  GameState,
+  GameStateType,
+  Health,
   HealthType,
   PlayerType,
-  GameStateType,
+  Position,
+  PositionType,
 } from "../components";
 
 /**
@@ -43,7 +42,7 @@ export function gameStateSystem(world: World): void {
   const playerQuery = world.query(PlayerType, HealthType);
   let playerAlive = false;
 
-  playerQuery.forEach((entity, player, health) => {
+  playerQuery.forEach((_entity, _player, health) => {
     const h = health as Health;
     if (h.current > 0) {
       playerAlive = true;

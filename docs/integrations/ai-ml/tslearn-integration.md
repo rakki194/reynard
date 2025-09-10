@@ -1,6 +1,6 @@
 # tslearn Integration for Training Script Editor
 
-This document describes the integration of tslearn (Time Series LEARNing) library into the Yipyap training script editor, providing powerful time series analysis and visualization capabilities.
+This document describes the integration of tslearn (Time Series LEARNing) library into the Reynard training script editor, providing powerful time series analysis and visualization capabilities.
 
 ## Overview
 

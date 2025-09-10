@@ -9,7 +9,6 @@
  */
 
 import { UnionFind } from "./union-find-core";
-import { UnionFindNode, UnionFindStats } from "./union-find-types";
 
 export interface BatchOperation {
   type: "union" | "find" | "connected";
@@ -95,13 +94,13 @@ export class BatchUnionFind extends UnionFind {
 
       switch (op.type) {
         case "union":
-          result = this.union(op.args[0], op.args[1]);
+          result = this.union(op.args[0], op.args[1]!);
           break;
         case "find":
           result = this.find(op.args[0]);
           break;
         case "connected":
-          result = this.connected(op.args[0], op.args[1]);
+          result = this.connected(op.args[0], op.args[1]!);
           break;
         default:
           throw new Error(`Unknown operation type: ${(op as any).type}`);
@@ -144,7 +143,9 @@ export class BatchUnionFind extends UnionFind {
       // Limit cache size
       if (this.operationCache.size > 1000) {
         const firstKey = this.operationCache.keys().next().value;
-        this.operationCache.delete(firstKey);
+        if (firstKey !== undefined) {
+          this.operationCache.delete(firstKey);
+        }
       }
     }
 

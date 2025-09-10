@@ -3,7 +3,7 @@
 ## Overview
 
 This document summarizes the implementation of PostgreSQL backend integration
-for the Gatekeeper authentication system in Yipyap. This integration replaces
+for the Gatekeeper authentication system in Reynard. This integration replaces
 the in-memory backend with a persistent PostgreSQL database, ensuring users
 persist across application restarts.
 
@@ -32,7 +32,7 @@ persist across application restarts.
 
 ### 2. Database Configuration
 
-**File**: `yipyap/app/config/database.py`
+**File**: `reynard/app/config/database.py`
 
 - **Environment-based Configuration**: Supports both DATABASE_URL and individual
   settings
@@ -43,7 +43,7 @@ persist across application restarts.
 
 ### 3. Updated Authentication Module
 
-**File**: `yipyap/app/auth.py`
+**File**: `reynard/app/auth.py`
 
 - **PostgreSQL Backend Integration**: Switched from MemoryBackend to
   PostgreSQLBackend
@@ -54,9 +54,9 @@ persist across application restarts.
 
 **Files**:
 
-- `yipyap/scripts/setup_postgres.py` - Database setup script
-- `yipyap/docker-compose.postgres.yml` - Docker Compose for PostgreSQL
-- `yipyap/scripts/init-postgres.sql` - Database initialization script
+- `reynard/scripts/setup_postgres.py` - Database setup script
+- `reynard/docker-compose.postgres.yml` - Docker Compose for PostgreSQL
+- `reynard/scripts/init-postgres.sql` - Database initialization script
 
 **Features**:
 
@@ -69,8 +69,8 @@ persist across application restarts.
 
 **Files**:
 
-- `yipyap/docs/POSTGRESQL_SETUP.md` - Complete setup guide
-- `yipyap/docs/GATEKEEPER_POSTGRESQL_INTEGRATION.md` - This summary
+- `reynard/docs/POSTGRESQL_SETUP.md` - Complete setup guide
+- `reynard/docs/GATEKEEPER_POSTGRESQL_INTEGRATION.md` - This summary
 
 **Content**:
 
@@ -128,9 +128,9 @@ CREATE INDEX idx_users_email ON users(email);
 | `DATABASE_URL`          | `None`      | Full PostgreSQL connection URL  |
 | `POSTGRES_HOST`         | `localhost` | PostgreSQL host                 |
 | `POSTGRES_PORT`         | `5432`      | PostgreSQL port                 |
-| `POSTGRES_USER`         | `yipyap`    | PostgreSQL username             |
-| `POSTGRES_PASSWORD`     | `yipyap`    | PostgreSQL password             |
-| `POSTGRES_DB`           | `yipyap`    | PostgreSQL database name        |
+| `POSTGRES_USER`         | `reynard`   | PostgreSQL username             |
+| `POSTGRES_PASSWORD`     | `reynard`   | PostgreSQL password             |
+| `POSTGRES_DB`           | `reynard`   | PostgreSQL database name        |
 | `POSTGRES_POOL_SIZE`    | `10`        | Connection pool size            |
 | `POSTGRES_MAX_OVERFLOW` | `20`        | Max overflow connections        |
 | `POSTGRES_ECHO`         | `false`     | Echo SQL statements (debugging) |
@@ -141,10 +141,10 @@ CREATE INDEX idx_users_email ON users(email);
 
 ```bash
 # Start PostgreSQL
-cd yipyap
+cd reynard
 docker-compose -f docker-compose.postgres.yml up -d
 
-# Start Yipyap
+# Start Reynard
 python -m app.main
 ```
 
@@ -152,10 +152,10 @@ python -m app.main
 
 ```bash
 # Run complete setup
-cd yipyap
+cd reynard
 python scripts/setup_postgres.py --all
 
-# Start Yipyap
+# Start Reynard
 python -m app.main
 ```
 
@@ -163,9 +163,9 @@ python -m app.main
 
 ```bash
 # Set environment variables
-export DATABASE_URL="postgresql://yipyap:yipyap@localhost:5432/yipyap"
+export DATABASE_URL="postgresql://reynard:reynard@localhost:5432/reynard"
 
-# Start Yipyap
+# Start Reynard
 python -m app.main
 ```
 
@@ -243,7 +243,7 @@ Potential improvements that could be added:
 ## Conclusion
 
 This PostgreSQL integration provides a robust, scalable, and production-ready
-solution for persistent user storage in Yipyap's Gatekeeper authentication
+solution for persistent user storage in Reynard's Gatekeeper authentication
 system. The implementation is comprehensive, well-documented, and includes all
 necessary tools for easy deployment and management.
 

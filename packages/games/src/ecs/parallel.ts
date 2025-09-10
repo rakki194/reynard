@@ -1,8 +1,7 @@
 // Parallel execution system for multi-threaded operations
 
-import { Entity, Component, ComponentType, QueryResult } from "./types";
-import { ComponentStorage } from "./component";
 import { ChangeDetection } from "./change-detection";
+import { Component, Entity, QueryResult } from "./types";
 
 /**
  * Parallel iterator for query results.
@@ -49,19 +48,18 @@ export const DEFAULT_BATCHING_STRATEGY: BatchingStrategy = {
  * Parallel iterator implementation.
  */
 export class ParallelIteratorImpl<T extends Component[]>
-  implements ParallelIterator<T>
-{
-  private strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
+  implements ParallelIterator<T> {
+  private _strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
 
   constructor(
     private queryResult: QueryResult<T>,
-    private world: any,
-    private changeDetection?: ChangeDetection,
-  ) {}
+    private _world: any,
+    private _changeDetection?: ChangeDetection,
+  ) { }
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
     this.forEachInit(
-      () => {},
+      () => { },
       (_, entity, ...components) => {
         callback(entity, ...components);
       },
@@ -86,7 +84,7 @@ export class ParallelIteratorImpl<T extends Component[]>
   }
 
   batchingStrategy(strategy: BatchingStrategy): ParallelIterator<T> {
-    this.strategy = strategy;
+    this._strategy = strategy;
     return this;
   }
 
@@ -129,12 +127,12 @@ export class ParallelCommandsImpl implements ParallelCommands {
   commandScope(callback: (commands: any) => void): void {
     // Create a scoped command context
     const scopedCommands = {
-      spawn: (...components: Component[]) => {
+      spawn: (..._components: Component[]) => {
         this.commandQueue.push(() => {
           // Commands will be applied later
         });
       },
-      despawn: (entity: Entity) => {
+      despawn: (_entity: Entity) => {
         this.commandQueue.push(() => {
           // Commands will be applied later
         });

@@ -75,7 +75,7 @@ async def shutdown_nlweb_service_func() -> None:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
     """
     try:
-        shutdown_nlweb_service()
+        await shutdown_nlweb_service()
         logger.info("🌐 NLWeb service shutdown")
     except Exception as e:
         logger.error(f"❌ NLWeb shutdown failed: {e}")

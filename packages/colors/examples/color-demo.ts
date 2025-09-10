@@ -1,15 +1,15 @@
 /**
- * Example demonstrating the color-media package functionality
+ * Example demonstrating the colors package functionality
  */
 
 import {
   createTagColorGenerator,
+  createThemeContext,
+  formatFileSize,
   formatOKLCH,
   generateColorPalette,
-  createThemeContext,
-  isImageFile,
   isAudioFile,
-  formatFileSize,
+  isImageFile,
 } from "../src/index";
 
 // Color generation example

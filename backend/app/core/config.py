@@ -87,6 +87,7 @@ class RAGConfig(ServiceConfig):
 @dataclass
 class OllamaConfig(ServiceConfig):
     """Ollama service configuration."""
+    enabled: bool = True
     base_url: str = "http://localhost:11434"
     timeout_seconds: int = 60
     assistant_enabled: bool = True

@@ -20,7 +20,6 @@ export default defineConfig({
         "solid-js",
         "solid-js/web",
         "@solidjs/testing-library",
-        "@testing-library/jest-dom",
         "@testing-library/user-event",
         "vitest",
         "vitest/utils",

@@ -3,8 +3,10 @@
  * Performance export tab for performance dashboard
  */
 
-import { Component, For, Show, createSignal, createEffect, onMount } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
+import { Component, Show, createEffect, createSignal, onMount } from "solid-js";
+import { Button } from "../primitives/Button";
+import { Select } from "../primitives/Select";
+import { TextField } from "../primitives/TextField";
 
 export interface PerformanceExportTabProps {
   performanceHistory: Array<{
@@ -230,10 +232,10 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
   // Generate CSV content
   const generateCSV = (data: any): string => {
     const lines: string[] = [];
-    
+
     // Header
     lines.push("Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops");
-    
+
     // Data rows
     if (data.performanceHistory) {
       data.performanceHistory.forEach((entry: any) => {
@@ -250,7 +252,7 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
         ].join(","));
       });
     }
-    
+
     return lines.join("\n");
   };
 

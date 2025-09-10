@@ -1,11 +1,11 @@
-# PostgreSQL Integration for Yipyap Gatekeeper
+# PostgreSQL Integration for Reynard Gatekeeper
 
 This document explains how to set up PostgreSQL for persistent user storage in
-Yipyap's Gatekeeper authentication system.
+Reynard's Gatekeeper authentication system.
 
 ## Overview
 
-By default, Yipyap uses an in-memory backend for user storage, which means all
+By default, Reynard uses an in-memory backend for user storage, which means all
 users are lost when the application restarts. This PostgreSQL integration
 provides persistent user storage, ensuring your users remain available across
 application restarts.
@@ -27,17 +27,17 @@ application restarts.
 1. **Start PostgreSQL**:
 
    ```bash
-   cd yipyap
+   cd reynard
    docker-compose -f docker-compose.postgres.yml up -d
    ```
 
 2. **Set Environment Variables** (optional, defaults are provided):
 
    ```bash
-   export DATABASE_URL="postgresql://yipyap:yipyap@localhost:5432/yipyap"
+   export DATABASE_URL="postgresql://reynard:reynard@localhost:5432/reynard"
    ```
 
-3. **Start Yipyap**:
+3. **Start Reynard**:
 
    ```bash
    python -m app.main
@@ -53,19 +53,19 @@ application restarts.
    sudo -u postgres psql
 
    # Create database and user
-   CREATE DATABASE yipyap;
-   CREATE USER yipyap WITH PASSWORD 'yipyap';
-   GRANT ALL PRIVILEGES ON DATABASE yipyap TO yipyap;
+   CREATE DATABASE reynard;
+   CREATE USER reynard WITH PASSWORD 'reynard';
+   GRANT ALL PRIVILEGES ON DATABASE reynard TO reynard;
    \q
    ```
 
 3. **Set Environment Variables**:
 
    ```bash
-   export DATABASE_URL="postgresql://yipyap:yipyap@localhost:5432/yipyap"
+   export DATABASE_URL="postgresql://reynard:reynard@localhost:5432/reynard"
    ```
 
-4. **Start Yipyap**:
+4. **Start Reynard**:
 
    ```bash
    python -m app.main
@@ -76,11 +76,11 @@ application restarts.
 1. **Run the setup script**:
 
    ```bash
-   cd yipyap
+   cd reynard
    python scripts/setup_postgres.py --all
    ```
 
-2. **Start Yipyap**:
+2. **Start Reynard**:
 
    ```bash
    python -m app.main
@@ -97,9 +97,9 @@ You can configure the PostgreSQL connection using environment variables:
 | `DATABASE_URL`          | `None`      | Full PostgreSQL connection URL  |
 | `POSTGRES_HOST`         | `localhost` | PostgreSQL host                 |
 | `POSTGRES_PORT`         | `5432`      | PostgreSQL port                 |
-| `POSTGRES_USER`         | `yipyap`    | PostgreSQL username             |
-| `POSTGRES_PASSWORD`     | `yipyap`    | PostgreSQL password             |
-| `POSTGRES_DB`           | `yipyap`    | PostgreSQL database name        |
+| `POSTGRES_USER`         | `reynard`   | PostgreSQL username             |
+| `POSTGRES_PASSWORD`     | `reynard`   | PostgreSQL password             |
+| `POSTGRES_DB`           | `reynard`   | PostgreSQL database name        |
 | `POSTGRES_POOL_SIZE`    | `10`        | Connection pool size            |
 | `POSTGRES_MAX_OVERFLOW` | `20`        | Max overflow connections        |
 | `POSTGRES_ECHO`         | `false`     | Echo SQL statements (debugging) |
@@ -113,9 +113,9 @@ export DATABASE_URL="postgresql://username:password@host:5432/database"
 # Or using individual settings
 export POSTGRES_HOST="localhost"
 export POSTGRES_PORT="5432"
-export POSTGRES_USER="yipyap"
+export POSTGRES_USER="reynard"
 export POSTGRES_PASSWORD="secure_password"
-export POSTGRES_DB="yipyap"
+export POSTGRES_DB="reynard"
 ```
 
 ## Database Schema
@@ -149,7 +149,7 @@ CREATE INDEX idx_users_email ON users(email);
 If you're currently using the memory backend and want to migrate to PostgreSQL:
 
 1. **Start PostgreSQL** (see Quick Start above)
-2. **Restart Yipyap** with PostgreSQL configuration
+2. **Restart Reynard** with PostgreSQL configuration
 3. **Re-register your users** through the API
 4. **Your users will now persist** across application restarts
 

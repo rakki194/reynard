@@ -9,9 +9,9 @@ import {
   createIntegrationTestConfig,
 
   // Test utilities
-  renderWithTestProviders,
+  renderWithAppContext,
   useTestAppContext,
-  createMockTestResource,
+  createMockFunction,
   mockFns,
   mockAppContext,
 
@@ -135,9 +135,9 @@ describe("reynard-testing Integration Tests", () => {
     });
 
     it("should export all test utilities", () => {
-      expect(renderWithTestProviders).toBeDefined();
+      expect(renderWithAppContext).toBeDefined();
       expect(useTestAppContext).toBeDefined();
-      expect(createMockTestResource).toBeDefined();
+      expect(createMockFunction).toBeDefined();
       expect(mockFns).toBeDefined();
       expect(mockAppContext).toBeDefined();
     });
@@ -286,7 +286,7 @@ describe("reynard-testing Integration Tests", () => {
         return <div data-testid="test">{context.theme}</div>;
       };
 
-      renderWithTestProviders(() => <TestComponent />);
+      renderWithAppContext(() => <TestComponent />);
       expect(screen.getByTestId("test")).toHaveTextContent("light");
     });
 

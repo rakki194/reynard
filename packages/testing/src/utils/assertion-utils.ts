@@ -1,3 +1,4 @@
+import { render } from "@solidjs/testing-library";
 import { expect } from "vitest";
 
 /**
@@ -19,9 +20,9 @@ export function expectComponentToThrow(
   expectedError?: string | RegExp | Error,
 ) {
   if (expectedError) {
-    expect(() => component()).toThrow(expectedError);
+    expect(() => render(component)).toThrow(expectedError);
   } else {
-    expect(() => component()).toThrow();
+    expect(() => render(component)).toThrow();
   }
 }
 
@@ -169,7 +170,7 @@ export function expectElementToHaveAttributes(
   attributes: Record<string, string>,
 ) {
   Object.entries(attributes).forEach(([name, value]) => {
-    expect(element).toHaveAttribute(name, value);
+    expect(element.getAttribute(name)).toBe(value);
   });
 }
 
@@ -181,7 +182,7 @@ export function expectElementToHaveClasses(
   ...classes: string[]
 ) {
   classes.forEach((className) => {
-    expect(element).toHaveClass(className);
+    expect(element.classList.contains(className)).toBe(true);
   });
 }
 
@@ -189,119 +190,123 @@ export function expectElementToHaveClasses(
  * Assert that a DOM element has specific text content
  */
 export function expectElementToHaveTextContent(element: Element, text: string) {
-  expect(element).toHaveTextContent(text);
+  expect(element.textContent).toBe(text);
 }
 
 /**
  * Assert that a DOM element is visible
  */
 export function expectElementToBeVisible(element: Element) {
-  expect(element).toBeVisible();
+  const style = window.getComputedStyle(element);
+  expect(style.display).not.toBe('none');
+  expect(style.visibility).not.toBe('hidden');
+  expect(style.opacity).not.toBe('0');
 }
 
 /**
  * Assert that a DOM element is hidden
  */
 export function expectElementToBeHidden(element: Element) {
-  expect(element).not.toBeVisible();
+  const style = window.getComputedStyle(element);
+  expect(style.display).toBe('none');
 }
 
 /**
  * Assert that a DOM element is in the document
  */
 export function expectElementToBeInTheDocument(element: Element) {
-  expect(element).toBeInTheDocument();
+  expect(document.contains(element)).toBe(true);
 }
 
 /**
  * Assert that a DOM element is not in the document
  */
 export function expectElementNotToBeInTheDocument(element: Element) {
-  expect(element).not.toBeInTheDocument();
+  expect(document.contains(element)).toBe(false);
 }
 
 /**
  * Assert that a DOM element is disabled
  */
 export function expectElementToBeDisabled(element: Element) {
-  expect(element).toBeDisabled();
+  expect((element as HTMLInputElement).disabled).toBe(true);
 }
 
 /**
  * Assert that a DOM element is enabled
  */
 export function expectElementToBeEnabled(element: Element) {
-  expect(element).toBeEnabled();
+  expect((element as HTMLInputElement).disabled).toBe(false);
 }
 
 /**
  * Assert that a DOM element is required
  */
 export function expectElementToBeRequired(element: Element) {
-  expect(element).toBeRequired();
+  expect((element as HTMLInputElement).required).toBe(true);
 }
 
 /**
  * Assert that a DOM element is not required
  */
 export function expectElementNotToBeRequired(element: Element) {
-  expect(element).not.toBeRequired();
+  expect((element as HTMLInputElement).required).toBe(false);
 }
 
 /**
  * Assert that a DOM element is valid
  */
 export function expectElementToBeValid(element: Element) {
-  expect(element).toBeValid();
+  expect((element as HTMLInputElement).validity.valid).toBe(true);
 }
 
 /**
  * Assert that a DOM element is invalid
  */
 export function expectElementToBeInvalid(element: Element) {
-  expect(element).toBeInvalid();
+  expect((element as HTMLInputElement).validity.valid).toBe(false);
 }
 
 /**
  * Assert that a DOM element has focus
  */
 export function expectElementToHaveFocus(element: Element) {
-  expect(element).toHaveFocus();
+  expect(document.activeElement).toBe(element);
 }
 
 /**
  * Assert that a DOM element does not have focus
  */
 export function expectElementNotToHaveFocus(element: Element) {
-  expect(element).not.toHaveFocus();
+  expect(document.activeElement).not.toBe(element);
 }
 
 /**
  * Assert that a DOM element is checked
  */
 export function expectElementToBeChecked(element: Element) {
-  expect(element).toBeChecked();
+  expect((element as HTMLInputElement).checked).toBe(true);
 }
 
 /**
  * Assert that a DOM element is not checked
  */
 export function expectElementNotToBeChecked(element: Element) {
-  expect(element).not.toBeChecked();
+  expect((element as HTMLInputElement).checked).toBe(false);
 }
 
 /**
  * Assert that a DOM element is partially checked
  */
 export function expectElementToBePartiallyChecked(element: Element) {
-  expect(element).toBePartiallyChecked();
+  expect((element as HTMLInputElement).indeterminate).toBe(true);
 }
 
 /**
  * Assert that a DOM element has a specific role
  */
 export function expectElementToHaveRole(element: Element, role: string) {
-  expect(element).toHaveRole(role);
+  expect(element.getAttribute('role')).toBe(role);
 }
 
 /**
@@ -311,7 +316,10 @@ export function expectElementToHaveAccessibleName(
   element: Element,
   name: string,
 ) {
-  expect(element).toHaveAccessibleName(name);
+  // For happy-dom, we'll check aria-label or text content as fallback
+  const ariaLabel = element.getAttribute('aria-label');
+  const textContent = element.textContent?.trim();
+  expect(ariaLabel || textContent).toBe(name);
 }
 
 /**
@@ -321,5 +329,8 @@ export function expectElementToHaveAccessibleDescription(
   element: Element,
   description: string,
 ) {
-  expect(element).toHaveAccessibleDescription(description);
+  // For happy-dom, we'll check aria-describedby or title attribute
+  const ariaDescribedBy = element.getAttribute('aria-describedby');
+  const title = element.getAttribute('title');
+  expect(ariaDescribedBy || title).toBe(description);
 }

@@ -170,6 +170,8 @@ else
                 echo -e "${YELLOW}   - Run 'black .' to fix formatting issues${NC}"
                 echo -e "${YELLOW}   - Run 'isort .' to fix import sorting${NC}"
                 echo -e "${YELLOW}   - Run 'flake8 .' to see all linting issues${NC}"
+                echo -e "${YELLOW}   - Run 'npm run python:linecheck' to check file line counts${NC}"
+                echo -e "${YELLOW}   - Split large files (>250 lines) into smaller modules${NC}"
                 echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                 exit 1
             else

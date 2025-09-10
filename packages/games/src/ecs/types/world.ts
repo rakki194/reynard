@@ -41,11 +41,12 @@
  * @since 1.0.0
  */
 
-import { Entity, Component, Resource } from "./core";
-import { ComponentType, ResourceType } from "./storage";
-import { QueryResult, QueryFilter } from "./query";
-import { System } from "./system";
+import { QueryBuilder } from "../query";
 import { Commands } from "./commands";
+import { Component, Entity, Resource } from "./core";
+import { QueryFilter, QueryResult } from "./query";
+import { ComponentType, ResourceType } from "./storage";
+import { System } from "./system";
 
 /**
  * World interface for ECS operations - the central container for all ECS data.
@@ -215,11 +216,17 @@ export interface World {
   /**
    * Queries entities that have all the specified components.
    * @param componentTypes Types of components to query for
-   * @returns QueryResult containing matching entities and their components
+   * @returns QueryBuilder with additional query methods
    */
   query<T extends Component[]>(
     ...componentTypes: ComponentType<T[number]>[]
-  ): QueryResult<T>;
+  ): QueryBuilder<T> & {
+    forEach: (callback: (entity: Entity, ...components: T) => void | false) => void;
+    first: () => { entity: Entity; components: T } | undefined;
+    added: (componentType: ComponentType<any>) => any;
+    changed: (componentType: ComponentType<any>) => any;
+    removed: (componentType: ComponentType<any>) => any;
+  };
 
   /**
    * Queries entities with additional filtering options.

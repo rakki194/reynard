@@ -2,14 +2,15 @@
 Pydantic models for Ollama API endpoints.
 """
 
-from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class OllamaChatRequest(BaseModel):
     """Request model for Ollama chat."""
     message: str = Field(..., description="User message", min_length=1, max_length=10000)
-    model: str = Field("llama3.1", description="Ollama model to use")
+    model: str = Field("qwen3:latest", description="Ollama model to use")
     system_prompt: Optional[str] = Field(None, description="System prompt for context")
     temperature: float = Field(0.7, description="Sampling temperature", ge=0.1, le=2.0)
     max_tokens: int = Field(2048, description="Maximum tokens to generate", ge=1, le=8192)
@@ -26,6 +27,7 @@ class OllamaChatResponse(BaseModel):
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
     tools_used: List[str] = Field(default_factory=list, description="Tools used during conversation")
+    tool_calls: List[Dict[str, Any]] = Field(default_factory=list, description="Tool calls made by the model")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
 
@@ -52,7 +54,7 @@ class OllamaAssistantRequest(BaseModel):
     """Request model for ReynardAssistant."""
     message: str = Field(..., description="User message", min_length=1, max_length=10000)
     assistant_type: str = Field("reynard", description="Assistant type (reynard, codewolf)")
-    model: str = Field("llama3.1", description="Ollama model to use")
+    model: str = Field("qwen3:latest", description="Ollama model to use")
     temperature: float = Field(0.7, description="Sampling temperature", ge=0.1, le=2.0)
     max_tokens: int = Field(2048, description="Maximum tokens to generate", ge=1, le=8192)
     stream: bool = Field(True, description="Enable streaming response")
@@ -69,6 +71,7 @@ class OllamaAssistantResponse(BaseModel):
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
     tools_used: List[str] = Field(default_factory=list, description="Tools used during conversation")
+    tool_calls: List[Dict[str, Any]] = Field(default_factory=list, description="Tool calls made by the assistant")
     reasoning: Optional[str] = Field(None, description="Assistant reasoning process")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
@@ -77,7 +80,7 @@ class OllamaConfig(BaseModel):
     """Configuration for Ollama service."""
     enabled: bool = Field(True, description="Whether Ollama service is enabled")
     base_url: str = Field("http://localhost:11434", description="Ollama server URL")
-    default_model: str = Field("llama3.1", description="Default model for generation")
+    default_model: str = Field("qwen3:latest", description="Default model for generation")
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
     assistant_enabled: bool = Field(True, description="Enable ReynardAssistant")

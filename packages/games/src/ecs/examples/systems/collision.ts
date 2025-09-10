@@ -1,19 +1,16 @@
 // Collision detection and physics systems
 
-import { World } from "../../types";
+import { Entity, World } from "../../types";
 import {
-  Position,
-  Health,
+  BulletType,
+  EnemyType,
   GameState,
-  Player,
-  Enemy,
-  Bullet,
-  PositionType,
+  GameStateType,
+  Health,
   HealthType,
   PlayerType,
-  EnemyType,
-  BulletType,
-  GameStateType,
+  Position,
+  PositionType,
 } from "../components";
 
 /**
@@ -25,9 +22,9 @@ export function collisionSystem(world: World): void {
   const bulletQuery = world.query(BulletType, PositionType);
 
   // Check player-enemy collisions
-  playerQuery.forEach((playerEntity, player, playerPos) => {
+  playerQuery.forEach((playerEntity: Entity, _player: any, playerPos: any) => {
     const pp = playerPos as Position;
-    enemyQuery.forEach((enemyEntity, enemy, enemyPos) => {
+    enemyQuery.forEach((enemyEntity: Entity, _enemy: any, enemyPos: any) => {
       const ep = enemyPos as Position;
       const dx = pp.x - ep.x;
       const dy = pp.y - ep.y;
@@ -48,9 +45,9 @@ export function collisionSystem(world: World): void {
   });
 
   // Check bullet-enemy collisions
-  bulletQuery.forEach((bulletEntity, bullet, bulletPos) => {
+  bulletQuery.forEach((bulletEntity: Entity, _bullet: any, bulletPos: any) => {
     const bp = bulletPos as Position;
-    enemyQuery.forEach((enemyEntity, enemy, enemyPos) => {
+    enemyQuery.forEach((enemyEntity: Entity, _enemy: any, enemyPos: any) => {
       const ep = enemyPos as Position;
       const dx = bp.x - ep.x;
       const dy = bp.y - ep.y;

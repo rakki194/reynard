@@ -1,9 +1,49 @@
 /**
  * Global test setup for reynard-testing
+ * Uses happy-dom for fast, modern DOM environment
  */
 
-import "@testing-library/jest-dom";
-import { setupStandardTestEnvironment } from "./utils/test-setup";
+import { cleanup } from "@solidjs/testing-library";
+import "@testing-library/jest-dom/vitest";
+import { afterEach, vi } from "vitest";
 
-// Setup standard test environment
-setupStandardTestEnvironment();
+// Mock localStorage for tests
+const localStorageMock = {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+    length: 0,
+    key: vi.fn(),
+};
+global.localStorage = localStorageMock as Storage;
+
+// Mock document.documentElement for theme tests
+Object.defineProperty(document, "documentElement", {
+    value: {
+        setAttribute: vi.fn(),
+        getAttribute: vi.fn(),
+    },
+    writable: true,
+});
+
+// Mock window.matchMedia for responsive tests
+Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(), // deprecated
+        removeListener: vi.fn(), // deprecated
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+    })),
+});
+
+// Clean up SolidJS components after each test
+afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+});

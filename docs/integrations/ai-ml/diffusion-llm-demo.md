@@ -5,7 +5,7 @@ This short script demonstrates generating text with Diffusion LLM and inserting 
 ## Prerequisites
 
 - Ensure `DIFFUSION_LLM_ENABLED=true` and a model is loaded (DreamOn or LLaDA)
-- Frontend running; open YipYap
+- Frontend running; open Reynard
 
 ## Steps
 

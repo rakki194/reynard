@@ -1,5 +1,8 @@
 # My junk
 #third_party/
+*.db
+unsloth_compiled_cache/
+.coverage.*
 css-validation-report.md
 coverage/
 

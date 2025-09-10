@@ -8,15 +8,12 @@
  * @since 1.0.0
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
-  World,
+  Component,
   ComponentType,
   StorageType,
-  Component,
-  Archetype,
-  ArchetypeId,
-  ArchetypeRow,
+  World
 } from "../types";
 import { createWorld } from "../world";
 
@@ -26,7 +23,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Velocity implements Component {
@@ -34,7 +31,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) {}
+  ) { }
 }
 
 class Health implements Component {
@@ -42,54 +39,25 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) {}
+  ) { }
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) {}
+  constructor(public name: string) { }
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) {}
+  constructor(public type: string) { }
 }
 
-// Component types
-const PositionType: ComponentType<Position> = {
-  name: "Position",
-  id: 0,
-  storage: StorageType.Table,
-  create: () => new Position(0, 0),
-};
-
-const VelocityType: ComponentType<Velocity> = {
-  name: "Velocity",
-  id: 1,
-  storage: StorageType.Table,
-  create: () => new Velocity(0, 0),
-};
-
-const HealthType: ComponentType<Health> = {
-  name: "Health",
-  id: 2,
-  storage: StorageType.SparseSet,
-  create: () => new Health(100, 100),
-};
-
-const PlayerType: ComponentType<Player> = {
-  name: "Player",
-  id: 3,
-  storage: StorageType.SparseSet,
-  create: () => new Player("Player"),
-};
-
-const EnemyType: ComponentType<Enemy> = {
-  name: "Enemy",
-  id: 4,
-  storage: StorageType.SparseSet,
-  create: () => new Enemy("basic"),
-};
+// Component types - will be initialized in beforeEach
+let PositionType: ComponentType<Position>;
+let VelocityType: ComponentType<Velocity>;
+let HealthType: ComponentType<Health>;
+let PlayerType: ComponentType<Player>;
+let EnemyType: ComponentType<Enemy>;
 
 describe("Archetype System", () => {
   let world: World;
@@ -98,11 +66,18 @@ describe("Archetype System", () => {
     world = createWorld();
 
     // Register component types
-    world.getComponentRegistry().register(PositionType);
-    world.getComponentRegistry().register(VelocityType);
-    world.getComponentRegistry().register(HealthType);
-    world.getComponentRegistry().register(PlayerType);
-    world.getComponentRegistry().register(EnemyType);
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
+
+    // Get the registered component types
+    PositionType = world.getComponentRegistry().getByName("Position")!;
+    VelocityType = world.getComponentRegistry().getByName("Velocity")!;
+    HealthType = world.getComponentRegistry().getByName("Health")!;
+    PlayerType = world.getComponentRegistry().getByName("Player")!;
+    EnemyType = world.getComponentRegistry().getByName("Enemy")!;
   });
 
   describe("Archetype Creation", () => {

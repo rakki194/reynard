@@ -1,0 +1,421 @@
+---
+alwaysApply: false
+---
+# Pydantic V2 Migration Guide
+
+*Comprehensive guide for migrating from Pydantic V1 to V2 with focus on deprecations and best practices*
+
+## Overview
+
+Pydantic V2 introduces significant changes to improve performance, type safety, and developer experience. This guide covers all major deprecations and provides clear migration patterns for the Reynard codebase.
+
+## Critical Deprecations
+
+### 1. Validator Decorators
+
+**❌ Deprecated (V1 Style):**
+
+```python
+from pydantic import BaseModel, validator
+
+class UserModel(BaseModel):
+    email: str
+    
+    @validator('email')
+    def validate_email(cls, v):
+        if '@' not in v:
+            raise ValueError('Invalid email')
+        return v.lower()
+```
+
+**✅ Recommended (V2 Style):**
+
+```python
+from pydantic import BaseModel, field_validator
+
+class UserModel(BaseModel):
+    email: str
+    
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, v: str) -> str:
+        if '@' not in v:
+            raise ValueError('Invalid email')
+        return v.lower()
+```
+
+**Key Changes:**
+
+- `@validator` → `@field_validator`
+- Add `@classmethod` decorator
+- Add proper type annotations: `(cls, v: str) -> str`
+- Use `@model_validator` for model-wide validation
+
+### 2. Field Constraints
+
+**❌ Deprecated:**
+
+```python
+from pydantic import BaseModel, Field
+
+class BatchModel(BaseModel):
+    items: List[str] = Field(..., min_items=1, max_items=100)
+```
+
+**✅ Recommended:**
+
+```python
+from pydantic import BaseModel, Field
+
+class BatchModel(BaseModel):
+    items: List[str] = Field(..., min_length=1, max_length=100)
+```
+
+**Migration:**
+
+- `min_items` → `min_length`
+- `max_items` → `max_length`
+
+### 3. Model Configuration
+
+**❌ Deprecated (V1 Style):**
+
+```python
+from pydantic import BaseModel
+
+class UserModel(BaseModel):
+    name: str
+    
+    class Config:
+        orm_mode = True
+        allow_mutation = False
+        validate_all = True
+```
+
+**✅ Recommended (V2 Style):**
+
+```python
+from pydantic import BaseModel, ConfigDict
+
+class UserModel(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,  # replaces orm_mode
+        frozen=True,           # replaces allow_mutation=False
+        validate_default=True, # replaces validate_all
+        extra='forbid'         # replaces extra='forbid'
+    )
+    name: str
+```
+
+### 4. Model Methods
+
+**❌ Deprecated Methods:**
+
+```python
+# V1 methods
+user = UserModel.parse_obj(data)
+user_dict = user.dict()
+user_json = user.json()
+user_copy = user.copy()
+```
+
+**✅ Recommended Methods:**
+
+```python
+# V2 methods
+user = UserModel.model_validate(data)
+user_dict = user.model_dump()
+user_json = user.model_dump_json()
+user_copy = user.model_copy()
+```
+
+### 5. ORM Integration
+
+**❌ Deprecated:**
+
+```python
+from pydantic import BaseModel
+
+class UserModel(BaseModel):
+    name: str
+    
+    class Config:
+        orm_mode = True
+
+# Usage
+user = UserModel.from_orm(orm_instance)
+```
+
+**✅ Recommended:**
+
+```python
+from pydantic import BaseModel, ConfigDict
+
+class UserModel(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    name: str
+
+# Usage
+user = UserModel.model_validate(orm_instance)
+```
+
+## Advanced Patterns
+
+### Model-Wide Validation
+
+**V2 Model Validator:**
+
+```python
+from pydantic import BaseModel, model_validator
+
+class UserModel(BaseModel):
+    email: str
+    confirm_email: str
+    
+    @model_validator(mode='after')
+    def emails_match(self) -> 'UserModel':
+        if self.email != self.confirm_email:
+            raise ValueError('Emails do not match')
+        return self
+```
+
+### Field Validation with Info
+
+**V2 Field Validator with Context:**
+
+```python
+from pydantic import BaseModel, field_validator, ValidationInfo
+
+class UserModel(BaseModel):
+    username: str
+    email: str
+    
+    @field_validator('username')
+    @classmethod
+    def validate_username(cls, v: str, info: ValidationInfo) -> str:
+        if len(v) < 3:
+            raise ValueError('Username too short')
+        return v.lower()
+```
+
+### Custom Field Types
+
+**V2 Field Configuration:**
+
+```python
+from pydantic import BaseModel, Field
+
+class UserModel(BaseModel):
+    email: str = Field(
+        ..., 
+        description="User email address",
+        json_schema_extra={"example": "user@example.com"}
+    )
+    age: int = Field(
+        default=18,
+        ge=0,
+        le=120,
+        description="User age in years"
+    )
+```
+
+## Error Handling Changes
+
+### TypeError in Validators
+
+**❌ V1 Behavior:**
+
+```python
+@validator('age')
+def validate_age(cls, v):
+    if v < 0:
+        raise TypeError('Age cannot be negative')  # Converted to ValidationError
+```
+
+**✅ V2 Behavior:**
+
+```python
+@field_validator('age')
+@classmethod
+def validate_age(cls, v: int) -> int:
+    if v < 0:
+        raise ValueError('Age cannot be negative')  # Must be ValueError
+    return v
+```
+
+## Performance Considerations
+
+### Lazy Loading
+
+**V2 Lazy Evaluation:**
+
+```python
+from pydantic import BaseModel, Field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from expensive_module import ExpensiveClass
+
+class UserModel(BaseModel):
+    name: str
+    expensive_data: 'ExpensiveClass' = Field(default_factory=lambda: None)
+```
+
+### Validation Optimization
+
+**V2 Validation Modes:**
+
+```python
+from pydantic import BaseModel, ConfigDict
+
+class FastModel(BaseModel):
+    model_config = ConfigDict(
+        validate_assignment=False,  # Skip validation on assignment
+        validate_default=False,     # Skip validation on defaults
+        extra='ignore'              # Ignore extra fields
+    )
+    name: str
+```
+
+## Migration Checklist
+
+### Phase 1: Critical Deprecations
+
+- [ ] Replace `@validator` with `@field_validator`
+- [ ] Add `@classmethod` to all validators
+- [ ] Add type annotations to validator methods
+- [ ] Replace `min_items`/`max_items` with `min_length`/`max_length`
+
+### Phase 2: Configuration Updates
+
+- [ ] Replace `Config` class with `model_config`
+- [ ] Update `orm_mode` to `from_attributes`
+- [ ] Replace `allow_mutation` with `frozen`
+- [ ] Update `validate_all` to `validate_default`
+
+### Phase 3: Method Updates
+
+- [ ] Replace `parse_obj()` with `model_validate()`
+- [ ] Replace `dict()` with `model_dump()`
+- [ ] Replace `json()` with `model_dump_json()`
+- [ ] Replace `copy()` with `model_copy()`
+
+### Phase 4: Error Handling
+
+- [ ] Replace `TypeError` with `ValueError` in validators
+- [ ] Update error handling for stricter type coercion
+- [ ] Test validation error messages
+
+## Common Pitfalls
+
+### 1. Missing @classmethod
+
+```python
+# ❌ Will fail
+@field_validator('field')
+def validate_field(cls, v):  # Missing @classmethod
+    return v
+
+# ✅ Correct
+@field_validator('field')
+@classmethod
+def validate_field(cls, v: str) -> str:
+    return v
+```
+
+### 2. Incorrect Type Annotations
+
+```python
+# ❌ Missing return type
+@field_validator('field')
+@classmethod
+def validate_field(cls, v: str):  # Missing -> str
+    return v
+
+# ✅ Complete annotations
+@field_validator('field')
+@classmethod
+def validate_field(cls, v: str) -> str:
+    return v
+```
+
+### 3. Configuration Migration
+
+```python
+# ❌ Mixed V1/V2 syntax
+class Model(BaseModel):
+    class Config:
+        orm_mode = True
+    model_config = ConfigDict(frozen=True)  # Conflicting configs
+
+# ✅ Pure V2 syntax
+class Model(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        frozen=True
+    )
+```
+
+## Testing Migration
+
+### Validation Testing
+
+```python
+import pytest
+from pydantic import ValidationError
+
+def test_field_validation():
+    with pytest.raises(ValidationError) as exc_info:
+        UserModel(email="invalid-email")
+    
+    assert "Invalid email" in str(exc_info.value)
+
+def test_model_validation():
+    with pytest.raises(ValidationError) as exc_info:
+        UserModel(email="test@example.com", confirm_email="different@example.com")
+    
+    assert "Emails do not match" in str(exc_info.value)
+```
+
+### Performance Testing
+
+```python
+import time
+from pydantic import BaseModel
+
+def test_validation_performance():
+    start_time = time.time()
+    for _ in range(1000):
+        UserModel.model_validate({"email": "test@example.com"})
+    end_time = time.time()
+    
+    assert (end_time - start_time) < 1.0  # Should be fast
+```
+
+## Best Practices
+
+### 1. Type Safety
+
+- Always use proper type annotations
+- Leverage `TYPE_CHECKING` for expensive imports
+- Use `ClassVar` for class-level constants
+
+### 2. Performance
+
+- Use `validate_assignment=False` for read-only models
+- Implement lazy loading for expensive validations
+- Cache validation results when appropriate
+
+### 3. Error Messages
+
+- Provide clear, actionable error messages
+- Use `ValidationInfo` for context-aware validation
+- Test error messages in your test suite
+
+### 4. Configuration
+
+- Use `ConfigDict` for all model configuration
+- Set appropriate `extra` behavior
+- Configure validation modes based on use case
+
+*Build models that outfox complexity and deliver exceptional performance.* 🦊

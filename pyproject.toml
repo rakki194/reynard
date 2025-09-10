@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -58,10 +58,10 @@ ignore_missing_imports = true
 
 [tool.pylint.messages_control]
 disable = [
-    "C0114",  # missing-module-docstring
-    "C0116",  # missing-function-docstring
-    "R0903",  # too-few-public-methods
-    "R0913",  # too-many-arguments
+    "C0114", # missing-module-docstring
+    "C0116", # missing-function-docstring
+    "R0903", # too-few-public-methods
+    "R0913", # too-many-arguments
 ]
 
 [tool.pylint.format]
@@ -74,9 +74,12 @@ max-returns = 6
 max-branches = 15
 max-statements = 60
 
+[tool.pylint.master]
+max-module-lines = 250
+
 [tool.bandit]
 exclude_dirs = ["tests", "test_*", "venv", ".venv", "node_modules"]
-skips = ["B101", "B601"]  # Skip assert_used and shell_injection for tests
+skips = ["B101", "B601"]                                            # Skip assert_used and shell_injection for tests
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "test_*"]

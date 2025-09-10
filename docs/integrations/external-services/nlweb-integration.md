@@ -1,6 +1,6 @@
 # NLWeb Integration
 
-This document describes configuration and rollout for integrating NLWeb into yipyap.
+This document describes configuration and rollout for integrating NLWeb into Reynard.
 
 ## Configuration
 
