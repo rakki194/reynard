@@ -25,8 +25,8 @@
  * @since 1.0.0
  */
 
-import { Entity, Component, Resource, World } from "../types";
-import { ComponentType, ResourceType } from "../types/storage";
+import { Component, Entity, Resource, World } from "../types";
+import { ComponentType } from "../types/storage";
 
 /**
  * Performance metrics for ECS operations.

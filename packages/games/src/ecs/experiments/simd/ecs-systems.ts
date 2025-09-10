@@ -1,6 +1,6 @@
 // ECS system definitions for benchmark
 
-import { createComponentType, system, Entity } from "../../index.js";
+import { createComponentType, Entity, system } from "../../index.js";
 
 // Define components for Reynard ECS
 const Position = createComponentType<{

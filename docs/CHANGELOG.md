@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD024 -->
 # Changelog
 
 All notable changes to the Reynard framework are documented in this file.
@@ -9,69 +10,108 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Massive Testing Framework Overhaul**: Complete unification of testing utilities with centralized reynard-testing library
-- **Enhanced Backend Integration**: New NLWeb integration with comprehensive tool calling, elaborate tool execution, and API integration tests
-- **Advanced Algorithm Optimization**: Enhanced memory pool system with improved collision detection and spatial optimization
-- **Comprehensive Documentation Cleanup**: Removed 15,164 lines of outdated documentation and research artifacts
-- **New Backend Test Suite**: Complete integration testing for tool calling, NLWeb endpoints, and API integration
-- **Enhanced ECS System**: Improved entity-component-system with better performance monitoring and parallel processing
-- **Roguelike Game Integration**: New roguelike game components and CSS styling for the starter template
-- **Python Development Tools**: Enhanced Python linting setup with comprehensive validation and formatting tools
-- **Connection Package Enhancement**: New HTTP client with error handling, validation, and enterprise-grade networking
-- **Unified Utilities Migration**: Comprehensive migration guide for consolidating testing utilities across packages
+- Massive Testing Framework Overhaul: Complete unification of testing
+  utilities with centralized reynard-testing library
+- Enhanced Backend Integration: New NLWeb integration with comprehensive
+  tool calling, elaborate tool execution, and API integration tests
+- Advanced Algorithm Optimization: Enhanced memory pool system with
+  improved collision detection and spatial optimization
+- Comprehensive Documentation Cleanup: Removed 15,164 lines of outdated
+  documentation and research artifacts
+- New Backend Test Suite: Complete integration testing for tool calling,
+  NLWeb endpoints, and API integration
+- Enhanced ECS System: Improved entity-component-system with better
+  performance monitoring and parallel processing
+- Roguelike Game Integration: New roguelike game components and CSS
+  styling for the starter template
+- Python Development Tools: Enhanced Python linting setup with
+  comprehensive validation and formatting tools
+- Connection Package Enhancement: New HTTP client with error handling,
+  validation, and enterprise-grade networking
+- Unified Utilities Migration: Comprehensive migration guide for
+  consolidating testing utilities across packages
 
 ### Changed
 
-- **Package Version Bumps**: All packages updated from 0.1.2 → 0.1.3 (main, 3d, algorithms, testing, games, connection, core, themes, ai-shared, boundingbox, caption, error-boundaries, file-processing, gallery-ai, settings, backend)
-- **Testing Architecture**: Complete refactoring of testing utilities with centralized test-utils.tsx and modular utility files
-- **Documentation Restructuring**: Massive cleanup removing outdated research papers, benchmark results, and obsolete documentation
-- **Backend Service Integration**: Enhanced Ollama service with improved tool calling capabilities and comprehensive error handling
-- **Algorithm Package Cleanup**: Removed deprecated optimization modules and streamlined to core functionality
-- **ECS Performance Improvements**: Enhanced world management, query optimization, and parallel system execution
-- **Bounding Box Operations**: Improved composables with better state management and operation handling
-- **Theme System Updates**: Enhanced OKLCH color utilities and theme context management
-- **Connection Package**: New HTTP client architecture with comprehensive error handling and validation
+- Package Version Bumps: All packages updated from 0.1.2 → 0.1.3
+  (main, 3d, algorithms, testing, games, connection, core, themes,
+  ai-shared, boundingbox, caption, error-boundaries, file-processing,
+  gallery-ai, settings, backend)
+- Testing Architecture: Complete refactoring of testing utilities with
+  centralized test-utils.tsx and modular utility files
+- Documentation Restructuring: Massive cleanup removing outdated research
+  papers, benchmark results, and obsolete documentation
+- Backend Service Integration: Enhanced Ollama service with improved tool
+  calling capabilities and comprehensive error handling
+- Algorithm Package Cleanup: Removed deprecated optimization modules and
+  streamlined to core functionality
+- ECS Performance Improvements: Enhanced world management, query
+  optimization, and parallel system execution
+- Bounding Box Operations: Improved composables with better state
+  management and operation handling
+- Theme System Updates: Enhanced OKLCH color utilities and theme context
+  management
+- Connection Package: New HTTP client architecture with comprehensive
+  error handling and validation
 
 ### Fixed
 
-- **Testing Framework Issues**: Resolved integration test failures and centralized testing utilities
-- **Backend API Stability**: Enhanced error handling for tool calling and NLWeb integration
-- **Memory Management**: Improved memory pool allocation and collision detection performance
-- **Type Safety**: Comprehensive TypeScript improvements across all packages
-- **Package Dependencies**: Resolved version conflicts and updated all package.json files
-- **Documentation Accuracy**: Removed outdated and conflicting documentation
-- **ECS Performance**: Fixed parallel processing and query optimization issues
-- **Component Architecture**: Better separation of concerns in complex components
+- Testing Framework Issues: Resolved integration test failures and
+  centralized testing utilities
+- Backend API Stability: Enhanced error handling for tool calling and
+  NLWeb integration
+- Memory Management: Improved memory pool allocation and collision
+  detection performance
+- Type Safety: Comprehensive TypeScript improvements across all
+  packages
+- Package Dependencies: Resolved version conflicts and updated all
+  package.json files
+- Documentation Accuracy: Removed outdated and conflicting
+  documentation
+- ECS Performance: Fixed parallel processing and query optimization
+  issues
+- Component Architecture: Better separation of concerns in complex
+  components
 
 ### Removed
 
-- **Massive Documentation Cleanup**: Removed 15,164 lines including:
+- Massive Documentation Cleanup: Removed 15,164 lines including:
   - Research algorithms documentation (2,000+ lines)
   - Benchmark results and optimization proposals (1,500+ lines)
   - Outdated API documentation and examples (1,200+ lines)
   - Obsolete algorithm optimization modules (800+ lines)
   - Legacy testing integration files (600+ lines)
-- **Deprecated Algorithm Modules**: Removed memory-pool.ts, optimized-spatial-collision.ts, and related optimization files
-- **Legacy Testing Infrastructure**: Removed integration test files and consolidated into unified testing framework
-- **Obsolete Documentation**: Removed REYNARD_CAPTION_IMPLEMENTATION.md, SUMMARIZATION_BACKEND_README.md, and overview.md
-- **Redundant Research Files**: Cleaned up paw-algorithms research directory with 15+ obsolete files
+- Deprecated Algorithm Modules: Removed memory-pool.ts,
+  optimized-spatial-collision.ts, and related optimization files
+- Legacy Testing Infrastructure: Removed integration test files and
+  consolidated into unified testing framework
+- Obsolete Documentation: Removed REYNARD_CAPTION_IMPLEMENTATION.md,
+  SUMMARIZATION_BACKEND_README.md, and overview.md
+- Redundant Research Files: Cleaned up paw-algorithms research
+  directory with 15+ obsolete files
 
 ### Technical Details
 
-- **Files Changed**: 236 files modified (3,864 insertions, 15,164 deletions)
-- **Package Versions**: Comprehensive version bumps across 15+ packages
-- **Testing Unification**: Centralized testing utilities with happy-dom integration
-- **Backend Enhancement**: New NLWeb integration with comprehensive tool calling
-- **Documentation Cleanup**: Removed 15,164 lines of outdated content
-- **Algorithm Optimization**: Enhanced memory management and collision detection
-- **ECS Improvements**: Better performance monitoring and parallel processing
-- **Python Development**: Enhanced linting and validation tools
+- Files Changed: 236 files modified (3,864 insertions, 15,164
+  deletions)
+- Package Versions: Comprehensive version bumps across 15+ packages
+- Testing Unification: Centralized testing utilities with happy-dom
+  integration
+- Backend Enhancement: New NLWeb integration with comprehensive tool
+  calling
+- Documentation Cleanup: Removed 15,164 lines of outdated content
+- Algorithm Optimization: Enhanced memory management and collision
+  detection
+- ECS Improvements: Better performance monitoring and parallel
+  processing
+- Python Development: Enhanced linting and validation tools
 
 ## [0.1.2] - 2025-09-08
 
 ### Added
 
-- Enhanced algorithm optimization with collision detection improvements
+- Enhanced algorithm optimization with collision detection
+  improvements
 - New memory pool utilities for performance optimization
 - Improved bounding box editor with refactored architecture
 - Enhanced charts package with comprehensive type definitions
@@ -93,7 +133,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced file processing with TypeScript configuration
 - Updated testing framework with better utilities and rendering
 - Improved themes package with enhanced color conversion and hooks
-- Enhanced starter template with comprehensive component architecture
+- Enhanced starter template with comprehensive component
+  architecture
 
 ### Fixed
 
@@ -307,10 +348,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Comprehensive backend improvements and package restructuring
-- Enhanced basic-backend example with structured logging, improved auth, and better error handling
+- Enhanced basic-backend example with structured logging, improved
+  auth, and better error handling
 - Beacon library integration and updated gatekeeper configuration
-- Enhanced chat package with enhanced P2P functionality, streaming markdown parsing, and better type safety
-- Enhanced file-processing with modular thumbnail generators and comprehensive type support
+- Enhanced chat package with enhanced P2P functionality, streaming
+  markdown parsing, and better type safety
+- Enhanced file-processing with modular thumbnail generators and
+  comprehensive type support
 - Updated i18n package with better pluralization and translation utilities
 - Comprehensive testing utilities and assertion helpers
 - Updated tools package with improved API endpoints and streaming capabilities
@@ -319,10 +363,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Refactored algorithms package: removed deprecated modules, reorganized geometry utilities
-- Enhanced basic-backend example with structured logging, improved auth, and better error handling
+- Refactored algorithms package: removed deprecated modules,
+  reorganized geometry utilities
+- Enhanced basic-backend example with structured logging, improved
+  auth, and better error handling
 - Updated package configurations and dependencies across multiple packages
-- Enhanced chat package with enhanced P2P functionality, streaming markdown parsing, and better type safety
+- Enhanced chat package with enhanced P2P functionality, streaming
+  markdown parsing, and better type safety
 
 ### Technical Details
 
@@ -403,9 +450,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Development Notes
 
-This changelog is automatically generated based on actual git commit diffs and file changes. Each entry represents real modifications to the codebase, not speculative changes.
+This changelog is automatically generated based on actual git commit
+  diffs and file changes. Each entry represents real modifications to the
+  codebase, not speculative changes.
 
-The Reynard framework follows a modular architecture with packages for different functionalities:
+The Reynard framework follows a modular architecture with packages for
+  different functionalities:
 
 - **Core**: Base utilities, composables, and modules
 - **UI**: User interface components and layouts

@@ -7,4 +7,4 @@
 
 export * from "./mock-utils";
 // export * from "./assertion-utils"; // Temporarily disabled - needs jest-dom replacement
-export * from "./test-setup";
+// export * from "./test-setup"; // Deleted - functionality moved to main setup system

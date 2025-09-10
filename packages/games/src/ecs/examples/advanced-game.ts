@@ -1,37 +1,36 @@
 // Advanced ECS game example demonstrating all new features
 
 import {
-  createWorld,
+  CommonHooks,
+  ComponentHookRegistry,
   ComponentType,
+  ConditionCombinators,
+  Conditions,
+  createComponentHooks,
+  createWorld,
   ResourceType,
+  schedule,
   StorageType,
   system,
-  schedule,
   systemSet,
-  Conditions,
-  ConditionCombinators,
-  CommonHooks,
-  createComponentHooks,
-  ComponentHookRegistry,
-  ParallelIterator,
-  TaskPool,
   TASK_POOL,
+  TaskPool
 } from "../index";
 
 import {
-  Position,
-  Velocity,
-  Health,
-  Damage,
-  Player,
-  Enemy,
   Bullet,
-  Color,
-  Size,
-  GameTime,
-  GameState,
-  InputState,
   Camera,
+  Color,
+  Damage,
+  Enemy,
+  GameState,
+  GameTime,
+  Health,
+  InputState,
+  Player,
+  Position,
+  Size,
+  Velocity,
 } from "./components";
 
 /**

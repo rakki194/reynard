@@ -34,40 +34,34 @@
  */
 
 // Import types and functions for internal use
-import type { UnifiedECS } from "./ecs-interface";
 import {
   createECSSystem,
   createTypeScriptECSSystem,
   createWASMSIMDECSSystem,
-  isWASMSIMDAvailable,
   getECSDiagnostics,
+  isWASMSIMDAvailable,
 } from "./ecs-factory";
+import type { UnifiedECS } from "./ecs-interface";
 
 // Main factory function - the primary entry point
 export {
   createECSSystem,
   createTypeScriptECSSystem,
-  createWASMSIMDECSSystem,
-  isWASMSIMDAvailable,
-  getECSDiagnostics,
+  createWASMSIMDECSSystem, getECSDiagnostics, isWASMSIMDAvailable
 } from "./ecs-factory";
 
 // Core interfaces and types
 export type {
-  UnifiedECS,
-  ECSConfig,
-  ECSPerformanceMetrics,
-  WASMSIMDCapabilities,
-  ECSFactoryFunction,
+  ECSConfig, ECSFactoryFunction, ECSPerformanceMetrics, UnifiedECS, WASMSIMDCapabilities
 } from "./ecs-interface";
 
 // Implementation classes (for advanced usage)
 export { TypeScriptECS } from "./typescript-ecs";
-export { WASMSIMDECS } from "./wasm-simd-ecs";
 export { WASMDetector } from "./wasm-detector";
+export { WASMSIMDECS } from "./wasm-simd-ecs";
 
 // Re-export core ECS types for convenience
-export type { Entity, Component, Resource, World } from "../types";
+export type { Component, Entity, Resource, World } from "../types";
 
 /**
  * Quick start function for common ECS usage patterns.

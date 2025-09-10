@@ -1,41 +1,41 @@
 // Complete ECS game example
 
 import {
-  createWorld,
   ComponentType,
+  createWorld,
   ResourceType,
+  schedule,
   StorageType,
   system,
-  schedule,
   systemSet,
 } from "../index";
 
 import {
-  Position,
-  Velocity,
-  Health,
-  Damage,
-  Player,
-  Enemy,
   Bullet,
-  Color,
-  Size,
-  GameTime,
-  GameState,
-  InputState,
   Camera,
+  Color,
+  Damage,
+  Enemy,
+  GameState,
+  GameTime,
+  Health,
+  InputState,
+  Player,
+  Position,
+  Size,
+  Velocity,
 } from "./components";
 
 import {
-  movementSystem,
-  lifetimeSystem,
-  damageSystem,
-  playerInputSystem,
-  enemyAISystem,
   collisionSystem,
-  shootingSystem,
-  renderingSystem,
+  damageSystem,
+  enemyAISystem,
   gameStateSystem,
+  lifetimeSystem,
+  movementSystem,
+  playerInputSystem,
+  renderingSystem,
+  shootingSystem,
 } from "./systems";
 
 /**

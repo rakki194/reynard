@@ -29,11 +29,11 @@
  * @since 1.0.0
  */
 
-import { UnifiedECS, ECSConfig, ECSFactoryFunction } from "./ecs-interface";
+import { ECSConfig, ECSFactoryFunction, UnifiedECS } from "./ecs-interface";
 
+import { createTypeScriptECS } from "./typescript-ecs";
 import { wasmDetector } from "./wasm-detector";
-import { TypeScriptECS, createTypeScriptECS } from "./typescript-ecs";
-import { WASMSIMDECS, createWASMSIMDECS } from "./wasm-simd-ecs";
+import { createWASMSIMDECS } from "./wasm-simd-ecs";
 
 /**
  * ECS Factory for automatic implementation selection.

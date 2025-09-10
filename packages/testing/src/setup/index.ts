@@ -7,6 +7,7 @@
 
 export * from "./3d-setup";
 export * from "./ai-setup";
+export * from "./backend-setup";
 export * from "./base-setup";
 export * from "./browser-setup";
 export * from "./canvas-setup";

@@ -22,15 +22,13 @@
  * @since 1.0.0
  */
 
-import { UnifiedECS, ECSConfig, ECSPerformanceMetrics } from "./ecs-interface";
+import { ECSConfig, ECSPerformanceMetrics, UnifiedECS } from "./ecs-interface";
 
 import {
-  Entity,
   Component,
+  Entity,
   Resource,
-  World,
-  ComponentType,
-  ResourceType,
+  World
 } from "../types";
 import { createWorld } from "../world";
 
@@ -187,7 +185,7 @@ export class TypeScriptECS implements UnifiedECS {
   runSystems(deltaTime?: number): void {
     if (deltaTime !== undefined) {
       // Add deltaTime as a resource if not already present
-      const gameTime = this.world.getResource("GameTime");
+      const gameTime = this.world.getResource("GameTime" as any);
       if (!gameTime) {
         this.addResource({
           __resource: true,
@@ -226,8 +224,14 @@ export class TypeScriptECS implements UnifiedECS {
    */
   clear(): void {
     // Clear all entities
-    const entities = Array.from(this.world.query("Entity" as any));
-    for (const [entity] of entities) {
+    const entitiesToDespawn: any[] = [];
+    const entityQuery = this.world.query("Entity" as any);
+    if (entityQuery && typeof entityQuery.forEach === 'function') {
+      entityQuery.forEach((entity: any) => {
+        entitiesToDespawn.push(entity);
+      });
+    }
+    for (const entity of entitiesToDespawn) {
       this.world.despawn(entity);
     }
 
@@ -282,9 +286,9 @@ export class TypeScriptECS implements UnifiedECS {
         totalTime / this.systemExecutionTimes.length;
     }
 
-    // Update memory usage if available
-    if (typeof performance !== "undefined" && performance.memory) {
-      this.metrics.memoryUsage = performance.memory.usedJSHeapSize;
+    // Update memory usage if available (browser-specific)
+    if (typeof performance !== "undefined" && (performance as any).memory) {
+      this.metrics.memoryUsage = (performance as any).memory.usedJSHeapSize;
     }
   }
 }

@@ -456,7 +456,6 @@ export function createMockFunction<T extends (...args: any[]) => any>(
     mockResolvedValue: (value: any) => void;
     mockRejectedValue: (error: any) => void;
     mockReturnValue: (value: any) => void;
-    mockImplementation: (impl: T) => void;
 } {
     const mockFn = vi.fn(implementation) as any;
 
@@ -470,10 +469,6 @@ export function createMockFunction<T extends (...args: any[]) => any>(
 
     mockFn.mockReturnValue = (value: any) => {
         mockFn.mockImplementation(() => value);
-    };
-
-    mockFn.mockImplementation = (impl: T) => {
-        mockFn.mockImplementation(impl);
     };
 
     return mockFn;
@@ -507,9 +502,7 @@ export function createMockObject<T extends Record<string, any>>(
     const mockObject = {} as any;
 
     for (const method of methods) {
-        if (typeof mockObject[method] === 'function') {
-            mockObject[method] = createMockFn();
-        }
+        mockObject[method] = createMockFn();
     }
 
     return mockObject;
@@ -771,6 +764,10 @@ export {
 export {
     setupMediaTest
 } from "./setup/media-setup";
+
+export {
+    setupBackendTest
+} from "./setup/backend-setup";
 
 // ============================================================================
 // Convenience Functions

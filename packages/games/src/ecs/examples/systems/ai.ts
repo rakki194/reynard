@@ -2,14 +2,12 @@
 
 import { World } from "../../types";
 import {
-  Position,
-  Velocity,
-  Player,
-  Enemy,
-  PositionType,
-  VelocityType,
-  PlayerType,
   EnemyType,
+  PlayerType,
+  Position,
+  PositionType,
+  Velocity,
+  VelocityType
 } from "../components";
 
 /**
