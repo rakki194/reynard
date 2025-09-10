@@ -32,6 +32,13 @@ export type SettingCategory =
   | "ai"
   | "media"
   | "datetime"
+  | "rag"
+  | "diffusion"
+  | "comfy"
+  | "model-management"
+  | "service-management"
+  | "assistant"
+  | "config-watcher"
   | "custom";
 
 export type SettingScope = "user" | "global" | "session" | "temporary";
@@ -548,10 +555,52 @@ export const COMMON_SETTING_CATEGORIES: Record<
     icon: "schedule",
     order: 13,
   },
+  rag: {
+    name: "RAG System",
+    description: "Retrieval-Augmented Generation settings",
+    icon: "search",
+    order: 14,
+  },
+  diffusion: {
+    name: "Diffusion LLM",
+    description: "Text generation and diffusion model settings",
+    icon: "auto_awesome",
+    order: 15,
+  },
+  comfy: {
+    name: "ComfyUI",
+    description: "ComfyUI workflow automation settings",
+    icon: "account_tree",
+    order: 16,
+  },
+  "model-management": {
+    name: "Model Management",
+    description: "AI model management and configuration",
+    icon: "model_training",
+    order: 17,
+  },
+  "service-management": {
+    name: "Service Management",
+    description: "Service monitoring and management settings",
+    icon: "settings_suggest",
+    order: 18,
+  },
+  assistant: {
+    name: "AI Assistant",
+    description: "AI assistant and Ollama integration settings",
+    icon: "smart_toy",
+    order: 19,
+  },
+  "config-watcher": {
+    name: "Config Watcher",
+    description: "Advanced configuration monitoring and management",
+    icon: "monitor_heart",
+    order: 20,
+  },
   custom: {
     name: "Custom",
     description: "Custom user-defined settings",
     icon: "build",
-    order: 14,
+    order: 21,
   },
 };

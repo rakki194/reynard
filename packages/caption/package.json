@@ -40,10 +40,10 @@
   ],
   "dependencies": {
     "reynard-api-client": "workspace:*",
-    "reynard-core": "workspace:*",
-    "reynard-components": "workspace:*",
-    "reynard-fluent-icons": "workspace:*",
-    "reynard-monaco": "workspace:*",
+    "reynard-core": "0.1.2",
+    "reynard-components": "0.1.2",
+    "reynard-fluent-icons": "0.1.1",
+    "reynard-monaco": "0.1.1",
     "reynard-audio": "workspace:*",
     "reynard-video": "workspace:*",
     "reynard-image": "workspace:*",
@@ -51,9 +51,12 @@
     "reynard-model-management": "workspace:*"
   },
   "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@testing-library/jest-dom": "6.8.0",
     "@types/node": "24.3.1",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
+    "jsdom": "26.1.0",
     "typescript": "5.9.2",
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8",

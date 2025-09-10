@@ -12,12 +12,9 @@ import type { TabItem } from "./types";
 const getIcon = (name: string) => {
   const icon = getIconFromRegistry(name);
   if (icon) {
-    return (
-      <div
-        // eslint-disable-next-line solid/no-innerhtml
-        innerHTML={icon.outerHTML}
-      />
-    );
+    const div = document.createElement('div');
+    div.innerHTML = icon.outerHTML;
+    return div.firstElementChild as HTMLElement;
   }
   return null;
 };

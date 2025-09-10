@@ -32,7 +32,10 @@ global.performance = {
 };
 
 // Mock crypto for ID generation tests
-global.crypto = {
-  ...global.crypto,
-  randomUUID: vi.fn(() => 'mock-uuid-1234-5678-9abc-def012345678'),
-};
+Object.defineProperty(global, 'crypto', {
+  value: {
+    ...global.crypto,
+    randomUUID: vi.fn(() => 'mock-uuid-1234-5678-9abc-def012345678'),
+  },
+  writable: true,
+});

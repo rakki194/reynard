@@ -1,11 +1,10 @@
 /**
  * PerformanceDashboard Component
- * Comprehensive real-time performance monitoring dashboard for debugging and optimization
+ * Main orchestrator for performance monitoring dashboard
  */
 
 import {
   Component,
-  For,
   Show,
   createSignal,
   createEffect,
@@ -13,37 +12,22 @@ import {
   onCleanup,
 } from "solid-js";
 import { Button, Tabs, TabItem } from "reynard-components";
-import { fluentIconsPackage } from "reynard-fluent-icons";
 import { usePerformanceMonitor } from "reynard-composables";
-import { PerformanceChart, MultiDatasetChart } from "reynard-charts";
-import { PerformanceMetricsPanel } from "./PerformanceMetricsPanel";
-import { MemoryTrackingPanel } from "./MemoryTrackingPanel";
-import { PerformanceAlertsPanel } from "./PerformanceAlertsPanel";
-import { PerformanceExportPanel } from "./PerformanceExportPanel";
+import { PerformanceOverviewTab } from "./PerformanceOverviewTab";
+import { PerformanceMetricsTab } from "./PerformanceMetricsTab";
+import { PerformanceMemoryTab } from "./PerformanceMemoryTab";
+import { PerformanceAlertsTab } from "./PerformanceAlertsTab";
+import { PerformanceExportTab } from "./PerformanceExportTab";
 
 export interface PerformanceDashboardProps {
-  /** Whether the dashboard is visible */
   isVisible: boolean;
-  /** Callback to close the dashboard */
   onClose: () => void;
-  /** Current dataset size */
   datasetSize?: number;
-  /** Current selection count */
   selectionCount?: number;
-  /** Whether to show real-time monitoring */
-  showRealTimeMonitoring?: boolean;
-  /** Whether to show memory tracking */
-  showMemoryTracking?: boolean;
-  /** Whether to show performance alerts */
-  showPerformanceAlerts?: boolean;
-  /** Whether to show export functionality */
-  showExportFunctionality?: boolean;
-  /** Auto-refresh interval in milliseconds */
   refreshInterval?: number;
 }
 
 export interface PerformanceWarning {
-  id: string;
   type: "critical" | "high" | "medium" | "low";
   message: string;
   value: number;
@@ -66,7 +50,6 @@ export interface PerformanceHistory {
 
 export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props) => {
   const performanceMonitor = usePerformanceMonitor();
-
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRecording, setIsRecording] = createSignal(false);
   const [memoryUsage, setMemoryUsage] = createSignal<number>(0);
@@ -82,7 +65,6 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
   let lastFrameTime = performance.now();
 
   onMount(() => {
-    // Initial data load
     updateMetrics();
   });
 
@@ -113,23 +95,27 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
   // Update performance metrics
   const updateMetrics = async () => {
     try {
-      // Get current performance metrics
       const metrics = performanceMonitor.metrics();
       const currentWarnings = performanceMonitor.warnings();
 
-      // Update memory usage
       const memory = await performanceMonitor.measureMemoryUsage();
       setMemoryUsage(memory);
 
-      // Update browser responsiveness
       const responsiveness = await performanceMonitor.checkBrowserResponsiveness();
       setBrowserResponsiveness(responsiveness);
 
-      // Update frame rate
       updateFrameRate();
 
-      // Update warnings
-      setWarnings(currentWarnings);
+      // Convert warnings to our format
+      const convertedWarnings: PerformanceWarning[] = currentWarnings.map((warning, index) => ({
+        type: warning.severity,
+        message: warning.message,
+        value: warning.value,
+        threshold: warning.threshold,
+        timestamp: warning.timestamp,
+        severity: warning.severity,
+      }));
+      setWarnings(convertedWarnings);
 
       // Update performance history
       if (metrics) {
@@ -147,8 +133,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
 
         setPerformanceHistory((prev) => {
           const updated = [...prev, historyEntry];
-          // Keep only last 100 data points
-          return updated.slice(-100);
+          return updated.slice(-100); // Keep only last 100 data points
         });
       }
 
@@ -215,239 +200,13 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
     URL.revokeObjectURL(url);
   };
 
-  // Format memory usage
-  const formatMemory = (bytes: number): string => {
-    if (bytes > 1024 * 1024 * 1024) {
-      return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
-    } else if (bytes > 1024 * 1024) {
-      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-    } else if (bytes > 1024) {
-      return `${(bytes / 1024).toFixed(1)} KB`;
-    } else {
-      return `${bytes} B`;
-    }
-  };
-
-  // Format duration
-  const formatDuration = (ms: number): string => {
-    if (ms < 1000) {
-      return `${ms.toFixed(0)}ms`;
-    } else {
-      return `${(ms / 1000).toFixed(2)}s`;
-    }
-  };
-
-  // Get performance status
-  const getPerformanceStatus = () => {
-    const currentWarnings = warnings();
-    const criticalWarnings = currentWarnings.filter((w) => w.severity === "critical").length;
-    const highWarnings = currentWarnings.filter((w) => w.severity === "high").length;
-
-    if (criticalWarnings > 0) {
-      return "critical";
-    } else if (highWarnings > 0) {
-      return "warning";
-    } else if (frameRate() < 30) {
-      return "warning";
-    } else if (browserResponsiveness() > 100) {
-      return "warning";
-    } else {
-      return "healthy";
-    }
-  };
-
-  // Get status icon
-  const getStatusIcon = () => {
-    const status = getPerformanceStatus();
-
-    switch (status) {
-      case "healthy":
-        return fluentIconsPackage.getIcon("checkmark-circle");
-      case "warning":
-        return fluentIconsPackage.getIcon("warning");
-      case "critical":
-        return fluentIconsPackage.getIcon("dismiss-circle");
-      default:
-        return fluentIconsPackage.getIcon("info");
-    }
-  };
-
-  // Get status class
-  const getStatusClass = () => {
-    const status = getPerformanceStatus();
-
-    switch (status) {
-      case "healthy":
-        return "status-healthy";
-      case "warning":
-        return "status-warning";
-      case "critical":
-        return "status-critical";
-      default:
-        return "status-unknown";
-    }
-  };
-
-  // Get status message
-  const getStatusMessage = () => {
-    const status = getPerformanceStatus();
-    const currentWarnings = warnings();
-
-    switch (status) {
-      case "healthy":
-        return "Performance is optimal";
-      case "warning":
-        return `${currentWarnings.filter((w) => w.severity === "high").length} performance warnings`;
-      case "critical":
-        return `${currentWarnings.filter((w) => w.severity === "critical").length} critical issues`;
-      default:
-        return "Performance status unknown";
-    }
-  };
-
   // Tabs configuration
   const tabs: TabItem[] = [
-    {
-      id: "overview",
-      label: "Overview",
-      content: (
-        <div class="overview-tab">
-          <div class="overview-grid">
-            {/* Current Status */}
-            <div class="status-card">
-              <h3>Current Status</h3>
-              <div class="status-grid">
-                <div class="status-item">
-                  <label>Dataset Size</label>
-                  <span class="value">{(props.datasetSize || 0).toLocaleString()}</span>
-                </div>
-                <div class="status-item">
-                  <label>Selected Items</label>
-                  <span class="value">{(props.selectionCount || 0).toLocaleString()}</span>
-                </div>
-                <div class="status-item">
-                  <label>Memory Usage</label>
-                  <span class="value">{formatMemory(memoryUsage())}</span>
-                </div>
-                <div class="status-item">
-                  <label>Browser Response</label>
-                  <span
-                    class="value"
-                    classList={{
-                      warning: browserResponsiveness() > 50,
-                      error: browserResponsiveness() > 100,
-                    }}
-                  >
-                    {formatDuration(browserResponsiveness())}
-                  </span>
-                </div>
-                <div class="status-item">
-                  <label>Frame Rate</label>
-                  <span
-                    class="value"
-                    classList={{
-                      warning: frameRate() < 55,
-                      error: frameRate() < 30,
-                    }}
-                  >
-                    {frameRate()} fps
-                  </span>
-                </div>
-                <div class="status-item">
-                  <label>Recording</label>
-                  <span class="value" classList={{ recording: isRecording() }}>
-                    {isRecording() ? "Active" : "Inactive"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Performance Status */}
-            <div class="status-card">
-              <h3>Performance Status</h3>
-              <div class={`performance-status ${getStatusClass()}`}>
-                <span class="status-icon">
-                  <div
-                    // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={getStatusIcon()?.outerHTML || ""}
-                  />
-                </span>
-                <span class="status-message">{getStatusMessage()}</span>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div class="status-card">
-              <h3>Quick Actions</h3>
-              <div class="quick-actions">
-                <Button
-                  variant={isRecording() ? "error" : "primary"}
-                  onClick={toggleRecording}
-                >
-                  {isRecording() ? "Stop Recording" : "Start Recording"}
-                </Button>
-                <Button variant="secondary" onClick={clearMetrics}>
-                  Clear Metrics
-                </Button>
-                <Button variant="secondary" onClick={exportPerformanceData}>
-                  Export Data
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "metrics",
-      label: "Metrics",
-      content: (
-        <div class="metrics-tab">
-          <PerformanceMetricsPanel
-            performanceHistory={performanceHistory()}
-            refreshInterval={props.refreshInterval}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "memory",
-      label: "Memory",
-      content: (
-        <div class="memory-tab">
-          <MemoryTrackingPanel
-            memoryUsage={memoryUsage()}
-            performanceHistory={performanceHistory()}
-            refreshInterval={props.refreshInterval}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "alerts",
-      label: "Alerts",
-      content: (
-        <div class="alerts-tab">
-          <PerformanceAlertsPanel
-            warnings={warnings()}
-            refreshInterval={props.refreshInterval}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "export",
-      label: "Export",
-      content: (
-        <div class="export-tab">
-          <PerformanceExportPanel
-            performanceHistory={performanceHistory()}
-            warnings={warnings()}
-            onExport={exportPerformanceData}
-          />
-        </div>
-      ),
-    },
+    { id: "overview", label: "Overview" },
+    { id: "metrics", label: "Metrics" },
+    { id: "memory", label: "Memory" },
+    { id: "alerts", label: "Alerts" },
+    { id: "export", label: "Export" },
   ];
 
   return (
@@ -457,15 +216,8 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
           {/* Header */}
           <div class="dashboard-header">
             <div class="dashboard-title">
-              <span class="icon">
-                <div
-                  // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={fluentIconsPackage.getIcon("chart-multiple")?.outerHTML || ""}
-                />
-              </span>
               <h2>Performance Dashboard</h2>
             </div>
-
             <div class="dashboard-actions">
               <Button variant="secondary" onClick={props.onClose}>
                 Close
@@ -481,6 +233,51 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
             variant="underline"
             size="lg"
           />
+
+          {/* Tab Content */}
+          <Show when={activeTab() === "overview"}>
+            <PerformanceOverviewTab
+              datasetSize={props.datasetSize || 0}
+              selectionCount={props.selectionCount || 0}
+              memoryUsage={memoryUsage()}
+              browserResponsiveness={browserResponsiveness()}
+              frameRate={frameRate()}
+              isRecording={isRecording()}
+              onToggleRecording={toggleRecording}
+              onClearMetrics={clearMetrics}
+              onExportData={exportPerformanceData}
+            />
+          </Show>
+
+          <Show when={activeTab() === "metrics"}>
+            <PerformanceMetricsTab
+              performanceHistory={performanceHistory()}
+              refreshInterval={props.refreshInterval}
+            />
+          </Show>
+
+          <Show when={activeTab() === "memory"}>
+            <PerformanceMemoryTab
+              memoryUsage={memoryUsage()}
+              performanceHistory={performanceHistory()}
+              refreshInterval={props.refreshInterval}
+            />
+          </Show>
+
+          <Show when={activeTab() === "alerts"}>
+            <PerformanceAlertsTab
+              warnings={warnings()}
+              refreshInterval={props.refreshInterval}
+            />
+          </Show>
+
+          <Show when={activeTab() === "export"}>
+            <PerformanceExportTab
+              performanceHistory={performanceHistory()}
+              warnings={warnings()}
+              onExport={exportPerformanceData}
+            />
+          </Show>
 
           {/* Last Update */}
           <Show when={lastUpdate()}>

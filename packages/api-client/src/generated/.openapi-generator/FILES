@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/AuthenticationApi.ts
 apis/CaptionApi.ts
 apis/CaptionMonitoringApi.ts

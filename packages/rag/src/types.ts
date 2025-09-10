@@ -71,7 +71,7 @@ export interface RAGQueryResponse {
 export interface TabItem {
   id: string;
   label: string;
-  icon: JSX.Element | null;
+  icon: HTMLElement | null;
 }
 
 // Advanced RAG types for 3D visualization and modals

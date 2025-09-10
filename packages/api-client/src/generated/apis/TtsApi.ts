@@ -51,7 +51,9 @@ export interface GetAudioFileApiTtsApiTtsAudioFilenameGet0Request {
     filename: string;
 }
 
-// Removed duplicate interface - defined in TtsAdminApi
+export interface ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts {
+    backendName: string;
+}
 
 export interface SynthesizeBatchApiTtsApiTtsSynthesizeBatchPostRequest {
     tTSBatchRequest: TTSBatchRequest;
@@ -228,7 +230,13 @@ export interface TtsApiInterface {
      * @throws {RequiredError}
      * @memberof TtsApiInterface
      */
-    // Removed duplicate methods - defined in TtsAdminApi
+    reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
+
+    /**
+     * Reload a specific TTS backend.
+     * Reload Backend
+     */
+    reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
     /**
      * Synthesize multiple texts to speech.
@@ -659,7 +667,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
      * Reload a specific TTS backend.
      * Reload Backend
      */
-    async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(requestParameters: any, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>> {
+    async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>> {
         if (requestParameters['backendName'] == null) {
             throw new runtime.RequiredError(
                 'backendName',
@@ -693,7 +701,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
      * Reload a specific TTS backend.
      * Reload Backend
      */
-    async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(requestParameters: any, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
         const response = await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(requestParameters, initOverrides);
         return await response.value();
     }

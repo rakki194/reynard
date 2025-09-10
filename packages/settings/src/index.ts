@@ -17,3 +17,6 @@ export * from "./utils";
 
 // Export storage
 export * from "./storage";
+
+// Import CSS for advanced settings components
+import "./components/AdvancedSettings.css";

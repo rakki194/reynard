@@ -982,6 +982,12 @@ importers:
         specifier: 1.9.9
         version: 1.9.9
     devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@testing-library/jest-dom':
+        specifier: 6.8.0
+        version: 6.8.0
       '@types/node':
         specifier: 24.3.1
         version: 24.3.1
@@ -991,6 +997,9 @@ importers:
       '@vitest/ui':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
+      jsdom:
+        specifier: 26.1.0
+        version: 26.1.0(canvas@3.2.0)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -999,13 +1008,16 @@ importers:
         version: 7.1.5(@types/node@24.3.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.6.4)(solid-js@1.9.9)(vite@7.1.5)
+        version: 2.11.8(@testing-library/jest-dom@6.8.0)(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(jsdom@26.1.0)
 
   packages/annotating-core:
     dependencies:
+      reynard-ai-shared:
+        specifier: workspace:*
+        version: link:../ai-shared
       reynard-core:
         specifier: workspace:*
         version: link:../core
@@ -1164,6 +1176,9 @@ importers:
 
   packages/api-client:
     dependencies:
+      node-fetch:
+        specifier: ^3.3.2
+        version: 3.3.2
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1331,14 +1346,14 @@ importers:
         specifier: workspace:*
         version: link:../audio
       reynard-components:
-        specifier: workspace:*
+        specifier: 0.1.2
         version: link:../components
       reynard-core:
-        specifier: workspace:*
+        specifier: 0.1.2
         version: link:../core
       reynard-fluent-icons:
-        specifier: workspace:*
-        version: link:../fluent-icons
+        specifier: 0.1.1
+        version: 0.1.1(solid-js@1.9.9)
       reynard-image:
         specifier: workspace:*
         version: link:../image
@@ -1346,8 +1361,8 @@ importers:
         specifier: workspace:*
         version: link:../model-management
       reynard-monaco:
-        specifier: workspace:*
-        version: link:../monaco
+        specifier: 0.1.1
+        version: 0.1.1(solid-js@1.9.9)
       reynard-multimodal:
         specifier: workspace:*
         version: link:../multimodal
@@ -1358,6 +1373,12 @@ importers:
         specifier: 1.9.9
         version: 1.9.9
     devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@testing-library/jest-dom':
+        specifier: 6.8.0
+        version: 6.8.0
       '@types/node':
         specifier: 24.3.1
         version: 24.3.1
@@ -1367,6 +1388,9 @@ importers:
       '@vitest/ui':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
+      jsdom:
+        specifier: 26.1.0
+        version: 26.1.0(canvas@3.2.0)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -1375,7 +1399,7 @@ importers:
         version: 7.1.5(@types/node@24.3.1)
       vite-plugin-solid:
         specifier: 2.11.8
-        version: 2.11.8(@testing-library/jest-dom@6.6.4)(solid-js@1.9.9)(vite@7.1.5)
+        version: 2.11.8(@testing-library/jest-dom@6.8.0)(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(jsdom@26.1.0)
@@ -5987,6 +6011,11 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /data-uri-to-buffer@4.0.1:
+    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
+    engines: {node: '>= 12'}
+    dev: false
+
   /data-uri-to-buffer@6.0.2:
     resolution: {integrity: sha512-7hvf7/GW8e86rW0ptuwS3OcBGDjIi6SZva7hCyWC0yYry2cOPmLIjXAUHI6DK2HsnwJd9ifmt57i8eV2n4YNpw==}
     engines: {node: '>= 14'}
@@ -6817,6 +6846,14 @@ packages:
     dependencies:
       picomatch: 4.0.3
 
+  /fetch-blob@3.2.0:
+    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
+    engines: {node: ^12.20 || >= 14.13}
+    dependencies:
+      node-domexception: 1.0.0
+      web-streams-polyfill: 3.3.3
+    dev: false
+
   /fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
 
@@ -6939,6 +6976,13 @@ packages:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+
+  /formdata-polyfill@4.0.10:
+    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
+    engines: {node: '>=12.20.0'}
+    dependencies:
+      fetch-blob: 3.2.0
+    dev: false
 
   /from@0.1.7:
     resolution: {integrity: sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==}
@@ -8546,6 +8590,12 @@ packages:
   /node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
+  /node-domexception@1.0.0:
+    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
+    engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
+    dev: false
+
   /node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
     engines: {node: 4.x || >=6.0.0}
@@ -8557,6 +8607,15 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+
+  /node-fetch@3.3.2:
+    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      data-uri-to-buffer: 4.0.1
+      fetch-blob: 3.2.0
+      formdata-polyfill: 4.0.10
+    dev: false
 
   /node-releases@2.0.20:
     resolution: {integrity: sha512-7gK6zSXEH6neM212JgfYFXe+GmZQM+fia5SsusuBIUgnPheLFBmIPhtFoAQRj8/7wASYQnbDlHPVwY0BefoFgA==}
@@ -9286,6 +9345,27 @@ packages:
       marked: 16.2.1
       reynard-components: 0.1.1(solid-js@1.9.9)
       reynard-core: 0.1.1(solid-js@1.9.9)
+      solid-js: 1.9.9
+    dev: false
+
+  /reynard-fluent-icons@0.1.1(solid-js@1.9.9):
+    resolution: {integrity: sha512-7TS5kohnsz+doHTxLnuhlFADPe2t5XrYQ5OpG969tpQt6zOydzlOmmQuKYcw9eByh9fiGpOYjOFk80YFY5d3ig==}
+    peerDependencies:
+      solid-js: 1.9.9
+    dependencies:
+      '@fluentui/svg-icons': 1.1.309
+      reynard-core: file:packages/core(solid-js@1.9.9)
+      solid-js: 1.9.9
+    dev: false
+
+  /reynard-monaco@0.1.1(solid-js@1.9.9):
+    resolution: {integrity: sha512-OjMxTQ0r4GvoI6GLxn3x8xkCJnPKEDCVf8RWgC9IfqrSXqEc/ckS0RywgKRtSUG/yjPJhiknmbhpMNcG9pINbw==}
+    peerDependencies:
+      solid-js: 1.9.9
+    dependencies:
+      '@monaco-editor/loader': 1.5.0
+      monaco-editor: 0.52.2
+      shiki: 3.12.2
       solid-js: 1.9.9
     dev: false
 
@@ -10802,6 +10882,11 @@ packages:
     dependencies:
       defaults: 1.0.4
     dev: true
+
+  /web-streams-polyfill@3.3.3:
+    resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}

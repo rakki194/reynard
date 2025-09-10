@@ -32,5 +32,13 @@ export { PackageLifecyclePanel } from "./PackageLifecyclePanel";
 export { PackageAnalyticsPanel } from "./PackageAnalyticsPanel";
 export { PackageConfigurationPanel } from "./PackageConfigurationPanel";
 
+// Debug and Performance Monitoring Components
+export { PerformanceDashboard } from "../debug/PerformanceDashboard";
+export { PerformanceOverviewTab } from "../debug/PerformanceOverviewTab";
+export { PerformanceMetricsTab } from "../debug/PerformanceMetricsTab";
+export { PerformanceMemoryTab } from "../debug/PerformanceMemoryTab";
+export { PerformanceAlertsTab } from "../debug/PerformanceAlertsTab";
+export { PerformanceExportTab } from "../debug/PerformanceExportTab";
+
 // Export hooks
 export * from "./hooks";
