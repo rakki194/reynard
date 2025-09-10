@@ -6,8 +6,6 @@ environment variable support and secure defaults.
 """
 
 import os
-import secrets
-from pathlib import Path
 from typing import List
 
 from dotenv import load_dotenv
@@ -20,14 +18,6 @@ class Config:
     """Configuration class for Reynard Backend."""
     
     def __init__(self):
-        self.SECRET_KEY = self._get_persistent_secret_key()
-        self.ALGORITHM = "HS256"
-        self.ACCESS_TOKEN_EXPIRE_MINUTES = 30
-        self.REFRESH_TOKEN_EXPIRE_DAYS = 7
-        
-        # Password hashing settings
-        self.PASSWORD_SALT_LENGTH = 32
-        self.PASSWORD_ITERATIONS = 100000
         
         # CORS settings
         self.CORS_ORIGINS = self._get_cors_origins()
@@ -46,27 +36,6 @@ class Config:
         # Security settings
         self.ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
         self.ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*.yourdomain.com"]
-    
-    def _get_persistent_secret_key(self) -> str:
-        """Get persistent JWT secret key with fallback to environment variable."""
-        # First try environment variable
-        env_secret = os.getenv("SECRET_KEY")
-        if env_secret:
-            return env_secret
-        
-        # Create persistent secret file
-        secret_file = Path("./secrets/jwt_secret.key")
-        secret_file.parent.mkdir(exist_ok=True, mode=0o700)
-        
-        if secret_file.exists():
-            # Load existing secret
-            return secret_file.read_text().strip()
-        else:
-            # Generate new persistent secret
-            new_secret = secrets.token_urlsafe(64)  # 64 bytes for strong entropy
-            secret_file.write_text(new_secret)
-            secret_file.chmod(0o600)  # Secure file permissions
-            return new_secret
     
     def _get_cors_origins(self) -> List[str]:
         """Get CORS allowed origins."""

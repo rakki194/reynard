@@ -1,7 +1,7 @@
 """
 Main Ollama service orchestrator.
 
-This service manages Ollama local LLM integration with YipYapAssistant,
+This service manages Ollama local LLM integration with ReynardAssistant,
 tool calling, streaming responses, and context awareness.
 """
 
@@ -28,7 +28,7 @@ class OllamaService:
     def __init__(self):
         self._config: Optional[OllamaConfig] = None
         self._client: Optional[OllamaClient] = None
-        self._assistant: Optional[YipYapAssistant] = None
+        self._assistant: Optional[ReynardAssistant] = None
         self._stats: Dict[str, Any] = {
             "total_requests": 0,
             "successful_requests": 0,
@@ -54,9 +54,9 @@ class OllamaService:
             # Initialize Ollama client
             self._client = OllamaClient(self._config.base_url, self._config.timeout_seconds)
 
-            # Initialize YipYapAssistant if enabled
+            # Initialize ReynardAssistant if enabled
             if self._config.assistant_enabled:
-                self._assistant = YipYapAssistant(self._client, self._config)
+                self._assistant = ReynardAssistant(self._client, self._config)
 
             logger.info("Ollama service initialized successfully")
             return True
@@ -131,11 +131,11 @@ class OllamaService:
     async def assistant_stream(
         self, params: OllamaAssistantParams
     ) -> AsyncIterable[OllamaStreamEvent]:
-        """Chat with YipYapAssistant with streaming support."""
+        """Chat with ReynardAssistant with streaming support."""
         if not self._enabled or not self._assistant:
             yield OllamaStreamEvent(
                 type="error",
-                data="YipYapAssistant is not available",
+                data="ReynardAssistant is not available",
                 timestamp=time.time(),
             )
             return
@@ -353,8 +353,8 @@ class OllamaClient:
         pass
 
 
-class YipYapAssistant:
-    """YipYapAssistant with tool calling and context awareness."""
+class ReynardAssistant:
+    """ReynardAssistant with tool calling and context awareness."""
 
     def __init__(self, client: OllamaClient, config: OllamaConfig):
         self.client = client
@@ -365,7 +365,7 @@ class YipYapAssistant:
         # Mock assistant response with tool calling
         yield OllamaStreamEvent(
             type="token",
-            data="I'm YipYapAssistant, ",
+            data="I'm ReynardAssistant, ",
             timestamp=time.time(),
         )
         

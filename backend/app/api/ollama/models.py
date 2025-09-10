@@ -49,9 +49,9 @@ class OllamaModelInfo(BaseModel):
 
 
 class OllamaAssistantRequest(BaseModel):
-    """Request model for YipYapAssistant."""
+    """Request model for ReynardAssistant."""
     message: str = Field(..., description="User message", min_length=1, max_length=10000)
-    assistant_type: str = Field("yipyap", description="Assistant type (yipyap, codewolf)")
+    assistant_type: str = Field("reynard", description="Assistant type (reynard, codewolf)")
     model: str = Field("llama3.1", description="Ollama model to use")
     temperature: float = Field(0.7, description="Sampling temperature", ge=0.1, le=2.0)
     max_tokens: int = Field(2048, description="Maximum tokens to generate", ge=1, le=8192)
@@ -61,7 +61,7 @@ class OllamaAssistantRequest(BaseModel):
 
 
 class OllamaAssistantResponse(BaseModel):
-    """Response model for YipYapAssistant."""
+    """Response model for ReynardAssistant."""
     success: bool = Field(..., description="Whether assistant response was successful")
     response: str = Field("", description="Assistant response")
     assistant_type: str = Field(..., description="Assistant type used")
@@ -80,7 +80,7 @@ class OllamaConfig(BaseModel):
     default_model: str = Field("llama3.1", description="Default model for generation")
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
-    assistant_enabled: bool = Field(True, description="Enable YipYapAssistant")
+    assistant_enabled: bool = Field(True, description="Enable ReynardAssistant")
     tools_enabled: bool = Field(True, description="Enable tool calling")
     context_awareness: bool = Field(True, description="Enable context awareness")
 

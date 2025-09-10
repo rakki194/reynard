@@ -1,15 +1,6 @@
-import { defineConfig } from "vitest/config";
-import { resolve } from "path";
+import { createBaseVitestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./test/setup.ts"],
-  },
-  resolve: {
-    alias: {
-      "~": resolve(__dirname, "src"),
-    },
-  },
+export default createBaseVitestConfig({
+  packageName: "reynard-colors",
+  setupFiles: ["./test/setup.ts"],
 });

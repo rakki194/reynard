@@ -6,7 +6,7 @@ describe("Vitest Configuration Utilities (Minimal)", () => {
   it("should be able to create a basic vitest config", () => {
     const config = defineConfig({
       test: {
-        environment: "jsdom",
+        environment: "happy-dom",
         globals: true,
         setupFiles: ["./src/test-setup.ts"],
         coverage: {
@@ -26,7 +26,7 @@ describe("Vitest Configuration Utilities (Minimal)", () => {
 
     expect(config).toBeDefined();
     expect(config.test).toBeDefined();
-    expect(config.test!.environment).toBe("jsdom");
+    expect(config.test!.environment).toBe("happy-dom");
     expect(config.test!.globals).toBe(true);
     expect(config.test!.setupFiles).toEqual(["./src/test-setup.ts"]);
   });
@@ -41,7 +41,7 @@ describe("Vitest Configuration Utilities (Minimal)", () => {
 
     const config = defineConfig({
       test: {
-        environment: "jsdom",
+        environment: "happy-dom",
         globals: true,
         coverage: {
           provider: "v8",
@@ -64,7 +64,7 @@ describe("Vitest Configuration Utilities (Minimal)", () => {
 
     const config = defineConfig({
       test: {
-        environment: "jsdom",
+        environment: "happy-dom",
         globals: true,
         coverage: {
           provider: "v8",

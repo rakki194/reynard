@@ -1,0 +1,172 @@
+.hue-shift-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-group label {
+  color: oklch(75% 0.01 0);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: oklch(30% 0.01 0);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: oklch(60% 0.2 240);
+  cursor: pointer;
+  border: 2px solid oklch(90% 0.01 0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: oklch(60% 0.2 240);
+  cursor: pointer;
+  border: 2px solid oklch(90% 0.01 0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.intensity-slider {
+  background: linear-gradient(
+    to right,
+    oklch(30% 0.01 0),
+    oklch(60% 0.2 240)
+  );
+}
+
+.ramp-stops-slider {
+  background: linear-gradient(
+    to right,
+    oklch(30% 0.01 0),
+    oklch(50% 0.15 120)
+  );
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: oklch(60% 0.01 0);
+}
+
+.preset-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.preset-buttons h4 {
+  color: oklch(75% 0.01 0);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.preset-button {
+  padding: 0.75rem 1rem;
+  border: 2px solid oklch(35% 0.02 0);
+  border-radius: 0.5rem;
+  background: oklch(25% 0.02 0);
+  color: oklch(70% 0.01 0);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.preset-button:hover {
+  background: oklch(30% 0.02 0);
+  border-color: oklch(45% 0.02 0);
+  transform: translateY(-1px);
+}
+
+.preset-button.subtle:hover {
+  border-color: oklch(60% 0.2 120);
+}
+
+.preset-button.moderate:hover {
+  border-color: oklch(60% 0.2 60);
+}
+
+.preset-button.strong:hover {
+  border-color: oklch(60% 0.2 0);
+}
+
+.preset-button.extreme:hover {
+  border-color: oklch(60% 0.2 300);
+}
+
+.info-panel {
+  background: oklch(25% 0.02 0);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid oklch(35% 0.02 0);
+}
+
+.info-panel h4 {
+  color: oklch(80% 0.01 0);
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-item {
+  color: oklch(65% 0.01 0);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.info-item strong {
+  color: oklch(75% 0.01 0);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .preset-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .preset-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}

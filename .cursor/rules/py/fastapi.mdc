@@ -1,0 +1,177 @@
+---
+globs: *.py
+alwaysApply: false
+---
+
+# FastAPI Development Guidelines for Reynard Backend
+
+## Core Principles
+
+### Lifespan Management (2025 Best Practices)
+
+- Use `@asynccontextmanager` for proper async startup/shutdown
+- Initialize services in parallel with `asyncio.gather()` for faster startup
+- Implement timeout handling (30s startup, 10s shutdown)
+- Handle partial failures gracefully with circuit breaker patterns
+
+```python
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Parallel service initialization
+    startup_tasks = [
+        initialize_gatekeeper(),
+        initialize_comfy_service(config),
+        initialize_nlweb_service(config),
+    ]
+    
+    try:
+        await asyncio.wait_for(
+            asyncio.gather(*startup_tasks),
+            timeout=30.0
+        )
+        print("[OK] All services initialized")
+    except asyncio.TimeoutError:
+        print("[FAIL] Service initialization timeout")
+        raise
+    
+    yield
+    
+    # Graceful shutdown
+    shutdown_tasks = [shutdown_gatekeeper()]
+    await asyncio.wait_for(
+        asyncio.gather(*shutdown_tasks, return_exceptions=True),
+        timeout=10.0
+    )
+```
+
+### Development vs Production Configuration
+
+- Environment-based feature toggles
+- Conditional docs/redoc URLs for production
+- Enhanced reload configuration for development
+
+```python
+is_development = os.getenv("ENVIRONMENT", "development") == "development"
+
+app = FastAPI(
+    docs_url="/api/docs" if is_development else None,
+    redoc_url="/api/redoc" if is_development else None,
+    lifespan=lifespan,
+)
+```
+
+## Enhanced File Monitoring (2025)
+
+### Installation
+
+```bash
+pip install watchfiles
+```
+
+### Development Server with Enhanced Reload
+
+```bash
+uvicorn main:app \
+    --reload \
+    --reload-include '*.py' \
+    --reload-include '*.env' \
+    --reload-include '*.json' \
+    --reload-exclude '*.db' \
+    --reload-exclude 'generated/*' \
+    --host 0.0.0.0 \
+    --port 8000
+```
+
+## Service Initialization Patterns
+
+### Modular Service Setup
+
+- Initialize services based on environment configuration
+- Use dependency injection for service access
+- Implement proper cleanup in shutdown handlers
+
+### Error Handling
+
+- Use structured logging with color-coded status messages
+- Implement health checks for critical services
+- Add circuit breaker patterns for external dependencies
+
+## Security & Middleware
+
+### Required Middleware Stack
+
+```python
+# CORS configuration
+setup_cors_middleware(app)
+
+# Rate limiting
+limiter = setup_rate_limiting(app)
+
+# Security headers
+app.middleware("http")(add_security_headers)
+
+# Trusted hosts
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["localhost", "127.0.0.1", "testserver"]
+)
+```
+
+## API Design Patterns
+
+### Router Organization
+
+- Use prefix-based routing (`/api` for all endpoints)
+- Implement proper authentication with Gatekeeper
+- Follow RESTful conventions
+
+### Response Patterns
+
+```python
+@app.get("/api/health")
+async def health_check():
+    from datetime import datetime, timezone
+    return {
+        "status": "healthy", 
+        "timestamp": datetime.now(timezone.utc)
+    }
+```
+
+## Performance Considerations
+
+### Async Best Practices
+
+- Use `async/await` for I/O operations
+- Implement connection pooling for databases
+- Use background tasks for non-critical operations
+
+### Resource Management
+
+- Implement proper connection cleanup
+- Use context managers for resource allocation
+- Monitor memory usage in long-running services
+
+## Testing Patterns
+
+### Test Client Setup
+
+```python
+from fastapi.testclient import TestClient
+
+def test_startup_time(client: TestClient):
+    start_time = time.time()
+    response = client.get("/api/health")
+    end_time = time.time()
+    
+    assert response.status_code == 200
+    assert (end_time - start_time) < 5.0  # 5 second startup limit
+```
+
+## Common Anti-Patterns to Avoid
+
+- ❌ Hardcoded `reload=True` in production
+- ❌ Synchronous service initialization in lifespan
+- ❌ Missing error handling in startup/shutdown
+- ❌ No timeout handling for service operations
+- ❌ Inline CSS in responses (use external stylesheets)
+- ❌ Missing security headers middleware

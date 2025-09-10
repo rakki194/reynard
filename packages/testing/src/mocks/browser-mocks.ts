@@ -83,7 +83,10 @@ export const mockPerformanceObserver = vi.fn().mockImplementation(() => ({
  * Mock requestAnimationFrame
  */
 export const mockRequestAnimationFrame = vi.fn(
-  (cb: FrameRequestCallback) => setTimeout(cb, 0) as any,
+  (cb: FrameRequestCallback) => {
+    setTimeout(cb, 0);
+    return 1; // Return a proper frame ID
+  },
 );
 
 /**
@@ -98,11 +101,11 @@ export const mockFetch = vi.fn((_url?: string) =>
   Promise.resolve({
     ok: true,
     status: 200,
-    json: () => Promise.resolve({}),
-    text: () => Promise.resolve(""),
-    blob: () => Promise.resolve(new Blob()),
-    arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
-    formData: () => Promise.resolve(new FormData()),
+    json: vi.fn().mockResolvedValue({}),
+    text: vi.fn().mockResolvedValue(""),
+    blob: vi.fn().mockResolvedValue(new Blob()),
+    arrayBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(0)),
+    formData: vi.fn().mockResolvedValue({}),
     clone: vi.fn().mockReturnThis(),
   }),
 );
@@ -270,9 +273,7 @@ export const mockURLSearchParams = vi
  * Mock FormData
  */
 export const mockFormData = vi.fn().mockImplementation(() => {
-  const formData = new FormData();
   return {
-    ...formData,
     append: vi.fn(),
     delete: vi.fn(),
     get: vi.fn(),
@@ -290,9 +291,7 @@ export const mockFormData = vi.fn().mockImplementation(() => {
  * Mock Headers
  */
 export const mockHeaders = vi.fn().mockImplementation((init?: HeadersInit) => {
-  const headers = new Headers(init);
   return {
-    ...headers,
     append: vi.fn(),
     delete: vi.fn(),
     get: vi.fn(),

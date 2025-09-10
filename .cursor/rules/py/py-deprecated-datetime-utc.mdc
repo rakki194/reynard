@@ -1,0 +1,108 @@
+---
+globs: *.py
+alwaysApply: false
+---
+
+# Python datetime UTC Deprecation Guide
+
+## Overview
+
+In Python 3.12, several datetime UTC methods were deprecated due to their return of naive `datetime` objects (those lacking timezone information). This can lead to errors when performing timezone-aware operations.
+
+## Deprecated Methods
+
+The following methods are deprecated and should be avoided:
+
+- `datetime.utcnow()` - Returns naive UTC datetime
+- `datetime.utcfromtimestamp()` - Returns naive UTC datetime from timestamp
+- `datetime.utctimetuple()` - Returns naive time tuple
+
+## Recommended Replacements
+
+### Current UTC Time
+
+**❌ Deprecated:**
+
+```python
+from datetime import datetime
+now = datetime.utcnow()  # Returns naive datetime
+```
+
+**✅ Recommended:**
+
+```python
+from datetime import datetime, timezone
+
+# Python 3.11+ (preferred)
+now = datetime.now(datetime.UTC)
+
+# Alternative (works in all versions)
+now = datetime.now(timezone.utc)
+```
+
+### From Timestamp
+
+**❌ Deprecated:**
+
+```python
+from datetime import datetime
+dt = datetime.utcfromtimestamp(timestamp)  # Returns naive datetime
+```
+
+**✅ Recommended:**
+
+```python
+from datetime import datetime, timezone
+dt = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+```
+
+### Time Tuple
+
+**❌ Deprecated:**
+
+```python
+from datetime import datetime
+timetuple = datetime.utcnow().utctimetuple()  # Returns naive time tuple
+```
+
+**✅ Recommended:**
+
+```python
+from datetime import datetime, timezone
+timetuple = datetime.now(timezone.utc).timetuple()  # Returns timezone-aware time tuple
+```
+
+## Why This Matters
+
+Naive datetime objects can cause issues when:
+
+- Comparing with timezone-aware datetimes
+- Performing timezone conversions
+- Working with databases that expect timezone-aware timestamps
+- Handling daylight saving time transitions
+
+## Migration Strategy
+
+1. **Search and Replace**: Find all instances of deprecated methods
+2. **Update Imports**: Add `timezone` import where needed
+3. **Test Thoroughly**: Ensure timezone-aware operations work correctly
+4. **Update Dependencies**: Check third-party libraries for deprecated usage
+
+## Reynard Codebase Status
+
+✅ **Clean**: Our main Reynard backend code does not use deprecated datetime UTC methods.
+
+⚠️ **Third-party Libraries**: Some dependencies (pawprint, yipyap) may still use deprecated methods, but this doesn't affect our core functionality.
+
+## Best Practices
+
+- Always use timezone-aware datetime objects when working with UTC
+- Prefer `datetime.UTC` constant (Python 3.11+) over `timezone.utc`
+- Be explicit about timezone handling in API responses and database operations
+- Use `datetime.now(timezone.utc)` for current UTC time
+- Use `datetime.fromtimestamp(timestamp, tz=timezone.utc)` for timestamp conversion
+
+## References
+
+- [Python 3.12 Deprecations](https://docs.python.org/3/deprecations/pending-removal-in-future.html)
+- [Python datetime documentation](https://docs.python.org/3/library/datetime.html)

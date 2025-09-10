@@ -1,0 +1,217 @@
+---
+globs: package.json,pnpm-workspace.yaml
+alwaysApply: false
+---
+
+# Reynard pnpm Workspace Dependency Management
+
+## Core Principles
+
+### 🦊> Workspace Protocol Usage
+
+Always use `workspace:*` for internal package dependencies:
+
+```json
+{
+  "dependencies": {
+    "reynard-core": "workspace:*",
+    "reynard-components": "workspace:*"
+  }
+}
+```
+
+### 🦦> Dependency Hierarchy
+
+Maintain a clear dependency hierarchy to prevent cycles:
+
+**Foundation Layer (No internal dependencies):**
+
+- `reynard-core` - Base utilities and types
+- `reynard-colors` - Color utilities and OKLCH functions
+- `reynard-ai-shared` - Shared AI types and interfaces
+
+**Service Layer:**
+
+- `reynard-service-manager` - Service orchestration
+- `reynard-composables` - Reusable logic modules
+
+**Component Layer:**
+
+- `reynard-components` - UI components
+- `reynard-themes` - Theme management
+- `reynard-fluent-icons` - Icon components
+
+**Feature Layer:**
+
+- `reynard-annotating` - Annotation system
+- `reynard-chat` - Chat functionality
+- `reynard-gallery` - Gallery components
+
+**Application Layer:**
+
+- `reynard-auth` - Authentication
+- `reynard-settings` - Settings management
+
+## Cyclic Dependency Prevention
+
+### 🐺> Detection and Resolution
+
+1. **Identify Cycles:** Use `pnpm install` to detect cyclic dependencies
+2. **Analyze Dependencies:** Check if dependencies are actually used in code
+3. **Remove Unused Dependencies:** Eliminate unnecessary workspace dependencies
+4. **Restructure Architecture:** Move shared code to appropriate foundation packages
+
+### Common Anti-Patterns to Avoid
+
+```json
+// ❌ BAD: Colors depending on media packages
+{
+  "dependencies": {
+    "reynard-audio": "workspace:*",
+    "reynard-video": "workspace:*"
+  }
+}
+
+// ✅ GOOD: Clean foundation package
+{
+  "dependencies": {}
+}
+```
+
+## Package Structure Standards
+
+### Essential Fields
+
+```json
+{
+  "name": "reynard-[package-name]",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}
+```
+
+### Scripts Pattern
+
+```json
+{
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  }
+}
+```
+
+### Peer Dependencies
+
+Always include SolidJS as peer dependency:
+
+```json
+{
+  "peerDependencies": {
+    "solid-js": "1.9.9"
+  }
+}
+```
+
+## Workspace Configuration
+
+### pnpm-workspace.yaml
+
+```yaml
+packages:
+  - packages/*
+  - templates/*
+  - examples/*
+
+ignoredBuiltDependencies:
+  - canvas
+  - esbuild
+```
+
+### Root Package Dependencies
+
+The root package.json should include all workspace packages:
+
+```json
+{
+  "dependencies": {
+    "reynard-3d": "workspace:*",
+    "reynard-algorithms": "workspace:*",
+    "reynard-annotating": "workspace:*",
+    // ... all other packages
+  }
+}
+```
+
+## Best Practices
+
+### 🦊> Dependency Management
+
+1. **Minimal Dependencies:** Only include what's actually used
+2. **Foundation First:** Build foundational packages without internal dependencies
+3. **Clear Boundaries:** Maintain clear separation between layers
+4. **Version Consistency:** Use consistent version numbers across packages
+
+### 🦦> Testing and Validation
+
+1. **Regular Audits:** Run `pnpm install` frequently to catch cycles early
+2. **Dependency Analysis:** Use grep to verify actual usage of dependencies
+3. **Build Validation:** Ensure all packages build successfully
+4. **Type Safety:** Maintain strict TypeScript checking
+
+### 🐺> Security and Maintenance
+
+1. **Audit Dependencies:** Regular security audits with `pnpm audit`
+2. **Clean Dependencies:** Remove unused dependencies promptly
+3. **Version Pinning:** Pin external dependencies to specific versions
+4. **Documentation:** Document complex dependency relationships
+
+## Troubleshooting
+
+### Common Issues
+
+- **Cyclic Dependencies:** Remove unused workspace dependencies
+- **Build Failures:** Check TypeScript configuration and exports
+- **Version Conflicts:** Ensure consistent peer dependency versions
+- **Missing Types:** Verify proper TypeScript declaration generation
+
+### Resolution Commands
+
+```bash
+# Check for cycles
+pnpm install
+
+# Clean and rebuild
+pnpm clean && pnpm install && pnpm build
+
+# Audit dependencies
+pnpm audit --audit-level=moderate
+
+# Check workspace structure
+pnpm list --depth=0
+```
+
+## Package Naming Convention
+
+All Reynard packages follow the pattern: `reynard-[feature]`
+
+- `reynard-core` - Core utilities
+- `reynard-components` - UI components  
+- `reynard-colors` - Color utilities
+- `reynard-auth` - Authentication
+- `reynard-annotating` - Annotation system
+
+This ensures clear identification and prevents naming conflicts in the workspace ecosystem.

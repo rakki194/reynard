@@ -17,10 +17,12 @@
     }
   },
   "bin": {
-    "reynard-docs": "node --loader ./loader.mjs ./dist/cli/index.js"
+    "reynard-docs": "./bin/reynard-docs"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin",
+    "loader.mjs"
   ],
   "scripts": {
     "dev": "vite build --watch",

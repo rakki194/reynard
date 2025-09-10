@@ -1,19 +1,3 @@
-import { defineConfig } from "vitest/config";
+import { createUtilityTestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  test: {
-    environment: "jsdom",
-    globals: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      exclude: [
-        "node_modules/",
-        "dist/",
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.d.ts",
-      ],
-    },
-  },
-});
+export default createUtilityTestConfig("reynard-algorithms");

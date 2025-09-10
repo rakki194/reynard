@@ -1,0 +1,558 @@
+---
+globs: *.test.ts,*.test.tsx
+alwaysApply: false
+---
+
+# Testing Guide for Reynard
+
+## Comprehensive testing framework and best practices for the Reynard codebase
+
+## Overview
+
+The Reynard project uses a unified testing approach with **Vitest** as the primary test runner, **Happy-DOM** as the test environment, and **@solidjs/testing-library** for component testing. The testing infrastructure is centralized in the `reynard-testing` package, providing standardized configurations, utilities, and mocks across all packages.
+
+## Testing Architecture
+
+### Core Testing Stack
+
+- **Vitest**: Fast, Vite-native test runner with excellent TypeScript support
+- **Happy-DOM**: Lightweight, fast DOM implementation (replaces jsdom for better performance)
+- **@solidjs/testing-library**: SolidJS-specific testing utilities
+- **@testing-library/jest-dom**: Additional DOM matchers
+- **@testing-library/user-event**: User interaction simulation
+
+### Package Structure
+
+```text
+packages/testing/           # Centralized testing framework
+├── src/
+│   ├── config/            # Vitest configuration presets
+│   ├── mocks/             # Browser and library mocks
+│   ├── utils/             # Testing utilities and helpers
+│   └── fixtures/          # Test data and fixtures
+├── vitest.config.ts       # Base testing configuration
+└── README.md              # Testing documentation
+```
+
+## Happy-DOM Integration
+
+### Why Happy-DOM?
+
+Happy-DOM is used throughout the Reynard project for several key advantages:
+
+- **Performance**: 2-3x faster than jsdom in most scenarios
+- **Memory Efficiency**: Lower memory footprint and better garbage collection
+- **Modern APIs**: Better support for modern web APIs and standards
+- **Maintenance**: Actively maintained with regular updates
+- **Vitest Integration**: Native support in Vitest with zero configuration
+- **Centralized Configuration**: All packages use the unified `reynard-testing` configuration
+
+### Configuration
+
+Happy-DOM is configured through the centralized `reynard-testing` package:
+
+```typescript
+// vitest.config.ts
+import { createBaseVitestConfig } from "reynard-testing/config";
+
+export default createBaseVitestConfig({
+  packageName: "my-package",
+  setupFiles: ["./src/test-setup.ts"],
+});
+```
+
+### Environment Options
+
+The centralized configuration includes optimized Happy-DOM settings:
+
+```typescript
+// Built into createBaseVitestConfig
+environmentOptions: {
+  happyDOM: {
+    url: "http://localhost:3000",
+    settings: {
+      disableJavaScriptFileLoading: true,
+      disableJavaScriptEvaluation: true,
+      disableCSSFileLoading: true,
+    },
+  },
+}
+```
+
+## Testing Configurations
+
+### 1. Base Configuration
+
+The `reynard-testing` package provides standardized configurations:
+
+```typescript
+// vitest.config.ts
+import { createBaseVitestConfig } from "reynard-testing/config";
+
+export default createBaseVitestConfig({
+  packageName: "my-package",
+  setupFiles: ["./src/test-setup.ts"],
+  coverageThresholds: {
+    branches: 80,
+    functions: 80,
+    lines: 80,
+    statements: 80,
+  },
+});
+```
+
+### 2. Component Testing
+
+For UI component packages:
+
+```typescript
+// vitest.config.ts
+import { createComponentTestConfig } from "reynard-testing/config";
+
+export default createComponentTestConfig("my-component-package");
+```
+
+### 3. Integration Testing
+
+For packages requiring complex integration tests:
+
+```typescript
+// vitest.config.ts
+import { createIntegrationTestConfig } from "reynard-testing/config";
+
+export default createIntegrationTestConfig("my-integration-package");
+```
+
+### 4. Custom Configuration
+
+For packages with specific requirements:
+
+```typescript
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+import solid from "vite-plugin-solid";
+
+export default defineConfig({
+  plugins: [solid()],
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: ["./src/test-setup.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      thresholds: {
+        global: {
+          branches: 85,
+          functions: 90,
+          lines: 90,
+          statements: 90,
+        },
+      },
+    },
+  },
+});
+```
+
+## Test Setup Patterns
+
+### 1. Standard Test Setup
+
+```typescript
+// src/test-setup.ts
+import "@testing-library/jest-dom";
+import { vi, beforeEach, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
+
+// Clean up after each test
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
+```
+
+### 2. Component Testing Setup
+
+```typescript
+// src/test-setup.ts
+import "@testing-library/jest-dom";
+import { setupStandardTestEnvironment } from "reynard-testing/utils";
+
+// Setup standard test environment with browser mocks and SolidJS cleanup
+setupStandardTestEnvironment();
+```
+
+### 3. Specialized Setup (e.g., Canvas Testing)
+
+```typescript
+// src/test-setup.ts
+import "@testing-library/jest-dom";
+import { setupCanvasTestEnvironment } from "reynard-testing/utils";
+
+// Setup canvas-specific test environment with WebGL and 2D context mocking
+setupCanvasTestEnvironment();
+```
+
+### 4. WebGL Testing Setup
+
+```typescript
+// src/test-setup.ts
+import "@testing-library/jest-dom";
+import { setupWebGLTestEnvironment } from "reynard-testing/utils";
+
+// Setup WebGL-specific test environment with 3D context mocking
+setupWebGLTestEnvironment();
+```
+
+## Testing Utilities
+
+### 1. Component Testing
+
+```typescript
+// Using reynard-testing utilities
+import { renderWithProviders, expectComponentToRender } from "reynard-testing";
+
+test("renders without errors", () => {
+  const MyComponent = () => <div>Hello World</div>;
+  expectComponentToRender(MyComponent);
+});
+
+// Using @solidjs/testing-library directly
+import { render, screen } from "@solidjs/testing-library";
+
+test("renders component with props", () => {
+  const MyComponent = (props: { name: string }) => <div>Hello {props.name}</div>;
+  
+  render(() => <MyComponent name="World" />);
+  
+  expect(screen.getByText("Hello World")).toBeInTheDocument();
+});
+```
+
+### 2. Mock Utilities
+
+```typescript
+// Using reynard-testing mocks
+import { mockFetch, mockLocalStorage } from "reynard-testing/mocks";
+
+test("uses fetch", async () => {
+  mockFetch.mockResolvedValueOnce({
+    ok: true,
+    json: () => Promise.resolve({ data: "test" }),
+  });
+
+  const result = await fetch("/api/test");
+  expect(result.ok).toBe(true);
+});
+```
+
+### 3. Custom Assertions
+
+```typescript
+// Custom assertions for SolidJS components
+import { expect } from "vitest";
+
+expect.extend({
+  toBeSolidComponent(received) {
+    const pass = typeof received === "function" && received.length <= 1;
+    return {
+      pass,
+      message: () => `Expected ${received} to be a SolidJS component`,
+    };
+  },
+});
+```
+
+## Test Organization
+
+### 1. File Naming Conventions
+
+```text
+src/
+├── components/
+│   ├── MyComponent.tsx
+│   └── __tests__/
+│       ├── MyComponent.test.tsx
+│       ├── MyComponent.integration.test.tsx
+│       └── MyComponent.accessibility.test.tsx
+├── utils/
+│   ├── myUtils.ts
+│   └── __tests__/
+│       └── myUtils.test.ts
+└── test-setup.ts
+```
+
+### 2. Test Categories
+
+- **Unit Tests** (`.test.ts`): Test individual functions and utilities
+- **Component Tests** (`.test.tsx`): Test React/SolidJS components
+- **Integration Tests** (`.integration.test.tsx`): Test component interactions
+- **Accessibility Tests** (`.accessibility.test.tsx`): Test WCAG compliance
+- **Performance Tests** (`.performance.test.ts`): Test performance characteristics
+
+### 3. Test Structure
+
+```typescript
+// Standard test structure
+import { describe, it, expect, beforeEach, vi } from "vitest";
+
+describe("MyComponent", () => {
+  beforeEach(() => {
+    // Setup for each test
+  });
+
+  describe("rendering", () => {
+    it("should render without errors", () => {
+      // Test implementation
+    });
+
+    it("should render with props", () => {
+      // Test implementation
+    });
+  });
+
+  describe("interactions", () => {
+    it("should handle user input", () => {
+      // Test implementation
+    });
+  });
+});
+```
+
+## Coverage and Quality
+
+### 1. Coverage Thresholds
+
+Standard coverage thresholds across packages:
+
+```typescript
+coverage: {
+  thresholds: {
+    global: {
+      branches: 80,    // Minimum branch coverage
+      functions: 80,   // Minimum function coverage
+      lines: 80,       // Minimum line coverage
+      statements: 80,  // Minimum statement coverage
+    },
+  },
+}
+```
+
+### 2. Coverage Exclusions
+
+```typescript
+coverage: {
+  exclude: [
+    "node_modules/",
+    "dist/",
+    "coverage/",
+    "**/*.d.ts",
+    "**/*.config.*",
+    "**/test-setup.ts",
+    "**/fixtures/**",
+    "**/mocks/**",
+  ],
+}
+```
+
+### 3. Running Tests with Coverage
+
+```bash
+# Run tests with coverage
+pnpm test:coverage
+
+# Check coverage thresholds
+pnpm test:coverage:check
+
+# Generate HTML coverage report
+pnpm test:coverage --reporter=html
+```
+
+## Backend Testing
+
+### 1. Python Testing Stack
+
+- **pytest**: Primary testing framework
+- **pytest-cov**: Coverage reporting
+- **pytest-asyncio**: Async test support
+- **httpx**: HTTP client for API testing
+
+### 2. Test Structure
+
+```text
+backend/tests/
+├── conftest.py              # Shared fixtures
+├── test_auth/               # Authentication tests
+├── test_api/                # API endpoint tests
+├── test_security/           # Security tests
+├── test_integration/        # Integration tests
+└── test_config/             # Configuration tests
+```
+
+### 3. Running Backend Tests
+
+```bash
+# Run all tests
+pnpm test:backend
+
+# Run specific test categories
+pnpm test:unit
+pnpm test:integration
+pnpm test:security
+
+# Run with coverage
+pnpm test:coverage:backend
+```
+
+## Best Practices
+
+### 1. Test Writing
+
+- **Arrange-Act-Assert**: Structure tests clearly
+- **Descriptive Names**: Use clear, descriptive test names
+- **Single Responsibility**: Each test should test one thing
+- **Independent Tests**: Tests should not depend on each other
+- **Fast Execution**: Keep tests fast and focused
+
+### 2. Mocking Strategy
+
+- **Mock External Dependencies**: Mock APIs, databases, and external services
+- **Use Real Implementations**: Prefer real implementations for internal code
+- **Mock at Boundaries**: Mock at the boundaries of your system
+- **Reset Mocks**: Always reset mocks between tests
+
+### 3. Component Testing
+
+- **Test Behavior, Not Implementation**: Focus on what the component does, not how
+- **User-Centric Testing**: Test from the user's perspective
+- **Accessibility Testing**: Include accessibility tests for UI components
+- **Error Boundaries**: Test error handling and recovery
+
+### 4. Performance Testing
+
+- **Benchmark Critical Paths**: Test performance of critical functionality
+- **Memory Leak Detection**: Test for memory leaks in long-running components
+- **Load Testing**: Test performance under load for backend services
+
+## Troubleshooting
+
+### 1. Common Issues
+
+**Happy-DOM Missing APIs**:
+
+```typescript
+// If you need specific browser APIs not in Happy-DOM, extend the base config
+import { createBaseVitestConfig } from "reynard-testing/config";
+import { defineConfig } from "vitest/config";
+
+const baseConfig = createBaseVitestConfig({
+  packageName: "my-package",
+});
+
+export default defineConfig({
+  ...baseConfig,
+  test: {
+    ...baseConfig.test,
+    environment: "jsdom", // Fallback to jsdom for specific APIs
+  },
+});
+```
+
+**SolidJS Lifecycle Warnings**:
+
+```typescript
+// These warnings are automatically suppressed by setupStandardTestEnvironment
+// No additional configuration needed when using reynard-testing utilities
+```
+
+**Canvas Testing Issues**:
+
+```typescript
+// Use the specialized canvas test setup
+import { setupCanvasTestEnvironment } from "reynard-testing/utils";
+
+// This automatically mocks all canvas and WebGL APIs
+setupCanvasTestEnvironment();
+```
+
+### 2. Debug Mode
+
+```bash
+# Run tests in debug mode
+pnpm test --reporter=verbose
+
+# Run specific test file
+pnpm test MyComponent.test.tsx
+
+# Run tests matching pattern
+pnpm test --grep "rendering"
+```
+
+### 3. Performance Issues
+
+- **Parallel Execution**: Use `--threads` for faster execution
+- **Watch Mode**: Use `--watch` for development
+- **Selective Testing**: Use `--grep` to run specific tests
+
+## Migration to Centralized Testing
+
+### 1. Update Configuration
+
+```typescript
+// Before (individual jsdom config)
+import { defineConfig } from "vitest/config";
+import solid from "vite-plugin-solid";
+
+export default defineConfig({
+  plugins: [solid()],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: ["./src/test-setup.ts"],
+    // ... other config
+  },
+});
+
+// After (centralized happy-dom config)
+import { createBaseVitestConfig } from "reynard-testing/config";
+
+export default createBaseVitestConfig({
+  packageName: "my-package",
+  setupFiles: ["./src/test-setup.ts"],
+});
+```
+
+### 2. Update Dependencies
+
+```json
+{
+  "devDependencies": {
+    "reynard-testing": "workspace:*"
+  }
+}
+```
+
+### 3. Test Compatibility
+
+Most tests should work without changes. If you encounter issues:
+
+- Use specialized test setup functions (`setupCanvasTestEnvironment`, `setupWebGLTestEnvironment`)
+- Check for missing browser APIs in Happy-DOM
+- Consider extending the base config for specific needs
+- Use the comprehensive browser mocks provided by `reynard-testing`
+
+## Conclusion
+
+The Reynard testing framework provides a robust, fast, and maintainable testing infrastructure. By using Happy-DOM, centralized configurations, and comprehensive utilities, developers can write effective tests that run quickly and provide reliable feedback.
+
+Key principles:
+
+- **Fast Execution**: Happy-DOM provides 2-3x performance improvement over jsdom
+- **Centralized Configuration**: All packages use unified `reynard-testing` setup
+- **Standardized Setup**: Consistent testing patterns across all packages
+- **Comprehensive Coverage**: Multiple test types for different scenarios
+- **Developer Experience**: Excellent TypeScript support and debugging tools
+- **Quality Assurance**: Enforced coverage thresholds and best practices
+- **Specialized Environments**: Canvas, WebGL, and other specialized test setups
+
+*Build tests that are as cunning and thorough as a fox hunting its prey!* 🦊

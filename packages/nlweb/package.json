@@ -31,16 +31,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "reynard-core": "workspace:*",
-    "reynard-tools": "workspace:*",
-    "reynard-service-manager": "workspace:*",
-    "reynard-connection": "workspace:*"
+    "reynard-core": "0.1.2",
+    "reynard-tools": "0.1.0",
+    "reynard-service-manager": "0.1.0",
+    "reynard-connection": "0.1.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "vitest": "^1.0.0",
-    "eslint": "^8.0.0"
+    "@types/node": "24.3.1",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4",
+    "eslint": "9.35.0"
   },
   "keywords": [
     "nlweb",

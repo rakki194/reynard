@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * Response model for YipYapAssistant.
+ * Response model for ReynardAssistant.
  * @export
  * @interface OllamaAssistantResponse
  */

@@ -13,8 +13,8 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
-from ..auth import get_current_active_user
-from ..models import User
+from gatekeeper.api.dependencies import require_active_user
+from gatekeeper.models.user import User
 from ..services.embedding_visualization_service import (
     EmbeddingVisualizationService,
     EmbeddingStats,
@@ -165,7 +165,7 @@ websocket_manager = WebSocketManager()
 
 @router.get("/stats", response_model=EmbeddingStatsResponse)
 async def get_embedding_stats(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Get comprehensive statistics about available embeddings.
@@ -194,7 +194,7 @@ async def get_embedding_stats(
 
 @router.get("/methods")
 async def get_available_reduction_methods(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Get available dimensionality reduction methods and their parameters.
@@ -214,7 +214,7 @@ async def get_available_reduction_methods(
 @router.post("/reduce", response_model=EmbeddingReductionResponse)
 async def perform_embedding_reduction(
     request: EmbeddingReductionRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Perform dimensionality reduction on embeddings.
@@ -302,7 +302,7 @@ async def perform_embedding_reduction(
 @router.post("/quality", response_model=EmbeddingQualityResponse)
 async def analyze_embedding_quality(
     request: EmbeddingQualityRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Analyze the quality of embeddings using various metrics.
@@ -345,7 +345,7 @@ async def analyze_embedding_quality(
 
 @router.get("/cache/stats", response_model=CacheStatsResponse)
 async def get_cache_stats(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Get cache statistics and management information.
@@ -372,7 +372,7 @@ async def get_cache_stats(
 
 @router.delete("/cache")
 async def clear_cache(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Clear all cached reduction results.

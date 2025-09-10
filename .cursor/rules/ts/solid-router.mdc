@@ -1,0 +1,383 @@
+---
+globs: *.ts,*.tsx
+alwaysApply: false
+---
+
+# Solid Router Guide for Reynard
+
+## Installation & Setup
+
+```bash
+# Install with pnpm (Reynard's preferred package manager)
+pnpm add @solidjs/router
+```
+
+## Basic Router Setup
+
+### App-Level Router
+
+```tsx
+// src/index.tsx
+import { render } from "solid-js/web";
+import { Router } from "@solidjs/router";
+import App from "./App";
+
+render(
+  () => (
+    <Router>
+      <App />
+    </Router>
+  ),
+  document.getElementById("app")!
+);
+```
+
+### Component-Based Routing
+
+```tsx
+// src/App.tsx
+import { Routes, Route } from "@solidjs/router";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+
+const App = () => (
+  <Routes>
+    <Route path="/" component={Home} />
+    <Route path="/dashboard" component={Dashboard} />
+    <Route path="*404" component={() => <div>Not Found</div>} />
+  </Routes>
+);
+```
+
+## Configuration-Based Routing (Reynard Pattern)
+
+### Route Configuration
+
+```tsx
+// src/router.ts
+import { lazy } from "solid-js";
+import { RouteDefinition } from "@solidjs/router";
+
+// Lazy load components for performance
+const HomePage = lazy(() => import("./pages/Home"));
+const DashboardPage = lazy(() => import("./pages/Dashboard"));
+const SettingsPage = lazy(() => import("./pages/Settings"));
+
+export const routes: RouteDefinition[] = [
+  {
+    path: "/",
+    component: HomePage,
+  },
+  {
+    path: "/dashboard",
+    component: DashboardPage,
+  },
+  {
+    path: "/settings",
+    component: SettingsPage,
+  },
+  {
+    path: "*404",
+    component: lazy(() => import("./pages/NotFound")),
+  },
+];
+```
+
+### Using Configuration
+
+```tsx
+// src/App.tsx
+import { Router } from "@solidjs/router";
+import { routes } from "./router";
+
+const App = () => <Router>{routes}</Router>;
+```
+
+## Navigation
+
+### Link Component
+
+```tsx
+import { A } from "@solidjs/router";
+
+const Navigation = () => (
+  <nav>
+    <A href="/" activeClass="active" end={true}>Home</A>
+    <A href="/dashboard" activeClass="active">Dashboard</A>
+    <A href="/settings" activeClass="active">Settings</A>
+  </nav>
+);
+```
+
+### Programmatic Navigation
+
+```tsx
+import { useNavigate } from "@solidjs/router";
+
+const LoginForm = () => {
+  const navigate = useNavigate();
+  
+  const handleLogin = async () => {
+    // Authentication logic
+    navigate("/dashboard", { replace: true });
+  };
+  
+  return (
+    <form onSubmit={handleLogin}>
+      {/* Form fields */}
+      <button type="submit">Login</button>
+    </form>
+  );
+};
+```
+
+## Route Parameters & Query Strings
+
+### Route Parameters
+
+```tsx
+import { useParams } from "@solidjs/router";
+
+const UserProfile = () => {
+  const params = useParams();
+  const userId = params.id;
+  
+  return <div>User ID: {userId}</div>;
+};
+
+// Route definition
+<Route path="/users/:id" component={UserProfile} />
+```
+
+### Query Parameters
+
+```tsx
+import { useSearchParams } from "@solidjs/router";
+
+const SearchPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.q || "";
+  
+  const handleSearch = (newQuery: string) => {
+    setSearchParams({ q: newQuery });
+  };
+  
+  return (
+    <div>
+      <input 
+        value={query}
+        onInput={(e) => handleSearch(e.target.value)}
+        placeholder="Search..."
+      />
+    </div>
+  );
+};
+```
+
+## Advanced Patterns
+
+### Nested Routes
+
+```tsx
+const App = () => (
+  <Routes>
+    <Route path="/" component={Home} />
+    <Route path="/dashboard">
+      <Route path="/" component={Dashboard} />
+      <Route path="/users" component={Users} />
+      <Route path="/settings" component={Settings} />
+    </Route>
+  </Routes>
+);
+```
+
+### Layout Components
+
+```tsx
+const Layout: ParentComponent = (props) => (
+  <div class="layout">
+    <header>Reynard App</header>
+    <main>{props.children}</main>
+    <footer>© 2025 Reynard</footer>
+  </div>
+);
+
+const App = () => (
+  <Router>
+    <Layout>
+      <Routes>
+        <Route path="/" component={Home} />
+        <Route path="/dashboard" component={Dashboard} />
+      </Routes>
+    </Layout>
+  </Router>
+);
+```
+
+### Error Boundaries
+
+```tsx
+import { ErrorBoundary } from "solid-js";
+
+const App = () => (
+  <Router>
+    <ErrorBoundary fallback={(err) => (
+      <div class="error">
+        <h2>Route Error</h2>
+        <p>{err.message}</p>
+        <button onClick={() => window.location.href = "/"}>
+          Go Home
+        </button>
+      </div>
+    )}>
+      <Routes>
+        <Route path="/" component={Home} />
+        <Route path="/dashboard" component={Dashboard} />
+      </Routes>
+    </ErrorBoundary>
+  </Router>
+);
+```
+
+## Performance Optimization
+
+### Lazy Loading with Error Handling
+
+```tsx
+import { lazy } from "solid-js";
+
+const LazyComponent = lazy(() =>
+  import("./HeavyComponent").catch(() => ({
+    default: () => (
+      <div class="error-fallback">
+        <h2>Failed to load component</h2>
+        <button onClick={() => window.location.reload()}>
+          Retry
+        </button>
+      </div>
+    ),
+  }))
+);
+```
+
+### Vite Configuration
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "solid-router": ["@solidjs/router"],
+          "reynard-core": ["reynard-core"],
+          "reynard-components": ["reynard-components"],
+        },
+      },
+    },
+  },
+});
+```
+
+## Testing Routes
+
+### Unit Testing
+
+```tsx
+import { render } from "@solidjs/testing-library";
+import { Router, Route } from "@solidjs/router";
+
+test("renders route correctly", () => {
+  render(() => (
+    <Router>
+      <Route path="/" component={() => <div>Home</div>} />
+    </Router>
+  ));
+  
+  expect(screen.getByText("Home")).toBeInTheDocument();
+});
+```
+
+### Mocking Router Hooks
+
+```tsx
+import { vi } from "vitest";
+
+vi.mock("@solidjs/router", () => ({
+  useNavigate: () => vi.fn(),
+  useParams: () => ({ id: "123" }),
+  useSearchParams: () => [{ q: "test" }, vi.fn()],
+}));
+```
+
+## Reynard-Specific Patterns
+
+### Authentication Routes
+
+```tsx
+// Protected route wrapper
+const ProtectedRoute: ParentComponent = (props) => {
+  const { user } = useAuth();
+  
+  return (
+    <Show when={user()} fallback={<Navigate href="/login" />}>
+      {props.children}
+    </Show>
+  );
+};
+
+// Usage
+<Route path="/dashboard" component={ProtectedRoute}>
+  <Route path="/" component={Dashboard} />
+</Route>
+```
+
+### API Route Proxying
+
+```tsx
+// API proxy route
+const ApiProxy = () => {
+  const params = useParams();
+  const [data] = createResource(
+    () => params.path,
+    async (path) => {
+      const response = await fetch(`/api/${path}`);
+      return response.json();
+    }
+  );
+  
+  return <div>{JSON.stringify(data())}</div>;
+};
+
+// Route definition
+<Route path="/api/*path" component={ApiProxy} />
+```
+
+## Best Practices
+
+### Route Organization
+
+- Use configuration-based routing for large applications
+- Lazy load all route components
+- Implement proper error boundaries
+- Use consistent naming conventions
+
+### Performance
+
+- Split routes at logical boundaries
+- Use manual chunk splitting in Vite
+- Implement proper loading states
+- Handle lazy loading errors gracefully
+
+### Accessibility
+
+- Use semantic navigation elements
+- Provide proper focus management
+- Include ARIA labels for navigation
+- Support keyboard navigation
+
+## Key Resources
+
+- [Solid Router Documentation](https://docs.solidjs.com/solid-router)
+- [Reynard Router Guide](../development/frontend/solid-router.md)
+- [SolidJS Testing Library](https://github.com/solidjs/solid-testing-library)

@@ -1,8 +1,5 @@
-import { defineConfig } from "vitest/config";
+import { createBaseVitestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  test: {
-    environment: "jsdom",
-    globals: true,
-  },
+export default createBaseVitestConfig({
+  packageName: "reynard-i18n",
 });

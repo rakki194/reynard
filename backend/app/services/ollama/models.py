@@ -13,7 +13,7 @@ class OllamaConfig(BaseModel):
     default_model: str = Field("llama3.1", description="Default model for generation")
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
-    assistant_enabled: bool = Field(True, description="Enable YipYapAssistant")
+    assistant_enabled: bool = Field(True, description="Enable ReynardAssistant")
     tools_enabled: bool = Field(True, description="Enable tool calling")
     context_awareness: bool = Field(True, description="Enable context awareness")
 
@@ -31,9 +31,9 @@ class OllamaChatParams(BaseModel):
 
 
 class OllamaAssistantParams(BaseModel):
-    """Parameters for YipYapAssistant."""
+    """Parameters for ReynardAssistant."""
     message: str = Field(..., description="User message")
-    assistant_type: str = Field("yipyap", description="Assistant type")
+    assistant_type: str = Field("reynard", description="Assistant type")
     model: str = Field("llama3.1", description="Ollama model to use")
     temperature: float = Field(0.7, description="Sampling temperature")
     max_tokens: int = Field(2048, description="Maximum tokens to generate")

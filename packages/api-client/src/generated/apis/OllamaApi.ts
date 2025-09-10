@@ -69,7 +69,7 @@ export interface UpdateConfigApiOllamaConfigPostRequest {
  */
 export interface OllamaApiInterface {
     /**
-     * Chat with YipYapAssistant.
+     * Chat with ReynardAssistant.
      * @summary Assistant Chat
      * @param {OllamaAssistantRequest} ollamaAssistantRequest 
      * @param {*} [options] Override http request option.
@@ -79,13 +79,13 @@ export interface OllamaApiInterface {
     assistantChatApiOllamaAssistantPostRaw(requestParameters: AssistantChatApiOllamaAssistantPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OllamaAssistantResponse>>;
 
     /**
-     * Chat with YipYapAssistant.
+     * Chat with ReynardAssistant.
      * Assistant Chat
      */
     assistantChatApiOllamaAssistantPost(requestParameters: AssistantChatApiOllamaAssistantPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OllamaAssistantResponse>;
 
     /**
-     * Chat with YipYapAssistant with streaming support.
+     * Chat with ReynardAssistant with streaming support.
      * @summary Assistant Chat Stream
      * @param {OllamaAssistantRequest} ollamaAssistantRequest 
      * @param {*} [options] Override http request option.
@@ -95,7 +95,7 @@ export interface OllamaApiInterface {
     assistantChatStreamApiOllamaAssistantStreamPostRaw(requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
 
     /**
-     * Chat with YipYapAssistant with streaming support.
+     * Chat with ReynardAssistant with streaming support.
      * Assistant Chat Stream
      */
     assistantChatStreamApiOllamaAssistantStreamPost(requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
@@ -262,7 +262,7 @@ export interface OllamaApiInterface {
 export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
 
     /**
-     * Chat with YipYapAssistant.
+     * Chat with ReynardAssistant.
      * Assistant Chat
      */
     async assistantChatApiOllamaAssistantPostRaw(requestParameters: AssistantChatApiOllamaAssistantPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OllamaAssistantResponse>> {
@@ -294,7 +294,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
     }
 
     /**
-     * Chat with YipYapAssistant.
+     * Chat with ReynardAssistant.
      * Assistant Chat
      */
     async assistantChatApiOllamaAssistantPost(requestParameters: AssistantChatApiOllamaAssistantPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OllamaAssistantResponse> {
@@ -303,7 +303,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
     }
 
     /**
-     * Chat with YipYapAssistant with streaming support.
+     * Chat with ReynardAssistant with streaming support.
      * Assistant Chat Stream
      */
     async assistantChatStreamApiOllamaAssistantStreamPostRaw(requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>> {
@@ -339,7 +339,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
     }
 
     /**
-     * Chat with YipYapAssistant with streaming support.
+     * Chat with ReynardAssistant with streaming support.
      * Assistant Chat Stream
      */
     async assistantChatStreamApiOllamaAssistantStreamPost(requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {

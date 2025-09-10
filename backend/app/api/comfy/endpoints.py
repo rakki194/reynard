@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Request
 from fastapi.responses import Response, StreamingResponse
 
-from ...auth.user_service import get_current_active_user
+from gatekeeper.api.dependencies import require_active_user
 from gatekeeper.models.user import User
 from ...services.comfy.service_initializer import get_comfy_service, initialize_comfy_service
 from .models import (
@@ -35,7 +35,7 @@ router = APIRouter(prefix="/api/comfy", tags=["comfy"])
 
 
 @router.get("/health")
-async def health_check(current_user: User = Depends(get_current_active_user)):
+async def health_check(current_user: User = Depends(require_active_user)):
     """Check ComfyUI service health."""
     try:
         service = get_comfy_service()
@@ -49,7 +49,7 @@ async def health_check(current_user: User = Depends(get_current_active_user)):
 
 
 @router.post("/health/force-check")
-async def force_health_check(current_user: User = Depends(get_current_active_user)):
+async def force_health_check(current_user: User = Depends(require_active_user)):
     """Force a health check."""
     try:
         service = get_comfy_service()
@@ -71,7 +71,7 @@ async def force_health_check(current_user: User = Depends(get_current_active_use
 @router.post("/queue")
 async def queue_prompt(
     request: ComfyQueueRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Queue a ComfyUI workflow for execution."""
     try:
@@ -91,7 +91,7 @@ async def queue_prompt(
 @router.get("/status/{prompt_id}")
 async def get_status(
     prompt_id: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Get the status of a queued prompt."""
     try:
@@ -108,7 +108,7 @@ async def get_status(
 @router.get("/history/{prompt_id}")
 async def get_history(
     prompt_id: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Get the history for a prompt."""
     try:
@@ -131,7 +131,7 @@ async def get_history(
 @router.get("/object-info")
 async def get_object_info(
     refresh: bool = False,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(require_active_user),
     request: Request = None
 ):
     """Get ComfyUI object information."""
@@ -166,7 +166,7 @@ async def view_image(
     filename: str,
     subfolder: str = "",
     type: str = "output",
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """View a generated image."""
     try:
@@ -183,7 +183,7 @@ async def view_image(
 @router.post("/text2img")
 async def text2img(
     request: ComfyText2ImgRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Generate an image from text using a simple workflow."""
     try:
@@ -218,7 +218,7 @@ async def ingest_generated_image(
     prompt_id: str = Form(...),
     workflow: str = Form(...),
     metadata: str = Form("{}"),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Ingest a generated image into the gallery."""
     try:
@@ -308,7 +308,7 @@ async def ingest_generated_image(
 @router.get("/stream/{prompt_id}")
 async def stream_status(
     prompt_id: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Stream status updates for a prompt."""
     try:
@@ -341,7 +341,7 @@ async def stream_status(
 @router.get("/validate/checkpoint/{checkpoint}")
 async def validate_checkpoint(
     checkpoint: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Validate checkpoint and suggest alternatives."""
     try:
@@ -362,7 +362,7 @@ async def validate_checkpoint(
 @router.get("/validate/lora/{lora}")
 async def validate_lora(
     lora: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Validate LoRA and suggest alternatives."""
     try:
@@ -383,7 +383,7 @@ async def validate_lora(
 @router.get("/validate/sampler/{sampler}")
 async def validate_sampler(
     sampler: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Validate sampler and suggest alternatives."""
     try:
@@ -404,7 +404,7 @@ async def validate_sampler(
 @router.get("/validate/scheduler/{scheduler}")
 async def validate_scheduler(
     scheduler: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Validate scheduler and suggest alternatives."""
     try:

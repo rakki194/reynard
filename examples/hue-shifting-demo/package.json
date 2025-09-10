@@ -1,0 +1,28 @@
+{
+  "name": "hue-shifting-demo",
+  "version": "1.0.0",
+  "description": "Interactive demo for OKLCH hue shifting algorithms in pixel art games",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "@solidjs/router": "0.15.3",
+    "reynard-colors": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "@typescript-eslint/eslint-plugin": "8.43.0",
+    "@typescript-eslint/parser": "8.42.0",
+    "eslint": "9.35.0",
+    "eslint-plugin-solid": "0.14.5",
+    "typescript": "5.9.2",
+    "vite": "7.1.5",
+    "vite-plugin-solid": "2.11.8"
+  }
+}

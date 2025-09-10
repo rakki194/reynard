@@ -1,0 +1,270 @@
+---
+globs: *.py
+alwaysApply: false
+---
+
+# Python 3.13 Guide for Reynard Development
+
+## Overview
+
+Python 3.13 (released October 7, 2024) introduces significant performance improvements, enhanced developer experience, and important deprecations that affect Reynard development.
+
+## 🚀 Key Features for Reynard
+
+### Enhanced Interactive Development
+
+**Improved REPL Experience:**
+
+```python
+# Multi-line editing now supported in interactive interpreter
+# Colorized exception tracebacks
+# Better error messages for debugging
+```
+
+**Better Debugging with `locals()`:**
+
+```python
+# Now has well-defined behavior when modifying returned mapping
+def debug_function():
+    x = 42
+    locals()['x'] = 100  # Now works consistently
+    return x  # Returns 100
+```
+
+### Performance Optimizations
+
+**Memory Efficiency:**
+
+- Docstring indentation automatically stripped (reduces memory usage)
+- Smaller `.pyc` files
+- New `dbm.sqlite3` backend for better database performance
+
+**Experimental Features (Future-Ready):**
+
+- **Free-Threaded Mode**: GIL removal for true concurrency (experimental)
+- **JIT Compiler**: Preliminary Just-In-Time compilation (disabled by default)
+
+## 🔧 Typing Enhancements (Highly Relevant for Reynard)
+
+### Type Defaults in Type Parameters
+
+```python
+# New in Python 3.13
+from typing import TypeVar, Generic
+
+T = TypeVar('T', default=str)  # T defaults to str
+
+class Container(Generic[T]):
+    def __init__(self, value: T):
+        self.value = value
+
+# Usage
+container = Container()  # T defaults to str
+container = Container[int](42)  # Explicit type
+```
+
+### New Type Annotations
+
+```python
+from typing import TypeIs, ReadOnly, TypedDict
+
+# Type narrowing
+def process_data(data: str | int) -> TypeIs[str]:
+    return isinstance(data, str)
+
+# Read-only TypedDict items
+class Config(TypedDict):
+    api_key: str
+    readonly_setting: ReadOnly[str]  # Cannot be modified
+```
+
+## ⚠️ Critical Deprecations for Reynard
+
+### Removed Standard Library Modules
+
+**Modules Removed (PEP 594):**
+
+- `cgi`, `cgitb` - Web CGI support
+- `telnetlib` - Telnet client
+- `aifc`, `audioop` - Audio processing
+- `lib2to3` - Python 2 to 3 migration tool
+- `tkinter.tix` - Extended Tkinter widgets
+
+**Action Required:**
+
+```bash
+# Check if any dependencies use removed modules
+grep -r "import cgi\|import telnetlib\|import aifc" backend/
+```
+
+### Deprecated Features
+
+**HTTP Server Changes:**
+
+```python
+# ❌ Deprecated (removal in 3.15)
+from http.server import CGIHTTPRequestHandler
+
+# ✅ Use alternatives
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+```
+
+**Locale Functions:**
+
+```python
+# ❌ Deprecated
+import locale
+default_locale = locale.getdefaultlocale()
+
+# ✅ Recommended
+import locale
+encoding = locale.getencoding()
+locale_name = locale.getlocale()
+```
+
+**Pathlib Changes:**
+
+```python
+# ❌ Deprecated
+from pathlib import PurePath
+is_reserved = PurePath("CON").is_reserved()
+
+# ✅ Recommended
+import os
+is_reserved = os.path.isreserved("CON")
+```
+
+## 🎯 Reynard-Specific Considerations
+
+### Backend Development
+
+**Database Operations:**
+
+```python
+# New dbm backend for better performance
+import dbm
+# Automatically uses dbm.sqlite3 backend for new files
+```
+
+**Concurrency (Future):**
+
+```python
+# When free-threaded mode becomes stable
+import threading
+import time
+
+def worker():
+    time.sleep(1)
+    print("Thread completed")
+
+# In free-threaded mode, true parallelism possible
+threads = [threading.Thread(target=worker) for _ in range(4)]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+```
+
+### API Development
+
+**Enhanced Type Safety:**
+
+```python
+from typing import TypeIs, ReadOnly, TypedDict
+
+class APIResponse(TypedDict):
+    status: str
+    data: ReadOnly[dict]  # Immutable data
+    timestamp: str
+
+def validate_response(response: dict) -> TypeIs[APIResponse]:
+    return all(key in response for key in ['status', 'data', 'timestamp'])
+```
+
+### Testing Improvements
+
+**Better Error Messages:**
+
+```python
+# Enhanced exception tracebacks in tests
+def test_api_endpoint():
+    response = client.get("/api/test")
+    # Colorized tracebacks make debugging easier
+    assert response.status_code == 200
+```
+
+## 🔍 Migration Checklist for Reynard
+
+### Immediate Actions
+
+1. **Check Dependencies:**
+
+   ```bash
+   # Scan for removed modules
+   grep -r "import cgi\|import telnetlib\|import aifc" backend/ third_party/
+   ```
+
+2. **Update Type Annotations:**
+
+   ```python
+   # Consider using new typing features
+   from typing import TypeIs, ReadOnly
+   ```
+
+3. **Review HTTP Server Usage:**
+
+   ```python
+   # Replace CGIHTTPRequestHandler if used
+   ```
+
+### Future Considerations
+
+1. **Monitor Free-Threaded Mode:**
+   - Watch for stability improvements
+   - Consider for high-concurrency endpoints
+
+2. **JIT Compiler:**
+   - Monitor performance benchmarks
+   - Consider enabling when stable
+
+3. **Platform Support:**
+   - macOS minimum version now 10.13
+   - WASI support for WebAssembly
+
+## 🛠️ Development Workflow Improvements
+
+### Enhanced REPL Usage
+
+```python
+# Multi-line editing in interactive interpreter
+# Better for testing API endpoints interactively
+>>> from backend.app.api import create_app
+>>> app = create_app()
+>>> with app.test_client() as client:
+...     response = client.get('/api/health')
+...     print(response.json())
+```
+
+### Better Debugging
+
+```python
+# Improved locals() behavior for debugging
+def debug_api_call():
+    request_data = {"key": "value"}
+    # Can now safely modify locals for debugging
+    locals()['debug_flag'] = True
+    return process_request(request_data)
+```
+
+## 📚 References
+
+- [Python 3.13 Release Notes](https://docs.python.org/3/whatsnew/3.13.html)
+- [Python 3.13 Deprecations](https://docs.python.org/3/deprecations/)
+- [PEP 594 - Removing dead batteries](https://peps.python.org/pep-0594/)
+
+## 🦊 Reynard Development Notes
+
+- **Type Safety**: Leverage new typing features for better API contracts
+- **Performance**: Monitor free-threaded mode for backend optimization
+- **Compatibility**: Ensure dependencies don't use removed modules
+- **Testing**: Take advantage of improved error messages and debugging

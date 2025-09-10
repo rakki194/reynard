@@ -3,14 +3,18 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [],
   test: {
-    environment: "jsdom",
+    environment: "happy-dom",
     globals: true,
     setupFiles: ["./src/test-setup.ts"],
     environmentOptions: {
-      jsdom: {
-        // Better DOM environment for SolidJS
-        pretendToBeVisual: true,
-        url: "http://localhost/",
+      happyDOM: {
+        // Fast, modern DOM environment for SolidJS
+        url: "http://localhost:3000",
+        settings: {
+          disableJavaScriptFileLoading: true,
+          disableJavaScriptEvaluation: true,
+          disableCSSFileLoading: true,
+        },
       },
     },
     coverage: {
@@ -34,11 +38,6 @@ export default defineConfig({
         "**/fixtures/**",
         "**/mocks/**",
       ],
-    },
-  },
-  resolve: {
-    alias: {
-      "~": "./src",
     },
   },
 });

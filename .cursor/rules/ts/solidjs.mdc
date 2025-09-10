@@ -1,0 +1,243 @@
+---
+globs: *.ts,*.tsx
+alwaysApply: false
+---
+
+# SolidJS Development Guide for Reynard
+
+## Core Principles
+
+### Reactive Primitives
+
+```tsx
+import { createSignal, createEffect, createMemo, createResource } from "solid-js";
+
+// Signals for reactive state
+const [count, setCount] = createSignal(0);
+const [user, setUser] = createSignal<User | null>(null);
+
+// Memos for derived state
+const doubled = createMemo(() => count() * 2);
+
+// Effects for side effects
+createEffect(() => {
+  console.log("Count changed:", count());
+});
+
+// Resources for async data
+const [data] = createResource(
+  () => userId(),
+  async (id) => {
+    const response = await fetch(`/api/users/${id}`);
+    return response.json();
+  }
+);
+```
+
+### Component Patterns
+
+```tsx
+import { Component, ParentComponent } from "solid-js";
+
+// Basic component
+const MyComponent: Component<{ title: string }> = (props) => {
+  return <h1>{props.title}</h1>;
+};
+
+// Parent component for layout
+const Layout: ParentComponent<{ header?: JSX.Element }> = (props) => {
+  return (
+    <div class="layout">
+      {props.header}
+      <main>{props.children}</main>
+    </div>
+  );
+};
+```
+
+## Reynard-Specific Patterns
+
+### Composables (use* functions)
+
+```tsx
+// packages/composables/useAuth.ts
+export function useAuth() {
+  const [user, setUser] = createSignal<User | null>(null);
+  const [isLoading, setIsLoading] = createSignal(false);
+  
+  const login = async (credentials: LoginCredentials) => {
+    setIsLoading(true);
+    try {
+      const user = await authenticate(credentials);
+      setUser(user);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  return { user, isLoading, login };
+}
+```
+
+### Error Boundaries
+
+```tsx
+import { ErrorBoundary } from "solid-js";
+
+const App = () => (
+  <ErrorBoundary fallback={(err) => <div>Error: {err.message}</div>}>
+    <MyComponent />
+  </ErrorBoundary>
+);
+```
+
+### Performance Optimization
+
+```tsx
+// Lazy loading components
+import { lazy } from "solid-js";
+
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
+
+// Conditional rendering
+const ConditionalComponent = () => {
+  const [show, setShow] = createSignal(false);
+  
+  return (
+    <div>
+      <button onClick={() => setShow(!show())}>Toggle</button>
+      {show() && <HeavyComponent />}
+    </div>
+  );
+};
+```
+
+## Best Practices
+
+### State Management
+
+- Use `createSignal` for simple state
+- Use `createStore` for complex objects
+- Use `createMemo` for expensive computations
+- Use `createResource` for async data
+
+### Event Handling
+
+```tsx
+const handleClick = (event: MouseEvent) => {
+  event.preventDefault();
+  // Handle click
+};
+
+const handleSubmit = (event: SubmitEvent) => {
+  event.preventDefault();
+  // Handle form submission
+};
+```
+
+### TypeScript Integration
+
+```tsx
+// Define component props interface
+interface ButtonProps {
+  variant?: "primary" | "secondary";
+  onClick?: () => void;
+  children: JSX.Element;
+}
+
+const Button: Component<ButtonProps> = (props) => {
+  return (
+    <button 
+      class={`btn btn-${props.variant || "primary"}`}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
+};
+```
+
+### Testing Patterns
+
+```tsx
+import { render } from "@solidjs/testing-library";
+
+test("renders component correctly", () => {
+  render(() => <MyComponent title="Test" />);
+  expect(screen.getByText("Test")).toBeInTheDocument();
+});
+```
+
+## Common Patterns in Reynard
+
+### API Integration
+
+```tsx
+// packages/api-client/src/composables/useApi.ts
+export function useApi<T>(url: string) {
+  const [data, setData] = createSignal<T | null>(null);
+  const [error, setError] = createSignal<Error | null>(null);
+  const [isLoading, setIsLoading] = createSignal(false);
+  
+  const fetchData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  return { data, error, isLoading, fetchData };
+}
+```
+
+### Form Handling
+
+```tsx
+const LoginForm = () => {
+  const [formData, setFormData] = createSignal({
+    email: "",
+    password: ""
+  });
+  
+  const handleInput = (field: string) => (event: InputEvent) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: (event.target as HTMLInputElement).value
+    }));
+  };
+  
+  const handleSubmit = async (event: SubmitEvent) => {
+    event.preventDefault();
+    // Handle form submission
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        type="email" 
+        value={formData().email}
+        onInput={handleInput("email")}
+      />
+      <input 
+        type="password" 
+        value={formData().password}
+        onInput={handleInput("password")}
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+};
+```
+
+## Key Resources
+
+- [SolidJS Documentation](https://docs.solidjs.com/)
+- [Reynard Composables Guide](../development/frontend/composables.md)
+- [SolidJS Testing Library](https://github.com/solidjs/solid-testing-library)

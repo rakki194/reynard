@@ -15,7 +15,7 @@ from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import StreamingResponse
 from sse_starlette import EventSourceResponse
 
-from ...auth.user_service import get_current_active_user
+from gatekeeper.api.dependencies import require_active_user
 from gatekeeper.models.user import User
 from ...services.nlweb import (
     NLWebService,
@@ -54,7 +54,7 @@ def get_nlweb_service() -> NLWebService:
 @router.post("/suggest", response_model=NLWebSuggestionResponse)
 async def suggest_tools(
     request: NLWebSuggestionRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Suggest tools for a natural language query using the NLWeb router service.
@@ -85,7 +85,7 @@ async def suggest_tools(
 
 @router.get("/status")
 async def get_status(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Get NLWeb integration status and performance metrics.
@@ -121,7 +121,7 @@ async def get_status(
 
 @router.get("/health", response_model=NLWebHealthStatus)
 async def get_health(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Get NLWeb service health status."""
     try:
@@ -136,7 +136,7 @@ async def get_health(
 
 @router.post("/health/force-check")
 async def force_health_check(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Force a health check of the NLWeb service."""
     try:
@@ -160,7 +160,7 @@ async def force_health_check(
 
 @router.get("/performance", response_model=NLWebPerformanceStats)
 async def get_performance_stats(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Get NLWeb service performance statistics."""
     try:
@@ -177,7 +177,7 @@ async def get_performance_stats(
 async def get_tools(
     category: Optional[str] = None,
     tags: Optional[str] = None,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Get available NLWeb tools, optionally filtered by category or tags."""
     try:
@@ -205,7 +205,7 @@ async def get_tools(
 @router.post("/tools")
 async def register_tool(
     tool: NLWebTool,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Register a new NLWeb tool."""
     try:
@@ -241,7 +241,7 @@ async def register_tool(
 @router.delete("/tools/{tool_name}")
 async def unregister_tool(
     tool_name: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Unregister an NLWeb tool."""
     try:
@@ -276,7 +276,7 @@ async def unregister_tool(
 @router.post("/tools/{tool_name}/enable")
 async def enable_tool(
     tool_name: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Enable an NLWeb tool."""
     try:
@@ -311,7 +311,7 @@ async def enable_tool(
 @router.post("/tools/{tool_name}/disable")
 async def disable_tool(
     tool_name: str,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Disable an NLWeb tool."""
     try:
@@ -346,7 +346,7 @@ async def disable_tool(
 @router.post("/rollback", response_model=NLWebRollbackResponse)
 async def enable_rollback(
     request: NLWebRollbackRequest,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Enable or disable emergency rollback for NLWeb integration.
@@ -380,7 +380,7 @@ async def enable_rollback(
 
 @router.get("/verification", response_model=NLWebVerificationResponse)
 async def get_verification_checklist(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Get NLWeb integration verification checklist for rollout.
@@ -402,7 +402,7 @@ async def get_verification_checklist(
 async def proxy_ask(
     request: NLWebAskRequest,
     http_request: Request,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Proxy NLWeb /ask endpoint with SSE streaming support.
@@ -501,7 +501,7 @@ async def proxy_ask(
 async def proxy_mcp(
     request: NLWebMCPRequest,
     http_request: Request,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """
     Proxy NLWeb MCP (Model Context Protocol) endpoint.
@@ -566,7 +566,7 @@ async def proxy_mcp(
 @router.get("/sites", response_model=NLWebSitesResponse)
 async def proxy_sites(
     http_request: Request,
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Proxy NLWeb /sites endpoint to list available sites."""
     try:
@@ -630,7 +630,7 @@ async def proxy_sites(
 
 @router.post("/cache/clear")
 async def clear_cache(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(require_active_user)
 ):
     """Clear the NLWeb suggestion cache."""
     try:

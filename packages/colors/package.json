@@ -50,12 +50,7 @@
   ],
   "author": "Reynard Team",
   "license": "MIT",
-  "dependencies": {
-    "reynard-audio": "workspace:*",
-    "reynard-video": "workspace:*",
-    "reynard-image": "workspace:*",
-    "reynard-multimodal": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "24.3.1",
     "typescript": "5.9.2",

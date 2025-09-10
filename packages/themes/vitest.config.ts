@@ -1,42 +1,6 @@
-import { defineConfig } from "vitest/config";
-import solid from "vite-plugin-solid";
+import { createBaseVitestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  plugins: [solid()],
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./src/__tests__/setup.ts"],
-    environmentOptions: {
-      jsdom: {
-        // Better DOM environment for SolidJS
-        pretendToBeVisual: true,
-      },
-    },
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "html", "lcov"],
-      thresholds: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
-      exclude: [
-        "node_modules/",
-        "dist/",
-        "coverage/",
-        "**/*.d.ts",
-        "**/*.config.*",
-        "**/__tests__/**",
-      ],
-    },
-  },
-  resolve: {
-    alias: {
-      "~": new URL("./src", import.meta.url).pathname,
-    },
-  },
+export default createBaseVitestConfig({
+  packageName: "reynard-themes",
+  setupFiles: ["./src/__tests__/setup.ts"],
 });

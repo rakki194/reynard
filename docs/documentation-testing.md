@@ -106,7 +106,7 @@ Each package can customize its documentation testing:
 export default defineConfig({
   plugins: [solid()],
   test: {
-    environment: "jsdom",
+    environment: "happy-dom",
     include: ["src/**/*.doc-tests.test.ts"],
     setupFiles: ["./src/test-setup.ts"],
   },

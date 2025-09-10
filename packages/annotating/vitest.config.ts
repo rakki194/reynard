@@ -1,11 +1,6 @@
-import { defineConfig } from "vitest/config";
-import solid from "vite-plugin-solid";
+import { createBaseVitestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  plugins: [solid()],
-  test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./src/test-setup.ts"],
-  },
+export default createBaseVitestConfig({
+  packageName: "reynard-annotating",
+  setupFiles: ["./src/test-setup.ts"],
 });

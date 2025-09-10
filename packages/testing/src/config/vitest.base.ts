@@ -35,14 +35,18 @@ export const createBaseVitestConfig = (
   return defineConfig({
     plugins: [solid(), ...additionalPlugins],
     test: {
-      environment: "jsdom",
+      environment: "happy-dom",
       globals: true,
       setupFiles,
       environmentOptions: {
-        jsdom: {
-          // Better DOM environment for SolidJS
-          pretendToBeVisual: true,
-          url: "http://localhost/",
+        happyDOM: {
+          // Fast, modern DOM environment for SolidJS
+          url: "http://localhost:3000",
+          settings: {
+            disableJavaScriptFileLoading: true,
+            disableJavaScriptEvaluation: true,
+            disableCSSFileLoading: true,
+          },
         },
       },
       coverage: {
@@ -62,11 +66,6 @@ export const createBaseVitestConfig = (
           "**/mocks/**",
           ...excludeFromCoverage,
         ],
-      },
-    },
-    resolve: {
-      alias: {
-        "~": "./src",
       },
     },
   });

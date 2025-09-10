@@ -8,13 +8,17 @@ import solid from "vite-plugin-solid";
 export default defineConfig({
   plugins: [solid()],
   test: {
-    environment: "jsdom",
+    environment: "happy-dom",
     globals: true,
     setupFiles: ["./src/test-setup.ts"],
     environmentOptions: {
-      jsdom: {
-        pretendToBeVisual: true,
-        url: "http://localhost/",
+      happyDOM: {
+        url: "http://localhost:3000",
+        settings: {
+          disableJavaScriptFileLoading: true,
+          disableJavaScriptEvaluation: true,
+          disableCSSFileLoading: true,
+        },
       },
     },
     coverage: {

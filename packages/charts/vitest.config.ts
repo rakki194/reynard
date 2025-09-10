@@ -1,10 +1,13 @@
+import { createComponentTestConfig } from "reynard-testing/config";
 import { defineConfig } from "vitest/config";
 import solid from "vite-plugin-solid";
-import { resolve } from "path";
+
+const baseConfig = createComponentTestConfig("reynard-charts");
 
 export default defineConfig({
+  ...baseConfig,
   plugins: [
-    solid(),
+    ...baseConfig.plugins!,
     {
       name: "mock-chartjs-adapter",
       resolveId(id) {
@@ -22,18 +25,10 @@ export default defineConfig({
     },
   ],
   test: {
-    environment: "jsdom",
-    globals: true,
+    ...baseConfig.test,
     setupFiles: ["./test/setup.ts"],
-    include: ["**/*.{test,spec}.{js,ts,jsx,tsx}"],
-    exclude: ["**/node_modules/**", "**/dist/**"],
     typecheck: {
       tsconfig: "./tsconfig.test.json",
-    },
-  },
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src"),
     },
   },
 });

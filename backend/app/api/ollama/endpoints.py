@@ -103,7 +103,7 @@ async def chat_stream(request: OllamaChatRequest):
 
 @router.post("/assistant", response_model=OllamaAssistantResponse)
 async def assistant_chat(request: OllamaAssistantRequest):
-    """Chat with YipYapAssistant."""
+    """Chat with ReynardAssistant."""
     try:
         service = get_ollama_service()
         
@@ -155,7 +155,7 @@ async def assistant_chat(request: OllamaAssistantRequest):
 
 @router.post("/assistant/stream")
 async def assistant_chat_stream(request: OllamaAssistantRequest):
-    """Chat with YipYapAssistant with streaming support."""
+    """Chat with ReynardAssistant with streaming support."""
     try:
         service = get_ollama_service()
         

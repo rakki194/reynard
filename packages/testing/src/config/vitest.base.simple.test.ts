@@ -14,7 +14,7 @@ describe("Vitest Configuration Utilities (Simple)", () => {
       expect(config).toBeDefined();
       expect(config.plugins).toBeDefined();
       expect(config.test).toBeDefined();
-      expect(config.test?.environment).toBe("jsdom");
+      expect(config.test?.environment).toBe("happy-dom");
       expect(config.test?.globals).toBe(true);
       expect(config.test?.setupFiles).toEqual(["./src/test-setup.ts"]);
     });

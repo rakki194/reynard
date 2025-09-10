@@ -1,22 +1,6 @@
-import { defineConfig } from "vitest/config";
-import solidPlugin from "vite-plugin-solid";
+import { createBaseVitestConfig } from "reynard-testing/config";
 
-export default defineConfig({
-  plugins: [solidPlugin()],
-  test: {
-    environment: "jsdom",
-    setupFiles: ["./src/test-setup.ts"],
-    globals: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      exclude: [
-        "node_modules/",
-        "dist/",
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "src/test-setup.ts",
-      ],
-    },
-  },
+export default createBaseVitestConfig({
+  packageName: "reynard-boundingbox",
+  setupFiles: ["./src/test-setup.ts"],
 });

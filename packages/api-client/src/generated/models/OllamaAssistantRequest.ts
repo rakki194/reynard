@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * Request model for YipYapAssistant.
+ * Request model for ReynardAssistant.
  * @export
  * @interface OllamaAssistantRequest
  */
@@ -26,7 +26,7 @@ export interface OllamaAssistantRequest {
      */
     message: string;
     /**
-     * Assistant type (yipyap, codewolf)
+     * Assistant type (reynard, codewolf)
      * @type {string}
      * @memberof OllamaAssistantRequest
      */
