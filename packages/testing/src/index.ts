@@ -12,3 +12,9 @@ export * from "./test-utils";
 
 // Unified test setup system
 export * from "./setup";
+
+// i18n testing utilities
+export * from "./utils/i18n-testing";
+export * from "./utils/i18n-eslint-plugin";
+export * from "./utils/i18n-lint-script";
+export * from "./utils/i18n-ci-checks";

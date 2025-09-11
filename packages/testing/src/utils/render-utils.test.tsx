@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-/// <reference types="@testing-library/jest-dom" />
+// Using reynard-testing instead of jest-dom
 /** @jsxImportSource solid-js */
 
 import { screen } from "@solidjs/testing-library";

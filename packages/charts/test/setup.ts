@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+// Using reynard-testing instead of jest-dom
 import { vi } from "vitest";
 
 // Mock Chart.js to avoid canvas issues in jsdom

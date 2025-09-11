@@ -13,15 +13,29 @@ export function getTranslationValue(
 ): string {
   const value = path.split(".").reduce((acc: any, part) => acc?.[part], obj);
 
+  // Debug logging
+  if (process.env.NODE_ENV === 'test') {
+    console.log('getTranslationValue:', { path, value, obj, params });
+  }
+
   if (typeof value === "function") {
     return (value as (params: TranslationParams) => string)(params || {});
   }
 
-  if (typeof value === "string" && params) {
-    return Object.entries(params).reduce(
-      (str, [key, val]) => str.replace(`{${key}}`, val?.toString() || ""),
-      value,
-    );
+  if (typeof value === "string" && params !== undefined) {
+    let result = value;
+    
+    // Replace placeholders with provided parameters
+    Object.entries(params).forEach(([key, val]) => {
+      result = result.replace(`{${key}}`, val?.toString() || "");
+    });
+    
+    // If params is an empty object, replace all remaining placeholders with empty strings
+    if (Object.keys(params).length === 0) {
+      result = result.replace(/\{[^}]+\}/g, "");
+    }
+    
+    return result;
   }
 
   return (typeof value === "string" ? value : "") || path;

@@ -1,9 +1,12 @@
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
 .code-editor {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--color-background, #ffffff);
-  border: 1px solid var(--color-border, #e1e5e9);
+  background: var(--color-background, oklch(98% 0.01 0));
+  border: 1px solid var(--color-border, oklch(85% 0.02 0));
   border-radius: var(--border-radius-base, 8px);
   overflow: hidden;
 }
@@ -13,8 +16,8 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-base, 12px);
-  background: var(--color-background-secondary, #f8f9fa);
-  border-bottom: 1px solid var(--color-border, #e1e5e9);
+  background: var(--color-background-secondary, oklch(95% 0.02 0));
+  border-bottom: 1px solid var(--color-border, oklch(85% 0.02 0));
   min-height: 48px;
 }
 
@@ -26,12 +29,12 @@
 
 .language-name {
   font-weight: 600;
-  color: var(--color-text, #212529);
+  color: var(--color-text, oklch(15% 0.01 0));
   font-size: var(--font-size-base, 14px);
 }
 
 .read-only-badge {
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
   color: var(--color-text-inverse, #ffffff);
   padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
   border-radius: var(--border-radius-base, 8px);
@@ -51,7 +54,7 @@
   align-items: center;
   gap: var(--spacing-xs, 4px);
   padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
   color: var(--color-text-inverse, #ffffff);
   border: none;
   border-radius: var(--border-radius-base, 8px);
@@ -142,11 +145,11 @@
 }
 
 .code-editor .monaco-editor .scrollbar .slider:hover {
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
 }
 
 .code-editor .monaco-editor .scrollbar .slider.active {
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
 }
 
 /* Minimap spacing and positioning */
@@ -156,7 +159,7 @@
 }
 
 .code-editor .monaco-editor .minimap-slider {
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
   opacity: 0.3;
 }
 
@@ -298,7 +301,7 @@
 
 .error-container button {
   padding: var(--spacing-sm, 8px) var(--spacing-base, 12px);
-  background: var(--color-accent, #007bff);
+  background: var(--color-accent, oklch(60% 0.25 240));
   color: var(--color-text-inverse, #ffffff);
   border: none;
   border-radius: var(--border-radius-base, 8px);

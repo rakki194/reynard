@@ -66,7 +66,7 @@ export function GeometryDemo() {
         id,
         type,
         data,
-        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        color: `oklch(60% 0.2 ${Math.random() * 360})`,
       },
     ]);
   };

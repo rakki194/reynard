@@ -77,6 +77,31 @@ Comprehensive demonstration of Reynard's theming capabilities.
 
 ---
 
+### 🎨 [Hue Shifting Demo](./hue-shifting-demo/) - Floating Panel System
+
+An interactive pixel art editor demonstrating Reynard's advanced floating panel system with staggered animations and state management.
+
+**What you'll learn:**
+
+- Advanced floating panel implementation
+- Staggered animation systems
+- State management with overlay coordination
+- Draggable and resizable panel components
+- Theme-aware panel styling
+
+**Features:**
+
+- 🎭 Sophisticated floating panel system
+- 🖱️ Draggable and resizable panels
+- 🎨 Real-time OKLCH color manipulation
+- 🎪 Staggered entrance/exit animations
+- 🎯 Advanced overlay state management
+- 📱 Mobile-responsive panel layouts
+
+**Bundle size:** ~18 kB total (gzipped)
+
+---
+
 ### 🌐 [Full-Stack App](./full-stack/) - Complete Application _(Coming Soon)_
 
 A comprehensive example with frontend, backend, and database integration.
@@ -121,7 +146,8 @@ pnpm run build
 
 - **Basic App**: <http://localhost:3001>
 - **Multi-Theme Gallery**: <http://localhost:3002>
-- **Full-Stack App**: <http://localhost:3003> _(when available)_
+- **Hue Shifting Demo**: <http://localhost:3003>
+- **Full-Stack App**: <http://localhost:3004> _(when available)_
 
 ## 🏗️ Architecture Overview
 
@@ -172,7 +198,14 @@ example-app/
 - Theme comparison interfaces
 - Complex state management
 
-### 3. Build Full-Stack App _(when available)_
+### 3. Try Hue Shifting Demo
+
+- Advanced floating panel systems
+- Staggered animation techniques
+- Interactive UI components
+- State management patterns
+
+### 4. Build Full-Stack App _(when available)_
 
 - Real-world application architecture
 - API integration patterns
@@ -194,6 +227,13 @@ example-app/
 - Theme evaluation and comparison
 - Component library showcases
 - Advanced styling patterns
+
+### Hue Shifting Demo is perfect for
+
+- Learning advanced UI patterns
+- Understanding floating panel systems
+- Exploring animation techniques
+- Interactive component development
 
 ### Full-Stack App will demonstrate
 

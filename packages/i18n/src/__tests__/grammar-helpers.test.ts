@@ -58,13 +58,13 @@ describe("Hungarian Articles", () => {
   });
 
   it("should handle decimal numbers", () => {
-    expect(getHungarianArticle(1.5)).toBe("a"); // egy egész öt
-    expect(getHungarianArticle(2.3)).toBe("a"); // kettő egész három
+    expect(getHungarianArticle(1.5)).toBe("az"); // egy egész öt (starts with 'e')
+    expect(getHungarianArticle(2.3)).toBe("a"); // kettő egész három (starts with 'k')
   });
 
   it("should handle large numbers", () => {
     expect(getHungarianArticle(100)).toBe("a"); // száz
-    expect(getHungarianArticle(1000)).toBe("a"); // ezer
+    expect(getHungarianArticle(1000)).toBe("az"); // ezer (starts with 'e')
     expect(getHungarianArticle(1000000)).toBe("a"); // millió
   });
 
@@ -106,18 +106,18 @@ describe("Hungarian Article For Word", () => {
 describe("Hungarian Suffix Selection", () => {
   it("should use back suffix for back vowel words", () => {
     expect(getHungarianSuffix("ház", "ban", "ben")).toBe("ban");
-    expect(getHungarianSuffix("kert", "nak", "nek")).toBe("nak");
+    expect(getHungarianSuffix("kert", "nak", "nek")).toBe("nek"); // last vowel 'e' (front)
     expect(getHungarianSuffix("macska", "val", "vel")).toBe("val");
-    expect(getHungarianSuffix("szék", "ra", "re")).toBe("ra");
-    expect(getHungarianSuffix("tér", "ba", "be")).toBe("ba");
+    expect(getHungarianSuffix("szék", "ra", "re")).toBe("re"); // last vowel 'é' (front)
+    expect(getHungarianSuffix("tér", "ba", "be")).toBe("be"); // last vowel 'é' (front)
   });
 
   it("should use front suffix for front vowel words", () => {
     expect(getHungarianSuffix("ember", "ban", "ben")).toBe("ben");
-    expect(getHungarianSuffix("iskola", "nak", "nek")).toBe("nek");
+    expect(getHungarianSuffix("iskola", "nak", "nek")).toBe("nak"); // last vowel 'a' (back)
     expect(getHungarianSuffix("üveg", "val", "vel")).toBe("vel");
     expect(getHungarianSuffix("élet", "ra", "re")).toBe("re");
-    expect(getHungarianSuffix("író", "ba", "be")).toBe("be");
+    expect(getHungarianSuffix("író", "ba", "be")).toBe("ba"); // last vowel 'ó' (back)
   });
 
   it("should use the last vowel to determine suffix", () => {
@@ -149,19 +149,19 @@ describe("Hungarian Suffix Selection", () => {
     expect(getHungarianSuffix("ember", "ban", "ben")).toBe("ben");
 
     // -nak/-nek (to/for)
-    expect(getHungarianSuffix("kert", "nak", "nek")).toBe("nak");
-    expect(getHungarianSuffix("iskola", "nak", "nek")).toBe("nek");
+    expect(getHungarianSuffix("kert", "nak", "nek")).toBe("nek"); // last vowel 'e' (front)
+    expect(getHungarianSuffix("iskola", "nak", "nek")).toBe("nak"); // last vowel 'a' (back)
 
     // -val/-vel (with)
     expect(getHungarianSuffix("macska", "val", "vel")).toBe("val");
     expect(getHungarianSuffix("üveg", "val", "vel")).toBe("vel");
 
     // -ra/-re (onto)
-    expect(getHungarianSuffix("szék", "ra", "re")).toBe("ra");
+    expect(getHungarianSuffix("szék", "ra", "re")).toBe("re"); // last vowel 'é' (front)
     expect(getHungarianSuffix("élet", "ra", "re")).toBe("re");
 
     // -ba/-be (into)
-    expect(getHungarianSuffix("tér", "ba", "be")).toBe("ba");
-    expect(getHungarianSuffix("író", "ba", "be")).toBe("be");
+    expect(getHungarianSuffix("tér", "ba", "be")).toBe("be"); // last vowel 'é' (front)
+    expect(getHungarianSuffix("író", "ba", "be")).toBe("ba"); // last vowel 'ó' (back)
   });
 });

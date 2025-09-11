@@ -1,3 +1,6 @@
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
 /* Rogue-like game styles */
 
 .roguelike-game-container {

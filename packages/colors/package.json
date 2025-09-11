@@ -1,6 +1,6 @@
 {
   "name": "reynard-colors",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Color generation utilities and theme management using OKLCH color space",
   "type": "module",
   "main": "dist/index.js",
@@ -52,8 +52,8 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@testing-library/jest-dom": "6.8.0",
     "@types/node": "24.3.1",
+    "happy-dom": "^18.0.1",
     "reynard-testing": "workspace:*",
     "typescript": "5.9.2",
     "vite": "7.1.5",

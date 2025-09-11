@@ -1,5 +1,6 @@
 import { Component, createMemo } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
+import { allIcons } from "reynard-fluent-icons";
 import "./ColorRamp.css";
 
 interface ColorRampProps {
@@ -44,7 +45,7 @@ export const ColorRamp: Component<ColorRampProps> = (props) => {
           class="action-button copy-all"
           onClick={() => copyToClipboard(colorStrings().join('\n'))}
         >
-          📋 Copy All Colors
+          <span innerHTML={allIcons.copy.svg}></span> Copy All Colors
         </button>
         <button 
           class="action-button export-css"
@@ -55,7 +56,7 @@ export const ColorRamp: Component<ColorRampProps> = (props) => {
             copyToClipboard(`:root {\n${cssVars}\n}`);
           }}
         >
-          🎨 Export as CSS Variables
+          <span innerHTML={allIcons["window-brush"].svg}></span> Export as CSS Variables
         </button>
       </div>
     </div>

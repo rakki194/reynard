@@ -1,0 +1,424 @@
+/**
+ * i18n Testing Utilities
+ * Comprehensive tools for testing internationalization across Reynard packages
+ */
+
+import type { Component } from 'solid-js';
+
+// Types for i18n testing
+export interface I18nTestConfig {
+  /** List of packages to test */
+  packages: string[];
+  /** Locales to test */
+  locales: string[];
+  /** Whether to check for hardcoded strings */
+  checkHardcodedStrings: boolean;
+  /** Whether to validate translation completeness */
+  validateCompleteness: boolean;
+  /** Whether to test pluralization */
+  testPluralization: boolean;
+  /** Whether to test RTL support */
+  testRTL: boolean;
+  /** Custom ignore patterns for hardcoded strings */
+  ignorePatterns: string[];
+}
+
+export interface HardcodedStringResult {
+  file: string;
+  line: number;
+  column: number;
+  text: string;
+  severity: 'error' | 'warning';
+  suggestion?: string;
+}
+
+export interface TranslationValidationResult {
+  locale: string;
+  missingKeys: string[];
+  unusedKeys: string[];
+  incompleteTranslations: string[];
+  pluralizationIssues: string[];
+}
+
+export interface I18nTestResult {
+  hardcodedStrings: HardcodedStringResult[];
+  translationValidation: TranslationValidationResult[];
+  rtlIssues: string[];
+  performanceMetrics: {
+    loadTime: number;
+    memoryUsage: number;
+  };
+}
+
+/**
+ * Detect hardcoded strings in JSX/TSX files
+ */
+export function detectHardcodedStrings(
+  filePath: string,
+  content: string,
+  config: I18nTestConfig
+): HardcodedStringResult[] {
+  const results: HardcodedStringResult[] = [];
+  const lines = content.split('\n');
+  
+  // Patterns to detect hardcoded strings
+  const patterns = [
+    // JSX text content: >Text<
+    { regex: />([^<>{}\n]+)</g, type: 'jsx-text' },
+    // String literals in JSX attributes: title="Text"
+    { regex: /(title|alt|placeholder|aria-label)="([^"]+)"/g, type: 'jsx-attribute' },
+    // Template literals with text: `Text ${variable}`
+    { regex: /`([^`${}]+)`/g, type: 'template-literal' },
+    // String literals: "Text"
+    { regex: /"([^"]{3,})"/g, type: 'string-literal' },
+  ];
+
+  lines.forEach((line, lineIndex) => {
+    // Skip comments and imports
+    if (line.trim().startsWith('//') || line.trim().startsWith('/*') || line.trim().startsWith('import')) {
+      return;
+    }
+
+    // Skip lines that are already using i18n
+    if (line.includes('i18n.t(') || line.includes('t(')) {
+      return;
+    }
+
+    patterns.forEach(({ regex, type }) => {
+      let match;
+      while ((match = regex.exec(line)) !== null) {
+        const text = match[1] || match[2];
+        
+        // Skip if matches ignore patterns
+        if (config.ignorePatterns.some(pattern => text.match(new RegExp(pattern)))) {
+          continue;
+        }
+
+        // Skip very short strings or common technical terms
+        if (text.length < 3 || isTechnicalTerm(text)) {
+          continue;
+        }
+
+        results.push({
+          file: filePath,
+          line: lineIndex + 1,
+          column: match.index + 1,
+          text: text.trim(),
+          severity: 'warning',
+          suggestion: `Consider using i18n.t('${generateTranslationKey(text)}') instead`
+        });
+      }
+    });
+  });
+
+  return results;
+}
+
+/**
+ * Generate a translation key from text
+ */
+function generateTranslationKey(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, '.')
+    .substring(0, 50);
+}
+
+/**
+ * Check if text is a technical term that doesn't need translation
+ */
+function isTechnicalTerm(text: string): boolean {
+  const technicalTerms = [
+    'id', 'class', 'type', 'name', 'value', 'key', 'index', 'count', 'size',
+    'width', 'height', 'color', 'url', 'path', 'file', 'dir', 'src', 'alt',
+    'title', 'role', 'aria', 'data', 'test', 'spec', 'mock', 'stub', 'fixture'
+  ];
+  
+  return technicalTerms.includes(text.toLowerCase()) || 
+         /^[a-z]+[A-Z][a-z]*$/.test(text) || // camelCase
+         /^[A-Z_]+$/.test(text); // CONSTANTS
+}
+
+/**
+ * Validate translation completeness across locales
+ */
+export async function validateTranslations(
+  config: I18nTestConfig
+): Promise<TranslationValidationResult[]> {
+  const results: TranslationValidationResult[] = [];
+  
+  for (const locale of config.locales) {
+    try {
+      // This would integrate with the actual i18n system
+      const translations = await loadTranslations(locale);
+      const referenceTranslations = await loadTranslations('en');
+      
+      const missingKeys = findMissingKeys(referenceTranslations, translations);
+      const unusedKeys = findUnusedKeys(referenceTranslations, translations);
+      const incompleteTranslations = findIncompleteTranslations(translations);
+      const pluralizationIssues = validatePluralization(translations, locale);
+      
+      results.push({
+        locale,
+        missingKeys,
+        unusedKeys,
+        incompleteTranslations,
+        pluralizationIssues
+      });
+    } catch (error) {
+      console.error(`Failed to validate translations for locale ${locale}:`, error);
+    }
+  }
+  
+  return results;
+}
+
+/**
+ * Load translations for a locale (placeholder implementation)
+ */
+async function loadTranslations(locale: string): Promise<Record<string, any>> {
+  // This would integrate with the actual reynard-i18n package
+  try {
+    const module = await import(`reynard-i18n/src/lang/${locale}/common.ts`);
+    return module.commonTranslations || {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Find missing translation keys
+ */
+function findMissingKeys(reference: Record<string, any>, target: Record<string, any>): string[] {
+  const missing: string[] = [];
+  
+  function compareObjects(ref: any, tar: any, path: string = '') {
+    for (const key in ref) {
+      const currentPath = path ? `${path}.${key}` : key;
+      
+      if (typeof ref[key] === 'object' && ref[key] !== null) {
+        if (!tar[key] || typeof tar[key] !== 'object') {
+          missing.push(currentPath);
+        } else {
+          compareObjects(ref[key], tar[key], currentPath);
+        }
+      } else if (!(key in tar)) {
+        missing.push(currentPath);
+      }
+    }
+  }
+  
+  compareObjects(reference, target);
+  return missing;
+}
+
+/**
+ * Find unused translation keys
+ */
+function findUnusedKeys(reference: Record<string, any>, target: Record<string, any>): string[] {
+  const unused: string[] = [];
+  
+  function findUnusedInObject(ref: any, tar: any, path: string = '') {
+    for (const key in tar) {
+      const currentPath = path ? `${path}.${key}` : key;
+      
+      if (typeof tar[key] === 'object' && tar[key] !== null) {
+        if (!ref[key] || typeof ref[key] !== 'object') {
+          unused.push(currentPath);
+        } else {
+          findUnusedInObject(ref[key], tar[key], currentPath);
+        }
+      } else if (!(key in ref)) {
+        unused.push(currentPath);
+      }
+    }
+  }
+  
+  findUnusedInObject(reference, target);
+  return unused;
+}
+
+/**
+ * Find incomplete translations (empty or placeholder values)
+ */
+function findIncompleteTranslations(translations: Record<string, any>): string[] {
+  const incomplete: string[] = [];
+  
+  function checkObject(obj: any, path: string = '') {
+    for (const key in obj) {
+      const currentPath = path ? `${path}.${key}` : key;
+      
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        checkObject(obj[key], currentPath);
+      } else if (typeof obj[key] === 'string') {
+        const value = obj[key];
+        if (!value || value.trim() === '' || value.includes('TODO') || value.includes('FIXME')) {
+          incomplete.push(currentPath);
+        }
+      }
+    }
+  }
+  
+  checkObject(translations);
+  return incomplete;
+}
+
+/**
+ * Validate pluralization rules
+ */
+function validatePluralization(translations: Record<string, any>, locale: string): string[] {
+  const issues: string[] = [];
+  
+  // This would integrate with the actual pluralization system
+  const pluralizationRules = getPluralizationRules(locale);
+  
+  function checkPluralization(obj: any, path: string = '') {
+    for (const key in obj) {
+      const currentPath = path ? `${path}.${key}` : key;
+      
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        checkPluralization(obj[key], currentPath);
+      } else if (typeof obj[key] === 'string') {
+        const value = obj[key];
+        if (value.includes('{count}') && !hasProperPluralForms(obj, key, pluralizationRules)) {
+          issues.push(currentPath);
+        }
+      }
+    }
+  }
+  
+  checkPluralization(translations);
+  return issues;
+}
+
+/**
+ * Get pluralization rules for a locale
+ */
+function getPluralizationRules(locale: string): string[] {
+  // This would integrate with the actual pluralization system
+  const rules: Record<string, string[]> = {
+    'en': ['one', 'other'],
+    'ru': ['one', 'few', 'many'],
+    'ar': ['zero', 'one', 'two', 'few', 'many', 'other'],
+    'pl': ['one', 'few', 'many'],
+  };
+  
+  return rules[locale] || rules['en'];
+}
+
+/**
+ * Check if plural forms are properly defined
+ */
+function hasProperPluralForms(obj: any, key: string, rules: string[]): boolean {
+  // Check if all required plural forms exist
+  return rules.every(rule => obj[`${key}_${rule}`] !== undefined);
+}
+
+/**
+ * Test RTL support
+ */
+export function testRTLSupport(config: I18nTestConfig): string[] {
+  const issues: string[] = [];
+  const rtlLocales = ['ar', 'he', 'fa', 'ur'];
+  
+  for (const locale of config.locales) {
+    if (rtlLocales.includes(locale)) {
+      // This would test actual RTL implementation
+      // For now, just return placeholder issues
+      issues.push(`RTL support not fully implemented for ${locale}`);
+    }
+  }
+  
+  return issues;
+}
+
+/**
+ * Run comprehensive i18n tests
+ */
+export async function runI18nTests(config: I18nTestConfig): Promise<I18nTestResult> {
+  const startTime = performance.now();
+  
+  const hardcodedStrings: HardcodedStringResult[] = [];
+  const translationValidation = await validateTranslations(config);
+  const rtlIssues = testRTLSupport(config);
+  
+  const endTime = performance.now();
+  
+  return {
+    hardcodedStrings,
+    translationValidation,
+    rtlIssues,
+    performanceMetrics: {
+      loadTime: endTime - startTime,
+      memoryUsage: (performance as any).memory?.usedJSHeapSize || 0
+    }
+  };
+}
+
+/**
+ * Generate i18n test report
+ */
+export function generateI18nReport(result: I18nTestResult): string {
+  let report = '# i18n Test Report\n\n';
+  
+  // Hardcoded strings section
+  if (result.hardcodedStrings.length > 0) {
+    report += '## Hardcoded Strings Found\n\n';
+    result.hardcodedStrings.forEach(item => {
+      report += `- **${item.file}:${item.line}:${item.column}** - "${item.text}"\n`;
+      if (item.suggestion) {
+        report += `  - Suggestion: ${item.suggestion}\n`;
+      }
+    });
+    report += '\n';
+  }
+  
+  // Translation validation section
+  if (result.translationValidation.length > 0) {
+    report += '## Translation Validation\n\n';
+    result.translationValidation.forEach(validation => {
+      report += `### ${validation.locale}\n\n`;
+      
+      if (validation.missingKeys.length > 0) {
+        report += `**Missing Keys (${validation.missingKeys.length}):**\n`;
+        validation.missingKeys.forEach(key => {
+          report += `- ${key}\n`;
+        });
+        report += '\n';
+      }
+      
+      if (validation.unusedKeys.length > 0) {
+        report += `**Unused Keys (${validation.unusedKeys.length}):**\n`;
+        validation.unusedKeys.forEach(key => {
+          report += `- ${key}\n`;
+        });
+        report += '\n';
+      }
+      
+      if (validation.incompleteTranslations.length > 0) {
+        report += `**Incomplete Translations (${validation.incompleteTranslations.length}):**\n`;
+        validation.incompleteTranslations.forEach(key => {
+          report += `- ${key}\n`;
+        });
+        report += '\n';
+      }
+    });
+  }
+  
+  // RTL issues section
+  if (result.rtlIssues.length > 0) {
+    report += '## RTL Issues\n\n';
+    result.rtlIssues.forEach(issue => {
+      report += `- ${issue}\n`;
+    });
+    report += '\n';
+  }
+  
+  // Performance metrics
+  report += '## Performance Metrics\n\n';
+  report += `- Load Time: ${result.performanceMetrics.loadTime.toFixed(2)}ms\n`;
+  report += `- Memory Usage: ${(result.performanceMetrics.memoryUsage / 1024 / 1024).toFixed(2)}MB\n`;
+  
+  return report;
+}

@@ -5,27 +5,36 @@ alwaysApply: false
 
 # Technical Documentation Writing Rules
 
-Technical documentation should be written with clarity, accuracy, and a focus on the reader's needs. Content must be well-structured, concise, and anticipate potential questions or challenges, providing clear explanations, actionable steps, and relevant context to support effective understanding and implementation.
+Technical documentation should be written with clarity, accuracy, and a focus
+on the reader's needs. Content must be well-structured, concise, and anticipate
+potential questions or challenges, providing clear explanations, actionable steps,
+and relevant context to support effective understanding and implementation.
 
-These guidelines capture the sophisticated patterns that make your technical writing exceptional.
+These guidelines capture the sophisticated patterns that make your technical
+writing exceptional.
 
 ## Core Principles
 
 ### Documentation Philosophy
 
-Every piece of technical documentation in the Reynard project should embody these core values, following the patterns established in your comprehensive guides:
+Every piece of technical documentation in the Reynard project should embody
+these core values, following the patterns established in your comprehensive
+guides:
 
-- **Strategic Clarity**: Write with foresight and precision, anticipating reader needs with real-world examples
-- **Modular Structure**: Create self-contained, reusable documentation components with clear cross-references
-- **Comprehensive Coverage**: Always provide alternative approaches, troubleshooting paths, and performance considerations
-- **Efficiency Without Compromise**: Deliver maximum value with minimal cognitive load through strategic organization
-- **Resilient Design**: Documentation that adapts to changing requirements with version-aware content
+Strategic clarity involves writing with foresight and precision, anticipating
+reader needs with real-world examples. Modular structure creates
+self-contained, reusable documentation components with clear cross-references.
+Comprehensive coverage always provides alternative approaches, troubleshooting
+paths, and performance considerations. Efficiency without compromise delivers
+maximum value with minimal cognitive load through strategic organization.
+Resilient design ensures documentation adapts to changing requirements with
+version-aware content.
 
 ## Documentation Structure
 
 ### Standard Document Template
 
-Based these documentation patterns, follow this proven structure:
+Based on these documentation patterns, follow this proven structure:
 
 ```markdown
 # [System/Feature Name] Guide
@@ -63,19 +72,20 @@ Based these documentation patterns, follow this proven structure:
 
 ### Section Organization
 
-1. **Start with Overview**: Always provide context and scope
-2. **Progress from Simple to Complex**: Build understanding incrementally
-3. **Include Practical Examples**: Show, don't just tell
-4. **End with Actionable Takeaways**: Give readers clear next steps
+Start with an overview that always provides context and scope. Progress from
+simple to complex concepts, building understanding incrementally. Include
+practical examples that show rather than just tell. End with actionable
+takeaways that give readers clear next steps.
 
 ## Writing Guidelines
 
 ### Tone and Voice
 
-- **Professional and Clear**: Technical accuracy with accessible language
-- **Direct and Concise**: Avoid unnecessary words or complex sentences
-- **Consistent Terminology**: Use established Reynard vocabulary
-- **Engaging Style**: Maintain reader interest while staying professional
+Maintain a professional and clear tone with technical accuracy and accessible
+language. Be direct and concise, avoiding unnecessary words or complex
+sentences. Use consistent terminology from established Reynard vocabulary.
+Employ an engaging style that maintains reader interest while staying
+professional.
 
 ### Code Examples
 
@@ -95,33 +105,34 @@ function opt(r) { return {...r, c: lazy(() => import(r.cp))}; }
 
 ### Code Block Standards
 
-- **Always include language specification**: `typescript`, `bash`, `json`, etc.
-- **Provide context**: Explain what the code does and why
-- **Include error handling**: Show both success and failure cases
-- **Use realistic examples**: Avoid contrived or overly simplified code
+Always include language specification such as `typescript`, `bash`, `json`, etc.
+Provide context by explaining what the code does and why. Include error
+handling that shows both success and failure cases. Use realistic examples
+that avoid contrived or overly simplified code.
 
 ## Content Guidelines
 
 ### Technical Accuracy
 
-- **Verify all code examples**: Ensure they compile and run
-- **Test all procedures**: Follow step-by-step instructions yourself
-- **Update regularly**: Keep documentation current with code changes
-- **Cross-reference**: Link to related documentation and external resources
+Verify all code examples to ensure they compile and run. Test all procedures
+by following step-by-step instructions yourself. Update regularly to keep
+documentation current with code changes. Cross-reference by linking to
+related documentation and external resources.
 
 ### Accessibility
 
-- **Use semantic structure**: Proper heading hierarchy (H1 → H2 → H3)
-- **Include alt text**: For images and diagrams
-- **Provide multiple formats**: Code, prose, and visual explanations
-- **Test with screen readers**: Ensure content is accessible
+Use semantic structure with proper heading hierarchy (H1 → H2 → H3). Include
+alt text for images and diagrams. Provide multiple formats including code,
+prose, and visual explanations. Test with screen readers to ensure content
+is accessible.
 
 ### Performance Considerations
 
-- **Optimize for scanning**: Use bullet points, numbered lists, and clear headings
-- **Include quick reference**: Provide TL;DR sections for complex topics
-- **Link strategically**: Connect related concepts without overwhelming
-- **Minimize cognitive load**: Break complex topics into digestible chunks
+Optimize for scanning by using bullet points, numbered lists, and clear
+headings. Include quick reference sections that provide TL;DR summaries for
+complex topics. Link strategically to connect related concepts without
+overwhelming readers. Minimize cognitive load by breaking complex topics
+into digestible chunks.
 
 ## Documentation Types
 
@@ -131,18 +142,14 @@ function opt(r) { return {...r, c: lazy(() => import(r.cp))}; }
 
 **Structure**:
 
-- Overview and prerequisites
-- Step-by-step implementation
-- Code examples with explanations
-- Integration points and dependencies
-- Performance considerations
+Include overview and prerequisites, step-by-step implementation guidance,
+code examples with explanations, integration points and dependencies, and
+performance considerations.
 
 **Example Topics**:
 
-- Component development
-- API integration
-- State management
-- Routing and navigation
+Cover component development, API integration, state management, and routing
+and navigation topics.
 
 ### Analysis Documentation
 
@@ -150,18 +157,13 @@ function opt(r) { return {...r, c: lazy(() => import(r.cp))}; }
 
 **Structure**:
 
-- Problem definition and scope
-- Analysis methodology
-- Tools and techniques
-- Results interpretation
-- Recommendations
+Address problem definition and scope, analysis methodology, tools and
+techniques, results interpretation, and recommendations.
 
 **Example Topics**:
 
-- Performance profiling
-- Testing strategies
-- Debugging workflows
-- Code quality analysis
+Include performance profiling, testing strategies, debugging workflows, and
+code quality analysis.
 
 ### Security and Error Handling
 
@@ -169,33 +171,33 @@ function opt(r) { return {...r, c: lazy(() => import(r.cp))}; }
 
 **Structure**:
 
-- Threat model or failure scenarios
-- Mitigation strategies
-- Implementation details
-- Monitoring and alerting
-- Incident response
+Cover threat models or failure scenarios, mitigation strategies,
+implementation details, monitoring and alerting, and incident response.
 
 **Example Topics**:
 
-- Security best practices
-- Error boundary implementation
-- Input validation
-- Authentication flows
+Address security best practices, error boundary implementation, input
+validation, and authentication flows.
 
 ## Real-World Examples from Your Documentation
 
 ### Solid Router Guide Pattern
 
-Based on your comprehensive Solid Router guide, here's the proven pattern for framework documentation:
+Based on your comprehensive Solid Router guide, here's the proven pattern
+for framework documentation:
 
 ```markdown
 # Solid Router Guide
 
-*Comprehensive routing solution for SolidJS applications with universal rendering support.*
+*Comprehensive routing solution for SolidJS applications with universal
+rendering support.*
 
 ## Overview
 
-Solid Router is the universal router for SolidJS that provides seamless client and server-side rendering capabilities. Built with performance and developer experience in mind, it offers flexible routing patterns that scale from simple single-page applications to complex enterprise solutions.
+Solid Router is the universal router for SolidJS that provides seamless
+client and server-side rendering capabilities. Built with performance and
+developer experience in mind, it offers flexible routing patterns that scale
+from simple single-page applications to complex enterprise solutions.
 
 ## Installation
 
@@ -207,7 +209,8 @@ npm i @solidjs/router
 
 ### Package Configuration
 
-In the Reynard ecosystem, Solid Router is typically configured in Vite builds with manual chunk splitting for optimal performance:
+In the Reynard ecosystem, Solid Router is typically configured in Vite
+builds with manual chunk splitting for optimal performance:
 
 ```typescript
 // vite.config.ts
@@ -230,7 +233,9 @@ export default defineConfig({
 
 ### Router Configuration
 
-The `Router` component serves as the root of your routing system, managing URL state and rendering appropriate routes. In production applications, the router is typically wrapped with application providers and context.
+The `Router` component serves as the root of your routing system, managing
+URL state and rendering appropriate routes. In production applications, the
+router is typically wrapped with application providers and context.
 
 **Production Router Setup (Reynard Pattern):**
 
@@ -252,32 +257,44 @@ render(
 
 ### Caption Generation System Pattern
 
-Based on your Caption Generation documentation, here's the pattern for system architecture documentation:
+Based on your Caption Generation documentation, here's the pattern for
+system architecture documentation:
 
 ```markdown
 # Caption Generation
 
-This system provides a unified, model-agnostic way to generate captions and tags in the Reynard framework. It discovers captioners at runtime, applies retry and post-processing policies, and can persist results for the gallery. The system is implemented in the `reynard-annotating` package.
+This system provides a unified, model-agnostic way to generate captions and
+tags in the Reynard framework. It discovers captioners at runtime, applies
+retry and post-processing policies, and can persist results for the gallery.
+The system is implemented in the `reynard-annotating` package.
 
 ## Architecture
 
-Captioning is implemented as a plugin system in the `reynard-annotating` package that discovers available generators at runtime and exposes a single service surface. The abstract interface `BaseCaptionGenerator` defines async generation, availability checks, configuration schema, versioning, and a `caption_type`. The `AnnotationManager` coordinates model loading with concurrency locks, bounded retries, post-processing, and optional persistence to the data source.
+Captioning is implemented as a plugin system in the `reynard-annotating`
+package that discovers available generators at runtime and exposes a single
+service surface. The abstract interface `BaseCaptionGenerator` defines async
+generation, availability checks, configuration schema, versioning, and a
+`caption_type`. The `AnnotationManager` coordinates model loading with
+concurrency locks, bounded retries, post-processing, and optional
+persistence to the data source.
 
-- Frontend Files (packages/annotating):
-  - `src/AnnotationManager.ts` - Main orchestrator
-  - `src/AnnotationService.ts` - Service layer
-  - `src/BaseCaptionGenerator.ts` - Abstract base class
-  - `src/generators/*` - Generator implementations
-- Backend Files (TBD):
-  - `app/caption_generation/base.py`
-  - `app/caption_generation/__init__.py`
-  - `app/caption_generation/plugin_loader.py`
-  - `app/caption_generation/caption_service.py`
-  - `app/caption_generation/plugins/*`
+Frontend files in packages/annotating include `src/AnnotationManager.ts` as
+the main orchestrator, `src/AnnotationService.ts` for the service layer,
+`src/BaseCaptionGenerator.ts` as the abstract base class, and
+`src/generators/*` for generator implementations. Backend files (TBD) include
+`app/caption_generation/base.py`, `app/caption_generation/__init__.py`,
+`app/caption_generation/plugin_loader.py`,
+`app/caption_generation/caption_service.py`, and
+`app/caption_generation/plugins/*`.
 
 ## Backend API
 
-The main endpoints for captions live in the app router. Use `POST /api/generate-caption/{path}` to trigger a single caption with query parameters `generator` (name), `force` (bool), and `post_process` (bool). The service validates the generator via the unified manager and returns a structured result with `success`, `caption`, `processing_time`, and `caption_type`.
+The main endpoints for captions live in the app router. Use
+`POST /api/generate-caption/{path}` to trigger a single caption with query
+parameters `generator` (name), `force` (bool), and `post_process` (bool).
+The service validates the generator via the unified manager and returns a
+structured result with `success`, `caption`, `processing_time`, and
+`caption_type`.
 ```markdown
 
 ### RAG System Pattern
@@ -287,32 +304,45 @@ Based on your RAG documentation, here's the pattern for complex system documenta
 ```markdown
 # RAG Chunking & Ingestion
 
-This document outlines the recommended chunking strategies and ingestion pipeline for Retrieval-Augmented Generation (RAG) in YipYap.
+This document outlines the recommended chunking strategies and ingestion
+pipeline for Retrieval-Augmented Generation (RAG) in YipYap.
 
 ## Architecture Overview
 
-YipYap's RAG subsystem is composed of a streaming-friendly indexing service, dedicated embedding services for text and images, a vector database layer backed by Postgres and pgvector, and a thin API. The indexing service coordinates chunking, batching, embedding, and vector upserts with progress events.
+YipYap's RAG subsystem is composed of a streaming-friendly indexing
+service, dedicated embedding services for text and images, a vector database
+layer backed by Postgres and pgvector, and a thin API. The indexing service
+coordinates chunking, batching, embedding, and vector upserts with progress
+events.
 
 ## Document Chunking
 
-Use semantic-first chunking: split documents by headings and sentences, then group into windows targeting approximately 1000 tokens (minimum 800, maximum 1200), with 10–15% overlap. If semantic segmentation cannot reach the minimum size, fall back to a recursive character splitter (about 4 characters per token).
+Use semantic-first chunking: split documents by headings and sentences,
+then group into windows targeting approximately 1000 tokens (minimum 800,
+maximum 1200), with 10–15% overlap. If semantic segmentation cannot reach
+the minimum size, fall back to a recursive character splitter (about 4
+characters per token).
 
 ## Code Chunking
 
-Prefer language-aware parsing (such as tree-sitter) when available. If unavailable, use regex to identify `def`, `class`, and import block boundaries, then build windows of 150–400 lines of code with a 3–5 line overlap. Maintain a simple symbol map (functions, classes, imports) to support highlighting and search.
+Prefer language-aware parsing (such as tree-sitter) when available. If
+unavailable, use regex to identify `def`, `class`, and import block
+boundaries, then build windows of 150–400 lines of code with a 3–5 line
+overlap. Maintain a simple symbol map (functions, classes, imports) to
+support highlighting and search.
 
 ## Security, Limits, and Privacy Controls
 
-The RAG subsystem includes configurable limits and privacy toggles in `AppConfig` with corresponding env overrides via the config manager. Defaults are chosen for safe operation.
+The RAG subsystem includes configurable limits and privacy toggles in
+`AppConfig` with corresponding env overrides via the config manager.
+Defaults are chosen for safe operation.
 
-- Rate limits (per user):
-  - `rag_query_rate_limit_per_minute` (default 60)
-  - `rag_ingest_rate_limit_per_minute` (default 10)
-- Request size clamps:
-  - `rag_query_topk_max` (default 50)
-  - `rag_ingest_max_items_per_request` (default 100)
-  - `rag_ingest_max_content_length` (default 50000)
-  - `rag_clip_max_items_per_request` (default 100)
+Rate limits per user include `rag_query_rate_limit_per_minute` (default 60)
+and `rag_ingest_rate_limit_per_minute` (default 10). Request size clamps
+include `rag_query_topk_max` (default 50),
+`rag_ingest_max_items_per_request` (default 100),
+`rag_ingest_max_content_length` (default 50000), and
+`rag_clip_max_items_per_request` (default 100).
 ```
 
 ### API Documentation Pattern
@@ -479,22 +509,38 @@ The RAG subsystem includes configurable limits and privacy toggles in `AppConfig
 
 ## Conclusion
 
-🦊> *Mastering technical documentation requires strategic thinking, clear communication, and attention to detail - just like the cunning fox who plans every move with precision.*
+🦊> *Mastering technical documentation requires strategic thinking, clear
+communication, and attention to detail - just like the cunning fox who plans
+every move with precision.*
 
-Mastering technical documentation requires strategic thinking, clear communication, and attention to detail. By following these guidelines and maintaining the Reynard project's commitment to excellence, you'll create documentation that not only informs but empowers developers to build better solutions.
+Mastering technical documentation requires strategic thinking, clear
+communication, and attention to detail. By following these guidelines and
+maintaining the Reynard project's commitment to excellence, you'll create
+documentation that not only informs but empowers developers to build better
+solutions.
 
-The patterns established in your existing documentation - from the comprehensive Solid Router guide to the sophisticated RAG system documentation - demonstrate a level of technical writing excellence that should be the standard for all future documentation.
+The patterns established in your existing documentation - from the
+comprehensive Solid Router guide to the sophisticated RAG system
+documentation - demonstrate a level of technical writing excellence that
+should be the standard for all future documentation.
 
 Key principles to remember:
 
-- **Write for your future self and new team members**: Documentation should be self-contained and comprehensive
-- **Test everything you document**: All code examples must be verified and functional
-- **Keep it current and accurate**: Regular maintenance ensures documentation remains valuable
-- **Make it accessible and scannable**: Structure and formatting matter as much as content
-- **Focus on practical, actionable content**: Real-world examples and troubleshooting are essential
-- **Include performance considerations**: Optimization strategies and benchmarks add significant value
-- **Address security and error handling**: Comprehensive coverage of edge cases and failure modes
+Write for your future self and new team members by making documentation
+self-contained and comprehensive. Test everything you document to ensure all
+code examples are verified and functional. Keep it current and accurate
+through regular maintenance that ensures documentation remains valuable.
+Make it accessible and scannable since structure and formatting matter as
+much as content. Focus on practical, actionable content where real-world
+examples and troubleshooting are essential. Include performance
+considerations as optimization strategies and benchmarks add significant
+value. Address security and error handling with comprehensive coverage of
+edge cases and failure modes.
 
-Effective documentation is the foundation of successful software projects and enables teams to work efficiently and maintain high-quality codebases. Your existing documentation demonstrates this principle beautifully, and these enhanced guidelines will help maintain that standard of excellence.
+Effective documentation is the foundation of successful software projects
+and enables teams to work efficiently and maintain high-quality codebases.
+Your existing documentation demonstrates this principle beautifully, and
+these enhanced guidelines will help maintain that standard of excellence.
 
-*Build documentation that empowers developers to outfox complexity and create exceptional solutions.* 🦊
+*Build documentation that empowers developers to outfox complexity and
+create exceptional solutions.* 🦊

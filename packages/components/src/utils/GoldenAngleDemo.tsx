@@ -50,7 +50,7 @@ export const GoldenAngleDemo: Component = () => {
         hue,
         x,
         y,
-        color: `hsl(${hue}, 70%, 60%)`,
+        color: `oklch(60% 0.2 ${hue})`,
       });
     }
 

@@ -3,6 +3,9 @@
  * Using Reynard's CSS conventions and design system
  */
 
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
 /* Import advanced styles */
 @import './components/RAGAdvancedStyles.css';
 

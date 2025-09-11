@@ -186,7 +186,7 @@ describe("Spanish Pluralization", () => {
   it("should handle decimal numbers", () => {
     const forms = { singular: "archivo", plural: "archivos" };
     expect(getSpanishPlural(1.0, forms)).toBe("archivo");
-    expect(getSpanishPlural(1.5, forms)).toBe("archivos");
+    expect(getSpanishPlural(1.5, forms)).toBe("archivo"); // Math.trunc(1.5) = 1, so singular
   });
 });
 

@@ -1,0 +1,230 @@
+/**
+ * Floating Panel Component Styles
+ * 
+ * Specific styles for individual floating panel components.
+ */
+
+.floating-panel {
+  /* Base styles are inherited from the main styles.css */
+}
+
+.floating-panel.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.floating-panel:focus-within {
+  outline: 2px solid var(--color-accent, oklch(60% 0.25 240));
+  outline-offset: 2px;
+}
+
+/* Panel content layout */
+.floating-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Header styles */
+.floating-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.floating-panel-drag-handle {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: grab;
+  user-select: none;
+}
+
+.floating-panel-drag-handle:active {
+  cursor: grabbing;
+}
+
+.floating-panel-drag-handle svg {
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  opacity: 0.6;
+}
+
+.floating-panel-title {
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin: 0;
+  font-size: 1rem;
+  flex: 1;
+}
+
+/* Body styles */
+.floating-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 0;
+}
+
+/* Footer styles */
+.floating-panel-footer {
+  flex-shrink: 0;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--floating-panel-border, #e5e7eb);
+}
+
+/* Control button styles */
+.floating-panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.floating-panel-control-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.floating-panel-control-btn:hover {
+  background: var(--hover-bg, rgba(0, 0, 0, 0.05));
+  color: var(--text-primary, #111827);
+}
+
+.floating-panel-control-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Resize handle styles */
+.floating-panel-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nw-resize;
+  background: transparent;
+  z-index: 1;
+}
+
+.floating-panel-resize-handle::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid var(--text-secondary, #6b7280);
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+
+.floating-panel-resize-handle:hover::after {
+  opacity: 0.7;
+}
+
+/* Theme-specific styles */
+.floating-panel.theme-accent {
+  border-color: var(--color-accent, oklch(60% 0.25 240));
+}
+
+.floating-panel.theme-warning {
+  border-color: var(--floating-panel-warning, #f59e0b);
+}
+
+.floating-panel.theme-error {
+  border-color: var(--floating-panel-error, #ef4444);
+}
+
+.floating-panel.theme-success {
+  border-color: var(--floating-panel-success, #10b981);
+}
+
+.floating-panel.theme-info {
+  border-color: var(--floating-panel-info, #06b6d4);
+}
+
+/* Animation states */
+.floating-panel.entering {
+  animation: panel-entrance var(--panel-transition-duration, 300ms) var(--panel-transition-easing, ease);
+}
+
+.floating-panel.exiting {
+  animation: panel-exit var(--panel-transition-duration, 300ms) var(--panel-transition-easing, ease);
+}
+
+@keyframes panel-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panel-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-panel {
+    min-width: 200px;
+    min-height: 150px;
+  }
+  
+  .floating-panel-header {
+    padding: 8px;
+  }
+  
+  .floating-panel-body {
+    padding: 8px;
+  }
+  
+  .floating-panel-title {
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .floating-panel {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .floating-panel {
+    border-width: 2px;
+  }
+  
+  .floating-panel-control-btn {
+    border: 1px solid currentColor;
+  }
+}

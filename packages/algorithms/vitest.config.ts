@@ -1,3 +1,9 @@
-import { createUtilityTestConfig } from "reynard-testing/config";
+import { defineConfig } from "vitest/config";
 
-export default createUtilityTestConfig("reynard-algorithms");
+export default defineConfig({
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: [],
+  },
+});

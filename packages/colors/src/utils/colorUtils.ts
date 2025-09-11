@@ -380,7 +380,7 @@ export function generateHSLColors(
 
   for (let i = 0; i < count; i++) {
     const hue = (baseHue + i * hueStep) % 360;
-    colors.push(`hsla(${hue}, 70%, 50%, ${opacity})`);
+    colors.push(`oklch(50% 0.2 ${hue} / ${opacity})`);
   }
 
   return colors;

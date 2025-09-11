@@ -129,6 +129,7 @@ export interface CommonTranslations {
 
 // Theme translations
 export interface ThemeTranslations {
+  theme: string;
   light: string;
   gray: string;
   dark: string;

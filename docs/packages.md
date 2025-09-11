@@ -55,12 +55,13 @@ function MyComponent() {
 
 ### reynard-themes
 
-Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities.
+Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities. Uses OKLCH color space for perceptual uniformity and modern color management.
 
 #### Features
 
 - **8 Built-in Themes** - Light, Dark, Gray, Banana, Strawberry, Peanut, High Contrast Black, High Contrast Inverse
-- **Custom Themes** - Create your own theme configurations
+- **OKLCH Color Space** - Modern color system with perceptual uniformity and better color consistency
+- **Custom Themes** - Create your own theme configurations with OKLCH colors
 - **Internationalization** - 30+ languages with RTL support
 - **CSS Custom Properties** - Dynamic theme switching with CSS variables
 - **System Theme Detection** - Automatic light/dark mode based on user preferences
@@ -747,6 +748,136 @@ function CaptionGenerator() {
 }
 ```
 
+### reynard-floating-panel
+
+Advanced floating panel system with staggered animations, state management, and sophisticated overlay effects based on Yipyap's BoundingBoxEditor implementation.
+
+#### Floating Panel Features
+
+- **🎭 Staggered Animations** - Sophisticated entrance/exit animations with configurable delays
+- **🎯 State Management** - Advanced overlay state coordination with transition phases
+- **🖱️ Draggable Panels** - Full drag support with constraints and snap points
+- **📏 Resizable Panels** - Resize handles with min/max constraints
+- **🎨 Theme Support** - Multiple built-in themes (accent, warning, error, success, info)
+- **♿ Accessibility** - WCAG compliant with keyboard navigation and screen reader support
+- **📱 Responsive** - Mobile-first design that works across all device sizes
+- **🎪 Backdrop Effects** - Blur effects and color-mixed backgrounds
+- **⚡ Performance** - Optimized animations with reduced motion support
+
+#### Floating Panel Components
+
+- **FloatingPanelOverlay** - Main overlay container with backdrop and state management
+- **FloatingPanel** - Individual draggable/resizable panels with animations
+- **FloatingPanelAdvanced** - Advanced panel with sophisticated features
+- **FloatingPanelDebug** - Debug panel for development and testing
+
+#### Floating Panel Composables
+
+- **`useOverlayManager()`** - Manages overlay state and panel coordination
+- **`useStaggeredAnimation()`** - Handles sophisticated animation timing
+- **`useDraggablePanel()`** - Provides drag functionality with constraints
+
+#### Floating Panel Example Usage
+
+```tsx
+import { 
+  FloatingPanelOverlay, 
+  FloatingPanel, 
+  useOverlayManager 
+} from "reynard-floating-panel";
+import type { FloatingPanel as FloatingPanelType } from "reynard-floating-panel";
+
+function MyApp() {
+  const overlayManager = useOverlayManager({
+    config: {
+      backdropBlur: 4,
+      backdropColor: "rgb(0 0 0 / 0.2)",
+      outlineColor: "#3b82f6"
+    }
+  });
+
+  const panels: FloatingPanelType[] = [
+    {
+      id: "panel-1",
+      position: { top: 20, left: 20 },
+      size: { width: 300, height: 200 },
+      content: <div>Panel 1 Content</div>,
+      config: {
+        draggable: true,
+        closable: true,
+        theme: "accent"
+      }
+    },
+    {
+      id: "panel-2", 
+      position: { top: 20, right: 20 },
+      size: { width: 250, height: 150 },
+      content: <div>Panel 2 Content</div>,
+      config: {
+        draggable: true,
+        resizable: true,
+        theme: "warning"
+      }
+    }
+  ];
+
+  return (
+    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+      <button onClick={() => overlayManager.toggleOverlay()}>
+        Toggle Overlay
+      </button>
+      
+      <FloatingPanelOverlay
+        isActive={overlayManager.isActive()}
+        transitionPhase={overlayManager.overlayState().transitionPhase}
+      >
+        {panels.map(panel => (
+          <FloatingPanel
+            key={panel.id}
+            id={panel.id}
+            position={panel.position}
+            size={panel.size}
+            config={panel.config}
+          >
+            {panel.content}
+          </FloatingPanel>
+        ))}
+      </FloatingPanelOverlay>
+    </div>
+  );
+}
+```
+
+#### Advanced Animation Configuration
+
+```tsx
+const animation = useStaggeredAnimation({
+  baseDelay: 0.1,
+  staggerStep: 0.1,
+  direction: "center-out", // or "forward", "reverse"
+  duration: 300,
+  easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+});
+```
+
+#### Drag & Drop Configuration
+
+```tsx
+const draggablePanel = useDraggablePanel(panelRef, {
+  constraints: {
+    minWidth: 200,
+    minHeight: 100,
+    maxWidth: 800,
+    maxHeight: 600
+  },
+  snapPoints: {
+    x: [0, 100, 200, 300],
+    y: [0, 50, 100, 150],
+    tolerance: 10
+  }
+});
+```
+
 ### reynard-caption
 
 Caption editing UI components with tag management, validation, and comprehensive user interface for caption workflows.
@@ -1019,6 +1150,31 @@ describe("Button Component", () => {
 - **reynard-boundingbox** - Reusable bounding box and annotation editing components
 - **reynard-colors** - Color generation utilities and media handling components
 
+### reynard-colors
+
+Color generation utilities and media handling components with OKLCH color space support for modern web applications.
+
+#### Features
+
+- **OKLCH Color Generation** - Generate colors using the OKLCH color space for perceptual uniformity
+- **Color Utilities** - Convert between color spaces and generate color palettes
+- **Media Handling** - Components for handling various media types
+- **Color Harmony** - Generate harmonious color schemes and gradients
+
+#### Usage
+
+```tsx
+import { generateColorPalette, convertToOKLCH } from "reynard-colors";
+
+// Generate a color palette using OKLCH
+const palette = generateColorPalette(5, 240); // 5 colors with base hue 240
+// Returns: ['oklch(60% 0.2 240)', 'oklch(60% 0.2 300)', ...]
+
+// Convert hex to OKLCH
+const oklchColor = convertToOKLCH('#3b82f6');
+// Returns: 'oklch(60% 0.25 240)'
+```
+
 ### Model and Service Management
 
 - **reynard-model-management** - Model management system for ML model loading and lifecycle
@@ -1058,7 +1214,7 @@ pnpm install reynard-testing reynard-tools reynard-composables
 pnpm install reynard-ui reynard-fluent-icons reynard-error-boundaries
 
 # Specialized features
-pnpm install reynard-3d reynard-games reynard-monaco reynard-boundingbox
+pnpm install reynard-3d reynard-games reynard-monaco reynard-boundingbox reynard-floating-panel
 ```
 
 ## Next Steps

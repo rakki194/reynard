@@ -43,6 +43,7 @@ export interface CoreTranslations {
 // Component package translations
 export interface ComponentTranslations {
   modal: {
+    title: string;
     close: string;
     confirm: string;
     cancel: string;

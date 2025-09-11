@@ -1,0 +1,484 @@
+/**
+ * Reynard Floating Panel System Styles
+ * 
+ * Advanced floating panel system with staggered animations, state management,
+ * and sophisticated overlay effects based on Yipyap's BoundingBoxEditor.
+ */
+
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
+/* ==========================================================================
+   CSS Custom Properties
+   ========================================================================== */
+
+:root {
+  /* Panel System Variables - Use centralized theme variables */
+  --floating-panel-bg: var(--color-surface, oklch(98% 0.01 0));
+  --floating-panel-border: var(--color-border, oklch(85% 0.02 0));
+  --floating-panel-shadow: var(--shadow-default, 0 2px 4px rgb(0 0 0 / 0.1));
+  --floating-panel-radius: var(--border-radius, 0.5rem);
+  --floating-panel-padding: var(--spacing, 1rem);
+  --floating-panel-z-index: var(--z-dropdown, 1000);
+  
+  /* Animation Variables */
+  --floating-panel-transition-duration: 0.3s;
+  --floating-panel-transition-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --floating-panel-stagger-delay: 0.1s;
+  --floating-panel-entrance-delay: 0.1s;
+  --floating-panel-exit-delay: 0s;
+  
+  /* Overlay Variables */
+  --floating-overlay-bg: var(--overlay-bg, rgb(0 0 0 / 0.2));
+  --floating-overlay-blur: var(--backdrop-blur, 4px);
+  --floating-overlay-opacity: 0.8;
+  --floating-overlay-outline: var(--color-accent, oklch(60% 0.25 240));
+  --floating-overlay-z-index: var(--z-overlay-highest, 1000);
+  
+  /* Theme Variables - Use centralized theme variables */
+  --floating-panel-accent: var(--color-accent, oklch(60% 0.25 240));
+  --floating-panel-warning: var(--color-warning, oklch(70% 0.2 80));
+  --floating-panel-error: var(--color-error, oklch(55% 0.25 20));
+  --floating-panel-success: var(--color-success, oklch(60% 0.2 140));
+  --floating-panel-info: var(--color-info, oklch(65% 0.2 200));
+}
+
+/* ==========================================================================
+   Floating Panel Overlay System
+   ========================================================================== */
+
+.floating-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--floating-overlay-z-index);
+  pointer-events: none;
+  outline: none;
+
+  /* Initial state - hidden */
+  opacity: 0;
+  backdrop-filter: blur(0);
+  background-color: transparent;
+
+  /* Transition properties with overlay support */
+  transition:
+    opacity var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    outline 0.15s,
+    backdrop-filter var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    background-color var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    overlay var(--floating-panel-transition-duration) allow-discrete,
+    display var(--floating-panel-transition-duration) allow-discrete;
+}
+
+/* Active overlay state */
+.floating-panel-overlay.active {
+  pointer-events: auto;
+  outline: 2px dashed var(--floating-overlay-outline);
+  opacity: 1;
+  backdrop-filter: blur(var(--floating-overlay-blur));
+  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+}
+
+/* Warning overlay state */
+.floating-panel-overlay.warning {
+  outline: 2px solid var(--floating-panel-warning);
+  backdrop-filter: blur(calc(var(--floating-overlay-blur) * 1.5));
+  background-color: color-mix(in srgb, var(--floating-panel-warning) 3%, transparent);
+}
+
+/* Error overlay state */
+.floating-panel-overlay.error {
+  outline: 2px solid var(--floating-panel-error);
+  backdrop-filter: blur(calc(var(--floating-overlay-blur) * 1.5));
+  background-color: color-mix(in srgb, var(--floating-panel-error) 3%, transparent);
+}
+
+/* Starting styles for entry animation */
+@starting-style {
+  .floating-panel-overlay.active {
+    opacity: 0;
+    backdrop-filter: blur(0);
+    background-color: transparent;
+  }
+}
+
+/* ==========================================================================
+   Base Panel Styles
+   ========================================================================== */
+
+.floating-panel {
+  position: absolute;
+  background: var(--floating-panel-bg);
+  border: 1px solid var(--floating-panel-border);
+  border-radius: var(--floating-panel-radius);
+  box-shadow: var(--floating-panel-shadow);
+  z-index: var(--floating-panel-z-index);
+  
+  /* Default hidden state */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  
+  /* Smooth transitions for all properties */
+  transition:
+    opacity var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    transform var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    transition-delay 0s;
+}
+
+/* Panel visibility states */
+.floating-panel-overlay.active .floating-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Staggered entrance animations */
+.floating-panel-overlay.active .floating-panel:nth-child(1) {
+  transition-delay: calc(var(--floating-panel-entrance-delay) * 1);
+}
+
+.floating-panel-overlay.active .floating-panel:nth-child(2) {
+  transition-delay: calc(var(--floating-panel-entrance-delay) * 2);
+}
+
+.floating-panel-overlay.active .floating-panel:nth-child(3) {
+  transition-delay: calc(var(--floating-panel-entrance-delay) * 3);
+}
+
+.floating-panel-overlay.active .floating-panel:nth-child(4) {
+  transition-delay: calc(var(--floating-panel-entrance-delay) * 4);
+}
+
+.floating-panel-overlay.active .floating-panel:nth-child(5) {
+  transition-delay: calc(var(--floating-panel-entrance-delay) * 5);
+}
+
+/* Exit states for smooth transitions */
+.floating-panel-overlay:not(.active) {
+  opacity: 0;
+  backdrop-filter: blur(0);
+  background-color: transparent;
+}
+
+.floating-panel-overlay:not(.active) .floating-panel {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition-delay: var(--floating-panel-exit-delay);
+  transition-duration: 0.2s;
+}
+
+/* ==========================================================================
+   State Management Classes
+   ========================================================================== */
+
+/* Transition coordination classes */
+.floating-panel-overlay[data-transition-phase="entering"] {
+  --floating-panel-entrance-delay: 0.1s;
+  opacity: 1;
+  backdrop-filter: blur(var(--floating-overlay-blur));
+  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+}
+
+.floating-panel-overlay[data-transition-phase="entering-active"] {
+  --floating-panel-entrance-delay: 0.1s;
+  opacity: 1;
+  backdrop-filter: blur(var(--floating-overlay-blur));
+  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+}
+
+.floating-panel-overlay[data-transition-phase="exiting"] {
+  --floating-panel-exit-delay: 0s;
+  opacity: 0;
+  backdrop-filter: blur(0);
+  background-color: transparent;
+}
+
+.floating-panel-overlay[data-transition-phase="exiting-active"] {
+  --floating-panel-exit-delay: 0s;
+  opacity: 0;
+  backdrop-filter: blur(0);
+  background-color: transparent;
+}
+
+.floating-panel-overlay[data-transition-phase="exiting-active"] .floating-panel {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+
+/* ==========================================================================
+   Panel Content Styles
+   ========================================================================== */
+
+.floating-panel-content {
+  padding: var(--floating-panel-padding);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.floating-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: calc(var(--floating-panel-padding) * 0.5);
+  padding-bottom: calc(var(--floating-panel-padding) * 0.5);
+  border-bottom: 1px solid var(--floating-panel-border);
+  flex-shrink: 0;
+}
+
+.floating-panel-title {
+  font-weight: 600;
+  color: var(--color-text, oklch(15% 0.01 0));
+  margin: 0;
+  font-size: 1rem;
+}
+
+.floating-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.floating-panel-footer {
+  margin-top: calc(var(--floating-panel-padding) * 0.5);
+  padding-top: calc(var(--floating-panel-padding) * 0.5);
+  border-top: 1px solid var(--floating-panel-border);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Draggable Panel Styles
+   ========================================================================== */
+
+.floating-panel-draggable {
+  cursor: grab;
+  user-select: none;
+}
+
+.floating-panel-draggable.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.floating-panel-drag-handle {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  padding: calc(var(--floating-panel-padding) * 0.25);
+  border-radius: calc(var(--floating-panel-radius) * 0.5);
+  transition: background-color 0.15s;
+  user-select: none;
+  flex: 1;
+}
+
+.floating-panel-drag-handle:hover {
+  background: color-mix(in srgb, var(--floating-panel-border) 30%, var(--floating-panel-bg));
+}
+
+.floating-panel-drag-handle:active {
+  cursor: grabbing;
+}
+
+.floating-panel-drag-handle svg {
+  width: 12px;
+  height: 12px;
+  color: var(--color-text-secondary, oklch(50% 0.01 0));
+  margin-right: calc(var(--floating-panel-padding) * 0.25);
+}
+
+/* ==========================================================================
+   Resizable Panel Styles
+   ========================================================================== */
+
+.floating-panel-resizable {
+  resize: both;
+  overflow: auto;
+}
+
+.floating-panel-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nw-resize;
+  background: transparent;
+  z-index: calc(var(--floating-panel-z-index) + 1);
+}
+
+.floating-panel-resize-handle::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid var(--color-text-secondary, oklch(50% 0.01 0));
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+
+.floating-panel-resize-handle:hover::after {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Panel Control Styles
+   ========================================================================== */
+
+.floating-panel-controls {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--floating-panel-padding) * 0.25);
+}
+
+.floating-panel-control-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary, oklch(50% 0.01 0));
+  cursor: pointer;
+  padding: calc(var(--floating-panel-padding) * 0.25);
+  border-radius: calc(var(--floating-panel-radius) * 0.5);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.floating-panel-control-btn:hover {
+  background: color-mix(in srgb, var(--floating-panel-border) 30%, var(--floating-panel-bg));
+  color: var(--color-text, oklch(15% 0.01 0));
+}
+
+.floating-panel-control-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ==========================================================================
+   Theme Variants
+   ========================================================================== */
+
+.floating-panel.theme-accent {
+  border-color: var(--floating-panel-accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-accent) 20%, transparent);
+}
+
+.floating-panel.theme-warning {
+  border-color: var(--floating-panel-warning);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-warning) 20%, transparent);
+}
+
+.floating-panel.theme-error {
+  border-color: var(--floating-panel-error);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-error) 20%, transparent);
+}
+
+.floating-panel.theme-success {
+  border-color: var(--floating-panel-success);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-success) 20%, transparent);
+}
+
+.floating-panel.theme-info {
+  border-color: var(--floating-panel-info);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-info) 20%, transparent);
+}
+
+/* ==========================================================================
+   Animation Keyframes
+   ========================================================================== */
+
+@keyframes floating-panel-flash {
+  0% {
+    box-shadow:
+      0 0 0 0 var(--floating-panel-accent, rgb(59 130 246 / 70%)),
+      0 0 0 0 color-mix(in srgb, var(--floating-panel-accent) 70%, transparent);
+    border-color: var(--floating-panel-accent);
+  }
+
+  60% {
+    box-shadow:
+      0 0 0 8px color-mix(in srgb, var(--floating-panel-accent) 20%, transparent),
+      0 0 0 16px color-mix(in srgb, var(--floating-panel-accent) 10%, transparent);
+    border-color: var(--floating-panel-accent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--floating-panel-accent) 0%, transparent);
+    border-color: var(--floating-panel-border);
+  }
+}
+
+.floating-panel.flash {
+  animation: floating-panel-flash 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: calc(var(--floating-panel-z-index) + 100);
+  border-width: 2px;
+}
+
+@keyframes floating-panel-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.floating-panel.pulse {
+  animation: floating-panel-pulse 0.8s ease-in-out;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .floating-panel {
+    --floating-panel-padding: calc(var(--spacing, 1rem) * 0.75);
+    --floating-panel-radius: calc(var(--border-radius, 0.5rem) * 0.75);
+  }
+  
+  .floating-panel-overlay.active .floating-panel {
+    transform: translateY(10px) scale(0.98);
+  }
+  
+  .floating-panel-overlay:not(.active) .floating-panel {
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+.floating-panel:focus-within {
+  outline: 2px solid var(--floating-panel-accent);
+  outline-offset: 2px;
+}
+
+.floating-panel-overlay[aria-hidden="true"] {
+  display: none;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .floating-panel-overlay,
+  .floating-panel {
+    transition: none;
+    animation: none;
+  }
+  
+  .floating-panel-overlay.active .floating-panel {
+    transition-delay: 0s;
+  }
+}

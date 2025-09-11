@@ -1,304 +1,411 @@
 /**
- * Reynard Theme Variables
- * Comprehensive CSS variables for theming and styling
- * Ported from yipyap's proven theme system
+ * Reynard Theme Variables - OKLCH Only
+ * Comprehensive CSS variables for theming and styling using OKLCH colors
+ * Modern color system for perceptual uniformity
  */
 
 :root {
   /* ==========================================================================
-     Base Theme Variables
+     Base Theme Variables - OKLCH Colors
      ========================================================================== */
 
-  /* Primary Colors */
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
+  /* Primary Colors - Use centralized theme variables */
+  --accent: var(--color-accent, oklch(60% 0.25 270));
+  --bg-color: var(--color-background, oklch(98% 0.01 0));
+  --secondary-bg: var(--color-background-secondary, oklch(95% 0.02 0));
+  --card-bg: var(--color-surface, oklch(98% 0.01 0));
 
-  /* Text Colors */
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --text-tertiary: hsl(0deg 0% 50%);
-  --text-on-accent: hsl(220deg 20% 95%);
+  /* Text Colors - Use centralized theme variables */
+  --text-primary: var(--color-text, oklch(15% 0.01 0));
+  --text-secondary: var(--color-text-secondary, oklch(30% 0.01 0));
+  --text-tertiary: var(--color-text-tertiary, oklch(50% 0.01 0));
+  --text-on-accent: var(--color-text-inverse, oklch(95% 0.01 220));
 
-  /* Border and UI Colors */
-  --border-color: hsl(0deg 0% 85%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
+  /* Border and UI Colors - Use centralized theme variables */
+  --border-color: var(--color-border, oklch(85% 0.02 0));
+  --border-secondary: var(--color-accent, oklch(60% 0.25 270));
+  --placeholder-color: var(--color-text-secondary, oklch(30% 0.01 0));
 
-  /* Status Colors */
-  --error: hsl(0deg 60% 50%);
-  --success: hsl(120deg 60% 50%);
-  --info: hsl(200deg 60% 50%);
-  --warning: hsl(45deg 60% 50%);
-  --danger: hsl(0deg 60% 50%);
+  /* Status Colors - Use centralized theme variables */
+  --error: var(--color-error, oklch(55% 0.25 20));
+  --success: var(--color-success, oklch(60% 0.2 140));
+  --info: var(--color-info, oklch(65% 0.2 200));
+  --warning: var(--color-warning, oklch(70% 0.2 80));
+  --danger: var(--color-error, oklch(55% 0.25 20));
 
-  /* Status Background Colors */
-  --error-bg: color-mix(in srgb, var(--error) 10%, var(--card-bg));
-  --error-text: var(--error);
-  --success-bg: color-mix(in srgb, var(--success) 10%, var(--card-bg));
-  --success-text: var(--success);
-  --info-bg: color-mix(in srgb, var(--info) 10%, var(--card-bg));
-  --info-text: var(--info);
-  --warning-bg: color-mix(in srgb, var(--warning) 10%, var(--card-bg));
-  --warning-text: var(--warning);
+  /* Status Background Colors - Use centralized theme variables */
+  --error-bg: color-mix(in oklch, var(--color-error, oklch(55% 0.25 20)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  --error-text: var(--color-error, oklch(55% 0.25 20));
+  --success-bg: color-mix(in oklch, var(--color-success, oklch(60% 0.2 140)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  --success-text: var(--color-success, oklch(60% 0.2 140));
+  --info-bg: color-mix(in oklch, var(--color-info, oklch(65% 0.2 200)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  --info-text: var(--color-info, oklch(65% 0.2 200));
+  --warning-bg: color-mix(in oklch, var(--color-warning, oklch(70% 0.2 80)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  --warning-text: var(--color-warning, oklch(70% 0.2 80));
 
   /* ==========================================================================
      Spacing and Layout
      ========================================================================== */
 
   --spacing: 1rem;
-  --quarter-spacing: calc(var(--spacing) / 4);
-  --half-spacing: calc(var(--spacing) / 2);
-  --double-spacing: calc(var(--spacing) * 2);
-  --triple-spacing: calc(var(--spacing) * 3);
-  --quad-spacing: calc(var(--spacing) * 4);
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
 
   /* ==========================================================================
-     Border Radius and Shadows
+     Border Radius
      ========================================================================== */
 
-  --border-radius: 0.5rem;
-  --shadow-color: rgb(0 0 0 / 30%);
-  --shadow-accent: var(--accent);
-  --shadow-default: 0 2px 4px var(--shadow-color);
-  --shadow-hover: 0 4px 6px var(--shadow-accent);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
 
   /* ==========================================================================
-     Z-Index Scale
+     Shadows
      ========================================================================== */
 
-  --z-base: 0;
-  --z-content: 1;
-  --z-overlay: 2;
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-tooltip: 1070;
-  --z-modal: 1050;
-  --z-toast: 1080;
-  --z-overlay-high: 100;
-  --z-overlay-higher: 200;
-  --z-overlay-highest: 1000;
-  --z-overlay-ultra: 1100;
-  --z-overlay-max: 2000;
-  --z-overlay-super: 9999;
-
-  /* ==========================================================================
-     Motion and Transitions
-     ========================================================================== */
-
-  --duration-fast: 120ms;
-  --duration-base: 200ms;
-  --duration-slow: 320ms;
-  --transition-duration: 0.2s;
-  --transition-duration-base: 0.2s;
-  --animation-duration: 0.3s;
-  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
-  --easing-decelerate: cubic-bezier(0, 0, 0, 1);
-  --easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
-  --transition-timing: ease;
-  --animation-timing: ease;
-
-  /* ==========================================================================
-     Overlay and Backdrop
-     ========================================================================== */
-
-  --overlay-bg: rgb(0 0 0 / 20%);
-  --overlay-bg-dark: rgb(0 0 0 / 80%);
-  --overlay-bg-darker: rgb(0 0 0 / 90%);
-  --overlay-bg-medium: rgb(0 0 0 / 50%);
-  --overlay-bg-light: rgb(0 0 0 / 30%);
-  --overlay-bg-lighter: rgb(0 0 0 / 40%);
-  --backdrop-blur: 10px;
-  --backdrop-opacity: 0.2;
-  --backdrop-saturation: 0.5;
-  --overlay-backdrop: brightness(0.5) saturate(var(--backdrop-saturation, 0.5));
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.05);
+  --shadow-md: 0 4px 6px oklch(0% 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px oklch(0% 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px oklch(0% 0 0 / 0.1);
 
   /* ==========================================================================
      Typography
      ========================================================================== */
 
-  --font-size: 14px;
-  --line-height: 1.6;
-  --font-family-mono:
-    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
-    monospace;
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
 
   /* ==========================================================================
-     Interactive States
+     Transitions
      ========================================================================== */
 
-  --hover-transform: translate3d(0, -4px, 0);
-  --focus-ring-color: var(--accent);
-  --focus-ring-width: 2px;
-  --focus-ring-offset:
-    0 0 0 2px hsl(0deg 0% 100%), 0 0 0 4px hsl(270deg 60% 60% / 0.5);
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
 
   /* ==========================================================================
-     Component Specific
+     Z-Index Scale
      ========================================================================== */
 
-  --icon-size: 1.5em;
-  --loader-size: 30px;
-  --loader-border-width: 3px;
-  --container-max-width: 1600px;
-  --grid-item-min-width: 250px;
-  --directory-item-min-width: 125px;
-  --directory-aspect-ratio: 4/1;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+
+  /* ==========================================================================
+     Breakpoints (for reference in JS)
+     ========================================================================== */
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ==========================================================================
+     Component-Specific Variables
+     ========================================================================== */
+
+  /* Button Variables */
+  --button-bg: var(--accent);
+  --button-bg-hover: oklch(50% 0.25 270);
+  --button-bg-active: oklch(40% 0.25 270);
+  --button-text: var(--text-on-accent);
+  --button-border: var(--accent);
+  --button-radius: var(--radius-md);
+
+  /* Input Variables */
+  --input-bg: var(--card-bg);
+  --input-border: var(--border-color);
+  --input-border-focus: var(--accent);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--text-tertiary);
+  --input-radius: var(--radius-md);
+
+  /* Card Variables */
+  --card-border: var(--border-color);
+  --card-shadow: var(--shadow-sm);
+  --card-radius: var(--radius-lg);
+
+  /* Modal Variables */
+  --modal-bg: var(--card-bg);
+  --modal-backdrop: oklch(0% 0 0 / 0.5);
+  --modal-border: var(--border-color);
+  --modal-shadow: var(--shadow-xl);
+  --modal-radius: var(--radius-xl);
+
+  /* Tooltip Variables */
+  --tooltip-bg: oklch(20% 0.01 0);
+  --tooltip-text: oklch(95% 0.01 0);
+  --tooltip-border: var(--border-color);
+  --tooltip-radius: var(--radius-md);
+
+  /* Progress Variables */
+  --progress-bg: var(--secondary-bg);
+  --progress-fill: var(--accent);
+  --progress-text: var(--text-primary);
+  --progress-radius: var(--radius-full);
+
+  /* Toggle Variables */
+  --toggle-bg: var(--secondary-bg);
+  --toggle-bg-active: var(--accent);
+  --toggle-thumb: var(--card-bg);
+  --toggle-border: var(--border-color);
+  --toggle-radius: var(--radius-full);
+
+  /* Slider Variables */
+  --slider-track: var(--secondary-bg);
+  --slider-track-active: var(--accent);
+  --slider-thumb: var(--card-bg);
+  --slider-thumb-border: var(--accent);
+  --slider-thumb-hover: oklch(50% 0.25 270);
+
+  /* Select Variables */
+  --select-bg: var(--card-bg);
+  --select-border: var(--border-color);
+  --select-border-focus: var(--accent);
+  --select-text: var(--text-primary);
+  --select-option-bg: var(--card-bg);
+  --select-option-bg-hover: var(--secondary-bg);
+  --select-option-text: var(--text-primary);
+  --select-radius: var(--radius-md);
+
+  /* Table Variables */
+  --table-bg: var(--card-bg);
+  --table-border: var(--border-color);
+  --table-header-bg: var(--secondary-bg);
+  --table-row-bg: var(--card-bg);
+  --table-row-bg-hover: var(--secondary-bg);
+  --table-text: var(--text-primary);
+  --table-text-secondary: var(--text-secondary);
+
+  /* Navigation Variables */
+  --nav-bg: var(--card-bg);
+  --nav-border: var(--border-color);
+  --nav-item-bg: transparent;
+  --nav-item-bg-hover: var(--secondary-bg);
+  --nav-item-bg-active: var(--accent);
+  --nav-item-text: var(--text-primary);
+  --nav-item-text-active: var(--text-on-accent);
+
+  /* Sidebar Variables */
+  --sidebar-bg: var(--secondary-bg);
+  --sidebar-border: var(--border-color);
+  --sidebar-item-bg: transparent;
+  --sidebar-item-bg-hover: var(--card-bg);
+  --sidebar-item-bg-active: var(--accent);
+  --sidebar-item-text: var(--text-primary);
+  --sidebar-item-text-active: var(--text-on-accent);
+
+  /* Header Variables */
+  --header-bg: var(--card-bg);
+  --header-border: var(--border-color);
+  --header-text: var(--text-primary);
+  --header-shadow: var(--shadow-sm);
+
+  /* Footer Variables */
+  --footer-bg: var(--secondary-bg);
+  --footer-border: var(--border-color);
+  --footer-text: var(--text-secondary);
+
+  /* Code Variables */
+  --code-bg: var(--secondary-bg);
+  --code-text: var(--text-primary);
+  --code-border: var(--border-color);
+  --code-radius: var(--radius-sm);
+
+  /* Blockquote Variables */
+  --blockquote-bg: var(--secondary-bg);
+  --blockquote-border: var(--accent);
+  --blockquote-text: var(--text-primary);
+  --blockquote-radius: var(--radius-md);
+
+  /* Link Variables */
+  --link-text: var(--accent);
+  --link-text-hover: oklch(50% 0.25 270);
+  --link-text-visited: oklch(50% 0.25 270);
+
+  /* Divider Variables */
+  --divider-color: var(--border-color);
+  --divider-style: solid;
+  --divider-width: 1px;
+
+  /* Badge Variables */
+  --badge-bg: var(--accent);
+  --badge-text: var(--text-on-accent);
+  --badge-radius: var(--radius-full);
+
+  /* Avatar Variables */
+  --avatar-bg: var(--secondary-bg);
+  --avatar-border: var(--border-color);
+  --avatar-text: var(--text-primary);
+  --avatar-radius: var(--radius-full);
+
+  /* Skeleton Variables */
+  --skeleton-bg: var(--secondary-bg);
+  --skeleton-shimmer: oklch(90% 0.01 0);
+  --skeleton-radius: var(--radius-md);
+
+  /* Loading Variables */
+  --loading-spinner: var(--accent);
+  --loading-text: var(--text-secondary);
+
+  /* Empty State Variables */
+  --empty-bg: var(--secondary-bg);
+  --empty-text: var(--text-secondary);
+  --empty-icon: var(--text-tertiary);
+
+  /* Error State Variables */
+  --error-bg: var(--error-bg);
+  --error-text: var(--error-text);
+  --error-border: var(--error);
+  --error-icon: var(--error);
+
+  /* Success State Variables */
+  --success-bg: var(--success-bg);
+  --success-text: var(--success-text);
+  --success-border: var(--success);
+  --success-icon: var(--success);
+
+  /* Warning State Variables */
+  --warning-bg: var(--warning-bg);
+  --warning-text: var(--warning-text);
+  --warning-border: var(--warning);
+  --warning-icon: var(--warning);
+
+  /* Info State Variables */
+  --info-bg: var(--info-bg);
+  --info-text: var(--info-text);
+  --info-border: var(--info);
+  --info-icon: var(--info);
 }
 
 /* ==========================================================================
-   Dark Theme
+   Theme Overrides - Use centralized theme system
    ========================================================================== */
 
-:root[data-theme="dark"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 10%);
-  --secondary-bg: hsl(0deg 0% 15%);
-  --card-bg: hsl(0deg 0% 15%);
-  --text-primary: hsl(0deg 0% 90%);
-  --text-secondary: hsl(0deg 0% 70%);
-  --text-tertiary: hsl(0deg 0% 50%);
-  --text-on-accent: hsl(220deg 20% 95%);
-  --border-color: hsl(0deg 0% 25%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 40%);
+/* All theme definitions are now handled by reynard-themes package */
+/* This file only provides component-specific variables that reference the centralized theme */
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+/* Text utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-on-accent { color: var(--text-on-accent); }
+
+/* Background utilities */
+.bg-primary { background-color: var(--bg-color); }
+.bg-secondary { background-color: var(--secondary-bg); }
+.bg-card { background-color: var(--card-bg); }
+.bg-accent { background-color: var(--accent); }
+
+/* Border utilities */
+.border { border: 1px solid var(--border-color); }
+.border-accent { border: 1px solid var(--accent); }
+
+/* Status utilities */
+.text-error { color: var(--error); }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-info { color: var(--info); }
+
+.bg-error { background-color: var(--error-bg); }
+.bg-success { background-color: var(--success-bg); }
+.bg-warning { background-color: var(--warning-bg); }
+.bg-info { background-color: var(--info-bg); }
+
+/* Interactive utilities */
+.hover\:bg-secondary:hover { background-color: var(--secondary-bg); }
+.hover\:text-accent:hover { color: var(--accent); }
+.hover\:border-accent:hover { border-color: var(--accent); }
+
+/* Focus utilities */
+.focus\:outline-accent:focus { outline: 2px solid var(--accent); }
+.focus\:ring-accent:focus { box-shadow: 0 0 0 2px var(--accent); }
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --spacing: 0.75rem;
+    --spacing-lg: 1.25rem;
+    --spacing-xl: 1.75rem;
+    --spacing-2xl: 2.5rem;
+    
+    --font-size-2xl: 1.375rem;
+    --font-size-3xl: 1.625rem;
+    --font-size-4xl: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing: 0.5rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+    --spacing-2xl: 2rem;
+    
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.125rem;
+    --font-size-2xl: 1.25rem;
+    --font-size-3xl: 1.5rem;
+    --font-size-4xl: 1.75rem;
+  }
 }
 
 /* ==========================================================================
-   Light Theme (Default)
+   Print Styles
    ========================================================================== */
 
-:root[data-theme="light"] {
-  --accent: hsl(270deg 60% 60%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 10%);
-  --text-secondary: hsl(0deg 0% 30%);
-  --text-tertiary: hsl(0deg 0% 50%);
-  --text-on-accent: hsl(220deg 20% 95%);
-  --border-color: hsl(0deg 0% 85%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);
-}
-
-/* ==========================================================================
-   Gray Theme
-   ========================================================================== */
-
-:root[data-theme="gray"] {
-  --accent: hsl(0deg 0% 50%);
-  --bg-color: hsl(0deg 0% 95%);
-  --secondary-bg: hsl(0deg 0% 90%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 20%);
-  --text-secondary: hsl(0deg 0% 40%);
-  --text-tertiary: hsl(0deg 0% 50%);
-  --text-on-accent: hsl(0deg 0% 96%);
-  --border-color: hsl(0deg 0% 75%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 15%);
-}
-
-/* ==========================================================================
-   Banana Theme
-   ========================================================================== */
-
-:root[data-theme="banana"] {
-  --accent: hsl(45deg 100% 50%);
-  --bg-color: hsl(45deg 100% 95%);
-  --secondary-bg: hsl(45deg 100% 90%);
-  --card-bg: hsl(45deg 100% 98%);
-  --text-primary: hsl(45deg 100% 15%);
-  --text-secondary: hsl(45deg 100% 35%);
-  --text-tertiary: hsl(45deg 100% 50%);
-  --text-on-accent: hsl(50deg 20% 15%);
-  --border-color: hsl(45deg 100% 80%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);
-}
-
-/* ==========================================================================
-   Strawberry Theme
-   ========================================================================== */
-
-:root[data-theme="strawberry"] {
-  --accent: hsl(330deg 100% 50%);
-  --bg-color: hsl(330deg 100% 95%);
-  --secondary-bg: hsl(330deg 100% 90%);
-  --card-bg: hsl(330deg 100% 98%);
-  --text-primary: hsl(330deg 100% 15%);
-  --text-secondary: hsl(330deg 100% 35%);
-  --text-tertiary: hsl(330deg 100% 50%);
-  --text-on-accent: hsl(340deg 30% 95%);
-  --border-color: hsl(330deg 100% 80%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);
-}
-
-/* ==========================================================================
-   Peanut Theme
-   ========================================================================== */
-
-:root[data-theme="peanut"] {
-  --accent: hsl(30deg 50% 50%);
-  --bg-color: hsl(30deg 50% 95%);
-  --secondary-bg: hsl(30deg 50% 90%);
-  --card-bg: hsl(30deg 50% 98%);
-  --text-primary: hsl(30deg 50% 15%);
-  --text-secondary: hsl(30deg 50% 35%);
-  --text-tertiary: hsl(30deg 50% 50%);
-  --text-on-accent: hsl(30deg 20% 95%);
-  --border-color: hsl(30deg 50% 80%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);
-}
-
-/* ==========================================================================
-   High Contrast Themes
-   ========================================================================== */
-
-:root[data-theme="high-contrast-black"] {
-  --accent: hsl(200deg 100% 50%);
-  --bg-color: hsl(0deg 0% 0%);
-  --secondary-bg: hsl(0deg 0% 10%);
-  --card-bg: hsl(0deg 0% 5%);
-  --text-primary: hsl(0deg 0% 100%);
-  --text-secondary: hsl(0deg 0% 80%);
-  --text-tertiary: hsl(0deg 0% 60%);
-  --text-on-accent: hsl(0deg 0% 0%);
-  --border-color: hsl(0deg 0% 50%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(255 255 255 / 20%);
-  --success: hsl(120deg 60% 50%);
-  --warning: hsl(45deg 60% 50%);
-  --danger: hsl(0deg 60% 50%);
-  --info: hsl(200deg 60% 50%);
-}
-
-:root[data-theme="high-contrast-inverse"] {
-  --accent: hsl(200deg 100% 50%);
-  --bg-color: hsl(0deg 0% 100%);
-  --secondary-bg: hsl(0deg 0% 95%);
-  --card-bg: hsl(0deg 0% 100%);
-  --text-primary: hsl(0deg 0% 0%);
-  --text-secondary: hsl(0deg 0% 20%);
-  --text-tertiary: hsl(0deg 0% 40%);
-  --text-on-accent: hsl(0deg 0% 100%);
-  --border-color: hsl(0deg 0% 0%);
-  --border-secondary: var(--accent);
-  --placeholder-color: var(--text-secondary);
-  --shadow-color: rgb(0 0 0 / 30%);
-  --success: hsl(120deg 60% 50%);
-  --warning: hsl(45deg 60% 50%);
-  --danger: hsl(0deg 60% 50%);
-  --info: hsl(200deg 60% 50%);
+@media print {
+  :root {
+    --bg-color: oklch(100% 0 0);
+    --text-primary: oklch(0% 0 0);
+    --text-secondary: oklch(20% 0 0);
+    --text-tertiary: oklch(40% 0 0);
+    --border-color: oklch(0% 0 0);
+    --accent: oklch(0% 0 0);
+  }
+  
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
 }

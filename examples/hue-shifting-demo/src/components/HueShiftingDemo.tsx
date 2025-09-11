@@ -4,6 +4,8 @@ import { ColorRamp } from "./ColorRamp";
 import { MaterialSelector } from "./MaterialSelector";
 import { PixelArtPreview } from "./PixelArtPreview";
 import { HueShiftControls } from "./HueShiftControls";
+import { ThemeSelector } from "./ThemeSelector";
+import { IconTest } from "./IconTest";
 import type { OKLCHColor } from "reynard-colors";
 import { basicHueShift, generateHueShiftRamp, materialHueShift } from "../utils/hueShiftingAlgorithms";
 import "./HueShiftingDemo.css";
@@ -56,8 +58,12 @@ export const HueShiftingDemo: Component = () => {
         </p>
       </header>
       
+      <IconTest />
+      
       <div class="demo-grid">
         <div class="controls-panel">
+          <ThemeSelector />
+          
           <section class="control-section">
             <h3>Base Color</h3>
             <ColorPicker

@@ -1,27 +1,28 @@
-import { Component, createSignal } from "solid-js";
+import { Component } from "solid-js";
 import { useI18n } from "reynard-themes";
+import { getDemoTranslation } from "../translations";
+import DemoCard from "./DemoCard";
+import CounterDemo from "./CounterDemo";
+import PackageDemo from "./PackageDemo";
+import StatusDemo from "./StatusDemo";
 
 const TranslationDemo: Component = () => {
-  // Use real i18n system
-  const { t } = useI18n();
-  const [count, setCount] = createSignal(0);
+  const { t, locale } = useI18n();
 
   return (
     <div class="translation-demo">
-      <h2>Translation Examples</h2>
+      <h2>{getDemoTranslation(locale, "translationExamples")}</h2>
 
       <div class="demo-grid">
-        <div class="demo-card">
-          <h3>Basic Actions</h3>
+        <DemoCard title="basicActions">
           <div class="button-group">
             <button class="btn btn-primary">{t("common.save")}</button>
             <button class="btn btn-secondary">{t("common.cancel")}</button>
             <button class="btn btn-danger">{t("common.delete")}</button>
           </div>
-        </div>
+        </DemoCard>
 
-        <div class="demo-card">
-          <h3>Navigation</h3>
+        <DemoCard title="navigation">
           <div class="nav-demo">
             <span>{t("common.home")}</span>
             <span>→</span>
@@ -29,67 +30,28 @@ const TranslationDemo: Component = () => {
             <span>→</span>
             <span>{t("common.about")}</span>
           </div>
-        </div>
+        </DemoCard>
 
-        <div class="demo-card">
-          <h3>Form Elements</h3>
+        <DemoCard title="formElements">
           <div class="form-demo">
             <label>{t("common.name")}:</label>
             <input type="text" placeholder={t("common.search")} />
             <label>{t("common.description")}:</label>
-            <textarea placeholder={t("common.description")}></textarea>
+            <textarea placeholder={t("common.description")} />
           </div>
-        </div>
+        </DemoCard>
 
-        <div class="demo-card">
-          <h3>Counter Demo</h3>
-          <div class="counter-demo">
-            <button onClick={() => setCount((c) => c - 1)}>-</button>
-            <span class="count">{count()}</span>
-            <button onClick={() => setCount((c) => c + 1)}>+</button>
-            <p class="count-text">
-              {count() === 0 && t("common.none")}
-              {count() === 1 && "1 item"}
-              {count() !== 0 && count() !== 1 && `${count()} items`}
-            </p>
-          </div>
-        </div>
+        <DemoCard title="counterDemo">
+          <CounterDemo />
+        </DemoCard>
 
-        <div class="demo-card">
-          <h3>Package Translations</h3>
-          <div class="package-demo">
-            <h4>Core</h4>
-            <p>
-              {t("core.notifications.title")}:{" "}
-              {t("core.notifications.noNotifications")}
-            </p>
+        <DemoCard title="packageTranslations">
+          <PackageDemo />
+        </DemoCard>
 
-            <h4>Components</h4>
-            <p>
-              {t("components.modal.title")}: {t("components.modal.close")}
-            </p>
-
-            <h4>Gallery</h4>
-            <p>
-              {t("gallery.upload.title")}: {t("gallery.upload.dragDrop")}
-            </p>
-
-            <h4>Charts</h4>
-            <p>
-              {t("charts.types.line")}: {t("charts.data.noData")}
-            </p>
-          </div>
-        </div>
-
-        <div class="demo-card">
-          <h3>Status Messages</h3>
-          <div class="status-demo">
-            <div class="status success">{t("common.success")}</div>
-            <div class="status warning">{t("common.warning")}</div>
-            <div class="status error">{t("common.error")}</div>
-            <div class="status info">{t("common.info")}</div>
-          </div>
-        </div>
+        <DemoCard title="statusMessages">
+          <StatusDemo />
+        </DemoCard>
       </div>
     </div>
   );

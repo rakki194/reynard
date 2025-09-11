@@ -3,6 +3,10 @@
  * Comprehensive styling for all components with theme integration
  */
 
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
+/* Import component-specific theme variables */
 @import "./theme.css";
 
 /* ==========================================================================
@@ -29,10 +33,10 @@
   --reynard-radius-xl: 12px;
 
   /* Shadows */
-  --reynard-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --reynard-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --reynard-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --reynard-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  --reynard-shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.05);
+  --reynard-shadow-md: 0 4px 6px oklch(0% 0 0 / 0.1);
+  --reynard-shadow-lg: 0 10px 15px oklch(0% 0 0 / 0.1);
+  --reynard-shadow-xl: 0 20px 25px oklch(0% 0 0 / 0.15);
 
   /* Typography */
   --reynard-font-size-sm: 0.875rem;

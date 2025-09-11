@@ -5,23 +5,39 @@ alwaysApply: false
 
 # LaTeX Writing Rules for Reynard Research Papers
 
-Academic papers should be crafted with precision and clarity - every equation, every algorithm, every citation strategically placed for maximum impact and understanding. These guidelines capture the sophisticated patterns that make your work exceptional.
+Academic papers should be crafted with precision and clarity - every equation,
+every algorithm, every citation strategically placed for maximum impact and
+understanding. These guidelines capture the sophisticated patterns that make
+your work exceptional.
 
 ## Core Principles
 
 ### Academic Writing Philosophy
 
-Every research paper in the Reynard project should embody technical excellence, following the patterns established in your comprehensive refactor analysis, NEXUS collision detection system, and VECTOR engagement tracking papers:
+Every research paper in the Reynard project should embody technical
+excellence, following the patterns established in your comprehensive refactor
+analysis, NEXUS collision detection system, and VECTOR engagement tracking
+papers.
 
-- **Mathematical Rigor**: Precise notation, clear proofs, and well-defined algorithms with complexity analysis
-- **Systematic Analysis**: Structured methodology with reproducible results and empirical validation
-- **Practical Impact**: Real-world applications with measurable performance improvements
-- **Clear Communication**: Accessible to both specialists and practitioners with strategic use of quotes and examples
-- **Innovation Focus**: Novel approaches to established problems with comprehensive benchmarking
+The foundation rests on mathematical rigor with precise notation, clear
+proofs, and well-defined algorithms that include comprehensive complexity
+analysis. Systematic analysis requires structured methodology with reproducible
+results and empirical validation, ensuring that every claim can be verified
+and replicated.
+
+Practical impact demands real-world applications with measurable performance
+improvements that demonstrate tangible value beyond theoretical contributions.
+Clear communication makes research accessible to both specialists and
+practitioners through strategic use of quotes and examples that illuminate
+complex concepts.
+
+Innovation focus drives novel approaches to established problems with
+comprehensive benchmarking that establishes new standards in the field.
 
 ### Document Structure Standards
 
-Based on analysis of your research papers, follow this proven structure that mirrors your successful NEXUS and VECTOR papers:
+Based on analysis of your research papers, follow this proven structure that
+mirrors your successful NEXUS and VECTOR papers.
 
 ```latex
 \documentclass[10pt]{article}
@@ -108,7 +124,8 @@ making it particularly suitable for [TARGET_APPLICATION] requiring [SPECIFIC_REQ
 \end{equation}
 
 % Good: Inline math for simple expressions
-The time complexity is $O(\alpha(n))$ where $\alpha(n)$ is the inverse Ackermann function.
+The time complexity is $O(\alpha(n))$ where $\alpha(n)$ is the inverse Ackermann
+function.
 
 % Good: Display math for important results
 \[
@@ -312,42 +329,39 @@ making it particularly suitable for [TARGET_APPLICATION] requiring [SPECIFIC_REQ
 
 ### Section Organization
 
-1. **Introduction**: Problem context, existing solutions, your contribution
-2. **System Architecture**: High-level design, component overview
-3. **Algorithmic Implementation**: Mathematical foundations, algorithms
-4. **Performance Analysis**: Benchmarks, measurements, comparisons
-5. **Conclusion**: Summary of contributions and future work
+The document structure follows a proven five-section organization that ensures comprehensive coverage and logical flow.
+
+The introduction establishes problem context, surveys existing solutions, and clearly articulates your unique contribution to the field. System architecture provides high-level design overview and component relationships that form the foundation for detailed implementation.
+
+Algorithmic implementation delves into mathematical foundations, presents core algorithms with complexity analysis, and demonstrates the theoretical soundness of the approach. Performance analysis presents benchmarks, measurements, and comparisons that validate the practical effectiveness of the proposed solution.
+
+The conclusion summarizes key contributions and outlines future work directions that build upon the current research.
 
 ### Technical Writing Style
 
-- **Precise Language**: Use exact technical terms, avoid ambiguity
-- **Active Voice**: "We implemented" not "Implementation was done"
-- **Present Tense**: For established facts and current system behavior
-- **Past Tense**: For completed experiments and historical context
-- **Consistent Notation**: Define all variables and maintain consistent symbols
+Technical writing demands precise language using exact technical terms while avoiding ambiguity that could lead to misinterpretation. Active voice construction, such as "We implemented" rather than "Implementation was done," creates more engaging and direct communication.
+
+Present tense should be used for established facts and current system behavior, while past tense appropriately describes completed experiments and historical context. Consistent notation requires that all variables be clearly defined and symbols maintained consistently throughout the document to prevent confusion and ensure mathematical rigor.
 
 ## Quality Standards
 
 ### Mathematical Rigor
 
-- **Define All Variables**: Every symbol must be clearly defined
-- **State Assumptions**: Explicitly state all assumptions and constraints
-- **Provide Proofs**: Include proofs for key theorems and lemmas
-- **Validate Results**: Show that results are mathematically sound
+Mathematical rigor demands that every symbol be clearly defined with no ambiguity about its meaning or scope. All assumptions and constraints must be explicitly stated to establish the boundaries within which the mathematical framework operates.
+
+Key theorems and lemmas require complete proofs that demonstrate their validity and establish the logical foundation for subsequent results. Mathematical soundness must be validated through rigorous analysis that shows results are not merely coincidental but follow logically from the established premises.
 
 ### Experimental Validation
 
-- **Reproducible Results**: Provide enough detail to reproduce experiments
-- **Statistical Significance**: Include confidence intervals and significance tests
-- **Baseline Comparisons**: Compare against established benchmarks
-- **Real-world Testing**: Validate with actual use cases and data
+Experimental validation requires reproducible results with sufficient detail for other researchers to replicate experiments and verify findings independently. Statistical significance must be demonstrated through confidence intervals and appropriate significance tests that establish the reliability of observed effects.
+
+Baseline comparisons against established benchmarks provide context for evaluating the magnitude and importance of improvements or innovations. Real-world testing validates theoretical results with actual use cases and data that reflect the complexity and variability of practical applications.
 
 ### Code Quality
 
-- **Working Examples**: All code examples must compile and run
-- **Performance Metrics**: Include actual performance measurements
-- **Error Handling**: Show how errors are handled and recovered
-- **Documentation**: Comment code thoroughly for clarity
+Code quality standards require that all examples compile and run successfully, demonstrating practical viability rather than theoretical concepts alone. Performance metrics must include actual measurements that quantify the effectiveness of proposed solutions with concrete data.
+
+Error handling should be explicitly demonstrated to show how systems gracefully manage unexpected conditions and recover from failures. Thorough documentation through comprehensive comments ensures code clarity and facilitates understanding for future maintenance and extension.
 
 ## Real-World Examples from Your Papers
 
@@ -397,13 +411,10 @@ Based on your VECTOR paper, here's the pattern for mathematical systems:
 \section{Mathematical Foundation}
 The core of VECTOR's analytical power lies in its application of linear algebra to model user behavior. User interactions are transformed into a dense, high-dimensional matrix, where rows represent users and columns represent various engagement metrics or features.
 
-Let $M$ be the user-feature matrix of size $U \times F$, where $U$ is the number of users and $F$ is the number of features/metrics.
-$M_{ij}$ represents the value of feature $j$ for user $i$.
+Let $M$ be the user-feature matrix of size $U \times F$, where $U$ is the number of users and $F$ is the number of features/metrics. $M_{ij}$ represents the value of feature $j$ for user $i$.
 
 \subsubsection{Principal Component Analysis (PCA)}
-PCA is used for dimensionality reduction and to identify the most significant underlying engagement patterns.
-The covariance matrix $C = \frac{1}{U-1} M^T M$ is computed.
-Eigenvalues and eigenvectors of $C$ are then extracted. The principal components are linear combinations of the original features that capture the maximum variance in the data.
+PCA is used for dimensionality reduction and to identify the most significant underlying engagement patterns. The covariance matrix $C = \frac{1}{U-1} M^T M$ is computed. Eigenvalues and eigenvectors of $C$ are then extracted. The principal components are linear combinations of the original features that capture the maximum variance in the data.
 \[
     M_{reduced} = M W
 \]
@@ -418,7 +429,7 @@ Based on your modular refactoring paper, here's the pattern for system analysis:
 \section{The Backend Leviathan Ecosystem}
 
 \subsection{The Python Monolith Landscape}
-Our analysis reveals a backend architecture that has grown into a collection of interconnected leviathans:
+Our analysis reveals a backend architecture that has grown into a collection of interconnected leviathans.
 
 \begin{table}[ht]
 \centering
@@ -445,15 +456,13 @@ Mastering academic writing requires precision, clarity, and systematic thinking.
 
 The patterns established in your existing research papers - from the comprehensive modular refactoring analysis to the sophisticated NEXUS collision detection system and VECTOR engagement tracking - demonstrate a level of academic writing excellence that should be the standard for all future research.
 
-Key principles for effective academic writing:
+Key principles for effective academic writing encompass mathematical rigor with practical validation, ensuring every equation is precise and every algorithm is thoroughly validated through empirical testing.
 
-- **Mathematical rigor with practical validation**: Every equation must be precise and every algorithm must be validated
-- **Clear algorithmic presentation with complexity analysis**: Algorithms should be well-formatted with complete complexity analysis
-- **Comprehensive performance measurement and comparison**: Empirical validation with measurable improvements
-- **Reproducible results with detailed implementation**: All experiments must be reproducible with clear methodology
-- **Professional presentation with consistent formatting**: Consistent LaTeX formatting and proper citation practices
-- **Strategic use of quotes and examples**: Enhance understanding with well-placed quotes and real-world examples
-- **Systematic analysis with empirical validation**: Combine theoretical foundations with practical measurements
+Clear algorithmic presentation requires well-formatted algorithms with complete complexity analysis that demonstrates both theoretical understanding and practical efficiency. Comprehensive performance measurement and comparison provide empirical validation with measurable improvements that establish the practical value of proposed solutions.
+
+Reproducible results demand detailed implementation descriptions that enable other researchers to replicate experiments with clear methodology and sufficient detail. Professional presentation requires consistent LaTeX formatting and proper citation practices that meet academic standards and facilitate peer review.
+
+Strategic use of quotes and examples enhances understanding by illuminating complex concepts with well-placed references and real-world applications. Systematic analysis combines theoretical foundations with practical measurements to create research that advances both knowledge and application.
 
 These guidelines ensure that your research contributions are accessible, credible, and impactful within the broader technical community. Your existing papers demonstrate these principles beautifully, and these enhanced guidelines will help maintain that standard of excellence.
 

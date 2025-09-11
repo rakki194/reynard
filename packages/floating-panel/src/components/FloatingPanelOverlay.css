@@ -1,0 +1,38 @@
+/**
+ * Floating Panel Overlay Component Styles
+ * 
+ * Specific styles for the overlay container component.
+ */
+
+.floating-panel-overlay {
+  /* Base styles are inherited from the main styles.css */
+}
+
+.floating-panel-overlay:focus {
+  outline: none;
+}
+
+.floating-panel-overlay[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+.floating-panel-overlay[aria-hidden="true"]::before {
+  display: none;
+}
+
+/* Ensure proper stacking context */
+.floating-panel-overlay.active {
+  isolation: isolate;
+}
+
+/* Backdrop click handling */
+.floating-panel-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: auto;
+  z-index: -1;
+}

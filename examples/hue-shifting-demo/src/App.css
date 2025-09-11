@@ -10,9 +10,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: oklch(12% 0.01 0);
-  color: oklch(90% 0.01 0);
+  background: var(--color-background, oklch(12% 0.01 0));
+  color: var(--color-text, oklch(90% 0.01 0));
   line-height: 1.6;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .app {
@@ -47,30 +48,31 @@ input {
 }
 
 ::-webkit-scrollbar-track {
-  background: oklch(20% 0.01 0);
+  background: var(--color-background-secondary, oklch(20% 0.01 0));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: oklch(40% 0.02 0);
+  background: var(--color-border, oklch(40% 0.02 0));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(50% 0.02 0);
+  background: var(--color-border-hover, oklch(50% 0.02 0));
 }
 
 /* Focus styles */
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid oklch(60% 0.2 240);
+  outline: 2px solid var(--color-accent, oklch(60% 0.2 240));
   outline-offset: 2px;
 }
 
 /* Selection styles */
 ::selection {
-  background: oklch(60% 0.2 240 / 0.3);
-  color: oklch(95% 0.01 0);
+  background: var(--color-accent, oklch(60% 0.2 240));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+  opacity: 0.3;
 }
 
 /* Typography */
@@ -110,22 +112,24 @@ p {
 /* Code styling */
 code {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  background: oklch(20% 0.01 0);
+  background: var(--color-background-secondary, oklch(20% 0.01 0));
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-size: 0.9em;
-  border: 1px solid oklch(30% 0.01 0);
+  border: 1px solid var(--color-border, oklch(30% 0.01 0));
+  color: var(--color-text, inherit);
 }
 
 pre {
-  background: oklch(15% 0.01 0);
+  background: var(--color-background-tertiary, oklch(15% 0.01 0));
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid oklch(25% 0.01 0);
+  border: 1px solid var(--color-border, oklch(25% 0.01 0));
   overflow-x: auto;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
+  color: var(--color-text, inherit);
 }
 
 pre code {

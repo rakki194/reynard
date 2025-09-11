@@ -88,7 +88,7 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
       <div class="preset-colors">
         <h4>Preset Colors</h4>
         <div class="preset-grid">
-          {PRESET_COLORS.map((preset, index) => (
+          {PRESET_COLORS.map((preset) => (
             <button
               class="preset-color"
               style={{ "background-color": `oklch(${preset.l}% ${preset.c} ${preset.h})` }}

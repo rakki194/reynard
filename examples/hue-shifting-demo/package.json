@@ -13,7 +13,10 @@
   "dependencies": {
     "solid-js": "1.9.9",
     "@solidjs/router": "0.15.3",
-    "reynard-colors": "workspace:*"
+    "reynard-colors": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-floating-panel": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.3.1",

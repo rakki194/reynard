@@ -1,365 +1,367 @@
 /**
  * BoundingBoxEditor Styles
  * 
- * Provides styling for the bounding box editor component with support for:
- * - Responsive layout
- * - Theme-aware colors
- * - Interactive states
- * - Accessibility features
+ * Styles for the bounding box editor using the new floating panel system.
+ * Most overlay and panel styles are now handled by the floating panel system.
  */
 
-.bounding-box-editor {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
 
-.canvas-container {
+/* ==========================================================================
+   Container Styles
+   ========================================================================== */
+
+.bounding-box-editor-container {
   position: relative;
-  background: #f8f9fa;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background: oklch(95% 0.02 0);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ccc;
-  width: 800px;
-  height: 600px;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
 }
 
-.canvas-container canvas {
-  display: block;
-  cursor: crosshair;
-}
+/* ==========================================================================
+   Toggle Button Styles
+   ========================================================================== */
 
-.canvas-container canvas:not(.drawing) {
-  cursor: default;
-}
-
-.controls-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  background: #ffffff;
-  border: 1px solid #e1e5e9;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.label-classes {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.label-classes label {
-  font-weight: 500;
-  color: #374151;
-  min-width: 80px;
-}
-
-.label-classes select {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  background: #ffffff;
-  font-size: 0.875rem;
-  color: #374151;
-}
-
-.label-classes select:focus {
-  outline: none;
-  border-color: #007acc;
-  box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
-}
-
-.box-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.box-list h4 {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.box-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: #f8f9fa;
-  border: 1px solid #e1e5e9;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.box-item:hover {
-  background: #f1f3f4;
-  border-color: #d1d5db;
-}
-
-.box-item.selected {
-  background: #e3f2fd;
-  border-color: #007acc;
-  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.2);
-}
-
-.box-label {
-  font-weight: 500;
-  color: #1f2937;
-  min-width: 80px;
-}
-
-.box-coords {
-  font-size: 0.75rem;
-  color: #6b7280;
-  font-family:
-    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
-    monospace;
-  flex: 1;
-}
-
-.box-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.box-actions button {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  background: #ffffff;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.box-actions button:hover:not(:disabled) {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-.box-actions button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.box-actions button:active:not(:disabled) {
-  background: #e5e7eb;
-  transform: translateY(1px);
-}
-
-.editing-controls {
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: #f0f9ff;
-  border: 1px solid #0ea5e9;
-  border-radius: 6px;
-}
-
-.editing-controls button {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+.bounding-box-toggle-btn {
+  position: absolute;
+  top: auto;
+  bottom: 12px;
+  left: 12px;
+  z-index: var(--z-sticky, 1020);
+  background: var(--color-accent, oklch(60% 0.25 240));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius, 4px);
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 1em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgb(var(--shadow-rgb, 0, 0, 0), 0.08);
+  transition: background 0.2s;
 }
 
-.editing-controls button:first-child {
-  background: #10b981;
-  color: #ffffff;
+.bounding-box-toggle-btn:hover {
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 85%, oklch(0% 0 0));
 }
 
-.editing-controls button:first-child:hover {
-  background: #059669;
+.bounding-box-toggle-btn.labelling {
+  background: var(--color-accent, oklch(60% 0.25 240));
 }
 
-.editing-controls button:last-child {
-  background: #ef4444;
-  color: #ffffff;
+/* ==========================================================================
+   Bounding Box Styles
+   ========================================================================== */
+
+.bounding-box {
+  position: absolute;
+  border: 2px solid var(--color-accent, oklch(60% 0.25 240));
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 8%, transparent);
+  box-sizing: border-box;
+  cursor: pointer;
+  z-index: var(--z-bounding-box, 100);
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.editing-controls button:last-child:hover {
-  background: #dc2626;
+.bounding-box.selected {
+  border-color: var(--color-accent, oklch(60% 0.25 240));
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 12%, transparent);
+  z-index: var(--z-bounding-box-selected, 200);
 }
 
-/* Responsive Design */
+.bounding-box:hover:not(.fabric-editing) {
+  border-color: var(--color-warning, oklch(70% 0.2 80));
+  background: color-mix(in oklch, var(--color-warning, oklch(70% 0.2 80)) 10%, transparent);
+  z-index: var(--z-bounding-box-hover, 150);
+  cursor: pointer;
+  box-shadow: 0 2px 8px color-mix(in oklch, var(--color-warning, oklch(70% 0.2 80)) 30%, transparent);
+}
+
+.bounding-box-label {
+  position: absolute;
+  left: 0;
+  top: -24px;
+  background: var(--color-accent, oklch(60% 0.25 240));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+  font-size: 0.85em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: var(--z-bounding-box-label, 300);
+  pointer-events: auto;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+}
+
+.bounding-box-label.bottom-positioned {
+  top: auto;
+  bottom: -24px;
+}
+
+.bounding-box.selected .bounding-box-label {
+  background: var(--color-accent, oklch(60% 0.25 240));
+}
+
+.bounding-box-delete-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--color-surface, oklch(98% 0.01 0));
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  z-index: var(--z-bounding-box-label, 300);
+  font-weight: 700;
+  color: var(--color-error, oklch(55% 0.25 20));
+  font-size: 1em;
+  line-height: 18px;
+  padding: 0;
+  display: none;
+}
+
+.bounding-box.selected .bounding-box-delete-btn {
+  display: block;
+}
+
+/* ==========================================================================
+   Drawing Box Styles
+   ========================================================================== */
+
+.bounding-box-drawing {
+  position: absolute;
+  border: 2px dashed var(--accent, #3b82f6);
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 8%, transparent);
+  box-sizing: border-box;
+  z-index: var(--z-bounding-box-drawing, 400);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Panel Content Styles (for floating panels)
+   ========================================================================== */
+
+.bounding-box-label-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.bounding-box-label-list-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--color-border, oklch(85% 0.02 0));
+  padding-bottom: 4px;
+  color: var(--color-text, oklch(15% 0.01 0));
+}
+
+.bounding-box-label-selected-info {
+  font-size: 0.85em;
+  color: var(--color-text-secondary, oklch(50% 0.01 0));
+  margin-bottom: 8px;
+  padding: 2px 0;
+}
+
+.bounding-box-label-selected-info strong {
+  color: var(--accent, #3b82f6);
+}
+
+.bounding-box-label-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  padding: 2px 4px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.bounding-box-label-item.selected {
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+}
+
+.bounding-box-label-item:hover {
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 5%, var(--color-surface, oklch(98% 0.01 0)));
+}
+
+.bounding-box-label-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 7px;
+  border: 1px solid var(--color-border, oklch(85% 0.02 0));
+}
+
+.bounding-box-label-color.selected {
+  border: 2px solid var(--color-accent, oklch(60% 0.25 240));
+}
+
+.bounding-box-label-delete-btn {
+  background: none;
+  border: none;
+  color: var(--color-error, oklch(55% 0.25 20));
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-left: 6px;
+  cursor: pointer;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bounding-box-label-delete-btn:hover {
+  background: color-mix(in oklch, var(--color-error, oklch(55% 0.25 20)) 10%, transparent);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   Label Management UI Styles
+   ========================================================================== */
+
+.bounding-box-label-management-ui {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.themed-btn {
+  background: var(--color-accent, oklch(60% 0.25 240));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+  border: 1px solid var(--accent, #3b82f6);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border 0.15s;
+  outline: none;
+  box-shadow: 0 1px 4px rgb(var(--shadow-rgb, 0, 0, 0), 0.04);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.themed-btn:hover {
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 85%, oklch(0% 0 0));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+  border-color: var(--color-accent, oklch(60% 0.25 240));
+}
+
+.themed-btn:active {
+  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 70%, oklch(0% 0 0));
+  border-color: var(--color-accent, oklch(60% 0.25 240));
+}
+
+/* ==========================================================================
+   Animation Keyframes
+   ========================================================================== */
+
+@keyframes bounding-box-flash {
+  0% {
+    box-shadow:
+      0 0 0 0 var(--warning, rgb(255 193 7 / 70%)),
+      0 0 0 0 var(--warning, color-mix(in srgb, var(--warning) 70%, transparent));
+    border-color: var(--color-warning, oklch(70% 0.2 80));
+  }
+
+  60% {
+    box-shadow:
+      0 0 0 8px var(--warning, color-mix(in srgb, var(--warning) 20%, transparent)),
+      0 0 0 16px var(--warning, color-mix(in srgb, var(--warning) 10%, transparent));
+    border-color: var(--color-warning, oklch(70% 0.2 80));
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 var(--warning, color-mix(in srgb, var(--warning) 0%, transparent));
+    border-color: var(--color-accent, oklch(60% 0.25 240));
+  }
+}
+
+.bounding-box.flash {
+  animation: bounding-box-flash 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: var(--z-overlay-high, 100);
+  border-width: 2px;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
 @media (max-width: 768px) {
-  .bounding-box-editor {
-    gap: 0.75rem;
+  .bounding-box-editor-container {
+    min-height: 300px;
   }
-
-  .controls-panel {
-    padding: 0.75rem;
+  
+  .bounding-box-toggle-btn {
+    bottom: 8px;
+    left: 8px;
+    padding: 4px 10px;
+    font-size: 0.9em;
   }
-
-  .box-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+  
+  .bounding-box-label {
+    font-size: 0.75em;
+    padding: 1px 4px;
   }
-
-  .box-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .label-classes {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .label-classes label {
-    min-width: auto;
+  
+  .bounding-box-delete-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 0.9em;
+    line-height: 14px;
   }
 }
 
-/* Dark Theme Support */
-@media (prefers-color-scheme: dark) {
-  .bounding-box-editor {
-    color: #f9fafb;
-  }
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
 
-  .canvas-container {
-    background: #1f2937;
-    border-color: #374151;
-  }
-
-  .controls-panel {
-    background: #1f2937;
-    border-color: #374151;
-  }
-
-  .label-classes select {
-    background: #374151;
-    border-color: #4b5563;
-    color: #f9fafb;
-  }
-
-  .label-classes select:focus {
-    border-color: #0ea5e9;
-    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
-  }
-
-  .box-item {
-    background: #374151;
-    border-color: #4b5563;
-  }
-
-  .box-item:hover {
-    background: #4b5563;
-    border-color: #6b7280;
-  }
-
-  .box-item.selected {
-    background: #1e3a8a;
-    border-color: #0ea5e9;
-    box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.2);
-  }
-
-  .box-label {
-    color: #f9fafb;
-  }
-
-  .box-coords {
-    color: #9ca3af;
-  }
-
-  .box-actions button {
-    background: #4b5563;
-    border-color: #6b7280;
-    color: #f9fafb;
-  }
-
-  .box-actions button:hover:not(:disabled) {
-    background: #6b7280;
-    border-color: #9ca3af;
-  }
-
-  .editing-controls {
-    background: #1e3a8a;
-    border-color: #0ea5e9;
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .box-item {
-    border-width: 2px;
-  }
-
-  .box-item.selected {
-    border-width: 3px;
-  }
-
-  .box-actions button {
-    border-width: 2px;
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .box-item,
-  .box-actions button,
-  .editing-controls button {
-    transition: none;
-  }
-}
-
-/* Focus Management */
-.box-actions button:focus,
-.editing-controls button:focus,
-.label-classes select:focus {
-  outline: 2px solid #007acc;
+.bounding-box-editor-container:focus-within {
+  outline: 2px solid var(--color-accent, oklch(60% 0.25 240));
   outline-offset: 2px;
 }
 
-/* Screen Reader Only */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+@media (prefers-reduced-motion: reduce) {
+  .bounding-box,
+  .bounding-box-drawing {
+    transition: none;
+    animation: none;
+  }
 }
 
-/* Drawing Overlay */
-.drawing-overlay {
-  position: absolute;
-  border: 2px dashed #ff0000;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Loading States */
-.bounding-box-editor.loading .canvas-container {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.bounding-box-editor.loading::after {
-  content: "Loading...";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bounding-box {
+    border-width: 3px;
+  }
+  
+  .bounding-box-label {
+    border: 1px solid currentColor;
+  }
+  
+  .themed-btn {
+    border-width: 2px;
+  }
 }

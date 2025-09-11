@@ -59,7 +59,7 @@ _All bundle sizes are measured from production builds and include gzipped compre
 
 ### Package Status
 
-_Note: Some packages (`reynard-auth`, `reynard-gallery`, `reynard-monaco`, `reynard-rag`, `reynard-settings`, `reynard-ui`, `reynard-tools`, `reynard-games`, `reynard-error-boundaries`, `reynard-connection`, `reynard-model-management`, `reynard-gallery-ai`, `reynard-boundingbox`) are currently under development and may have build issues. Bundle sizes will be updated as these packages are completed._
+_Note: Some packages (`reynard-auth`, `reynard-gallery`, `reynard-monaco`, `reynard-rag`, `reynard-settings`, `reynard-ui`, `reynard-tools`, `reynard-games`, `reynard-error-boundaries`, `reynard-connection`, `reynard-model-management`, `reynard-gallery-ai`, `reynard-boundingbox`, `reynard-floating-panel`) are currently under development and may have build issues. Bundle sizes will be updated as these packages are completed._
 
 ## Optimization Strategies
 

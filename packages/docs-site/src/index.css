@@ -2,6 +2,9 @@
  * @fileoverview Global styles for the documentation site
  */
 
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
 /* CSS Reset and Base Styles */
 * {
   box-sizing: border-box;
@@ -19,50 +22,12 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
-  color: var(--text-primary, #1f2937);
-  background-color: var(--bg-color, #ffffff);
+  color: var(--color-text, oklch(15% 0.01 0));
+  background-color: var(--color-background, oklch(98% 0.01 0));
 }
 
-/* CSS Variables for theming */
-:root {
-  --bg-color: #ffffff;
-  --secondary-bg: #f9fafb;
-  --card-bg: #ffffff;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --border-color: #e5e7eb;
-  --accent: #6366f1;
-  --accent-light: #e0e7ff;
-  --accent-dark: #4f46e5;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --code-bg: #1f2937;
-  --code-text: #f9fafb;
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Dark theme variables */
-[data-theme="dark"] {
-  --bg-color: #111827;
-  --secondary-bg: #1f2937;
-  --card-bg: #374151;
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --border-color: #374151;
-  --accent: #818cf8;
-  --accent-light: #3730a3;
-  --accent-dark: #6366f1;
-  --code-bg: #0f172a;
-  --code-text: #e2e8f0;
-  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-}
+/* CSS Variables for theming - Use centralized theme system */
+/* All theme variables are now provided by reynard-themes package */
 
 /* Typography */
 h1,

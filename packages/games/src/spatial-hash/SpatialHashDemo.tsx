@@ -37,7 +37,7 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
     y: Math.random() * (CANVAS_HEIGHT - 40),
     width: Math.random() * 30 + 10,
     height: Math.random() * 30 + 10,
-    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    color: `oklch(60% 0.2 ${Math.random() * 360})`,
   });
 
   const initializeDemo = () => {

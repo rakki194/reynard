@@ -42,6 +42,7 @@ function App() {
 - **[🚀 Quick Start](./docs/quickstart.md)** - Get up and running in minutes
 - **[📚 Complete Tutorial](./docs/tutorial.md)** - Build your first Reynard app
 - **[📦 Package Documentation](./docs/packages.md)** - Detailed package documentation
+- **[🎨 OKLCH Color System](./docs/oklch-color-system.md)** - Modern color system with perceptual uniformity
 - **[📱 Examples & Templates](./docs/examples.md)** - Real-world applications
 - **[📖 API Reference](./docs/api.md)** - Complete API documentation
 - **[🚀 Performance Guide](./docs/performance.md)** - Optimization and performance tips
@@ -78,6 +79,7 @@ Reynard's package ecosystem is built on the foundation of YipYap's proven archit
 - **`reynard-gallery`** - Advanced file management with drag-and-drop
 - **`reynard-annotating`** - AI-powered caption generation with multiple models
 - **`reynard-caption`** - Caption editing UI with tag management
+- **`reynard-floating-panel`** - Advanced floating panel system with staggered animations and state management
 - **`reynard-3d`** - Three.js integration for 3D graphics
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities
@@ -136,6 +138,7 @@ _[View complete bundle sizes and performance guide →](./docs/performance.md)_
 - **`reynard-gallery`** - Advanced file management with drag-and-drop
 - **`reynard-annotating`** - AI-powered caption generation with multiple models
 - **`reynard-caption`** - Caption editing UI with tag management
+- **`reynard-floating-panel`** - Advanced floating panel system with staggered animations and state management
 - **`reynard-3d`** - Three.js integration for 3D graphics
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities

@@ -1,1 +1,1 @@
-import "@testing-library/jest-dom";
+// Using reynard-testing instead of jest-dom

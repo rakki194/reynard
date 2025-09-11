@@ -1,0 +1,144 @@
+/* Floating Panel Styles for Pixel Art Editor */
+
+.floating-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: var(--space-md);
+  background: var(--surface-elevated);
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-header h3 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.panel-header p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.panel-body {
+  flex: 1;
+  padding: var(--space-md);
+  overflow-y: auto;
+}
+
+/* Trigger Bar Styles */
+.floating-panel-trigger-bar {
+  position: fixed;
+  top: 50%;
+  right: var(--space-lg, 24px);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm, 8px);
+  z-index: var(--z-modal, 1050);
+  background: var(--color-surface, oklch(95% 0.02 0));
+  border: 1px solid var(--color-border, oklch(85% 0.02 0));
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-sm, 8px);
+  box-shadow: var(--elevation-2, 0 2px 4px oklch(0% 0 0 / 0.16));
+}
+
+.trigger-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 4px);
+}
+
+.trigger-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-border, oklch(85% 0.02 0));
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-surface, oklch(95% 0.02 0));
+  color: var(--color-text-secondary, oklch(30% 0.01 0));
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+
+.trigger-button:hover {
+  background: var(--color-surface-hover, oklch(90% 0.02 0));
+  color: var(--color-text, oklch(15% 0.01 0));
+  border-color: var(--color-border-hover, oklch(80% 0.02 0));
+}
+
+.trigger-button.active {
+  background: var(--color-accent, oklch(60% 0.25 240));
+  color: var(--color-text-inverse, oklch(95% 0.01 0));
+  border-color: var(--color-accent, oklch(60% 0.25 240));
+}
+
+.trigger-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.panel-actions {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-sm);
+  display: flex;
+  justify-content: center;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.action-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-panel-trigger-bar {
+    right: var(--space-md);
+    top: auto;
+    bottom: var(--space-lg);
+    transform: none;
+    flex-direction: row;
+    padding: var(--space-sm);
+  }
+  
+  .trigger-buttons {
+    flex-direction: row;
+  }
+  
+  .panel-actions {
+    border-top: none;
+    border-left: 1px solid var(--border);
+    padding-top: 0;
+    padding-left: var(--space-sm);
+  }
+}

@@ -95,3 +95,42 @@ export interface I18nModule {
   isRTL: boolean;
   loadTranslations: (locale: LanguageCode) => Promise<Translations>;
 }
+
+// Enhanced i18n options interface
+export interface EnhancedI18nOptions {
+  initialTranslations?: Partial<Translations>;
+  enableDebug?: boolean;
+  enablePerformanceMonitoring?: boolean;
+  intlConfig?: Partial<IntlConfig>;
+  usedNamespaces?: string[];
+  preloadLocales?: LanguageCode[];
+}
+
+// Enhanced i18n module interface
+export interface EnhancedI18nModule extends I18nModule {
+  // Enhanced features
+  debugger: any; // I18nDebugger
+  performanceMonitor: any; // I18nPerformanceMonitor
+  intlFormatter: any; // ReturnType<typeof createIntlFormatter>
+  templateTranslator: any; // ReturnType<typeof createTemplateTranslator>
+  pluralTranslator: any; // ReturnType<typeof createDebugPluralTranslator>
+  
+  // Namespace loading
+  loadNamespace: <T = any>(namespace: string) => Promise<T>;
+  
+  // Cache management
+  clearCache: (locale?: LanguageCode) => void;
+  getCacheStats: () => any;
+  
+  // Enterprise features
+  translationManager: any; // TranslationManager
+  analytics: any; // TranslationAnalytics
+}
+
+// Intl configuration interface
+export interface IntlConfig {
+  locale: LanguageCode;
+  timeZone?: string;
+  currency?: string;
+  numberingSystem?: string;
+}

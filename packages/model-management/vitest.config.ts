@@ -1,6 +1,9 @@
-import { createBaseVitestConfig } from "reynard-testing/config";
+import { defineConfig } from "vitest/config";
 
-export default createBaseVitestConfig({
-  packageName: "reynard-model-management",
-  setupFiles: ["./src/test-setup.ts"],
+export default defineConfig({
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: [],
+  },
 });

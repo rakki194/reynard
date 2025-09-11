@@ -15,10 +15,14 @@ const mockTranslations = {
     welcome: "Welcome, {name}!",
     itemCount: "You have {count} items",
     dynamic: (params: TranslationParams) => `Hello ${params.name}`,
+    complex: (params: TranslationParams) => `User ${params.name} has ${params.count} items in ${params.category}`,
   },
   templates: {
     greeting: "Hello {name}, you have {count} items",
     nested: "Level {level} with {value}",
+  },
+  complex: {
+    mixed: "User {name} (ID: {id}) has {count} items worth ${amount}",
   },
 };
 
@@ -45,7 +49,7 @@ describe("Translation Logic", () => {
       writable: true,
     });
 
-    i18n = createI18nModule(mockTranslations);
+    i18n = createI18nModule({ initialTranslations: mockTranslations, enableDebug: true });
   });
 
   describe("Translation with Parameters", () => {

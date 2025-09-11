@@ -72,8 +72,3 @@ export {
   type OKLCH,
   type RGB
 } from "./colorConversion";
-
-// Export CSS
-import "./oklch-themes.css";
-import "./themes.css";
-

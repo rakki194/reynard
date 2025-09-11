@@ -4,7 +4,7 @@ import { TimeSeriesChart } from "../TimeSeriesChart";
 import type { TimeSeriesDataPoint } from "../../types";
 
 // Extend expect with jest-dom matchers
-import "@testing-library/jest-dom";
+// Using reynard-testing instead of jest-dom
 
 const mockData: TimeSeriesDataPoint[] = [
   { timestamp: 1640995200000, value: 20, label: "Jan 1" }, // 2022-01-01

@@ -10,18 +10,20 @@
 }
 
 .editor-header h2 {
-  color: oklch(90% 0.01 0);
+  color: var(--color-text, oklch(90% 0.01 0));
   margin-bottom: 1rem;
   font-size: 2.5rem;
   font-weight: 700;
+  transition: color 0.2s ease;
 }
 
 .editor-header p {
-  color: oklch(70% 0.01 0);
+  color: var(--color-text-secondary, oklch(70% 0.01 0));
   font-size: 1.2rem;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  transition: color 0.2s ease;
 }
 
 .editor-grid {
@@ -31,12 +33,14 @@
 }
 
 .editor-controls {
-  background: oklch(20% 0.02 0);
+  background: var(--color-surface, oklch(25% 0.02 0));
   border-radius: 1rem;
   padding: 2rem;
   height: fit-content;
   position: sticky;
   top: 120px;
+  border: 1px solid var(--color-border, oklch(35% 0.02 0));
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .control-section {
@@ -48,10 +52,11 @@
 }
 
 .control-section h3 {
-  color: oklch(85% 0.01 0);
+  color: var(--color-text, oklch(85% 0.01 0));
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .material-buttons {
@@ -62,26 +67,26 @@
 
 .material-button {
   padding: 0.75rem 1rem;
-  border: 2px solid oklch(35% 0.02 0);
+  border: 2px solid var(--color-border, oklch(35% 0.02 0));
   border-radius: 0.5rem;
-  background: oklch(25% 0.02 0);
-  color: oklch(70% 0.01 0);
+  background: var(--color-surface, oklch(25% 0.02 0));
+  color: var(--color-text-secondary, oklch(70% 0.01 0));
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .material-button:hover {
-  background: oklch(30% 0.02 0);
-  border-color: oklch(45% 0.02 0);
+  background: var(--color-surface-hover, oklch(30% 0.02 0));
+  border-color: var(--color-border-hover, oklch(45% 0.02 0));
   transform: translateY(-1px);
 }
 
 .material-button.selected {
-  background: oklch(35% 0.02 0);
-  border-color: oklch(60% 0.2 240);
-  color: oklch(85% 0.01 0);
+  background: var(--color-surface-active, oklch(35% 0.02 0));
+  border-color: var(--color-accent, oklch(60% 0.2 240));
+  color: var(--color-text, oklch(85% 0.01 0));
 }
 
 .intensity-control {
@@ -96,8 +101,8 @@
   border-radius: 4px;
   background: linear-gradient(
     to right,
-    oklch(30% 0.01 0),
-    oklch(60% 0.2 240)
+    var(--color-background-secondary, oklch(30% 0.01 0)),
+    var(--color-accent, oklch(60% 0.2 240))
   );
   outline: none;
   cursor: pointer;
@@ -109,24 +114,25 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: oklch(60% 0.2 240);
+  background: var(--color-accent, oklch(60% 0.2 240));
   cursor: pointer;
-  border: 2px solid oklch(90% 0.01 0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--color-text-inverse, oklch(90% 0.01 0));
+  box-shadow: 0 2px 8px var(--shadow-rgb, 0 0 0 / 0.3);
   transition: all 0.2s ease;
 }
 
 .intensity-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-rgb, 0 0 0 / 0.4);
 }
 
 .intensity-value {
-  color: oklch(75% 0.01 0);
+  color: var(--color-text-secondary, oklch(75% 0.01 0));
   font-weight: 500;
   font-size: 0.9rem;
   text-align: center;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  transition: color 0.2s ease;
 }
 
 .editor-canvas {
@@ -139,20 +145,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: oklch(15% 0.01 0);
+  background: var(--color-background-tertiary, oklch(15% 0.01 0));
   border-radius: 1rem;
   padding: 2rem;
-  border: 2px solid oklch(25% 0.02 0);
+  border: 2px solid var(--color-border, oklch(25% 0.02 0));
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .pixel-canvas {
   display: grid;
   gap: 1px;
-  background: oklch(10% 0.01 0);
+  background: var(--color-background, oklch(10% 0.01 0));
   border-radius: 0.5rem;
   padding: 1rem;
   max-width: 100%;
   max-height: 600px;
+  transition: background-color 0.2s ease;
+}
+
+.pixel-canvas--dynamic {
+  /* Dynamic grid styles will be applied via CSS custom properties */
 }
 
 .pixel-cell {
@@ -161,6 +173,14 @@
   cursor: crosshair;
   transition: all 0.1s ease;
   border-radius: 2px;
+}
+
+.pixel-cell--empty {
+  border: 1px solid var(--color-border, oklch(30% 0.01 0));
+}
+
+.pixel-cell--filled {
+  border: none;
 }
 
 .pixel-cell:hover {
@@ -183,19 +203,21 @@
 }
 
 .size-input label {
-  color: oklch(75% 0.01 0);
+  color: var(--color-text-secondary, oklch(75% 0.01 0));
   font-weight: 500;
   min-width: 50px;
+  transition: color 0.2s ease;
 }
 
 .size-input input {
   padding: 0.5rem;
-  border: 2px solid oklch(35% 0.02 0);
+  border: 2px solid var(--color-border, oklch(35% 0.02 0));
   border-radius: 0.5rem;
-  background: oklch(25% 0.02 0);
-  color: oklch(85% 0.01 0);
+  background: var(--color-surface, oklch(25% 0.02 0));
+  color: var(--color-text, oklch(85% 0.01 0));
   font-size: 0.9rem;
   width: 80px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .preset-sizes {
@@ -206,18 +228,18 @@
 
 .preset-sizes button {
   padding: 0.5rem 1rem;
-  border: 2px solid oklch(35% 0.02 0);
+  border: 2px solid var(--color-border, oklch(35% 0.02 0));
   border-radius: 0.5rem;
-  background: oklch(25% 0.02 0);
-  color: oklch(70% 0.01 0);
+  background: var(--color-surface, oklch(25% 0.02 0));
+  color: var(--color-text-secondary, oklch(70% 0.01 0));
   cursor: pointer;
   font-size: 0.8rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .preset-sizes button:hover {
-  background: oklch(30% 0.02 0);
-  border-color: oklch(45% 0.02 0);
+  background: var(--color-surface-hover, oklch(30% 0.02 0));
+  border-color: var(--color-border-hover, oklch(45% 0.02 0));
 }
 
 .tool-buttons {
@@ -228,42 +250,42 @@
 
 .tool-button {
   padding: 0.75rem 1rem;
-  border: 2px solid oklch(35% 0.02 0);
+  border: 2px solid var(--color-border, oklch(35% 0.02 0));
   border-radius: 0.5rem;
-  background: oklch(25% 0.02 0);
-  color: oklch(70% 0.01 0);
+  background: var(--color-surface, oklch(25% 0.02 0));
+  color: var(--color-text-secondary, oklch(70% 0.01 0));
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .tool-button:hover {
-  background: oklch(30% 0.02 0);
-  border-color: oklch(45% 0.02 0);
+  background: var(--color-surface-hover, oklch(30% 0.02 0));
+  border-color: var(--color-border-hover, oklch(45% 0.02 0));
   transform: translateY(-1px);
 }
 
 .tool-button.selected {
-  background: oklch(35% 0.02 0);
-  border-color: oklch(60% 0.2 240);
-  color: oklch(85% 0.01 0);
+  background: var(--color-surface-active, oklch(35% 0.02 0));
+  border-color: var(--color-accent, oklch(60% 0.2 240));
+  color: var(--color-text, oklch(85% 0.01 0));
 }
 
 .clear-button {
   width: 100%;
   padding: 1rem;
-  border: 2px solid oklch(50% 0.2 0);
+  border: 2px solid var(--color-accent, oklch(50% 0.2 0));
   border-radius: 0.5rem;
-  background: oklch(40% 0.2 0);
-  color: oklch(90% 0.01 0);
+  background: var(--color-surface-active, oklch(40% 0.2 0));
+  color: var(--color-text-inverse, oklch(90% 0.01 0));
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,19 +293,32 @@
 }
 
 .clear-button:hover {
-  background: oklch(45% 0.2 0);
-  border-color: oklch(60% 0.2 0);
+  background: var(--color-accent, oklch(45% 0.2 0));
+  border-color: var(--color-accent, oklch(60% 0.2 0));
   transform: translateY(-2px);
 }
 
 .canvas-info {
   text-align: center;
-  color: oklch(70% 0.01 0);
+  color: var(--color-text-secondary, oklch(70% 0.01 0));
   font-size: 0.9rem;
+  transition: color 0.2s ease;
 }
 
 .canvas-info p {
   margin: 0.25rem 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 1024px) {

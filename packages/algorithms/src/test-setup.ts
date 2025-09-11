@@ -1,8 +1,4 @@
 /**
  * Test setup for reynard-algorithms
+ * Using simple happy-dom setup for utility functions
  */
-
-import { setupMinimalTestEnvironment } from "reynard-testing/utils";
-
-// Setup minimal test environment for utility functions
-setupMinimalTestEnvironment();

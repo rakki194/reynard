@@ -36,7 +36,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
     vx: (Math.random() - 0.5) * 6,
     vy: (Math.random() - 0.5) * 6,
     radius: Math.random() * 15 + 10,
-    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    color: `oklch(60% 0.2 ${Math.random() * 360})`,
   });
 
   const initializeBalls = () => {

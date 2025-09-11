@@ -4,7 +4,7 @@
  */
 
 import { cleanup } from "@solidjs/testing-library";
-import "@testing-library/jest-dom/vitest";
+// Using unified testing setup instead of jest-dom
 import { afterEach, vi } from "vitest";
 
 // Mock localStorage for tests

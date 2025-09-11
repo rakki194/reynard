@@ -3,6 +3,9 @@
  * Styles for advanced charting components including ModelUsage, EmbeddingDistribution, and PCA charts
  */
 
+/* Import centralized theme system */
+@import "reynard-themes/themes.css";
+
 /* Dashboard Styles */
 .advanced-charting-dashboard {
   display: flex;
@@ -11,7 +14,7 @@
   padding: 1rem;
   background: var(--color-background);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px oklch(0% 0 0 / 0.1);
 }
 
 .dashboard-header {

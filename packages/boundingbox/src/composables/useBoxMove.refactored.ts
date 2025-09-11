@@ -56,7 +56,7 @@ export function useBoxMove(
 
   // Create state and operations
   const state = createMoveState();
-  const operations = createMoveOperations(state.state, finalConstraints);
+  const operations = createMoveOperations(state, finalConstraints);
 
   const startMove = (
     boxId: string,

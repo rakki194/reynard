@@ -1,12 +1,21 @@
-import { createBaseVitestConfig } from "reynard-testing/config";
+import { defineConfig } from "vitest/config";
 
-export default createBaseVitestConfig({
-  packageName: "reynard-core",
-  setupFiles: ["./src/test-setup.ts"],
-  coverageThresholds: {
-    branches: 85,
-    functions: 90,
-    lines: 90,
-    statements: 90,
+export default defineConfig({
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: [],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      thresholds: {
+        global: {
+          branches: 85,
+          functions: 90,
+          lines: 90,
+          statements: 90,
+        },
+      },
+    },
   },
 });

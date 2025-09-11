@@ -11,12 +11,7 @@ export { getSpanishPlural } from "./spanish-plural";
 export { getRomanianPlural } from "./romanian-plural";
 
 // Additional pluralization functions that were missing
-export function getTurkishPlural(
-  n: number,
-  forms: { singular: string; plural: string },
-): string {
-  return n === 1 ? forms.singular : forms.plural;
-}
+export { getTurkishPlural } from "./turkish-plural";
 
 export function getPortuguesePlural(
   n: number,
