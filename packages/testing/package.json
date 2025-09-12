@@ -44,7 +44,7 @@
     "dev": "vite build --watch",
     "build": "tsc --build",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=testing-package ../../scripts/vitest-global-queue.sh run testing-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",

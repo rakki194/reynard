@@ -29,7 +29,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=video-package ../../scripts/vitest-global-queue.sh run video-package",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "type-check": "tsc --noEmit"

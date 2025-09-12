@@ -18,7 +18,7 @@ export function createMockFn<T extends (...args: any[]) => any>(
 /**
  * Create a mock object with all methods mocked
  */
-export function createMockObject<T extends Record<string, any>>(
+export function createMockObject<T extends Record<string, unknown>>(
   methods: (keyof T)[],
 ): {
   [K in keyof T]: T[K] extends (...args: any[]) => any
@@ -73,7 +73,7 @@ export function createMockResponse(
  * Create a mock fetch function
  */
 export function createMockFetch(
-  responses: Record<string, any> = {},
+  responses: Record<string, unknown> = {},
 ): typeof fetch {
   return vi.fn().mockImplementation((url: string | URL | Request) => {
     const urlString = url.toString();

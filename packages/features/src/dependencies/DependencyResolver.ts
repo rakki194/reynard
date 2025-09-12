@@ -89,7 +89,7 @@ export class DependencyResolver {
 
     // Build dependency graph
     features.forEach((feature) => {
-      dependencyGraph.set(feature.id, feature.dependencies || []);
+      dependencyGraph.set(feature.id, (feature.dependencies || []).map(dep => dep.services).flat());
     });
 
     // Resolve dependencies
@@ -122,9 +122,11 @@ export class DependencyResolver {
     
     if (feature.dependencies) {
       feature.dependencies.forEach((dep) => {
-        if (!this.isServiceAvailable(dep)) {
-          missing.push(dep);
-        }
+        dep.services.forEach((service) => {
+          if (!this.isServiceAvailable(service)) {
+            missing.push(service);
+          }
+        });
       });
     }
     

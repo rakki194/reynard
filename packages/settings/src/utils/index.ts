@@ -259,7 +259,7 @@ export function validateSetting(
  */
 export function validateAllSettings(
   definitions: Record<string, SettingDefinition>,
-  values: Record<string, any>,
+  values: Record<string, unknown>,
 ): LegacyMultiValidationResult {
   const errors: Record<string, string> = {};
 
@@ -283,7 +283,7 @@ export function validateAllSettings(
  */
 export function evaluateCondition(
   condition: SettingCondition,
-  values: Record<string, any>,
+  values: Record<string, unknown>,
 ): boolean {
   const { key, value: expectedValue, operator = "equals", and, or } = condition;
 
@@ -346,7 +346,7 @@ export function evaluateCondition(
  */
 export function isSettingVisible(
   definition: SettingDefinition,
-  values: Record<string, any>,
+  values: Record<string, unknown>,
 ): boolean {
   if (!definition.condition) return true;
   return evaluateCondition(definition.condition, values);
@@ -357,7 +357,7 @@ export function isSettingVisible(
  */
 export function getVisibleSettings(
   definitions: Record<string, SettingDefinition>,
-  values: Record<string, any>,
+  values: Record<string, unknown>,
 ): Record<string, SettingDefinition> {
   const visible: Record<string, SettingDefinition> = {};
 

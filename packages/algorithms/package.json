@@ -20,7 +20,7 @@
     "dev": "vite build --watch",
     "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist --skipLibCheck",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly --skipLibCheck",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=algorithms-package ../../scripts/vitest-global-queue.sh run algorithms-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit --skipLibCheck",

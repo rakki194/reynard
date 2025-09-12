@@ -1,15 +1,16 @@
 /**
  * תרגומים עבריים בסיסיים למסגרת Reynard
  */
-
 export const coreTranslations = {
   // שגיאות חיבור ו-API
   connection: {
     failed: "החיבור נכשל",
   },
+
   network: {
     error: "שגיאת רשת",
   },
+
   request: {
     aborted: "הבקשה בוטלה",
   },
@@ -171,4 +172,5 @@ export const coreTranslations = {
       "אינטגרציה של אימות ואימות קלט",
     "performance-and-security-integration": "אינטגרציה של ביצועים ואבטחה",
   },
+
 };

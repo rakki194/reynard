@@ -15,7 +15,7 @@ from pathlib import Path
 
 # Import the validation functions
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../.husky'))
+sys.path.insert(0, os.path.dirname(__file__))
 from validate_python import (
     Colors,
     print_colored,

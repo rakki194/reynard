@@ -1,15 +1,16 @@
 /**
  * Grunnleggende norske oversettelser for Reynard-rammeverket
  */
-
 export const coreTranslations = {
   // Tilkoblings- og API-feil
   connection: {
     failed: "Tilkobling mislyktes",
   },
+
   network: {
     error: "Nettverksfeil",
   },
+
   request: {
     aborted: "Forespørsel avbrutt",
   },
@@ -174,4 +175,5 @@ export const coreTranslations = {
       "Autentisering og inputvalidering integrasjon",
     "performance-and-security-integration": "Ytelse og sikkerhet integrasjon",
   },
+
 };

@@ -4,7 +4,8 @@
  * Status management for the feature manager.
  */
 
-import type { FeatureStatus, FeatureManagerCore } from "./FeatureManagerCore.js";
+import type { FeatureStatus } from "./types.js";
+import type { FeatureManagerCore } from "./FeatureManagerCore.js";
 
 /**
  * Get feature status
@@ -46,10 +47,22 @@ export function getAllFeatureStatuses(
  * Refresh feature statuses
  */
 export function refreshFeatureStatuses(core: FeatureManagerCore): void {
-  const features = core.registry.getAllFeatures();
+  const features = core.registry.getAll();
   
   for (const feature of features) {
-    const status = core.registry.isFeatureEnabled(feature.id) ? "enabled" : "disabled";
+    const isEnabled = core.registry.isEnabled(feature.id);
+    const status: FeatureStatus = {
+      id: feature.id,
+      name: feature.name,
+      available: isEnabled,
+      degraded: false,
+      message: isEnabled ? "Feature is available" : "Feature is disabled",
+      missingServices: [],
+      degradedServices: [],
+      config: {},
+      lastUpdated: Date.now(),
+      healthScore: isEnabled ? 100 : 0
+    };
     setFeatureStatus(core, feature.id, status);
   }
 }

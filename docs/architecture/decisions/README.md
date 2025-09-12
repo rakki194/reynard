@@ -44,7 +44,9 @@ When making significant architectural decisions:
 4. **Get team review** before marking as "Accepted"
 5. **Update related documentation** to reference the new ADR
 
-## ADR Template
+## ADR Templates
+
+### Standard ADR Template
 
 ```markdown
 # ADR-XXX: [Decision Title]
@@ -74,6 +76,16 @@ When making significant architectural decisions:
 ### Risks and Mitigations
 
 [Identify risks and how they're mitigated]
+```
+
+### Specialized ADR Templates
+
+For specific types of architectural decisions, use these specialized templates:
+
+- **[Security ADR Template](./templates/security-adr-template.md)** - For security-related architectural decisions
+- **[Performance ADR Template](./templates/performance-adr-template.md)** - For performance optimization decisions  
+- **[Scalability ADR Template](./templates/scalability-adr-template.md)** - For scalability and growth decisions
+- **[Integration ADR Template](./templates/integration-adr-template.md)** - For system integration decisions
 
 ## Compliance
 

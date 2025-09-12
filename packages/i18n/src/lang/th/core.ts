@@ -1,15 +1,16 @@
 /**
  * การแปลภาษาไทยพื้นฐานสำหรับเฟรมเวิร์ก Reynard
  */
-
 export const coreTranslations = {
   // ข้อผิดพลาดการเชื่อมต่อและ API
   connection: {
     failed: "การเชื่อมต่อล้มเหลว",
   },
+
   network: {
     error: "ข้อผิดพลาดเครือข่าย",
   },
+
   request: {
     aborted: "คำขอถูกยกเลิก",
   },
@@ -173,4 +174,5 @@ export const coreTranslations = {
       "การรวมการรับรองตัวตนและการตรวจสอบอินพุต",
     "performance-and-security-integration": "การรวมประสิทธิภาพและความปลอดภัย",
   },
+
 };

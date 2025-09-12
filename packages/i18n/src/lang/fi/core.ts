@@ -1,15 +1,16 @@
 /**
  * Perus suomenkieliset käännökset Reynard-kehykselle
  */
-
 export const coreTranslations = {
   // Yhteyden ja API:n virheet
   connection: {
     failed: "Yhteys epäonnistui",
   },
+
   network: {
     error: "Verkkovirhe",
   },
+
   request: {
     aborted: "Pyyntö keskeytetty",
   },
@@ -179,4 +180,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Suorituskyvyn ja turvallisuuden integraatio",
   },
+
 };

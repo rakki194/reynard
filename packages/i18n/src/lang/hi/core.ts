@@ -1,15 +1,16 @@
 /**
  * Reynard फ्रेमवर्क के लिए मूल हिंदी अनुवाद
  */
-
 export const coreTranslations = {
   // कनेक्शन और API त्रुटियां
   connection: {
     failed: "कनेक्शन विफल",
   },
+
   network: {
     error: "नेटवर्क त्रुटि",
   },
+
   request: {
     aborted: "अनुरोध रद्द",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
       "प्रमाणीकरण और इनपुट सत्यापन एकीकरण",
     "performance-and-security-integration": "प्रदर्शन और सुरक्षा एकीकरण",
   },
+
 };

@@ -4,20 +4,10 @@ import solid from "vite-plugin-solid";
 export default defineConfig({
   plugins: [solid()],
   test: {
-    environment: "happy-dom",
+    environment: "jsdom",
     globals: true,
     setupFiles: ["./src/test-setup.ts"],
     reporters: [["default", { summary: false }]],
-    environmentOptions: {
-      happyDOM: {
-        url: "http://localhost:3000",
-        settings: {
-          disableJavaScriptFileLoading: true,
-          disableJavaScriptEvaluation: true,
-          disableCSSFileLoading: true,
-        },
-      },
-    },
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],

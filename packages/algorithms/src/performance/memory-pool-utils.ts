@@ -12,6 +12,8 @@ import {
   PerformanceMemoryPoolConfig,
   PooledObject,
 } from "./memory-pool-core";
+import type { SpatialObjectData, MemoryPoolStats } from "../types/spatial-types";
+import type { MemoryPoolStats as PerformanceStats } from "../types/performance-types";
 
 /**
  * Create a memory pool for spatial objects
@@ -25,7 +27,7 @@ export function createSpatialObjectPool(
     y: number = 0;
     width: number = 0;
     height: number = 0;
-    data: any = null;
+    data: SpatialObjectData | null = null;
 
     reset(): void {
       this.id = "";
@@ -101,7 +103,7 @@ export function createVectorPool(config: PerformanceMemoryPoolConfig = {}) {
  * Global memory pool manager for managing multiple pools
  */
 export class MemoryPoolManager {
-  private pools = new Map<string, MemoryPool<any>>();
+  private pools = new Map<string, MemoryPool<PooledObject>>();
 
   createPool<T extends PooledObject>(
     name: string,
@@ -109,20 +111,20 @@ export class MemoryPoolManager {
     config: PerformanceMemoryPoolConfig = {},
   ): MemoryPool<T> {
     const pool = new MemoryPool(createFn, config);
-    this.pools.set(name, pool);
+    this.pools.set(name, pool as MemoryPool<PooledObject>);
     return pool;
   }
 
   getPool<T extends PooledObject>(name: string): MemoryPool<T> | undefined {
-    return this.pools.get(name);
+    return this.pools.get(name) as MemoryPool<T> | undefined;
   }
 
   removePool(name: string): boolean {
     return this.pools.delete(name);
   }
 
-  getAllStats(): Record<string, any> {
-    const stats: Record<string, any> = {};
+  getAllStats(): Record<string, PerformanceStats> {
+    const stats: Record<string, PerformanceStats> = {};
     this.pools.forEach((pool, name) => {
       stats[name] = pool.getStats();
     });

@@ -6,13 +6,17 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   createDebugTranslationFunction,
+} from "../../../debugger/DebugTranslation.js";
+import {
   validateTranslations,
+} from "../../../debugger/Validation.js";
+import {
   createDebugStats,
   usedKeys,
   missingKeys,
-} from "../../debugger";
+} from "../../../debugger/DebugStats.js";
 
-import type { Translations, TranslationParams } from "../../types";
+import type { Translations, TranslationParams } from "../../../types";
 
 // Mock console methods
 const mockConsole = {

@@ -1,15 +1,16 @@
 /**
  * Terjemahan bahasa Indonesia dasar untuk framework Reynard
  */
-
 export const coreTranslations = {
   // Kesalahan koneksi dan API
   connection: {
     failed: "Koneksi gagal",
   },
+
   network: {
     error: "Kesalahan jaringan",
   },
+
   request: {
     aborted: "Permintaan dibatalkan",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
       "Integrasi autentikasi dan validasi input",
     "performance-and-security-integration": "Integrasi kinerja dan keamanan",
   },
+
 };

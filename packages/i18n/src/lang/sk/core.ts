@@ -1,15 +1,16 @@
 /**
  * Základné slovenské preklady pre Reynard framework
  */
-
 export const coreTranslations = {
   // Chyby pripojenia a API
   connection: {
     failed: "Pripojenie zlyhalo",
   },
+
   network: {
     error: "Chyba siete",
   },
+
   request: {
     aborted: "Požiadavka bola prerušená",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
       "Integrácia autentifikácie a validácie vstupu",
     "performance-and-security-integration": "Integrácia výkonu a bezpečnosti",
   },
+
 };

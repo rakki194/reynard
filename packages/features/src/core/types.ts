@@ -164,6 +164,8 @@ export interface FeatureRegistry {
   getByTag(tag: string): FeatureDefinition[];
   /** Check if feature is registered */
   has(featureId: string): boolean;
+  /** Check if feature is enabled */
+  isEnabled(featureId: string): boolean;
   /** Clear all features */
   clear(): void;
   /** Get registry size */

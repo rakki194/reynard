@@ -140,8 +140,8 @@ export function expectObjectToHaveProperties(
  * Assert that an object has specific values
  */
 export function expectObjectToHaveValues(
-  obj: any,
-  values: Record<string, any>,
+  obj: unknown,
+  values: Record<string, unknown>,
 ) {
   Object.entries(values).forEach(([key, value]) => {
     expect(obj).toHaveProperty(key, value);

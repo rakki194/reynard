@@ -1,6 +1,20 @@
-import { createContext, useContext, createMemo, JSX } from "solid-js";
+import { createContext, useContext, JSX } from "solid-js";
 import type { FeatureContext, FeatureConfig } from "../core/types";
-import { FeatureManager } from "../core/FeatureManager";
+import { createFeatureContext } from "./createFeatureContext";
+import { 
+  useFeatureAvailable as useFeatureAvailableBase,
+  useFeatureDegraded as useFeatureDegradedBase,
+  useFeatureStatus as useFeatureStatusBase,
+  useFeatureConfig as useFeatureConfigBase,
+  useFeaturesByCategory as useFeaturesByCategoryBase,
+  useFeaturesByPriority as useFeaturesByPriorityBase,
+  useCriticalFeatures as useCriticalFeaturesBase,
+  useFeaturesByService as useFeaturesByServiceBase
+} from "./useFeatureHooks";
+import { 
+  useFeatureAware as useFeatureAwareBase,
+  useFeatureConfiguration as useFeatureConfigurationBase
+} from "./useFeatureAware";
 
 // Create feature context
 const FeatureContextProvider = createContext<FeatureContext>();
@@ -17,27 +31,8 @@ export interface FeatureProviderProps {
  * Feature provider component
  */
 export function FeatureProvider(props: FeatureProviderProps) {
-  const manager = new FeatureManager(props.config);
-
-  const context: FeatureContext = {
-    manager,
-    featureStatuses: manager.getFeatureStatusesSignal(),
-    availableFeatures: createMemo(() => manager.getAvailableFeatures()),
-    degradedFeatures: createMemo(() => manager.getDegradedFeatures()),
-    featureSummary: createMemo(() => manager.getFeatureSummary()),
-    isFeatureAvailable: (featureId: string) =>
-      manager.isFeatureAvailable(featureId),
-    isFeatureDegraded: (featureId: string) =>
-      manager.isFeatureDegraded(featureId),
-    getFeatureStatus: (featureId: string) =>
-      manager.getFeatureStatus(featureId),
-    configureFeature: (featureId: string, config: Record<string, any>) =>
-      manager.configureFeature(featureId, config),
-    getFeatureConfig: (featureId: string) =>
-      manager.getFeatureConfig(featureId),
-    refreshFeatureStatuses: () => manager.refreshFeatureStatuses(),
-  };
-
+  // eslint-disable-next-line solid/reactivity
+  const context = createFeatureContext(props.config);
   return (
     <FeatureContextProvider.Provider value={context}>
       {props.children}
@@ -60,108 +55,78 @@ export function useFeatures(): FeatureContext {
  * Hook to check if a feature is available
  */
 export function useFeatureAvailable(featureId: string) {
-  const { isFeatureAvailable } = useFeatures();
-  return createMemo(() => isFeatureAvailable(featureId));
+  const context = useFeatures();
+  return useFeatureAvailableBase(featureId, context);
 }
 
 /**
  * Hook to check if a feature is degraded
  */
 export function useFeatureDegraded(featureId: string) {
-  const { isFeatureDegraded } = useFeatures();
-  return createMemo(() => isFeatureDegraded(featureId));
+  const context = useFeatures();
+  return useFeatureDegradedBase(featureId, context);
 }
 
 /**
  * Hook to get feature status
  */
 export function useFeatureStatus(featureId: string) {
-  const { getFeatureStatus } = useFeatures();
-  return createMemo(() => getFeatureStatus(featureId));
+  const context = useFeatures();
+  return useFeatureStatusBase(featureId, context);
 }
 
 /**
  * Hook to get feature configuration
  */
 export function useFeatureConfig(featureId: string) {
-  const { getFeatureConfig } = useFeatures();
-  return createMemo(() => getFeatureConfig(featureId));
+  const context = useFeatures();
+  return useFeatureConfigBase(featureId, context);
 }
 
 /**
  * Hook to get available features by category
  */
 export function useFeaturesByCategory(category: string) {
-  const { manager } = useFeatures();
-  return createMemo(() => manager.getFeaturesByCategory(category));
+  const context = useFeatures();
+  return useFeaturesByCategoryBase(category, context);
 }
 
 /**
  * Hook to get features by priority
  */
 export function useFeaturesByPriority(priority: string) {
-  const { manager } = useFeatures();
-  return createMemo(() => manager.getFeaturesByPriority(priority));
+  const context = useFeatures();
+  return useFeaturesByPriorityBase(priority, context);
 }
 
 /**
  * Hook to get critical features status
  */
 export function useCriticalFeatures() {
-  const { manager } = useFeatures();
-  return createMemo(() => ({
-    available: manager.areCriticalFeaturesAvailable(),
-    unavailable: manager.getUnavailableCriticalFeatures(),
-  }));
+  const context = useFeatures();
+  return useCriticalFeaturesBase(context);
 }
 
 /**
  * Hook to get features dependent on a service
  */
 export function useFeaturesByService(serviceName: string) {
-  const { manager } = useFeatures();
-  return createMemo(() => manager.getFeaturesDependentOnService(serviceName));
+  const context = useFeatures();
+  return useFeaturesByServiceBase(serviceName, context);
 }
 
 /**
  * Hook to create a feature-aware component
  */
-export function useFeatureAware(featureId: string, fallback?: any) {
-  const isAvailable = useFeatureAvailable(featureId);
-  const isDegraded = useFeatureDegraded(featureId);
-  const status = useFeatureStatus(featureId);
-
-  return {
-    isAvailable,
-    isDegraded,
-    status,
-    shouldRender: createMemo(() => isAvailable() || isDegraded()),
-    fallback,
-  };
+export function useFeatureAware(featureId: string, fallback?: unknown) {
+  const context = useFeatures();
+  return useFeatureAwareBase(featureId, context, fallback);
 }
 
 /**
  * Hook to manage feature configuration
  */
 export function useFeatureConfiguration(featureId: string) {
-  const { configureFeature } = useFeatures();
-  const config = useFeatureConfig(featureId);
-
-  const updateConfig = (newConfig: Record<string, any>) => {
-    configureFeature(featureId, newConfig);
-  };
-
-  const setConfigValue = (key: string, value: any) => {
-    const currentConfig = config() || {};
-    updateConfig({
-      ...currentConfig,
-      [key]: value,
-    });
-  };
-
-  return {
-    config,
-    updateConfig,
-    setConfigValue,
-  };
+  const context = useFeatures();
+  return useFeatureConfigurationBase(featureId, context);
 }

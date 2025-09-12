@@ -1,15 +1,16 @@
 /**
  * Osnovni hrvatski prijevodi za Reynard okvir
  */
-
 export const coreTranslations = {
   // Greške veze i API-ja
   connection: {
     failed: "Veza neuspješna",
   },
+
   network: {
     error: "Mrežna greška",
   },
+
   request: {
     aborted: "Zahtjev prekinut",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integracija performansi i sigurnosti",
   },
+
 };

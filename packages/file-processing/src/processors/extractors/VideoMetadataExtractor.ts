@@ -19,6 +19,7 @@ export class VideoMetadataExtractor extends BaseMetadataExtractor {
     file: File | string,
     options?: Partial<MetadataExtractionOptions>,
   ): Promise<VideoMetadata> {
+    const mergedOptions = { ...this.options, ...options };
     const video = await this.loadVideo(file);
     const basicInfo = await this.getBasicFileInfo(file);
 
@@ -33,19 +34,21 @@ export class VideoMetadataExtractor extends BaseMetadataExtractor {
       frameCount: Math.floor(video.duration * 30), // Estimate based on default FPS
     };
 
-    // Try to extract more detailed video information
-    try {
-      const videoInfo = await this.extractVideoInfo();
-      if (videoInfo) {
-        metadata.fps = videoInfo.fps || metadata.fps;
-        metadata.bitrate = videoInfo.bitrate || metadata.bitrate;
-        metadata.codec = videoInfo.codec || metadata.codec;
-        metadata.frameCount = videoInfo.frameCount || metadata.frameCount;
-        metadata.audioCodec = videoInfo.audioCodec;
-        metadata.audioBitrate = videoInfo.audioBitrate;
+    // Try to extract more detailed video information if content analysis is enabled
+    if (mergedOptions.analyzeContent) {
+      try {
+        const videoInfo = await this.extractVideoInfo();
+        if (videoInfo) {
+          metadata.fps = videoInfo.fps || metadata.fps;
+          metadata.bitrate = videoInfo.bitrate || metadata.bitrate;
+          metadata.codec = videoInfo.codec || metadata.codec;
+          metadata.frameCount = videoInfo.frameCount || metadata.frameCount;
+          metadata.audioCodec = videoInfo.audioCodec;
+          metadata.audioBitrate = videoInfo.audioBitrate;
+        }
+      } catch (error) {
+        console.warn("Detailed video info extraction failed:", error);
       }
-    } catch (error) {
-      console.warn("Detailed video info extraction failed:", error);
     }
 
     return metadata;

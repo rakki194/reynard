@@ -1,15 +1,16 @@
 /**
  * Core English translations for Reynard framework
  */
-
 export const coreTranslations = {
   // Connection and API errors
   connection: {
     failed: "Connection failed",
   },
+
   network: {
     error: "Network error",
   },
+
   request: {
     aborted: "Request aborted",
   },
@@ -216,4 +217,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Performance and Security Integration",
   },
+
 };

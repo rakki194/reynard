@@ -4,7 +4,8 @@
  * Operations for the feature registry.
  */
 
-import type { FeatureDefinition, FeatureRegistryCore } from "./FeatureRegistryCore.js";
+import type { FeatureDefinition } from "./types.js";
+import type { FeatureRegistryCore } from "./FeatureRegistryCore.js";
 
 /**
  * Register a new feature
@@ -86,7 +87,11 @@ export function getFeaturesByStatus(
 ): FeatureDefinition[] {
   const functionalities = core.getFunctionalities();
   return Array.from(functionalities.values()).filter(
-    (feature) => feature.status === status,
+    (feature) => {
+      if (status === "enabled") return feature.enabled === true;
+      if (status === "disabled") return feature.enabled === false;
+      return false;
+    },
   );
 }
 

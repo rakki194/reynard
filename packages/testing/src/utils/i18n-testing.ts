@@ -375,7 +375,7 @@ export async function validateTranslations(
 /**
  * Load translations for a locale (placeholder implementation)
  */
-async function loadTranslations(locale: string): Promise<Record<string, any>> {
+async function loadTranslations(locale: string): Promise<Record<string, unknown>> {
   // This would integrate with the actual reynard-i18n package
   try {
     const module = await import(`reynard-i18n/src/lang/${locale}/common.ts`);
@@ -389,12 +389,12 @@ async function loadTranslations(locale: string): Promise<Record<string, any>> {
  * Find missing translation keys
  */
 function findMissingKeys(
-  reference: Record<string, any>,
-  target: Record<string, any>,
+  reference: Record<string, unknown>,
+  target: Record<string, unknown>,
 ): string[] {
   const missing: string[] = [];
 
-  function compareObjects(ref: any, tar: any, path: string = "") {
+  function compareObjects(ref: unknown, tar: unknown, path: string = "") {
     for (const key in ref) {
       const currentPath = path ? `${path}.${key}` : key;
 
@@ -418,12 +418,12 @@ function findMissingKeys(
  * Find unused translation keys
  */
 function findUnusedKeys(
-  reference: Record<string, any>,
-  target: Record<string, any>,
+  reference: Record<string, unknown>,
+  target: Record<string, unknown>,
 ): string[] {
   const unused: string[] = [];
 
-  function findUnusedInObject(ref: any, tar: any, path: string = "") {
+  function findUnusedInObject(ref: unknown, tar: unknown, path: string = "") {
     for (const key in tar) {
       const currentPath = path ? `${path}.${key}` : key;
 
@@ -447,11 +447,11 @@ function findUnusedKeys(
  * Find incomplete translations (empty or placeholder values)
  */
 function findIncompleteTranslations(
-  translations: Record<string, any>,
+  translations: Record<string, unknown>,
 ): string[] {
   const incomplete: string[] = [];
 
-  function checkObject(obj: any, path: string = "") {
+  function checkObject(obj: unknown, path: string = "") {
     for (const key in obj) {
       const currentPath = path ? `${path}.${key}` : key;
 
@@ -479,7 +479,7 @@ function findIncompleteTranslations(
  * Validate pluralization rules
  */
 function validatePluralization(
-  translations: Record<string, any>,
+  translations: Record<string, unknown>,
   locale: string,
 ): string[] {
   const issues: string[] = [];

@@ -8,6 +8,8 @@
  * @module algorithms/optimized
  */
 
+import type { SpatialDataType } from "./types/spatial-types";
+
 import {
   OptimizedCollisionAdapter,
   type OptimizedCollisionConfig,
@@ -127,13 +129,13 @@ export function detectCollisions(aabbs: AABB[]): CollisionPair[] {
  * @param spatialObjects Array of spatial objects
  * @returns Array of nearby objects
  */
-export function performSpatialQuery(
+export function performSpatialQuery<T extends SpatialDataType>(
   queryAABB: AABB,
-  spatialObjects: Array<{ aabb: AABB; data: any }>,
-): Array<{ aabb: AABB; data: any }> {
+  spatialObjects: Array<{ aabb: AABB; data: T }>,
+): Array<{ aabb: AABB; data: T }> {
   // This would be implemented with the spatial query adapter
   // For now, return a simple implementation
-  const nearby: Array<{ aabb: AABB; data: any }> = [];
+  const nearby: Array<{ aabb: AABB; data: T }> = [];
 
   for (const obj of spatialObjects) {
     if (checkCollision(queryAABB, obj.aabb).colliding) {

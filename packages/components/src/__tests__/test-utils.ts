@@ -386,7 +386,7 @@ export const customMatchers = {
   /**
    * Check if element has a specific form
    */
-  toHaveFormValues: (element: Element | null, values: Record<string, any>) => {
+  toHaveFormValues: (element: Element | null, values: Record<string, unknown>) => {
     if (!element) {
       return {
         message: () => 'Expected element to have form values, but element was null',

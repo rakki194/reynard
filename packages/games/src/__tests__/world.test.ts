@@ -12,6 +12,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   Component,
   ComponentType,
+  Entity,
   Resource,
   ResourceType,
   StorageType,
@@ -153,7 +154,7 @@ describe("World System", () => {
     });
 
     it("should handle multiple spawn/despawn cycles", () => {
-      const entities: any[] = [];
+      const entities: Entity[] = [];
 
       // Spawn 10 entities
       for (let i = 0; i < 10; i++) {
@@ -348,7 +349,7 @@ describe("World System", () => {
 
     it("should query entities with single component", () => {
       const query = world.query(PositionType);
-      const results: any[] = [];
+      const results: Array<{ entity: Entity; position: Position }> = [];
 
       query.forEach((entity, position) => {
         results.push({ entity, position });
@@ -362,7 +363,7 @@ describe("World System", () => {
 
     it("should query entities with multiple components", () => {
       const query = world.query(PositionType, VelocityType);
-      const results: any[] = [];
+      const results: Array<{ entity: Entity; position: Position; velocity: Velocity }> = [];
 
       query.forEach((entity, position, velocity) => {
         results.push({ entity, position, velocity });
@@ -377,7 +378,7 @@ describe("World System", () => {
 
     it("should query entities with sparse set components", () => {
       const query = world.query(HealthType);
-      const results: any[] = [];
+      const results: Array<{ entity: Entity; health: Health }> = [];
 
       query.forEach((entity, health) => {
         results.push({ entity, health });
@@ -390,7 +391,7 @@ describe("World System", () => {
 
     it("should handle empty queries", () => {
       const query = world.query(PlayerType);
-      const results: any[] = [];
+      const results: Array<{ entity: Entity; player: Player }> = [];
 
       query.forEach((entity, player) => {
         results.push({ entity, player });
@@ -405,7 +406,7 @@ describe("World System", () => {
       const query = world.queryFiltered([PositionType], {
         without: [VelocityType],
       });
-      const results: any[] = [];
+      const results: Array<{ entity: Entity; position: Position }> = [];
 
       query.forEach((entity, position) => {
         results.push({ entity, position });

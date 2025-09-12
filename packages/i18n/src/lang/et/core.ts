@@ -1,15 +1,16 @@
 /**
  * Põhilised eesti tõlked Reynard raamistikule
  */
-
 export const coreTranslations = {
   // Ühenduse ja API vead
   connection: {
     failed: "Ühendus ebaõnnestus",
   },
+
   network: {
     error: "Võrgu viga",
   },
+
   request: {
     aborted: "Päring katkestatud",
   },
@@ -178,4 +179,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Jõudluse ja turvalisuse integratsioon",
   },
+
 };

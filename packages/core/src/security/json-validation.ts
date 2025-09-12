@@ -42,7 +42,7 @@ export function validateJSON(input: string): {
 /**
  * Check for prototype pollution in nested objects
  */
-function hasPrototypePollution(obj: Record<string, any>): boolean {
+function hasPrototypePollution(obj: Record<string, unknown>): boolean {
   if (typeof obj !== "object" || obj === null) {
     return false;
   }

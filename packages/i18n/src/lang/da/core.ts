@@ -1,15 +1,16 @@
 /**
  * Grundlæggende danske oversættelser til Reynard framework
  */
-
 export const coreTranslations = {
   // Forbindelses- og API-fejl
   connection: {
     failed: "Forbindelse mislykkedes",
   },
+
   network: {
     error: "Netværksfejl",
   },
+
   request: {
     aborted: "Anmodning afbrudt",
   },
@@ -174,4 +175,5 @@ export const coreTranslations = {
       "Autentificering og input validering integration",
     "performance-and-security-integration": "Ydeevne og sikkerhed integration",
   },
+
 };

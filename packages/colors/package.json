@@ -35,7 +35,7 @@
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "dev": "vite build --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=colors-package ../../scripts/vitest-global-queue.sh run colors-package",
     "test:coverage": "vitest --coverage",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"

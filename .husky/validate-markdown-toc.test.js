@@ -266,12 +266,14 @@ New content.`;
 ## Installation
 ## Table of Contents
 - [Installation](#installation)
+- [Configuration](#configuration)
 ## Configuration`;
 
       const content2 = `# File 2
 ## Setup
 ## Table of Contents
 - [Setup](#setup)
+- [Usage](#usage)
 ## Usage`;
 
       mockReadFileSync
@@ -327,7 +329,7 @@ More content.`;
       const result = autoFixToC(['test.md']);
 
       expect(result).toBe(true);
-      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.stringContaining('## Table of Contents'));
+      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.stringContaining('## Table of Contents'), 'utf8');
     });
 
     it('should update existing ToC', () => {
@@ -354,8 +356,8 @@ New content.`;
       const result = autoFixToC(['test.md']);
 
       expect(result).toBe(true);
-      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.stringContaining('New Section'));
-      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.not.stringContaining('Old Section'));
+      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.stringContaining('New Section'), 'utf8');
+      expect(mockWriteFileSync).toHaveBeenCalledWith('test.md', expect.not.stringContaining('Old Section'), 'utf8');
     });
 
     it('should handle files without H2 headings', () => {
@@ -439,6 +441,7 @@ More content.`;
 ## table of contents
 
 - [Installation](#installation)
+- [Configuration](#configuration)
 
 ## Configuration`;
 
@@ -457,6 +460,7 @@ More content.`;
 ##   Table of Contents   
 
 - [Installation](#installation)
+- [Configuration](#configuration)
 
 ## Configuration`;
 
@@ -482,8 +486,6 @@ More content.`;
   - [Advanced Options](#advanced-options)
     - [Environment Variables](#environment-variables)
     - [Custom Themes](#custom-themes)
-
-## Installation
 
 ### Prerequisites
 

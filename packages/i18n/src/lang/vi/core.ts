@@ -1,15 +1,16 @@
 /**
  * Bản dịch tiếng Việt cơ bản cho framework Reynard
  */
-
 export const coreTranslations = {
   // Lỗi kết nối và API
   connection: {
     failed: "Kết nối thất bại",
   },
+
   network: {
     error: "Lỗi mạng",
   },
+
   request: {
     aborted: "Yêu cầu bị hủy",
   },
@@ -173,4 +174,5 @@ export const coreTranslations = {
       "Tích hợp xác thực và xác thực đầu vào",
     "performance-and-security-integration": "Tích hợp hiệu suất và bảo mật",
   },
+
 };

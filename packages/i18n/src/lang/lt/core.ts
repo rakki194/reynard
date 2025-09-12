@@ -1,15 +1,16 @@
 /**
  * Pagrindiniai lietuvių kalbos vertimai Reynard sistemai
  */
-
 export const coreTranslations = {
   // Ryšio ir API klaidų
   connection: {
     failed: "Ryšys nepavyko",
   },
+
   network: {
     error: "Tinklo klaida",
   },
+
   request: {
     aborted: "Užklausa nutraukta",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
       "Autentifikavimo ir įvesties validavimo integracija",
     "performance-and-security-integration": "Veikimo ir saugumo integracija",
   },
+
 };

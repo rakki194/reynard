@@ -1,15 +1,16 @@
 /**
  * Grundläggande svenska översättningar för Reynard-ramverket
  */
-
 export const coreTranslations = {
   // Anslutnings- och API-fel
   connection: {
     failed: "Anslutning misslyckades",
   },
+
   network: {
     error: "Nätverksfel",
   },
+
   request: {
     aborted: "Förfrågan avbruten",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Prestanda- och säkerhetsintegration",
   },
+
 };

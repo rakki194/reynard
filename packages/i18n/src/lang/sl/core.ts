@@ -1,15 +1,16 @@
 /**
  * Osnovni slovenski prevodi za Reynard ogrodje
  */
-
 export const coreTranslations = {
   // Napake povezave in API-ja
   connection: {
     failed: "Povezava ni uspela",
   },
+
   network: {
     error: "Omrežna napaka",
   },
+
   request: {
     aborted: "Zahteva prekinjena",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integracija zmogljivosti in varnosti",
   },
+
 };

@@ -21,7 +21,7 @@
     "build": "tsc && vite build",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=settings-package ../../scripts/vitest-global-queue.sh run settings-package",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },

@@ -1,15 +1,16 @@
 /**
  * Основні українські переклади для фреймворку Reynard
  */
-
 export const coreTranslations = {
   // Помилки підключення та API
   connection: {
     failed: "Підключення не вдалося",
   },
+
   network: {
     error: "Помилка мережі",
   },
+
   request: {
     aborted: "Запит перервано",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Інтеграція продуктивності та безпеки",
   },
+
 };

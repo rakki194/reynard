@@ -17,7 +17,7 @@ export interface FeatureManagerCore {
   config: FeatureConfig;
   featureStatusesSignal: ReturnType<typeof createSignal<Record<string, FeatureStatus>>>;
   featureConfigsSignal: ReturnType<typeof createSignal<Record<string, Record<string, unknown>>>>;
-  refreshTimer: number | undefined;
+  refreshTimer: ReturnType<typeof setInterval> | undefined;
 }
 
 /**
@@ -32,7 +32,7 @@ export function createFeatureManagerCore(config: FeatureConfig): FeatureManagerC
   // Register features from config
   if (config.features) {
     for (const feature of config.features) {
-      registry.registerFeature(feature);
+      registry.register(feature);
     }
   }
 

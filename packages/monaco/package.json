@@ -21,7 +21,7 @@
     "build": "vite build && pnpm run build:types",
     "build:types": "rm -f tsconfig.tsbuildinfo && tsc --build tsconfig.declarations.json --force",
     "dev": "vite build --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=monaco-package ../../scripts/vitest-global-queue.sh run monaco-package",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "lint": "eslint src",

@@ -1,15 +1,16 @@
 /**
  * Βασικές ελληνικές μεταφράσεις για το πλαίσιο Reynard
  */
-
 export const coreTranslations = {
   // Σφάλματα σύνδεσης και API
   connection: {
     failed: "Η σύνδεση απέτυχε",
   },
+
   network: {
     error: "Σφάλμα δικτύου",
   },
+
   request: {
     aborted: "Το αίτημα ακυρώθηκε",
   },
@@ -179,4 +180,5 @@ export const coreTranslations = {
       "Ολοκλήρωση εξουσιοδότησης και επαλήθευσης εισόδου",
     "performance-and-security-integration": "Ολοκλήρωση απόδοσης και ασφαλείας",
   },
+
 };

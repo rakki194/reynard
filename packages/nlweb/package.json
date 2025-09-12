@@ -26,7 +26,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=nlweb-package ../../scripts/vitest-global-queue.sh run nlweb-package",
     "lint": "eslint src --ext .ts,.tsx",
     "type-check": "tsc --noEmit"
   },

@@ -22,6 +22,9 @@ export class AudioMetadataExtractor extends BaseMetadataExtractor {
     const audio = await this.loadAudio(file);
     const basicInfo = await this.getBasicFileInfo(file);
 
+    // Merge options with instance options
+    const mergedOptions = { ...this.options, ...options };
+
     const metadata: AudioMetadata = {
       ...basicInfo,
       duration: audio.duration,
@@ -32,17 +35,19 @@ export class AudioMetadataExtractor extends BaseMetadataExtractor {
       format: this.getFileExtension(basicInfo.name).substring(1).toUpperCase(),
     };
 
-    // Try to extract more detailed audio information
-    try {
-      const audioInfo = await this.extractAudioInfo();
-      if (audioInfo) {
-        metadata.sampleRate = audioInfo.sampleRate || metadata.sampleRate;
-        metadata.channels = audioInfo.channels || metadata.channels;
-        metadata.bitrate = audioInfo.bitrate || metadata.bitrate;
-        metadata.codec = audioInfo.codec || metadata.codec;
+    // Try to extract more detailed audio information if content analysis is enabled
+    if (mergedOptions.analyzeContent) {
+      try {
+        const audioInfo = await this.extractAudioInfo();
+        if (audioInfo) {
+          metadata.sampleRate = audioInfo.sampleRate || metadata.sampleRate;
+          metadata.channels = audioInfo.channels || metadata.channels;
+          metadata.bitrate = audioInfo.bitrate || metadata.bitrate;
+          metadata.codec = audioInfo.codec || metadata.codec;
+        }
+      } catch (error) {
+        console.warn("Detailed audio info extraction failed:", error);
       }
-    } catch (error) {
-      console.warn("Detailed audio info extraction failed:", error);
     }
 
     return metadata;

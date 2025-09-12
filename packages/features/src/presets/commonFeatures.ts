@@ -19,6 +19,28 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
   ...AI_FEATURES,
 ];
 
+/**
+ * Available feature categories
+ */
+export const FEATURE_CATEGORIES = [
+  "core",
+  "ml", 
+  "integration",
+  "utility",
+  "ui",
+  "data"
+] as const;
+
+/**
+ * Available feature priorities
+ */
+export const FEATURE_PRIORITIES = [
+  "critical",
+  "high",
+  "medium", 
+  "low"
+] as const;
+
 // Re-export individual feature categories
 export { CORE_FEATURES } from "./coreFeatures.js";
 export { UI_FEATURES } from "./uiFeatures.js";

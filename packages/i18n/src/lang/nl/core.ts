@@ -1,15 +1,16 @@
 /**
  * Basis Nederlandse vertalingen voor Reynard framework
  */
-
 export const coreTranslations = {
   // Verbindings- en API-fouten
   connection: {
     failed: "Verbinding mislukt",
   },
+
   network: {
     error: "Netwerkfout",
   },
+
   request: {
     aborted: "Verzoek geannuleerd",
   },
@@ -180,4 +181,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Prestatie en beveiliging integratie",
   },
+
 };

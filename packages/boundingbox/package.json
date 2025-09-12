@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=boundingbox-package ../../scripts/vitest-global-queue.sh run boundingbox-package",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",

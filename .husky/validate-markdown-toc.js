@@ -118,7 +118,8 @@ function generateToC(headings, startLevel = 2) {
         const link = `[${group.main.text}](#${anchor})`;
         tocLines.push(`- ${link}`);
         
-        // Add sub-headings
+        // Add sub-headings with proper nesting
+        let lastLevel = startLevel;
         for (const sub of group.subs) {
             const subAnchor = sub.text
                 .toLowerCase()
@@ -128,7 +129,9 @@ function generateToC(headings, startLevel = 2) {
                 .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
             
             const subLink = `[${sub.text}](#${subAnchor})`;
-            tocLines.push(`  - ${subLink}`);
+            const indent = '  '.repeat(sub.level - startLevel);
+            tocLines.push(`${indent}- ${subLink}`);
+            lastLevel = sub.level;
         }
     }
     
@@ -151,8 +154,8 @@ function extractExistingToC(content) {
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         
-        // Check for ToC heading (case insensitive, various formats)
-        if (line.match(/^##\s+(table\s+of\s+contents|toc|contents?)$/i)) {
+        // Check for ToC heading (case insensitive, various formats, flexible whitespace)
+        if (line.match(/^##\s+(table\s+of\s+contents|toc|contents?)\s*$/i)) {
             tocStart = i;
             tocContent = line + '\n';
             
@@ -160,14 +163,14 @@ function extractExistingToC(content) {
             for (let j = i + 1; j < lines.length; j++) {
                 const nextLine = lines[j];
                 
-                // Stop at next heading (## or higher)
-                if (nextLine.match(/^#{1,2}\s+/)) {
+                // Stop at any heading that's not a ToC heading
+                if (nextLine.match(/^#+\s+/) && !nextLine.match(/^#+\s+(table\s+of\s+contents|toc|contents?)\s*$/i)) {
                     tocEnd = j - 1;
                     break;
                 }
                 
-                // Stop at empty line followed by heading
-                if (nextLine.trim() === '' && j + 1 < lines.length && lines[j + 1].match(/^#{1,2}\s+/)) {
+                // Stop at empty line followed by heading (that's not a ToC heading)
+                if (nextLine.trim() === '' && j + 1 < lines.length && lines[j + 1].match(/^#+\s+/) && !lines[j + 1].match(/^#+\s+(table\s+of\s+contents|toc|contents?)\s*$/i)) {
                     tocEnd = j - 1;
                     break;
                 }

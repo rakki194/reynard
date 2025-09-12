@@ -1,15 +1,16 @@
 /**
  * الترجمات الأساسية العربية لإطار عمل Reynard
  */
-
 export const coreTranslations = {
   // أخطاء الاتصال وواجهة برمجة التطبيقات
   connection: {
     failed: "فشل الاتصال",
   },
+
   network: {
     error: "خطأ في الشبكة",
   },
+
   request: {
     aborted: "تم إلغاء الطلب",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
       "تكامل المصادقة والتحقق من الإدخال",
     "performance-and-security-integration": "تكامل الأداء والأمان",
   },
+
 };

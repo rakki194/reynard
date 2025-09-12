@@ -1,15 +1,16 @@
 /**
  * Reynardフレームワークの基本日本語翻訳
  */
-
 export const coreTranslations = {
   // 接続とAPIエラー
   connection: {
     failed: "接続に失敗しました",
   },
+
   network: {
     error: "ネットワークエラー",
   },
+
   request: {
     aborted: "リクエストが中止されました",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "パフォーマンスとセキュリティの統合",
   },
+
 };

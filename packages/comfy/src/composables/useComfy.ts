@@ -55,7 +55,7 @@ export function useComfy() {
 
   // Queue workflow
   const queueWorkflow = async (
-    workflow: Record<string, any>,
+    workflow: Record<string, unknown>,
     clientId?: string,
   ) => {
     try {
@@ -140,8 +140,8 @@ export function useComfy() {
   const ingestImage = async (
     file: File,
     promptId: string,
-    workflow: Record<string, any>,
-    metadata: Record<string, any> = {},
+    workflow: Record<string, unknown>,
+    metadata: Record<string, unknown> = {},
   ) => {
     try {
       setIsLoading(true);

@@ -1,15 +1,16 @@
 /**
  * Основные русские переводы для фреймворка Reynard
  */
-
 export const coreTranslations = {
   // Ошибки подключения и API
   connection: {
     failed: "Подключение не удалось",
   },
+
   network: {
     error: "Ошибка сети",
   },
+
   request: {
     aborted: "Запрос прерван",
   },
@@ -177,4 +178,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Интеграция производительности и безопасности",
   },
+
 };

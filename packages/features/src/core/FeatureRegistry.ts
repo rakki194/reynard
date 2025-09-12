@@ -76,10 +76,43 @@ export class FeatureRegistry implements IFeatureRegistry {
   }
 
   /**
+   * Get features by priority
+   */
+  public getByPriority(priority: string): FeatureDefinition[] {
+    const allFeatures = this.getAll();
+    return allFeatures.filter(feature => feature.priority === priority);
+  }
+
+  /**
+   * Get features by tag
+   */
+  public getByTag(tag: string): FeatureDefinition[] {
+    const allFeatures = this.getAll();
+    return allFeatures.filter(feature => feature.tags?.includes(tag) ?? false);
+  }
+
+  /**
    * Get feature count
    */
   public getCount(): number {
     return this.core.getFunctionalities().size;
+  }
+
+  /**
+   * Get registry size
+   */
+  public get size(): number {
+    return this.getCount();
+  }
+
+  /**
+   * Clear all features
+   */
+  public clear(): void {
+    const allFeatures = this.getAll();
+    for (const feature of allFeatures) {
+      this.unregister(feature.id);
+    }
   }
 
   /**

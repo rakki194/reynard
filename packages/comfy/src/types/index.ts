@@ -25,13 +25,13 @@ export interface ComfyWorkflowNode {
   /** Node type */
   type: string;
   /** Node inputs */
-  inputs: Record<string, any>;
+  inputs: Record<string, unknown>;
   /** Node outputs */
-  outputs: Record<string, any>;
+  outputs: Record<string, unknown>;
   /** Node position */
   position: { x: number; y: number };
   /** Node metadata */
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 }
 
 export interface ComfyWorkflowConnection {
@@ -73,7 +73,7 @@ export interface ComfyJobResult {
   /** Final status */
   status: "completed" | "failed";
   /** Job outputs */
-  outputs: Record<string, any>;
+  outputs: Record<string, unknown>;
   /** Error message if failed */
   error?: string;
   /** Completion timestamp */
@@ -90,7 +90,7 @@ export interface ComfyImage {
   /** Image URL */
   url?: string;
   /** Image metadata */
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ComfyText2ImgParams {
@@ -145,9 +145,9 @@ export interface ComfyPreset {
   /** Preset category */
   category: string;
   /** Preset workflow */
-  workflow: Record<string, any>;
+  workflow: Record<string, unknown>;
   /** Preset parameters */
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   /** Whether this is the default preset */
   isDefault: boolean;
   /** Creation timestamp */
@@ -168,13 +168,13 @@ export interface ComfyWorkflowTemplate {
   /** Template category */
   category: string;
   /** Template workflow */
-  workflow: Record<string, any>;
+  workflow: Record<string, unknown>;
   /** Template author */
   author: string;
   /** Template tags */
   tags: string[];
   /** Template parameters */
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   /** Template visibility */
   visibility: "private" | "public" | "community";
   /** Parent template ID for branches */

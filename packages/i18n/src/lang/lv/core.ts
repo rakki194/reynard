@@ -1,15 +1,16 @@
 /**
  * Pamata latviešu tulkojumi Reynard sistēmai
  */
-
 export const coreTranslations = {
   // Savienojuma un API kļūdas
   connection: {
     failed: "Savienojums neizdevās",
   },
+
   network: {
     error: "Tīkla kļūda",
   },
+
   request: {
     aborted: "Pieprasījums pārtraukts",
   },
@@ -175,4 +176,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Veiktspējas un drošības integrācija",
   },
+
 };

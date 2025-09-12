@@ -1,15 +1,16 @@
 /**
  * Traduzzjonijiet bażiċi Maltin għall-framework Reynard
  */
-
 export const coreTranslations = {
   // Żbalji ta' konnessjoni u API
   connection: {
     failed: "Il-konnessjoni falliet",
   },
+
   network: {
     error: "Żball tan-netwerk",
   },
+
   request: {
     aborted: "It-talba ġiet abbandunata",
   },
@@ -179,4 +180,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integrazzjoni tal-prestazzjoni u s-sigurtà",
   },
+
 };

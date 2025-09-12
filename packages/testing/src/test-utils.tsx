@@ -141,9 +141,9 @@ function suppressConsoleWarnings() {
 // ============================================================================
 
 export interface ComponentTestOptions {
-  props?: Record<string, any>;
-  wrapper?: Component<any>;
-  providers?: Component<any>[];
+  props?: Record<string, unknown>;
+  wrapper?: Component<unknown>;
+  providers?: Component<unknown>[];
 }
 
 /**
@@ -500,7 +500,7 @@ export function createMockFn<T extends (...args: any[]) => any>(
 /**
  * Create a mock object with all methods mocked
  */
-export function createMockObject<T extends Record<string, any>>(
+export function createMockObject<T extends Record<string, unknown>>(
   methods: (keyof T)[],
 ): {
   [K in keyof T]: T[K] extends (...args: any[]) => any

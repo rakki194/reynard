@@ -1,15 +1,16 @@
 /**
  * Základní české překlady pro Reynard framework
  */
-
 export const coreTranslations = {
   // Chyby připojení a API
   connection: {
     failed: "Připojení se nezdařilo",
   },
+
   network: {
     error: "Chyba sítě",
   },
+
   request: {
     aborted: "Požadavek byl přerušen",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
       "Integrace autentizace a validace vstupu",
     "performance-and-security-integration": "Integrace výkonu a bezpečnosti",
   },
+
 };

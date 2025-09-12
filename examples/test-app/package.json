@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=test-app-example ../../scripts/vitest-global-queue.sh run test-app-example",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "validate-story": "pnpm test -- --run"

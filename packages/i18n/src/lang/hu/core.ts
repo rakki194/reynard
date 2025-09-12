@@ -1,15 +1,16 @@
 /**
  * Alapvető magyar fordítások a Reynard keretrendszerhez
  */
-
 export const coreTranslations = {
   // Kapcsolat és API hibák
   connection: {
     failed: "Kapcsolat sikertelen",
   },
+
   network: {
     error: "Hálózati hiba",
   },
+
   request: {
     aborted: "Kérés megszakítva",
   },
@@ -179,4 +180,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Teljesítmény és biztonság integráció",
   },
+
 };

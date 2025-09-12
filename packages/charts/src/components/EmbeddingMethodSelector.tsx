@@ -12,7 +12,7 @@ export interface EmbeddingMethodSelectorProps {
   /** Current reduction method */
   reductionMethod: string;
   /** Current reduction parameters */
-  reductionParams: Record<string, any>;
+  reductionParams: Record<string, unknown>;
   /** Maximum samples */
   maxSamples: number;
   /** Whether loading */

@@ -6,23 +6,30 @@
  * @module algorithms/performance/throttle
  */
 
-import type { ThrottleOptions, DebounceOptions } from "./types";
+import type { 
+  ThrottleOptions, 
+  DebounceOptions, 
+  FunctionSignature,
+  ThrottledFunction,
+  DebouncedFunction
+} from "../types/performance-types";
 
 /**
  * Throttle function execution
  */
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
+export function throttle<TArgs extends readonly unknown[], TReturn>(
+  func: FunctionSignature<TArgs, TReturn>,
   wait: number,
   options: ThrottleOptions = {},
-): T {
+): ThrottledFunction<TArgs, TReturn> {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
-  let lastArgs: any[] | null = null;
+  let lastArgs: TArgs | null = null;
+  let lastResult: TReturn | undefined;
 
   const { leading = true, trailing = true, maxWait } = options;
 
-  return ((...args: any[]) => {
+  const throttled = ((...args: TArgs): TReturn | undefined => {
     const now = Date.now();
     const timeSinceLastExec = now - lastExecTime;
 
@@ -33,7 +40,8 @@ export function throttle<T extends (...args: any[]) => any>(
 
     if (leading && timeSinceLastExec >= wait) {
       lastExecTime = now;
-      return func(...args);
+      lastResult = func(...args);
+      return lastResult;
     }
 
     if (trailing) {
@@ -45,29 +53,52 @@ export function throttle<T extends (...args: any[]) => any>(
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
           lastExecTime = Date.now();
-          func(...lastArgs);
+          lastResult = func(...lastArgs);
           lastArgs = null;
         }
       }, delay);
     }
-  }) as T;
+
+    return lastResult;
+  }) as ThrottledFunction<TArgs, TReturn>;
+
+  throttled.cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    lastArgs = null;
+  };
+
+  throttled.flush = () => {
+    if (lastArgs) {
+      lastExecTime = Date.now();
+      lastResult = func(...lastArgs);
+      lastArgs = null;
+      return lastResult;
+    }
+    return lastResult;
+  };
+
+  return throttled;
 }
 
 /**
  * Debounce function execution
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
+export function debounce<TArgs extends readonly unknown[], TReturn>(
+  func: FunctionSignature<TArgs, TReturn>,
   wait: number,
   options: DebounceOptions = {},
-): T {
+): DebouncedFunction<TArgs, TReturn> {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
-  let lastArgs: any[] | null = null;
+  let lastArgs: TArgs | null = null;
+  let lastResult: TReturn | undefined;
 
   const { leading = false, trailing = true, maxWait } = options;
 
-  return ((...args: any[]) => {
+  const debounced = ((...args: TArgs): TReturn | undefined => {
     const now = Date.now();
     const timeSinceLastExec = now - lastExecTime;
 
@@ -78,7 +109,8 @@ export function debounce<T extends (...args: any[]) => any>(
 
     if (leading && timeSinceLastExec >= wait) {
       lastExecTime = now;
-      return func(...args);
+      lastResult = func(...args);
+      return lastResult;
     }
 
     if (trailing) {
@@ -90,10 +122,32 @@ export function debounce<T extends (...args: any[]) => any>(
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
           lastExecTime = Date.now();
-          func(...lastArgs);
+          lastResult = func(...lastArgs);
           lastArgs = null;
         }
       }, delay);
     }
-  }) as T;
+
+    return lastResult;
+  }) as DebouncedFunction<TArgs, TReturn>;
+
+  debounced.cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    lastArgs = null;
+  };
+
+  debounced.flush = () => {
+    if (lastArgs) {
+      lastExecTime = Date.now();
+      lastResult = func(...lastArgs);
+      lastArgs = null;
+      return lastResult;
+    }
+    return lastResult;
+  };
+
+  return debounced;
 }

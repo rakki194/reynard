@@ -33,7 +33,7 @@
     "build": "tsc && vite build",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=gallery-ai-package ../../scripts/vitest-global-queue.sh run gallery-ai-package",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui",
     "clean": "rm -rf dist"

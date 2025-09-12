@@ -1,15 +1,16 @@
 /**
  * Reynard 프레임워크를 위한 기본 한국어 번역
  */
-
 export const coreTranslations = {
   // 연결 및 API 오류
   connection: {
     failed: "연결 실패",
   },
+
   network: {
     error: "네트워크 오류",
   },
+
   request: {
     aborted: "요청이 중단됨",
   },
@@ -175,4 +176,5 @@ export const coreTranslations = {
       "인증 및 입력 유효성 검사 통합",
     "performance-and-security-integration": "성능 및 보안 통합",
   },
+
 };

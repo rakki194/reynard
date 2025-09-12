@@ -48,7 +48,7 @@ export class ComfyService {
    * Queue a workflow for execution
    */
   async queueWorkflow(
-    workflow: Record<string, any>,
+    workflow: Record<string, unknown>,
     clientId?: string,
   ): Promise<{ promptId: string; clientId?: string }> {
     const response = await this.apiClient.comfy.queue({
@@ -90,7 +90,7 @@ export class ComfyService {
   /**
    * Get ComfyUI object information
    */
-  async getObjectInfo(refresh = false): Promise<Record<string, any>> {
+  async getObjectInfo(refresh = false): Promise<Record<string, unknown>> {
     const response = await this.apiClient.comfy.getObjectInfo({ refresh });
     return response.data;
   }
@@ -132,8 +132,8 @@ export class ComfyService {
   async ingestImage(
     file: File,
     promptId: string,
-    workflow: Record<string, any>,
-    metadata: Record<string, any> = {},
+    workflow: Record<string, unknown>,
+    metadata: Record<string, unknown> = {},
   ): Promise<ComfyIngestResult> {
     const formData = new FormData();
     formData.append("file", file);
@@ -404,7 +404,7 @@ export class ComfyService {
   /**
    * Export a template
    */
-  async exportTemplate(templateId: string): Promise<Record<string, any>> {
+  async exportTemplate(templateId: string): Promise<Record<string, unknown>> {
     const response = await this.apiClient.comfy.exportTemplate(templateId);
     return response.data.export_data;
   }
@@ -413,7 +413,7 @@ export class ComfyService {
    * Import a template
    */
   async importTemplate(
-    templateData: Record<string, any>,
+    templateData: Record<string, unknown>,
     visibility = "private",
   ): Promise<ComfyWorkflowTemplate> {
     const response = await this.apiClient.comfy.importTemplate({
@@ -426,7 +426,7 @@ export class ComfyService {
   /**
    * Get template statistics
    */
-  async getTemplateStats(): Promise<Record<string, any>> {
+  async getTemplateStats(): Promise<Record<string, unknown>> {
     const response = await this.apiClient.comfy.getTemplateStats();
     return response.data.stats;
   }

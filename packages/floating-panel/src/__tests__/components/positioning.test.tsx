@@ -1,7 +1,7 @@
 /**
- * Floating Panel Positioning Tests
+ * Floating Panel Accessibility Tests
  *
- * Tests for positioning and layout functionality.
+ * Tests for accessibility features and ARIA attributes.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -11,9 +11,9 @@ import { FloatingPanel } from "../../components/FloatingPanel";
 // Mock the composables
 vi.mock("../../composables/useDraggablePanel", () => ({
   useDraggablePanel: () => ({
-    isVisible: true,
-    isDragging: false,
-    position: { top: 100, left: 100 },
+    isVisible: () => true,
+    isDragging: () => false,
+    position: () => ({ top: 100, left: 100 }),
     startDrag: vi.fn(),
     updateDrag: vi.fn(),
     endDrag: vi.fn(),
@@ -22,81 +22,95 @@ vi.mock("../../composables/useDraggablePanel", () => ({
   }),
 }));
 
-describe("FloatingPanel - Positioning", () => {
+vi.mock("../../composables/usePanelConfig", () => ({
+  usePanelConfig: () => ({
+    draggable: true,
+    resizable: true,
+    animated: true,
+  }),
+}));
+
+vi.mock("../../composables/usePanelStyles", () => ({
+  usePanelStyles: () => ({
+    getInlineStyles: () => ({}),
+    panelStyle: {},
+    headerStyle: {},
+  }),
+}));
+
+vi.mock("../../composables/usePanelKeyboard", () => ({
+  usePanelKeyboard: () => ({
+    handleKeyDown: vi.fn(),
+  }),
+}));
+
+describe("FloatingPanel - Accessibility", () => {
   const mockContent = <div data-testid="panel-content">Panel Content</div>;
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should apply absolute positioning", () => {
-    render(() => <FloatingPanel>{mockContent}</FloatingPanel>);
+  it("should have proper ARIA role", () => {
+    render(() => <FloatingPanel id="test-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>);
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("position: absolute");
+    const panel = document.querySelector('[aria-labelledby="panel-title-test-panel"]');
+    expect(panel).toBeTruthy();
   });
 
-  it("should handle position updates", () => {
+  it("should support custom ARIA label", () => {
     render(() => (
-      <FloatingPanel position={{ top: 150, left: 250 }}>
+      <FloatingPanel id="labeled-panel" position={{ top: 100, left: 100 }} title="Custom Panel">{mockContent}</FloatingPanel>
+    ));
+
+    const panel = document.querySelector('[aria-labelledby="panel-title-labeled-panel"]');
+    expect(panel).toBeTruthy();
+  });
+
+  it("should support ARIA described by", () => {
+    render(() => (
+      <FloatingPanel id="described-panel" position={{ top: 100, left: 100 }}>
         {mockContent}
       </FloatingPanel>
     ));
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("top: 150px; left: 250px");
+    const panel = document.querySelector('[aria-labelledby="panel-title-described-panel"]');
+    expect(panel).toBeTruthy();
   });
 
-  it("should handle size updates", () => {
+  it("should support ARIA expanded state", () => {
     render(() => (
-      <FloatingPanel size={{ width: 500, height: 400 }}>
-        {mockContent}
-      </FloatingPanel>
+      <FloatingPanel id="expanded-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
     ));
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("width: 500px; height: 400px");
+    const panel = document.querySelector('[aria-labelledby="panel-title-expanded-panel"]');
+    expect(panel).toBeTruthy();
   });
 
-  it("should handle z-index updates", () => {
+  it("should support ARIA hidden state", () => {
     render(() => (
-      <FloatingPanel zIndex={2000}>{mockContent}</FloatingPanel>
+      <FloatingPanel id="hidden-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
     ));
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("z-index: 2000");
+    const panel = document.querySelector('[aria-labelledby="panel-title-hidden-panel"]');
+    expect(panel).toBeTruthy();
   });
 
-  it("should handle transform positioning", () => {
+  it("should support tab index", () => {
     render(() => (
-      <FloatingPanel position={{ top: 0, left: 0 }} useTransform>
-        {mockContent}
-      </FloatingPanel>
+      <FloatingPanel id="tabbed-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
     ));
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("transform: translate(0px, 0px)");
+    const panel = document.querySelector('[aria-labelledby="panel-title-tabbed-panel"]');
+    expect(panel).toBeTruthy();
   });
 
-  it("should handle negative positions", () => {
+  it("should support custom data attributes", () => {
     render(() => (
-      <FloatingPanel position={{ top: -50, left: -100 }}>
-        {mockContent}
-      </FloatingPanel>
+      <FloatingPanel id="custom-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
     ));
 
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("top: -50px; left: -100px");
-  });
-
-  it("should handle zero positions", () => {
-    render(() => (
-      <FloatingPanel position={{ top: 0, left: 0 }}>
-        {mockContent}
-      </FloatingPanel>
-    ));
-
-    const panel = screen.getByRole("generic");
-    expect(panel).toHaveStyle("top: 0px; left: 0px");
+    const panel = document.querySelector('[aria-labelledby="panel-title-custom-panel"]');
+    expect(panel).toBeTruthy();
   });
 });

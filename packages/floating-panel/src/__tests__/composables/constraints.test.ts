@@ -5,11 +5,13 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@solidjs/testing-library";
-import { useDraggablePanel } from "../../composables/useDraggablePanel";
+import { useDraggablePanel, type UseDraggablePanelOptions } from "../../composables/useDraggablePanel";
+import type { PanelConstraints, PanelPosition } from "../../types.js";
+import type { RenderHookResult } from "@testing-library/react";
 describe("useDraggablePanel - Constraints", () => {
   const mockPanelRef = () => document.createElement("div");
-  const createTestHook = (constraints: any) => renderHook(() => useDraggablePanel(mockPanelRef, { constraints }));
-  const performDrag = (result: any, start: any, end: any) => {
+  const createTestHook = (constraints: PanelConstraints) => renderHook(() => useDraggablePanel(mockPanelRef, { constraints }));
+  const performDrag = (result: RenderHookResult<ReturnType<typeof useDraggablePanel>>, start: PanelPosition, end: PanelPosition) => {
     act(() => {
       result.current.startDrag(start);
       result.current.updateDrag(end);

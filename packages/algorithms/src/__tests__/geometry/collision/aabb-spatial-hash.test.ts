@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { SpatialHash } from "../../../geometry/collision/aabb-spatial-hash";
-import type { AABB } from "../../../geometry/collision/aabb-types";
+import { SpatialHash } from "../../geometry/collision/aabb-spatial-hash";
+import type { AABB } from "../../geometry/collision/aabb-types";
 
 // Test utilities
 const createAABB = (

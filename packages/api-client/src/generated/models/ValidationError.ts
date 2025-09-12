@@ -71,7 +71,7 @@ export function ValidationErrorFromJSONTyped(
     return json;
   }
   return {
-    loc: (json["loc"] as Array<any>).map(ValidationErrorLocInnerFromJSON),
+    loc: (json["loc"] as Array<ValidationErrorLocInner>).map(ValidationErrorLocInnerFromJSON),
     msg: json["msg"],
     type: json["type"],
   };
@@ -90,7 +90,7 @@ export function ValidationErrorToJSONTyped(
   }
 
   return {
-    loc: (value["loc"] as Array<any>).map(ValidationErrorLocInnerToJSON),
+    loc: (value["loc"] as Array<ValidationErrorLocInner>).map(ValidationErrorLocInnerToJSON),
     msg: value["msg"],
     type: value["type"],
   };

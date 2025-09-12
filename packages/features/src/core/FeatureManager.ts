@@ -95,6 +95,165 @@ export class FeatureManager implements IFeatureManager {
   }
 
   /**
+   * Get registry
+   */
+  get registry() {
+    return this.core.registry;
+  }
+
+  /**
+   * Check if feature is available
+   */
+  isFeatureAvailable(featureId: string): boolean {
+    const status = this.getFeatureStatus(featureId);
+    return status?.available === true;
+  }
+
+  /**
+   * Check if feature is degraded
+   */
+  isFeatureDegraded(featureId: string): boolean {
+    const status = this.getFeatureStatus(featureId);
+    return status?.degraded === true;
+  }
+
+  /**
+   * Get available features
+   */
+  getAvailableFeatures() {
+    const allFeatures = this.core.registry.getAll();
+    const statuses = this.getAllFeatureStatuses();
+    return allFeatures.filter(feature => statuses[feature.id]?.available === true);
+  }
+
+  /**
+   * Get degraded features
+   */
+  getDegradedFeatures() {
+    const allFeatures = this.core.registry.getAll();
+    const statuses = this.getAllFeatureStatuses();
+    return allFeatures.filter(feature => statuses[feature.id]?.degraded === true);
+  }
+
+  /**
+   * Get features by category
+   */
+  getFeaturesByCategory(category: string) {
+    return this.core.registry.getByCategory(category);
+  }
+
+  /**
+   * Get features by priority
+   */
+  getFeaturesByPriority(priority: string) {
+    return this.core.registry.getByPriority(priority);
+  }
+
+  /**
+   * Get unavailable critical features
+   */
+  getUnavailableCriticalFeatures() {
+    const criticalFeatures = this.getFeaturesByPriority("critical");
+    const statuses = this.getAllFeatureStatuses();
+    return criticalFeatures.filter(feature => statuses[feature.id]?.available !== true);
+  }
+
+  /**
+   * Get features dependent on service
+   */
+  getFeaturesDependentOnService(serviceName: string) {
+    const allFeatures = this.core.registry.getAll();
+    return allFeatures.filter(feature => 
+      feature.dependencies.some(dep => dep.services.includes(serviceName))
+    );
+  }
+
+  /**
+   * Get critical services
+   */
+  getCriticalServices(): string[] {
+    const criticalFeatures = this.getFeaturesByPriority("critical");
+    const services = new Set<string>();
+    criticalFeatures.forEach(feature => {
+      feature.dependencies.forEach(dep => {
+        if (dep.required !== false) {
+          dep.services.forEach(service => services.add(service));
+        }
+      });
+    });
+    return Array.from(services);
+  }
+
+  /**
+   * Check if critical features are available
+   */
+  areCriticalFeaturesAvailable(): boolean {
+    const unavailableCritical = this.getUnavailableCriticalFeatures();
+    return unavailableCritical.length === 0;
+  }
+
+  /**
+   * Get feature summary
+   */
+  getFeatureSummary() {
+    const allFeatures = this.core.registry.getAll();
+    const statuses = this.getAllFeatureStatuses();
+    const total = allFeatures.length;
+    let available = 0;
+    let degraded = 0;
+    let unavailable = 0;
+    let criticalUnavailable = 0;
+
+    allFeatures.forEach(feature => {
+      const status = statuses[feature.id];
+      if (status?.available === true) {
+        if (status?.degraded === true) {
+          degraded++;
+        } else {
+          available++;
+        }
+      } else {
+        unavailable++;
+        if (feature.priority === "critical") {
+          criticalUnavailable++;
+        }
+      }
+    });
+
+    const successRate = total > 0 ? ((available + degraded) / total) * 100 : 100;
+
+    return {
+      total,
+      available,
+      degraded,
+      unavailable,
+      criticalUnavailable,
+      successRate,
+    };
+  }
+
+  /**
+   * Update feature statuses (alias for refresh)
+   */
+  updateFeatureStatuses(): void {
+    this.refreshFeatureStatuses();
+  }
+
+  /**
+   * Configure feature
+   */
+  configureFeature(featureId: string, config: Record<string, any>): void {
+    this.setFeatureConfig(featureId, config);
+  }
+
+  /**
+   * Get feature statuses signal
+   */
+  getFeatureStatusesSignal() {
+    return this.core.featureStatusesSignal[0];
+  }
+
+  /**
    * Cleanup
    */
   onCleanup(): void {

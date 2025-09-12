@@ -24,7 +24,7 @@
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=caption-package ../../scripts/vitest-global-queue.sh run caption-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",

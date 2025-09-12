@@ -32,7 +32,7 @@
   "scripts": {
     "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "dev": "tsc --watch",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=i18n-package ../../scripts/vitest-global-queue.sh run i18n-package",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",

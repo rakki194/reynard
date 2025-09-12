@@ -4,8 +4,15 @@ i18n-report.md
 i18n-results.json
 *.db
 unsloth_compiled_cache/
-.coverage.*
 css-validation-report.md
+
+.benchmarks/
+htmlcov/
+.coverage.*
+.coverage
+coverage.xml
+coverage/
+*.lcov
 coverage/
 
 # Python junk
@@ -13,6 +20,7 @@ __pycache__/
 *.egg-info/
 venv/
 .venv/
+.pytest_cache/
 
 # Dependencies
 package-lock.json
@@ -38,10 +46,6 @@ src/**/*.d.ts.map
 
 # Vite generated type files
 **/vite-env.d.ts
-
-# Coverage reports
-coverage/
-*.lcov
 
 # Environment variables
 .env

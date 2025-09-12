@@ -1,15 +1,16 @@
 /**
  * Traduzioni italiane di base per il framework Reynard
  */
-
 export const coreTranslations = {
   // Errori di connessione e API
   connection: {
     failed: "Connessione fallita",
   },
+
   network: {
     error: "Errore di rete",
   },
+
   request: {
     aborted: "Richiesta annullata",
   },
@@ -179,4 +180,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integrazione prestazioni e sicurezza",
   },
+
 };

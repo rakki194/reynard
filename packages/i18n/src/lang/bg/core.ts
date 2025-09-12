@@ -1,15 +1,16 @@
 /**
  * Основни български преводи за рамката Reynard
  */
-
 export const coreTranslations = {
   // Грешки при връзка и API
   connection: {
     failed: "Връзката неуспешна",
   },
+
   network: {
     error: "Мрежова грешка",
   },
+
   request: {
     aborted: "Заявката е прекратена",
   },
@@ -178,4 +179,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Интеграция на производителност и сигурност",
   },
+
 };

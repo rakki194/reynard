@@ -4,8 +4,8 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { runPackageI18nTests } from "reynard-testing/utils/i18n-package-orchestrator";
-import { getPackageI18nConfig } from "reynard-testing/config/i18n-testing-config";
+import { runPackageI18nTests } from "reynard-testing/utils";
+import { getPackageI18nConfig } from "reynard-testing/config";
 
 describe("floating-panel i18n Tests", () => {
   it("should pass all i18n validation checks", async () => {

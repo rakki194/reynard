@@ -1,15 +1,16 @@
 /**
  * Reynard框架的中文基础翻译
  */
-
 export const coreTranslations = {
   // 连接和API错误
   connection: {
     failed: "连接失败",
   },
+
   network: {
     error: "网络错误",
   },
+
   request: {
     aborted: "请求已中止",
   },
@@ -165,4 +166,5 @@ export const coreTranslations = {
     "authentication-and-input-validation-integration": "身份验证和输入验证集成",
     "performance-and-security-integration": "性能和安全集成",
   },
+
 };

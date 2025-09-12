@@ -1,15 +1,16 @@
 /**
  * Reynard framework için temel Türkçe çeviriler
  */
-
 export const coreTranslations = {
   // Bağlantı ve API hataları
   connection: {
     failed: "Bağlantı başarısız",
   },
+
   network: {
     error: "Ağ hatası",
   },
+
   request: {
     aborted: "İstek iptal edildi",
   },
@@ -176,4 +177,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Performans ve güvenlik entegrasyonu",
   },
+
 };

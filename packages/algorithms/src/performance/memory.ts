@@ -6,6 +6,8 @@
  * @module algorithms/performance/memory
  */
 
+import type { ExtendedPerformance, PerformanceMemoryInfo } from "../types/performance-types";
+
 /**
  * Memory usage monitor
  */
@@ -13,9 +15,9 @@ export class MemoryMonitor {
   private measurements: Array<{ timestamp: number; usage: number }> = [];
 
   measure(): number {
-    if ("memory" in performance) {
-      const memory = (performance as any).memory;
-      const usage = memory.usedJSHeapSize;
+    const perf = performance as ExtendedPerformance;
+    if (perf.memory) {
+      const usage = perf.memory.usedJSHeapSize;
       this.measurements.push({ timestamp: Date.now(), usage });
       return usage;
     }
@@ -108,8 +110,9 @@ export class MemoryLeakDetector {
   }
 
   private getMemoryUsage(): number {
-    if ("memory" in performance) {
-      return (performance as any).memory.usedJSHeapSize;
+    const perf = performance as ExtendedPerformance;
+    if (perf.memory) {
+      return perf.memory.usedJSHeapSize;
     }
     return 0;
   }

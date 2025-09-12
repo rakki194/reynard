@@ -17,9 +17,9 @@ export interface EmbeddingReductionRequest {
     end_date?: string;
     model_id?: string;
     variant?: string;
-    metadata_filters?: Record<string, any>;
+    metadata_filters?: Record<string, unknown>;
   };
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   max_samples?: number;
   random_seed?: number;
   use_cache?: boolean;
@@ -31,8 +31,8 @@ export interface EmbeddingReductionResponse {
   method: string;
   transformed_data: number[][];
   original_indices: number[];
-  parameters: Record<string, any>;
-  metadata: Record<string, any>;
+  parameters: Record<string, unknown>;
+  metadata: Record<string, unknown>;
   error?: string;
   processing_time_ms: number;
   job_id?: string;
@@ -41,8 +41,8 @@ export interface EmbeddingReductionResponse {
     id: string;
     image_path?: string;
     text_content?: string;
-    metadata?: Record<string, any>;
-    [key: string]: any;
+    metadata?: Record<string, unknown>;
+    [key: string]: unknown;
   }>;
 }
 
@@ -82,7 +82,7 @@ export interface AvailableMethods {
     {
       name: string;
       description: string;
-      parameters: Record<string, any>;
+      parameters: Record<string, unknown>;
     }
   >;
 }

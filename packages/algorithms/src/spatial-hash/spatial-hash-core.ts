@@ -14,9 +14,10 @@ import {
   QueryResult,
 } from "./spatial-hash-types";
 import { estimateMemoryUsage } from "./spatial-hash-utils";
+import type { SpatialDataType } from "../types/spatial-types";
 
-export class SpatialHash<T = any> {
-  private cells = new Map<string, Array<SpatialObject & { data: T }>>();
+export class SpatialHash<T extends SpatialDataType = SpatialDataType> {
+  private cells = new Map<string, Array<SpatialObject<T>>>();
   private objectToCells = new Map<string | number, Set<string>>();
   private config: SpatialHashConfig;
   private stats = {
@@ -109,8 +110,8 @@ export class SpatialHash<T = any> {
       const cell = this.cells.get(cellKey);
       if (cell) {
         for (const obj of cell) {
-          if (this.isObjectInRect(obj, x, y, width, height)) {
-            results.set(obj.id, obj);
+          if (this.isObjectInRect(obj, x, y, width, height) && obj.data !== undefined) {
+            results.set(obj.id, obj as SpatialObject & { data: T });
           }
         }
       }
@@ -179,7 +180,9 @@ export class SpatialHash<T = any> {
 
     for (const cell of Array.from(this.cells.values())) {
       for (const obj of cell) {
-        objects.set(obj.id, obj);
+        if (obj.data !== undefined) {
+          objects.set(obj.id, obj as SpatialObject & { data: T });
+        }
       }
     }
 
@@ -252,9 +255,9 @@ export class SpatialHash<T = any> {
       const firstCellKey = Array.from(cellKeys)[0];
       const object = oldCells
         .get(firstCellKey)
-        ?.find((obj: any) => obj.id === objectId);
-      if (object) {
-        this.insert(object);
+        ?.find((obj: SpatialObject<T>) => obj.id === objectId);
+      if (object && object.data !== undefined) {
+        this.insert(object as SpatialObject<T> & { data: T });
       }
     }
   }

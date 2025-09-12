@@ -1,15 +1,16 @@
 /**
  * Traduceri de bază în română pentru framework-ul Reynard
  */
-
 export const coreTranslations = {
   // Erori de conexiune și API
   connection: {
     failed: "Conexiunea a eșuat",
   },
+
   network: {
     error: "Eroare de rețea",
   },
+
   request: {
     aborted: "Cererea a fost întreruptă",
   },
@@ -178,4 +179,5 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integrarea performanței și securității",
   },
+
 };

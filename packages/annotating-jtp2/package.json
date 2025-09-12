@@ -19,7 +19,7 @@
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "vitest",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=annotating-jtp2-package ../../scripts/vitest-global-queue.sh run annotating-jtp2-package",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
