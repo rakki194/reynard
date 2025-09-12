@@ -50,7 +50,13 @@
     "test:docs": "vitest run --config vitest.docs.config.ts",
     "doc-tests": "node src/doc-test-runner.js",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "i18n:test": "tsx src/scripts/i18n-test-cli.ts run",
+    "i18n:setup": "tsx src/scripts/i18n-test-cli.ts setup",
+    "i18n:validate": "tsx src/scripts/i18n-test-cli.ts validate",
+    "i18n:list": "tsx src/scripts/i18n-test-cli.ts list",
+    "i18n:eslint": "tsx src/scripts/i18n-test-cli.ts eslint",
+    "i18n:ci": "tsx src/scripts/i18n-test-cli.ts ci"
   },
   "keywords": [
     "testing",
@@ -66,17 +72,19 @@
   "dependencies": {
     "@solidjs/testing-library": "0.8.10",
     "@testing-library/user-event": "14.6.1",
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "commander": "14.0.0"
   },
   "devDependencies": {
     "@types/node": "24.3.1",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "18.0.1",
     "typescript": "5.9.2",
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8",
-    "vitest": "3.2.4"
+    "vitest": "3.2.4",
+    "tsx": "4.20.5"
   },
   "peerDependencies": {
     "solid-js": "1.9.9",

@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Indonesian translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Simpan",
+    format: "Format Kode",
+    find: "Cari",
+    replace: "Ganti",
+    undo: "Batal",
+    redo: "Ulang",
+    cut: "Potong",
+    copy: "Salin",
+    paste: "Tempel",
+    selectAll: "Pilih Semua",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Pilih Bahasa",
+    detect: "Deteksi Bahasa",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Pilih Tema",
+    light: "Tema Terang",
+    dark: "Tema Gelap",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
+    title: "Pengaturan Editor",
+    fontSize: "Ukuran Font",
+    tabSize: "Ukuran Tab",
+    wordWrap: "Bungkus Kata",
     minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    lineNumbers: "Nomor Baris",
   },
 };

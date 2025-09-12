@@ -1,34 +1,34 @@
 /**
- * Chat English translations for Reynard framework
+ * Chat Hungarian translations for Reynard framework
  */
 
 export const chatTranslations = {
   message: {
-    send: "Send Message",
-    type: "Type a message...",
-    placeholder: "Type your message here",
-    sent: "Message sent",
-    received: "Message received",
-    failed: "Failed to send message",
+    send: "Üzenet küldése",
+    type: "Írjon üzenetet...",
+    placeholder: "Írja ide az üzenetét",
+    sent: "Üzenet elküldve",
+    received: "Üzenet fogadva",
+    failed: "Üzenet küldése sikertelen",
   },
   room: {
-    create: "Create Room",
-    join: "Join Room",
-    leave: "Leave Room",
-    delete: "Delete Room",
-    name: "Room Name",
-    description: "Room Description",
+    create: "Szoba létrehozása",
+    join: "Csatlakozás a szobához",
+    leave: "Szoba elhagyása",
+    delete: "Szoba törlése",
+    name: "Szoba neve",
+    description: "Szoba leírása",
   },
   user: {
     online: "Online",
     offline: "Offline",
-    typing: "Typing...",
-    away: "Away",
+    typing: "Gépelés...",
+    away: "Távol",
   },
   p2p: {
-    connect: "Connect",
-    disconnect: "Disconnect",
-    connected: "Connected",
-    disconnected: "Disconnected",
+    connect: "Kapcsolódás",
+    disconnect: "Kapcsolat bontása",
+    connected: "Kapcsolódva",
+    disconnected: "Kapcsolat bontva",
   },
 };

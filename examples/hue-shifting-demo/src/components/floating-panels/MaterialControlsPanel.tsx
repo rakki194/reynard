@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component } from "solid-js";
 import { FloatingPanelAdvanced } from "reynard-floating-panel";
 import { MaterialControls } from "../MaterialControls";
 import type { MaterialType } from "../../composables/useMaterialEffects";
@@ -15,9 +15,6 @@ interface MaterialControlsPanelProps {
 
 export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (props) => {
   return (
-    <Show when={props.isVisible}>
-      {() => (
-
     <FloatingPanelAdvanced
       id="material-controls-panel"
       position={{ top: 220, left: 240 }}
@@ -32,6 +29,7 @@ export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (pro
       }}
       onShow={props.onShow}
       onHide={props.onHide}
+      style={{ display: props.isVisible ? 'block' : 'none' }}
     >
       <div class="floating-panel-body">
         <h3>Material Effects</h3>
@@ -44,7 +42,5 @@ export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (pro
         />
       </div>
     </FloatingPanelAdvanced>
-      )}
-    </Show>
   );
 };

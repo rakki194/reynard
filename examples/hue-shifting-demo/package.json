@@ -16,12 +16,13 @@
     "reynard-colors": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-themes": "workspace:*",
-    "reynard-floating-panel": "workspace:*"
+    "reynard-floating-panel": "workspace:*",
+    "colorizr": "3.0.8"
   },
   "devDependencies": {
     "@types/node": "24.3.1",
     "@typescript-eslint/eslint-plugin": "8.43.0",
-    "@typescript-eslint/parser": "8.42.0",
+    "@typescript-eslint/parser": "8.43.0",
     "eslint": "9.35.0",
     "eslint-plugin-solid": "0.14.5",
     "typescript": "5.9.2",

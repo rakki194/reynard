@@ -3,6 +3,8 @@
  * Secure random number generation and cryptographic functions
  */
 
+import { i18n } from 'reynard-i18n';
+
 /**
  * Generate cryptographically secure random bytes
  */
@@ -252,7 +254,7 @@ export function generateSecurePassword(
   }
 
   if (charset.length === 0) {
-    throw new Error("At least one character type must be included");
+    throw new Error(i18n.t('core.security.at-least-one-character-type-must-be-included'));
   }
 
   return generateSecureString(length, charset);

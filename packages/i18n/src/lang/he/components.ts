@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Hebrew translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "חלון מודאלי",
+    close: "סגור",
+    confirm: "אשר",
+    cancel: "בטל",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "לשונית הבאה",
+    previous: "לשונית קודמת",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "בחר",
+    clear: "נקה",
+    search: "חפש",
+    noResults: "לא נמצאו תוצאות",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "הצג טיפ",
+    hide: "הסתר טיפ",
   },
 };

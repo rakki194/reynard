@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Vietnamese translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Đăng nhập",
+    username: "Tên đăng nhập",
+    password: "Mật khẩu",
+    remember: "Ghi nhớ đăng nhập",
+    forgot: "Quên mật khẩu?",
+    submit: "Đăng nhập",
+    success: "Đăng nhập thành công",
+    failed: "Đăng nhập thất bại",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Đăng ký",
+    username: "Tên đăng nhập",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Mật khẩu",
+    confirmPassword: "Xác nhận mật khẩu",
+    submit: "Đăng ký",
+    success: "Đăng ký thành công",
+    failed: "Đăng ký thất bại",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Đăng xuất",
+    confirm: "Bạn có chắc chắn muốn đăng xuất?",
+    success: "Đăng xuất thành công",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Hồ sơ",
+    edit: "Chỉnh sửa hồ sơ",
+    save: "Lưu thay đổi",
+    cancel: "Hủy",
   },
 };

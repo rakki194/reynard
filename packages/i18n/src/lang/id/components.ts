@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Indonesian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
     title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    close: "Tutup",
+    confirm: "Konfirmasi",
+    cancel: "Batal",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Tab Berikutnya",
+    previous: "Tab Sebelumnya",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Pilih",
+    clear: "Hapus",
+    search: "Cari",
+    noResults: "Tidak ada hasil ditemukan",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Tampilkan tooltip",
+    hide: "Sembunyikan tooltip",
   },
 };

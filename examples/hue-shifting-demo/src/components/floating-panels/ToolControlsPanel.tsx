@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component } from "solid-js";
 import { FloatingPanelAdvanced } from "reynard-floating-panel";
 import { ToolControls } from "../ToolControls";
 
@@ -14,8 +14,6 @@ interface ToolControlsPanelProps {
 
 export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
   return (
-    <Show when={props.isVisible}>
-      {() => (
     <FloatingPanelAdvanced
       id="tool-controls-panel"
       position={{ top: 20, left: 360 }}
@@ -30,6 +28,7 @@ export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
       }}
       onShow={props.onShow}
       onHide={props.onHide}
+      style={{ display: props.isVisible ? 'block' : 'none' }}
     >
       <div class="floating-panel-body">
         <h3>Drawing Tools</h3>
@@ -40,7 +39,5 @@ export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
         />
       </div>
     </FloatingPanelAdvanced>
-      )}
-    </Show>
   );
 };

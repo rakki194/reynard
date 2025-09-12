@@ -4,6 +4,8 @@
  */
 
 import type { Component } from 'solid-js';
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, extname } from 'path';
 
 // Types for i18n testing
 export interface I18nTestConfig {
@@ -69,8 +71,12 @@ export function detectHardcodedStrings(
     { regex: /(title|alt|placeholder|aria-label)="([^"]+)"/g, type: 'jsx-attribute' },
     // Template literals with text: `Text ${variable}`
     { regex: /`([^`${}]+)`/g, type: 'template-literal' },
-    // String literals: "Text"
-    { regex: /"([^"]{3,})"/g, type: 'string-literal' },
+    // User-facing strings with capital letters and spaces
+    { regex: /"([A-Z][a-z]+ [a-z]+[^"]*)"/g, type: 'user-facing-string' },
+    // Return statements with hardcoded strings
+    { regex: /return\s+"([A-Z][a-z]+ [a-z]+[^"]*)"/g, type: 'return-statement' },
+    // Error messages and fallback strings
+    { regex: /"([A-Z][a-z]+ [a-z]+[^"]*)"\s*\|\|/g, type: 'fallback-string' },
   ];
 
   lines.forEach((line, lineIndex) => {
@@ -81,6 +87,19 @@ export function detectHardcodedStrings(
 
     // Skip lines that are already using i18n
     if (line.includes('i18n.t(') || line.includes('t(')) {
+      return;
+    }
+
+    // Skip lines with technical patterns
+    if (line.includes('className=') || line.includes('style=') || line.includes('data-') || 
+        line.includes('id=') || line.includes('key=') || line.includes('type=') ||
+        line.includes('src=') || line.includes('href=') || line.includes('onClick=') ||
+        line.includes('onChange=') || line.includes('onSubmit=') || line.includes('onLoad=')) {
+      return;
+    }
+
+    // Skip lines with variable assignments or function calls
+    if (line.includes('=') && (line.includes('const ') || line.includes('let ') || line.includes('var '))) {
       return;
     }
 
@@ -132,12 +151,56 @@ function isTechnicalTerm(text: string): boolean {
   const technicalTerms = [
     'id', 'class', 'type', 'name', 'value', 'key', 'index', 'count', 'size',
     'width', 'height', 'color', 'url', 'path', 'file', 'dir', 'src', 'alt',
-    'title', 'role', 'aria', 'data', 'test', 'spec', 'mock', 'stub', 'fixture'
+    'title', 'role', 'aria', 'data', 'test', 'spec', 'mock', 'stub', 'fixture',
+    'aria-label', 'aria-describedby', 'aria-expanded', 'aria-hidden', 'aria-selected',
+    'aria-controls', 'aria-labelledby', 'aria-live', 'aria-modal', 'aria-orientation',
+    'aria-required', 'aria-invalid', 'aria-disabled', 'aria-readonly', 'aria-checked',
+    'aria-pressed', 'aria-current', 'aria-level', 'aria-posinset', 'aria-setsize',
+    'aria-sort', 'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext',
+    'aria-busy', 'aria-dropeffect', 'aria-grabbed', 'aria-haspopup', 'aria-multiline',
+    'aria-multiselectable', 'aria-owns', 'aria-relevant', 'aria-autocomplete',
+    'aria-activedescendant', 'aria-colcount', 'aria-colindex', 'aria-colspan',
+    'aria-rowcount', 'aria-rowindex', 'aria-rowspan', 'aria-selected', 'aria-sort',
+    'aria-expanded', 'aria-level', 'aria-posinset', 'aria-setsize', 'aria-sort',
+    'aria-valuemin', 'aria-valuemax', 'aria-valuenow', 'aria-valuetext'
   ];
   
-  return technicalTerms.includes(text.toLowerCase()) || 
-         /^[a-z]+[A-Z][a-z]*$/.test(text) || // camelCase
-         /^[A-Z_]+$/.test(text); // CONSTANTS
+  // Check for technical terms
+  if (technicalTerms.includes(text.toLowerCase())) {
+    return true;
+  }
+  
+  // Check for camelCase (but not user-facing text)
+  if (/^[a-z]+[A-Z][a-z]*$/.test(text) && text.length < 20) {
+    return true;
+  }
+  
+  // Check for CONSTANTS
+  if (/^[A-Z_]+$/.test(text)) {
+    return true;
+  }
+  
+  // Check for CSS classes, IDs, or technical identifiers
+  if (/^[a-z-]+$/.test(text) && text.length < 30) {
+    return true;
+  }
+  
+  // Check for file extensions or technical suffixes
+  if (/\.(js|ts|tsx|jsx|css|scss|sass|less|json|md|txt|yml|yaml|xml|html|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot)$/i.test(text)) {
+    return true;
+  }
+  
+  // Check for URLs or paths
+  if (/^(https?:\/\/|www\.|\.com|\.org|\.net|\.io|\.dev|\.\/|\/)/.test(text)) {
+    return true;
+  }
+  
+  // Check for version numbers or technical identifiers
+  if (/^v?\d+\.\d+(\.\d+)?(-[a-z0-9]+)?$/i.test(text)) {
+    return true;
+  }
+  
+  return false;
 }
 
 /**
@@ -322,15 +385,88 @@ export function testRTLSupport(config: I18nTestConfig): string[] {
   const issues: string[] = [];
   const rtlLocales = ['ar', 'he', 'fa', 'ur'];
   
-  for (const locale of config.locales) {
-    if (rtlLocales.includes(locale)) {
-      // This would test actual RTL implementation
-      // For now, just return placeholder issues
-      issues.push(`RTL support not fully implemented for ${locale}`);
+  // Only report RTL issues if we're actually testing RTL locales
+  const testedRTLLocales = config.locales.filter(locale => rtlLocales.includes(locale));
+  
+  if (testedRTLLocales.length > 0) {
+    // Check if RTL support is properly configured
+    for (const locale of testedRTLLocales) {
+      // For now, we'll assume RTL support needs improvement
+      // In a real implementation, this would check for:
+      // - CSS direction properties
+      // - RTL-specific styling
+      // - Text alignment
+      // - Icon mirroring
+      // - Proper text direction handling
+      issues.push(`RTL support needs verification for ${locale}`);
     }
   }
   
   return issues;
+}
+
+/**
+ * Scan a package directory for hardcoded strings
+ */
+async function scanPackageForHardcodedStrings(
+  packagePath: string, 
+  config: I18nTestConfig
+): Promise<HardcodedStringResult[]> {
+  const results: HardcodedStringResult[] = [];
+  const srcPath = join(packagePath, 'src');
+  
+  if (!statSync(srcPath).isDirectory()) {
+    return results;
+  }
+  
+  const files = getAllFiles(srcPath, ['.tsx', '.jsx', '.ts', '.js']);
+  
+  for (const file of files) {
+    try {
+      const content = readFileSync(file, 'utf8');
+      const fileResults = detectHardcodedStrings(file, content, config);
+      results.push(...fileResults);
+    } catch (error) {
+      console.warn(`Failed to read file ${file}:`, error);
+    }
+  }
+  
+  return results;
+}
+
+/**
+ * Get all files with specified extensions from a directory
+ */
+function getAllFiles(dirPath: string, extensions: string[]): string[] {
+  const files: string[] = [];
+  
+  function scanDirectory(currentPath: string) {
+    try {
+      const items = readdirSync(currentPath);
+      
+      for (const item of items) {
+        const fullPath = join(currentPath, item);
+        const stat = statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+          // Skip node_modules, dist, build, etc.
+          if (!['node_modules', 'dist', 'build', 'coverage', '__tests__', 'test'].includes(item)) {
+            scanDirectory(fullPath);
+          }
+        } else if (stat.isFile()) {
+          const ext = extname(item);
+          if (extensions.includes(ext)) {
+            files.push(fullPath);
+          }
+        }
+      }
+    } catch (error) {
+      // Skip directories we can't read
+    }
+  }
+  
+  scanDirectory(dirPath);
+  return files;
 }
 
 /**
@@ -340,6 +476,15 @@ export async function runI18nTests(config: I18nTestConfig): Promise<I18nTestResu
   const startTime = performance.now();
   
   const hardcodedStrings: HardcodedStringResult[] = [];
+  
+  // Scan files for hardcoded strings if enabled
+  if (config.checkHardcodedStrings) {
+    for (const packagePath of config.packages) {
+      const packageHardcodedStrings = await scanPackageForHardcodedStrings(packagePath, config);
+      hardcodedStrings.push(...packageHardcodedStrings);
+    }
+  }
+  
   const translationValidation = await validateTranslations(config);
   const rtlIssues = testRTLSupport(config);
   

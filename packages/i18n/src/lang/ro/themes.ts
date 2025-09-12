@@ -1,15 +1,15 @@
 /**
- * Theme English translations for Reynard framework
+ * Theme Romanian translations for Reynard framework
  */
 
 export const themeTranslations = {
-  theme: "Theme",
-  light: "Light",
-  gray: "Gray",
-  dark: "Dark",
+  theme: "Temă",
+  light: "Luminoasă",
+  gray: "Gri",
+  dark: "Întunecată",
   banana: "Banana",
-  strawberry: "Strawberry",
-  peanut: "Peanut",
-  "high-contrast-black": "High Contrast Black",
-  "high-contrast-inverse": "High Contrast Inverse",
+  strawberry: "Căpșună",
+  peanut: "Arahide",
+  "high-contrast-black": "Contrast înalt negru",
+  "high-contrast-inverse": "Contrast înalt invers",
 };

@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { i18n } from 'reynard-i18n';
 import {
   ExportType,
   ExportValidationLevel,
@@ -48,7 +49,7 @@ describe("Package Exports Types", () => {
 
   describe("ExportValidationError", () => {
     it("should create error with message and package name", () => {
-      const error = new ExportValidationError("Test error", "test-package");
+      const error = new ExportValidationError(i18n.t('core.test.error'), "test-package");
 
       expect(error.message).toBe("Export validation failed for test-package: Test error");
       expect(error.packageName).toBe("test-package");
@@ -56,14 +57,14 @@ describe("Package Exports Types", () => {
     });
 
     it("should be instance of Error", () => {
-      const error = new ExportValidationError("Test error", "test-package");
+      const error = new ExportValidationError(i18n.t('core.test.error'), "test-package");
 
       expect(error).toBeInstanceOf(Error);
       expect(error).toBeInstanceOf(ExportValidationError);
     });
 
     it("should have correct stack trace", () => {
-      const error = new ExportValidationError("Test error", "test-package");
+      const error = new ExportValidationError(i18n.t('core.test.error'), "test-package");
 
       expect(error.stack).toBeDefined();
       expect(typeof error.stack).toBe("string");
@@ -77,7 +78,7 @@ describe("Package Exports Types", () => {
     });
 
     it("should handle empty package name", () => {
-      const error = new ExportValidationError("Test error", "");
+      const error = new ExportValidationError(i18n.t('core.test.error'), "");
 
       expect(error.message).toBe("Export validation failed for : Test error");
       expect(error.packageName).toBe("");
@@ -117,13 +118,13 @@ describe("Package Exports Types", () => {
         loadTime: 1000,
         lastAccess: Date.now(),
         memoryUsage: 1024,
-        lastError: "Some error",
+        lastError: i18n.t('core.errors.some-error'),
       };
 
       expect(metadata.loadTime).toBe(1000);
       expect(metadata.lastAccess).toBeDefined();
       expect(metadata.memoryUsage).toBe(1024);
-      expect(metadata.lastError).toBe("Some error");
+      expect(metadata.lastError).toBe(i18n.t('core.errors.some-error'));
     });
 
     it("should support all export types", () => {

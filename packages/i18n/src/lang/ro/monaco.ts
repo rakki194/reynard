@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Romanian translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Salvează",
+    format: "Formatează codul",
+    find: "Găsește",
+    replace: "Înlocuiește",
+    undo: "Anulează",
+    redo: "Refă",
+    cut: "Taie",
+    copy: "Copiază",
+    paste: "Lipește",
+    selectAll: "Selectează tot",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Selectează limba",
+    detect: "Detectează limba",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Selectează tema",
+    light: "Temă luminoasă",
+    dark: "Temă întunecată",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Setări editor",
+    fontSize: "Dimensiune font",
+    tabSize: "Dimensiune tab",
+    wordWrap: "Înfășurare cuvinte",
+    minimap: "Minimapă",
+    lineNumbers: "Numere de linie",
   },
 };

@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Brazilian Portuguese translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Entrar",
+    username: "Nome de usuário",
+    password: "Senha",
+    remember: "Lembrar de mim",
+    forgot: "Esqueceu a senha?",
+    submit: "Entrar",
+    success: "Login realizado com sucesso",
+    failed: "Falha no login",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Registrar",
+    username: "Nome de usuário",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Senha",
+    confirmPassword: "Confirmar senha",
+    submit: "Registrar",
+    success: "Registro realizado com sucesso",
+    failed: "Falha no registro",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Sair",
+    confirm: "Tem certeza de que deseja sair?",
+    success: "Logout realizado com sucesso",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Perfil",
+    edit: "Editar perfil",
+    save: "Salvar alterações",
+    cancel: "Cancelar",
   },
 };

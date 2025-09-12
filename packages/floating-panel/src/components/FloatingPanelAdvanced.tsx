@@ -10,6 +10,8 @@ import type { FloatingPanelProps, PanelConfig } from "../types";
 import "./FloatingPanelAdvanced.css";
 
 export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
+  console.log('🦦> FloatingPanelAdvanced rendering for panel:', props.id);
+  
   // Default configuration
   const config: Required<PanelConfig> = {
     draggable: true,
@@ -79,10 +81,21 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
     panel.resetPosition();
   };
 
+  const panelClasses = `floating-panel-advanced theme-${config.theme} ${panel.isDragging() ? 'dragging' : ''} ${panel.isResizing() ? 'resizing' : ''} ${panel.isMinimized() ? 'minimized' : ''}`;
+  const panelStyle = { ...panel.style(), ...props.style };
+  
+  console.log('🦦> Panel rendering details:', {
+    id: props.id,
+    classes: panelClasses,
+    style: panelStyle,
+    isMinimized: panel.isMinimized(),
+    panelState: panel.panelState()
+  });
+
   return (
     <div
-      class={`floating-panel-advanced theme-${config.theme} ${panel.isDragging() ? 'dragging' : ''} ${panel.isResizing() ? 'resizing' : ''} ${panel.isMinimized() ? 'minimized' : ''}`}
-      style={panel.style()}
+      class={panelClasses}
+      style={panelStyle}
       tabIndex={config.closable ? 0 : -1}
       role="dialog"
       aria-modal="true"

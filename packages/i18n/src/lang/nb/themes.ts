@@ -1,15 +1,15 @@
 /**
- * Theme English translations for Reynard framework
+ * Theme Norwegian translations for Reynard framework
  */
 
 export const themeTranslations = {
-  theme: "Theme",
-  light: "Light",
-  gray: "Gray",
-  dark: "Dark",
-  banana: "Banana",
-  strawberry: "Strawberry",
-  peanut: "Peanut",
-  "high-contrast-black": "High Contrast Black",
-  "high-contrast-inverse": "High Contrast Inverse",
+  theme: "Tema",
+  light: "Lys",
+  gray: "Grå",
+  dark: "Mørk",
+  banana: "Banan",
+  strawberry: "Jordbær",
+  peanut: "Peanøtt",
+  "high-contrast-black": "Høy kontrast svart",
+  "high-contrast-inverse": "Høy kontrast invers",
 };

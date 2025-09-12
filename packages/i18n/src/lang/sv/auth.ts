@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Swedish translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Logga in",
+    username: "Användarnamn",
+    password: "Lösenord",
+    remember: "Kom ihåg mig",
+    forgot: "Glömt lösenordet?",
+    submit: "Logga in",
+    success: "Inloggning lyckades",
+    failed: "Inloggning misslyckades",
   },
   register: {
-    title: "Register",
-    username: "Username",
-    email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    title: "Registrera",
+    username: "Användarnamn",
+    email: "E-post",
+    password: "Lösenord",
+    confirmPassword: "Bekräfta lösenord",
+    submit: "Registrera",
+    success: "Registrering lyckades",
+    failed: "Registrering misslyckades",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Logga ut",
+    confirm: "Är du säker på att du vill logga ut?",
+    success: "Utloggning lyckades",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Profil",
+    edit: "Redigera profil",
+    save: "Spara ändringar",
+    cancel: "Avbryt",
   },
 };

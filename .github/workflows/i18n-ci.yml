@@ -1,0 +1,110 @@
+name: i18n CI Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  i18n-testing:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Build testing package
+      run: |
+        cd packages/testing
+        pnpm build
+        
+    - name: Validate i18n setup
+      run: |
+        cd packages/testing
+        pnpm i18n:validate
+        
+    - name: Run i18n CI tests
+      run: |
+        cd packages/testing
+        pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --fail-on-rtl --coverage-threshold 80
+        
+    - name: Generate i18n report
+      if: always()
+      run: |
+        cd packages/testing
+        pnpm i18n:test --output ../../i18n-results.json --report ../../i18n-report.md
+        
+    - name: Upload i18n results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: i18n-results-${{ matrix.node-version }}
+        path: |
+          i18n-results.json
+          i18n-report.md
+          
+    - name: Comment PR with i18n results
+      if: github.event_name == 'pull_request' && always()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          try {
+            const resultsPath = 'i18n-results.json';
+            if (fs.existsSync(resultsPath)) {
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              
+              const comment = `## 🦊 i18n Test Results
+              
+              **Summary:**
+              - ✅ Packages tested: ${results.summary.totalPackages}
+              - 🔍 Hardcoded strings: ${results.summary.totalHardcodedStrings}
+              - 🌍 Missing translations: ${results.summary.totalMissingTranslations}
+              - 🔄 RTL issues: ${results.summary.totalRTLIssues}
+              - 📊 Coverage: ${results.summary.averageCoverage}%
+              
+              **Status:** ${results.success ? '✅ PASSED' : '❌ FAILED'}
+              
+              ${results.summary.totalHardcodedStrings > 0 ? 
+                '⚠️ **Hardcoded strings detected!** Please use translation keys instead of hardcoded text.' : 
+                '✅ No hardcoded strings found!'
+              }
+              
+              ${results.summary.totalMissingTranslations > 0 ? 
+                '⚠️ **Missing translations detected!** Please add missing translation keys.' : 
+                '✅ All translations are complete!'
+              }
+              
+              *Full report available in the artifacts.*`;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+          } catch (error) {
+            console.log('Could not create comment:', error);
+          }

@@ -5,6 +5,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LazyPackageExport } from "./lazy-package-export";
 import { ExportType, ExportValidationLevel, ExportMetadata, ExportValidationError } from "../utils/package-exports-types";
+import { i18n } from 'reynard-i18n';
 
 // Test the actual implementation
 
@@ -174,21 +175,21 @@ describe("LazyPackageExport", () => {
     });
 
     it("should handle loading errors", async () => {
-      const mockError = new Error("Loading failed");
+      const mockError = new Error(i18n.t('core.module.loading-failed'));
       mockLoader.mockRejectedValue(mockError);
 
       await expect(lazyExport.getModule()).rejects.toThrow(ExportValidationError);
 
       expect((lazyExport as any)._metadata.errorCount).toBe(1);
-      expect((lazyExport as any)._metadata.lastError).toBe("Loading failed");
+      expect((lazyExport as any)._metadata.lastError).toBe(i18n.t('core.module.loading-failed'));
     });
 
     it("should handle non-Error exceptions", async () => {
-      mockLoader.mockRejectedValue("String error");
+      mockLoader.mockRejectedValue(i18n.t('core.errors.string-error'));
 
       await expect(lazyExport.getModule()).rejects.toThrow(ExportValidationError);
 
-      expect((lazyExport as any)._metadata.lastError).toBe("String error");
+      expect((lazyExport as any)._metadata.lastError).toBe(i18n.t('core.errors.string-error'));
     });
   });
 

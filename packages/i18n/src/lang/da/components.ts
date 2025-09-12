@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Danish translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
     title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    close: "Luk",
+    confirm: "Bekræft",
+    cancel: "Annuller",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Næste fane",
+    previous: "Forrige fane",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Vælg",
+    clear: "Ryd",
+    search: "Søg",
+    noResults: "Ingen resultater fundet",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Vis værktøjstip",
+    hide: "Skjul værktøjstip",
   },
 };

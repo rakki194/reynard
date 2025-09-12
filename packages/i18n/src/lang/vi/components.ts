@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Vietnamese translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Cửa sổ",
+    close: "Đóng",
+    confirm: "Xác nhận",
+    cancel: "Hủy",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Tab tiếp theo",
+    previous: "Tab trước đó",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Chọn",
+    clear: "Xóa",
+    search: "Tìm kiếm",
+    noResults: "Không tìm thấy kết quả",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Hiển thị gợi ý",
+    hide: "Ẩn gợi ý",
   },
 };

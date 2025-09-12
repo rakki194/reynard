@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Finnish translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Modaali",
+    close: "Sulje",
+    confirm: "Vahvista",
+    cancel: "Peruuta",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Seuraava välilehti",
+    previous: "Edellinen välilehti",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Valitse",
+    clear: "Tyhjennä",
+    search: "Hae",
+    noResults: "Tuloksia ei löytynyt",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Näytä vihje",
+    hide: "Piilota vihje",
   },
 };

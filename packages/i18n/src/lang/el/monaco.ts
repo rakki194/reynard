@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Greek translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Αποθήκευση",
+    format: "Μορφοποίηση κώδικα",
+    find: "Εύρεση",
+    replace: "Αντικατάσταση",
+    undo: "Αναίρεση",
+    redo: "Επανάληψη",
+    cut: "Αποκοπή",
+    copy: "Αντιγραφή",
+    paste: "Επικόλληση",
+    selectAll: "Επιλογή όλων",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Επιλογή γλώσσας",
+    detect: "Ανίχνευση γλώσσας",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Επιλογή θέματος",
+    light: "Φωτεινό θέμα",
+    dark: "Σκοτεινό θέμα",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Ρυθμίσεις επεξεργαστή",
+    fontSize: "Μέγεθος γραμματοσειράς",
+    tabSize: "Μέγεθος tab",
+    wordWrap: "Αναδίπλωση λέξεων",
+    minimap: "Μινιχάρτης",
+    lineNumbers: "Αριθμοί γραμμών",
   },
 };

@@ -3,6 +3,8 @@
  * Comprehensive validation functions for forms and data
  */
 
+import { i18n } from 'reynard-i18n';
+
 /**
  * Email validation using RFC 5322 compliant regex
  */
@@ -65,35 +67,35 @@ export function validatePasswordStrength(password: string): PasswordStrength {
 
   // Length check
   if (password.length < 8) {
-    feedback.push("Password must be at least 8 characters long");
+    feedback.push(i18n.t('core.password.must-be-at-least-8-characters-long'));
   } else if (password.length >= 8) {
     score += 25;
   }
 
   // Uppercase check
   if (!/[A-Z]/.test(password)) {
-    feedback.push("Password must contain at least one uppercase letter");
+    feedback.push(i18n.t('core.password.must-contain-at-least-one-uppercase-letter'));
   } else {
     score += 25;
   }
 
   // Lowercase check
   if (!/[a-z]/.test(password)) {
-    feedback.push("Password must contain at least one lowercase letter");
+    feedback.push(i18n.t('core.password.must-contain-at-least-one-lowercase-letter'));
   } else {
     score += 25;
   }
 
   // Number check
   if (!/\d/.test(password)) {
-    feedback.push("Password must contain at least one number");
+    feedback.push(i18n.t('core.password.must-contain-at-least-one-number'));
   } else {
     score += 15;
   }
 
   // Special character check
   if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
-    feedback.push("Password must contain at least one special character");
+    feedback.push(i18n.t('core.password.must-contain-at-least-one-special-character'));
   } else {
     score += 10;
   }

@@ -26,7 +26,7 @@ export const commonTranslations = {
   clear: "Cancella",
 
   // Navigation
-  home: "Home",
+  home: "Casa",
   back: "Indietro",
   next: "Avanti",
   previous: "Precedente",

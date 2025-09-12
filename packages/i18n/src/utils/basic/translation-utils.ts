@@ -4,22 +4,44 @@
  */
 
 import type { LanguageCode, TranslationParams } from "../../types";
+import { getPlural } from "../../plurals";
 
 // Helper function to get nested translation values with type safety
 export function getTranslationValue(
   obj: Record<string, unknown>,
   path: string,
   params?: TranslationParams,
+  locale: LanguageCode = "en",
 ): string {
   const value = path.split(".").reduce((acc: any, part) => acc?.[part], obj);
 
-  // Debug logging
-  if (process.env.NODE_ENV === 'test') {
-    console.log('getTranslationValue:', { path, value, obj, params });
-  }
+  // Debug logging removed
 
   if (typeof value === "function") {
     return (value as (params: TranslationParams) => string)(params || {});
+  }
+
+  // Check if this is a pluralization object
+  if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    const pluralObj = value as Record<string, string>;
+    // Check if it has pluralization keys
+    if (pluralObj.zero || pluralObj.one || pluralObj.few || pluralObj.many || pluralObj.other) {
+      if (params && typeof params.count === "number") {
+        const pluralResult = getPlural(params.count, pluralObj as any, locale);
+        // Debug logging removed
+        // Interpolate parameters in the plural result
+        if (pluralResult && params !== undefined) {
+          let result = pluralResult;
+          Object.entries(params).forEach(([key, val]) => {
+            result = result.replace(`{${key}}`, val?.toString() || "");
+          });
+          return result;
+        }
+        return pluralResult || "";
+      }
+      // If no count parameter or invalid count, return the key (fallback behavior)
+      return path;
+    }
   }
 
   if (typeof value === "string" && params !== undefined) {

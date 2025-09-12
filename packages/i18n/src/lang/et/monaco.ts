@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Estonian translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Salvesta",
+    format: "Vorminda kood",
+    find: "Otsi",
+    replace: "Asenda",
+    undo: "Võta tagasi",
+    redo: "Tee uuesti",
+    cut: "Lõika",
+    copy: "Kopeeri",
+    paste: "Kleebi",
+    selectAll: "Vali kõik",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Vali keel",
+    detect: "Tuvasta keel",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Vali teema",
+    light: "Hele teema",
+    dark: "Tume teema",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Redaktori seaded",
+    fontSize: "Fondi suurus",
+    tabSize: "Sakke suurus",
+    wordWrap: "Sõnade ümberpööramine",
+    minimap: "Minikaart",
+    lineNumbers: "Rea numbrid",
   },
 };

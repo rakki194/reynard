@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Hebrew translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "שמור",
+    format: "עיצוב קוד",
+    find: "חפש",
+    replace: "החלף",
+    undo: "בטל",
+    redo: "חזור",
+    cut: "גזור",
+    copy: "העתק",
+    paste: "הדבק",
+    selectAll: "בחר הכל",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "בחר שפה",
+    detect: "זהה שפה",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "בחר ערכת נושא",
+    light: "ערכת נושא בהירה",
+    dark: "ערכת נושא כהה",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "הגדרות עורך",
+    fontSize: "גודל גופן",
+    tabSize: "גודל טאב",
+    wordWrap: "גלישת מילים",
+    minimap: "מפת מיני",
+    lineNumbers: "מספרי שורות",
   },
 };

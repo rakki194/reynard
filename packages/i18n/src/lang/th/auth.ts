@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Thai translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "เข้าสู่ระบบ",
+    username: "ชื่อผู้ใช้",
+    password: "รหัสผ่าน",
+    remember: "จดจำฉัน",
+    forgot: "ลืมรหัสผ่าน?",
+    submit: "เข้าสู่ระบบ",
+    success: "เข้าสู่ระบบสำเร็จ",
+    failed: "เข้าสู่ระบบล้มเหลว",
   },
   register: {
-    title: "Register",
-    username: "Username",
-    email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    title: "สมัครสมาชิก",
+    username: "ชื่อผู้ใช้",
+    email: "อีเมล",
+    password: "รหัสผ่าน",
+    confirmPassword: "ยืนยันรหัสผ่าน",
+    submit: "สมัครสมาชิก",
+    success: "สมัครสมาชิกสำเร็จ",
+    failed: "สมัครสมาชิกล้มเหลว",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "ออกจากระบบ",
+    confirm: "คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?",
+    success: "ออกจากระบบสำเร็จ",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "โปรไฟล์",
+    edit: "แก้ไขโปรไฟล์",
+    save: "บันทึกการเปลี่ยนแปลง",
+    cancel: "ยกเลิก",
   },
 };

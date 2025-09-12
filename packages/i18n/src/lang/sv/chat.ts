@@ -1,34 +1,34 @@
 /**
- * Chat English translations for Reynard framework
+ * Chat Swedish translations for Reynard framework
  */
 
 export const chatTranslations = {
   message: {
-    send: "Send Message",
-    type: "Type a message...",
-    placeholder: "Type your message here",
-    sent: "Message sent",
-    received: "Message received",
-    failed: "Failed to send message",
+    send: "Skicka meddelande",
+    type: "Skriv ett meddelande...",
+    placeholder: "Skriv ditt meddelande här",
+    sent: "Meddelande skickat",
+    received: "Meddelande mottaget",
+    failed: "Misslyckades att skicka meddelande",
   },
   room: {
-    create: "Create Room",
-    join: "Join Room",
-    leave: "Leave Room",
-    delete: "Delete Room",
-    name: "Room Name",
-    description: "Room Description",
+    create: "Skapa rum",
+    join: "Gå med i rum",
+    leave: "Lämna rum",
+    delete: "Ta bort rum",
+    name: "Rummets namn",
+    description: "Rummets beskrivning",
   },
   user: {
     online: "Online",
     offline: "Offline",
-    typing: "Typing...",
-    away: "Away",
+    typing: "Skriver...",
+    away: "Borta",
   },
   p2p: {
-    connect: "Connect",
-    disconnect: "Disconnect",
-    connected: "Connected",
-    disconnected: "Disconnected",
+    connect: "Anslut",
+    disconnect: "Koppla från",
+    connected: "Ansluten",
+    disconnected: "Frånkopplad",
   },
 };

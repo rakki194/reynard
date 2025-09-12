@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Slovak translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Prihlásenie",
+    username: "Používateľské meno",
+    password: "Heslo",
+    remember: "Zapamätať si ma",
+    forgot: "Zabudli ste heslo?",
+    submit: "Prihlásiť sa",
+    success: "Úspešné prihlásenie",
+    failed: "Neúspešné prihlásenie",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Registrácia",
+    username: "Používateľské meno",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Heslo",
+    confirmPassword: "Potvrdiť heslo",
+    submit: "Registrovať sa",
+    success: "Úspešná registrácia",
+    failed: "Neúspešná registrácia",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Odhlásenie",
+    confirm: "Ste si istí, že sa chcete odhlásiť?",
+    success: "Úspešné odhlásenie",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Profil",
+    edit: "Upraviť profil",
+    save: "Uložiť zmeny",
+    cancel: "Zrušiť",
   },
 };

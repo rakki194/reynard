@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Thai translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "หน้าต่าง",
+    close: "ปิด",
+    confirm: "ยืนยัน",
+    cancel: "ยกเลิก",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "แท็บถัดไป",
+    previous: "แท็บก่อนหน้า",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "เลือก",
+    clear: "ล้าง",
+    search: "ค้นหา",
+    noResults: "ไม่พบผลลัพธ์",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "แสดงคำแนะนำ",
+    hide: "ซ่อนคำแนะนำ",
   },
 };

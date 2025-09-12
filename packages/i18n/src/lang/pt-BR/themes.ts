@@ -1,15 +1,15 @@
 /**
- * Theme English translations for Reynard framework
+ * Theme Brazilian Portuguese translations for Reynard framework
  */
 
 export const themeTranslations = {
-  theme: "Theme",
-  light: "Light",
-  gray: "Gray",
-  dark: "Dark",
+  theme: "Tema",
+  light: "Claro",
+  gray: "Cinza",
+  dark: "Escuro",
   banana: "Banana",
-  strawberry: "Strawberry",
-  peanut: "Peanut",
-  "high-contrast-black": "High Contrast Black",
-  "high-contrast-inverse": "High Contrast Inverse",
+  strawberry: "Morango",
+  peanut: "Amendoim",
+  "high-contrast-black": "Alto contraste preto",
+  "high-contrast-inverse": "Alto contraste inverso",
 };

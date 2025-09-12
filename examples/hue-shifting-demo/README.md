@@ -74,7 +74,7 @@ The demo integrates with Reynard's color system:
 
 ```typescript
 import { OKLCHColor } from 'reynard-colors';
-import { basicHueShift, materialHueShift } from './algorithms';
+import { basicColorRamp, materialHueShift } from './algorithms';
 ```
 
 ### Performance

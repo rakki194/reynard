@@ -331,37 +331,7 @@ export function oklchToCSSWithAlpha(
   return `oklch(${lightness}% ${chroma} ${hue} / ${clampedOpacity})`;
 }
 
-/**
- * Convert OKLCH values to RGB (simplified implementation)
- * @param l - Lightness (0-1)
- * @param c - Chroma (0-0.4)
- * @param h - Hue (0-360)
- * @returns RGB color object
- */
-export function oklchToRgb(
-  l: number,
-  c: number,
-  h: number,
-): { r: number; g: number; b: number } {
-  // Simplified OKLCH to RGB conversion
-  // This is a basic implementation - for production use a proper color conversion library
-  const hRad = (h * Math.PI) / 180;
-  const a = c * Math.cos(hRad);
-  const b = c * Math.sin(hRad);
-
-  // Convert to RGB (simplified)
-  const r = Math.round(
-    255 * Math.max(0, Math.min(1, l + 0.3963377774 * a + 0.2158037573 * b)),
-  );
-  const g = Math.round(
-    255 * Math.max(0, Math.min(1, l - 0.1055613458 * a - 0.0638541728 * b)),
-  );
-  const bVal = Math.round(
-    255 * Math.max(0, Math.min(1, l - 0.0894841775 * a - 1.291485548 * b)),
-  );
-
-  return { r, g, b: bVal };
-}
+// oklchToRgb function moved to colorConversion.ts for better implementation
 
 /**
  * Generate HSL colors as fallback when OKLCH is not available

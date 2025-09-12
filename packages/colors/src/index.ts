@@ -15,6 +15,8 @@ export * from "./types";
 // Export all utilities
 export * from "./utils";
 
+// New color conversion and hue shifting utilities are exported via utils/index.ts
+
 // Export specific utilities for direct access
 export {
   createTagColorGenerator,

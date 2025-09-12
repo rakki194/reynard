@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { i18n } from 'reynard-i18n';
 import {
   DEFAULT_SECURITY_HEADERS,
   STRICT_SECURITY_HEADERS,
@@ -332,7 +333,7 @@ describe("Security Headers", () => {
       await secureFetch("/test", {
         headers: {
           "Custom-Header": "custom-value",
-          Authorization: "Bearer token",
+          Authorization: i18n.t('core.bearer.token'),
         },
       });
 
@@ -341,7 +342,7 @@ describe("Security Headers", () => {
         expect.objectContaining({
           headers: expect.objectContaining({
             "Custom-Header": "custom-value",
-            Authorization: "Bearer token",
+            Authorization: i18n.t('core.bearer.token'),
             "X-Requested-With": "XMLHttpRequest",
           }),
         }),

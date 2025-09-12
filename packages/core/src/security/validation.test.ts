@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { i18n } from 'reynard-i18n';
 import {
   sanitizeHTML,
   validateURL,
@@ -437,7 +438,7 @@ describe("Comprehensive Input Validation", () => {
 
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain(
-        "Input contains potentially dangerous HTML",
+        i18n.t('core.security.input-contains-potentially-dangerous-html'),
       );
     });
 
@@ -448,7 +449,7 @@ describe("Comprehensive Input Validation", () => {
 
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain(
-        "Input contains potentially dangerous SQL patterns",
+        i18n.t('core.security.input-contains-potentially-dangerous-sql-patterns'),
       );
     });
 
@@ -459,7 +460,7 @@ describe("Comprehensive Input Validation", () => {
 
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain(
-        "Input contains potentially dangerous XSS patterns",
+        i18n.t('core.security.input-contains-potentially-dangerous-xss-patterns'),
       );
     });
 

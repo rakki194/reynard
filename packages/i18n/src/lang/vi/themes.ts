@@ -1,15 +1,15 @@
 /**
- * Theme English translations for Reynard framework
+ * Theme Vietnamese translations for Reynard framework
  */
 
 export const themeTranslations = {
-  theme: "Theme",
-  light: "Light",
-  gray: "Gray",
-  dark: "Dark",
-  banana: "Banana",
-  strawberry: "Strawberry",
-  peanut: "Peanut",
-  "high-contrast-black": "High Contrast Black",
-  "high-contrast-inverse": "High Contrast Inverse",
+  theme: "Chủ đề",
+  light: "Sáng",
+  gray: "Xám",
+  dark: "Tối",
+  banana: "Chuối",
+  strawberry: "Dâu tây",
+  peanut: "Đậu phộng",
+  "high-contrast-black": "Tương phản cao đen",
+  "high-contrast-inverse": "Tương phản cao ngược",
 };

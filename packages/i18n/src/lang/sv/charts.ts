@@ -1,35 +1,35 @@
 /**
- * Charts English translations for Reynard framework
+ * Charts Swedish translations for Reynard framework
  */
 
 export const chartTranslations = {
   types: {
-    line: "Line Chart",
-    bar: "Bar Chart",
-    pie: "Pie Chart",
-    area: "Area Chart",
-    scatter: "Scatter Plot",
+    line: "Linjediagram",
+    bar: "Stapeldiagram",
+    pie: "Cirkeldiagram",
+    area: "Ytdiagram",
+    scatter: "Spridningsdiagram",
     histogram: "Histogram",
   },
   axes: {
-    x: "X Axis",
-    y: "Y Axis",
-    value: "Value",
-    category: "Category",
-    time: "Time",
+    x: "X-axel",
+    y: "Y-axel",
+    value: "Värde",
+    category: "Kategori",
+    time: "Tid",
   },
   legend: {
-    show: "Show Legend",
-    hide: "Hide Legend",
-    position: "Legend Position",
+    show: "Visa förklaring",
+    hide: "Dölj förklaring",
+    position: "Förklaringsposition",
   },
   tooltip: {
-    show: "Show Tooltip",
-    hide: "Hide Tooltip",
+    show: "Visa verktygstips",
+    hide: "Dölj verktygstips",
   },
   data: {
-    noData: "No data available",
-    loading: "Loading data...",
-    error: "Error loading data",
+    noData: "Inga data tillgängliga",
+    loading: "Laddar data...",
+    error: "Fel vid laddning av data",
   },
 };

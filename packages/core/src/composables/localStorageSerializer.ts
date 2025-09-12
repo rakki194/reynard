@@ -3,6 +3,8 @@
  * Prevents XSS attacks and prototype pollution
  */
 
+import { i18n } from 'reynard-i18n';
+
 export interface Serializer<T = unknown> {
   read: (value: string) => T;
   write: (value: T) => string;
@@ -32,12 +34,12 @@ const safeJsonParse = <T = unknown>(value: string): T => {
       value.includes("constructor") ||
       value.includes("prototype")
     ) {
-      throw new Error("Potentially dangerous JSON detected");
+      throw new Error(i18n.t('core.storage.potentially-dangerous-json-detected'));
     }
 
     return JSON.parse(value) as T;
   } catch (error) {
-    console.warn("Failed to parse JSON from localStorage:", error);
+    console.warn(i18n.t('core.storage.failed-to-parse-json-from-localstorage'), error);
     throw error;
   }
 };

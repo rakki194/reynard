@@ -26,6 +26,35 @@
   transition: color 0.2s ease;
 }
 
+.demo-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  gap: 0.5rem;
+}
+
+.tab-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--color-surface, oklch(95% 0.01 0));
+  color: var(--color-text, oklch(20% 0.01 0));
+  border: 1px solid var(--color-border, oklch(80% 0.01 0));
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background: var(--color-surface-hover, oklch(90% 0.01 0));
+}
+
+.tab-button.active {
+  background: var(--color-primary, oklch(60% 0.2 240));
+  color: white;
+  border-color: var(--color-primary, oklch(60% 0.2 240));
+}
+
 .demo-grid {
   display: grid;
   grid-template-columns: 400px 1fr;

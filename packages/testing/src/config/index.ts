@@ -1,13 +1,10 @@
 /**
- * Configuration exports for reynard-testing
+ * i18n Testing Configuration
+ * Centralized configuration for translation testing across all Reynard packages
  */
 
-export {
-  createBaseVitestConfig,
-  createComponentTestConfig,
-  createUtilityTestConfig,
-  createIntegrationTestConfig,
-} from "./vitest.base.js";
-export { default as componentTestConfig } from "./vitest.component.js";
-export { default as integrationTestConfig } from "./vitest.integration.js";
-export { default as e2eTestConfig } from "./vitest.e2e.js";
+export * from './types';
+export * from './main-config';
+export * from './utilities';
+export * from './ignore-patterns';
+export * from './packages';

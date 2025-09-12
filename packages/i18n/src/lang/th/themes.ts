@@ -1,15 +1,15 @@
 /**
- * Theme English translations for Reynard framework
+ * Theme Thai translations for Reynard framework
  */
 
 export const themeTranslations = {
-  theme: "Theme",
-  light: "Light",
-  gray: "Gray",
-  dark: "Dark",
-  banana: "Banana",
-  strawberry: "Strawberry",
-  peanut: "Peanut",
-  "high-contrast-black": "High Contrast Black",
-  "high-contrast-inverse": "High Contrast Inverse",
+  theme: "ธีม",
+  light: "สว่าง",
+  gray: "เทา",
+  dark: "มืด",
+  banana: "กล้วย",
+  strawberry: "สตรอว์เบอร์รี",
+  peanut: "ถั่วลิสง",
+  "high-contrast-black": "คอนทราสต์สูงดำ",
+  "high-contrast-inverse": "คอนทราสต์สูงกลับด้าน",
 };

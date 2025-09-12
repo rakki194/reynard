@@ -1,34 +1,34 @@
 /**
- * Chat English translations for Reynard framework
+ * Chat Norwegian translations for Reynard framework
  */
 
 export const chatTranslations = {
   message: {
-    send: "Send Message",
-    type: "Type a message...",
-    placeholder: "Type your message here",
-    sent: "Message sent",
-    received: "Message received",
-    failed: "Failed to send message",
+    send: "Send melding",
+    type: "Skriv en melding...",
+    placeholder: "Skriv meldingen din her",
+    sent: "Melding sendt",
+    received: "Melding mottatt",
+    failed: "Kunne ikke sende melding",
   },
   room: {
-    create: "Create Room",
-    join: "Join Room",
-    leave: "Leave Room",
-    delete: "Delete Room",
-    name: "Room Name",
-    description: "Room Description",
+    create: "Opprett rom",
+    join: "Bli med i rom",
+    leave: "Forlat rom",
+    delete: "Slett rom",
+    name: "Romnavn",
+    description: "Rombeskrivelse",
   },
   user: {
-    online: "Online",
-    offline: "Offline",
-    typing: "Typing...",
-    away: "Away",
+    online: "Pålogget",
+    offline: "Frakoblet",
+    typing: "Skriver...",
+    away: "Borte",
   },
   p2p: {
-    connect: "Connect",
-    disconnect: "Disconnect",
-    connected: "Connected",
-    disconnected: "Disconnected",
+    connect: "Koble til",
+    disconnect: "Koble fra",
+    connected: "Tilkoblet",
+    disconnected: "Frakoblet",
   },
 };

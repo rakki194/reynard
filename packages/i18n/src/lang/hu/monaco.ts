@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Hungarian translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Mentés",
+    format: "Kód formázása",
+    find: "Keresés",
+    replace: "Csere",
+    undo: "Visszavonás",
+    redo: "Újra",
+    cut: "Kivágás",
+    copy: "Másolás",
+    paste: "Beillesztés",
+    selectAll: "Összes kiválasztása",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Nyelv kiválasztása",
+    detect: "Nyelv felismerése",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Téma kiválasztása",
+    light: "Világos téma",
+    dark: "Sötét téma",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Szerkesztő beállítások",
+    fontSize: "Betűméret",
+    tabSize: "Tabulátor méret",
+    wordWrap: "Szó törés",
+    minimap: "Minimapa",
+    lineNumbers: "Sorszámok",
   },
 };

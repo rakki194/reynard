@@ -1,34 +1,34 @@
 /**
- * Chat English translations for Reynard framework
+ * Chat Czech translations for Reynard framework
  */
 
 export const chatTranslations = {
   message: {
-    send: "Send Message",
-    type: "Type a message...",
-    placeholder: "Type your message here",
-    sent: "Message sent",
-    received: "Message received",
-    failed: "Failed to send message",
+    send: "Odeslat zprávu",
+    type: "Napište zprávu...",
+    placeholder: "Napište svou zprávu zde",
+    sent: "Zpráva odeslána",
+    received: "Zpráva přijata",
+    failed: "Odeslání zprávy selhalo",
   },
   room: {
-    create: "Create Room",
-    join: "Join Room",
-    leave: "Leave Room",
-    delete: "Delete Room",
-    name: "Room Name",
-    description: "Room Description",
+    create: "Vytvořit místnost",
+    join: "Připojit se k místnosti",
+    leave: "Opustit místnost",
+    delete: "Smazat místnost",
+    name: "Název místnosti",
+    description: "Popis místnosti",
   },
   user: {
     online: "Online",
     offline: "Offline",
-    typing: "Typing...",
-    away: "Away",
+    typing: "Píše...",
+    away: "Nepřítomen",
   },
   p2p: {
-    connect: "Connect",
-    disconnect: "Disconnect",
-    connected: "Connected",
-    disconnected: "Disconnected",
+    connect: "Připojit",
+    disconnect: "Odpojit",
+    connected: "Připojeno",
+    disconnected: "Odpojeno",
   },
 };

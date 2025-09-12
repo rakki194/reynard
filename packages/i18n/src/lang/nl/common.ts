@@ -26,7 +26,7 @@ export const commonTranslations = {
   clear: "Wissen",
 
   // Navigation
-  home: "Home",
+  home: "Thuis",
   back: "Terug",
   next: "Volgende",
   previous: "Vorige",

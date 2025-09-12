@@ -3,6 +3,8 @@
  * Helpful utilities for async operations, promises, and timing
  */
 
+import { i18n } from 'reynard-i18n';
+
 /**
  * Creates a promise that resolves after a specified delay
  *
@@ -41,7 +43,7 @@ export function delay<T>(value: T, ms: number): Promise<T> {
 export function withTimeout<T>(
   promise: Promise<T>,
   ms: number,
-  errorMessage: string = "Operation timed out",
+  errorMessage: string = i18n.t('core.async.operation-timed-out'),
 ): Promise<T> {
   const timeout = new Promise<never>((_, reject) => {
     setTimeout(() => reject(new Error(errorMessage)), ms);
@@ -236,7 +238,7 @@ export async function mapWithConcurrency<T, U>(
   }
 
   if (concurrency <= 0) {
-    throw new Error("Concurrency must be greater than 0");
+    throw new Error(i18n.t('core.async.concurrency-must-be-greater-than-0'));
   }
 
   const results: U[] = new Array(items.length);
@@ -307,7 +309,7 @@ export async function poll(
     await sleep(interval);
   }
 
-  throw new Error("Polling timeout reached");
+  throw new Error(i18n.t('core.async.polling-timeout-reached'));
 }
 
 /**

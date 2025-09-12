@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Estonian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Modaal",
+    close: "Sulge",
+    confirm: "Kinnita",
+    cancel: "Tühista",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Järgmine sakk",
+    previous: "Eelmine sakk",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Vali",
+    clear: "Tühjenda",
+    search: "Otsi",
+    noResults: "Tulemusi ei leitud",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Näita vihjet",
+    hide: "Peida vihje",
   },
 };

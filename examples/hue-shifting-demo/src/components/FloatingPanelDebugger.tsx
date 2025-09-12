@@ -22,7 +22,10 @@ export const FloatingPanelDebugger: Component = () => {
   if (!isVisible()) {
     return (
       <button
-        onClick={() => setIsVisible(true)}
+        onClick={() => {
+          console.log('🦦> Debug panels button clicked, setting visible to true');
+          setIsVisible(true);
+        }}
         style={{
           position: "fixed",
           top: "10px",
@@ -95,7 +98,11 @@ export const FloatingPanelDebugger: Component = () => {
       
       <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
         <button
-          onClick={() => floatingPanels.showPanel('colorPicker')}
+          onClick={() => {
+            console.log('🦦> Debug: Show Color button clicked');
+            floatingPanels.showPanel('colorPicker');
+            console.log('🦦> Debug: Panel states after show color:', floatingPanels.panelStates());
+          }}
           style={{
             background: floatingPanels.panelStates().colorPicker ? "#00ff00" : "#333",
             color: "white",

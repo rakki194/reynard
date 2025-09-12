@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Ukrainian translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Вхід",
+    username: "Ім'я користувача",
+    password: "Пароль",
+    remember: "Запам'ятати мене",
+    forgot: "Забули пароль?",
+    submit: "Увійти",
+    success: "Успішний вхід",
+    failed: "Помилка входу",
   },
   register: {
-    title: "Register",
-    username: "Username",
-    email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    title: "Реєстрація",
+    username: "Ім'я користувача",
+    email: "Електронна пошта",
+    password: "Пароль",
+    confirmPassword: "Підтвердити пароль",
+    submit: "Зареєструватися",
+    success: "Реєстрація успішна",
+    failed: "Помилка реєстрації",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Вихід",
+    confirm: "Ви впевнені, що хочете вийти?",
+    success: "Успішний вихід",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Профіль",
+    edit: "Редагувати профіль",
+    save: "Зберегти зміни",
+    cancel: "Скасувати",
   },
 };

@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Danish translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
+    save: "Gem",
+    format: "Formatér kode",
     find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    replace: "Erstat",
+    undo: "Fortryd",
+    redo: "Gentag",
+    cut: "Klip",
+    copy: "Kopier",
+    paste: "Indsæt",
+    selectAll: "Vælg alt",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Vælg sprog",
+    detect: "Registrer sprog",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Vælg tema",
+    light: "Lyst tema",
+    dark: "Mørkt tema",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Editor indstillinger",
+    fontSize: "Skriftstørrelse",
+    tabSize: "Tab størrelse",
+    wordWrap: "Ordombrydning",
+    minimap: "Minikort",
+    lineNumbers: "Linjenumre",
   },
 };

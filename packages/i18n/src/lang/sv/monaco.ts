@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Swedish translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Spara",
+    format: "Formatera kod",
+    find: "Hitta",
+    replace: "Ersätt",
+    undo: "Ångra",
+    redo: "Gör om",
+    cut: "Klipp ut",
+    copy: "Kopiera",
+    paste: "Klistra in",
+    selectAll: "Välj alla",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Välj språk",
+    detect: "Upptäck språk",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Välj tema",
+    light: "Ljust tema",
+    dark: "Mörkt tema",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Redigerarinställningar",
+    fontSize: "Teckenstorlek",
+    tabSize: "Tabbstorlek",
+    wordWrap: "Radbrytning",
+    minimap: "Minimapp",
+    lineNumbers: "Radnummer",
   },
 };

@@ -5,6 +5,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createRoot, createSignal } from "solid-js";
 import { useLocalStorage } from "./useLocalStorage";
+import { i18n } from 'reynard-i18n';
 
 // Mock localStorage
 const localStorageMock = {
@@ -188,7 +189,7 @@ describe("useLocalStorage", () => {
 
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
-        'Error parsing storage event for key "test-key-malicious":',
+        i18n.t('core.storage.error-parsing-storage-event') + ' "test-key-malicious":',
         expect.any(Error),
       );
       expect(value()).toBe("initial");
@@ -228,7 +229,7 @@ describe("useLocalStorage", () => {
 
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
-        'Error parsing storage event for key "test-key-large":',
+        i18n.t('core.storage.error-parsing-storage-event') + ' "test-key-large":',
         expect.any(Error),
       );
       expect(value()).toBe("initial");

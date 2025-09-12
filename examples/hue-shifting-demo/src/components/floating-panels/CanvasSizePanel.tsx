@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component } from "solid-js";
 import { FloatingPanelAdvanced } from "reynard-floating-panel";
 import { CanvasSizeControls } from "../CanvasSizeControls";
 
@@ -13,9 +13,6 @@ interface CanvasSizePanelProps {
 
 export const CanvasSizePanel: Component<CanvasSizePanelProps> = (props) => {
   return (
-    <Show when={props.isVisible}>
-      {() => (
-
     <FloatingPanelAdvanced
       id="canvas-size-panel"
       position={{ top: 220, left: 20 }}
@@ -30,6 +27,7 @@ export const CanvasSizePanel: Component<CanvasSizePanelProps> = (props) => {
       }}
       onShow={props.onShow}
       onHide={props.onHide}
+      style={{ display: props.isVisible ? 'block' : 'none' }}
     >
       <div class="floating-panel-body">
         <h3>Canvas Size</h3>
@@ -41,7 +39,5 @@ export const CanvasSizePanel: Component<CanvasSizePanelProps> = (props) => {
         />
       </div>
     </FloatingPanelAdvanced>
-      )}
-    </Show>
   );
 };

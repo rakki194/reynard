@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Romanian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Fereastră modală",
+    close: "Închide",
+    confirm: "Confirmă",
+    cancel: "Anulează",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Tab următor",
+    previous: "Tab anterior",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Selectează",
+    clear: "Șterge",
+    search: "Caută",
+    noResults: "Nu au fost găsite rezultate",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Afișează sugestie",
+    hide: "Ascunde sugestie",
   },
 };

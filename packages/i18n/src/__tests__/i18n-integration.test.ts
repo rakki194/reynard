@@ -5,22 +5,50 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createI18nModule, loadTranslations } from "../index";
+import { clearTranslationCache } from "../cache";
 
-// Mock translations for testing
+// Mock translations for testing - updated to match loader's comprehensive mock data
 const mockTranslations = {
   common: {
+    hello: "Hello",
+    welcome: "Welcome, {name}!",
+    itemCount: "You have {count} items",
+    dynamic: "Hello {name}",
+    complex: "User {name} has {count} items in {category}",
+    items: "One item",
+    messages: "No messages",
     close: "Close",
-    save: "Save",
-    error: "Error",
-    success: "Success",
+    save: "Save"
+  },
+  templates: {
+    greeting: "Hello {name}, you have {count} items",
+    nested: "Level {level} with {value}"
+  },
+  complex: {
+    mixed: "User {name} (ID: {id}) has {count} items worth ${amount}"
   },
   integration: {
-    test: "Integration test passed",
-    dynamic: "Dynamic content: {value}",
+    dynamic: "Dynamic content: {value}"
   },
+  russian: {
+    files: "1 файл"
+  },
+  polish: {
+    books: "1 książka"
+  },
+  large: {
+    key500: "value500"
+  }
 };
 
 describe("I18n Integration Tests", () => {
+  beforeEach(() => {
+    // Clear translation cache to prevent interference between tests
+    clearTranslationCache();
+    // Clear all mocks
+    vi.clearAllMocks();
+  });
+
   describe("Translation Loading", () => {
     it("should load translations for supported locales", async () => {
       // Mock the dynamic import

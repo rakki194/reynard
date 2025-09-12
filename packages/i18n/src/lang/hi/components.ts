@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Hindi translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "मोडल",
+    close: "बंद करें",
+    confirm: "पुष्टि करें",
+    cancel: "रद्द करें",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "अगला टैब",
+    previous: "पिछला टैब",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "चुनें",
+    clear: "साफ करें",
+    search: "खोजें",
+    noResults: "कोई परिणाम नहीं मिला",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "टूलटिप दिखाएं",
+    hide: "टूलटिप छुपाएं",
   },
 };

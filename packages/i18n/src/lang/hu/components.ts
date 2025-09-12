@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Hungarian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
     title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    close: "Bezárás",
+    confirm: "Megerősítés",
+    cancel: "Mégse",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Következő lap",
+    previous: "Előző lap",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Kiválasztás",
+    clear: "Törlés",
+    search: "Keresés",
+    noResults: "Nincs találat",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Súgó megjelenítése",
+    hide: "Súgó elrejtése",
   },
 };

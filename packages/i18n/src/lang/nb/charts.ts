@@ -1,35 +1,35 @@
 /**
- * Charts English translations for Reynard framework
+ * Charts Norwegian translations for Reynard framework
  */
 
 export const chartTranslations = {
   types: {
-    line: "Line Chart",
-    bar: "Bar Chart",
-    pie: "Pie Chart",
-    area: "Area Chart",
-    scatter: "Scatter Plot",
+    line: "Linjediagram",
+    bar: "Stolpediagram",
+    pie: "Sektordiagram",
+    area: "Områdediagram",
+    scatter: "Spredningsdiagram",
     histogram: "Histogram",
   },
   axes: {
-    x: "X Axis",
-    y: "Y Axis",
-    value: "Value",
-    category: "Category",
-    time: "Time",
+    x: "X-akse",
+    y: "Y-akse",
+    value: "Verdi",
+    category: "Kategori",
+    time: "Tid",
   },
   legend: {
-    show: "Show Legend",
-    hide: "Hide Legend",
-    position: "Legend Position",
+    show: "Vis forklaring",
+    hide: "Skjul forklaring",
+    position: "Forklaringsposisjon",
   },
   tooltip: {
-    show: "Show Tooltip",
-    hide: "Hide Tooltip",
+    show: "Vis verktøytips",
+    hide: "Skjul verktøytips",
   },
   data: {
-    noData: "No data available",
-    loading: "Loading data...",
-    error: "Error loading data",
+    noData: "Ingen data tilgjengelig",
+    loading: "Laster data...",
+    error: "Feil ved lasting av data",
   },
 };

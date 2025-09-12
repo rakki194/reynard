@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Finnish translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Tallenna",
+    format: "Muotoile koodi",
+    find: "Etsi",
+    replace: "Korvaa",
+    undo: "Kumoa",
+    redo: "Tee uudelleen",
+    cut: "Leikkaa",
+    copy: "Kopioi",
+    paste: "Liitä",
+    selectAll: "Valitse kaikki",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Valitse kieli",
+    detect: "Havaitse kieli",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Valitse teema",
+    light: "Vaalea teema",
+    dark: "Tumma teema",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Editorin asetukset",
+    fontSize: "Fontin koko",
+    tabSize: "Tabulaation koko",
+    wordWrap: "Rivinvaihto",
+    minimap: "Minikartta",
+    lineNumbers: "Rivinumerot",
   },
 };

@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { i18n } from 'reynard-i18n';
 import {
   sanitizeHTML as sanitizeInput,
   validateInput,
@@ -57,7 +58,7 @@ describe("Security Integration Tests", () => {
     vi.clearAllMocks();
   });
 
-  describe("Authentication and Input Validation Integration", () => {
+  describe(i18n.t('core.integration.authentication-and-input-validation-integration'), () => {
     it("should handle malicious input in authentication flow", () => {
       // Test malicious input sanitization
       const maliciousInput =
@@ -301,7 +302,7 @@ describe("Security Integration Tests", () => {
     });
   });
 
-  describe("Performance and Security Integration", () => {
+  describe(i18n.t('core.integration.performance-and-security-integration'), () => {
     it("should maintain security while processing multiple inputs", () => {
       // Test multiple input validations
       const inputs = Array.from({ length: 10 }, (_, i) => `test-input-${i}`);

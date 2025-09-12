@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@fluentui/svg-icons": "1.1.309",
-    "reynard-core": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

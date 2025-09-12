@@ -4,6 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LazyPackageExport } from "./lazy-package-export";
+import { i18n } from 'reynard-i18n';
 
 // Test the actual implementation
 
@@ -118,14 +119,14 @@ describe("Utils Lazy Package Export", () => {
     });
 
     it("should handle loading errors", async () => {
-      const errorLoader = vi.fn().mockRejectedValue(new Error("Load failed"));
+      const errorLoader = vi.fn().mockRejectedValue(new Error(i18n.t('core.module.load-failed')));
       const instance = new LazyPackageExport("test-package", errorLoader);
       
-      await expect(instance.getModule()).rejects.toThrow("Load failed");
+      await expect(instance.getModule()).rejects.toThrow(i18n.t('core.module.load-failed'));
       
       const metadata = instance.getMetadata();
       expect(metadata.errorCount).toBe(1);
-      expect(metadata.lastError).toBe("Load failed");
+      expect(metadata.lastError).toBe(i18n.t('core.module.load-failed'));
     });
 
     it("should reset module and clear metadata", async () => {

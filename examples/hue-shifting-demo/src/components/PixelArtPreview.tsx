@@ -1,6 +1,6 @@
 import { Component, createMemo, createSignal } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import { basicHueShift, materialHueShift, MATERIAL_PATTERNS } from "../utils/hueShiftingAlgorithms";
+import { basicColorRamp, materialHueShift, MATERIAL_PATTERNS } from "../utils/hueShiftingAlgorithms";
 import { sprites } from "../data/spriteData";
 import { SpriteSelector } from "./SpriteSelector";
 import { SpritePreview } from "./SpritePreview";
@@ -23,9 +23,9 @@ export const PixelArtPreview: Component<PixelArtPreviewProps> = (props) => {
     
     if (material === "custom") {
       return {
-        shadow: basicHueShift(base, "shadow", intensity),
+        shadow: basicColorRamp(base, "shadow", intensity),
         base: base,
-        highlight: basicHueShift(base, "highlight", intensity)
+        highlight: basicColorRamp(base, "highlight", intensity)
       };
     }
     

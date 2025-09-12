@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Greek translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Σύνδεση",
+    username: "Όνομα χρήστη",
+    password: "Κωδικός πρόσβασης",
+    remember: "Θυμήσου με",
+    forgot: "Ξέχασες τον κωδικό;",
+    submit: "Σύνδεση",
+    success: "Επιτυχής σύνδεση",
+    failed: "Αποτυχημένη σύνδεση",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Εγγραφή",
+    username: "Όνομα χρήστη",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Κωδικός πρόσβασης",
+    confirmPassword: "Επιβεβαίωση κωδικού",
+    submit: "Εγγραφή",
+    success: "Επιτυχής εγγραφή",
+    failed: "Αποτυχημένη εγγραφή",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Αποσύνδεση",
+    confirm: "Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς;",
+    success: "Επιτυχής αποσύνδεση",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Προφίλ",
+    edit: "Επεξεργασία προφίλ",
+    save: "Αποθήκευση αλλαγών",
+    cancel: "Ακύρωση",
   },
 };

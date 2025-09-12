@@ -187,7 +187,15 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
   };
 
   const toggleMinimized = () => {
-    setPanelState({ minimized: !panelState().minimized });
+    const currentState = panelState();
+    const newMinimized = !currentState.minimized;
+    console.log('🦦> toggleMinimized called:', {
+      storageKey,
+      currentMinimized: currentState.minimized,
+      newMinimized,
+      fullState: currentState
+    });
+    setPanelState({ minimized: newMinimized });
   };
 
   const resetPosition = () => {

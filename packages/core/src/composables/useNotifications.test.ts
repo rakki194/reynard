@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { createRoot } from "solid-js";
+import { i18n } from 'reynard-i18n';
 import {
   createNotifications,
   NotificationsProvider,
@@ -41,10 +42,10 @@ describe("useNotifications Composable", () => {
     it("should allow adding notifications", () => {
       const notificationsModule = createNotifications();
 
-      notificationsModule.notify("Test notification");
+      notificationsModule.notify(i18n.t('core.test.notification'));
       expect(notificationsModule.notifications.length).toBe(1);
       expect(notificationsModule.notifications[0].message).toBe(
-        "Test notification",
+        i18n.t('core.test.notification'),
       );
     });
 
@@ -52,7 +53,7 @@ describe("useNotifications Composable", () => {
       const notificationsModule = createNotifications();
 
       // Add a notification first
-      notificationsModule.notify("Test notification");
+      notificationsModule.notify(i18n.t('core.test.notification'));
       expect(notificationsModule.notifications.length).toBe(1);
 
       // Clear notifications
@@ -63,8 +64,8 @@ describe("useNotifications Composable", () => {
     it("should allow removing specific notifications", () => {
       const notificationsModule = createNotifications();
 
-      notificationsModule.notify("Test notification 1");
-      notificationsModule.notify("Test notification 2");
+      notificationsModule.notify(i18n.t('core.test.notification-1'));
+      notificationsModule.notify(i18n.t('core.test.notification-2'));
       expect(notificationsModule.notifications.length).toBe(2);
 
       const firstNotification = notificationsModule.notifications[0];
@@ -137,10 +138,10 @@ describe("useNotifications Composable", () => {
 
     it("should return notifications after adding them", () => {
       const notificationsModule = createNotifications();
-      notificationsModule.notify("Test notification", "info");
+      notificationsModule.notify(i18n.t('core.test.notification'), "info");
       
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe("Test notification");
+      expect(notificationsModule.notifications[0].message).toBe(i18n.t('core.test.notification'));
       expect(notificationsModule.notifications[0].type).toBe("info");
     });
   });
@@ -180,8 +181,8 @@ describe("useNotifications Composable", () => {
       const notificationsModule = createNotifications();
       
       // Add notifications
-      notificationsModule.notify("First notification", "info");
-      notificationsModule.notify("Second notification", "success");
+      notificationsModule.notify(i18n.t('core.notifications.first'), "info");
+      notificationsModule.notify(i18n.t('core.notifications.second'), "success");
       
       expect(notificationsModule.notifications).toHaveLength(2);
       
@@ -190,7 +191,7 @@ describe("useNotifications Composable", () => {
       notificationsModule.removeNotification(firstId);
       
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe("Second notification");
+      expect(notificationsModule.notifications[0].message).toBe(i18n.t('core.notifications.second'));
       
       // Clear all notifications
       notificationsModule.clearNotifications();

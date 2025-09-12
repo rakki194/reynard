@@ -1,6 +1,6 @@
 import { Component, createSignal, createMemo, onMount } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import { basicHueShift, generateHueShiftRamp } from "../utils/hueShiftingAlgorithms";
+import { basicColorRamp, generateHueShiftRamp } from "../utils/hueShiftingAlgorithms";
 import "./PerformanceComparison.css";
 
 export const PerformanceComparison: Component = () => {
@@ -37,8 +37,8 @@ export const PerformanceComparison: Component = () => {
     const oklchStart = performance.now();
     for (let i = 0; i < iterationsCount; i++) {
       testColorsArray.forEach(color => {
-        basicHueShift(color, 'shadow', 0.3);
-        basicHueShift(color, 'highlight', 0.3);
+        basicColorRamp(color, 'shadow', 0.3);
+        basicColorRamp(color, 'highlight', 0.3);
         generateHueShiftRamp(color, 5);
       });
     }

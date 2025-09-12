@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Vietnamese translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Lưu",
+    format: "Định dạng mã",
+    find: "Tìm",
+    replace: "Thay thế",
+    undo: "Hoàn tác",
+    redo: "Làm lại",
+    cut: "Cắt",
+    copy: "Sao chép",
+    paste: "Dán",
+    selectAll: "Chọn tất cả",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Chọn ngôn ngữ",
+    detect: "Phát hiện ngôn ngữ",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Chọn chủ đề",
+    light: "Chủ đề sáng",
+    dark: "Chủ đề tối",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Cài đặt trình soạn thảo",
+    fontSize: "Kích thước phông chữ",
+    tabSize: "Kích thước tab",
+    wordWrap: "Xuống dòng tự động",
+    minimap: "Bản đồ thu nhỏ",
+    lineNumbers: "Số dòng",
   },
 };

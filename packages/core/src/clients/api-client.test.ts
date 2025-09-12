@@ -5,6 +5,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ApiClient, ApiClientConfig, HealthStatus } from "./api-client";
 import { HttpClient } from "./http-client";
+import { i18n } from 'reynard-i18n';
 
 // Mock HttpClient
 vi.mock("./http-client");
@@ -169,7 +170,7 @@ describe("ApiClient", () => {
     });
 
     it("should return unhealthy status on failed health check", async () => {
-      const mockError = new Error("Connection failed");
+      const mockError = new Error(i18n.t('core.connection.failed'));
       mockHttpClient.request.mockRejectedValue(mockError);
 
       const healthStatus = await apiClient.checkHealth();
@@ -181,7 +182,7 @@ describe("ApiClient", () => {
         version: "1.0.0",
         serviceName: "test-service",
         details: {
-          error: "Connection failed",
+          error: i18n.t('core.connection.failed'),
         },
       });
 
@@ -189,12 +190,12 @@ describe("ApiClient", () => {
     });
 
     it("should handle non-Error exceptions", async () => {
-      mockHttpClient.request.mockRejectedValue("String error");
+      mockHttpClient.request.mockRejectedValue(i18n.t('core.errors.string-error'));
 
       const healthStatus = await apiClient.checkHealth();
 
       expect(healthStatus.details).toEqual({
-        error: "String error",
+        error: i18n.t('core.errors.string-error'),
       });
     });
   });

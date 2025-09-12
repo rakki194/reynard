@@ -177,6 +177,7 @@ export interface FloatingPanelProps {
   config?: PanelConfig;
   children?: JSX.Element;
   class?: string;
+  style?: JSX.CSSProperties;
   onShow?: () => void;
   onHide?: () => void;
   onDrag?: (position: PanelPosition) => void;

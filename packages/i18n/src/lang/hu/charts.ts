@@ -1,35 +1,35 @@
 /**
- * Charts English translations for Reynard framework
+ * Charts Hungarian translations for Reynard framework
  */
 
 export const chartTranslations = {
   types: {
-    line: "Line Chart",
-    bar: "Bar Chart",
-    pie: "Pie Chart",
-    area: "Area Chart",
-    scatter: "Scatter Plot",
-    histogram: "Histogram",
+    line: "Vonaldiagram",
+    bar: "Oszlopdiagram",
+    pie: "Kördiagram",
+    area: "Területdiagram",
+    scatter: "Pontdiagram",
+    histogram: "Hisztogram",
   },
   axes: {
-    x: "X Axis",
-    y: "Y Axis",
-    value: "Value",
-    category: "Category",
-    time: "Time",
+    x: "X tengely",
+    y: "Y tengely",
+    value: "Érték",
+    category: "Kategória",
+    time: "Idő",
   },
   legend: {
-    show: "Show Legend",
-    hide: "Hide Legend",
-    position: "Legend Position",
+    show: "Jelmagyarázat megjelenítése",
+    hide: "Jelmagyarázat elrejtése",
+    position: "Jelmagyarázat pozíciója",
   },
   tooltip: {
-    show: "Show Tooltip",
-    hide: "Hide Tooltip",
+    show: "Súgó megjelenítése",
+    hide: "Súgó elrejtése",
   },
   data: {
-    noData: "No data available",
-    loading: "Loading data...",
-    error: "Error loading data",
+    noData: "Nincs elérhető adat",
+    loading: "Adatok betöltése...",
+    error: "Hiba az adatok betöltésekor",
   },
 };

@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Greek translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Μοντάλ",
+    close: "Κλείσιμο",
+    confirm: "Επιβεβαίωση",
+    cancel: "Ακύρωση",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Επόμενη καρτέλα",
+    previous: "Προηγούμενη καρτέλα",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Επιλογή",
+    clear: "Εκκαθάριση",
+    search: "Αναζήτηση",
+    noResults: "Δεν βρέθηκαν αποτελέσματα",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Εμφάνιση υπόδειξης",
+    hide: "Απόκρυψη υπόδειξης",
   },
 };

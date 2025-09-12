@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Hebrew translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "התחברות",
+    username: "שם משתמש",
+    password: "סיסמה",
+    remember: "זכור אותי",
+    forgot: "שכחת סיסמה?",
+    submit: "התחבר",
+    success: "התחברות הצליחה",
+    failed: "התחברות נכשלה",
   },
   register: {
-    title: "Register",
-    username: "Username",
-    email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    title: "הרשמה",
+    username: "שם משתמש",
+    email: "אימייל",
+    password: "סיסמה",
+    confirmPassword: "אשר סיסמה",
+    submit: "הירשם",
+    success: "הרשמה הצליחה",
+    failed: "הרשמה נכשלה",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "התנתקות",
+    confirm: "האם אתה בטוח שברצונך להתנתק?",
+    success: "התנתקות הצליחה",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "פרופיל",
+    edit: "ערוך פרופיל",
+    save: "שמור שינויים",
+    cancel: "בטל",
   },
 };

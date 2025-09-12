@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Hindi translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "सहेजें",
+    format: "कोड फॉर्मेट करें",
+    find: "खोजें",
+    replace: "बदलें",
+    undo: "पूर्ववत करें",
+    redo: "फिर से करें",
+    cut: "काटें",
+    copy: "कॉपी करें",
+    paste: "पेस्ट करें",
+    selectAll: "सभी चुनें",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "भाषा चुनें",
+    detect: "भाषा पहचानें",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "थीम चुनें",
+    light: "हल्की थीम",
+    dark: "गहरी थीम",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "एडिटर सेटिंग्स",
+    fontSize: "फॉन्ट साइज़",
+    tabSize: "टैब साइज़",
+    wordWrap: "शब्द लपेटें",
+    minimap: "मिनीमैप",
+    lineNumbers: "लाइन नंबर",
   },
 };

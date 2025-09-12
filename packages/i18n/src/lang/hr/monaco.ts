@@ -1,35 +1,35 @@
 /**
- * Monaco English translations for Reynard framework
+ * Monaco Croatian translations for Reynard framework
  */
 
 export const monacoTranslations = {
   editor: {
-    save: "Save",
-    format: "Format Code",
-    find: "Find",
-    replace: "Replace",
-    undo: "Undo",
-    redo: "Redo",
-    cut: "Cut",
-    copy: "Copy",
-    paste: "Paste",
-    selectAll: "Select All",
+    save: "Spremi",
+    format: "Formatiraj kod",
+    find: "Pronađi",
+    replace: "Zamijeni",
+    undo: "Poništi",
+    redo: "Ponovi",
+    cut: "Izreži",
+    copy: "Kopiraj",
+    paste: "Zalijepi",
+    selectAll: "Odaberi sve",
   },
   language: {
-    select: "Select Language",
-    detect: "Detect Language",
+    select: "Odaberi jezik",
+    detect: "Prepoznaj jezik",
   },
   theme: {
-    select: "Select Theme",
-    light: "Light Theme",
-    dark: "Dark Theme",
+    select: "Odaberi temu",
+    light: "Svijetla tema",
+    dark: "Tamna tema",
   },
   settings: {
-    title: "Editor Settings",
-    fontSize: "Font Size",
-    tabSize: "Tab Size",
-    wordWrap: "Word Wrap",
-    minimap: "Minimap",
-    lineNumbers: "Line Numbers",
+    title: "Postavke uređivača",
+    fontSize: "Veličina fonta",
+    tabSize: "Veličina taba",
+    wordWrap: "Prelom riječi",
+    minimap: "Minimapa",
+    lineNumbers: "Brojevi linija",
   },
 };

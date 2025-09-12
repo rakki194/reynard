@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Slovak translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Modálne okno",
+    close: "Zavrieť",
+    confirm: "Potvrdiť",
+    cancel: "Zrušiť",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Ďalšia karta",
+    previous: "Predchádzajúca karta",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Vybrať",
+    clear: "Vymazať",
+    search: "Hľadať",
+    noResults: "Žiadne výsledky",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Zobraziť nápovedu",
+    hide: "Skryť nápovedu",
   },
 };

@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { createNotificationsModule } from "./notifications";
+import { i18n } from 'reynard-i18n';
 
 describe("Notifications Module", () => {
   beforeEach(() => {
@@ -29,12 +30,12 @@ describe("Notifications Module", () => {
     it("should add notification with notify method", () => {
       const notificationsModule = createNotificationsModule();
 
-      const id = notificationsModule.notify("Test message", "success");
+      const id = notificationsModule.notify(i18n.t('core.test.message'), "success");
 
       expect(notificationsModule.notifications).toHaveLength(1);
       expect(notificationsModule.notifications[0]).toMatchObject({
         id,
-        message: "Test message",
+        message: i18n.t('core.test.message'),
         type: "success",
         icon: "success",
       });
@@ -43,10 +44,10 @@ describe("Notifications Module", () => {
     it("should add notification with default type and duration", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("Default message");
+      notificationsModule.notify(i18n.t('core.notifications.default-message'));
 
       expect(notificationsModule.notifications[0]).toMatchObject({
-        message: "Default message",
+        message: i18n.t('core.notifications.default-message'),
         type: "info",
         icon: "info",
         duration: 5000,
@@ -56,23 +57,23 @@ describe("Notifications Module", () => {
     it("should replace grouped notifications", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("First message", "info", {
+      notificationsModule.notify(i18n.t('core.notifications.first-message'), "info", {
         group: "test-group",
       });
-      notificationsModule.notify("Second message", "info", {
+      notificationsModule.notify(i18n.t('core.notifications.second-message'), "info", {
         group: "test-group",
       });
 
       expect(notificationsModule.notifications).toHaveLength(1);
       expect(notificationsModule.notifications[0].message).toBe(
-        "Second message",
+        i18n.t('core.notifications.second-message'),
       );
     });
 
     it("should auto-dismiss notifications with duration", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("Auto dismiss", "success");
+      notificationsModule.notify(i18n.t('core.notifications.auto-dismiss'), "success");
       expect(notificationsModule.notifications).toHaveLength(1);
 
       // Fast forward past the auto-dismiss duration
@@ -84,7 +85,7 @@ describe("Notifications Module", () => {
     it("should not auto-dismiss error notifications", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("Error message", "error");
+      notificationsModule.notify(i18n.t('core.notifications.error-message'), "error");
       expect(notificationsModule.notifications).toHaveLength(1);
 
       // Fast forward, error should still be there
@@ -116,7 +117,7 @@ describe("Notifications Module", () => {
       notificationsModule.notify("Group B message", "info", {
         group: "group-b",
       });
-      notificationsModule.notify("No group message");
+      notificationsModule.notify(i18n.t('core.notifications.no-group-message'));
 
       expect(notificationsModule.notifications).toHaveLength(3);
 
@@ -145,7 +146,7 @@ describe("Notifications Module", () => {
     it("should update notification progress", () => {
       const notificationsModule = createNotificationsModule();
 
-      const id = notificationsModule.notify("Upload progress", "info", {
+      const id = notificationsModule.notify(i18n.t('core.notifications.upload-progress'), "info", {
         progress: 50,
       });
 
@@ -159,17 +160,17 @@ describe("Notifications Module", () => {
     it("should clamp progress values between 0 and 100", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("Progress test", "info", { progress: 150 });
+      notificationsModule.notify(i18n.t('core.notifications.progress-test'), "info", { progress: 150 });
       expect(notificationsModule.notifications[0].progress).toBe(100);
 
-      notificationsModule.notify("Progress test 2", "info", { progress: -10 });
+      notificationsModule.notify(i18n.t('core.notifications.progress-test-2'), "info", { progress: -10 });
       expect(notificationsModule.notifications[1].progress).toBe(0);
     });
 
     it("should create notification with custom duration", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify("Custom duration", "info", { duration: 1000 });
+      notificationsModule.notify(i18n.t('core.notifications.custom-duration'), "info", { duration: 1000 });
 
       expect(notificationsModule.notifications[0].duration).toBe(1000);
 
@@ -190,7 +191,7 @@ describe("Notifications Module", () => {
 
       (window as any).__notificationContainer = mockContainer;
 
-      const id = notificationsModule.notify("Test message");
+      const id = notificationsModule.notify(i18n.t('core.test.message'));
 
       // Test removeNotification with global container
       notificationsModule.removeNotification(id);
@@ -216,7 +217,7 @@ describe("Notifications Module", () => {
       // Ensure no global container
       delete (window as any).__notificationContainer;
 
-      const id = notificationsModule.notify("Test message");
+      const id = notificationsModule.notify(i18n.t('core.test.message'));
       expect(notificationsModule.notifications).toHaveLength(1);
 
       // Test removeNotification fallback
@@ -224,10 +225,10 @@ describe("Notifications Module", () => {
       expect(notificationsModule.notifications).toHaveLength(0);
 
       // Add notifications for clear tests
-      notificationsModule.notify("Group message", "info", {
+      notificationsModule.notify(i18n.t('core.notifications.group-message'), "info", {
         group: "test-group",
       });
-      notificationsModule.notify("Regular message");
+      notificationsModule.notify(i18n.t('core.notifications.regular-message'));
 
       // Test clearNotifications with group fallback
       notificationsModule.clearNotifications("test-group");
@@ -243,7 +244,7 @@ describe("Notifications Module", () => {
       const notificationsModule = createNotificationsModule();
 
       const id = notificationsModule.createNotification({
-        message: "Created notification",
+        message: i18n.t('core.notifications.created-notification'),
         type: "success",
         duration: 2000,
       });
@@ -261,20 +262,20 @@ describe("Notifications Module", () => {
       const notificationsModule = createNotificationsModule();
 
       notificationsModule.createNotification({
-        message: "First grouped",
+        message: i18n.t('core.notifications.first-grouped'),
         type: "info",
         group: "test-group",
       });
 
       notificationsModule.createNotification({
-        message: "Second grouped",
+        message: i18n.t('core.notifications.second-grouped'),
         type: "info",
         group: "test-group",
       });
 
       expect(notificationsModule.notifications).toHaveLength(1);
       expect(notificationsModule.notifications[0].message).toBe(
-        "Second grouped",
+        i18n.t('core.notifications.second-grouped'),
       );
     });
   });

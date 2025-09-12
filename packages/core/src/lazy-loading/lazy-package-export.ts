@@ -5,6 +5,7 @@
  * loading, validation, and performance monitoring.
  */
 
+import { i18n } from 'reynard-i18n';
 import {
   ExportMetadata,
   ExportValidationError,
@@ -84,13 +85,13 @@ export class LazyPackageExport {
 
   private async _validateExport(): Promise<void> {
     if (!this._module) {
-      throw new ExportValidationError("Module is null", this._packageName);
+      throw new ExportValidationError(i18n.t('core.module.is-null'), this._packageName);
     }
 
     if (this._validationLevel >= ExportValidationLevel.BASIC) {
       if (typeof this._module !== "object" || this._module === null) {
         throw new ExportValidationError(
-          "Invalid module structure",
+          i18n.t('core.module.invalid-structure'),
           this._packageName,
         );
       }

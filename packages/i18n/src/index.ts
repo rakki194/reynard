@@ -134,6 +134,7 @@ export function createI18nModule(
         usedNamespaces = [],
         preloadLocales = []
       } = options);
+      
     } else {
       // Direct translations object format (legacy)
       initialTranslations = options as Partial<Translations>;
@@ -142,6 +143,8 @@ export function createI18nModule(
     // Direct translations object format (legacy)
     initialTranslations = options as Partial<Translations>;
   }
+  
+  // Debug logging removed
 
   const [locale, setLocaleSignal] = createSignal<LanguageCode>(getInitialLocale());
   const [translations, _setTranslationsSignal] = createSignal<Translations>(
@@ -167,6 +170,7 @@ export function createI18nModule(
   const optimizedLoader = usedNamespaces.length > 0 
     ? createOptimizedLoader(usedNamespaces)
     : null;
+  
 
   // Initialize with initial locale from localStorage/browser if available
   const initialLocale = getInitialLocale();
@@ -183,12 +187,8 @@ export function createI18nModule(
   createEffect(async () => {
     const currentLocale = locale();
     if (typeof window !== "undefined") {
-      localStorage.setItem("reynard-locale", currentLocale);
-      document.documentElement.setAttribute("lang", currentLocale);
-      document.documentElement.setAttribute(
-        "dir",
-        isRTL(currentLocale) ? "rtl" : "ltr",
-      );
+      // Note: Side effects are now handled directly in setLocale for better testability
+      // This effect only handles translation loading
       
       // Update Intl formatter with new locale
       intlFormatter.updateConfig({ locale: currentLocale });
@@ -216,6 +216,30 @@ export function createI18nModule(
 
   const setLocale = (newLocale: LanguageCode) => {
     setLocaleSignal(newLocale);
+    
+    // Apply side effects immediately for better testability
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("reynard-locale", newLocale);
+      } catch (error) {
+        // Gracefully handle localStorage errors (e.g., storage full, private browsing)
+        console.warn("Failed to save locale to localStorage:", error);
+      }
+      
+      try {
+        document.documentElement.setAttribute("lang", newLocale);
+        document.documentElement.setAttribute(
+          "dir",
+          isRTL(newLocale) ? "rtl" : "ltr",
+        );
+      } catch (error) {
+        // Gracefully handle DOM manipulation errors
+        console.warn("Failed to update document attributes:", error);
+      }
+      
+      // Update Intl formatter with new locale
+      intlFormatter.updateConfig({ locale: newLocale });
+    }
   };
 
   // Enhanced translation function with debugging and analytics
@@ -232,18 +256,11 @@ export function createI18nModule(
     
     const currentTranslations = translations();
     
-    // Debug: Check what's actually in the translations object
-    if (key === "common.complex") {
-      console.error('🦊 DEBUG common.complex:', JSON.stringify({
-        currentTranslations,
-        initialTranslations
-      }, null, 2));
-    }
-    
     const result = getTranslationValue(
       currentTranslations as unknown as Record<string, unknown>,
       key,
       params,
+      locale(),
     );
     
     return result;
@@ -291,6 +308,7 @@ export function createI18nModule(
     
     // Namespace loading
     loadNamespace: loadNamespaceFunc,
+    optimizedLoader,
     
     // Cache management
     clearCache,

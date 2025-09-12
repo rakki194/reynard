@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Romanian translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Autentificare",
+    username: "Nume de utilizator",
+    password: "Parolă",
+    remember: "Ține-mă minte",
+    forgot: "Ai uitat parola?",
+    submit: "Autentificare",
+    success: "Autentificare reușită",
+    failed: "Autentificare eșuată",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Înregistrare",
+    username: "Nume de utilizator",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Parolă",
+    confirmPassword: "Confirmă parola",
+    submit: "Înregistrare",
+    success: "Înregistrare reușită",
+    failed: "Înregistrare eșuată",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Deconectare",
+    confirm: "Ești sigur că vrei să te deconectezi?",
+    success: "Deconectare reușită",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Profil",
+    edit: "Editează profilul",
+    save: "Salvează modificările",
+    cancel: "Anulează",
   },
 };

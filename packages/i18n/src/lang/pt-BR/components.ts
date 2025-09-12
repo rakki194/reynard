@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Brazilian Portuguese translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
     title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    close: "Fechar",
+    confirm: "Confirmar",
+    cancel: "Cancelar",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Próxima aba",
+    previous: "Aba anterior",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Selecionar",
+    clear: "Limpar",
+    search: "Pesquisar",
+    noResults: "Nenhum resultado encontrado",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Mostrar dica",
+    hide: "Ocultar dica",
   },
 };

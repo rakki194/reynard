@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Bulgarian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Модал",
+    close: "Затвори",
+    confirm: "Потвърди",
+    cancel: "Отказ",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Следващ таб",
+    previous: "Предишен таб",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Избери",
+    clear: "Изчисти",
+    search: "Търси",
+    noResults: "Няма намерени резултати",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Покажи подсказка",
+    hide: "Скрий подсказка",
   },
 };

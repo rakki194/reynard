@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component } from "solid-js";
 import { FloatingPanelAdvanced } from "reynard-floating-panel";
 import { ColorPicker } from "../ColorPicker";
 import type { OKLCHColor } from "reynard-colors";
@@ -13,8 +13,6 @@ interface ColorPickerPanelProps {
 
 export const ColorPickerPanel: Component<ColorPickerPanelProps> = (props) => {
   return (
-    <Show when={props.isVisible}>
-      {() => (
     <FloatingPanelAdvanced
       id="color-picker-panel"
       position={{ top: 20, left: 20 }}
@@ -29,6 +27,7 @@ export const ColorPickerPanel: Component<ColorPickerPanelProps> = (props) => {
       }}
       onShow={props.onShow}
       onHide={props.onHide}
+      style={{ display: props.isVisible ? 'block' : 'none' }}
     >
       <div class="floating-panel-body">
         <h3>Color Picker</h3>
@@ -39,7 +38,5 @@ export const ColorPickerPanel: Component<ColorPickerPanelProps> = (props) => {
         />
       </div>
     </FloatingPanelAdvanced>
-      )}
-    </Show>
   );
 };

@@ -1,26 +1,26 @@
 /**
- * Component English translations for Reynard framework
+ * Component Croatian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
     title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    close: "Zatvori",
+    confirm: "Potvrdi",
+    cancel: "Odustani",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Sljedeća kartica",
+    previous: "Prethodna kartica",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Odaberi",
+    clear: "Očisti",
+    search: "Pretraži",
+    noResults: "Nema rezultata",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Prikaži savjet",
+    hide: "Sakrij savjet",
   },
 };

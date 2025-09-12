@@ -1,35 +1,35 @@
 /**
- * Charts English translations for Reynard framework
+ * Charts Czech translations for Reynard framework
  */
 
 export const chartTranslations = {
   types: {
-    line: "Line Chart",
-    bar: "Bar Chart",
-    pie: "Pie Chart",
-    area: "Area Chart",
-    scatter: "Scatter Plot",
+    line: "Čárový graf",
+    bar: "Sloupcový graf",
+    pie: "Koláčový graf",
+    area: "Plošný graf",
+    scatter: "Bodový graf",
     histogram: "Histogram",
   },
   axes: {
-    x: "X Axis",
-    y: "Y Axis",
-    value: "Value",
-    category: "Category",
-    time: "Time",
+    x: "Osa X",
+    y: "Osa Y",
+    value: "Hodnota",
+    category: "Kategorie",
+    time: "Čas",
   },
   legend: {
-    show: "Show Legend",
-    hide: "Hide Legend",
-    position: "Legend Position",
+    show: "Zobrazit legendu",
+    hide: "Skrýt legendu",
+    position: "Pozice legendy",
   },
   tooltip: {
-    show: "Show Tooltip",
-    hide: "Hide Tooltip",
+    show: "Zobrazit nápovědu",
+    hide: "Skrýt nápovědu",
   },
   data: {
-    noData: "No data available",
-    loading: "Loading data...",
-    error: "Error loading data",
+    noData: "Žádná data k dispozici",
+    loading: "Načítání dat...",
+    error: "Chyba při načítání dat",
   },
 };

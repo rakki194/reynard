@@ -1,37 +1,37 @@
 /**
- * Auth English translations for Reynard framework
+ * Auth Hungarian translations for Reynard framework
  */
 
 export const authTranslations = {
   login: {
-    title: "Login",
-    username: "Username",
-    password: "Password",
-    remember: "Remember me",
-    forgot: "Forgot password?",
-    submit: "Login",
-    success: "Login successful",
-    failed: "Login failed",
+    title: "Bejelentkezés",
+    username: "Felhasználónév",
+    password: "Jelszó",
+    remember: "Emlékezz rám",
+    forgot: "Elfelejtette a jelszót?",
+    submit: "Bejelentkezés",
+    success: "Bejelentkezés sikeres",
+    failed: "Bejelentkezés sikertelen",
   },
   register: {
-    title: "Register",
-    username: "Username",
+    title: "Regisztráció",
+    username: "Felhasználónév",
     email: "Email",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    submit: "Register",
-    success: "Registration successful",
-    failed: "Registration failed",
+    password: "Jelszó",
+    confirmPassword: "Jelszó megerősítése",
+    submit: "Regisztráció",
+    success: "Regisztráció sikeres",
+    failed: "Regisztráció sikertelen",
   },
   logout: {
-    title: "Logout",
-    confirm: "Are you sure you want to logout?",
-    success: "Logout successful",
+    title: "Kijelentkezés",
+    confirm: "Biztosan ki szeretne jelentkezni?",
+    success: "Kijelentkezés sikeres",
   },
   profile: {
-    title: "Profile",
-    edit: "Edit Profile",
-    save: "Save Changes",
-    cancel: "Cancel",
+    title: "Profil",
+    edit: "Profil szerkesztése",
+    save: "Változások mentése",
+    cancel: "Mégse",
   },
 };
