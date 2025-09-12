@@ -8,6 +8,7 @@
 import { Component, createSignal, createEffect, For, Show } from "solid-js";
 import { ImageThumbnailGenerator, ImageMetadataExtractor } from "reynard-file-processing";
 import { ImageFile, ImageMetadata } from "./types/ImageTypes";
+import { useI18n } from "reynard-i18n";
 
 export interface ImageGridProps {
   /** Initial image files to display */
@@ -29,6 +30,7 @@ export interface ImageGridProps {
 }
 
 export const ImageGrid: Component<ImageGridProps> = (props) => {
+  const { t } = useI18n();
   const [imageFiles, setImageFiles] = createSignal<ImageFile[]>(props.initialFiles || []);
   const [selectedFile, setSelectedFile] = createSignal<ImageFile | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
@@ -73,7 +75,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
       // Generate thumbnail using existing infrastructure
       const thumbnailResult = await thumbnailGenerator.generateThumbnail(file);
       if (!thumbnailResult.success) {
-        throw new Error(thumbnailResult.error || "Failed to generate thumbnail");
+        throw new Error(thumbnailResult.error || t('image.failedToGenerateThumbnail'));
       }
 
       // Extract metadata using existing infrastructure
@@ -117,7 +119,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
 
       setImageFiles(prev => [...prev, ...processedFiles]);
     } catch (err) {
-      console.error("Failed to process image files:", err);
+      console.error(t('image.failedToProcessImageFiles'), err);
     }
   };
 
@@ -143,10 +145,10 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
           onChange={handleFileUpload}
           class="image-upload-input"
           disabled={isLoading()}
-          title="Select image files to upload"
+          title={t('image.selectImageFilesToUpload')}
         />
         <Show when={isLoading()}>
-          <div class="loading-indicator">Processing images...</div>
+          <div class="loading-indicator">{t('image.processingImages')}</div>
         </Show>
         <Show when={error()}>
           <div class="error-message">{error()}</div>
@@ -213,7 +215,7 @@ const ImageFileCard: Component<ImageFileCardProps> = (props) => {
       onClick={props.onSelect}
     >
       <div class="image-thumbnail">
-        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">🖼️</div>}>
+        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">{t('image.imageIcon')}</div>}>
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
         <div class="image-overlay">

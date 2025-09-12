@@ -100,7 +100,7 @@ describe("useMediaQuery Integration", () => {
 
     it("should handle matchMedia throwing errors", () => {
       mockMatchMedia.mockImplementation(() => {
-        throw new Error("matchMedia not supported");
+        throw new Error("matchMedia not supported"); // TODO: i18n
       });
 
       createRoot(() => {

@@ -6,6 +6,7 @@
 
 import { Component, createSignal, createEffect, Show } from "solid-js";
 import { VideoFile } from "./types/VideoTypes";
+import { useI18n } from "reynard-i18n";
 
 export interface VideoFileCardProps {
   file: VideoFile;
@@ -16,6 +17,7 @@ export interface VideoFileCardProps {
 }
 
 export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
+  const { t } = useI18n();
   const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
 
   // Create thumbnail URL
@@ -34,7 +36,7 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
       onClick={props.onSelect}
     >
       <div class="video-thumbnail">
-        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">Video</div>}>
+        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">{t('video.thumbnailPlaceholder')}</div>}>
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
         <div class="play-overlay">
@@ -53,20 +55,20 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="video-metadata">
             <div class="metadata-item">
-              <span class="label">Duration:</span>
+              <span class="label">{t('video.duration')}:</span>
               <span class="value">
                 {Math.floor(props.file.metadata.duration / 60)}:
                 {Math.floor(props.file.metadata.duration % 60).toString().padStart(2, '0')}
               </span>
             </div>
             <div class="metadata-item">
-              <span class="label">Resolution:</span>
+              <span class="label">{t('video.resolution')}:</span>
               <span class="value">
                 {props.file.metadata.width}×{props.file.metadata.height}
               </span>
             </div>
             <div class="metadata-item">
-              <span class="label">FPS:</span>
+              <span class="label">{t('video.fps')}:</span>
               <span class="value">{props.file.metadata.fps}</span>
             </div>
           </div>
@@ -79,7 +81,7 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
           e.stopPropagation();
           props.onRemove();
         }}
-        title="Remove video"
+        title={t('video.removeVideo')}
       >
         ×
       </button>

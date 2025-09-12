@@ -7,9 +7,11 @@ import { createEffect } from "solid-js";
 import { getIcon } from "reynard-fluent-icons";
 import { useDraggableResizable } from "../composables/useDraggableResizable";
 import type { FloatingPanelProps, PanelConfig } from "../types";
+import { useI18n } from "reynard-i18n";
 import "./FloatingPanelAdvanced.css";
 
 export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
+  const { t } = useI18n();
   console.log('🦦> FloatingPanelAdvanced rendering for panel:', props.id);
   
   // Default configuration
@@ -110,7 +112,7 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
               panel.handleMouseDown(e, 'drag');
             }}
             onPointerDown={e => e.stopPropagation()}
-            title="Drag to move panel"
+            title={t('floating-panel.dragToMovePanel')}
           >
             <span 
               class="drag-icon" 
@@ -135,7 +137,7 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
             <button
               class="panel-control-btn"
               onClick={handleReset}
-              title="Reset panel position"
+              title={t('floating-panel.resetPanelPosition')}
             >
                 <span 
                   innerHTML={getIcon("refresh")?.outerHTML || ""}
@@ -145,7 +147,7 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
               <button
                 class="panel-control-btn"
                 onClick={() => props.onHide?.()}
-                title="Close panel"
+                title={t('floating-panel.closePanel')}
               >
                 <span 
                   innerHTML={getIcon("close")?.outerHTML || ""}
@@ -170,7 +172,7 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
             e.stopPropagation();
             panel.handleMouseDown(e, 'resize');
           }}
-          title="Drag to resize panel"
+          title={t('floating-panel.dragToResizePanel')}
         />
       )}
     </div>

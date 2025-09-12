@@ -182,7 +182,7 @@ export class RoguelikeGame {
         const messageLog = this.world.getResource(MessageLogType) as MessageLog;
         if (messageLog) {
             messageLog.messages.push({
-                text: "Welcome to the dungeon! Use WASD or arrow keys to move.",
+                text: "Welcome to the dungeon! Use WASD or arrow keys to move.", // TODO: i18n
                 color: "#4ecdc4",
                 timestamp: Date.now()
             });

@@ -1,5 +1,6 @@
 import { Component, createSignal } from "solid-js";
 import { ThreeJSVisualization } from "./ThreeJSVisualization";
+import { useI18n } from "reynard-i18n";
 import "./ThreeJSVisualizationDemo.css";
 
 interface ThreeJSVisualizationDemoProps {
@@ -11,6 +12,7 @@ interface ThreeJSVisualizationDemoProps {
 export const ThreeJSVisualizationDemo: Component<
   ThreeJSVisualizationDemoProps
 > = (props) => {
+  const { t } = useI18n();
   const [_scene, setScene] = createSignal<unknown>(null);
   const [_camera, setCamera] = createSignal<unknown>(null);
   const [_renderer, setRenderer] = createSignal<unknown>(null);
@@ -206,18 +208,18 @@ export const ThreeJSVisualizationDemo: Component<
 
       <div class="demo-info">
         <div class="info-panel">
-          <h4>Camera Information</h4>
+          <h4>{t('3d.cameraInformation')}</h4>
           <div class="camera-info">{cameraInfo()}</div>
         </div>
 
         <div class="info-panel">
-          <h4>Features Demonstrated</h4>
+          <h4>{t('3d.featuresDemonstrated')}</h4>
           <ul>
-            <li>✅ Smooth camera controls with damping</li>
-            <li>✅ Enhanced lighting system with shadows</li>
-            <li>✅ Responsive canvas with device pixel ratio</li>
-            <li>✅ Real-time camera position tracking</li>
-            <li>✅ Performance optimized rendering</li>
+            <li>✅ {t('3d.smoothCameraControlsWithDamping')}</li>
+            <li>✅ {t('3d.enhancedLightingSystemWithShadows')}</li>
+            <li>✅ {t('3d.responsiveCanvasWithDevicePixelRatio')}</li>
+            <li>✅ {t('3d.realTimeCameraPositionTracking')}</li>
+            <li>✅ {t('3d.performanceOptimizedRendering')}</li>
           </ul>
         </div>
       </div>

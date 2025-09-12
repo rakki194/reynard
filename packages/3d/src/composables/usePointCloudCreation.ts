@@ -1,0 +1,48 @@
+import { createEffect } from "solid-js";
+
+export interface PointCloudCreationConfig {
+  pointCloudRenderer: () => any;
+  pointCloudEvents: () => any;
+  points: any[];
+  config: any;
+  scene: any;
+  camera: any;
+  renderer: any;
+  onPointSelect?: (pointId: string) => void;
+}
+
+export function usePointCloudCreation(config: PointCloudCreationConfig) {
+  const createPointCloud = async () => {
+    if (!config.pointCloudRenderer() || !config.points || config.points.length === 0) return;
+
+    const handlePointClick = (event: MouseEvent) => {
+      if (config.pointCloudEvents() && config.pointCloudRenderer()) {
+        config.pointCloudEvents().handlePointClick(
+          event,
+          config.pointCloudRenderer().pointCloud(),
+          config.points,
+          config.camera,
+          config.renderer,
+          config.onPointSelect,
+        );
+      }
+    };
+
+    await config.pointCloudRenderer().createPointCloud(
+      config.points,
+      config.config,
+      config.scene,
+      handlePointClick,
+    );
+  };
+
+  createEffect(() => {
+    if (config.pointCloudRenderer() && config.points && config.points.length > 0) {
+      createPointCloud();
+    }
+  });
+
+  return {
+    createPointCloud,
+  };
+}

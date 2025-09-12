@@ -140,6 +140,14 @@ export interface PointCloudSettings {
 }
 
 // Animation types
+export interface AnimationState {
+  isAnimating: boolean;
+  progress: number;
+  startTime: number;
+  duration: number;
+  easing: EasingType;
+}
+
 export interface AnimationSettings {
   enableAnimations?: boolean;
   animationDuration?: number;

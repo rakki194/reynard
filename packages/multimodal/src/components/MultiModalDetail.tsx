@@ -7,8 +7,10 @@
 
 import { Component, Show } from "solid-js";
 import type { MultiModalDetailProps } from "../types/MultiModalTypes";
+import { useI18n } from "reynard-i18n";
 
 export const MultiModalDetail: Component<MultiModalDetailProps> = (props) => {
+  const { t } = useI18n();
   return (
     <div class="multi-modal-detail-modal">
       <div class="detail-content">
@@ -44,9 +46,9 @@ export const MultiModalDetail: Component<MultiModalDetailProps> = (props) => {
           
           <Show when={props.file.fileType === "document"}>
             <div class="detail-document">
-              <p>Document preview not available. Download to view.</p>
+              <p>{t('multimodal.documentPreviewNotAvailable')}</p>
               <a href={props.file.url} download={props.file.name} class="download-button">
-                Download Document
+                {t('multimodal.downloadDocument')}
               </a>
             </div>
           </Show>

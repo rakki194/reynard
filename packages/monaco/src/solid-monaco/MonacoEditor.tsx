@@ -8,6 +8,7 @@ import {
 } from "solid-js";
 import loader from "@monaco-editor/loader";
 import type * as monaco from "monaco-editor";
+import { useI18n } from "reynard-i18n";
 import "./MonacoEditor.css";
 
 export interface MonacoEditorProps {
@@ -28,6 +29,7 @@ export interface MonacoEditorProps {
 }
 
 export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
+  const { t } = useI18n();
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
   const [editor, setEditor] =
     createSignal<monaco.editor.IStandaloneCodeEditor>();
@@ -42,9 +44,9 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
       setMonaco(monacoInstance);
       setIsLoading(false);
     } catch (err) {
-      console.error("Failed to load Monaco Editor:", err);
+      console.error(t('monaco.failedToLoadMonacoEditor'), err);
       setError(
-        err instanceof Error ? err.message : "Failed to load Monaco Editor",
+        err instanceof Error ? err.message : t('monaco.failedToLoadMonacoEditor'),
       );
       setIsLoading(false);
     }
@@ -80,9 +82,9 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
         // Call onMount callback
         props.onMount?.(editorInstance, monacoInstance);
       } catch (err) {
-        console.error("Failed to create Monaco editor:", err);
+        console.error(t('monaco.failedToCreateMonacoEditor'), err);
         setError(
-          err instanceof Error ? err.message : "Failed to create editor",
+          err instanceof Error ? err.message : t('monaco.failedToCreateEditor'),
         );
       }
     }

@@ -10,8 +10,10 @@ import type { MultiModalFileCardProps } from "../types/MultiModalTypes";
 import { getTypeColor } from "../utils/FileProcessingUtils";
 import { MultiModalFileThumbnail } from "./MultiModalFileThumbnail";
 import { MultiModalFileInfo } from "./MultiModalFileInfo";
+import { useI18n } from "reynard-i18n";
 
 export const MultiModalFileCard: Component<MultiModalFileCardProps> = (props) => {
+  const { t } = useI18n();
   return (
     <div
       class="multi-modal-file-card"
@@ -32,7 +34,7 @@ export const MultiModalFileCard: Component<MultiModalFileCardProps> = (props) =>
           e.stopPropagation();
           props.onRemove();
         }}
-        title="Remove file"
+        title={t('multimodal.removeFile')}
       >
         ×
       </button>

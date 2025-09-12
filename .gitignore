@@ -1,5 +1,7 @@
 # My junk
 #third_party/
+i18n-report.md
+i18n-results.json
 *.db
 unsloth_compiled_cache/
 .coverage.*

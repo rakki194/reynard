@@ -2,6 +2,7 @@
 
 import { Component, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { RoguelikeGame } from "./roguelike-game";
+import { useI18n } from "reynard-i18n";
 
 interface RoguelikeGameProps {
     width?: number;
@@ -10,6 +11,7 @@ interface RoguelikeGameProps {
 }
 
 export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (props) => {
+    const { t } = useI18n();
     let canvasRef: HTMLCanvasElement | undefined;
     let game: RoguelikeGame | null = null;
     const [isLoading, setIsLoading] = createSignal(true);
@@ -17,7 +19,7 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (props) => 
 
     onMount(() => {
         if (!canvasRef) {
-            setError("Canvas element not found");
+            setError(t('games.canvasElementNotFound'));
             setIsLoading(false);
             return;
         }
@@ -134,24 +136,24 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (props) => 
 
             <div class="game-info">
                 <div class="info-section">
-                    <h3>How to Play</h3>
+                    <h3>{t('games.howToPlay')}</h3>
                     <ul>
-                        <li>Use <strong>WASD</strong> or <strong>Arrow Keys</strong> to move your character (@)</li>
-                        <li>Explore the procedurally generated dungeon</li>
-                        <li>Fight enemies (g, o, T) by walking into them</li>
-                        <li>Collect items (!, ?, $, )) by walking over them</li>
-                        <li>Press <strong>R</strong> to restart the game</li>
+                        <li>{t('games.useWASDOrArrowKeysToMove')}</li>
+                        <li>{t('games.exploreProcedurallyGeneratedDungeon')}</li>
+                        <li>{t('games.fightEnemiesByWalkingIntoThem')}</li>
+                        <li>{t('games.collectItemsByWalkingOverThem')}</li>
+                        <li>{t('games.pressRToRestartGame')}</li>
                     </ul>
                 </div>
 
                 <div class="info-section">
-                    <h3>Features</h3>
+                    <h3>{t('games.features')}</h3>
                     <ul>
-                        <li>🦊 <strong>ECS Architecture</strong> - Built with Reynard's Entity-Component-System</li>
-                        <li>🏰 <strong>Procedural Generation</strong> - Each dungeon is uniquely generated</li>
-                        <li>👁️ <strong>Line of Sight</strong> - Realistic vision and exploration mechanics</li>
-                        <li>🤖 <strong>AI Enemies</strong> - Different enemy types with unique behaviors</li>
-                        <li>🎨 <strong>Pixel Art</strong> - Retro-style rendering with crisp pixels</li>
+                        <li>🦊 <strong>{t('games.ecsArchitecture')}</strong> - {t('games.builtWithReynardsECS')}</li>
+                        <li>🏰 <strong>{t('games.proceduralGeneration')}</strong> - {t('games.eachDungeonUniquelyGenerated')}</li>
+                        <li>👁️ <strong>{t('games.lineOfSight')}</strong> - {t('games.realisticVisionAndExplorationMechanics')}</li>
+                        <li>🤖 <strong>{t('games.aiEnemies')}</strong> - {t('games.differentEnemyTypesWithUniqueBehaviors')}</li>
+                        <li>🎨 <strong>{t('games.pixelArt')}</strong> - {t('games.retroStyleRenderingWithCrispPixels')}</li>
                     </ul>
                 </div>
             </div>

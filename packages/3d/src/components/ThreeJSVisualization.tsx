@@ -1,83 +1,32 @@
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-  Show,
-  createMemo,
-} from "solid-js";
+import { Component, createSignal, onMount, Show } from "solid-js";
 import type { ThreeJSVisualizationProps } from "../types";
 import { useThreeJSVisualization } from "../composables/useThreeJSVisualization";
+import { useResizeHandler } from "../composables/useResizeHandler";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { ErrorDisplay } from "./ErrorDisplay";
 import "./ThreeJSVisualization.css";
 
-export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = (
-  props,
-) => {
+export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = (props) => {
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
-
   const visualization = useThreeJSVisualization(props);
 
-  // Initialize scene on mount
+  const initializeScene = (container: HTMLDivElement) => visualization.initializeScene(container);
+
   onMount(() => {
     const container = containerRef();
-    if (container) {
-      visualization.initializeScene(container);
-    }
+    if (container) initializeScene(container);
   });
 
-  // Handle resize events with passive listeners for performance
-  createEffect(() => {
-    const container = containerRef();
-    if (container) {
-      const resizeObserver = new ResizeObserver(() => {
-        visualization.handleResize(container);
-      });
-      resizeObserver.observe(container);
-
-      window.addEventListener(
-        "resize",
-        () => {
-          visualization.handleResize(container);
-        },
-        { passive: true },
-      );
-
-      return () => {
-        resizeObserver.disconnect();
-        window.removeEventListener("resize", () => {
-          visualization.handleResize(container);
-        });
-      };
-    }
-  });
+  useResizeHandler(containerRef, { onResize: (container) => visualization.handleResize(container) });
 
   return (
-    <div
-      ref={setContainerRef}
-      class={`threejs-visualization threejs-container ${props.className || ""}`}
-    >
-      <Show when={visualization.isLoading()}>
-        <div class="threejs-loading">
-          <div class="loading-spinner"></div>
-          <span>Loading 3D visualization...</span>
-        </div>
-      </Show>
-
+    <div ref={setContainerRef} class={`threejs-visualization threejs-container ${props.className || ""}`}>
+      <Show when={visualization.isLoading()}><LoadingSpinner /></Show>
       <Show when={visualization.error()}>
-        <div class="threejs-error">
-          <span>Error: {visualization.error()}</span>
-          <button
-            onClick={() => {
-              const container = containerRef();
-              if (container) {
-                visualization.initializeScene(container);
-              }
-            }}
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorDisplay 
+          error={visualization.error()} 
+          onRetry={() => { const container = containerRef(); if (container) initializeScene(container); }} 
+        />
       </Show>
     </div>
   );

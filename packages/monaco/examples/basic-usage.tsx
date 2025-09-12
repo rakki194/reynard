@@ -1,8 +1,10 @@
 import { createSignal } from "solid-js";
 import { CodeEditor } from "../src/components/CodeEditor";
+import { useI18n } from "reynard-i18n";
 import "./basic-usage.css";
 
 export function BasicUsageExample() {
+  const { t } = useI18n();
   const [code, setCode] = createSignal(`// Welcome to Reynard Monaco Editor!
 function fibonacci(n) {
   if (n <= 1) return n;
@@ -17,33 +19,33 @@ console.log(fibonacci(10)); // 55`);
 
   return (
     <div class="example-container">
-      <h1>Reynard Monaco Editor - Basic Usage</h1>
+      <h1>{t('monaco.reynardMonacoEditorBasicUsage')}</h1>
 
       <div class="example-controls">
         <label>
-          Theme:
+          {t('monaco.theme')}:
           <select value={theme()} onChange={(e) => setTheme(e.target.value)}>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="gray">Gray</option>
+            <option value="light">{t('monaco.light')}</option>
+            <option value="dark">{t('monaco.dark')}</option>
+            <option value="gray">{t('monaco.gray')}</option>
           </select>
         </label>
 
         <label>
-          Language:
+          {t('monaco.language')}:
           <select
             value={language()}
             onChange={(e) => setLanguage(e.target.value)}
           >
-            <option value="javascript">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-            <option value="python">Python</option>
-            <option value="java">Java</option>
-            <option value="cpp">C++</option>
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="json">JSON</option>
-            <option value="markdown">Markdown</option>
+            <option value="javascript">{t('monaco.javascript')}</option>
+            <option value="typescript">{t('monaco.typescript')}</option>
+            <option value="python">{t('monaco.python')}</option>
+            <option value="java">{t('monaco.java')}</option>
+            <option value="cpp">{t('monaco.cpp')}</option>
+            <option value="html">{t('monaco.html')}</option>
+            <option value="css">{t('monaco.css')}</option>
+            <option value="json">{t('monaco.json')}</option>
+            <option value="markdown">{t('monaco.markdown')}</option>
           </select>
         </label>
 
@@ -53,7 +55,7 @@ console.log(fibonacci(10)); // 55`);
             checked={readOnly()}
             onChange={(e) => setReadOnly(e.target.checked)}
           />
-          Read Only
+          {t('monaco.readOnly')}
         </label>
       </div>
 

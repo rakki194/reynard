@@ -8,8 +8,10 @@
 import { Component } from "solid-js";
 import type { MultiModalFileRowProps } from "../types/MultiModalTypes";
 import { getFileIcon } from "../utils/FileProcessingUtils";
+import { useI18n } from "reynard-i18n";
 
 export const MultiModalFileRow: Component<MultiModalFileRowProps> = (props) => {
+  const { t } = useI18n();
   return (
     <div
       class="multi-modal-file-row"
@@ -27,7 +29,7 @@ export const MultiModalFileRow: Component<MultiModalFileRowProps> = (props) => {
           e.stopPropagation();
           props.onRemove();
         }}
-        title="Remove file"
+        title={t('multimodal.removeFile')}
       >
         ×
       </button>

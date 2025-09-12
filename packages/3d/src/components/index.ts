@@ -1,6 +1,8 @@
 // Export all components
 
 export * from "./ThreeJSVisualization";
+export * from "./LoadingSpinner";
+export * from "./ErrorDisplay";
 export * from "./PointCloudVisualization";
 export * from "./ThreeJSVisualizationDemo";
 export * from "./ClusterVisualization";
