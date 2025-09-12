@@ -290,7 +290,7 @@ describe("Security Integration Tests", () => {
       const result = validateInput(invalidInput, { maxLength: 100 });
 
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Invalid input type");
+      expect(result.errors).toContain("[core.validation.invalid-input-type]");
     });
 
     it("should sanitize error messages", () => {

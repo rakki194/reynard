@@ -189,7 +189,7 @@ describe("useLocalStorage", () => {
 
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
-        i18n.t('core.storage.error-parsing-storage-event') + ' "test-key-malicious":',
+        '[core.storage.error-parsing-storage-event] "test-key-malicious":',
         expect.any(Error),
       );
       expect(value()).toBe("initial");
@@ -229,7 +229,7 @@ describe("useLocalStorage", () => {
 
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
-        i18n.t('core.storage.error-parsing-storage-event') + ' "test-key-large":',
+        '[core.storage.error-parsing-storage-event] "test-key-large":',
         expect.any(Error),
       );
       expect(value()).toBe("initial");

@@ -470,7 +470,7 @@ describe("Comprehensive Input Validation", () => {
       });
 
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Input does not match required pattern");
+      expect(result.errors).toContain("[core.validation.does-not-match-pattern]");
     });
 
     it("should handle multiple violations", () => {
@@ -491,13 +491,13 @@ describe("Comprehensive Input Validation", () => {
     it("should handle empty input", () => {
       const result = validateInput("", {});
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Invalid input type");
+      expect(result.errors).toContain("[core.validation.invalid-input-type]");
     });
 
     it("should handle null input", () => {
       const result = validateInput(null as any, {});
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Invalid input type");
+      expect(result.errors).toContain("[core.validation.invalid-input-type]");
     });
   });
 });

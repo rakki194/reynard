@@ -51,7 +51,7 @@ describe("Package Exports Types", () => {
     it("should create error with message and package name", () => {
       const error = new ExportValidationError(i18n.t('core.test.error'), "test-package");
 
-      expect(error.message).toBe("Export validation failed for test-package: Test error");
+      expect(error.message).toBe("Export validation failed for test-package: [core.test.error]");
       expect(error.packageName).toBe("test-package");
       expect(error.name).toBe("Error"); // Custom error classes inherit from Error
     });
@@ -80,7 +80,7 @@ describe("Package Exports Types", () => {
     it("should handle empty package name", () => {
       const error = new ExportValidationError(i18n.t('core.test.error'), "");
 
-      expect(error.message).toBe("Export validation failed for : Test error");
+      expect(error.message).toBe("Export validation failed for : [core.test.error]");
       expect(error.packageName).toBe("");
     });
   });

@@ -340,7 +340,7 @@ describe("Async Utilities", () => {
       const promise = poll(condition, 100, 500);
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      await expect(promise).rejects.toThrow("Polling timeout reached");
+      await expect(promise).rejects.toThrow("[core.async.polling-timeout-reached]");
     });
 
     it("should handle async conditions", async () => {
