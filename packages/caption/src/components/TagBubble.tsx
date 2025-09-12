@@ -15,7 +15,10 @@ import {
 } from "solid-js";
 import { TagBubbleProps } from "../types/index.js";
 import { useTagAutocomplete } from "../utils/tagAutocomplete.js";
-import { createTagColorGenerator, type TagColorOptions } from "../utils/tagColors.js";
+import {
+  createTagColorGenerator,
+  type TagColorOptions,
+} from "../utils/tagColors.js";
 import "./TagBubble.css";
 
 export const TagBubble: Component<TagBubbleProps> = (props) => {
@@ -29,14 +32,14 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
   let tagBubbleRef: HTMLDivElement | undefined;
 
   const tagColorGenerator = createTagColorGenerator();
-  
+
   // Enhanced OKLCH color generation with options
   const tagColorOptions: TagColorOptions = {
     intensity: props.intensity || 1.0,
     variant: props.variant || "default",
     theme: props.theme,
   };
-  
+
   const tagColor = tagColorGenerator.getColor(props.tag, tagColorOptions);
 
   // Set CSS custom properties for dynamic styling with OKLCH support
@@ -48,7 +51,7 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
       );
       tagBubbleRef.style.setProperty("--tag-text-color", tagColor.text);
       tagBubbleRef.style.setProperty("--tag-border-color", tagColor.border);
-      
+
       // Enhanced OKLCH hover and active states
       if (tagColor.hover) {
         tagBubbleRef.style.setProperty("--tag-hover-color", tagColor.hover);

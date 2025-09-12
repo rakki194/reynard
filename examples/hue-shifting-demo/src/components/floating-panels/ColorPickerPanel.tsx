@@ -23,19 +23,16 @@ export const ColorPickerPanel: Component<ColorPickerPanelProps> = (props) => {
         closable: true,
         backdrop: false,
         animationDelay: 0,
-        theme: "accent"
+        theme: "accent",
       }}
       onShow={props.onShow}
       onHide={props.onHide}
-      style={{ display: props.isVisible ? 'block' : 'none' }}
+      style={{ display: props.isVisible ? "block" : "none" }}
     >
       <div class="floating-panel-body">
         <h3>Color Picker</h3>
         <p>Choose your base color using OKLCH values</p>
-        <ColorPicker
-          color={props.color}
-          onColorChange={props.onColorChange}
-        />
+        <ColorPicker color={props.color} onColorChange={props.onColorChange} />
       </div>
     </FloatingPanelAdvanced>
   );

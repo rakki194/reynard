@@ -10,7 +10,12 @@ import type { IntlConfig } from "./intl";
 
 // Migration utilities for different i18n libraries
 export interface MigrationOptions {
-  sourceLibrary: 'solid-i18n' | 'solid-primitives' | 'amoutonbrady' | 'i18next' | 'react-i18next';
+  sourceLibrary:
+    | "solid-i18n"
+    | "solid-primitives"
+    | "amoutonbrady"
+    | "i18next"
+    | "react-i18next";
   sourceTranslations: any;
   targetLocale: LanguageCode;
   preserveStructure?: boolean;
@@ -31,7 +36,10 @@ export interface MigrationResult {
 }
 
 // Migration from solid-i18n
-export const migrateFromSolidI18n = (sourceTranslations: any, _options: MigrationOptions): MigrationResult => {
+export const migrateFromSolidI18n = (
+  sourceTranslations: any,
+  _options: MigrationOptions,
+): MigrationResult => {
   const warnings: string[] = [];
   const errors: string[] = [];
   let migratedKeys = 0;
@@ -49,15 +57,18 @@ export const migrateFromSolidI18n = (sourceTranslations: any, _options: Migratio
       charts: {} as any,
       auth: {} as any,
       chat: {} as any,
-      monaco: {} as any
+      monaco: {} as any,
     };
 
     for (const [key, value] of Object.entries(sourceTranslations)) {
       try {
         // Map flat keys to our namespace structure
         const namespace = mapKeyToNamespace(key);
-        const cleanKey = key.replace(/^(common|themes|core|components|gallery|charts|auth|chat|monaco)\./, '');
-        
+        const cleanKey = key.replace(
+          /^(common|themes|core|components|gallery|charts|auth|chat|monaco)\./,
+          "",
+        );
+
         if (namespace && cleanKey) {
           (migratedTranslations[namespace] as any)[cleanKey] = value;
           migratedKeys++;
@@ -82,8 +93,8 @@ export const migrateFromSolidI18n = (sourceTranslations: any, _options: Migratio
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys,
         skippedKeys,
-        errorKeys
-      }
+        errorKeys,
+      },
     };
   } catch (error) {
     return {
@@ -95,14 +106,17 @@ export const migrateFromSolidI18n = (sourceTranslations: any, _options: Migratio
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys: 0,
         skippedKeys: 0,
-        errorKeys: Object.keys(sourceTranslations).length
-      }
+        errorKeys: Object.keys(sourceTranslations).length,
+      },
     };
   }
 };
 
 // Migration from solid-primitives/i18n
-export const migrateFromSolidPrimitives = (sourceTranslations: any, _options: MigrationOptions): MigrationResult => {
+export const migrateFromSolidPrimitives = (
+  sourceTranslations: any,
+  _options: MigrationOptions,
+): MigrationResult => {
   const warnings: string[] = [];
   const errors: string[] = [];
   let migratedKeys = 0;
@@ -119,11 +133,13 @@ export const migrateFromSolidPrimitives = (sourceTranslations: any, _options: Mi
       charts: {},
       auth: {},
       chat: {},
-      monaco: {}
+      monaco: {},
     };
 
     // solid-primitives uses a nested structure similar to ours
-    for (const [namespace, translations] of Object.entries(sourceTranslations)) {
+    for (const [namespace, translations] of Object.entries(
+      sourceTranslations,
+    )) {
       if (namespace in migratedTranslations) {
         (migratedTranslations as any)[namespace] = translations;
         migratedKeys += Object.keys(translations as any).length;
@@ -144,8 +160,8 @@ export const migrateFromSolidPrimitives = (sourceTranslations: any, _options: Mi
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys,
         skippedKeys,
-        errorKeys
-      }
+        errorKeys,
+      },
     };
   } catch (error) {
     return {
@@ -157,14 +173,17 @@ export const migrateFromSolidPrimitives = (sourceTranslations: any, _options: Mi
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys: 0,
         skippedKeys: 0,
-        errorKeys: Object.keys(sourceTranslations).length
-      }
+        errorKeys: Object.keys(sourceTranslations).length,
+      },
     };
   }
 };
 
 // Migration from i18next/react-i18next
-export const migrateFromI18next = (sourceTranslations: any, _options: MigrationOptions): MigrationResult => {
+export const migrateFromI18next = (
+  sourceTranslations: any,
+  _options: MigrationOptions,
+): MigrationResult => {
   const warnings: string[] = [];
   const errors: string[] = [];
   let migratedKeys = 0;
@@ -181,11 +200,13 @@ export const migrateFromI18next = (sourceTranslations: any, _options: MigrationO
       charts: {},
       auth: {},
       chat: {},
-      monaco: {}
+      monaco: {},
     };
 
     // i18next uses nested structure with namespaces
-    for (const [namespace, translations] of Object.entries(sourceTranslations)) {
+    for (const [namespace, translations] of Object.entries(
+      sourceTranslations,
+    )) {
       if (namespace in migratedTranslations) {
         (migratedTranslations as any)[namespace] = translations;
         migratedKeys += Object.keys(translations as any).length;
@@ -206,8 +227,8 @@ export const migrateFromI18next = (sourceTranslations: any, _options: MigrationO
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys,
         skippedKeys,
-        errorKeys
-      }
+        errorKeys,
+      },
     };
   } catch (error) {
     return {
@@ -219,21 +240,23 @@ export const migrateFromI18next = (sourceTranslations: any, _options: MigrationO
         totalKeys: Object.keys(sourceTranslations).length,
         migratedKeys: 0,
         skippedKeys: 0,
-        errorKeys: Object.keys(sourceTranslations).length
-      }
+        errorKeys: Object.keys(sourceTranslations).length,
+      },
     };
   }
 };
 
 // Main migration function
-export const migrateTranslations = (options: MigrationOptions): MigrationResult => {
+export const migrateTranslations = (
+  options: MigrationOptions,
+): MigrationResult => {
   switch (options.sourceLibrary) {
-    case 'solid-i18n':
+    case "solid-i18n":
       return migrateFromSolidI18n(options.sourceTranslations, options);
-    case 'solid-primitives':
+    case "solid-primitives":
       return migrateFromSolidPrimitives(options.sourceTranslations, options);
-    case 'i18next':
-    case 'react-i18next':
+    case "i18next":
+    case "react-i18next":
       return migrateFromI18next(options.sourceTranslations, options);
     default:
       return {
@@ -245,23 +268,23 @@ export const migrateTranslations = (options: MigrationOptions): MigrationResult 
           totalKeys: 0,
           migratedKeys: 0,
           skippedKeys: 0,
-          errorKeys: 0
-        }
+          errorKeys: 0,
+        },
       };
   }
 };
 
 // Helper function to map keys to namespaces
 const mapKeyToNamespace = (key: string): keyof Translations | null => {
-  if (key.startsWith('common.')) return 'common';
-  if (key.startsWith('themes.')) return 'themes';
-  if (key.startsWith('core.')) return 'core';
-  if (key.startsWith('components.')) return 'components';
-  if (key.startsWith('gallery.')) return 'gallery';
-  if (key.startsWith('charts.')) return 'charts';
-  if (key.startsWith('auth.')) return 'auth';
-  if (key.startsWith('chat.')) return 'chat';
-  if (key.startsWith('monaco.')) return 'monaco';
+  if (key.startsWith("common.")) return "common";
+  if (key.startsWith("themes.")) return "themes";
+  if (key.startsWith("core.")) return "core";
+  if (key.startsWith("components.")) return "components";
+  if (key.startsWith("gallery.")) return "gallery";
+  if (key.startsWith("charts.")) return "charts";
+  if (key.startsWith("auth.")) return "auth";
+  if (key.startsWith("chat.")) return "chat";
+  if (key.startsWith("monaco.")) return "monaco";
   return null;
 };
 
@@ -285,17 +308,18 @@ export class TranslationManager {
 
   // Add or update translation
   setTranslation(
-    locale: LanguageCode, 
-    key: string, 
-    value: any, 
-    author?: string
+    locale: LanguageCode,
+    key: string,
+    value: any,
+    author?: string,
   ): void {
-    const currentTranslations = this.translations.get(locale) || {} as Translations;
+    const currentTranslations =
+      this.translations.get(locale) || ({} as Translations);
     const oldValue = this.getNestedValue(currentTranslations, key);
-    
+
     this.setNestedValue(currentTranslations, key, value);
     this.translations.set(locale, currentTranslations);
-    
+
     // Record change
     this.changeHistory.push({
       timestamp: new Date(),
@@ -303,7 +327,7 @@ export class TranslationManager {
       key,
       oldValue,
       newValue: value,
-      author
+      author,
     });
   }
 
@@ -330,35 +354,39 @@ export class TranslationManager {
   }
 
   // Import translations
-  importTranslations(locale: LanguageCode, jsonString: string, author?: string): boolean {
+  importTranslations(
+    locale: LanguageCode,
+    jsonString: string,
+    author?: string,
+  ): boolean {
     try {
       const translations = JSON.parse(jsonString) as Translations;
       this.translations.set(locale, translations);
-      
+
       // Record import
       this.changeHistory.push({
         timestamp: new Date(),
         locale,
-        key: 'IMPORT',
+        key: "IMPORT",
         oldValue: null,
         newValue: translations,
-        author
+        author,
       });
-      
+
       return true;
     } catch (error) {
-      console.error('Failed to import translations:', error);
+      console.error("Failed to import translations:", error);
       return false;
     }
   }
 
   // Helper functions
   private getNestedValue(obj: any, path: string): any {
-    return path.split('.').reduce((current, key) => current?.[key], obj);
+    return path.split(".").reduce((current, key) => current?.[key], obj);
   }
 
   private setNestedValue(obj: any, path: string, value: any): void {
-    const keys = path.split('.');
+    const keys = path.split(".");
     const lastKey = keys.pop()!;
     const target = keys.reduce((current, key) => {
       if (!current[key]) current[key] = {};
@@ -380,51 +408,51 @@ export class TranslationValidator {
   // Validate translations
   validate(translations: Translations): string[] {
     const errors: string[] = [];
-    
+
     for (const rule of this.rules) {
       errors.push(...rule(translations));
     }
-    
+
     return errors;
   }
 
   // Built-in validation rules
   static createDefaultValidator(): TranslationValidator {
     const validator = new TranslationValidator();
-    
+
     // Required namespaces rule
     validator.addRule((translations) => {
-      const requiredNamespaces = ['common', 'themes', 'core', 'components'];
+      const requiredNamespaces = ["common", "themes", "core", "components"];
       const errors: string[] = [];
-      
+
       for (const namespace of requiredNamespaces) {
         if (!(namespace in translations)) {
           errors.push(`Missing required namespace: ${namespace}`);
         }
       }
-      
+
       return errors;
     });
-    
+
     // Empty values rule
     validator.addRule((translations) => {
       const errors: string[] = [];
-      const checkEmpty = (obj: any, path: string = '') => {
+      const checkEmpty = (obj: any, path: string = "") => {
         for (const [key, value] of Object.entries(obj)) {
           const currentPath = path ? `${path}.${key}` : key;
-          
-          if (typeof value === 'object' && value !== null) {
+
+          if (typeof value === "object" && value !== null) {
             checkEmpty(value, currentPath);
-          } else if (value === '' || value === null || value === undefined) {
+          } else if (value === "" || value === null || value === undefined) {
             errors.push(`Empty value at: ${currentPath}`);
           }
         }
       };
-      
+
       checkEmpty(translations);
       return errors;
     });
-    
+
     return validator;
   }
 }
@@ -450,17 +478,20 @@ export class TranslationAnalytics {
       .map(([key, count]) => ({ key, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
-    
+
     const localeUsage = Array.from(this.localeStats.entries())
       .map(([locale, count]) => ({ locale, count }))
       .sort((a, b) => b.count - a.count);
-    
-    const totalUsage = Array.from(this.usageStats.values()).reduce((sum, count) => sum + count, 0);
-    
+
+    const totalUsage = Array.from(this.usageStats.values()).reduce(
+      (sum, count) => sum + count,
+      0,
+    );
+
     return {
       mostUsedKeys,
       localeUsage,
-      totalUsage
+      totalUsage,
     };
   }
 

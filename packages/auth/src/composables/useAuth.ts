@@ -8,7 +8,10 @@ import { createSignal, onMount, onCleanup } from "solid-js";
 import type { AuthState, AuthConfiguration, AuthCallbacks } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
-import { useAuth as useGeneratedAuth, createReynardApiClient } from "reynard-api-client";
+import {
+  useAuth as useGeneratedAuth,
+  createReynardApiClient,
+} from "reynard-api-client";
 
 export interface UseAuthOptions {
   /** Authentication configuration */
@@ -25,7 +28,7 @@ export function useAuth(options: UseAuthOptions = {}) {
 
   // Create API client for generated auth
   const apiClient = createReynardApiClient({
-    basePath: config.baseUrl
+    basePath: config.baseUrl,
   });
 
   // Use generated auth composable
@@ -42,7 +45,7 @@ export function useAuth(options: UseAuthOptions = {}) {
     },
     onRegisterError: (error) => {
       callbacks.onRegisterError?.(error);
-    }
+    },
   });
 
   // Auth state - integrate with generated auth
@@ -87,7 +90,8 @@ export function useAuth(options: UseAuthOptions = {}) {
     // State - integrate with generated auth
     authState,
     user: () => generatedAuth.user() || authState().user,
-    isAuthenticated: () => generatedAuth.isAuthenticated() || authState().isAuthenticated,
+    isAuthenticated: () =>
+      generatedAuth.isAuthenticated() || authState().isAuthenticated,
     isLoading: () => generatedAuth.isLoading() || authState().isLoading,
     error: () => generatedAuth.error() || authState().error,
     isRefreshing: () => authState().isRefreshing,

@@ -1,6 +1,6 @@
 /**
  * RAG Types and Interfaces
- * 
+ *
  * Type definitions for RAG (Retrieval-Augmented Generation) system
  * with EmbeddingGemma integration using Reynard conventions.
  */
@@ -75,7 +75,7 @@ export interface TabItem {
 }
 
 // Advanced RAG types for 3D visualization and modals
-export type RAGModality = 'docs' | 'images' | 'code' | 'captions';
+export type RAGModality = "docs" | "images" | "code" | "captions";
 
 export interface RAGQueryHit {
   id?: number | string;

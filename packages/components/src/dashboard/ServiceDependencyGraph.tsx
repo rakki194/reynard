@@ -20,7 +20,9 @@ export interface ServiceDependency {
   isRequired: boolean;
 }
 
-export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (props) => {
+export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (
+  props,
+) => {
   // Mock dependency data
   const getDependencies = (serviceName: string): ServiceDependency[] => {
     const dependencyMap: Record<string, ServiceDependency[]> = {
@@ -187,23 +189,32 @@ export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (p
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(dependency))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(dependency))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <span class="dependency-name">{dependency.name}</span>
-                  
+
                   <Show when={dependency.isRequired}>
                     <span class="required-badge">Required</span>
                   </Show>
                 </div>
 
                 <div class="dependency-status">
-                  <span class="status-badge" classList={{ [getStatusColor(dependency)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(dependency)]: true }}
+                  >
                     {dependency.status}
                   </span>
-                  
-                  <span class="health-badge" classList={{ [getStatusColor(dependency)]: true }}>
+
+                  <span
+                    class="health-badge"
+                    classList={{ [getStatusColor(dependency)]: true }}
+                  >
                     {dependency.health}
                   </span>
                 </div>

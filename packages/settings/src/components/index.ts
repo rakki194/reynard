@@ -8,9 +8,24 @@ export { SettingControl, type SettingControlProps } from "./SettingControl";
 
 // Advanced Settings Components
 export { RAGSettings, type RAGSettingsProps } from "./RAGSettings";
-export { DiffusionSettings, type DiffusionSettingsProps } from "./DiffusionSettings";
+export {
+  DiffusionSettings,
+  type DiffusionSettingsProps,
+} from "./DiffusionSettings";
 export { ComfySettings, type ComfySettingsProps } from "./ComfySettings";
-export { ModelManagementSettings, type ModelManagementSettingsProps } from "./ModelManagementSettings";
-export { ServiceManagementSettings, type ServiceManagementSettingsProps } from "./ServiceManagementSettings";
-export { AssistantSettings, type AssistantSettingsProps } from "./AssistantSettings";
-export { AdvancedConfigWatcher, type AdvancedConfigWatcherProps } from "./AdvancedConfigWatcher";
+export {
+  ModelManagementSettings,
+  type ModelManagementSettingsProps,
+} from "./ModelManagementSettings";
+export {
+  ServiceManagementSettings,
+  type ServiceManagementSettingsProps,
+} from "./ServiceManagementSettings";
+export {
+  AssistantSettings,
+  type AssistantSettingsProps,
+} from "./AssistantSettings";
+export {
+  AdvancedConfigWatcher,
+  type AdvancedConfigWatcherProps,
+} from "./AdvancedConfigWatcher";

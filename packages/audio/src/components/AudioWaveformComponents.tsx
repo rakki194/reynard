@@ -1,12 +1,15 @@
 /**
  * Audio Waveform Sub-components
- * 
+ *
  * Sub-components for the Audio Waveform Visualizer to keep the main component
  * under the 140-line limit.
  */
 
 import { Component, Show } from "solid-js";
-import type { AudioWaveformVisualizerProps, WaveformData } from "./AudioWaveformVisualizer";
+import type {
+  AudioWaveformVisualizerProps,
+  WaveformData,
+} from "./AudioWaveformVisualizer";
 
 // Loading State Component
 export const LoadingState: Component = () => (
@@ -73,10 +76,12 @@ export const PlaybackControls: Component<{
 
       <div class="time-display">
         <span class="current-time">
-          {Math.floor(props.currentTime() / 60)}:{(props.currentTime() % 60).toFixed(0).padStart(2, "0")}
+          {Math.floor(props.currentTime() / 60)}:
+          {(props.currentTime() % 60).toFixed(0).padStart(2, "0")}
         </span>
         <span class="duration">
-          {Math.floor(props.duration() / 60)}:{(props.duration() % 60).toFixed(0).padStart(2, "0")}
+          {Math.floor(props.duration() / 60)}:
+          {(props.duration() % 60).toFixed(0).padStart(2, "0")}
         </span>
       </div>
 

@@ -45,7 +45,9 @@ export interface PerformanceMetrics {
   performanceScore: number;
 }
 
-export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = (props) => {
+export const PerformanceMetricsPanel: Component<
+  PerformanceMetricsPanelProps
+> = (props) => {
   const [metrics, setMetrics] = createSignal<PerformanceMetrics>({
     averageFrameRate: 0,
     averageMemoryUsage: 0,
@@ -108,7 +110,7 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
       const now = Date.now();
       const timeRangeMs = getTimeRangeMs(timeRange());
       const filteredHistory = history.filter(
-        (entry) => now - entry.timestamp <= timeRangeMs
+        (entry) => now - entry.timestamp <= timeRangeMs,
       );
 
       if (filteredHistory.length === 0) {
@@ -117,14 +119,39 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
       }
 
       // Calculate metrics
-      const averageFrameRate = filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) / filteredHistory.length;
-      const averageMemoryUsage = filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) / filteredHistory.length;
-      const averageBrowserResponsiveness = filteredHistory.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length;
-      const averageSelectionDuration = filteredHistory.reduce((sum, entry) => sum + (entry.selectionDuration || 0), 0) / filteredHistory.length;
-      const averageItemsPerSecond = filteredHistory.reduce((sum, entry) => sum + (entry.itemsPerSecond || 0), 0) / filteredHistory.length;
-      const totalDomUpdates = filteredHistory.reduce((sum, entry) => sum + (entry.domUpdateCount || 0), 0);
-      const totalStyleApplications = filteredHistory.reduce((sum, entry) => sum + (entry.styleApplicationCount || 0), 0);
-      const totalFrameDrops = filteredHistory.reduce((sum, entry) => sum + (entry.frameDropCount || 0), 0);
+      const averageFrameRate =
+        filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) /
+        filteredHistory.length;
+      const averageMemoryUsage =
+        filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
+        filteredHistory.length;
+      const averageBrowserResponsiveness =
+        filteredHistory.reduce(
+          (sum, entry) => sum + entry.browserResponsiveness,
+          0,
+        ) / filteredHistory.length;
+      const averageSelectionDuration =
+        filteredHistory.reduce(
+          (sum, entry) => sum + (entry.selectionDuration || 0),
+          0,
+        ) / filteredHistory.length;
+      const averageItemsPerSecond =
+        filteredHistory.reduce(
+          (sum, entry) => sum + (entry.itemsPerSecond || 0),
+          0,
+        ) / filteredHistory.length;
+      const totalDomUpdates = filteredHistory.reduce(
+        (sum, entry) => sum + (entry.domUpdateCount || 0),
+        0,
+      );
+      const totalStyleApplications = filteredHistory.reduce(
+        (sum, entry) => sum + (entry.styleApplicationCount || 0),
+        0,
+      );
+      const totalFrameDrops = filteredHistory.reduce(
+        (sum, entry) => sum + (entry.frameDropCount || 0),
+        0,
+      );
 
       // Calculate performance score (0-100)
       const performanceScore = calculatePerformanceScore({
@@ -256,7 +283,7 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
     const timeRangeMs = getTimeRangeMs(timeRange());
     const now = Date.now();
     const filteredHistory = history.filter(
-      (entry) => now - entry.timestamp <= timeRangeMs
+      (entry) => now - entry.timestamp <= timeRangeMs,
     );
 
     return filteredHistory.map((entry) => ({
@@ -334,7 +361,9 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("chart-line")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("chart-line")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Performance Metrics</h3>
@@ -363,7 +392,9 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
             onChange={(e) => setSelectedMetric(e.currentTarget.value)}
           >
             <For each={availableMetrics}>
-              {(metric) => <option value={metric}>{getMetricLabel(metric)}</option>}
+              {(metric) => (
+                <option value={metric}>{getMetricLabel(metric)}</option>
+              )}
             </For>
           </select>
         </div>
@@ -385,7 +416,9 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
       <div class="performance-score">
         <div class="score-header">
           <h4>Performance Score</h4>
-          <span class={`score-value ${getPerformanceScoreColor(metrics().performanceScore)}`}>
+          <span
+            class={`score-value ${getPerformanceScoreColor(metrics().performanceScore)}`}
+          >
             {metrics().performanceScore.toFixed(0)}
           </span>
         </div>
@@ -399,35 +432,51 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
         <div class="summary-grid">
           <div class="summary-item">
             <label>Average Frame Rate</label>
-            <span class="value">{metrics().averageFrameRate.toFixed(1)} fps</span>
+            <span class="value">
+              {metrics().averageFrameRate.toFixed(1)} fps
+            </span>
           </div>
           <div class="summary-item">
             <label>Average Memory Usage</label>
-            <span class="value">{formatMemory(metrics().averageMemoryUsage)}</span>
+            <span class="value">
+              {formatMemory(metrics().averageMemoryUsage)}
+            </span>
           </div>
           <div class="summary-item">
             <label>Average Browser Response</label>
-            <span class="value">{formatDuration(metrics().averageBrowserResponsiveness)}</span>
+            <span class="value">
+              {formatDuration(metrics().averageBrowserResponsiveness)}
+            </span>
           </div>
           <div class="summary-item">
             <label>Average Selection Duration</label>
-            <span class="value">{formatDuration(metrics().averageSelectionDuration)}</span>
+            <span class="value">
+              {formatDuration(metrics().averageSelectionDuration)}
+            </span>
           </div>
           <div class="summary-item">
             <label>Average Items/Second</label>
-            <span class="value">{metrics().averageItemsPerSecond.toFixed(1)}</span>
+            <span class="value">
+              {metrics().averageItemsPerSecond.toFixed(1)}
+            </span>
           </div>
           <div class="summary-item">
             <label>Total DOM Updates</label>
-            <span class="value">{metrics().totalDomUpdates.toLocaleString()}</span>
+            <span class="value">
+              {metrics().totalDomUpdates.toLocaleString()}
+            </span>
           </div>
           <div class="summary-item">
             <label>Total Style Applications</label>
-            <span class="value">{metrics().totalStyleApplications.toLocaleString()}</span>
+            <span class="value">
+              {metrics().totalStyleApplications.toLocaleString()}
+            </span>
           </div>
           <div class="summary-item">
             <label>Total Frame Drops</label>
-            <span class="value">{metrics().totalFrameDrops.toLocaleString()}</span>
+            <span class="value">
+              {metrics().totalFrameDrops.toLocaleString()}
+            </span>
           </div>
         </div>
       </div>
@@ -468,7 +517,9 @@ export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = 
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

@@ -3,9 +3,9 @@
  * Specialized functions for pixel art game development
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import { basicHueShift, generateHueShiftRamp } from './core-algorithms';
-import { materialHueShift } from './material-patterns';
+import type { OKLCHColor } from "reynard-colors";
+import { basicHueShift, generateHueShiftRamp } from "./core-algorithms";
+import { materialHueShift } from "./material-patterns";
 
 /**
  * Generate sprite colors with hue shifting
@@ -16,8 +16,8 @@ import { materialHueShift } from './material-patterns';
  */
 export function generateSpriteColors(
   baseColor: OKLCHColor,
-  spriteType: 'character' | 'environment' | 'ui',
-  material?: keyof typeof import('./material-patterns').MATERIAL_PATTERNS
+  spriteType: "character" | "environment" | "ui",
+  material?: keyof typeof import("./material-patterns").MATERIAL_PATTERNS,
 ): {
   shadow: OKLCHColor;
   base: OKLCHColor;
@@ -27,23 +27,23 @@ export function generateSpriteColors(
   let shadow: OKLCHColor;
   let highlight: OKLCHColor;
   let accent: OKLCHColor;
-  
+
   if (material) {
     const materialColors = materialHueShift(baseColor, material);
     shadow = materialColors.shadow;
     highlight = materialColors.highlight;
-    accent = basicHueShift(baseColor, 'midtone', 0.2);
+    accent = basicHueShift(baseColor, "midtone", 0.2);
   } else {
-    shadow = basicHueShift(baseColor, 'shadow', 0.4);
-    highlight = basicHueShift(baseColor, 'highlight', 0.3);
-    accent = basicHueShift(baseColor, 'midtone', 0.2);
+    shadow = basicHueShift(baseColor, "shadow", 0.4);
+    highlight = basicHueShift(baseColor, "highlight", 0.3);
+    accent = basicHueShift(baseColor, "midtone", 0.2);
   }
-  
+
   return {
     shadow,
     base: baseColor,
     highlight,
-    accent
+    accent,
   };
 }
 
@@ -55,15 +55,15 @@ export function generateSpriteColors(
  */
 export function generateTilesetPalette(
   baseColors: OKLCHColor[],
-  tileCount: number = 16
+  tileCount: number = 16,
 ): OKLCHColor[] {
   const palette: OKLCHColor[] = [];
-  
-  baseColors.forEach(baseColor => {
+
+  baseColors.forEach((baseColor) => {
     const ramp = generateHueShiftRamp(baseColor, 4);
     palette.push(...ramp);
   });
-  
+
   return palette.slice(0, tileCount);
 }
 
@@ -75,10 +75,14 @@ export function generateTilesetPalette(
  */
 export function createColorLookupTable(
   baseColors: OKLCHColor[],
-  shiftTypes: Array<'shadow' | 'highlight' | 'midtone'> = ['shadow', 'highlight', 'midtone']
+  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = [
+    "shadow",
+    "highlight",
+    "midtone",
+  ],
 ): Map<string, OKLCHColor> {
   const lookup = new Map<string, OKLCHColor>();
-  
+
   baseColors.forEach((baseColor, baseIndex) => {
     shiftTypes.forEach((shiftType, shiftIndex) => {
       const shifted = basicHueShift(baseColor, shiftType, 0.3);
@@ -86,7 +90,7 @@ export function createColorLookupTable(
       lookup.set(key, shifted);
     });
   });
-  
+
   return lookup;
 }
 
@@ -100,12 +104,16 @@ export function createColorLookupTable(
 export function generateCharacterPalette(
   skinColor: OKLCHColor,
   hairColor: OKLCHColor,
-  clothingColor: OKLCHColor
+  clothingColor: OKLCHColor,
 ): OKLCHColor[] {
-  const skinColors = generateSpriteColors(skinColor, 'character', 'skin');
-  const hairColors = generateSpriteColors(hairColor, 'character', 'fabric');
-  const clothingColors = generateSpriteColors(clothingColor, 'character', 'fabric');
-  
+  const skinColors = generateSpriteColors(skinColor, "character", "skin");
+  const hairColors = generateSpriteColors(hairColor, "character", "fabric");
+  const clothingColors = generateSpriteColors(
+    clothingColor,
+    "character",
+    "fabric",
+  );
+
   return [
     skinColors.shadow,
     skinColors.base,
@@ -115,7 +123,7 @@ export function generateCharacterPalette(
     hairColors.highlight,
     clothingColors.shadow,
     clothingColors.base,
-    clothingColors.highlight
+    clothingColors.highlight,
   ];
 }
 
@@ -129,12 +137,12 @@ export function generateCharacterPalette(
 export function generateEnvironmentPalette(
   grassColor: OKLCHColor,
   stoneColor: OKLCHColor,
-  waterColor: OKLCHColor
+  waterColor: OKLCHColor,
 ): OKLCHColor[] {
   const grassRamp = generateHueShiftRamp(grassColor, 4);
   const stoneRamp = generateHueShiftRamp(stoneColor, 4);
   const waterRamp = generateHueShiftRamp(waterColor, 4);
-  
+
   return [...grassRamp, ...stoneRamp, ...waterRamp];
 }
 
@@ -148,12 +156,12 @@ export function generateEnvironmentPalette(
 export function generateUIPalette(
   primaryColor: OKLCHColor,
   secondaryColor: OKLCHColor,
-  accentColor: OKLCHColor
+  accentColor: OKLCHColor,
 ): OKLCHColor[] {
-  const primaryColors = generateSpriteColors(primaryColor, 'ui');
-  const secondaryColors = generateSpriteColors(secondaryColor, 'ui');
-  const accentColors = generateSpriteColors(accentColor, 'ui');
-  
+  const primaryColors = generateSpriteColors(primaryColor, "ui");
+  const secondaryColors = generateSpriteColors(secondaryColor, "ui");
+  const accentColors = generateSpriteColors(accentColor, "ui");
+
   return [
     primaryColors.shadow,
     primaryColors.base,
@@ -163,6 +171,6 @@ export function generateUIPalette(
     secondaryColors.highlight,
     accentColors.shadow,
     accentColors.base,
-    accentColors.highlight
+    accentColors.highlight,
   ];
 }

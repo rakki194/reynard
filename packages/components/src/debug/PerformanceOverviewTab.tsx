@@ -18,7 +18,9 @@ export interface PerformanceOverviewTabProps {
   onExportData: () => void;
 }
 
-export const PerformanceOverviewTab: Component<PerformanceOverviewTabProps> = (props) => {
+export const PerformanceOverviewTab: Component<PerformanceOverviewTabProps> = (
+  props,
+) => {
   // Format memory usage
   const formatMemory = (bytes: number): string => {
     if (bytes > 1024 * 1024 * 1024) {

@@ -69,7 +69,7 @@ Reynard's package ecosystem is built on the foundation of yipyap's proven archit
 | `reynard-annotating`       | Annotation and caption generation system for Reynard - handles image captioning, tagging, and annotation workflows | `0.1.0` |
 | `reynard-boundingbox`      | Reusable bounding box and annotation editing components for Reynard                                                | `0.1.0` |
 | `reynard-caption`          | Caption editing UI components for Reynard - textarea and tag bubbles for caption editing                           | `0.1.0` |
-| `reynard-floating-panel`   | Advanced floating panel system with staggered animations and state management for Reynard                         | `0.1.0` |
+| `reynard-floating-panel`   | Advanced floating panel system with staggered animations and state management for Reynard                          | `0.1.0` |
 | `reynard-composables`      | Reusable reactive logic for Reynard applications                                                                   | `0.1.0` |
 | `reynard-connection`       | Enterprise-grade networking for Reynard applications                                                               | `0.1.0` |
 | `reynard-features`         | Advanced feature system for managing application features, dependencies, and capabilities                          | `0.1.0` |

@@ -221,7 +221,9 @@ export interface World {
   query<T extends Component[]>(
     ...componentTypes: ComponentType<T[number]>[]
   ): QueryBuilder<T> & {
-    forEach: (callback: (entity: Entity, ...components: T) => void | false) => void;
+    forEach: (
+      callback: (entity: Entity, ...components: T) => void | false,
+    ) => void;
     first: () => { entity: Entity; components: T } | undefined;
     added: (componentType: ComponentType<any>) => any;
     changed: (componentType: ComponentType<any>) => any;

@@ -7,7 +7,7 @@ export interface ResizeHandlerOptions {
 
 export function useResizeHandler(
   containerRef: () => HTMLDivElement | undefined,
-  options: ResizeHandlerOptions
+  options: ResizeHandlerOptions,
 ) {
   const { onResize, debounceMs = 100 } = options;
   let resizeTimeout: number | null = null;
@@ -20,19 +20,19 @@ export function useResizeHandler(
       if (resizeTimeout) {
         clearTimeout(resizeTimeout);
       }
-      
+
       resizeTimeout = window.setTimeout(() => {
         onResize(container);
       }, debounceMs);
     });
-    
+
     resizeObserver.observe(container);
 
     const handleWindowResize = () => {
       if (resizeTimeout) {
         clearTimeout(resizeTimeout);
       }
-      
+
       resizeTimeout = window.setTimeout(() => {
         onResize(container);
       }, debounceMs);

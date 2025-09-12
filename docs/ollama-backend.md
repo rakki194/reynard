@@ -343,11 +343,11 @@ curl -X POST http://localhost:8000/api/ollama/admin/models/mistral/pull
 
    ```python
    from .base import Tool
-   
+
    class MyTool(Tool):
        def __init__(self):
            super().__init__("my_tool")
-       
+
        async def execute(self, args: Dict[str, Any]) -> Dict[str, Any]:
            # Implement tool logic
            return {"result": "success"}
@@ -358,7 +358,7 @@ curl -X POST http://localhost:8000/api/ollama/admin/models/mistral/pull
    ```python
    # In reynard_assistant.py
    from .my_tool import MyTool
-   
+
    async def _initialize_tools(self):
        self._tools["my_tool"] = MyTool()
    ```
@@ -369,11 +369,11 @@ curl -X POST http://localhost:8000/api/ollama/admin/models/mistral/pull
 
    ```python
    from .base import Assistant
-   
+
    class MyAssistant(Assistant):
        def __init__(self, client: OllamaClient, config: OllamaConfig):
            super().__init__("my_assistant", client, config)
-       
+
        async def chat_stream(self, params: OllamaAssistantParams):
            # Implement assistant logic
            pass
@@ -384,7 +384,7 @@ curl -X POST http://localhost:8000/api/ollama/admin/models/mistral/pull
    ```python
    # In ollama_service.py
    from .my_assistant import MyAssistant
-   
+
    async def _initialize_assistants(self):
        self._assistants["my_assistant"] = MyAssistant(self._client, self._config)
    ```
@@ -474,4 +474,4 @@ Key benefits:
 - **Developer Friendly**: Comprehensive API and easy extension
 - **Performance Optimized**: Efficient model management and resource usage
 
-*Build intelligent local AI applications with the cunning precision of a fox!* 🦊
+_Build intelligent local AI applications with the cunning precision of a fox!_ 🦊

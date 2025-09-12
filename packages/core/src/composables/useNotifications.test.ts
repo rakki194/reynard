@@ -4,7 +4,7 @@
 
 import { describe, it, expect } from "vitest";
 import { createRoot } from "solid-js";
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 import {
   createNotifications,
   NotificationsProvider,
@@ -42,10 +42,10 @@ describe("useNotifications Composable", () => {
     it("should allow adding notifications", () => {
       const notificationsModule = createNotifications();
 
-      notificationsModule.notify(i18n.t('core.test.notification'));
+      notificationsModule.notify(i18n.t("core.test.notification"));
       expect(notificationsModule.notifications.length).toBe(1);
       expect(notificationsModule.notifications[0].message).toBe(
-        i18n.t('core.test.notification'),
+        i18n.t("core.test.notification"),
       );
     });
 
@@ -53,7 +53,7 @@ describe("useNotifications Composable", () => {
       const notificationsModule = createNotifications();
 
       // Add a notification first
-      notificationsModule.notify(i18n.t('core.test.notification'));
+      notificationsModule.notify(i18n.t("core.test.notification"));
       expect(notificationsModule.notifications.length).toBe(1);
 
       // Clear notifications
@@ -64,8 +64,8 @@ describe("useNotifications Composable", () => {
     it("should allow removing specific notifications", () => {
       const notificationsModule = createNotifications();
 
-      notificationsModule.notify(i18n.t('core.test.notification-1'));
-      notificationsModule.notify(i18n.t('core.test.notification-2'));
+      notificationsModule.notify(i18n.t("core.test.notification-1"));
+      notificationsModule.notify(i18n.t("core.test.notification-2"));
       expect(notificationsModule.notifications.length).toBe(2);
 
       const firstNotification = notificationsModule.notifications[0];
@@ -138,10 +138,12 @@ describe("useNotifications Composable", () => {
 
     it("should return notifications after adding them", () => {
       const notificationsModule = createNotifications();
-      notificationsModule.notify(i18n.t('core.test.notification'), "info");
-      
+      notificationsModule.notify(i18n.t("core.test.notification"), "info");
+
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(i18n.t('core.test.notification'));
+      expect(notificationsModule.notifications[0].message).toBe(
+        i18n.t("core.test.notification"),
+      );
       expect(notificationsModule.notifications[0].type).toBe("info");
     });
   });
@@ -167,7 +169,7 @@ describe("useNotifications Composable", () => {
   describe("Context Integration", () => {
     it("should work with custom provider", () => {
       const customModule = createNotifications();
-      
+
       createRoot((dispose) => {
         // Test that the custom module works
         expect(customModule).toBeDefined();
@@ -179,20 +181,25 @@ describe("useNotifications Composable", () => {
 
     it("should share state across multiple operations", () => {
       const notificationsModule = createNotifications();
-      
+
       // Add notifications
-      notificationsModule.notify(i18n.t('core.notifications.first'), "info");
-      notificationsModule.notify(i18n.t('core.notifications.second'), "success");
-      
+      notificationsModule.notify(i18n.t("core.notifications.first"), "info");
+      notificationsModule.notify(
+        i18n.t("core.notifications.second"),
+        "success",
+      );
+
       expect(notificationsModule.notifications).toHaveLength(2);
-      
+
       // Remove one notification
       const firstId = notificationsModule.notifications[0].id;
       notificationsModule.removeNotification(firstId);
-      
+
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(i18n.t('core.notifications.second'));
-      
+      expect(notificationsModule.notifications[0].message).toBe(
+        i18n.t("core.notifications.second"),
+      );
+
       // Clear all notifications
       notificationsModule.clearNotifications();
       expect(notificationsModule.notifications).toHaveLength(0);

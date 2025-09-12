@@ -13,7 +13,9 @@ interface MaterialControlsPanelProps {
   onHide?: () => void;
 }
 
-export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (props) => {
+export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (
+  props,
+) => {
   return (
     <FloatingPanelAdvanced
       id="material-controls-panel"
@@ -25,11 +27,11 @@ export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (pro
         closable: true,
         backdrop: false,
         animationDelay: 300,
-        theme: "warning"
+        theme: "warning",
       }}
       onShow={props.onShow}
       onHide={props.onHide}
-      style={{ display: props.isVisible ? 'block' : 'none' }}
+      style={{ display: props.isVisible ? "block" : "none" }}
     >
       <div class="floating-panel-body">
         <h3>Material Effects</h3>

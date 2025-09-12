@@ -1,6 +1,6 @@
 /**
  * Text Types for Reynard Caption System
- * 
+ *
  * Type definitions for text processing components,
  * leveraging existing text processing infrastructure.
  */
@@ -100,13 +100,46 @@ export interface TextEditorState {
   zoomLevel: number;
 }
 
-export type SupportedTextFormat = 
-  | 'txt' | 'md' | 'json' | 'xml' | 'yaml' | 'yml' | 'toml'
-  | 'js' | 'ts' | 'tsx' | 'jsx' | 'py' | 'java' | 'cpp' | 'c' | 'cs'
-  | 'php' | 'rb' | 'go' | 'rs' | 'swift' | 'kt' | 'scala'
-  | 'html' | 'css' | 'scss' | 'sass' | 'less'
-  | 'sql' | 'sh' | 'bash' | 'zsh' | 'fish' | 'ps1' | 'bat'
-  | 'dockerfile' | 'gitignore' | 'env' | 'log';
+export type SupportedTextFormat =
+  | "txt"
+  | "md"
+  | "json"
+  | "xml"
+  | "yaml"
+  | "yml"
+  | "toml"
+  | "js"
+  | "ts"
+  | "tsx"
+  | "jsx"
+  | "py"
+  | "java"
+  | "cpp"
+  | "c"
+  | "cs"
+  | "php"
+  | "rb"
+  | "go"
+  | "rs"
+  | "swift"
+  | "kt"
+  | "scala"
+  | "html"
+  | "css"
+  | "scss"
+  | "sass"
+  | "less"
+  | "sql"
+  | "sh"
+  | "bash"
+  | "zsh"
+  | "fish"
+  | "ps1"
+  | "bat"
+  | "dockerfile"
+  | "gitignore"
+  | "env"
+  | "log";
 
 export interface TextFormatInfo {
   /** File extension */
@@ -126,4 +159,3 @@ export interface TextFormatInfo {
   /** Whether format supports formatting */
   supportsFormatting: boolean;
 }
-

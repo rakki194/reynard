@@ -52,7 +52,11 @@ describe("Package Exports", () => {
 
       const result = createLazyExport("test-package", mockLoader, mockOptions);
 
-      expect(mockCreateLazyExport).toHaveBeenCalledWith("test-package", mockLoader, mockOptions);
+      expect(mockCreateLazyExport).toHaveBeenCalledWith(
+        "test-package",
+        mockLoader,
+        mockOptions,
+      );
       expect(result).toBe(mockLazyExport);
     });
   });
@@ -77,7 +81,10 @@ describe("Package Exports", () => {
 
       const result = getLazyExport("test-package", mockLoader);
 
-      expect(mockGetLazyExport).toHaveBeenCalledWith("test-package", mockLoader);
+      expect(mockGetLazyExport).toHaveBeenCalledWith(
+        "test-package",
+        mockLoader,
+      );
       expect(result).toBe(mockLazyExport);
     });
   });

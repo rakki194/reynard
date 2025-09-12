@@ -1,6 +1,6 @@
 /**
  * RAG Search Tab Configuration
- * 
+ *
  * Centralized configuration for RAG search tabs
  * following Reynard modular conventions.
  */
@@ -24,7 +24,7 @@ const getIcon = (name: string) => {
 
 /**
  * Creates the tab configuration for RAG search interface
- * 
+ *
  * @returns Array of tab items with icons and labels
  */
 export const createRAGTabConfig = (): TabItem[] => [

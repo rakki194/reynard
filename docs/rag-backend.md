@@ -1,6 +1,6 @@
 # RAG Backend Implementation Guide
 
-*Comprehensive Retrieval-Augmented Generation system for Reynard with PostgreSQL + pgvector integration*
+_Comprehensive Retrieval-Augmented Generation system for Reynard with PostgreSQL + pgvector integration_
 
 ## Overview
 
@@ -72,11 +72,11 @@ Perform semantic search with advanced filtering options.
 
 ```typescript
 interface RAGQueryRequest {
-  q: string;                           // Search query
-  modality?: string;                   // Search modality (docs, code, captions, images)
-  top_k?: number;                      // Number of results (default: 20)
-  similarity_threshold?: number;       // Minimum similarity score (default: 0.0)
-  enable_reranking?: boolean;          // Enable result reranking (default: false)
+  q: string; // Search query
+  modality?: string; // Search modality (docs, code, captions, images)
+  top_k?: number; // Number of results (default: 20)
+  similarity_threshold?: number; // Minimum similarity score (default: 0.0)
+  enable_reranking?: boolean; // Enable result reranking (default: false)
 }
 ```
 
@@ -84,12 +84,12 @@ interface RAGQueryRequest {
 
 ```typescript
 interface RAGQueryResponse {
-  hits: RAGQueryHit[];                 // Search results
-  total: number;                       // Total number of results
-  query_time?: number;                 // Query processing time (seconds)
-  embedding_time?: number;             // Embedding generation time (seconds)
-  search_time?: number;                // Vector search time (seconds)
-  metadata?: Record<string, any>;      // Additional metadata
+  hits: RAGQueryHit[]; // Search results
+  total: number; // Total number of results
+  query_time?: number; // Query processing time (seconds)
+  embedding_time?: number; // Embedding generation time (seconds)
+  search_time?: number; // Vector search time (seconds)
+  metadata?: Record<string, any>; // Additional metadata
 }
 ```
 
@@ -103,10 +103,10 @@ Ingest documents with batch processing and progress tracking.
 
 ```typescript
 interface RAGIngestRequest {
-  items: RAGIngestItem[];              // Documents to ingest
-  model?: string;                      // Embedding model to use
-  batch_size?: number;                 // Batch size for processing (default: 16)
-  force_reindex?: boolean;             // Force reindexing of existing documents
+  items: RAGIngestItem[]; // Documents to ingest
+  model?: string; // Embedding model to use
+  batch_size?: number; // Batch size for processing (default: 16)
+  force_reindex?: boolean; // Force reindexing of existing documents
 }
 ```
 
@@ -303,7 +303,7 @@ const rag = useRAG({
   authFetch: myAuthFetch,
   queryUrl: "/api/rag/query",
   ingestUrl: "/api/rag/ingest",
-  adminUrl: "/api/rag/admin"
+  adminUrl: "/api/rag/admin",
 });
 
 // Perform semantic search
@@ -311,17 +311,18 @@ const results = await rag.query({
   q: "machine learning algorithms",
   modality: "docs",
   top_k: 10,
-  similarity_threshold: 0.7
+  similarity_threshold: 0.7,
 });
 
 // Ingest documents with streaming progress
-await rag.ingestDocuments([
-  { source: "doc1.txt", content: "document content" }
-], {
-  model: "mxbai-embed-large",
-  batch_size: 16,
-  force_reindex: false
-});
+await rag.ingestDocuments(
+  [{ source: "doc1.txt", content: "document content" }],
+  {
+    model: "mxbai-embed-large",
+    batch_size: 16,
+    force_reindex: false,
+  },
+);
 ```
 
 ## Performance Considerations

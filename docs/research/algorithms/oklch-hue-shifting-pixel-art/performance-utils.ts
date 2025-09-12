@@ -3,8 +3,8 @@
  * Caching and batch processing for efficient hue shifting
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import { basicHueShift } from './core-algorithms';
+import type { OKLCHColor } from "reynard-colors";
+import { basicHueShift } from "./core-algorithms";
 
 /**
  * Cached hue shifting for performance
@@ -12,11 +12,11 @@ import { basicHueShift } from './core-algorithms';
 export class CachedHueShifter {
   private cache = new Map<string, OKLCHColor>();
   private maxCacheSize: number;
-  
+
   constructor(maxCacheSize: number = 1000) {
     this.maxCacheSize = maxCacheSize;
   }
-  
+
   /**
    * Get shifted color with caching
    * @param baseColor - Base OKLCH color
@@ -27,24 +27,24 @@ export class CachedHueShifter {
   getShiftedColor(
     baseColor: OKLCHColor,
     shiftType: string,
-    intensity: number
+    intensity: number,
   ): OKLCHColor {
     const key = `${baseColor.l}-${baseColor.c}-${baseColor.h}-${shiftType}-${intensity}`;
-    
+
     if (this.cache.has(key)) {
       return this.cache.get(key)!;
     }
-    
+
     // Check cache size and evict if necessary
     if (this.cache.size >= this.maxCacheSize) {
       this.evictOldest();
     }
-    
+
     const shifted = basicHueShift(baseColor, shiftType as any, intensity);
     this.cache.set(key, shifted);
     return shifted;
   }
-  
+
   /**
    * Evict oldest cache entries
    */
@@ -54,14 +54,14 @@ export class CachedHueShifter {
       this.cache.delete(firstKey);
     }
   }
-  
+
   /**
    * Clear the cache
    */
   clearCache(): void {
     this.cache.clear();
   }
-  
+
   /**
    * Get cache statistics
    */
@@ -69,7 +69,7 @@ export class CachedHueShifter {
     return {
       size: this.cache.size,
       maxSize: this.maxCacheSize,
-      hitRate: 0 // Would need to track hits/misses for actual hit rate
+      hitRate: 0, // Would need to track hits/misses for actual hit rate
     };
   }
 }
@@ -83,12 +83,10 @@ export class CachedHueShifter {
  */
 export function batchHueShift(
   colors: OKLCHColor[],
-  shiftType: 'shadow' | 'highlight' | 'midtone',
-  intensity: number
+  shiftType: "shadow" | "highlight" | "midtone",
+  intensity: number,
 ): OKLCHColor[] {
-  return colors.map(color => 
-    basicHueShift(color, shiftType, intensity)
-  );
+  return colors.map((color) => basicHueShift(color, shiftType, intensity));
 }
 
 /**
@@ -100,11 +98,15 @@ export function batchHueShift(
  */
 export function createColorLookupTable(
   baseColors: OKLCHColor[],
-  shiftTypes: Array<'shadow' | 'highlight' | 'midtone'> = ['shadow', 'highlight', 'midtone'],
-  intensities: number[] = [0.3, 0.5, 0.7]
+  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = [
+    "shadow",
+    "highlight",
+    "midtone",
+  ],
+  intensities: number[] = [0.3, 0.5, 0.7],
 ): Map<string, OKLCHColor> {
   const lookup = new Map<string, OKLCHColor>();
-  
+
   baseColors.forEach((baseColor, baseIndex) => {
     shiftTypes.forEach((shiftType, shiftIndex) => {
       intensities.forEach((intensity, intensityIndex) => {
@@ -114,7 +116,7 @@ export function createColorLookupTable(
       });
     });
   });
-  
+
   return lookup;
 }
 
@@ -128,24 +130,24 @@ export function createColorLookupTable(
 export function interpolateColors(
   color1: OKLCHColor,
   color2: OKLCHColor,
-  steps: number = 10
+  steps: number = 10,
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
-  
+
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
     const l = color1.l + (color2.l - color1.l) * t;
     const c = color1.c + (color2.c - color1.c) * t;
-    
+
     // Handle hue interpolation with shortest path
     let h = color1.h + (color2.h - color1.h) * t;
     if (Math.abs(color2.h - color1.h) > 180) {
       h = color1.h + ((color2.h - color1.h) % 360) * t;
     }
     h = (h + 360) % 360;
-    
+
     colors.push({ l, c, h });
   }
-  
+
   return colors;
 }

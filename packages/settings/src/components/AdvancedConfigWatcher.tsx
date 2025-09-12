@@ -14,7 +14,9 @@ export interface AdvancedConfigWatcherProps {
   class?: string;
 }
 
-export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (props) => {
+export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
+  props,
+) => {
   const settings = props.settings || useSettings();
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaving, setIsSaving] = createSignal(false);
@@ -40,16 +42,34 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
   const loadConfigWatcherSettings = async () => {
     setIsLoading(true);
     try {
-      setEnableWatching(settings().getSetting("config_watcher.enable_watching") || true);
-      setWatchInterval(settings().getSetting("config_watcher.watch_interval") || 5000);
-      setEnableBackups(settings().getSetting("config_watcher.enable_backups") || true);
-      setBackupInterval(settings().getSetting("config_watcher.backup_interval") || 3600000);
+      setEnableWatching(
+        settings().getSetting("config_watcher.enable_watching") || true,
+      );
+      setWatchInterval(
+        settings().getSetting("config_watcher.watch_interval") || 5000,
+      );
+      setEnableBackups(
+        settings().getSetting("config_watcher.enable_backups") || true,
+      );
+      setBackupInterval(
+        settings().getSetting("config_watcher.backup_interval") || 3600000,
+      );
       setMaxBackups(settings().getSetting("config_watcher.max_backups") || 10);
-      setEnableTemplates(settings().getSetting("config_watcher.enable_templates") || true);
-      setEnableScheduling(settings().getSetting("config_watcher.enable_scheduling") || false);
-      setScheduleInterval(settings().getSetting("config_watcher.schedule_interval") || 86400000);
-      setEnableApproval(settings().getSetting("config_watcher.enable_approval") || false);
-      setEnableImportExport(settings().getSetting("config_watcher.enable_import_export") || true);
+      setEnableTemplates(
+        settings().getSetting("config_watcher.enable_templates") || true,
+      );
+      setEnableScheduling(
+        settings().getSetting("config_watcher.enable_scheduling") || false,
+      );
+      setScheduleInterval(
+        settings().getSetting("config_watcher.schedule_interval") || 86400000,
+      );
+      setEnableApproval(
+        settings().getSetting("config_watcher.enable_approval") || false,
+      );
+      setEnableImportExport(
+        settings().getSetting("config_watcher.enable_import_export") || true,
+      );
     } catch (error) {
       console.error("Failed to load config watcher settings:", error);
     } finally {
@@ -60,17 +80,44 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
   const saveConfigWatcherSettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting("config_watcher.enable_watching", enableWatching());
-      await settings().setSetting("config_watcher.watch_interval", watchInterval());
-      await settings().setSetting("config_watcher.enable_backups", enableBackups());
-      await settings().setSetting("config_watcher.backup_interval", backupInterval());
+      await settings().setSetting(
+        "config_watcher.enable_watching",
+        enableWatching(),
+      );
+      await settings().setSetting(
+        "config_watcher.watch_interval",
+        watchInterval(),
+      );
+      await settings().setSetting(
+        "config_watcher.enable_backups",
+        enableBackups(),
+      );
+      await settings().setSetting(
+        "config_watcher.backup_interval",
+        backupInterval(),
+      );
       await settings().setSetting("config_watcher.max_backups", maxBackups());
-      await settings().setSetting("config_watcher.enable_templates", enableTemplates());
-      await settings().setSetting("config_watcher.enable_scheduling", enableScheduling());
-      await settings().setSetting("config_watcher.schedule_interval", scheduleInterval());
-      await settings().setSetting("config_watcher.enable_approval", enableApproval());
-      await settings().setSetting("config_watcher.enable_import_export", enableImportExport());
-      
+      await settings().setSetting(
+        "config_watcher.enable_templates",
+        enableTemplates(),
+      );
+      await settings().setSetting(
+        "config_watcher.enable_scheduling",
+        enableScheduling(),
+      );
+      await settings().setSetting(
+        "config_watcher.schedule_interval",
+        scheduleInterval(),
+      );
+      await settings().setSetting(
+        "config_watcher.enable_approval",
+        enableApproval(),
+      );
+      await settings().setSetting(
+        "config_watcher.enable_import_export",
+        enableImportExport(),
+      );
+
       await settings().saveSettings();
     } catch (error) {
       console.error("Failed to save config watcher settings:", error);
@@ -97,14 +144,18 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
         </p>
 
         <Show when={isLoading()}>
-          <div class="loading-state">Loading config watcher configuration...</div>
+          <div class="loading-state">
+            Loading config watcher configuration...
+          </div>
         </Show>
 
         <Show when={!isLoading()}>
           {/* Core Settings */}
           <div class="setting-group">
             <h4>Core Settings</h4>
-            <p class="setting-description">Basic configuration watching and monitoring.</p>
+            <p class="setting-description">
+              Basic configuration watching and monitoring.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -139,24 +190,20 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "history"}>
             <div class="setting-group">
               <h4>Configuration History</h4>
-              <p class="setting-description">View and manage configuration change history.</p>
+              <p class="setting-description">
+                View and manage configuration change history.
+              </p>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  View Change History
-                </Button>
+                <Button variant="secondary">View Change History</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Clear History
-                </Button>
+                <Button variant="secondary">Clear History</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Export History
-                </Button>
+                <Button variant="secondary">Export History</Button>
               </div>
             </div>
           </Show>
@@ -165,7 +212,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "backups"}>
             <div class="setting-group">
               <h4>Backup Configuration</h4>
-              <p class="setting-description">Configure automatic configuration backups.</p>
+              <p class="setting-description">
+                Configure automatic configuration backups.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -181,7 +230,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
                   label="Backup Interval (ms)"
                   type="number"
                   value={backupInterval()}
-                  onChange={(value) => setBackupInterval(parseInt(value) || 3600000)}
+                  onChange={(value) =>
+                    setBackupInterval(parseInt(value) || 3600000)
+                  }
                   description="How often to create configuration backups"
                   validation={{ min: 300000, max: 86400000 }}
                   disabled={!enableBackups()}
@@ -201,15 +252,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Create Manual Backup
-                </Button>
+                <Button variant="secondary">Create Manual Backup</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Restore from Backup
-                </Button>
+                <Button variant="secondary">Restore from Backup</Button>
               </div>
             </div>
           </Show>
@@ -218,7 +265,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "templates"}>
             <div class="setting-group">
               <h4>Configuration Templates</h4>
-              <p class="setting-description">Manage configuration templates and presets.</p>
+              <p class="setting-description">
+                Manage configuration templates and presets.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -230,21 +279,15 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Create Template
-                </Button>
+                <Button variant="secondary">Create Template</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Load Template
-                </Button>
+                <Button variant="secondary">Load Template</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Manage Templates
-                </Button>
+                <Button variant="secondary">Manage Templates</Button>
               </div>
             </div>
           </Show>
@@ -253,7 +296,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "schedule"}>
             <div class="setting-group">
               <h4>Scheduled Operations</h4>
-              <p class="setting-description">Configure scheduled configuration operations.</p>
+              <p class="setting-description">
+                Configure scheduled configuration operations.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -269,7 +314,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
                   label="Schedule Interval (ms)"
                   type="number"
                   value={scheduleInterval()}
-                  onChange={(value) => setScheduleInterval(parseInt(value) || 86400000)}
+                  onChange={(value) =>
+                    setScheduleInterval(parseInt(value) || 86400000)
+                  }
                   description="Default interval for scheduled operations"
                   validation={{ min: 3600000, max: 604800000 }}
                   disabled={!enableScheduling()}
@@ -277,15 +324,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Create Schedule
-                </Button>
+                <Button variant="secondary">Create Schedule</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  View Schedules
-                </Button>
+                <Button variant="secondary">View Schedules</Button>
               </div>
             </div>
           </Show>
@@ -294,7 +337,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "approval"}>
             <div class="setting-group">
               <h4>Approval Workflow</h4>
-              <p class="setting-description">Configure configuration change approval process.</p>
+              <p class="setting-description">
+                Configure configuration change approval process.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -306,21 +351,15 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Configure Approvers
-                </Button>
+                <Button variant="secondary">Configure Approvers</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  View Pending Approvals
-                </Button>
+                <Button variant="secondary">View Pending Approvals</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Approval History
-                </Button>
+                <Button variant="secondary">Approval History</Button>
               </div>
             </div>
           </Show>
@@ -329,7 +368,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
           <Show when={activeTab() === "import"}>
             <div class="setting-group">
               <h4>Import/Export</h4>
-              <p class="setting-description">Import and export configuration data.</p>
+              <p class="setting-description">
+                Import and export configuration data.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -341,21 +382,15 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Export Configuration
-                </Button>
+                <Button variant="secondary">Export Configuration</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Import Configuration
-                </Button>
+                <Button variant="secondary">Import Configuration</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Validate Configuration
-                </Button>
+                <Button variant="secondary">Validate Configuration</Button>
               </div>
             </div>
           </Show>
@@ -366,7 +401,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
             <div class="config-summary">
               <div class="config-item">
                 <span class="config-label">Watching:</span>
-                <span class="config-value">{enableWatching() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {enableWatching() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Watch Interval:</span>
@@ -374,7 +411,9 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
               <div class="config-item">
                 <span class="config-label">Backups:</span>
-                <span class="config-value">{enableBackups() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {enableBackups() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Backup Interval:</span>
@@ -386,15 +425,21 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (pro
               </div>
               <div class="config-item">
                 <span class="config-label">Templates:</span>
-                <span class="config-value">{enableTemplates() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {enableTemplates() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Scheduling:</span>
-                <span class="config-value">{enableScheduling() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {enableScheduling() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Approval:</span>
-                <span class="config-value">{enableApproval() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {enableApproval() ? "Enabled" : "Disabled"}
+                </span>
               </div>
             </div>
           </div>

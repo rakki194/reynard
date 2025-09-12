@@ -21,11 +21,11 @@ pnpm add reynard-api-client
 ### Basic Setup
 
 ```typescript
-import { createReynardApiClient } from 'reynard-api-client';
+import { createReynardApiClient } from "reynard-api-client";
 
 const apiClient = createReynardApiClient({
-  basePath: 'http://localhost:8000',
-  authFetch: myAuthFetch // Optional authenticated fetch function
+  basePath: "http://localhost:8000",
+  authFetch: myAuthFetch, // Optional authenticated fetch function
 });
 ```
 
@@ -115,7 +115,7 @@ function ChatInterface() {
           </div>
         )}
       </For>
-      <input 
+      <input
         onKeyPress={(e) => {
           if (e.key === 'Enter') {
             sendMessage(e.target.value);

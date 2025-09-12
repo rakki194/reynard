@@ -17,12 +17,7 @@ export function useThreeJSAnimation() {
     camera: any,
     renderer: any,
     controls: any,
-    onRender?: (
-      scene: any,
-      camera: any,
-      renderer: any,
-      controls: any,
-    ) => void,
+    onRender?: (scene: any, camera: any, renderer: any, controls: any) => void,
   ) => {
     const animate = () => {
       const currentScene = scene();

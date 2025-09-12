@@ -1,23 +1,23 @@
 /**
  * ComfyUI Demo App
- * 
+ *
  * Demonstrates ComfyUI integration with Reynard framework.
  */
 
-import { Component } from 'solid-js';
-import { ComfyHealthStatus, ComfyText2ImgForm } from 'reynard-comfy';
+import { Component } from "solid-js";
+import { ComfyHealthStatus, ComfyText2ImgForm } from "reynard-comfy";
 
 const App: Component = () => {
   const handleGenerate = (promptId: string) => {
-    console.log('Generation started:', promptId);
+    console.log("Generation started:", promptId);
   };
 
   const handleComplete = (result: any) => {
-    console.log('Generation completed:', result);
+    console.log("Generation completed:", result);
   };
 
   const handleError = (error: string) => {
-    console.error('Generation failed:', error);
+    console.error("Generation failed:", error);
   };
 
   return (

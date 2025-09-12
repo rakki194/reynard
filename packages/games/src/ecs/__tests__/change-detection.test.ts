@@ -16,7 +16,7 @@ import {
   ResourceType,
   StorageType,
   Tick,
-  World
+  World,
 } from "../types";
 import { createWorld } from "../world";
 
@@ -26,7 +26,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Velocity implements Component {
@@ -34,7 +34,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Health implements Component {
@@ -42,12 +42,12 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) { }
+  ) {}
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) { }
+  constructor(public name: string) {}
 }
 
 // Test resources
@@ -56,7 +56,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) { }
+  ) {}
 }
 
 // Component types - will be initialized in beforeEach
@@ -76,10 +76,18 @@ describe("Change Detection System", () => {
     world = createWorld();
 
     // Register component types
-    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
-    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world
+      .getComponentRegistry()
+      .register("Position", StorageType.Table, () => new Position(0, 0));
+    world
+      .getComponentRegistry()
+      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world
+      .getComponentRegistry()
+      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world
+      .getComponentRegistry()
+      .register("Player", StorageType.SparseSet, () => new Player("Player"));
 
     // Get the registered component types
     PositionType = world.getComponentRegistry().getByName("Position")!;

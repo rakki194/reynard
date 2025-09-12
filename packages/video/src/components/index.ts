@@ -1,6 +1,6 @@
 /**
  * Video Components Barrel Export
- * 
+ *
  * Provides clean API boundaries for all video-related components.
  */
 
@@ -19,5 +19,5 @@ export type {
   VideoGridProps,
   VideoGridContentProps,
   VideoFileCardProps,
-  VideoPlayerProps
+  VideoPlayerProps,
 } from "../types";

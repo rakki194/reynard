@@ -1,6 +1,6 @@
 /**
  * Multi-Modal Gallery Component Test Suite
- * 
+ *
  * Tests for the MultiModalGallery component including file management,
  * view switching, and filtering functionality.
  */
@@ -82,121 +82,111 @@ describe("MultiModalGallery", () => {
 
   describe("Rendering", () => {
     it("should render with initial files", () => {
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           callbacks={mockCallbacks}
         />
-      );
-      
+      ));
+
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
 
     it("should render with custom class name", () => {
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           class="custom-gallery"
         />
+      ));
+
+      expect(screen.getByTestId("multimodal-gallery-view")).toHaveClass(
+        "custom-gallery",
       );
-      
-      expect(screen.getByTestId("multimodal-gallery-view")).toHaveClass("custom-gallery");
     });
 
     it("should render with default view", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          defaultView="list"
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="list" />
+      ));
+
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
 
     it("should render with max files limit", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          maxFiles={5}
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={5} />
+      ));
+
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
   });
 
   describe("File Management", () => {
     it("should handle file selection", () => {
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           callbacks={mockCallbacks}
         />
-      );
-      
+      ));
+
       // Simulate file selection through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       expect(mockCallbacks.onFileSelect).toHaveBeenCalled();
     });
 
     it("should handle file removal", () => {
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           callbacks={mockCallbacks}
         />
-      );
-      
+      ));
+
       // Simulate file removal through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       expect(mockCallbacks.onFileRemove).toHaveBeenCalled();
     });
 
     it("should handle file modification", () => {
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           callbacks={mockCallbacks}
         />
-      );
-      
+      ));
+
       // Simulate file modification through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       expect(mockCallbacks.onFileModify).toHaveBeenCalled();
     });
   });
 
   describe("View Management", () => {
     it("should switch between grid and list views", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          defaultView="grid"
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should handle view changes", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          defaultView="grid"
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       // View change should be handled by the composable
       expect(galleryView).toBeInTheDocument();
     });
@@ -204,26 +194,18 @@ describe("MultiModalGallery", () => {
 
   describe("Filtering", () => {
     it("should filter files by type", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-        />
-      );
-      
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} />);
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       // Filtering should be handled by the composable
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should show file counts for each type", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-        />
-      );
-      
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} />);
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
@@ -231,28 +213,22 @@ describe("MultiModalGallery", () => {
 
   describe("File Upload", () => {
     it("should handle file upload", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          maxFiles={10}
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={10} />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
-      
+
       // File upload should be handled by the composable
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should respect max files limit", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          maxFiles={2}
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={2} />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
@@ -260,25 +236,19 @@ describe("MultiModalGallery", () => {
 
   describe("Loading States", () => {
     it("should show loading state", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          loading={true}
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} loading={true} />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should show error state", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-          error="Test error"
-        />
-      );
-      
+      render(() => (
+        <MultiModalGallery initialFiles={mockInitialFiles} error="Test error" />
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
@@ -286,23 +256,15 @@ describe("MultiModalGallery", () => {
 
   describe("Accessibility", () => {
     it("should have proper ARIA labels", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-        />
-      );
-      
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} />);
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should support keyboard navigation", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={mockInitialFiles}
-        />
-      );
-      
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} />);
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
@@ -318,24 +280,20 @@ describe("MultiModalGallery", () => {
         autoUpload: false,
       };
 
-      render(() => 
-        <MultiModalGallery 
+      render(() => (
+        <MultiModalGallery
           initialFiles={mockInitialFiles}
           config={customConfig}
         />
-      );
-      
+      ));
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should handle empty files array", () => {
-      render(() => 
-        <MultiModalGallery 
-          initialFiles={[]}
-        />
-      );
-      
+      render(() => <MultiModalGallery initialFiles={[]} />);
+
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });

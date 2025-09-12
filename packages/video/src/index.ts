@@ -1,6 +1,6 @@
 /**
  * Reynard Video Package
- * 
+ *
  * Video processing and playback components for Reynard applications.
  */
 

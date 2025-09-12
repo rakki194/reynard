@@ -220,11 +220,13 @@ export default function ReynardTutorial() {
           <For each={tutorialData}>
             {(section, index) => (
               <div
-                class={`tutorial-section-item ${section.id === tutorialState().currentSection ? "active" : ""
-                  } ${tutorialState().completedSections.includes(section.id)
+                class={`tutorial-section-item ${
+                  section.id === tutorialState().currentSection ? "active" : ""
+                } ${
+                  tutorialState().completedSections.includes(section.id)
                     ? "completed"
                     : ""
-                  }`}
+                }`}
                 onClick={() =>
                   setTutorialState((prev) => ({
                     ...prev,

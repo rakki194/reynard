@@ -1,12 +1,12 @@
 /**
  * Reynard Caption Package
- * 
+ *
  * Caption generation and text editing components for Reynard applications.
- * 
+ *
  * Note: Audio, video, image, and multimodal components have been moved to
  * dedicated packages:
  * - Audio components: reynard-audio
- * - Video components: reynard-video  
+ * - Video components: reynard-video
  * - Image components: reynard-image
  * - Multimodal components: reynard-multimodal
  * - Model management: reynard-model-management

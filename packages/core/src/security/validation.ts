@@ -3,7 +3,7 @@
  * Input validation and sanitization functions
  */
 
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 
 /**
  * Validate and sanitize HTML content
@@ -589,7 +589,10 @@ export function validateInput(
   let sanitized = input;
 
   if (!input || typeof input !== "string") {
-    return { isValid: false, errors: [i18n.t('core.validation.invalid-input-type')] };
+    return {
+      isValid: false,
+      errors: [i18n.t("core.validation.invalid-input-type")],
+    };
   }
 
   // Length validation
@@ -599,28 +602,34 @@ export function validateInput(
 
   // HTML validation
   if (!options.allowHTML && !validateXSSInput(input)) {
-    errors.push(i18n.t('core.security.input-contains-potentially-dangerous-html'));
+    errors.push(
+      i18n.t("core.security.input-contains-potentially-dangerous-html"),
+    );
     sanitized = sanitizeHTML(input);
   }
 
   // SQL injection validation
   if (!options.allowSQL && !validateSQLInput(input)) {
-    errors.push(i18n.t('core.security.input-contains-potentially-dangerous-sql-patterns'));
+    errors.push(
+      i18n.t("core.security.input-contains-potentially-dangerous-sql-patterns"),
+    );
   }
 
   // XSS validation
   if (!options.allowXSS && !validateXSSInput(input)) {
-    errors.push(i18n.t('core.security.input-contains-potentially-dangerous-xss-patterns'));
+    errors.push(
+      i18n.t("core.security.input-contains-potentially-dangerous-xss-patterns"),
+    );
   }
 
   // Path traversal validation
   if (/\.\./.test(input)) {
-    errors.push(i18n.t('core.security.input-contains-path-traversal-patterns'));
+    errors.push(i18n.t("core.security.input-contains-path-traversal-patterns"));
   }
 
   // Windows reserved names validation
   if (/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$/i.test(input)) {
-    errors.push(i18n.t('core.security.input-contains-windows-reserved-names'));
+    errors.push(i18n.t("core.security.input-contains-windows-reserved-names"));
   }
 
   // Executable file validation (but not for email addresses)
@@ -628,27 +637,31 @@ export function validateInput(
     /\.(exe|bat|cmd|scr|pif|msi)$/i.test(input) ||
     (/\.com$/i.test(input) && !/@/.test(input))
   ) {
-    errors.push(i18n.t('core.security.input-contains-executable-file-extensions'));
+    errors.push(
+      i18n.t("core.security.input-contains-executable-file-extensions"),
+    );
   }
 
   // Null byte validation
   if (input.includes("\0")) {
-    errors.push(i18n.t('core.security.input-contains-null-bytes'));
+    errors.push(i18n.t("core.security.input-contains-null-bytes"));
   }
 
   // Hidden file validation
   if (/^\./.test(input)) {
-    errors.push(i18n.t('core.security.input-contains-hidden-files'));
+    errors.push(i18n.t("core.security.input-contains-hidden-files"));
   }
 
   // JavaScript file validation
   if (/\.(js|javascript)$/i.test(input)) {
-    errors.push(i18n.t('core.security.input-contains-javascript-file-extensions'));
+    errors.push(
+      i18n.t("core.security.input-contains-javascript-file-extensions"),
+    );
   }
 
   // Pattern validation
   if (options.pattern && !options.pattern.test(input)) {
-    errors.push(i18n.t('core.validation.does-not-match-pattern'));
+    errors.push(i18n.t("core.validation.does-not-match-pattern"));
   }
 
   return {

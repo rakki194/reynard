@@ -1,11 +1,17 @@
 /**
  * Multi-Modal Types for Reynard Caption System
- * 
+ *
  * Type definitions for multi-modal gallery components,
  * leveraging existing file processing infrastructure.
  */
 
-export type MediaType = "image" | "video" | "audio" | "text" | "document" | "unknown";
+export type MediaType =
+  | "image"
+  | "video"
+  | "audio"
+  | "text"
+  | "document"
+  | "unknown";
 
 export type GalleryView = "grid" | "list" | "timeline";
 
@@ -185,7 +191,12 @@ export interface BatchOperation {
 
 export interface GalleryEvent {
   /** Event type */
-  type: "fileSelect" | "fileRemove" | "fileModify" | "viewChange" | "filterChange";
+  type:
+    | "fileSelect"
+    | "fileRemove"
+    | "fileModify"
+    | "viewChange"
+    | "filterChange";
   /** Event data */
   data: any;
   /** Event timestamp */
@@ -294,4 +305,3 @@ export type ModalityId = (typeof MODALITY_IDS)[keyof typeof MODALITY_IDS];
  */
 export type FunctionalityId =
   (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
-

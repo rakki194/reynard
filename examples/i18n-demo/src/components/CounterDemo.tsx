@@ -14,7 +14,12 @@ const CounterDemo: Component = () => {
       <p class="count-text">
         {count() === 0 && t("common.none")}
         {count() === 1 && getDemoTranslation(locale, "oneItem")}
-        {count() !== 0 && count() !== 1 && getDemoTranslation(locale, "multipleItems").replace("{count}", count().toString())}
+        {count() !== 0 &&
+          count() !== 1 &&
+          getDemoTranslation(locale, "multipleItems").replace(
+            "{count}",
+            count().toString(),
+          )}
       </p>
     </div>
   );

@@ -16,14 +16,14 @@ import { RAG3DVisualizationModal } from "./components/RAG3DVisualizationModal";
 import { RAGFileModal } from "./components/RAGFileModal";
 import { RAGImageModal } from "./components/RAGImageModal";
 import { RAGSearchHistory } from "./components/RAGSearchHistory";
-import type { 
-  RAGSearchProps, 
-  RAGModality, 
-  FileModalState, 
-  ImageModalState, 
+import type {
+  RAGSearchProps,
+  RAGModality,
+  FileModalState,
+  ImageModalState,
   ThreeDModalState,
   SearchHistoryItem,
-  RAGQueryHit
+  RAGQueryHit,
 } from "./types";
 import "./styles.css";
 
@@ -38,39 +38,46 @@ const getIcon = (name: string) => {
 
 export function RAGSearch(props: RAGSearchProps) {
   // Use component composable for initialization and state management
-  const { ragState, handlers, activeTab, setActiveTab } = useRAGSearchComponent({ props });
+  const { ragState, handlers, activeTab, setActiveTab } = useRAGSearchComponent(
+    { props },
+  );
 
   // Advanced features state
-  const [modality, setModality] = createSignal<RAGModality>('docs');
+  const [modality, setModality] = createSignal<RAGModality>("docs");
   const [topK, setTopK] = createSignal<number>(20);
 
   // Modal states
   const [fileModalState, setFileModalState] = createSignal<FileModalState>({
     isOpen: false,
-    filePath: '',
-    fileName: '',
-    fileContent: '',
+    filePath: "",
+    fileName: "",
+    fileContent: "",
   });
 
   const [imageModalState, setImageModalState] = createSignal<ImageModalState>({
     isOpen: false,
-    imagePath: '',
-    imageId: '',
+    imagePath: "",
+    imageId: "",
     score: 0,
   });
 
-  const [threeDModalState, setThreeDModalState] = createSignal<ThreeDModalState>({
-    isOpen: false,
-    searchQuery: '',
-    searchResults: [],
-  });
+  const [threeDModalState, setThreeDModalState] =
+    createSignal<ThreeDModalState>({
+      isOpen: false,
+      searchQuery: "",
+      searchResults: [],
+    });
 
   // Search history state
-  const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>([]);
+  const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>(
+    [],
+  );
 
   // Enhanced search results with advanced features
   const [enhancedResults, setEnhancedResults] = createSignal<RAGQueryHit[]>([]);
-  const [queryEmbedding, setQueryEmbedding] = createSignal<number[] | undefined>();
+  const [queryEmbedding, setQueryEmbedding] = createSignal<
+    number[] | undefined
+  >();
 
   // Get tab configuration
   const tabItems = createRAGTabConfig(!!props.showSearchHistory);
@@ -83,7 +90,7 @@ export function RAGSearch(props: RAGSearchProps) {
       // Perform search with current modality
       const results = await performRAGSearch(query, modality(), topK());
       setEnhancedResults(results);
-      
+
       // Add to search history
       const historyItem: SearchHistoryItem = {
         id: Date.now().toString(),
@@ -93,29 +100,35 @@ export function RAGSearch(props: RAGSearchProps) {
         resultCount: results.length,
         topScore: results.length > 0 ? results[0].score : 0,
       };
-      
-      setSearchHistory(prev => [historyItem, ...prev.slice(0, 49)]); // Keep last 50 items
-      
+
+      setSearchHistory((prev) => [historyItem, ...prev.slice(0, 49)]); // Keep last 50 items
+
       // Extract query embedding if available
       if (results.length > 0 && results[0].embedding_vector) {
         setQueryEmbedding(results[0].embedding_vector);
       }
-      
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
     }
   };
 
   // Mock search function (replace with actual API call)
-  const performRAGSearch = async (query: string, modality: RAGModality, topK: number): Promise<RAGQueryHit[]> => {
+  const performRAGSearch = async (
+    query: string,
+    modality: RAGModality,
+    topK: number,
+  ): Promise<RAGQueryHit[]> => {
     // This would be replaced with actual API call
     return Array.from({ length: Math.min(topK, 10) }, (_, i) => ({
       id: `result-${i}`,
       score: Math.random() * 0.4 + 0.6, // 0.6-1.0
-      embedding_vector: Array.from({ length: 384 }, () => Math.random() * 2 - 1),
-      file_path: modality === 'docs' ? `/path/to/document-${i}.txt` : undefined,
-      image_path: modality === 'images' ? `/path/to/image-${i}.jpg` : undefined,
-      image_id: modality === 'images' ? `image-${i}` : undefined,
+      embedding_vector: Array.from(
+        { length: 384 },
+        () => Math.random() * 2 - 1,
+      ),
+      file_path: modality === "docs" ? `/path/to/document-${i}.txt` : undefined,
+      image_path: modality === "images" ? `/path/to/image-${i}.jpg` : undefined,
+      image_id: modality === "images" ? `image-${i}` : undefined,
       metadata: {
         title: `Result ${i + 1}`,
         source: `example-${modality}`,
@@ -124,7 +137,13 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   // Modal handlers
-  const handleOpenFileModal = (filePath: string, fileName: string, fileContent: string, chunkIndex?: number, chunkText?: string) => {
+  const handleOpenFileModal = (
+    filePath: string,
+    fileName: string,
+    fileContent: string,
+    chunkIndex?: number,
+    chunkText?: string,
+  ) => {
     setFileModalState({
       isOpen: true,
       filePath,
@@ -136,10 +155,15 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleCloseFileModal = () => {
-    setFileModalState(prev => ({ ...prev, isOpen: false }));
+    setFileModalState((prev) => ({ ...prev, isOpen: false }));
   };
 
-  const handleOpenImageModal = (imagePath: string, imageId: string, score: number, metadata?: Record<string, unknown>) => {
+  const handleOpenImageModal = (
+    imagePath: string,
+    imageId: string,
+    score: number,
+    metadata?: Record<string, unknown>,
+  ) => {
     setImageModalState({
       isOpen: true,
       imagePath,
@@ -150,7 +174,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleCloseImageModal = () => {
-    setImageModalState(prev => ({ ...prev, isOpen: false }));
+    setImageModalState((prev) => ({ ...prev, isOpen: false }));
   };
 
   const handleOpen3DModal = () => {
@@ -163,7 +187,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleClose3DModal = () => {
-    setThreeDModalState(prev => ({ ...prev, isOpen: false }));
+    setThreeDModalState((prev) => ({ ...prev, isOpen: false }));
   };
 
   // Search history handlers
@@ -178,14 +202,14 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleRemoveHistoryItem = (id: string) => {
-    setSearchHistory(prev => prev.filter(item => item.id !== id));
+    setSearchHistory((prev) => prev.filter((item) => item.id !== id));
   };
 
   // Sync search query with suggestions
   createEffect(() => {
     const query = ragState.query();
     // Suggestions logic can be added here if needed
-    console.log('Query changed:', query);
+    console.log("Query changed:", query);
   });
 
   return (
@@ -198,13 +222,13 @@ export function RAGSearch(props: RAGSearchProps) {
             value={ragState.query()}
             onChange={ragState.setQuery}
             onKeyPress={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleAdvancedSearch(ragState.query());
               }
             }}
             fullWidth
           />
-          
+
           <Button
             variant="primary"
             onClick={() => handleAdvancedSearch(ragState.query())}
@@ -219,22 +243,22 @@ export function RAGSearch(props: RAGSearchProps) {
             value={modality()}
             onChange={(value) => setModality(value as RAGModality)}
             options={[
-              { value: 'docs', label: 'Documents' },
-              { value: 'images', label: 'Images' },
-              { value: 'code', label: 'Code' },
-              { value: 'captions', label: 'Captions' },
+              { value: "docs", label: "Documents" },
+              { value: "images", label: "Images" },
+              { value: "code", label: "Code" },
+              { value: "captions", label: "Captions" },
             ]}
             size="sm"
           />
-          
+
           <Select
             value={topK()}
             onChange={(value) => setTopK(Number(value))}
             options={[
-              { value: 10, label: '10 results' },
-              { value: 20, label: '20 results' },
-              { value: 50, label: '50 results' },
-              { value: 100, label: '100 results' },
+              { value: 10, label: "10 results" },
+              { value: 20, label: "20 results" },
+              { value: 50, label: "50 results" },
+              { value: 100, label: "100 results" },
             ]}
             size="sm"
           />
@@ -242,20 +266,16 @@ export function RAGSearch(props: RAGSearchProps) {
 
         {/* Advanced Feature Buttons */}
         <div class="advanced-features">
-          <Show when={props.show3DVisualization && enhancedResults().length > 0}>
-            <Button
-              variant="secondary"
-              onClick={handleOpen3DModal}
-            >
+          <Show
+            when={props.show3DVisualization && enhancedResults().length > 0}
+          >
+            <Button variant="secondary" onClick={handleOpen3DModal}>
               3D Visualization
             </Button>
           </Show>
-          
+
           <Show when={props.showSearchHistory}>
-            <Button
-              variant="secondary"
-              onClick={() => setActiveTab('history')}
-            >
+            <Button variant="secondary" onClick={() => setActiveTab("history")}>
               Search History
             </Button>
           </Show>
@@ -282,9 +302,9 @@ export function RAGSearch(props: RAGSearchProps) {
             modality: modality(),
           }}
         />
-        
+
         {/* Search History Tab */}
-        <Show when={props.showSearchHistory && activeTab() === 'history'}>
+        <Show when={props.showSearchHistory && activeTab() === "history"}>
           <div class="rag-tab-panel">
             <RAGSearchHistory
               searchHistory={searchHistory()}

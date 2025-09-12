@@ -3,21 +3,21 @@
  * Provides helper functions for common sprite operations
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import type { PixelSprite } from './sprite-renderer';
+import type { OKLCHColor } from "reynard-colors";
+import type { PixelSprite } from "./sprite-renderer";
 
 /**
  * Create a sprite from a 2D array of color indices
  */
 export function createSprite(
   pixels: number[][],
-  palette: OKLCHColor[]
+  palette: OKLCHColor[],
 ): PixelSprite {
   return {
     width: pixels[0]?.length || 0,
     height: pixels.length,
     pixels,
-    palette
+    palette,
   };
 }
 
@@ -27,10 +27,10 @@ export function createSprite(
 export function createRectSprite(
   width: number,
   height: number,
-  color: OKLCHColor
+  color: OKLCHColor,
 ): PixelSprite {
   const pixels: number[][] = [];
-  
+
   for (let row = 0; row < height; row++) {
     const pixelRow: number[] = [];
     for (let col = 0; col < width; col++) {
@@ -38,12 +38,12 @@ export function createRectSprite(
     }
     pixels.push(pixelRow);
   }
-  
+
   return {
     width,
     height,
     pixels,
-    palette: [color]
+    palette: [color],
   };
 }
 
@@ -55,10 +55,10 @@ export function createCheckerboardSprite(
   height: number,
   color1: OKLCHColor,
   color2: OKLCHColor,
-  checkerSize: number = 1
+  checkerSize: number = 1,
 ): PixelSprite {
   const pixels: number[][] = [];
-  
+
   for (let row = 0; row < height; row++) {
     const pixelRow: number[] = [];
     for (let col = 0; col < width; col++) {
@@ -69,12 +69,12 @@ export function createCheckerboardSprite(
     }
     pixels.push(pixelRow);
   }
-  
+
   return {
     width,
     height,
     pixels,
-    palette: [color1, color2]
+    palette: [color1, color2],
   };
 }
 
@@ -84,18 +84,18 @@ export function createCheckerboardSprite(
 export function createCircleSprite(
   radius: number,
   color: OKLCHColor,
-  fillColor?: OKLCHColor
+  fillColor?: OKLCHColor,
 ): PixelSprite {
   const size = radius * 2 + 1;
   const pixels: number[][] = [];
-  
+
   for (let row = 0; row < size; row++) {
     const pixelRow: number[] = [];
     for (let col = 0; col < size; col++) {
       const dx = col - radius;
       const dy = row - radius;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (distance <= radius) {
         if (fillColor && distance < radius - 1) {
           pixelRow.push(2); // Fill color
@@ -108,13 +108,13 @@ export function createCircleSprite(
     }
     pixels.push(pixelRow);
   }
-  
+
   const palette = fillColor ? [color, fillColor] : [color];
   return {
     width: size,
     height: size,
     pixels,
-    palette
+    palette,
   };
 }
 
@@ -126,12 +126,12 @@ export function createLineSprite(
   y1: number,
   x2: number,
   y2: number,
-  color: OKLCHColor
+  color: OKLCHColor,
 ): PixelSprite {
   const width = Math.max(x1, x2) + 1;
   const height = Math.max(y1, y2) + 1;
   const pixels: number[][] = [];
-  
+
   // Initialize empty pixels
   for (let row = 0; row < height; row++) {
     const pixelRow: number[] = [];
@@ -140,22 +140,22 @@ export function createLineSprite(
     }
     pixels.push(pixelRow);
   }
-  
+
   // Draw line using Bresenham's algorithm
   const dx = Math.abs(x2 - x1);
   const dy = Math.abs(y2 - y1);
   const sx = x1 < x2 ? 1 : -1;
   const sy = y1 < y2 ? 1 : -1;
   let err = dx - dy;
-  
+
   let x = x1;
   let y = y1;
-  
+
   while (true) {
     pixels[y][x] = 1;
-    
+
     if (x === x2 && y === y2) break;
-    
+
     const e2 = 2 * err;
     if (e2 > -dy) {
       err -= dy;
@@ -166,12 +166,12 @@ export function createLineSprite(
       y += sy;
     }
   }
-  
+
   return {
     width,
     height,
     pixels,
-    palette: [color]
+    palette: [color],
   };
 }
 
@@ -188,15 +188,15 @@ export function createExampleCharacter(): PixelSprite {
     [1, 2, 2, 3, 3, 2, 2, 1], // Eyes
     [1, 2, 2, 2, 2, 2, 2, 1],
     [1, 2, 2, 2, 2, 2, 2, 1], // Mouth
-    [0, 1, 1, 1, 1, 1, 1, 0]
+    [0, 1, 1, 1, 1, 1, 1, 0],
   ];
-  
+
   // Define color palette
   const palette: OKLCHColor[] = [
     { l: 30, c: 0.15, h: 20 }, // Hair (brown)
     { l: 70, c: 0.12, h: 30 }, // Skin (light)
-    { l: 20, c: 0.05, h: 0 }   // Eyes (dark)
+    { l: 20, c: 0.05, h: 0 }, // Eyes (dark)
   ];
-  
+
   return createSprite(pixels, palette);
 }

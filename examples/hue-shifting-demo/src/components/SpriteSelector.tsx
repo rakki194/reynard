@@ -13,7 +13,7 @@ export const SpriteSelector: Component<SpriteSelectorProps> = (props) => {
       <div class="sprite-buttons">
         {Object.entries(sprites).map(([key, sprite]) => (
           <button
-            class={`sprite-button ${props.selectedSprite === key ? 'selected' : ''}`}
+            class={`sprite-button ${props.selectedSprite === key ? "selected" : ""}`}
             onClick={() => props.onSpriteChange(key)}
           >
             {sprite.name}

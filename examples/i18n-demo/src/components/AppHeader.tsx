@@ -13,8 +13,7 @@ const AppHeader: Component = () => {
       <div class="header-content">
         <h1 class="title">{getDemoTranslation(locale, "title")}</h1>
         <p class="subtitle">
-          {t("common.description")} - {t("themes.theme")}:{" "}
-          {themeContext.theme}
+          {t("common.description")} - {t("themes.theme")}: {themeContext.theme}
         </p>
         <div class="controls">
           <LanguageSelector />

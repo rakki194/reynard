@@ -5,7 +5,7 @@ import { createSignal, createMemo } from "solid-js";
 import type { Point3D, SearchIntegrationSettings } from "../types";
 
 export function usePointCloudSearchIntegration(
-  searchIntegration: () => SearchIntegrationSettings = () => ({})
+  searchIntegration: () => SearchIntegrationSettings = () => ({}),
 ) {
   // Search integration settings
   const enableSearchIntegration = createMemo(

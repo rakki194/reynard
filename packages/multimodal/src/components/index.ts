@@ -1,6 +1,6 @@
 /**
  * Multimodal Components Barrel Export
- * 
+ *
  * Provides clean API boundaries for all multimodal gallery components.
  */
 
@@ -30,5 +30,5 @@ export type {
   MultiModalFile,
   MediaType,
   GalleryView,
-  FileCounts
+  FileCounts,
 } from "../types";

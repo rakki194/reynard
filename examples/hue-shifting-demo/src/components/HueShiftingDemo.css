@@ -166,7 +166,9 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid var(--color-border, oklch(35% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .info-card h4 {
@@ -189,7 +191,7 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .controls-panel {
     position: static;
   }
@@ -199,25 +201,25 @@
   .hue-shifting-demo {
     padding: 1rem;
   }
-  
+
   .demo-header h2 {
     font-size: 2rem;
   }
-  
+
   .demo-header p {
     font-size: 1rem;
   }
-  
+
   .color-showcase {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .swatch-color {
     width: 100px;
     height: 100px;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }

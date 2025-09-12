@@ -101,13 +101,13 @@ export function useThreeJSControls(config: ControlsConfig) {
         // Interpolate position and target
         camera.position.lerpVectors(
           startPosition,
-          new (camera.position.constructor)(...targetPosition),
+          new camera.position.constructor(...targetPosition),
           easedProgress,
         );
 
         controls.target.lerpVectors(
           startTarget,
-          new (controls.target.constructor)(...targetLookAt),
+          new controls.target.constructor(...targetLookAt),
           easedProgress,
         );
 

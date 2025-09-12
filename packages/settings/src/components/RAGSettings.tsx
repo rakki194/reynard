@@ -43,11 +43,15 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       // Load RAG settings from the settings system
       setRagEnabled(settings().getSetting("rag.enabled") || false);
       setDatabaseUrl(settings().getSetting("rag.database_url") || "");
-      setEmbeddingModel(settings().getSetting("rag.embedding_model") || "nomic-embed-text");
+      setEmbeddingModel(
+        settings().getSetting("rag.embedding_model") || "nomic-embed-text",
+      );
       setChunkSize(settings().getSetting("rag.chunk_size") || 1000);
       setChunkOverlap(settings().getSetting("rag.chunk_overlap") || 200);
       setTopK(settings().getSetting("rag.top_k") || 10);
-      setSimilarityThreshold(settings().getSetting("rag.similarity_threshold") || 0.7);
+      setSimilarityThreshold(
+        settings().getSetting("rag.similarity_threshold") || 0.7,
+      );
       setEnableStreaming(settings().getSetting("rag.enable_streaming") || true);
       setEnableCaching(settings().getSetting("rag.enable_caching") || true);
       setCacheSize(settings().getSetting("rag.cache_size") || 1000);
@@ -67,11 +71,14 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       await settings().setSetting("rag.chunk_size", chunkSize());
       await settings().setSetting("rag.chunk_overlap", chunkOverlap());
       await settings().setSetting("rag.top_k", topK());
-      await settings().setSetting("rag.similarity_threshold", similarityThreshold());
+      await settings().setSetting(
+        "rag.similarity_threshold",
+        similarityThreshold(),
+      );
       await settings().setSetting("rag.enable_streaming", enableStreaming());
       await settings().setSetting("rag.enable_caching", enableCaching());
       await settings().setSetting("rag.cache_size", cacheSize());
-      
+
       await settings().saveSettings();
     } catch (error) {
       console.error("Failed to save RAG settings:", error);
@@ -89,7 +96,10 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
     { value: "nomic-embed-text", label: "Nomic Embed Text" },
     { value: "all-MiniLM-L6-v2", label: "All-MiniLM-L6-v2" },
     { value: "all-mpnet-base-v2", label: "All-MPNet-Base-v2" },
-    { value: "sentence-transformers/all-MiniLM-L12-v2", label: "MiniLM-L12-v2" },
+    {
+      value: "sentence-transformers/all-MiniLM-L12-v2",
+      label: "MiniLM-L12-v2",
+    },
   ];
 
   return (
@@ -97,7 +107,8 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       <div class="settings-section">
         <h3>RAG System Configuration</h3>
         <p class="settings-description">
-          Configure Retrieval-Augmented Generation settings for document search and processing.
+          Configure Retrieval-Augmented Generation settings for document search
+          and processing.
         </p>
 
         <Show when={isLoading()}>
@@ -108,7 +119,9 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Core RAG Settings */}
           <div class="setting-group">
             <h4>Core Settings</h4>
-            <p class="setting-description">Basic RAG functionality and database configuration.</p>
+            <p class="setting-description">
+              Basic RAG functionality and database configuration.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -143,7 +156,9 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Embedding Configuration */}
           <div class="setting-group">
             <h4>Embedding Configuration</h4>
-            <p class="setting-description">Configure embedding models and processing parameters.</p>
+            <p class="setting-description">
+              Configure embedding models and processing parameters.
+            </p>
 
             <div class="setting-row">
               <Select
@@ -181,7 +196,9 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Search Configuration */}
           <div class="setting-group">
             <h4>Search Configuration</h4>
-            <p class="setting-description">Configure search parameters and result filtering.</p>
+            <p class="setting-description">
+              Configure search parameters and result filtering.
+            </p>
 
             <div class="setting-row">
               <TextField
@@ -200,7 +217,9 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={similarityThreshold()}
-                onChange={(value) => setSimilarityThreshold(parseFloat(value) || 0.7)}
+                onChange={(value) =>
+                  setSimilarityThreshold(parseFloat(value) || 0.7)
+                }
                 description="Minimum similarity score for search results (0.0 - 1.0)"
                 validation={{ min: 0, max: 1 }}
               />
@@ -210,7 +229,9 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Performance Settings */}
           <div class="setting-group">
             <h4>Performance Settings</h4>
-            <p class="setting-description">Configure performance optimization and caching.</p>
+            <p class="setting-description">
+              Configure performance optimization and caching.
+            </p>
 
             <div class="setting-row">
               <Toggle

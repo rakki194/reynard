@@ -8,7 +8,7 @@ import { applyEasing } from "./easing";
 export function interpolatePoint(
   point: EmbeddingPoint,
   pointAnim: PointAnimation,
-  animationState: AnimationState
+  animationState: AnimationState,
 ): EmbeddingPoint {
   const progress = Math.max(
     0,
@@ -48,10 +48,11 @@ export function interpolatePoint(
  */
 export function createPointAnimations(
   startPoints: EmbeddingPoint[],
-  endPoints: EmbeddingPoint[]
+  endPoints: EmbeddingPoint[],
 ): PointAnimation[] {
   return startPoints.map((startPoint) => {
-    const endPoint = endPoints.find((p) => p.id === startPoint.id) || startPoint;
+    const endPoint =
+      endPoints.find((p) => p.id === startPoint.id) || startPoint;
     return {
       id: startPoint.id,
       startPosition: startPoint.position,

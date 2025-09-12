@@ -47,7 +47,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error State */
@@ -208,29 +210,29 @@
   .audio-waveform-visualizer {
     padding: 1rem;
   }
-  
+
   .playback-controls {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
-  
+
   .play-button {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1rem;
   }
-  
+
   .time-display {
     font-size: 0.75rem;
     min-width: 4rem;
   }
-  
+
   .volume-control {
     margin-left: 0;
     width: 100%;
     justify-content: center;
   }
-  
+
   .volume-slider {
     width: 8rem;
   }
@@ -241,15 +243,15 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .play-button {
     align-self: center;
   }
-  
+
   .time-display {
     justify-content: center;
   }
-  
+
   .volume-control {
     justify-content: center;
   }
@@ -261,17 +263,17 @@
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .waveform-wrapper {
     background: var(--color-surface-dark-hover, #374151);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .playback-controls {
     background: var(--color-surface-dark-hover, #374151);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .waveform-canvas:hover {
     background: var(--color-surface-dark-hover, #374151);
   }
@@ -279,7 +281,9 @@
 
 /* Animation Enhancements */
 .waveform-canvas {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .waveform-canvas:active {
@@ -310,15 +314,15 @@
   .audio-waveform-visualizer {
     border-width: 2px;
   }
-  
+
   .waveform-wrapper {
     border-width: 2px;
   }
-  
+
   .playback-controls {
     border-width: 2px;
   }
-  
+
   .play-button {
     border: 2px solid var(--color-primary, #3b82f6);
   }
@@ -329,14 +333,14 @@
   .loading-spinner {
     animation: none;
   }
-  
+
   .waveform-canvas,
   .play-button,
   .volume-slider::-webkit-slider-thumb,
   .volume-slider::-moz-range-thumb {
     transition: none;
   }
-  
+
   .waveform-canvas:active,
   .play-button:active {
     transform: none;

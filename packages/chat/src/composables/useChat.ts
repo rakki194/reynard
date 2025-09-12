@@ -9,7 +9,10 @@ import { createSignal, createResource, onCleanup, onMount } from "solid-js";
 import { useChatMessages } from "./useChatMessages";
 import { useChatStreaming } from "./useChatStreaming";
 import { useChatTools } from "./useChatTools";
-import { useChat as useGeneratedChat, createReynardApiClient } from "reynard-api-client";
+import {
+  useChat as useGeneratedChat,
+  createReynardApiClient,
+} from "reynard-api-client";
 import type { ChatState, ChatActions, UseChatReturn } from "../types";
 
 export interface UseChatOptions {
@@ -66,14 +69,14 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
   // Create API client
   const apiClient = createReynardApiClient({
-    basePath: endpoint.replace('/api/chat', ''),
-    authFetch: fetchFn
+    basePath: endpoint.replace("/api/chat", ""),
+    authFetch: fetchFn,
   });
 
   // Use generated chat composable
   const generatedChat = useGeneratedChat({
     apiClient,
-    defaultModel: "llama3.1"
+    defaultModel: "llama3.1",
   });
 
   // Core state
@@ -188,7 +191,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
           type: "send_error",
           message: err instanceof Error ? err.message : "Send failed",
           timestamp: Date.now(),
-          recoverable: true
+          recoverable: true,
         });
       }
     },
@@ -214,7 +217,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       return [...legacyMessages, ...generatedMessages];
     },
     currentMessage: messagesComposable.currentMessage,
-    isStreaming: () => generatedChat.isStreaming() || streamingComposable.isStreaming(),
+    isStreaming: () =>
+      generatedChat.isStreaming() || streamingComposable.isStreaming(),
     isThinking: streamingComposable.isThinking,
     availableModels: () => generatedChat.models() || availableModels(),
     selectedModel,

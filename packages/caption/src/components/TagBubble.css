@@ -26,22 +26,21 @@
 }
 
 .tag-bubble:hover {
-  background-color: var(--tag-hover-color, color-mix(
-    in srgb,
-    var(--tag-background-color, #e3f2fd) 80%,
-    transparent
-  ));
-  border-color: var(--tag-hover-color, color-mix(
-    in srgb,
-    var(--tag-border-color, #bbdefb) 80%,
-    transparent
-  ));
+  background-color: var(
+    --tag-hover-color,
+    color-mix(in srgb, var(--tag-background-color, #e3f2fd) 80%, transparent)
+  );
+  border-color: var(
+    --tag-hover-color,
+    color-mix(in srgb, var(--tag-border-color, #bbdefb) 80%, transparent)
+  );
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .tag-bubble:focus {
-  outline: 2px solid var(--tag-focus-color, var(--tag-background-color, #e3f2fd));
+  outline: 2px solid
+    var(--tag-focus-color, var(--tag-background-color, #e3f2fd));
   outline-offset: 2px;
 }
 
@@ -52,7 +51,8 @@
 }
 
 .tag-bubble--focused {
-  outline: 2px solid var(--tag-focus-color, var(--tag-background-color, #e3f2fd));
+  outline: 2px solid
+    var(--tag-focus-color, var(--tag-background-color, #e3f2fd));
   outline-offset: 2px;
 }
 
@@ -61,11 +61,10 @@
 }
 
 .tag-bubble--editable:hover {
-  background-color: var(--tag-hover-color, color-mix(
-    in srgb,
-    var(--tag-background-color, #e3f2fd) 90%,
-    transparent
-  ));
+  background-color: var(
+    --tag-hover-color,
+    color-mix(in srgb, var(--tag-background-color, #e3f2fd) 90%, transparent)
+  );
 }
 
 /* Enhanced OKLCH variant styles */

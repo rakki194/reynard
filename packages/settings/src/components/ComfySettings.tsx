@@ -29,7 +29,8 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
   const [maxQueueSize, setMaxQueueSize] = createSignal(10);
   const [autoDownloadModels, setAutoDownloadModels] = createSignal(true);
   const [modelCacheSize, setModelCacheSize] = createSignal(5);
-  const [enableProgressTracking, setEnableProgressTracking] = createSignal(true);
+  const [enableProgressTracking, setEnableProgressTracking] =
+    createSignal(true);
 
   // Load settings on mount
   createEffect(() => {
@@ -40,14 +41,20 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
     setIsLoading(true);
     try {
       setEnabled(settings().getSetting("comfy.enabled") || false);
-      setApiUrl(settings().getSetting("comfy.api_url") || "http://localhost:8188");
+      setApiUrl(
+        settings().getSetting("comfy.api_url") || "http://localhost:8188",
+      );
       setTimeoutSeconds(settings().getSetting("comfy.timeout_seconds") || 300);
       setRetryAttempts(settings().getSetting("comfy.retry_attempts") || 3);
       setEnableQueue(settings().getSetting("comfy.enable_queue") || true);
       setMaxQueueSize(settings().getSetting("comfy.max_queue_size") || 10);
-      setAutoDownloadModels(settings().getSetting("comfy.auto_download_models") || true);
+      setAutoDownloadModels(
+        settings().getSetting("comfy.auto_download_models") || true,
+      );
       setModelCacheSize(settings().getSetting("comfy.model_cache_size") || 5);
-      setEnableProgressTracking(settings().getSetting("comfy.enable_progress_tracking") || true);
+      setEnableProgressTracking(
+        settings().getSetting("comfy.enable_progress_tracking") || true,
+      );
     } catch (error) {
       console.error("Failed to load ComfyUI settings:", error);
     } finally {
@@ -64,10 +71,16 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
       await settings().setSetting("comfy.retry_attempts", retryAttempts());
       await settings().setSetting("comfy.enable_queue", enableQueue());
       await settings().setSetting("comfy.max_queue_size", maxQueueSize());
-      await settings().setSetting("comfy.auto_download_models", autoDownloadModels());
+      await settings().setSetting(
+        "comfy.auto_download_models",
+        autoDownloadModels(),
+      );
       await settings().setSetting("comfy.model_cache_size", modelCacheSize());
-      await settings().setSetting("comfy.enable_progress_tracking", enableProgressTracking());
-      
+      await settings().setSetting(
+        "comfy.enable_progress_tracking",
+        enableProgressTracking(),
+      );
+
       await settings().saveSettings();
     } catch (error) {
       console.error("Failed to save ComfyUI settings:", error);
@@ -112,7 +125,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
           {/* Core ComfyUI Settings */}
           <div class="setting-group">
             <h4>Core Settings</h4>
-            <p class="setting-description">Basic ComfyUI integration configuration.</p>
+            <p class="setting-description">
+              Basic ComfyUI integration configuration.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -149,7 +164,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
           {/* Connection Settings */}
           <div class="setting-group">
             <h4>Connection Settings</h4>
-            <p class="setting-description">Configure connection timeouts and retry behavior.</p>
+            <p class="setting-description">
+              Configure connection timeouts and retry behavior.
+            </p>
 
             <div class="setting-row">
               <TextField
@@ -179,7 +196,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
           {/* Queue Management */}
           <div class="setting-group">
             <h4>Queue Management</h4>
-            <p class="setting-description">Configure workflow queue and processing behavior.</p>
+            <p class="setting-description">
+              Configure workflow queue and processing behavior.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -209,7 +228,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
           {/* Model Management */}
           <div class="setting-group">
             <h4>Model Management</h4>
-            <p class="setting-description">Configure automatic model downloading and caching.</p>
+            <p class="setting-description">
+              Configure automatic model downloading and caching.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -237,7 +258,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
           {/* Progress Tracking */}
           <div class="setting-group">
             <h4>Progress Tracking</h4>
-            <p class="setting-description">Configure workflow progress monitoring and reporting.</p>
+            <p class="setting-description">
+              Configure workflow progress monitoring and reporting.
+            </p>
 
             <div class="setting-row">
               <Toggle
@@ -270,7 +293,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                   </div>
                   <div class="status-item">
                     <span class="status-label">Queue:</span>
-                    <span class="status-value">{enableQueue() ? "Enabled" : "Disabled"}</span>
+                    <span class="status-value">
+                      {enableQueue() ? "Enabled" : "Disabled"}
+                    </span>
                   </div>
                 </div>
               </div>

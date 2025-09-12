@@ -3,7 +3,15 @@
  * Metrics tab for performance dashboard
  */
 
-import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
+import {
+  Component,
+  For,
+  Show,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+} from "solid-js";
 import { Button } from "reynard-components";
 
 export interface PerformanceMetricsTabProps {
@@ -21,7 +29,9 @@ export interface PerformanceMetricsTabProps {
   refreshInterval?: number;
 }
 
-export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (props) => {
+export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (
+  props,
+) => {
   const [selectedMetric, setSelectedMetric] = createSignal<string>("frameRate");
   const [timeRange, setTimeRange] = createSignal<string>("5m");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
@@ -157,7 +167,9 @@ export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (pro
             onChange={(e) => setSelectedMetric(e.currentTarget.value)}
           >
             <For each={availableMetrics}>
-              {(metric) => <option value={metric}>{getMetricLabel(metric)}</option>}
+              {(metric) => (
+                <option value={metric}>{getMetricLabel(metric)}</option>
+              )}
             </For>
           </select>
         </div>
@@ -205,7 +217,9 @@ export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (pro
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

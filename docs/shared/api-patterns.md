@@ -1,6 +1,6 @@
 # Shared API Patterns
 
-*Common API design patterns and structures used across Reynard services*
+_Common API design patterns and structures used across Reynard services_
 
 ## Standard Request/Response Models
 
@@ -229,7 +229,7 @@ enum ErrorCode {
   VALIDATION_ERROR = "VALIDATION_ERROR",
   AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR",
   AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR",
-  
+
   // Service-specific errors
   SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE",
   RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED",
@@ -348,7 +348,7 @@ interface ServiceMetrics {
 // Test helper for API calls
 async function testAPIEndpoint<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<{ response: Response; data: T }> {
   const response = await fetch(endpoint, {
     headers: {
@@ -357,7 +357,7 @@ async function testAPIEndpoint<T>(
     },
     ...options,
   });
-  
+
   const data = await response.json();
   return { response, data };
 }
@@ -376,7 +376,7 @@ class MockService {
       uptime: 3600,
     };
   }
-  
+
   async getStats(): Promise<StatsResponse> {
     return {
       totalRequests: 1000,

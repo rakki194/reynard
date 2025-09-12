@@ -24,12 +24,7 @@
 
 import { ECSConfig, ECSPerformanceMetrics, UnifiedECS } from "./ecs-interface";
 
-import {
-  Component,
-  Entity,
-  Resource,
-  World
-} from "../types";
+import { Component, Entity, Resource, World } from "../types";
 import { createWorld } from "../world";
 
 /**
@@ -152,9 +147,7 @@ export class TypeScriptECS implements UnifiedECS {
   /**
    * Query entities with specific component combinations.
    */
-  query<T extends Component[]>(
-    ...componentTypes: any[]
-  ): any {
+  query<T extends Component[]>(...componentTypes: any[]): any {
     return this.world.query(...componentTypes);
   }
 
@@ -226,7 +219,7 @@ export class TypeScriptECS implements UnifiedECS {
     // Clear all entities
     const entitiesToDespawn: any[] = [];
     const entityQuery = this.world.query("Entity" as any);
-    if (entityQuery && typeof entityQuery.forEach === 'function') {
+    if (entityQuery && typeof entityQuery.forEach === "function") {
       entityQuery.forEach((entity: any) => {
         entitiesToDespawn.push(entity);
       });

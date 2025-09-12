@@ -9,8 +9,8 @@ export function createPointCloudReturn(
   settingsModule: any,
   stateModule: any,
   processedPoints: any,
-  handlePointSelection: any,
-  handlePointHover: any
+  createPointSelectionHandler: any,
+  createPointHoverHandler: any,
 ) {
   return {
     // Three.js state
@@ -77,8 +77,8 @@ export function createPointCloudReturn(
     // Methods
     initializeThreeJS: threeJSInit.initializeThreeJS,
     initializeRaycaster: eventsModule.initializeRaycaster,
-    handlePointSelection,
-    handlePointHover,
+    createPointSelectionHandler,
+    createPointHoverHandler,
     setSelectedPoints: interactions.setSelectedPoints,
     setHoveredPoint: interactions.setHoveredPoint,
     setTooltipPosition: interactions.setTooltipPosition,

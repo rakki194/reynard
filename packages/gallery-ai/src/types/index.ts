@@ -6,10 +6,7 @@
  */
 
 // Import types from ai-shared for consistency
-import type {
-  CaptionType,
-  CaptionResult,
-} from "reynard-ai-shared";
+import type { CaptionType, CaptionResult } from "reynard-ai-shared";
 
 // Re-export for convenience
 export type { CaptionType, CaptionResult } from "reynard-ai-shared";
@@ -220,7 +217,10 @@ export interface AIGalleryCallbacks {
   onCaptionGenerationStart?: (item: FileItem, generator: string) => void;
 
   /** Called when caption generation completes */
-  onCaptionGenerationComplete?: (item: FileItem, result: GalleryCaptionResult) => void;
+  onCaptionGenerationComplete?: (
+    item: FileItem,
+    result: GalleryCaptionResult,
+  ) => void;
 
   /** Called when caption generation fails */
   onCaptionGenerationError?: (item: FileItem, error: string) => void;

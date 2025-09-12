@@ -8,25 +8,25 @@ interface ColorRampProps {
 }
 
 export const ColorRamp: Component<ColorRampProps> = (props) => {
-  const colorStrings = createMemo(() => 
-    props.colors.map(color => `oklch(${color.l}% ${color.c} ${color.h})`)
+  const colorStrings = createMemo(() =>
+    props.colors.map((color) => `oklch(${color.l}% ${color.c} ${color.h})`),
   );
-  
+
   const copyToClipboard = async (colorString: string) => {
     try {
       await navigator.clipboard.writeText(colorString);
       // Could add a toast notification here
     } catch (err) {
-      console.error('Failed to copy color:', err);
+      console.error("Failed to copy color:", err);
     }
   };
-  
+
   return (
     <div class="color-ramp">
       <div class="ramp-container">
         {colorStrings().map((colorString, index) => (
           <div class="ramp-color">
-            <div 
+            <div
               class="color-swatch"
               style={{ "background-color": colorString }}
               onClick={() => copyToClipboard(colorString)}
@@ -39,24 +39,25 @@ export const ColorRamp: Component<ColorRampProps> = (props) => {
           </div>
         ))}
       </div>
-      
+
       <div class="ramp-actions">
-        <button 
+        <button
           class="action-button copy-all"
-          onClick={() => copyToClipboard(colorStrings().join('\n'))}
+          onClick={() => copyToClipboard(colorStrings().join("\n"))}
         >
           <span innerHTML={allIcons.copy.svg}></span> Copy All Colors
         </button>
-        <button 
+        <button
           class="action-button export-css"
           onClick={() => {
-            const cssVars = colorStrings().map((color, i) => 
-              `  --color-${i + 1}: ${color};`
-            ).join('\n');
+            const cssVars = colorStrings()
+              .map((color, i) => `  --color-${i + 1}: ${color};`)
+              .join("\n");
             copyToClipboard(`:root {\n${cssVars}\n}`);
           }}
         >
-          <span innerHTML={allIcons["window-brush"].svg}></span> Export as CSS Variables
+          <span innerHTML={allIcons["window-brush"].svg}></span> Export as CSS
+          Variables
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 /**
  * Multi-Modal Gallery Component for Reynard Caption System
- * 
+ *
  * Orchestrates multi-modal file handling and display using
  * modular components and utilities.
  */
@@ -25,13 +25,13 @@ export const MultiModalGallery: Component<MultiModalGalleryProps> = (props) => {
     fileCounts,
     handleFileSelect,
     handleFileRemove,
-    handleFileModify
+    handleFileModify,
   } = useFileHandling(
     props.initialFiles || [],
     props.defaultView || "grid",
     props.onFileSelect,
     props.onFileRemove,
-    props.onFileModify
+    props.onFileModify,
   );
 
   const { isLoading, error, handleFileUpload } = useFileUpload();
@@ -53,13 +53,13 @@ export const MultiModalGallery: Component<MultiModalGalleryProps> = (props) => {
       isLoading={isLoading()}
       error={error()}
       filteredFiles={filteredFiles()}
-            selectedFile={selectedFile()}
-            onFileSelect={handleFileSelect}
-            onFileRemove={handleFileRemove}
+      selectedFile={selectedFile()}
+      onFileSelect={handleFileSelect}
+      onFileRemove={handleFileRemove}
       onFileModify={handleFileModify}
       onCloseDetail={() => setSelectedFile(null)}
-            showMetadata={props.showMetadata}
-          editable={props.editable}
-        />
+      showMetadata={props.showMetadata}
+      editable={props.editable}
+    />
   );
 };

@@ -1,6 +1,6 @@
 # i18n Testing Integration Guide
 
-*whiskers twitch with satisfaction* The Reynard i18n testing system provides comprehensive translation validation across all packages, ensuring no hardcoded strings slip through and all translations are complete and properly formatted.
+_whiskers twitch with satisfaction_ The Reynard i18n testing system provides comprehensive translation validation across all packages, ensuring no hardcoded strings slip through and all translations are complete and properly formatted.
 
 ## Overview
 
@@ -83,11 +83,11 @@ The system includes custom ESLint rules for real-time i18n validation:
 ```javascript
 // .eslintrc.js
 module.exports = {
-  extends: ['packages/testing/src/eslint/i18n-eslint-config.js'],
+  extends: ["packages/testing/src/eslint/i18n-eslint-config.js"],
   rules: {
-    '@reynard/i18n/no-hardcoded-strings': 'error',
-    '@reynard/i18n/no-untranslated-keys': 'warn'
-  }
+    "@reynard/i18n/no-hardcoded-strings": "error",
+    "@reynard/i18n/no-untranslated-keys": "warn",
+  },
 };
 ```
 
@@ -103,15 +103,15 @@ module.exports = {
 Each package should have an `i18n.test.ts` file in its `src/__tests__/` directory:
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { runPackageI18nTests } from 'reynard-testing/utils/i18n-package-orchestrator';
-import { getPackageI18nConfig } from 'reynard-testing/config/i18n-testing-config';
+import { describe, it, expect } from "vitest";
+import { runPackageI18nTests } from "reynard-testing/utils/i18n-package-orchestrator";
+import { getPackageI18nConfig } from "reynard-testing/config/i18n-testing-config";
 
-describe('components i18n Tests', () => {
-  it('should pass all i18n validation checks', async () => {
-    const config = getPackageI18nConfig('components');
+describe("components i18n Tests", () => {
+  it("should pass all i18n validation checks", async () => {
+    const config = getPackageI18nConfig("components");
     expect(config).toBeDefined();
-    
+
     if (config?.enabled) {
       const result = await runPackageI18nTests(config);
       expect(result.success).toBe(true);
@@ -144,14 +144,14 @@ packages/[package-name]/src/lang/
 // packages/components/src/lang/en/components.ts
 export const componentsTranslations = {
   button: {
-    submit: 'Submit',
-    cancel: 'Cancel',
-    save: 'Save'
+    submit: "Submit",
+    cancel: "Cancel",
+    save: "Save",
   },
   form: {
-    required: 'This field is required',
-    invalid: 'Please enter a valid value'
-  }
+    required: "This field is required",
+    invalid: "Please enter a valid value",
+  },
 };
 ```
 
@@ -195,13 +195,13 @@ Override default settings for specific packages:
 
 ```typescript
 const customConfig: I18nTestConfig = {
-  packages: ['packages/auth'],
-  locales: ['en', 'es'],
+  packages: ["packages/auth"],
+  locales: ["en", "es"],
   checkHardcodedStrings: true,
   validateCompleteness: true,
   testPluralization: true,
   testRTL: true,
-  ignorePatterns: ['^(token|jwt)$']
+  ignorePatterns: ["^(token|jwt)$"],
 };
 
 const result = await runI18nTests(customConfig);
@@ -212,14 +212,14 @@ const result = await runI18nTests(customConfig);
 Add i18n tests to existing test suites:
 
 ```typescript
-import { runPackageI18nTests } from 'reynard-testing/utils/i18n-package-orchestrator';
+import { runPackageI18nTests } from "reynard-testing/utils/i18n-package-orchestrator";
 
-describe('MyComponent', () => {
+describe("MyComponent", () => {
   // ... existing tests
-  
-  describe('i18n', () => {
-    it('should not have hardcoded strings', async () => {
-      const config = getPackageI18nConfig('components');
+
+  describe("i18n", () => {
+    it("should not have hardcoded strings", async () => {
+      const config = getPackageI18nConfig("components");
       const result = await runPackageI18nTests(config);
       expect(result.results.hardcodedStrings).toHaveLength(0);
     });
@@ -278,4 +278,4 @@ For issues or questions:
 3. Run validation commands to identify issues
 4. Check the GitHub Actions logs for CI/CD issues
 
-*red fur bristles with excitement* The i18n testing system ensures that Reynard maintains high-quality internationalization across all packages, making it easier to support users worldwide!
+_red fur bristles with excitement_ The i18n testing system ensures that Reynard maintains high-quality internationalization across all packages, making it easier to support users worldwide!

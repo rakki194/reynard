@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Pieprasījums pārtraukts",
   },
-  
+
   // Autentifikācija un drošība
   bearer: {
     token: "Bearer žetons",
     "test-key": "Bearer testa atslēga",
     "new-key": "Bearer jauna atslēga",
   },
-  
+
   // Paziņojumi
   notifications: {
     title: "Paziņojumi",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Pirmais grupēts",
     "second-grouped": "Otrais grupēts",
   },
-  
+
   // Validācijas ziņojumi
   validation: {
     required: "Šis lauks ir obligāts",
@@ -70,30 +70,41 @@ export const coreTranslations = {
     "invalid-input-type": "Nederīgs ievades tips",
     "does-not-match-pattern": "Ievade neatbilst nepieciešamajam modelim",
   },
-  
+
   // Paroles validācija
   password: {
     "must-be-at-least-8-characters-long": "Parolei jābūt vismaz 8 rakstzīmēm",
-    "must-contain-at-least-one-uppercase-letter": "Parolei jāsatur vismaz viens lielais burts",
-    "must-contain-at-least-one-lowercase-letter": "Parolei jāsatur vismaz viens mazais burts",
+    "must-contain-at-least-one-uppercase-letter":
+      "Parolei jāsatur vismaz viens lielais burts",
+    "must-contain-at-least-one-lowercase-letter":
+      "Parolei jāsatur vismaz viens mazais burts",
     "must-contain-at-least-one-number": "Parolei jāsatur vismaz viens cipars",
-    "must-contain-at-least-one-special-character": "Parolei jāsatur vismaz viens speciāls rakstzīme",
+    "must-contain-at-least-one-special-character":
+      "Parolei jāsatur vismaz viens speciāls rakstzīme",
   },
-  
+
   // Drošības validācija
   security: {
-    "at-least-one-character-type-must-be-included": "Jāiekļauj vismaz viens rakstzīmes tips",
-    "input-contains-potentially-dangerous-html": "Ievade satur potenciāli bīstamu HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Ievade satur potenciāli bīstamus SQL modeļus",
-    "input-contains-potentially-dangerous-xss-patterns": "Ievade satur potenciāli bīstamus XSS modeļus",
-    "input-contains-path-traversal-patterns": "Ievade satur ceļa šķērsošanas modeļus",
-    "input-contains-windows-reserved-names": "Ievade satur Windows rezervētos nosaukumus",
-    "input-contains-executable-file-extensions": "Ievade satur izpildāmo failu paplašinājumus",
+    "at-least-one-character-type-must-be-included":
+      "Jāiekļauj vismaz viens rakstzīmes tips",
+    "input-contains-potentially-dangerous-html":
+      "Ievade satur potenciāli bīstamu HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Ievade satur potenciāli bīstamus SQL modeļus",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Ievade satur potenciāli bīstamus XSS modeļus",
+    "input-contains-path-traversal-patterns":
+      "Ievade satur ceļa šķērsošanas modeļus",
+    "input-contains-windows-reserved-names":
+      "Ievade satur Windows rezervētos nosaukumus",
+    "input-contains-executable-file-extensions":
+      "Ievade satur izpildāmo failu paplašinājumus",
     "input-contains-null-bytes": "Ievade satur null baitus",
     "input-contains-hidden-files": "Ievade satur paslēptus failus",
-    "input-contains-javascript-file-extensions": "Ievade satur JavaScript failu paplašinājumus",
+    "input-contains-javascript-file-extensions":
+      "Ievade satur JavaScript failu paplašinājumus",
   },
-  
+
   // Asinhronās operācijas
   async: {
     "operation-timed-out": "Operācija beidzās laikā",
@@ -107,7 +118,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Vienlaicīgumam jābūt lielākam par 0",
     "polling-timeout-reached": "Sasniegts aptaujas laika limits",
   },
-  
+
   // Moduļu ielāde
   module: {
     "is-null": "Modulis ir null",
@@ -115,14 +126,16 @@ export const coreTranslations = {
     "load-failed": "Ielāde neizdevās",
     "loading-failed": "Ielāde neizdevās",
   },
-  
+
   // Glabāšana un serializācija
   storage: {
     "potentially-dangerous-json-detected": "Atklāts potenciāli bīstams JSON",
-    "failed-to-parse-json-from-localstorage": "Neizdevās parsēt JSON no localStorage:",
-    "error-parsing-storage-event": "Kļūda parsējot glabāšanas notikumu atslēgai",
+    "failed-to-parse-json-from-localstorage":
+      "Neizdevās parsēt JSON no localStorage:",
+    "error-parsing-storage-event":
+      "Kļūda parsējot glabāšanas notikumu atslēgai",
   },
-  
+
   // Tests un izstrāde
   test: {
     error: "Testa kļūda",
@@ -131,19 +144,19 @@ export const coreTranslations = {
     "notification-1": "Testa paziņojums 1",
     "notification-2": "Testa paziņojums 2",
   },
-  
+
   // Vispārējās kļūdas
   errors: {
     "string-error": "Virknes kļūda",
     "crypto-error": "Kriptogrāfijas kļūda",
     "some-error": "Kāda kļūda",
   },
-  
+
   // Formātētāji un rīki
   formatters: {
     "hello-world": "Sveika pasaule",
   },
-  
+
   // Datums un laiks
   dateTime: {
     now: "Tagad",
@@ -153,11 +166,13 @@ export const coreTranslations = {
     format: "Formāts",
     timezone: "Laika zona",
   },
-  
+
   // Integrācijas testi
   integration: {
     "session-and-api-key-generation": "Sesijas un API atslēgas ģenerēšana",
-    "authentication-and-input-validation-integration": "Autentifikācijas un ievades validācijas integrācija",
-    "performance-and-security-integration": "Veiktspējas un drošības integrācija",
+    "authentication-and-input-validation-integration":
+      "Autentifikācijas un ievades validācijas integrācija",
+    "performance-and-security-integration":
+      "Veiktspējas un drošības integrācija",
   },
 };

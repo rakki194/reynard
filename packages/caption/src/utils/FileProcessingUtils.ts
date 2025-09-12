@@ -1,47 +1,90 @@
 /**
  * File Processing Utilities for Multi-Modal Gallery
- * 
+ *
  * Utility functions for file type determination and processing
  * logic used across the multi-modal gallery system.
  */
 
 import { FileProcessingPipeline } from "reynard-file-processing";
-import type { MultiModalFile, MediaType, FileCounts } from "../types/MultiModalTypes";
+import type {
+  MultiModalFile,
+  MediaType,
+  FileCounts,
+} from "../types/MultiModalTypes";
 
 /**
  * Determines the media type of a file based on MIME type and extension
  */
 export const determineFileType = (file: File): MediaType => {
   const mimeType = file.type.toLowerCase();
-  const extension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+  const extension = file.name
+    .substring(file.name.lastIndexOf("."))
+    .toLowerCase();
 
   // Image files
-  if (mimeType.startsWith("image/") || 
-      [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".svg", ".tiff"].includes(extension)) {
+  if (
+    mimeType.startsWith("image/") ||
+    [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".webp",
+      ".bmp",
+      ".svg",
+      ".tiff",
+    ].includes(extension)
+  ) {
     return "image";
   }
 
   // Video files
-  if (mimeType.startsWith("video/") || 
-      [".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv"].includes(extension)) {
+  if (
+    mimeType.startsWith("video/") ||
+    [".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv"].includes(
+      extension,
+    )
+  ) {
     return "video";
   }
 
   // Audio files
-  if (mimeType.startsWith("audio/") || 
-      [".mp3", ".wav", ".flac", ".ogg", ".aac", ".m4a"].includes(extension)) {
+  if (
+    mimeType.startsWith("audio/") ||
+    [".mp3", ".wav", ".flac", ".ogg", ".aac", ".m4a"].includes(extension)
+  ) {
     return "audio";
   }
 
   // Text files
-  if (mimeType.startsWith("text/") || 
-      [".txt", ".md", ".json", ".xml", ".yaml", ".yml", ".toml", ".js", ".ts", ".py", ".html", ".css"].includes(extension)) {
+  if (
+    mimeType.startsWith("text/") ||
+    [
+      ".txt",
+      ".md",
+      ".json",
+      ".xml",
+      ".yaml",
+      ".yml",
+      ".toml",
+      ".js",
+      ".ts",
+      ".py",
+      ".html",
+      ".css",
+    ].includes(extension)
+  ) {
     return "text";
   }
 
   // Document files
-  if (mimeType.includes("pdf") || mimeType.includes("document") || 
-      [".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx"].includes(extension)) {
+  if (
+    mimeType.includes("pdf") ||
+    mimeType.includes("document") ||
+    [".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx"].includes(
+      extension,
+    )
+  ) {
     return "document";
   }
 
@@ -53,11 +96,11 @@ export const determineFileType = (file: File): MediaType => {
  */
 export const processFile = async (
   file: File,
-  processingPipeline: FileProcessingPipeline
+  processingPipeline: FileProcessingPipeline,
 ): Promise<MultiModalFile> => {
   // Determine file type
   const fileType = determineFileType(file);
-  
+
   // Process file using existing pipeline
   const result = await processingPipeline.processFile(file, {
     generateThumbnails: true,
@@ -92,11 +135,11 @@ export const processFile = async (
 export const calculateFileCounts = (files: MultiModalFile[]): FileCounts => {
   return {
     all: files.length,
-    image: files.filter(f => f.fileType === "image").length,
-    video: files.filter(f => f.fileType === "video").length,
-    audio: files.filter(f => f.fileType === "audio").length,
-    text: files.filter(f => f.fileType === "text").length,
-    document: files.filter(f => f.fileType === "document").length,
+    image: files.filter((f) => f.fileType === "image").length,
+    video: files.filter((f) => f.fileType === "video").length,
+    audio: files.filter((f) => f.fileType === "audio").length,
+    text: files.filter((f) => f.fileType === "text").length,
+    document: files.filter((f) => f.fileType === "document").length,
   };
 };
 

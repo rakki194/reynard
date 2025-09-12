@@ -155,16 +155,16 @@
   .app-header {
     padding: 1rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .header-controls {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .add-todo {
     flex-direction: column;
   }

@@ -1,6 +1,6 @@
 /**
  * RAG Search Tab Configuration
- * 
+ *
  * Centralized configuration for RAG search tabs
  * following Reynard modular conventions.
  */
@@ -12,7 +12,7 @@ import type { TabItem } from "./types";
 const getIcon = (name: string) => {
   const icon = getIconFromRegistry(name);
   if (icon) {
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.innerHTML = icon.outerHTML;
     return div.firstElementChild as HTMLElement;
   }
@@ -21,11 +21,13 @@ const getIcon = (name: string) => {
 
 /**
  * Creates the tab configuration for RAG search interface
- * 
+ *
  * @param includeHistory Whether to include the history tab
  * @returns Array of tab items with icons and labels
  */
-export const createRAGTabConfig = (includeHistory: boolean = false): TabItem[] => {
+export const createRAGTabConfig = (
+  includeHistory: boolean = false,
+): TabItem[] => {
   const baseTabs: TabItem[] = [
     { id: "search", label: "Search", icon: getIcon("search") },
     { id: "documents", label: "Documents", icon: getIcon("box") },
@@ -34,7 +36,11 @@ export const createRAGTabConfig = (includeHistory: boolean = false): TabItem[] =
   ];
 
   if (includeHistory) {
-    baseTabs.splice(1, 0, { id: "history", label: "History", icon: getIcon("history") });
+    baseTabs.splice(1, 0, {
+      id: "history",
+      label: "History",
+      icon: getIcon("history"),
+    });
   }
 
   return baseTabs;

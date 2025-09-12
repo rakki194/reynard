@@ -25,7 +25,13 @@ export function getTranslationValue(
   if (typeof value === "object" && value !== null && !Array.isArray(value)) {
     const pluralObj = value as Record<string, string>;
     // Check if it has pluralization keys
-    if (pluralObj.zero || pluralObj.one || pluralObj.few || pluralObj.many || pluralObj.other) {
+    if (
+      pluralObj.zero ||
+      pluralObj.one ||
+      pluralObj.few ||
+      pluralObj.many ||
+      pluralObj.other
+    ) {
       if (params && typeof params.count === "number") {
         const pluralResult = getPlural(params.count, pluralObj as any, locale);
         // Debug logging removed
@@ -46,17 +52,17 @@ export function getTranslationValue(
 
   if (typeof value === "string" && params !== undefined) {
     let result = value;
-    
+
     // Replace placeholders with provided parameters
     Object.entries(params).forEach(([key, val]) => {
       result = result.replace(`{${key}}`, val?.toString() || "");
     });
-    
+
     // If params is an empty object, replace all remaining placeholders with empty strings
     if (Object.keys(params).length === 0) {
       result = result.replace(/\{[^}]+\}/g, "");
     }
-    
+
     return result;
   }
 

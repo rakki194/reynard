@@ -1,6 +1,6 @@
 /**
  * Reynard Multimodal Package
- * 
+ *
  * Multimodal media gallery and management components for Reynard applications.
  */
 

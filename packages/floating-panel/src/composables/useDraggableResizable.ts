@@ -1,6 +1,6 @@
 /**
  * useDraggableResizable Composable
- * 
+ *
  * Ported from Yipyap's sophisticated draggable/resizable panel system.
  * Provides comprehensive panel interaction capabilities.
  */
@@ -37,12 +37,14 @@ export interface DraggableResizableReturn {
   isResizing: () => boolean;
   isMinimized: () => boolean;
   style: () => Record<string, string>;
-  handleMouseDown: (e: MouseEvent, type: 'drag' | 'resize') => void;
+  handleMouseDown: (e: MouseEvent, type: "drag" | "resize") => void;
   toggleMinimized: () => void;
   resetPosition: () => void;
 }
 
-export function useDraggableResizable(options: DraggableResizableOptions): DraggableResizableReturn {
+export function useDraggableResizable(
+  options: DraggableResizableOptions,
+): DraggableResizableReturn {
   const {
     initialState,
     minWidth = 180,
@@ -62,27 +64,41 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
           const parsed = JSON.parse(stored);
           // Validate the stored state
           if (
-            typeof parsed === 'object' &&
-            typeof parsed.x === 'number' &&
-            typeof parsed.y === 'number' &&
-            typeof parsed.width === 'number' &&
-            typeof parsed.height === 'number'
+            typeof parsed === "object" &&
+            typeof parsed.x === "number" &&
+            typeof parsed.y === "number" &&
+            typeof parsed.width === "number" &&
+            typeof parsed.height === "number"
           ) {
             return { ...initialState, ...parsed };
           }
         }
       } catch (error) {
-        console.warn(`[useDraggableResizable] Failed to load stored state for ${storageKey}:`, error);
+        console.warn(
+          `[useDraggableResizable] Failed to load stored state for ${storageKey}:`,
+          error,
+        );
       }
     }
     return initialState;
   };
 
-  const [panelState, setPanelStateInternal] = createSignal<PanelState>(loadStoredState());
+  const [panelState, setPanelStateInternal] =
+    createSignal<PanelState>(loadStoredState());
   const [isDragging, setIsDragging] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
-  const [dragStart, setDragStart] = createSignal<{ x: number; y: number; panelX: number; panelY: number } | null>(null);
-  const [resizeStart, setResizeStart] = createSignal<{ x: number; y: number; width: number; height: number } | null>(null);
+  const [dragStart, setDragStart] = createSignal<{
+    x: number;
+    y: number;
+    panelX: number;
+    panelY: number;
+  } | null>(null);
+  const [resizeStart, setResizeStart] = createSignal<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
 
   // Save to localStorage when state changes
   createEffect(() => {
@@ -91,17 +107,25 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
       try {
         localStorage.setItem(storageKey, JSON.stringify(state));
       } catch (error) {
-        console.warn(`[useDraggableResizable] Failed to save state for ${storageKey}:`, error);
+        console.warn(
+          `[useDraggableResizable] Failed to save state for ${storageKey}:`,
+          error,
+        );
       }
     }
     onStateChange?.(state);
   });
 
   const setPanelState = (updates: Partial<PanelState>) => {
-    setPanelStateInternal(prev => ({ ...prev, ...updates }));
+    setPanelStateInternal((prev) => ({ ...prev, ...updates }));
   };
 
-  const constrainPosition = (x: number, y: number, width: number, height: number) => {
+  const constrainPosition = (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ) => {
     const constrainedX = Math.max(0, Math.min(x, window.innerWidth - width));
     const constrainedY = Math.max(0, Math.min(y, window.innerHeight - height));
     return { x: constrainedX, y: constrainedY };
@@ -123,7 +147,12 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
       const newX = start.panelX + deltaX;
       const newY = start.panelY + deltaY;
 
-      const constrained = constrainPosition(newX, newY, panelState().width, panelState().height);
+      const constrained = constrainPosition(
+        newX,
+        newY,
+        panelState().width,
+        panelState().height,
+      );
       setPanelState({ x: constrained.x, y: constrained.y });
     } else if (isResizing()) {
       const start = resizeStart();
@@ -136,7 +165,7 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
 
       const constrained = constrainSize(newWidth, newHeight);
       console.debug(
-        `[useDraggableResizable] Resize ${storageKey}: delta(${deltaX}, ${deltaY}) -> size(${newWidth}, ${newHeight}) -> constrained(${constrained.width}, ${constrained.height})`
+        `[useDraggableResizable] Resize ${storageKey}: delta(${deltaX}, ${deltaY}) -> size(${newWidth}, ${newHeight}) -> constrained(${constrained.width}, ${constrained.height})`,
       );
       setPanelState({ width: constrained.width, height: constrained.height });
     }
@@ -153,15 +182,15 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
       setResizeStart(null);
       console.debug(`[useDraggableResizable] Resize ended for ${storageKey}`);
     }
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
   };
 
-  const handleMouseDown = (e: MouseEvent, type: 'drag' | 'resize') => {
+  const handleMouseDown = (e: MouseEvent, type: "drag" | "resize") => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (type === 'drag') {
+    if (type === "drag") {
       setIsDragging(true);
       setDragStart({
         x: e.clientX,
@@ -169,10 +198,10 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
         panelX: panelState().x,
         panelY: panelState().y,
       });
-      document.body.style.cursor = 'grabbing';
-      document.body.style.userSelect = 'none';
+      document.body.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
       console.debug(`[useDraggableResizable] Drag started for ${storageKey}`);
-    } else if (type === 'resize') {
+    } else if (type === "resize") {
       setIsResizing(true);
       setResizeStart({
         x: e.clientX,
@@ -180,8 +209,8 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
         width: panelState().width,
         height: panelState().height,
       });
-      document.body.style.cursor = 'nw-resize';
-      document.body.style.userSelect = 'none';
+      document.body.style.cursor = "nw-resize";
+      document.body.style.userSelect = "none";
       console.debug(`[useDraggableResizable] Resize started for ${storageKey}`);
     }
   };
@@ -189,11 +218,11 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
   const toggleMinimized = () => {
     const currentState = panelState();
     const newMinimized = !currentState.minimized;
-    console.log('🦦> toggleMinimized called:', {
+    console.log("🦦> toggleMinimized called:", {
       storageKey,
       currentMinimized: currentState.minimized,
       newMinimized,
-      fullState: currentState
+      fullState: currentState,
     });
     setPanelState({ minimized: newMinimized });
   };
@@ -205,35 +234,39 @@ export function useDraggableResizable(options: DraggableResizableOptions): Dragg
   // Set up global event listeners
   createEffect(() => {
     if (isDragging() || isResizing()) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('mouseleave', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mouseleave", handleMouseUp);
     } else {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mouseleave', handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseleave", handleMouseUp);
     }
   });
 
   // Cleanup on unmount
   onCleanup(() => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-    document.removeEventListener('mouseleave', handleMouseUp);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("mouseleave", handleMouseUp);
   });
 
   // Generate style object
   const style = () => {
     const state = panelState();
     return {
-      position: 'absolute',
+      position: "absolute",
       left: `${state.x}px`,
       top: `${state.y}px`,
       width: `${state.width}px`,
-      height: state.minimized ? '40px' : `${state.height}px`,
-      zIndex: '1001',
-      cursor: isDragging() ? 'grabbing' : isResizing() ? 'nw-resize' : 'default',
-      userSelect: isDragging() || isResizing() ? 'none' : 'auto',
+      height: state.minimized ? "40px" : `${state.height}px`,
+      zIndex: "1001",
+      cursor: isDragging()
+        ? "grabbing"
+        : isResizing()
+          ? "nw-resize"
+          : "default",
+      userSelect: isDragging() || isResizing() ? "none" : "auto",
     };
   };
 

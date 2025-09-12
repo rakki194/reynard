@@ -40,7 +40,7 @@ export function useCanvas(initialWidth = 16, initialHeight = 16) {
     setCanvasHeight(height);
     const newPixels: PixelData[][] = [];
     const currentPixels = pixels();
-    
+
     for (let y = 0; y < height; y++) {
       newPixels[y] = [];
       for (let x = 0; x < width; x++) {
@@ -56,8 +56,8 @@ export function useCanvas(initialWidth = 16, initialHeight = 16) {
   };
 
   const drawPixel = (x: number, y: number, color: PixelData) => {
-    setPixels(prev => {
-      const newPixels = prev.map(row => [...row]);
+    setPixels((prev) => {
+      const newPixels = prev.map((row) => [...row]);
       if (y >= 0 && y < newPixels.length && x >= 0 && x < newPixels[y].length) {
         newPixels[y][x] = color;
       }
@@ -67,7 +67,12 @@ export function useCanvas(initialWidth = 16, initialHeight = 16) {
 
   const getPixel = (x: number, y: number): PixelData => {
     const currentPixels = pixels();
-    if (y >= 0 && y < currentPixels.length && x >= 0 && x < currentPixels[y].length) {
+    if (
+      y >= 0 &&
+      y < currentPixels.length &&
+      x >= 0 &&
+      x < currentPixels[y].length
+    ) {
       return currentPixels[y][x];
     }
     return null;
@@ -82,7 +87,7 @@ export function useCanvas(initialWidth = 16, initialHeight = 16) {
     canvasWidth,
     canvasHeight,
     pixels,
-    
+
     // Actions
     setWidth: setCanvasWidth,
     setHeight: setCanvasHeight,
@@ -90,6 +95,6 @@ export function useCanvas(initialWidth = 16, initialHeight = 16) {
     initializeCanvas,
     clearCanvas,
     drawPixel,
-    getPixel
+    getPixel,
   };
 }

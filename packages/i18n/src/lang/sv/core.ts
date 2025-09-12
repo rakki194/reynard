@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Förfrågan avbruten",
   },
-  
+
   // Autentisering och säkerhet
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer testnyckel",
     "new-key": "Bearer ny nyckel",
   },
-  
+
   // Notifieringar
   notifications: {
     title: "Notifieringar",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Första grupperade",
     "second-grouped": "Andra grupperade",
   },
-  
+
   // Valideringsmeddelanden
   validation: {
     required: "Detta fält är obligatoriskt",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "Ogiltig indatatyp",
     "does-not-match-pattern": "Indata matchar inte det nödvändiga mönstret",
   },
-  
+
   // Lösenordsvalidering
   password: {
-    "must-be-at-least-8-characters-long": "Lösenordet måste vara minst 8 tecken",
-    "must-contain-at-least-one-uppercase-letter": "Lösenordet måste innehålla minst en stor bokstav",
-    "must-contain-at-least-one-lowercase-letter": "Lösenordet måste innehålla minst en liten bokstav",
-    "must-contain-at-least-one-number": "Lösenordet måste innehålla minst en siffra",
-    "must-contain-at-least-one-special-character": "Lösenordet måste innehålla minst ett specialtecken",
+    "must-be-at-least-8-characters-long":
+      "Lösenordet måste vara minst 8 tecken",
+    "must-contain-at-least-one-uppercase-letter":
+      "Lösenordet måste innehålla minst en stor bokstav",
+    "must-contain-at-least-one-lowercase-letter":
+      "Lösenordet måste innehålla minst en liten bokstav",
+    "must-contain-at-least-one-number":
+      "Lösenordet måste innehålla minst en siffra",
+    "must-contain-at-least-one-special-character":
+      "Lösenordet måste innehålla minst ett specialtecken",
   },
-  
+
   // Säkerhetsvalidering
   security: {
-    "at-least-one-character-type-must-be-included": "Minst en teckentyp måste inkluderas",
-    "input-contains-potentially-dangerous-html": "Indata innehåller potentiellt farlig HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Indata innehåller potentiellt farliga SQL-mönster",
-    "input-contains-potentially-dangerous-xss-patterns": "Indata innehåller potentiellt farliga XSS-mönster",
-    "input-contains-path-traversal-patterns": "Indata innehåller sökvägskorsningsmönster",
-    "input-contains-windows-reserved-names": "Indata innehåller Windows-reserverade namn",
-    "input-contains-executable-file-extensions": "Indata innehåller körbara filändelser",
+    "at-least-one-character-type-must-be-included":
+      "Minst en teckentyp måste inkluderas",
+    "input-contains-potentially-dangerous-html":
+      "Indata innehåller potentiellt farlig HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Indata innehåller potentiellt farliga SQL-mönster",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Indata innehåller potentiellt farliga XSS-mönster",
+    "input-contains-path-traversal-patterns":
+      "Indata innehåller sökvägskorsningsmönster",
+    "input-contains-windows-reserved-names":
+      "Indata innehåller Windows-reserverade namn",
+    "input-contains-executable-file-extensions":
+      "Indata innehåller körbara filändelser",
     "input-contains-null-bytes": "Indata innehåller null-bytes",
     "input-contains-hidden-files": "Indata innehåller dolda filer",
-    "input-contains-javascript-file-extensions": "Indata innehåller JavaScript-filändelser",
+    "input-contains-javascript-file-extensions":
+      "Indata innehåller JavaScript-filändelser",
   },
-  
+
   // Asynkrona operationer
   async: {
     "operation-timed-out": "Operationen gick ut på tid",
@@ -107,7 +120,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Samtidighet måste vara större än 0",
     "polling-timeout-reached": "Polling-timeout nådd",
   },
-  
+
   // Modulladdning
   module: {
     "is-null": "Modulen är null",
@@ -115,14 +128,16 @@ export const coreTranslations = {
     "load-failed": "Laddning misslyckades",
     "loading-failed": "Laddning misslyckades",
   },
-  
+
   // Lagring och serialisering
   storage: {
     "potentially-dangerous-json-detected": "Potentiellt farlig JSON upptäckt",
-    "failed-to-parse-json-from-localstorage": "Kunde inte parsa JSON från localStorage:",
-    "error-parsing-storage-event": "Fel vid parsning av lagringshändelse för nyckel",
+    "failed-to-parse-json-from-localstorage":
+      "Kunde inte parsa JSON från localStorage:",
+    "error-parsing-storage-event":
+      "Fel vid parsning av lagringshändelse för nyckel",
   },
-  
+
   // Test och utveckling
   test: {
     error: "Testfel",
@@ -131,19 +146,19 @@ export const coreTranslations = {
     "notification-1": "Testnotifiering 1",
     "notification-2": "Testnotifiering 2",
   },
-  
+
   // Allmänna fel
   errors: {
     "string-error": "Strängfel",
     "crypto-error": "Kryptofel",
     "some-error": "Något fel",
   },
-  
+
   // Formaterare och verktyg
   formatters: {
     "hello-world": "Hej världen",
   },
-  
+
   // Datum och tid
   dateTime: {
     now: "Nu",
@@ -153,11 +168,13 @@ export const coreTranslations = {
     format: "Format",
     timezone: "Tidszon",
   },
-  
+
   // Integrationstester
   integration: {
     "session-and-api-key-generation": "Session och API-nyckelgenerering",
-    "authentication-and-input-validation-integration": "Autentiserings- och indatavalideringsintegration",
-    "performance-and-security-integration": "Prestanda- och säkerhetsintegration",
+    "authentication-and-input-validation-integration":
+      "Autentiserings- och indatavalideringsintegration",
+    "performance-and-security-integration":
+      "Prestanda- och säkerhetsintegration",
   },
 };

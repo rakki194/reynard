@@ -39,7 +39,7 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
 
   const checkAuthServices = async () => {
     setIsChecking(true);
-    
+
     try {
       // Simulate API calls to auth service health endpoints
       const mockServices: AuthServiceInfo[] = [
@@ -120,15 +120,15 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
   const getOverallStatus = () => {
     const services = filteredServices();
     const criticalServices = services.filter((s) => s.isCritical);
-    
+
     if (criticalServices.some((s) => s.status === "unavailable")) {
       return "critical";
     }
-    
+
     if (criticalServices.some((s) => s.status === "degraded")) {
       return "warning";
     }
-    
+
     return "healthy";
   };
 
@@ -164,7 +164,7 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
     const status = getOverallStatus();
     const services = filteredServices();
     const criticalServices = services.filter((s) => s.isCritical);
-    
+
     switch (status) {
       case "healthy":
         return "All authentication services are operational";
@@ -181,10 +181,16 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
     return (
       <div class="service-auth-status compact">
         <div class="auth-status-summary">
-          <span class="status-icon" classList={{ [getOverallStatusColor()]: true }}>
+          <span
+            class="status-icon"
+            classList={{ [getOverallStatusColor()]: true }}
+          >
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(getOverallStatusIcon())?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon(getOverallStatusIcon())?.outerHTML ||
+                ""
+              }
             />
           </span>
           <span class="status-message">{getOverallStatusMessage()}</span>
@@ -225,11 +231,17 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
 
       {/* Overall Status */}
       <div class="overall-status">
-        <div class="status-summary" classList={{ [getOverallStatusColor()]: true }}>
+        <div
+          class="status-summary"
+          classList={{ [getOverallStatusColor()]: true }}
+        >
           <span class="status-icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(getOverallStatusIcon())?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon(getOverallStatusIcon())?.outerHTML ||
+                ""
+              }
             />
           </span>
           <span class="status-message">{getOverallStatusMessage()}</span>
@@ -246,10 +258,13 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(service))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(service))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="service-details">
                     <span class="service-name">{service.name}</span>
                     <Show when={service.isCritical}>
@@ -259,10 +274,13 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
                 </div>
 
                 <div class="service-status">
-                  <span class="status-badge" classList={{ [getStatusColor(service)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(service)]: true }}
+                  >
                     {service.status}
                   </span>
-                  
+
                   <Show when={service.responseTime}>
                     <span class="response-time">{service.responseTime}ms</span>
                   </Show>
@@ -273,9 +291,11 @@ export const ServiceAuthStatus: Component<ServiceAuthStatusProps> = (props) => {
               <div class="service-details-expanded">
                 <div class="detail-row">
                   <span class="label">Last Check:</span>
-                  <span class="value">{service.lastCheck.toLocaleString()}</span>
+                  <span class="value">
+                    {service.lastCheck.toLocaleString()}
+                  </span>
                 </div>
-                
+
                 <Show when={service.error}>
                   <div class="detail-row error">
                     <span class="label">Error:</span>

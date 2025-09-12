@@ -1,6 +1,6 @@
 /**
  * Multi-Modal Grid Component
- * 
+ *
  * Displays files in a grid layout with file cards.
  */
 

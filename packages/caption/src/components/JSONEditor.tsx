@@ -1,9 +1,9 @@
 /**
  * JSON Editor Component
- * 
+ *
  * A generic JSON editor with syntax highlighting, validation, and Monaco integration.
  * Built for the Reynard caption system but can be used for any JSON editing needs.
- * 
+ *
  * Features:
  * - Real-time JSON validation with Monaco
  * - Syntax highlighting for JSON format
@@ -71,26 +71,25 @@ const getMonacoOptions = (readOnly: boolean) => ({
   renderValidationDecorations: "on" as const,
 });
 
-
 // Event handlers for JSON Editor
 const createJSONEditorHandlers = (
   content: () => string,
   setContent: (content: string) => void,
   setValidationMarkers: (markers: ValidationMarker[]) => void,
-  props: JSONEditorProps
+  props: JSONEditorProps,
 ) => {
   const handleValidation = (markers: ValidationMarker[]) => {
     setValidationMarkers(markers);
     props.onValidationChange?.(markers.length === 0, markers);
   };
-  
+
   const handleContentChange = (newContent: string | undefined) => {
     if (newContent !== undefined) {
       setContent(newContent);
       props.onChange(newContent);
     }
   };
-  
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" && e.shiftKey) {
       e.preventDefault();
@@ -99,41 +98,39 @@ const createJSONEditorHandlers = (
       props.onChange(formatted);
     }
   };
-  
+
   const handleFormat = () => {
     const formatted = formatJSON(content());
     setContent(formatted);
     props.onChange(formatted);
   };
-  
+
   return {
     handleValidation,
     handleContentChange,
     handleKeyDown,
-    handleFormat
+    handleFormat,
   };
 };
 
 export const JSONEditor: Component<JSONEditorProps> = (props) => {
   const [content, setContent] = createSignal("");
-  const [validationMarkers, setValidationMarkers] = createSignal<ValidationMarker[]>([]);
-  
+  const [validationMarkers, setValidationMarkers] = createSignal<
+    ValidationMarker[]
+  >([]);
+
   // Computed values
   const isValid = createMemo(() => validationMarkers().length === 0);
-  
+
   // Effects - Initialize and sync content with props
   createEffect(() => {
     setContent(props.content);
   });
-  
+
   // Event handlers
-  const { handleValidation, handleContentChange, handleFormat } = createJSONEditorHandlers(
-    content,
-    setContent,
-    setValidationMarkers,
-    props
-  );
-  
+  const { handleValidation, handleContentChange, handleFormat } =
+    createJSONEditorHandlers(content, setContent, setValidationMarkers, props);
+
   return (
     <div class="json-editor">
       <EditorHeader
@@ -142,7 +139,7 @@ export const JSONEditor: Component<JSONEditorProps> = (props) => {
         validationMarkers={validationMarkers}
         onFormat={handleFormat}
       />
-      
+
       <div class="editor-container">
         <MonacoEditor
           value={content()}
@@ -155,7 +152,7 @@ export const JSONEditor: Component<JSONEditorProps> = (props) => {
           theme={props.theme || "light"}
         />
       </div>
-      
+
       <ErrorDetails validationMarkers={validationMarkers} />
     </div>
   );

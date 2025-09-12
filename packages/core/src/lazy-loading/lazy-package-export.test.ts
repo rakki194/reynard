@@ -4,8 +4,13 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LazyPackageExport } from "./lazy-package-export";
-import { ExportType, ExportValidationLevel, ExportMetadata, ExportValidationError } from "../utils/package-exports-types";
-import { i18n } from 'reynard-i18n';
+import {
+  ExportType,
+  ExportValidationLevel,
+  ExportMetadata,
+  ExportValidationError,
+} from "../utils/package-exports-types";
+import { i18n } from "reynard-i18n";
 
 // Test the actual implementation
 
@@ -28,7 +33,9 @@ describe("LazyPackageExport", () => {
 
       expect((lazyExport as any)._packageName).toBe("test-package");
       expect((lazyExport as any)._loader).toBeUndefined();
-      expect((lazyExport as any)._validationLevel).toBe(ExportValidationLevel.BASIC);
+      expect((lazyExport as any)._validationLevel).toBe(
+        ExportValidationLevel.BASIC,
+      );
       expect((lazyExport as any)._enablePerformanceMonitoring).toBe(true);
       expect((lazyExport as any)._autoCleanup).toBe(true);
     });
@@ -44,7 +51,9 @@ describe("LazyPackageExport", () => {
 
       expect((lazyExport as any)._packageName).toBe("test-package");
       expect((lazyExport as any)._loader).toBe(mockLoader);
-      expect((lazyExport as any)._validationLevel).toBe(ExportValidationLevel.STRICT);
+      expect((lazyExport as any)._validationLevel).toBe(
+        ExportValidationLevel.STRICT,
+      );
       expect((lazyExport as any)._enablePerformanceMonitoring).toBe(false);
       expect((lazyExport as any)._autoCleanup).toBe(false);
     });
@@ -131,7 +140,8 @@ describe("LazyPackageExport", () => {
       const mockModule = { test: "module" };
       mockLoader.mockResolvedValue(mockModule);
 
-      const performanceSpy = vi.spyOn(performance, "now")
+      const performanceSpy = vi
+        .spyOn(performance, "now")
         .mockReturnValueOnce(1000)
         .mockReturnValueOnce(1500);
 
@@ -175,21 +185,29 @@ describe("LazyPackageExport", () => {
     });
 
     it("should handle loading errors", async () => {
-      const mockError = new Error(i18n.t('core.module.loading-failed'));
+      const mockError = new Error(i18n.t("core.module.loading-failed"));
       mockLoader.mockRejectedValue(mockError);
 
-      await expect(lazyExport.getModule()).rejects.toThrow(ExportValidationError);
+      await expect(lazyExport.getModule()).rejects.toThrow(
+        ExportValidationError,
+      );
 
       expect((lazyExport as any)._metadata.errorCount).toBe(1);
-      expect((lazyExport as any)._metadata.lastError).toBe(i18n.t('core.module.loading-failed'));
+      expect((lazyExport as any)._metadata.lastError).toBe(
+        i18n.t("core.module.loading-failed"),
+      );
     });
 
     it("should handle non-Error exceptions", async () => {
-      mockLoader.mockRejectedValue(i18n.t('core.errors.string-error'));
+      mockLoader.mockRejectedValue(i18n.t("core.errors.string-error"));
 
-      await expect(lazyExport.getModule()).rejects.toThrow(ExportValidationError);
+      await expect(lazyExport.getModule()).rejects.toThrow(
+        ExportValidationError,
+      );
 
-      expect((lazyExport as any)._metadata.lastError).toBe(i18n.t('core.errors.string-error'));
+      expect((lazyExport as any)._metadata.lastError).toBe(
+        i18n.t("core.errors.string-error"),
+      );
     });
   });
 
@@ -209,7 +227,9 @@ describe("LazyPackageExport", () => {
     it("should validate basic module structure", async () => {
       (lazyExport as any)._module = { test: "module" };
 
-      await expect((lazyExport as any)._validateExport()).resolves.not.toThrow();
+      await expect(
+        (lazyExport as any)._validateExport(),
+      ).resolves.not.toThrow();
     });
 
     it("should throw error for invalid module structure", async () => {
@@ -241,7 +261,9 @@ describe("LazyPackageExport", () => {
       (lazyExport as any)._updateAccessStats();
 
       expect((lazyExport as any)._metadata.accessCount).toBe(initialCount + 1);
-      expect((lazyExport as any)._metadata.lastAccess).toBeGreaterThan(initialAccess || 0);
+      expect((lazyExport as any)._metadata.lastAccess).toBeGreaterThan(
+        initialAccess || 0,
+      );
     });
   });
 
@@ -309,11 +331,21 @@ describe("LazyPackageExport", () => {
 
       lazyExport.reset();
 
-      expect((lazyExport as any)._metadata.packageName).toBe(originalMetadata.packageName);
-      expect((lazyExport as any)._metadata.exportType).toBe(originalMetadata.exportType);
-      expect((lazyExport as any)._metadata.validationLevel).toBe(originalMetadata.validationLevel);
-      expect((lazyExport as any)._metadata.accessCount).toBe(originalMetadata.accessCount);
-      expect((lazyExport as any)._metadata.errorCount).toBe(originalMetadata.errorCount);
+      expect((lazyExport as any)._metadata.packageName).toBe(
+        originalMetadata.packageName,
+      );
+      expect((lazyExport as any)._metadata.exportType).toBe(
+        originalMetadata.exportType,
+      );
+      expect((lazyExport as any)._metadata.validationLevel).toBe(
+        originalMetadata.validationLevel,
+      );
+      expect((lazyExport as any)._metadata.accessCount).toBe(
+        originalMetadata.accessCount,
+      );
+      expect((lazyExport as any)._metadata.errorCount).toBe(
+        originalMetadata.errorCount,
+      );
     });
   });
 });

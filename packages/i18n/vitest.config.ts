@@ -1,20 +1,20 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    environment: 'happy-dom',
+    environment: "happy-dom",
     globals: true,
-    setupFiles: ['./src/__tests__/setup.ts'],
+    setupFiles: ["./src/__tests__/setup.ts"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      provider: "v8",
+      reporter: ["text", "json", "html"],
       exclude: [
-        'node_modules/',
-        'dist/',
-        'src/__tests__/',
-        '**/*.d.ts',
-        '**/*.config.*'
-      ]
-    }
-  }
+        "node_modules/",
+        "dist/",
+        "src/__tests__/",
+        "**/*.d.ts",
+        "**/*.config.*",
+      ],
+    },
+  },
 });

@@ -18,7 +18,7 @@ const AppContent: Component = () => {
         <Card padding="lg">
           <h2>Theme Demo</h2>
           <p>This is a simple version to test the basic setup.</p>
-          
+
           <div class="theme-controls">
             <Button>Test Button</Button>
           </div>

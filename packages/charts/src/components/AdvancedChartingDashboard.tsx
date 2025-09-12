@@ -3,14 +3,12 @@
  * Comprehensive dashboard combining all advanced charting components
  */
 
-import {
-  Component,
-  createSignal,
-  JSX,
-  onMount
-} from "solid-js";
+import { Component, createSignal, JSX, onMount } from "solid-js";
 import { ChartConfig } from "../types";
-import { EmbeddingDistributionChart, EmbeddingDistributionData } from "./EmbeddingDistributionChart";
+import {
+  EmbeddingDistributionChart,
+  EmbeddingDistributionData,
+} from "./EmbeddingDistributionChart";
 import { ModelUsageChart, ModelUsageData } from "./ModelUsageChart";
 import { PCAVarianceChart, PCAVarianceData } from "./PCAVarianceChart";
 // Temporarily removed to break circular dependency
@@ -46,7 +44,9 @@ export interface AdvancedChartingDashboardProps {
   height?: number;
 }
 
-export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps> = (props) => {
+export const AdvancedChartingDashboard: Component<
+  AdvancedChartingDashboardProps
+> = (props) => {
   const [activeTab, setActiveTab] = createSignal("model-usage");
   const [isLoading, setIsLoading] = createSignal(props.showLoading || false);
 
@@ -170,7 +170,13 @@ export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps
             <div class="chart-item full-width">
               <PCAVarianceChart
                 title="PCA Explained Variance Analysis"
-                data={props.pcaVarianceData || { components: [], explainedVarianceRatio: [], cumulativeVarianceRatio: [] }}
+                data={
+                  props.pcaVarianceData || {
+                    components: [],
+                    explainedVarianceRatio: [],
+                    cumulativeVarianceRatio: [],
+                  }
+                }
                 width={800}
                 height={400}
                 showCumulative={true}
@@ -212,7 +218,7 @@ export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps
         <div class="tab-headers">
           {tabs.map((tab) => (
             <button
-              class={`tab-header ${activeTab() === tab.id ? 'active' : ''}`}
+              class={`tab-header ${activeTab() === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
@@ -220,7 +226,7 @@ export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps
           ))}
         </div>
         <div class="tab-content">
-          {tabs.find(tab => tab.id === activeTab())?.content}
+          {tabs.find((tab) => tab.id === activeTab())?.content}
         </div>
       </div>
     </div>

@@ -1,5 +1,9 @@
 // Cluster interpolation utilities for animations
-import type { EmbeddingPoint, PointAnimation, ClusterAnimation } from "../types";
+import type {
+  EmbeddingPoint,
+  PointAnimation,
+  ClusterAnimation,
+} from "../types";
 import { applyEasing } from "./easing";
 
 /**
@@ -8,7 +12,7 @@ import { applyEasing } from "./easing";
 export function createClusterPointAnimations(
   points: EmbeddingPoint[],
   center: [number, number, number],
-  expansionRadius: number
+  expansionRadius: number,
 ): PointAnimation[] {
   return points.map((point, index) => {
     const angle = (index / points.length) * Math.PI * 2;
@@ -36,7 +40,7 @@ export function createClusterPointAnimations(
 export function interpolateClusterPoint(
   point: EmbeddingPoint,
   pointAnim: PointAnimation,
-  clusterAnim: ClusterAnimation
+  clusterAnim: ClusterAnimation,
 ): EmbeddingPoint {
   const progress = Math.max(
     0,

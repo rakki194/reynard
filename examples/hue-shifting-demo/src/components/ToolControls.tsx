@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { allIcons } from "reynard-fluent-icons";
 
-type DrawingTool = 'pencil' | 'eraser' | 'fill';
+type DrawingTool = "pencil" | "eraser" | "fill";
 
 interface ToolControlsProps {
   selectedTool: DrawingTool;
@@ -14,20 +14,20 @@ export const ToolControls: Component<ToolControlsProps> = (props) => {
       <h3>Tools</h3>
       <div class="tool-buttons">
         <button
-          class={`tool-button ${props.selectedTool === 'pencil' ? 'selected' : ''}`}
-          onClick={() => props.onToolChange('pencil')}
+          class={`tool-button ${props.selectedTool === "pencil" ? "selected" : ""}`}
+          onClick={() => props.onToolChange("pencil")}
         >
           <span innerHTML={allIcons.edit.svg}></span> Pencil
         </button>
         <button
-          class={`tool-button ${props.selectedTool === 'eraser' ? 'selected' : ''}`}
-          onClick={() => props.onToolChange('eraser')}
+          class={`tool-button ${props.selectedTool === "eraser" ? "selected" : ""}`}
+          onClick={() => props.onToolChange("eraser")}
         >
           <span innerHTML={allIcons.clean.svg}></span> Eraser
         </button>
         <button
-          class={`tool-button ${props.selectedTool === 'fill' ? 'selected' : ''}`}
-          onClick={() => props.onToolChange('fill')}
+          class={`tool-button ${props.selectedTool === "fill" ? "selected" : ""}`}
+          onClick={() => props.onToolChange("fill")}
         >
           <span innerHTML={allIcons.box.svg}></span> Fill
         </button>

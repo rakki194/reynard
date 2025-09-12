@@ -219,7 +219,6 @@ describe("Render Utilities", () => {
     });
   });
 
-
   describe("integration tests", () => {
     it("should work with reactive components", () => {
       const ReactiveComponent: Component = () => {

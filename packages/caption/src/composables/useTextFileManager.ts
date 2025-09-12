@@ -1,6 +1,6 @@
 /**
  * Text File Manager Composable for Reynard Caption System
- * 
+ *
  * Handles text file state management and operations.
  */
 
@@ -15,7 +15,9 @@ export interface UseTextFileManagerOptions {
 }
 
 export const useTextFileManager = (options: UseTextFileManagerOptions = {}) => {
-  const [textFiles, setTextFiles] = createSignal<TextFile[]>(options.initialFiles || []);
+  const [textFiles, setTextFiles] = createSignal<TextFile[]>(
+    options.initialFiles || [],
+  );
   const [selectedFile, setSelectedFile] = createSignal<TextFile | null>(null);
 
   // Handle file selection
@@ -26,7 +28,7 @@ export const useTextFileManager = (options: UseTextFileManagerOptions = {}) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setTextFiles(prev => prev.filter(f => f.id !== fileId));
+    setTextFiles((prev) => prev.filter((f) => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -35,15 +37,17 @@ export const useTextFileManager = (options: UseTextFileManagerOptions = {}) => {
 
   // Handle file content modification
   const handleFileModify = (fileId: string, content: string) => {
-    setTextFiles(prev => prev.map(f => 
-      f.id === fileId ? { ...f, content, modifiedAt: new Date() } : f
-    ));
+    setTextFiles((prev) =>
+      prev.map((f) =>
+        f.id === fileId ? { ...f, content, modifiedAt: new Date() } : f,
+      ),
+    );
     options.onFileModify?.(fileId, content);
   };
 
   // Add new files
   const addFiles = (newFiles: TextFile[]) => {
-    setTextFiles(prev => [...prev, ...newFiles]);
+    setTextFiles((prev) => [...prev, ...newFiles]);
   };
 
   return {
@@ -53,6 +57,6 @@ export const useTextFileManager = (options: UseTextFileManagerOptions = {}) => {
     handleFileSelect,
     handleFileRemove,
     handleFileModify,
-    addFiles
+    addFiles,
   };
 };

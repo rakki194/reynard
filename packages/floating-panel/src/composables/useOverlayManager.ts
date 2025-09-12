@@ -1,6 +1,6 @@
 /**
  * Overlay Manager Composable
- * 
+ *
  * Manages the state and transitions of the floating panel overlay system.
  * Based on Yipyap's sophisticated state management patterns.
  */
@@ -12,7 +12,7 @@ import type {
   FloatingPanel,
   OverlayConfig,
   PanelEventHandlers,
-  UseOverlayManagerReturn
+  UseOverlayManagerReturn,
 } from "../types";
 
 export interface UseOverlayManagerOptions {
@@ -31,10 +31,12 @@ const DEFAULT_OVERLAY_CONFIG: Required<OverlayConfig> = {
   outlineWidth: 2,
   transitionDuration: 300,
   transitionEasing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-  zIndex: 1000
+  zIndex: 1000,
 };
 
-export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOverlayManagerReturn {
+export function useOverlayManager(
+  options: UseOverlayManagerOptions = {},
+): UseOverlayManagerReturn {
   const config = { ...DEFAULT_OVERLAY_CONFIG, ...options.config };
   const eventHandlers = options.eventHandlers || {};
   const autoHideDelay = options.autoHideDelay || 0;
@@ -45,11 +47,11 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
     transitionPhase: "idle",
     backdropVisible: false,
     panels: options.initialPanels || [],
-    activePanelId: undefined
+    activePanelId: undefined,
   });
 
   const [panels, setPanels] = createSignal<Map<string, FloatingPanel>>(
-    new Map(options.initialPanels?.map(p => [p.id, p]) || [])
+    new Map(options.initialPanels?.map((p) => [p.id, p]) || []),
   );
 
   // Transition management
@@ -65,67 +67,67 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
   // Transition phase management
   const setTransitionPhase = (phase: TransitionPhase) => {
     batch(() => {
-      setOverlayState(prev => ({
+      setOverlayState((prev) => ({
         ...prev,
-        transitionPhase: phase
+        transitionPhase: phase,
       }));
-      
+
       eventHandlers.onTransitionStart?.(phase);
-      
+
       // Handle phase-specific logic
       switch (phase) {
         case "entering":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
             isActive: true,
-            backdropVisible: true
+            backdropVisible: true,
           }));
           break;
-          
+
         case "entering-active":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
             isActive: true,
-            backdropVisible: true
+            backdropVisible: true,
           }));
           break;
-          
+
         case "active":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
             isActive: true,
-            backdropVisible: true
+            backdropVisible: true,
           }));
           break;
-          
+
         case "exiting":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
-            backdropVisible: false
+            backdropVisible: false,
           }));
           break;
-          
+
         case "exiting-active":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
             isActive: false,
-            backdropVisible: false
+            backdropVisible: false,
           }));
           break;
-          
+
         case "idle":
-          setOverlayState(prev => ({
+          setOverlayState((prev) => ({
             ...prev,
             isActive: false,
-            backdropVisible: false
+            backdropVisible: false,
           }));
           break;
       }
-      
+
       // Set up next phase transition
       transitionTimeoutId = window.setTimeout(() => {
         eventHandlers.onTransitionEnd?.(phase);
-        
+
         // Auto-advance certain phases
         switch (phase) {
           case "entering":
@@ -151,10 +153,10 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
       clearTimeout(autoHideTimeoutId);
       autoHideTimeoutId = undefined;
     }
-    
+
     const currentState = overlayState();
     if (currentState.isActive) return;
-    
+
     eventHandlers.onOverlayShow?.();
     setTransitionPhase("entering");
   };
@@ -163,7 +165,7 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
   const hideOverlay = () => {
     const currentState = overlayState();
     if (!currentState.isActive) return;
-    
+
     eventHandlers.onOverlayHide?.();
     setTransitionPhase("exiting");
   };
@@ -180,29 +182,30 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
 
   // Panel management
   const addPanel = (panel: FloatingPanel) => {
-    setPanels(prev => new Map(prev.set(panel.id, panel)));
-    setOverlayState(prev => ({
+    setPanels((prev) => new Map(prev.set(panel.id, panel)));
+    setOverlayState((prev) => ({
       ...prev,
-      panels: [...prev.panels, panel]
+      panels: [...prev.panels, panel],
     }));
   };
 
   const removePanel = (panelId: string) => {
-    setPanels(prev => {
+    setPanels((prev) => {
       const newMap = new Map(prev);
       newMap.delete(panelId);
       return newMap;
     });
-    
-    setOverlayState(prev => ({
+
+    setOverlayState((prev) => ({
       ...prev,
-      panels: prev.panels.filter(p => p.id !== panelId),
-      activePanelId: prev.activePanelId === panelId ? undefined : prev.activePanelId
+      panels: prev.panels.filter((p) => p.id !== panelId),
+      activePanelId:
+        prev.activePanelId === panelId ? undefined : prev.activePanelId,
     }));
   };
 
   const updatePanel = (panelId: string, updates: Partial<FloatingPanel>) => {
-    setPanels(prev => {
+    setPanels((prev) => {
       const newMap = new Map(prev);
       const existingPanel = newMap.get(panelId);
       if (existingPanel) {
@@ -210,12 +213,12 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
       }
       return newMap;
     });
-    
-    setOverlayState(prev => ({
+
+    setOverlayState((prev) => ({
       ...prev,
-      panels: prev.panels.map(p => 
-        p.id === panelId ? { ...p, ...updates } : p
-      )
+      panels: prev.panels.map((p) =>
+        p.id === panelId ? { ...p, ...updates } : p,
+      ),
     }));
   };
 
@@ -257,6 +260,6 @@ export function useOverlayManager(options: UseOverlayManagerOptions = {}): UseOv
     setTransitionPhase,
     isActive: () => overlayState().isActive,
     getPanel: (panelId: string) => panels().get(panelId),
-    getAllPanels: () => Array.from(panels().values())
+    getAllPanels: () => Array.from(panels().values()),
   };
 }

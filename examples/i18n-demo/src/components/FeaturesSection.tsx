@@ -4,7 +4,7 @@ import { getDemoTranslation } from "../translations";
 
 const FeaturesSection: Component = () => {
   const { locale } = useI18n();
-  
+
   return (
     <div class="demo-section">
       <h2>{getDemoTranslation(locale, "features")}</h2>
@@ -14,7 +14,9 @@ const FeaturesSection: Component = () => {
         <li>✅ {getDemoTranslation(locale, "featuresList.rtlSupport")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.typeSafe")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.dynamicLoading")}</li>
-        <li>✅ {getDemoTranslation(locale, "featuresList.culturalAdaptations")}</li>
+        <li>
+          ✅ {getDemoTranslation(locale, "featuresList.culturalAdaptations")}
+        </li>
         <li>✅ {getDemoTranslation(locale, "featuresList.packageSpecific")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.fallbackSystem")}</li>
       </ul>

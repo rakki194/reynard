@@ -1,6 +1,6 @@
 /**
  * RAG Documents Tab Component
- * 
+ *
  * Displays and manages documents in the RAG system
  * with document listing and deletion capabilities.
  */

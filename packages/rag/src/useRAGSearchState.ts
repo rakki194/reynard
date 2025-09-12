@@ -1,6 +1,6 @@
 /**
  * RAG Search State Composable
- * 
+ *
  * Manages state and operations for the RAG search component
  * following Reynard composable conventions.
  */
@@ -9,11 +9,11 @@ import { createSignal } from "solid-js";
 import { useRAG } from "./useRAG";
 import type { RAGQueryHit, RAGQueryParams } from "./rag-types";
 import { RAGApiService } from "./api-service";
-import type { 
-  RAGResult, 
-  RAGDocument, 
-  RAGStats, 
-  RAGQueryResponse 
+import type {
+  RAGResult,
+  RAGDocument,
+  RAGStats,
+  RAGQueryResponse,
 } from "./types";
 
 export interface RAGSearchStateConfig {
@@ -28,22 +28,24 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   // Use RAG composable
   const rag = useRAG({
     authFetch: async (input: string | URL, init?: RequestInit) => {
-      const url = typeof input === 'string' ? input : input.toString();
-      const fullUrl = url.startsWith('http') ? url : `${config.apiService.getBasePath()}${url}`;
+      const url = typeof input === "string" ? input : input.toString();
+      const fullUrl = url.startsWith("http")
+        ? url
+        : `${config.apiService.getBasePath()}${url}`;
       return fetch(fullUrl, init);
     },
     queryUrl: "/api/rag/query",
     configUrl: "/api/rag/config",
     ingestUrl: "/api/rag/ingest",
     adminUrl: "/api/rag/admin",
-    metricsUrl: "/api/rag/ops/metrics"
+    metricsUrl: "/api/rag/ops/metrics",
   });
 
   // State management
   const [documents, setDocuments] = createSignal<RAGDocument[]>([]);
   const [stats, setStats] = createSignal<RAGStats | null>(null);
   const [error, setError] = createSignal<string | null>(null);
-  
+
   // Search state
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<RAGResult[]>([]);
@@ -53,8 +55,12 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   // Search settings
   const [embeddingModel, setEmbeddingModel] = createSignal(config.defaultModel);
   const [maxResults, setMaxResults] = createSignal(config.maxResults);
-  const [similarityThreshold, setSimilarityThreshold] = createSignal(config.similarityThreshold);
-  const [enableReranking, setEnableReranking] = createSignal(config.enableReranking);
+  const [similarityThreshold, setSimilarityThreshold] = createSignal(
+    config.similarityThreshold,
+  );
+  const [enableReranking, setEnableReranking] = createSignal(
+    config.enableReranking,
+  );
 
   // Upload state
   const [isUploading, setIsUploading] = createSignal(false);
@@ -79,7 +85,11 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
     }
   };
 
-  const uploadFile = async (file: File, basePath: string, onUpload?: (result: any) => void) => {
+  const uploadFile = async (
+    file: File,
+    basePath: string,
+    onUpload?: (result: any) => void,
+  ) => {
     setIsUploading(true);
     setUploadProgress(0);
     setError(null);
@@ -113,24 +123,26 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
 
   const search = async (searchQuery: string) => {
     if (!searchQuery.trim()) return;
-    
+
     setIsSearching(true);
     setError(null);
     setQuery(searchQuery);
-    
+
     try {
       const startTime = Date.now();
       const response = await rag.query({
         q: searchQuery,
         modality: "docs",
-        topK: maxResults()
+        topK: maxResults(),
       });
-      
+
       const endTime = Date.now();
       setQueryTime(endTime - startTime);
-      
+
       // Convert results to legacy format
-      const legacyResults = response.hits?.map((hit, index) => convertToLegacyResult(hit, index)) || [];
+      const legacyResults =
+        response.hits?.map((hit, index) => convertToLegacyResult(hit, index)) ||
+        [];
       setResults(legacyResults);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Search failed");
@@ -141,18 +153,21 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   };
 
   // Helper function to convert generated API results to legacy format
-  const convertToLegacyResult = (hit: RAGQueryHit, index: number): RAGResult => ({
+  const convertToLegacyResult = (
+    hit: RAGQueryHit,
+    index: number,
+  ): RAGResult => ({
     chunk_id: hit.id?.toString() || `chunk-${index}`,
-    document_id: hit.file_path || 'unknown',
-    text: hit.chunk_text || hit.file_content || '',
+    document_id: hit.file_path || "unknown",
+    text: hit.chunk_text || hit.file_content || "",
     similarity_score: hit.score,
     rank: index + 1,
     metadata: {
       chunk_length: hit.chunk_tokens,
       document_source: hit.file_path,
-      embedding_model: 'generated',
-      ...hit.extra
-    }
+      embedding_model: "generated",
+      ...hit.extra,
+    },
   });
 
   // Computed values
@@ -165,7 +180,7 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
         query_time: currentQueryTime * 1000, // Convert to ms
         embedding_time: 0, // Not available in generated client yet
         search_time: 0, // Not available in generated client yet
-        total_results: currentResults.length
+        total_results: currentResults.length,
       };
     }
     return null;
@@ -174,19 +189,19 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
   return {
     // RAG composable
     rag,
-    
+
     // State
     documents,
     stats,
     error,
-    
+
     // Search state
     query,
     setQuery,
     results,
     isSearching,
     queryTime,
-    
+
     // Settings
     embeddingModel,
     setEmbeddingModel,
@@ -196,20 +211,20 @@ export function useRAGSearchState(config: RAGSearchStateConfig) {
     setSimilarityThreshold,
     enableReranking,
     setEnableReranking,
-    
+
     // Upload state
     isUploading,
     uploadProgress,
-    
+
     // Operations
     loadDocuments,
     loadStats,
     uploadFile,
     deleteDocument,
     search,
-    
+
     // Computed values
     legacyResults,
-    queryResponse
+    queryResponse,
   };
 }

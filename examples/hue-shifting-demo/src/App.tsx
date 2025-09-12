@@ -10,9 +10,7 @@ import "./App.css";
 const Layout: Component<{ children?: any }> = (props) => (
   <div class="app">
     <Navigation />
-    <main class="main-content">
-      {props.children}
-    </main>
+    <main class="main-content">{props.children}</main>
   </div>
 );
 

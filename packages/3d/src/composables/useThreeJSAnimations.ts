@@ -17,10 +17,10 @@ export function useThreeJSAnimations() {
   const getInterpolatedPoints = (originalPoints: EmbeddingPoint[]) => {
     // First apply point animations
     let points = pointAnimations.getInterpolatedPoints(originalPoints);
-    
+
     // Then apply cluster animations
     points = clusterAnimations.getInterpolatedClusterPoints(points);
-    
+
     return points;
   };
 
@@ -30,7 +30,7 @@ export function useThreeJSAnimations() {
   const getCameraAnimationState = () => {
     const currentAnim = pointAnimations.currentAnimation();
     if (!currentAnim) return null;
-    
+
     return cameraAnimations.getCameraAnimationState(currentAnim.progress);
   };
 

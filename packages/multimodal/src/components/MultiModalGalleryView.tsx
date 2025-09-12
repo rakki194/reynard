@@ -1,11 +1,16 @@
 /**
  * Multi-Modal Gallery View Component
- * 
+ *
  * Handles the JSX rendering for the multi-modal gallery.
  */
 
 import { Component, Show } from "solid-js";
-import type { MultiModalFile, MediaType, GalleryView, FileCounts } from "../types/MultiModalTypes";
+import type {
+  MultiModalFile,
+  MediaType,
+  GalleryView,
+  FileCounts,
+} from "../types/MultiModalTypes";
 import { MultiModalGalleryHeader } from "./MultiModalGalleryHeader";
 import { MultiModalGalleryContent } from "./MultiModalGalleryContent";
 import { MultiModalDetail } from "./MultiModalDetail";
@@ -30,7 +35,9 @@ interface MultiModalGalleryViewProps {
   editable?: boolean;
 }
 
-export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = (props) => {
+export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = (
+  props,
+) => {
   return (
     <div class={`multi-modal-gallery ${props.class || ""}`}>
       <MultiModalGalleryHeader
@@ -65,7 +72,9 @@ export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = (pro
         <MultiModalDetail
           file={props.selectedFile!}
           onClose={props.onCloseDetail}
-          onModify={(content) => props.onFileModify(props.selectedFile!.id, content)}
+          onModify={(content) =>
+            props.onFileModify(props.selectedFile!.id, content)
+          }
           editable={props.editable}
         />
       </Show>

@@ -21,14 +21,14 @@ export function createMockFn<T extends (...args: any[]) => any>(
 export function createMockObject<T extends Record<string, any>>(
   methods: (keyof T)[],
 ): {
-    [K in keyof T]: T[K] extends (...args: any[]) => any
+  [K in keyof T]: T[K] extends (...args: any[]) => any
     ? T[K] & {
-      mockClear: () => void;
-      mockReset: () => void;
-      mockReturnValue: (value: ReturnType<T[K]>) => any;
-    }
+        mockClear: () => void;
+        mockReset: () => void;
+        mockReturnValue: (value: ReturnType<T[K]>) => any;
+      }
     : T[K];
-  } {
+} {
   const mockObj = {} as any;
   methods.forEach((method) => {
     mockObj[method] = createMockFn();

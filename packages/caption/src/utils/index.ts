@@ -1,6 +1,6 @@
 /**
  * Barrel exports for Multi-Modal Gallery Utilities
- * 
+ *
  * Provides clean API boundaries for all multi-modal gallery utilities.
  */
 
@@ -10,5 +10,5 @@ export {
   calculateFileCounts,
   createFileProcessingPipeline,
   getFileIcon,
-  getTypeColor
+  getTypeColor,
 } from "./FileProcessingUtils";

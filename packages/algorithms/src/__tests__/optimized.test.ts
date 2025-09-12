@@ -8,7 +8,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { checkCollision } from "../geometry/collision/aabb-collision";
 import type { AABB } from "../geometry/collision/aabb-types";
-import { AlgorithmSelector, EnhancedMemoryPool as MemoryPool } from "../optimization";
+import {
+  AlgorithmSelector,
+  EnhancedMemoryPool as MemoryPool,
+} from "../optimization";
 import {
   OptimizationConfig,
   PerformanceMonitor,
@@ -142,9 +145,7 @@ describe("Optimized Algorithms API", () => {
     });
 
     it("should handle isolated objects", () => {
-      const edges: Array<[number, number]> = [
-        [0, 1],
-      ];
+      const edges: Array<[number, number]> = [[0, 1]];
 
       const components = findConnectedComponents(edges);
 

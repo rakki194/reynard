@@ -44,7 +44,11 @@ describe("Package Export Registry", () => {
       const mockLoader = vi.fn();
       const validationLevel = "strict" as any;
 
-      const lazyExport = createLazyExport("test-package", mockLoader, validationLevel);
+      const lazyExport = createLazyExport(
+        "test-package",
+        mockLoader,
+        validationLevel,
+      );
 
       expect(lazyExport).toBeDefined();
       expect(lazyExport).toBeInstanceOf(LazyPackageExport);
@@ -107,7 +111,7 @@ describe("Package Export Registry", () => {
 
     it("should have package configurations with expected structure", () => {
       const packageNames = Object.keys(mlPackages);
-      
+
       expect(packageNames.length).toBeGreaterThan(0);
 
       packageNames.forEach((packageName) => {

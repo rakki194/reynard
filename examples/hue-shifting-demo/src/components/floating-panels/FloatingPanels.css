@@ -68,7 +68,8 @@
   background: var(--color-surface, oklch(95% 0.02 0));
   color: var(--color-text-secondary, oklch(30% 0.01 0));
   cursor: pointer;
-  transition: all var(--duration-fast, 120ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  transition: all var(--duration-fast, 120ms)
+    var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .trigger-button:hover {
@@ -130,11 +131,11 @@
     flex-direction: row;
     padding: var(--space-sm);
   }
-  
+
   .trigger-buttons {
     flex-direction: row;
   }
-  
+
   .panel-actions {
     border-top: none;
     border-left: 1px solid var(--border);

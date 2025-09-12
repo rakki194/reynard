@@ -63,7 +63,7 @@ describe("Browser Mocks", () => {
       });
 
       it("should be mockable", () => {
-        mockSessionStorage.setItem.mockImplementation(() => { });
+        mockSessionStorage.setItem.mockImplementation(() => {});
         mockSessionStorage.setItem("key", "value");
         expect(mockSessionStorage.setItem).toHaveBeenCalledWith("key", "value");
       });
@@ -120,7 +120,7 @@ describe("Browser Mocks", () => {
 
     describe("mockIntersectionObserver", () => {
       it("should create observer with required methods", () => {
-        const observer = new mockIntersectionObserver(() => { });
+        const observer = new mockIntersectionObserver(() => {});
 
         expect(observer.observe).toBeDefined();
         expect(observer.unobserve).toBeDefined();
@@ -128,13 +128,13 @@ describe("Browser Mocks", () => {
       });
 
       it("should be callable as constructor", () => {
-        expect(() => new mockIntersectionObserver(() => { })).not.toThrow();
+        expect(() => new mockIntersectionObserver(() => {})).not.toThrow();
       });
     });
 
     describe("mockMutationObserver", () => {
       it("should create observer with required methods", () => {
-        const observer = new mockMutationObserver(() => { });
+        const observer = new mockMutationObserver(() => {});
 
         expect(observer.observe).toBeDefined();
         expect(observer.disconnect).toBeDefined();
@@ -142,14 +142,14 @@ describe("Browser Mocks", () => {
       });
 
       it("should return empty records", () => {
-        const observer = new mockMutationObserver(() => { });
+        const observer = new mockMutationObserver(() => {});
         expect(observer.takeRecords()).toEqual([]);
       });
     });
 
     describe("mockPerformanceObserver", () => {
       it("should create observer with required methods", () => {
-        const observer = new mockPerformanceObserver(() => { });
+        const observer = new mockPerformanceObserver(() => {});
 
         expect(observer.observe).toBeDefined();
         expect(observer.disconnect).toBeDefined();
@@ -158,7 +158,7 @@ describe("Browser Mocks", () => {
       });
 
       it("should return empty records", () => {
-        const observer = new mockPerformanceObserver(() => { });
+        const observer = new mockPerformanceObserver(() => {});
         expect(observer.takeRecords()).toEqual([]);
       });
     });
@@ -176,7 +176,7 @@ describe("Browser Mocks", () => {
       });
 
       it("should return a number", () => {
-        const id = mockRequestAnimationFrame(() => { });
+        const id = mockRequestAnimationFrame(() => {});
         expect(typeof id).toBe("number");
       });
     });

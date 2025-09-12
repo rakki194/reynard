@@ -3,7 +3,7 @@
  * Material-specific hue shifting for different surface types
  */
 
-import type { OKLCHColor } from 'reynard-colors';
+import type { OKLCHColor } from "reynard-colors";
 
 /**
  * Material-specific hue shifting patterns
@@ -13,26 +13,26 @@ export const MATERIAL_PATTERNS = {
     shadowShift: 30,
     highlightShift: 15,
     chromaBoost: 0.15,
-    lightnessRange: 50
+    lightnessRange: 50,
   },
   skin: {
     shadowShift: 20,
     highlightShift: 25,
     chromaBoost: 0.08,
-    lightnessRange: 35
+    lightnessRange: 35,
   },
   fabric: {
     shadowShift: 15,
     highlightShift: 10,
     chromaBoost: 0.05,
-    lightnessRange: 40
+    lightnessRange: 40,
   },
   plastic: {
     shadowShift: 10,
     highlightShift: 20,
     chromaBoost: 0.12,
-    lightnessRange: 45
-  }
+    lightnessRange: 45,
+  },
 } as const;
 
 /**
@@ -45,27 +45,27 @@ export const MATERIAL_PATTERNS = {
 export function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0
+  intensity: number = 1.0,
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   const pattern = MATERIAL_PATTERNS[material];
   const { l, c, h } = baseColor;
-  
+
   return {
     shadow: {
-      l: Math.max(0, l - (pattern.lightnessRange * 0.6 * intensity)),
-      c: Math.min(0.4, c + (pattern.chromaBoost * intensity)),
-      h: (h - (pattern.shadowShift * intensity) + 360) % 360
+      l: Math.max(0, l - pattern.lightnessRange * 0.6 * intensity),
+      c: Math.min(0.4, c + pattern.chromaBoost * intensity),
+      h: (h - pattern.shadowShift * intensity + 360) % 360,
     },
     base: {
       l: l,
       c: c,
-      h: h
+      h: h,
     },
     highlight: {
-      l: Math.min(100, l + (pattern.lightnessRange * 0.4 * intensity)),
-      c: Math.min(0.4, c + (pattern.chromaBoost * 0.5 * intensity)),
-      h: (h + (pattern.highlightShift * intensity) + 360) % 360
-    }
+      l: Math.min(100, l + pattern.lightnessRange * 0.4 * intensity),
+      c: Math.min(0.4, c + pattern.chromaBoost * 0.5 * intensity),
+      h: (h + pattern.highlightShift * intensity + 360) % 360,
+    },
   };
 }
 
@@ -75,8 +75,8 @@ export function materialHueShift(
  * @returns Material pattern configuration
  */
 export function getMaterialPattern(
-  material: keyof typeof MATERIAL_PATTERNS
-): typeof MATERIAL_PATTERNS[keyof typeof MATERIAL_PATTERNS] {
+  material: keyof typeof MATERIAL_PATTERNS,
+): (typeof MATERIAL_PATTERNS)[keyof typeof MATERIAL_PATTERNS] {
   return MATERIAL_PATTERNS[material];
 }
 
@@ -86,7 +86,7 @@ export function getMaterialPattern(
  * @returns True if material is supported
  */
 export function isSupportedMaterial(
-  material: string
+  material: string,
 ): material is keyof typeof MATERIAL_PATTERNS {
   return material in MATERIAL_PATTERNS;
 }

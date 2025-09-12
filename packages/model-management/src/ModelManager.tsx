@@ -55,10 +55,11 @@ export interface SystemHealth {
 }
 
 export const ModelManager: Component<ModelManagerProps> = (props) => {
-  const { models, systemHealth, error, loadModel, unloadModel, clearError } = useModelManager({
-    baseUrl: props.backendConfig?.baseUrl || "http://localhost:8000",
-    apiKey: props.backendConfig?.apiKey,
-  });
+  const { models, systemHealth, error, loadModel, unloadModel, clearError } =
+    useModelManager({
+      baseUrl: props.backendConfig?.baseUrl || "http://localhost:8000",
+      apiKey: props.backendConfig?.apiKey,
+    });
 
   return (
     <div class={`model-manager ${props.className || ""}`}>
@@ -71,17 +72,17 @@ export const ModelManager: Component<ModelManagerProps> = (props) => {
 
       <div class="manager-content">
         <HealthOverview systemHealth={systemHealth()} />
-        <ModelsGrid models={models()} onLoad={loadModel} onUnload={unloadModel} />
+        <ModelsGrid
+          models={models()}
+          onLoad={loadModel}
+          onUnload={unloadModel}
+        />
 
         <Show when={error()}>
           <div class="error-message">
             <div class="error-icon">⚠️</div>
             <div class="error-text">{error()}</div>
-            <button
-              type="button"
-              class="error-dismiss"
-              onClick={clearError}
-            >
+            <button type="button" class="error-dismiss" onClick={clearError}>
               Dismiss
             </button>
           </div>

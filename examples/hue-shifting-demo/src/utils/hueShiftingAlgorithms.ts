@@ -4,14 +4,14 @@
  * For true hue shifting, use the new hueShifting utilities
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import { 
-  basicColorRamp as reynardBasicColorRamp, 
+import type { OKLCHColor } from "reynard-colors";
+import {
+  basicColorRamp as reynardBasicColorRamp,
   generateColorRamp as reynardGenerateColorRamp,
   applyMaterialPattern,
   getMaterialPattern,
-  type MaterialType 
-} from 'reynard-colors';
+  type MaterialType,
+} from "reynard-colors";
 
 /**
  * Basic color ramping algorithm for pixel art
@@ -22,8 +22,8 @@ import {
  */
 export function basicColorRamp(
   baseColor: OKLCHColor,
-  shiftType: 'shadow' | 'highlight' | 'midtone',
-  intensity: number = 0.3
+  shiftType: "shadow" | "highlight" | "midtone",
+  intensity: number = 0.3,
 ): OKLCHColor {
   return reynardBasicColorRamp(baseColor, shiftType, intensity);
 }
@@ -40,9 +40,14 @@ export function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20
+  highlightShift: number = 20,
 ): OKLCHColor[] {
-  return reynardGenerateColorRamp(baseColor, stops, shadowShift, highlightShift);
+  return reynardGenerateColorRamp(
+    baseColor,
+    stops,
+    shadowShift,
+    highlightShift,
+  );
 }
 
 /**
@@ -50,16 +55,16 @@ export function generateHueShiftRamp(
  * Now using the advanced material pattern system
  */
 export const MATERIAL_PATTERNS = {
-  metal: getMaterialPattern('metal'),
-  skin: getMaterialPattern('skin'),
-  fabric: getMaterialPattern('fabric'),
-  plastic: getMaterialPattern('plastic'),
-  wood: getMaterialPattern('wood'),
-  stone: getMaterialPattern('stone'),
-  glass: getMaterialPattern('glass'),
-  ceramic: getMaterialPattern('ceramic'),
-  leather: getMaterialPattern('leather'),
-  custom: getMaterialPattern('custom')
+  metal: getMaterialPattern("metal"),
+  skin: getMaterialPattern("skin"),
+  fabric: getMaterialPattern("fabric"),
+  plastic: getMaterialPattern("plastic"),
+  wood: getMaterialPattern("wood"),
+  stone: getMaterialPattern("stone"),
+  glass: getMaterialPattern("glass"),
+  ceramic: getMaterialPattern("ceramic"),
+  leather: getMaterialPattern("leather"),
+  custom: getMaterialPattern("custom"),
 } as const;
 
 /**
@@ -72,7 +77,7 @@ export const MATERIAL_PATTERNS = {
 export function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0
+  intensity: number = 1.0,
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   return applyMaterialPattern(baseColor, material as MaterialType, intensity);
 }

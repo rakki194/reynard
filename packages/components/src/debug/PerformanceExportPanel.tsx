@@ -68,7 +68,9 @@ export interface ExportSummary {
   recommendations: string[];
 }
 
-export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (props) => {
+export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
+  props,
+) => {
   const [exportOptions, setExportOptions] = createSignal<ExportOptions>({
     format: "json",
     includeHistory: true,
@@ -77,7 +79,7 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
     includeCharts: false,
     timeRange: "24h",
     compression: false,
-    filename: `performance-report-${new Date().toISOString().split('T')[0]}`,
+    filename: `performance-report-${new Date().toISOString().split("T")[0]}`,
   });
   const [exportSummary, setExportSummary] = createSignal<ExportSummary>({
     totalDataPoints: 0,
@@ -114,28 +116,50 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
 
     // Calculate summary statistics
     const totalDataPoints = filteredHistory.length;
-    const averageFrameRate = filteredHistory.length > 0 
-      ? filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) / filteredHistory.length 
-      : 0;
-    const averageMemoryUsage = filteredHistory.length > 0 
-      ? filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) / filteredHistory.length 
-      : 0;
-    const averageBrowserResponsiveness = filteredHistory.length > 0 
-      ? filteredHistory.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length 
-      : 0;
+    const averageFrameRate =
+      filteredHistory.length > 0
+        ? filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) /
+          filteredHistory.length
+        : 0;
+    const averageMemoryUsage =
+      filteredHistory.length > 0
+        ? filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
+          filteredHistory.length
+        : 0;
+    const averageBrowserResponsiveness =
+      filteredHistory.length > 0
+        ? filteredHistory.reduce(
+            (sum, entry) => sum + entry.browserResponsiveness,
+            0,
+          ) / filteredHistory.length
+        : 0;
 
     // Calculate warning statistics
     const totalWarnings = filteredWarnings.length;
-    const criticalWarnings = filteredWarnings.filter((w) => w.severity === "critical").length;
-    const highWarnings = filteredWarnings.filter((w) => w.severity === "high").length;
-    const mediumWarnings = filteredWarnings.filter((w) => w.severity === "medium").length;
-    const lowWarnings = filteredWarnings.filter((w) => w.severity === "low").length;
+    const criticalWarnings = filteredWarnings.filter(
+      (w) => w.severity === "critical",
+    ).length;
+    const highWarnings = filteredWarnings.filter(
+      (w) => w.severity === "high",
+    ).length;
+    const mediumWarnings = filteredWarnings.filter(
+      (w) => w.severity === "medium",
+    ).length;
+    const lowWarnings = filteredWarnings.filter(
+      (w) => w.severity === "low",
+    ).length;
 
     // Calculate performance score
-    const performanceScore = calculatePerformanceScore(filteredHistory, filteredWarnings);
+    const performanceScore = calculatePerformanceScore(
+      filteredHistory,
+      filteredWarnings,
+    );
 
     // Generate recommendations
-    const recommendations = generateRecommendations(filteredHistory, filteredWarnings);
+    const recommendations = generateRecommendations(
+      filteredHistory,
+      filteredWarnings,
+    );
 
     const summary: ExportSummary = {
       totalDataPoints,
@@ -203,12 +227,17 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
   };
 
   // Calculate performance score
-  const calculatePerformanceScore = (history: any[], warnings: any[]): number => {
+  const calculatePerformanceScore = (
+    history: any[],
+    warnings: any[],
+  ): number => {
     let score = 100;
 
     // Frame rate penalty
     if (history.length > 0) {
-      const avgFrameRate = history.reduce((sum, entry) => sum + entry.frameRate, 0) / history.length;
+      const avgFrameRate =
+        history.reduce((sum, entry) => sum + entry.frameRate, 0) /
+        history.length;
       if (avgFrameRate < 30) {
         score -= 40;
       } else if (avgFrameRate < 45) {
@@ -219,9 +248,13 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
     }
 
     // Warning penalties
-    const criticalWarnings = warnings.filter((w) => w.severity === "critical").length;
+    const criticalWarnings = warnings.filter(
+      (w) => w.severity === "critical",
+    ).length;
     const highWarnings = warnings.filter((w) => w.severity === "high").length;
-    const mediumWarnings = warnings.filter((w) => w.severity === "medium").length;
+    const mediumWarnings = warnings.filter(
+      (w) => w.severity === "medium",
+    ).length;
 
     score -= criticalWarnings * 20;
     score -= highWarnings * 10;
@@ -231,40 +264,66 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
   };
 
   // Generate recommendations
-  const generateRecommendations = (history: any[], warnings: any[]): string[] => {
+  const generateRecommendations = (
+    history: any[],
+    warnings: any[],
+  ): string[] => {
     const recommendations: string[] = [];
 
     if (history.length > 0) {
-      const avgFrameRate = history.reduce((sum, entry) => sum + entry.frameRate, 0) / history.length;
+      const avgFrameRate =
+        history.reduce((sum, entry) => sum + entry.frameRate, 0) /
+        history.length;
       if (avgFrameRate < 30) {
-        recommendations.push("Frame rate is below 30 FPS - consider optimizing rendering performance");
+        recommendations.push(
+          "Frame rate is below 30 FPS - consider optimizing rendering performance",
+        );
       } else if (avgFrameRate < 45) {
-        recommendations.push("Frame rate is below 45 FPS - monitor performance closely");
+        recommendations.push(
+          "Frame rate is below 45 FPS - monitor performance closely",
+        );
       }
 
-      const avgMemoryUsage = history.reduce((sum, entry) => sum + entry.memoryUsage, 0) / history.length;
-      if (avgMemoryUsage > 200 * 1024 * 1024) { // 200MB
-        recommendations.push("High memory usage detected - investigate for potential memory leaks");
+      const avgMemoryUsage =
+        history.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
+        history.length;
+      if (avgMemoryUsage > 200 * 1024 * 1024) {
+        // 200MB
+        recommendations.push(
+          "High memory usage detected - investigate for potential memory leaks",
+        );
       }
 
-      const avgBrowserResponsiveness = history.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) / history.length;
+      const avgBrowserResponsiveness =
+        history.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) /
+        history.length;
       if (avgBrowserResponsiveness > 100) {
-        recommendations.push("Browser responsiveness is poor - consider reducing computational load");
+        recommendations.push(
+          "Browser responsiveness is poor - consider reducing computational load",
+        );
       }
     }
 
-    const criticalWarnings = warnings.filter((w) => w.severity === "critical").length;
+    const criticalWarnings = warnings.filter(
+      (w) => w.severity === "critical",
+    ).length;
     if (criticalWarnings > 0) {
-      recommendations.push(`${criticalWarnings} critical performance issues require immediate attention`);
+      recommendations.push(
+        `${criticalWarnings} critical performance issues require immediate attention`,
+      );
     }
 
     const highWarnings = warnings.filter((w) => w.severity === "high").length;
     if (highWarnings > 0) {
-      recommendations.push(`${highWarnings} high priority performance issues should be addressed soon`);
+      recommendations.push(
+        `${highWarnings} high priority performance issues should be addressed soon`,
+      );
     }
 
     if (recommendations.length === 0) {
-      recommendations.push("Performance appears to be within acceptable parameters");
+      recommendations.push(
+        "Performance appears to be within acceptable parameters",
+      );
     }
 
     return recommendations;
@@ -282,7 +341,10 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
 
       // Filter data by time range
       const filteredHistory = filterDataByTimeRange(history, options.timeRange);
-      const filteredWarnings = filterDataByTimeRange(warnings, options.timeRange);
+      const filteredWarnings = filterDataByTimeRange(
+        warnings,
+        options.timeRange,
+      );
 
       setExportProgress(25);
 
@@ -367,27 +429,31 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
   // Generate CSV content
   const generateCSV = (data: any): string => {
     const lines: string[] = [];
-    
+
     // Header
-    lines.push("Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops");
-    
+    lines.push(
+      "Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops",
+    );
+
     // Data rows
     if (data.performanceHistory) {
       data.performanceHistory.forEach((entry: any) => {
-        lines.push([
-          new Date(entry.timestamp).toISOString(),
-          entry.frameRate,
-          entry.memoryUsage,
-          entry.browserResponsiveness,
-          entry.selectionDuration || 0,
-          entry.itemsPerSecond || 0,
-          entry.domUpdateCount || 0,
-          entry.styleApplicationCount || 0,
-          entry.frameDropCount || 0,
-        ].join(","));
+        lines.push(
+          [
+            new Date(entry.timestamp).toISOString(),
+            entry.frameRate,
+            entry.memoryUsage,
+            entry.browserResponsiveness,
+            entry.selectionDuration || 0,
+            entry.itemsPerSecond || 0,
+            entry.domUpdateCount || 0,
+            entry.styleApplicationCount || 0,
+            entry.frameDropCount || 0,
+          ].join(","),
+        );
       });
     }
-    
+
     return lines.join("\n");
   };
 
@@ -420,7 +486,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
         <p>Total Data Points: ${data.metadata.totalDataPoints}</p>
     </div>
     
-    ${data.summary ? `
+    ${
+      data.summary
+        ? `
     <div class="summary">
         <h2>Summary</h2>
         <div class="metrics">
@@ -442,29 +510,43 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
             </div>
         </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
     
-    ${data.warnings && data.warnings.length > 0 ? `
+    ${
+      data.warnings && data.warnings.length > 0
+        ? `
     <div class="warnings">
         <h2>Performance Warnings</h2>
-        ${data.warnings.map((warning: any) => `
+        ${data.warnings
+          .map(
+            (warning: any) => `
         <div class="warning ${warning.severity}">
             <strong>${warning.severity.toUpperCase()}</strong>: ${warning.message}
             <br>Value: ${warning.value}ms, Threshold: ${warning.threshold}ms
             <br>Time: ${new Date(warning.timestamp).toLocaleString()}
         </div>
-        `).join('')}
+        `,
+          )
+          .join("")}
     </div>
-    ` : ''}
+    `
+        : ""
+    }
     
-    ${data.summary && data.summary.recommendations ? `
+    ${
+      data.summary && data.summary.recommendations
+        ? `
     <div class="summary">
         <h2>Recommendations</h2>
         <ul>
-            ${data.summary.recommendations.map((rec: string) => `<li>${rec}</li>`).join('')}
+            ${data.summary.recommendations.map((rec: string) => `<li>${rec}</li>`).join("")}
         </ul>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 </body>
 </html>`;
   };
@@ -496,7 +578,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("download")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("download")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Export Performance Data</h3>
@@ -511,7 +595,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
             <label>Format:</label>
             <Select
               value={exportOptions().format}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, format: value as any }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({ ...prev, format: value as any }))
+              }
               options={formats}
             />
           </div>
@@ -520,7 +606,12 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
             <label>Time Range:</label>
             <Select
               value={exportOptions().timeRange}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, timeRange: value as any }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({
+                  ...prev,
+                  timeRange: value as any,
+                }))
+              }
               options={timeRanges}
             />
           </div>
@@ -529,7 +620,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
             <label>Filename:</label>
             <TextField
               value={exportOptions().filename}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, filename: value }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({ ...prev, filename: value }))
+              }
               placeholder="Enter filename"
             />
           </div>
@@ -542,7 +635,12 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
               <input
                 type="checkbox"
                 checked={exportOptions().includeSummary}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeSummary: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeSummary: e.currentTarget.checked,
+                  }))
+                }
               />
               Summary Statistics
             </label>
@@ -550,7 +648,12 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
               <input
                 type="checkbox"
                 checked={exportOptions().includeHistory}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeHistory: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeHistory: e.currentTarget.checked,
+                  }))
+                }
               />
               Performance History
             </label>
@@ -558,7 +661,12 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
               <input
                 type="checkbox"
                 checked={exportOptions().includeWarnings}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeWarnings: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeWarnings: e.currentTarget.checked,
+                  }))
+                }
               />
               Performance Warnings
             </label>
@@ -566,7 +674,12 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
               <input
                 type="checkbox"
                 checked={exportOptions().includeCharts}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeCharts: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeCharts: e.currentTarget.checked,
+                  }))
+                }
               />
               Charts (HTML only)
             </label>
@@ -588,7 +701,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
           </div>
           <div class="summary-item">
             <label>Performance Score:</label>
-            <span class="value">{exportSummary().performanceScore.toFixed(0)}/100</span>
+            <span class="value">
+              {exportSummary().performanceScore.toFixed(0)}/100
+            </span>
           </div>
           <div class="summary-item">
             <label>Total Warnings:</label>

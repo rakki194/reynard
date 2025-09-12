@@ -24,7 +24,10 @@ export interface SpriteManagementConfig {
     };
   } | null;
   pointCloudEvents: () => {
-    handlePointHover: (pointId: string, config: EmbeddingRenderingConfig) => void;
+    handlePointHover: (
+      pointId: string,
+      config: EmbeddingRenderingConfig,
+    ) => void;
     handlePointLeave: (config: EmbeddingRenderingConfig) => void;
   } | null;
   points: EmbeddingPoint[];
@@ -40,7 +43,7 @@ export function useSpriteManagement(config: SpriteManagementConfig) {
   const createThumbnailSprites = async () => {
     const renderer = config.pointCloudRenderer();
     const events = config.pointCloudEvents();
-    
+
     if (!renderer || !events || !config.points) return;
 
     const sprites = await renderer.spriteManager().createThumbnailSprites(
@@ -56,20 +59,22 @@ export function useSpriteManagement(config: SpriteManagementConfig) {
 
   const createTextSprites = async () => {
     const renderer = config.pointCloudRenderer();
-    
+
     if (!renderer || !config.points) return;
 
-    const sprites = await renderer.spriteManager().createTextSprites(
-      config.points,
-      config.config,
-      config.scene,
-    );
+    const sprites = await renderer
+      .spriteManager()
+      .createTextSprites(config.points, config.config, config.scene);
 
     config.setTextSprites(sprites);
   };
 
   createEffect(() => {
-    if (config.pointCloudRenderer() && config.pointCloudEvents() && config.points) {
+    if (
+      config.pointCloudRenderer() &&
+      config.pointCloudEvents() &&
+      config.points
+    ) {
       createThumbnailSprites();
       createTextSprites();
     }

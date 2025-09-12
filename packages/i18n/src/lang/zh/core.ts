@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "请求已中止",
   },
-  
+
   // 身份验证和安全
   bearer: {
     token: "Bearer令牌",
     "test-key": "Bearer测试密钥",
     "new-key": "Bearer新密钥",
   },
-  
+
   // 通知
   notifications: {
     title: "通知",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "第一个分组",
     "second-grouped": "第二个分组",
   },
-  
+
   // 验证消息
   validation: {
     required: "此字段为必填项",
@@ -70,22 +70,27 @@ export const coreTranslations = {
     "invalid-input-type": "无效的输入类型",
     "does-not-match-pattern": "输入不匹配所需模式",
   },
-  
+
   // 密码验证
   password: {
     "must-be-at-least-8-characters-long": "密码必须至少8个字符",
-    "must-contain-at-least-one-uppercase-letter": "密码必须包含至少一个大写字母",
-    "must-contain-at-least-one-lowercase-letter": "密码必须包含至少一个小写字母",
+    "must-contain-at-least-one-uppercase-letter":
+      "密码必须包含至少一个大写字母",
+    "must-contain-at-least-one-lowercase-letter":
+      "密码必须包含至少一个小写字母",
     "must-contain-at-least-one-number": "密码必须包含至少一个数字",
-    "must-contain-at-least-one-special-character": "密码必须包含至少一个特殊字符",
+    "must-contain-at-least-one-special-character":
+      "密码必须包含至少一个特殊字符",
   },
-  
+
   // 安全验证
   security: {
     "at-least-one-character-type-must-be-included": "必须包含至少一种字符类型",
     "input-contains-potentially-dangerous-html": "输入包含潜在危险的HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "输入包含潜在危险的SQL模式",
-    "input-contains-potentially-dangerous-xss-patterns": "输入包含潜在危险的XSS模式",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "输入包含潜在危险的SQL模式",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "输入包含潜在危险的XSS模式",
     "input-contains-path-traversal-patterns": "输入包含路径遍历模式",
     "input-contains-windows-reserved-names": "输入包含Windows保留名称",
     "input-contains-executable-file-extensions": "输入包含可执行文件扩展名",
@@ -93,7 +98,7 @@ export const coreTranslations = {
     "input-contains-hidden-files": "输入包含隐藏文件",
     "input-contains-javascript-file-extensions": "输入包含JavaScript文件扩展名",
   },
-  
+
   // 异步操作
   async: {
     "operation-timed-out": "操作超时",
@@ -107,7 +112,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "并发数必须大于0",
     "polling-timeout-reached": "轮询超时已到达",
   },
-  
+
   // 模块加载
   module: {
     "is-null": "模块为null",
@@ -115,14 +120,14 @@ export const coreTranslations = {
     "load-failed": "加载失败",
     "loading-failed": "加载失败",
   },
-  
+
   // 存储和序列化
   storage: {
     "potentially-dangerous-json-detected": "检测到潜在危险的JSON",
     "failed-to-parse-json-from-localstorage": "从localStorage解析JSON失败：",
     "error-parsing-storage-event": "解析存储事件时出错，键为",
   },
-  
+
   // 测试和开发
   test: {
     error: "测试错误",
@@ -131,19 +136,19 @@ export const coreTranslations = {
     "notification-1": "测试通知1",
     "notification-2": "测试通知2",
   },
-  
+
   // 一般错误
   errors: {
     "string-error": "字符串错误",
     "crypto-error": "加密错误",
     "some-error": "某些错误",
   },
-  
+
   // 格式化器和工具
   formatters: {
     "hello-world": "你好世界",
   },
-  
+
   // 日期和时间
   dateTime: {
     now: "现在",
@@ -153,7 +158,7 @@ export const coreTranslations = {
     format: "格式",
     timezone: "时区",
   },
-  
+
   // 集成测试
   integration: {
     "session-and-api-key-generation": "会话和API密钥生成",

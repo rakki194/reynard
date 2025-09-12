@@ -6,11 +6,11 @@ import type { Point3D } from "../types";
 /**
  * Color mapping strategies for point clouds
  */
-export type ColorMappingStrategy = 
-  | "similarity" 
-  | "cluster" 
-  | "importance" 
-  | "confidence" 
+export type ColorMappingStrategy =
+  | "similarity"
+  | "cluster"
+  | "importance"
+  | "confidence"
   | "custom";
 
 /**
@@ -18,7 +18,7 @@ export type ColorMappingStrategy =
  */
 export function calculatePointColors(
   points: Point3D[],
-  strategy: ColorMappingStrategy = "similarity"
+  strategy: ColorMappingStrategy = "similarity",
 ): Point3D[] {
   return points.map((point) => {
     let color: [number, number, number] = [1, 1, 1];
@@ -101,11 +101,7 @@ function calculateConfidenceColor(point: Point3D): [number, number, number] {
 /**
  * Utility function to convert HSL to RGB
  */
-function hslToRgb(
-  h: number,
-  s: number,
-  l: number,
-): [number, number, number] {
+function hslToRgb(h: number, s: number, l: number): [number, number, number] {
   const hue2rgb = (p: number, q: number, t: number) => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;

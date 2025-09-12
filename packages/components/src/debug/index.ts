@@ -1,12 +1,16 @@
 /**
  * Debug Components Index
- * 
+ *
  * Exports all debug and performance monitoring components
  */
 
 // Main Performance Dashboard
 export { PerformanceDashboard } from "./PerformanceDashboard";
-export type { PerformanceDashboardProps, PerformanceWarning, PerformanceHistory } from "./PerformanceDashboard";
+export type {
+  PerformanceDashboardProps,
+  PerformanceWarning,
+  PerformanceHistory,
+} from "./PerformanceDashboard";
 
 // Performance Dashboard Tabs
 export { PerformanceOverviewTab } from "./PerformanceOverviewTab";

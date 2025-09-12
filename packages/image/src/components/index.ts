@@ -1,6 +1,6 @@
 /**
  * Image Components Barrel Export
- * 
+ *
  * Provides clean API boundaries for all image-related components.
  */
 
@@ -18,5 +18,5 @@ export type {
   ImageProcessingOptions,
   ImageGridProps,
   ImageFileCardProps,
-  ImageViewerProps
+  ImageViewerProps,
 } from "../types";

@@ -1,6 +1,6 @@
 # Shared Installation Guides
 
-*Standardized installation procedures for Reynard packages and services*
+_Standardized installation procedures for Reynard packages and services_
 
 ## Frontend Package Installation
 

@@ -25,7 +25,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Velocity implements Component {
@@ -33,7 +33,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Health implements Component {
@@ -41,12 +41,12 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) { }
+  ) {}
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) { }
+  constructor(public name: string) {}
 }
 
 // Test resources
@@ -55,7 +55,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) { }
+  ) {}
 }
 
 class GameState implements Resource {
@@ -63,7 +63,7 @@ class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-  ) { }
+  ) {}
 }
 
 // Component and resource types will be created dynamically in beforeEach

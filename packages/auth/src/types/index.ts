@@ -1,6 +1,6 @@
 /**
  * Authentication Types and Interfaces
- * 
+ *
  * Note: These types will be replaced with generated types from the API client
  * once the backend auth system is fully integrated.
  */

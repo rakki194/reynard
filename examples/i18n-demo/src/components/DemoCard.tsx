@@ -9,7 +9,7 @@ interface DemoCardProps {
 
 const DemoCard: Component<DemoCardProps> = (props) => {
   const { locale } = useI18n();
-  
+
   return (
     <div class="demo-card">
       <h3>{getDemoTranslation(locale, props.title as any)}</h3>

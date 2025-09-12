@@ -257,16 +257,26 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary, #3b82f6), var(--color-accent, #8b5cf6));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary, #3b82f6),
+    var(--color-accent, #8b5cf6)
+  );
   border-radius: 0.25rem;
   transition: width 0.3s ease;
   animation: progress-shimmer 1.5s ease-in-out infinite;
 }
 
 @keyframes progress-shimmer {
-  0% { opacity: 0.8; }
-  50% { opacity: 1; }
-  100% { opacity: 0.8; }
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
 }
 
 /* Loading Spinner */
@@ -280,7 +290,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error Display */
@@ -364,16 +376,16 @@
     padding: 1rem;
     gap: 1rem;
   }
-  
+
   .model-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .upload-area {
     padding: 1.5rem;
     min-height: 150px;
   }
-  
+
   .result-meta {
     grid-template-columns: 1fr;
   }
@@ -385,17 +397,17 @@
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .model-card {
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .upload-area {
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .results-content {
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);

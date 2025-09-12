@@ -1,12 +1,12 @@
 /**
  * ComfyUI Health Status Component
- * 
+ *
  * Displays the current health status of the ComfyUI service.
  */
 
-import { Component, createSignal, createEffect, onCleanup } from 'solid-js';
-import { useComfy } from '../composables/useComfy.js';
-import type { ComfyHealthStatus } from '../types/index.js';
+import { Component, createSignal, createEffect, onCleanup } from "solid-js";
+import { useComfy } from "../composables/useComfy.js";
+import type { ComfyHealthStatus } from "../types/index.js";
 
 export interface ComfyHealthStatusProps {
   /** Whether to show detailed information */
@@ -34,31 +34,31 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'ok':
-      case 'healthy':
-        return 'text-green-600';
-      case 'error':
-      case 'unhealthy':
-        return 'text-red-600';
-      case 'disabled':
-        return 'text-gray-600';
+      case "ok":
+      case "healthy":
+        return "text-green-600";
+      case "error":
+      case "unhealthy":
+        return "text-red-600";
+      case "disabled":
+        return "text-gray-600";
       default:
-        return 'text-yellow-600';
+        return "text-yellow-600";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'ok':
-      case 'healthy':
-        return '✓';
-      case 'error':
-      case 'unhealthy':
-        return '✗';
-      case 'disabled':
-        return '⊘';
+      case "ok":
+      case "healthy":
+        return "✓";
+      case "error":
+      case "unhealthy":
+        return "✗";
+      case "disabled":
+        return "⊘";
       default:
-        return '?';
+        return "?";
     }
   };
 
@@ -67,7 +67,7 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
   };
 
   return (
-    <div class={`comfy-health-status ${props.class || ''}`}>
+    <div class={`comfy-health-status ${props.class || ""}`}>
       <div class="health-header">
         <h3>ComfyUI Service Status</h3>
         {lastChecked() && (
@@ -81,10 +81,14 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
         {comfy.health() ? (
           <div class="status-info">
             <div class="status-main">
-              <span class={`status-icon ${getStatusColor(comfy.health()!.status)}`}>
+              <span
+                class={`status-icon ${getStatusColor(comfy.health()!.status)}`}
+              >
                 {getStatusIcon(comfy.health()!.status)}
               </span>
-              <span class={`status-text ${getStatusColor(comfy.health()!.status)}`}>
+              <span
+                class={`status-text ${getStatusColor(comfy.health()!.status)}`}
+              >
                 {comfy.health()!.status.toUpperCase()}
               </span>
             </div>
@@ -94,7 +98,7 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
                 <div class="detail-item">
                   <span class="detail-label">Enabled:</span>
                   <span class="detail-value">
-                    {comfy.health()!.enabled ? 'Yes' : 'No'}
+                    {comfy.health()!.enabled ? "Yes" : "No"}
                   </span>
                 </div>
 
@@ -108,14 +112,18 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
                 {comfy.health()!.connectionState && (
                   <div class="detail-item">
                     <span class="detail-label">Connection:</span>
-                    <span class="detail-value">{comfy.health()!.connectionState}</span>
+                    <span class="detail-value">
+                      {comfy.health()!.connectionState}
+                    </span>
                   </div>
                 )}
 
                 {comfy.health()!.connectionAttempts !== undefined && (
                   <div class="detail-item">
                     <span class="detail-label">Attempts:</span>
-                    <span class="detail-value">{comfy.health()!.connectionAttempts}</span>
+                    <span class="detail-value">
+                      {comfy.health()!.connectionAttempts}
+                    </span>
                   </div>
                 )}
               </div>
@@ -123,7 +131,7 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
           </div>
         ) : (
           <div class="status-loading">
-            {comfy.isLoading() ? 'Checking status...' : 'Status unknown'}
+            {comfy.isLoading() ? "Checking status..." : "Status unknown"}
           </div>
         )}
 
@@ -143,7 +151,7 @@ export const ComfyHealthStatus: Component<ComfyHealthStatusProps> = (props) => {
           disabled={comfy.isLoading()}
           class="btn btn-sm btn-secondary"
         >
-          {comfy.isLoading() ? 'Checking...' : 'Refresh'}
+          {comfy.isLoading() ? "Checking..." : "Refresh"}
         </button>
       </div>
     </div>

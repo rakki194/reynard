@@ -12,20 +12,25 @@ export const PixelArtEditor: Component = () => {
   const [selectedColor, setSelectedColor] = createSignal<OKLCHColor>({
     l: 60,
     c: 0.2,
-    h: 120
+    h: 120,
   });
 
   // Composables
   const canvas = useCanvas(16, 16);
   const drawingTools = useDrawingTools();
   const materialEffects = useMaterialEffects();
-  const events = useEditorEvents(selectedColor, canvas, drawingTools, materialEffects);
-  
+  const events = useEditorEvents(
+    selectedColor,
+    canvas,
+    drawingTools,
+    materialEffects,
+  );
+
   // Initialize on mount
   onMount(() => {
     canvas.initializeCanvas();
   });
-  
+
   return (
     <FloatingPanelEditorLayout
       selectedColor={selectedColor()}

@@ -1,29 +1,29 @@
 /**
  * Floating Panel Overlay Component
- * 
+ *
  * Main overlay container that manages the backdrop and coordinates panel animations.
  * Based on Yipyap's sophisticated overlay system.
  */
 
 import type { Component } from "solid-js";
 import { createEffect, onCleanup } from "solid-js";
-import type {
-  FloatingPanelOverlayProps
-} from "../types";
+import type { FloatingPanelOverlayProps } from "../types";
 import "./FloatingPanelOverlay.css";
 
-export const FloatingPanelOverlay: Component<FloatingPanelOverlayProps> = (props) => {
+export const FloatingPanelOverlay: Component<FloatingPanelOverlayProps> = (
+  props,
+) => {
   // Handle transition phase changes
   createEffect(() => {
     const phase = props.transitionPhase;
     if (phase) {
       props.onTransitionStart?.(phase);
-      
+
       // Set up transition end callback
       const timeoutId = setTimeout(() => {
         props.onTransitionEnd?.(phase);
       }, 300); // Default transition duration
-      
+
       onCleanup(() => clearTimeout(timeoutId));
     }
   });
@@ -49,7 +49,7 @@ export const FloatingPanelOverlay: Component<FloatingPanelOverlayProps> = (props
     } else {
       document.body.style.overflow = "";
     }
-    
+
     return () => {
       document.body.style.overflow = "";
     };

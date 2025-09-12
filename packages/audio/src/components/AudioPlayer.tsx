@@ -73,12 +73,16 @@ export interface TrackInfo {
 }
 
 export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
-  const [currentTrackIndex, setCurrentTrackIndex] = createSignal(props.initialTrack || 0);
+  const [currentTrackIndex, setCurrentTrackIndex] = createSignal(
+    props.initialTrack || 0,
+  );
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentTime, setCurrentTime] = createSignal(0);
   const [duration, setDuration] = createSignal(0);
   const [volume, setVolume] = createSignal(props.playerConfig?.volume || 0.8);
-  const [isShuffled, setIsShuffled] = createSignal(props.playerConfig?.shuffle || false);
+  const [isShuffled, setIsShuffled] = createSignal(
+    props.playerConfig?.shuffle || false,
+  );
   const [playlist, setPlaylist] = createSignal<(File | string)[]>([]);
   const [shuffledIndices, setShuffledIndices] = createSignal<number[]>([]);
 
@@ -120,7 +124,10 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
   // Setup keyboard shortcuts
   const setupKeyboardShortcuts = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) {
         return;
       }
 
@@ -182,12 +189,12 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
   const getCurrentTrack = (): File | string | null => {
     const playlistArray = playlist();
     if (playlistArray.length === 0) return null;
-    
+
     if (isShuffled() && shuffledIndices().length > 0) {
       const shuffledIndex = shuffledIndices()[currentTrackIndex()];
       return playlistArray[shuffledIndex] || null;
     }
-    
+
     return playlistArray[currentTrackIndex()] || null;
   };
 
@@ -195,10 +202,13 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
   const getTrackInfo = (index: number): TrackInfo => {
     const track = playlist()[index];
     const isCurrentTrack = index === currentTrackIndex();
-    
+
     return {
       index,
-      name: typeof track === "string" ? track.split("/").pop() || "Unknown" : track.name,
+      name:
+        typeof track === "string"
+          ? track.split("/").pop() || "Unknown"
+          : track.name,
       duration: duration(),
       file: track,
       isPlaying: isCurrentTrack && isPlaying(),
@@ -245,7 +255,10 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
 
   const seekForward = () => {
     if (audioRef) {
-      audioRef.currentTime = Math.min(audioRef.currentTime + 10, audioRef.duration);
+      audioRef.currentTime = Math.min(
+        audioRef.currentTime + 10,
+        audioRef.duration,
+      );
     }
   };
 
@@ -309,7 +322,7 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
   const handleEnded = () => {
     setIsPlaying(false);
     setCurrentTime(0);
-    
+
     if (playerConfig.loopTrack) {
       audioRef?.play();
     } else if (playerConfig.autoPlayNext) {
@@ -337,7 +350,13 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
       {/* Audio element (hidden) */}
       <audio
         ref={audioRef}
-        src={currentTrack ? (typeof currentTrack === "string" ? currentTrack : URL.createObjectURL(currentTrack)) : ""}
+        src={
+          currentTrack
+            ? typeof currentTrack === "string"
+              ? currentTrack
+              : URL.createObjectURL(currentTrack)
+            : ""
+        }
         loop={playerConfig.loopTrack}
         preload="metadata"
         onLoadedMetadata={handleLoadedMetadata}
@@ -376,10 +395,17 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
         <div class="main-controls">
           <div class="track-info">
             <div class="track-name">
-              {currentTrack ? (typeof currentTrack === "string" ? currentTrack.split("/").pop() : currentTrack.name) : "No track selected"}
+              {currentTrack
+                ? typeof currentTrack === "string"
+                  ? currentTrack.split("/").pop()
+                  : currentTrack.name
+                : "No track selected"}
             </div>
             <div class="track-position">
-              {Math.floor(currentTime() / 60)}:{(currentTime() % 60).toFixed(0).padStart(2, "0")} / {Math.floor(duration() / 60)}:{(duration() % 60).toFixed(0).padStart(2, "0")}
+              {Math.floor(currentTime() / 60)}:
+              {(currentTime() % 60).toFixed(0).padStart(2, "0")} /{" "}
+              {Math.floor(duration() / 60)}:
+              {(duration() % 60).toFixed(0).padStart(2, "0")}
             </div>
           </div>
 
@@ -420,7 +446,10 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
               type="button"
               class="control-button"
               onClick={nextTrack}
-              disabled={currentTrackIndex() === playlist().length - 1 && !playerConfig.loopPlaylist}
+              disabled={
+                currentTrackIndex() === playlist().length - 1 &&
+                !playerConfig.loopPlaylist
+              }
               title="Next (N)"
             >
               ⏭️
@@ -462,7 +491,10 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
                       <div class="playlist-item-info">
                         <span class="playlist-item-name">{trackInfo.name}</span>
                         <span class="playlist-item-duration">
-                          {Math.floor(trackInfo.duration / 60)}:{(trackInfo.duration % 60).toFixed(0).padStart(2, "0")}
+                          {Math.floor(trackInfo.duration / 60)}:
+                          {(trackInfo.duration % 60)
+                            .toFixed(0)
+                            .padStart(2, "0")}
                         </span>
                       </div>
                       <Show when={trackInfo.isPlaying}>

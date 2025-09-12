@@ -5,7 +5,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createRoot, createSignal } from "solid-js";
 import { useLocalStorage } from "./useLocalStorage";
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 
 // Mock localStorage
 const localStorageMock = {

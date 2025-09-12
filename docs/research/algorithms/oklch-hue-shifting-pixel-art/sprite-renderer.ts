@@ -3,8 +3,8 @@
  * Handles sprite drawing with palette support and hue shifting
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import { PixelArtRenderer } from './pixel-art-renderer';
+import type { OKLCHColor } from "reynard-colors";
+import { PixelArtRenderer } from "./pixel-art-renderer";
 
 /**
  * Sprite data structure for pixel art
@@ -21,11 +21,11 @@ export interface PixelSprite {
  */
 export class SpriteRenderer {
   private renderer: PixelArtRenderer;
-  
+
   constructor(renderer: PixelArtRenderer) {
     this.renderer = renderer;
   }
-  
+
   /**
    * Draw a sprite at the specified position
    */
@@ -33,9 +33,9 @@ export class SpriteRenderer {
     for (let row = 0; row < sprite.height; row++) {
       for (let col = 0; col < sprite.width; col++) {
         const pixelValue = sprite.pixels[row][col];
-        
+
         if (pixelValue === 0) continue; // Skip transparent pixels
-        
+
         const colorIndex = pixelValue - 1; // Convert to 0-based index
         if (colorIndex >= 0 && colorIndex < sprite.palette.length) {
           const color = sprite.palette[colorIndex];
@@ -44,22 +44,22 @@ export class SpriteRenderer {
       }
     }
   }
-  
+
   /**
    * Draw a sprite with custom palette (for hue shifting effects)
    */
   drawSpriteWithPalette(
-    sprite: PixelSprite, 
-    x: number, 
-    y: number, 
-    customPalette: OKLCHColor[]
+    sprite: PixelSprite,
+    x: number,
+    y: number,
+    customPalette: OKLCHColor[],
   ): void {
     for (let row = 0; row < sprite.height; row++) {
       for (let col = 0; col < sprite.width; col++) {
         const pixelValue = sprite.pixels[row][col];
-        
+
         if (pixelValue === 0) continue; // Skip transparent pixels
-        
+
         const colorIndex = pixelValue - 1; // Convert to 0-based index
         if (colorIndex >= 0 && colorIndex < customPalette.length) {
           const color = customPalette[colorIndex];
@@ -68,7 +68,7 @@ export class SpriteRenderer {
       }
     }
   }
-  
+
   /**
    * Draw a sprite with hue shifting applied
    */
@@ -77,17 +77,17 @@ export class SpriteRenderer {
     x: number,
     y: number,
     hueShift: number,
-    intensity: number = 1.0
+    intensity: number = 1.0,
   ): void {
-    const shiftedPalette = sprite.palette.map(color => ({
+    const shiftedPalette = sprite.palette.map((color) => ({
       l: color.l,
       c: color.c,
-      h: (color.h + hueShift * intensity + 360) % 360
+      h: (color.h + hueShift * intensity + 360) % 360,
     }));
-    
+
     this.drawSpriteWithPalette(sprite, x, y, shiftedPalette);
   }
-  
+
   /**
    * Get the underlying pixel art renderer
    */

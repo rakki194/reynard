@@ -3,12 +3,7 @@
  * Advanced model usage analytics and performance tracking with OKLCH color integration
  */
 
-import {
-  Component,
-  createSignal,
-  onMount,
-  Show,
-} from "solid-js";
+import { Component, createSignal, onMount, Show } from "solid-js";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,7 +34,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler,
-  ...registerables
+  ...registerables,
 );
 
 export interface ModelUsageData {
@@ -117,7 +112,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
       const colors = props.useOKLCH
         ? visualizationEngine.generateOKLCHColors(
             Object.keys(modelTypeData).length,
-            props.colorTheme || "dark"
+            props.colorTheme || "dark",
           )
         : props.colors || defaultColors;
 
@@ -154,8 +149,9 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
         case "timeout_ratio":
           data = dataEntries.map(([_, info]) => {
             return (
-              Math.round((info.vram_unload_timeout / info.ram_unload_timeout) * 100) /
-              100
+              Math.round(
+                (info.vram_unload_timeout / info.ram_unload_timeout) * 100,
+              ) / 100
             );
           });
           label = "VRAM/RAM Timeout Ratio";
@@ -265,7 +261,11 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={!props.loading && Object.keys(props.data).length > 0 && isRegistered()}>
+      <Show
+        when={
+          !props.loading && Object.keys(props.data).length > 0 && isRegistered()
+        }
+      >
         <Show when={props.type === "line"}>
           <Line
             data={chartData()}

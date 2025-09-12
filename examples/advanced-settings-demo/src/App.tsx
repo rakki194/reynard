@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, Show } from "solid-js";
-import { 
+import {
   SettingsPanel,
   RAGSettings,
   DiffusionSettings,
@@ -13,7 +13,7 @@ import {
   ServiceManagementSettings,
   AssistantSettings,
   AdvancedConfigWatcher,
-  useSettings
+  useSettings,
 } from "reynard-settings";
 import { Button, Tabs } from "reynard-components";
 import type { SettingCategory } from "reynard-settings";
@@ -21,7 +21,7 @@ import type { SettingCategory } from "reynard-settings";
 export const App: Component = () => {
   const [activeTab, setActiveTab] = createSignal<SettingCategory>("general");
   const [showAdvancedSettings, setShowAdvancedSettings] = createSignal(false);
-  
+
   // Initialize settings with comprehensive schema
   const settings = useSettings({
     config: {
@@ -60,7 +60,7 @@ export const App: Component = () => {
             ],
             order: 3,
           },
-          
+
           // Diffusion Settings
           "diffusion.max_new_tokens": {
             key: "diffusion.max_new_tokens",
@@ -82,7 +82,7 @@ export const App: Component = () => {
             validation: { min: 0, max: 2, step: 0.1 },
             order: 2,
           },
-          
+
           // ComfyUI Settings
           "comfy.enabled": {
             key: "comfy.enabled",
@@ -102,7 +102,7 @@ export const App: Component = () => {
             defaultValue: "http://localhost:8188",
             order: 2,
           },
-          
+
           // Model Management Settings
           "models.auto_download": {
             key: "models.auto_download",
@@ -123,7 +123,7 @@ export const App: Component = () => {
             validation: { min: 1, max: 10 },
             order: 2,
           },
-          
+
           // Service Management Settings
           "services.auto_refresh": {
             key: "services.auto_refresh",
@@ -144,7 +144,7 @@ export const App: Component = () => {
             validation: { min: 1000, max: 60000 },
             order: 2,
           },
-          
+
           // Assistant Settings
           "assistant.enabled": {
             key: "assistant.enabled",
@@ -164,7 +164,7 @@ export const App: Component = () => {
             defaultValue: "http://localhost:11434",
             order: 2,
           },
-          
+
           // Config Watcher Settings
           "config_watcher.enable_watching": {
             key: "config_watcher.enable_watching",
@@ -206,8 +206,11 @@ export const App: Component = () => {
     <div class="advanced-settings-demo">
       <header class="demo-header">
         <h1>Reynard Advanced Settings Demo</h1>
-        <p>Comprehensive demonstration of advanced settings and configuration management</p>
-        
+        <p>
+          Comprehensive demonstration of advanced settings and configuration
+          management
+        </p>
+
         <div class="demo-controls">
           <Button
             variant="primary"
@@ -292,9 +295,10 @@ export const App: Component = () => {
 
       <footer class="demo-footer">
         <p>
-          This demo showcases Reynard's comprehensive settings system with specialized 
-          configuration panels for RAG, Diffusion, ComfyUI, Model Management, Service 
-          Management, AI Assistant, and Advanced Configuration Watching.
+          This demo showcases Reynard's comprehensive settings system with
+          specialized configuration panels for RAG, Diffusion, ComfyUI, Model
+          Management, Service Management, AI Assistant, and Advanced
+          Configuration Watching.
         </p>
       </footer>
     </div>

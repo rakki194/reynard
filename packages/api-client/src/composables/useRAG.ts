@@ -2,8 +2,12 @@
  * RAG (Retrieval-Augmented Generation) composable for Reynard API
  */
 
-import { createSignal } from 'solid-js';
-import type { RAGQueryRequest, RAGQueryResponse, RAGStatsResponse } from '../generated/index.js';
+import { createSignal } from "solid-js";
+import type {
+  RAGQueryRequest,
+  RAGQueryResponse,
+  RAGStatsResponse,
+} from "../generated/index.js";
 
 export interface UseRAGOptions {
   basePath?: string;
@@ -16,12 +20,12 @@ export function useRAG(options: UseRAGOptions = {}) {
     setIsLoading(true);
     try {
       // Stub implementation
-      console.log('RAG query:', request);
+      console.log("RAG query:", request);
       return {
         hits: [
-          { chunkText: 'Sample document content', score: 0.95, extra: {} }
+          { chunkText: "Sample document content", score: 0.95, extra: {} },
         ],
-        total: 1
+        total: 1,
       };
     } finally {
       setIsLoading(false);
@@ -32,12 +36,12 @@ export function useRAG(options: UseRAGOptions = {}) {
     // Stub implementation
     return [
       {
-        id: '1',
-        title: 'Sample Document',
-        content: 'This is sample content',
+        id: "1",
+        title: "Sample Document",
+        content: "This is sample content",
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
+        updated_at: new Date().toISOString(),
+      },
     ];
   };
 
@@ -48,9 +52,9 @@ export function useRAG(options: UseRAGOptions = {}) {
       totalChunks: 5,
       chunksWithEmbeddings: 5,
       embeddingCoverage: 100.0,
-      defaultModel: 'test-model',
+      defaultModel: "test-model",
       vectorDbEnabled: true,
-      cacheSize: 1024
+      cacheSize: 1024,
     };
   };
 
@@ -58,6 +62,6 @@ export function useRAG(options: UseRAGOptions = {}) {
     isLoading,
     query,
     getDocuments,
-    getStats
+    getStats,
   };
 }

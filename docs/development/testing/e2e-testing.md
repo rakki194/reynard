@@ -246,14 +246,14 @@ docker system prune -f
 
 The following environment variables can be set to customize the E2E testing environment:
 
-| Variable                  | Default                       | Description                           |
-| ------------------------- | ----------------------------- | ------------------------------------- |
+| Variable                  | Default                        | Description                           |
+| ------------------------- | ------------------------------ | ------------------------------------- |
 | `PLAYWRIGHT_BASE_URL`     | `http://reynard-frontend:5173` | Base URL for the frontend application |
 | `PLAYWRIGHT_API_BASE_URL` | `http://reynard-backend:7000`  | Base URL for the backend API          |
-| `CI`                      | `true`                        | Set to true in CI environment         |
-| `UID`                     | `1000`                        | User ID for Docker containers         |
-| `GID`                     | `1000`                        | Group ID for Docker containers        |
-| `CUDA_VISIBLE_DEVICES`    | `""`                          | Disables CUDA in CPU-only version     |
+| `CI`                      | `true`                         | Set to true in CI environment         |
+| `UID`                     | `1000`                         | User ID for Docker containers         |
+| `GID`                     | `1000`                         | Group ID for Docker containers        |
+| `CUDA_VISIBLE_DEVICES`    | `""`                           | Disables CUDA in CPU-only version     |
 
 ### Playwright Configuration
 

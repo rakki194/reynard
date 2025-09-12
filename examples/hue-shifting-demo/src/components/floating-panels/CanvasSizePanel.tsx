@@ -23,11 +23,11 @@ export const CanvasSizePanel: Component<CanvasSizePanelProps> = (props) => {
         closable: true,
         backdrop: false,
         animationDelay: 200,
-        theme: "info"
+        theme: "info",
       }}
       onShow={props.onShow}
       onHide={props.onHide}
-      style={{ display: props.isVisible ? 'block' : 'none' }}
+      style={{ display: props.isVisible ? "block" : "none" }}
     >
       <div class="floating-panel-body">
         <h3>Canvas Size</h3>

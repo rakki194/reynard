@@ -2,7 +2,6 @@
  * Color system types for theming
  */
 
-
 // Color system interface
 export interface ThemeColors {
   // Primary colors

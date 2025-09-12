@@ -2,7 +2,7 @@ import { Component } from "solid-js";
 import { FloatingPanelAdvanced } from "reynard-floating-panel";
 import { ToolControls } from "../ToolControls";
 
-type DrawingTool = 'pencil' | 'eraser' | 'fill';
+type DrawingTool = "pencil" | "eraser" | "fill";
 
 interface ToolControlsPanelProps {
   selectedTool: DrawingTool;
@@ -24,11 +24,11 @@ export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
         closable: true,
         backdrop: false,
         animationDelay: 100,
-        theme: "default"
+        theme: "default",
       }}
       onShow={props.onShow}
       onHide={props.onHide}
-      style={{ display: props.isVisible ? 'block' : 'none' }}
+      style={{ display: props.isVisible ? "block" : "none" }}
     >
       <div class="floating-panel-body">
         <h3>Drawing Tools</h3>

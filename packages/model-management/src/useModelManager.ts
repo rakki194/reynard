@@ -1,6 +1,6 @@
 /**
  * Model Manager Composable
- * 
+ *
  * Handles model management state and operations for the ModelManager component.
  * Extracted to keep the main component under the 50-line limit.
  */
@@ -8,18 +8,22 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { createBackendAnnotationManager } from "reynard-annotating";
 import type { ModelInfo, SystemHealth } from "../components/ModelManager";
-import { createDefaultModels, extractLoadedModels, createModelStatusMap } from "./modelData";
-import { 
-  updateModelLoadingState, 
-  createModelErrorMessage, 
-  createInitErrorMessage, 
-  createModelDataErrorMessage 
+import {
+  createDefaultModels,
+  extractLoadedModels,
+  createModelStatusMap,
+} from "./modelData";
+import {
+  updateModelLoadingState,
+  createModelErrorMessage,
+  createInitErrorMessage,
+  createModelDataErrorMessage,
 } from "./modelOperations";
-import { 
-  initializeModelManager, 
-  setupHealthChecks, 
-  setupModelEventListeners, 
-  cleanupModelManager 
+import {
+  initializeModelManager,
+  setupHealthChecks,
+  setupModelEventListeners,
+  cleanupModelManager,
 } from "./modelInitialization";
 
 export interface ModelManagerConfig {
@@ -36,9 +40,13 @@ export interface UseModelManagerReturn {
   clearError: () => void;
 }
 
-export const useModelManager = (config: ModelManagerConfig): UseModelManagerReturn => {
+export const useModelManager = (
+  config: ModelManagerConfig,
+): UseModelManagerReturn => {
   const [models, setModels] = createSignal<ModelInfo[]>([]);
-  const [systemHealth, setSystemHealth] = createSignal<SystemHealth | null>(null);
+  const [systemHealth, setSystemHealth] = createSignal<SystemHealth | null>(
+    null,
+  );
   const [error, setError] = createSignal<string | null>(null);
 
   let manager: ReturnType<typeof createBackendAnnotationManager> | null = null;
@@ -53,7 +61,6 @@ export const useModelManager = (config: ModelManagerConfig): UseModelManagerRetu
 
       healthCheckInterval = setupHealthChecks(loadSystemHealth);
       setupModelEventListeners(manager, loadModelData);
-
     } catch (err) {
       setError(createInitErrorMessage(err));
     }
@@ -104,7 +111,7 @@ export const useModelManager = (config: ModelManagerConfig): UseModelManagerRetu
   const loadModel = async (modelName: string) => {
     if (!manager) return;
     try {
-      setModels(prev => updateModelLoadingState(prev, modelName, true));
+      setModels((prev) => updateModelLoadingState(prev, modelName, true));
       await manager.preloadModel(modelName);
       await loadModelData();
     } catch (err) {
@@ -116,7 +123,7 @@ export const useModelManager = (config: ModelManagerConfig): UseModelManagerRetu
   const unloadModel = async (modelName: string) => {
     if (!manager) return;
     try {
-      setModels(prev => updateModelLoadingState(prev, modelName, true));
+      setModels((prev) => updateModelLoadingState(prev, modelName, true));
       await manager.unloadModel(modelName);
       await loadModelData();
     } catch (err) {

@@ -19,8 +19,14 @@ export * from "./ecs/examples";
 // Types
 export type {
   Ball,
-  Collision, GameConfig,
-  GameControls, GameState, GameStats, Measurement, Operation, QueryRect,
-  Shape, SpatialObject
+  Collision,
+  GameConfig,
+  GameControls,
+  GameState,
+  GameStats,
+  Measurement,
+  Operation,
+  QueryRect,
+  Shape,
+  SpatialObject,
 } from "./types";
-

@@ -2,8 +2,16 @@
  * Main API client factory for Reynard
  */
 
-import { DefaultApi, Configuration, RagApi, CaptionApi, CaptionUploadApi, OllamaApi, AuthenticationApi } from './generated/index.js';
-import type { AuthFetchOptions, AuthFetch } from './types.js';
+import {
+  DefaultApi,
+  Configuration,
+  RagApi,
+  CaptionApi,
+  CaptionUploadApi,
+  OllamaApi,
+  AuthenticationApi,
+} from "./generated/index.js";
+import type { AuthFetchOptions, AuthFetch } from "./types.js";
 
 export interface ReynardApiClientConfig {
   basePath?: string;
@@ -16,15 +24,15 @@ export interface ReynardApiClientConfig {
  */
 export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
   const {
-    basePath = 'http://localhost:8000',
+    basePath = "http://localhost:8000",
     authFetch,
-    timeout = 30000
+    timeout = 30000,
   } = config;
 
   // Create configuration
   const apiConfig = new Configuration({
     basePath,
-    fetchApi: authFetch || fetch
+    fetchApi: authFetch || fetch,
   });
 
   // Create API clients
@@ -38,38 +46,49 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
   return {
     api: defaultApi,
     config: apiConfig,
-    
+
     // Convenience methods
     rag: {
       query: ragApi.queryRagApiRagApiRagQueryPost.bind(ragApi),
       ingest: ragApi.ingestDocumentsApiRagApiRagIngestPost.bind(ragApi),
       stats: ragApi.getRagStatsApiRagApiRagAdminStatsGet.bind(ragApi),
-      documents: ragApi.getRagConfigApiRagApiRagConfigGet.bind(ragApi)
+      documents: ragApi.getRagConfigApiRagApiRagConfigGet.bind(ragApi),
     },
-    
+
     caption: {
-      generate: captionApi.generateCaptionApiCaptionGeneratePost.bind(captionApi),
-      batchGenerate: captionApi.generateBatchCaptionsApiCaptionBatchPost.bind(captionApi),
-      generators: captionApi.getAvailableGeneratorsApiCaptionGeneratorsGet.bind(captionApi),
-      upload: captionUploadApi.uploadAndGenerateCaptionApiCaptionUploadPost.bind(captionUploadApi)
+      generate:
+        captionApi.generateCaptionApiCaptionGeneratePost.bind(captionApi),
+      batchGenerate:
+        captionApi.generateBatchCaptionsApiCaptionBatchPost.bind(captionApi),
+      generators:
+        captionApi.getAvailableGeneratorsApiCaptionGeneratorsGet.bind(
+          captionApi,
+        ),
+      upload:
+        captionUploadApi.uploadAndGenerateCaptionApiCaptionUploadPost.bind(
+          captionUploadApi,
+        ),
     },
-    
+
     chat: {
       send: ollamaApi.chatApiOllamaChatPost.bind(ollamaApi),
       stream: ollamaApi.chatStreamApiOllamaChatStreamPost.bind(ollamaApi),
       assistant: ollamaApi.assistantChatApiOllamaAssistantPost.bind(ollamaApi),
-      assistantStream: ollamaApi.assistantChatStreamApiOllamaAssistantStreamPost.bind(ollamaApi)
+      assistantStream:
+        ollamaApi.assistantChatStreamApiOllamaAssistantStreamPost.bind(
+          ollamaApi,
+        ),
     },
-    
+
     auth: {
       login: authApi.loginApiAuthLoginPost.bind(authApi),
       register: authApi.registerApiAuthRegisterPost.bind(authApi),
       refresh: authApi.refreshTokenApiAuthRefreshPost.bind(authApi),
       logout: authApi.logoutApiAuthLogoutPost.bind(authApi),
-      me: authApi.getCurrentUserInfoApiAuthMeGet.bind(authApi)
+      me: authApi.getCurrentUserInfoApiAuthMeGet.bind(authApi),
     },
-    
-    health: defaultApi.healthCheckApiHealthGet.bind(defaultApi)
+
+    health: defaultApi.healthCheckApiHealthGet.bind(defaultApi),
   };
 }
 

@@ -18,7 +18,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Velocity implements Component {
@@ -26,7 +26,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Health implements Component {
@@ -34,27 +34,27 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) { }
+  ) {}
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) { }
+  constructor(public name: string) {}
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) { }
+  constructor(public type: string) {}
 }
 
 class Bullet implements Component {
   readonly __component = true;
-  constructor(public speed: number) { }
+  constructor(public speed: number) {}
 }
 
 class Renderable implements Component {
   readonly __component = true;
-  constructor(public shape: "circle" | "rectangle" | "triangle") { }
+  constructor(public shape: "circle" | "rectangle" | "triangle") {}
 }
 
 // Component types
@@ -274,7 +274,7 @@ describe("Query System", () => {
   describe("Change Detection Queries", () => {
     it("should query entities with added components", () => {
       // First, run a query to establish baseline
-      world.query(PositionType).forEach(() => { });
+      world.query(PositionType).forEach(() => {});
 
       // Advance tick to establish baseline for change detection
       world.getChangeDetection().advanceTick();
@@ -300,7 +300,7 @@ describe("Query System", () => {
 
     it("should query entities with changed components", () => {
       // First, run a query to establish baseline
-      world.query(PositionType).forEach(() => { });
+      world.query(PositionType).forEach(() => {});
 
       // Advance tick to establish baseline for change detection
       world.getChangeDetection().advanceTick();

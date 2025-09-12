@@ -3,8 +3,8 @@
  * Functions for creating animated color effects
  */
 
-import type { OKLCHColor } from 'reynard-colors';
-import { temporalHueShift } from './core-algorithms';
+import type { OKLCHColor } from "reynard-colors";
+import { temporalHueShift } from "./core-algorithms";
 
 /**
  * Generate color animation keyframes
@@ -16,39 +16,39 @@ import { temporalHueShift } from './core-algorithms';
 export function generateColorKeyframes(
   baseColor: OKLCHColor,
   keyframeCount: number = 8,
-  animationType: 'pulse' | 'shift' | 'fade' = 'pulse'
+  animationType: "pulse" | "shift" | "fade" = "pulse",
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     let animatedColor: OKLCHColor;
-    
+
     switch (animationType) {
-      case 'pulse':
+      case "pulse":
         animatedColor = {
           l: baseColor.l + Math.sin(t * Math.PI * 2) * 10,
           c: baseColor.c + Math.sin(t * Math.PI * 2) * 0.05,
-          h: baseColor.h
+          h: baseColor.h,
         };
         break;
-        
-      case 'shift':
+
+      case "shift":
         animatedColor = temporalHueShift(baseColor, t, 1.0);
         break;
-        
-      case 'fade':
+
+      case "fade":
         animatedColor = {
           l: baseColor.l,
           c: baseColor.c * (1 - t * 0.5),
-          h: baseColor.h
+          h: baseColor.h,
         };
         break;
     }
-    
+
     keyframes.push(animatedColor);
   }
-  
+
   return keyframes;
 }
 
@@ -62,21 +62,21 @@ export function generateColorKeyframes(
 export function createBreathingAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 16,
-  intensity: number = 0.2
+  intensity: number = 0.2,
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     const breathCycle = Math.sin(t * Math.PI * 2);
-    
+
     keyframes.push({
       l: baseColor.l + breathCycle * intensity * 20,
       c: baseColor.c + breathCycle * intensity * 0.1,
-      h: baseColor.h
+      h: baseColor.h,
     });
   }
-  
+
   return keyframes;
 }
 
@@ -90,21 +90,21 @@ export function createBreathingAnimation(
 export function createShimmerAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 12,
-  shimmerIntensity: number = 0.3
+  shimmerIntensity: number = 0.3,
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     const shimmerCycle = Math.sin(t * Math.PI * 4); // Faster oscillation
-    
+
     keyframes.push({
       l: baseColor.l + shimmerCycle * shimmerIntensity * 15,
       c: baseColor.c + Math.abs(shimmerCycle) * shimmerIntensity * 0.15,
-      h: baseColor.h + shimmerCycle * shimmerIntensity * 10
+      h: baseColor.h + shimmerCycle * shimmerIntensity * 10,
     });
   }
-  
+
   return keyframes;
 }
 
@@ -118,21 +118,21 @@ export function createShimmerAnimation(
 export function createColorCyclingAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 20,
-  cycleRange: number = 60
+  cycleRange: number = 60,
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     const hueShift = Math.sin(t * Math.PI * 2) * cycleRange;
-    
+
     keyframes.push({
       l: baseColor.l,
       c: baseColor.c,
-      h: (baseColor.h + hueShift + 360) % 360
+      h: (baseColor.h + hueShift + 360) % 360,
     });
   }
-  
+
   return keyframes;
 }
 
@@ -146,33 +146,33 @@ export function createColorCyclingAnimation(
 export function createFadeAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 10,
-  fadeType: 'in' | 'out' | 'inout' = 'inout'
+  fadeType: "in" | "out" | "inout" = "inout",
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     let alpha: number;
-    
+
     switch (fadeType) {
-      case 'in':
+      case "in":
         alpha = t;
         break;
-      case 'out':
+      case "out":
         alpha = 1 - t;
         break;
-      case 'inout':
-        alpha = t < 0.5 ? t * 2 : 2 - (t * 2);
+      case "inout":
+        alpha = t < 0.5 ? t * 2 : 2 - t * 2;
         break;
     }
-    
+
     keyframes.push({
       l: baseColor.l,
       c: baseColor.c * alpha,
-      h: baseColor.h
+      h: baseColor.h,
     });
   }
-  
+
   return keyframes;
 }
 
@@ -186,20 +186,20 @@ export function createFadeAnimation(
 export function createRainbowAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 24,
-  saturation: number = 0.3
+  saturation: number = 0.3,
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
-  
+
   for (let i = 0; i < keyframeCount; i++) {
     const t = i / (keyframeCount - 1);
     const hue = (t * 360) % 360;
-    
+
     keyframes.push({
       l: baseColor.l,
       c: saturation,
-      h: hue
+      h: hue,
     });
   }
-  
+
   return keyframes;
 }

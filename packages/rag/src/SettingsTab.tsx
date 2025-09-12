@@ -1,6 +1,6 @@
 /**
  * RAG Settings Tab Component
- * 
+ *
  * Manages search settings and displays system statistics
  * for the RAG system configuration.
  */
@@ -32,7 +32,11 @@ export function SettingsTab(props: SettingsTabProps) {
             <label>Embedding Model</label>
             <Select
               value={props.embeddingModel}
-              onChange={(e: Event) => props.onEmbeddingModelChange((e.target as HTMLSelectElement).value)}
+              onChange={(e: Event) =>
+                props.onEmbeddingModelChange(
+                  (e.target as HTMLSelectElement).value,
+                )
+              }
               options={[
                 {
                   value: "embeddinggemma:latest",
@@ -81,7 +85,9 @@ export function SettingsTab(props: SettingsTabProps) {
               step="0.05"
               value={props.similarityThreshold}
               onInput={(e) =>
-                props.onSimilarityThresholdChange(parseFloat(e.currentTarget.value))
+                props.onSimilarityThresholdChange(
+                  parseFloat(e.currentTarget.value),
+                )
               }
               class="range-slider"
               title="Similarity threshold for search results"
@@ -111,9 +117,7 @@ export function SettingsTab(props: SettingsTabProps) {
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-label">Total Documents</div>
-              <div class="stat-value">
-                {props.stats!.total_documents}
-              </div>
+              <div class="stat-value">{props.stats!.total_documents}</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Total Chunks</div>
@@ -127,9 +131,7 @@ export function SettingsTab(props: SettingsTabProps) {
             </div>
             <div class="stat-card">
               <div class="stat-label">Default Model</div>
-              <div class="stat-model">
-                {props.stats!.default_model}
-              </div>
+              <div class="stat-model">{props.stats!.default_model}</div>
             </div>
           </div>
         </Card>

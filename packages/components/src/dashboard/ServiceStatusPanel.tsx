@@ -55,11 +55,17 @@ export interface ServiceSummary {
   successRate?: number;
 }
 
-export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) => {
-  const [selectedService, setSelectedService] = createSignal<string | null>(null);
+export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
+  props,
+) => {
+  const [selectedService, setSelectedService] = createSignal<string | null>(
+    null,
+  );
   const [showMetrics, setShowMetrics] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
-  const [services, setServices] = createSignal<Record<string, ServiceStatus>>({});
+  const [services, setServices] = createSignal<Record<string, ServiceStatus>>(
+    {},
+  );
   const [summary, setSummary] = createSignal<ServiceSummary>({
     totalServices: 0,
     runningServices: 0,
@@ -216,16 +222,23 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
       const serviceList = Object.values(mockServices);
       const mockSummary: ServiceSummary = {
         totalServices: serviceList.length,
-        runningServices: serviceList.filter((s) => s.status === "running").length,
-        healthyServices: serviceList.filter((s) => s.health === "healthy").length,
+        runningServices: serviceList.filter((s) => s.status === "running")
+          .length,
+        healthyServices: serviceList.filter((s) => s.health === "healthy")
+          .length,
         failedServices: serviceList.filter((s) => s.status === "failed").length,
-        successRate: (serviceList.filter((s) => s.status === "running").length / serviceList.length) * 100,
+        successRate:
+          (serviceList.filter((s) => s.status === "running").length /
+            serviceList.length) *
+          100,
       };
 
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load service data");
+      setError(
+        err instanceof Error ? err.message : "Failed to load service data",
+      );
     } finally {
       setIsRefreshing(false);
       setIsLoading(false);
@@ -239,7 +252,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
   const handleRestartService = async (serviceName: string) => {
     // In a real implementation, this would call the backend restart endpoint
     console.log(`Restarting service: ${serviceName}`);
-    
+
     // Simulate restart
     const updatedServices = { ...services() };
     if (updatedServices[serviceName]) {
@@ -306,7 +319,8 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
 
   const getStatusIcon = (service: ServiceStatus) => {
     if (service.status === "failed") return "dismiss-circle";
-    if (service.status === "running" && service.isHealthy) return "checkmark-circle";
+    if (service.status === "running" && service.isHealthy)
+      return "checkmark-circle";
     if (service.status === "running" && !service.isHealthy) return "warning";
     if (service.status === "starting") return "spinner";
     if (service.status === "stopping") return "warning";
@@ -419,24 +433,35 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(service))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(service))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
                   <span class="service-name">{serviceName}</span>
                   <ServiceHealthIndicator health={service.health} />
                   <Show when={service.connection_state}>
-                    <span class="connection-state-badge" classList={{ [service.connection_state]: true }}>
+                    <span
+                      class="connection-state-badge"
+                      classList={{ [service.connection_state]: true }}
+                    >
                       {service.connection_state}
                     </span>
                   </Show>
                 </div>
 
                 <div class="service-status">
-                  <span class="status-badge" classList={{ [service.status]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [service.status]: true }}
+                  >
                     {service.status}
                   </span>
 
-                  <Show when={props.showActions && service.status === "running"}>
+                  <Show
+                    when={props.showActions && service.status === "running"}
+                  >
                     <Button
                       variant="secondary"
                       size="sm"
@@ -452,7 +477,9 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
               </div>
 
               {/* Service Details */}
-              <Show when={props.showDetails && selectedService() === serviceName}>
+              <Show
+                when={props.showDetails && selectedService() === serviceName}
+              >
                 <div class="service-details">
                   <Show when={service.message}>
                     <div class="detail-item">
@@ -464,7 +491,9 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
                   <Show when={service.lastCheck}>
                     <div class="detail-item">
                       <span class="label">Last Check:</span>
-                      <span class="value">{service.lastCheck!.toLocaleString()}</span>
+                      <span class="value">
+                        {service.lastCheck!.toLocaleString()}
+                      </span>
                     </div>
                   </Show>
 
@@ -486,14 +515,18 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
                     <Show when={service.memoryUsage !== undefined}>
                       <div class="detail-item">
                         <span class="label">Memory:</span>
-                        <span class="value">{formatMemoryUsage(service.memoryUsage)}</span>
+                        <span class="value">
+                          {formatMemoryUsage(service.memoryUsage)}
+                        </span>
                       </div>
                     </Show>
 
                     <Show when={service.cpuUsage !== undefined}>
                       <div class="detail-item">
                         <span class="label">CPU:</span>
-                        <span class="value">{service.cpuUsage?.toFixed(1)}%</span>
+                        <span class="value">
+                          {service.cpuUsage?.toFixed(1)}%
+                        </span>
                       </div>
                     </Show>
                   </Show>
@@ -524,7 +557,9 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (props) =>
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

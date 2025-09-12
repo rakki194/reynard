@@ -1,6 +1,6 @@
 /**
  * 3D Embedding Visualization Component
- * 
+ *
  * Interactive 3D visualization of embeddings using Three.js.
  * Integrates with existing Reynard 3D package for advanced visualization.
  */
@@ -54,7 +54,9 @@ const defaultProps = {
   loading: false,
 };
 
-export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> = (props) => {
+export const Embedding3DVisualization: Component<
+  Embedding3DVisualizationProps
+> = (props) => {
   const [local, others] = splitProps(props, [
     "data",
     "loading",
@@ -100,7 +102,7 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
     try {
       // Dynamic import of Three.js to avoid bundle bloat
       const THREE = await import("three");
-      
+
       if (!container()) return;
 
       // Create scene
@@ -112,7 +114,7 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
         75,
         others.width! / others.height!,
         0.1,
-        1000
+        1000,
       );
       camera.position.set(0, 0, 10);
 
@@ -131,7 +133,9 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
       scene.add(directionalLight);
 
       // Add orbit controls
-      const { OrbitControls } = await import("three/examples/jsm/controls/OrbitControls.js");
+      const { OrbitControls } = await import(
+        "three/examples/jsm/controls/OrbitControls.js"
+      );
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
@@ -146,7 +150,6 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
 
       setIsInitialized(true);
       startAnimation();
-
     } catch (err) {
       console.error("Failed to initialize Three.js:", err);
       setError("Failed to initialize 3D visualization");
@@ -179,13 +182,15 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
         positions[index * 3 + 2] = point[2];
 
         // Color based on position (distance from center)
-        const distance = Math.sqrt(point[0] ** 2 + point[1] ** 2 + point[2] ** 2);
+        const distance = Math.sqrt(
+          point[0] ** 2 + point[1] ** 2 + point[2] ** 2,
+        );
         const normalizedDistance = Math.min(distance / 5, 1);
-        
+
         // Color gradient from blue to red
         const color = new THREE.Color();
         color.setHSL(0.6 - normalizedDistance * 0.6, 1, 0.5);
-        
+
         colors[index * 3] = color.r;
         colors[index * 3 + 1] = color.g;
         colors[index * 3 + 2] = color.b;
@@ -238,11 +243,11 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         setHoveredPoint(pointIndex);
-        
+
         if (others.onPointHover) {
           others.onPointHover(pointIndex, {
             position: intersects[0].point,
-            data: local.data?.original_embeddings?.[pointIndex]
+            data: local.data?.original_embeddings?.[pointIndex],
           });
         }
       } else {
@@ -261,11 +266,11 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         setSelectedPoint(pointIndex);
-        
+
         if (others.onPointClick) {
           others.onPointClick(pointIndex, {
             position: intersects[0].point,
-            data: local.data?.original_embeddings?.[pointIndex]
+            data: local.data?.original_embeddings?.[pointIndex],
           });
         }
       }
@@ -290,11 +295,14 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
     if (data.length === 0) return;
 
     // Calculate bounding box
-    let minX = Infinity, maxX = -Infinity;
-    let minY = Infinity, maxY = -Infinity;
-    let minZ = Infinity, maxZ = -Infinity;
+    let minX = Infinity,
+      maxX = -Infinity;
+    let minY = Infinity,
+      maxY = -Infinity;
+    let minZ = Infinity,
+      maxZ = -Infinity;
 
-    data.forEach(point => {
+    data.forEach((point) => {
       if (point.length >= 3) {
         minX = Math.min(minX, point[0]);
         maxX = Math.max(maxX, point[0]);
@@ -411,16 +419,20 @@ export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> 
             <p>🖱️ Right click + drag: Pan</p>
             <p>🖱️ Scroll: Zoom</p>
           </div>
-          
+
           <Show when={hoveredPoint() !== null}>
             <div class="hover-info">
-              Point {hoveredPoint()}: {local.data?.original_embeddings?.[hoveredPoint()!]?.id || "Unknown"}
+              Point {hoveredPoint()}:{" "}
+              {local.data?.original_embeddings?.[hoveredPoint()!]?.id ||
+                "Unknown"}
             </div>
           </Show>
-          
+
           <Show when={selectedPoint() !== null}>
             <div class="selected-info">
-              Selected Point {selectedPoint()}: {local.data?.original_embeddings?.[selectedPoint()!]?.id || "Unknown"}
+              Selected Point {selectedPoint()}:{" "}
+              {local.data?.original_embeddings?.[selectedPoint()!]?.id ||
+                "Unknown"}
             </div>
           </Show>
         </div>

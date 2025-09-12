@@ -7,7 +7,7 @@ This document describes the comprehensive Python linting setup for the Reynard f
 The Python linting system enforces:
 
 - **250 lines maximum** for source files
-- **300 lines maximum** for test files  
+- **300 lines maximum** for test files
 - **88 characters** per line (Black standard)
 - **Comprehensive code quality** checks via multiple tools
 - **Pre-commit hooks** for automatic validation
@@ -135,7 +135,7 @@ def example_function():  # This line IS counted
 The pre-commit hook automatically runs when you commit Python files:
 
 1. **Black formatting check** - Ensures consistent code formatting
-2. **isort import check** - Verifies import statement organization  
+2. **isort import check** - Verifies import statement organization
 3. **Flake8 linting** - Checks for style and syntax issues
 4. **File line count validation** - Enforces 250/300 line limits
 5. **MyPy type checking** - Validates type hints (non-blocking)
@@ -155,7 +155,7 @@ git commit --no-verify -m "your commit message"
 All tools use the Reynard color scheme:
 
 - 🔵 **Blue**: Information and progress
-- 🟢 **Green**: Success messages  
+- 🟢 **Green**: Success messages
 - 🟡 **Yellow**: Warnings and tips
 - 🔴 **Red**: Errors and failures
 - 🟣 **Purple**: Reynard branding
@@ -267,4 +267,4 @@ pip install -r requirements-dev.txt
 
 ---
 
-*🦊 Happy coding with Reynard's Python linting system!*
+_🦊 Happy coding with Reynard's Python linting system!_

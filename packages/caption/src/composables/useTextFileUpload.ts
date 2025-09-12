@@ -1,6 +1,6 @@
 /**
  * Text File Upload Composable for Reynard Caption System
- * 
+ *
  * Handles file upload logic and processing for text files.
  */
 
@@ -18,14 +18,17 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
   const [error, setError] = createSignal<string | null>(null);
 
   // Process uploaded files with error handling
-  const processFileWithErrorHandling = async (file: File): Promise<TextFile> => {
+  const processFileWithErrorHandling = async (
+    file: File,
+  ): Promise<TextFile> => {
     setIsLoading(true);
     setError(null);
 
     try {
       return await processTextFile(file);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to process text file";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to process text file";
       setError(errorMessage);
       options.onError?.(errorMessage);
       throw new Error(errorMessage);
@@ -38,7 +41,7 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
   const handleFileUpload = async (event: Event): Promise<TextFile[]> => {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    
+
     if (!files || files.length === 0) return [];
 
     const maxFiles = options.maxFiles || 10;
@@ -46,7 +49,7 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
 
     try {
       return await Promise.all(
-        filesToProcess.map(processFileWithErrorHandling)
+        filesToProcess.map(processFileWithErrorHandling),
       );
     } catch (err) {
       console.error("Failed to process text files:", err);
@@ -58,6 +61,6 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
     isLoading,
     error,
     handleFileUpload,
-    setError
+    setError,
   };
 };

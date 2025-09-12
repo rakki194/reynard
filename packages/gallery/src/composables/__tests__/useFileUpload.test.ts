@@ -1,6 +1,6 @@
 /**
  * File Upload Composable Test Suite
- * 
+ *
  * Tests for the useFileUpload composable including upload management,
  * progress tracking, and error handling.
  */
@@ -83,202 +83,205 @@ describe("useFileUpload", () => {
 
   describe("Initialization", () => {
     it("should initialize with default values", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       expect(result.current.uploadItems()).toEqual([]);
       expect(result.current.isUploading()).toBe(false);
       expect(result.current.uploadProgress()).toEqual({});
     });
 
     it("should initialize with callbacks", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       expect(result.current.uploadItems()).toEqual([]);
       expect(result.current.isUploading()).toBe(false);
     });
 
     it("should initialize with current path", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ 
-          config: mockConfig, 
-          currentPath: "/Photos" 
-        })
+      const { result } = renderHook(() =>
+        useFileUpload({
+          config: mockConfig,
+          currentPath: "/Photos",
+        }),
       );
-      
+
       expect(result.current.uploadItems()).toEqual([]);
     });
   });
 
   describe("File Management", () => {
     it("should add files to upload queue", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
         new File(["content2"], "test2.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       expect(result.current.uploadItems()).toHaveLength(2);
     });
 
     it("should remove files from upload queue", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
         new File(["content2"], "test2.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
         result.current.removeUploadItem("0");
       });
-      
+
       expect(result.current.uploadItems()).toHaveLength(1);
     });
 
     it("should clear all upload items", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
         new File(["content2"], "test2.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
         result.current.clearCompleted();
       });
-      
+
       expect(result.current.uploadItems()).toHaveLength(0);
     });
   });
 
   describe("Upload Process", () => {
     it("should start upload process", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
         result.current.startUpload();
       });
-      
+
       expect(result.current.isUploading()).toBe(true);
       expect(mockCallbacks.onUploadStart).toHaveBeenCalled();
     });
 
     it("should cancel upload process", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       act(() => {
         result.current.startUpload();
         result.current.cancelUpload("0");
       });
-      
+
       expect(result.current.isUploading()).toBe(false);
     });
 
     it("should retry failed uploads", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       act(() => {
         result.current.retryUpload("0");
       });
-      
+
       expect(result.current.isUploading()).toBe(true);
     });
   });
 
   describe("Progress Tracking", () => {
     it("should track upload progress", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       act(() => {
         result.current.updateProgress("0", 50);
       });
-      
+
       expect(result.current.uploadProgress()["0"]).toBe(50);
       expect(mockCallbacks.onUploadProgress).toHaveBeenCalledWith("0", 50);
     });
 
     it("should handle upload completion", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       const mockResult = { success: true, fileId: "123" };
-      
+
       act(() => {
         result.current.handleUploadComplete("0", mockResult);
       });
-      
-      expect(mockCallbacks.onUploadComplete).toHaveBeenCalledWith("0", mockResult);
+
+      expect(mockCallbacks.onUploadComplete).toHaveBeenCalledWith(
+        "0",
+        mockResult,
+      );
     });
 
     it("should handle upload errors", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       const mockError = new Error("Upload failed");
-      
+
       act(() => {
         result.current.handleUploadError("0", mockError);
       });
-      
+
       expect(mockCallbacks.onError).toHaveBeenCalledWith("0", mockError);
     });
   });
 
   describe("Validation", () => {
     it("should validate files before upload", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       // Validation should be called during addFiles
       expect(result.current.uploadItems()).toHaveLength(1);
     });
 
     it("should handle validation errors", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig }),
       );
-      
+
       // Mock validation to return errors
       const mockValidation = {
         validateFiles: vi.fn().mockReturnValue({
@@ -286,7 +289,7 @@ describe("useFileUpload", () => {
           errors: ["File too large"],
         }),
       };
-      
+
       // This would be set up in the actual implementation
       expect(result.current.uploadItems()).toEqual([]);
     });
@@ -298,18 +301,20 @@ describe("useFileUpload", () => {
         ...mockConfig,
         maxFileSize: 1000, // 1KB
       };
-      
-      const { result } = renderHook(() => 
-        useFileUpload({ config: configWithSizeLimit })
+
+      const { result } = renderHook(() =>
+        useFileUpload({ config: configWithSizeLimit }),
       );
-      
-      const largeFile = new File(["content"], "large.txt", { type: "text/plain" });
+
+      const largeFile = new File(["content"], "large.txt", {
+        type: "text/plain",
+      });
       Object.defineProperty(largeFile, "size", { value: 2000 });
-      
+
       act(() => {
         result.current.addFiles([largeFile]);
       });
-      
+
       // Should not add file due to size limit
       expect(result.current.uploadItems()).toHaveLength(0);
     });
@@ -319,21 +324,21 @@ describe("useFileUpload", () => {
         ...mockConfig,
         maxFiles: 2,
       };
-      
-      const { result } = renderHook(() => 
-        useFileUpload({ config: configWithFileLimit })
+
+      const { result } = renderHook(() =>
+        useFileUpload({ config: configWithFileLimit }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
         new File(["content2"], "test2.txt", { type: "text/plain" }),
         new File(["content3"], "test3.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       // Should only add up to maxFiles
       expect(result.current.uploadItems()).toHaveLength(2);
     });
@@ -343,20 +348,20 @@ describe("useFileUpload", () => {
         ...mockConfig,
         allowedTypes: ["image/*"],
       };
-      
-      const { result } = renderHook(() => 
-        useFileUpload({ config: configWithTypeLimit })
+
+      const { result } = renderHook(() =>
+        useFileUpload({ config: configWithTypeLimit }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
         new File(["content2"], "test2.jpg", { type: "image/jpeg" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       // Should only add files with allowed types
       expect(result.current.uploadItems()).toHaveLength(1);
     });
@@ -368,37 +373,40 @@ describe("useFileUpload", () => {
         ...mockConfig,
         autoUpload: true,
       };
-      
-      const { result } = renderHook(() => 
-        useFileUpload({ config: configWithAutoUpload, callbacks: mockCallbacks })
+
+      const { result } = renderHook(() =>
+        useFileUpload({
+          config: configWithAutoUpload,
+          callbacks: mockCallbacks,
+        }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       // Should automatically start upload
       expect(result.current.isUploading()).toBe(true);
       expect(mockCallbacks.onUploadStart).toHaveBeenCalled();
     });
 
     it("should not auto-upload when disabled", () => {
-      const { result } = renderHook(() => 
-        useFileUpload({ config: mockConfig, callbacks: mockCallbacks })
+      const { result } = renderHook(() =>
+        useFileUpload({ config: mockConfig, callbacks: mockCallbacks }),
       );
-      
+
       const mockFiles = [
         new File(["content1"], "test1.txt", { type: "text/plain" }),
       ];
-      
+
       act(() => {
         result.current.addFiles(mockFiles);
       });
-      
+
       // Should not automatically start upload
       expect(result.current.isUploading()).toBe(false);
       expect(mockCallbacks.onUploadStart).not.toHaveBeenCalled();

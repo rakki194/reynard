@@ -1,6 +1,6 @@
 /**
  * Caption Generator Sub-components
- * 
+ *
  * Sub-components for the Caption Generator to keep the main component
  * under the 140-line limit.
  */
@@ -27,7 +27,9 @@ export const ModelSelection: Component<{
               "model-card--selected": props.selectedModel === generator.name,
               "model-card--unavailable": !generator.available,
             }}
-            onClick={() => generator.available && props.onModelSelect(generator.name)}
+            onClick={() =>
+              generator.available && props.onModelSelect(generator.name)
+            }
             disabled={!generator.available}
           >
             <div class="model-name">{generator.displayName}</div>
@@ -77,7 +79,7 @@ export const ImageUpload: Component<{
           if (file) props.onFileSelect(file);
         }}
       />
-      
+
       <Show
         when={props.imagePreview}
         fallback={
@@ -95,7 +97,10 @@ export const ImageUpload: Component<{
           <div class="image-info">
             <div class="image-name">{props.imageFile?.name}</div>
             <div class="image-size">
-              {props.imageFile ? (props.imageFile.size / 1024 / 1024).toFixed(2) : "0"} MB
+              {props.imageFile
+                ? (props.imageFile.size / 1024 / 1024).toFixed(2)
+                : "0"}{" "}
+              MB
             </div>
           </div>
         </div>
@@ -117,7 +122,7 @@ export const GenerationResults: Component<{
         <div class="caption-text">{props.result.caption}</div>
       </div>
     </div>
-    
+
     <div class="result-meta">
       <div class="result-info">
         <span class="result-label">Model:</span>
@@ -125,7 +130,9 @@ export const GenerationResults: Component<{
       </div>
       <div class="result-info">
         <span class="result-label">Processing Time:</span>
-        <span class="result-value">{props.result.processingTime?.toFixed(2)}s</span>
+        <span class="result-value">
+          {props.result.processingTime?.toFixed(2)}s
+        </span>
       </div>
       <div class="result-info">
         <span class="result-label">Success:</span>

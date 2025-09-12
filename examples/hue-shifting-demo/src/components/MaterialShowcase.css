@@ -31,7 +31,6 @@
   margin-bottom: 3rem;
 }
 
-
 @media (max-width: 1024px) {
   .showcase-grid {
     grid-template-columns: 1fr;
@@ -43,11 +42,11 @@
   .material-showcase {
     padding: 1rem;
   }
-  
+
   .showcase-header h2 {
     font-size: 2rem;
   }
-  
+
   .showcase-header p {
     font-size: 1rem;
   }

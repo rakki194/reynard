@@ -82,12 +82,10 @@ export const mockPerformanceObserver = vi.fn().mockImplementation(() => ({
 /**
  * Mock requestAnimationFrame
  */
-export const mockRequestAnimationFrame = vi.fn(
-  (cb: FrameRequestCallback) => {
-    setTimeout(() => cb(performance.now()), 0);
-    return 1; // Return a proper frame ID
-  },
-);
+export const mockRequestAnimationFrame = vi.fn((cb: FrameRequestCallback) => {
+  setTimeout(() => cb(performance.now()), 0);
+  return 1; // Return a proper frame ID
+});
 
 /**
  * Mock cancelAnimationFrame
@@ -209,28 +207,29 @@ export const mockURL = vi
   .mockImplementation((url: string, base?: string) => {
     // Simple URL parsing without circular dependencies
     let fullUrl = url;
-    if (base && !url.startsWith('http') && !url.startsWith('//')) {
+    if (base && !url.startsWith("http") && !url.startsWith("//")) {
       // Parse base URL manually to avoid circular dependency
       const baseMatch = base.match(/^(https?:)\/\/([^\/]+)/) || [];
-      const baseOrigin = baseMatch[0] || 'http://localhost';
-      fullUrl = baseOrigin + (url.startsWith('/') ? '' : '/') + url;
+      const baseOrigin = baseMatch[0] || "http://localhost";
+      fullUrl = baseOrigin + (url.startsWith("/") ? "" : "/") + url;
     }
 
     // Parse URL parts
-    const match = fullUrl.match(/^(https?:)\/\/([^\/]+)(\/[^?]*)?(\?[^#]*)?(#.*)?$/) || [];
-    const protocol = match[1] || 'http:';
-    const host = match[2] || 'localhost';
-    const pathname = match[3] || '/';
-    const search = match[4] || '';
-    const hash = match[5] || '';
+    const match =
+      fullUrl.match(/^(https?:)\/\/([^\/]+)(\/[^?]*)?(\?[^#]*)?(#.*)?$/) || [];
+    const protocol = match[1] || "http:";
+    const host = match[2] || "localhost";
+    const pathname = match[3] || "/";
+    const search = match[4] || "";
+    const hash = match[5] || "";
 
     const urlObj = {
       href: fullUrl,
       origin: `${protocol}//${host}`,
       protocol,
       host,
-      hostname: host.split(':')[0],
-      port: host.includes(':') ? host.split(':')[1] : '',
+      hostname: host.split(":")[0],
+      port: host.includes(":") ? host.split(":")[1] : "",
       pathname,
       search,
       hash,
@@ -316,19 +315,26 @@ export const mockHeaders = vi.fn().mockImplementation((init?: HeadersInit) => {
     } else if (init instanceof Map) {
       init.forEach((value, key) => headers.set(key.toLowerCase(), value));
     } else {
-      Object.entries(init).forEach(([key, value]) => headers.set(key.toLowerCase(), value));
+      Object.entries(init).forEach(([key, value]) =>
+        headers.set(key.toLowerCase(), value),
+      );
     }
   }
 
   return {
     append: vi.fn((name: string, value: string) => {
       const existing = headers.get(name.toLowerCase());
-      headers.set(name.toLowerCase(), existing ? `${existing}, ${value}` : value);
+      headers.set(
+        name.toLowerCase(),
+        existing ? `${existing}, ${value}` : value,
+      );
     }),
     delete: vi.fn((name: string) => headers.delete(name.toLowerCase())),
     get: vi.fn((name: string) => headers.get(name.toLowerCase()) || null),
     has: vi.fn((name: string) => headers.has(name.toLowerCase())),
-    set: vi.fn((name: string, value: string) => headers.set(name.toLowerCase(), value)),
+    set: vi.fn((name: string, value: string) =>
+      headers.set(name.toLowerCase(), value),
+    ),
     entries: vi.fn(() => headers.entries()),
     keys: vi.fn(() => headers.keys()),
     values: vi.fn(() => headers.values()),

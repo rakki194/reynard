@@ -27,9 +27,15 @@ export interface FeatureInfo {
   healthScore: number;
 }
 
-export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(null);
-  const [selectedPriority, setSelectedPriority] = createSignal<string | null>(null);
+export const FeatureAvailabilityPanel: Component<
+  FeatureAvailabilityPanelProps
+> = (props) => {
+  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(
+    null,
+  );
+  const [selectedPriority, setSelectedPriority] = createSignal<string | null>(
+    null,
+  );
 
   // Mock feature data
   const [features] = createSignal<FeatureInfo[]>([
@@ -229,7 +235,9 @@ export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> 
             <label>Category:</label>
             <select
               value={selectedCategory() || ""}
-              onChange={(e) => setSelectedCategory(e.currentTarget.value || null)}
+              onChange={(e) =>
+                setSelectedCategory(e.currentTarget.value || null)
+              }
               aria-label="Filter by category"
             >
               <option value="">All Categories</option>
@@ -245,7 +253,9 @@ export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> 
             <label>Priority:</label>
             <select
               value={selectedPriority() || ""}
-              onChange={(e) => setSelectedPriority(e.currentTarget.value || null)}
+              onChange={(e) =>
+                setSelectedPriority(e.currentTarget.value || null)
+              }
               aria-label="Filter by priority"
             >
               <option value="">All Priorities</option>
@@ -267,26 +277,42 @@ export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> 
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(feature))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(feature))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="feature-details">
                     <span class="feature-name">{feature.name}</span>
-                    <span class="feature-description">{feature.description}</span>
+                    <span class="feature-description">
+                      {feature.description}
+                    </span>
                   </div>
                 </div>
 
                 <div class="feature-status">
-                  <span class="status-badge" classList={{ [getStatusColor(feature)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(feature)]: true }}
+                  >
                     {feature.status}
                   </span>
-                  
-                  <span class="priority-badge" classList={{ [getPriorityColor(feature.priority)]: true }}>
+
+                  <span
+                    class="priority-badge"
+                    classList={{ [getPriorityColor(feature.priority)]: true }}
+                  >
                     {feature.priority}
                   </span>
-                  
-                  <span class="health-score" classList={{ [getHealthScoreColor(feature.healthScore)]: true }}>
+
+                  <span
+                    class="health-score"
+                    classList={{
+                      [getHealthScoreColor(feature.healthScore)]: true,
+                    }}
+                  >
                     {feature.healthScore}%
                   </span>
                 </div>
@@ -298,13 +324,19 @@ export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> 
                   <span class="label">Category:</span>
                   <span class="value">{feature.category}</span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Last Check:</span>
-                  <span class="value">{feature.lastCheck.toLocaleString()}</span>
+                  <span class="value">
+                    {feature.lastCheck.toLocaleString()}
+                  </span>
                 </div>
-                
-                <Show when={props.showDependencies && feature.dependencies.length > 0}>
+
+                <Show
+                  when={
+                    props.showDependencies && feature.dependencies.length > 0
+                  }
+                >
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
                     <span class="value">{feature.dependencies.join(", ")}</span>
@@ -337,7 +369,10 @@ export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> 
         <div class="summary-item">
           <span class="label">Unavailable:</span>
           <span class="value error">
-            {filteredFeatures().filter((f) => f.status === "unavailable").length}
+            {
+              filteredFeatures().filter((f) => f.status === "unavailable")
+                .length
+            }
           </span>
         </div>
       </div>

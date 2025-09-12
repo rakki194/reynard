@@ -44,9 +44,11 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
       setMonaco(monacoInstance);
       setIsLoading(false);
     } catch (err) {
-      console.error(t('monaco.failedToLoadMonacoEditor'), err);
+      console.error(t("monaco.failedToLoadMonacoEditor"), err);
       setError(
-        err instanceof Error ? err.message : t('monaco.failedToLoadMonacoEditor'),
+        err instanceof Error
+          ? err.message
+          : t("monaco.failedToLoadMonacoEditor"),
       );
       setIsLoading(false);
     }
@@ -82,9 +84,9 @@ export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
         // Call onMount callback
         props.onMount?.(editorInstance, monacoInstance);
       } catch (err) {
-        console.error(t('monaco.failedToCreateMonacoEditor'), err);
+        console.error(t("monaco.failedToCreateMonacoEditor"), err);
         setError(
-          err instanceof Error ? err.message : t('monaco.failedToCreateEditor'),
+          err instanceof Error ? err.message : t("monaco.failedToCreateEditor"),
         );
       }
     }

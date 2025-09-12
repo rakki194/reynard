@@ -4,22 +4,14 @@
  */
 
 // Re-export all translation loading functionality
-export { 
-  loadTranslationsWithCache, 
+export {
+  loadTranslationsWithCache,
   preloadTranslations,
-  fullTranslations 
+  fullTranslations,
 } from "./translation-loader";
 
-export { 
-  createNamespaceLoader, 
-  loadNamespace 
-} from "./namespace-loader";
+export { createNamespaceLoader, loadNamespace } from "./namespace-loader";
 
-export { 
-  clearTranslationCache, 
-  getCacheStats 
-} from "./cache";
+export { clearTranslationCache, getCacheStats } from "./cache";
 
-export { 
-  createOptimizedLoader 
-} from "./optimized-loader";
+export { createOptimizedLoader } from "./optimized-loader";

@@ -1,6 +1,6 @@
 /**
  * Audio Components Barrel Export
- * 
+ *
  * Provides clean API boundaries for all audio-related components.
  */
 
@@ -22,5 +22,5 @@ export type {
   AudioGridProps,
   AudioFileCardProps,
   AudioPlayerModalProps,
-  AudioAnalysis
+  AudioAnalysis,
 } from "../types";

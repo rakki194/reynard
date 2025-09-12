@@ -31,14 +31,16 @@ export interface PerformanceExportTabProps {
   onExport: () => void;
 }
 
-export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props) => {
+export const PerformanceExportTab: Component<PerformanceExportTabProps> = (
+  props,
+) => {
   const [exportOptions, setExportOptions] = createSignal({
     format: "json" as "json" | "csv" | "html",
     includeHistory: true,
     includeWarnings: true,
     includeSummary: true,
     timeRange: "24h" as "1h" | "6h" | "24h" | "7d" | "all",
-    filename: `performance-report-${new Date().toISOString().split('T')[0]}`,
+    filename: `performance-report-${new Date().toISOString().split("T")[0]}`,
   });
   const [exportSummary, setExportSummary] = createSignal({
     totalDataPoints: 0,
@@ -70,10 +72,18 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
     // Calculate summary statistics
     const totalDataPoints = filteredHistory.length;
     const totalWarnings = filteredWarnings.length;
-    const criticalWarnings = filteredWarnings.filter((w) => w.severity === "critical").length;
-    const highWarnings = filteredWarnings.filter((w) => w.severity === "high").length;
-    const mediumWarnings = filteredWarnings.filter((w) => w.severity === "medium").length;
-    const lowWarnings = filteredWarnings.filter((w) => w.severity === "low").length;
+    const criticalWarnings = filteredWarnings.filter(
+      (w) => w.severity === "critical",
+    ).length;
+    const highWarnings = filteredWarnings.filter(
+      (w) => w.severity === "high",
+    ).length;
+    const mediumWarnings = filteredWarnings.filter(
+      (w) => w.severity === "medium",
+    ).length;
+    const lowWarnings = filteredWarnings.filter(
+      (w) => w.severity === "low",
+    ).length;
 
     const summary = {
       totalDataPoints,
@@ -147,7 +157,10 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
 
       // Filter data by time range
       const filteredHistory = filterDataByTimeRange(history, options.timeRange);
-      const filteredWarnings = filterDataByTimeRange(warnings, options.timeRange);
+      const filteredWarnings = filterDataByTimeRange(
+        warnings,
+        options.timeRange,
+      );
 
       setExportProgress(25);
 
@@ -234,22 +247,26 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
     const lines: string[] = [];
 
     // Header
-    lines.push("Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops");
+    lines.push(
+      "Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops",
+    );
 
     // Data rows
     if (data.performanceHistory) {
       data.performanceHistory.forEach((entry: any) => {
-        lines.push([
-          new Date(entry.timestamp).toISOString(),
-          entry.frameRate,
-          entry.memoryUsage,
-          entry.browserResponsiveness,
-          entry.selectionDuration || 0,
-          entry.itemsPerSecond || 0,
-          entry.domUpdateCount || 0,
-          entry.styleApplicationCount || 0,
-          entry.frameDropCount || 0,
-        ].join(","));
+        lines.push(
+          [
+            new Date(entry.timestamp).toISOString(),
+            entry.frameRate,
+            entry.memoryUsage,
+            entry.browserResponsiveness,
+            entry.selectionDuration || 0,
+            entry.itemsPerSecond || 0,
+            entry.domUpdateCount || 0,
+            entry.styleApplicationCount || 0,
+            entry.frameDropCount || 0,
+          ].join(","),
+        );
       });
     }
 
@@ -285,7 +302,9 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
         <p>Total Data Points: ${data.metadata.totalDataPoints}</p>
     </div>
     
-    ${data.summary ? `
+    ${
+      data.summary
+        ? `
     <div class="summary">
         <h2>Summary</h2>
         <div class="metrics">
@@ -307,20 +326,30 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
             </div>
         </div>
     </div>
-    ` : ''}
+    `
+        : ""
+    }
     
-    ${data.warnings && data.warnings.length > 0 ? `
+    ${
+      data.warnings && data.warnings.length > 0
+        ? `
     <div class="warnings">
         <h2>Performance Warnings</h2>
-        ${data.warnings.map((warning: any) => `
+        ${data.warnings
+          .map(
+            (warning: any) => `
         <div class="warning ${warning.severity}">
             <strong>${warning.severity.toUpperCase()}</strong>: ${warning.message}
             <br>Value: ${warning.value}ms, Threshold: ${warning.threshold}ms
             <br>Time: ${new Date(warning.timestamp).toLocaleString()}
         </div>
-        `).join('')}
+        `,
+          )
+          .join("")}
     </div>
-    ` : ''}
+    `
+        : ""
+    }
 </body>
 </html>`;
   };
@@ -361,7 +390,9 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
             <label>Format:</label>
             <Select
               value={exportOptions().format}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, format: value as any }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({ ...prev, format: value as any }))
+              }
               options={formats}
             />
           </div>
@@ -370,7 +401,12 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
             <label>Time Range:</label>
             <Select
               value={exportOptions().timeRange}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, timeRange: value as any }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({
+                  ...prev,
+                  timeRange: value as any,
+                }))
+              }
               options={timeRanges}
             />
           </div>
@@ -379,7 +415,9 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
             <label>Filename:</label>
             <TextField
               value={exportOptions().filename}
-              onChange={(value) => setExportOptions(prev => ({ ...prev, filename: value }))}
+              onChange={(value) =>
+                setExportOptions((prev) => ({ ...prev, filename: value }))
+              }
               placeholder="Enter filename"
             />
           </div>
@@ -392,7 +430,12 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
               <input
                 type="checkbox"
                 checked={exportOptions().includeSummary}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeSummary: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeSummary: e.currentTarget.checked,
+                  }))
+                }
               />
               Summary Statistics
             </label>
@@ -400,7 +443,12 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
               <input
                 type="checkbox"
                 checked={exportOptions().includeHistory}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeHistory: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeHistory: e.currentTarget.checked,
+                  }))
+                }
               />
               Performance History
             </label>
@@ -408,7 +456,12 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (props
               <input
                 type="checkbox"
                 checked={exportOptions().includeWarnings}
-                onChange={(e) => setExportOptions(prev => ({ ...prev, includeWarnings: e.currentTarget.checked }))}
+                onChange={(e) =>
+                  setExportOptions((prev) => ({
+                    ...prev,
+                    includeWarnings: e.currentTarget.checked,
+                  }))
+                }
               />
               Performance Warnings
             </label>

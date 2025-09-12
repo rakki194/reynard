@@ -5,23 +5,20 @@
 import type { Component } from "solid-js";
 import { createSignal, createEffect } from "solid-js";
 import { useDraggablePanel } from "../composables/useDraggablePanel";
-import type {
-  FloatingPanelProps,
-  PanelConfig
-} from "../types";
+import type { FloatingPanelProps, PanelConfig } from "../types";
 import "./FloatingPanel.css";
 
 export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
-  
+
   // Debug logging
   console.log("🦦> FloatingPanelDebug created:", {
     id: props.id,
     position: props.position,
     size: props.size,
-    config: props.config
+    config: props.config,
   });
-  
+
   // Default configuration
   const config: Required<PanelConfig> = {
     draggable: true,
@@ -37,14 +34,11 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
     hoverDelay: 500,
     persistent: true,
     theme: "default",
-    ...props.config
+    ...props.config,
   };
 
   // Set up draggable functionality
-  const {
-    isVisible,
-    isDragging
-  } = useDraggablePanel(panelRef, {
+  const { isVisible, isDragging } = useDraggablePanel(panelRef, {
     initialPosition: props.position,
     enabled: config.draggable,
     onDragStart: () => {
@@ -63,8 +57,8 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
       minWidth: 200,
       minHeight: 100,
       maxWidth: 800,
-      maxHeight: 600
-    }
+      maxHeight: 600,
+    },
   });
 
   // Debug effect for visibility changes
@@ -72,7 +66,7 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
     console.log("🦦> Panel visibility changed:", {
       id: props.id,
       isVisible: isVisible(),
-      isDragging: isDragging()
+      isDragging: isDragging(),
     });
   });
 
@@ -87,13 +81,13 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
           top: rect.top,
           left: rect.left,
           width: rect.width,
-          height: rect.height
+          height: rect.height,
         },
         computedStyle: {
           position: getComputedStyle(element).position,
           zIndex: getComputedStyle(element).zIndex,
-          transform: getComputedStyle(element).transform
-        }
+          transform: getComputedStyle(element).transform,
+        },
       });
     }
   });
@@ -106,7 +100,7 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
   return (
     <div
       ref={setPanelRef}
-      class={`floating-panel theme-${config.theme} ${isDragging() ? 'dragging' : ''}`}
+      class={`floating-panel theme-${config.theme} ${isDragging() ? "dragging" : ""}`}
       style={{
         position: "absolute",
         top: `${props.position.top || 0}px`,
@@ -118,7 +112,7 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
         "max-width": `${props.size?.maxWidth || 800}px`,
         "max-height": `${props.size?.maxHeight || 600}px`,
         "z-index": props.position.zIndex || 1000,
-        "transition-delay": `${config.animationDelay}ms`
+        "transition-delay": `${config.animationDelay}ms`,
       }}
     >
       <div class="floating-panel-content">
@@ -139,15 +133,11 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
             )}
           </div>
         </div>
-        
-        <div class="floating-panel-body">
-          {props.children}
-        </div>
+
+        <div class="floating-panel-body">{props.children}</div>
       </div>
-      
-      {config.resizable && (
-        <div class="floating-panel-resize-handle" />
-      )}
+
+      {config.resizable && <div class="floating-panel-resize-handle" />}
     </div>
   );
 };

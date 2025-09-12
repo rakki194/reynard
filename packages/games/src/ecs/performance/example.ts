@@ -25,7 +25,7 @@ import {
   benchmarkECS,
   createECSSystem,
   diagnoseECS,
-  quickStartECS
+  quickStartECS,
 } from "./index";
 
 import { Component, Resource } from "../types";
@@ -38,7 +38,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Velocity implements Component {
@@ -46,7 +46,7 @@ class Velocity implements Component {
   constructor(
     public vx: number,
     public vy: number,
-  ) { }
+  ) {}
 }
 
 class Health implements Component {
@@ -54,17 +54,17 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) { }
+  ) {}
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) { }
+  constructor(public name: string) {}
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) { }
+  constructor(public type: string) {}
 }
 
 /**
@@ -75,7 +75,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) { }
+  ) {}
 }
 
 class GameState implements Resource {
@@ -83,7 +83,7 @@ class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-  ) { }
+  ) {}
 }
 
 /**

@@ -3,7 +3,15 @@
  * Memory tracking tab for performance dashboard
  */
 
-import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
+import {
+  Component,
+  For,
+  Show,
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+} from "solid-js";
 import { Button } from "reynard-components";
 
 export interface PerformanceMemoryTabProps {
@@ -22,7 +30,9 @@ export interface PerformanceMemoryTabProps {
   refreshInterval?: number;
 }
 
-export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props) => {
+export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (
+  props,
+) => {
   const [isMonitoring, setIsMonitoring] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [lastUpdate, setLastUpdate] = createSignal<Date | null>(null);
@@ -83,14 +93,19 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
       const memoryUsages = history.map((entry) => entry.memoryUsage);
       const currentUsage = props.memoryUsage;
       const peakUsage = Math.max(...memoryUsages);
-      const averageUsage = memoryUsages.reduce((sum, usage) => sum + usage, 0) / memoryUsages.length;
+      const averageUsage =
+        memoryUsages.reduce((sum, usage) => sum + usage, 0) /
+        memoryUsages.length;
 
       // Calculate usage trend
       const recentUsages = memoryUsages.slice(-10);
       const olderUsages = memoryUsages.slice(-20, -10);
-      const recentAverage = recentUsages.reduce((sum, usage) => sum + usage, 0) / recentUsages.length;
-      const olderAverage = olderUsages.reduce((sum, usage) => sum + usage, 0) / olderUsages.length;
-      
+      const recentAverage =
+        recentUsages.reduce((sum, usage) => sum + usage, 0) /
+        recentUsages.length;
+      const olderAverage =
+        olderUsages.reduce((sum, usage) => sum + usage, 0) / olderUsages.length;
+
       let usageTrend: "increasing" | "stable" | "decreasing" = "stable";
       if (recentAverage > olderAverage * 1.1) {
         usageTrend = "increasing";
@@ -100,11 +115,14 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
 
       // Calculate memory pressure
       let memoryPressure: "low" | "medium" | "high" | "critical" = "low";
-      if (currentUsage > 500 * 1024 * 1024) { // 500MB
+      if (currentUsage > 500 * 1024 * 1024) {
+        // 500MB
         memoryPressure = "critical";
-      } else if (currentUsage > 200 * 1024 * 1024) { // 200MB
+      } else if (currentUsage > 200 * 1024 * 1024) {
+        // 200MB
         memoryPressure = "high";
-      } else if (currentUsage > 100 * 1024 * 1024) { // 100MB
+      } else if (currentUsage > 100 * 1024 * 1024) {
+        // 100MB
         memoryPressure = "medium";
       }
 
@@ -205,10 +223,7 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
             </Show>
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={forceGarbageCollection}
-          >
+          <Button variant="secondary" onClick={forceGarbageCollection}>
             Force GC
           </Button>
         </div>
@@ -219,7 +234,9 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
         <div class="stats-grid">
           <div class="stat-item">
             <label>Current Usage</label>
-            <span class="value">{formatMemory(memoryStats().currentUsage)}</span>
+            <span class="value">
+              {formatMemory(memoryStats().currentUsage)}
+            </span>
           </div>
           <div class="stat-item">
             <label>Peak Usage</label>
@@ -227,7 +244,9 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
           </div>
           <div class="stat-item">
             <label>Average Usage</label>
-            <span class="value">{formatMemory(memoryStats().averageUsage)}</span>
+            <span class="value">
+              {formatMemory(memoryStats().averageUsage)}
+            </span>
           </div>
           <div class="stat-item">
             <label>Usage Trend</label>
@@ -235,7 +254,9 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
           </div>
           <div class="stat-item">
             <label>Memory Pressure</label>
-            <span class={`value ${getMemoryPressureColor(memoryStats().memoryPressure)}`}>
+            <span
+              class={`value ${getMemoryPressureColor(memoryStats().memoryPressure)}`}
+            >
               {memoryStats().memoryPressure}
             </span>
           </div>
@@ -254,7 +275,9 @@ export const PerformanceMemoryTab: Component<PerformanceMemoryTabProps> = (props
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

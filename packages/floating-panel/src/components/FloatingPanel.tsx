@@ -1,6 +1,6 @@
 /**
  * Floating Panel Component
- * 
+ *
  * Individual floating panel with draggable, resizable, and animated capabilities.
  * Based on Yipyap's sophisticated panel system.
  */
@@ -25,7 +25,12 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
     onDragStart: () => props.onShow?.(),
     onDrag: (position) => props.onDrag?.(position),
     onDragEnd: () => props.onHide?.(),
-    constraints: { minWidth: 200, minHeight: 100, maxWidth: 800, maxHeight: 600 }
+    constraints: {
+      minWidth: 200,
+      minHeight: 100,
+      maxWidth: 800,
+      maxHeight: 600,
+    },
   });
 
   createEffect(() => {
@@ -34,11 +39,11 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
   });
 
   usePanelKeyboard({ panelRef, config, onHide: props.onHide });
-  
+
   const { getInlineStyles } = usePanelStyles({
     position: props.position,
     size: props.size,
-    config
+    config,
   });
 
   return (
@@ -53,7 +58,11 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
     >
       <div class="floating-panel-content">
         {(config.draggable || config.closable) && (
-          <FloatingPanelHeader id={props.id} config={config} onHide={props.onHide} />
+          <FloatingPanelHeader
+            id={props.id}
+            config={config}
+            onHide={props.onHide}
+          />
         )}
         <div class="floating-panel-body">{props.children}</div>
       </div>

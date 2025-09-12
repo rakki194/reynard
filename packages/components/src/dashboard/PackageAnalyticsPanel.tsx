@@ -53,7 +53,9 @@ export interface AnalyticsSummary {
   errorRate: number;
 }
 
-export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (props) => {
+export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
+  props,
+) => {
   const [analytics, setAnalytics] = createSignal<PackageAnalytics[]>([]);
   const [summary, setSummary] = createSignal<AnalyticsSummary>({
     totalPackages: 0,
@@ -222,16 +224,32 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
       // Calculate summary
       const analyticsList = mockAnalytics;
       const totalLoads = analyticsList.reduce((sum, a) => sum + a.loadCount, 0);
-      const totalLoadTime = analyticsList.reduce((sum, a) => sum + a.totalLoadTime, 0);
+      const totalLoadTime = analyticsList.reduce(
+        (sum, a) => sum + a.totalLoadTime,
+        0,
+      );
       const averageLoadTime = totalLoadTime / totalLoads;
-      const totalSuccesses = analyticsList.reduce((sum, a) => sum + (a.loadCount * a.successRate / 100), 0);
+      const totalSuccesses = analyticsList.reduce(
+        (sum, a) => sum + (a.loadCount * a.successRate) / 100,
+        0,
+      );
       const overallSuccessRate = (totalSuccesses / totalLoads) * 100;
-      const totalMemoryUsage = analyticsList.reduce((sum, a) => sum + a.memoryUsage, 0);
-      const peakMemoryUsage = Math.max(...analyticsList.map((a) => a.peakMemoryUsage));
-      const averagePerformanceScore = analyticsList.reduce((sum, a) => sum + a.performanceScore, 0) / analyticsList.length;
-      const totalErrors = analyticsList.reduce((sum, a) => sum + a.errorCount, 0);
+      const totalMemoryUsage = analyticsList.reduce(
+        (sum, a) => sum + a.memoryUsage,
+        0,
+      );
+      const peakMemoryUsage = Math.max(
+        ...analyticsList.map((a) => a.peakMemoryUsage),
+      );
+      const averagePerformanceScore =
+        analyticsList.reduce((sum, a) => sum + a.performanceScore, 0) /
+        analyticsList.length;
+      const totalErrors = analyticsList.reduce(
+        (sum, a) => sum + a.errorCount,
+        0,
+      );
       const errorRate = (totalErrors / totalLoads) * 100;
-      
+
       const mockSummary: AnalyticsSummary = {
         totalPackages: analyticsList.length,
         totalLoads: totalLoads,
@@ -261,13 +279,15 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
       filtered = filtered.filter(
         (analytics) =>
           analytics.name.toLowerCase().includes(query) ||
-          analytics.version.toLowerCase().includes(query)
+          analytics.version.toLowerCase().includes(query),
       );
     }
 
     // Filter by frequency
     if (selectedFrequency() !== "all") {
-      filtered = filtered.filter((analytics) => analytics.usageFrequency === selectedFrequency());
+      filtered = filtered.filter(
+        (analytics) => analytics.usageFrequency === selectedFrequency(),
+      );
     }
 
     // Sort
@@ -391,7 +411,9 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("chart-multiple")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("chart-multiple")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Package Analytics</h3>
@@ -427,7 +449,12 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
         </div>
         <div class="summary-item">
           <span class="label">Success Rate:</span>
-          <span class="value" classList={{ [getSuccessRateColor(summary().overallSuccessRate)]: true }}>
+          <span
+            class="value"
+            classList={{
+              [getSuccessRateColor(summary().overallSuccessRate)]: true,
+            }}
+          >
             {summary().overallSuccessRate.toFixed(1)}%
           </span>
         </div>
@@ -441,7 +468,12 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
         </div>
         <div class="summary-item">
           <span class="label">Performance:</span>
-          <span class="value" classList={{ [getPerformanceColor(summary().performanceScore)]: true }}>
+          <span
+            class="value"
+            classList={{
+              [getPerformanceColor(summary().performanceScore)]: true,
+            }}
+          >
             {summary().performanceScore.toFixed(0)}
           </span>
         </div>
@@ -483,7 +515,9 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
 
         <Select
           value={sortOrder()}
-          onChange={(e) => setSortOrder(e.currentTarget.value as "asc" | "desc")}
+          onChange={(e) =>
+            setSortOrder(e.currentTarget.value as "asc" | "desc")
+          }
         >
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
@@ -500,10 +534,14 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getFrequencyIcon(analytics.usageFrequency))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(
+                          getFrequencyIcon(analytics.usageFrequency),
+                        )?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="analytics-details">
                     <span class="package-name">{analytics.name}</span>
                     <span class="package-version">v{analytics.version}</span>
@@ -511,11 +549,21 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
                 </div>
 
                 <div class="analytics-status">
-                  <span class="frequency-badge" classList={{ [getFrequencyColor(analytics.usageFrequency)]: true }}>
+                  <span
+                    class="frequency-badge"
+                    classList={{
+                      [getFrequencyColor(analytics.usageFrequency)]: true,
+                    }}
+                  >
                     {analytics.usageFrequency}
                   </span>
-                  
-                  <span class="performance-score" classList={{ [getPerformanceColor(analytics.performanceScore)]: true }}>
+
+                  <span
+                    class="performance-score"
+                    classList={{
+                      [getPerformanceColor(analytics.performanceScore)]: true,
+                    }}
+                  >
                     {analytics.performanceScore}
                   </span>
                 </div>
@@ -526,31 +574,44 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
                 <div class="metrics-grid">
                   <div class="metric-item">
                     <span class="label">Load Count:</span>
-                    <span class="value">{analytics.loadCount.toLocaleString()}</span>
+                    <span class="value">
+                      {analytics.loadCount.toLocaleString()}
+                    </span>
                   </div>
-                  
+
                   <div class="metric-item">
                     <span class="label">Avg Load Time:</span>
-                    <span class="value">{formatTime(analytics.averageLoadTime)}</span>
+                    <span class="value">
+                      {formatTime(analytics.averageLoadTime)}
+                    </span>
                   </div>
-                  
+
                   <div class="metric-item">
                     <span class="label">Success Rate:</span>
-                    <span class="value" classList={{ [getSuccessRateColor(analytics.successRate)]: true }}>
+                    <span
+                      class="value"
+                      classList={{
+                        [getSuccessRateColor(analytics.successRate)]: true,
+                      }}
+                    >
                       {analytics.successRate.toFixed(1)}%
                     </span>
                   </div>
-                  
+
                   <div class="metric-item">
                     <span class="label">Memory Usage:</span>
-                    <span class="value">{formatSize(analytics.memoryUsage)}</span>
+                    <span class="value">
+                      {formatSize(analytics.memoryUsage)}
+                    </span>
                   </div>
-                  
+
                   <div class="metric-item">
                     <span class="label">Peak Memory:</span>
-                    <span class="value">{formatSize(analytics.peakMemoryUsage)}</span>
+                    <span class="value">
+                      {formatSize(analytics.peakMemoryUsage)}
+                    </span>
                   </div>
-                  
+
                   <div class="metric-item">
                     <span class="label">Error Count:</span>
                     <span class="value error">{analytics.errorCount}</span>
@@ -559,18 +620,24 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
 
                 <div class="detail-row">
                   <span class="label">Last Used:</span>
-                  <span class="value">{analytics.lastUsed.toLocaleString()}</span>
+                  <span class="value">
+                    {analytics.lastUsed.toLocaleString()}
+                  </span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Total Load Time:</span>
-                  <span class="value">{formatDuration(analytics.totalLoadTime)}</span>
+                  <span class="value">
+                    {formatDuration(analytics.totalLoadTime)}
+                  </span>
                 </div>
-                
+
                 <Show when={analytics.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
-                    <span class="value">{analytics.dependencies.join(", ")}</span>
+                    <span class="value">
+                      {analytics.dependencies.join(", ")}
+                    </span>
                   </div>
                 </Show>
               </div>
@@ -581,7 +648,9 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (pro
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

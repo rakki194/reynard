@@ -3,8 +3,13 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HttpClient, HttpClientConfig, RequestOptions, UploadOptions } from "./http-client";
-import { i18n } from 'reynard-i18n';
+import {
+  HttpClient,
+  HttpClientConfig,
+  RequestOptions,
+  UploadOptions,
+} from "./http-client";
+import { i18n } from "reynard-i18n";
 
 // Mock fetch
 const mockFetch = vi.fn();
@@ -64,7 +69,7 @@ describe("HttpClient", () => {
         "Content-Type": "application/json",
         Accept: "application/json",
         "X-Custom": "value",
-        Authorization: i18n.t('core.bearer.test-key'),
+        Authorization: i18n.t("core.bearer.test-key"),
       });
     });
 
@@ -109,7 +114,7 @@ describe("HttpClient", () => {
           headers: expect.objectContaining({
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: i18n.t('core.bearer.test-key'),
+            Authorization: i18n.t("core.bearer.test-key"),
             "X-Custom": "value",
           }),
           signal: expect.any(AbortSignal),
@@ -267,7 +272,7 @@ describe("HttpClient", () => {
         return 1 as any;
       });
 
-      mockFetch.mockRejectedValue(new Error(i18n.t('core.request.aborted')));
+      mockFetch.mockRejectedValue(new Error(i18n.t("core.request.aborted")));
 
       const options: RequestOptions = {
         method: "GET",
@@ -279,7 +284,7 @@ describe("HttpClient", () => {
     });
 
     it("should retry on failure with exponential backoff", async () => {
-      const mockError = new Error(i18n.t('core.network.error'));
+      const mockError = new Error(i18n.t("core.network.error"));
       mockFetch.mockRejectedValue(mockError);
 
       const options: RequestOptions = {
@@ -293,7 +298,9 @@ describe("HttpClient", () => {
         return 1 as any;
       });
 
-      await expect(httpClient.request(options)).rejects.toThrow(i18n.t('core.network.error'));
+      await expect(httpClient.request(options)).rejects.toThrow(
+        i18n.t("core.network.error"),
+      );
 
       // Should have been called 4 times (initial + 3 retries)
       expect(mockFetch).toHaveBeenCalledTimes(4);
@@ -313,7 +320,9 @@ describe("HttpClient", () => {
         endpoint: "/nonexistent",
       };
 
-      await expect(httpClient.request(options)).rejects.toThrow("HTTP 404: Not Found");
+      await expect(httpClient.request(options)).rejects.toThrow(
+        "HTTP 404: Not Found",
+      );
     });
 
     it("should use custom headers", async () => {
@@ -340,7 +349,7 @@ describe("HttpClient", () => {
             "X-Custom-Request": "custom-value",
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: i18n.t('core.bearer.test-key'),
+            Authorization: i18n.t("core.bearer.test-key"),
             "X-Custom": "value",
           }),
         }),
@@ -365,7 +374,10 @@ describe("HttpClient", () => {
       await httpClient.request(options);
 
       // Verify that setTimeout was called with the custom timeout
-      expect(global.setTimeout).toHaveBeenCalledWith(expect.any(Function), 5000);
+      expect(global.setTimeout).toHaveBeenCalledWith(
+        expect.any(Function),
+        5000,
+      );
     });
   });
 
@@ -395,7 +407,7 @@ describe("HttpClient", () => {
           method: "POST",
           headers: expect.objectContaining({
             Accept: "application/json",
-            Authorization: i18n.t('core.bearer.test-key'),
+            Authorization: i18n.t("core.bearer.test-key"),
           }),
           body: formData,
         }),
@@ -454,7 +466,9 @@ describe("HttpClient", () => {
         formData,
       };
 
-      await expect(httpClient.upload(options)).rejects.toThrow("HTTP 413: Payload Too Large");
+      await expect(httpClient.upload(options)).rejects.toThrow(
+        "HTTP 413: Payload Too Large",
+      );
     });
 
     it("should use custom headers for upload", async () => {
@@ -483,7 +497,7 @@ describe("HttpClient", () => {
           headers: expect.objectContaining({
             "X-Upload-Type": "image",
             Accept: "application/json",
-            Authorization: i18n.t('core.bearer.test-key'),
+            Authorization: i18n.t("core.bearer.test-key"),
           }),
         }),
       );
@@ -535,7 +549,7 @@ describe("HttpClient", () => {
 
       expect((httpClient as any).baseHeaders).toEqual(
         expect.objectContaining({
-          Authorization: i18n.t('core.bearer.new-key'),
+          Authorization: i18n.t("core.bearer.new-key"),
         }),
       );
     });
@@ -543,10 +557,12 @@ describe("HttpClient", () => {
     it.skip("should remove authorization header when API key is removed", () => {
       // Check initial state
       expect((httpClient as any).baseHeaders).toHaveProperty("Authorization");
-      
+
       httpClient.updateConfig({ apiKey: undefined });
 
-      expect((httpClient as any).baseHeaders).not.toHaveProperty("Authorization");
+      expect((httpClient as any).baseHeaders).not.toHaveProperty(
+        "Authorization",
+      );
     });
 
     it("should update base headers when headers change", () => {

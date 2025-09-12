@@ -1,11 +1,11 @@
 /**
  * NLWeb API
- * 
+ *
  * HTTP API endpoints for the NLWeb assistant tooling and routing system.
  * Provides REST endpoints for tool suggestions, health monitoring, and configuration.
  */
 
-import { 
+import {
   NLWebService,
   NLWebSuggestionRequest,
   NLWebSuggestionResponse,
@@ -13,8 +13,8 @@ import {
   NLWebConfiguration,
   NLWebTool,
   NLWebEvent,
-  NLWebEventEmitter
-} from '../types/index.js';
+  NLWebEventEmitter,
+} from "../types/index.js";
 
 export interface NLWebAPIConfig {
   /** Base path for API endpoints */
@@ -50,13 +50,13 @@ export interface NLWebAPIHandler {
  */
 export function createNLWebAPI(
   service: NLWebService,
-  config: NLWebAPIConfig = {}
+  config: NLWebAPIConfig = {},
 ): Record<string, NLWebAPIHandler> {
   const {
-    basePath = '/api/nlweb',
+    basePath = "/api/nlweb",
     enableCORS = true,
     auth,
-    enableLogging = true
+    enableLogging = true,
   } = config;
 
   const handlers: Record<string, NLWebAPIHandler> = {};
@@ -64,18 +64,20 @@ export function createNLWebAPI(
   /**
    * POST /api/nlweb/suggest - Get tool suggestions
    */
-  handlers[`POST ${basePath}/suggest`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`POST ${basePath}/suggest`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       if (enableLogging) {
         console.log(`[NLWeb] Suggest request: ${JSON.stringify(req.body)}`);
       }
 
       // Validate request
-      if (!req.body || typeof req.body.query !== 'string') {
+      if (!req.body || typeof req.body.query !== "string") {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
-          body: { error: 'Missing or invalid query parameter' }
+          body: { error: "Missing or invalid query parameter" },
         };
       }
 
@@ -86,13 +88,13 @@ export function createNLWebAPI(
           context: req.body.context || {},
           maxSuggestions: req.body.maxSuggestions || 3,
           minScore: req.body.minScore || 30,
-          includeReasoning: req.body.includeReasoning || false
+          includeReasoning: req.body.includeReasoning || false,
         },
         metadata: {
-          requestId: req.headers['x-request-id'] || generateRequestId(),
+          requestId: req.headers["x-request-id"] || generateRequestId(),
           timestamp: Date.now(),
-          source: req.headers['user-agent'] || 'unknown'
-        }
+          source: req.headers["user-agent"] || "unknown",
+        },
       };
 
       // Get suggestions
@@ -101,18 +103,17 @@ export function createNLWebAPI(
       return {
         status: 200,
         headers: getCORSHeaders(enableCORS),
-        body: response
+        body: response,
       };
-
     } catch (error) {
-      console.error('[NLWeb] Suggest error:', error);
+      console.error("[NLWeb] Suggest error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -120,7 +121,9 @@ export function createNLWebAPI(
   /**
    * GET /api/nlweb/status - Get service status
    */
-  handlers[`GET ${basePath}/status`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`GET ${basePath}/status`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       const healthStatus = await service.getHealthStatus();
       const configuration = service.getConfiguration();
@@ -136,21 +139,20 @@ export function createNLWebAPI(
             canaryEnabled: configuration.canary.enabled,
             canaryPercentage: configuration.canary.percentage,
             rollbackEnabled: configuration.rollback.enabled,
-            performanceMonitoring: configuration.performance.enabled
+            performanceMonitoring: configuration.performance.enabled,
           },
-          tools: toolStats
-        }
+          tools: toolStats,
+        },
       };
-
     } catch (error) {
-      console.error('[NLWeb] Status error:', error);
+      console.error("[NLWeb] Status error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -158,25 +160,26 @@ export function createNLWebAPI(
   /**
    * GET /api/nlweb/health - Get health status
    */
-  handlers[`GET ${basePath}/health`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`GET ${basePath}/health`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       const healthStatus = await service.getHealthStatus();
 
       return {
-        status: healthStatus.status === 'healthy' ? 200 : 503,
+        status: healthStatus.status === "healthy" ? 200 : 503,
         headers: getCORSHeaders(enableCORS),
-        body: healthStatus
+        body: healthStatus,
       };
-
     } catch (error) {
-      console.error('[NLWeb] Health error:', error);
+      console.error("[NLWeb] Health error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -184,25 +187,26 @@ export function createNLWebAPI(
   /**
    * POST /api/nlweb/health/force-check - Force health check
    */
-  handlers[`POST ${basePath}/health/force-check`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`POST ${basePath}/health/force-check`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       const healthStatus = await service.getRouter().forceHealthCheck();
 
       return {
         status: 200,
         headers: getCORSHeaders(enableCORS),
-        body: healthStatus
+        body: healthStatus,
       };
-
     } catch (error) {
-      console.error('[NLWeb] Force health check error:', error);
+      console.error("[NLWeb] Force health check error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -210,11 +214,13 @@ export function createNLWebAPI(
   /**
    * GET /api/nlweb/tools - Get registered tools
    */
-  handlers[`GET ${basePath}/tools`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`GET ${basePath}/tools`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       const category = req.query?.category;
-      const tags = req.query?.tags?.split(',');
-      
+      const tags = req.query?.tags?.split(",");
+
       let tools: NLWebTool[];
       if (category) {
         tools = service.getToolRegistry().getToolsByCategory(category);
@@ -230,19 +236,18 @@ export function createNLWebAPI(
         body: {
           tools,
           count: tools.length,
-          stats: service.getToolRegistry().getStats()
-        }
+          stats: service.getToolRegistry().getStats(),
+        },
       };
-
     } catch (error) {
-      console.error('[NLWeb] Tools error:', error);
+      console.error("[NLWeb] Tools error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -250,13 +255,15 @@ export function createNLWebAPI(
   /**
    * POST /api/nlweb/tools - Register a new tool
    */
-  handlers[`POST ${basePath}/tools`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`POST ${basePath}/tools`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       if (!req.body || !req.body.name) {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
-          body: { error: 'Missing tool name' }
+          body: { error: "Missing tool name" },
         };
       }
 
@@ -266,21 +273,20 @@ export function createNLWebAPI(
       return {
         status: 201,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          message: 'Tool registered successfully',
-          tool: tool.name
-        }
+        body: {
+          message: "Tool registered successfully",
+          tool: tool.name,
+        },
       };
-
     } catch (error) {
-      console.error('[NLWeb] Register tool error:', error);
+      console.error("[NLWeb] Register tool error:", error);
       return {
         status: 400,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Invalid tool definition',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Invalid tool definition",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -288,14 +294,16 @@ export function createNLWebAPI(
   /**
    * DELETE /api/nlweb/tools/:name - Unregister a tool
    */
-  handlers[`DELETE ${basePath}/tools/:name`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`DELETE ${basePath}/tools/:name`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
-      const toolName = req.url.split('/').pop();
+      const toolName = req.url.split("/").pop();
       if (!toolName) {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
-          body: { error: 'Missing tool name' }
+          body: { error: "Missing tool name" },
         };
       }
 
@@ -304,21 +312,20 @@ export function createNLWebAPI(
       return {
         status: 200,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          message: 'Tool unregistered successfully',
-          tool: toolName
-        }
+        body: {
+          message: "Tool unregistered successfully",
+          tool: toolName,
+        },
       };
-
     } catch (error) {
-      console.error('[NLWeb] Unregister tool error:', error);
+      console.error("[NLWeb] Unregister tool error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -326,25 +333,26 @@ export function createNLWebAPI(
   /**
    * GET /api/nlweb/performance - Get performance statistics
    */
-  handlers[`GET ${basePath}/performance`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`GET ${basePath}/performance`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
       const performanceStats = service.getRouter().getPerformanceStats();
 
       return {
         status: 200,
         headers: getCORSHeaders(enableCORS),
-        body: performanceStats
+        body: performanceStats,
       };
-
     } catch (error) {
-      console.error('[NLWeb] Performance error:', error);
+      console.error("[NLWeb] Performance error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -352,42 +360,43 @@ export function createNLWebAPI(
   /**
    * POST /api/nlweb/rollback - Enable/disable emergency rollback
    */
-  handlers[`POST ${basePath}/rollback`] = async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
+  handlers[`POST ${basePath}/rollback`] = async (
+    req: NLWebAPIRequest,
+  ): Promise<NLWebAPIResponse> => {
     try {
-      if (!req.body || typeof req.body.enable !== 'boolean') {
+      if (!req.body || typeof req.body.enable !== "boolean") {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
-          body: { error: 'Missing or invalid enable parameter' }
+          body: { error: "Missing or invalid enable parameter" },
         };
       }
 
       const config = service.getConfiguration();
       config.rollback.enabled = req.body.enable;
-      config.rollback.reason = req.body.reason || 'Manual rollback';
+      config.rollback.reason = req.body.reason || "Manual rollback";
 
       await service.updateConfiguration(config);
 
       return {
         status: 200,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          message: `Rollback ${req.body.enable ? 'enabled' : 'disabled'}`,
+        body: {
+          message: `Rollback ${req.body.enable ? "enabled" : "disabled"}`,
           rollbackEnabled: req.body.enable,
           reason: config.rollback.reason,
-          timestamp: Date.now()
-        }
+          timestamp: Date.now(),
+        },
       };
-
     } catch (error) {
-      console.error('[NLWeb] Rollback error:', error);
+      console.error("[NLWeb] Rollback error:", error);
       return {
         status: 500,
         headers: getCORSHeaders(enableCORS),
-        body: { 
-          error: 'Internal server error',
-          message: error instanceof Error ? error.message : String(error)
-        }
+        body: {
+          error: "Internal server error",
+          message: error instanceof Error ? error.message : String(error),
+        },
       };
     }
   };
@@ -400,14 +409,14 @@ export function createNLWebAPI(
  */
 function getCORSHeaders(enableCORS: boolean): Record<string, string> {
   if (!enableCORS) {
-    return { 'Content-Type': 'application/json' };
+    return { "Content-Type": "application/json" };
   }
 
   return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Request-ID'
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Request-ID",
   };
 }
 

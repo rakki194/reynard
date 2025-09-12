@@ -1,12 +1,24 @@
 // Cluster animation composable for SolidJS
 import { createSignal, createMemo } from "solid-js";
-import type { ClusterAnimation, PointAnimation, EasingType, EmbeddingPoint } from "../types";
+import type {
+  ClusterAnimation,
+  PointAnimation,
+  EasingType,
+  EmbeddingPoint,
+} from "../types";
 import { applyEasing } from "../utils/easing";
-import { createClusterPointAnimations, interpolateClusterPoint } from "../utils/clusterInterpolation";
+import {
+  createClusterPointAnimations,
+  interpolateClusterPoint,
+} from "../utils/clusterInterpolation";
 
 export function useClusterAnimations() {
-  const [clusterAnimations, setClusterAnimations] = createSignal<ClusterAnimation[]>([]);
-  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(null);
+  const [clusterAnimations, setClusterAnimations] = createSignal<
+    ClusterAnimation[]
+  >([]);
+  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(
+    null,
+  );
 
   const isAnimationsDisabled = createMemo(() => false);
 
@@ -25,7 +37,11 @@ export function useClusterAnimations() {
       return Promise.resolve();
     }
 
-    const animations = createClusterPointAnimations(points, center, expansionRadius);
+    const animations = createClusterPointAnimations(
+      points,
+      center,
+      expansionRadius,
+    );
 
     const clusterAnimation: ClusterAnimation = {
       clusterId,

@@ -1,12 +1,16 @@
 /**
  * Modality Utils Test Suite
- * 
+ *
  * Tests for the modality utility functions including file validation,
  * modality management, and type detection.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { BaseModality, ModalityManager, detectFileModality } from "../modalityUtils";
+import {
+  BaseModality,
+  ModalityManager,
+  detectFileModality,
+} from "../modalityUtils";
 
 // Mock modality classes for testing
 class MockImageModality extends BaseModality {
@@ -58,7 +62,7 @@ describe("BaseModality", () => {
         new File(["content"], "test.webp", { type: "image/webp" }),
       ];
 
-      supportedFiles.forEach(file => {
+      supportedFiles.forEach((file) => {
         expect(imageModality.validateFile(file)).toBe(true);
       });
     });
@@ -70,7 +74,7 @@ describe("BaseModality", () => {
         new File(["content"], "test.mp4", { type: "video/mp4" }),
       ];
 
-      unsupportedFiles.forEach(file => {
+      unsupportedFiles.forEach((file) => {
         expect(imageModality.validateFile(file)).toBe(false);
       });
     });
@@ -82,13 +86,15 @@ describe("BaseModality", () => {
         new File(["content"], "test.GIF", { type: "image/gif" }),
       ];
 
-      caseVariations.forEach(file => {
+      caseVariations.forEach((file) => {
         expect(imageModality.validateFile(file)).toBe(true);
       });
     });
 
     it("should handle files without extensions", () => {
-      const fileWithoutExtension = new File(["content"], "test", { type: "image/jpeg" });
+      const fileWithoutExtension = new File(["content"], "test", {
+        type: "image/jpeg",
+      });
       expect(imageModality.validateFile(fileWithoutExtension)).toBe(false);
     });
   });
@@ -96,7 +102,13 @@ describe("BaseModality", () => {
   describe("File Type Support", () => {
     it("should return supported file types", () => {
       const supportedTypes = imageModality.getSupportedFileTypes();
-      expect(supportedTypes).toEqual([".jpg", ".jpeg", ".png", ".gif", ".webp"]);
+      expect(supportedTypes).toEqual([
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+      ]);
     });
 
     it("should return supported MIME types", () => {
@@ -227,25 +239,33 @@ describe("ModalityManager", () => {
     });
 
     it("should detect image files", () => {
-      const imageFile = new File(["content"], "test.jpg", { type: "image/jpeg" });
+      const imageFile = new File(["content"], "test.jpg", {
+        type: "image/jpeg",
+      });
       const detectedModality = manager.detectFileModality(imageFile);
       expect(detectedModality).toBe(imageModality);
     });
 
     it("should detect video files", () => {
-      const videoFile = new File(["content"], "test.mp4", { type: "video/mp4" });
+      const videoFile = new File(["content"], "test.mp4", {
+        type: "video/mp4",
+      });
       const detectedModality = manager.detectFileModality(videoFile);
       expect(detectedModality).toBe(videoModality);
     });
 
     it("should detect audio files", () => {
-      const audioFile = new File(["content"], "test.mp3", { type: "audio/mpeg" });
+      const audioFile = new File(["content"], "test.mp3", {
+        type: "audio/mpeg",
+      });
       const detectedModality = manager.detectFileModality(audioFile);
       expect(detectedModality).toBe(audioModality);
     });
 
     it("should return null for unsupported files", () => {
-      const unsupportedFile = new File(["content"], "test.txt", { type: "text/plain" });
+      const unsupportedFile = new File(["content"], "test.txt", {
+        type: "text/plain",
+      });
       const detectedModality = manager.detectFileModality(unsupportedFile);
       expect(detectedModality).toBe(null);
     });
@@ -267,7 +287,13 @@ describe("ModalityManager", () => {
 
     it("should get supported extensions for specific modality", () => {
       const imageExtensions = manager.getSupportedExtensions("image");
-      expect(imageExtensions).toEqual([".jpg", ".jpeg", ".png", ".gif", ".webp"]);
+      expect(imageExtensions).toEqual([
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+      ]);
     });
 
     it("should return empty array for non-existent modality", () => {
@@ -294,13 +320,17 @@ describe("detectFileModality", () => {
   });
 
   it("should return null for unsupported files", () => {
-    const unsupportedFile = new File(["content"], "test.txt", { type: "text/plain" });
+    const unsupportedFile = new File(["content"], "test.txt", {
+      type: "text/plain",
+    });
     const detectedModality = detectFileModality(unsupportedFile, manager);
     expect(detectedModality).toBe(null);
   });
 
   it("should handle files without extensions", () => {
-    const fileWithoutExtension = new File(["content"], "test", { type: "image/jpeg" });
+    const fileWithoutExtension = new File(["content"], "test", {
+      type: "image/jpeg",
+    });
     const detectedModality = detectFileModality(fileWithoutExtension, manager);
     expect(detectedModality).toBe(null);
   });

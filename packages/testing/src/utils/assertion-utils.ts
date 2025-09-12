@@ -198,9 +198,9 @@ export function expectElementToHaveTextContent(element: Element, text: string) {
  */
 export function expectElementToBeVisible(element: Element) {
   const style = window.getComputedStyle(element);
-  expect(style.display).not.toBe('none');
-  expect(style.visibility).not.toBe('hidden');
-  expect(style.opacity).not.toBe('0');
+  expect(style.display).not.toBe("none");
+  expect(style.visibility).not.toBe("hidden");
+  expect(style.opacity).not.toBe("0");
 }
 
 /**
@@ -208,7 +208,7 @@ export function expectElementToBeVisible(element: Element) {
  */
 export function expectElementToBeHidden(element: Element) {
   const style = window.getComputedStyle(element);
-  expect(style.display).toBe('none');
+  expect(style.display).toBe("none");
 }
 
 /**
@@ -306,7 +306,7 @@ export function expectElementToBePartiallyChecked(element: Element) {
  * Assert that a DOM element has a specific role
  */
 export function expectElementToHaveRole(element: Element, role: string) {
-  expect(element.getAttribute('role')).toBe(role);
+  expect(element.getAttribute("role")).toBe(role);
 }
 
 /**
@@ -317,7 +317,7 @@ export function expectElementToHaveAccessibleName(
   name: string,
 ) {
   // For happy-dom, we'll check aria-label or text content as fallback
-  const ariaLabel = element.getAttribute('aria-label');
+  const ariaLabel = element.getAttribute("aria-label");
   const textContent = element.textContent?.trim();
   expect(ariaLabel || textContent).toBe(name);
 }
@@ -330,7 +330,7 @@ export function expectElementToHaveAccessibleDescription(
   description: string,
 ) {
   // For happy-dom, we'll check aria-describedby or title attribute
-  const ariaDescribedBy = element.getAttribute('aria-describedby');
-  const title = element.getAttribute('title');
+  const ariaDescribedBy = element.getAttribute("aria-describedby");
+  const title = element.getAttribute("title");
   expect(ariaDescribedBy || title).toBe(description);
 }

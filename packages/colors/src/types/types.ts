@@ -109,5 +109,5 @@ export type FunctionalityId =
 
 // Media item interfaces have been moved to their respective packages:
 // - AudioItem -> reynard-audio
-// - VideoItem -> reynard-video  
+// - VideoItem -> reynard-video
 // - ImageItem -> reynard-image

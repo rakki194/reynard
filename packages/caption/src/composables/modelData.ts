@@ -1,6 +1,6 @@
 /**
  * Model Data Utilities
- * 
+ *
  * Utility functions for managing model information and system statistics.
  * Extracted to keep composables under the 140-line limit.
  */
@@ -53,13 +53,17 @@ export const createDefaultModels = (loadedModels: string[]): ModelInfo[] => [
  * Extracts loaded models from system statistics
  */
 export const extractLoadedModels = (systemStats: any): string[] => {
-  return Array.isArray(systemStats.loadedModels) ? systemStats.loadedModels : [];
+  return Array.isArray(systemStats.loadedModels)
+    ? systemStats.loadedModels
+    : [];
 };
 
 /**
  * Creates model status mapping from loaded models
  */
-export const createModelStatusMap = (loadedModels: string[]): Record<string, boolean> => {
+export const createModelStatusMap = (
+  loadedModels: string[],
+): Record<string, boolean> => {
   return loadedModels.reduce((acc: Record<string, boolean>, model: string) => {
     acc[model] = true;
     return acc;

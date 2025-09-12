@@ -1,6 +1,6 @@
 /**
  * Reynard Audio Package
- * 
+ *
  * Audio processing and playback components for Reynard applications.
  */
 

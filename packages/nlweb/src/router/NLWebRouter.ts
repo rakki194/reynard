@@ -1,11 +1,11 @@
 /**
  * NLWeb Router
- * 
+ *
  * Intelligent tool suggestion and routing system that analyzes natural language queries
  * and suggests appropriate tools with parameters.
  */
 
-import { 
+import {
   NLWebRouter as INLWebRouter,
   NLWebSuggestionRequest,
   NLWebSuggestionResponse,
@@ -15,18 +15,24 @@ import {
   NLWebContext,
   NLWebTool,
   NLWebEvent,
-  NLWebEventEmitter
-} from '../types/index.js';
-import { NLWebToolRegistry } from './NLWebToolRegistry.js';
+  NLWebEventEmitter,
+} from "../types/index.js";
+import { NLWebToolRegistry } from "./NLWebToolRegistry.js";
 
 export class NLWebRouter implements INLWebRouter {
   private toolRegistry: NLWebToolRegistry;
   private performanceStats: NLWebPerformanceStats;
-  private cache = new Map<string, { response: NLWebSuggestionResponse; timestamp: number }>();
+  private cache = new Map<
+    string,
+    { response: NLWebSuggestionResponse; timestamp: number }
+  >();
   private eventEmitter: NLWebEventEmitter;
   private initialized = false;
 
-  constructor(toolRegistry: NLWebToolRegistry, eventEmitter: NLWebEventEmitter) {
+  constructor(
+    toolRegistry: NLWebToolRegistry,
+    eventEmitter: NLWebEventEmitter,
+  ) {
     this.toolRegistry = toolRegistry;
     this.eventEmitter = eventEmitter;
     this.performanceStats = {
@@ -38,7 +44,7 @@ export class NLWebRouter implements INLWebRouter {
       cacheHits: 0,
       cacheMisses: 0,
       cacheSize: 0,
-      maxCacheSize: 1000
+      maxCacheSize: 1000,
     };
   }
 
@@ -60,17 +66,19 @@ export class NLWebRouter implements INLWebRouter {
       cacheHits: 0,
       cacheMisses: 0,
       cacheSize: 0,
-      maxCacheSize: 1000
+      maxCacheSize: 1000,
     };
 
     this.initialized = true;
-    this.emitEvent('health_check', { status: 'initialized' });
+    this.emitEvent("health_check", { status: "initialized" });
   }
 
   /**
    * Get tool suggestions for a query
    */
-  async suggest(request: NLWebSuggestionRequest): Promise<NLWebSuggestionResponse> {
+  async suggest(
+    request: NLWebSuggestionRequest,
+  ): Promise<NLWebSuggestionResponse> {
     const startTime = Date.now();
     const requestId = request.metadata?.requestId || this.generateRequestId();
 
@@ -78,23 +86,26 @@ export class NLWebRouter implements INLWebRouter {
       // Check cache first
       const cacheKey = this.generateCacheKey(request);
       const cached = this.cache.get(cacheKey);
-      
+
       if (cached && this.isCacheValid(cached.timestamp)) {
         this.performanceStats.cacheHits++;
-        this.emitEvent('cache_hit', { key: cacheKey, age: Date.now() - cached.timestamp });
-        
+        this.emitEvent("cache_hit", {
+          key: cacheKey,
+          age: Date.now() - cached.timestamp,
+        });
+
         return {
           ...cached.response,
           cacheInfo: {
             hit: true,
             key: cacheKey,
-            age: Date.now() - cached.timestamp
-          }
+            age: Date.now() - cached.timestamp,
+          },
         };
       }
 
       this.performanceStats.cacheMisses++;
-      this.emitEvent('cache_miss', { key: cacheKey });
+      this.emitEvent("cache_miss", { key: cacheKey });
 
       // Process the query
       const suggestions = await this.processQuery(request);
@@ -107,8 +118,8 @@ export class NLWebRouter implements INLWebRouter {
         metadata: {
           requestId,
           timestamp: Date.now(),
-          version: '1.0.0'
-        }
+          version: "1.0.0",
+        },
       };
 
       // Cache the response
@@ -119,19 +130,22 @@ export class NLWebRouter implements INLWebRouter {
       this.updatePerformanceStats(processingTime);
 
       // Emit event
-      this.emitEvent('tool_suggested', { 
-        query: request.query.text, 
+      this.emitEvent("tool_suggested", {
+        query: request.query.text,
         suggestionsCount: suggestions.length,
-        processingTime 
+        processingTime,
       });
 
       return response;
-
     } catch (error) {
       const processingTime = Date.now() - startTime;
-      this.emitEvent('error', { error: error instanceof Error ? error.message : String(error) });
-      
-      throw new Error(`Failed to process query: ${error instanceof Error ? error.message : String(error)}`);
+      this.emitEvent("error", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+
+      throw new Error(
+        `Failed to process query: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -140,16 +154,18 @@ export class NLWebRouter implements INLWebRouter {
    */
   async getHealthStatus(): Promise<NLWebHealthStatus> {
     const stats = this.getPerformanceStats();
-    
+
     // Determine health status based on performance
-    let status: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    
-    if (stats.p95ProcessingTime > 2000) { // 2 seconds
-      status = 'degraded';
+    let status: "healthy" | "degraded" | "unhealthy" = "healthy";
+
+    if (stats.p95ProcessingTime > 2000) {
+      // 2 seconds
+      status = "degraded";
     }
-    
-    if (stats.p95ProcessingTime > 5000 || stats.cacheHitRate < 10) { // 5 seconds or very low cache hit rate
-      status = 'unhealthy';
+
+    if (stats.p95ProcessingTime > 5000 || stats.cacheHitRate < 10) {
+      // 5 seconds or very low cache hit rate
+      status = "unhealthy";
     }
 
     return {
@@ -161,8 +177,8 @@ export class NLWebRouter implements INLWebRouter {
         enabled: true,
         canaryEnabled: false,
         rollbackEnabled: false,
-        performanceMonitoring: true
-      }
+        performanceMonitoring: true,
+      },
     };
   }
 
@@ -186,28 +202,34 @@ export class NLWebRouter implements INLWebRouter {
   async shutdown(): Promise<void> {
     this.cache.clear();
     this.initialized = false;
-    this.emitEvent('health_check', { status: 'shutdown' });
+    this.emitEvent("health_check", { status: "shutdown" });
   }
 
   /**
    * Process a query and generate tool suggestions
    */
-  private async processQuery(request: NLWebSuggestionRequest): Promise<NLWebSuggestion[]> {
+  private async processQuery(
+    request: NLWebSuggestionRequest,
+  ): Promise<NLWebSuggestion[]> {
     const { query } = request;
     const maxSuggestions = query.maxSuggestions || 3;
     const minScore = query.minScore || 30;
 
     // Get contextual tools
     const contextualTools = this.toolRegistry.getContextualTools(query.context);
-    
+
     // Score tools against the query
-    const scoredTools = await this.scoreTools(query.text, contextualTools, query.context);
-    
+    const scoredTools = await this.scoreTools(
+      query.text,
+      contextualTools,
+      query.context,
+    );
+
     // Filter by minimum score and limit results
     const suggestions = scoredTools
-      .filter(score => score.score >= minScore)
+      .filter((score) => score.score >= minScore)
       .slice(0, maxSuggestions)
-      .map(score => this.createSuggestion(score, query));
+      .map((score) => this.createSuggestion(score, query));
 
     return suggestions;
   }
@@ -216,12 +238,16 @@ export class NLWebRouter implements INLWebRouter {
    * Score tools against a query
    */
   private async scoreTools(
-    query: string, 
-    tools: NLWebTool[], 
-    context: NLWebContext
+    query: string,
+    tools: NLWebTool[],
+    context: NLWebContext,
   ): Promise<Array<{ tool: NLWebTool; score: number; reasoning: string }>> {
     const normalizedQuery = query.toLowerCase();
-    const results: Array<{ tool: NLWebTool; score: number; reasoning: string }> = [];
+    const results: Array<{
+      tool: NLWebTool;
+      score: number;
+      reasoning: string;
+    }> = [];
 
     for (const tool of tools) {
       let score = 0;
@@ -234,39 +260,45 @@ export class NLWebRouter implements INLWebRouter {
       // Name matching
       if (tool.name.toLowerCase().includes(normalizedQuery)) {
         score += 40;
-        reasoning.push('Tool name matches query');
+        reasoning.push("Tool name matches query");
       }
 
       // Description matching
       const descriptionWords = tool.description.toLowerCase().split(/\s+/);
       const queryWords = normalizedQuery.split(/\s+/);
-      const matchingWords = queryWords.filter(word => 
-        descriptionWords.some(descWord => descWord.includes(word) || word.includes(descWord))
+      const matchingWords = queryWords.filter((word) =>
+        descriptionWords.some(
+          (descWord) => descWord.includes(word) || word.includes(descWord),
+        ),
       );
-      
+
       if (matchingWords.length > 0) {
         score += matchingWords.length * 10;
-        reasoning.push(`Description matches: ${matchingWords.join(', ')}`);
+        reasoning.push(`Description matches: ${matchingWords.join(", ")}`);
       }
 
       // Tag matching
-      const matchingTags = tool.tags.filter(tag => 
-        normalizedQuery.includes(tag.toLowerCase()) || tag.toLowerCase().includes(normalizedQuery)
+      const matchingTags = tool.tags.filter(
+        (tag) =>
+          normalizedQuery.includes(tag.toLowerCase()) ||
+          tag.toLowerCase().includes(normalizedQuery),
       );
-      
+
       if (matchingTags.length > 0) {
         score += matchingTags.length * 15;
-        reasoning.push(`Tags match: ${matchingTags.join(', ')}`);
+        reasoning.push(`Tags match: ${matchingTags.join(", ")}`);
       }
 
       // Example matching
-      const matchingExamples = tool.examples.filter(example => 
-        example.toLowerCase().includes(normalizedQuery) || normalizedQuery.includes(example.toLowerCase())
+      const matchingExamples = tool.examples.filter(
+        (example) =>
+          example.toLowerCase().includes(normalizedQuery) ||
+          normalizedQuery.includes(example.toLowerCase()),
       );
-      
+
       if (matchingExamples.length > 0) {
         score += matchingExamples.length * 20;
-        reasoning.push(`Examples match: ${matchingExamples.join(', ')}`);
+        reasoning.push(`Examples match: ${matchingExamples.join(", ")}`);
       }
 
       // Context-based scoring
@@ -278,7 +310,7 @@ export class NLWebRouter implements INLWebRouter {
       results.push({
         tool,
         score,
-        reasoning: reasoning.join('; ')
+        reasoning: reasoning.join("; "),
       });
     }
 
@@ -290,39 +322,42 @@ export class NLWebRouter implements INLWebRouter {
    * Score contextual relevance of a tool
    */
   private scoreContextualRelevance(
-    tool: NLWebTool, 
-    context: NLWebContext, 
-    reasoning: string[]
+    tool: NLWebTool,
+    context: NLWebContext,
+    reasoning: string[],
   ): number {
     let score = 0;
 
     // Path-based scoring
-    if (context.currentPath && tool.tags.includes('file-operations')) {
+    if (context.currentPath && tool.tags.includes("file-operations")) {
       score += 15;
-      reasoning.push('Context: file operations in current path');
+      reasoning.push("Context: file operations in current path");
     }
 
     // Git-based scoring
-    if (context.gitStatus?.isRepository && tool.tags.includes('git')) {
+    if (context.gitStatus?.isRepository && tool.tags.includes("git")) {
       score += 20;
-      reasoning.push('Context: git repository detected');
-      
-      if (context.gitStatus.isDirty && tool.name.includes('commit')) {
+      reasoning.push("Context: git repository detected");
+
+      if (context.gitStatus.isDirty && tool.name.includes("commit")) {
         score += 10;
-        reasoning.push('Context: repository has uncommitted changes');
+        reasoning.push("Context: repository has uncommitted changes");
       }
     }
 
     // Selection-based scoring
     if (context.selectedItems && context.selectedItems.length > 0) {
-      if (tool.tags.includes('batch-operations')) {
+      if (tool.tags.includes("batch-operations")) {
         score += 15;
-        reasoning.push('Context: batch operations on selected items');
+        reasoning.push("Context: batch operations on selected items");
       }
-      
-      if (tool.tags.includes('single-item') && context.selectedItems.length === 1) {
+
+      if (
+        tool.tags.includes("single-item") &&
+        context.selectedItems.length === 1
+      ) {
         score += 10;
-        reasoning.push('Context: single item selected');
+        reasoning.push("Context: single item selected");
       }
     }
 
@@ -331,7 +366,7 @@ export class NLWebRouter implements INLWebRouter {
       const preferredCategory = context.userPreferences.preferredCategory;
       if (preferredCategory && tool.category === preferredCategory) {
         score += 10;
-        reasoning.push('Context: matches user preferred category');
+        reasoning.push("Context: matches user preferred category");
       }
     }
 
@@ -343,13 +378,13 @@ export class NLWebRouter implements INLWebRouter {
    */
   private createSuggestion(
     scoredTool: { tool: NLWebTool; score: number; reasoning: string },
-    query: { context: NLWebContext; includeReasoning?: boolean }
+    query: { context: NLWebContext; includeReasoning?: boolean },
   ): NLWebSuggestion {
     const { tool, score, reasoning } = scoredTool;
-    
+
     // Generate suggested parameters based on context
     const parameters = this.generateSuggestedParameters(tool, query.context);
-    
+
     // Generate parameter hints
     const parameterHints = this.generateParameterHints(tool, query.context);
 
@@ -357,27 +392,30 @@ export class NLWebRouter implements INLWebRouter {
       tool,
       score,
       parameters,
-      reasoning: query.includeReasoning ? reasoning : '',
-      parameterHints
+      reasoning: query.includeReasoning ? reasoning : "",
+      parameterHints,
     };
   }
 
   /**
    * Generate suggested parameters for a tool
    */
-  private generateSuggestedParameters(tool: NLWebTool, context: NLWebContext): Record<string, any> {
+  private generateSuggestedParameters(
+    tool: NLWebTool,
+    context: NLWebContext,
+  ): Record<string, any> {
     const parameters: Record<string, any> = {};
 
     for (const param of tool.parameters) {
       // Use context to suggest parameter values
-      if (param.name === 'path' && context.currentPath) {
+      if (param.name === "path" && context.currentPath) {
         parameters[param.name] = context.currentPath;
-      } else if (param.name === 'dataset_path' && context.currentPath) {
+      } else if (param.name === "dataset_path" && context.currentPath) {
         parameters[param.name] = context.currentPath;
-      } else if (param.name === 'files' && context.selectedItems) {
+      } else if (param.name === "files" && context.selectedItems) {
         parameters[param.name] = context.selectedItems;
-      } else if (param.name === 'message' && tool.name.includes('commit')) {
-        parameters[param.name] = 'Auto-generated commit message';
+      } else if (param.name === "message" && tool.name.includes("commit")) {
+        parameters[param.name] = "Auto-generated commit message";
       } else if (param.default !== undefined) {
         parameters[param.name] = param.default;
       }
@@ -389,27 +427,30 @@ export class NLWebRouter implements INLWebRouter {
   /**
    * Generate parameter hints for a tool
    */
-  private generateParameterHints(tool: NLWebTool, context: NLWebContext): Record<string, any> {
+  private generateParameterHints(
+    tool: NLWebTool,
+    context: NLWebContext,
+  ): Record<string, any> {
     const hints: Record<string, any> = {};
 
     for (const param of tool.parameters) {
-      if (param.name === 'path' && context.currentPath) {
+      if (param.name === "path" && context.currentPath) {
         hints[param.name] = {
           suggested: context.currentPath,
-          type: 'path',
-          description: 'Current working directory'
+          type: "path",
+          description: "Current working directory",
         };
-      } else if (param.name === 'files' && context.selectedItems) {
+      } else if (param.name === "files" && context.selectedItems) {
         hints[param.name] = {
           suggested: context.selectedItems,
-          type: 'array',
-          description: 'Currently selected items'
+          type: "array",
+          description: "Currently selected items",
         };
       } else if (param.constraints) {
         hints[param.name] = {
           constraints: param.constraints,
           type: param.type,
-          description: param.description
+          description: param.description,
         };
       }
     }
@@ -422,7 +463,10 @@ export class NLWebRouter implements INLWebRouter {
    */
   private generateCacheKey(request: NLWebSuggestionRequest): string {
     const query = request.query.text.toLowerCase().trim();
-    const context = JSON.stringify(request.query.context, Object.keys(request.query.context).sort());
+    const context = JSON.stringify(
+      request.query.context,
+      Object.keys(request.query.context).sort(),
+    );
     return `${query}|${context}`;
   }
 
@@ -444,13 +488,16 @@ export class NLWebRouter implements INLWebRouter {
         this.cache.delete(key);
       }
     }
-    
+
     // Limit cache size
     if (this.cache.size > this.performanceStats.maxCacheSize) {
       const entries = Array.from(this.cache.entries());
       entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-      
-      const toDelete = entries.slice(0, entries.length - this.performanceStats.maxCacheSize);
+
+      const toDelete = entries.slice(
+        0,
+        entries.length - this.performanceStats.maxCacheSize,
+      );
       for (const [key] of toDelete) {
         this.cache.delete(key);
       }
@@ -463,14 +510,22 @@ export class NLWebRouter implements INLWebRouter {
   private updatePerformanceStats(processingTime: number): void {
     this.performanceStats.totalRequests++;
     this.performanceStats.cacheSize = this.cache.size;
-    
+
     // Update average processing time
-    const totalTime = this.performanceStats.avgProcessingTime * (this.performanceStats.totalRequests - 1) + processingTime;
-    this.performanceStats.avgProcessingTime = totalTime / this.performanceStats.totalRequests;
-    
+    const totalTime =
+      this.performanceStats.avgProcessingTime *
+        (this.performanceStats.totalRequests - 1) +
+      processingTime;
+    this.performanceStats.avgProcessingTime =
+      totalTime / this.performanceStats.totalRequests;
+
     // Update cache hit rate
-    const totalCacheOps = this.performanceStats.cacheHits + this.performanceStats.cacheMisses;
-    this.performanceStats.cacheHitRate = totalCacheOps > 0 ? (this.performanceStats.cacheHits / totalCacheOps) * 100 : 0;
+    const totalCacheOps =
+      this.performanceStats.cacheHits + this.performanceStats.cacheMisses;
+    this.performanceStats.cacheHitRate =
+      totalCacheOps > 0
+        ? (this.performanceStats.cacheHits / totalCacheOps) * 100
+        : 0;
   }
 
   /**
@@ -483,11 +538,11 @@ export class NLWebRouter implements INLWebRouter {
   /**
    * Emit an event
    */
-  private emitEvent(type: NLWebEvent['type'], data: any): void {
+  private emitEvent(type: NLWebEvent["type"], data: any): void {
     const event: NLWebEvent = {
       type,
       timestamp: Date.now(),
-      data
+      data,
     };
     this.eventEmitter.emit(event);
   }

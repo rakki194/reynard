@@ -36,7 +36,9 @@ export class ReynardDocsCLI {
 
       // Load configuration
       console.log(`📋 Loading configuration from: ${options.configPath}`);
-      const config = await this.configLoader.loadConfiguration(options.configPath);
+      const config = await this.configLoader.loadConfiguration(
+        options.configPath,
+      );
 
       // Validate configuration
       const validation = validateConfig(config);

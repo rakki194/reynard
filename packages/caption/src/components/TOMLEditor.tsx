@@ -1,9 +1,9 @@
 /**
  * TOML Editor Component
- * 
+ *
  * A specialized editor for TOML format with syntax highlighting,
  * validation, and Monaco integration. Built for the Reynard caption system.
- * 
+ *
  * Features:
  * - Real-time TOML validation
  * - Syntax highlighting for TOML format
@@ -12,7 +12,14 @@
  * - Integration with Reynard's Monaco package
  */
 
-import { Component, createSignal, createMemo, onMount, Show, For } from "solid-js";
+import {
+  Component,
+  createSignal,
+  createMemo,
+  onMount,
+  Show,
+  For,
+} from "solid-js";
 import { MonacoEditor } from "reynard-monaco";
 
 interface ValidationMarker {
@@ -34,27 +41,37 @@ export interface TOMLEditorProps {
   /** Whether the editor is read-only */
   readOnly?: boolean;
   /** Custom theme */
-  theme?: "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut" | "high-contrast-black" | "high-contrast-inverse";
+  theme?:
+    | "light"
+    | "dark"
+    | "gray"
+    | "banana"
+    | "strawberry"
+    | "peanut"
+    | "high-contrast-black"
+    | "high-contrast-inverse";
   /** Additional CSS class */
   className?: string;
 }
 
 export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
   const [content, setContent] = createSignal(props.content);
-  const [validationMarkers, setValidationMarkers] = createSignal<ValidationMarker[]>([]);
-  
+  const [validationMarkers, setValidationMarkers] = createSignal<
+    ValidationMarker[]
+  >([]);
+
   // Real-time validation using Monaco's built-in INI validation (TOML uses INI language)
   const isValid = createMemo(() => {
     const markers = validationMarkers();
     return markers.length === 0;
   });
-  
+
   // Handle validation markers from Monaco
   const handleValidation = (markers: ValidationMarker[]) => {
     setValidationMarkers(markers);
     props.onValidationChange?.(markers.length === 0, markers);
   };
-  
+
   // Handle content changes
   const handleContentChange = (newContent: string | undefined) => {
     if (newContent !== undefined) {
@@ -62,53 +79,53 @@ export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
       props.onChange(newContent);
     }
   };
-  
+
   // Basic TOML formatting (indentation and spacing)
   const formatTOML = (tomlContent: string): string => {
-    const lines = tomlContent.split('\n');
+    const lines = tomlContent.split("\n");
     const formatted: string[] = [];
     let currentIndent = 0;
-    
+
     for (const line of lines) {
       const trimmed = line.trim();
-      
+
       // Skip empty lines
       if (!trimmed) {
-        formatted.push('');
+        formatted.push("");
         continue;
       }
-      
+
       // Handle section headers
-      if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+      if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
         currentIndent = 0;
         formatted.push(trimmed);
         continue;
       }
-      
+
       // Handle key-value pairs
-      if (trimmed.includes('=')) {
-        const [key, ...valueParts] = trimmed.split('=');
-        const value = valueParts.join('=').trim();
-        
+      if (trimmed.includes("=")) {
+        const [key, ...valueParts] = trimmed.split("=");
+        const value = valueParts.join("=").trim();
+
         // Format key-value pair with proper spacing
         const formattedLine = `${key.trim()} = ${value}`;
-        formatted.push('  '.repeat(currentIndent) + formattedLine);
+        formatted.push("  ".repeat(currentIndent) + formattedLine);
         continue;
       }
-      
+
       // Handle comments
-      if (trimmed.startsWith('#')) {
-        formatted.push('  '.repeat(currentIndent) + trimmed);
+      if (trimmed.startsWith("#")) {
+        formatted.push("  ".repeat(currentIndent) + trimmed);
         continue;
       }
-      
+
       // Default: preserve original indentation
       formatted.push(line);
     }
-    
-    return formatted.join('\n');
+
+    return formatted.join("\n");
   };
-  
+
   // Handle keyboard shortcuts
   const handleKeyDown = (e: KeyboardEvent) => {
     // Shift+Enter for formatting
@@ -119,32 +136,36 @@ export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
       props.onChange(formatted);
     }
   };
-  
+
   // Update content when props change
   onMount(() => {
     if (props.content !== content()) {
       setContent(props.content);
     }
   });
-  
+
   return (
-    <div class={`toml-editor ${props.className || ""}`} onKeyDown={handleKeyDown}>
+    <div
+      class={`toml-editor ${props.className || ""}`}
+      onKeyDown={handleKeyDown}
+    >
       <div class="editor-header">
         <div class="editor-info">
           <span class="editor-title">TOML Editor</span>
-          <span 
-            class="validation-status" 
-            classList={{ 
-              valid: isValid(), 
-              invalid: !isValid()
+          <span
+            class="validation-status"
+            classList={{
+              valid: isValid(),
+              invalid: !isValid(),
             }}
           >
-            {isValid() ? "Valid TOML" : 
-             `${validationMarkers().length} error${validationMarkers().length !== 1 ? 's' : ''}`}
+            {isValid()
+              ? "Valid TOML"
+              : `${validationMarkers().length} error${validationMarkers().length !== 1 ? "s" : ""}`}
           </span>
         </div>
         <div class="editor-actions">
-          <button 
+          <button
             type="button"
             class="format-button"
             onClick={() => {
@@ -158,7 +179,7 @@ export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
           </button>
         </div>
       </div>
-      
+
       <div class="editor-container">
         <MonacoEditor
           value={content()}
@@ -195,7 +216,7 @@ export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
           theme={props.theme || "light"}
         />
       </div>
-      
+
       {/* Error details */}
       <Show when={!isValid() && validationMarkers().length > 0}>
         <div class="error-details">

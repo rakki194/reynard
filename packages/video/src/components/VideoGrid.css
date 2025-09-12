@@ -364,21 +364,21 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 0.75rem;
   }
-  
+
   .video-thumbnail {
     height: 100px;
   }
-  
+
   .video-player-modal {
     padding: 1rem;
   }
-  
+
   .video-controls {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
-  
+
   .video-info {
     width: 100%;
   }
@@ -388,17 +388,16 @@
   .video-files-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
-  
+
   .video-thumbnail {
     height: 80px;
   }
-  
+
   .video-info {
     padding: 0.5rem;
   }
-  
+
   .video-name {
     font-size: 0.75rem;
   }
 }
-

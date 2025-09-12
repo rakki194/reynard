@@ -31,7 +31,7 @@ export function usePointTransitions() {
       },
       () => {
         animationState.setCurrentAnimation(null);
-      }
+      },
     );
   };
 

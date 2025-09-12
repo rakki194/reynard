@@ -335,7 +335,7 @@ describe("Mock Utilities", () => {
   describe("createMockIntersectionObserver", () => {
     it("should create a mock IntersectionObserver", () => {
       const MockIntersectionObserver = createMockIntersectionObserver();
-      const observer = new MockIntersectionObserver(() => { });
+      const observer = new MockIntersectionObserver(() => {});
 
       expect(observer.observe).toBeDefined();
       expect(observer.unobserve).toBeDefined();
@@ -348,14 +348,14 @@ describe("Mock Utilities", () => {
     it("should be callable as constructor", () => {
       const MockIntersectionObserver = createMockIntersectionObserver();
 
-      expect(() => new MockIntersectionObserver(() => { })).not.toThrow();
+      expect(() => new MockIntersectionObserver(() => {})).not.toThrow();
     });
   });
 
   describe("createMockResizeObserver", () => {
     it("should create a mock ResizeObserver", () => {
       const MockResizeObserver = createMockResizeObserver();
-      const observer = new MockResizeObserver(() => { });
+      const observer = new MockResizeObserver(() => {});
 
       expect(observer.observe).toBeDefined();
       expect(observer.unobserve).toBeDefined();
@@ -365,14 +365,14 @@ describe("Mock Utilities", () => {
     it("should be callable as constructor", () => {
       const MockResizeObserver = createMockResizeObserver();
 
-      expect(() => new MockResizeObserver(() => { })).not.toThrow();
+      expect(() => new MockResizeObserver(() => {})).not.toThrow();
     });
   });
 
   describe("createMockMutationObserver", () => {
     it("should create a mock MutationObserver", () => {
       const MockMutationObserver = createMockMutationObserver();
-      const observer = new MockMutationObserver(() => { });
+      const observer = new MockMutationObserver(() => {});
 
       expect(observer.observe).toBeDefined();
       expect(observer.disconnect).toBeDefined();
@@ -381,7 +381,7 @@ describe("Mock Utilities", () => {
 
     it("should return empty records from takeRecords", () => {
       const MockMutationObserver = createMockMutationObserver();
-      const observer = new MockMutationObserver(() => { });
+      const observer = new MockMutationObserver(() => {});
 
       expect(observer.takeRecords()).toEqual([]);
     });
@@ -390,7 +390,7 @@ describe("Mock Utilities", () => {
   describe("createMockPerformanceObserver", () => {
     it("should create a mock PerformanceObserver", () => {
       const MockPerformanceObserver = createMockPerformanceObserver();
-      const observer = new MockPerformanceObserver(() => { });
+      const observer = new MockPerformanceObserver(() => {});
 
       expect(observer.observe).toBeDefined();
       expect(observer.disconnect).toBeDefined();
@@ -399,7 +399,7 @@ describe("Mock Utilities", () => {
 
     it("should return empty records from takeRecords", () => {
       const MockPerformanceObserver = createMockPerformanceObserver();
-      const observer = new MockPerformanceObserver(() => { });
+      const observer = new MockPerformanceObserver(() => {});
 
       expect(observer.takeRecords()).toEqual([]);
     });
@@ -489,7 +489,7 @@ describe("Mock Utilities", () => {
     it("should return a number", () => {
       const mockRAF = createMockRequestAnimationFrame();
 
-      const id = mockRAF(() => { });
+      const id = mockRAF(() => {});
       expect(typeof id).toBe("number");
     });
   });

@@ -1,22 +1,24 @@
 /**
  * Batch Processing Example
- * 
+ *
  * Comprehensive example demonstrating the BatchCaptionProcessor component
  * with real-time progress tracking, configuration options, and result management.
  */
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
-import { 
-  BackendAnnotationManager, 
+import {
+  BackendAnnotationManager,
   createAnnotationManager,
   BatchCaptionProcessor,
   type BatchCaptionProcessorProps,
-  type CaptionResult 
+  type CaptionResult,
 } from "reynard-annotating";
 import "reynard-annotating/components/BatchCaptionProcessor.css";
 
 export const BatchProcessingExample: Component = () => {
-  const [manager, setManager] = createSignal<BackendAnnotationManager | null>(null);
+  const [manager, setManager] = createSignal<BackendAnnotationManager | null>(
+    null,
+  );
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
 
@@ -56,12 +58,15 @@ export const BatchProcessingExample: Component = () => {
   // Handle batch completion
   const handleBatchComplete = (results: CaptionResult[]) => {
     console.log("🎉 Batch processing completed!", results);
-    
+
     // Log summary statistics
-    const successful = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success).length;
-    const totalTime = results.reduce((sum, r) => sum + (r.processingTime || 0), 0);
-    
+    const successful = results.filter((r) => r.success).length;
+    const failed = results.filter((r) => !r.success).length;
+    const totalTime = results.reduce(
+      (sum, r) => sum + (r.processingTime || 0),
+      0,
+    );
+
     console.log(`📊 Batch Summary:
       - Total files: ${results.length}
       - Successful: ${successful}
@@ -82,7 +87,7 @@ export const BatchProcessingExample: Component = () => {
   const handleBatchError = (error: Error) => {
     console.error("💥 Batch processing failed:", error);
     setError(error.message);
-    
+
     // You could also:
     // - Show user-friendly error messages
     // - Log to error tracking service
@@ -116,10 +121,7 @@ export const BatchProcessingExample: Component = () => {
           <div class="error-icon">❌</div>
           <h2>Failed to Initialize</h2>
           <p>{error()}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            class="retry-button"
-          >
+          <button onClick={() => window.location.reload()} class="retry-button">
             Retry
           </button>
         </div>
@@ -133,8 +135,9 @@ export const BatchProcessingExample: Component = () => {
       <div class="example-header">
         <h1>🦊 Batch Caption Processing</h1>
         <p>
-          Advanced batch processing for caption generation with real-time progress tracking,
-          multiple generator support, and comprehensive result management.
+          Advanced batch processing for caption generation with real-time
+          progress tracking, multiple generator support, and comprehensive
+          result management.
         </p>
       </div>
 
@@ -150,29 +153,57 @@ export const BatchProcessingExample: Component = () => {
       <div class="example-info">
         <h3>Features Demonstrated</h3>
         <ul>
-          <li>✅ <strong>Drag & Drop Upload:</strong> Intuitive file selection with visual feedback</li>
-          <li>✅ <strong>Real-time Progress:</strong> Live updates during batch processing</li>
-          <li>✅ <strong>Multiple Generators:</strong> Support for JTP2, Florence2, WDv3, JoyCaption</li>
-          <li>✅ <strong>Configuration Options:</strong> Concurrency control, force regeneration, post-processing</li>
-          <li>✅ <strong>Error Handling:</strong> Comprehensive error tracking and recovery</li>
-          <li>✅ <strong>Results Export:</strong> JSON export of all generated captions</li>
-          <li>✅ <strong>Responsive Design:</strong> Works on desktop and mobile devices</li>
+          <li>
+            ✅ <strong>Drag & Drop Upload:</strong> Intuitive file selection
+            with visual feedback
+          </li>
+          <li>
+            ✅ <strong>Real-time Progress:</strong> Live updates during batch
+            processing
+          </li>
+          <li>
+            ✅ <strong>Multiple Generators:</strong> Support for JTP2,
+            Florence2, WDv3, JoyCaption
+          </li>
+          <li>
+            ✅ <strong>Configuration Options:</strong> Concurrency control,
+            force regeneration, post-processing
+          </li>
+          <li>
+            ✅ <strong>Error Handling:</strong> Comprehensive error tracking and
+            recovery
+          </li>
+          <li>
+            ✅ <strong>Results Export:</strong> JSON export of all generated
+            captions
+          </li>
+          <li>
+            ✅ <strong>Responsive Design:</strong> Works on desktop and mobile
+            devices
+          </li>
         </ul>
 
         <h3>Backend Integration</h3>
         <p>
-          This component integrates with the Reynard backend's batch processing API:
+          This component integrates with the Reynard backend's batch processing
+          API:
         </p>
         <ul>
-          <li><code>POST /api/caption/batch</code> - Batch caption generation endpoint</li>
-          <li><code>GET /api/caption/generators</code> - Available generator information</li>
+          <li>
+            <code>POST /api/caption/batch</code> - Batch caption generation
+            endpoint
+          </li>
+          <li>
+            <code>GET /api/caption/generators</code> - Available generator
+            information
+          </li>
           <li>Progress callbacks for real-time status updates</li>
           <li>Concurrent processing with configurable limits</li>
         </ul>
 
         <h3>Usage Example</h3>
         <pre class="code-block">
-{`import { BatchCaptionProcessor, createAnnotationManager } from "reynard-annotating";
+          {`import { BatchCaptionProcessor, createAnnotationManager } from "reynard-annotating";
 
 const manager = createAnnotationManager({
   baseUrl: "http://localhost:8000"
@@ -310,8 +341,8 @@ const exampleStyles = `
 `;
 
 // Inject styles
-if (typeof document !== 'undefined') {
-  const styleSheet = document.createElement('style');
+if (typeof document !== "undefined") {
+  const styleSheet = document.createElement("style");
   styleSheet.textContent = exampleStyles;
   document.head.appendChild(styleSheet);
 }

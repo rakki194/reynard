@@ -8,9 +8,7 @@ const IntroSection: Component = () => {
   return (
     <div class="demo-section">
       <h2>{t("common.about")} Reynard i18n</h2>
-      <p>
-        {getDemoTranslation(locale, "description")}
-      </p>
+      <p>{getDemoTranslation(locale, "description")}</p>
     </div>
   );
 };

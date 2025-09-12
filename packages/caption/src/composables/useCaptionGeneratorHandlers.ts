@@ -1,6 +1,6 @@
 /**
  * Caption Generator Event Handlers Composable
- * 
+ *
  * Manages all event handlers for the caption generator component.
  * Extracted to keep the main component under the 140-line limit.
  */
@@ -20,13 +20,17 @@ export interface CaptionGeneratorHandlers {
  */
 export function useCaptionGeneratorHandlers(
   state: CaptionGeneratorState,
-  manager: ReturnType<typeof import("reynard-annotating").createBackendAnnotationManager> | null,
-  onCaptionGenerated?: (result: import("reynard-annotating").CaptionResult) => void,
-  onGenerationError?: (error: Error) => void
+  manager: ReturnType<
+    typeof import("reynard-annotating").createBackendAnnotationManager
+  > | null,
+  onCaptionGenerated?: (
+    result: import("reynard-annotating").CaptionResult,
+  ) => void,
+  onGenerationError?: (error: Error) => void,
 ): CaptionGeneratorHandlers {
   const handleFileSelect = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      state.setError('Please select a valid image file');
+    if (!file.type.startsWith("image/")) {
+      state.setError("Please select a valid image file");
       return;
     }
     state.setImageFile(file);
@@ -34,7 +38,7 @@ export function useCaptionGeneratorHandlers(
     state.setResult(null);
     const reader = new FileReader();
     reader.onload = (e) => {
-      state.setImagePreview(e.target?.result as string || null);
+      state.setImagePreview((e.target?.result as string) || null);
     };
     reader.readAsDataURL(file);
   };
@@ -64,7 +68,7 @@ export function useCaptionGeneratorHandlers(
     state.setGenerationProgress(0);
     state.setError(null);
     state.setResult(null);
-    
+
     try {
       const task: import("reynard-annotating").CaptionTask = {
         imagePath: state.imageFile()!.name,
@@ -72,18 +76,22 @@ export function useCaptionGeneratorHandlers(
         config: { threshold: 0.2 },
         postProcess: true,
       };
-      
+
       const progressInterval = setInterval(() => {
-        state.setGenerationProgress(Math.min(state.generationProgress() + 10, 90));
+        state.setGenerationProgress(
+          Math.min(state.generationProgress() + 10, 90),
+        );
       }, 200);
-      
+
       const captionResult = await manager.getService().generateCaption(task);
       clearInterval(progressInterval);
       state.setGenerationProgress(100);
       state.setResult(captionResult);
       onCaptionGenerated?.(captionResult);
     } catch (err) {
-      state.setError(`Generation failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      state.setError(
+        `Generation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
       onGenerationError?.(err as Error);
     } finally {
       state.setIsGenerating(false);

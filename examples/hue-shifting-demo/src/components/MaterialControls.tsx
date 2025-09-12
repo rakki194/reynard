@@ -1,5 +1,8 @@
 import { Component } from "solid-js";
-import { MATERIAL_PATTERNS, type MaterialType } from "../composables/useMaterialEffects";
+import {
+  MATERIAL_PATTERNS,
+  type MaterialType,
+} from "../composables/useMaterialEffects";
 
 interface MaterialControlsProps {
   selectedMaterial: MaterialType;
@@ -16,7 +19,7 @@ export const MaterialControls: Component<MaterialControlsProps> = (props) => {
         <div class="material-buttons">
           {Object.entries(MATERIAL_PATTERNS).map(([key]) => (
             <button
-              class={`material-button ${props.selectedMaterial === key ? 'selected' : ''}`}
+              class={`material-button ${props.selectedMaterial === key ? "selected" : ""}`}
               onClick={() => props.onMaterialChange(key as MaterialType)}
             >
               {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -24,7 +27,7 @@ export const MaterialControls: Component<MaterialControlsProps> = (props) => {
           ))}
         </div>
       </section>
-      
+
       <section class="control-section">
         <h3>Shift Intensity</h3>
         <div class="intensity-control">
@@ -38,7 +41,9 @@ export const MaterialControls: Component<MaterialControlsProps> = (props) => {
             onInput={(e) => props.onIntensityChange(parseFloat(e.target.value))}
             class="intensity-slider"
           />
-          <label for="shift-intensity" class="sr-only">Shift Intensity</label>
+          <label for="shift-intensity" class="sr-only">
+            Shift Intensity
+          </label>
           <span class="intensity-value">{props.shiftIntensity.toFixed(2)}</span>
         </div>
       </section>

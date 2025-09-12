@@ -30,7 +30,13 @@ export interface PackageLifecycleInfo {
   name: string;
   version: string;
   description: string;
-  status: "loaded" | "unloaded" | "loading" | "unloading" | "reloading" | "error";
+  status:
+    | "loaded"
+    | "unloaded"
+    | "loading"
+    | "unloading"
+    | "reloading"
+    | "error";
   loadTime: number;
   memoryUsage: number;
   lastLoaded: Date | null;
@@ -51,7 +57,9 @@ export interface LifecycleSummary {
   averageLoadTime: number;
 }
 
-export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (props) => {
+export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (
+  props,
+) => {
   const [packages, setPackages] = createSignal<PackageLifecycleInfo[]>([]);
   const [summary, setSummary] = createSignal<LifecycleSummary>({
     totalPackages: 0,
@@ -205,14 +213,21 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
       // Calculate summary
       const packageList = mockPackages;
       const loadedPackages = packageList.filter((p) => p.status === "loaded");
-      const totalMemoryUsage = loadedPackages.reduce((sum, p) => sum + p.memoryUsage, 0);
-      const averageLoadTime = loadedPackages.reduce((sum, p) => sum + p.loadTime, 0) / loadedPackages.length;
-      
+      const totalMemoryUsage = loadedPackages.reduce(
+        (sum, p) => sum + p.memoryUsage,
+        0,
+      );
+      const averageLoadTime =
+        loadedPackages.reduce((sum, p) => sum + p.loadTime, 0) /
+        loadedPackages.length;
+
       const mockSummary: LifecycleSummary = {
         totalPackages: packageList.length,
         loadedPackages: packageList.filter((p) => p.status === "loaded").length,
-        unloadedPackages: packageList.filter((p) => p.status === "unloaded").length,
-        loadingPackages: packageList.filter((p) => p.status === "loading").length,
+        unloadedPackages: packageList.filter((p) => p.status === "unloaded")
+          .length,
+        loadingPackages: packageList.filter((p) => p.status === "loading")
+          .length,
         errorPackages: packageList.filter((p) => p.status === "error").length,
         totalMemoryUsage: totalMemoryUsage,
         averageLoadTime: averageLoadTime || 0,
@@ -232,12 +247,14 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
     try {
       // In a real implementation, this would call the backend load endpoint
       console.log(`Loading package: ${packageName}`);
-      
+
       // Simulate loading
       setPackages((prev) =>
         prev.map((pkg) =>
-          pkg.name === packageName ? { ...pkg, status: "loading" as const } : pkg
-        )
+          pkg.name === packageName
+            ? { ...pkg, status: "loading" as const }
+            : pkg,
+        ),
       );
 
       // Simulate loading progress
@@ -254,8 +271,8 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                 loadCount: pkg.loadCount + 1,
                 memoryUsage: 128 * 1024 * 1024, // 128MB
               }
-            : pkg
-        )
+            : pkg,
+        ),
       );
     } catch (error) {
       console.error("Failed to load package:", error);
@@ -263,9 +280,13 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
       setPackages((prev) =>
         prev.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: "Failed to load package" }
-            : pkg
-        )
+            ? {
+                ...pkg,
+                status: "error" as const,
+                error: "Failed to load package",
+              }
+            : pkg,
+        ),
       );
     } finally {
       setIsOperating(false);
@@ -277,12 +298,14 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
     try {
       // In a real implementation, this would call the backend unload endpoint
       console.log(`Unloading package: ${packageName}`);
-      
+
       // Simulate unloading
       setPackages((prev) =>
         prev.map((pkg) =>
-          pkg.name === packageName ? { ...pkg, status: "unloading" as const } : pkg
-        )
+          pkg.name === packageName
+            ? { ...pkg, status: "unloading" as const }
+            : pkg,
+        ),
       );
 
       // Simulate unloading progress
@@ -298,8 +321,8 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                 lastUnloaded: new Date(),
                 memoryUsage: 0,
               }
-            : pkg
-        )
+            : pkg,
+        ),
       );
     } catch (error) {
       console.error("Failed to unload package:", error);
@@ -307,9 +330,13 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
       setPackages((prev) =>
         prev.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: "Failed to unload package" }
-            : pkg
-        )
+            ? {
+                ...pkg,
+                status: "error" as const,
+                error: "Failed to unload package",
+              }
+            : pkg,
+        ),
       );
     } finally {
       setIsOperating(false);
@@ -321,12 +348,14 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
     try {
       // In a real implementation, this would call the backend reload endpoint
       console.log(`Reloading package: ${packageName}`);
-      
+
       // Simulate reloading
       setPackages((prev) =>
         prev.map((pkg) =>
-          pkg.name === packageName ? { ...pkg, status: "reloading" as const } : pkg
-        )
+          pkg.name === packageName
+            ? { ...pkg, status: "reloading" as const }
+            : pkg,
+        ),
       );
 
       // Simulate reloading progress
@@ -342,8 +371,8 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                 lastLoaded: new Date(),
                 loadCount: pkg.loadCount + 1,
               }
-            : pkg
-        )
+            : pkg,
+        ),
       );
     } catch (error) {
       console.error("Failed to reload package:", error);
@@ -351,9 +380,13 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
       setPackages((prev) =>
         prev.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: "Failed to reload package" }
-            : pkg
-        )
+            ? {
+                ...pkg,
+                status: "error" as const,
+                error: "Failed to reload package",
+              }
+            : pkg,
+        ),
       );
     } finally {
       setIsOperating(false);
@@ -361,9 +394,11 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
   };
 
   const handleBulkLoad = async () => {
-    const unloadedPackages = packages().filter((pkg) => pkg.status === "unloaded");
+    const unloadedPackages = packages().filter(
+      (pkg) => pkg.status === "unloaded",
+    );
     setIsOperating(true);
-    
+
     try {
       for (const pkg of unloadedPackages) {
         await handleLoadPackage(pkg.name);
@@ -378,7 +413,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
   const handleBulkUnload = async () => {
     const loadedPackages = packages().filter((pkg) => pkg.status === "loaded");
     setIsOperating(true);
-    
+
     try {
       for (const pkg of loadedPackages) {
         await handleUnloadPackage(pkg.name);
@@ -399,7 +434,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
       filtered = filtered.filter(
         (pkg) =>
           pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query)
+          pkg.description.toLowerCase().includes(query),
       );
     }
 
@@ -481,7 +516,9 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("arrow-sync")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("arrow-sync")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Package Lifecycle</h3>
@@ -494,7 +531,10 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
               onClick={handleBulkLoad}
               disabled={isOperating() || summary().unloadedPackages === 0}
             >
-              <Show when={isOperating()} fallback={`Load All (${summary().unloadedPackages})`}>
+              <Show
+                when={isOperating()}
+                fallback={`Load All (${summary().unloadedPackages})`}
+              >
                 <span class="spinner"></span>
                 Loading...
               </Show>
@@ -505,7 +545,10 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
               onClick={handleBulkUnload}
               disabled={isOperating() || summary().loadedPackages === 0}
             >
-              <Show when={isOperating()} fallback={`Unload All (${summary().loadedPackages})`}>
+              <Show
+                when={isOperating()}
+                fallback={`Unload All (${summary().loadedPackages})`}
+              >
                 <span class="spinner"></span>
                 Unloading...
               </Show>
@@ -586,10 +629,13 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(pkg.status))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(pkg.status))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="package-details">
                     <span class="package-name">{pkg.name}</span>
                     <span class="package-version">v{pkg.version}</span>
@@ -598,11 +644,16 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                 </div>
 
                 <div class="package-status">
-                  <span class="status-badge" classList={{ [getStatusColor(pkg.status)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(pkg.status)]: true }}
+                  >
                     {pkg.status}
                   </span>
-                  
-                  <span class="memory-usage">{formatSize(pkg.memoryUsage)}</span>
+
+                  <span class="memory-usage">
+                    {formatSize(pkg.memoryUsage)}
+                  </span>
                 </div>
               </div>
 
@@ -612,40 +663,44 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                   <span class="label">Load Time:</span>
                   <span class="value">{formatTime(pkg.loadTime)}</span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Load Count:</span>
                   <span class="value">{pkg.loadCount}</span>
                 </div>
-                
+
                 <Show when={pkg.lastLoaded}>
                   <div class="detail-row">
                     <span class="label">Last Loaded:</span>
-                    <span class="value">{pkg.lastLoaded!.toLocaleString()}</span>
+                    <span class="value">
+                      {pkg.lastLoaded!.toLocaleString()}
+                    </span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.lastUnloaded}>
                   <div class="detail-row">
                     <span class="label">Last Unloaded:</span>
-                    <span class="value">{pkg.lastUnloaded!.toLocaleString()}</span>
+                    <span class="value">
+                      {pkg.lastUnloaded!.toLocaleString()}
+                    </span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
                     <span class="value">{pkg.dependencies.join(", ")}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.dependents.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependents:</span>
                     <span class="value">{pkg.dependents.join(", ")}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.error}>
                   <div class="detail-row error">
                     <span class="label">Error:</span>
@@ -666,7 +721,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                     Load
                   </Button>
                 </Show>
-                
+
                 <Show when={pkg.status === "loaded"}>
                   <Button
                     variant="secondary"
@@ -676,7 +731,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                   >
                     Unload
                   </Button>
-                  
+
                   <Show when={props.showReload}>
                     <Button
                       variant="warning"
@@ -688,7 +743,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
                     </Button>
                   </Show>
                 </Show>
-                
+
                 <Show when={pkg.status === "error"}>
                   <Button
                     variant="primary"
@@ -707,7 +762,9 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

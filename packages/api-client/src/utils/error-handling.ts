@@ -2,7 +2,7 @@
  * Error handling utilities for API client
  */
 
-import type { ApiError } from '../types.js';
+import type { ApiError } from "../types.js";
 
 export class ReynardApiError extends Error implements ApiError {
   public status: number;
@@ -10,7 +10,7 @@ export class ReynardApiError extends Error implements ApiError {
 
   constructor(status: number, body: any, message?: string) {
     super(message || `API Error ${status}`);
-    this.name = 'ReynardApiError';
+    this.name = "ReynardApiError";
     this.status = status;
     this.body = body;
   }
@@ -26,7 +26,7 @@ export function handleApiError(error: any): ReynardApiError {
     return new ReynardApiError(
       error.response.status,
       error.response.data,
-      error.message
+      error.message,
     );
   }
 
@@ -35,10 +35,10 @@ export function handleApiError(error: any): ReynardApiError {
     return new ReynardApiError(
       error.status,
       error.body || error.message,
-      error.message
+      error.message,
     );
   }
 
   // Generic error
-  return new ReynardApiError(0, null, error.message || 'Unknown error');
+  return new ReynardApiError(0, null, error.message || "Unknown error");
 }

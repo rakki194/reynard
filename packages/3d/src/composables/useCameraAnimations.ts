@@ -3,8 +3,11 @@ import { createSignal, createMemo } from "solid-js";
 import type { CameraAnimation, EasingType } from "../types";
 
 export function useCameraAnimations() {
-  const [cameraAnimation, setCameraAnimation] = createSignal<CameraAnimation | null>(null);
-  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(null);
+  const [cameraAnimation, setCameraAnimation] =
+    createSignal<CameraAnimation | null>(null);
+  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(
+    null,
+  );
 
   const isAnimationsDisabled = createMemo(() => false);
 

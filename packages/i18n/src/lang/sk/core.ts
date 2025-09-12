@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Požiadavka bola prerušená",
   },
-  
+
   // Autentifikácia a bezpečnosť
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer testovací kľúč",
     "new-key": "Bearer nový kľúč",
   },
-  
+
   // Oznámenia
   notifications: {
     title: "Oznámenia",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Prvé zoskupené",
     "second-grouped": "Druhé zoskupené",
   },
-  
+
   // Validačné správy
   validation: {
     required: "Toto pole je povinné",
@@ -70,30 +70,42 @@ export const coreTranslations = {
     "invalid-input-type": "Neplatný typ vstupu",
     "does-not-match-pattern": "Vstup nezodpovedá požadovanému vzoru",
   },
-  
+
   // Validácia hesla
   password: {
     "must-be-at-least-8-characters-long": "Heslo musí mať aspoň 8 znakov",
-    "must-contain-at-least-one-uppercase-letter": "Heslo musí obsahovať aspoň jedno veľké písmeno",
-    "must-contain-at-least-one-lowercase-letter": "Heslo musí obsahovať aspoň jedno malé písmeno",
-    "must-contain-at-least-one-number": "Heslo musí obsahovať aspoň jedno číslo",
-    "must-contain-at-least-one-special-character": "Heslo musí obsahovať aspoň jeden špeciálny znak",
+    "must-contain-at-least-one-uppercase-letter":
+      "Heslo musí obsahovať aspoň jedno veľké písmeno",
+    "must-contain-at-least-one-lowercase-letter":
+      "Heslo musí obsahovať aspoň jedno malé písmeno",
+    "must-contain-at-least-one-number":
+      "Heslo musí obsahovať aspoň jedno číslo",
+    "must-contain-at-least-one-special-character":
+      "Heslo musí obsahovať aspoň jeden špeciálny znak",
   },
-  
+
   // Bezpečnostná validácia
   security: {
-    "at-least-one-character-type-must-be-included": "Musí byť zahrnutý aspoň jeden typ znaku",
-    "input-contains-potentially-dangerous-html": "Vstup obsahuje potenciálne nebezpečný HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Vstup obsahuje potenciálne nebezpečné SQL vzory",
-    "input-contains-potentially-dangerous-xss-patterns": "Vstup obsahuje potenciálne nebezpečné XSS vzory",
-    "input-contains-path-traversal-patterns": "Vstup obsahuje vzory prechádzania cesty",
-    "input-contains-windows-reserved-names": "Vstup obsahuje rezervované názvy Windows",
-    "input-contains-executable-file-extensions": "Vstup obsahuje prípony spustiteľných súborov",
+    "at-least-one-character-type-must-be-included":
+      "Musí byť zahrnutý aspoň jeden typ znaku",
+    "input-contains-potentially-dangerous-html":
+      "Vstup obsahuje potenciálne nebezpečný HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Vstup obsahuje potenciálne nebezpečné SQL vzory",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Vstup obsahuje potenciálne nebezpečné XSS vzory",
+    "input-contains-path-traversal-patterns":
+      "Vstup obsahuje vzory prechádzania cesty",
+    "input-contains-windows-reserved-names":
+      "Vstup obsahuje rezervované názvy Windows",
+    "input-contains-executable-file-extensions":
+      "Vstup obsahuje prípony spustiteľných súborov",
     "input-contains-null-bytes": "Vstup obsahuje null bajty",
     "input-contains-hidden-files": "Vstup obsahuje skryté súbory",
-    "input-contains-javascript-file-extensions": "Vstup obsahuje prípony JavaScript súborov",
+    "input-contains-javascript-file-extensions":
+      "Vstup obsahuje prípony JavaScript súborov",
   },
-  
+
   // Asynchrónne operácie
   async: {
     "operation-timed-out": "Operácia vypršala",
@@ -107,7 +119,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Súbežnosť musí byť väčšia ako 0",
     "polling-timeout-reached": "Dosiahnutý timeout dotazovania",
   },
-  
+
   // Načítanie modulov
   module: {
     "is-null": "Modul je null",
@@ -115,14 +127,17 @@ export const coreTranslations = {
     "load-failed": "Načítanie zlyhalo",
     "loading-failed": "Načítanie zlyhalo",
   },
-  
+
   // Úložisko a serializácia
   storage: {
-    "potentially-dangerous-json-detected": "Detekovaný potenciálne nebezpečný JSON",
-    "failed-to-parse-json-from-localstorage": "Nepodarilo sa parsovať JSON z localStorage:",
-    "error-parsing-storage-event": "Chyba pri parsovaní udalosti úložiska pre kľúč",
+    "potentially-dangerous-json-detected":
+      "Detekovaný potenciálne nebezpečný JSON",
+    "failed-to-parse-json-from-localstorage":
+      "Nepodarilo sa parsovať JSON z localStorage:",
+    "error-parsing-storage-event":
+      "Chyba pri parsovaní udalosti úložiska pre kľúč",
   },
-  
+
   // Test a vývoj
   test: {
     error: "Testovacia chyba",
@@ -131,19 +146,19 @@ export const coreTranslations = {
     "notification-1": "Testovacie oznámenie 1",
     "notification-2": "Testovacie oznámenie 2",
   },
-  
+
   // Všeobecné chyby
   errors: {
     "string-error": "Chyba reťazca",
     "crypto-error": "Kryptografická chyba",
     "some-error": "Nejaká chyba",
   },
-  
+
   // Formátovače a nástroje
   formatters: {
     "hello-world": "Ahoj svet",
   },
-  
+
   // Dátum a čas
   dateTime: {
     now: "Teraz",
@@ -153,11 +168,12 @@ export const coreTranslations = {
     format: "Formát",
     timezone: "Časové pásmo",
   },
-  
+
   // Integračné testy
   integration: {
     "session-and-api-key-generation": "Generovanie relácie a API kľúča",
-    "authentication-and-input-validation-integration": "Integrácia autentifikácie a validácie vstupu",
+    "authentication-and-input-validation-integration":
+      "Integrácia autentifikácie a validácie vstupu",
     "performance-and-security-integration": "Integrácia výkonu a bezpečnosti",
   },
 };

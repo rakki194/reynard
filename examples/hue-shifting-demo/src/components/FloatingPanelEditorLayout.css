@@ -75,15 +75,15 @@
   .editor-header {
     padding: var(--space-md);
   }
-  
+
   .editor-header h2 {
     font-size: var(--font-size-lg);
   }
-  
+
   .editor-header p {
     font-size: var(--font-size-sm);
   }
-  
+
   .editor-canvas-container {
     padding: var(--space-md);
   }

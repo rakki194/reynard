@@ -1,6 +1,6 @@
 /**
  * Embedding Visualization Dashboard
- * 
+ *
  * Comprehensive dashboard for embedding analysis and visualization.
  * Integrates all embedding visualization components with real-time data.
  */
@@ -35,18 +35,26 @@ export interface EmbeddingVisualizationDashboardProps {
   class?: string;
 }
 
-export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDashboardProps> = (props) => {
+export const EmbeddingVisualizationDashboard: Component<
+  EmbeddingVisualizationDashboardProps
+> = (props) => {
   const embeddingViz = useEmbeddingVisualization();
-  
+
   // State
-  const [activeTab, setActiveTab] = createSignal<'distribution' | 'pca' | 'quality' | '3d'>('distribution');
+  const [activeTab, setActiveTab] = createSignal<
+    "distribution" | "pca" | "quality" | "3d"
+  >("distribution");
   const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal<string>('');
+  const [error, setError] = createSignal<string>("");
   const [embeddingData, setEmbeddingData] = createSignal<any>(null);
   const [pcaData, setPcaData] = createSignal<any>(null);
   const [qualityData, setQualityData] = createSignal<any>(null);
-  const [reductionMethod, setReductionMethod] = createSignal<'pca' | 'tsne' | 'umap'>('pca');
-  const [reductionParams, setReductionParams] = createSignal<Record<string, any>>({});
+  const [reductionMethod, setReductionMethod] = createSignal<
+    "pca" | "tsne" | "umap"
+  >("pca");
+  const [reductionParams, setReductionParams] = createSignal<
+    Record<string, any>
+  >({});
   const [maxSamples, setMaxSamples] = createSignal(1000);
   const [reductionResult, setReductionResult] = createSignal<any>(null);
 
@@ -61,32 +69,39 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
   const loadEmbeddingData = async () => {
     try {
       setIsLoading(true);
-      setError('');
+      setError("");
 
       // Get embedding statistics
       const stats = embeddingViz.stats();
       if (!stats) {
-        throw new Error('Failed to load embedding statistics');
+        throw new Error("Failed to load embedding statistics");
       }
 
       // Generate sample embeddings for demonstration
-      const sampleEmbeddings = embeddingViz.generateSampleEmbeddings(1000, stats.embedding_dimension);
+      const sampleEmbeddings = embeddingViz.generateSampleEmbeddings(
+        1000,
+        stats.embedding_dimension,
+      );
 
       // Process distribution data
-      const distributionData = embeddingViz.processDistributionData(sampleEmbeddings);
+      const distributionData =
+        embeddingViz.processDistributionData(sampleEmbeddings);
       setEmbeddingData(distributionData);
 
       // Process PCA data
-      const pcaVarianceData = embeddingViz.processPCAVarianceData(sampleEmbeddings);
+      const pcaVarianceData =
+        embeddingViz.processPCAVarianceData(sampleEmbeddings);
       setPcaData(pcaVarianceData);
 
       // Process quality data
-      const qualityMetricsData = embeddingViz.processQualityMetricsData(sampleEmbeddings);
+      const qualityMetricsData =
+        embeddingViz.processQualityMetricsData(sampleEmbeddings);
       setQualityData(qualityMetricsData);
-
     } catch (err) {
-      console.error('Error loading embedding data:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load embedding data');
+      console.error("Error loading embedding data:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to load embedding data",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -96,28 +111,27 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
   const performReduction = async () => {
     try {
       setIsLoading(true);
-      setError('');
+      setError("");
 
       const request: EmbeddingReductionRequest = {
         method: reductionMethod(),
         parameters: reductionParams(),
         max_samples: maxSamples(),
         use_cache: true,
-        random_seed: 42
+        random_seed: 42,
       };
 
       const result = await embeddingViz.performReduction(request);
-      
+
       if (!result.success) {
-        throw new Error(result.error || 'Dimensionality reduction failed');
+        throw new Error(result.error || "Dimensionality reduction failed");
       }
 
       setReductionResult(result);
-      console.log('Reduction completed:', result);
-      
+      console.log("Reduction completed:", result);
     } catch (err) {
-      console.error('Error performing reduction:', err);
-      setError(err instanceof Error ? err.message : 'Reduction failed');
+      console.error("Error performing reduction:", err);
+      setError(err instanceof Error ? err.message : "Reduction failed");
     } finally {
       setIsLoading(false);
     }
@@ -125,9 +139,9 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
 
   // Update reduction parameters
   const updateReductionParams = (key: string, value: any) => {
-    setReductionParams(prev => ({
+    setReductionParams((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
@@ -141,15 +155,13 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
         <div class="method-controls">
           <div class="method-select">
             <label>Method:</label>
-            <select 
-              value={reductionMethod()} 
+            <select
+              value={reductionMethod()}
               onChange={(e) => setReductionMethod(e.currentTarget.value as any)}
             >
               <For each={Object.keys(methods.methods)}>
                 {(method) => (
-                  <option value={method}>
-                    {methods.methods[method].name}
-                  </option>
+                  <option value={method}>{methods.methods[method].name}</option>
                 )}
               </For>
             </select>
@@ -157,62 +169,85 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
 
           <div class="samples-control">
             <label>Max Samples:</label>
-            <input 
-              type="number" 
-              value={maxSamples()} 
-              min="100" 
-              max="10000" 
+            <input
+              type="number"
+              value={maxSamples()}
+              min="100"
+              max="10000"
               step="100"
               onChange={(e) => setMaxSamples(parseInt(e.currentTarget.value))}
             />
           </div>
 
-          <button 
-            class="reduce-button" 
+          <button
+            class="reduce-button"
             onClick={performReduction}
             disabled={isLoading()}
           >
-            {isLoading() ? 'Processing...' : 'Perform Reduction'}
+            {isLoading() ? "Processing..." : "Perform Reduction"}
           </button>
         </div>
 
         <Show when={methods.methods[reductionMethod()]}>
           <div class="method-parameters">
             <h4>Parameters</h4>
-            <For each={Object.entries(methods.methods[reductionMethod()].parameters)}>
+            <For
+              each={Object.entries(
+                methods.methods[reductionMethod()].parameters,
+              )}
+            >
               {([paramName, paramInfo]: [string, any]) => (
                 <div class="parameter-control">
                   <label>{paramInfo.description}:</label>
-                  <Show when={paramInfo.type === 'integer'}>
-                    <input 
-                      type="number" 
+                  <Show when={paramInfo.type === "integer"}>
+                    <input
+                      type="number"
                       value={reductionParams()[paramName] || paramInfo.default}
                       min={paramInfo.min}
                       max={paramInfo.max}
-                      onChange={(e) => updateReductionParams(paramName, parseInt(e.currentTarget.value))}
+                      onChange={(e) =>
+                        updateReductionParams(
+                          paramName,
+                          parseInt(e.currentTarget.value),
+                        )
+                      }
                     />
                   </Show>
-                  <Show when={paramInfo.type === 'float'}>
-                    <input 
-                      type="number" 
+                  <Show when={paramInfo.type === "float"}>
+                    <input
+                      type="number"
                       step="0.1"
                       value={reductionParams()[paramName] || paramInfo.default}
                       min={paramInfo.min}
                       max={paramInfo.max}
-                      onChange={(e) => updateReductionParams(paramName, parseFloat(e.currentTarget.value))}
+                      onChange={(e) =>
+                        updateReductionParams(
+                          paramName,
+                          parseFloat(e.currentTarget.value),
+                        )
+                      }
                     />
                   </Show>
-                  <Show when={paramInfo.type === 'boolean'}>
-                    <input 
-                      type="checkbox" 
-                      checked={reductionParams()[paramName] || paramInfo.default}
-                      onChange={(e) => updateReductionParams(paramName, e.currentTarget.checked)}
+                  <Show when={paramInfo.type === "boolean"}>
+                    <input
+                      type="checkbox"
+                      checked={
+                        reductionParams()[paramName] || paramInfo.default
+                      }
+                      onChange={(e) =>
+                        updateReductionParams(
+                          paramName,
+                          e.currentTarget.checked,
+                        )
+                      }
                     />
                   </Show>
-                  <Show when={paramInfo.type === 'string' && paramInfo.options}>
-                    <select 
+                  <Show when={paramInfo.type === "string" && paramInfo.options}>
+                    <select
                       value={reductionParams()[paramName] || paramInfo.default}
-                      onChange={(e) => updateReductionParams(paramName, e.currentTarget.value)}
+                      onChange={(e) =>
+                        updateReductionParams(paramName, e.currentTarget.value)
+                      }
                     >
                       <For each={paramInfo.options}>
                         {(option: string) => (
@@ -240,7 +275,9 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
         <div class="stats-grid">
           <div class="stat-item">
             <div class="stat-label">Total Embeddings:</div>
-            <div class="stat-value">{stats.total_embeddings.toLocaleString()}</div>
+            <div class="stat-value">
+              {stats.total_embeddings.toLocaleString()}
+            </div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Dimensions:</div>
@@ -248,11 +285,15 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
           </div>
           <div class="stat-item">
             <div class="stat-label">Quality Score:</div>
-            <div class="stat-value">{(stats.quality_score * 100).toFixed(1)}%</div>
+            <div class="stat-value">
+              {(stats.quality_score * 100).toFixed(1)}%
+            </div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Last Updated:</div>
-            <div class="stat-value">{new Date(stats.last_updated).toLocaleString()}</div>
+            <div class="stat-value">
+              {new Date(stats.last_updated).toLocaleString()}
+            </div>
           </div>
         </div>
       </div>
@@ -260,31 +301,33 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
   };
 
   return (
-    <div class={`reynard-embedding-visualization-dashboard ${props.class || ""}`}>
+    <div
+      class={`reynard-embedding-visualization-dashboard ${props.class || ""}`}
+    >
       <div class="dashboard-header">
         <h2>Embedding Visualization Dashboard</h2>
         <div class="dashboard-controls">
-          <button 
-            class={`tab-button ${activeTab() === 'distribution' ? 'active' : ''}`}
-            onClick={() => setActiveTab('distribution')}
+          <button
+            class={`tab-button ${activeTab() === "distribution" ? "active" : ""}`}
+            onClick={() => setActiveTab("distribution")}
           >
             Distribution
           </button>
-          <button 
-            class={`tab-button ${activeTab() === 'pca' ? 'active' : ''}`}
-            onClick={() => setActiveTab('pca')}
+          <button
+            class={`tab-button ${activeTab() === "pca" ? "active" : ""}`}
+            onClick={() => setActiveTab("pca")}
           >
             PCA Analysis
           </button>
-          <button 
-            class={`tab-button ${activeTab() === 'quality' ? 'active' : ''}`}
-            onClick={() => setActiveTab('quality')}
+          <button
+            class={`tab-button ${activeTab() === "quality" ? "active" : ""}`}
+            onClick={() => setActiveTab("quality")}
           >
             Quality Metrics
           </button>
-          <button 
-            class={`tab-button ${activeTab() === '3d' ? 'active' : ''}`}
-            onClick={() => setActiveTab('3d')}
+          <button
+            class={`tab-button ${activeTab() === "3d" ? "active" : ""}`}
+            onClick={() => setActiveTab("3d")}
           >
             3D Visualization
           </button>
@@ -308,7 +351,7 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
 
           <Show when={!isLoading() && !error()}>
             <div class="visualization-content">
-              <Show when={activeTab() === 'distribution' && embeddingData()}>
+              <Show when={activeTab() === "distribution" && embeddingData()}>
                 <div class="chart-section">
                   <h4>Embedding Value Distribution</h4>
                   <div class="chart-grid">
@@ -338,7 +381,7 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
                 </div>
               </Show>
 
-              <Show when={activeTab() === 'pca' && pcaData()}>
+              <Show when={activeTab() === "pca" && pcaData()}>
                 <div class="chart-section">
                   <h4>PCA Explained Variance Analysis</h4>
                   <PCAVarianceChart
@@ -354,7 +397,7 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
                 </div>
               </Show>
 
-              <Show when={activeTab() === 'quality' && qualityData()}>
+              <Show when={activeTab() === "quality" && qualityData()}>
                 <div class="chart-section">
                   <h4>Embedding Quality Analysis</h4>
                   <div class="chart-grid">
@@ -380,7 +423,7 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
                 </div>
               </Show>
 
-              <Show when={activeTab() === '3d'}>
+              <Show when={activeTab() === "3d"}>
                 <div class="chart-section">
                   <h4>3D Embedding Visualization</h4>
                   <Show when={reductionResult()}>
@@ -393,17 +436,23 @@ export const EmbeddingVisualizationDashboard: Component<EmbeddingVisualizationDa
                       showSimilarityPaths={true}
                       theme={props.theme}
                       onPointClick={(index, data) => {
-                        console.log('Point clicked:', index, data);
+                        console.log("Point clicked:", index, data);
                       }}
                       onPointHover={(index, data) => {
-                        console.log('Point hovered:', index, data);
+                        console.log("Point hovered:", index, data);
                       }}
                     />
                   </Show>
                   <Show when={!reductionResult()}>
                     <div class="3d-placeholder">
-                      <p>Perform a dimensionality reduction to see 3D visualization</p>
-                      <p>Use the controls in the sidebar to reduce embeddings to 3D</p>
+                      <p>
+                        Perform a dimensionality reduction to see 3D
+                        visualization
+                      </p>
+                      <p>
+                        Use the controls in the sidebar to reduce embeddings to
+                        3D
+                      </p>
                     </div>
                   </Show>
                 </div>

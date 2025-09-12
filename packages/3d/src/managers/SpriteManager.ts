@@ -46,7 +46,11 @@ export class SpriteManager {
 
       // Create sprite
       const sprite = new Sprite(material) as ThreeJSSpriteLike;
-      sprite.position.set(point.position[0], point.position[1], point.position[2]);
+      sprite.position.set(
+        point.position[0],
+        point.position[1],
+        point.position[2],
+      );
       sprite.scale.setScalar(config.thumbnailSize);
       sprite.userData = {
         type: "thumbnail",
@@ -103,7 +107,11 @@ export class SpriteManager {
       });
 
       const sprite = new Sprite(material) as ThreeJSSpriteLike;
-      sprite.position.set(point.position[0], point.position[1], point.position[2]);
+      sprite.position.set(
+        point.position[0],
+        point.position[1],
+        point.position[2],
+      );
       sprite.position.y += 0.5; // Offset above point
       sprite.scale.setScalar(config.textSpriteSize);
       sprite.userData = {

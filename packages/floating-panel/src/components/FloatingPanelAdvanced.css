@@ -11,7 +11,8 @@
   border-radius: var(--radius-lg, 12px);
   box-shadow: var(--elevation-2, 0 2px 4px oklch(0% 0 0 / 0.16));
   overflow: hidden;
-  transition: box-shadow var(--duration-base, 200ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  transition: box-shadow var(--duration-base, 200ms)
+    var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
   color: var(--color-text, oklch(15% 0.01 0));
 }
 
@@ -44,10 +45,12 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm, 8px) var(--space-md, 16px);
-  background: linear-gradient(135deg, 
-    var(--color-surface-hover, oklch(90% 0.02 0)) 0%, 
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-hover, oklch(90% 0.02 0)) 0%,
     var(--color-surface-active, oklch(85% 0.02 0)) 50%,
-    var(--color-surface-hover, oklch(90% 0.02 0)) 100%);
+    var(--color-surface-hover, oklch(90% 0.02 0)) 100%
+  );
   border-bottom: 1px solid var(--color-border, oklch(85% 0.02 0));
   min-height: 40px;
 }
@@ -106,7 +109,8 @@
   border-radius: var(--radius-sm, 4px);
   cursor: pointer;
   color: var(--color-text-secondary, oklch(30% 0.01 0));
-  transition: all var(--duration-fast, 120ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  transition: all var(--duration-fast, 120ms)
+    var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .panel-control-btn:hover {
@@ -137,11 +141,31 @@
   width: 12px;
   height: 12px;
   cursor: nw-resize;
-  background: linear-gradient(-45deg, transparent 30%, var(--color-border, oklch(85% 0.02 0)) 30%, var(--color-border, oklch(85% 0.02 0)) 40%, transparent 40%, transparent 60%, var(--color-border, oklch(85% 0.02 0)) 60%, var(--color-border, oklch(85% 0.02 0)) 70%, transparent 70%);
+  background: linear-gradient(
+    -45deg,
+    transparent 30%,
+    var(--color-border, oklch(85% 0.02 0)) 30%,
+    var(--color-border, oklch(85% 0.02 0)) 40%,
+    transparent 40%,
+    transparent 60%,
+    var(--color-border, oklch(85% 0.02 0)) 60%,
+    var(--color-border, oklch(85% 0.02 0)) 70%,
+    transparent 70%
+  );
 }
 
 .floating-panel-resize-handle:hover {
-  background: linear-gradient(-45deg, transparent 30%, var(--color-accent, oklch(60% 0.25 240)) 30%, var(--color-accent, oklch(60% 0.25 240)) 40%, transparent 40%, transparent 60%, var(--color-accent, oklch(60% 0.25 240)) 60%, var(--color-accent, oklch(60% 0.25 240)) 70%, transparent 70%);
+  background: linear-gradient(
+    -45deg,
+    transparent 30%,
+    var(--color-accent, oklch(60% 0.25 240)) 30%,
+    var(--color-accent, oklch(60% 0.25 240)) 40%,
+    transparent 40%,
+    transparent 60%,
+    var(--color-accent, oklch(60% 0.25 240)) 60%,
+    var(--color-accent, oklch(60% 0.25 240)) 70%,
+    transparent 70%
+  );
 }
 
 /* Theme Variants */
@@ -150,7 +174,11 @@
 }
 
 .floating-panel-advanced.theme-accent .panel-header {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 10%, var(--color-surface, oklch(95% 0.02 0)));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 10%,
+    var(--color-surface, oklch(95% 0.02 0))
+  );
   border-bottom-color: var(--color-accent, oklch(60% 0.25 240));
 }
 
@@ -159,7 +187,11 @@
 }
 
 .floating-panel-advanced.theme-warning .panel-header {
-  background: color-mix(in oklch, var(--color-warning, oklch(75% 0.2 80)) 10%, var(--color-surface, oklch(95% 0.02 0)));
+  background: color-mix(
+    in oklch,
+    var(--color-warning, oklch(75% 0.2 80)) 10%,
+    var(--color-surface, oklch(95% 0.02 0))
+  );
   border-bottom-color: var(--color-warning, oklch(75% 0.2 80));
 }
 
@@ -168,7 +200,11 @@
 }
 
 .floating-panel-advanced.theme-info .panel-header {
-  background: color-mix(in oklch, var(--color-info, oklch(65% 0.2 200)) 10%, var(--color-surface, oklch(95% 0.02 0)));
+  background: color-mix(
+    in oklch,
+    var(--color-info, oklch(65% 0.2 200)) 10%,
+    var(--color-surface, oklch(95% 0.02 0))
+  );
   border-bottom-color: var(--color-info, oklch(65% 0.2 200));
 }
 
@@ -194,11 +230,11 @@
     max-width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
   }
-  
+
   .panel-header {
     padding: 6px 8px;
   }
-  
+
   .floating-panel-body {
     padding: 12px;
   }

@@ -18,27 +18,27 @@ const mockTranslations = {
     items: "One item",
     messages: "No messages",
     close: "Close",
-    save: "Save"
+    save: "Save",
   },
   templates: {
     greeting: "Hello {name}, you have {count} items",
-    nested: "Level {level} with {value}"
+    nested: "Level {level} with {value}",
   },
   complex: {
-    mixed: "User {name} (ID: {id}) has {count} items worth ${amount}"
+    mixed: "User {name} (ID: {id}) has {count} items worth ${amount}",
   },
   integration: {
-    dynamic: "Dynamic content: {value}"
+    dynamic: "Dynamic content: {value}",
   },
   russian: {
-    files: "1 файл"
+    files: "1 файл",
   },
   polish: {
-    books: "1 książka"
+    books: "1 książka",
   },
   large: {
-    key500: "value500"
-  }
+    key500: "value500",
+  },
 };
 
 describe("I18n Integration Tests", () => {

@@ -54,7 +54,9 @@ export interface MemoryStats {
   gcEfficiency: number;
 }
 
-export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) => {
+export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (
+  props,
+) => {
   const [memoryStats, setMemoryStats] = createSignal<MemoryStats>({
     currentUsage: 0,
     peakUsage: 0,
@@ -72,12 +74,14 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
     timeToCritical: 0,
     recommendations: [],
   });
-  const [memoryHistory, setMemoryHistory] = createSignal<Array<{
-    timestamp: number;
-    usage: number;
-    gcCount: number;
-    gcTime: number;
-  }>>([]);
+  const [memoryHistory, setMemoryHistory] = createSignal<
+    Array<{
+      timestamp: number;
+      usage: number;
+      gcCount: number;
+      gcTime: number;
+    }>
+  >([]);
   const [isMonitoring, setIsMonitoring] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [lastUpdate, setLastUpdate] = createSignal<Date | null>(null);
@@ -132,14 +136,19 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
       const memoryUsages = history.map((entry) => entry.memoryUsage);
       const currentUsage = props.memoryUsage;
       const peakUsage = Math.max(...memoryUsages);
-      const averageUsage = memoryUsages.reduce((sum, usage) => sum + usage, 0) / memoryUsages.length;
+      const averageUsage =
+        memoryUsages.reduce((sum, usage) => sum + usage, 0) /
+        memoryUsages.length;
 
       // Calculate usage trend
       const recentUsages = memoryUsages.slice(-10);
       const olderUsages = memoryUsages.slice(-20, -10);
-      const recentAverage = recentUsages.reduce((sum, usage) => sum + usage, 0) / recentUsages.length;
-      const olderAverage = olderUsages.reduce((sum, usage) => sum + usage, 0) / olderUsages.length;
-      
+      const recentAverage =
+        recentUsages.reduce((sum, usage) => sum + usage, 0) /
+        recentUsages.length;
+      const olderAverage =
+        olderUsages.reduce((sum, usage) => sum + usage, 0) / olderUsages.length;
+
       let usageTrend: "increasing" | "stable" | "decreasing" = "stable";
       if (recentAverage > olderAverage * 1.1) {
         usageTrend = "increasing";
@@ -149,11 +158,14 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
 
       // Calculate memory pressure
       let memoryPressure: "low" | "medium" | "high" | "critical" = "low";
-      if (currentUsage > 500 * 1024 * 1024) { // 500MB
+      if (currentUsage > 500 * 1024 * 1024) {
+        // 500MB
         memoryPressure = "critical";
-      } else if (currentUsage > 200 * 1024 * 1024) { // 200MB
+      } else if (currentUsage > 200 * 1024 * 1024) {
+        // 200MB
         memoryPressure = "high";
-      } else if (currentUsage > 100 * 1024 * 1024) { // 100MB
+      } else if (currentUsage > 100 * 1024 * 1024) {
+        // 100MB
         memoryPressure = "medium";
       }
 
@@ -205,24 +217,30 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
     }
 
     // Calculate leak rate (bytes per second)
-    const timeSpan = (memoryUsages.length - 1) * (props.refreshInterval || 1000) / 1000; // seconds
-    const memoryIncrease = memoryUsages[memoryUsages.length - 1] - memoryUsages[0];
+    const timeSpan =
+      ((memoryUsages.length - 1) * (props.refreshInterval || 1000)) / 1000; // seconds
+    const memoryIncrease =
+      memoryUsages[memoryUsages.length - 1] - memoryUsages[0];
     const leakRate = memoryIncrease / timeSpan;
 
     // Determine leak severity
     let leakSeverity: "low" | "medium" | "high" | "critical" = "low";
     let isLeakDetected = false;
 
-    if (leakRate > 1024 * 1024) { // 1MB per second
+    if (leakRate > 1024 * 1024) {
+      // 1MB per second
       leakSeverity = "critical";
       isLeakDetected = true;
-    } else if (leakRate > 100 * 1024) { // 100KB per second
+    } else if (leakRate > 100 * 1024) {
+      // 100KB per second
       leakSeverity = "high";
       isLeakDetected = true;
-    } else if (leakRate > 10 * 1024) { // 10KB per second
+    } else if (leakRate > 10 * 1024) {
+      // 10KB per second
       leakSeverity = "medium";
       isLeakDetected = true;
-    } else if (leakRate > 1024) { // 1KB per second
+    } else if (leakRate > 1024) {
+      // 1KB per second
       leakSeverity = "low";
       isLeakDetected = true;
     }
@@ -231,17 +249,24 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
     const estimatedLeakSize = Math.max(0, leakRate * 60); // bytes per minute
 
     // Calculate time to critical (assuming 500MB is critical)
-    const timeToCritical = isLeakDetected && leakRate > 0 
-      ? (500 * 1024 * 1024 - stats.currentUsage) / leakRate 
-      : Infinity;
+    const timeToCritical =
+      isLeakDetected && leakRate > 0
+        ? (500 * 1024 * 1024 - stats.currentUsage) / leakRate
+        : Infinity;
 
     // Generate recommendations
     const recommendations: string[] = [];
     if (isLeakDetected) {
-      recommendations.push("Memory leak detected - investigate for potential causes");
+      recommendations.push(
+        "Memory leak detected - investigate for potential causes",
+      );
       if (leakSeverity === "critical" || leakSeverity === "high") {
-        recommendations.push("Consider restarting the application to free memory");
-        recommendations.push("Check for event listeners that are not being removed");
+        recommendations.push(
+          "Consider restarting the application to free memory",
+        );
+        recommendations.push(
+          "Check for event listeners that are not being removed",
+        );
         recommendations.push("Review component cleanup and disposal logic");
       }
       if (leakSeverity === "medium" || leakSeverity === "low") {
@@ -403,10 +428,7 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
             </Show>
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={forceGarbageCollection}
-          >
+          <Button variant="secondary" onClick={forceGarbageCollection}>
             Force GC
           </Button>
         </div>
@@ -417,7 +439,9 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
         <div class="stats-grid">
           <div class="stat-item">
             <label>Current Usage</label>
-            <span class="value">{formatMemory(memoryStats().currentUsage)}</span>
+            <span class="value">
+              {formatMemory(memoryStats().currentUsage)}
+            </span>
           </div>
           <div class="stat-item">
             <label>Peak Usage</label>
@@ -425,7 +449,9 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
           </div>
           <div class="stat-item">
             <label>Average Usage</label>
-            <span class="value">{formatMemory(memoryStats().averageUsage)}</span>
+            <span class="value">
+              {formatMemory(memoryStats().averageUsage)}
+            </span>
           </div>
           <div class="stat-item">
             <label>Usage Trend</label>
@@ -433,7 +459,9 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
               <span class="trend-icon">
                 <div
                   // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={getUsageTrendIcon(memoryStats().usageTrend)?.outerHTML || ""}
+                  innerHTML={
+                    getUsageTrendIcon(memoryStats().usageTrend)?.outerHTML || ""
+                  }
                 />
               </span>
               {memoryStats().usageTrend}
@@ -441,13 +469,17 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
           </div>
           <div class="stat-item">
             <label>Memory Pressure</label>
-            <span class={`value ${getMemoryPressureColor(memoryStats().memoryPressure)}`}>
+            <span
+              class={`value ${getMemoryPressureColor(memoryStats().memoryPressure)}`}
+            >
               {memoryStats().memoryPressure}
             </span>
           </div>
           <div class="stat-item">
             <label>GC Frequency</label>
-            <span class="value">{memoryStats().gcFrequency.toFixed(1)}/min</span>
+            <span class="value">
+              {memoryStats().gcFrequency.toFixed(1)}/min
+            </span>
           </div>
           <div class="stat-item">
             <label>GC Efficiency</label>
@@ -461,7 +493,9 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
         <h4>Memory Leak Detection</h4>
         <div class="leak-status">
           <div class="leak-indicator">
-            <span class={`leak-status-badge ${getLeakSeverityColor(leakDetection().leakSeverity)}`}>
+            <span
+              class={`leak-status-badge ${getLeakSeverityColor(leakDetection().leakSeverity)}`}
+            >
               {leakDetection().isLeakDetected ? "Leak Detected" : "No Leak"}
             </span>
             <Show when={leakDetection().isLeakDetected}>
@@ -476,15 +510,21 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
           <div class="leak-details">
             <div class="leak-metric">
               <label>Leak Rate:</label>
-              <span class="value">{formatMemory(leakDetection().leakRate)}/s</span>
+              <span class="value">
+                {formatMemory(leakDetection().leakRate)}/s
+              </span>
             </div>
             <div class="leak-metric">
               <label>Estimated Leak Size:</label>
-              <span class="value">{formatMemory(leakDetection().estimatedLeakSize)}/min</span>
+              <span class="value">
+                {formatMemory(leakDetection().estimatedLeakSize)}/min
+              </span>
             </div>
             <div class="leak-metric">
               <label>Time to Critical:</label>
-              <span class="value">{formatDuration(leakDetection().timeToCritical)}</span>
+              <span class="value">
+                {formatDuration(leakDetection().timeToCritical)}
+              </span>
             </div>
           </div>
         </Show>
@@ -523,7 +563,7 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
               y: {
                 beginAtZero: true,
                 ticks: {
-                  callback: function(value: any) {
+                  callback: function (value: any) {
                     return formatMemory(value);
                   },
                 },
@@ -540,7 +580,9 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (props) 
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

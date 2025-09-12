@@ -1,12 +1,17 @@
 /**
  * Image Utils Test Suite
- * 
+ *
  * Tests for image utility functions including file validation,
  * image processing, and helper functions.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { isImageFile, getImageDimensions, resizeImage, compressImage } from "../imageUtils";
+import {
+  isImageFile,
+  getImageDimensions,
+  resizeImage,
+  compressImage,
+} from "../imageUtils";
 
 describe("imageUtils", () => {
   describe("isImageFile", () => {
@@ -22,7 +27,7 @@ describe("imageUtils", () => {
         new File([], "test.tiff", { type: "image/tiff" }),
       ];
 
-      imageFiles.forEach(file => {
+      imageFiles.forEach((file) => {
         expect(isImageFile(file)).toBe(true);
       });
     });
@@ -35,7 +40,7 @@ describe("imageUtils", () => {
         new File([], "test.pdf", { type: "application/pdf" }),
       ];
 
-      nonImageFiles.forEach(file => {
+      nonImageFiles.forEach((file) => {
         expect(isImageFile(file)).toBe(false);
       });
     });
@@ -47,7 +52,7 @@ describe("imageUtils", () => {
         new File([], "test.GIF", { type: "image/gif" }),
       ];
 
-      caseVariations.forEach(file => {
+      caseVariations.forEach((file) => {
         expect(isImageFile(file)).toBe(true);
       });
     });
@@ -55,8 +60,10 @@ describe("imageUtils", () => {
 
   describe("getImageDimensions", () => {
     it("should return dimensions for valid image file", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       // Mock image element
       const mockImage = {
         width: 1920,
@@ -68,24 +75,26 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       // Mock URL.createObjectURL
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       // Mock HTMLImageElement constructor
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
-      
+
       const dimensions = await getImageDimensions(mockImageFile);
       expect(dimensions).toEqual({ width: 1920, height: 1080 });
     });
 
     it("should handle image load errors", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       // Mock image element that fails to load
       const mockImage = {
         width: 0,
@@ -97,15 +106,15 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
-      
+
       const dimensions = await getImageDimensions(mockImageFile);
       expect(dimensions).toEqual({ width: 0, height: 0 });
     });
@@ -113,8 +122,10 @@ describe("imageUtils", () => {
 
   describe("resizeImage", () => {
     it("should resize image to specified dimensions", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       // Mock canvas
       const mockCanvas = {
         width: 0,
@@ -127,7 +138,7 @@ describe("imageUtils", () => {
           callback(blob);
         }),
       };
-      
+
       // Mock image element
       const mockImage = {
         width: 1920,
@@ -139,23 +150,25 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
       global.HTMLCanvasElement = vi.fn(() => mockCanvas) as any;
-      
+
       const resizedImage = await resizeImage(mockImageFile, 800, 600);
       expect(resizedImage).toBeInstanceOf(Blob);
     });
 
     it("should maintain aspect ratio when resizing", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       const mockCanvas = {
         width: 0,
         height: 0,
@@ -167,7 +180,7 @@ describe("imageUtils", () => {
           callback(blob);
         }),
       };
-      
+
       const mockImage = {
         width: 1920,
         height: 1080,
@@ -178,16 +191,16 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
       global.HTMLCanvasElement = vi.fn(() => mockCanvas) as any;
-      
+
       const resizedImage = await resizeImage(mockImageFile, 800, 600, true);
       expect(resizedImage).toBeInstanceOf(Blob);
     });
@@ -195,8 +208,10 @@ describe("imageUtils", () => {
 
   describe("compressImage", () => {
     it("should compress image with specified quality", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       const mockCanvas = {
         width: 0,
         height: 0,
@@ -208,7 +223,7 @@ describe("imageUtils", () => {
           callback(blob);
         }),
       };
-      
+
       const mockImage = {
         width: 1920,
         height: 1080,
@@ -219,23 +234,25 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
       global.HTMLCanvasElement = vi.fn(() => mockCanvas) as any;
-      
+
       const compressedImage = await compressImage(mockImageFile, 0.8);
       expect(compressedImage).toBeInstanceOf(Blob);
     });
 
     it("should handle compression errors", async () => {
-      const mockImageFile = new File(["image"], "test.jpg", { type: "image/jpeg" });
-      
+      const mockImageFile = new File(["image"], "test.jpg", {
+        type: "image/jpeg",
+      });
+
       const mockImage = {
         width: 0,
         height: 0,
@@ -246,15 +263,15 @@ describe("imageUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLImageElement = vi.fn(() => mockImage) as any;
-      
+
       const compressedImage = await compressImage(mockImageFile, 0.8);
       expect(compressedImage).toBe(null);
     });

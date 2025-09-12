@@ -3,9 +3,9 @@
  * Automated i18n validation for continuous integration
  */
 
-import { execSync } from 'child_process';
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { execSync } from "child_process";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
 
 export interface I18nCIConfig {
   /** Packages to check */
@@ -38,7 +38,9 @@ export interface I18nCIResult {
 /**
  * Run i18n checks in CI environment
  */
-export async function runI18nCIChecks(config: I18nCIConfig): Promise<I18nCIResult> {
+export async function runI18nCIChecks(
+  config: I18nCIConfig,
+): Promise<I18nCIResult> {
   const startTime = Date.now();
   const result: I18nCIResult = {
     success: true,
@@ -48,103 +50,116 @@ export async function runI18nCIChecks(config: I18nCIConfig): Promise<I18nCIResul
     coverage: 0,
     duration: 0,
     errors: [],
-    warnings: []
+    warnings: [],
   };
-  
+
   try {
-    console.log('🦊 Starting i18n CI checks...\n');
-    
+    console.log("🦊 Starting i18n CI checks...\n");
+
     // 1. Check for hardcoded strings
     if (config.failOnHardcodedStrings) {
-      console.log('🔍 Checking for hardcoded strings...');
+      console.log("🔍 Checking for hardcoded strings...");
       const hardcodedResult = await checkHardcodedStrings(config.packages);
       result.hardcodedStrings = hardcodedResult.count;
-      
+
       if (hardcodedResult.count > 0) {
         result.errors.push(`Found ${hardcodedResult.count} hardcoded strings`);
         result.success = false;
       }
     }
-    
+
     // 2. Validate translations
     if (config.failOnMissingTranslations) {
-      console.log('🌍 Validating translations...');
+      console.log("🌍 Validating translations...");
       const translationResult = await validateTranslations(config.locales);
       result.missingTranslations = translationResult.missingCount;
-      
+
       if (translationResult.missingCount > 0) {
-        result.errors.push(`Found ${translationResult.missingCount} missing translations`);
+        result.errors.push(
+          `Found ${translationResult.missingCount} missing translations`,
+        );
         result.success = false;
       }
     }
-    
+
     // 3. Check RTL support
     if (config.failOnRTLIssues) {
-      console.log('🔄 Checking RTL support...');
+      console.log("🔄 Checking RTL support...");
       const rtlResult = await checkRTLSupport(config.locales);
       result.rtlIssues = rtlResult.issueCount;
-      
+
       if (rtlResult.issueCount > 0) {
         result.errors.push(`Found ${rtlResult.issueCount} RTL issues`);
         result.success = false;
       }
     }
-    
+
     // 4. Generate coverage report
     if (config.generateCoverageReport) {
-      console.log('📊 Generating coverage report...');
+      console.log("📊 Generating coverage report...");
       const coverageResult = await generateCoverageReport();
       result.coverage = coverageResult.percentage;
-      
+
       if (coverageResult.percentage < 80) {
-        result.warnings.push(`i18n coverage is below 80% (${coverageResult.percentage}%)`);
+        result.warnings.push(
+          `i18n coverage is below 80% (${coverageResult.percentage}%)`,
+        );
       }
     }
-    
+
     // 5. Upload results if configured
     if (config.uploadResults) {
-      console.log('📤 Uploading results...');
+      console.log("📤 Uploading results...");
       await uploadResults(result);
     }
-    
+
     result.duration = Date.now() - startTime;
-    
+
     console.log(`\n✅ i18n CI checks completed in ${result.duration}ms`);
     if (result.success) {
-      console.log('🎉 All i18n checks passed!');
+      console.log("🎉 All i18n checks passed!");
     } else {
-      console.log('❌ Some i18n checks failed. See errors above.');
+      console.log("❌ Some i18n checks failed. See errors above.");
     }
-    
   } catch (error) {
     result.success = false;
-    result.errors.push(`CI check failed: ${error instanceof Error ? error.message : String(error)}`);
-    console.error('❌ i18n CI checks failed:', error);
+    result.errors.push(
+      `CI check failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    console.error("❌ i18n CI checks failed:", error);
   }
-  
+
   return result;
 }
 
 /**
  * Check for hardcoded strings using ESLint
  */
-async function checkHardcodedStrings(packages: string[]): Promise<{ count: number; details: string[] }> {
+async function checkHardcodedStrings(
+  packages: string[],
+): Promise<{ count: number; details: string[] }> {
   try {
     // Run ESLint with i18n rules
-    const command = `npx eslint ${packages.join(' ')} --ext .ts,.tsx,.js,.jsx --rule '@reynard/i18n/no-hardcoded-strings: error' --format json`;
-    const output = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
-    
+    const command = `npx eslint ${packages.join(" ")} --ext .ts,.tsx,.js,.jsx --rule '@reynard/i18n/no-hardcoded-strings: error' --format json`;
+    const output = execSync(command, { encoding: "utf8", stdio: "pipe" });
+
     // Handle case where output is undefined (test environment)
     if (!output) {
       return { count: 0, details: [] };
     }
-    
+
     const results = JSON.parse(output);
-    const count = results.reduce((sum: number, file: any) => sum + file.messages.length, 0);
-    const details = results.flatMap((file: any) => 
-      file.messages.map((msg: any) => `${file.filePath}:${msg.line}:${msg.column} - ${msg.message}`)
+    const count = results.reduce(
+      (sum: number, file: any) => sum + file.messages.length,
+      0,
     );
-    
+    const details = results.flatMap((file: any) =>
+      file.messages.map(
+        (msg: any) =>
+          `${file.filePath}:${msg.line}:${msg.column} - ${msg.message}`,
+      ),
+    );
+
     return { count, details };
   } catch (error) {
     // ESLint might fail if no issues found, which is actually success
@@ -158,36 +173,41 @@ async function checkHardcodedStrings(packages: string[]): Promise<{ count: numbe
 /**
  * Validate translations using the i18n package
  */
-async function validateTranslations(locales: string[]): Promise<{ missingCount: number; details: string[] }> {
+async function validateTranslations(
+  locales: string[],
+): Promise<{ missingCount: number; details: string[] }> {
   try {
     // This would integrate with the actual i18n validation
     const command = `npx vitest run packages/i18n/src/__tests__/translation-validation.test.ts --reporter=json`;
-    const output = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
-    
+    const output = execSync(command, { encoding: "utf8", stdio: "pipe" });
+
     // Handle case where output is undefined (test environment)
     if (!output) {
       return { missingCount: 0, details: [] };
     }
-    
+
     const results = JSON.parse(output);
-    const missingCount = results.testResults.reduce((sum: number, test: any) => 
-      sum + (test.status === 'failed' ? 1 : 0), 0
+    const missingCount = results.testResults.reduce(
+      (sum: number, test: any) => sum + (test.status === "failed" ? 1 : 0),
+      0,
     );
-    
+
     return { missingCount, details: [] };
   } catch (error) {
     // Test failure might indicate missing translations
-    return { missingCount: 1, details: ['Translation validation failed'] };
+    return { missingCount: 1, details: ["Translation validation failed"] };
   }
 }
 
 /**
  * Check RTL support
  */
-async function checkRTLSupport(locales: string[]): Promise<{ issueCount: number; details: string[] }> {
-  const rtlLocales = ['ar', 'he', 'fa', 'ur'];
+async function checkRTLSupport(
+  locales: string[],
+): Promise<{ issueCount: number; details: string[] }> {
+  const rtlLocales = ["ar", "he", "fa", "ur"];
   const rtlIssues: string[] = [];
-  
+
   for (const locale of locales) {
     if (rtlLocales.includes(locale)) {
       // Check if RTL support is properly implemented
@@ -197,29 +217,32 @@ async function checkRTLSupport(locales: string[]): Promise<{ issueCount: number;
       }
     }
   }
-  
+
   return { issueCount: rtlIssues.length, details: rtlIssues };
 }
 
 /**
  * Generate coverage report
  */
-async function generateCoverageReport(): Promise<{ percentage: number; details: string }> {
+async function generateCoverageReport(): Promise<{
+  percentage: number;
+  details: string;
+}> {
   try {
     const command = `npx vitest run packages/i18n --coverage --reporter=json`;
-    const output = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
-    
+    const output = execSync(command, { encoding: "utf8", stdio: "pipe" });
+
     // Handle case where output is undefined (test environment)
     if (!output) {
-      return { percentage: 0, details: 'No coverage data available' };
+      return { percentage: 0, details: "No coverage data available" };
     }
-    
+
     const results = JSON.parse(output);
     const coverage = results.coverage?.summary?.lines?.pct || 0;
-    
+
     return { percentage: coverage, details: `Coverage: ${coverage}%` };
   } catch (error) {
-    return { percentage: 0, details: 'Failed to generate coverage report' };
+    return { percentage: 0, details: "Failed to generate coverage report" };
   }
 }
 
@@ -232,8 +255,8 @@ async function uploadResults(result: I18nCIResult): Promise<void> {
   // - Slack notifications
   // - Custom dashboard
   // - Test result storage
-  
-  console.log('📤 Results would be uploaded to external service');
+
+  console.log("📤 Results would be uploaded to external service");
   console.log(`   Success: ${result.success}`);
   console.log(`   Hardcoded strings: ${result.hardcodedStrings}`);
   console.log(`   Missing translations: ${result.missingTranslations}`);

@@ -1,6 +1,6 @@
 /**
  * Batch Progress Component
- * 
+ *
  * Progress tracking display for batch processing.
  */
 

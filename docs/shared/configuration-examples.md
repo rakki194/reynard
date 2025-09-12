@@ -1,6 +1,6 @@
 # Shared Configuration Examples
 
-*Common configuration patterns used across Reynard packages*
+_Common configuration patterns used across Reynard packages_
 
 ## Table of Contents
 
@@ -293,15 +293,15 @@ class Settings(BaseSettings):
     debug: bool = False
     host: str = "0.0.0.0"
     port: int = 8000
-    
+
     # Database
     database_url: str = "postgresql://user:pass@localhost/reynard"
-    
+
     # Services
     ollama_base_url: str = "http://localhost:11434"
     rag_enabled: bool = True
     tts_enabled: bool = True
-    
+
     class Config:
         env_file = ".env"
 

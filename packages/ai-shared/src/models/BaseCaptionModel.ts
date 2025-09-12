@@ -37,7 +37,7 @@ export abstract class BaseCaptionModel extends BaseModel {
       configSchema,
       metadata,
     );
-    
+
     this._supportedCaptionTypes = supportedCaptionTypes;
     this._supportedFormats = ["jpg", "jpeg", "png", "webp"];
   }
@@ -110,7 +110,10 @@ export abstract class BaseCaptionModel extends BaseModel {
   /**
    * Validate a caption task
    */
-  validateCaptionTask(task: CaptionTask): { isValid: boolean; errors: string[] } {
+  validateCaptionTask(task: CaptionTask): {
+    isValid: boolean;
+    errors: string[];
+  } {
     const errors: string[] = [];
 
     // Check if image path is provided
@@ -120,12 +123,14 @@ export abstract class BaseCaptionModel extends BaseModel {
 
     // Check if caption type is supported
     if (task.captionType && !this.supportsCaptionType(task.captionType)) {
-      errors.push(`Caption type ${task.captionType} is not supported by this model`);
+      errors.push(
+        `Caption type ${task.captionType} is not supported by this model`,
+      );
     }
 
     // Check if image format is supported
     if (task.imagePath) {
-      const extension = task.imagePath.split('.').pop()?.toLowerCase();
+      const extension = task.imagePath.split(".").pop()?.toLowerCase();
       if (extension && !this.supportsImageFormat(extension)) {
         errors.push(`Image format ${extension} is not supported by this model`);
       }
@@ -206,7 +211,7 @@ export abstract class BaseCaptionModel extends BaseModel {
    * Set supported image formats
    */
   setSupportedImageFormats(formats: string[]): void {
-    this._supportedFormats = formats.map(f => f.toLowerCase());
+    this._supportedFormats = formats.map((f) => f.toLowerCase());
   }
 
   // ========================================================================
@@ -248,6 +253,8 @@ export abstract class BaseCaptionModel extends BaseModel {
    * Get all supported caption types as display names
    */
   getSupportedCaptionTypeDisplayNames(): string[] {
-    return this._supportedCaptionTypes.map(type => this.getCaptionTypeDisplayName(type));
+    return this._supportedCaptionTypes.map((type) =>
+      this.getCaptionTypeDisplayName(type),
+    );
   }
 }

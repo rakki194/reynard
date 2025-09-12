@@ -9,7 +9,7 @@ export interface ClusterInteractionConfig {
 
 export function useClusterInteractions(config: ClusterInteractionConfig) {
   const [hoveredCluster, setHoveredCluster] = createSignal<string | null>(null);
-  
+
   let raycaster: any = null;
   let mouse: any = null;
 

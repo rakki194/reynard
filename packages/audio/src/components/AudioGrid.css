@@ -444,21 +444,21 @@
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 0.75rem;
   }
-  
+
   .audio-player-modal {
     padding: 1rem;
   }
-  
+
   .audio-player-content {
     max-width: 95vw;
     max-height: 95vh;
   }
-  
+
   .audio-player-body {
     padding: 1rem;
     gap: 1rem;
   }
-  
+
   .metadata-grid {
     grid-template-columns: 1fr;
   }
@@ -469,33 +469,33 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.5rem;
   }
-  
+
   .audio-thumbnail {
     height: 150px;
   }
-  
+
   .audio-info {
     padding: 0.75rem;
   }
-  
+
   .audio-name {
     font-size: 0.8rem;
   }
-  
+
   .audio-size {
     font-size: 0.7rem;
   }
-  
+
   .audio-player-header {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
   }
-  
+
   .audio-player-header h2 {
     max-width: 100%;
   }
-  
+
   .audio-player-actions {
     width: 100%;
     justify-content: flex-end;

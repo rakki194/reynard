@@ -63,7 +63,7 @@ export const useLocalStorage = <T>(
   });
 
   // Setup cross-tab synchronization
-  const storageHandler = syncAcrossTabs 
+  const storageHandler = syncAcrossTabs
     ? createStorageEventHandler(key, setValue, serializer)
     : { cleanup: () => {} };
 

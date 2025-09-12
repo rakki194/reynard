@@ -114,14 +114,14 @@ export interface EnhancedI18nModule extends I18nModule {
   intlFormatter: any; // ReturnType<typeof createIntlFormatter>
   templateTranslator: any; // ReturnType<typeof createTemplateTranslator>
   pluralTranslator: any; // ReturnType<typeof createDebugPluralTranslator>
-  
+
   // Namespace loading
   loadNamespace: <T = any>(namespace: string) => Promise<T>;
-  
+
   // Cache management
   clearCache: (locale?: LanguageCode) => void;
   getCacheStats: () => any;
-  
+
   // Enterprise features
   translationManager: any; // TranslationManager
   analytics: any; // TranslationAnalytics

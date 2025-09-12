@@ -49,7 +49,9 @@ export interface InstallationSummary {
   totalProgress: number;
 }
 
-export const PackageInstallationPanel: Component<PackageInstallationPanelProps> = (props) => {
+export const PackageInstallationPanel: Component<
+  PackageInstallationPanelProps
+> = (props) => {
   const [packages, setPackages] = createSignal<InstallationPackage[]>([]);
   const [summary, setSummary] = createSignal<InstallationSummary>({
     totalPackages: 0,
@@ -176,13 +178,18 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
 
       // Calculate summary
       const packageList = mockPackages;
-      const totalProgress = packageList.reduce((sum, pkg) => sum + pkg.progress, 0) / packageList.length;
-      
+      const totalProgress =
+        packageList.reduce((sum, pkg) => sum + pkg.progress, 0) /
+        packageList.length;
+
       const mockSummary: InstallationSummary = {
         totalPackages: packageList.length,
-        pendingPackages: packageList.filter((p) => p.status === "pending").length,
-        installingPackages: packageList.filter((p) => p.status === "installing").length,
-        installedPackages: packageList.filter((p) => p.status === "installed").length,
+        pendingPackages: packageList.filter((p) => p.status === "pending")
+          .length,
+        installingPackages: packageList.filter((p) => p.status === "installing")
+          .length,
+        installedPackages: packageList.filter((p) => p.status === "installed")
+          .length,
         failedPackages: packageList.filter((p) => p.status === "failed").length,
         totalProgress: totalProgress,
       };
@@ -199,10 +206,12 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
   const handleInstallPackage = async (packageName: string) => {
     // In a real implementation, this would call the backend installation endpoint
     console.log(`Installing package: ${packageName}`);
-    
+
     // Simulate installation
     const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName ? { ...pkg, status: "installing" as const, startTime: new Date() } : pkg
+      pkg.name === packageName
+        ? { ...pkg, status: "installing" as const, startTime: new Date() }
+        : pkg,
     );
     setPackages(updatedPackages);
 
@@ -214,8 +223,8 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
         prev.map((pkg) =>
           pkg.name === packageName && pkg.status === "installing"
             ? { ...pkg, progress: Math.min(progress, 100) }
-            : pkg
-        )
+            : pkg,
+        ),
       );
 
       if (progress >= 100) {
@@ -224,8 +233,8 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
           prev.map((pkg) =>
             pkg.name === packageName && pkg.status === "installing"
               ? { ...pkg, status: "installed" as const, endTime: new Date() }
-              : pkg
-          )
+              : pkg,
+          ),
         );
       }
     }, 500);
@@ -234,10 +243,12 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
   const handleCancelInstallation = async (packageName: string) => {
     // In a real implementation, this would call the backend cancellation endpoint
     console.log(`Cancelling installation: ${packageName}`);
-    
+
     // Simulate cancellation
     const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName ? { ...pkg, status: "cancelled" as const, endTime: new Date() } : pkg
+      pkg.name === packageName
+        ? { ...pkg, status: "cancelled" as const, endTime: new Date() }
+        : pkg,
     );
     setPackages(updatedPackages);
   };
@@ -245,18 +256,28 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
   const handleRetryInstallation = async (packageName: string) => {
     // In a real implementation, this would call the backend retry endpoint
     console.log(`Retrying installation: ${packageName}`);
-    
+
     // Simulate retry
     const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName ? { ...pkg, status: "installing" as const, progress: 0, error: undefined, startTime: new Date() } : pkg
+      pkg.name === packageName
+        ? {
+            ...pkg,
+            status: "installing" as const,
+            progress: 0,
+            error: undefined,
+            startTime: new Date(),
+          }
+        : pkg,
     );
     setPackages(updatedPackages);
   };
 
   const handleBulkInstall = async () => {
-    const pendingPackages = packages().filter((pkg) => pkg.status === "pending");
+    const pendingPackages = packages().filter(
+      (pkg) => pkg.status === "pending",
+    );
     setIsInstalling(true);
-    
+
     try {
       for (const pkg of pendingPackages) {
         await handleInstallPackage(pkg.name);
@@ -277,7 +298,7 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
       filtered = filtered.filter(
         (pkg) =>
           pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query)
+          pkg.description.toLowerCase().includes(query),
       );
     }
 
@@ -357,7 +378,9 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("download")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("download")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Package Installation</h3>
@@ -370,7 +393,10 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
               onClick={handleBulkInstall}
               disabled={isInstalling() || summary().pendingPackages === 0}
             >
-              <Show when={isInstalling()} fallback={`Install All (${summary().pendingPackages})`}>
+              <Show
+                when={isInstalling()}
+                fallback={`Install All (${summary().pendingPackages})`}
+              >
                 <span class="spinner"></span>
                 Installing...
               </Show>
@@ -447,10 +473,13 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(pkg.status))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(pkg.status))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="package-details">
                     <span class="package-name">{pkg.name}</span>
                     <span class="package-version">v{pkg.version}</span>
@@ -459,10 +488,13 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
                 </div>
 
                 <div class="package-status">
-                  <span class="status-badge" classList={{ [getStatusColor(pkg.status)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(pkg.status)]: true }}
+                  >
                     {pkg.status}
                   </span>
-                  
+
                   <span class="package-size">{formatSize(pkg.size)}</span>
                 </div>
               </div>
@@ -471,14 +503,13 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
               <Show when={props.showProgress && pkg.status === "installing"}>
                 <div class="installation-progress">
                   <div class="progress-bar">
-                    <div 
-                      class="progress-fill" 
-                      data-progress={pkg.progress}
-                    />
+                    <div class="progress-fill" data-progress={pkg.progress} />
                   </div>
                   <div class="progress-info">
                     <span class="progress-text">{pkg.progress}%</span>
-                    <span class="estimated-time">ETA: {formatTime(pkg.estimatedTime)}</span>
+                    <span class="estimated-time">
+                      ETA: {formatTime(pkg.estimatedTime)}
+                    </span>
                   </div>
                 </div>
               </Show>
@@ -489,33 +520,33 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
                   <span class="label">Size:</span>
                   <span class="value">{formatSize(pkg.size)}</span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Estimated Time:</span>
                   <span class="value">{formatTime(pkg.estimatedTime)}</span>
                 </div>
-                
+
                 <Show when={pkg.startTime}>
                   <div class="detail-row">
                     <span class="label">Started:</span>
                     <span class="value">{pkg.startTime!.toLocaleString()}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.endTime}>
                   <div class="detail-row">
                     <span class="label">Completed:</span>
                     <span class="value">{pkg.endTime!.toLocaleString()}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
                     <span class="value">{pkg.dependencies.join(", ")}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.error}>
                   <div class="detail-row error">
                     <span class="label">Error:</span>
@@ -535,7 +566,7 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
                     Install
                   </Button>
                 </Show>
-                
+
                 <Show when={pkg.status === "installing"}>
                   <Button
                     variant="warning"
@@ -545,7 +576,7 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
                     Cancel
                   </Button>
                 </Show>
-                
+
                 <Show when={pkg.status === "failed"}>
                   <Button
                     variant="secondary"
@@ -563,7 +594,9 @@ export const PackageInstallationPanel: Component<PackageInstallationPanelProps> 
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

@@ -30,7 +30,7 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
           <span>Strong</span>
         </div>
       </div>
-      
+
       <div class="control-group">
         <label for="ramp-stops-slider">
           Color Ramp Stops: {props.rampStops}
@@ -50,7 +50,7 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
           <span>9</span>
         </div>
       </div>
-      
+
       <div class="preset-buttons">
         <h4>Quick Presets</h4>
         <div class="preset-grid">
@@ -80,16 +80,17 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
           </button>
         </div>
       </div>
-      
+
       <div class="info-panel">
         <h4>About Hue Shifting</h4>
         <div class="info-content">
           <div class="info-item">
-            <strong>Intensity:</strong> Controls how much the hue shifts between 
-            shadows and highlights. Higher values create more dramatic color changes.
+            <strong>Intensity:</strong> Controls how much the hue shifts between
+            shadows and highlights. Higher values create more dramatic color
+            changes.
           </div>
           <div class="info-item">
-            <strong>Ramp Stops:</strong> Number of colors in the generated ramp. 
+            <strong>Ramp Stops:</strong> Number of colors in the generated ramp.
             More stops create smoother gradients but use more palette space.
           </div>
         </div>

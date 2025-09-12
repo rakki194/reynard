@@ -1,6 +1,6 @@
 # 🦊> Reynard Embedding Visualization System
 
-*Comprehensive embedding analysis and visualization with dimensionality reduction, statistical analysis, and interactive 3D visualization.*
+_Comprehensive embedding analysis and visualization with dimensionality reduction, statistical analysis, and interactive 3D visualization._
 
 ## Overview
 
@@ -95,7 +95,7 @@ export const MyComponent = () => {
 ### Individual Components
 
 ```tsx
-import { 
+import {
   EmbeddingDistributionChart,
   PCAVarianceChart,
   EmbeddingQualityChart,
@@ -142,29 +142,25 @@ import { useEmbeddingVisualization } from "reynard-charts";
 
 export const MyComponent = () => {
   const embeddingViz = useEmbeddingVisualization();
-  
+
   // Get statistics
   const stats = embeddingViz.stats();
-  
+
   // Perform reduction
   const performReduction = async () => {
     const result = await embeddingViz.performReduction({
-      method: 'pca',
+      method: "pca",
       parameters: { n_components: 3 },
-      max_samples: 1000
+      max_samples: 1000,
     });
   };
-  
+
   // Analyze quality
   const analyzeQuality = async (embeddings) => {
     const quality = await embeddingViz.analyzeQuality(embeddings);
   };
-  
-  return (
-    <div>
-      {/* Your component content */}
-    </div>
-  );
+
+  return <div>{/* Your component content */}</div>;
 };
 ```
 
@@ -238,7 +234,7 @@ from ..services.rag_service import RAGService
 class EmbeddingVisualizationService:
     def __init__(self, rag_service: RAGService):
         self.rag_service = rag_service
-    
+
     async def get_embedding_stats(self):
         # Get real embedding statistics from RAG service
         return await self.rag_service.get_embedding_statistics()
@@ -327,8 +323,8 @@ Enable debug logging:
 ```typescript
 // Frontend
 const embeddingViz = useEmbeddingVisualization();
-console.log('Stats:', embeddingViz.stats());
-console.log('Available methods:', embeddingViz.availableMethods());
+console.log("Stats:", embeddingViz.stats());
+console.log("Available methods:", embeddingViz.availableMethods());
 ```
 
 ```python
@@ -380,4 +376,4 @@ This embedding visualization system is part of the Reynard project and follows t
 
 ---
 
-🦊> *Built with cunning agile development - the fox's strategic approach to complex visualization challenges.*
+🦊> _Built with cunning agile development - the fox's strategic approach to complex visualization challenges._

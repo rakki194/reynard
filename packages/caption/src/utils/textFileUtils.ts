@@ -1,6 +1,6 @@
 /**
  * Text File Utilities for Reynard Caption System
- * 
+ *
  * Utility functions for processing text files and detecting language types.
  */
 
@@ -11,7 +11,9 @@ import { TextFile, TextMetadata } from "../types/TextTypes";
  */
 export const getFileExtension = (filename: string): string => {
   const lastDotIndex = filename.lastIndexOf(".");
-  return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
+  return lastDotIndex !== -1
+    ? filename.substring(lastDotIndex).toLowerCase()
+    : "";
 };
 
 /**
@@ -19,51 +21,51 @@ export const getFileExtension = (filename: string): string => {
  */
 export const detectLanguage = (filename: string, content: string): string => {
   const extension = getFileExtension(filename);
-  
+
   // Language detection based on file extension
   const languageMap: Record<string, string> = {
-    '.js': 'javascript',
-    '.ts': 'typescript',
-    '.tsx': 'typescript',
-    '.jsx': 'javascript',
-    '.py': 'python',
-    '.java': 'java',
-    '.cpp': 'cpp',
-    '.c': 'c',
-    '.cs': 'csharp',
-    '.php': 'php',
-    '.rb': 'ruby',
-    '.go': 'go',
-    '.rs': 'rust',
-    '.swift': 'swift',
-    '.kt': 'kotlin',
-    '.scala': 'scala',
-    '.html': 'html',
-    '.css': 'css',
-    '.scss': 'scss',
-    '.sass': 'sass',
-    '.less': 'less',
-    '.json': 'json',
-    '.xml': 'xml',
-    '.yaml': 'yaml',
-    '.yml': 'yaml',
-    '.toml': 'toml',
-    '.md': 'markdown',
-    '.txt': 'plaintext',
-    '.log': 'plaintext',
-    '.sql': 'sql',
-    '.sh': 'shell',
-    '.bash': 'shell',
-    '.zsh': 'shell',
-    '.fish': 'shell',
-    '.ps1': 'powershell',
-    '.bat': 'batch',
-    '.dockerfile': 'dockerfile',
-    '.gitignore': 'plaintext',
-    '.env': 'plaintext',
+    ".js": "javascript",
+    ".ts": "typescript",
+    ".tsx": "typescript",
+    ".jsx": "javascript",
+    ".py": "python",
+    ".java": "java",
+    ".cpp": "cpp",
+    ".c": "c",
+    ".cs": "csharp",
+    ".php": "php",
+    ".rb": "ruby",
+    ".go": "go",
+    ".rs": "rust",
+    ".swift": "swift",
+    ".kt": "kotlin",
+    ".scala": "scala",
+    ".html": "html",
+    ".css": "css",
+    ".scss": "scss",
+    ".sass": "sass",
+    ".less": "less",
+    ".json": "json",
+    ".xml": "xml",
+    ".yaml": "yaml",
+    ".yml": "yaml",
+    ".toml": "toml",
+    ".md": "markdown",
+    ".txt": "plaintext",
+    ".log": "plaintext",
+    ".sql": "sql",
+    ".sh": "shell",
+    ".bash": "shell",
+    ".zsh": "shell",
+    ".fish": "shell",
+    ".ps1": "powershell",
+    ".bat": "batch",
+    ".dockerfile": "dockerfile",
+    ".gitignore": "plaintext",
+    ".env": "plaintext",
   };
 
-  return languageMap[extension] || 'plaintext';
+  return languageMap[extension] || "plaintext";
 };
 
 /**
@@ -71,48 +73,48 @@ export const detectLanguage = (filename: string, content: string): string => {
  */
 export const getFileIcon = (extension: string): string => {
   const iconMap: Record<string, string> = {
-    '.js': '📄',
-    '.ts': '📘',
-    '.tsx': '📘',
-    '.jsx': '📄',
-    '.py': '🐍',
-    '.java': '☕',
-    '.cpp': '⚡',
-    '.c': '⚡',
-    '.cs': '🔷',
-    '.php': '🐘',
-    '.rb': '💎',
-    '.go': '🐹',
-    '.rs': '🦀',
-    '.swift': '🐦',
-    '.kt': '🟣',
-    '.scala': '🔴',
-    '.html': '🌐',
-    '.css': '🎨',
-    '.scss': '🎨',
-    '.sass': '🎨',
-    '.less': '🎨',
-    '.json': '📋',
-    '.xml': '📄',
-    '.yaml': '📄',
-    '.yml': '📄',
-    '.toml': '📄',
-    '.md': '📝',
-    '.txt': '📄',
-    '.log': '📋',
-    '.sql': '🗄️',
-    '.sh': '💻',
-    '.bash': '💻',
-    '.zsh': '💻',
-    '.fish': '🐠',
-    '.ps1': '💻',
-    '.bat': '💻',
-    '.dockerfile': '🐳',
-    '.gitignore': '📄',
-    '.env': '⚙️',
+    ".js": "📄",
+    ".ts": "📘",
+    ".tsx": "📘",
+    ".jsx": "📄",
+    ".py": "🐍",
+    ".java": "☕",
+    ".cpp": "⚡",
+    ".c": "⚡",
+    ".cs": "🔷",
+    ".php": "🐘",
+    ".rb": "💎",
+    ".go": "🐹",
+    ".rs": "🦀",
+    ".swift": "🐦",
+    ".kt": "🟣",
+    ".scala": "🔴",
+    ".html": "🌐",
+    ".css": "🎨",
+    ".scss": "🎨",
+    ".sass": "🎨",
+    ".less": "🎨",
+    ".json": "📋",
+    ".xml": "📄",
+    ".yaml": "📄",
+    ".yml": "📄",
+    ".toml": "📄",
+    ".md": "📝",
+    ".txt": "📄",
+    ".log": "📋",
+    ".sql": "🗄️",
+    ".sh": "💻",
+    ".bash": "💻",
+    ".zsh": "💻",
+    ".fish": "🐠",
+    ".ps1": "💻",
+    ".bat": "💻",
+    ".dockerfile": "🐳",
+    ".gitignore": "📄",
+    ".env": "⚙️",
   };
 
-  return iconMap[extension] || '📄';
+  return iconMap[extension] || "📄";
 };
 
 /**
@@ -121,17 +123,17 @@ export const getFileIcon = (extension: string): string => {
 export const processTextFile = async (file: File): Promise<TextFile> => {
   // Read file content
   const content = await file.text();
-  
+
   // Extract basic metadata
   const metadata: TextMetadata = {
     name: file.name,
     size: file.size,
     type: file.type,
     extension: getFileExtension(file.name),
-    lineCount: content.split('\n').length,
-    wordCount: content.split(/\s+/).filter(word => word.length > 0).length,
+    lineCount: content.split("\n").length,
+    wordCount: content.split(/\s+/).filter((word) => word.length > 0).length,
     characterCount: content.length,
-    encoding: 'utf-8', // Default assumption
+    encoding: "utf-8", // Default assumption
     language: detectLanguage(file.name, content),
     lastModified: new Date(file.lastModified),
   };

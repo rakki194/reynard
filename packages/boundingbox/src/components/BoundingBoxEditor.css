@@ -48,7 +48,11 @@
 }
 
 .bounding-box-toggle-btn:hover {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 85%, oklch(0% 0 0));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 85%,
+    oklch(0% 0 0)
+  );
 }
 
 .bounding-box-toggle-btn.labelling {
@@ -62,7 +66,11 @@
 .bounding-box {
   position: absolute;
   border: 2px solid var(--color-accent, oklch(60% 0.25 240));
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 8%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 8%,
+    transparent
+  );
   box-sizing: border-box;
   cursor: pointer;
   z-index: var(--z-bounding-box, 100);
@@ -75,16 +83,29 @@
 
 .bounding-box.selected {
   border-color: var(--color-accent, oklch(60% 0.25 240));
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 12%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 12%,
+    transparent
+  );
   z-index: var(--z-bounding-box-selected, 200);
 }
 
 .bounding-box:hover:not(.fabric-editing) {
   border-color: var(--color-warning, oklch(70% 0.2 80));
-  background: color-mix(in oklch, var(--color-warning, oklch(70% 0.2 80)) 10%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-warning, oklch(70% 0.2 80)) 10%,
+    transparent
+  );
   z-index: var(--z-bounding-box-hover, 150);
   cursor: pointer;
-  box-shadow: 0 2px 8px color-mix(in oklch, var(--color-warning, oklch(70% 0.2 80)) 30%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(
+      in oklch,
+      var(--color-warning, oklch(70% 0.2 80)) 30%,
+      transparent
+    );
 }
 
 .bounding-box-label {
@@ -142,7 +163,11 @@
 .bounding-box-drawing {
   position: absolute;
   border: 2px dashed var(--accent, #3b82f6);
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 8%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 8%,
+    transparent
+  );
   box-sizing: border-box;
   z-index: var(--z-bounding-box-drawing, 400);
   pointer-events: none;
@@ -191,12 +216,20 @@
 }
 
 .bounding-box-label-item.selected {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 10%, var(--color-surface, oklch(98% 0.01 0)));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 10%,
+    var(--color-surface, oklch(98% 0.01 0))
+  );
   color: var(--color-text-inverse, oklch(95% 0.01 0));
 }
 
 .bounding-box-label-item:hover {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 5%, var(--color-surface, oklch(98% 0.01 0)));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 5%,
+    var(--color-surface, oklch(98% 0.01 0))
+  );
 }
 
 .bounding-box-label-color {
@@ -229,7 +262,11 @@
 }
 
 .bounding-box-label-delete-btn:hover {
-  background: color-mix(in oklch, var(--color-error, oklch(55% 0.25 20)) 10%, transparent);
+  background: color-mix(
+    in oklch,
+    var(--color-error, oklch(55% 0.25 20)) 10%,
+    transparent
+  );
   border-radius: 2px;
 }
 
@@ -264,13 +301,21 @@
 }
 
 .themed-btn:hover {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 85%, oklch(0% 0 0));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 85%,
+    oklch(0% 0 0)
+  );
   color: var(--color-text-inverse, oklch(95% 0.01 0));
   border-color: var(--color-accent, oklch(60% 0.25 240));
 }
 
 .themed-btn:active {
-  background: color-mix(in oklch, var(--color-accent, oklch(60% 0.25 240)) 70%, oklch(0% 0 0));
+  background: color-mix(
+    in oklch,
+    var(--color-accent, oklch(60% 0.25 240)) 70%,
+    oklch(0% 0 0)
+  );
   border-color: var(--color-accent, oklch(60% 0.25 240));
 }
 
@@ -282,19 +327,23 @@
   0% {
     box-shadow:
       0 0 0 0 var(--warning, rgb(255 193 7 / 70%)),
-      0 0 0 0 var(--warning, color-mix(in srgb, var(--warning) 70%, transparent));
+      0 0 0 0
+        var(--warning, color-mix(in srgb, var(--warning) 70%, transparent));
     border-color: var(--color-warning, oklch(70% 0.2 80));
   }
 
   60% {
     box-shadow:
-      0 0 0 8px var(--warning, color-mix(in srgb, var(--warning) 20%, transparent)),
-      0 0 0 16px var(--warning, color-mix(in srgb, var(--warning) 10%, transparent));
+      0 0 0 8px
+        var(--warning, color-mix(in srgb, var(--warning) 20%, transparent)),
+      0 0 0 16px
+        var(--warning, color-mix(in srgb, var(--warning) 10%, transparent));
     border-color: var(--color-warning, oklch(70% 0.2 80));
   }
 
   100% {
-    box-shadow: 0 0 0 0 var(--warning, color-mix(in srgb, var(--warning) 0%, transparent));
+    box-shadow: 0 0 0 0
+      var(--warning, color-mix(in srgb, var(--warning) 0%, transparent));
     border-color: var(--color-accent, oklch(60% 0.25 240));
   }
 }
@@ -313,19 +362,19 @@
   .bounding-box-editor-container {
     min-height: 300px;
   }
-  
+
   .bounding-box-toggle-btn {
     bottom: 8px;
     left: 8px;
     padding: 4px 10px;
     font-size: 0.9em;
   }
-  
+
   .bounding-box-label {
     font-size: 0.75em;
     padding: 1px 4px;
   }
-  
+
   .bounding-box-delete-btn {
     width: 16px;
     height: 16px;
@@ -356,11 +405,11 @@
   .bounding-box {
     border-width: 3px;
   }
-  
+
   .bounding-box-label {
     border: 1px solid currentColor;
   }
-  
+
   .themed-btn {
     border-width: 2px;
   }

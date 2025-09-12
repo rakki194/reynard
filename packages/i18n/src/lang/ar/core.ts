@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "تم إلغاء الطلب",
   },
-  
+
   // المصادقة والأمان
   bearer: {
     token: "رمز Bearer",
     "test-key": "مفتاح اختبار Bearer",
     "new-key": "مفتاح جديد Bearer",
   },
-  
+
   // الإشعارات
   notifications: {
     title: "الإشعارات",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "أول مجمع",
     "second-grouped": "ثاني مجمع",
   },
-  
+
   // رسائل التحقق
   validation: {
     required: "هذا الحقل مطلوب",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "نوع الإدخال غير صحيح",
     "does-not-match-pattern": "الإدخال لا يطابق النمط المطلوب",
   },
-  
+
   // التحقق من كلمة المرور
   password: {
-    "must-be-at-least-8-characters-long": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-    "must-contain-at-least-one-uppercase-letter": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
-    "must-contain-at-least-one-lowercase-letter": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
-    "must-contain-at-least-one-number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
-    "must-contain-at-least-one-special-character": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
+    "must-be-at-least-8-characters-long":
+      "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "must-contain-at-least-one-uppercase-letter":
+      "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+    "must-contain-at-least-one-lowercase-letter":
+      "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+    "must-contain-at-least-one-number":
+      "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+    "must-contain-at-least-one-special-character":
+      "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
   },
-  
+
   // التحقق من الأمان
   security: {
-    "at-least-one-character-type-must-be-included": "يجب تضمين نوع حرف واحد على الأقل",
-    "input-contains-potentially-dangerous-html": "الإدخال يحتوي على HTML محتمل الخطورة",
-    "input-contains-potentially-dangerous-sql-patterns": "الإدخال يحتوي على أنماط SQL محتملة الخطورة",
-    "input-contains-potentially-dangerous-xss-patterns": "الإدخال يحتوي على أنماط XSS محتملة الخطورة",
-    "input-contains-path-traversal-patterns": "الإدخال يحتوي على أنماط اجتياز المسار",
-    "input-contains-windows-reserved-names": "الإدخال يحتوي على أسماء محجوزة في Windows",
-    "input-contains-executable-file-extensions": "الإدخال يحتوي على امتدادات ملفات قابلة للتنفيذ",
+    "at-least-one-character-type-must-be-included":
+      "يجب تضمين نوع حرف واحد على الأقل",
+    "input-contains-potentially-dangerous-html":
+      "الإدخال يحتوي على HTML محتمل الخطورة",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "الإدخال يحتوي على أنماط SQL محتملة الخطورة",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "الإدخال يحتوي على أنماط XSS محتملة الخطورة",
+    "input-contains-path-traversal-patterns":
+      "الإدخال يحتوي على أنماط اجتياز المسار",
+    "input-contains-windows-reserved-names":
+      "الإدخال يحتوي على أسماء محجوزة في Windows",
+    "input-contains-executable-file-extensions":
+      "الإدخال يحتوي على امتدادات ملفات قابلة للتنفيذ",
     "input-contains-null-bytes": "الإدخال يحتوي على بايتات فارغة",
     "input-contains-hidden-files": "الإدخال يحتوي على ملفات مخفية",
-    "input-contains-javascript-file-extensions": "الإدخال يحتوي على امتدادات ملفات JavaScript",
+    "input-contains-javascript-file-extensions":
+      "الإدخال يحتوي على امتدادات ملفات JavaScript",
   },
-  
+
   // العمليات غير المتزامنة
   async: {
     "operation-timed-out": "انتهت مهلة العملية",
@@ -107,7 +120,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "يجب أن يكون التزامن أكبر من 0",
     "polling-timeout-reached": "تم الوصول إلى مهلة الاستطلاع",
   },
-  
+
   // تحميل الوحدات
   module: {
     "is-null": "الوحدة فارغة",
@@ -115,14 +128,15 @@ export const coreTranslations = {
     "load-failed": "فشل التحميل",
     "loading-failed": "فشل التحميل",
   },
-  
+
   // التخزين والتسلسل
   storage: {
     "potentially-dangerous-json-detected": "تم اكتشاف JSON محتمل الخطورة",
-    "failed-to-parse-json-from-localstorage": "فشل في تحليل JSON من localStorage:",
+    "failed-to-parse-json-from-localstorage":
+      "فشل في تحليل JSON من localStorage:",
     "error-parsing-storage-event": "خطأ في تحليل حدث التخزين للمفتاح",
   },
-  
+
   // الاختبار والتطوير
   test: {
     error: "خطأ اختبار",
@@ -131,19 +145,19 @@ export const coreTranslations = {
     "notification-1": "إشعار اختبار 1",
     "notification-2": "إشعار اختبار 2",
   },
-  
+
   // الأخطاء العامة
   errors: {
     "string-error": "خطأ نصي",
     "crypto-error": "خطأ تشفير",
     "some-error": "خطأ ما",
   },
-  
+
   // المنسقات والأدوات
   formatters: {
     "hello-world": "مرحباً بالعالم",
   },
-  
+
   // التاريخ والوقت
   dateTime: {
     now: "الآن",
@@ -153,11 +167,13 @@ export const coreTranslations = {
     format: "تنسيق",
     timezone: "المنطقة الزمنية",
   },
-  
+
   // اختبارات التكامل
   integration: {
-    "session-and-api-key-generation": "إنشاء الجلسة ومفتاح واجهة برمجة التطبيقات",
-    "authentication-and-input-validation-integration": "تكامل المصادقة والتحقق من الإدخال",
+    "session-and-api-key-generation":
+      "إنشاء الجلسة ومفتاح واجهة برمجة التطبيقات",
+    "authentication-and-input-validation-integration":
+      "تكامل المصادقة والتحقق من الإدخال",
     "performance-and-security-integration": "تكامل الأداء والأمان",
   },
 };

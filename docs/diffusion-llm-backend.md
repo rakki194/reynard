@@ -60,7 +60,7 @@ backend/app/api/diffusion/
    ```bash
    # Install DreamOn model dependencies
    pip install torch transformers
-   
+
    # Install LLaDA model dependencies
    pip install diffusers accelerate
    ```
@@ -299,15 +299,15 @@ curl -X POST http://localhost:8000/api/diffusion/admin/models/dreamon/reload
 
    ```python
    from .base import DiffusionModel
-   
+
    class MyDiffusionModel(DiffusionModel):
        def __init__(self):
            super().__init__("my_model")
-       
+
        async def initialize(self) -> bool:
            # Initialize your model
            return True
-       
+
        async def generate_stream(self, params: DiffusionGenerationParams):
            # Implement generation logic
            pass
@@ -318,7 +318,7 @@ curl -X POST http://localhost:8000/api/diffusion/admin/models/dreamon/reload
    ```python
    # In diffusion_service.py
    from .my_model import MyDiffusionModel
-   
+
    async def _initialize_models(self):
        self._models["my_model"] = MyDiffusionModel()
        await self._models["my_model"].initialize()
@@ -409,4 +409,4 @@ Key benefits:
 - **Developer Friendly**: Comprehensive API and easy model extension
 - **Performance Optimized**: GPU acceleration and automatic fallback
 
-*Build advanced text generation applications with the cunning precision of a fox!* 🦊
+_Build advanced text generation applications with the cunning precision of a fox!_ 🦊

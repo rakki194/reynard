@@ -1,12 +1,14 @@
 /**
  * Panel Configuration Composable
- * 
+ *
  * Extracted configuration logic to maintain 140-line axiom.
  */
 
 import type { PanelConfig } from "../types";
 
-export const usePanelConfig = (userConfig?: PanelConfig): Required<PanelConfig> => {
+export const usePanelConfig = (
+  userConfig?: PanelConfig,
+): Required<PanelConfig> => {
   return {
     draggable: true,
     resizable: false,
@@ -21,6 +23,6 @@ export const usePanelConfig = (userConfig?: PanelConfig): Required<PanelConfig> 
     hoverDelay: 500,
     persistent: true,
     theme: "default",
-    ...userConfig
+    ...userConfig,
   };
 };

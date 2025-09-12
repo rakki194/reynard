@@ -1,6 +1,10 @@
 import { Component, createMemo, createSignal } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import { basicColorRamp, materialHueShift, MATERIAL_PATTERNS } from "../utils/hueShiftingAlgorithms";
+import {
+  basicColorRamp,
+  materialHueShift,
+  MATERIAL_PATTERNS,
+} from "../utils/hueShiftingAlgorithms";
 import { sprites } from "../data/spriteData";
 import { SpriteSelector } from "./SpriteSelector";
 import { SpritePreview } from "./SpritePreview";
@@ -15,41 +19,40 @@ interface PixelArtPreviewProps {
 
 export const PixelArtPreview: Component<PixelArtPreviewProps> = (props) => {
   const [selectedSprite, setSelectedSprite] = createSignal("character");
-  
+
   const spriteColors = createMemo(() => {
     const base = props.baseColor;
     const material = props.material;
     const intensity = props.intensity;
-    
+
     if (material === "custom") {
       return {
         shadow: basicColorRamp(base, "shadow", intensity),
         base: base,
-        highlight: basicColorRamp(base, "highlight", intensity)
+        highlight: basicColorRamp(base, "highlight", intensity),
       };
     }
-    
+
     return materialHueShift(base, material, intensity);
   });
-  
-  const currentSprite = createMemo(() => sprites[selectedSprite() as keyof typeof sprites]);
-  
+
+  const currentSprite = createMemo(
+    () => sprites[selectedSprite() as keyof typeof sprites],
+  );
+
   return (
     <div class="pixel-art-preview">
-      <SpriteSelector 
-        selectedSprite={selectedSprite()} 
-        onSpriteChange={setSelectedSprite} 
+      <SpriteSelector
+        selectedSprite={selectedSprite()}
+        onSpriteChange={setSelectedSprite}
       />
-      
-      <SpritePreview 
-        sprite={currentSprite()} 
-        spriteColors={spriteColors()} 
-      />
-      
-      <ComparisonView 
-        sprite={currentSprite()} 
+
+      <SpritePreview sprite={currentSprite()} spriteColors={spriteColors()} />
+
+      <ComparisonView
+        sprite={currentSprite()}
         baseColor={props.baseColor}
-        spriteColors={spriteColors()} 
+        spriteColors={spriteColors()}
       />
     </div>
   );

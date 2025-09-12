@@ -2,41 +2,41 @@
  * Test setup file for enhanced i18n tests
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Mock import.meta.glob
-vi.mock('import.meta', () => ({
-  glob: vi.fn().mockReturnValue({})
+vi.mock("import.meta", () => ({
+  glob: vi.fn().mockReturnValue({}),
 }));
 
 // Mock performance API
-Object.defineProperty(global, 'performance', {
+Object.defineProperty(global, "performance", {
   value: {
-    now: vi.fn().mockReturnValue(1000)
+    now: vi.fn().mockReturnValue(1000),
   },
-  writable: true
+  writable: true,
 });
 
 // Mock localStorage
-Object.defineProperty(global, 'localStorage', {
+Object.defineProperty(global, "localStorage", {
   value: {
-    getItem: vi.fn().mockReturnValue('en'),
+    getItem: vi.fn().mockReturnValue("en"),
     setItem: vi.fn(),
     removeItem: vi.fn(),
-    clear: vi.fn()
+    clear: vi.fn(),
   },
-  writable: true
+  writable: true,
 });
 
 // Mock document
-Object.defineProperty(global, 'document', {
+Object.defineProperty(global, "document", {
   value: {
     documentElement: {
       setAttribute: vi.fn(),
-      getAttribute: vi.fn()
-    }
+      getAttribute: vi.fn(),
+    },
   },
-  writable: true
+  writable: true,
 });
 
 // Mock console methods to avoid noise in tests
@@ -48,5 +48,5 @@ global.console = {
   group: vi.fn(),
   groupEnd: vi.fn(),
   log: vi.fn(),
-  info: vi.fn()
+  info: vi.fn(),
 };

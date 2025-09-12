@@ -69,13 +69,15 @@ describe("useMediaQuery Integration", () => {
 
       createRoot(() => {
         const mobile = useMediaQuery("(max-width: 768px)");
-        const tablet = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
+        const tablet = useMediaQuery(
+          "(min-width: 769px) and (max-width: 1024px)",
+        );
         const desktop = useMediaQuery("(min-width: 1025px)");
-        
+
         expect(typeof mobile).toBe("function");
         expect(typeof tablet).toBe("function");
         expect(typeof desktop).toBe("function");
-        
+
         expect(mobile()).toBe(false);
         expect(tablet()).toBe(false);
         expect(desktop()).toBe(false);

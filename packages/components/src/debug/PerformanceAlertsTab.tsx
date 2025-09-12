@@ -3,7 +3,15 @@
  * Performance alerts tab for performance dashboard
  */
 
-import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import {
+  Component,
+  For,
+  Show,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { Button } from "../primitives/Button";
 
 export interface PerformanceAlertsTabProps {
@@ -18,7 +26,9 @@ export interface PerformanceAlertsTabProps {
   refreshInterval?: number;
 }
 
-export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (props) => {
+export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
+  props,
+) => {
   const [selectedSeverity, setSelectedSeverity] = createSignal<string>("all");
   const [selectedStatus, setSelectedStatus] = createSignal<string>("all");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
@@ -94,7 +104,9 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (props
 
     // Filter by severity
     if (selectedSeverity() !== "all") {
-      filtered = filtered.filter((alert) => alert.severity === selectedSeverity());
+      filtered = filtered.filter(
+        (alert) => alert.severity === selectedSeverity(),
+      );
     }
 
     // Filter by status (all are unresolved for now)
@@ -228,7 +240,9 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (props
             <div class={`alert-item ${getSeverityColor(alert.severity)}`}>
               <div class="alert-header">
                 <div class="alert-severity">
-                  <span class="severity-text">{alert.severity.toUpperCase()}</span>
+                  <span class="severity-text">
+                    {alert.severity.toUpperCase()}
+                  </span>
                 </div>
                 <div class="alert-timestamp">
                   {formatTimestamp(alert.timestamp)}
@@ -265,7 +279,9 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (props
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

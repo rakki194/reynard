@@ -1,6 +1,6 @@
 /**
  * Embedding Quality Chart Component
- * 
+ *
  * Visualizes embedding quality metrics and assessments.
  * Ported from Yipyap's EmbeddingQualityChart with Reynard integration.
  */
@@ -79,7 +79,9 @@ const defaultProps = {
   emptyMessage: "No embedding quality data available",
 };
 
-export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (props) => {
+export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
+  props,
+) => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -182,7 +184,8 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (pro
 
     // Generate colors using visualization engine
     const colors = visualization.generateColors(1);
-    const backgroundColor = colors[0]?.replace("1)", "0.3)") || "rgba(54, 162, 235, 0.3)";
+    const backgroundColor =
+      colors[0]?.replace("1)", "0.3)") || "rgba(54, 162, 235, 0.3)";
     const borderColor = colors[0] || "rgba(54, 162, 235, 1)";
 
     return {
@@ -261,7 +264,9 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (pro
 
         <div class="overall-score">
           <div class="score-label">Overall Score:</div>
-          <div class="score-value">{local.data.overall_score.toFixed(1)}/100</div>
+          <div class="score-value">
+            {local.data.overall_score.toFixed(1)}/100
+          </div>
         </div>
 
         <Show when={assessment.issues.length > 0}>
@@ -297,7 +302,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (pro
         <div class="metrics-header">
           <h4>Quality Metrics</h4>
         </div>
-        
+
         <div class="metrics-grid">
           {local.data.metrics.map((metric) => (
             <div class="metric-item">
@@ -306,7 +311,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (pro
                 {metric.value.toFixed(2)}
                 {metric.unit && <span class="metric-unit">{metric.unit}</span>}
               </div>
-              <div 
+              <div
                 class="metric-bar"
                 style={{
                   width: `${Math.min(100, Math.max(0, metric.value))}%`,

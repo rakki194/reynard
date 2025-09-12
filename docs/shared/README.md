@@ -1,6 +1,6 @@
 # Shared Documentation
 
-*Common patterns, configurations, and guides used across Reynard documentation*
+_Common patterns, configurations, and guides used across Reynard documentation_
 
 This directory contains shared documentation that eliminates duplication across the Reynard documentation system. These files provide standardized patterns and configurations that are referenced by multiple other documentation files.
 
@@ -84,4 +84,4 @@ Using shared documentation provides:
 
 ---
 
-*These shared patterns form the foundation of consistent, maintainable documentation across the Reynard ecosystem.*
+_These shared patterns form the foundation of consistent, maintainable documentation across the Reynard ecosystem._

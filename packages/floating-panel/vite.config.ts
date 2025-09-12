@@ -9,15 +9,15 @@ export default defineConfig({
       entry: "src/index.ts",
       name: "ReynardFloatingPanel",
       fileName: "index",
-      formats: ["es", "cjs", "umd"]
+      formats: ["es", "cjs", "umd"],
     },
     rollupOptions: {
       external: ["solid-js"],
       output: {
         globals: {
-          "solid-js": "SolidJS"
-        }
-      }
-    }
-  }
+          "solid-js": "SolidJS",
+        },
+      },
+    },
+  },
 });

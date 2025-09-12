@@ -1,7 +1,7 @@
 # 📚 Complete Tutorial: Building Your First Reynard App
 
-*Master the cunning SolidJS framework with this comprehensive guide to Reynard's
-architecture and capabilities*
+_Master the cunning SolidJS framework with this comprehensive guide to Reynard's
+architecture and capabilities_
 
 This tutorial will guide you through creating a complete application with Reynard,
 from understanding the framework's modular architecture to building and
@@ -84,27 +84,27 @@ Reynard consists of 40+ specialized packages, each with a specific purpose:
 
 ### Core Packages
 
-| Package | Purpose | Key Features |
-|---------|---------|--------------|
-| `reynard-core` | Foundation utilities | Notifications, composables, HTTP |
-| `reynard-themes` | Theming system | OKLCH colors, i18n, themes |
-| `reynard-components` | UI components | Primitives, layouts, composite |
-| `reynard-fluent-icons` | Icon system | 1000+ Fluent UI icons |
+| Package                | Purpose              | Key Features                     |
+| ---------------------- | -------------------- | -------------------------------- |
+| `reynard-core`         | Foundation utilities | Notifications, composables, HTTP |
+| `reynard-themes`       | Theming system       | OKLCH colors, i18n, themes       |
+| `reynard-components`   | UI components        | Primitives, layouts, composite   |
+| `reynard-fluent-icons` | Icon system          | 1000+ Fluent UI icons            |
 
 ### Specialized Packages
 
-| Package | Purpose | Key Features |
-|---------|---------|--------------|
-| `reynard-chat` | Chat system | Real-time messaging, message history |
-| `reynard-rag` | RAG system | Vector search, embeddings, retrieval |
-| `reynard-auth` | Authentication | User management, JWT, OAuth |
-| `reynard-gallery` | Media management | File uploads, thumbnails, galleries |
-| `reynard-annotating` | AI captioning | Multiple AI models, batch processing |
-| `reynard-floating-panel` | Floating panels | Staggered animations, state management |
-| `reynard-3d` | 3D components | Three.js integration, 3D scenes |
-| `reynard-charts` | Data visualization | Charts, graphs, analytics |
-| `reynard-games` | Game components | Roguelike, puzzle games |
-| `reynard-algorithms` | Algorithm primitives | Data structures, utilities |
+| Package                  | Purpose              | Key Features                           |
+| ------------------------ | -------------------- | -------------------------------------- |
+| `reynard-chat`           | Chat system          | Real-time messaging, message history   |
+| `reynard-rag`            | RAG system           | Vector search, embeddings, retrieval   |
+| `reynard-auth`           | Authentication       | User management, JWT, OAuth            |
+| `reynard-gallery`        | Media management     | File uploads, thumbnails, galleries    |
+| `reynard-annotating`     | AI captioning        | Multiple AI models, batch processing   |
+| `reynard-floating-panel` | Floating panels      | Staggered animations, state management |
+| `reynard-3d`             | 3D components        | Three.js integration, 3D scenes        |
+| `reynard-charts`         | Data visualization   | Charts, graphs, analytics              |
+| `reynard-games`          | Game components      | Roguelike, puzzle games                |
+| `reynard-algorithms`     | Algorithm primitives | Data structures, utilities             |
 
 ### Project Structure
 
@@ -146,13 +146,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'reynard-core': ['reynard-core'],
-          'reynard-themes': ['reynard-themes'],
-          'reynard-components': ['reynard-components'],
-        }
-      }
-    }
-  }
+          "reynard-core": ["reynard-core"],
+          "reynard-themes": ["reynard-themes"],
+          "reynard-components": ["reynard-components"],
+        },
+      },
+    },
+  },
 });
 ```
 
@@ -285,7 +285,7 @@ const AppContent: Component = () => {
         <Card padding="lg">
           <h2>Theme Demo</h2>
           <p>This is a simple version to test the basic setup.</p>
-          
+
           <div class="theme-controls">
             <Button>Test Button</Button>
           </div>
@@ -472,16 +472,16 @@ export default App;
   .app-header {
     padding: 1rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .header-controls {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .add-todo {
     flex-direction: column;
   }
@@ -844,7 +844,7 @@ export const ThemeToggle: Component = () => {
 
   const themes = ["light", "gray", "dark", "banana", "strawberry", "peanut"];
   const currentIndex = () => themes.indexOf(theme);
-  
+
   const nextTheme = () => {
     const nextIndex = (currentIndex() + 1) % themes.length;
     setTheme(themes[nextIndex] as any);
@@ -881,7 +881,7 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
   ];
 
   return (
-    <select 
+    <select
       class="language-selector"
       onChange={(e) => props.setLocale(e.currentTarget.value as LanguageCode)}
     >
@@ -969,7 +969,8 @@ export const en = {
 export const es = {
   app: {
     title: "Aplicación de Tareas",
-    subtitle: "Una aplicación simple de tareas construida con el framework Reynard",
+    subtitle:
+      "Una aplicación simple de tareas construida con el framework Reynard",
   },
   todo: {
     placeholder: "¿Qué necesita hacerse?",
@@ -1007,7 +1008,8 @@ export const es = {
 export const fr = {
   app: {
     title: "Application de Tâches",
-    subtitle: "Une application simple de tâches construite avec le framework Reynard",
+    subtitle:
+      "Une application simple de tâches construite avec le framework Reynard",
   },
   todo: {
     placeholder: "Que faut-il faire ?",
@@ -1295,16 +1297,16 @@ body {
   .app-header {
     padding: 1rem;
   }
-  
+
   .app-main {
     padding: 1rem;
   }
-  
+
   .header-controls {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .add-todo {
     flex-direction: column;
   }
@@ -1372,10 +1374,12 @@ const TodoApp: Component = () => {
   // Load from localStorage on initialization
   const [todos, setTodos] = createSignal<Todo[]>(() => {
     const stored = localStorage.getItem("todos");
-    return stored ? JSON.parse(stored) : [
-      { id: 1, text: "Learn SolidJS", completed: true },
-      { id: 2, text: "Try Reynard framework", completed: false },
-    ];
+    return stored
+      ? JSON.parse(stored)
+      : [
+          { id: 1, text: "Learn SolidJS", completed: true },
+          { id: 2, text: "Try Reynard framework", completed: false },
+        ];
   });
 
   // Save to localStorage whenever todos change
@@ -1555,7 +1559,7 @@ Reynard embodies the "cunning fox" philosophy:
 
 ---
 
-*Ready to build something amazing? Check out the [Package Documentation](./packages.md)
-to explore all available features and start your next project with Reynard!* 🦊
+_Ready to build something amazing? Check out the [Package Documentation](./packages.md)
+to explore all available features and start your next project with Reynard!_ 🦊
 
 ---

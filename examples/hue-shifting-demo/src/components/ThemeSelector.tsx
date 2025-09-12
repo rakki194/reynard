@@ -10,13 +10,13 @@ export const ThemeSelector: Component = () => {
 
   const themeIcons: Record<string, string> = {
     light: "sun",
-    dark: "moon", 
+    dark: "moon",
     gray: "cloud",
     banana: "banana",
     strawberry: "strawberry",
     peanut: "peanut",
     "high-contrast-black": "eye",
-    "high-contrast-inverse": "eye-off"
+    "high-contrast-inverse": "eye-off",
   };
 
   return (
@@ -28,16 +28,20 @@ export const ThemeSelector: Component = () => {
             const themeName = themeConfig.name as ThemeName;
             const iconName = themeIcons[themeName] || "palette";
             const isSelected = theme === themeName;
-            
+
             return (
               <button
-                class={`theme-card ${isSelected ? 'selected' : ''}`}
+                class={`theme-card ${isSelected ? "selected" : ""}`}
                 onClick={() => setTheme(themeName)}
                 title={`Switch to ${themeName} theme`}
               >
-                <div 
-                  class="theme-icon" 
-                  innerHTML={allIcons[iconName as keyof typeof allIcons]?.svg || allIcons.settings?.svg || ''}
+                <div
+                  class="theme-icon"
+                  innerHTML={
+                    allIcons[iconName as keyof typeof allIcons]?.svg ||
+                    allIcons.settings?.svg ||
+                    ""
+                  }
                 />
                 <div class="theme-info">
                   <h4>{themeConfig.displayName}</h4>

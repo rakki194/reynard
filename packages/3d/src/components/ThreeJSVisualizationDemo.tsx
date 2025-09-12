@@ -208,18 +208,18 @@ export const ThreeJSVisualizationDemo: Component<
 
       <div class="demo-info">
         <div class="info-panel">
-          <h4>{t('3d.cameraInformation')}</h4>
+          <h4>{t("3d.cameraInformation")}</h4>
           <div class="camera-info">{cameraInfo()}</div>
         </div>
 
         <div class="info-panel">
-          <h4>{t('3d.featuresDemonstrated')}</h4>
+          <h4>{t("3d.featuresDemonstrated")}</h4>
           <ul>
-            <li>✅ {t('3d.smoothCameraControlsWithDamping')}</li>
-            <li>✅ {t('3d.enhancedLightingSystemWithShadows')}</li>
-            <li>✅ {t('3d.responsiveCanvasWithDevicePixelRatio')}</li>
-            <li>✅ {t('3d.realTimeCameraPositionTracking')}</li>
-            <li>✅ {t('3d.performanceOptimizedRendering')}</li>
+            <li>✅ {t("3d.smoothCameraControlsWithDamping")}</li>
+            <li>✅ {t("3d.enhancedLightingSystemWithShadows")}</li>
+            <li>✅ {t("3d.responsiveCanvasWithDevicePixelRatio")}</li>
+            <li>✅ {t("3d.realTimeCameraPositionTracking")}</li>
+            <li>✅ {t("3d.performanceOptimizedRendering")}</li>
           </ul>
         </div>
       </div>

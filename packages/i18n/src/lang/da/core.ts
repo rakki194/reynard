@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Anmodning afbrudt",
   },
-  
+
   // Autentificering og sikkerhed
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer testnøgle",
     "new-key": "Bearer ny nøgle",
   },
-  
+
   // Notifikationer
   notifications: {
     title: "Notifikationer",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Første grupperet",
     "second-grouped": "Anden grupperet",
   },
-  
+
   // Valideringsbeskeder
   validation: {
     required: "Dette felt er påkrævet",
@@ -70,30 +70,42 @@ export const coreTranslations = {
     "invalid-input-type": "Ugyldig input type",
     "does-not-match-pattern": "Input matcher ikke det påkrævede mønster",
   },
-  
+
   // Adgangskode validering
   password: {
     "must-be-at-least-8-characters-long": "Adgangskode skal være mindst 8 tegn",
-    "must-contain-at-least-one-uppercase-letter": "Adgangskode skal indeholde mindst ét stort bogstav",
-    "must-contain-at-least-one-lowercase-letter": "Adgangskode skal indeholde mindst ét lille bogstav",
-    "must-contain-at-least-one-number": "Adgangskode skal indeholde mindst ét tal",
-    "must-contain-at-least-one-special-character": "Adgangskode skal indeholde mindst ét specialtegn",
+    "must-contain-at-least-one-uppercase-letter":
+      "Adgangskode skal indeholde mindst ét stort bogstav",
+    "must-contain-at-least-one-lowercase-letter":
+      "Adgangskode skal indeholde mindst ét lille bogstav",
+    "must-contain-at-least-one-number":
+      "Adgangskode skal indeholde mindst ét tal",
+    "must-contain-at-least-one-special-character":
+      "Adgangskode skal indeholde mindst ét specialtegn",
   },
-  
+
   // Sikkerhedsvalidering
   security: {
-    "at-least-one-character-type-must-be-included": "Mindst én tegn type skal inkluderes",
-    "input-contains-potentially-dangerous-html": "Input indeholder potentielt farlig HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Input indeholder potentielt farlige SQL mønstre",
-    "input-contains-potentially-dangerous-xss-patterns": "Input indeholder potentielt farlige XSS mønstre",
-    "input-contains-path-traversal-patterns": "Input indeholder sti gennemgang mønstre",
-    "input-contains-windows-reserved-names": "Input indeholder Windows reserverede navne",
-    "input-contains-executable-file-extensions": "Input indeholder eksekverbare fil udvidelser",
+    "at-least-one-character-type-must-be-included":
+      "Mindst én tegn type skal inkluderes",
+    "input-contains-potentially-dangerous-html":
+      "Input indeholder potentielt farlig HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Input indeholder potentielt farlige SQL mønstre",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Input indeholder potentielt farlige XSS mønstre",
+    "input-contains-path-traversal-patterns":
+      "Input indeholder sti gennemgang mønstre",
+    "input-contains-windows-reserved-names":
+      "Input indeholder Windows reserverede navne",
+    "input-contains-executable-file-extensions":
+      "Input indeholder eksekverbare fil udvidelser",
     "input-contains-null-bytes": "Input indeholder null bytes",
     "input-contains-hidden-files": "Input indeholder skjulte filer",
-    "input-contains-javascript-file-extensions": "Input indeholder JavaScript fil udvidelser",
+    "input-contains-javascript-file-extensions":
+      "Input indeholder JavaScript fil udvidelser",
   },
-  
+
   // Asynkrone operationer
   async: {
     "operation-timed-out": "Operation timeout",
@@ -107,7 +119,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Samtidighed skal være større end 0",
     "polling-timeout-reached": "Polling timeout nået",
   },
-  
+
   // Modul indlæsning
   module: {
     "is-null": "Modul er null",
@@ -115,14 +127,15 @@ export const coreTranslations = {
     "load-failed": "Indlæsning mislykkedes",
     "loading-failed": "Indlæsning mislykkedes",
   },
-  
+
   // Lager og serialisering
   storage: {
     "potentially-dangerous-json-detected": "Potentielt farlig JSON detekteret",
-    "failed-to-parse-json-from-localstorage": "Kunne ikke parse JSON fra localStorage:",
+    "failed-to-parse-json-from-localstorage":
+      "Kunne ikke parse JSON fra localStorage:",
     "error-parsing-storage-event": "Fejl ved parsing af lager event for nøgle",
   },
-  
+
   // Test og udvikling
   test: {
     error: "Test fejl",
@@ -131,19 +144,19 @@ export const coreTranslations = {
     "notification-1": "Test notifikation 1",
     "notification-2": "Test notifikation 2",
   },
-  
+
   // Generelle fejl
   errors: {
     "string-error": "Streng fejl",
     "crypto-error": "Krypto fejl",
     "some-error": "Noget fejl",
   },
-  
+
   // Formattere og værktøjer
   formatters: {
     "hello-world": "Hej verden",
   },
-  
+
   // Dato og tid
   dateTime: {
     now: "Nu",
@@ -153,11 +166,12 @@ export const coreTranslations = {
     format: "Format",
     timezone: "Tidszone",
   },
-  
+
   // Integrationstests
   integration: {
     "session-and-api-key-generation": "Session og API nøgle generering",
-    "authentication-and-input-validation-integration": "Autentificering og input validering integration",
+    "authentication-and-input-validation-integration":
+      "Autentificering og input validering integration",
     "performance-and-security-integration": "Ydeevne og sikkerhed integration",
   },
 };

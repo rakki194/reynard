@@ -1,6 +1,6 @@
 /**
  * Batch File List Component
- * 
+ *
  * Displays and manages the list of files in the batch.
  */
 
@@ -50,9 +50,11 @@ export const BatchFileList: Component<BatchFileListProps> = (props) => {
                 <div class="file-generator">
                   <select
                     value={file.generatorName}
-                    onChange={(e) => props.onUpdateFileConfig(file.id, {
-                      generatorName: e.currentTarget.value,
-                    })}
+                    onChange={(e) =>
+                      props.onUpdateFileConfig(file.id, {
+                        generatorName: e.currentTarget.value,
+                      })
+                    }
                     disabled={props.isProcessing}
                     aria-label={`Select generator for ${file.file.name}`}
                   >

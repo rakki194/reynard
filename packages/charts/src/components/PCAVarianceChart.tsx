@@ -3,12 +3,7 @@
  * Principal Component Analysis variance visualization with recommendations
  */
 
-import {
-  Component,
-  onMount,
-  createSignal,
-  Show,
-} from "solid-js";
+import { Component, onMount, createSignal, Show } from "solid-js";
 import {
   Chart as ChartJS,
   Title,
@@ -35,7 +30,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  LineController
+  LineController,
 );
 
 export interface PCAVarianceData {
@@ -101,7 +96,10 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
     const maxComps = props.maxComponents || props.data.components.length;
     const components = props.data.components.slice(0, maxComps);
     const varianceRatio = props.data.explainedVarianceRatio.slice(0, maxComps);
-    const cumulativeRatio = props.data.cumulativeVarianceRatio.slice(0, maxComps);
+    const cumulativeRatio = props.data.cumulativeVarianceRatio.slice(
+      0,
+      maxComps,
+    );
 
     const colors = props.useOKLCH
       ? visualizationEngine.generateOKLCHColors(2, props.colorTheme || "dark")
@@ -244,7 +242,9 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
   // Summary statistics
   const summaryStats = () => {
     const totalVariance =
-      props.data.cumulativeVarianceRatio[props.data.cumulativeVarianceRatio.length - 1];
+      props.data.cumulativeVarianceRatio[
+        props.data.cumulativeVarianceRatio.length - 1
+      ];
     const topComponents = props.data.components.slice(0, 5);
     const topVariance = props.data.explainedVarianceRatio.slice(0, 5);
 
@@ -258,7 +258,9 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
           <span class="stat-label">Top 5 Components:</span>
           <span class="stat-value">
             {topComponents
-              .map((comp, i) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`)
+              .map(
+                (comp, i) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`,
+              )
               .join(", ")}
           </span>
         </div>
@@ -275,13 +277,25 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={!props.loading && (!props.data.components || props.data.components.length === 0)}>
+      <Show
+        when={
+          !props.loading &&
+          (!props.data.components || props.data.components.length === 0)
+        }
+      >
         <div class="chart-empty">
           <p>{props.emptyMessage || "No PCA variance data available"}</p>
         </div>
       </Show>
 
-      <Show when={!props.loading && props.data.components && props.data.components.length > 0 && isRegistered()}>
+      <Show
+        when={
+          !props.loading &&
+          props.data.components &&
+          props.data.components.length > 0 &&
+          isRegistered()
+        }
+      >
         <Line
           data={chartData()}
           options={chartOptions()}

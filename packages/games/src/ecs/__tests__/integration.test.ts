@@ -26,7 +26,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Velocity implements Component {
@@ -34,7 +34,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 }
 
 class Health implements Component {
@@ -42,27 +42,27 @@ class Health implements Component {
   constructor(
     public current: number,
     public maximum: number,
-  ) { }
+  ) {}
 }
 
 class Player implements Component {
   readonly __component = true;
-  constructor(public name: string) { }
+  constructor(public name: string) {}
 }
 
 class Enemy implements Component {
   readonly __component = true;
-  constructor(public type: string) { }
+  constructor(public type: string) {}
 }
 
 class Bullet implements Component {
   readonly __component = true;
-  constructor(public speed: number) { }
+  constructor(public speed: number) {}
 }
 
 class Renderable implements Component {
   readonly __component = true;
-  constructor(public shape: "circle" | "rectangle" | "triangle") { }
+  constructor(public shape: "circle" | "rectangle" | "triangle") {}
 }
 
 // Game resources
@@ -71,7 +71,7 @@ class GameTime implements Resource {
   constructor(
     public deltaTime: number,
     public totalTime: number,
-  ) { }
+  ) {}
 }
 
 class GameState implements Resource {
@@ -80,7 +80,7 @@ class GameState implements Resource {
     public score: number,
     public level: number,
     public isRunning: boolean = true,
-  ) { }
+  ) {}
 }
 
 class InputState implements Resource {
@@ -89,7 +89,7 @@ class InputState implements Resource {
     public keys: Set<string> = new Set(),
     public mouseX: number = 0,
     public mouseY: number = 0,
-  ) { }
+  ) {}
 }
 
 // Component types - will be initialized in beforeEach
@@ -116,13 +116,31 @@ describe("ECS Integration Tests", () => {
     world = createWorld();
 
     // Register component types
-    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
-    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
-    world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
-    world.getComponentRegistry().register("Bullet", StorageType.SparseSet, () => new Bullet(300));
-    world.getComponentRegistry().register("Renderable", StorageType.Table, () => new Renderable("circle"));
+    world
+      .getComponentRegistry()
+      .register("Position", StorageType.Table, () => new Position(0, 0));
+    world
+      .getComponentRegistry()
+      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world
+      .getComponentRegistry()
+      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world
+      .getComponentRegistry()
+      .register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world
+      .getComponentRegistry()
+      .register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
+    world
+      .getComponentRegistry()
+      .register("Bullet", StorageType.SparseSet, () => new Bullet(300));
+    world
+      .getComponentRegistry()
+      .register(
+        "Renderable",
+        StorageType.Table,
+        () => new Renderable("circle"),
+      );
 
     // Get the registered component types
     PositionType = world.getComponentRegistry().getByName("Position")!;
@@ -135,7 +153,9 @@ describe("ECS Integration Tests", () => {
 
     // Register resource types
     world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
-    world.getResourceRegistry().register("GameState", () => new GameState(0, 1, true));
+    world
+      .getResourceRegistry()
+      .register("GameState", () => new GameState(0, 1, true));
     world.getResourceRegistry().register("InputState", () => new InputState());
 
     // Get the registered resource types

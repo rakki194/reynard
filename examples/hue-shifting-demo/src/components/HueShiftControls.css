@@ -24,7 +24,9 @@
   background: var(--color-background-secondary, oklch(30% 0.01 0));
   outline: none;
   cursor: pointer;
-  transition: all 0.2s ease, background-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb {
@@ -36,7 +38,10 @@
   cursor: pointer;
   border: 2px solid var(--color-text-inverse, oklch(90% 0.01 0));
   box-shadow: 0 2px 8px var(--shadow-rgb, 0 0 0 / 0.3);
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
@@ -55,19 +60,11 @@
 }
 
 .intensity-slider {
-  background: linear-gradient(
-    to right,
-    oklch(30% 0.01 0),
-    oklch(60% 0.2 240)
-  );
+  background: linear-gradient(to right, oklch(30% 0.01 0), oklch(60% 0.2 240));
 }
 
 .ramp-stops-slider {
-  background: linear-gradient(
-    to right,
-    oklch(30% 0.01 0),
-    oklch(50% 0.15 120)
-  );
+  background: linear-gradient(to right, oklch(30% 0.01 0), oklch(50% 0.15 120));
 }
 
 .slider-labels {
@@ -107,7 +104,11 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .preset-button:hover {
@@ -137,7 +138,9 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid var(--color-border, oklch(35% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .info-panel h4 {
@@ -170,7 +173,7 @@
   .preset-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .preset-button {
     padding: 0.5rem 0.75rem;
     font-size: 0.85rem;

@@ -3,7 +3,12 @@
  * Enhanced developer experience with comprehensive debugging capabilities
  */
 
-import type { LanguageCode, Translations, TranslationParams, I18nModule } from "./types";
+import type {
+  LanguageCode,
+  Translations,
+  TranslationParams,
+  I18nModule,
+} from "./types";
 import { getTranslationValue } from "./utils";
 
 // Track used translation keys for debugging
@@ -32,7 +37,7 @@ export interface DebugStats {
 export const createDebugTranslationFunction = (
   baseTranslations: () => Translations,
   locale: () => LanguageCode,
-  enableDebug: boolean = false
+  enableDebug: boolean = false,
 ) => {
   return (key: string, params?: TranslationParams): string => {
     if (enableDebug) {
@@ -62,14 +67,16 @@ export const createDebugTranslationFunction = (
 };
 
 // Validation functions
-export const validateTranslations = (translations: Translations): ValidationResult => {
+export const validateTranslations = (
+  translations: Translations,
+): ValidationResult => {
   const errors: string[] = [];
   const missingKeys: string[] = [];
   const duplicateKeys: string[] = [];
   const allKeys = new Set<string>();
 
   // Check for required namespaces
-  const requiredNamespaces = ['common', 'themes', 'core', 'components'];
+  const requiredNamespaces = ["common", "themes", "core", "components"];
   for (const namespace of requiredNamespaces) {
     if (!(namespace in translations)) {
       errors.push(`Missing required namespace: ${namespace}`);
@@ -77,17 +84,17 @@ export const validateTranslations = (translations: Translations): ValidationResu
   }
 
   // Collect all keys and check for duplicates
-  const collectKeys = (obj: any, prefix: string = '') => {
+  const collectKeys = (obj: any, prefix: string = "") => {
     for (const [key, value] of Object.entries(obj)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
-      
+
       if (allKeys.has(fullKey)) {
         duplicateKeys.push(fullKey);
       } else {
         allKeys.add(fullKey);
       }
 
-      if (typeof value === 'object' && value !== null) {
+      if (typeof value === "object" && value !== null) {
         collectKeys(value, fullKey);
       }
     }
@@ -105,9 +112,9 @@ export const validateTranslations = (translations: Translations): ValidationResu
   return {
     isValid: errors.length === 0 && missingKeys.length === 0,
     missingKeys,
-    unusedKeys: Array.from(allKeys).filter(key => !usedKeys.has(key)),
+    unusedKeys: Array.from(allKeys).filter((key) => !usedKeys.has(key)),
     duplicateKeys,
-    errors
+    errors,
   };
 };
 
@@ -119,7 +126,7 @@ export const getDebugStats = (): DebugStats => {
     missingKeys: missingKeys.size,
     unusedKeys: 0, // Would need full translation tree to calculate
     cacheHits: 0, // Would need cache integration
-    cacheMisses: 0 // Would need cache integration
+    cacheMisses: 0, // Would need cache integration
   };
 };
 
@@ -144,17 +151,17 @@ export class I18nDebugger {
   // Get unused translation keys (requires full translation tree)
   getUnusedKeys(translations: Translations): string[] {
     const allKeys = new Set<string>();
-    const collectKeys = (obj: any, prefix: string = '') => {
+    const collectKeys = (obj: any, prefix: string = "") => {
       for (const [key, value] of Object.entries(obj)) {
         const fullKey = prefix ? `${prefix}.${key}` : key;
         allKeys.add(fullKey);
-        if (typeof value === 'object' && value !== null) {
+        if (typeof value === "object" && value !== null) {
           collectKeys(value, fullKey);
         }
       }
     };
     collectKeys(translations);
-    return Array.from(allKeys).filter(key => !usedKeys.has(key));
+    return Array.from(allKeys).filter((key) => !usedKeys.has(key));
   }
 
   // Validate current translations
@@ -181,7 +188,7 @@ export class I18nDebugger {
       usedKeys: this.getUsedKeys(),
       missingKeys: this.getMissingKeys(),
       stats: this.getStats(),
-      validation: this.validationResults
+      validation: this.validationResults,
     };
   }
 
@@ -190,41 +197,43 @@ export class I18nDebugger {
     const validation = this.validate(translations);
     const stats = this.getStats();
 
-    console.group('🌍 i18n Debug Report');
-    console.log('📊 Statistics:', stats);
-    console.log('✅ Validation:', validation.isValid ? 'PASSED' : 'FAILED');
-    
+    console.group("🌍 i18n Debug Report");
+    console.log("📊 Statistics:", stats);
+    console.log("✅ Validation:", validation.isValid ? "PASSED" : "FAILED");
+
     if (validation.missingKeys.length > 0) {
-      console.warn('❌ Missing Keys:', validation.missingKeys);
+      console.warn("❌ Missing Keys:", validation.missingKeys);
     }
-    
+
     if (validation.unusedKeys.length > 0) {
-      console.info('ℹ️ Unused Keys:', validation.unusedKeys);
+      console.info("ℹ️ Unused Keys:", validation.unusedKeys);
     }
-    
+
     if (validation.duplicateKeys.length > 0) {
-      console.error('🔄 Duplicate Keys:', validation.duplicateKeys);
+      console.error("🔄 Duplicate Keys:", validation.duplicateKeys);
     }
-    
+
     if (validation.errors.length > 0) {
-      console.error('🚨 Errors:', validation.errors);
+      console.error("🚨 Errors:", validation.errors);
     }
-    
+
     console.groupEnd();
   }
 }
 
 // Template literal support for translations
-export const createTemplateTranslator = (t: (key: string, params?: TranslationParams) => string) => {
+export const createTemplateTranslator = (
+  t: (key: string, params?: TranslationParams) => string,
+) => {
   return (template: TemplateStringsArray, ...values: any[]): string => {
-    const key = template.join('${}');
+    const key = template.join("${}");
     const params: TranslationParams = {};
-    
+
     // Map values to parameters
     values.forEach((value, index) => {
       params[`param${index}`] = value;
     });
-    
+
     return t(key, params);
   };
 };
@@ -232,22 +241,28 @@ export const createTemplateTranslator = (t: (key: string, params?: TranslationPa
 // Enhanced pluralization with debugging
 export const createDebugPluralTranslator = (
   t: (key: string, params?: TranslationParams) => string,
-  locale: () => LanguageCode
+  locale: () => LanguageCode,
 ) => {
   return (key: string, count: number, params?: TranslationParams): string => {
     const pluralKey = getPluralKey(key, count, locale());
     const enhancedParams = { ...params, count };
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.debug(`Plural translation: ${key} -> ${pluralKey} (count: ${count})`);
+
+    if (process.env.NODE_ENV === "development") {
+      console.debug(
+        `Plural translation: ${key} -> ${pluralKey} (count: ${count})`,
+      );
     }
-    
+
     return t(pluralKey, enhancedParams);
   };
 };
 
 // Helper function to get plural key
-const getPluralKey = (key: string, count: number, _locale: LanguageCode): string => {
+const getPluralKey = (
+  key: string,
+  count: number,
+  _locale: LanguageCode,
+): string => {
   // This would integrate with our existing pluralization system
   // For now, return a simple implementation
   if (count === 1) {
@@ -263,7 +278,7 @@ export class I18nPerformanceMonitor {
     cacheHits: 0,
     cacheMisses: 0,
     loadTimes: [] as number[],
-    averageLoadTime: 0
+    averageLoadTime: 0,
   };
 
   recordTranslationCall(): void {
@@ -280,14 +295,17 @@ export class I18nPerformanceMonitor {
 
   recordLoadTime(time: number): void {
     this.metrics.loadTimes.push(time);
-    this.metrics.averageLoadTime = 
-      this.metrics.loadTimes.reduce((a, b) => a + b, 0) / this.metrics.loadTimes.length;
+    this.metrics.averageLoadTime =
+      this.metrics.loadTimes.reduce((a, b) => a + b, 0) /
+      this.metrics.loadTimes.length;
   }
 
   getMetrics() {
     return {
       ...this.metrics,
-      cacheHitRate: this.metrics.cacheHits / (this.metrics.cacheHits + this.metrics.cacheMisses) || 0
+      cacheHitRate:
+        this.metrics.cacheHits /
+          (this.metrics.cacheHits + this.metrics.cacheMisses) || 0,
     };
   }
 
@@ -297,7 +315,7 @@ export class I18nPerformanceMonitor {
       cacheHits: 0,
       cacheMisses: 0,
       loadTimes: [],
-      averageLoadTime: 0
+      averageLoadTime: 0,
     };
   }
 }

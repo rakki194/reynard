@@ -1,6 +1,6 @@
 /**
  * Model Initialization Utilities
- * 
+ *
  * Utility functions for initializing the model manager and setting up event listeners.
  * Extracted to keep composables under the 140-line limit.
  */
@@ -17,7 +17,7 @@ export interface ModelManagerInstance {
  */
 export const initializeModelManager = async (
   baseUrl: string,
-  apiKey?: string
+  apiKey?: string,
 ): Promise<ReturnType<typeof createBackendAnnotationManager>> => {
   const manager = createBackendAnnotationManager({
     baseUrl,
@@ -33,7 +33,7 @@ export const initializeModelManager = async (
  */
 export const setupHealthChecks = (
   loadSystemHealth: () => Promise<void>,
-  intervalMs: number = 5000
+  intervalMs: number = 5000,
 ): ReturnType<typeof setInterval> => {
   return setInterval(async () => {
     await loadSystemHealth();
@@ -45,7 +45,7 @@ export const setupHealthChecks = (
  */
 export const setupModelEventListeners = (
   manager: ReturnType<typeof createBackendAnnotationManager>,
-  loadModelData: () => Promise<void>
+  loadModelData: () => Promise<void>,
 ): void => {
   manager.addEventListener((event) => {
     if (event.type === "model_loaded" || event.type === "model_unloaded") {
@@ -59,7 +59,7 @@ export const setupModelEventListeners = (
  */
 export const cleanupModelManager = async (
   manager: ReturnType<typeof createBackendAnnotationManager> | null,
-  healthCheckInterval: ReturnType<typeof setInterval> | null
+  healthCheckInterval: ReturnType<typeof setInterval> | null,
 ): Promise<void> => {
   if (healthCheckInterval) {
     clearInterval(healthCheckInterval);

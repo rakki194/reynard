@@ -16,12 +16,8 @@
       "name": "components",
       "path": "/home/kade/runeset/reynard/packages/components",
       "success": false,
-      "errors": [
-        "Found 718 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 718 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 718,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -30,12 +26,8 @@
       "name": "ui",
       "path": "/home/kade/runeset/reynard/packages/ui",
       "success": false,
-      "errors": [
-        "Found 10 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 10 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 10,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -44,12 +36,8 @@
       "name": "floating-panel",
       "path": "/home/kade/runeset/reynard/packages/floating-panel",
       "success": false,
-      "errors": [
-        "Found 11 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 11 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 11,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -58,12 +46,8 @@
       "name": "themes",
       "path": "/home/kade/runeset/reynard/packages/themes",
       "success": false,
-      "errors": [
-        "Found 14 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 14 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 14,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -72,12 +56,8 @@
       "name": "auth",
       "path": "/home/kade/runeset/reynard/packages/auth",
       "success": false,
-      "errors": [
-        "Found 132 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 132 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 132,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -86,12 +66,8 @@
       "name": "chat",
       "path": "/home/kade/runeset/reynard/packages/chat",
       "success": false,
-      "errors": [
-        "Found 246 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 246 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 246,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -100,12 +76,8 @@
       "name": "gallery",
       "path": "/home/kade/runeset/reynard/packages/gallery",
       "success": false,
-      "errors": [
-        "Found 120 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 120 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 120,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -114,12 +86,8 @@
       "name": "settings",
       "path": "/home/kade/runeset/reynard/packages/settings",
       "success": false,
-      "errors": [
-        "Found 246 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 246 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 246,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -128,12 +96,8 @@
       "name": "rag",
       "path": "/home/kade/runeset/reynard/packages/rag",
       "success": false,
-      "errors": [
-        "Found 67 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 67 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 67,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -142,12 +106,8 @@
       "name": "charts",
       "path": "/home/kade/runeset/reynard/packages/charts",
       "success": false,
-      "errors": [
-        "Found 98 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 98 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 98,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -156,12 +116,8 @@
       "name": "caption",
       "path": "/home/kade/runeset/reynard/packages/caption",
       "success": false,
-      "errors": [
-        "Found 66 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 66 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 66,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -170,12 +126,8 @@
       "name": "boundingbox",
       "path": "/home/kade/runeset/reynard/packages/boundingbox",
       "success": false,
-      "errors": [
-        "Found 50 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 50 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 50,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -184,12 +136,8 @@
       "name": "audio",
       "path": "/home/kade/runeset/reynard/packages/audio",
       "success": false,
-      "errors": [
-        "Found 51 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 51 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 51,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -198,12 +146,8 @@
       "name": "video",
       "path": "/home/kade/runeset/reynard/packages/video",
       "success": false,
-      "errors": [
-        "Found 10 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 10 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 10,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -212,12 +156,8 @@
       "name": "image",
       "path": "/home/kade/runeset/reynard/packages/image",
       "success": false,
-      "errors": [
-        "Found 13 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 13 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 13,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -226,12 +166,8 @@
       "name": "multimodal",
       "path": "/home/kade/runeset/reynard/packages/multimodal",
       "success": false,
-      "errors": [
-        "Found 9 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 9 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 9,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -240,12 +176,8 @@
       "name": "monaco",
       "path": "/home/kade/runeset/reynard/packages/monaco",
       "success": false,
-      "errors": [
-        "Found 29 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 29 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 29,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -254,12 +186,8 @@
       "name": "3d",
       "path": "/home/kade/runeset/reynard/packages/3d",
       "success": false,
-      "errors": [
-        "Found 83 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 83 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 83,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -268,12 +196,8 @@
       "name": "games",
       "path": "/home/kade/runeset/reynard/packages/games",
       "success": false,
-      "errors": [
-        "Found 145 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 145 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 145,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -282,12 +206,8 @@
       "name": "i18n",
       "path": "/home/kade/runeset/reynard/packages/i18n",
       "success": false,
-      "errors": [
-        "Found 4034 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 4034 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 4034,
       "missingTranslations": 0,
       "rtlIssues": 1
@@ -296,12 +216,8 @@
       "name": "core",
       "path": "/home/kade/runeset/reynard/packages/core",
       "success": false,
-      "errors": [
-        "Found 46 hardcoded strings"
-      ],
-      "warnings": [
-        "Found 1 RTL issues"
-      ],
+      "errors": ["Found 46 hardcoded strings"],
+      "warnings": ["Found 1 RTL issues"],
       "hardcodedStrings": 46,
       "missingTranslations": 0,
       "rtlIssues": 1

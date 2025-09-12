@@ -26,6 +26,6 @@ export const getCacheStats = () => ({
   fullTranslations: translationCache.size,
   namespaces: Array.from(namespaceCache.entries()).map(([name, map]) => ({
     name,
-    locales: map.size
-  }))
+    locales: map.size,
+  })),
 });

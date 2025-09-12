@@ -1,6 +1,6 @@
 /**
  * Multi-Modal Gallery Content Component
- * 
+ *
  * Handles the main content area with different view modes.
  */
 
@@ -19,7 +19,9 @@ interface MultiModalGalleryContentProps {
   showMetadata?: boolean;
 }
 
-export const MultiModalGalleryContent: Component<MultiModalGalleryContentProps> = (props) => {
+export const MultiModalGalleryContent: Component<
+  MultiModalGalleryContentProps
+> = (props) => {
   return (
     <div class="gallery-content">
       <Show when={props.currentView === "grid"}>
@@ -31,7 +33,7 @@ export const MultiModalGalleryContent: Component<MultiModalGalleryContentProps> 
           showMetadata={props.showMetadata}
         />
       </Show>
-      
+
       <Show when={props.currentView === "list"}>
         <MultiModalList
           files={props.files}
@@ -41,7 +43,7 @@ export const MultiModalGalleryContent: Component<MultiModalGalleryContentProps> 
           showMetadata={props.showMetadata}
         />
       </Show>
-      
+
       <Show when={props.currentView === "timeline"}>
         <MultiModalTimeline
           files={props.files}

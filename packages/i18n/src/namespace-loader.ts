@@ -7,24 +7,28 @@ import type { LanguageCode } from "./types";
 import { namespaceCache } from "./cache";
 
 // Namespace-based loaders for bundle optimization
-export const createNamespaceLoader = <T = unknown>(namespace: string): Record<string, () => Promise<T>> => {
+export const createNamespaceLoader = <T = unknown>(
+  namespace: string,
+): Record<string, () => Promise<T>> => {
   // For testing environment, return mock loaders to avoid dynamic glob issues
-  if (typeof import.meta === 'undefined' || !import.meta.glob) {
+  if (typeof import.meta === "undefined" || !import.meta.glob) {
     return createMockNamespaceLoader<T>(namespace);
   }
-  
+
   // Check if we're in a test environment by looking for vitest or jest globals
-  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'test') {
+  if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
     return createMockNamespaceLoader<T>(namespace);
   }
-  
+
   // In production, this would use dynamic glob patterns
   // For now, return mock loaders to avoid test environment issues
   return createMockNamespaceLoader<T>(namespace);
 };
 
 // Create mock namespace loaders for testing
-function createMockNamespaceLoader<T = unknown>(namespace: string): Record<string, () => Promise<T>> {
+function createMockNamespaceLoader<T = unknown>(
+  namespace: string,
+): Record<string, () => Promise<T>> {
   const mockTranslations: Record<string, any> = {
     common: {
       hello: "Hello",
@@ -35,26 +39,26 @@ function createMockNamespaceLoader<T = unknown>(namespace: string): Record<strin
       items: "One item",
       messages: "No messages",
       close: "Close",
-      save: "Save"
+      save: "Save",
     },
     templates: {
       greeting: "Hello {name}, you have {count} items",
-      nested: "Level {level} with {value}"
+      nested: "Level {level} with {value}",
     },
     themes: {
       light: "Light",
-      dark: "Dark"
-    }
+      dark: "Dark",
+    },
   };
 
   const namespaceData = mockTranslations[namespace] || {};
-  
+
   return {
     en: () => Promise.resolve(namespaceData as T),
     es: () => Promise.resolve(namespaceData as T),
     fr: () => Promise.resolve(namespaceData as T),
     de: () => Promise.resolve(namespaceData as T),
-    ar: () => Promise.resolve(namespaceData as T)
+    ar: () => Promise.resolve(namespaceData as T),
   };
 }
 
@@ -62,7 +66,7 @@ function createMockNamespaceLoader<T = unknown>(namespace: string): Record<strin
 export async function loadNamespace<T = unknown>(
   locale: LanguageCode,
   namespace: string,
-  useCache: boolean = true
+  useCache: boolean = true,
 ): Promise<T> {
   if (useCache && namespaceCache.has(namespace)) {
     const namespaceMap = namespaceCache.get(namespace)!;
@@ -74,7 +78,7 @@ export async function loadNamespace<T = unknown>(
   try {
     const namespaceLoader = createNamespaceLoader<T>(namespace);
     const loader = namespaceLoader[locale];
-    
+
     if (loader) {
       const result = await loader();
       if (useCache) {
@@ -101,9 +105,14 @@ export async function loadNamespace<T = unknown>(
       }
     }
 
-    throw new Error(`No translations found for namespace ${namespace} in locale ${locale}`);
+    throw new Error(
+      `No translations found for namespace ${namespace} in locale ${locale}`,
+    );
   } catch (error) {
-    console.error(`Failed to load namespace ${namespace} for locale ${locale}:`, error);
+    console.error(
+      `Failed to load namespace ${namespace} for locale ${locale}:`,
+      error,
+    );
     throw error;
   }
 }

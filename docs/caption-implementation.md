@@ -168,7 +168,7 @@ import { CaptionTask } from "reynard-annotating-core";
 const annotationManager = new BackendAnnotationManager({
   baseUrl: "http://localhost:8000/api",
   timeout: 30000,
-  retries: 3
+  retries: 3,
 });
 
 // Initialize the manager
@@ -178,10 +178,9 @@ await annotationManager.initialize();
 const generators = await annotationManager.getAvailableGenerators();
 
 // Generate a caption using convenience method
-const result = await annotationManager.generateFurryTags(
-  "/path/to/image.jpg",
-  { threshold: 0.2 }
-);
+const result = await annotationManager.generateFurryTags("/path/to/image.jpg", {
+  threshold: 0.2,
+});
 
 // Or use the service directly
 const service = annotationManager.getService();
@@ -310,7 +309,7 @@ const annotationManager = new BackendAnnotationManager({
   baseUrl: "http://localhost:8000/api", // Backend URL
   timeout: 30000, // Request timeout in milliseconds
   retries: 3, // Number of retry attempts
-  apiKey: "your-api-key" // Optional API key for authentication
+  apiKey: "your-api-key", // Optional API key for authentication
 });
 ```
 

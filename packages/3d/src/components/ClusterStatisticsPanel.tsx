@@ -21,9 +21,7 @@ const ClusterStatItem: Component<{
   >
     <div class="stat-header">
       <span class="cluster-name">{props.cluster.label}</span>
-      <span class="cluster-size">
-        {props.cluster.statistics.size} points
-      </span>
+      <span class="cluster-size">{props.cluster.statistics.size} points</span>
     </div>
     <div class="stat-details">
       <div class="stat-row">
@@ -36,9 +34,7 @@ const ClusterStatItem: Component<{
       </div>
       <div class="stat-row">
         <span>Avg Similarity:</span>
-        <span>
-          {props.cluster.statistics.averageSimilarity.toFixed(2)}
-        </span>
+        <span>{props.cluster.statistics.averageSimilarity.toFixed(2)}</span>
       </div>
     </div>
   </div>

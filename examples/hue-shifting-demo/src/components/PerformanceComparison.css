@@ -52,11 +52,7 @@
   width: 200px;
   height: 8px;
   border-radius: 4px;
-  background: linear-gradient(
-    to right,
-    oklch(30% 0.01 0),
-    oklch(60% 0.2 240)
-  );
+  background: linear-gradient(to right, oklch(30% 0.01 0), oklch(60% 0.2 240));
   outline: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -177,7 +173,7 @@
   color: oklch(85% 0.01 0);
   font-size: 0.9rem;
   font-weight: 600;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .performance-summary {
@@ -221,7 +217,7 @@
   color: oklch(85% 0.01 0);
   font-size: 0.9rem;
   font-weight: 600;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .performance-info {
@@ -274,28 +270,28 @@
   .performance-comparison {
     padding: 1rem;
   }
-  
+
   .comparison-header h2 {
     font-size: 2rem;
   }
-  
+
   .comparison-header p {
     font-size: 1rem;
   }
-  
+
   .comparison-controls {
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .results-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .summary-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }

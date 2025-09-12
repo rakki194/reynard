@@ -25,10 +25,14 @@ export interface ServiceInfo {
   restartCount: number;
 }
 
-export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) => {
+export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
+  props,
+) => {
   const [selectedServices, setSelectedServices] = createSignal<string[]>([]);
   const [isRestarting, setIsRestarting] = createSignal(false);
-  const [restartProgress, setRestartProgress] = createSignal<Record<string, number>>({});
+  const [restartProgress, setRestartProgress] = createSignal<
+    Record<string, number>
+  >({});
 
   // Mock service data
   const [services] = createSignal<ServiceInfo[]>([
@@ -69,7 +73,9 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
   const filteredServices = () => {
     const serviceList = services();
     if (props.showFailedOnly) {
-      return serviceList.filter((s) => s.status === "failed" || s.health === "unhealthy");
+      return serviceList.filter(
+        (s) => s.status === "failed" || s.health === "unhealthy",
+      );
     }
     return serviceList;
   };
@@ -86,7 +92,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
   const handleSelectAll = () => {
     const filtered = filteredServices();
     const selected = selectedServices();
-    
+
     if (selected.length === filtered.length) {
       setSelectedServices([]);
     } else {
@@ -116,10 +122,10 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
     if (selected.length === 0) return;
 
     setIsRestarting(true);
-    
+
     for (const serviceName of selected) {
       setRestartProgress((prev) => ({ ...prev, [serviceName]: 0 }));
-      
+
       // Simulate restart progress
       for (let i = 0; i <= 100; i += 10) {
         setRestartProgress((prev) => ({ ...prev, [serviceName]: i }));
@@ -137,8 +143,10 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
 
   const getStatusIcon = (service: ServiceInfo) => {
     if (service.status === "failed") return "dismiss-circle";
-    if (service.status === "running" && service.health === "healthy") return "checkmark-circle";
-    if (service.status === "running" && service.health === "degraded") return "warning";
+    if (service.status === "running" && service.health === "healthy")
+      return "checkmark-circle";
+    if (service.status === "running" && service.health === "degraded")
+      return "warning";
     if (service.status === "starting") return "spinner";
     if (service.status === "stopping") return "warning";
     return "info";
@@ -146,8 +154,10 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
 
   const getStatusColor = (service: ServiceInfo) => {
     if (service.status === "failed") return "error";
-    if (service.status === "running" && service.health === "healthy") return "success";
-    if (service.status === "running" && service.health === "degraded") return "warning";
+    if (service.status === "running" && service.health === "healthy")
+      return "success";
+    if (service.status === "running" && service.health === "degraded")
+      return "warning";
     if (service.status === "starting") return "info";
     if (service.status === "stopping") return "warning";
     return "neutral";
@@ -161,7 +171,9 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("arrow-clockwise")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("arrow-clockwise")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Service Restart</h3>
@@ -183,12 +195,10 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
       {/* Bulk Actions */}
       <Show when={props.showBulkActions}>
         <div class="bulk-actions">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleSelectAll}
-          >
-            {selectedServices().length === filteredServices().length ? "Deselect All" : "Select All"}
+          <Button variant="secondary" size="sm" onClick={handleSelectAll}>
+            {selectedServices().length === filteredServices().length
+              ? "Deselect All"
+              : "Select All"}
           </Button>
         </div>
       </Show>
@@ -209,17 +219,23 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
                       aria-label={`Select ${service.name} for bulk operations`}
                     />
                   </Show>
-                  
+
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(service))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(service))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <span class="service-name">{service.name}</span>
-                  
-                  <span class="status-badge" classList={{ [getStatusColor(service)]: true }}>
+
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(service)]: true }}
+                  >
                     {service.status}
                   </span>
                 </div>
@@ -244,14 +260,16 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
                   <span class="label">Health:</span>
                   <span class="value">{service.health}</span>
                 </div>
-                
+
                 <Show when={service.lastRestart}>
                   <div class="detail-item">
                     <span class="label">Last Restart:</span>
-                    <span class="value">{service.lastRestart!.toLocaleString()}</span>
+                    <span class="value">
+                      {service.lastRestart!.toLocaleString()}
+                    </span>
                   </div>
                 </Show>
-                
+
                 <div class="detail-item">
                   <span class="label">Restart Count:</span>
                   <span class="value">{service.restartCount}</span>
@@ -262,12 +280,14 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (props) 
               <Show when={restartProgress()[service.name] !== undefined}>
                 <div class="restart-progress">
                   <div class="progress-bar">
-                    <div 
-                      class="progress-fill" 
+                    <div
+                      class="progress-fill"
                       data-progress={restartProgress()[service.name]}
                     />
                   </div>
-                  <span class="progress-text">{restartProgress()[service.name]}%</span>
+                  <span class="progress-text">
+                    {restartProgress()[service.name]}%
+                  </span>
                 </div>
               </Show>
             </div>

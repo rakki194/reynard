@@ -1,6 +1,6 @@
 /**
  * Multi-Modal File Info Component
- * 
+ *
  * Displays file information including name, size, and metadata.
  */
 
@@ -13,7 +13,9 @@ interface MultiModalFileInfoProps {
   showMetadata?: boolean;
 }
 
-export const MultiModalFileInfo: Component<MultiModalFileInfoProps> = (props) => {
+export const MultiModalFileInfo: Component<MultiModalFileInfoProps> = (
+  props,
+) => {
   const { t } = useI18n();
   return (
     <div class="file-info">
@@ -23,16 +25,18 @@ export const MultiModalFileInfo: Component<MultiModalFileInfoProps> = (props) =>
       <div class="file-size">
         {(props.file.size / (1024 * 1024)).toFixed(2)} MB
       </div>
-      
+
       <Show when={props.showMetadata && props.file.metadata}>
         <div class="file-metadata">
           <div class="metadata-item">
-            <span class="label">{t('multimodal.type')}:</span>
+            <span class="label">{t("multimodal.type")}:</span>
             <span class="value">{props.file.type}</span>
           </div>
           <div class="metadata-item">
-            <span class="label">{t('multimodal.uploaded')}:</span>
-            <span class="value">{props.file.uploadedAt.toLocaleDateString()}</span>
+            <span class="label">{t("multimodal.uploaded")}:</span>
+            <span class="value">
+              {props.file.uploadedAt.toLocaleDateString()}
+            </span>
           </div>
         </div>
       </Show>

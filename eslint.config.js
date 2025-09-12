@@ -217,6 +217,7 @@ export default [
       "**/vitest.config.ts",
       "**/debug-scan.js",
       "**/pkg/**/*.js", // Generated WebAssembly JavaScript files
+      "**/third_party/**", // Exclude third-party code
     ],
   },
 ];

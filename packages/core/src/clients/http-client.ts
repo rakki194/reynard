@@ -6,7 +6,10 @@
 // Re-export the unified HTTP client from reynard-connection
 export { HTTPClient } from "reynard-connection";
 export type {
-  HTTPClientConfig, HTTPError, HTTPResponse, HTTPRequestOptions as RequestOptions
+  HTTPClientConfig,
+  HTTPError,
+  HTTPResponse,
+  HTTPRequestOptions as RequestOptions,
 } from "reynard-connection";
 
 // Legacy interface for backward compatibility

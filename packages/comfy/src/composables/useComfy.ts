@@ -1,11 +1,11 @@
 /**
  * useComfy Composable
- * 
+ *
  * Main composable for ComfyUI integration and workflow management.
  */
 
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { ComfyService } from '../services/ComfyService.js';
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import { ComfyService } from "../services/ComfyService.js";
 import type {
   ComfyJob,
   ComfyJobResult,
@@ -19,7 +19,7 @@ import type {
   ComfyStreamEvent,
   ComfyPreset,
   ComfyWorkflowTemplate,
-} from '../types/index.js';
+} from "../types/index.js";
 
 export function useComfy() {
   const [service] = createSignal(new ComfyService());
@@ -36,17 +36,17 @@ export function useComfy() {
         const healthStatus = await service().getHealth();
         setHealth(healthStatus);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Health check failed');
+        setError(err instanceof Error ? err.message : "Health check failed");
       } finally {
         setIsLoading(false);
       }
     };
 
     checkHealth();
-    
+
     // Check health every 30 seconds
     const interval = setInterval(checkHealth, 30000);
-    
+
     onCleanup(() => {
       clearInterval(interval);
       service().cleanup();
@@ -54,14 +54,17 @@ export function useComfy() {
   });
 
   // Queue workflow
-  const queueWorkflow = async (workflow: Record<string, any>, clientId?: string) => {
+  const queueWorkflow = async (
+    workflow: Record<string, any>,
+    clientId?: string,
+  ) => {
     try {
       setIsLoading(true);
       setError(null);
       const result = await service().queueWorkflow(workflow, clientId);
       return result;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to queue workflow');
+      setError(err instanceof Error ? err.message : "Failed to queue workflow");
       throw err;
     } finally {
       setIsLoading(false);
@@ -74,7 +77,7 @@ export function useComfy() {
       setError(null);
       return await service().getStatus(promptId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get status');
+      setError(err instanceof Error ? err.message : "Failed to get status");
       throw err;
     }
   };
@@ -85,7 +88,7 @@ export function useComfy() {
       setError(null);
       return await service().getHistory(promptId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get history');
+      setError(err instanceof Error ? err.message : "Failed to get history");
       throw err;
     }
   };
@@ -96,18 +99,24 @@ export function useComfy() {
       setError(null);
       return await service().getObjectInfo(refresh);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get object info');
+      setError(
+        err instanceof Error ? err.message : "Failed to get object info",
+      );
       throw err;
     }
   };
 
   // Get image
-  const getImage = async (filename: string, subfolder = "", type = "output") => {
+  const getImage = async (
+    filename: string,
+    subfolder = "",
+    type = "output",
+  ) => {
     try {
       setError(null);
       return await service().getImage(filename, subfolder, type);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get image');
+      setError(err instanceof Error ? err.message : "Failed to get image");
       throw err;
     }
   };
@@ -120,7 +129,7 @@ export function useComfy() {
       const result = await service().textToImage(params);
       return result;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate image');
+      setError(err instanceof Error ? err.message : "Failed to generate image");
       throw err;
     } finally {
       setIsLoading(false);
@@ -132,15 +141,20 @@ export function useComfy() {
     file: File,
     promptId: string,
     workflow: Record<string, any>,
-    metadata: Record<string, any> = {}
+    metadata: Record<string, any> = {},
   ) => {
     try {
       setIsLoading(true);
       setError(null);
-      const result = await service().ingestImage(file, promptId, workflow, metadata);
+      const result = await service().ingestImage(
+        file,
+        promptId,
+        workflow,
+        metadata,
+      );
       return result;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to ingest image');
+      setError(err instanceof Error ? err.message : "Failed to ingest image");
       throw err;
     } finally {
       setIsLoading(false);
@@ -148,12 +162,15 @@ export function useComfy() {
   };
 
   // Stream status
-  const streamStatus = (promptId: string, onEvent: (event: ComfyStreamEvent) => void) => {
+  const streamStatus = (
+    promptId: string,
+    onEvent: (event: ComfyStreamEvent) => void,
+  ) => {
     try {
       setError(null);
       return service().streamStatus(promptId, onEvent);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to stream status');
+      setError(err instanceof Error ? err.message : "Failed to stream status");
       throw err;
     }
   };
@@ -164,7 +181,9 @@ export function useComfy() {
       setError(null);
       return await service().validateCheckpoint(checkpoint);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to validate checkpoint');
+      setError(
+        err instanceof Error ? err.message : "Failed to validate checkpoint",
+      );
       throw err;
     }
   };
@@ -174,7 +193,7 @@ export function useComfy() {
       setError(null);
       return await service().validateLora(lora);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to validate LoRA');
+      setError(err instanceof Error ? err.message : "Failed to validate LoRA");
       throw err;
     }
   };
@@ -184,7 +203,9 @@ export function useComfy() {
       setError(null);
       return await service().validateSampler(sampler);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to validate sampler');
+      setError(
+        err instanceof Error ? err.message : "Failed to validate sampler",
+      );
       throw err;
     }
   };
@@ -194,7 +215,9 @@ export function useComfy() {
       setError(null);
       return await service().validateScheduler(scheduler);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to validate scheduler');
+      setError(
+        err instanceof Error ? err.message : "Failed to validate scheduler",
+      );
       throw err;
     }
   };
@@ -205,7 +228,9 @@ export function useComfy() {
       setError(null);
       return await service().getQueueStatus();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get queue status');
+      setError(
+        err instanceof Error ? err.message : "Failed to get queue status",
+      );
       throw err;
     }
   };
@@ -215,7 +240,9 @@ export function useComfy() {
       setError(null);
       return await service().getQueueItems();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get queue items');
+      setError(
+        err instanceof Error ? err.message : "Failed to get queue items",
+      );
       throw err;
     }
   };
@@ -226,7 +253,9 @@ export function useComfy() {
       setError(null);
       await service().clearQueueItem(promptId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to clear queue item');
+      setError(
+        err instanceof Error ? err.message : "Failed to clear queue item",
+      );
       throw err;
     } finally {
       setIsLoading(false);
@@ -239,7 +268,9 @@ export function useComfy() {
       setError(null);
       await service().clearAllQueueItems();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to clear all queue items');
+      setError(
+        err instanceof Error ? err.message : "Failed to clear all queue items",
+      );
       throw err;
     } finally {
       setIsLoading(false);
@@ -252,7 +283,7 @@ export function useComfy() {
       setError(null);
       await service().pauseQueue();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to pause queue');
+      setError(err instanceof Error ? err.message : "Failed to pause queue");
       throw err;
     } finally {
       setIsLoading(false);
@@ -265,7 +296,7 @@ export function useComfy() {
       setError(null);
       await service().resumeQueue();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to resume queue');
+      setError(err instanceof Error ? err.message : "Failed to resume queue");
       throw err;
     } finally {
       setIsLoading(false);
@@ -278,7 +309,9 @@ export function useComfy() {
       setError(null);
       await service().moveQueueItem(promptId, position);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to move queue item');
+      setError(
+        err instanceof Error ? err.message : "Failed to move queue item",
+      );
       throw err;
     } finally {
       setIsLoading(false);
@@ -290,7 +323,7 @@ export function useComfy() {
     health,
     isLoading,
     error,
-    
+
     // Core methods
     queueWorkflow,
     getStatus,
@@ -300,13 +333,13 @@ export function useComfy() {
     textToImage,
     ingestImage,
     streamStatus,
-    
+
     // Validation
     validateCheckpoint,
     validateLora,
     validateSampler,
     validateScheduler,
-    
+
     // Queue management
     getQueueStatus,
     getQueueItems,

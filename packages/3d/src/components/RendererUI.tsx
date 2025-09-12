@@ -16,8 +16,16 @@ export const RendererUI: Component<RendererUIProps> = (uiProps) => {
       <RendererInfo
         pointCount={uiProps.props.points.length}
         config={uiProps.props.config}
-        materialStats={uiProps.pointCloudRenderer()?.materialManager()?.getStats() || { cached: 0 }}
-        geometryStats={uiProps.pointCloudRenderer()?.geometryManager()?.getStats() || { cached: 0 }}
+        materialStats={
+          uiProps.pointCloudRenderer()?.materialManager()?.getStats() || {
+            cached: 0,
+          }
+        }
+        geometryStats={
+          uiProps.pointCloudRenderer()?.geometryManager()?.getStats() || {
+            cached: 0,
+          }
+        }
       />
 
       <RendererControls
@@ -26,8 +34,16 @@ export const RendererUI: Component<RendererUIProps> = (uiProps) => {
       />
 
       <RendererStats
-        materialStats={uiProps.pointCloudRenderer()?.materialManager()?.getStats() || { cached: 0 }}
-        geometryStats={uiProps.pointCloudRenderer()?.geometryManager()?.getStats() || { cached: 0 }}
+        materialStats={
+          uiProps.pointCloudRenderer()?.materialManager()?.getStats() || {
+            cached: 0,
+          }
+        }
+        geometryStats={
+          uiProps.pointCloudRenderer()?.geometryManager()?.getStats() || {
+            cached: 0,
+          }
+        }
       />
     </div>
   );

@@ -1,7 +1,7 @@
 /**
  * Settings Utilities
  * Helper functions for validation, migration, and settings management
- * 
+ *
  * @deprecated ValidationResult and MultiValidationResult are deprecated. Use unified types from reynard-connection instead.
  */
 
@@ -16,7 +16,11 @@ export {
   validateEmail,
   validatePassword,
   validateUrl,
-  validateUsername, validateValue, ValidationUtils, type MultiValidationResult, type ValidationResult
+  validateUsername,
+  validateValue,
+  ValidationUtils,
+  type MultiValidationResult,
+  type ValidationResult,
 } from "reynard-connection";
 
 // Legacy interfaces for backward compatibility

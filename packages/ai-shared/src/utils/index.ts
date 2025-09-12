@@ -5,7 +5,7 @@
  * across AI/ML packages in the Reynard framework. These utilities help with
  * common tasks like validation, error handling, performance monitoring, and
  * data processing.
- * 
+ *
  * @deprecated ValidationUtils and ErrorUtils are deprecated. Use unified utilities from reynard-connection instead.
  */
 
@@ -22,16 +22,26 @@ import {
 
 // Re-export unified utilities from reynard-connection
 export {
-  ValidationUtils as UnifiedValidationUtils, validateEmail,
+  ValidationUtils as UnifiedValidationUtils,
+  validateEmail,
   validatePassword,
   validateUrl,
-  validateUsername, validateValue, type FieldValidationOptions, type MultiValidationResult as UnifiedMultiValidationResult, type ValidationResult as UnifiedValidationResult, type ValidationSchema
+  validateUsername,
+  validateValue,
+  type FieldValidationOptions,
+  type MultiValidationResult as UnifiedMultiValidationResult,
+  type ValidationResult as UnifiedValidationResult,
+  type ValidationSchema,
 } from "reynard-connection";
 
 export {
-  errorHandler, NetworkError, retry, ReynardError,
-  ValidationError, wrapAsync,
-  type BaseErrorContext
+  errorHandler,
+  NetworkError,
+  retry,
+  ReynardError,
+  ValidationError,
+  wrapAsync,
+  type BaseErrorContext,
 } from "reynard-connection";
 
 // ============================================================================

@@ -29,4 +29,3 @@ export * from "./transformations";
 export type { Point } from "./shapes/point-algorithms";
 export type { Circle, Line, Polygon, Rectangle } from "./shapes/shapes";
 export type { Vector } from "./vectors/vector-algorithms";
-

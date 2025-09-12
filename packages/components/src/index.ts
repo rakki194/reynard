@@ -12,7 +12,11 @@ export * from "./primitives";
 // Export composite components
 export { Modal, type ModalProps } from "./Modal";
 export {
-  TabPanel, Tabs, type TabItem, type TabPanelProps, type TabsProps
+  TabPanel,
+  Tabs,
+  type TabItem,
+  type TabPanelProps,
+  type TabsProps,
 } from "./Tabs";
 
 // Export icons

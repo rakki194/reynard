@@ -36,9 +36,12 @@ export class ClusterRenderer {
     this.textSprites = [];
   }
 
-  async renderClusters(clusters: ClusterData[], onHover?: (clusterId: string) => void) {
+  async renderClusters(
+    clusters: ClusterData[],
+    onHover?: (clusterId: string) => void,
+  ) {
     await this.initialize();
-    
+
     // Clear existing cluster visualizations
     this.clearClusterVisualizations();
 
@@ -52,7 +55,10 @@ export class ClusterRenderer {
     this.config.renderer.render(this.config.scene, this.config.camera);
   }
 
-  private createConvexHull(cluster: ClusterData, onHover?: (clusterId: string) => void) {
+  private createConvexHull(
+    cluster: ClusterData,
+    onHover?: (clusterId: string) => void,
+  ) {
     if (!cluster.points || cluster.points.length < 3 || !this.THREE) return;
 
     // Create convex hull geometry

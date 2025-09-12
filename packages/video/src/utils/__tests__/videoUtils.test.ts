@@ -1,12 +1,17 @@
 /**
  * Video Utils Test Suite
- * 
+ *
  * Tests for video utility functions including file validation,
  * formatting, and helper functions.
  */
 
 import { describe, it, expect } from "vitest";
-import { isVideoFile, getVideoDuration, formatVideoDuration, getVideoThumbnail } from "../videoUtils";
+import {
+  isVideoFile,
+  getVideoDuration,
+  formatVideoDuration,
+  getVideoThumbnail,
+} from "../videoUtils";
 
 describe("videoUtils", () => {
   describe("isVideoFile", () => {
@@ -21,7 +26,7 @@ describe("videoUtils", () => {
         new File([], "test.wmv", { type: "video/x-ms-wmv" }),
       ];
 
-      videoFiles.forEach(file => {
+      videoFiles.forEach((file) => {
         expect(isVideoFile(file)).toBe(true);
       });
     });
@@ -34,7 +39,7 @@ describe("videoUtils", () => {
         new File([], "test.pdf", { type: "application/pdf" }),
       ];
 
-      nonVideoFiles.forEach(file => {
+      nonVideoFiles.forEach((file) => {
         expect(isVideoFile(file)).toBe(false);
       });
     });
@@ -46,7 +51,7 @@ describe("videoUtils", () => {
         new File([], "test.MOV", { type: "video/quicktime" }),
       ];
 
-      caseVariations.forEach(file => {
+      caseVariations.forEach((file) => {
         expect(isVideoFile(file)).toBe(true);
       });
     });
@@ -54,32 +59,36 @@ describe("videoUtils", () => {
 
   describe("getVideoDuration", () => {
     it("should return duration for valid video file", async () => {
-      const mockVideoFile = new File(["video"], "test.mp4", { type: "video/mp4" });
-      
+      const mockVideoFile = new File(["video"], "test.mp4", {
+        type: "video/mp4",
+      });
+
       // Mock video element
       const mockVideo = {
         duration: 120,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn(),
       };
-      
+
       // Mock URL.createObjectURL
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       // Mock HTMLVideoElement constructor
       global.HTMLVideoElement = vi.fn(() => mockVideo) as any;
-      
+
       const duration = await getVideoDuration(mockVideoFile);
       expect(duration).toBe(120);
     });
 
     it("should handle video load errors", async () => {
-      const mockVideoFile = new File(["video"], "test.mp4", { type: "video/mp4" });
-      
+      const mockVideoFile = new File(["video"], "test.mp4", {
+        type: "video/mp4",
+      });
+
       // Mock video element that fails to load
       const mockVideo = {
         duration: NaN,
@@ -90,15 +99,15 @@ describe("videoUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLVideoElement = vi.fn(() => mockVideo) as any;
-      
+
       const duration = await getVideoDuration(mockVideoFile);
       expect(duration).toBe(0);
     });
@@ -135,8 +144,10 @@ describe("videoUtils", () => {
 
   describe("getVideoThumbnail", () => {
     it("should generate thumbnail for video file", async () => {
-      const mockVideoFile = new File(["video"], "test.mp4", { type: "video/mp4" });
-      
+      const mockVideoFile = new File(["video"], "test.mp4", {
+        type: "video/mp4",
+      });
+
       // Mock video element
       const mockVideo = {
         duration: 120,
@@ -149,7 +160,7 @@ describe("videoUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       // Mock canvas
       const mockCanvas = {
         width: 0,
@@ -157,26 +168,30 @@ describe("videoUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toDataURL: vi.fn().mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
+        toDataURL: vi
+          .fn()
+          .mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
       };
-      
+
       // Mock URL.createObjectURL
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLVideoElement = vi.fn(() => mockVideo) as any;
       global.HTMLCanvasElement = vi.fn(() => mockCanvas) as any;
-      
+
       const thumbnail = await getVideoThumbnail(mockVideoFile, 0.5);
       expect(thumbnail).toBe("data:image/jpeg;base64,mock-thumbnail");
     });
 
     it("should handle video load errors", async () => {
-      const mockVideoFile = new File(["video"], "test.mp4", { type: "video/mp4" });
-      
+      const mockVideoFile = new File(["video"], "test.mp4", {
+        type: "video/mp4",
+      });
+
       // Mock video element that fails to load
       const mockVideo = {
         duration: NaN,
@@ -187,22 +202,24 @@ describe("videoUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLVideoElement = vi.fn(() => mockVideo) as any;
-      
+
       const thumbnail = await getVideoThumbnail(mockVideoFile, 0.5);
       expect(thumbnail).toBe(null);
     });
 
     it("should use custom time for thumbnail", async () => {
-      const mockVideoFile = new File(["video"], "test.mp4", { type: "video/mp4" });
-      
+      const mockVideoFile = new File(["video"], "test.mp4", {
+        type: "video/mp4",
+      });
+
       const mockVideo = {
         duration: 120,
         videoWidth: 1920,
@@ -215,25 +232,27 @@ describe("videoUtils", () => {
         }),
         removeEventListener: vi.fn(),
       };
-      
+
       const mockCanvas = {
         width: 0,
         height: 0,
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toDataURL: vi.fn().mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
+        toDataURL: vi
+          .fn()
+          .mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
       };
-      
+
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       Object.defineProperty(URL, "createObjectURL", {
         value: mockCreateObjectURL,
         writable: true,
       });
-      
+
       global.HTMLVideoElement = vi.fn(() => mockVideo) as any;
       global.HTMLCanvasElement = vi.fn(() => mockCanvas) as any;
-      
+
       const thumbnail = await getVideoThumbnail(mockVideoFile, 0.25);
       expect(thumbnail).toBe("data:image/jpeg;base64,mock-thumbnail");
     });

@@ -17,6 +17,7 @@ extend-exclude = '''
   | build
   | dist
   | node_modules
+  | third_party
 )/
 '''
 
@@ -27,7 +28,7 @@ line_length = 88
 known_first_party = ["reynard", "gatekeeper", "beacon"]
 known_third_party = ["fastapi", "uvicorn", "pydantic", "sqlalchemy"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-skip_glob = ["**/node_modules/**", "**/venv/**", "**/.venv/**"]
+skip_glob = ["**/node_modules/**", "**/venv/**", "**/.venv/**", "**/third_party/**"]
 
 [tool.mypy]
 python_version = "3.8"
@@ -78,7 +79,7 @@ max-statements = 60
 max-module-lines = 250
 
 [tool.bandit]
-exclude_dirs = ["tests", "test_*", "venv", ".venv", "node_modules"]
+exclude_dirs = ["tests", "test_*", "venv", ".venv", "node_modules", "third_party"]
 skips = ["B101", "B601"]                                            # Skip assert_used and shell_injection for tests
 
 [tool.pytest.ini_options]

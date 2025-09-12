@@ -38,7 +38,7 @@
 }
 
 .property-value {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   color: var(--accent-color);
   font-weight: 600;
 }
@@ -82,7 +82,7 @@
 
 .variation-info code {
   display: block;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.85rem;
   color: var(--text-secondary);
   background: var(--surface-color);

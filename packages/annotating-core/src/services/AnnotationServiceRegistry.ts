@@ -21,7 +21,8 @@ import {
  */
 export class AnnotationServiceRegistry {
   private serviceRegistry: ServiceRegistry;
-  private annotationServices: Map<string, AISharedBackendAnnotationService> = new Map();
+  private annotationServices: Map<string, AISharedBackendAnnotationService> =
+    new Map();
 
   constructor(serviceRegistry?: ServiceRegistry) {
     this.serviceRegistry = serviceRegistry || getServiceRegistry();
@@ -35,20 +36,22 @@ export class AnnotationServiceRegistry {
     config: AISharedBackendAnnotationServiceConfig,
   ): AISharedBackendAnnotationService {
     const service = new AISharedBackendAnnotationService(config);
-    
+
     // Register with the global service registry
     this.serviceRegistry.register(service);
-    
+
     // Keep a local reference
     this.annotationServices.set(name, service);
-    
+
     return service;
   }
 
   /**
    * Get an annotation service by name
    */
-  getAnnotationService(name: string): AISharedBackendAnnotationService | undefined {
+  getAnnotationService(
+    name: string,
+  ): AISharedBackendAnnotationService | undefined {
     return this.annotationServices.get(name);
   }
 
@@ -74,10 +77,10 @@ export class AnnotationServiceRegistry {
     if (service) {
       // Unregister from global registry
       this.serviceRegistry.unregister(service.name);
-      
+
       // Remove from local registry
       this.annotationServices.delete(name);
-      
+
       return true;
     }
     return false;
@@ -94,7 +97,10 @@ export class AnnotationServiceRegistry {
           await service.start();
         }
       } catch (error) {
-        console.error(`Failed to start annotation service ${service.name}:`, error);
+        console.error(
+          `Failed to start annotation service ${service.name}:`,
+          error,
+        );
       }
     });
 
@@ -112,7 +118,10 @@ export class AnnotationServiceRegistry {
           await service.stop();
         }
       } catch (error) {
-        console.error(`Failed to stop annotation service ${service.name}:`, error);
+        console.error(
+          `Failed to stop annotation service ${service.name}:`,
+          error,
+        );
       }
     });
 
@@ -187,7 +196,7 @@ export function createDefaultAnnotationService(
   name: string = "default-annotation-service",
 ): AISharedBackendAnnotationService {
   const registry = getAnnotationServiceRegistry();
-  
+
   const config: AISharedBackendAnnotationServiceConfig = {
     name,
     baseUrl,

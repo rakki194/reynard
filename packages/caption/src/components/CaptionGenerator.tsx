@@ -16,10 +16,10 @@
 import { Component, createEffect } from "solid-js";
 import { type CaptionResult } from "reynard-annotating";
 import { CaptionGeneratorView } from "./CaptionGeneratorView";
-import { 
-  useCaptionGeneratorState, 
-  useCaptionGeneratorHandlers, 
-  useCaptionGeneratorBackend 
+import {
+  useCaptionGeneratorState,
+  useCaptionGeneratorHandlers,
+  useCaptionGeneratorBackend,
 } from "../composables";
 import "./CaptionGenerator.css";
 
@@ -41,22 +41,21 @@ export interface CaptionGeneratorProps {
   className?: string;
 }
 
-
 export const CaptionGenerator: Component<CaptionGeneratorProps> = (props) => {
   // Initialize composables
   const state = useCaptionGeneratorState();
-  
+
   let backend: ReturnType<typeof useCaptionGeneratorBackend>;
   let handlers: ReturnType<typeof useCaptionGeneratorHandlers>;
-  
+
   // Track reactive props and recreate backend and handlers when they change
   createEffect(() => {
     backend = useCaptionGeneratorBackend(state, props.backendConfig);
     handlers = useCaptionGeneratorHandlers(
-      state, 
-      backend.manager, 
-      props.onCaptionGenerated, 
-      props.onGenerationError
+      state,
+      backend.manager,
+      props.onCaptionGenerated,
+      props.onGenerationError,
     );
   });
 

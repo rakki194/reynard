@@ -47,12 +47,18 @@ import type { UnifiedECS } from "./ecs-interface";
 export {
   createECSSystem,
   createTypeScriptECSSystem,
-  createWASMSIMDECSSystem, getECSDiagnostics, isWASMSIMDAvailable
+  createWASMSIMDECSSystem,
+  getECSDiagnostics,
+  isWASMSIMDAvailable,
 } from "./ecs-factory";
 
 // Core interfaces and types
 export type {
-  ECSConfig, ECSFactoryFunction, ECSPerformanceMetrics, UnifiedECS, WASMSIMDCapabilities
+  ECSConfig,
+  ECSFactoryFunction,
+  ECSPerformanceMetrics,
+  UnifiedECS,
+  WASMSIMDCapabilities,
 } from "./ecs-interface";
 
 // Implementation classes (for advanced usage)

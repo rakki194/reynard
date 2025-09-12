@@ -1,6 +1,6 @@
 /**
  * Caption Generator Results Component
- * 
+ *
  * Results display for the caption generator.
  */
 
@@ -12,7 +12,9 @@ export interface CaptionGeneratorResultsProps {
   state: CaptionGeneratorState;
 }
 
-export const CaptionGeneratorResults: Component<CaptionGeneratorResultsProps> = (props) => {
+export const CaptionGeneratorResults: Component<
+  CaptionGeneratorResultsProps
+> = (props) => {
   return (
     <Show when={props.state.result()}>
       <GenerationResults

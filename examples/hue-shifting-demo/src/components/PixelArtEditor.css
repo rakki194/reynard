@@ -40,7 +40,9 @@
   position: sticky;
   top: 120px;
   border: 1px solid var(--color-border, oklch(35% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .control-section {
@@ -74,7 +76,11 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .material-button:hover {
@@ -131,7 +137,7 @@
   font-weight: 500;
   font-size: 0.9rem;
   text-align: center;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   transition: color 0.2s ease;
 }
 
@@ -149,7 +155,9 @@
   border-radius: 1rem;
   padding: 2rem;
   border: 2px solid var(--color-border, oklch(25% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pixel-canvas {
@@ -217,7 +225,10 @@
   color: var(--color-text, oklch(85% 0.01 0));
   font-size: 0.9rem;
   width: 80px;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .preset-sizes {
@@ -234,7 +245,11 @@
   color: var(--color-text-secondary, oklch(70% 0.01 0));
   cursor: pointer;
   font-size: 0.8rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .preset-sizes button:hover {
@@ -257,7 +272,11 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -285,7 +304,11 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,7 +349,7 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .editor-controls {
     position: static;
   }
@@ -336,15 +359,15 @@
   .pixel-art-editor {
     padding: 1rem;
   }
-  
+
   .editor-header h2 {
     font-size: 2rem;
   }
-  
+
   .editor-header p {
     font-size: 1rem;
   }
-  
+
   .material-buttons {
     grid-template-columns: 1fr;
   }

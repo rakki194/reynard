@@ -10,11 +10,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'reynard-core': ['reynard-core'],
-          'reynard-themes': ['reynard-themes'],
-          'reynard-components': ['reynard-components'],
-        }
-      }
-    }
-  }
+          "reynard-core": ["reynard-core"],
+          "reynard-themes": ["reynard-themes"],
+          "reynard-components": ["reynard-components"],
+        },
+      },
+    },
+  },
 });

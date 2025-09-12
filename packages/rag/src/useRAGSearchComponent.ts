@@ -1,6 +1,6 @@
 /**
  * RAG Search Component Composable
- * 
+ *
  * Manages component initialization and setup for RAG search
  * following Reynard composable conventions.
  */
@@ -17,14 +17,14 @@ export interface RAGSearchComponentConfig {
 
 /**
  * Composable for managing RAG search component initialization and state
- * 
+ *
  * @param config Component configuration
  * @returns Component state and handlers
  */
 export function useRAGSearchComponent(config: RAGSearchComponentConfig) {
   // Create API service
   const apiService = new RAGApiService({
-    basePath: config.props.apiBaseUrl || "http://localhost:8000"
+    basePath: config.props.apiBaseUrl || "http://localhost:8000",
   });
 
   // Use RAG search state composable
@@ -33,7 +33,7 @@ export function useRAGSearchComponent(config: RAGSearchComponentConfig) {
     defaultModel: config.props.defaultModel || "embeddinggemma:latest",
     maxResults: config.props.maxResults || 10,
     similarityThreshold: config.props.similarityThreshold || 0.7,
-    enableReranking: config.props.enableReranking || false
+    enableReranking: config.props.enableReranking || false,
   });
 
   // UI state
@@ -51,13 +51,13 @@ export function useRAGSearchComponent(config: RAGSearchComponentConfig) {
     onDocumentUpload: config.props.onDocumentUpload,
     apiBaseUrl: config.props.apiBaseUrl,
     uploadFile: ragState.uploadFile,
-    search: () => ragState.search(ragState.query())
+    search: () => ragState.search(ragState.query()),
   });
 
   return {
     ragState,
     handlers,
     activeTab,
-    setActiveTab
+    setActiveTab,
   };
 }

@@ -3,7 +3,7 @@
  * Handles frame-based animation with timing control
  */
 
-import type { PixelSprite } from './sprite-renderer';
+import type { PixelSprite } from "./sprite-renderer";
 
 /**
  * Animated sprite data structure
@@ -22,7 +22,7 @@ export class SpriteAnimator {
   private frameTime: number = 0;
   private isPlaying: boolean = false;
   private animation: AnimatedSprite | null = null;
-  
+
   /**
    * Start playing an animation
    */
@@ -32,7 +32,7 @@ export class SpriteAnimator {
     this.frameTime = 0;
     this.isPlaying = true;
   }
-  
+
   /**
    * Stop the current animation
    */
@@ -41,34 +41,34 @@ export class SpriteAnimator {
     this.currentFrame = 0;
     this.frameTime = 0;
   }
-  
+
   /**
    * Pause the current animation
    */
   pause(): void {
     this.isPlaying = false;
   }
-  
+
   /**
    * Resume the current animation
    */
   resume(): void {
     this.isPlaying = true;
   }
-  
+
   /**
    * Update animation (call this every frame)
    */
   update(deltaTime: number): void {
     if (!this.isPlaying || !this.animation) return;
-    
+
     this.frameTime += deltaTime;
     const frameDuration = 1000 / this.animation.frameRate; // Convert to milliseconds
-    
+
     if (this.frameTime >= frameDuration) {
       this.frameTime = 0;
       this.currentFrame++;
-      
+
       if (this.currentFrame >= this.animation.frames.length) {
         if (this.animation.loop) {
           this.currentFrame = 0;
@@ -79,7 +79,7 @@ export class SpriteAnimator {
       }
     }
   }
-  
+
   /**
    * Get the current frame sprite
    */
@@ -87,36 +87,40 @@ export class SpriteAnimator {
     if (!this.animation || this.currentFrame >= this.animation.frames.length) {
       return null;
     }
-    
+
     return this.animation.frames[this.currentFrame];
   }
-  
+
   /**
    * Check if animation is playing
    */
   isAnimationPlaying(): boolean {
     return this.isPlaying;
   }
-  
+
   /**
    * Get current frame index
    */
   getCurrentFrameIndex(): number {
     return this.currentFrame;
   }
-  
+
   /**
    * Get total frame count
    */
   getFrameCount(): number {
     return this.animation?.frames.length || 0;
   }
-  
+
   /**
    * Set current frame (for manual control)
    */
   setFrame(frameIndex: number): void {
-    if (this.animation && frameIndex >= 0 && frameIndex < this.animation.frames.length) {
+    if (
+      this.animation &&
+      frameIndex >= 0 &&
+      frameIndex < this.animation.frames.length
+    ) {
       this.currentFrame = frameIndex;
       this.frameTime = 0;
     }

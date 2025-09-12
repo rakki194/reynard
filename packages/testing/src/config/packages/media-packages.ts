@@ -3,78 +3,78 @@
  * Configuration for media and visualization packages that require i18n testing
  */
 
-import type { PackageI18nConfig } from '../types';
-import { createIgnorePatterns } from '../ignore-patterns';
+import type { PackageI18nConfig } from "../types";
+import { createIgnorePatterns } from "../ignore-patterns";
 
 export const mediaPackages: PackageI18nConfig[] = [
   {
-    name: 'charts',
-    path: 'packages/charts',
+    name: "charts",
+    path: "packages/charts",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('charts'),
+    ignorePatterns: createIgnorePatterns("charts"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['charts', 'common']
+    namespaces: ["charts", "common"],
   },
   {
-    name: 'caption',
-    path: 'packages/caption',
+    name: "caption",
+    path: "packages/caption",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('caption'),
+    ignorePatterns: createIgnorePatterns("caption"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['caption', 'common']
+    namespaces: ["caption", "common"],
   },
   {
-    name: 'boundingbox',
-    path: 'packages/boundingbox',
+    name: "boundingbox",
+    path: "packages/boundingbox",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('boundingBox'),
+    ignorePatterns: createIgnorePatterns("boundingBox"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['boundingbox', 'common']
+    namespaces: ["boundingbox", "common"],
   },
   {
-    name: 'audio',
-    path: 'packages/audio',
+    name: "audio",
+    path: "packages/audio",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('audio'),
+    ignorePatterns: createIgnorePatterns("audio"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['audio', 'common']
+    namespaces: ["audio", "common"],
   },
   {
-    name: 'video',
-    path: 'packages/video',
+    name: "video",
+    path: "packages/video",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('video'),
+    ignorePatterns: createIgnorePatterns("video"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['video', 'common']
+    namespaces: ["video", "common"],
   },
   {
-    name: 'image',
-    path: 'packages/image',
+    name: "image",
+    path: "packages/image",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('image'),
+    ignorePatterns: createIgnorePatterns("image"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['image', 'common']
+    namespaces: ["image", "common"],
   },
   {
-    name: 'multimodal',
-    path: 'packages/multimodal',
+    name: "multimodal",
+    path: "packages/multimodal",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('multimodal'),
+    ignorePatterns: createIgnorePatterns("multimodal"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['multimodal', 'common']
-  }
+    namespaces: ["multimodal", "common"],
+  },
 ];

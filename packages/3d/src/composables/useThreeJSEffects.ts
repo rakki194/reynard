@@ -49,13 +49,18 @@ interface InitializationResult {
       camera: () => ThreeCamera | null,
       renderer: () => ThreeRenderer | null,
       controls: () => ThreeControls | null,
-      onRender?: (scene: ThreeScene, camera: ThreeCamera, renderer: ThreeRenderer, controls: ThreeControls) => void
+      onRender?: (
+        scene: ThreeScene,
+        camera: ThreeCamera,
+        renderer: ThreeRenderer,
+        controls: ThreeControls,
+      ) => void,
     ) => void;
     handleResize: (
       container: HTMLDivElement,
       camera: () => ThreeCamera | null,
       renderer: () => ThreeRenderer | null,
-      controls: () => ThreeControls | null
+      controls: () => ThreeControls | null,
     ) => () => void;
   };
 }

@@ -12,7 +12,9 @@
   border-radius: 0.75rem;
   border: 1px solid var(--color-border, oklch(35% 0.02 0));
   overflow-x: auto;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .ramp-color {
@@ -30,7 +32,9 @@
   border-radius: 0.5rem;
   border: 2px solid var(--color-border, oklch(40% 0.02 0));
   cursor: pointer;
-  transition: all 0.2s ease, border-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    border-color 0.2s ease;
   box-shadow: 0 4px 12px var(--shadow-rgb, 0 0 0 / 0.3);
   position: relative;
 }
@@ -61,11 +65,14 @@
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   border: 1px solid var(--color-border, oklch(30% 0.01 0));
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .color-value {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.7rem;
   color: var(--color-text-secondary, oklch(70% 0.01 0));
   background: var(--color-background-tertiary, oklch(15% 0.01 0));
@@ -74,7 +81,10 @@
   border: 1px solid var(--color-border, oklch(25% 0.01 0));
   word-break: break-all;
   max-width: 100%;
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .ramp-actions {
@@ -92,7 +102,11 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -118,25 +132,25 @@
     gap: 0.25rem;
     padding: 0.75rem;
   }
-  
+
   .ramp-color {
     min-width: 60px;
   }
-  
+
   .color-swatch {
     width: 50px;
     height: 50px;
   }
-  
+
   .color-value {
     font-size: 0.65rem;
     padding: 0.2rem 0.4rem;
   }
-  
+
   .ramp-actions {
     flex-direction: column;
   }
-  
+
   .action-button {
     padding: 0.6rem 1.2rem;
     font-size: 0.85rem;

@@ -1,6 +1,6 @@
 /**
  * Video Grid Content Component for Reynard Caption System
- * 
+ *
  * Renders the main content area of the video grid.
  */
 

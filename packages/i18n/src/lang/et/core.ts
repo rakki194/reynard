@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Päring katkestatud",
   },
-  
+
   // Autentimine ja turvalisus
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer testvõti",
     "new-key": "Bearer uus võti",
   },
-  
+
   // Teated
   notifications: {
     title: "Teated",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Esimene grupeeritud",
     "second-grouped": "Teine grupeeritud",
   },
-  
+
   // Valideerimise sõnumid
   validation: {
     required: "See väli on kohustuslik",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "Vigane sisendi tüüp",
     "does-not-match-pattern": "Sisend ei vasta nõutud mustrile",
   },
-  
+
   // Parooli valideerimine
   password: {
-    "must-be-at-least-8-characters-long": "Parool peab olema vähemalt 8 tähemärki",
-    "must-contain-at-least-one-uppercase-letter": "Parool peab sisaldama vähemalt üht suurt tähte",
-    "must-contain-at-least-one-lowercase-letter": "Parool peab sisaldama vähemalt üht väikest tähte",
-    "must-contain-at-least-one-number": "Parool peab sisaldama vähemalt üht numbrit",
-    "must-contain-at-least-one-special-character": "Parool peab sisaldama vähemalt üht erimärki",
+    "must-be-at-least-8-characters-long":
+      "Parool peab olema vähemalt 8 tähemärki",
+    "must-contain-at-least-one-uppercase-letter":
+      "Parool peab sisaldama vähemalt üht suurt tähte",
+    "must-contain-at-least-one-lowercase-letter":
+      "Parool peab sisaldama vähemalt üht väikest tähte",
+    "must-contain-at-least-one-number":
+      "Parool peab sisaldama vähemalt üht numbrit",
+    "must-contain-at-least-one-special-character":
+      "Parool peab sisaldama vähemalt üht erimärki",
   },
-  
+
   // Turvalisuse valideerimine
   security: {
-    "at-least-one-character-type-must-be-included": "Peab olema kaasatud vähemalt üks tähemärgi tüüp",
-    "input-contains-potentially-dangerous-html": "Sisend sisaldab potentsiaalselt ohtlikku HTML-i",
-    "input-contains-potentially-dangerous-sql-patterns": "Sisend sisaldab potentsiaalselt ohtlikke SQL mustreid",
-    "input-contains-potentially-dangerous-xss-patterns": "Sisend sisaldab potentsiaalselt ohtlikke XSS mustreid",
-    "input-contains-path-traversal-patterns": "Sisend sisaldab tee läbimise mustreid",
-    "input-contains-windows-reserved-names": "Sisend sisaldab Windowsi reserveeritud nimesid",
-    "input-contains-executable-file-extensions": "Sisend sisaldab täidetavate failide laiendeid",
+    "at-least-one-character-type-must-be-included":
+      "Peab olema kaasatud vähemalt üks tähemärgi tüüp",
+    "input-contains-potentially-dangerous-html":
+      "Sisend sisaldab potentsiaalselt ohtlikku HTML-i",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Sisend sisaldab potentsiaalselt ohtlikke SQL mustreid",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Sisend sisaldab potentsiaalselt ohtlikke XSS mustreid",
+    "input-contains-path-traversal-patterns":
+      "Sisend sisaldab tee läbimise mustreid",
+    "input-contains-windows-reserved-names":
+      "Sisend sisaldab Windowsi reserveeritud nimesid",
+    "input-contains-executable-file-extensions":
+      "Sisend sisaldab täidetavate failide laiendeid",
     "input-contains-null-bytes": "Sisend sisaldab null baite",
     "input-contains-hidden-files": "Sisend sisaldab peidetud faile",
-    "input-contains-javascript-file-extensions": "Sisend sisaldab JavaScript failide laiendeid",
+    "input-contains-javascript-file-extensions":
+      "Sisend sisaldab JavaScript failide laiendeid",
   },
-  
+
   // Asünkroonsed toimingud
   async: {
     "operation-timed-out": "Toiming aegus",
@@ -107,7 +120,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Samaaegsus peab olema suurem kui 0",
     "polling-timeout-reached": "Pollingu timeout saavutatud",
   },
-  
+
   // Moodulite laadimine
   module: {
     "is-null": "Moodul on null",
@@ -115,14 +128,17 @@ export const coreTranslations = {
     "load-failed": "Laadimine ebaõnnestus",
     "loading-failed": "Laadimine ebaõnnestus",
   },
-  
+
   // Salvestamine ja serialiseerimine
   storage: {
-    "potentially-dangerous-json-detected": "Tuvastatud potentsiaalselt ohtlik JSON",
-    "failed-to-parse-json-from-localstorage": "JSON-i parsimine localStorage-ist ebaõnnestus:",
-    "error-parsing-storage-event": "Viga salvestamise sündmuse parsimisel võtme jaoks",
+    "potentially-dangerous-json-detected":
+      "Tuvastatud potentsiaalselt ohtlik JSON",
+    "failed-to-parse-json-from-localstorage":
+      "JSON-i parsimine localStorage-ist ebaõnnestus:",
+    "error-parsing-storage-event":
+      "Viga salvestamise sündmuse parsimisel võtme jaoks",
   },
-  
+
   // Test ja arendus
   test: {
     error: "Testi viga",
@@ -131,19 +147,19 @@ export const coreTranslations = {
     "notification-1": "Testi teade 1",
     "notification-2": "Testi teade 2",
   },
-  
+
   // Üldised vead
   errors: {
     "string-error": "Stringi viga",
     "crypto-error": "Krüpto viga",
     "some-error": "Mingi viga",
   },
-  
+
   // Formaadid ja utiliidid
   formatters: {
     "hello-world": "Tere maailm",
   },
-  
+
   // Kuupäev ja aeg
   dateTime: {
     now: "Nüüd",
@@ -153,11 +169,13 @@ export const coreTranslations = {
     format: "Formaat",
     timezone: "Ajavöönd",
   },
-  
+
   // Integratsiooni testid
   integration: {
     "session-and-api-key-generation": "Sessiooni ja API võtme genereerimine",
-    "authentication-and-input-validation-integration": "Autentimise ja sisendi valideerimise integratsioon",
-    "performance-and-security-integration": "Jõudluse ja turvalisuse integratsioon",
+    "authentication-and-input-validation-integration":
+      "Autentimise ja sisendi valideerimise integratsioon",
+    "performance-and-security-integration":
+      "Jõudluse ja turvalisuse integratsioon",
   },
 };

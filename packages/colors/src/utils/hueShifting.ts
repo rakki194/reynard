@@ -3,8 +3,8 @@
  * Implements true OKLCH hue shifting that preserves lightness and chroma
  */
 
-import type { OKLCHColor } from '../types';
-import { clampToGamut, handleEdgeCases } from './colorConversion';
+import type { OKLCHColor } from "../types";
+import { clampToGamut, handleEdgeCases } from "./colorConversion";
 
 /**
  * Pure hue shift that preserves lightness and chroma
@@ -13,13 +13,16 @@ import { clampToGamut, handleEdgeCases } from './colorConversion';
  * @param deltaH - Hue shift amount in degrees
  * @returns Shifted OKLCH color with same L and C
  */
-export function pureHueShift(baseColor: OKLCHColor, deltaH: number): OKLCHColor {
+export function pureHueShift(
+  baseColor: OKLCHColor,
+  deltaH: number,
+): OKLCHColor {
   const shifted = {
     l: baseColor.l, // PRESERVE lightness
     c: baseColor.c, // PRESERVE chroma
-    h: (baseColor.h + deltaH + 360) % 360 // ONLY shift hue
+    h: (baseColor.h + deltaH + 360) % 360, // ONLY shift hue
   };
-  
+
   // Handle edge cases and ensure gamut compliance
   return handleEdgeCases(clampToGamut(shifted));
 }
@@ -34,17 +37,17 @@ export function pureHueShift(baseColor: OKLCHColor, deltaH: number): OKLCHColor 
 export function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
-  hueRange: number = 60
+  hueRange: number = 60,
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const hueStep = hueRange / (stops - 1);
-  
+
   for (let i = 0; i < stops; i++) {
     const hueOffset = i * hueStep;
     const shiftedColor = pureHueShift(baseColor, hueOffset);
     colors.push(shiftedColor);
   }
-  
+
   return colors;
 }
 
@@ -54,10 +57,7 @@ export function generateHueShiftRamp(
  * @returns Array with base color and its complement
  */
 export function createComplementaryPair(baseColor: OKLCHColor): OKLCHColor[] {
-  return [
-    baseColor,
-    pureHueShift(baseColor, 180)
-  ];
+  return [baseColor, pureHueShift(baseColor, 180)];
 }
 
 /**
@@ -69,7 +69,7 @@ export function createTriadicSet(baseColor: OKLCHColor): OKLCHColor[] {
   return [
     baseColor,
     pureHueShift(baseColor, 120),
-    pureHueShift(baseColor, 240)
+    pureHueShift(baseColor, 240),
   ];
 }
 
@@ -83,7 +83,7 @@ export function createTetradicSet(baseColor: OKLCHColor): OKLCHColor[] {
     baseColor,
     pureHueShift(baseColor, 90),
     pureHueShift(baseColor, 180),
-    pureHueShift(baseColor, 270)
+    pureHueShift(baseColor, 270),
   ];
 }
 
@@ -97,17 +97,17 @@ export function createTetradicSet(baseColor: OKLCHColor): OKLCHColor[] {
 export function createAnalogousSet(
   baseColor: OKLCHColor,
   count: number = 5,
-  spread: number = 60
+  spread: number = 60,
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const step = spread / (count - 1);
   const startOffset = -spread / 2;
-  
+
   for (let i = 0; i < count; i++) {
-    const hueOffset = startOffset + (i * step);
+    const hueOffset = startOffset + i * step;
     colors.push(pureHueShift(baseColor, hueOffset));
   }
-  
+
   return colors;
 }
 
@@ -121,16 +121,16 @@ export function createAnalogousSet(
 export function perceptualHueShift(
   baseColor: OKLCHColor,
   deltaH: number,
-  preserveRelationships: boolean = true
+  preserveRelationships: boolean = true,
 ): OKLCHColor {
   if (!preserveRelationships) {
     return pureHueShift(baseColor, deltaH);
   }
-  
+
   // For perceptual relationships, we might want to make small adjustments
   // to L and C to maintain visual harmony, but keep them minimal
   const shifted = pureHueShift(baseColor, deltaH);
-  
+
   // Optional: Make tiny adjustments for perceptual harmony
   // This is more of an artistic choice than mathematical necessity
   return shifted;
@@ -142,8 +142,11 @@ export function perceptualHueShift(
  * @param deltaH - Hue shift amount in degrees
  * @returns Array of shifted OKLCH colors
  */
-export function batchHueShift(colors: OKLCHColor[], deltaH: number): OKLCHColor[] {
-  return colors.map(color => pureHueShift(color, deltaH));
+export function batchHueShift(
+  colors: OKLCHColor[],
+  deltaH: number,
+): OKLCHColor[] {
+  return colors.map((color) => pureHueShift(color, deltaH));
 }
 
 /**
@@ -158,11 +161,11 @@ export function easedHueShift(
   baseColor: OKLCHColor,
   deltaH: number,
   progress: number,
-  easingFunction: (t: number) => number = (t: number) => t
+  easingFunction: (t: number) => number = (t: number) => t,
 ): OKLCHColor {
   const easedProgress = easingFunction(progress);
   const actualDeltaH = deltaH * easedProgress;
-  
+
   return pureHueShift(baseColor, actualDeltaH);
 }
 
@@ -171,7 +174,7 @@ export function easedHueShift(
  */
 export const EasingFunctions = {
   linear: (t: number) => t,
-  easeInOut: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+  easeInOut: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
   easeIn: (t: number) => t * t,
   easeOut: (t: number) => t * (2 - t),
   bounce: (t: number) => {
@@ -184,5 +187,5 @@ export const EasingFunctions = {
     } else {
       return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
     }
-  }
+  },
 } as const;

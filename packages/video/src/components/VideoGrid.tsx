@@ -1,6 +1,6 @@
 /**
  * Video Grid Component for Reynard Caption System
- * 
+ *
  * Orchestrates video file management with modular components.
  */
 
@@ -13,21 +13,21 @@ import { useVideoProcessing } from "../composables/useVideoProcessing";
 const createFileUploadHandler = (
   processVideoFile: (file: File) => Promise<VideoFile>,
   setVideoFiles: (fn: (prev: VideoFile[]) => VideoFile[]) => void,
-  maxFiles: number
+  maxFiles: number,
 ) => {
   return async (event: Event) => {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    
+
     if (!files || files.length === 0) return;
 
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
       const processedFiles = await Promise.all(
-        filesToProcess.map(processVideoFile)
+        filesToProcess.map(processVideoFile),
       );
-      setVideoFiles(prev => [...prev, ...processedFiles]);
+      setVideoFiles((prev) => [...prev, ...processedFiles]);
     } catch (err) {
       console.error("Failed to process video files:", err);
     }
@@ -35,7 +35,9 @@ const createFileUploadHandler = (
 };
 
 export const VideoGrid: Component<VideoGridProps> = (props) => {
-  const [videoFiles, setVideoFiles] = createSignal<VideoFile[]>(props.initialFiles || []);
+  const [videoFiles, setVideoFiles] = createSignal<VideoFile[]>(
+    props.initialFiles || [],
+  );
   const [selectedFile, setSelectedFile] = createSignal<VideoFile | null>(null);
 
   // Use video processing composable
@@ -55,7 +57,7 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setVideoFiles(prev => prev.filter(f => f.id !== fileId));
+    setVideoFiles((prev) => prev.filter((f) => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -67,7 +69,7 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
   const handleFileUpload = createFileUploadHandler(
     processVideoFile,
     setVideoFiles,
-    maxFiles()
+    maxFiles(),
   );
 
   // Cleanup on unmount
@@ -92,5 +94,3 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
     />
   );
 };
-
-

@@ -1,11 +1,14 @@
 /**
  * Video Processing Composable for Reynard Caption System
- * 
+ *
  * Handles video file processing, thumbnail generation, and metadata extraction.
  */
 
 import { createSignal, Accessor, Setter } from "solid-js";
-import { VideoThumbnailGenerator, VideoMetadataExtractor } from "reynard-file-processing";
+import {
+  VideoThumbnailGenerator,
+  VideoMetadataExtractor,
+} from "reynard-file-processing";
 import { VideoFile } from "../components/types/VideoTypes";
 
 export interface UseVideoProcessingOptions {
@@ -24,7 +27,7 @@ export interface UseVideoProcessingReturn {
 }
 
 export const useVideoProcessing = (
-  options: UseVideoProcessingOptions = {}
+  options: UseVideoProcessingOptions = {},
 ): UseVideoProcessingReturn => {
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -48,7 +51,9 @@ export const useVideoProcessing = (
       // Generate thumbnail using existing infrastructure
       const thumbnailResult = await thumbnailGenerator.generateThumbnail(file);
       if (!thumbnailResult.success) {
-        throw new Error(thumbnailResult.error || "Failed to generate thumbnail");
+        throw new Error(
+          thumbnailResult.error || "Failed to generate thumbnail",
+        );
       }
 
       // Extract metadata using existing infrastructure
@@ -67,7 +72,8 @@ export const useVideoProcessing = (
 
       return videoFile;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to process video file";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to process video file";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

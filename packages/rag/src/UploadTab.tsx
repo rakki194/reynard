@@ -1,6 +1,6 @@
 /**
  * RAG Upload Tab Component
- * 
+ *
  * Handles file upload functionality for the RAG system
  * with progress tracking and file type validation.
  */

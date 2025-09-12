@@ -1,6 +1,6 @@
 /**
  * Text Files Grid Component for Reynard Caption System
- * 
+ *
  * Displays the grid of text file cards.
  */
 
@@ -44,7 +44,9 @@ export const TextFilesGrid: Component<TextFilesGridProps> = (props) => {
         <TextEditor
           file={props.selectedFile!}
           onClose={props.onCloseEditor}
-          onModify={(content) => props.onFileModify(props.selectedFile!.id, content)}
+          onModify={(content) =>
+            props.onFileModify(props.selectedFile!.id, content)
+          }
           editable={props.editable}
         />
       </Show>

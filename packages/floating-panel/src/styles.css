@@ -20,21 +20,21 @@
   --floating-panel-radius: var(--border-radius, 0.5rem);
   --floating-panel-padding: var(--spacing, 1rem);
   --floating-panel-z-index: var(--z-dropdown, 1000);
-  
+
   /* Animation Variables */
   --floating-panel-transition-duration: 0.3s;
   --floating-panel-transition-easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --floating-panel-stagger-delay: 0.1s;
   --floating-panel-entrance-delay: 0.1s;
   --floating-panel-exit-delay: 0s;
-  
+
   /* Overlay Variables */
   --floating-overlay-bg: var(--overlay-bg, rgb(0 0 0 / 0.2));
   --floating-overlay-blur: var(--backdrop-blur, 4px);
   --floating-overlay-opacity: 0.8;
   --floating-overlay-outline: var(--color-accent, oklch(60% 0.25 240));
   --floating-overlay-z-index: var(--z-overlay-highest, 1000);
-  
+
   /* Theme Variables - Use centralized theme variables */
   --floating-panel-accent: var(--color-accent, oklch(60% 0.25 240));
   --floating-panel-warning: var(--color-warning, oklch(70% 0.2 80));
@@ -64,10 +64,13 @@
 
   /* Transition properties with overlay support */
   transition:
-    opacity var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    opacity var(--floating-panel-transition-duration)
+      var(--floating-panel-transition-easing),
     outline 0.15s,
-    backdrop-filter var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
-    background-color var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    backdrop-filter var(--floating-panel-transition-duration)
+      var(--floating-panel-transition-easing),
+    background-color var(--floating-panel-transition-duration)
+      var(--floating-panel-transition-easing),
     overlay var(--floating-panel-transition-duration) allow-discrete,
     display var(--floating-panel-transition-duration) allow-discrete;
 }
@@ -78,21 +81,33 @@
   outline: 2px dashed var(--floating-overlay-outline);
   opacity: 1;
   backdrop-filter: blur(var(--floating-overlay-blur));
-  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--floating-overlay-outline) 2%,
+    transparent
+  );
 }
 
 /* Warning overlay state */
 .floating-panel-overlay.warning {
   outline: 2px solid var(--floating-panel-warning);
   backdrop-filter: blur(calc(var(--floating-overlay-blur) * 1.5));
-  background-color: color-mix(in srgb, var(--floating-panel-warning) 3%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--floating-panel-warning) 3%,
+    transparent
+  );
 }
 
 /* Error overlay state */
 .floating-panel-overlay.error {
   outline: 2px solid var(--floating-panel-error);
   backdrop-filter: blur(calc(var(--floating-overlay-blur) * 1.5));
-  background-color: color-mix(in srgb, var(--floating-panel-error) 3%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--floating-panel-error) 3%,
+    transparent
+  );
 }
 
 /* Starting styles for entry animation */
@@ -115,15 +130,17 @@
   border-radius: var(--floating-panel-radius);
   box-shadow: var(--floating-panel-shadow);
   z-index: var(--floating-panel-z-index);
-  
+
   /* Default hidden state */
   opacity: 0;
   transform: translateY(20px) scale(0.95);
-  
+
   /* Smooth transitions for all properties */
   transition:
-    opacity var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
-    transform var(--floating-panel-transition-duration) var(--floating-panel-transition-easing),
+    opacity var(--floating-panel-transition-duration)
+      var(--floating-panel-transition-easing),
+    transform var(--floating-panel-transition-duration)
+      var(--floating-panel-transition-easing),
     transition-delay 0s;
 }
 
@@ -177,14 +194,22 @@
   --floating-panel-entrance-delay: 0.1s;
   opacity: 1;
   backdrop-filter: blur(var(--floating-overlay-blur));
-  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--floating-overlay-outline) 2%,
+    transparent
+  );
 }
 
 .floating-panel-overlay[data-transition-phase="entering-active"] {
   --floating-panel-entrance-delay: 0.1s;
   opacity: 1;
   backdrop-filter: blur(var(--floating-overlay-blur));
-  background-color: color-mix(in srgb, var(--floating-overlay-outline) 2%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--floating-overlay-outline) 2%,
+    transparent
+  );
 }
 
 .floating-panel-overlay[data-transition-phase="exiting"] {
@@ -201,7 +226,8 @@
   background-color: transparent;
 }
 
-.floating-panel-overlay[data-transition-phase="exiting-active"] .floating-panel {
+.floating-panel-overlay[data-transition-phase="exiting-active"]
+  .floating-panel {
   opacity: 0;
   transform: translateY(20px) scale(0.95);
   transition-duration: 0.2s;
@@ -276,7 +302,11 @@
 }
 
 .floating-panel-drag-handle:hover {
-  background: color-mix(in srgb, var(--floating-panel-border) 30%, var(--floating-panel-bg));
+  background: color-mix(
+    in srgb,
+    var(--floating-panel-border) 30%,
+    var(--floating-panel-bg)
+  );
 }
 
 .floating-panel-drag-handle:active {
@@ -355,7 +385,11 @@
 }
 
 .floating-panel-control-btn:hover {
-  background: color-mix(in srgb, var(--floating-panel-border) 30%, var(--floating-panel-bg));
+  background: color-mix(
+    in srgb,
+    var(--floating-panel-border) 30%,
+    var(--floating-panel-bg)
+  );
   color: var(--color-text, oklch(15% 0.01 0));
 }
 
@@ -370,27 +404,32 @@
 
 .floating-panel.theme-accent {
   border-color: var(--floating-panel-accent);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-accent) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--floating-panel-accent) 20%, transparent);
 }
 
 .floating-panel.theme-warning {
   border-color: var(--floating-panel-warning);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-warning) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--floating-panel-warning) 20%, transparent);
 }
 
 .floating-panel.theme-error {
   border-color: var(--floating-panel-error);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-error) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--floating-panel-error) 20%, transparent);
 }
 
 .floating-panel.theme-success {
   border-color: var(--floating-panel-success);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-success) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--floating-panel-success) 20%, transparent);
 }
 
 .floating-panel.theme-info {
   border-color: var(--floating-panel-info);
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--floating-panel-info) 20%, transparent);
+  box-shadow: 0 2px 8px
+    color-mix(in srgb, var(--floating-panel-info) 20%, transparent);
 }
 
 /* ==========================================================================
@@ -407,13 +446,16 @@
 
   60% {
     box-shadow:
-      0 0 0 8px color-mix(in srgb, var(--floating-panel-accent) 20%, transparent),
-      0 0 0 16px color-mix(in srgb, var(--floating-panel-accent) 10%, transparent);
+      0 0 0 8px
+        color-mix(in srgb, var(--floating-panel-accent) 20%, transparent),
+      0 0 0 16px
+        color-mix(in srgb, var(--floating-panel-accent) 10%, transparent);
     border-color: var(--floating-panel-accent);
   }
 
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--floating-panel-accent) 0%, transparent);
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--floating-panel-accent) 0%, transparent);
     border-color: var(--floating-panel-border);
   }
 }
@@ -425,7 +467,8 @@
 }
 
 @keyframes floating-panel-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
 
@@ -447,11 +490,11 @@
     --floating-panel-padding: calc(var(--spacing, 1rem) * 0.75);
     --floating-panel-radius: calc(var(--border-radius, 0.5rem) * 0.75);
   }
-  
+
   .floating-panel-overlay.active .floating-panel {
     transform: translateY(10px) scale(0.98);
   }
-  
+
   .floating-panel-overlay:not(.active) .floating-panel {
     transform: translateY(10px) scale(0.98);
   }
@@ -477,7 +520,7 @@
     transition: none;
     animation: none;
   }
-  
+
   .floating-panel-overlay.active .floating-panel {
     transition-delay: 0s;
   }

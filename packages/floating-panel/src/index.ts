@@ -1,9 +1,9 @@
 /**
  * Reynard Floating Panel System
- * 
+ *
  * Advanced floating panel system with staggered animations, state management,
  * and sophisticated overlay effects based on Yipyap's BoundingBoxEditor.
- * 
+ *
  * @packageDocumentation
  */
 
@@ -37,7 +37,7 @@ export type {
   OverlayCSSVariables,
   AdvancedPanelState,
   DraggableResizableOptions,
-  DraggableResizableReturn
+  DraggableResizableReturn,
 } from "./types";
 
 // Core components
@@ -49,7 +49,11 @@ export { PanelHeader } from "./components/PanelHeader";
 
 // Composables
 export { useOverlayManager } from "./composables/useOverlayManager";
-export { useStaggeredAnimation, usePanelAnimation, useMultiPanelAnimation } from "./composables/useStaggeredAnimation";
+export {
+  useStaggeredAnimation,
+  usePanelAnimation,
+  useMultiPanelAnimation,
+} from "./composables/useStaggeredAnimation";
 export { useDraggablePanel } from "./composables/useDraggablePanel";
 export { useDraggableResizable } from "./composables/useDraggableResizable";
 

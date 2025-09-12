@@ -50,7 +50,13 @@ export interface PanelConfig {
   theme?: PanelTheme;
 }
 
-export type PanelTheme = "default" | "accent" | "warning" | "error" | "success" | "info";
+export type PanelTheme =
+  | "default"
+  | "accent"
+  | "warning"
+  | "error"
+  | "success"
+  | "info";
 
 // ============================================================================
 // Overlay System Types
@@ -64,12 +70,12 @@ export interface OverlayState {
   activePanelId?: string;
 }
 
-export type TransitionPhase = 
-  | "idle" 
-  | "entering" 
-  | "entering-active" 
-  | "active" 
-  | "exiting" 
+export type TransitionPhase =
+  | "idle"
+  | "entering"
+  | "entering-active"
+  | "active"
+  | "exiting"
   | "exiting-active";
 
 export interface OverlayConfig {
@@ -275,7 +281,7 @@ export interface DraggableResizableReturn {
   isResizing: () => boolean;
   isMinimized: () => boolean;
   style: () => Record<string, string>;
-  handleMouseDown: (e: MouseEvent, type: 'drag' | 'resize') => void;
+  handleMouseDown: (e: MouseEvent, type: "drag" | "resize") => void;
   toggleMinimized: () => void;
   resetPosition: () => void;
 }

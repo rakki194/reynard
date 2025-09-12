@@ -1,12 +1,15 @@
 /**
  * Audio Grid Component for Reynard Caption System
- * 
+ *
  * Leverages existing AudioPlayer, AudioWaveformVisualizer, and AudioThumbnailGenerator
  * infrastructure for comprehensive audio file handling and display.
  */
 
 import { Component, createSignal, createEffect, For, Show } from "solid-js";
-import { AudioThumbnailGenerator, AudioMetadataExtractor } from "reynard-file-processing";
+import {
+  AudioThumbnailGenerator,
+  AudioMetadataExtractor,
+} from "reynard-file-processing";
 import { AudioPlayer } from "./AudioPlayer";
 import { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
 import { AudioFile, AudioMetadata } from "./types/AudioTypes";
@@ -31,7 +34,9 @@ export interface AudioGridProps {
 }
 
 export const AudioGrid: Component<AudioGridProps> = (props) => {
-  const [audioFiles, setAudioFiles] = createSignal<AudioFile[]>(props.initialFiles || []);
+  const [audioFiles, setAudioFiles] = createSignal<AudioFile[]>(
+    props.initialFiles || [],
+  );
   const [selectedFile, setSelectedFile] = createSignal<AudioFile | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -55,7 +60,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setAudioFiles(prev => prev.filter(f => f.id !== fileId));
+    setAudioFiles((prev) => prev.filter((f) => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -76,7 +81,9 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
       // Generate waveform thumbnail using existing infrastructure
       const thumbnailResult = await thumbnailGenerator.generateThumbnail(file);
       if (!thumbnailResult.success) {
-        throw new Error(thumbnailResult.error || "Failed to generate waveform thumbnail");
+        throw new Error(
+          thumbnailResult.error || "Failed to generate waveform thumbnail",
+        );
       }
 
       // Extract metadata using existing infrastructure
@@ -95,7 +102,8 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
 
       return audioFile;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to process audio file";
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to process audio file";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -107,7 +115,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
   const handleFileUpload = async (event: Event) => {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    
+
     if (!files || files.length === 0) return;
 
     const maxFiles = props.maxFiles || 20;
@@ -115,10 +123,10 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
 
     try {
       const processedFiles = await Promise.all(
-        filesToProcess.map(processAudioFile)
+        filesToProcess.map(processAudioFile),
       );
 
-      setAudioFiles(prev => [...prev, ...processedFiles]);
+      setAudioFiles((prev) => [...prev, ...processedFiles]);
     } catch (err) {
       console.error("Failed to process audio files:", err);
     }
@@ -216,7 +224,10 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
       onClick={props.onSelect}
     >
       <div class="audio-thumbnail">
-        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">🎵</div>}>
+        <Show
+          when={thumbnailUrl()}
+          fallback={<div class="thumbnail-placeholder">🎵</div>}
+        >
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
         <div class="audio-overlay">
@@ -252,7 +263,7 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
           </div>
         </div>
       </div>
-      
+
       <div class="audio-info">
         <h4 class="audio-name" title={props.file.name}>
           {props.file.name}
@@ -260,14 +271,16 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
         <div class="audio-size">
           {(props.file.size / (1024 * 1024)).toFixed(2)} MB
         </div>
-        
+
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="audio-metadata">
             <div class="metadata-item">
               <span class="label">Duration:</span>
               <span class="value">
                 {Math.floor(props.file.metadata.duration / 60)}:
-                {Math.floor(props.file.metadata.duration % 60).toString().padStart(2, '0')}
+                {Math.floor(props.file.metadata.duration % 60)
+                  .toString()
+                  .padStart(2, "0")}
               </span>
             </div>
             <div class="metadata-item">
@@ -301,8 +314,10 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
   return (
     <div class="audio-player-modal">
       <div class="audio-player-content">
-        <button class="close-button" onClick={props.onClose}>×</button>
-        
+        <button class="close-button" onClick={props.onClose}>
+          ×
+        </button>
+
         <div class="audio-player-header">
           <h2>{props.file.name}</h2>
           <div class="audio-player-actions">
@@ -315,7 +330,7 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
             </button>
           </div>
         </div>
-        
+
         <div class="audio-player-body">
           {/* Audio Player */}
           <div class="audio-player-section">
@@ -329,7 +344,7 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
               }}
             />
           </div>
-          
+
           {/* Waveform Visualizer */}
           <div class="waveform-section">
             <h3>Waveform Visualization</h3>
@@ -353,7 +368,7 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
               }}
             />
           </div>
-          
+
           {/* Audio Metadata */}
           <Show when={props.file.metadata}>
             <div class="audio-metadata-panel">
@@ -363,7 +378,9 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
                   <span class="label">Duration:</span>
                   <span class="value">
                     {Math.floor(props.file.metadata.duration / 60)}:
-                    {Math.floor(props.file.metadata.duration % 60).toString().padStart(2, '0')}
+                    {Math.floor(props.file.metadata.duration % 60)
+                      .toString()
+                      .padStart(2, "0")}
                   </span>
                 </div>
                 <div class="metadata-item">
@@ -384,7 +401,9 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
                 </div>
                 <div class="metadata-item">
                   <span class="label">File Size:</span>
-                  <span class="value">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</span>
+                  <span class="value">
+                    {(props.file.size / (1024 * 1024)).toFixed(2)} MB
+                  </span>
                 </div>
               </div>
             </div>

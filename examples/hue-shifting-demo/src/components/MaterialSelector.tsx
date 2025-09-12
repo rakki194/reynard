@@ -4,7 +4,9 @@ import "./MaterialSelector.css";
 
 interface MaterialSelectorProps {
   selectedMaterial: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS;
-  onMaterialSelect: (material: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS) => void;
+  onMaterialSelect: (
+    material: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS,
+  ) => void;
 }
 
 export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
@@ -18,7 +20,7 @@ export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
         name: material.name,
         icon: material.icon,
         iconLength: material.icon?.length,
-        iconType: typeof material.icon
+        iconType: typeof material.icon,
       });
     });
   });
@@ -30,7 +32,7 @@ export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
         <For each={MATERIALS}>
           {(material) => (
             <button
-              class={`material-card ${props.selectedMaterial === material.key ? 'selected' : ''}`}
+              class={`material-card ${props.selectedMaterial === material.key ? "selected" : ""}`}
               onClick={() => props.onMaterialSelect(material.key)}
             >
               <div class="material-icon" innerHTML={material.icon}></div>
@@ -38,10 +40,10 @@ export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
                 <h4>{material.name}</h4>
                 <p>{material.description}</p>
               </div>
-              <div 
-                class={`material-preview ${props.selectedMaterial === material.key ? 'selected' : ''}`}
+              <div
+                class={`material-preview ${props.selectedMaterial === material.key ? "selected" : ""}`}
                 style={{
-                  "--preview-color": `oklch(${material.exampleColor.l}% ${material.exampleColor.c} ${material.exampleColor.h})`
+                  "--preview-color": `oklch(${material.exampleColor.l}% ${material.exampleColor.c} ${material.exampleColor.h})`,
                 }}
               />
             </button>

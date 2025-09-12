@@ -1,6 +1,6 @@
 /**
  * RAG API Service
- * 
+ *
  * Handles all backend communication for RAG operations
  * using Reynard API client conventions.
  */

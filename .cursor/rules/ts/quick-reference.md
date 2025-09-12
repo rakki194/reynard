@@ -1,6 +1,6 @@
 # TypeScript/JavaScript Quick Reference
 
-*Essential templates and patterns for rapid development*
+_Essential templates and patterns for rapid development_
 
 ## Module Templates
 
@@ -17,27 +17,29 @@ export interface ExampleModule {
 
 export const createExampleModule = (): ExampleModule => {
   const data: SomeType[] = [];
-  
+
   const addItem = (item: SomeType) => {
     data.push(item);
   };
-  
+
   const removeItem = (id: string) => {
-    const index = data.findIndex(item => item.id === id);
+    const index = data.findIndex((item) => item.id === id);
     if (index > -1) {
       data.splice(index, 1);
     }
   };
-  
+
   const clearItems = () => {
     data.length = 0;
   };
-  
+
   return {
-    get data() { return [...data]; },
+    get data() {
+      return [...data];
+    },
     addItem,
     removeItem,
-    clearItems
+    clearItems,
   };
 };
 ```
@@ -61,30 +63,32 @@ export interface ExampleService {
 
 export const createExampleService = (config: ServiceConfig): ExampleService => {
   let isConnected = false;
-  
+
   const connect = async () => {
     // Connection logic
     isConnected = true;
   };
-  
+
   const disconnect = async () => {
     // Disconnection logic
     isConnected = false;
   };
-  
+
   const sendData = async (data: any) => {
     if (!isConnected) {
-      throw new Error('Service not connected');
+      throw new Error("Service not connected");
     }
     // Send data logic
     return { success: true };
   };
-  
+
   return {
-    get isConnected() { return isConnected; },
+    get isConnected() {
+      return isConnected;
+    },
     connect,
     disconnect,
-    sendData
+    sendData,
   };
 };
 ```
@@ -100,33 +104,33 @@ export interface ValidationResult {
 
 export const validateEmail = (email: string): ValidationResult => {
   const errors: string[] = [];
-  
+
   if (!email) {
-    errors.push('Email is required');
+    errors.push("Email is required");
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.push('Invalid email format');
+    errors.push("Invalid email format");
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 };
 
 export const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 };
 
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number
+  delay: number,
 ): ((...args: Parameters<T>) => void) => {
   let timeoutId: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);
@@ -140,13 +144,13 @@ export const debounce = <T extends (...args: any[]) => any>(
 
 ```typescript
 // Generic result type
-export type Result<T, E = Error> = 
+export type Result<T, E = Error> =
   | { success: true; data: T }
   | { success: false; error: E };
 
 // Generic async function wrapper
 export const asyncWrapper = async <T>(
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
 ): Promise<Result<T>> => {
   try {
     const data = await fn();
@@ -158,10 +162,10 @@ export const asyncWrapper = async <T>(
 
 // Generic module factory
 export const createTypedModule = <T extends Record<string, any>>(
-  initialState: T
+  initialState: T,
 ) => {
   let state = { ...initialState };
-  
+
   return {
     getState: () => ({ ...state }),
     setState: (updates: Partial<T>) => {
@@ -169,7 +173,7 @@ export const createTypedModule = <T extends Record<string, any>>(
     },
     resetState: () => {
       state = { ...initialState };
-    }
+    },
   };
 };
 ```
@@ -181,7 +185,8 @@ export const createTypedModule = <T extends Record<string, any>>(
 export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 // Make all properties required except specified ones
-export type RequiredExcept<T, K extends keyof T> = Required<T> & Partial<Pick<T, K>>;
+export type RequiredExcept<T, K extends keyof T> = Required<T> &
+  Partial<Pick<T, K>>;
 
 // Extract function parameters
 export type Parameters<T> = T extends (...args: infer P) => any ? P : never;
@@ -202,7 +207,7 @@ export type DeepReadonly<T> = {
 export interface QueryBuilder {
   select(fields: string[]): QueryBuilder;
   where(condition: string): QueryBuilder;
-  orderBy(field: string, direction: 'asc' | 'desc'): QueryBuilder;
+  orderBy(field: string, direction: "asc" | "desc"): QueryBuilder;
   build(): string;
 }
 
@@ -232,34 +237,38 @@ export interface Command {
 // counter.js
 export const createCounter = (initialValue = 0) => {
   let count = initialValue;
-  
+
   return {
     increment: () => ++count,
     decrement: () => --count,
     getValue: () => count,
-    reset: () => { count = initialValue; }
+    reset: () => {
+      count = initialValue;
+    },
   };
 };
 
 // calculator.js
 export const createCalculator = () => {
   let history = [];
-  
+
   const add = (a, b) => {
     const result = a + b;
-    history.push({ operation: 'add', a, b, result });
+    history.push({ operation: "add", a, b, result });
     return result;
   };
-  
+
   const subtract = (a, b) => {
     const result = a - b;
-    history.push({ operation: 'subtract', a, b, result });
+    history.push({ operation: "subtract", a, b, result });
     return result;
   };
-  
+
   const getHistory = () => [...history];
-  const clearHistory = () => { history = []; };
-  
+  const clearHistory = () => {
+    history = [];
+  };
+
   return { add, subtract, getHistory, clearHistory };
 };
 ```
@@ -270,13 +279,13 @@ export const createCalculator = () => {
 // pub-sub.js
 export const createPubSub = () => {
   const subscribers = new Map();
-  
+
   const subscribe = (event, callback) => {
     if (!subscribers.has(event)) {
       subscribers.set(event, []);
     }
     subscribers.get(event).push(callback);
-    
+
     return () => {
       const callbacks = subscribers.get(event);
       const index = callbacks.indexOf(callback);
@@ -285,26 +294,26 @@ export const createPubSub = () => {
       }
     };
   };
-  
+
   const publish = (event, data) => {
     const callbacks = subscribers.get(event) || [];
-    callbacks.forEach(callback => callback(data));
+    callbacks.forEach((callback) => callback(data));
   };
-  
+
   return { subscribe, publish };
 };
 
 // mediator.js
 export const createMediator = () => {
   const channels = new Map();
-  
+
   const channel = (name) => {
     if (!channels.has(name)) {
       channels.set(name, createPubSub());
     }
     return channels.get(name);
   };
-  
+
   return { channel };
 };
 ```
@@ -315,44 +324,47 @@ export const createMediator = () => {
 
 ```typescript
 // tests/modules/example.test.ts
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createExampleModule, type ExampleModule } from '../../src/modules/example-module';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import {
+  createExampleModule,
+  type ExampleModule,
+} from "../../src/modules/example-module";
 
-describe('ExampleModule', () => {
+describe("ExampleModule", () => {
   let module: ExampleModule;
-  
+
   beforeEach(() => {
     module = createExampleModule();
     vi.clearAllMocks();
   });
-  
-  it('should initialize with empty data', () => {
+
+  it("should initialize with empty data", () => {
     expect(module.data).toHaveLength(0);
   });
-  
-  it('should add item', () => {
-    const item = { id: '1', name: 'Test' };
+
+  it("should add item", () => {
+    const item = { id: "1", name: "Test" };
     module.addItem(item);
-    
+
     expect(module.data).toHaveLength(1);
     expect(module.data[0]).toEqual(item);
   });
-  
-  it('should remove item by id', () => {
-    const item = { id: '1', name: 'Test' };
+
+  it("should remove item by id", () => {
+    const item = { id: "1", name: "Test" };
     module.addItem(item);
-    
-    module.removeItem('1');
-    
+
+    module.removeItem("1");
+
     expect(module.data).toHaveLength(0);
   });
-  
-  it('should clear all items', () => {
-    module.addItem({ id: '1', name: 'Test 1' });
-    module.addItem({ id: '2', name: 'Test 2' });
-    
+
+  it("should clear all items", () => {
+    module.addItem({ id: "1", name: "Test 1" });
+    module.addItem({ id: "2", name: "Test 2" });
+
     module.clearItems();
-    
+
     expect(module.data).toHaveLength(0);
   });
 });
@@ -362,28 +374,28 @@ describe('ExampleModule', () => {
 
 ```typescript
 // tests/integration/example.test.ts
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createExampleModule } from '../../src/modules/example-module';
-import { createExampleService } from '../../src/services/example-service';
+import { describe, it, expect, beforeEach } from "vitest";
+import { createExampleModule } from "../../src/modules/example-module";
+import { createExampleService } from "../../src/services/example-service";
 
-describe('Module Integration', () => {
+describe("Module Integration", () => {
   let module: ReturnType<typeof createExampleModule>;
   let service: ReturnType<typeof createExampleService>;
-  
+
   beforeEach(() => {
     module = createExampleModule();
     service = createExampleService({
-      host: 'localhost',
+      host: "localhost",
       port: 8080,
-      timeout: 5000
+      timeout: 5000,
     });
   });
-  
-  it('should integrate module with service', async () => {
+
+  it("should integrate module with service", async () => {
     await service.connect();
-    
-    const result = await service.sendData({ test: 'data' });
-    
+
+    const result = await service.sendData({ test: "data" });
+
     expect(result.success).toBe(true);
     expect(service.isConnected).toBe(true);
   });
@@ -397,21 +409,21 @@ describe('Module Integration', () => {
 ```typescript
 // Lazy load heavy modules
 export const loadHeavyModule = async () => {
-  const { HeavyModule } = await import('./heavy-module');
+  const { HeavyModule } = await import("./heavy-module");
   return new HeavyModule();
 };
 
 // Lazy initialization
 export const createLazyService = () => {
   let service: any = null;
-  
+
   return {
     getService: async () => {
       if (!service) {
         service = await loadHeavyModule();
       }
       return service;
-    }
+    },
   };
 };
 ```
@@ -422,7 +434,7 @@ export const createLazyService = () => {
 // Simple cache
 export const createCache = <T>(maxSize = 100) => {
   const cache = new Map<string, T>();
-  
+
   return {
     get: (key: string) => cache.get(key),
     set: (key: string, value: T) => {
@@ -433,21 +445,21 @@ export const createCache = <T>(maxSize = 100) => {
       cache.set(key, value);
     },
     clear: () => cache.clear(),
-    size: () => cache.size
+    size: () => cache.size,
   };
 };
 
 // Memoization
 export const memoize = <T extends (...args: any[]) => any>(fn: T) => {
   const cache = new Map();
-  
+
   return ((...args: Parameters<T>) => {
     const key = JSON.stringify(args);
-    
+
     if (cache.has(key)) {
       return cache.get(key);
     }
-    
+
     const result = fn(...args);
     cache.set(key, result);
     return result;
@@ -461,10 +473,10 @@ export const memoize = <T extends (...args: any[]) => any>(fn: T) => {
 // Debounce
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number
+  delay: number,
 ): ((...args: Parameters<T>) => void) => {
   let timeoutId: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);
@@ -474,10 +486,10 @@ export const debounce = <T extends (...args: any[]) => any>(
 // Throttle
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number
+  delay: number,
 ): ((...args: Parameters<T>) => void) => {
   let lastCall = 0;
-  
+
   return (...args: Parameters<T>) => {
     const now = Date.now();
     if (now - lastCall >= delay) {
@@ -496,7 +508,7 @@ export const throttle = <T extends (...args: any[]) => any>(
 // Error wrapper
 export const withErrorHandling = <T extends (...args: any[]) => any>(
   fn: T,
-  errorHandler?: (error: Error) => void
+  errorHandler?: (error: Error) => void,
 ) => {
   return (...args: Parameters<T>) => {
     try {
@@ -505,7 +517,7 @@ export const withErrorHandling = <T extends (...args: any[]) => any>(
       if (errorHandler) {
         errorHandler(error as Error);
       } else {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
       throw error;
     }
@@ -513,9 +525,11 @@ export const withErrorHandling = <T extends (...args: any[]) => any>(
 };
 
 // Async error wrapper
-export const withAsyncErrorHandling = <T extends (...args: any[]) => Promise<any>>(
+export const withAsyncErrorHandling = <
+  T extends (...args: any[]) => Promise<any>,
+>(
   fn: T,
-  errorHandler?: (error: Error) => void
+  errorHandler?: (error: Error) => void,
 ) => {
   return async (...args: Parameters<T>) => {
     try {
@@ -524,7 +538,7 @@ export const withAsyncErrorHandling = <T extends (...args: any[]) => Promise<any
       if (errorHandler) {
         errorHandler(error as Error);
       } else {
-        console.error('Async error:', error);
+        console.error("Async error:", error);
       }
       throw error;
     }
@@ -536,19 +550,21 @@ export const withAsyncErrorHandling = <T extends (...args: any[]) => Promise<any
 
 ```typescript
 // Simple validator
-export const createValidator = <T>(schema: Record<keyof T, (value: any) => boolean>) => {
+export const createValidator = <T>(
+  schema: Record<keyof T, (value: any) => boolean>,
+) => {
   return (data: T): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
-    
+
     Object.entries(schema).forEach(([key, validator]) => {
       if (!validator(data[key as keyof T])) {
         errors.push(`Invalid ${key}`);
       }
     });
-    
+
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   };
 };
@@ -556,8 +572,8 @@ export const createValidator = <T>(schema: Record<keyof T, (value: any) => boole
 // Usage
 const userValidator = createValidator({
   email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  age: (value) => typeof value === 'number' && value >= 0,
-  name: (value) => typeof value === 'string' && value.length > 0
+  age: (value) => typeof value === "number" && value >= 0,
+  name: (value) => typeof value === "string" && value.length > 0,
 });
 ```
 
@@ -565,26 +581,29 @@ const userValidator = createValidator({
 
 ```typescript
 // Date formatting
-export const formatDate = (date: Date, format: 'short' | 'long' | 'iso' = 'short') => {
+export const formatDate = (
+  date: Date,
+  format: "short" | "long" | "iso" = "short",
+) => {
   switch (format) {
-    case 'short':
+    case "short":
       return date.toLocaleDateString();
-    case 'long':
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+    case "long":
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
-    case 'iso':
+    case "iso":
       return date.toISOString();
   }
 };
 
 // Number formatting
 export const formatNumber = (num: number, decimals = 2) => {
-  return num.toLocaleString('en-US', {
+  return num.toLocaleString("en-US", {
     minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
+    maximumFractionDigits: decimals,
   });
 };
 
@@ -594,7 +613,7 @@ export const capitalize = (str: string) => {
 };
 
 export const truncate = (str: string, length: number) => {
-  return str.length > length ? str.substring(0, length) + '...' : str;
+  return str.length > length ? str.substring(0, length) + "..." : str;
 };
 ```
 

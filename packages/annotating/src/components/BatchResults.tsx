@@ -1,6 +1,6 @@
 /**
  * Batch Results Component
- * 
+ *
  * Displays results from batch processing with export functionality.
  */
 
@@ -15,10 +15,15 @@ export interface BatchResultsProps {
 }
 
 export const BatchResults: Component<BatchResultsProps> = (props) => {
-  const completedFiles = () => props.files.filter(f => f.status === "completed" && f.result);
+  const completedFiles = () =>
+    props.files.filter((f) => f.status === "completed" && f.result);
   const totalFiles = () => props.files.length;
-  const successRate = () => totalFiles() > 0 ? Math.round((completedFiles().length / totalFiles()) * 100) : 0;
-  const errorCount = () => props.files.filter(f => f.status === "error").length;
+  const successRate = () =>
+    totalFiles() > 0
+      ? Math.round((completedFiles().length / totalFiles()) * 100)
+      : 0;
+  const errorCount = () =>
+    props.files.filter((f) => f.status === "error").length;
 
   return (
     <Show when={props.showResults}>

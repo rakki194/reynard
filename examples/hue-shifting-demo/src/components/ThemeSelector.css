@@ -26,7 +26,10 @@
   border-radius: 8px;
   background: var(--color-surface, oklch(25% 0.02 0));
   cursor: pointer;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
   text-align: center;
   position: relative;
   overflow: hidden;

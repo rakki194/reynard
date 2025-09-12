@@ -396,26 +396,26 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.75rem;
   }
-  
+
   .image-viewer-modal {
     padding: 1rem;
   }
-  
+
   .image-viewer-content {
     max-width: 95vw;
     max-height: 95vh;
   }
-  
+
   .image-viewer-body {
     flex-direction: column;
   }
-  
+
   .image-metadata-panel {
     width: 100%;
     border-left: none;
     border-top: 1px solid oklch(var(--border-color));
   }
-  
+
   .viewer-image {
     max-height: 50vh;
   }
@@ -426,19 +426,19 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 0.5rem;
   }
-  
+
   .image-thumbnail {
     height: 150px;
   }
-  
+
   .image-info {
     padding: 0.75rem;
   }
-  
+
   .image-name {
     font-size: 0.8rem;
   }
-  
+
   .image-size {
     font-size: 0.7rem;
   }

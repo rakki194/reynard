@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Запрос прерван",
   },
-  
+
   // Аутентификация и безопасность
   bearer: {
     token: "Bearer токен",
     "test-key": "Bearer тестовый ключ",
     "new-key": "Bearer новый ключ",
   },
-  
+
   // Уведомления
   notifications: {
     title: "Уведомления",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Первое сгруппированное",
     "second-grouped": "Второе сгруппированное",
   },
-  
+
   // Сообщения валидации
   validation: {
     required: "Это поле обязательно",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "Неверный тип ввода",
     "does-not-match-pattern": "Ввод не соответствует требуемому шаблону",
   },
-  
+
   // Валидация пароля
   password: {
-    "must-be-at-least-8-characters-long": "Пароль должен содержать не менее 8 символов",
-    "must-contain-at-least-one-uppercase-letter": "Пароль должен содержать хотя бы одну заглавную букву",
-    "must-contain-at-least-one-lowercase-letter": "Пароль должен содержать хотя бы одну строчную букву",
-    "must-contain-at-least-one-number": "Пароль должен содержать хотя бы одну цифру",
-    "must-contain-at-least-one-special-character": "Пароль должен содержать хотя бы один специальный символ",
+    "must-be-at-least-8-characters-long":
+      "Пароль должен содержать не менее 8 символов",
+    "must-contain-at-least-one-uppercase-letter":
+      "Пароль должен содержать хотя бы одну заглавную букву",
+    "must-contain-at-least-one-lowercase-letter":
+      "Пароль должен содержать хотя бы одну строчную букву",
+    "must-contain-at-least-one-number":
+      "Пароль должен содержать хотя бы одну цифру",
+    "must-contain-at-least-one-special-character":
+      "Пароль должен содержать хотя бы один специальный символ",
   },
-  
+
   // Валидация безопасности
   security: {
-    "at-least-one-character-type-must-be-included": "Должен быть включен хотя бы один тип символа",
-    "input-contains-potentially-dangerous-html": "Ввод содержит потенциально опасный HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Ввод содержит потенциально опасные SQL-шаблоны",
-    "input-contains-potentially-dangerous-xss-patterns": "Ввод содержит потенциально опасные XSS-шаблоны",
-    "input-contains-path-traversal-patterns": "Ввод содержит шаблоны обхода пути",
-    "input-contains-windows-reserved-names": "Ввод содержит зарезервированные имена Windows",
-    "input-contains-executable-file-extensions": "Ввод содержит расширения исполняемых файлов",
+    "at-least-one-character-type-must-be-included":
+      "Должен быть включен хотя бы один тип символа",
+    "input-contains-potentially-dangerous-html":
+      "Ввод содержит потенциально опасный HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Ввод содержит потенциально опасные SQL-шаблоны",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Ввод содержит потенциально опасные XSS-шаблоны",
+    "input-contains-path-traversal-patterns":
+      "Ввод содержит шаблоны обхода пути",
+    "input-contains-windows-reserved-names":
+      "Ввод содержит зарезервированные имена Windows",
+    "input-contains-executable-file-extensions":
+      "Ввод содержит расширения исполняемых файлов",
     "input-contains-null-bytes": "Ввод содержит нулевые байты",
     "input-contains-hidden-files": "Ввод содержит скрытые файлы",
-    "input-contains-javascript-file-extensions": "Ввод содержит расширения файлов JavaScript",
+    "input-contains-javascript-file-extensions":
+      "Ввод содержит расширения файлов JavaScript",
   },
-  
+
   // Асинхронные операции
   async: {
     "operation-timed-out": "Операция превысила время ожидания",
@@ -107,7 +120,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Параллелизм должен быть больше 0",
     "polling-timeout-reached": "Достигнут таймаут опроса",
   },
-  
+
   // Загрузка модулей
   module: {
     "is-null": "Модуль равен null",
@@ -115,14 +128,16 @@ export const coreTranslations = {
     "load-failed": "Загрузка не удалась",
     "loading-failed": "Загрузка не удалась",
   },
-  
+
   // Хранение и сериализация
   storage: {
-    "potentially-dangerous-json-detected": "Обнаружен потенциально опасный JSON",
-    "failed-to-parse-json-from-localstorage": "Не удалось разобрать JSON из localStorage:",
+    "potentially-dangerous-json-detected":
+      "Обнаружен потенциально опасный JSON",
+    "failed-to-parse-json-from-localstorage":
+      "Не удалось разобрать JSON из localStorage:",
     "error-parsing-storage-event": "Ошибка разбора события хранения для ключа",
   },
-  
+
   // Тест и разработка
   test: {
     error: "Ошибка теста",
@@ -131,19 +146,19 @@ export const coreTranslations = {
     "notification-1": "Тестовое уведомление 1",
     "notification-2": "Тестовое уведомление 2",
   },
-  
+
   // Общие ошибки
   errors: {
     "string-error": "Ошибка строки",
     "crypto-error": "Ошибка шифрования",
     "some-error": "Какая-то ошибка",
   },
-  
+
   // Форматтеры и утилиты
   formatters: {
     "hello-world": "Привет мир",
   },
-  
+
   // Дата и время
   dateTime: {
     now: "Сейчас",
@@ -153,11 +168,13 @@ export const coreTranslations = {
     format: "Формат",
     timezone: "Часовой пояс",
   },
-  
+
   // Интеграционные тесты
   integration: {
     "session-and-api-key-generation": "Генерация сессии и API-ключа",
-    "authentication-and-input-validation-integration": "Интеграция аутентификации и валидации ввода",
-    "performance-and-security-integration": "Интеграция производительности и безопасности",
+    "authentication-and-input-validation-integration":
+      "Интеграция аутентификации и валидации ввода",
+    "performance-and-security-integration":
+      "Интеграция производительности и безопасности",
   },
 };

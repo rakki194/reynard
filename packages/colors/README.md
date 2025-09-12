@@ -73,10 +73,10 @@ const tagStyle = themeContext.getTagStyle("react");
 ### Color Manipulation
 
 ```typescript
-import { 
-  adjustLightness, 
-  adjustSaturation, 
-  generateComplementaryColors 
+import {
+  adjustLightness,
+  adjustSaturation,
+  generateComplementaryColors,
 } from "reynard-colors";
 
 // Adjust color properties
@@ -90,17 +90,17 @@ const complementary = generateComplementaryColors(baseColor);
 ### Advanced Color Features
 
 ```typescript
-import { 
-  createTagColorGenerator, 
+import {
+  createTagColorGenerator,
   generateColorPalette,
-  formatOKLCH 
+  formatOKLCH,
 } from "reynard-colors";
 
 // Create a color generator with custom settings
 const colorGenerator = createTagColorGenerator({
   baseSaturation: 0.3,
   baseLightness: 0.6,
-  hueVariation: 0.1
+  hueVariation: 0.1,
 });
 
 // Generate a harmonious color palette

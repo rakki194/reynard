@@ -6,7 +6,10 @@ export interface AuthFetchOptions extends RequestInit {
   skipAuth?: boolean;
 }
 
-export type AuthFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+export type AuthFetch = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>;
 
 export interface ApiError {
   message: string;

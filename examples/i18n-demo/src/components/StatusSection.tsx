@@ -21,7 +21,10 @@ const StatusSection: Component<StatusSectionProps> = (props) => {
           <strong>{t("themes.theme")}:</strong> {themeContext.theme}
         </div>
         <div class="status-item">
-          <strong>{getDemoTranslation(locale, "rtl")}:</strong> {isRTL ? getDemoTranslation(locale, "yes") : getDemoTranslation(locale, "no")}
+          <strong>{getDemoTranslation(locale, "rtl")}:</strong>{" "}
+          {isRTL
+            ? getDemoTranslation(locale, "yes")
+            : getDemoTranslation(locale, "no")}
         </div>
         <div class="status-item">
           <strong>{t("core.dateTime.now")}:</strong>{" "}

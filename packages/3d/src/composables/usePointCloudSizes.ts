@@ -14,7 +14,7 @@ export type SizeMappingStrategy = "importance" | "confidence" | "uniform";
 export function calculatePointSizes(
   points: Point3D[],
   strategy: SizeMappingStrategy = "uniform",
-  baseSize: number = 2
+  baseSize: number = 2,
 ): Point3D[] {
   return points.map((point) => {
     let size = baseSize;

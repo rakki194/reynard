@@ -47,7 +47,9 @@ export interface DiscoverySummary {
   readyToInstall: number;
 }
 
-export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (props) => {
+export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
+  props,
+) => {
   const [packages, setPackages] = createSignal<PackageInfo[]>([]);
   const [summary, setSummary] = createSignal<DiscoverySummary>({
     totalDiscovered: 0,
@@ -181,10 +183,15 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
       const packageList = mockPackages;
       const mockSummary: DiscoverySummary = {
         totalDiscovered: packageList.length,
-        newPackages: packageList.filter((p) => p.status === "discovered").length,
-        updatedPackages: packageList.filter((p) => p.status === "registered").length,
-        conflictedPackages: packageList.filter((p) => p.status === "conflict").length,
-        readyToInstall: packageList.filter((p) => p.status === "discovered" || p.status === "registered").length,
+        newPackages: packageList.filter((p) => p.status === "discovered")
+          .length,
+        updatedPackages: packageList.filter((p) => p.status === "registered")
+          .length,
+        conflictedPackages: packageList.filter((p) => p.status === "conflict")
+          .length,
+        readyToInstall: packageList.filter(
+          (p) => p.status === "discovered" || p.status === "registered",
+        ).length,
       };
 
       setSummary(mockSummary);
@@ -212,10 +219,12 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
   const handleRegisterPackage = async (packageName: string) => {
     // In a real implementation, this would call the backend registration endpoint
     console.log(`Registering package: ${packageName}`);
-    
+
     // Simulate registration
     const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName ? { ...pkg, status: "registered" as const } : pkg
+      pkg.name === packageName
+        ? { ...pkg, status: "registered" as const }
+        : pkg,
     );
     setPackages(updatedPackages);
   };
@@ -223,10 +232,12 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
   const handleResolveConflict = async (packageName: string) => {
     // In a real implementation, this would call the conflict resolution endpoint
     console.log(`Resolving conflict for package: ${packageName}`);
-    
+
     // Simulate conflict resolution
     const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName ? { ...pkg, status: "discovered" as const, conflicts: [] } : pkg
+      pkg.name === packageName
+        ? { ...pkg, status: "discovered" as const, conflicts: [] }
+        : pkg,
     );
     setPackages(updatedPackages);
   };
@@ -240,7 +251,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
       filtered = filtered.filter(
         (pkg) =>
           pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query)
+          pkg.description.toLowerCase().includes(query),
       );
     }
 
@@ -415,10 +426,13 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(pkg.status))?.outerHTML || ""}
+                      innerHTML={
+                        fluentIconsPackage.getIcon(getStatusIcon(pkg.status))
+                          ?.outerHTML || ""
+                      }
                     />
                   </span>
-                  
+
                   <div class="package-details">
                     <span class="package-name">{pkg.name}</span>
                     <span class="package-version">v{pkg.version}</span>
@@ -427,10 +441,13 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
                 </div>
 
                 <div class="package-status">
-                  <span class="status-badge" classList={{ [getStatusColor(pkg.status)]: true }}>
+                  <span
+                    class="status-badge"
+                    classList={{ [getStatusColor(pkg.status)]: true }}
+                  >
                     {pkg.status}
                   </span>
-                  
+
                   <span class="package-size">{formatSize(pkg.size)}</span>
                 </div>
               </div>
@@ -441,24 +458,24 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
                   <span class="label">Category:</span>
                   <span class="value">{pkg.category}</span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Source:</span>
                   <span class="value">{pkg.source}</span>
                 </div>
-                
+
                 <div class="detail-row">
                   <span class="label">Last Updated:</span>
                   <span class="value">{pkg.lastUpdated.toLocaleString()}</span>
                 </div>
-                
+
                 <Show when={pkg.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
                     <span class="value">{pkg.dependencies.join(", ")}</span>
                   </div>
                 </Show>
-                
+
                 <Show when={pkg.conflicts.length > 0}>
                   <div class="detail-row error">
                     <span class="label">Conflicts:</span>
@@ -478,7 +495,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
                     Register
                   </Button>
                 </Show>
-                
+
                 <Show when={pkg.status === "conflict"}>
                   <Button
                     variant="warning"
@@ -488,7 +505,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
                     Resolve Conflict
                   </Button>
                 </Show>
-                
+
                 <Show when={pkg.status === "registered"}>
                   <Button
                     variant="secondary"
@@ -506,7 +523,9 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (pro
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

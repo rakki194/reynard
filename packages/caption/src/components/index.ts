@@ -1,6 +1,6 @@
 /**
  * Caption Components Barrel Export
- * 
+ *
  * Provides clean API boundaries for caption-specific components.
  */
 
@@ -37,5 +37,5 @@ export type {
   TextProcessingOptions,
   TextGridProps,
   TextFileCardProps,
-  TextEditorProps
+  TextEditorProps,
 } from "../types/TextTypes";

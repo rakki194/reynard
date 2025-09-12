@@ -8,13 +8,13 @@ export const createAuthFetch = (token: string) => {
       ...options,
       headers: {
         ...options.headers,
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   };
 };
 
 export const handleApiError = (error: any) => {
-  console.error('API Error:', error);
-  throw new Error(error.message || 'An API error occurred');
+  console.error("API Error:", error);
+  throw new Error(error.message || "An API error occurred");
 };

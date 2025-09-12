@@ -123,11 +123,11 @@ function MyComponent() {
 ### Enhanced Usage with Advanced Features
 
 ```typescript
-import { 
-  createI18nModule, 
-  useI18n, 
+import {
+  createI18nModule,
+  useI18n,
   I18nProvider,
-  type EnhancedI18nOptions 
+  type EnhancedI18nOptions
 } from 'reynard-i18n';
 
 // Create enhanced i18n module with debugging and performance monitoring
@@ -153,10 +153,10 @@ function EnhancedApp() {
 }
 
 function MyEnhancedComponent() {
-  const { 
-    t, 
-    locale, 
-    setLocale, 
+  const {
+    t,
+    locale,
+    setLocale,
     languages,
     debugger: i18nDebugger,
     performanceMonitor,
@@ -186,7 +186,7 @@ function MyEnhancedComponent() {
       <p>Date: {formattedDate}</p>
       <p>{templateResult}</p>
       <p>{pluralResult}</p>
-      
+
       {/* Debug information in development */}
       {process.env.NODE_ENV === 'development' && (
         <details>
@@ -319,7 +319,11 @@ getTurkishPlural("ev", forms); // "kitapler" (front vowel)
 #### Dynamic Translation Loading
 
 ```typescript
-import { loadTranslations, loadNamespace, createOptimizedLoader } from "reynard-i18n";
+import {
+  loadTranslations,
+  loadNamespace,
+  createOptimizedLoader,
+} from "reynard-i18n";
 
 // Load specific locale with caching
 const englishTranslations = await loadTranslations("en", true);
@@ -328,14 +332,18 @@ const englishTranslations = await loadTranslations("en", true);
 const authTranslations = await loadNamespace("en", "auth");
 
 // Create optimized loader for specific namespaces
-const loader = createOptimizedLoader(['common', 'components', 'auth']);
+const loader = createOptimizedLoader(["common", "components", "auth"]);
 const optimizedTranslations = await loader.loadFull("en");
 ```
 
 #### Cache Management
 
 ```typescript
-import { clearTranslationCache, getCacheStats, preloadTranslations } from "reynard-i18n";
+import {
+  clearTranslationCache,
+  getCacheStats,
+  preloadTranslations,
+} from "reynard-i18n";
 
 // Clear cache for specific locale or all locales
 clearTranslationCache("en"); // Clear specific locale
@@ -346,7 +354,7 @@ const stats = getCacheStats();
 console.log(stats); // { fullTranslations: 5, namespaces: [...] }
 
 // Preload critical locales
-await preloadTranslations(['en', 'es', 'fr']);
+await preloadTranslations(["en", "es", "fr"]);
 ```
 
 ### Intl API Integration
@@ -492,11 +500,11 @@ import { migrateTranslations } from "reynard-i18n";
 
 // Migrate from solid-i18n
 const result = migrateTranslations({
-  sourceLibrary: 'solid-i18n',
+  sourceLibrary: "solid-i18n",
   sourceTranslations: oldTranslations,
-  targetLocale: 'en',
+  targetLocale: "en",
   preserveStructure: true,
-  validateAfterMigration: true
+  validateAfterMigration: true,
 });
 
 console.log(result);
@@ -772,17 +780,17 @@ The enhanced Reynard I18n provides comprehensive migration tools and backward co
 import { migrateTranslations } from "reynard-i18n";
 
 const result = migrateTranslations({
-  sourceLibrary: 'solid-i18n',
+  sourceLibrary: "solid-i18n",
   sourceTranslations: yourOldTranslations,
-  targetLocale: 'en',
+  targetLocale: "en",
   preserveStructure: true,
-  validateAfterMigration: true
+  validateAfterMigration: true,
 });
 
 if (result.success) {
   // Use result.migratedTranslations
-  const i18n = createI18nModule({ 
-    initialTranslations: result.migratedTranslations 
+  const i18n = createI18nModule({
+    initialTranslations: result.migratedTranslations,
   });
 }
 ```
@@ -791,9 +799,9 @@ if (result.success) {
 
 ```typescript
 const result = migrateTranslations({
-  sourceLibrary: 'solid-primitives',
+  sourceLibrary: "solid-primitives",
   sourceTranslations: yourOldTranslations,
-  targetLocale: 'en'
+  targetLocale: "en",
 });
 ```
 
@@ -801,9 +809,9 @@ const result = migrateTranslations({
 
 ```typescript
 const result = migrateTranslations({
-  sourceLibrary: 'i18next',
+  sourceLibrary: "i18next",
   sourceTranslations: yourOldTranslations,
-  targetLocale: 'en'
+  targetLocale: "en",
 });
 ```
 

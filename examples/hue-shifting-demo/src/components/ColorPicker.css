@@ -13,7 +13,9 @@
   background: var(--color-surface, oklch(25% 0.02 0));
   border-radius: 0.75rem;
   border: 1px solid var(--color-border, oklch(35% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .preview-color {
@@ -22,7 +24,9 @@
   border-radius: 0.75rem;
   border: 3px solid var(--color-border-hover, oklch(50% 0.02 0));
   box-shadow: 0 8px 24px var(--shadow-rgb, 0 0 0 / 0.4);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .preview-color:hover {
@@ -34,14 +38,17 @@
 }
 
 .color-string {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.9rem;
   color: var(--color-text-secondary, oklch(70% 0.01 0));
   background: var(--color-background-tertiary, oklch(15% 0.01 0));
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: 1px solid var(--color-border, oklch(30% 0.01 0));
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .color-controls {
@@ -70,7 +77,9 @@
   background: var(--color-background-secondary, oklch(30% 0.01 0));
   outline: none;
   cursor: pointer;
-  transition: all 0.2s ease, background-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb {
@@ -82,7 +91,10 @@
   cursor: pointer;
   border: 2px solid var(--color-text-inverse, oklch(90% 0.01 0));
   box-shadow: 0 2px 8px var(--shadow-rgb, 0 0 0 / 0.3);
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .slider::-webkit-slider-thumb:hover {
@@ -152,7 +164,9 @@
   border-radius: 0.5rem;
   border: 2px solid var(--color-border, oklch(40% 0.02 0));
   cursor: pointer;
-  transition: all 0.2s ease, border-color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    border-color 0.2s ease;
   position: relative;
 }
 
@@ -170,7 +184,7 @@
   .preset-grid {
     grid-template-columns: repeat(6, 1fr);
   }
-  
+
   .preset-color {
     width: 35px;
     height: 35px;

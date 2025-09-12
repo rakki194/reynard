@@ -376,7 +376,7 @@
 .detail-item .value {
   font-size: 0.9rem;
   color: var(--color-text);
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .service-loading {
@@ -710,7 +710,7 @@
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .health-score.success {
@@ -881,7 +881,7 @@
 .response-time {
   font-size: 0.8rem;
   color: var(--color-text-secondary);
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .auth-check-progress {
@@ -1005,8 +1005,12 @@
 
 /* Animations */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive Design */
@@ -1016,37 +1020,37 @@
     gap: 1rem;
     align-items: flex-start;
   }
-  
+
   .overview-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .summary-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .service-header {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
   }
-  
+
   .service-status {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .feature-filters {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .feature-header {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
   }
-  
+
   .feature-status {
     width: 100%;
     justify-content: space-between;
@@ -1057,20 +1061,20 @@
   .service-management-dashboard {
     padding: 0.5rem;
   }
-  
+
   .overview-card {
     padding: 1rem;
   }
-  
+
   .summary-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .service-summary {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .feature-summary {
     flex-direction: column;
     gap: 0.5rem;
@@ -1083,7 +1087,7 @@
     background: var(--color-background-dark, #1a1a1a);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
-  
+
   .overview-card,
   .service-item,
   .restart-service-item,
@@ -1093,7 +1097,7 @@
     background: var(--color-surface-dark, #2a2a2a);
     border-color: var(--color-border-dark, #444);
   }
-  
+
   .service-summary,
   .bulk-actions,
   .feature-filters,

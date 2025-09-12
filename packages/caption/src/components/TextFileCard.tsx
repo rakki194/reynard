@@ -1,6 +1,6 @@
 /**
  * Text File Card Component for Reynard Caption System
- * 
+ *
  * Displays individual text file information in a card format.
  */
 
@@ -30,7 +30,7 @@ export const TextFileCard: Component<TextFileCardProps> = (props) => {
         <span class="file-icon">{icon}</span>
         <span class="file-extension">{extension}</span>
       </div>
-      
+
       <div class="text-file-info">
         <h4 class="text-file-name" title={props.file.name}>
           {props.file.name}
@@ -38,7 +38,7 @@ export const TextFileCard: Component<TextFileCardProps> = (props) => {
         <div class="text-file-size">
           {(props.file.size / 1024).toFixed(2)} KB
         </div>
-        
+
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="text-file-metadata">
             <div class="metadata-item">
@@ -60,7 +60,7 @@ export const TextFileCard: Component<TextFileCardProps> = (props) => {
           </div>
         </Show>
       </div>
-      
+
       <button
         class="remove-button"
         onClick={(e) => {

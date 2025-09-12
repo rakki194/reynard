@@ -65,7 +65,9 @@ export interface GlobalConfiguration {
   enableErrorReporting: boolean;
 }
 
-export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps> = (props) => {
+export const PackageConfigurationPanel: Component<
+  PackageConfigurationPanelProps
+> = (props) => {
   const [packages, setPackages] = createSignal<PackageConfiguration[]>([]);
   const [globalConfig, setGlobalConfig] = createSignal<GlobalConfiguration>({
     autoDiscovery: true,
@@ -82,7 +84,9 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
     enablePerformanceMonitoring: true,
     enableErrorReporting: false,
   });
-  const [selectedPackage, setSelectedPackage] = createSignal<string | null>(null);
+  const [selectedPackage, setSelectedPackage] = createSignal<string | null>(
+    null,
+  );
   const [isSaving, setIsSaving] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [searchQuery, setSearchQuery] = createSignal("");
@@ -355,23 +359,30 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
     }
   };
 
-  const handleGlobalConfigChange = (key: keyof GlobalConfiguration, value: any) => {
+  const handleGlobalConfigChange = (
+    key: keyof GlobalConfiguration,
+    value: any,
+  ) => {
     setGlobalConfig((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handlePackageSettingChange = (packageName: string, settingKey: string, value: any) => {
+  const handlePackageSettingChange = (
+    packageName: string,
+    settingKey: string,
+    value: any,
+  ) => {
     setPackages((prev) =>
       prev.map((pkg) =>
         pkg.name === packageName
           ? {
               ...pkg,
               settings: pkg.settings.map((setting) =>
-                setting.key === settingKey ? { ...setting, value } : setting
+                setting.key === settingKey ? { ...setting, value } : setting,
               ),
               lastModified: new Date(),
             }
-          : pkg
-      )
+          : pkg,
+      ),
     );
   };
 
@@ -393,7 +404,10 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
     try {
       // In a real implementation, this would call the backend package configuration endpoint
       const packageConfig = packages().find((p) => p.name === packageName);
-      console.log(`Saving configuration for ${packageName}:`, packageConfig?.settings);
+      console.log(
+        `Saving configuration for ${packageName}:`,
+        packageConfig?.settings,
+      );
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error(`Failed to save configuration for ${packageName}:`, error);
@@ -407,7 +421,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
     try {
       // In a real implementation, this would call the backend reset endpoint
       console.log(`Resetting configuration for ${packageName}`);
-      
+
       setPackages((prev) =>
         prev.map((pkg) =>
           pkg.name === packageName
@@ -419,10 +433,10 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                 })),
                 lastModified: new Date(),
               }
-            : pkg
-        )
+            : pkg,
+        ),
       );
-      
+
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       console.error(`Failed to reset configuration for ${packageName}:`, error);
@@ -440,7 +454,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
       filtered = filtered.filter(
         (pkg) =>
           pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query)
+          pkg.description.toLowerCase().includes(query),
       );
     }
 
@@ -472,7 +486,9 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
         return (
           <Toggle
             checked={setting.value}
-            onChange={(checked) => handlePackageSettingChange(packageName, setting.key, checked)}
+            onChange={(checked) =>
+              handlePackageSettingChange(packageName, setting.key, checked)
+            }
           />
         );
       case "number":
@@ -483,7 +499,13 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
             min={setting.min}
             max={setting.max}
             step={setting.step}
-            onChange={(e) => handlePackageSettingChange(packageName, setting.key, Number(e.currentTarget.value))}
+            onChange={(e) =>
+              handlePackageSettingChange(
+                packageName,
+                setting.key,
+                Number(e.currentTarget.value),
+              )
+            }
             class="setting-input"
           />
         );
@@ -491,7 +513,13 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
         return (
           <Select
             value={setting.value}
-            onChange={(e) => handlePackageSettingChange(packageName, setting.key, e.currentTarget.value)}
+            onChange={(e) =>
+              handlePackageSettingChange(
+                packageName,
+                setting.key,
+                e.currentTarget.value,
+              )
+            }
           >
             <For each={setting.options}>
               {(option) => <option value={option}>{option}</option>}
@@ -504,8 +532,15 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
             multiple
             value={setting.value}
             onChange={(e) => {
-              const selectedOptions = Array.from(e.currentTarget.selectedOptions, (option) => option.value);
-              handlePackageSettingChange(packageName, setting.key, selectedOptions);
+              const selectedOptions = Array.from(
+                e.currentTarget.selectedOptions,
+                (option) => option.value,
+              );
+              handlePackageSettingChange(
+                packageName,
+                setting.key,
+                selectedOptions,
+              );
             }}
           >
             <For each={setting.options}>
@@ -517,7 +552,13 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
         return (
           <TextField
             value={setting.value}
-            onChange={(e) => handlePackageSettingChange(packageName, setting.key, e.currentTarget.value)}
+            onChange={(e) =>
+              handlePackageSettingChange(
+                packageName,
+                setting.key,
+                e.currentTarget.value,
+              )
+            }
             placeholder={setting.defaultValue}
           />
         );
@@ -532,7 +573,9 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("settings")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("settings")?.outerHTML || ""
+              }
             />
           </span>
           <h3>Package Configuration</h3>
@@ -563,21 +606,27 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                 <label>Auto Discovery</label>
                 <Toggle
                   checked={globalConfig().autoDiscovery}
-                  onChange={(checked) => handleGlobalConfigChange("autoDiscovery", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange("autoDiscovery", checked)
+                  }
                 />
               </div>
               <div class="setting-item">
                 <label>Auto Install</label>
                 <Toggle
                   checked={globalConfig().autoInstall}
-                  onChange={(checked) => handleGlobalConfigChange("autoInstall", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange("autoInstall", checked)
+                  }
                 />
               </div>
               <div class="setting-item">
                 <label>Auto Update</label>
                 <Toggle
                   checked={globalConfig().autoUpdate}
-                  onChange={(checked) => handleGlobalConfigChange("autoUpdate", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange("autoUpdate", checked)
+                  }
                 />
               </div>
             </div>
@@ -591,7 +640,12 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                   value={globalConfig().maxConcurrentInstalls}
                   min={1}
                   max={10}
-                  onChange={(e) => handleGlobalConfigChange("maxConcurrentInstalls", Number(e.currentTarget.value))}
+                  onChange={(e) =>
+                    handleGlobalConfigChange(
+                      "maxConcurrentInstalls",
+                      Number(e.currentTarget.value),
+                    )
+                  }
                   class="setting-input"
                 />
               </div>
@@ -602,7 +656,12 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                   value={globalConfig().maxConcurrentLoads}
                   min={1}
                   max={10}
-                  onChange={(e) => handleGlobalConfigChange("maxConcurrentLoads", Number(e.currentTarget.value))}
+                  onChange={(e) =>
+                    handleGlobalConfigChange(
+                      "maxConcurrentLoads",
+                      Number(e.currentTarget.value),
+                    )
+                  }
                   class="setting-input"
                 />
               </div>
@@ -614,7 +673,12 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                   min={512}
                   max={8192}
                   step={256}
-                  onChange={(e) => handleGlobalConfigChange("memoryLimit", Number(e.currentTarget.value))}
+                  onChange={(e) =>
+                    handleGlobalConfigChange(
+                      "memoryLimit",
+                      Number(e.currentTarget.value),
+                    )
+                  }
                   class="setting-input"
                 />
               </div>
@@ -626,21 +690,30 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                 <label>Enable Analytics</label>
                 <Toggle
                   checked={globalConfig().enableAnalytics}
-                  onChange={(checked) => handleGlobalConfigChange("enableAnalytics", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange("enableAnalytics", checked)
+                  }
                 />
               </div>
               <div class="setting-item">
                 <label>Performance Monitoring</label>
                 <Toggle
                   checked={globalConfig().enablePerformanceMonitoring}
-                  onChange={(checked) => handleGlobalConfigChange("enablePerformanceMonitoring", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange(
+                      "enablePerformanceMonitoring",
+                      checked,
+                    )
+                  }
                 />
               </div>
               <div class="setting-item">
                 <label>Error Reporting</label>
                 <Toggle
                   checked={globalConfig().enableErrorReporting}
-                  onChange={(checked) => handleGlobalConfigChange("enableErrorReporting", checked)}
+                  onChange={(checked) =>
+                    handleGlobalConfigChange("enableErrorReporting", checked)
+                  }
                 />
               </div>
             </div>
@@ -665,7 +738,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
       <Show when={props.showPackageSettings}>
         <div class="package-configuration">
           <h4>Package Settings</h4>
-          
+
           {/* Filters */}
           <div class="configuration-filters">
             <TextField
@@ -695,22 +768,33 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                       <span class="icon">
                         <div
                           // eslint-disable-next-line solid/no-innerhtml
-                          innerHTML={fluentIconsPackage.getIcon(getConfigurationIcon(pkg.isConfigured))?.outerHTML || ""}
+                          innerHTML={
+                            fluentIconsPackage.getIcon(
+                              getConfigurationIcon(pkg.isConfigured),
+                            )?.outerHTML || ""
+                          }
                         />
                       </span>
-                      
+
                       <div class="package-config-details">
                         <span class="package-name">{pkg.name}</span>
                         <span class="package-version">v{pkg.version}</span>
-                        <span class="package-description">{pkg.description}</span>
+                        <span class="package-description">
+                          {pkg.description}
+                        </span>
                       </div>
                     </div>
 
                     <div class="package-config-status">
-                      <span class="status-badge" classList={{ [getConfigurationColor(pkg.isConfigured)]: true }}>
+                      <span
+                        class="status-badge"
+                        classList={{
+                          [getConfigurationColor(pkg.isConfigured)]: true,
+                        }}
+                      >
                         {pkg.isConfigured ? "Configured" : "Default"}
                       </span>
-                      
+
                       <span class="last-modified">
                         {pkg.lastModified.toLocaleDateString()}
                       </span>
@@ -728,15 +812,15 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                               <span class="required">*</span>
                             </Show>
                           </div>
-                          
+
                           <div class="setting-description">
                             {setting.description}
                           </div>
-                          
+
                           <div class="setting-input-container">
                             {renderSettingInput(setting, pkg.name)}
                           </div>
-                          
+
                           <Show when={setting.value !== setting.defaultValue}>
                             <div class="setting-changed">
                               <span class="changed-indicator">Modified</span>
@@ -760,7 +844,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
                         Saving...
                       </Show>
                     </Button>
-                    
+
                     <Button
                       variant="secondary"
                       size="sm"
@@ -779,7 +863,9 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Forespørsel avbrutt",
   },
-  
+
   // Autentisering og sikkerhet
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer testnøkkel",
     "new-key": "Bearer ny nøkkel",
   },
-  
+
   // Varsler
   notifications: {
     title: "Varsler",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Første gruppert",
     "second-grouped": "Andre gruppert",
   },
-  
+
   // Valideringsmeldinger
   validation: {
     required: "Dette feltet er påkrevd",
@@ -70,30 +70,41 @@ export const coreTranslations = {
     "invalid-input-type": "Ugyldig inputtype",
     "does-not-match-pattern": "Input matcher ikke det påkrevde mønsteret",
   },
-  
+
   // Passordvalidering
   password: {
     "must-be-at-least-8-characters-long": "Passordet må være minst 8 tegn",
-    "must-contain-at-least-one-uppercase-letter": "Passordet må inneholde minst én stor bokstav",
-    "must-contain-at-least-one-lowercase-letter": "Passordet må inneholde minst én liten bokstav",
+    "must-contain-at-least-one-uppercase-letter":
+      "Passordet må inneholde minst én stor bokstav",
+    "must-contain-at-least-one-lowercase-letter":
+      "Passordet må inneholde minst én liten bokstav",
     "must-contain-at-least-one-number": "Passordet må inneholde minst ett tall",
-    "must-contain-at-least-one-special-character": "Passordet må inneholde minst ett spesialtegn",
+    "must-contain-at-least-one-special-character":
+      "Passordet må inneholde minst ett spesialtegn",
   },
-  
+
   // Sikkerhetsvalidering
   security: {
-    "at-least-one-character-type-must-be-included": "Minst én tegnetype må inkluderes",
-    "input-contains-potentially-dangerous-html": "Input inneholder potensielt farlig HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Input inneholder potensielt farlige SQL-mønstre",
-    "input-contains-potentially-dangerous-xss-patterns": "Input inneholder potensielt farlige XSS-mønstre",
-    "input-contains-path-traversal-patterns": "Input inneholder sti-traversering mønstre",
-    "input-contains-windows-reserved-names": "Input inneholder Windows-reserverte navn",
-    "input-contains-executable-file-extensions": "Input inneholder kjørbare filutvidelser",
+    "at-least-one-character-type-must-be-included":
+      "Minst én tegnetype må inkluderes",
+    "input-contains-potentially-dangerous-html":
+      "Input inneholder potensielt farlig HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Input inneholder potensielt farlige SQL-mønstre",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Input inneholder potensielt farlige XSS-mønstre",
+    "input-contains-path-traversal-patterns":
+      "Input inneholder sti-traversering mønstre",
+    "input-contains-windows-reserved-names":
+      "Input inneholder Windows-reserverte navn",
+    "input-contains-executable-file-extensions":
+      "Input inneholder kjørbare filutvidelser",
     "input-contains-null-bytes": "Input inneholder null-bytes",
     "input-contains-hidden-files": "Input inneholder skjulte filer",
-    "input-contains-javascript-file-extensions": "Input inneholder JavaScript-filutvidelser",
+    "input-contains-javascript-file-extensions":
+      "Input inneholder JavaScript-filutvidelser",
   },
-  
+
   // Asynkrone operasjoner
   async: {
     "operation-timed-out": "Operasjonen tidsavbrutt",
@@ -107,7 +118,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Samtidighet må være større enn 0",
     "polling-timeout-reached": "Polling-timeout nådd",
   },
-  
+
   // Modullasting
   module: {
     "is-null": "Modulen er null",
@@ -115,14 +126,16 @@ export const coreTranslations = {
     "load-failed": "Lasting mislyktes",
     "loading-failed": "Lasting mislyktes",
   },
-  
+
   // Lagring og serialisering
   storage: {
     "potentially-dangerous-json-detected": "Potensielt farlig JSON oppdaget",
-    "failed-to-parse-json-from-localstorage": "Kunne ikke parse JSON fra localStorage:",
-    "error-parsing-storage-event": "Feil ved parsing av lagringsbegivenhet for nøkkel",
+    "failed-to-parse-json-from-localstorage":
+      "Kunne ikke parse JSON fra localStorage:",
+    "error-parsing-storage-event":
+      "Feil ved parsing av lagringsbegivenhet for nøkkel",
   },
-  
+
   // Test og utvikling
   test: {
     error: "Testfeil",
@@ -131,19 +144,19 @@ export const coreTranslations = {
     "notification-1": "Testvarsel 1",
     "notification-2": "Testvarsel 2",
   },
-  
+
   // Generelle feil
   errors: {
     "string-error": "Strengfeil",
     "crypto-error": "Krypto-feil",
     "some-error": "Noen feil",
   },
-  
+
   // Formattere og verktøy
   formatters: {
     "hello-world": "Hei verden",
   },
-  
+
   // Dato og tid
   dateTime: {
     now: "Nå",
@@ -153,11 +166,12 @@ export const coreTranslations = {
     format: "Format",
     timezone: "Tidssone",
   },
-  
+
   // Integrasjonstester
   integration: {
     "session-and-api-key-generation": "Sesjon og API-nøkkel generering",
-    "authentication-and-input-validation-integration": "Autentisering og inputvalidering integrasjon",
+    "authentication-and-input-validation-integration":
+      "Autentisering og inputvalidering integrasjon",
     "performance-and-security-integration": "Ytelse og sikkerhet integrasjon",
   },
 };

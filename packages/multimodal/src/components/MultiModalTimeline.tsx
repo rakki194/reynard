@@ -1,6 +1,6 @@
 /**
  * Multi-Modal Timeline Component
- * 
+ *
  * Displays files in a timeline layout grouped by date.
  */
 
@@ -8,11 +8,13 @@ import { Component, For, createMemo } from "solid-js";
 import type { MultiModalTimelineProps } from "../types/MultiModalTypes";
 import { MultiModalFileCard } from "./MultiModalFileCard";
 
-export const MultiModalTimeline: Component<MultiModalTimelineProps> = (props) => {
+export const MultiModalTimeline: Component<MultiModalTimelineProps> = (
+  props,
+) => {
   // Group files by date
   const groupedFiles = createMemo(() => {
     const groups: Record<string, typeof props.files> = {};
-    props.files.forEach(file => {
+    props.files.forEach((file) => {
       const date = file.uploadedAt.toDateString();
       if (!groups[date]) groups[date] = [];
       groups[date].push(file);

@@ -5,4 +5,4 @@
  */
 
 // Re-export everything from the modular components
-export * from './index';
+export * from "./index";

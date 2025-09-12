@@ -11,22 +11,22 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
   const [lightness, setLightness] = createSignal(props.color.l);
   const [chroma, setChroma] = createSignal(props.color.c);
   const [hue, setHue] = createSignal(props.color.h);
-  
+
   createEffect(() => {
     const newColor: OKLCHColor = {
       l: lightness(),
       c: chroma(),
-      h: hue()
+      h: hue(),
     };
     props.onColorChange(newColor);
   });
-  
+
   const colorString = () => `oklch(${lightness()}% ${chroma()} ${hue()})`;
-  
+
   return (
     <div class="color-picker">
       <div class="color-preview">
-        <div 
+        <div
           class="preview-color"
           style={{ "background-color": colorString() }}
         />
@@ -34,7 +34,7 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
           <span class="color-string">{colorString()}</span>
         </div>
       </div>
-      
+
       <div class="color-controls">
         <div class="control-group">
           <label for="lightness-slider">
@@ -51,11 +51,9 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
             class="slider lightness-slider"
           />
         </div>
-        
+
         <div class="control-group">
-          <label for="chroma-slider">
-            Chroma: {chroma().toFixed(2)}
-          </label>
+          <label for="chroma-slider">Chroma: {chroma().toFixed(2)}</label>
           <input
             id="chroma-slider"
             type="range"
@@ -67,11 +65,9 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
             class="slider chroma-slider"
           />
         </div>
-        
+
         <div class="control-group">
-          <label for="hue-slider">
-            Hue: {Math.round(hue())}°
-          </label>
+          <label for="hue-slider">Hue: {Math.round(hue())}°</label>
           <input
             id="hue-slider"
             type="range"
@@ -84,14 +80,16 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
           />
         </div>
       </div>
-      
+
       <div class="preset-colors">
         <h4>Preset Colors</h4>
         <div class="preset-grid">
           {PRESET_COLORS.map((preset) => (
             <button
               class="preset-color"
-              style={{ "background-color": `oklch(${preset.l}% ${preset.c} ${preset.h})` }}
+              style={{
+                "background-color": `oklch(${preset.l}% ${preset.c} ${preset.h})`,
+              }}
               onClick={() => {
                 setLightness(preset.l);
                 setChroma(preset.c);
@@ -118,5 +116,5 @@ const PRESET_COLORS: Array<OKLCHColor & { name: string }> = [
   { l: 40, c: 0.25, h: 240, name: "Deep Blue" },
   { l: 80, c: 0.1, h: 60, name: "Light Yellow" },
   { l: 30, c: 0.2, h: 0, name: "Very Dark Red" },
-  { l: 90, c: 0.05, h: 0, name: "Very Light" }
+  { l: 90, c: 0.05, h: 0, name: "Very Light" },
 ];

@@ -60,31 +60,31 @@ The fundamental algorithm for creating shadows and highlights with hue shifts.
  */
 function basicHueShift(
   baseColor: OKLCHColor,
-  shiftType: 'shadow' | 'highlight' | 'midtone',
-  intensity: number = 0.3
+  shiftType: "shadow" | "highlight" | "midtone",
+  intensity: number = 0.3,
 ): OKLCHColor {
   const { l, c, h } = baseColor;
-  
+
   switch (shiftType) {
-    case 'shadow':
+    case "shadow":
       return {
-        l: Math.max(0, l - (intensity * 30)), // Darker
-        c: Math.min(0.4, c + (intensity * 0.1)), // More saturated
-        h: (h - (intensity * 20) + 360) % 360 // Shift toward cooler colors
+        l: Math.max(0, l - intensity * 30), // Darker
+        c: Math.min(0.4, c + intensity * 0.1), // More saturated
+        h: (h - intensity * 20 + 360) % 360, // Shift toward cooler colors
       };
-    
-    case 'highlight':
+
+    case "highlight":
       return {
-        l: Math.min(100, l + (intensity * 25)), // Lighter
-        c: Math.min(0.4, c + (intensity * 0.05)), // Slightly more saturated
-        h: (h + (intensity * 15) + 360) % 360 // Shift toward warmer colors
+        l: Math.min(100, l + intensity * 25), // Lighter
+        c: Math.min(0.4, c + intensity * 0.05), // Slightly more saturated
+        h: (h + intensity * 15 + 360) % 360, // Shift toward warmer colors
       };
-    
-    case 'midtone':
+
+    case "midtone":
       return {
         l: l, // Keep same lightness
-        c: Math.min(0.4, c + (intensity * 0.08)), // Increase saturation
-        h: (h + (intensity * 5) + 360) % 360 // Subtle hue shift
+        c: Math.min(0.4, c + intensity * 0.08), // Increase saturation
+        h: (h + intensity * 5 + 360) % 360, // Subtle hue shift
       };
   }
 }
@@ -107,16 +107,16 @@ function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20
+  highlightShift: number = 20,
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { l, c, h } = baseColor;
-  
+
   for (let i = 0; i < stops; i++) {
     const t = i / (stops - 1); // 0 to 1
     const lightness = l + (t - 0.5) * 40; // -20 to +20 from base
     const chroma = c + Math.sin(t * Math.PI) * 0.1; // Peak at middle
-    
+
     // Calculate hue shift based on position
     let hueShift = 0;
     if (t < 0.5) {
@@ -126,14 +126,14 @@ function generateHueShiftRamp(
       // Highlight side - shift toward warmer colors
       hueShift = highlightShift * (t - 0.5) * 2;
     }
-    
+
     colors.push({
       l: Math.max(0, Math.min(100, lightness)),
       c: Math.max(0.05, Math.min(0.4, chroma)),
-      h: (h + hueShift + 360) % 360
+      h: (h + hueShift + 360) % 360,
     });
   }
-  
+
   return colors;
 }
 ```
@@ -151,52 +151,52 @@ const MATERIAL_PATTERNS = {
     shadowShift: 30,
     highlightShift: 15,
     chromaBoost: 0.15,
-    lightnessRange: 50
+    lightnessRange: 50,
   },
   skin: {
     shadowShift: 20,
     highlightShift: 25,
     chromaBoost: 0.08,
-    lightnessRange: 35
+    lightnessRange: 35,
   },
   fabric: {
     shadowShift: 15,
     highlightShift: 10,
     chromaBoost: 0.05,
-    lightnessRange: 40
+    lightnessRange: 40,
   },
   plastic: {
     shadowShift: 10,
     highlightShift: 20,
     chromaBoost: 0.12,
-    lightnessRange: 45
-  }
+    lightnessRange: 45,
+  },
 };
 
 function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0
+  intensity: number = 1.0,
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   const pattern = MATERIAL_PATTERNS[material];
   const { l, c, h } = baseColor;
-  
+
   return {
     shadow: {
-      l: Math.max(0, l - (pattern.lightnessRange * 0.6 * intensity)),
-      c: Math.min(0.4, c + (pattern.chromaBoost * intensity)),
-      h: (h - (pattern.shadowShift * intensity) + 360) % 360
+      l: Math.max(0, l - pattern.lightnessRange * 0.6 * intensity),
+      c: Math.min(0.4, c + pattern.chromaBoost * intensity),
+      h: (h - pattern.shadowShift * intensity + 360) % 360,
     },
     base: {
       l: l,
       c: c,
-      h: h
+      h: h,
     },
     highlight: {
-      l: Math.min(100, l + (pattern.lightnessRange * 0.4 * intensity)),
-      c: Math.min(0.4, c + (pattern.chromaBoost * 0.5 * intensity)),
-      h: (h + (pattern.highlightShift * intensity) + 360) % 360
-    }
+      l: Math.min(100, l + pattern.lightnessRange * 0.4 * intensity),
+      c: Math.min(0.4, c + pattern.chromaBoost * 0.5 * intensity),
+      h: (h + pattern.highlightShift * intensity + 360) % 360,
+    },
   };
 }
 ```
@@ -216,24 +216,24 @@ Uses the golden ratio for optimal color distribution in palettes.
  */
 function goldenRatioHuePalette(
   baseColor: OKLCHColor,
-  count: number = 8
+  count: number = 8,
 ): OKLCHColor[] {
   const GOLDEN_ANGLE = 137.508; // Golden angle in degrees
   const colors: OKLCHColor[] = [];
   const { l, c } = baseColor;
-  
+
   for (let i = 0; i < count; i++) {
-    const hue = (baseColor.h + (i * GOLDEN_ANGLE)) % 360;
+    const hue = (baseColor.h + i * GOLDEN_ANGLE) % 360;
     const lightnessVariation = Math.sin(i * 0.5) * 15; // Subtle lightness variation
     const chromaVariation = Math.cos(i * 0.3) * 0.05; // Subtle chroma variation
-    
+
     colors.push({
       l: Math.max(0, Math.min(100, l + lightnessVariation)),
       c: Math.max(0.05, Math.min(0.4, c + chromaVariation)),
-      h: hue
+      h: hue,
     });
   }
-  
+
   return colors;
 }
 ```
@@ -255,30 +255,30 @@ function adaptiveHueShift(
     isWarm: boolean;
     isSaturated: boolean;
     isDark: boolean;
-  }
+  },
 ): { shadow: OKLCHColor; highlight: OKLCHColor } {
   const { l, c, h } = baseColor;
-  
+
   // Calculate adaptive shift amounts
   const baseShift = context.isSaturated ? 15 : 25;
   const lightnessFactor = context.isDark ? 0.8 : 1.2;
   const chromaFactor = context.isSaturated ? 0.5 : 1.0;
-  
+
   // Determine shift direction based on color temperature
   const shadowDirection = context.isWarm ? -1 : 1;
   const highlightDirection = context.isWarm ? 1 : -1;
-  
+
   return {
     shadow: {
-      l: Math.max(0, l - (25 * lightnessFactor)),
-      c: Math.min(0.4, c + (0.1 * chromaFactor)),
-      h: (h + (baseShift * shadowDirection) + 360) % 360
+      l: Math.max(0, l - 25 * lightnessFactor),
+      c: Math.min(0.4, c + 0.1 * chromaFactor),
+      h: (h + baseShift * shadowDirection + 360) % 360,
     },
     highlight: {
-      l: Math.min(100, l + (20 * lightnessFactor)),
-      c: Math.min(0.4, c + (0.05 * chromaFactor)),
-      h: (h + (baseShift * highlightDirection) + 360) % 360
-    }
+      l: Math.min(100, l + 20 * lightnessFactor),
+      c: Math.min(0.4, c + 0.05 * chromaFactor),
+      h: (h + baseShift * highlightDirection + 360) % 360,
+    },
   };
 }
 ```
@@ -298,15 +298,15 @@ For animated pixel art with color transitions.
 function temporalHueShift(
   baseColor: OKLCHColor,
   time: number,
-  frequency: number = 1.0
+  frequency: number = 1.0,
 ): OKLCHColor {
   const { l, c, h } = baseColor;
   const hueShift = Math.sin(time * Math.PI * 2 * frequency) * 10;
-  
+
   return {
     l: l,
     c: c,
-    h: (h + hueShift + 360) % 360
+    h: (h + hueShift + 360) % 360,
   };
 }
 ```
@@ -316,58 +316,58 @@ function temporalHueShift(
 ### Integration with Reynard OKLCH System
 
 ```typescript
-import { 
-  OKLCHColor, 
-  formatOKLCH, 
+import {
+  OKLCHColor,
+  formatOKLCH,
   oklchToRgb,
-  createTagColorGenerator 
-} from 'reynard-colors';
+  createTagColorGenerator,
+} from "reynard-colors";
 
 /**
  * Pixel art sprite color generator using Reynard's OKLCH system
  */
 class PixelArtColorGenerator {
   private colorGenerator = createTagColorGenerator();
-  
+
   /**
    * Generate sprite colors with hue shifting
    */
   generateSpriteColors(
     baseColor: OKLCHColor,
-    spriteType: 'character' | 'environment' | 'ui',
-    material?: string
+    spriteType: "character" | "environment" | "ui",
+    material?: string,
   ): {
     shadow: string;
     base: string;
     highlight: string;
     accent: string;
   } {
-    const shadow = basicHueShift(baseColor, 'shadow', 0.4);
-    const highlight = basicHueShift(baseColor, 'highlight', 0.3);
-    const accent = basicHueShift(baseColor, 'midtone', 0.2);
-    
+    const shadow = basicHueShift(baseColor, "shadow", 0.4);
+    const highlight = basicHueShift(baseColor, "highlight", 0.3);
+    const accent = basicHueShift(baseColor, "midtone", 0.2);
+
     return {
       shadow: formatOKLCH(shadow),
       base: formatOKLCH(baseColor),
       highlight: formatOKLCH(highlight),
-      accent: formatOKLCH(accent)
+      accent: formatOKLCH(accent),
     };
   }
-  
+
   /**
    * Generate palette for pixel art tileset
    */
   generateTilesetPalette(
     baseColors: OKLCHColor[],
-    tileCount: number = 16
+    tileCount: number = 16,
   ): string[] {
     const palette: string[] = [];
-    
-    baseColors.forEach(baseColor => {
+
+    baseColors.forEach((baseColor) => {
       const ramp = generateHueShiftRamp(baseColor, 4);
-      ramp.forEach(color => palette.push(formatOKLCH(color)));
+      ramp.forEach((color) => palette.push(formatOKLCH(color)));
     });
-    
+
     return palette.slice(0, tileCount);
   }
 }
@@ -382,12 +382,12 @@ class PixelArtColorGenerator {
 class PixelArtRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  
+
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d')!;
+    this.ctx = canvas.getContext("2d")!;
   }
-  
+
   /**
    * Draw pixel with OKLCH color
    */
@@ -396,7 +396,7 @@ class PixelArtRenderer {
     this.ctx.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     this.ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
   }
-  
+
   /**
    * Draw sprite with hue-shifted colors
    */
@@ -405,20 +405,27 @@ class PixelArtRenderer {
     colors: { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor },
     x: number,
     y: number,
-    pixelSize: number = 1
+    pixelSize: number = 1,
   ) {
     sprite.forEach((row, rowIndex) => {
       row.forEach((pixel, colIndex) => {
         if (pixel === 0) return; // Skip transparent pixels
-        
+
         let color: OKLCHColor;
         switch (pixel) {
-          case 1: color = colors.shadow; break;
-          case 2: color = colors.base; break;
-          case 3: color = colors.highlight; break;
-          default: return;
+          case 1:
+            color = colors.shadow;
+            break;
+          case 2:
+            color = colors.base;
+            break;
+          case 3:
+            color = colors.highlight;
+            break;
+          default:
+            return;
         }
-        
+
         this.drawPixel(x + colIndex, y + rowIndex, color, pixelSize);
       });
     });
@@ -436,23 +443,23 @@ class PixelArtRenderer {
  */
 class CachedHueShifter {
   private cache = new Map<string, OKLCHColor>();
-  
+
   getShiftedColor(
     baseColor: OKLCHColor,
     shiftType: string,
-    intensity: number
+    intensity: number,
   ): OKLCHColor {
     const key = `${baseColor.l}-${baseColor.c}-${baseColor.h}-${shiftType}-${intensity}`;
-    
+
     if (this.cache.has(key)) {
       return this.cache.get(key)!;
     }
-    
+
     const shifted = basicHueShift(baseColor, shiftType as any, intensity);
     this.cache.set(key, shifted);
     return shifted;
   }
-  
+
   clearCache(): void {
     this.cache.clear();
   }
@@ -467,12 +474,10 @@ class CachedHueShifter {
  */
 function batchHueShift(
   colors: OKLCHColor[],
-  shiftType: 'shadow' | 'highlight' | 'midtone',
-  intensity: number
+  shiftType: "shadow" | "highlight" | "midtone",
+  intensity: number,
 ): OKLCHColor[] {
-  return colors.map(color => 
-    basicHueShift(color, shiftType, intensity)
-  );
+  return colors.map((color) => basicHueShift(color, shiftType, intensity));
 }
 ```
 
@@ -481,7 +486,7 @@ function batchHueShift(
 ### Theme Integration
 
 ```typescript
-import { useOKLCHColors, useTheme } from 'reynard-themes';
+import { useOKLCHColors, useTheme } from "reynard-themes";
 
 /**
  * Theme-aware pixel art color generation
@@ -489,20 +494,20 @@ import { useOKLCHColors, useTheme } from 'reynard-themes';
 function usePixelArtColors() {
   const { getColor, getColorVariant } = useOKLCHColors();
   const { theme } = useTheme();
-  
+
   const generatePixelArtPalette = (baseColorName: string) => {
     const baseColor = getColor(baseColorName);
-    const shadow = getColorVariant(baseColorName, 'darker', 0.3);
-    const highlight = getColorVariant(baseColorName, 'lighter', 0.2);
-    
+    const shadow = getColorVariant(baseColorName, "darker", 0.3);
+    const highlight = getColorVariant(baseColorName, "lighter", 0.2);
+
     return {
       shadow,
       base: baseColor,
       highlight,
-      theme: theme()
+      theme: theme(),
     };
   };
-  
+
   return { generatePixelArtPalette };
 }
 ```
@@ -522,7 +527,7 @@ export const PixelArtPreview: Component<{
 }> = (props) => {
   const { generatePixelArtPalette } = usePixelArtColors();
   const palette = generatePixelArtPalette(props.baseColor);
-  
+
   return (
     <div class="pixel-art-preview">
       {/* Render sprite with hue-shifted colors */}

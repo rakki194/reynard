@@ -19,23 +19,23 @@ export function useFloatingPanels() {
   // const overlayManager = useOverlayManager();
 
   const togglePanel = (panelName: keyof FloatingPanelState) => {
-    setPanelStates(prev => ({
+    setPanelStates((prev) => ({
       ...prev,
-      [panelName]: !prev[panelName]
+      [panelName]: !prev[panelName],
     }));
   };
 
   const showPanel = (panelName: keyof FloatingPanelState) => {
-    setPanelStates(prev => ({
+    setPanelStates((prev) => ({
       ...prev,
-      [panelName]: true
+      [panelName]: true,
     }));
   };
 
   const hidePanel = (panelName: keyof FloatingPanelState) => {
-    setPanelStates(prev => ({
+    setPanelStates((prev) => ({
       ...prev,
-      [panelName]: false
+      [panelName]: false,
     }));
   };
 
@@ -59,7 +59,12 @@ export function useFloatingPanels() {
 
   const isAnyPanelVisible = () => {
     const states = panelStates();
-    return states.colorPicker || states.toolControls || states.canvasSize || states.materialControls;
+    return (
+      states.colorPicker ||
+      states.toolControls ||
+      states.canvasSize ||
+      states.materialControls
+    );
   };
 
   return {

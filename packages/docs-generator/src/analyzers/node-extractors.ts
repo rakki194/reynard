@@ -17,13 +17,13 @@ export const isExportedDeclaration = (node: ts.Node): boolean => {
   ) {
     return true;
   }
-  
+
   // Check for export assignment (export = ...)
   if (ts.isExportAssignment(node)) return true;
-  
+
   // Check for export declaration (export { ... } from ...)
   if (ts.isExportDeclaration(node)) return true;
-  
+
   return false;
 };
 
@@ -65,12 +65,20 @@ export const extractApiInfo = (
 ): ApiInfo | null => {
   // Try multiple approaches to get the symbol
   let symbol = checker.getSymbolAtLocation(node);
-  
+
   // If no symbol found, try getting it from the name node
-  if (!symbol && (ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) || ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isEnumDeclaration(node)) && node.name) {
+  if (
+    !symbol &&
+    (ts.isFunctionDeclaration(node) ||
+      ts.isClassDeclaration(node) ||
+      ts.isInterfaceDeclaration(node) ||
+      ts.isTypeAliasDeclaration(node) ||
+      ts.isEnumDeclaration(node)) &&
+    node.name
+  ) {
     symbol = checker.getSymbolAtLocation(node.name);
   }
-  
+
   // For export declarations, try to get the symbol from the module specifier
   if (!symbol && ts.isExportDeclaration(node) && node.moduleSpecifier) {
     const moduleSymbol = checker.getSymbolAtLocation(node.moduleSpecifier);
@@ -79,19 +87,26 @@ export const extractApiInfo = (
       return null; // Skip re-exports for now
     }
   }
-  
+
   // If still no symbol, try to get it from the type
-  if (!symbol && (ts.isFunctionDeclaration(node) || ts.isClassDeclaration(node) || ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node) || ts.isEnumDeclaration(node))) {
+  if (
+    !symbol &&
+    (ts.isFunctionDeclaration(node) ||
+      ts.isClassDeclaration(node) ||
+      ts.isInterfaceDeclaration(node) ||
+      ts.isTypeAliasDeclaration(node) ||
+      ts.isEnumDeclaration(node))
+  ) {
     const type = checker.getTypeAtLocation(node);
     if (type) {
       symbol = type.getSymbol();
     }
   }
-  
+
   if (!symbol) {
     return null;
   }
-  
+
   const name = symbol.getName();
   const description = getJSDocDescription(symbol, checker);
 

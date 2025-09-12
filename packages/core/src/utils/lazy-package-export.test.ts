@@ -4,7 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LazyPackageExport } from "./lazy-package-export";
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 
 // Test the actual implementation
 
@@ -32,7 +32,13 @@ describe("Utils Lazy Package Export", () => {
 
     it("should pass through constructor arguments", () => {
       const mockLoader = vi.fn();
-      const instance = new LazyPackageExport("test-package", mockLoader, "basic", false, false);
+      const instance = new LazyPackageExport(
+        "test-package",
+        mockLoader,
+        "basic",
+        false,
+        false,
+      );
 
       expect(instance).toBeDefined();
       expect(instance).toBeInstanceOf(LazyPackageExport);
@@ -80,7 +86,7 @@ describe("Utils Lazy Package Export", () => {
     it("should initialize with correct metadata", () => {
       const instance = new LazyPackageExport("test-package");
       const metadata = instance.getMetadata();
-      
+
       expect(metadata.packageName).toBe("test-package");
       expect(metadata.accessCount).toBe(0);
       expect(metadata.errorCount).toBe(0);
@@ -90,51 +96,55 @@ describe("Utils Lazy Package Export", () => {
 
     it("should load module using provided loader", async () => {
       const instance = new LazyPackageExport("test-package", mockLoader);
-      
+
       const module = await instance.getModule();
-      
+
       expect(mockLoader).toHaveBeenCalledTimes(1);
       expect(module).toEqual({ test: "module" });
     });
 
     it("should return cached module on subsequent calls", async () => {
       const instance = new LazyPackageExport("test-package", mockLoader);
-      
+
       const module1 = await instance.getModule();
       const module2 = await instance.getModule();
-      
+
       expect(mockLoader).toHaveBeenCalledTimes(1);
       expect(module1).toBe(module2);
     });
 
     it("should update access statistics", async () => {
       const instance = new LazyPackageExport("test-package", mockLoader);
-      
+
       await instance.getModule();
       await instance.getModule();
-      
+
       const metadata = instance.getMetadata();
       expect(metadata.accessCount).toBe(2);
       expect(metadata.lastAccess).toBeDefined();
     });
 
     it("should handle loading errors", async () => {
-      const errorLoader = vi.fn().mockRejectedValue(new Error(i18n.t('core.module.load-failed')));
+      const errorLoader = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.module.load-failed")));
       const instance = new LazyPackageExport("test-package", errorLoader);
-      
-      await expect(instance.getModule()).rejects.toThrow(i18n.t('core.module.load-failed'));
-      
+
+      await expect(instance.getModule()).rejects.toThrow(
+        i18n.t("core.module.load-failed"),
+      );
+
       const metadata = instance.getMetadata();
       expect(metadata.errorCount).toBe(1);
-      expect(metadata.lastError).toBe(i18n.t('core.module.load-failed'));
+      expect(metadata.lastError).toBe(i18n.t("core.module.load-failed"));
     });
 
     it("should reset module and clear metadata", async () => {
       const instance = new LazyPackageExport("test-package", mockLoader);
-      
+
       await instance.getModule();
       instance.reset();
-      
+
       const metadata = instance.getMetadata();
       expect(metadata.loadTime).toBeUndefined();
       expect(metadata.lastAccess).toBeUndefined();
@@ -145,7 +155,7 @@ describe("Utils Lazy Package Export", () => {
       const instance = new LazyPackageExport("test-package");
       const metadata1 = instance.getMetadata();
       const metadata2 = instance.getMetadata();
-      
+
       expect(metadata1).not.toBe(metadata2);
       expect(metadata1).toEqual(metadata2);
     });
@@ -157,7 +167,7 @@ describe("Utils Lazy Package Export", () => {
       global.import = vi.fn().mockResolvedValue(mockModule);
 
       const instance = new LazyPackageExport("test-package");
-      
+
       try {
         const module = await instance.getModule();
         expect(module).toEqual(mockModule);
@@ -172,9 +182,9 @@ describe("Utils Lazy Package Export", () => {
     it("should handle validation errors", async () => {
       const invalidLoader = vi.fn().mockResolvedValue(null);
       const instance = new LazyPackageExport("test-package", invalidLoader);
-      
+
       await expect(instance.getModule()).rejects.toThrow();
-      
+
       const metadata = instance.getMetadata();
       expect(metadata.errorCount).toBe(1);
     });
@@ -182,18 +192,18 @@ describe("Utils Lazy Package Export", () => {
     it("should handle non-object modules in validation", async () => {
       const invalidLoader = vi.fn().mockResolvedValue("string module");
       const instance = new LazyPackageExport("test-package", invalidLoader);
-      
+
       await expect(instance.getModule()).rejects.toThrow();
-      
+
       const metadata = instance.getMetadata();
       expect(metadata.errorCount).toBe(1);
     });
 
     it("should estimate memory usage", async () => {
       const instance = new LazyPackageExport("test-package", mockLoader);
-      
+
       await instance.getModule();
-      
+
       const metadata = instance.getMetadata();
       expect(metadata.memoryUsage).toBeDefined();
       expect(typeof metadata.memoryUsage).toBe("number");

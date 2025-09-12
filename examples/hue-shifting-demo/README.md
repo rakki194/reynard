@@ -73,8 +73,8 @@ This demo uses the OKLCH color space, which provides:
 The demo integrates with Reynard's color system:
 
 ```typescript
-import { OKLCHColor } from 'reynard-colors';
-import { basicColorRamp, materialHueShift } from './algorithms';
+import { OKLCHColor } from "reynard-colors";
+import { basicColorRamp, materialHueShift } from "./algorithms";
 ```
 
 ### Performance

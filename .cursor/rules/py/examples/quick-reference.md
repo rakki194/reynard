@@ -1,6 +1,6 @@
 # Modular Python Quick Reference
 
-*Essential patterns and templates for rapid development*
+_Essential patterns and templates for rapid development_
 
 ## File Structure Templates
 
@@ -13,31 +13,31 @@ from typing import Dict, Any, Optional
 
 class ExampleService:
     """Example service with standard lifecycle"""
-    
+
     def __init__(self):
         self.is_initialized = False
         self.config = {}
-    
+
     async def initialize(self):
         """Initialize the service"""
         if IS_RELOAD_MODE:
             return
-        
+
         print("[INFO] Initializing ExampleService...")
         # Add initialization logic here
         self.is_initialized = True
         print("[OK] ExampleService initialized")
-    
+
     async def close(self):
         """Close the service"""
         if not self.is_initialized:
             return
-        
+
         print("[INFO] Closing ExampleService...")
         # Add cleanup logic here
         self.is_initialized = False
         print("[OK] ExampleService closed")
-    
+
     def get_stats(self) -> Dict[str, Any]:
         """Get service statistics"""
         return {
@@ -66,13 +66,13 @@ async def get_items(
         cached_items = await cache_service.get("items")
         if cached_items:
             return cached_items
-        
+
         # Query database
         items = await db_service.execute_query("SELECT * FROM items")
-        
+
         # Cache results
         await cache_service.set("items", items, ttl=300)
-        
+
         return items
     except Exception as e:
         raise HTTPException(
@@ -93,10 +93,10 @@ async def create_item(
             "INSERT INTO items (name, description) VALUES (?, ?)",
             {"name": item_data["name"], "description": item_data["description"]}
         )
-        
+
         # Invalidate cache
         await cache_service.delete("items")
-        
+
         return {"id": result["last_id"], "message": "Item created successfully"}
     except Exception as e:
         raise HTTPException(
@@ -120,23 +120,23 @@ class ExampleConfig:
     debug: bool = False
     timeout: int = 30
     max_connections: int = 100
-    
+
     def __post_init__(self):
         """Validate configuration after initialization"""
         if self.port < 1 or self.port > 65535:
             raise ValueError("Port must be between 1 and 65535")
-        
+
         if self.timeout < 1:
             raise ValueError("Timeout must be positive")
-        
+
         if self.max_connections < 1:
             raise ValueError("Max connections must be positive")
-    
+
     @classmethod
     def from_env(cls) -> 'ExampleConfig':
         """Create configuration from environment variables"""
         import os
-        
+
         return cls(
             host=os.getenv("EXAMPLE_HOST", "localhost"),
             port=int(os.getenv("EXAMPLE_PORT", "8000")),
@@ -193,7 +193,7 @@ async def service_context(service: Any) -> AsyncGenerator[Any, None]:
     """Generic service context manager"""
     if hasattr(service, 'initialize'):
         await service.initialize()
-    
+
     try:
         yield service
     finally:
@@ -243,7 +243,7 @@ def handle_errors(
                 if log_error:
                     logger.error(f"Error in {func.__name__}: {e}", exc_info=True)
                 return default_return
-        
+
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             try:
@@ -252,7 +252,7 @@ def handle_errors(
                 if log_error:
                     logger.error(f"Error in {func.__name__}: {e}", exc_info=True)
                 return default_return
-        
+
         return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
     return decorator
 
@@ -277,7 +277,7 @@ import re
 
 class BaseValidator(BaseModel):
     """Base validator with common validation methods"""
-    
+
     @classmethod
     def validate_email(cls, email: str) -> str:
         """Validate email format"""
@@ -285,16 +285,16 @@ class BaseValidator(BaseModel):
         if not re.match(pattern, email):
             raise ValueError("Invalid email format")
         return email.lower()
-    
+
     @classmethod
     def validate_username(cls, username: str) -> str:
         """Validate username format"""
         if len(username) < 3 or len(username) > 20:
             raise ValueError("Username must be between 3 and 20 characters")
-        
+
         if not re.match(r'^[a-zA-Z0-9_]+$', username):
             raise ValueError("Username can only contain letters, numbers, and underscores")
-        
+
         return username.lower()
 
 class UserValidator(BaseValidator):
@@ -303,21 +303,21 @@ class UserValidator(BaseValidator):
     email: str
     password: str
     age: Optional[int] = None
-    
+
     @validator('username')
     def validate_username_field(cls, v):
         return cls.validate_username(v)
-    
+
     @validator('email')
     def validate_email_field(cls, v):
         return cls.validate_email(v)
-    
+
     @validator('password')
     def validate_password(cls, v):
         if len(v) < 8:
             raise ValueError("Password must be at least 8 characters")
         return v
-    
+
     @validator('age')
     def validate_age(cls, v):
         if v is not None and (v < 0 or v > 150):
@@ -355,7 +355,7 @@ async def test_service_reload_mode():
     with patch('services.example_service.IS_RELOAD_MODE', True):
         service = ExampleService()
         await service.initialize()
-        
+
         # Should not be initialized in reload mode
         assert not service.is_initialized
 
@@ -363,7 +363,7 @@ async def test_service_reload_mode():
 async def test_service_cleanup(example_service):
     """Test service cleanup"""
     assert example_service.is_initialized
-    
+
     await example_service.close()
     assert not example_service.is_initialized
 ```
@@ -388,7 +388,7 @@ def mock_services():
         # Configure mock services
         mock_services['database'] = AsyncMock()
         mock_services['cache'] = AsyncMock()
-        
+
         yield mock_services
 
 def test_health_endpoint(client):
@@ -402,7 +402,7 @@ def test_api_endpoint(client, mock_services):
     # Configure mock behavior
     mock_services['database'].execute_query.return_value = {"rows": [], "affected": 0}
     mock_services['cache'].get.return_value = None
-    
+
     response = client.get("/api/items")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
@@ -418,21 +418,21 @@ from typing import Any, Optional
 
 class LazyLoader:
     """Simple lazy loading utility"""
-    
+
     def __init__(self, loader_func: callable, *args, **kwargs):
         self.loader_func = loader_func
         self.args = args
         self.kwargs = kwargs
         self._value: Optional[Any] = None
         self._loaded = False
-    
+
     def __call__(self) -> Any:
         """Get the loaded value"""
         if not self._loaded:
             self._value = self.loader_func(*self.args, **self.kwargs)
             self._loaded = True
         return self._value
-    
+
     def reset(self):
         """Reset the loader to force reload"""
         self._loaded = False
@@ -453,23 +453,23 @@ from functools import wraps
 
 class SimpleCache:
     """Simple in-memory cache with TTL"""
-    
+
     def __init__(self, default_ttl: int = 300):
         self.default_ttl = default_ttl
         self._cache: Dict[str, Dict[str, Any]] = {}
-    
+
     def get(self, key: str) -> Optional[Any]:
         """Get value from cache"""
         if key not in self._cache:
             return None
-        
+
         entry = self._cache[key]
         if time.time() > entry["expires_at"]:
             del self._cache[key]
             return None
-        
+
         return entry["value"]
-    
+
     def set(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
         """Set value in cache"""
         ttl = ttl or self.default_ttl
@@ -477,7 +477,7 @@ class SimpleCache:
             "value": value,
             "expires_at": time.time() + ttl
         }
-    
+
     def delete(self, key: str) -> bool:
         """Delete value from cache"""
         if key in self._cache:
@@ -488,32 +488,32 @@ class SimpleCache:
 def cached(ttl: int = 300):
     """Decorator for caching function results"""
     cache = SimpleCache(ttl)
-    
+
     def decorator(func):
         @wraps(func)
         async def async_wrapper(*args, **kwargs):
             cache_key = f"{func.__name__}:{hash(str(args) + str(kwargs))}"
-            
+
             cached_result = cache.get(cache_key)
             if cached_result is not None:
                 return cached_result
-            
+
             result = await func(*args, **kwargs)
             cache.set(cache_key, result, ttl)
             return result
-        
+
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             cache_key = f"{func.__name__}:{hash(str(args) + str(kwargs))}"
-            
+
             cached_result = cache.get(cache_key)
             if cached_result is not None:
                 return cached_result
-            
+
             result = func(*args, **kwargs)
             cache.set(cache_key, result, ttl)
             return result
-        
+
         return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
     return decorator
 
@@ -541,13 +541,13 @@ def setup_logging(
     include_timestamp: bool = True
 ) -> None:
     """Setup application logging"""
-    
+
     if format_string is None:
         if include_timestamp:
             format_string = "[%(asctime)s] %(levelname)s: %(name)s: %(message)s"
         else:
             format_string = "%(levelname)s: %(name)s: %(message)s"
-    
+
     logging.basicConfig(
         level=getattr(logging, level.upper()),
         format=format_string,
@@ -555,7 +555,7 @@ def setup_logging(
             logging.StreamHandler(sys.stdout)
         ]
     )
-    
+
     # Set specific logger levels
     logging.getLogger("uvicorn").setLevel(logging.WARNING)
     logging.getLogger("fastapi").setLevel(logging.INFO)
@@ -580,13 +580,13 @@ def get_env_var(
 ) -> Any:
     """Get environment variable with type conversion"""
     value = os.getenv(key, default)
-    
+
     if value is None and required:
         raise ValueError(f"Required environment variable {key} is not set")
-    
+
     if value is None:
         return default
-    
+
     # Type conversion
     if var_type == bool:
         return value.lower() in ("true", "1", "yes", "on")
@@ -600,7 +600,7 @@ def get_env_var(
             return float(value)
         except ValueError:
             raise ValueError(f"Environment variable {key} must be a float")
-    
+
     return value
 
 # Usage
@@ -629,11 +629,11 @@ async def gather_with_concurrency_limit(
 ) -> List[Any]:
     """Run coroutines with concurrency limit"""
     semaphore = asyncio.Semaphore(limit)
-    
+
     async def limited_coro(coro):
         async with semaphore:
             return await coro
-    
+
     return await asyncio.gather(*[limited_coro(coro) for coro in coroutines])
 
 async def timeout_after(seconds: float, coro: Coroutine) -> Any:

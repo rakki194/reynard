@@ -3,12 +3,7 @@
  * Advanced embedding distribution analysis with histogram and box plot visualization
  */
 
-import {
-  Component,
-  onMount,
-  createSignal,
-  Show,
-} from "solid-js";
+import { Component, onMount, createSignal, Show } from "solid-js";
 import {
   Chart as ChartJS,
   Title,
@@ -39,7 +34,7 @@ ChartJS.register(
   BarElement,
   PointElement,
   LineElement,
-  LineController
+  LineController,
 );
 
 export interface EmbeddingDistributionData {
@@ -90,7 +85,9 @@ export interface EmbeddingDistributionChartProps extends ChartConfig {
   emptyMessage?: string;
 }
 
-export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartProps> = (props) => {
+export const EmbeddingDistributionChart: Component<
+  EmbeddingDistributionChartProps
+> = (props) => {
   const [isRegistered, setIsRegistered] = createSignal(false);
   const visualizationEngine = useVisualizationEngine();
 
@@ -106,7 +103,8 @@ export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartPro
     }
 
     const values = props.data.values;
-    const numBins = props.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
+    const numBins =
+      props.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
 
     // Calculate bin edges
     const min = Math.min(...values);
@@ -169,7 +167,8 @@ export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartPro
     const median = values[Math.floor(n * 0.5)];
     const q3 = values[Math.floor(n * 0.75)];
     const mean = values.reduce((sum, val) => sum + val, 0) / n;
-    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
+    const variance =
+      values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
     const std = Math.sqrt(variance);
 
     // Create box plot data points
@@ -243,7 +242,8 @@ export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartPro
           display: true,
           title: {
             display: !!props.xAxisLabel,
-            text: props.xAxisLabel || (isHistogram ? "Value Range" : "Statistic"),
+            text:
+              props.xAxisLabel || (isHistogram ? "Value Range" : "Statistic"),
           },
           grid: {
             display: props.showGrid !== false,
@@ -325,13 +325,27 @@ export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartPro
         </div>
       </Show>
 
-      <Show when={!props.loading && (!props.data.values || props.data.values.length === 0)}>
+      <Show
+        when={
+          !props.loading &&
+          (!props.data.values || props.data.values.length === 0)
+        }
+      >
         <div class="chart-empty">
-          <p>{props.emptyMessage || "No embedding distribution data available"}</p>
+          <p>
+            {props.emptyMessage || "No embedding distribution data available"}
+          </p>
         </div>
       </Show>
 
-      <Show when={!props.loading && props.data.values && props.data.values.length > 0 && isRegistered()}>
+      <Show
+        when={
+          !props.loading &&
+          props.data.values &&
+          props.data.values.length > 0 &&
+          isRegistered()
+        }
+      >
         <Show when={props.type === "histogram"}>
           <Bar
             data={histogramData()}

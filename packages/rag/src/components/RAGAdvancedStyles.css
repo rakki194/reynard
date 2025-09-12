@@ -129,8 +129,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .rag-3d-error {
@@ -724,45 +728,45 @@
   .rag-search-controls {
     padding: 0.75rem;
   }
-  
+
   .search-input-group {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .search-options {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .advanced-features {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .rag-3d-controls {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .rag-image-content {
     flex-direction: column;
   }
-  
+
   .rag-image-sidebar {
     width: 100%;
   }
-  
+
   .history-filters {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .item-header {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .item-actions {
     justify-content: flex-end;
   }

@@ -1,11 +1,15 @@
 /**
  * Multi-Modal Gallery Header Component
- * 
+ *
  * Handles gallery title, file counts, view controls, and file upload.
  */
 
 import { Component, For } from "solid-js";
-import type { MediaType, GalleryView, FileCounts } from "../types/MultiModalTypes";
+import type {
+  MediaType,
+  GalleryView,
+  FileCounts,
+} from "../types/MultiModalTypes";
 
 interface MultiModalGalleryHeaderProps {
   fileCounts: FileCounts;
@@ -17,7 +21,9 @@ interface MultiModalGalleryHeaderProps {
   isLoading: boolean;
 }
 
-export const MultiModalGalleryHeader: Component<MultiModalGalleryHeaderProps> = (props) => {
+export const MultiModalGalleryHeader: Component<
+  MultiModalGalleryHeaderProps
+> = (props) => {
   return (
     <div class="gallery-header">
       <div class="gallery-title">
@@ -36,7 +42,7 @@ export const MultiModalGalleryHeader: Component<MultiModalGalleryHeaderProps> = 
           </For>
         </div>
       </div>
-      
+
       <div class="gallery-controls">
         <div class="view-controls">
           <button
@@ -61,7 +67,7 @@ export const MultiModalGalleryHeader: Component<MultiModalGalleryHeaderProps> = 
             Timeline
           </button>
         </div>
-        
+
         <input
           type="file"
           multiple

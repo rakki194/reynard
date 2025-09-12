@@ -4,16 +4,16 @@
  */
 
 // Core rendering
-export { PixelArtRenderer } from './pixel-art-renderer';
+export { PixelArtRenderer } from "./pixel-art-renderer";
 
 // Sprite rendering
-export { SpriteRenderer, type PixelSprite } from './sprite-renderer';
+export { SpriteRenderer, type PixelSprite } from "./sprite-renderer";
 
 // Tilemap rendering
-export { TilemapRenderer, type Tilemap } from './tilemap-renderer';
+export { TilemapRenderer, type Tilemap } from "./tilemap-renderer";
 
 // Animation
-export { SpriteAnimator, type AnimatedSprite } from './sprite-animator';
+export { SpriteAnimator, type AnimatedSprite } from "./sprite-animator";
 
 // Effects and filters
 export {
@@ -23,8 +23,8 @@ export {
   createBrightnessSprite,
   createContrastSprite,
   createHueShiftedSprite,
-  createSaturationSprite
-} from './sprite-effects';
+  createSaturationSprite,
+} from "./sprite-effects";
 
 // Utility functions
 export {
@@ -33,8 +33,8 @@ export {
   createCheckerboardSprite,
   createCircleSprite,
   createLineSprite,
-  createExampleCharacter
-} from './sprite-utils';
+  createExampleCharacter,
+} from "./sprite-utils";
 
 // Example usage
 export {
@@ -42,8 +42,8 @@ export {
   createSimpleScene,
   animateCharacterWithHueShift,
   createPaletteDemo,
-  performanceTest
-} from './rendering-examples';
+  performanceTest,
+} from "./rendering-examples";
 
 // ============================================================================
 // OKLCH HUE SHIFTING ALGORITHMS
@@ -54,8 +54,8 @@ export {
   basicHueShift,
   generateHueShiftRamp,
   temporalHueShift,
-  adaptiveHueShift
-} from './core-algorithms';
+  adaptiveHueShift,
+} from "./core-algorithms";
 
 // Material patterns
 export {
@@ -63,8 +63,8 @@ export {
   materialHueShift,
   getMaterialPattern,
   isSupportedMaterial,
-  getSupportedMaterials
-} from './material-patterns';
+  getSupportedMaterials,
+} from "./material-patterns";
 
 // Advanced techniques
 export {
@@ -73,16 +73,16 @@ export {
   generateTriadicColors,
   generateAnalogousColors,
   generateSplitComplementaryColors,
-  generateTetradicColors
-} from './advanced-techniques';
+  generateTetradicColors,
+} from "./advanced-techniques";
 
 // Performance utilities
 export {
   CachedHueShifter,
   batchHueShift,
   createColorLookupTable,
-  interpolateColors
-} from './performance-utils';
+  interpolateColors,
+} from "./performance-utils";
 
 // Pixel art utilities
 export {
@@ -91,8 +91,8 @@ export {
   createColorLookupTable as createPixelArtLookupTable,
   generateCharacterPalette,
   generateEnvironmentPalette,
-  generateUIPalette
-} from './pixel-art-utils';
+  generateUIPalette,
+} from "./pixel-art-utils";
 
 // Animation utilities
 export {
@@ -101,8 +101,8 @@ export {
   createShimmerAnimation,
   createColorCyclingAnimation,
   createFadeAnimation,
-  createRainbowAnimation
-} from './animation-utils';
+  createRainbowAnimation,
+} from "./animation-utils";
 
 // Validation utilities
 export {
@@ -114,8 +114,8 @@ export {
   validateShiftParameters,
   validateAnimationParameters,
   validateMaterialType,
-  getOKLCHValidationErrors
-} from './validation-utils';
+  getOKLCHValidationErrors,
+} from "./validation-utils";
 
 // Example functions
 export {
@@ -124,8 +124,8 @@ export {
   createUIPalette,
   createFantasyCharacterPalette,
   createNatureEnvironmentPalette,
-  createSciFiUIPalette
-} from './examples';
+  createSciFiUIPalette,
+} from "./examples";
 
 // Re-export types
-export type { OKLCHColor } from 'reynard-colors';
+export type { OKLCHColor } from "reynard-colors";

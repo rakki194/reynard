@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Anfrage abgebrochen",
   },
-  
+
   // Authentifizierung und Sicherheit
   bearer: {
     token: "Bearer Token",
     "test-key": "Bearer Test-Schlüssel",
     "new-key": "Bearer neuer Schlüssel",
   },
-  
+
   // Benachrichtigungen
   notifications: {
     title: "Benachrichtigungen",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Erste gruppierte",
     "second-grouped": "Zweite gruppierte",
   },
-  
+
   // Validierungsnachrichten
   validation: {
     required: "Dieses Feld ist erforderlich",
@@ -68,32 +68,46 @@ export const coreTranslations = {
     minValue: "Wert ist zu klein",
     maxValue: "Wert ist zu groß",
     "invalid-input-type": "Ungültiger Eingabetyp",
-    "does-not-match-pattern": "Eingabe entspricht nicht dem erforderlichen Muster",
+    "does-not-match-pattern":
+      "Eingabe entspricht nicht dem erforderlichen Muster",
   },
-  
+
   // Passwort-Validierung
   password: {
-    "must-be-at-least-8-characters-long": "Passwort muss mindestens 8 Zeichen lang sein",
-    "must-contain-at-least-one-uppercase-letter": "Passwort muss mindestens einen Großbuchstaben enthalten",
-    "must-contain-at-least-one-lowercase-letter": "Passwort muss mindestens einen Kleinbuchstaben enthalten",
-    "must-contain-at-least-one-number": "Passwort muss mindestens eine Zahl enthalten",
-    "must-contain-at-least-one-special-character": "Passwort muss mindestens ein Sonderzeichen enthalten",
+    "must-be-at-least-8-characters-long":
+      "Passwort muss mindestens 8 Zeichen lang sein",
+    "must-contain-at-least-one-uppercase-letter":
+      "Passwort muss mindestens einen Großbuchstaben enthalten",
+    "must-contain-at-least-one-lowercase-letter":
+      "Passwort muss mindestens einen Kleinbuchstaben enthalten",
+    "must-contain-at-least-one-number":
+      "Passwort muss mindestens eine Zahl enthalten",
+    "must-contain-at-least-one-special-character":
+      "Passwort muss mindestens ein Sonderzeichen enthalten",
   },
-  
+
   // Sicherheitsvalidierung
   security: {
-    "at-least-one-character-type-must-be-included": "Mindestens ein Zeichentyp muss enthalten sein",
-    "input-contains-potentially-dangerous-html": "Eingabe enthält potentiell gefährliches HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Eingabe enthält potentiell gefährliche SQL-Muster",
-    "input-contains-potentially-dangerous-xss-patterns": "Eingabe enthält potentiell gefährliche XSS-Muster",
-    "input-contains-path-traversal-patterns": "Eingabe enthält Pfad-Traversal-Muster",
-    "input-contains-windows-reserved-names": "Eingabe enthält Windows-reservierte Namen",
-    "input-contains-executable-file-extensions": "Eingabe enthält ausführbare Dateierweiterungen",
+    "at-least-one-character-type-must-be-included":
+      "Mindestens ein Zeichentyp muss enthalten sein",
+    "input-contains-potentially-dangerous-html":
+      "Eingabe enthält potentiell gefährliches HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Eingabe enthält potentiell gefährliche SQL-Muster",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Eingabe enthält potentiell gefährliche XSS-Muster",
+    "input-contains-path-traversal-patterns":
+      "Eingabe enthält Pfad-Traversal-Muster",
+    "input-contains-windows-reserved-names":
+      "Eingabe enthält Windows-reservierte Namen",
+    "input-contains-executable-file-extensions":
+      "Eingabe enthält ausführbare Dateierweiterungen",
     "input-contains-null-bytes": "Eingabe enthält Null-Bytes",
     "input-contains-hidden-files": "Eingabe enthält versteckte Dateien",
-    "input-contains-javascript-file-extensions": "Eingabe enthält JavaScript-Dateierweiterungen",
+    "input-contains-javascript-file-extensions":
+      "Eingabe enthält JavaScript-Dateierweiterungen",
   },
-  
+
   // Asynchrone Operationen
   async: {
     "operation-timed-out": "Operation ist abgelaufen",
@@ -107,7 +121,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Parallelität muss größer als 0 sein",
     "polling-timeout-reached": "Polling-Timeout erreicht",
   },
-  
+
   // Modulladung
   module: {
     "is-null": "Modul ist null",
@@ -115,14 +129,17 @@ export const coreTranslations = {
     "load-failed": "Laden fehlgeschlagen",
     "loading-failed": "Laden fehlgeschlagen",
   },
-  
+
   // Speicherung und Serialisierung
   storage: {
-    "potentially-dangerous-json-detected": "Potentiell gefährliches JSON erkannt",
-    "failed-to-parse-json-from-localstorage": "JSON aus localStorage konnte nicht geparst werden:",
-    "error-parsing-storage-event": "Fehler beim Parsen des Speicher-Events für Schlüssel",
+    "potentially-dangerous-json-detected":
+      "Potentiell gefährliches JSON erkannt",
+    "failed-to-parse-json-from-localstorage":
+      "JSON aus localStorage konnte nicht geparst werden:",
+    "error-parsing-storage-event":
+      "Fehler beim Parsen des Speicher-Events für Schlüssel",
   },
-  
+
   // Test und Entwicklung
   test: {
     error: "Test-Fehler",
@@ -131,19 +148,19 @@ export const coreTranslations = {
     "notification-1": "Test-Benachrichtigung 1",
     "notification-2": "Test-Benachrichtigung 2",
   },
-  
+
   // Allgemeine Fehler
   errors: {
     "string-error": "String-Fehler",
     "crypto-error": "Krypto-Fehler",
     "some-error": "Irgendein Fehler",
   },
-  
+
   // Formatierer und Utilities
   formatters: {
     "hello-world": "Hallo Welt",
   },
-  
+
   // Datum und Zeit
   dateTime: {
     now: "Jetzt",
@@ -153,11 +170,13 @@ export const coreTranslations = {
     format: "Format",
     timezone: "Zeitzone",
   },
-  
+
   // Integrationstests
   integration: {
     "session-and-api-key-generation": "Session- und API-Schlüssel-Generierung",
-    "authentication-and-input-validation-integration": "Authentifizierungs- und Eingabevalidierungs-Integration",
-    "performance-and-security-integration": "Leistungs- und Sicherheitsintegration",
+    "authentication-and-input-validation-integration":
+      "Authentifizierungs- und Eingabevalidierungs-Integration",
+    "performance-and-security-integration":
+      "Leistungs- und Sicherheitsintegration",
   },
 };

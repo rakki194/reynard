@@ -1,19 +1,19 @@
 /**
  * NLWeb Composable
- * 
+ *
  * React composable for integrating with the NLWeb assistant tooling and routing system.
  * Provides reactive state management and API integration.
  */
 
-import { createSignal, createEffect, onCleanup } from 'solid-js';
-import { 
+import { createSignal, createEffect, onCleanup } from "solid-js";
+import {
   NLWebSuggestionRequest,
   NLWebSuggestionResponse,
   NLWebHealthStatus,
   NLWebConfiguration,
   NLWebTool,
-  NLWebContext
-} from '../types/index.js';
+  NLWebContext,
+} from "../types/index.js";
 
 export interface UseNLWebOptions {
   /** Base URL for NLWeb API */
@@ -38,7 +38,10 @@ export interface UseNLWebReturn {
   error: () => string | null;
 
   // Actions
-  suggest: (query: string, context?: NLWebContext) => Promise<NLWebSuggestionResponse>;
+  suggest: (
+    query: string,
+    context?: NLWebContext,
+  ) => Promise<NLWebSuggestionResponse>;
   getHealth: () => Promise<NLWebHealthStatus>;
   getConfiguration: () => Promise<NLWebConfiguration>;
   getTools: (category?: string, tags?: string[]) => Promise<NLWebTool[]>;
@@ -56,17 +59,19 @@ export interface UseNLWebReturn {
 
 export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
   const {
-    baseUrl = '/api/nlweb',
+    baseUrl = "/api/nlweb",
     defaultContext = {},
     enableHealthChecks = true,
     healthCheckInterval = 30000, // 30 seconds
-    requestTimeout = 10000 // 10 seconds
+    requestTimeout = 10000, // 10 seconds
   } = options;
 
   // State signals
-  const [suggestions, setSuggestions] = createSignal<NLWebSuggestionResponse | null>(null);
+  const [suggestions, setSuggestions] =
+    createSignal<NLWebSuggestionResponse | null>(null);
   const [health, setHealth] = createSignal<NLWebHealthStatus | null>(null);
-  const [configuration, setConfiguration] = createSignal<NLWebConfiguration | null>(null);
+  const [configuration, setConfiguration] =
+    createSignal<NLWebConfiguration | null>(null);
   const [tools, setTools] = createSignal<NLWebTool[]>([]);
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -98,7 +103,7 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    */
   async function apiRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<T> {
     try {
       setLoading(true);
@@ -111,22 +116,25 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
         ...options,
         signal: controller.signal,
         headers: {
-          'Content-Type': 'application/json',
-          ...options.headers
-        }
+          "Content-Type": "application/json",
+          ...options.headers,
+        },
       });
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(
+          errorData.message ||
+            `HTTP ${response.status}: ${response.statusText}`,
+        );
       }
 
       return await response.json();
-
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      const errorMessage =
+        err instanceof Error ? err.message : "Unknown error occurred";
       setError(errorMessage);
       throw err;
     } finally {
@@ -137,18 +145,21 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
   /**
    * Get tool suggestions for a query
    */
-  async function suggest(query: string, context: NLWebContext = {}): Promise<NLWebSuggestionResponse> {
+  async function suggest(
+    query: string,
+    context: NLWebContext = {},
+  ): Promise<NLWebSuggestionResponse> {
     const mergedContext = { ...defaultContext, ...context };
-    
-    const response = await apiRequest<NLWebSuggestionResponse>('/suggest', {
-      method: 'POST',
+
+    const response = await apiRequest<NLWebSuggestionResponse>("/suggest", {
+      method: "POST",
       body: JSON.stringify({
         query,
         context: mergedContext,
         maxSuggestions: 3,
         minScore: 30,
-        includeReasoning: true
-      })
+        includeReasoning: true,
+      }),
     });
 
     setSuggestions(response);
@@ -159,7 +170,7 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    * Get service health status
    */
   async function getHealth(): Promise<NLWebHealthStatus> {
-    const response = await apiRequest<NLWebHealthStatus>('/health');
+    const response = await apiRequest<NLWebHealthStatus>("/health");
     setHealth(response);
     return response;
   }
@@ -168,7 +179,9 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    * Get service configuration
    */
   async function getConfiguration(): Promise<NLWebConfiguration> {
-    const response = await apiRequest<{ configuration: NLWebConfiguration }>('/status');
+    const response = await apiRequest<{ configuration: NLWebConfiguration }>(
+      "/status",
+    );
     setConfiguration(response.configuration);
     return response.configuration;
   }
@@ -176,14 +189,17 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
   /**
    * Get registered tools
    */
-  async function getTools(category?: string, tags?: string[]): Promise<NLWebTool[]> {
+  async function getTools(
+    category?: string,
+    tags?: string[],
+  ): Promise<NLWebTool[]> {
     const params = new URLSearchParams();
-    if (category) params.append('category', category);
-    if (tags && tags.length > 0) params.append('tags', tags.join(','));
+    if (category) params.append("category", category);
+    if (tags && tags.length > 0) params.append("tags", tags.join(","));
 
-    const endpoint = `/tools${params.toString() ? `?${params.toString()}` : ''}`;
+    const endpoint = `/tools${params.toString() ? `?${params.toString()}` : ""}`;
     const response = await apiRequest<{ tools: NLWebTool[] }>(endpoint);
-    
+
     setTools(response.tools);
     return response.tools;
   }
@@ -192,9 +208,9 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    * Register a new tool
    */
   async function registerTool(tool: NLWebTool): Promise<void> {
-    await apiRequest('/tools', {
-      method: 'POST',
-      body: JSON.stringify(tool)
+    await apiRequest("/tools", {
+      method: "POST",
+      body: JSON.stringify(tool),
     });
 
     // Refresh tools list
@@ -206,7 +222,7 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    */
   async function unregisterTool(toolName: string): Promise<void> {
     await apiRequest(`/tools/${encodeURIComponent(toolName)}`, {
-      method: 'DELETE'
+      method: "DELETE",
     });
 
     // Refresh tools list
@@ -216,10 +232,12 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
   /**
    * Update service configuration
    */
-  async function updateConfiguration(config: Partial<NLWebConfiguration>): Promise<void> {
-    await apiRequest('/configuration', {
-      method: 'PUT',
-      body: JSON.stringify(config)
+  async function updateConfiguration(
+    config: Partial<NLWebConfiguration>,
+  ): Promise<void> {
+    await apiRequest("/configuration", {
+      method: "PUT",
+      body: JSON.stringify(config),
     });
 
     // Refresh configuration
@@ -230,12 +248,12 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    * Enable emergency rollback
    */
   async function enableRollback(reason?: string): Promise<void> {
-    await apiRequest('/rollback', {
-      method: 'POST',
+    await apiRequest("/rollback", {
+      method: "POST",
       body: JSON.stringify({
         enable: true,
-        reason: reason || 'Manual rollback'
-      })
+        reason: reason || "Manual rollback",
+      }),
     });
   }
 
@@ -243,12 +261,12 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    * Disable emergency rollback
    */
   async function disableRollback(): Promise<void> {
-    await apiRequest('/rollback', {
-      method: 'POST',
+    await apiRequest("/rollback", {
+      method: "POST",
       body: JSON.stringify({
         enable: false,
-        reason: 'Manual disable'
-      })
+        reason: "Manual disable",
+      }),
     });
   }
 
@@ -257,7 +275,7 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
    */
   function isHealthy(): boolean {
     const healthStatus = health();
-    return healthStatus?.status === 'healthy';
+    return healthStatus?.status === "healthy";
   }
 
   /**
@@ -299,6 +317,6 @@ export function useNLWeb(options: UseNLWebOptions = {}): UseNLWebReturn {
     // Utilities
     isHealthy,
     isAvailable,
-    getPerformanceStats
+    getPerformanceStats,
   };
 }

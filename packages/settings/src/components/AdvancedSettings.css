@@ -234,7 +234,8 @@
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -247,19 +248,19 @@
   .settings-section {
     padding: 1rem;
   }
-  
+
   .config-summary {
     grid-template-columns: 1fr;
   }
-  
+
   .status-details {
     grid-template-columns: 1fr;
   }
-  
+
   .settings-actions {
     flex-direction: column;
   }
-  
+
   .settings-panel__modal-actions {
     flex-direction: column;
   }
@@ -271,22 +272,22 @@
     background: var(--color-surface-dark);
     border-color: var(--color-border-dark);
   }
-  
+
   .setting-group {
     background: var(--color-surface-elevated-dark);
     border-color: var(--color-border-subtle-dark);
   }
-  
+
   .config-summary {
     background: var(--color-surface-elevated-dark);
     border-color: var(--color-border-subtle-dark);
   }
-  
+
   .config-item {
     background: var(--color-surface-dark);
     border-color: var(--color-border-subtle-dark);
   }
-  
+
   .connection-status {
     background: var(--color-surface-elevated-dark);
     border-color: var(--color-border-subtle-dark);
@@ -302,7 +303,7 @@
   .connection-status {
     border-width: 2px;
   }
-  
+
   .status-dot {
     width: 10px;
     height: 10px;

@@ -22,16 +22,16 @@ project.
 ### 1. Basic Usage
 
 ```typescript
-import { runI18nTests, generateI18nReport } from 'reynard-testing';
+import { runI18nTests, generateI18nReport } from "reynard-testing";
 
 const config = {
-  packages: ['packages/ui', 'packages/i18n'],
-  locales: ['en', 'es', 'fr', 'de', 'ru', 'ar'],
+  packages: ["packages/ui", "packages/i18n"],
+  locales: ["en", "es", "fr", "de", "ru", "ar"],
   checkHardcodedStrings: true,
   validateCompleteness: true,
   testPluralization: true,
   testRTL: true,
-  ignorePatterns: ['^[a-z]+[A-Z][a-z]*$', '^[A-Z_]+$']
+  ignorePatterns: ["^[a-z]+[A-Z][a-z]*$", "^[A-Z_]+$"],
 };
 
 const result = await runI18nTests(config);
@@ -45,12 +45,12 @@ Add to your `.eslintrc.js`:
 
 ```javascript
 module.exports = {
-  plugins: ['@reynard/i18n'],
-  extends: ['plugin:@reynard/i18n/recommended'],
+  plugins: ["@reynard/i18n"],
+  extends: ["plugin:@reynard/i18n/recommended"],
   rules: {
-    '@reynard/i18n/no-hardcoded-strings': 'error',
-    '@reynard/i18n/no-untranslated-keys': 'warn'
-  }
+    "@reynard/i18n/no-hardcoded-strings": "error",
+    "@reynard/i18n/no-untranslated-keys": "warn",
+  },
 };
 ```
 
@@ -87,9 +87,11 @@ Detects hardcoded strings in source code.
 **Example:**
 
 ```typescript
-const results = detectHardcodedStrings('Component.tsx', sourceCode, config);
-results.forEach(result => {
-  console.log(`${result.file}:${result.line}:${result.column} - "${result.text}"`);
+const results = detectHardcodedStrings("Component.tsx", sourceCode, config);
+results.forEach((result) => {
+  console.log(
+    `${result.file}:${result.line}:${result.column} - "${result.text}"`,
+  );
   console.log(`Suggestion: ${result.suggestion}`);
 });
 ```
@@ -108,7 +110,7 @@ Validates translation completeness across locales.
 
 ```typescript
 const results = await validateTranslations(config);
-results.forEach(result => {
+results.forEach((result) => {
   console.log(`Locale: ${result.locale}`);
   console.log(`Missing keys: ${result.missingKeys.length}`);
   console.log(`Unused keys: ${result.unusedKeys.length}`);
@@ -147,7 +149,7 @@ Generates a human-readable report from test results.
 
 ```typescript
 const report = generateI18nReport(result);
-fs.writeFileSync('i18n-report.md', report);
+fs.writeFileSync("i18n-report.md", report);
 ```
 
 ## Configuration
@@ -156,13 +158,13 @@ fs.writeFileSync('i18n-report.md', report);
 
 ```typescript
 interface I18nTestConfig {
-  packages: string[];           // Packages to test
-  locales: string[];           // Locales to validate
-  checkHardcodedStrings: boolean;  // Enable hardcoded string detection
-  validateCompleteness: boolean;   // Enable translation validation
-  testPluralization: boolean;      // Enable pluralization testing
-  testRTL: boolean;               // Enable RTL support testing
-  ignorePatterns: string[];       // Regex patterns to ignore
+  packages: string[]; // Packages to test
+  locales: string[]; // Locales to validate
+  checkHardcodedStrings: boolean; // Enable hardcoded string detection
+  validateCompleteness: boolean; // Enable translation validation
+  testPluralization: boolean; // Enable pluralization testing
+  testRTL: boolean; // Enable RTL support testing
+  ignorePatterns: string[]; // Regex patterns to ignore
 }
 ```
 
@@ -170,19 +172,19 @@ interface I18nTestConfig {
 
 ```typescript
 const DEFAULT_CONFIG: I18nTestConfig = {
-  packages: ['packages/*'],
-  locales: ['en', 'es', 'fr', 'de', 'ru', 'ar'],
+  packages: ["packages/*"],
+  locales: ["en", "es", "fr", "de", "ru", "ar"],
   checkHardcodedStrings: true,
   validateCompleteness: true,
   testPluralization: true,
   testRTL: true,
   ignorePatterns: [
-    '^[a-z]+[A-Z][a-z]*$',  // camelCase
-    '^[A-Z_]+$',            // CONSTANTS
-    '^[0-9]+$',             // numbers
-    '^[a-z]{1,2}$',         // short strings
-    '^(id|class|type|name|value|key|index|count|size|width|height|color|url|path|file|dir|src|alt|title|role|aria|data|test|spec|mock|stub|fixture)$' // technical terms
-  ]
+    "^[a-z]+[A-Z][a-z]*$", // camelCase
+    "^[A-Z_]+$", // CONSTANTS
+    "^[0-9]+$", // numbers
+    "^[a-z]{1,2}$", // short strings
+    "^(id|class|type|name|value|key|index|count|size|width|height|color|url|path|file|dir|src|alt|title|role|aria|data|test|spec|mock|stub|fixture)$", // technical terms
+  ],
 };
 ```
 
@@ -191,13 +193,17 @@ const DEFAULT_CONFIG: I18nTestConfig = {
 ### 1. Component Testing
 
 ```typescript
-import { detectHardcodedStrings } from 'reynard-testing';
+import { detectHardcodedStrings } from "reynard-testing";
 
-describe('Component i18n', () => {
-  it('should not have hardcoded strings', () => {
-    const componentCode = fs.readFileSync('Component.tsx', 'utf8');
-    const results = detectHardcodedStrings('Component.tsx', componentCode, config);
-    
+describe("Component i18n", () => {
+  it("should not have hardcoded strings", () => {
+    const componentCode = fs.readFileSync("Component.tsx", "utf8");
+    const results = detectHardcodedStrings(
+      "Component.tsx",
+      componentCode,
+      config,
+    );
+
     expect(results).toHaveLength(0);
   });
 });
@@ -206,13 +212,13 @@ describe('Component i18n', () => {
 ### 2. Translation Validation
 
 ```typescript
-import { validateTranslations } from 'reynard-testing';
+import { validateTranslations } from "reynard-testing";
 
-describe('Translation completeness', () => {
-  it('should have complete translations', async () => {
+describe("Translation completeness", () => {
+  it("should have complete translations", async () => {
     const results = await validateTranslations(config);
-    
-    results.forEach(result => {
+
+    results.forEach((result) => {
       expect(result.missingKeys).toHaveLength(0);
       expect(result.incompleteTranslations).toHaveLength(0);
     });
@@ -223,14 +229,16 @@ describe('Translation completeness', () => {
 ### 3. Performance Testing
 
 ```typescript
-import { runI18nTests } from 'reynard-testing';
+import { runI18nTests } from "reynard-testing";
 
-describe('i18n performance', () => {
-  it('should load translations quickly', async () => {
+describe("i18n performance", () => {
+  it("should load translations quickly", async () => {
     const result = await runI18nTests(config);
-    
+
     expect(result.performanceMetrics.loadTime).toBeLessThan(1000);
-    expect(result.performanceMetrics.memoryUsage).toBeLessThan(50 * 1024 * 1024); // 50MB
+    expect(result.performanceMetrics.memoryUsage).toBeLessThan(
+      50 * 1024 * 1024,
+    ); // 50MB
   });
 });
 ```
@@ -248,18 +256,18 @@ jobs:
   i18n-checks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Run i18n linting
-      run: npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
-    - name: Run i18n tests
-      run: npx vitest run packages/i18n --coverage
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run i18n linting
+        run: npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
+      - name: Run i18n tests
+        run: npx vitest run packages/i18n --coverage
 ```
 
 ### GitLab CI
@@ -335,10 +343,10 @@ const packageConfig = {
   ...DEFAULT_CONFIG,
   ignorePatterns: [
     ...DEFAULT_CONFIG.ignorePatterns,
-    '^test-',           // test-specific terms
-    '^mock-',           // mock-specific terms
-    '^fixture-',        // fixture-specific terms
-  ]
+    "^test-", // test-specific terms
+    "^mock-", // mock-specific terms
+    "^fixture-", // fixture-specific terms
+  ],
 };
 ```
 

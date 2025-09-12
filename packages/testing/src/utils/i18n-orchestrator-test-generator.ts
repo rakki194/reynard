@@ -2,27 +2,27 @@
  * Test File Generator for i18n Package Testing
  */
 
-import { existsSync } from 'fs';
-import { join } from 'path';
-import type { PackageI18nConfig } from '../config/i18n-testing-config';
+import { existsSync } from "fs";
+import { join } from "path";
+import type { PackageI18nConfig } from "../config/i18n-testing-config";
 
 /**
  * Create package-specific i18n test files
  */
 export async function createPackageI18nTestFiles(): Promise<void> {
-  const { getEnabledPackages } = await import('../config/i18n-testing-config');
+  const { getEnabledPackages } = await import("../config/i18n-testing-config");
   const enabledPackages = getEnabledPackages();
-  
+
   for (const pkg of enabledPackages) {
-    const testFilePath = join(pkg.path, 'src/__tests__/i18n.test.ts');
-    const testDir = join(pkg.path, 'src/__tests__');
-    
+    const testFilePath = join(pkg.path, "src/__tests__/i18n.test.ts");
+    const testDir = join(pkg.path, "src/__tests__");
+
     // Create test directory if it doesn't exist
     if (!existsSync(testDir)) {
       console.log(`📁 Creating test directory: ${testDir}`);
       // Note: In a real implementation, you'd use fs.mkdirSync with recursive: true
     }
-    
+
     // Create test file if it doesn't exist
     if (!existsSync(testFilePath)) {
       const _testContent = generatePackageTestFile(pkg);

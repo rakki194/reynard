@@ -1,14 +1,20 @@
 /**
  * RAG 3D Visualization Modal Component
- * 
+ *
  * Advanced 3D embedding visualization with dimensionality reduction
  * and interactive point cloud exploration.
  */
 
-import { Component, createSignal, createEffect, Show, createMemo } from 'solid-js';
-import { Modal, Button, Select, Slider } from 'reynard-components';
-import { getIcon as getIconFromRegistry } from 'reynard-fluent-icons';
-import type { ThreeDModalState, RAGQueryHit, EmbeddingPoint } from '../types';
+import {
+  Component,
+  createSignal,
+  createEffect,
+  Show,
+  createMemo,
+} from "solid-js";
+import { Modal, Button, Select, Slider } from "reynard-components";
+import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
+import type { ThreeDModalState, RAGQueryHit, EmbeddingPoint } from "../types";
 
 // Helper function to get icon as JSX element
 const getIcon = (name: string) => {
@@ -27,9 +33,13 @@ export interface RAG3DVisualizationModalProps {
   queryEmbedding?: number[];
 }
 
-export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = (props) => {
+export const RAG3DVisualizationModal: Component<
+  RAG3DVisualizationModalProps
+> = (props) => {
   // State for 3D visualization
-  const [reductionMethod, setReductionMethod] = createSignal<'tsne' | 'umap' | 'pca'>('tsne');
+  const [reductionMethod, setReductionMethod] = createSignal<
+    "tsne" | "umap" | "pca"
+  >("tsne");
   const [transformedData, setTransformedData] = createSignal<number[][]>([]);
   const [originalIndices, setOriginalIndices] = createSignal<number[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
@@ -42,22 +52,22 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
     learning_rate: 200,
     early_exaggeration: 12,
     max_iter: 1000,
-    metric: 'euclidean',
-    method: 'barnes_hut',
+    metric: "euclidean",
+    method: "barnes_hut",
   });
   const [umapParams, setUmapParams] = createSignal({
     n_neighbors: 15,
     min_dist: 0.1,
     learning_rate: 1.0,
     spread: 1.0,
-    metric: 'euclidean',
+    metric: "euclidean",
     local_connectivity: 1,
   });
   const [pcaParams, setPcaParams] = createSignal({
     n_components: 3,
     variance_threshold: 0.95,
     whiten: false,
-    svd_solver: 'auto',
+    svd_solver: "auto",
   });
 
   // Visualization settings
@@ -76,15 +86,19 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
     return transformedData().map((point, index) => {
       const originalIndex = originalIndices()[index];
       const result = props.searchResults[originalIndex];
-      
+
       // Color based on similarity score
       const score = result?.score || 0;
       const colorIntensity = Math.max(0.1, score);
-      
+
       return {
         id: `point-${index}`,
         position: [point[0], point[1], point[2]] as [number, number, number],
-        color: [colorIntensity, 1 - colorIntensity, 0.5] as [number, number, number],
+        color: [colorIntensity, 1 - colorIntensity, 0.5] as [
+          number,
+          number,
+          number,
+        ],
         size: pointSize(),
         metadata: {
           score,
@@ -106,11 +120,11 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
     try {
       // Extract embeddings from search results
       const embeddings = props.searchResults
-        .map(result => result.embedding_vector)
+        .map((result) => result.embedding_vector)
         .filter((embedding): embedding is number[] => embedding !== undefined);
 
       if (embeddings.length === 0) {
-        throw new Error('No embedding vectors found in search results');
+        throw new Error("No embedding vectors found in search results");
       }
 
       // Add query embedding if available
@@ -120,12 +134,19 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
 
       // Perform dimensionality reduction
       const method = reductionMethod();
-      const reducedData = await performDimensionalityReduction(embeddings, method);
-      
+      const reducedData = await performDimensionalityReduction(
+        embeddings,
+        method,
+      );
+
       setTransformedData(reducedData);
-      setOriginalIndices(Array.from({ length: reducedData.length }, (_, i) => i));
+      setOriginalIndices(
+        Array.from({ length: reducedData.length }, (_, i) => i),
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load embedding data');
+      setError(
+        err instanceof Error ? err.message : "Failed to load embedding data",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +155,7 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
   // Mock dimensionality reduction function (replace with actual implementation)
   const performDimensionalityReduction = async (
     embeddings: number[][],
-    method: 'tsne' | 'umap' | 'pca'
+    method: "tsne" | "umap" | "pca",
   ): Promise<number[][]> => {
     // This is a mock implementation - replace with actual dimensionality reduction
     return embeddings.map((_, index) => [
@@ -166,11 +187,13 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
             <label>Reduction Method</label>
             <Select
               value={reductionMethod()}
-              onChange={(value) => setReductionMethod(value as 'tsne' | 'umap' | 'pca')}
+              onChange={(value) =>
+                setReductionMethod(value as "tsne" | "umap" | "pca")
+              }
               options={[
-                { value: 'tsne', label: 't-SNE' },
-                { value: 'umap', label: 'UMAP' },
-                { value: 'pca', label: 'PCA' },
+                { value: "tsne", label: "t-SNE" },
+                { value: "umap", label: "UMAP" },
+                { value: "pca", label: "PCA" },
               ]}
             />
           </div>
@@ -233,7 +256,7 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
           <Button
             variant="secondary"
             onClick={() => setShowParameterControls(!showParameterControls())}
-            icon={getIcon('settings')}
+            icon={getIcon("settings")}
           >
             Advanced Parameters
           </Button>
@@ -242,23 +265,25 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
             variant="primary"
             onClick={loadEmbeddingData}
             disabled={isLoading()}
-            icon={getIcon('refresh')}
+            icon={getIcon("refresh")}
           >
-            {isLoading() ? 'Loading...' : 'Refresh'}
+            {isLoading() ? "Loading..." : "Refresh"}
           </Button>
         </div>
 
         {/* Parameter Controls */}
         <Show when={showParameterControls()}>
           <div class="rag-3d-parameters">
-            <Show when={reductionMethod() === 'tsne'}>
+            <Show when={reductionMethod() === "tsne"}>
               <div class="parameter-group">
                 <h4>t-SNE Parameters</h4>
                 <div class="parameter-row">
                   <label>Perplexity</label>
                   <Slider
                     value={tsneParams().perplexity}
-                    onChange={(value) => setTsneParams(prev => ({ ...prev, perplexity: value }))}
+                    onChange={(value) =>
+                      setTsneParams((prev) => ({ ...prev, perplexity: value }))
+                    }
                     min={5}
                     max={50}
                     step={1}
@@ -268,7 +293,12 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
                   <label>Learning Rate</label>
                   <Slider
                     value={tsneParams().learning_rate}
-                    onChange={(value) => setTsneParams(prev => ({ ...prev, learning_rate: value }))}
+                    onChange={(value) =>
+                      setTsneParams((prev) => ({
+                        ...prev,
+                        learning_rate: value,
+                      }))
+                    }
                     min={10}
                     max={1000}
                     step={10}
@@ -277,14 +307,16 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
               </div>
             </Show>
 
-            <Show when={reductionMethod() === 'umap'}>
+            <Show when={reductionMethod() === "umap"}>
               <div class="parameter-group">
                 <h4>UMAP Parameters</h4>
                 <div class="parameter-row">
                   <label>N Neighbors</label>
                   <Slider
                     value={umapParams().n_neighbors}
-                    onChange={(value) => setUmapParams(prev => ({ ...prev, n_neighbors: value }))}
+                    onChange={(value) =>
+                      setUmapParams((prev) => ({ ...prev, n_neighbors: value }))
+                    }
                     min={2}
                     max={100}
                     step={1}
@@ -294,7 +326,9 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
                   <label>Min Distance</label>
                   <Slider
                     value={umapParams().min_dist}
-                    onChange={(value) => setUmapParams(prev => ({ ...prev, min_dist: value }))}
+                    onChange={(value) =>
+                      setUmapParams((prev) => ({ ...prev, min_dist: value }))
+                    }
                     min={0.01}
                     max={1.0}
                     step={0.01}
@@ -303,14 +337,16 @@ export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = 
               </div>
             </Show>
 
-            <Show when={reductionMethod() === 'pca'}>
+            <Show when={reductionMethod() === "pca"}>
               <div class="parameter-group">
                 <h4>PCA Parameters</h4>
                 <div class="parameter-row">
                   <label>Components</label>
                   <Slider
                     value={pcaParams().n_components}
-                    onChange={(value) => setPcaParams(prev => ({ ...prev, n_components: value }))}
+                    onChange={(value) =>
+                      setPcaParams((prev) => ({ ...prev, n_components: value }))
+                    }
                     min={2}
                     max={10}
                     step={1}

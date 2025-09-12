@@ -1,6 +1,6 @@
 /**
  * Panel Keyboard Composable
- * 
+ *
  * Extracted keyboard handling logic to maintain 140-line axiom.
  */
 

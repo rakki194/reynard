@@ -96,10 +96,10 @@ export function createMoveOperations(
     if (!currentState.isMoving || !currentState.originalBox) return null;
 
     const result = updateMove(currentState.currentX, currentState.currentY);
-    
+
     // Reset the state after ending the move
     state.reset();
-    
+
     return result;
   };
 

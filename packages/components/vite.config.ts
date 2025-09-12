@@ -16,7 +16,15 @@ export default defineConfig({
       formats: ["es", "cjs", "umd"],
     },
     rollupOptions: {
-      external: ["solid-js", "solid-js/web", "reynard-core", "reynard-colors", "reynard-fluent-icons", "reynard-themes", "three"],
+      external: [
+        "solid-js",
+        "solid-js/web",
+        "reynard-core",
+        "reynard-colors",
+        "reynard-fluent-icons",
+        "reynard-themes",
+        "three",
+      ],
       output: {
         globals: {
           "solid-js": "solid",
@@ -25,7 +33,7 @@ export default defineConfig({
           "reynard-colors": "ReynardColors",
           "reynard-fluent-icons": "ReynardFluentIcons",
           "reynard-themes": "ReynardThemes",
-          "three": "THREE",
+          three: "THREE",
         },
         assetFileNames: (assetInfo) => {
           const assetName = (assetInfo as { fileName?: string }).fileName;

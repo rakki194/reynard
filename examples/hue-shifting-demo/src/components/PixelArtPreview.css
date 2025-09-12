@@ -32,7 +32,11 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    all 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .sprite-button:hover {
@@ -64,7 +68,9 @@
   border-radius: 0.5rem;
   padding: 1rem;
   border: 2px solid var(--color-border, oklch(30% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pixel {
@@ -168,7 +174,9 @@
   border-radius: 0.5rem;
   padding: 0.75rem;
   border: 2px solid var(--color-border, oklch(30% 0.02 0));
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 @media (max-width: 768px) {
@@ -176,27 +184,27 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-  
+
   .sprite-container {
     width: 160px;
     height: 160px;
     margin: 0 auto;
   }
-  
+
   .comparison-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .comparison-sprite {
     width: 140px;
     height: 140px;
   }
-  
+
   .sprite-buttons {
     flex-wrap: wrap;
   }
-  
+
   .sprite-button {
     padding: 0.6rem 1.2rem;
     font-size: 0.85rem;

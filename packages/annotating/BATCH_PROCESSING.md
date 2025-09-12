@@ -1,6 +1,6 @@
 # 🦊> Batch Processing UI - Complete Implementation
 
-*Advanced batch processing interface for caption generation with real-time progress tracking, comprehensive error handling, and export functionality.*
+_Advanced batch processing interface for caption generation with real-time progress tracking, comprehensive error handling, and export functionality._
 
 ## 🎯 Overview
 
@@ -289,4 +289,4 @@ This implementation completes Phase 2 of the Reynard Modular Implementation Plan
 
 ---
 
-*Built with the cunning of a fox, the thoroughness of an otter, and the precision of a wolf.* 🦊🦦🐺
+_Built with the cunning of a fox, the thoroughness of an otter, and the precision of a wolf._ 🦊🦦🐺

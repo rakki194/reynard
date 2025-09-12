@@ -228,14 +228,17 @@ describe("reynard-testing Integration Tests", () => {
       setupBrowserMocks();
 
       mockLocalStorage.getItem.mockReturnValue("test-value");
-      mockLocalStorage.setItem.mockImplementation(() => { });
+      mockLocalStorage.setItem.mockImplementation(() => {});
 
       const value = localStorage.getItem("test-key");
       localStorage.setItem("test-key", "test-value");
 
       expect(value).toBe("test-value");
       expect(mockLocalStorage.getItem).toHaveBeenCalledWith("test-key");
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith("test-key", "test-value");
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
+        "test-key",
+        "test-value",
+      );
 
       resetBrowserMocks();
     });

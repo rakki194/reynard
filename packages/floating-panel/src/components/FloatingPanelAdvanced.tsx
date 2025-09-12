@@ -12,8 +12,8 @@ import "./FloatingPanelAdvanced.css";
 
 export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
   const { t } = useI18n();
-  console.log('🦦> FloatingPanelAdvanced rendering for panel:', props.id);
-  
+  console.log("🦦> FloatingPanelAdvanced rendering for panel:", props.id);
+
   // Default configuration
   const config: Required<PanelConfig> = {
     draggable: true,
@@ -29,37 +29,45 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
     hoverDelay: 500,
     persistent: true,
     theme: "default",
-    ...props.config
+    ...props.config,
   };
 
   // Set up draggable/resizable functionality
   const panel = useDraggableResizable({
     initialState: {
-      x: typeof props.position.left === 'number' ? props.position.left : 20,
-      y: typeof props.position.top === 'number' ? props.position.top : 20,
-      width: typeof props.size?.width === 'number' ? props.size.width : 300,
-      height: typeof props.size?.height === 'number' ? props.size.height : 200,
-      minimized: false
+      x: typeof props.position.left === "number" ? props.position.left : 20,
+      y: typeof props.position.top === "number" ? props.position.top : 20,
+      width: typeof props.size?.width === "number" ? props.size.width : 300,
+      height: typeof props.size?.height === "number" ? props.size.height : 200,
+      minimized: false,
     },
-    minWidth: typeof props.size?.minWidth === 'number' ? props.size.minWidth : 180,
-    minHeight: typeof props.size?.minHeight === 'number' ? props.size.minHeight : 120,
-    maxWidth: typeof props.size?.maxWidth === 'number' ? props.size.maxWidth : window.innerWidth * 0.8,
-    maxHeight: typeof props.size?.maxHeight === 'number' ? props.size.maxHeight : window.innerHeight * 0.8,
+    minWidth:
+      typeof props.size?.minWidth === "number" ? props.size.minWidth : 180,
+    minHeight:
+      typeof props.size?.minHeight === "number" ? props.size.minHeight : 120,
+    maxWidth:
+      typeof props.size?.maxWidth === "number"
+        ? props.size.maxWidth
+        : window.innerWidth * 0.8,
+    maxHeight:
+      typeof props.size?.maxHeight === "number"
+        ? props.size.maxHeight
+        : window.innerHeight * 0.8,
     storageKey: `floating-panel-${props.id}`,
     onStateChange: (state) => {
       // Notify parent of position changes
       props.onDrag?.({
         top: state.y,
         left: state.x,
-        zIndex: props.position.zIndex
+        zIndex: props.position.zIndex,
       });
-      
+
       // Notify parent of size changes
       props.onResize?.({
         width: state.width,
-        height: state.height
+        height: state.height,
       });
-    }
+    },
   });
 
   // Handle panel visibility - only call onShow/onHide for actual show/hide, not minimize
@@ -83,15 +91,15 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
     panel.resetPosition();
   };
 
-  const panelClasses = `floating-panel-advanced theme-${config.theme} ${panel.isDragging() ? 'dragging' : ''} ${panel.isResizing() ? 'resizing' : ''} ${panel.isMinimized() ? 'minimized' : ''}`;
+  const panelClasses = `floating-panel-advanced theme-${config.theme} ${panel.isDragging() ? "dragging" : ""} ${panel.isResizing() ? "resizing" : ""} ${panel.isMinimized() ? "minimized" : ""}`;
   const panelStyle = { ...panel.style(), ...props.style };
-  
-  console.log('🦦> Panel rendering details:', {
+
+  console.log("🦦> Panel rendering details:", {
     id: props.id,
     classes: panelClasses,
     style: panelStyle,
     isMinimized: panel.isMinimized(),
-    panelState: panel.panelState()
+    panelState: panel.panelState(),
   });
 
   return (
@@ -107,15 +115,15 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
         <div class="panel-header">
           <div
             class="panel-drag-handle"
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               e.stopPropagation();
-              panel.handleMouseDown(e, 'drag');
+              panel.handleMouseDown(e, "drag");
             }}
-            onPointerDown={e => e.stopPropagation()}
-            title={t('floating-panel.dragToMovePanel')}
+            onPointerDown={(e) => e.stopPropagation()}
+            title={t("floating-panel.dragToMovePanel")}
           >
-            <span 
-              class="drag-icon" 
+            <span
+              class="drag-icon"
               innerHTML={getIcon("menu")?.outerHTML || ""}
             />
             <span class="panel-title">{`Panel ${props.id}`}</span>
@@ -124,55 +132,61 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
             <button
               class="panel-control-btn"
               onClick={() => {
-                console.log('🦦> Minimize/expand button clicked for panel:', props.id, 'currently minimized:', panel.isMinimized());
+                console.log(
+                  "🦦> Minimize/expand button clicked for panel:",
+                  props.id,
+                  "currently minimized:",
+                  panel.isMinimized(),
+                );
                 panel.toggleMinimized();
-                console.log('🦦> Panel state after toggle:', panel.panelState());
+                console.log(
+                  "🦦> Panel state after toggle:",
+                  panel.panelState(),
+                );
               }}
-              title={panel.isMinimized() ? 'Expand panel' : 'Minimize panel'}
+              title={panel.isMinimized() ? "Expand panel" : "Minimize panel"}
             >
-              <span 
-                innerHTML={(panel.isMinimized() ? getIcon("expand")?.outerHTML : getIcon("collapse")?.outerHTML) || ""}
+              <span
+                innerHTML={
+                  (panel.isMinimized()
+                    ? getIcon("expand")?.outerHTML
+                    : getIcon("collapse")?.outerHTML) || ""
+                }
               />
             </button>
             <button
               class="panel-control-btn"
               onClick={handleReset}
-              title={t('floating-panel.resetPanelPosition')}
+              title={t("floating-panel.resetPanelPosition")}
             >
-                <span 
-                  innerHTML={getIcon("refresh")?.outerHTML || ""}
-                />
+              <span innerHTML={getIcon("refresh")?.outerHTML || ""} />
             </button>
             {config.closable && (
               <button
                 class="panel-control-btn"
                 onClick={() => props.onHide?.()}
-                title={t('floating-panel.closePanel')}
+                title={t("floating-panel.closePanel")}
               >
-                <span 
-                  innerHTML={getIcon("close")?.outerHTML || ""}
-                />
+                <span innerHTML={getIcon("close")?.outerHTML || ""} />
               </button>
             )}
           </div>
         </div>
-        
+
         {!panel.isMinimized() && (
-          <div class="floating-panel-body">
-            {props.children}
-          </div>
+          <div class="floating-panel-body">{props.children}</div>
         )}
       </div>
-      
+
       {config.resizable && (
-        <div 
+        <div
           class="floating-panel-resize-handle"
-          onMouseDown={e => {
-            console.log('🦦> Resize handle clicked for panel:', props.id);
+          onMouseDown={(e) => {
+            console.log("🦦> Resize handle clicked for panel:", props.id);
             e.stopPropagation();
-            panel.handleMouseDown(e, 'resize');
+            panel.handleMouseDown(e, "resize");
           }}
-          title={t('floating-panel.dragToResizePanel')}
+          title={t("floating-panel.dragToResizePanel")}
         />
       )}
     </div>

@@ -65,7 +65,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error State */
@@ -219,11 +221,11 @@
     padding: 1rem;
     gap: 1rem;
   }
-  
+
   .analysis-results {
     gap: 1.5rem;
   }
-  
+
   .file-info-section,
   .metadata-section,
   .statistics-section,
@@ -231,16 +233,16 @@
   .quality-section {
     padding: 1rem;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
-  
+
   .info-item {
     padding: 0.5rem;
   }
-  
+
   .section-title {
     font-size: 1rem;
   }
@@ -250,15 +252,15 @@
   .dashboard-title {
     font-size: 1.25rem;
   }
-  
+
   .dashboard-description {
     font-size: 0.75rem;
   }
-  
+
   .info-label {
     font-size: 0.625rem;
   }
-  
+
   .info-value {
     font-size: 0.75rem;
   }
@@ -270,7 +272,7 @@
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .file-info-section,
   .metadata-section,
   .statistics-section,
@@ -279,16 +281,16 @@
     background: var(--color-surface-dark-hover, #374151);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .info-item {
     background: var(--color-surface-dark, #1f2937);
     border-color: var(--color-border-dark, #374151);
   }
-  
+
   .info-item:hover {
     border-color: var(--color-primary-dark, #60a5fa);
   }
-  
+
   .section-title {
     border-bottom-color: var(--color-border-dark, #374151);
   }
@@ -305,7 +307,7 @@
   .info-item {
     border-width: 2px;
   }
-  
+
   .section-title {
     border-bottom-width: 3px;
   }
@@ -316,7 +318,7 @@
   .loading-spinner {
     animation: none;
   }
-  
+
   .info-item {
     transition: none;
   }

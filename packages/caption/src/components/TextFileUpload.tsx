@@ -1,6 +1,6 @@
 /**
  * Text File Upload Component for Reynard Caption System
- * 
+ *
  * Handles file upload UI and interactions.
  */
 

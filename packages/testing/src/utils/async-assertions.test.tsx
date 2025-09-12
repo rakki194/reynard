@@ -39,7 +39,7 @@ describe("Async and Value Assertions", () => {
       it("should throw when promise rejects", async () => {
         const promise = Promise.reject(new Error("Rejected"));
         // Add catch to prevent unhandled rejection
-        promise.catch(() => { });
+        promise.catch(() => {});
 
         await expect(expectPromiseToResolve(promise)).rejects.toThrow();
       });
@@ -49,7 +49,7 @@ describe("Async and Value Assertions", () => {
       it("should reject successfully", async () => {
         const promise = Promise.reject(new Error("Expected error"));
         // Add catch to prevent unhandled rejection
-        promise.catch(() => { });
+        promise.catch(() => {});
 
         await expectPromiseToReject(promise);
       });
@@ -57,7 +57,7 @@ describe("Async and Value Assertions", () => {
       it("should reject with expected error", async () => {
         const promise = Promise.reject(new Error("Expected error"));
         // Add catch to prevent unhandled rejection
-        promise.catch(() => { });
+        promise.catch(() => {});
 
         await expectPromiseToReject(promise, "Expected error");
       });

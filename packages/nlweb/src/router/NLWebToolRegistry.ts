@@ -1,11 +1,14 @@
 /**
  * NLWeb Tool Registry
- * 
+ *
  * Manages the registration and discovery of tools for the NLWeb routing system.
  * Provides a more flexible alternative to XML-based tool configuration.
  */
 
-import { NLWebTool, NLWebToolRegistry as INLWebToolRegistry } from '../types/index.js';
+import {
+  NLWebTool,
+  NLWebToolRegistry as INLWebToolRegistry,
+} from "../types/index.js";
 
 export class NLWebToolRegistry implements INLWebToolRegistry {
   private tools = new Map<string, NLWebTool>();
@@ -92,7 +95,7 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
     }
 
     return Array.from(toolNames)
-      .map(name => this.tools.get(name))
+      .map((name) => this.tools.get(name))
       .filter((tool): tool is NLWebTool => tool !== undefined);
   }
 
@@ -115,7 +118,7 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
       }
 
       if (isFirstTag) {
-        tagSet.forEach(name => matchingToolNames.add(name));
+        tagSet.forEach((name) => matchingToolNames.add(name));
         isFirstTag = false;
       } else {
         // Intersection with existing matches
@@ -128,7 +131,7 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
     }
 
     return Array.from(matchingToolNames)
-      .map(name => this.tools.get(name))
+      .map((name) => this.tools.get(name))
       .filter((tool): tool is NLWebTool => tool !== undefined);
   }
 
@@ -196,13 +199,19 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
       }
 
       // Check tag match
-      if (tool.tags.some(tag => tag.toLowerCase().includes(normalizedQuery))) {
+      if (
+        tool.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
+      ) {
         results.push(tool);
         continue;
       }
 
       // Check example match
-      if (tool.examples.some(example => example.toLowerCase().includes(normalizedQuery))) {
+      if (
+        tool.examples.some((example) =>
+          example.toLowerCase().includes(normalizedQuery),
+        )
+      ) {
         results.push(tool);
         continue;
       }
@@ -237,55 +246,58 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
    * Validate a tool before registration
    */
   private validateTool(tool: NLWebTool): void {
-    if (!tool.name || typeof tool.name !== 'string') {
-      throw new Error('Tool name is required and must be a string');
+    if (!tool.name || typeof tool.name !== "string") {
+      throw new Error("Tool name is required and must be a string");
     }
 
-    if (!tool.description || typeof tool.description !== 'string') {
-      throw new Error('Tool description is required and must be a string');
+    if (!tool.description || typeof tool.description !== "string") {
+      throw new Error("Tool description is required and must be a string");
     }
 
-    if (!tool.category || typeof tool.category !== 'string') {
-      throw new Error('Tool category is required and must be a string');
+    if (!tool.category || typeof tool.category !== "string") {
+      throw new Error("Tool category is required and must be a string");
     }
 
     if (!Array.isArray(tool.tags)) {
-      throw new Error('Tool tags must be an array');
+      throw new Error("Tool tags must be an array");
     }
 
-    if (!tool.path || typeof tool.path !== 'string') {
-      throw new Error('Tool path is required and must be a string');
+    if (!tool.path || typeof tool.path !== "string") {
+      throw new Error("Tool path is required and must be a string");
     }
 
-    if (!['GET', 'POST', 'PUT', 'DELETE'].includes(tool.method)) {
-      throw new Error('Tool method must be one of: GET, POST, PUT, DELETE');
+    if (!["GET", "POST", "PUT", "DELETE"].includes(tool.method)) {
+      throw new Error("Tool method must be one of: GET, POST, PUT, DELETE");
     }
 
     if (!Array.isArray(tool.parameters)) {
-      throw new Error('Tool parameters must be an array');
+      throw new Error("Tool parameters must be an array");
     }
 
     if (!Array.isArray(tool.examples)) {
-      throw new Error('Tool examples must be an array');
+      throw new Error("Tool examples must be an array");
     }
 
-    if (typeof tool.enabled !== 'boolean') {
-      throw new Error('Tool enabled must be a boolean');
+    if (typeof tool.enabled !== "boolean") {
+      throw new Error("Tool enabled must be a boolean");
     }
 
-    if (typeof tool.priority !== 'number' || tool.priority < 0) {
-      throw new Error('Tool priority must be a non-negative number');
+    if (typeof tool.priority !== "number" || tool.priority < 0) {
+      throw new Error("Tool priority must be a non-negative number");
     }
 
-    if (typeof tool.timeout !== 'number' || tool.timeout <= 0) {
-      throw new Error('Tool timeout must be a positive number');
+    if (typeof tool.timeout !== "number" || tool.timeout <= 0) {
+      throw new Error("Tool timeout must be a positive number");
     }
   }
 
   /**
    * Check if a tool is suitable for a specific context
    */
-  private isToolSuitableForContext(tool: NLWebTool, context: Record<string, any>): boolean {
+  private isToolSuitableForContext(
+    tool: NLWebTool,
+    context: Record<string, any>,
+  ): boolean {
     // Check if tool requires specific context that's not available
     for (const param of tool.parameters) {
       if (param.required && !context[param.name]) {
@@ -296,15 +308,15 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
     }
 
     // Check for context-specific tags
-    if (context.currentPath && tool.tags.includes('file-operations')) {
+    if (context.currentPath && tool.tags.includes("file-operations")) {
       return true;
     }
 
-    if (context.gitStatus && tool.tags.includes('git')) {
+    if (context.gitStatus && tool.tags.includes("git")) {
       return true;
     }
 
-    if (context.selectedItems && tool.tags.includes('batch-operations')) {
+    if (context.selectedItems && tool.tags.includes("batch-operations")) {
       return true;
     }
 

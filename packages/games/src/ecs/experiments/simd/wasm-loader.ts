@@ -38,7 +38,7 @@ export class WasmLoader {
   private wasmModule: WasmModule | null = null;
   private loadError: Error | null = null;
 
-  private constructor() { }
+  private constructor() {}
 
   static getInstance(): WasmLoader {
     if (!WasmLoader.instance) {

@@ -98,7 +98,7 @@ const palette = generateColorPalette(5, 240);
 import { convertToOKLCH } from "reynard-colors";
 
 // Convert hex to OKLCH
-const oklchColor = convertToOKLCH('#3b82f6');
+const oklchColor = convertToOKLCH("#3b82f6");
 // Returns: 'oklch(60% 0.25 240)'
 ```
 
@@ -145,9 +145,9 @@ const oklchColor = convertToOKLCH('#3b82f6');
 
 ```css
 /* Good - appropriate chroma for different use cases */
---color-primary: oklch(60% 0.25 240);    /* High chroma for primary actions */
---color-text: oklch(15% 0.01 0);         /* Low chroma for text */
---color-border: oklch(85% 0.02 0);       /* Very low chroma for borders */
+--color-primary: oklch(60% 0.25 240); /* High chroma for primary actions */
+--color-text: oklch(15% 0.01 0); /* Low chroma for text */
+--color-border: oklch(85% 0.02 0); /* Very low chroma for borders */
 ```
 
 ### 4. Leverage Color Mixing
@@ -187,12 +187,12 @@ color: var(--color-text, oklch(15% 0.01 0));
 
 If you're migrating from HSL colors, here are some common conversions:
 
-| HSL | OKLCH | Description |
-|-----|-------|-------------|
-| `hsl(240, 100%, 50%)` | `oklch(60% 0.25 240)` | Pure blue |
-| `hsl(0, 100%, 50%)` | `oklch(60% 0.25 20)` | Pure red |
-| `hsl(120, 100%, 50%)` | `oklch(60% 0.25 140)` | Pure green |
-| `hsl(0, 0%, 50%)` | `oklch(50% 0 0)` | Neutral gray |
+| HSL                   | OKLCH                 | Description  |
+| --------------------- | --------------------- | ------------ |
+| `hsl(240, 100%, 50%)` | `oklch(60% 0.25 240)` | Pure blue    |
+| `hsl(0, 100%, 50%)`   | `oklch(60% 0.25 20)`  | Pure red     |
+| `hsl(120, 100%, 50%)` | `oklch(60% 0.25 140)` | Pure green   |
+| `hsl(0, 0%, 50%)`     | `oklch(50% 0 0)`      | Neutral gray |
 
 ## Tools and Resources
 
@@ -222,16 +222,18 @@ import { createSignal } from "solid-js";
 
 function ColorGenerator() {
   const [hue, setHue] = createSignal(240);
-  
+
   return (
-    <div style={{ 
-      background: `oklch(60% 0.25 ${hue()})`,
-      color: 'oklch(95% 0.01 0)'
-    }}>
-      <input 
-        type="range" 
-        min="0" 
-        max="360" 
+    <div
+      style={{
+        background: `oklch(60% 0.25 ${hue()})`,
+        color: "oklch(95% 0.01 0)",
+      }}
+    >
+      <input
+        type="range"
+        min="0"
+        max="360"
         value={hue()}
         onInput={(e) => setHue(Number(e.target.value))}
       />

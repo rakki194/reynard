@@ -48,18 +48,19 @@ export const DEFAULT_BATCHING_STRATEGY: BatchingStrategy = {
  * Parallel iterator implementation.
  */
 export class ParallelIteratorImpl<T extends Component[]>
-  implements ParallelIterator<T> {
+  implements ParallelIterator<T>
+{
   private _strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
 
   constructor(
     private queryResult: QueryResult<T>,
     private _world: any,
     private _changeDetection?: ChangeDetection,
-  ) { }
+  ) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
     this.forEachInit(
-      () => { },
+      () => {},
       (_, entity, ...components) => {
         callback(entity, ...components);
       },

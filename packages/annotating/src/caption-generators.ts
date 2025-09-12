@@ -1,9 +1,9 @@
 /**
  * Caption generation utilities for different model types
- * 
+ *
  * These functions provide specialized caption generation for various use cases:
  * - Furry tags (JTP2 model)
- * - Detailed descriptions (JoyCaption model) 
+ * - Detailed descriptions (JoyCaption model)
  * - Anime tags (WDV3 model)
  * - General captions (Florence2 model)
  */

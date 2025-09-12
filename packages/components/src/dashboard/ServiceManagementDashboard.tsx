@@ -61,7 +61,9 @@ export interface AuthStatus {
   failedServices: number;
 }
 
-export const ServiceManagementDashboard: Component<ServiceManagementDashboardProps> = (props) => {
+export const ServiceManagementDashboard: Component<
+  ServiceManagementDashboardProps
+> = (props) => {
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [lastRefresh, setLastRefresh] = createSignal<Date | null>(null);
@@ -261,19 +263,27 @@ export const ServiceManagementDashboard: Component<ServiceManagementDashboardPro
               <h3>Service Status</h3>
               <div class="summary-stats">
                 <div class="stat-item">
-                  <span class="stat-value">{serviceSummary().totalServices}</span>
+                  <span class="stat-value">
+                    {serviceSummary().totalServices}
+                  </span>
                   <span class="stat-label">Total</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">{serviceSummary().runningServices}</span>
+                  <span class="stat-value success">
+                    {serviceSummary().runningServices}
+                  </span>
                   <span class="stat-label">Running</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">{serviceSummary().healthyServices}</span>
+                  <span class="stat-value warning">
+                    {serviceSummary().healthyServices}
+                  </span>
                   <span class="stat-label">Healthy</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">{serviceSummary().failedServices}</span>
+                  <span class="stat-value error">
+                    {serviceSummary().failedServices}
+                  </span>
                   <span class="stat-label">Failed</span>
                 </div>
               </div>
@@ -288,15 +298,21 @@ export const ServiceManagementDashboard: Component<ServiceManagementDashboardPro
                   <span class="stat-label">Total</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">{featureSummary().available}</span>
+                  <span class="stat-value success">
+                    {featureSummary().available}
+                  </span>
                   <span class="stat-label">Available</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">{featureSummary().degraded}</span>
+                  <span class="stat-value warning">
+                    {featureSummary().degraded}
+                  </span>
                   <span class="stat-label">Degraded</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">{featureSummary().unavailable}</span>
+                  <span class="stat-value error">
+                    {featureSummary().unavailable}
+                  </span>
                   <span class="stat-label">Unavailable</span>
                 </div>
               </div>

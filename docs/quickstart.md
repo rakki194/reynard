@@ -55,7 +55,7 @@ See [Shared Configuration Examples](./shared/configuration-examples.md) for comp
 **Required files:**
 
 - `vite.config.ts` - Vite configuration
-- `tsconfig.json` - TypeScript configuration  
+- `tsconfig.json` - TypeScript configuration
 - `index.html` - HTML entry point
 - `src/main.tsx` - Application entry point
 - `src/themes.css` - Theme variables

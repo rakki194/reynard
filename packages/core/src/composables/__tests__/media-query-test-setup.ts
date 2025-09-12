@@ -30,12 +30,12 @@ export const createMockMediaQuery = (matches = false): MockMediaQuery => ({
  */
 export const setupMatchMediaMock = (): MockMatchMedia => {
   const mockMatchMedia = vi.fn();
-  
+
   Object.defineProperty(window, "matchMedia", {
     writable: true,
     value: mockMatchMedia,
   });
-  
+
   return mockMatchMedia;
 };
 
@@ -55,7 +55,7 @@ export const cleanupMatchMediaMock = (): void => {
 export const mockSSR = (): (() => void) => {
   const originalWindow = global.window;
   delete (global as any).window;
-  
+
   return () => {
     global.window = originalWindow;
   };

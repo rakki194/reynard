@@ -13,10 +13,7 @@ import {
   createContext,
   useContext,
 } from "solid-js";
-import {
-  CaptionTask,
-  CaptionType,
-} from "reynard-ai-shared";
+import { CaptionTask, CaptionType } from "reynard-ai-shared";
 import {
   getAnnotationServiceRegistry,
   createDefaultAnnotationService,
@@ -123,7 +120,8 @@ export function useGalleryAI(
   });
 
   // Annotation service instance
-  const [annotationService, setAnnotationService] = createSignal<AISharedBackendAnnotationService | null>(null);
+  const [annotationService, setAnnotationService] =
+    createSignal<AISharedBackendAnnotationService | null>(null);
 
   // Persist configuration changes
   createEffect(() => {
@@ -154,12 +152,12 @@ export function useGalleryAI(
     try {
       const registry = getAnnotationServiceRegistry();
       let service = registry.getAnnotationService("gallery-ai-service");
-      
+
       if (!service) {
         // Create a default service if none exists
         service = createDefaultAnnotationService(
           "http://localhost:8000", // Default backend URL
-          "gallery-ai-service"
+          "gallery-ai-service",
         );
       }
 
@@ -223,7 +221,8 @@ export function useGalleryAI(
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
         force: state.config.captionSettings.forceRegeneration,
-        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
+        captionType: state.config.captionSettings
+          .defaultCaptionType as CaptionType,
       };
 
       // Call callback
@@ -302,7 +301,8 @@ export function useGalleryAI(
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
         force: state.config.captionSettings.forceRegeneration,
-        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
+        captionType: state.config.captionSettings
+          .defaultCaptionType as CaptionType,
       }));
 
       // Call callback
@@ -322,16 +322,18 @@ export function useGalleryAI(
       );
 
       // Convert ai-shared CaptionResult[] to GalleryCaptionResult[]
-      const galleryResults: GalleryCaptionResult[] = results.map((result: any) => ({
-        success: result.success,
-        caption: result.caption,
-        processingTime: result.processingTime,
-        captionType: result.captionType,
-        generator: result.generatorName,
-        imagePath: result.imagePath,
-        error: result.error,
-        metadata: result.metadata,
-      }));
+      const galleryResults: GalleryCaptionResult[] = results.map(
+        (result: any) => ({
+          success: result.success,
+          caption: result.caption,
+          processingTime: result.processingTime,
+          captionType: result.captionType,
+          generator: result.generatorName,
+          imagePath: result.imagePath,
+          error: result.error,
+          metadata: result.metadata,
+        }),
+      );
 
       setAIState((prev) => ({
         ...prev,

@@ -1,6 +1,6 @@
 /**
  * Text Editor Component for Reynard Caption System
- * 
+ *
  * Provides Monaco editor integration for text file editing.
  */
 
@@ -35,48 +35,48 @@ export const TextEditor: Component<TextEditorProps> = (props) => {
 
   const getLanguageFromExtension = (filename: string): string => {
     const extension = getFileExtension(filename);
-    
+
     const languageMap: Record<string, string> = {
-      '.js': 'javascript',
-      '.ts': 'typescript',
-      '.tsx': 'typescript',
-      '.jsx': 'javascript',
-      '.py': 'python',
-      '.java': 'java',
-      '.cpp': 'cpp',
-      '.c': 'c',
-      '.cs': 'csharp',
-      '.php': 'php',
-      '.rb': 'ruby',
-      '.go': 'go',
-      '.rs': 'rust',
-      '.swift': 'swift',
-      '.kt': 'kotlin',
-      '.scala': 'scala',
-      '.html': 'html',
-      '.css': 'css',
-      '.scss': 'scss',
-      '.sass': 'sass',
-      '.less': 'less',
-      '.json': 'json',
-      '.xml': 'xml',
-      '.yaml': 'yaml',
-      '.yml': 'yaml',
-      '.toml': 'toml',
-      '.md': 'markdown',
-      '.txt': 'plaintext',
-      '.log': 'plaintext',
-      '.sql': 'sql',
-      '.sh': 'shell',
-      '.bash': 'shell',
-      '.zsh': 'shell',
-      '.fish': 'shell',
-      '.ps1': 'powershell',
-      '.bat': 'batch',
-      '.dockerfile': 'dockerfile',
+      ".js": "javascript",
+      ".ts": "typescript",
+      ".tsx": "typescript",
+      ".jsx": "javascript",
+      ".py": "python",
+      ".java": "java",
+      ".cpp": "cpp",
+      ".c": "c",
+      ".cs": "csharp",
+      ".php": "php",
+      ".rb": "ruby",
+      ".go": "go",
+      ".rs": "rust",
+      ".swift": "swift",
+      ".kt": "kotlin",
+      ".scala": "scala",
+      ".html": "html",
+      ".css": "css",
+      ".scss": "scss",
+      ".sass": "sass",
+      ".less": "less",
+      ".json": "json",
+      ".xml": "xml",
+      ".yaml": "yaml",
+      ".yml": "yaml",
+      ".toml": "toml",
+      ".md": "markdown",
+      ".txt": "plaintext",
+      ".log": "plaintext",
+      ".sql": "sql",
+      ".sh": "shell",
+      ".bash": "shell",
+      ".zsh": "shell",
+      ".fish": "shell",
+      ".ps1": "powershell",
+      ".bat": "batch",
+      ".dockerfile": "dockerfile",
     };
 
-    return languageMap[extension] || 'plaintext';
+    return languageMap[extension] || "plaintext";
   };
 
   return (
@@ -86,10 +86,12 @@ export const TextEditor: Component<TextEditorProps> = (props) => {
           <div class="file-info">
             <h3>{props.file.name}</h3>
             <div class="file-details">
-              {props.file.metadata.lineCount} lines • {props.file.metadata.wordCount} words • {props.file.metadata.characterCount} characters
+              {props.file.metadata.lineCount} lines •{" "}
+              {props.file.metadata.wordCount} words •{" "}
+              {props.file.metadata.characterCount} characters
             </div>
           </div>
-          
+
           <div class="editor-actions">
             <Show when={isModified()}>
               <button onClick={handleSave} class="save-button">
@@ -101,7 +103,7 @@ export const TextEditor: Component<TextEditorProps> = (props) => {
             </button>
           </div>
         </div>
-        
+
         <div class="text-editor-container">
           <MonacoEditor
             value={content()}

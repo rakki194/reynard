@@ -270,15 +270,15 @@ curl http://localhost:8000/api/tts/admin/backends
 
    ```python
    from .base import TTSBackend
-   
+
    class MyBackend(TTSBackend):
        def __init__(self):
            super().__init__("my_backend")
-       
+
        async def initialize(self) -> bool:
            # Initialize your backend
            return True
-       
+
        async def synthesize(self, text: str, out_path: Path, **kwargs) -> Path:
            # Implement synthesis logic
            return out_path
@@ -289,7 +289,7 @@ curl http://localhost:8000/api/tts/admin/backends
    ```python
    # In tts_service.py
    from ...integration.tts.my_backend import MyBackend
-   
+
    async def _initialize_backends(self):
        self._backend_services["my_backend"] = MyBackend()
        await self._backend_services["my_backend"].initialize()
@@ -377,4 +377,4 @@ Key benefits:
 - **Developer Friendly**: Comprehensive API and easy backend extension
 - **Performance Optimized**: Multiple performance modes and GPU acceleration
 
-*Build voice-enabled applications with the cunning precision of a fox!* 🦊
+_Build voice-enabled applications with the cunning precision of a fox!_ 🦊

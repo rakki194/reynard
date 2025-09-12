@@ -1,6 +1,6 @@
 # Reynard ComfyUI Integration
 
-🦊> *Cunning workflow automation for diffusion image generation*
+🦊> _Cunning workflow automation for diffusion image generation_
 
 A comprehensive ComfyUI integration package for the Reynard framework, providing workflow automation, queue management, and image generation capabilities.
 
@@ -38,16 +38,16 @@ pnpm add reynard-comfy --workspace
 ### Basic Usage
 
 ```tsx
-import { ComfyText2ImgForm, ComfyHealthStatus } from 'reynard-comfy';
+import { ComfyText2ImgForm, ComfyHealthStatus } from "reynard-comfy";
 
 function MyApp() {
   return (
     <div>
       <ComfyHealthStatus showDetails={true} />
       <ComfyText2ImgForm
-        onGenerate={(promptId) => console.log('Started:', promptId)}
-        onComplete={(result) => console.log('Completed:', result)}
-        onError={(error) => console.error('Failed:', error)}
+        onGenerate={(promptId) => console.log("Started:", promptId)}
+        onComplete={(result) => console.log("Completed:", result)}
+        onError={(error) => console.error("Failed:", error)}
       />
     </div>
   );
@@ -57,11 +57,11 @@ function MyApp() {
 ### Using the Composable
 
 ```tsx
-import { useComfy } from 'reynard-comfy';
+import { useComfy } from "reynard-comfy";
 
 function MyComponent() {
   const comfy = useComfy();
-  
+
   const generateImage = async () => {
     try {
       const result = await comfy.textToImage({
@@ -69,14 +69,14 @@ function MyComponent() {
         width: 1024,
         height: 1024,
         steps: 24,
-        cfg: 5.5
+        cfg: 5.5,
       });
-      console.log('Generated:', result.promptId);
+      console.log("Generated:", result.promptId);
     } catch (error) {
-      console.error('Generation failed:', error);
+      console.error("Generation failed:", error);
     }
   };
-  
+
   return (
     <div>
       <button onClick={generateImage} disabled={comfy.isLoading()}>
@@ -91,23 +91,23 @@ function MyComponent() {
 ### Using the Service Directly
 
 ```tsx
-import { ComfyService } from 'reynard-comfy';
+import { ComfyService } from "reynard-comfy";
 
 const service = new ComfyService();
 
 // Queue a custom workflow
 const result = await service.queueWorkflow({
   "1": {
-    "class_type": "CheckpointLoaderSimple",
-    "inputs": { "ckpt_name": "model.safetensors" }
-  }
+    class_type: "CheckpointLoaderSimple",
+    inputs: { ckpt_name: "model.safetensors" },
+  },
   // ... more nodes
 });
 
 // Stream status updates
 const cleanup = service.streamStatus(result.promptId, (event) => {
-  console.log('Status update:', event);
-  if (event.type === 'status' && event.data?.status === 'completed') {
+  console.log("Status update:", event);
+  if (event.type === "status" && event.data?.status === "completed") {
     cleanup(); // Stop streaming
   }
 });
@@ -154,18 +154,18 @@ Main composable for ComfyUI integration.
 const comfy = useComfy();
 
 // State
-comfy.health()        // Current health status
-comfy.isLoading()     // Loading state
-comfy.error()         // Error message
+comfy.health(); // Current health status
+comfy.isLoading(); // Loading state
+comfy.error(); // Error message
 
 // Methods
-comfy.textToImage(params)           // Generate image from text
-comfy.queueWorkflow(workflow)       // Queue custom workflow
-comfy.getStatus(promptId)           // Get prompt status
-comfy.streamStatus(promptId, cb)    // Stream status updates
-comfy.validateCheckpoint(name)      // Validate checkpoint
-comfy.getQueueStatus()              // Get queue status
-comfy.clearQueueItem(promptId)      // Clear queue item
+comfy.textToImage(params); // Generate image from text
+comfy.queueWorkflow(workflow); // Queue custom workflow
+comfy.getStatus(promptId); // Get prompt status
+comfy.streamStatus(promptId, cb); // Stream status updates
+comfy.validateCheckpoint(name); // Validate checkpoint
+comfy.getQueueStatus(); // Get queue status
+comfy.clearQueueItem(promptId); // Clear queue item
 ```
 
 ### Services
@@ -243,16 +243,16 @@ const comfy = useComfy();
 
 // Check for errors
 if (comfy.error()) {
-  console.error('ComfyUI error:', comfy.error());
+  console.error("ComfyUI error:", comfy.error());
 }
 
 // Handle errors in callbacks
 <ComfyText2ImgForm
   onError={(error) => {
     // Handle generation error
-    showNotification(`Generation failed: ${error}`, 'error');
+    showNotification(`Generation failed: ${error}`, "error");
   }}
-/>
+/>;
 ```
 
 ## TypeScript Support
@@ -270,7 +270,7 @@ import type {
   ComfyQueueItem,
   ComfyHealthStatus,
   ComfyStreamEvent,
-} from 'reynard-comfy';
+} from "reynard-comfy";
 ```
 
 ## Examples

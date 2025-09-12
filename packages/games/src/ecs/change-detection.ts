@@ -18,7 +18,7 @@ export function createTick(value: number): Tick {
     value,
     isNewerThan(other: Tick): boolean {
       return this.value > other.value;
-    }
+    },
   };
 }
 
@@ -167,7 +167,11 @@ export class ChangeDetectionImpl implements ChangeDetection {
     if (existing) {
       this.componentTicks.set(
         key,
-        createComponentTicks(existing.added, existing.changed, this.currentTick),
+        createComponentTicks(
+          existing.added,
+          existing.changed,
+          this.currentTick,
+        ),
       );
     }
   }
@@ -214,9 +218,10 @@ export class ChangeDetectionImpl implements ChangeDetection {
     if (!ticks) return false;
 
     // Component is removed if it was removed after the last check tick
-    return ticks.removed ? ticks.removed.isNewerThan(this.lastCheckTick) : false;
+    return ticks.removed
+      ? ticks.removed.isNewerThan(this.lastCheckTick)
+      : false;
   }
-
 
   /**
    * Gets the component ticks for an entity and component type.

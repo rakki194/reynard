@@ -56,7 +56,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
       this.lastBackendError = undefined;
     } catch (error) {
       this.isBackendConnected = false;
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       throw new ServiceError(
         `Failed to initialize backend annotation service: ${this.lastBackendError}`,
         this.name,
@@ -71,17 +72,17 @@ export class AISharedBackendAnnotationService extends BaseAIService {
   async healthCheck(): Promise<ServiceHealthInfo> {
     try {
       const backendHealth = this.backendService.getHealthStatus();
-      
+
       // Check if backend is responsive
       const isHealthy = backendHealth.isHealthy && this.isBackendConnected;
-      
+
       return {
         status: this.status,
         health: isHealthy ? ServiceHealth.HEALTHY : ServiceHealth.UNHEALTHY,
         lastCheck: new Date(),
         uptime: this.startupTime ? Date.now() - this.startupTime.getTime() : 0,
         memoryUsage: 0, // Backend service doesn't track memory directly
-        cpuUsage: 0,    // Backend service doesn't track CPU directly
+        cpuUsage: 0, // Backend service doesn't track CPU directly
         errorCount: this.lastBackendError ? 1 : 0,
         lastError: this.lastBackendError,
         metadata: {
@@ -91,9 +92,10 @@ export class AISharedBackendAnnotationService extends BaseAIService {
         },
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       this.lastBackendError = errorMessage;
-      
+
       return {
         status: this.status,
         health: ServiceHealth.UNHEALTHY,
@@ -120,7 +122,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
       this.isBackendConnected = false;
       this.lastBackendError = undefined;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       this.lastBackendError = errorMessage;
       throw new ServiceError(
         `Failed to shutdown backend annotation service: ${errorMessage}`,
@@ -149,7 +152,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return await this.backendService.generateCaption(task);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -170,9 +174,13 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     }
 
     try {
-      return await this.backendService.generateBatchCaptions(tasks, progressCallback);
+      return await this.backendService.generateBatchCaptions(
+        tasks,
+        progressCallback,
+      );
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -188,7 +196,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return await this.backendService.getAvailableGenerators();
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       return [];
     }
   }
@@ -204,7 +213,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getGenerator(name);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       return undefined;
     }
   }
@@ -220,7 +230,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.isGeneratorAvailable(name);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       return false;
     }
   }
@@ -240,7 +251,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       await this.backendService.preloadModel(name);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -260,7 +272,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       await this.backendService.unloadModel(name);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -276,7 +289,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getModelUsageStats(name);
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       return null;
     }
   }
@@ -296,7 +310,8 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getHealthStatus();
     } catch (error) {
-      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      this.lastBackendError =
+        error instanceof Error ? error.message : String(error);
       return {
         isHealthy: false,
         lastCheck: new Date(),

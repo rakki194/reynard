@@ -7,7 +7,7 @@ import {
   Position,
   PositionType,
   Velocity,
-  VelocityType
+  VelocityType,
 } from "../components";
 
 /**

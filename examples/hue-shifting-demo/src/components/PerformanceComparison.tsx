@@ -1,6 +1,9 @@
 import { Component, createSignal, createMemo, onMount } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import { basicColorRamp, generateHueShiftRamp } from "../utils/hueShiftingAlgorithms";
+import {
+  basicColorRamp,
+  generateHueShiftRamp,
+} from "../utils/hueShiftingAlgorithms";
 import "./PerformanceComparison.css";
 
 export const PerformanceComparison: Component = () => {
@@ -10,44 +13,44 @@ export const PerformanceComparison: Component = () => {
     oklch: { time: number; operations: number };
     rgb: { time: number; operations: number };
   } | null>(null);
-  
+
   const testColors = createMemo(() => {
     const colors: OKLCHColor[] = [];
     for (let i = 0; i < 100; i++) {
       colors.push({
         l: 20 + (i % 8) * 10,
         c: 0.1 + (i % 5) * 0.05,
-        h: (i * 36) % 360
+        h: (i * 36) % 360,
       });
     }
     return colors;
   });
-  
+
   const runBenchmark = async () => {
     setIsRunning(true);
     setResults(null);
-    
+
     // Small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     const testColorsArray = testColors();
     const iterationsCount = iterations();
-    
+
     // Test OKLCH hue shifting
     const oklchStart = performance.now();
     for (let i = 0; i < iterationsCount; i++) {
-      testColorsArray.forEach(color => {
-        basicColorRamp(color, 'shadow', 0.3);
-        basicColorRamp(color, 'highlight', 0.3);
+      testColorsArray.forEach((color) => {
+        basicColorRamp(color, "shadow", 0.3);
+        basicColorRamp(color, "highlight", 0.3);
         generateHueShiftRamp(color, 5);
       });
     }
     const oklchEnd = performance.now();
-    
+
     // Test RGB-based approach (simulated)
     const rgbStart = performance.now();
     for (let i = 0; i < iterationsCount; i++) {
-      testColorsArray.forEach(color => {
+      testColorsArray.forEach((color) => {
         // Simulate RGB-based hue shifting (just lightness changes)
         const shadow = { ...color, l: Math.max(0, color.l - 30) };
         const highlight = { ...color, l: Math.min(100, color.l + 25) };
@@ -62,51 +65,49 @@ export const PerformanceComparison: Component = () => {
       });
     }
     const rgbEnd = performance.now();
-    
+
     setResults({
       oklch: {
         time: oklchEnd - oklchStart,
-        operations: iterationsCount * testColorsArray.length * 3
+        operations: iterationsCount * testColorsArray.length * 3,
       },
       rgb: {
         time: rgbEnd - rgbStart,
-        operations: iterationsCount * testColorsArray.length * 3
-      }
+        operations: iterationsCount * testColorsArray.length * 3,
+      },
     });
-    
+
     setIsRunning(false);
   };
-  
+
   const performanceRatio = createMemo(() => {
     const result = results();
     if (!result) return 0;
     return result.oklch.time / result.rgb.time;
   });
-  
+
   const operationsPerSecond = createMemo(() => {
     const result = results();
     if (!result) return { oklch: 0, rgb: 0 };
     return {
       oklch: Math.round(result.oklch.operations / (result.oklch.time / 1000)),
-      rgb: Math.round(result.rgb.operations / (result.rgb.time / 1000))
+      rgb: Math.round(result.rgb.operations / (result.rgb.time / 1000)),
     };
   });
-  
+
   return (
     <div class="performance-comparison">
       <header class="comparison-header">
         <h2>Performance Comparison</h2>
         <p>
-          Compare the performance of OKLCH hue shifting algorithms against 
+          Compare the performance of OKLCH hue shifting algorithms against
           traditional RGB-based approaches.
         </p>
       </header>
-      
+
       <div class="comparison-controls">
         <div class="control-group">
-          <label for="iterations-input">
-            Test Iterations: {iterations()}
-          </label>
+          <label for="iterations-input">Test Iterations: {iterations()}</label>
           <input
             id="iterations-input"
             type="range"
@@ -123,7 +124,7 @@ export const PerformanceComparison: Component = () => {
             <span>10,000</span>
           </div>
         </div>
-        
+
         <button
           class="run-benchmark-button"
           onClick={runBenchmark}
@@ -132,7 +133,7 @@ export const PerformanceComparison: Component = () => {
           {isRunning() ? "Running..." : "Run Benchmark"}
         </button>
       </div>
-      
+
       {results() && (
         <div class="results-display">
           <div class="results-grid">
@@ -141,38 +142,50 @@ export const PerformanceComparison: Component = () => {
               <div class="result-metrics">
                 <div class="metric">
                   <span class="metric-label">Total Time:</span>
-                  <span class="metric-value">{results()!.oklch.time.toFixed(2)}ms</span>
+                  <span class="metric-value">
+                    {results()!.oklch.time.toFixed(2)}ms
+                  </span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Operations/sec:</span>
-                  <span class="metric-value">{operationsPerSecond().oklch.toLocaleString()}</span>
+                  <span class="metric-value">
+                    {operationsPerSecond().oklch.toLocaleString()}
+                  </span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Total Operations:</span>
-                  <span class="metric-value">{results()!.oklch.operations.toLocaleString()}</span>
+                  <span class="metric-value">
+                    {results()!.oklch.operations.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
-            
+
             <div class="result-card rgb">
               <h3>RGB-Based Approach</h3>
               <div class="result-metrics">
                 <div class="metric">
                   <span class="metric-label">Total Time:</span>
-                  <span class="metric-value">{results()!.rgb.time.toFixed(2)}ms</span>
+                  <span class="metric-value">
+                    {results()!.rgb.time.toFixed(2)}ms
+                  </span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Operations/sec:</span>
-                  <span class="metric-value">{operationsPerSecond().rgb.toLocaleString()}</span>
+                  <span class="metric-value">
+                    {operationsPerSecond().rgb.toLocaleString()}
+                  </span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Total Operations:</span>
-                  <span class="metric-value">{results()!.rgb.operations.toLocaleString()}</span>
+                  <span class="metric-value">
+                    {results()!.rgb.operations.toLocaleString()}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <div class="performance-summary">
             <h3>Performance Summary</h3>
             <div class="summary-grid">
@@ -193,7 +206,7 @@ export const PerformanceComparison: Component = () => {
           </div>
         </div>
       )}
-      
+
       <div class="performance-info">
         <h3>Performance Considerations</h3>
         <div class="info-grid">

@@ -1,6 +1,6 @@
 /**
  * Batch Configuration Component
- * 
+ *
  * Configuration panel for batch processing options.
  */
 
@@ -20,7 +20,9 @@ export interface BatchConfigurationProps {
   class?: string;
 }
 
-export const BatchConfiguration: Component<BatchConfigurationProps> = (props) => {
+export const BatchConfiguration: Component<BatchConfigurationProps> = (
+  props,
+) => {
   return (
     <div class={`batch-config ${props.class || ""}`}>
       <div class="config-group">
@@ -33,9 +35,7 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (props) =>
           aria-label="Select default caption generator"
         >
           <For each={props.availableGenerators}>
-            {(generator) => (
-              <option value={generator}>{generator}</option>
-            )}
+            {(generator) => <option value={generator}>{generator}</option>}
           </For>
         </select>
       </div>
@@ -48,7 +48,9 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (props) =>
           min="1"
           max="8"
           value={props.maxConcurrent}
-          onChange={(e) => props.onMaxConcurrentChange(parseInt(e.currentTarget.value) || 4)}
+          onChange={(e) =>
+            props.onMaxConcurrentChange(parseInt(e.currentTarget.value) || 4)
+          }
           disabled={props.disabled}
           aria-label="Maximum concurrent processing tasks"
         />

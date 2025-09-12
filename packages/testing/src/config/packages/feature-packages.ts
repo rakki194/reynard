@@ -3,58 +3,58 @@
  * Configuration for feature-specific packages that require i18n testing
  */
 
-import type { PackageI18nConfig } from '../types';
-import { createIgnorePatterns } from '../ignore-patterns';
+import type { PackageI18nConfig } from "../types";
+import { createIgnorePatterns } from "../ignore-patterns";
 
 export const featurePackages: PackageI18nConfig[] = [
   {
-    name: 'auth',
-    path: 'packages/auth',
+    name: "auth",
+    path: "packages/auth",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('auth'),
+    ignorePatterns: createIgnorePatterns("auth"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['auth', 'common']
+    namespaces: ["auth", "common"],
   },
   {
-    name: 'chat',
-    path: 'packages/chat',
+    name: "chat",
+    path: "packages/chat",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('chat'),
+    ignorePatterns: createIgnorePatterns("chat"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['chat', 'common']
+    namespaces: ["chat", "common"],
   },
   {
-    name: 'gallery',
-    path: 'packages/gallery',
+    name: "gallery",
+    path: "packages/gallery",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('gallery'),
+    ignorePatterns: createIgnorePatterns("gallery"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['gallery', 'common']
+    namespaces: ["gallery", "common"],
   },
   {
-    name: 'settings',
-    path: 'packages/settings',
+    name: "settings",
+    path: "packages/settings",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('settings'),
+    ignorePatterns: createIgnorePatterns("settings"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['settings', 'common']
+    namespaces: ["settings", "common"],
   },
   {
-    name: 'rag',
-    path: 'packages/rag',
+    name: "rag",
+    path: "packages/rag",
     enabled: true,
-    ignorePatterns: createIgnorePatterns('rag'),
+    ignorePatterns: createIgnorePatterns("rag"),
     failOnHardcodedStrings: true,
     validateCompleteness: true,
     testRTL: true,
-    namespaces: ['rag', 'common']
-  }
+    namespaces: ["rag", "common"],
+  },
 ];

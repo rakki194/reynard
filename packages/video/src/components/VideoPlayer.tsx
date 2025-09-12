@@ -1,6 +1,6 @@
 /**
  * Video Player Component for Reynard Caption System
- * 
+ *
  * Modal video player with custom controls and metadata display.
  */
 
@@ -21,7 +21,7 @@ const useVideoControls = (videoRef: () => HTMLVideoElement | undefined) => {
   const handlePlayPause = () => {
     const video = videoRef();
     if (!video) return;
-    
+
     if (isPlaying()) {
       video.pause();
     } else {
@@ -47,7 +47,7 @@ const useVideoControls = (videoRef: () => HTMLVideoElement | undefined) => {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return {
@@ -58,7 +58,7 @@ const useVideoControls = (videoRef: () => HTMLVideoElement | undefined) => {
     handleTimeUpdate,
     handleLoadedMetadata,
     formatTime,
-    setIsPlaying
+    setIsPlaying,
   };
 };
 
@@ -74,13 +74,15 @@ const renderVideoPlayerContent = (
   handleLoadedMetadata: () => void,
   formatTime: (seconds: number) => string,
   setIsPlaying: (playing: boolean) => void,
-  handleClose: () => void
+  handleClose: () => void,
 ) => {
   return (
     <div class="video-player-modal">
       <div class="video-player-content">
-        <button class="close-button" onClick={handleClose}>×</button>
-        
+        <button class="close-button" onClick={handleClose}>
+          ×
+        </button>
+
         <div class="video-container">
           <video
             ref={videoRef}
@@ -93,21 +95,21 @@ const renderVideoPlayerContent = (
             class="video-element"
           />
         </div>
-        
+
         <div class="video-controls">
           <button onClick={handlePlayPause} class="play-pause-button">
             {isPlaying() ? "⏸" : "▶"}
           </button>
-          
+
           <div class="time-display">
             {formatTime(currentTime())} / {formatTime(duration())}
           </div>
-          
+
           <div class="video-info">
             <h3>{props.file.name}</h3>
             <div class="video-details">
-              {props.file.metadata.width}×{props.file.metadata.height} • 
-              {props.file.metadata.fps} FPS • 
+              {props.file.metadata.width}×{props.file.metadata.height} •
+              {props.file.metadata.fps} FPS •
               {(props.file.size / (1024 * 1024)).toFixed(2)} MB
             </div>
           </div>
@@ -119,7 +121,7 @@ const renderVideoPlayerContent = (
 
 export const VideoPlayer: Component<VideoPlayerProps> = (props) => {
   let videoRef: HTMLVideoElement | undefined;
-  
+
   const {
     isPlaying,
     currentTime,
@@ -128,7 +130,7 @@ export const VideoPlayer: Component<VideoPlayerProps> = (props) => {
     handleTimeUpdate,
     handleLoadedMetadata,
     formatTime,
-    setIsPlaying
+    setIsPlaying,
   } = useVideoControls(() => videoRef);
 
   const handleClose = () => {
@@ -146,6 +148,6 @@ export const VideoPlayer: Component<VideoPlayerProps> = (props) => {
     handleLoadedMetadata,
     formatTime,
     setIsPlaying,
-    handleClose
+    handleClose,
   );
 };

@@ -14,7 +14,9 @@ export interface ModelManagementSettingsProps {
   class?: string;
 }
 
-export const ModelManagementSettings: Component<ModelManagementSettingsProps> = (props) => {
+export const ModelManagementSettings: Component<
+  ModelManagementSettingsProps
+> = (props) => {
   const settings = props.settings || useSettings();
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaving, setIsSaving] = createSignal(false);
@@ -40,12 +42,22 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
     try {
       setAutoDownload(settings().getSetting("models.auto_download") || true);
       setPreloadModels(settings().getSetting("models.preload") || false);
-      setMaxConcurrentModels(settings().getSetting("models.max_concurrent") || 3);
+      setMaxConcurrentModels(
+        settings().getSetting("models.max_concurrent") || 3,
+      );
       setModelCacheSize(settings().getSetting("models.cache_size") || 10);
-      setEnableModelSharing(settings().getSetting("models.enable_sharing") || true);
-      setDefaultDevice(settings().getSetting("models.default_device") || "auto");
-      setEnableQuantization(settings().getSetting("models.enable_quantization") || true);
-      setQuantizationBits(settings().getSetting("models.quantization_bits") || 8);
+      setEnableModelSharing(
+        settings().getSetting("models.enable_sharing") || true,
+      );
+      setDefaultDevice(
+        settings().getSetting("models.default_device") || "auto",
+      );
+      setEnableQuantization(
+        settings().getSetting("models.enable_quantization") || true,
+      );
+      setQuantizationBits(
+        settings().getSetting("models.quantization_bits") || 8,
+      );
     } catch (error) {
       console.error("Failed to load model management settings:", error);
     } finally {
@@ -58,13 +70,25 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
     try {
       await settings().setSetting("models.auto_download", autoDownload());
       await settings().setSetting("models.preload", preloadModels());
-      await settings().setSetting("models.max_concurrent", maxConcurrentModels());
+      await settings().setSetting(
+        "models.max_concurrent",
+        maxConcurrentModels(),
+      );
       await settings().setSetting("models.cache_size", modelCacheSize());
-      await settings().setSetting("models.enable_sharing", enableModelSharing());
+      await settings().setSetting(
+        "models.enable_sharing",
+        enableModelSharing(),
+      );
       await settings().setSetting("models.default_device", defaultDevice());
-      await settings().setSetting("models.enable_quantization", enableQuantization());
-      await settings().setSetting("models.quantization_bits", quantizationBits());
-      
+      await settings().setSetting(
+        "models.enable_quantization",
+        enableQuantization(),
+      );
+      await settings().setSetting(
+        "models.quantization_bits",
+        quantizationBits(),
+      );
+
       await settings().saveSettings();
     } catch (error) {
       console.error("Failed to save model management settings:", error);
@@ -102,7 +126,9 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
         </p>
 
         <Show when={isLoading()}>
-          <div class="loading-state">Loading model management configuration...</div>
+          <div class="loading-state">
+            Loading model management configuration...
+          </div>
         </Show>
 
         <Show when={!isLoading()}>
@@ -117,7 +143,9 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
           <Show when={activeTab() === "general"}>
             <div class="setting-group">
               <h4>General Model Settings</h4>
-              <p class="setting-description">Basic model management configuration.</p>
+              <p class="setting-description">
+                Basic model management configuration.
+              </p>
 
               <div class="setting-row">
                 <Toggle
@@ -162,14 +190,18 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
           <Show when={activeTab() === "performance"}>
             <div class="setting-group">
               <h4>Performance Optimization</h4>
-              <p class="setting-description">Configure model performance and resource usage.</p>
+              <p class="setting-description">
+                Configure model performance and resource usage.
+              </p>
 
               <div class="setting-row">
                 <TextField
                   label="Max Concurrent Models"
                   type="number"
                   value={maxConcurrentModels()}
-                  onChange={(value) => setMaxConcurrentModels(parseInt(value) || 3)}
+                  onChange={(value) =>
+                    setMaxConcurrentModels(parseInt(value) || 3)
+                  }
                   description="Maximum number of models to load simultaneously"
                   validation={{ min: 1, max: 10 }}
                 />
@@ -189,7 +221,9 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
                   <Select
                     label="Quantization Bits"
                     value={quantizationBits()}
-                    onChange={(value) => setQuantizationBits(parseInt(value) || 8)}
+                    onChange={(value) =>
+                      setQuantizationBits(parseInt(value) || 8)
+                    }
                     options={quantizationOptions}
                     description="Quantization precision (lower = more efficient, higher = better quality)"
                   />
@@ -202,7 +236,9 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
           <Show when={activeTab() === "storage"}>
             <div class="setting-group">
               <h4>Storage Management</h4>
-              <p class="setting-description">Configure model storage and caching.</p>
+              <p class="setting-description">
+                Configure model storage and caching.
+              </p>
 
               <div class="setting-row">
                 <TextField
@@ -216,15 +252,11 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Clear Model Cache
-                </Button>
+                <Button variant="secondary">Clear Model Cache</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  View Storage Usage
-                </Button>
+                <Button variant="secondary">View Storage Usage</Button>
               </div>
             </div>
           </Show>
@@ -233,30 +265,24 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
           <Show when={activeTab() === "advanced"}>
             <div class="setting-group">
               <h4>Advanced Configuration</h4>
-              <p class="setting-description">Advanced model management options.</p>
+              <p class="setting-description">
+                Advanced model management options.
+              </p>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Export Model Registry
-                </Button>
+                <Button variant="secondary">Export Model Registry</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Import Model Registry
-                </Button>
+                <Button variant="secondary">Import Model Registry</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Reset Model Settings
-                </Button>
+                <Button variant="secondary">Reset Model Settings</Button>
               </div>
 
               <div class="setting-row">
-                <Button variant="secondary">
-                  Validate Model Integrity
-                </Button>
+                <Button variant="secondary">Validate Model Integrity</Button>
               </div>
             </div>
           </Show>
@@ -267,11 +293,15 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
             <div class="config-summary">
               <div class="config-item">
                 <span class="config-label">Auto-download:</span>
-                <span class="config-value">{autoDownload() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {autoDownload() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Preload:</span>
-                <span class="config-value">{preloadModels() ? "Enabled" : "Disabled"}</span>
+                <span class="config-value">
+                  {preloadModels() ? "Enabled" : "Disabled"}
+                </span>
               </div>
               <div class="config-item">
                 <span class="config-label">Max Concurrent:</span>
@@ -288,7 +318,9 @@ export const ModelManagementSettings: Component<ModelManagementSettingsProps> = 
               <div class="config-item">
                 <span class="config-label">Quantization:</span>
                 <span class="config-value">
-                  {enableQuantization() ? `${quantizationBits()}-bit` : "Disabled"}
+                  {enableQuantization()
+                    ? `${quantizationBits()}-bit`
+                    : "Disabled"}
                 </span>
               </div>
             </div>

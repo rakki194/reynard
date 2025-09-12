@@ -2,8 +2,11 @@
  * Chat composable for Reynard API
  */
 
-import { createSignal } from 'solid-js';
-import type { OllamaChatRequest, OllamaChatResponse } from '../generated/index.js';
+import { createSignal } from "solid-js";
+import type {
+  OllamaChatRequest,
+  OllamaChatResponse,
+} from "../generated/index.js";
 
 export interface UseChatOptions {
   basePath?: string;
@@ -12,16 +15,18 @@ export interface UseChatOptions {
 export function useChat(options: UseChatOptions = {}) {
   const [isLoading, setIsLoading] = createSignal(false);
 
-  const sendMessage = async (request: OllamaChatRequest): Promise<OllamaChatResponse> => {
+  const sendMessage = async (
+    request: OllamaChatRequest,
+  ): Promise<OllamaChatResponse> => {
     setIsLoading(true);
     try {
       // Stub implementation
-      console.log('Sending chat message:', request);
-      return { 
-        success: true, 
-        response: 'This is a stub response', 
-        model: request.model || 'llama3.1',
-        processingTime: 1.0
+      console.log("Sending chat message:", request);
+      return {
+        success: true,
+        response: "This is a stub response",
+        model: request.model || "llama3.1",
+        processingTime: 1.0,
       };
     } finally {
       setIsLoading(false);
@@ -30,12 +35,12 @@ export function useChat(options: UseChatOptions = {}) {
 
   const getModels = async (): Promise<string[]> => {
     // Stub implementation
-    return ['llama3', 'mistral', 'codellama'];
+    return ["llama3", "mistral", "codellama"];
   };
 
   return {
     isLoading,
     sendMessage,
-    getModels
+    getModels,
   };
 }

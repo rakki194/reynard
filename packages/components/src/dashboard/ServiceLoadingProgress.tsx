@@ -17,7 +17,9 @@ export interface ServiceLoadingProgressProps {
   showSpinner?: boolean;
 }
 
-export const ServiceLoadingProgress: Component<ServiceLoadingProgressProps> = (props) => {
+export const ServiceLoadingProgress: Component<ServiceLoadingProgressProps> = (
+  props,
+) => {
   return (
     <div class="service-loading-progress">
       <Show when={props.showSpinner !== false}>
@@ -28,17 +30,14 @@ export const ServiceLoadingProgress: Component<ServiceLoadingProgressProps> = (p
           />
         </span>
       </Show>
-      
+
       <Show when={props.message}>
         <span class="loading-message">{props.message}</span>
       </Show>
-      
+
       <Show when={props.showProgress && props.progress !== undefined}>
         <div class="progress-bar">
-          <div 
-            class="progress-fill" 
-            data-progress={props.progress}
-          />
+          <div class="progress-fill" data-progress={props.progress} />
         </div>
         <span class="progress-text">{props.progress}%</span>
       </Show>

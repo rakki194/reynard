@@ -3,19 +3,23 @@
  * Helper functions for working with i18n testing configuration
  */
 
-import type { PackageI18nConfig } from './types';
-import { defaultI18nTestingConfig } from './main-config';
-import { resolve } from 'path';
+import type { PackageI18nConfig } from "./types";
+import { defaultI18nTestingConfig } from "./main-config";
+import { resolve } from "path";
 
 /**
  * Get configuration for a specific package
  */
-export function getPackageI18nConfig(packageName: string): PackageI18nConfig | undefined {
-  const pkg = defaultI18nTestingConfig.packages.find(pkg => pkg.name === packageName);
+export function getPackageI18nConfig(
+  packageName: string,
+): PackageI18nConfig | undefined {
+  const pkg = defaultI18nTestingConfig.packages.find(
+    (pkg) => pkg.name === packageName,
+  );
   if (pkg) {
     return {
       ...pkg,
-      path: resolvePackagePath(pkg.path)
+      path: resolvePackagePath(pkg.path),
     };
   }
   return undefined;
@@ -25,17 +29,19 @@ export function getPackageI18nConfig(packageName: string): PackageI18nConfig | u
  * Get all enabled packages for i18n testing
  */
 export function getEnabledPackages(): PackageI18nConfig[] {
-  return defaultI18nTestingConfig.packages.filter(pkg => pkg.enabled).map(pkg => ({
-    ...pkg,
-    path: resolvePackagePath(pkg.path)
-  }));
+  return defaultI18nTestingConfig.packages
+    .filter((pkg) => pkg.enabled)
+    .map((pkg) => ({
+      ...pkg,
+      path: resolvePackagePath(pkg.path),
+    }));
 }
 
 /**
  * Get all package paths for i18n testing
  */
 export function getEnabledPackagePaths(): string[] {
-  return getEnabledPackages().map(pkg => pkg.path);
+  return getEnabledPackages().map((pkg) => pkg.path);
 }
 
 /**
@@ -45,16 +51,22 @@ function resolvePackagePath(relativePath: string): string {
   // Try to find the Reynard root directory by looking for package.json with "reynard" in name
   let currentDir = process.cwd();
   let rootDir = currentDir;
-  
+
   // Walk up the directory tree to find the root
-  while (currentDir !== '/') {
+  while (currentDir !== "/") {
     try {
-      const packageJsonPath = resolve(currentDir, 'package.json');
-      const fs = require('fs');
+      const packageJsonPath = resolve(currentDir, "package.json");
+      const fs = require("fs");
       if (fs.existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+        const packageJson = JSON.parse(
+          fs.readFileSync(packageJsonPath, "utf8"),
+        );
         // Look for the main Reynard package.json (not the testing package)
-        if (packageJson.name && packageJson.name.includes('reynard') && !packageJson.name.includes('testing')) {
+        if (
+          packageJson.name &&
+          packageJson.name.includes("reynard") &&
+          !packageJson.name.includes("testing")
+        ) {
           rootDir = currentDir;
           break;
         }
@@ -62,14 +74,14 @@ function resolvePackagePath(relativePath: string): string {
     } catch (error) {
       // Continue searching
     }
-    currentDir = resolve(currentDir, '..');
+    currentDir = resolve(currentDir, "..");
   }
-  
+
   // If we're in the testing package, go up two levels to get to the root
-  if (process.cwd().includes('packages/testing')) {
-    rootDir = resolve(process.cwd(), '../..');
+  if (process.cwd().includes("packages/testing")) {
+    rootDir = resolve(process.cwd(), "../..");
   }
-  
+
   return resolve(rootDir, relativePath);
 }
 
@@ -78,8 +90,8 @@ function resolvePackagePath(relativePath: string): string {
  */
 export function getAllNamespaces(): string[] {
   const namespaces = new Set<string>();
-  getEnabledPackages().forEach(pkg => {
-    pkg.namespaces.forEach(ns => namespaces.add(ns));
+  getEnabledPackages().forEach((pkg) => {
+    pkg.namespaces.forEach((ns) => namespaces.add(ns));
   });
   return Array.from(namespaces);
 }

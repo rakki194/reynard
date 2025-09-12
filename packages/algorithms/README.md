@@ -28,19 +28,19 @@ import {
   detectCollisions,
   PerformanceMonitor,
   OptimizationConfig,
-  
+
   // Core algorithms
   UnionFind,
   detectCycle,
   findConnectedComponents,
   SpatialHash,
-  
+
   // Performance utilities
   PerformanceTimer,
   PerformanceBenchmark,
   throttle,
   debounce,
-  
+
   // Geometry operations
   checkCollision,
   PointOps,
@@ -53,7 +53,7 @@ import {
 const aabbs = [
   { x: 0, y: 0, width: 100, height: 100 },
   { x: 50, y: 50, width: 100, height: 100 },
-  { x: 200, y: 200, width: 50, height: 50 }
+  { x: 200, y: 200, width: 50, height: 50 },
 ];
 const collisions = detectCollisions(aabbs);
 console.log(`Found ${collisions.length} collisions`);
@@ -105,7 +105,7 @@ import {
 // Automatic collision detection with optimization
 const aabbs = [
   { x: 0, y: 0, width: 100, height: 100 },
-  { x: 50, y: 50, width: 100, height: 100 }
+  { x: 50, y: 50, width: 100, height: 100 },
 ];
 const collisions = detectCollisions(aabbs);
 
@@ -118,7 +118,7 @@ const recommendations = monitor.getOptimizationRecommendations();
 const config = new OptimizationConfig({
   enableMemoryPooling: true,
   enableAlgorithmSelection: true,
-  algorithmSelectionStrategy: "adaptive"
+  algorithmSelectionStrategy: "adaptive",
 });
 ```
 
@@ -140,7 +140,7 @@ const selector = new AlgorithmSelector();
 const characteristics: WorkloadCharacteristics = {
   objectCount: 1000,
   spatialDistribution: "clustered",
-  updateFrequency: "high"
+  updateFrequency: "high",
 };
 const optimalAlgorithm = selector.selectOptimalAlgorithm(characteristics);
 
@@ -148,7 +148,7 @@ const optimalAlgorithm = selector.selectOptimalAlgorithm(characteristics);
 const memoryPool = new EnhancedMemoryPool({
   initialSize: 1024,
   growthFactor: 2,
-  maxSize: 10240
+  maxSize: 10240,
 });
 
 // Optimized collision adapter
@@ -158,8 +158,8 @@ const adapter = new OptimizedCollisionAdapter({
   performanceThresholds: {
     maxExecutionTime: 16,
     maxMemoryUsage: 50 * 1024 * 1024,
-    minHitRate: 90
-  }
+    minHitRate: 90,
+  },
 });
 ```
 
@@ -244,21 +244,21 @@ import {
   PerformanceBenchmark,
   measureAsync,
   measureSync,
-  
+
   // Memory monitoring
   MemoryMonitor,
   MemoryLeakDetector,
-  
+
   // Frame rate monitoring
   FrameRateMonitor,
-  
+
   // Throttling and debouncing
   throttle,
   debounce,
-  
+
   // Performance budgets
   PerformanceBudgetChecker,
-  
+
   // Memory pool optimizations
   MemoryPoolCore,
   MemoryPoolUtils,
@@ -290,7 +290,7 @@ const metrics = await benchmark.run(() => {
 // Performance budgets
 const budgetChecker = new PerformanceBudgetChecker({
   maxExecutionTime: 16,
-  maxMemoryUsage: 50 * 1024 * 1024
+  maxMemoryUsage: 50 * 1024 * 1024,
 });
 const isWithinBudget = budgetChecker.checkPerformance(metrics);
 
@@ -310,20 +310,20 @@ import {
   batchCollisionDetection,
   type AABB,
   type CollisionPair,
-  
+
   // Shape algorithms
   PointOps,
   LineOps,
   RectangleOps,
   CircleOps,
   PolygonOps,
-  
+
   // Vector operations
   VectorOps,
-  
+
   // Transformations
   TransformOps,
-  
+
   // Types
   type Point,
   type Vector,
@@ -367,7 +367,7 @@ const polygon = PolygonOps.create([
   { x: 0, y: 0 },
   { x: 10, y: 0 },
   { x: 10, y: 10 },
-  { x: 0, y: 10 }
+  { x: 0, y: 10 },
 ]);
 const polygonArea = PolygonOps.area(polygon); // 100
 const contains = PolygonOps.contains(polygon, { x: 5, y: 5 }); // true
@@ -441,13 +441,13 @@ import { EnhancedMemoryPool, MemoryPoolCore } from "reynard-algorithms";
 const collisionPool = new EnhancedMemoryPool({
   initialSize: 1024,
   growthFactor: 2,
-  maxSize: 10240
+  maxSize: 10240,
 });
 
 const spatialPool = new EnhancedMemoryPool({
   initialSize: 2048,
   growthFactor: 1.5,
-  maxSize: 20480
+  maxSize: 20480,
 });
 ```
 
@@ -461,7 +461,7 @@ import { PerformanceBudgetChecker } from "reynard-algorithms";
 const budget = new PerformanceBudgetChecker({
   maxExecutionTime: 16, // 60fps target
   maxMemoryUsage: 50 * 1024 * 1024, // 50MB limit
-  maxFrameDrops: 5 // Allow 5 frame drops per second
+  maxFrameDrops: 5, // Allow 5 frame drops per second
 });
 
 // Check if current performance is within budget

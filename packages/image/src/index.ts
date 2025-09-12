@@ -1,6 +1,6 @@
 /**
  * Reynard Image Package
- * 
+ *
  * Image processing and display components for Reynard applications.
  */
 

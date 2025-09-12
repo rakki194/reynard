@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 import {
   generateSecureBytes,
   generateSecureString,
@@ -315,7 +315,7 @@ describe("Cryptographic Utilities", () => {
     });
   });
 
-  describe(i18n.t('core.integration.session-and-api-key-generation'), () => {
+  describe(i18n.t("core.integration.session-and-api-key-generation"), () => {
     it("should generate session IDs", () => {
       const sessionId = generateSessionID();
       expect(sessionId).toHaveLength(128); // 64 bytes as hex = 128 characters
@@ -466,7 +466,9 @@ describe("Cryptographic Utilities", () => {
           includeNumbers: false,
           includeSymbols: false,
         }),
-      ).toThrow(i18n.t('core.security.at-least-one-character-type-must-be-included'));
+      ).toThrow(
+        i18n.t("core.security.at-least-one-character-type-must-be-included"),
+      );
     });
   });
 
@@ -495,10 +497,12 @@ describe("Cryptographic Utilities", () => {
 
     it("should handle crypto API errors gracefully", () => {
       mockCrypto.getRandomValues.mockImplementation(() => {
-        throw new Error(i18n.t('core.errors.crypto-error'));
+        throw new Error(i18n.t("core.errors.crypto-error"));
       });
 
-      expect(() => generateSecureBytes(16)).toThrow(i18n.t('core.errors.crypto-error'));
+      expect(() => generateSecureBytes(16)).toThrow(
+        i18n.t("core.errors.crypto-error"),
+      );
     });
   });
 

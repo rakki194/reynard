@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "Zahtjev prekinut",
   },
-  
+
   // Autentifikacija i sigurnost
   bearer: {
     token: "Bearer token",
     "test-key": "Bearer test ključ",
     "new-key": "Bearer novi ključ",
   },
-  
+
   // Obavještenja
   notifications: {
     title: "Obavještenja",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "Prvo grupirano",
     "second-grouped": "Drugo grupirano",
   },
-  
+
   // Poruke validacije
   validation: {
     required: "Ovo polje je obavezno",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "Nevaljan tip unosa",
     "does-not-match-pattern": "Unos se ne podudara s potrebnim uzorkom",
   },
-  
+
   // Validacija lozinke
   password: {
-    "must-be-at-least-8-characters-long": "Lozinka mora imati najmanje 8 znakova",
-    "must-contain-at-least-one-uppercase-letter": "Lozinka mora sadržavati najmanje jedno veliko slovo",
-    "must-contain-at-least-one-lowercase-letter": "Lozinka mora sadržavati najmanje jedno malo slovo",
-    "must-contain-at-least-one-number": "Lozinka mora sadržavati najmanje jedan broj",
-    "must-contain-at-least-one-special-character": "Lozinka mora sadržavati najmanje jedan poseban znak",
+    "must-be-at-least-8-characters-long":
+      "Lozinka mora imati najmanje 8 znakova",
+    "must-contain-at-least-one-uppercase-letter":
+      "Lozinka mora sadržavati najmanje jedno veliko slovo",
+    "must-contain-at-least-one-lowercase-letter":
+      "Lozinka mora sadržavati najmanje jedno malo slovo",
+    "must-contain-at-least-one-number":
+      "Lozinka mora sadržavati najmanje jedan broj",
+    "must-contain-at-least-one-special-character":
+      "Lozinka mora sadržavati najmanje jedan poseban znak",
   },
-  
+
   // Validacija sigurnosti
   security: {
-    "at-least-one-character-type-must-be-included": "Mora biti uključen najmanje jedan tip znaka",
-    "input-contains-potentially-dangerous-html": "Unos sadrži potencijalno opasan HTML",
-    "input-contains-potentially-dangerous-sql-patterns": "Unos sadrži potencijalno opasne SQL uzorke",
-    "input-contains-potentially-dangerous-xss-patterns": "Unos sadrži potencijalno opasne XSS uzorke",
-    "input-contains-path-traversal-patterns": "Unos sadrži uzorke prelaska putanje",
-    "input-contains-windows-reserved-names": "Unos sadrži rezervirana imena Windows-a",
-    "input-contains-executable-file-extensions": "Unos sadrži ekstenzije izvršnih datoteka",
+    "at-least-one-character-type-must-be-included":
+      "Mora biti uključen najmanje jedan tip znaka",
+    "input-contains-potentially-dangerous-html":
+      "Unos sadrži potencijalno opasan HTML",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "Unos sadrži potencijalno opasne SQL uzorke",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "Unos sadrži potencijalno opasne XSS uzorke",
+    "input-contains-path-traversal-patterns":
+      "Unos sadrži uzorke prelaska putanje",
+    "input-contains-windows-reserved-names":
+      "Unos sadrži rezervirana imena Windows-a",
+    "input-contains-executable-file-extensions":
+      "Unos sadrži ekstenzije izvršnih datoteka",
     "input-contains-null-bytes": "Unos sadrži null bajtove",
     "input-contains-hidden-files": "Unos sadrži skrivene datoteke",
-    "input-contains-javascript-file-extensions": "Unos sadrži ekstenzije JavaScript datoteka",
+    "input-contains-javascript-file-extensions":
+      "Unos sadrži ekstenzije JavaScript datoteka",
   },
-  
+
   // Asinkrone operacije
   async: {
     "operation-timed-out": "Operacija je istekla",
@@ -107,7 +120,7 @@ export const coreTranslations = {
     "concurrency-must-be-greater-than-0": "Istodobnost mora biti veća od 0",
     "polling-timeout-reached": "Dostignut timeout ankete",
   },
-  
+
   // Učitavanje modula
   module: {
     "is-null": "Modul je null",
@@ -115,14 +128,16 @@ export const coreTranslations = {
     "load-failed": "Učitavanje neuspješno",
     "loading-failed": "Učitavanje neuspješno",
   },
-  
+
   // Pohrana i serijalizacija
   storage: {
     "potentially-dangerous-json-detected": "Otkriven potencijalno opasan JSON",
-    "failed-to-parse-json-from-localstorage": "Neuspješno parsiranje JSON-a iz localStorage:",
-    "error-parsing-storage-event": "Greška pri parsiranju događaja pohrane za ključ",
+    "failed-to-parse-json-from-localstorage":
+      "Neuspješno parsiranje JSON-a iz localStorage:",
+    "error-parsing-storage-event":
+      "Greška pri parsiranju događaja pohrane za ključ",
   },
-  
+
   // Test i razvoj
   test: {
     error: "Test greška",
@@ -131,19 +146,19 @@ export const coreTranslations = {
     "notification-1": "Test obavještenje 1",
     "notification-2": "Test obavještenje 2",
   },
-  
+
   // Opće greške
   errors: {
     "string-error": "Greška niza",
     "crypto-error": "Kripto greška",
     "some-error": "Neka greška",
   },
-  
+
   // Formatirači i alati
   formatters: {
     "hello-world": "Pozdrav svijete",
   },
-  
+
   // Datum i vrijeme
   dateTime: {
     now: "Sada",
@@ -153,11 +168,13 @@ export const coreTranslations = {
     format: "Format",
     timezone: "Vremenska zona",
   },
-  
+
   // Testovi integracije
   integration: {
     "session-and-api-key-generation": "Generiranje sesije i API ključa",
-    "authentication-and-input-validation-integration": "Integracija autentifikacije i validacije unosa",
-    "performance-and-security-integration": "Integracija performansi i sigurnosti",
+    "authentication-and-input-validation-integration":
+      "Integracija autentifikacije i validacije unosa",
+    "performance-and-security-integration":
+      "Integracija performansi i sigurnosti",
   },
 };

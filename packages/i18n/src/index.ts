@@ -45,16 +45,10 @@ import {
 } from "./debugger";
 
 // Intl API integration
-import {
-  createIntlFormatter,
-  type IntlConfig,
-} from "./intl";
+import { createIntlFormatter, type IntlConfig } from "./intl";
 
 // Migration and enterprise tools
-import {
-  TranslationManager,
-  TranslationAnalytics,
-} from "./migration";
+import { TranslationManager, TranslationAnalytics } from "./migration";
 
 // Legacy exports for backward compatibility
 export const translations = fullTranslations;
@@ -62,7 +56,7 @@ export const translations = fullTranslations;
 // Enhanced translation loading function with caching
 export async function loadTranslations(
   locale: LanguageCode,
-  useCache: boolean = true
+  useCache: boolean = true,
 ): Promise<Translations> {
   return loadTranslationsWithCache(locale, useCache);
 }
@@ -98,22 +92,20 @@ export interface EnhancedI18nModule extends I18nModule {
   intlFormatter: ReturnType<typeof createIntlFormatter>;
   templateTranslator: ReturnType<typeof createTemplateTranslator>;
   pluralTranslator: ReturnType<typeof createDebugPluralTranslator>;
-  
+
   // Namespace loading
   loadNamespace: <T = any>(namespace: string) => Promise<T>;
-  
+
   // Cache management
   clearCache: (locale?: LanguageCode) => void;
   getCacheStats: () => ReturnType<typeof getCacheStats>;
-  
+
   // Enterprise features
   translationManager: TranslationManager;
   analytics: TranslationAnalytics;
 }
 
-export function createI18nModule(
-  options: any = {}
-): any {
+export function createI18nModule(options: any = {}): any {
   // Handle both direct translations parameter and options object
   let initialTranslations: Partial<Translations> | undefined;
   let enableDebug = false;
@@ -122,9 +114,9 @@ export function createI18nModule(
   let usedNamespaces: string[] = [];
   let preloadLocales: LanguageCode[] = [];
 
-  if (options && typeof options === 'object' && !Array.isArray(options)) {
+  if (options && typeof options === "object" && !Array.isArray(options)) {
     // Check if this is the options object format
-    if ('initialTranslations' in options) {
+    if ("initialTranslations" in options) {
       // Options object format
       ({
         initialTranslations,
@@ -132,21 +124,21 @@ export function createI18nModule(
         enablePerformanceMonitoring = false,
         intlConfig = {},
         usedNamespaces = [],
-        preloadLocales = []
+        preloadLocales = [],
       } = options);
-      
     } else {
       // Direct translations object format (legacy)
       initialTranslations = options as Partial<Translations>;
     }
-  } else if (options && typeof options === 'object') {
+  } else if (options && typeof options === "object") {
     // Direct translations object format (legacy)
     initialTranslations = options as Partial<Translations>;
   }
-  
+
   // Debug logging removed
 
-  const [locale, setLocaleSignal] = createSignal<LanguageCode>(getInitialLocale());
+  const [locale, setLocaleSignal] =
+    createSignal<LanguageCode>(getInitialLocale());
   const [translations, _setTranslationsSignal] = createSignal<Translations>(
     (initialTranslations as Translations) || ({} as Translations),
   );
@@ -158,19 +150,17 @@ export function createI18nModule(
   const performanceMonitor = new I18nPerformanceMonitor();
   const intlFormatter = createIntlFormatter({
     locale: locale(),
-    ...intlConfig
+    ...intlConfig,
   });
   const translationManager = new TranslationManager({
     locale: locale(),
-    ...intlConfig
+    ...intlConfig,
   });
   const analytics = new TranslationAnalytics();
 
   // Create optimized loader if namespaces are specified
-  const optimizedLoader = usedNamespaces.length > 0 
-    ? createOptimizedLoader(usedNamespaces)
-    : null;
-  
+  const optimizedLoader =
+    usedNamespaces.length > 0 ? createOptimizedLoader(usedNamespaces) : null;
 
   // Initialize with initial locale from localStorage/browser if available
   const initialLocale = getInitialLocale();
@@ -189,26 +179,30 @@ export function createI18nModule(
     if (typeof window !== "undefined") {
       // Note: Side effects are now handled directly in setLocale for better testability
       // This effect only handles translation loading
-      
+
       // Update Intl formatter with new locale
       intlFormatter.updateConfig({ locale: currentLocale });
-      
+
       // Only load translations if no initial translations were provided
       if (!initialTranslations) {
         try {
           const startTime = performance.now();
-          const loadedTranslations = optimizedLoader 
+          const loadedTranslations = optimizedLoader
             ? await optimizedLoader.loadFull(currentLocale)
             : await loadTranslations(currentLocale);
-          
+
           const loadTime = performance.now() - startTime;
           if (enablePerformanceMonitoring) {
             performanceMonitor.recordLoadTime(loadTime);
           }
-          
+
           _setTranslationsSignal(loadedTranslations);
         } catch (error) {
-          console.error("Failed to load translations for locale:", currentLocale, error);
+          console.error(
+            "Failed to load translations for locale:",
+            currentLocale,
+            error,
+          );
         }
       }
     }
@@ -216,7 +210,7 @@ export function createI18nModule(
 
   const setLocale = (newLocale: LanguageCode) => {
     setLocaleSignal(newLocale);
-    
+
     // Apply side effects immediately for better testability
     if (typeof window !== "undefined") {
       try {
@@ -225,7 +219,7 @@ export function createI18nModule(
         // Gracefully handle localStorage errors (e.g., storage full, private browsing)
         console.warn("Failed to save locale to localStorage:", error);
       }
-      
+
       try {
         document.documentElement.setAttribute("lang", newLocale);
         document.documentElement.setAttribute(
@@ -236,7 +230,7 @@ export function createI18nModule(
         // Gracefully handle DOM manipulation errors
         console.warn("Failed to update document attributes:", error);
       }
-      
+
       // Update Intl formatter with new locale
       intlFormatter.updateConfig({ locale: newLocale });
     }
@@ -247,22 +241,22 @@ export function createI18nModule(
     if (enableDebug) {
       i18nDebugger.getUsedKeys().push(key);
     }
-    
+
     if (enablePerformanceMonitoring) {
       performanceMonitor.recordTranslationCall();
     }
-    
+
     analytics.trackUsage(key, locale());
-    
+
     const currentTranslations = translations();
-    
+
     const result = getTranslationValue(
       currentTranslations as unknown as Record<string, unknown>,
       key,
       params,
       locale(),
     );
-    
+
     return result;
   };
 
@@ -298,22 +292,22 @@ export function createI18nModule(
     setLocale,
     t,
     loadTranslations: (locale: LanguageCode) => loadTranslations(locale),
-    
+
     // Enhanced features
     debugger: i18nDebugger,
     performanceMonitor,
     intlFormatter,
     templateTranslator,
     pluralTranslator,
-    
+
     // Namespace loading
     loadNamespace: loadNamespaceFunc,
     optimizedLoader,
-    
+
     // Cache management
     clearCache,
     getCacheStats: getCacheStatsFunc,
-    
+
     // Enterprise features
     translationManager,
     analytics,
@@ -343,9 +337,7 @@ export type {
 // export type { EnhancedI18nOptions } from "./types";
 
 // Export enhanced features
-export type {
-  IntlConfig,
-} from "./intl";
+export type { IntlConfig } from "./intl";
 
 // Core utilities
 export {
@@ -406,7 +398,4 @@ export {
 } from "./intl";
 
 // Migration and enterprise tools
-export {
-  TranslationManager,
-  TranslationAnalytics,
-} from "./migration";
+export { TranslationManager, TranslationAnalytics } from "./migration";

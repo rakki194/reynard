@@ -20,8 +20,8 @@ This document provides visual examples and detailed explanations of OKLCH hue sh
 
 ```typescript
 const baseColor: OKLCHColor = { l: 60, c: 0.2, h: 120 };
-const shadow = basicHueShift(baseColor, 'shadow', 0.4);
-const highlight = basicHueShift(baseColor, 'highlight', 0.3);
+const shadow = basicHueShift(baseColor, "shadow", 0.4);
+const highlight = basicHueShift(baseColor, "highlight", 0.3);
 ```
 
 ### Example 2: Material-Based Shifting
@@ -92,7 +92,7 @@ const goldenPalette = goldenRatioHuePalette(baseColor, 8);
 
 ```typescript
 const primary: OKLCHColor = { l: 60, c: 0.2, h: 240 }; // Blue
-const secondary: OKLCHColor = { l: 60, c: 0.2, h: 60 };  // Yellow (complement)
+const secondary: OKLCHColor = { l: 60, c: 0.2, h: 60 }; // Yellow (complement)
 
 // Generate hue-shifted variations
 const primaryRamp = generateHueShiftRamp(primary, 5);
@@ -104,7 +104,7 @@ const secondaryRamp = generateHueShiftRamp(secondary, 5);
 **Triadic Palette:**
 
 ```typescript
-const base: OKLCHColor = { l: 60, c: 0.2, h: 0 };    // Red
+const base: OKLCHColor = { l: 60, c: 0.2, h: 0 }; // Red
 const triadic1: OKLCHColor = { l: 60, c: 0.2, h: 120 }; // Green
 const triadic2: OKLCHColor = { l: 60, c: 0.2, h: 240 }; // Blue
 
@@ -119,8 +119,8 @@ const blueRamp = generateHueShiftRamp(triadic2, 4);
 **Analogous Palette (30° apart):**
 
 ```typescript
-const base: OKLCHColor = { l: 60, c: 0.2, h: 120 };   // Green
-const analogous1: OKLCHColor = { l: 60, c: 0.2, h: 90 };  // Yellow-Green
+const base: OKLCHColor = { l: 60, c: 0.2, h: 120 }; // Green
+const analogous1: OKLCHColor = { l: 60, c: 0.2, h: 90 }; // Yellow-Green
 const analogous2: OKLCHColor = { l: 60, c: 0.2, h: 150 }; // Blue-Green
 
 // Create smooth transitions between analogous colors
@@ -182,9 +182,9 @@ const mediumSkin: OKLCHColor = { l: 60, c: 0.12, h: 25 };
 const darkSkin: OKLCHColor = { l: 40, c: 0.15, h: 20 };
 
 // Each skin tone gets material-based hue shifting
-const lightSkinRamp = materialHueShift(lightSkin, 'skin');
-const mediumSkinRamp = materialHueShift(mediumSkin, 'skin');
-const darkSkinRamp = materialHueShift(darkSkin, 'skin');
+const lightSkinRamp = materialHueShift(lightSkin, "skin");
+const mediumSkinRamp = materialHueShift(mediumSkin, "skin");
+const darkSkinRamp = materialHueShift(darkSkin, "skin");
 ```
 
 **Hair Colors:**
@@ -196,10 +196,10 @@ const black: OKLCHColor = { l: 25, c: 0.1, h: 0 };
 const red: OKLCHColor = { l: 55, c: 0.25, h: 15 };
 
 // Hair uses fabric material pattern
-const blondeRamp = materialHueShift(blonde, 'fabric');
-const brownRamp = materialHueShift(brown, 'fabric');
-const blackRamp = materialHueShift(black, 'fabric');
-const redRamp = materialHueShift(red, 'fabric');
+const blondeRamp = materialHueShift(blonde, "fabric");
+const brownRamp = materialHueShift(brown, "fabric");
+const blackRamp = materialHueShift(black, "fabric");
+const redRamp = materialHueShift(red, "fabric");
 ```
 
 **Clothing Colors:**
@@ -210,9 +210,9 @@ const metal: OKLCHColor = { l: 50, c: 0.08, h: 0 };
 const fabric: OKLCHColor = { l: 60, c: 0.2, h: 240 };
 
 // Each material gets appropriate hue shifting
-const leatherRamp = materialHueShift(leather, 'fabric');
-const metalRamp = materialHueShift(metal, 'metal');
-const fabricRamp = materialHueShift(fabric, 'fabric');
+const leatherRamp = materialHueShift(leather, "fabric");
+const metalRamp = materialHueShift(metal, "metal");
+const fabricRamp = materialHueShift(fabric, "fabric");
 ```
 
 ## Environment Design Examples
@@ -260,10 +260,10 @@ const metal: OKLCHColor = { l: 55, c: 0.08, h: 0 };
 const glass: OKLCHColor = { l: 70, c: 0.1, h: 200 };
 
 // Urban materials use material-specific shifting
-const brickRamp = materialHueShift(brick, 'fabric');
-const concreteRamp = materialHueShift(concrete, 'fabric');
-const metalRamp = materialHueShift(metal, 'metal');
-const glassRamp = materialHueShift(glass, 'plastic');
+const brickRamp = materialHueShift(brick, "fabric");
+const concreteRamp = materialHueShift(concrete, "fabric");
+const metalRamp = materialHueShift(metal, "metal");
+const glassRamp = materialHueShift(glass, "plastic");
 ```
 
 ## Animation Examples
@@ -276,12 +276,12 @@ const glassRamp = materialHueShift(glass, 'plastic');
 function interpolateOKLCH(
   color1: OKLCHColor,
   color2: OKLCHColor,
-  t: number
+  t: number,
 ): OKLCHColor {
   return {
     l: color1.l + (color2.l - color1.l) * t,
     c: color1.c + (color2.c - color1.c) * t,
-    h: interpolateHue(color1.h, color2.h, t)
+    h: interpolateHue(color1.h, color2.h, t),
   };
 }
 
@@ -299,13 +299,13 @@ function createPulsingColor(
   baseColor: OKLCHColor,
   time: number,
   frequency: number = 1.0,
-  intensity: number = 0.1
+  intensity: number = 0.1,
 ): OKLCHColor {
   const pulse = Math.sin(time * Math.PI * 2 * frequency) * intensity;
   return {
     l: baseColor.l + pulse * 20,
     c: baseColor.c + pulse * 0.05,
-    h: baseColor.h
+    h: baseColor.h,
   };
 }
 ```
@@ -316,12 +316,12 @@ function createPulsingColor(
 function createColorCycle(
   baseColor: OKLCHColor,
   time: number,
-  cycleSpeed: number = 1.0
+  cycleSpeed: number = 1.0,
 ): OKLCHColor {
   return {
     l: baseColor.l,
     c: baseColor.c,
-    h: (baseColor.h + time * cycleSpeed * 360) % 360
+    h: (baseColor.h + time * cycleSpeed * 360) % 360,
   };
 }
 ```

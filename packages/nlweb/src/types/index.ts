@@ -1,6 +1,6 @@
 /**
  * NLWeb Types
- * 
+ *
  * Type definitions for the NLWeb assistant tooling and routing system.
  */
 
@@ -16,7 +16,7 @@ export interface NLWebTool {
   /** Tool execution path or endpoint */
   path: string;
   /** HTTP method for tool execution */
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: "GET" | "POST" | "PUT" | "DELETE";
   /** Required parameters for tool execution */
   parameters: NLWebToolParameter[];
   /** Example usage prompts */
@@ -33,7 +33,7 @@ export interface NLWebToolParameter {
   /** Parameter name */
   name: string;
   /** Parameter type */
-  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  type: "string" | "number" | "boolean" | "object" | "array";
   /** Human-readable description */
   description: string;
   /** Whether the parameter is required */
@@ -154,7 +154,7 @@ export interface NLWebPerformanceStats {
 
 export interface NLWebHealthStatus {
   /** Overall health status */
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: "healthy" | "degraded" | "unhealthy";
   /** Service availability */
   available: boolean;
   /** Last health check timestamp */
@@ -279,7 +279,13 @@ export interface NLWebService {
 
 // Event types for NLWeb system
 export interface NLWebEvent {
-  type: 'tool_suggested' | 'tool_executed' | 'cache_hit' | 'cache_miss' | 'error' | 'health_check';
+  type:
+    | "tool_suggested"
+    | "tool_executed"
+    | "cache_hit"
+    | "cache_miss"
+    | "error"
+    | "health_check";
   timestamp: number;
   data: any;
 }
@@ -290,9 +296,9 @@ export interface NLWebEventListener {
 
 export interface NLWebEventEmitter {
   /** Add an event listener */
-  on(eventType: NLWebEvent['type'], listener: NLWebEventListener): void;
+  on(eventType: NLWebEvent["type"], listener: NLWebEventListener): void;
   /** Remove an event listener */
-  off(eventType: NLWebEvent['type'], listener: NLWebEventListener): void;
+  off(eventType: NLWebEvent["type"], listener: NLWebEventListener): void;
   /** Emit an event */
   emit(event: NLWebEvent): void;
 }

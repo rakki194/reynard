@@ -780,10 +780,10 @@ Advanced floating panel system with staggered animations, state management, and 
 #### Floating Panel Example Usage
 
 ```tsx
-import { 
-  FloatingPanelOverlay, 
-  FloatingPanel, 
-  useOverlayManager 
+import {
+  FloatingPanelOverlay,
+  FloatingPanel,
+  useOverlayManager,
 } from "reynard-floating-panel";
 import type { FloatingPanel as FloatingPanelType } from "reynard-floating-panel";
 
@@ -792,8 +792,8 @@ function MyApp() {
     config: {
       backdropBlur: 4,
       backdropColor: "rgb(0 0 0 / 0.2)",
-      outlineColor: "#3b82f6"
-    }
+      outlineColor: "#3b82f6",
+    },
   });
 
   const panels: FloatingPanelType[] = [
@@ -805,20 +805,20 @@ function MyApp() {
       config: {
         draggable: true,
         closable: true,
-        theme: "accent"
-      }
+        theme: "accent",
+      },
     },
     {
-      id: "panel-2", 
+      id: "panel-2",
       position: { top: 20, right: 20 },
       size: { width: 250, height: 150 },
       content: <div>Panel 2 Content</div>,
       config: {
         draggable: true,
         resizable: true,
-        theme: "warning"
-      }
-    }
+        theme: "warning",
+      },
+    },
   ];
 
   return (
@@ -826,12 +826,12 @@ function MyApp() {
       <button onClick={() => overlayManager.toggleOverlay()}>
         Toggle Overlay
       </button>
-      
+
       <FloatingPanelOverlay
         isActive={overlayManager.isActive()}
         transitionPhase={overlayManager.overlayState().transitionPhase}
       >
-        {panels.map(panel => (
+        {panels.map((panel) => (
           <FloatingPanel
             key={panel.id}
             id={panel.id}
@@ -856,7 +856,7 @@ const animation = useStaggeredAnimation({
   staggerStep: 0.1,
   direction: "center-out", // or "forward", "reverse"
   duration: 300,
-  easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+  easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
 });
 ```
 
@@ -868,13 +868,13 @@ const draggablePanel = useDraggablePanel(panelRef, {
     minWidth: 200,
     minHeight: 100,
     maxWidth: 800,
-    maxHeight: 600
+    maxHeight: 600,
   },
   snapPoints: {
     x: [0, 100, 200, 300],
     y: [0, 50, 100, 150],
-    tolerance: 10
-  }
+    tolerance: 10,
+  },
 });
 ```
 
@@ -1171,7 +1171,7 @@ const palette = generateColorPalette(5, 240); // 5 colors with base hue 240
 // Returns: ['oklch(60% 0.2 240)', 'oklch(60% 0.2 300)', ...]
 
 // Convert hex to OKLCH
-const oklchColor = convertToOKLCH('#3b82f6');
+const oklchColor = convertToOKLCH("#3b82f6");
 // Returns: 'oklch(60% 0.25 240)'
 ```
 

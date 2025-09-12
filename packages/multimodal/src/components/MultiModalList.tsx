@@ -1,6 +1,6 @@
 /**
  * Multi-Modal List Component
- * 
+ *
  * Displays files in a list layout with file rows.
  */
 

@@ -56,7 +56,9 @@ export interface AlertSummary {
   unresolved: number;
 }
 
-export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (props) => {
+export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
+  props,
+) => {
   const [alerts, setAlerts] = createSignal<PerformanceAlert[]>([]);
   const [alertSummary, setAlertSummary] = createSignal<AlertSummary>({
     total: 0,
@@ -124,7 +126,8 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
       // Calculate alert summary
       const summary: AlertSummary = {
         total: newAlerts.length,
-        critical: newAlerts.filter((alert) => alert.severity === "critical").length,
+        critical: newAlerts.filter((alert) => alert.severity === "critical")
+          .length,
         high: newAlerts.filter((alert) => alert.severity === "high").length,
         medium: newAlerts.filter((alert) => alert.severity === "medium").length,
         low: newAlerts.filter((alert) => alert.severity === "low").length,
@@ -191,8 +194,8 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
   const acknowledgeAlert = (alertId: string) => {
     setAlerts((prev) =>
       prev.map((alert) =>
-        alert.id === alertId ? { ...alert, acknowledged: true } : alert
-      )
+        alert.id === alertId ? { ...alert, acknowledged: true } : alert,
+      ),
     );
   };
 
@@ -200,23 +203,21 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
   const resolveAlert = (alertId: string) => {
     setAlerts((prev) =>
       prev.map((alert) =>
-        alert.id === alertId ? { ...alert, resolved: true } : alert
-      )
+        alert.id === alertId ? { ...alert, resolved: true } : alert,
+      ),
     );
   };
 
   // Acknowledge all alerts
   const acknowledgeAllAlerts = () => {
     setAlerts((prev) =>
-      prev.map((alert) => ({ ...alert, acknowledged: true }))
+      prev.map((alert) => ({ ...alert, acknowledged: true })),
     );
   };
 
   // Resolve all alerts
   const resolveAllAlerts = () => {
-    setAlerts((prev) =>
-      prev.map((alert) => ({ ...alert, resolved: true }))
-    );
+    setAlerts((prev) => prev.map((alert) => ({ ...alert, resolved: true })));
   };
 
   // Clear resolved alerts
@@ -230,7 +231,9 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
 
     // Filter by severity
     if (selectedSeverity() !== "all") {
-      filtered = filtered.filter((alert) => alert.severity === selectedSeverity());
+      filtered = filtered.filter(
+        (alert) => alert.severity === selectedSeverity(),
+      );
     }
 
     // Filter by status
@@ -404,10 +407,14 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
                   <span class="severity-icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={getSeverityIcon(alert.severity)?.outerHTML || ""}
+                      innerHTML={
+                        getSeverityIcon(alert.severity)?.outerHTML || ""
+                      }
                     />
                   </span>
-                  <span class="severity-text">{alert.severity.toUpperCase()}</span>
+                  <span class="severity-text">
+                    {alert.severity.toUpperCase()}
+                  </span>
                 </div>
                 <div class="alert-timestamp">
                   {formatTimestamp(alert.timestamp)}
@@ -476,7 +483,9 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
           <div class="no-alerts-icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""}
+              innerHTML={
+                fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""
+              }
             />
           </div>
           <div class="no-alerts-message">
@@ -488,7 +497,9 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (p
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
+        <div class="last-update">
+          Last updated: {lastUpdate()!.toLocaleString()}
+        </div>
       </Show>
     </div>
   );

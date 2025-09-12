@@ -39,14 +39,22 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
     setIsLoading(true);
     try {
       setMaxNewTokens(settings().getSetting("diffusion.max_new_tokens") || 64);
-      setTimeoutSeconds(settings().getSetting("diffusion.timeout_seconds") || 120);
+      setTimeoutSeconds(
+        settings().getSetting("diffusion.timeout_seconds") || 120,
+      );
       setDevice(settings().getSetting("diffusion.device") || "auto");
       setAutoTrim(settings().getSetting("diffusion.auto_trim") || false);
-      setFixPunctuation(settings().getSetting("diffusion.fix_punctuation") || false);
+      setFixPunctuation(
+        settings().getSetting("diffusion.fix_punctuation") || false,
+      );
       setTemperature(settings().getSetting("diffusion.temperature") || 0.7);
       setTopP(settings().getSetting("diffusion.top_p") || 0.9);
-      setRepetitionPenalty(settings().getSetting("diffusion.repetition_penalty") || 1.1);
-      setEnableStreaming(settings().getSetting("diffusion.enable_streaming") || true);
+      setRepetitionPenalty(
+        settings().getSetting("diffusion.repetition_penalty") || 1.1,
+      );
+      setEnableStreaming(
+        settings().getSetting("diffusion.enable_streaming") || true,
+      );
     } catch (error) {
       console.error("Failed to load diffusion settings:", error);
     } finally {
@@ -58,15 +66,27 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
     setIsSaving(true);
     try {
       await settings().setSetting("diffusion.max_new_tokens", maxNewTokens());
-      await settings().setSetting("diffusion.timeout_seconds", timeoutSeconds());
+      await settings().setSetting(
+        "diffusion.timeout_seconds",
+        timeoutSeconds(),
+      );
       await settings().setSetting("diffusion.device", device());
       await settings().setSetting("diffusion.auto_trim", autoTrim());
-      await settings().setSetting("diffusion.fix_punctuation", fixPunctuation());
+      await settings().setSetting(
+        "diffusion.fix_punctuation",
+        fixPunctuation(),
+      );
       await settings().setSetting("diffusion.temperature", temperature());
       await settings().setSetting("diffusion.top_p", topP());
-      await settings().setSetting("diffusion.repetition_penalty", repetitionPenalty());
-      await settings().setSetting("diffusion.enable_streaming", enableStreaming());
-      
+      await settings().setSetting(
+        "diffusion.repetition_penalty",
+        repetitionPenalty(),
+      );
+      await settings().setSetting(
+        "diffusion.enable_streaming",
+        enableStreaming(),
+      );
+
       await settings().saveSettings();
     } catch (error) {
       console.error("Failed to save diffusion settings:", error);
@@ -97,7 +117,9 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
           {/* Generation Parameters */}
           <div class="setting-group">
             <h4>Generation Parameters</h4>
-            <p class="setting-description">Configure text generation behavior and quality.</p>
+            <p class="setting-description">
+              Configure text generation behavior and quality.
+            </p>
 
             <div class="setting-row">
               <TextField
@@ -151,7 +173,9 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={repetitionPenalty()}
-                onChange={(value) => setRepetitionPenalty(parseFloat(value) || 1.1)}
+                onChange={(value) =>
+                  setRepetitionPenalty(parseFloat(value) || 1.1)
+                }
                 description="Penalty for repeating tokens (1.0 = no penalty, >1.0 = reduce repetition)"
                 validation={{ min: 1, max: 2 }}
               />
@@ -161,7 +185,9 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
           {/* Device Configuration */}
           <div class="setting-group">
             <h4>Device Configuration</h4>
-            <p class="setting-description">Configure hardware preferences for model execution.</p>
+            <p class="setting-description">
+              Configure hardware preferences for model execution.
+            </p>
 
             <div class="setting-row">
               <Select
@@ -177,7 +203,9 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
           {/* Output Processing */}
           <div class="setting-group">
             <h4>Output Processing</h4>
-            <p class="setting-description">Configure post-processing of generated text.</p>
+            <p class="setting-description">
+              Configure post-processing of generated text.
+            </p>
 
             <div class="setting-row">
               <Toggle

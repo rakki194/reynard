@@ -7,11 +7,11 @@ export interface LoadingSpinnerProps {
 
 export const LoadingSpinner: Component<LoadingSpinnerProps> = (props) => {
   const { t } = useI18n();
-  
+
   return (
     <div class="threejs-loading">
       <div class="loading-spinner" />
-      <span>{props.message || t('3d.loading3DVisualization')}</span>
+      <span>{props.message || t("3d.loading3DVisualization")}</span>
     </div>
   );
 };

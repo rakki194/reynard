@@ -1,6 +1,6 @@
 /**
  * Caption Generator State Composable
- * 
+ *
  * Manages all state for the caption generator component.
  * Extracted to keep the main component under the 140-line limit.
  */
@@ -48,7 +48,9 @@ export function useCaptionGeneratorState(): CaptionGeneratorState {
   const [generationProgress, setGenerationProgress] = createSignal(0);
   const [result, setResult] = createSignal<CaptionResult | null>(null);
   const [error, setError] = createSignal<string | null>(null);
-  const [availableGenerators, setAvailableGenerators] = createSignal<GeneratorInfo[]>([]);
+  const [availableGenerators, setAvailableGenerators] = createSignal<
+    GeneratorInfo[]
+  >([]);
   const [isDragOver, setIsDragOver] = createSignal(false);
 
   return {

@@ -3,10 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": [
-      "vitest/globals",
-      "solid-js"
-    ]
+    "types": ["vitest/globals", "solid-js"]
   },
   "include": [
     "src/**/*.test.ts",
@@ -17,8 +14,5 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

@@ -9,20 +9,20 @@ import { setupBrowserTest } from "./browser-setup";
  * Includes gallery-specific mocks like IntersectionObserver, matchMedia, and storage
  */
 export function setupGalleryTest() {
-    setupBrowserTest();
+  setupBrowserTest();
 
-    // Mock window.matchMedia for responsive tests
-    Object.defineProperty(window, "matchMedia", {
-        writable: true,
-        value: (query: string) => ({
-            matches: false,
-            media: query,
-            onchange: null,
-            addListener: () => { },
-            removeListener: () => { },
-            addEventListener: () => { },
-            removeEventListener: () => { },
-            dispatchEvent: () => { },
-        }),
-    });
+  // Mock window.matchMedia for responsive tests
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => {},
+    }),
+  });
 }

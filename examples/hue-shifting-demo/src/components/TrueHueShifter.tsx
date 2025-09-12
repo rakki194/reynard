@@ -1,6 +1,6 @@
 import { Component, createSignal, createMemo, For } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import { 
+import {
   pureHueShift,
   generateHueShiftRamp,
   createComplementaryPair,
@@ -9,7 +9,7 @@ import {
   createAnalogousSet,
   batchHueShift,
   easedHueShift,
-  EasingFunctions
+  EasingFunctions,
 } from "reynard-colors";
 import "./TrueHueShifter.css";
 
@@ -23,7 +23,8 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
   const [rampStops, setRampStops] = createSignal(5);
   const [rampRange, setRampRange] = createSignal(60);
   const [selectedPreset, setSelectedPreset] = createSignal<string>("custom");
-  const [easingFunction, setEasingFunction] = createSignal<keyof typeof EasingFunctions>("linear");
+  const [easingFunction, setEasingFunction] =
+    createSignal<keyof typeof EasingFunctions>("linear");
 
   const shiftedColor = createMemo(() => {
     return pureHueShift(props.baseColor, hueShift());
@@ -35,7 +36,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
 
   const presetColors = createMemo(() => {
     const base = props.baseColor;
-    
+
     switch (selectedPreset()) {
       case "complementary":
         return createComplementaryPair(base);
@@ -51,7 +52,12 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
         const easedColors: OKLCHColor[] = [];
         for (let i = 0; i < rampStops(); i++) {
           const t = i / (rampStops() - 1);
-          const eased = easedHueShift(base, rampRange(), t, EasingFunctions[easingFunction()]);
+          const eased = easedHueShift(
+            base,
+            rampRange(),
+            t,
+            EasingFunctions[easingFunction()],
+          );
           easedColors.push(eased);
         }
         return easedColors;
@@ -70,7 +76,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
   };
 
   const applyHueShift = (deltaH: number) => {
-    setHueShift(prev => prev + deltaH);
+    setHueShift((prev) => prev + deltaH);
   };
 
   return (
@@ -82,9 +88,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
 
       <div class="hue-controls">
         <div class="hue-shift-control">
-          <label for="hue-shift-slider">
-            Hue Shift: {hueShift()}°
-          </label>
+          <label for="hue-shift-slider">Hue Shift: {hueShift()}°</label>
           <input
             id="hue-shift-slider"
             type="range"
@@ -108,7 +112,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
 
         <div class="preset-selector">
           <label for="preset-select">Color Harmony:</label>
-          <select 
+          <select
             id="preset-select"
             value={selectedPreset()}
             onChange={(e) => handlePresetChange(e.target.value)}
@@ -139,7 +143,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
               />
               <span>{rampStops()}</span>
             </div>
-            
+
             <div class="control-group">
               <label for="ramp-range">Hue Range:</label>
               <input
@@ -160,10 +164,14 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
         {selectedPreset() === "eased" && (
           <div class="easing-controls">
             <label for="easing-select">Easing Function:</label>
-            <select 
+            <select
               id="easing-select"
               value={easingFunction()}
-              onChange={(e) => setEasingFunction(e.target.value as keyof typeof EasingFunctions)}
+              onChange={(e) =>
+                setEasingFunction(
+                  e.target.value as keyof typeof EasingFunctions,
+                )
+              }
             >
               <option value="linear">Linear</option>
               <option value="easeInOut">Ease In-Out</option>
@@ -181,7 +189,7 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
           <For each={presetColors()}>
             {(color, index) => (
               <div class="color-swatch">
-                <div 
+                <div
                   class="swatch-color"
                   style={`background: oklch(${color.l}% ${color.c} ${color.h})`}
                 ></div>
@@ -206,14 +214,14 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
             <div>C: {props.baseColor.c.toFixed(3)}</div>
             <div>H: {props.baseColor.h.toFixed(1)}°</div>
           </div>
-          
+
           <div class="info-item">
             <strong>Shifted Color:</strong>
             <div>L: {shiftedColor().l.toFixed(1)}% (preserved)</div>
             <div>C: {shiftedColor().c.toFixed(3)} (preserved)</div>
             <div>H: {shiftedColor().h.toFixed(1)}° (shifted)</div>
           </div>
-          
+
           <div class="info-item">
             <strong>Shift Amount:</strong>
             <div>{hueShift()}°</div>
@@ -224,14 +232,15 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
       <div class="hue-explanation">
         <h4>What is True Hue Shifting?</h4>
         <p>
-          True hue shifting in OKLCH preserves the lightness (L) and chroma (C) values 
-          while only modifying the hue (H) component. This ensures perceptually uniform 
-          color changes that maintain the original brightness and saturation.
+          True hue shifting in OKLCH preserves the lightness (L) and chroma (C)
+          values while only modifying the hue (H) component. This ensures
+          perceptually uniform color changes that maintain the original
+          brightness and saturation.
         </p>
         <p>
-          Unlike color ramping (which modifies all three components), pure hue shifting 
-          is mathematically correct for creating color harmonies and maintaining visual 
-          consistency across different hues.
+          Unlike color ramping (which modifies all three components), pure hue
+          shifting is mathematically correct for creating color harmonies and
+          maintaining visual consistency across different hues.
         </p>
       </div>
     </div>

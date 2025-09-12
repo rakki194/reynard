@@ -12,12 +12,12 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        "solid-js", 
-        "solid-js/web", 
+        "solid-js",
+        "solid-js/web",
         "solid-js/store",
         "reynard-ai-shared",
         "reynard-core",
-        "reynard-service-manager"
+        "reynard-service-manager",
       ],
       output: {
         globals: {

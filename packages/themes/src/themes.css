@@ -404,40 +404,86 @@ textarea:focus {
    ========================================================================== */
 
 /* Text utilities */
-.text-primary { color: var(--color-text); }
-.text-secondary { color: var(--color-text-secondary); }
-.text-tertiary { color: var(--color-text-tertiary); }
-.text-inverse { color: var(--color-text-inverse); }
+.text-primary {
+  color: var(--color-text);
+}
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+.text-tertiary {
+  color: var(--color-text-tertiary);
+}
+.text-inverse {
+  color: var(--color-text-inverse);
+}
 
 /* Background utilities */
-.bg-primary { background-color: var(--color-background); }
-.bg-secondary { background-color: var(--color-background-secondary); }
-.bg-tertiary { background-color: var(--color-background-tertiary); }
-.bg-surface { background-color: var(--color-surface); }
+.bg-primary {
+  background-color: var(--color-background);
+}
+.bg-secondary {
+  background-color: var(--color-background-secondary);
+}
+.bg-tertiary {
+  background-color: var(--color-background-tertiary);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
 
 /* Border utilities */
-.border { border: 1px solid var(--color-border); }
-.border-hover { border: 1px solid var(--color-border-hover); }
+.border {
+  border: 1px solid var(--color-border);
+}
+.border-hover {
+  border: 1px solid var(--color-border-hover);
+}
 
 /* Interactive utilities */
-.hover\:bg-surface:hover { background-color: var(--color-surface-hover); }
-.hover\:bg-active:hover { background-color: var(--color-surface-active); }
-.hover\:border-hover:hover { border-color: var(--color-border-hover); }
+.hover\:bg-surface:hover {
+  background-color: var(--color-surface-hover);
+}
+.hover\:bg-active:hover {
+  background-color: var(--color-surface-active);
+}
+.hover\:border-hover:hover {
+  border-color: var(--color-border-hover);
+}
 
 /* Focus utilities */
-.focus\:outline-primary:focus { outline: 2px solid var(--color-primary); }
-.focus\:outline-accent:focus { outline: 2px solid var(--color-accent); }
+.focus\:outline-primary:focus {
+  outline: 2px solid var(--color-primary);
+}
+.focus\:outline-accent:focus {
+  outline: 2px solid var(--color-accent);
+}
 
 /* Status utilities */
-.text-success { color: var(--color-success); }
-.text-warning { color: var(--color-warning); }
-.text-error { color: var(--color-error); }
-.text-info { color: var(--color-info); }
+.text-success {
+  color: var(--color-success);
+}
+.text-warning {
+  color: var(--color-warning);
+}
+.text-error {
+  color: var(--color-error);
+}
+.text-info {
+  color: var(--color-info);
+}
 
-.bg-success { background-color: var(--color-success); }
-.bg-warning { background-color: var(--color-warning); }
-.bg-error { background-color: var(--color-error); }
-.bg-info { background-color: var(--color-info); }
+.bg-success {
+  background-color: var(--color-success);
+}
+.bg-warning {
+  background-color: var(--color-warning);
+}
+.bg-error {
+  background-color: var(--color-error);
+}
+.bg-info {
+  background-color: var(--color-info);
+}
 
 /* ==========================================================================
    Responsive Design
@@ -476,42 +522,48 @@ textarea:focus {
     box-shadow: none !important;
     text-shadow: none !important;
   }
-  
-  a, a:visited {
+
+  a,
+  a:visited {
     text-decoration: underline;
   }
-  
+
   a[href]:after {
     content: " (" attr(href) ")";
   }
-  
+
   abbr[title]:after {
     content: " (" attr(title) ")";
   }
-  
-  pre, blockquote {
+
+  pre,
+  blockquote {
     border: 1px solid #999;
     page-break-inside: avoid;
   }
-  
+
   thead {
     display: table-header-group;
   }
-  
-  tr, img {
+
+  tr,
+  img {
     page-break-inside: avoid;
   }
-  
+
   img {
     max-width: 100% !important;
   }
-  
-  p, h2, h3 {
+
+  p,
+  h2,
+  h3 {
     orphans: 3;
     widows: 3;
   }
-  
-  h2, h3 {
+
+  h2,
+  h3 {
     page-break-after: avoid;
   }
 }

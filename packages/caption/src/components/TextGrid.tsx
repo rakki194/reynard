@@ -1,6 +1,6 @@
 /**
  * Text Grid Component for Reynard Caption System
- * 
+ *
  * Leverages existing text processing infrastructure and Monaco editor
  * for comprehensive text file handling and editing.
  */
@@ -13,24 +13,24 @@ import { useTextFileUpload } from "../composables/useTextFileUpload";
 import { useTextFileManager } from "../composables/useTextFileManager";
 
 export const TextGrid: Component<TextGridProps> = (props) => {
-  const { 
-    textFiles, 
-    selectedFile, 
+  const {
+    textFiles,
+    selectedFile,
     setSelectedFile,
-    handleFileSelect, 
-    handleFileRemove, 
+    handleFileSelect,
+    handleFileRemove,
     handleFileModify,
-    addFiles
+    addFiles,
   } = useTextFileManager({
     initialFiles: props.initialFiles,
     onFileSelect: props.onFileSelect,
     onFileRemove: props.onFileRemove,
-    onFileModify: props.onFileModify
+    onFileModify: props.onFileModify,
   });
-  
+
   const { isLoading, error, handleFileUpload } = useTextFileUpload({
     maxFiles: props.maxFiles,
-    onError: (error) => console.error("File upload error:", error)
+    onError: (error) => console.error("File upload error:", error),
   });
 
   // Handle file upload
@@ -41,7 +41,6 @@ export const TextGrid: Component<TextGridProps> = (props) => {
     }
   };
 
-
   return (
     <div class={`text-grid ${props.class || ""}`}>
       <TextFileUpload
@@ -49,7 +48,7 @@ export const TextGrid: Component<TextGridProps> = (props) => {
         isLoading={isLoading()}
         error={error()}
       />
-      
+
       <TextFilesGrid
         files={textFiles()}
         selectedFile={selectedFile()}
@@ -63,4 +62,3 @@ export const TextGrid: Component<TextGridProps> = (props) => {
     </div>
   );
 };
-

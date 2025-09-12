@@ -25,7 +25,7 @@ export function usePointCloudEvents() {
   ): void => {
     const currentRaycaster = raycaster();
     const currentMouse = mouse();
-    
+
     if (!currentRaycaster || !currentMouse || !camera || !pointCloud) return;
 
     // Update mouse position
@@ -50,10 +50,7 @@ export function usePointCloudEvents() {
     }
   };
 
-  const handlePointHover = (
-    pointId: string,
-    config: any,
-  ): void => {
+  const handlePointHover = (pointId: string, config: any): void => {
     // Highlight point on hover
     if (config.enableHighlighting) {
       // Implementation for highlighting

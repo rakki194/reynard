@@ -7,7 +7,7 @@
 @import "reynard-themes/themes.css";
 
 /* Import advanced styles */
-@import './components/RAGAdvancedStyles.css';
+@import "./components/RAGAdvancedStyles.css";
 
 /* ==========================================================================
    RAG Search Container

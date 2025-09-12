@@ -77,7 +77,9 @@ export class HTTPClient {
   /**
    * Make HTTP request with retry logic and exponential backoff
    */
-  async request<T = unknown>(options: HTTPRequestOptions): Promise<HTTPResponse<T>> {
+  async request<T = unknown>(
+    options: HTTPRequestOptions,
+  ): Promise<HTTPResponse<T>> {
     const url = `${this.config.baseUrl}${options.endpoint}`;
     const headers = { ...this.baseHeaders, ...options.headers };
     const timeout = options.timeout ?? this.config.timeout;
@@ -127,7 +129,9 @@ export class HTTPClient {
         }
 
         if (!response.ok) {
-          const error = new Error(`HTTP ${response.status}: ${response.statusText}`) as HTTPError;
+          const error = new Error(
+            `HTTP ${response.status}: ${response.statusText}`,
+          ) as HTTPError;
           error.status = response.status;
           error.statusText = response.statusText;
           error.response = {
@@ -149,9 +153,10 @@ export class HTTPClient {
           config: options,
         };
       } catch (error) {
-        lastError = error instanceof Error ?
-          (error as HTTPError) :
-          new Error(String(error)) as HTTPError;
+        lastError =
+          error instanceof Error
+            ? (error as HTTPError)
+            : (new Error(String(error)) as HTTPError);
 
         lastError.config = options;
 
@@ -170,30 +175,52 @@ export class HTTPClient {
   /**
    * Convenience methods for common HTTP operations
    */
-  async get<T = unknown>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async get<T = unknown>(
+    endpoint: string,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "GET", endpoint, ...options });
   }
 
-  async post<T = unknown>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async post<T = unknown>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "POST", endpoint, data, ...options });
   }
 
-  async put<T = unknown>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async put<T = unknown>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "PUT", endpoint, data, ...options });
   }
 
-  async delete<T = unknown>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async delete<T = unknown>(
+    endpoint: string,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "DELETE", endpoint, ...options });
   }
 
-  async patch<T = unknown>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async patch<T = unknown>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "PATCH", endpoint, data, ...options });
   }
 
   /**
    * Upload file with multipart form data
    */
-  async upload<T = unknown>(endpoint: string, file: File, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
+  async upload<T = unknown>(
+    endpoint: string,
+    file: File,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>> {
     const formData = new FormData();
     formData.append("file", file);
 
@@ -216,7 +243,8 @@ export class HTTPClient {
     return {
       requestCount: this.requestCount,
       errorCount: this.errorCount,
-      errorRate: this.requestCount > 0 ? (this.errorCount / this.requestCount) * 100 : 0,
+      errorRate:
+        this.requestCount > 0 ? (this.errorCount / this.requestCount) * 100 : 0,
     };
   }
 

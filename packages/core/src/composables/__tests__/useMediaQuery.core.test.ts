@@ -78,7 +78,7 @@ describe("useMediaQuery Core", () => {
       createRoot(() => {
         const mobile = useMediaQuery("(max-width: 768px)");
         const desktop = useMediaQuery("(min-width: 1025px)");
-        
+
         expect(typeof mobile).toBe("function");
         expect(typeof desktop).toBe("function");
         expect(mobile()).toBe(false);

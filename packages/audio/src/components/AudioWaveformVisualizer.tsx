@@ -22,7 +22,12 @@ import {
   Show,
 } from "solid-js";
 import { AudioThumbnailGenerator } from "reynard-file-processing";
-import { LoadingState, ErrorState, WaveformCanvas, PlaybackControls } from "./AudioWaveformComponents";
+import {
+  LoadingState,
+  ErrorState,
+  WaveformCanvas,
+  PlaybackControls,
+} from "./AudioWaveformComponents";
 import "./AudioWaveformVisualizer.css";
 
 export interface AudioWaveformVisualizerProps {
@@ -86,8 +91,12 @@ export interface WaveformData {
   sampleRate: number;
 }
 
-export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = (props) => {
-  const [waveformData, setWaveformData] = createSignal<WaveformData | null>(null);
+export const AudioWaveformVisualizer: Component<
+  AudioWaveformVisualizerProps
+> = (props) => {
+  const [waveformData, setWaveformData] = createSignal<WaveformData | null>(
+    null,
+  );
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentTime, setCurrentTime] = createSignal(0);
   const [duration, setDuration] = createSignal(0);
@@ -153,9 +162,10 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
         audioRef.addEventListener("ended", handleEnded);
         audioRef.addEventListener("error", handleError);
       }
-
     } catch (err) {
-      setError(`Failed to load audio: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      setError(
+        `Failed to load audio: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     } finally {
       setIsLoading(false);
     }
@@ -179,22 +189,26 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
     try {
       // Generate waveform data using the thumbnail generator
       const result = await thumbnailGenerator.generateThumbnail(props.audioSrc);
-      
+
       if (result.success && result.data) {
         // For now, we'll create mock waveform data
         // In a real implementation, this would extract actual waveform data
         const mockWaveformData: WaveformData = {
-          amplitudes: Array.from({ length: waveformConfig().bars }, () => Math.random()),
+          amplitudes: Array.from({ length: waveformConfig().bars }, () =>
+            Math.random(),
+          ),
           duration: 0, // Will be set when audio loads
           sampleRate: 44100,
         };
-        
+
         setWaveformData(mockWaveformData);
       } else {
         throw new Error(result.error || "Failed to generate waveform");
       }
     } catch (err) {
-      throw new Error(`Waveform generation failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      throw new Error(
+        `Waveform generation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     }
   };
 
@@ -202,7 +216,9 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
   const handleLoadedMetadata = () => {
     if (audioRef) {
       setDuration(audioRef.duration);
-      setWaveformData(prev => prev ? { ...prev, duration: audioRef!.duration } : null);
+      setWaveformData((prev) =>
+        prev ? { ...prev, duration: audioRef!.duration } : null,
+      );
     }
   };
 
@@ -263,7 +279,7 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
     const rect = canvasRef.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const clickTime = (x / rect.width) * duration();
-    
+
     seekTo(clickTime);
   };
 
@@ -282,7 +298,9 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
     const barSpacing = waveformConfig().barSpacing;
     const totalBarWidth = barWidth + barSpacing;
     const visibleBars = Math.floor(canvasWidth / totalBarWidth);
-    const startBar = Math.floor(_pan() * (data.amplitudes.length - visibleBars));
+    const startBar = Math.floor(
+      _pan() * (data.amplitudes.length - visibleBars),
+    );
 
     // Clear canvas
     ctx.fillStyle = waveformConfig().backgroundColor;
@@ -297,7 +315,7 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
         const barHeight = amplitude * canvasHeight * 0.8;
         const x = i * totalBarWidth;
         const y = (canvasHeight - barHeight) / 2;
-        
+
         ctx.fillRect(x, y, barWidth, barHeight);
       }
     }
@@ -306,7 +324,7 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
     if (interactionConfig().showProgress && duration() > 0) {
       const progress = currentTime() / duration();
       const progressX = progress * canvasWidth;
-      
+
       ctx.fillStyle = "#ef4444";
       ctx.fillRect(progressX, 0, 2, canvasHeight);
     }
@@ -323,7 +341,11 @@ export const AudioWaveformVisualizer: Component<AudioWaveformVisualizerProps> = 
         {/* Audio element (hidden) */}
         <audio
           ref={audioRef}
-          src={typeof props.audioSrc === "string" ? props.audioSrc : URL.createObjectURL(props.audioSrc)}
+          src={
+            typeof props.audioSrc === "string"
+              ? props.audioSrc
+              : URL.createObjectURL(props.audioSrc)
+          }
           loop={playbackConfig().loop}
           preload="metadata"
         />

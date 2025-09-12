@@ -1,6 +1,6 @@
 /**
  * Staggered Animation Composable
- * 
+ *
  * Manages staggered entrance and exit animations for floating panels.
  * Based on Yipyap's sophisticated animation timing system.
  */
@@ -9,7 +9,7 @@ import { createSignal, createEffect, onCleanup } from "solid-js";
 import type {
   AnimationConfig,
   StaggeredAnimation,
-  UseStaggeredAnimationReturn
+  UseStaggeredAnimationReturn,
 } from "../types";
 
 export interface UseStaggeredAnimationOptions {
@@ -39,26 +39,27 @@ const DEFAULT_ANIMATION_CONFIG: Required<AnimationConfig> = {
     exit: "translateY(20px) scale(0.95)",
     scale: 1,
     translateX: 0,
-    translateY: 0
-  }
+    translateY: 0,
+  },
 };
 
 const DEFAULT_STAGGER_CONFIG: Required<StaggeredAnimation> = {
   baseDelay: 0.1,
   staggerStep: 0.1,
   maxDelay: 0.5,
-  direction: "forward"
+  direction: "forward",
 };
 
 export function useStaggeredAnimation(
-  options: UseStaggeredAnimationOptions = {}
+  options: UseStaggeredAnimationOptions = {},
 ): UseStaggeredAnimationReturn {
   const config = { ...DEFAULT_ANIMATION_CONFIG, ...options };
   const staggerConfig = { ...DEFAULT_STAGGER_CONFIG, ...options };
 
   // Animation state
   const [isAnimating, setIsAnimating] = createSignal(false);
-  const [animationConfig, setAnimationConfig] = createSignal<AnimationConfig>(config);
+  const [animationConfig, setAnimationConfig] =
+    createSignal<AnimationConfig>(config);
 
   // Animation timing
   let animationTimeoutId: number | undefined;
@@ -67,31 +68,32 @@ export function useStaggeredAnimation(
   // Cleanup on unmount
   onCleanup(() => {
     if (animationTimeoutId) clearTimeout(animationTimeoutId);
-    staggerTimeoutIds.forEach(id => clearTimeout(id));
+    staggerTimeoutIds.forEach((id) => clearTimeout(id));
   });
 
   // Calculate stagger delay based on index and direction
   const getStaggerDelay = (index: number): number => {
     const { baseDelay, staggerStep, maxDelay, direction } = staggerConfig;
-    
+
     let delay: number;
-    
+
     switch (direction) {
       case "forward":
-        delay = baseDelay + (index * staggerStep);
+        delay = baseDelay + index * staggerStep;
         break;
       case "reverse":
-        delay = baseDelay + ((staggerTimeoutIds.length - 1 - index) * staggerStep);
+        delay =
+          baseDelay + (staggerTimeoutIds.length - 1 - index) * staggerStep;
         break;
       case "center-out":
         const center = Math.floor(staggerTimeoutIds.length / 2);
         const distance = Math.abs(index - center);
-        delay = baseDelay + (distance * staggerStep);
+        delay = baseDelay + distance * staggerStep;
         break;
       default:
-        delay = baseDelay + (index * staggerStep);
+        delay = baseDelay + index * staggerStep;
     }
-    
+
     return Math.min(delay, maxDelay);
   };
 
@@ -108,27 +110,27 @@ export function useStaggeredAnimation(
   // Start animation sequence
   const startAnimation = () => {
     setIsAnimating(true);
-    
+
     // Clear any existing timeouts
-    staggerTimeoutIds.forEach(id => clearTimeout(id));
+    staggerTimeoutIds.forEach((id) => clearTimeout(id));
     staggerTimeoutIds = [];
-    
+
     // Update animation config
-    setAnimationConfig(prev => ({
+    setAnimationConfig((prev) => ({
       ...prev,
       staggerDelay: staggerConfig.baseDelay,
       entranceDelay: staggerConfig.baseDelay,
-      exitDelay: config.exitDelay
+      exitDelay: config.exitDelay,
     }));
   };
 
   // Stop animation sequence
   const stopAnimation = () => {
     setIsAnimating(false);
-    
+
     // Clear all timeouts
     if (animationTimeoutId) clearTimeout(animationTimeoutId);
-    staggerTimeoutIds.forEach(id => clearTimeout(id));
+    staggerTimeoutIds.forEach((id) => clearTimeout(id));
     staggerTimeoutIds = [];
   };
 
@@ -151,7 +153,7 @@ export function useStaggeredAnimation(
     getExitDelay,
     isAnimating,
     startAnimation,
-    stopAnimation
+    stopAnimation,
   };
 }
 
@@ -160,15 +162,15 @@ export function useStaggeredAnimation(
  */
 export function usePanelAnimation(
   panelIndex: number,
-  options: UseStaggeredAnimationOptions = {}
+  options: UseStaggeredAnimationOptions = {},
 ) {
   const animation = useStaggeredAnimation(options);
-  
+
   return {
     ...animation,
     panelDelay: () => animation.getStaggerDelay(panelIndex),
     panelEntranceDelay: () => animation.getEntranceDelay(panelIndex),
-    panelExitDelay: () => animation.getExitDelay(panelIndex)
+    panelExitDelay: () => animation.getExitDelay(panelIndex),
   };
 }
 
@@ -177,25 +179,25 @@ export function usePanelAnimation(
  */
 export function useMultiPanelAnimation(
   panelCount: number,
-  options: UseStaggeredAnimationOptions = {}
+  options: UseStaggeredAnimationOptions = {},
 ) {
   const animation = useStaggeredAnimation(options);
-  
+
   const getPanelDelays = () => {
     return Array.from({ length: panelCount }, (_, i) => ({
       index: i,
       staggerDelay: animation.getStaggerDelay(i),
       entranceDelay: animation.getEntranceDelay(i),
-      exitDelay: animation.getExitDelay(i)
+      exitDelay: animation.getExitDelay(i),
     }));
   };
-  
+
   return {
     ...animation,
     panelCount: () => panelCount,
     getPanelDelays,
     getPanelDelay: (index: number) => animation.getStaggerDelay(index),
     getPanelEntranceDelay: (index: number) => animation.getEntranceDelay(index),
-    getPanelExitDelay: (index: number) => animation.getExitDelay(index)
+    getPanelExitDelay: (index: number) => animation.getExitDelay(index),
   };
 }

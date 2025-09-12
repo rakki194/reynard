@@ -123,10 +123,7 @@ export class BackendAnnotationManager {
   }
 
   // Convenience methods for common operations
-  async generateFurryTags(
-    imagePath: string,
-    config?: Record<string, unknown>,
-  ) {
+  async generateFurryTags(imagePath: string, config?: Record<string, unknown>) {
     return generateFurryTags(this, imagePath, config);
   }
 
@@ -137,10 +134,7 @@ export class BackendAnnotationManager {
     return generateDetailedCaption(this, imagePath, config);
   }
 
-  async generateAnimeTags(
-    imagePath: string,
-    config?: Record<string, unknown>,
-  ) {
+  async generateAnimeTags(imagePath: string, config?: Record<string, unknown>) {
     return generateAnimeTags(this, imagePath, config);
   }
 

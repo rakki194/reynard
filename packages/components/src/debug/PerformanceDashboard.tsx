@@ -49,15 +49,20 @@ export interface PerformanceHistory {
   frameDropCount?: number;
 }
 
-export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props) => {
+export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
+  props,
+) => {
   const performanceMonitor = usePerformanceMonitor();
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRecording, setIsRecording] = createSignal(false);
   const [memoryUsage, setMemoryUsage] = createSignal<number>(0);
-  const [browserResponsiveness, setBrowserResponsiveness] = createSignal<number>(0);
+  const [browserResponsiveness, setBrowserResponsiveness] =
+    createSignal<number>(0);
   const [frameRate, setFrameRate] = createSignal<number>(60);
   const [warnings, setWarnings] = createSignal<PerformanceWarning[]>([]);
-  const [performanceHistory, setPerformanceHistory] = createSignal<PerformanceHistory[]>([]);
+  const [performanceHistory, setPerformanceHistory] = createSignal<
+    PerformanceHistory[]
+  >([]);
   const [lastUpdate, setLastUpdate] = createSignal<Date | null>(null);
 
   // Auto-refresh functionality
@@ -102,20 +107,23 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
       const memory = await performanceMonitor.measureMemoryUsage();
       setMemoryUsage(memory);
 
-      const responsiveness = await performanceMonitor.checkBrowserResponsiveness();
+      const responsiveness =
+        await performanceMonitor.checkBrowserResponsiveness();
       setBrowserResponsiveness(responsiveness);
 
       updateFrameRate();
 
       // Convert warnings to our format
-      const convertedWarnings: PerformanceWarning[] = currentWarnings.map((warning, index) => ({
-        type: warning.severity,
-        message: warning.message,
-        value: warning.value,
-        threshold: warning.threshold,
-        timestamp: warning.timestamp,
-        severity: warning.severity,
-      }));
+      const convertedWarnings: PerformanceWarning[] = currentWarnings.map(
+        (warning, index) => ({
+          type: warning.severity,
+          message: warning.message,
+          value: warning.value,
+          threshold: warning.threshold,
+          timestamp: warning.timestamp,
+          severity: warning.severity,
+        }),
+      );
       setWarnings(convertedWarnings);
 
       // Update performance history
@@ -190,7 +198,9 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (props
       frameRate: frameRate(),
     };
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;

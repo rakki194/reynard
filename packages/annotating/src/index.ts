@@ -3,7 +3,10 @@
  */
 
 // Main manager class and factory
-export { BackendAnnotationManager, createAnnotationManager } from "./BackendAnnotationManager";
+export {
+  BackendAnnotationManager,
+  createAnnotationManager,
+} from "./BackendAnnotationManager";
 
 // Configuration types and constants
 export type { BackendAnnotationManagerConfig } from "./config";
@@ -24,8 +27,8 @@ export { BatchConfiguration } from "./components/BatchConfiguration";
 export { BatchProgress } from "./components/BatchProgress";
 export { BatchFileList } from "./components/BatchFileList";
 export { BatchResults } from "./components/BatchResults";
-export type { 
-  BatchCaptionProcessorProps, 
-  BatchFile, 
-  BatchProgress 
+export type {
+  BatchCaptionProcessorProps,
+  BatchFile,
+  BatchProgress,
 } from "./components/BatchCaptionProcessor";

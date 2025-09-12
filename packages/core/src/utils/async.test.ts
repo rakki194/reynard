@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { i18n } from 'reynard-i18n';
+import { i18n } from "reynard-i18n";
 
 // Import all async utilities
 import {
@@ -67,21 +67,23 @@ describe("Async Utilities", () => {
     it("should reject when timeout is reached", async () => {
       const promise = new Promise<string>(() => {}); // Never resolves
       await expect(withTimeout(promise, 100)).rejects.toThrow(
-        i18n.t('core.async.operation-timed-out'),
+        i18n.t("core.async.operation-timed-out"),
       );
     }, 10000);
 
     it("should use custom error message", async () => {
       const promise = new Promise<string>(() => {});
-      await expect(withTimeout(promise, 100, i18n.t('core.async.custom-timeout'))).rejects.toThrow(
-        i18n.t('core.async.custom-timeout'),
-      );
+      await expect(
+        withTimeout(promise, 100, i18n.t("core.async.custom-timeout")),
+      ).rejects.toThrow(i18n.t("core.async.custom-timeout"));
     }, 10000);
 
     it("should handle promise rejection", async () => {
-      const promise = Promise.reject(new Error(i18n.t('core.async.original-error')));
+      const promise = Promise.reject(
+        new Error(i18n.t("core.async.original-error")),
+      );
       await expect(withTimeout(promise, 1000)).rejects.toThrow(
-        i18n.t('core.async.original-error'),
+        i18n.t("core.async.original-error"),
       );
     });
   });
@@ -97,8 +99,8 @@ describe("Async Utilities", () => {
     it("should retry and eventually succeed", async () => {
       const mockFn = vi
         .fn()
-        .mockRejectedValueOnce(new Error(i18n.t('core.async.first-failure')))
-        .mockRejectedValueOnce(new Error(i18n.t('core.async.second-failure')))
+        .mockRejectedValueOnce(new Error(i18n.t("core.async.first-failure")))
+        .mockRejectedValueOnce(new Error(i18n.t("core.async.second-failure")))
         .mockResolvedValue("success");
 
       const result = await retry(mockFn, 3, 50);
@@ -107,15 +109,19 @@ describe("Async Utilities", () => {
     }, 15000);
 
     it("should fail after max retries", async () => {
-      const mockFn = vi.fn().mockRejectedValue(new Error(i18n.t('core.async.persistent-failure')));
-      await expect(retry(mockFn, 2, 50)).rejects.toThrow(i18n.t('core.async.persistent-failure'));
+      const mockFn = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.async.persistent-failure")));
+      await expect(retry(mockFn, 2, 50)).rejects.toThrow(
+        i18n.t("core.async.persistent-failure"),
+      );
       expect(mockFn).toHaveBeenCalledTimes(3); // Initial + 2 retries
     }, 15000);
 
     it("should use exponential backoff", async () => {
       const mockFn = vi
         .fn()
-        .mockRejectedValueOnce(new Error(i18n.t('core.async.first-failure')))
+        .mockRejectedValueOnce(new Error(i18n.t("core.async.first-failure")))
         .mockResolvedValue("success");
 
       const start = Date.now();
@@ -157,10 +163,14 @@ describe("Async Utilities", () => {
     }, 5000);
 
     it("should handle function errors", async () => {
-      const mockFn = vi.fn().mockRejectedValue(new Error(i18n.t('core.async.function-failed')));
+      const mockFn = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.async.function-failed")));
       const debouncedFn = debounce(mockFn, 100);
 
-      await expect(debouncedFn("arg")).rejects.toThrow(i18n.t('core.async.function-failed'));
+      await expect(debouncedFn("arg")).rejects.toThrow(
+        i18n.t("core.async.function-failed"),
+      );
     });
 
     it("should clear timeout on new calls", async () => {
@@ -204,10 +214,14 @@ describe("Async Utilities", () => {
     }, 15000);
 
     it("should handle function errors", async () => {
-      const mockFn = vi.fn().mockRejectedValue(new Error(i18n.t('core.async.function-failed')));
+      const mockFn = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.async.function-failed")));
       const throttledFn = throttle(mockFn, 100);
 
-      await expect(throttledFn("arg")).rejects.toThrow(i18n.t('core.async.function-failed'));
+      await expect(throttledFn("arg")).rejects.toThrow(
+        i18n.t("core.async.function-failed"),
+      );
     });
   });
 
@@ -286,7 +300,9 @@ describe("Async Utilities", () => {
 
     it("should handle mapper errors", async () => {
       const items = [1, 2, 3];
-      const mapper = vi.fn().mockRejectedValue(new Error(i18n.t('core.async.mapper-failed')));
+      const mapper = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.async.mapper-failed")));
 
       // The function now catches errors and stores them in results array
       const results = await mapWithConcurrency(items, mapper);
@@ -301,10 +317,10 @@ describe("Async Utilities", () => {
       const mapper = vi.fn().mockResolvedValue("result");
 
       await expect(mapWithConcurrency(items, mapper, 0)).rejects.toThrow(
-        i18n.t('core.async.concurrency-must-be-greater-than-0'),
+        i18n.t("core.async.concurrency-must-be-greater-than-0"),
       );
       await expect(mapWithConcurrency(items, mapper, -1)).rejects.toThrow(
-        i18n.t('core.async.concurrency-must-be-greater-than-0'),
+        i18n.t("core.async.concurrency-must-be-greater-than-0"),
       );
     });
 
@@ -340,7 +356,9 @@ describe("Async Utilities", () => {
       const promise = poll(condition, 100, 500);
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      await expect(promise).rejects.toThrow("[core.async.polling-timeout-reached]");
+      await expect(promise).rejects.toThrow(
+        "[core.async.polling-timeout-reached]",
+      );
     });
 
     it("should handle async conditions", async () => {
@@ -409,13 +427,19 @@ describe("Async Utilities", () => {
     });
 
     it("should clean up cache on error", async () => {
-      const mockFn = vi.fn().mockRejectedValue(new Error(i18n.t('core.async.function-failed')));
+      const mockFn = vi
+        .fn()
+        .mockRejectedValue(new Error(i18n.t("core.async.function-failed")));
       const memoizedFn = memoizeAsync(mockFn);
 
-      await expect(memoizedFn("arg")).rejects.toThrow(i18n.t('core.async.function-failed'));
+      await expect(memoizedFn("arg")).rejects.toThrow(
+        i18n.t("core.async.function-failed"),
+      );
 
       // Second call should not use cache
-      await expect(memoizedFn("arg")).rejects.toThrow(i18n.t('core.async.function-failed'));
+      await expect(memoizedFn("arg")).rejects.toThrow(
+        i18n.t("core.async.function-failed"),
+      );
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
   });

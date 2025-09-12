@@ -1,6 +1,6 @@
 /**
  * RAG Search Tab Component
- * 
+ *
  * Handles the search interface and results display
  * for RAG queries with EmbeddingGemma integration.
  */
@@ -41,7 +41,9 @@ export function SearchTab(props: SearchTabProps) {
           <div class="search-input-group">
             <TextField
               value={props.query}
-              onInput={(e: Event) => props.onQueryChange((e.target as HTMLInputElement).value)}
+              onInput={(e: Event) =>
+                props.onQueryChange((e.target as HTMLInputElement).value)
+              }
               onKeyPress={props.onKeyPress}
               placeholder="Ask a question or search for information..."
               fullWidth

@@ -13,7 +13,7 @@ export class SystemImpl implements System {
     public readonly dependencies: string[] = [],
     public readonly exclusive: boolean = false,
     public readonly condition?: SystemCondition,
-  ) { }
+  ) {}
 }
 
 /**
@@ -22,7 +22,7 @@ export class SystemImpl implements System {
 export class ScheduleImpl implements Schedule {
   private systems: System[] = [];
 
-  constructor(public readonly name: string) { }
+  constructor(public readonly name: string) {}
 
   addSystem(system: System): this {
     // Validate system parameter
@@ -224,7 +224,7 @@ export class SystemBuilder {
         // Combine multiple conditions with AND logic
         combinedCondition = {
           __condition: true as const,
-          name: `combined_${this.conditions.map(c => c.name).join('_and_')}`,
+          name: `combined_${this.conditions.map((c) => c.name).join("_and_")}`,
           run: (world: World) => {
             for (const condition of this.conditions) {
               try {
@@ -256,8 +256,11 @@ export class SystemBuilder {
  */
 export function system(name: string, run: SystemFunction): SystemBuilder;
 export function system(run: SystemFunction): SystemBuilder;
-export function system(nameOrRun: string | SystemFunction, run?: SystemFunction): SystemBuilder {
-  if (typeof nameOrRun === 'string') {
+export function system(
+  nameOrRun: string | SystemFunction,
+  run?: SystemFunction,
+): SystemBuilder {
+  if (typeof nameOrRun === "string") {
     // Called with name and function: system(name, run)
     return new SystemBuilder(nameOrRun, run!);
   } else {
@@ -280,7 +283,7 @@ export function schedule(name: string): ScheduleImpl {
 export class SystemSet {
   private systems: System[] = [];
 
-  constructor(public readonly name: string) { }
+  constructor(public readonly name: string) {}
 
   /**
    * Adds a system to this set.
@@ -338,7 +341,7 @@ export class SystemSetConfig {
     public readonly set: SystemSet,
     public readonly otherSet: SystemSet,
     public readonly order: "before" | "after",
-  ) { }
+  ) {}
 }
 
 /**

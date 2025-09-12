@@ -3,7 +3,7 @@
  * Functions for validating and sanitizing OKLCH color values
  */
 
-import type { OKLCHColor } from 'reynard-colors';
+import type { OKLCHColor } from "reynard-colors";
 
 /**
  * Validate OKLCH color values
@@ -12,9 +12,15 @@ import type { OKLCHColor } from 'reynard-colors';
  */
 export function validateOKLCHColor(color: OKLCHColor): boolean {
   return (
-    typeof color.l === 'number' && color.l >= 0 && color.l <= 100 &&
-    typeof color.c === 'number' && color.c >= 0 && color.c <= 0.4 &&
-    typeof color.h === 'number' && color.h >= 0 && color.h < 360
+    typeof color.l === "number" &&
+    color.l >= 0 &&
+    color.l <= 100 &&
+    typeof color.c === "number" &&
+    color.c >= 0 &&
+    color.c <= 0.4 &&
+    typeof color.h === "number" &&
+    color.h >= 0 &&
+    color.h < 360
   );
 }
 
@@ -27,7 +33,7 @@ export function clampOKLCHColor(color: OKLCHColor): OKLCHColor {
   return {
     l: Math.max(0, Math.min(100, color.l)),
     c: Math.max(0, Math.min(0.4, color.c)),
-    h: ((color.h % 360) + 360) % 360
+    h: ((color.h % 360) + 360) % 360,
   };
 }
 
@@ -37,7 +43,7 @@ export function clampOKLCHColor(color: OKLCHColor): OKLCHColor {
  * @returns True if all colors are valid
  */
 export function validateOKLCHColorArray(colors: OKLCHColor[]): boolean {
-  return colors.every(color => validateOKLCHColor(color));
+  return colors.every((color) => validateOKLCHColor(color));
 }
 
 /**
@@ -46,7 +52,7 @@ export function validateOKLCHColorArray(colors: OKLCHColor[]): boolean {
  * @returns Array of sanitized OKLCH colors
  */
 export function sanitizeOKLCHColorArray(colors: OKLCHColor[]): OKLCHColor[] {
-  return colors.map(color => clampOKLCHColor(color));
+  return colors.map((color) => clampOKLCHColor(color));
 }
 
 /**
@@ -59,7 +65,7 @@ export function sanitizeOKLCHColorArray(colors: OKLCHColor[]): OKLCHColor[] {
 export function colorsApproximatelyEqual(
   color1: OKLCHColor,
   color2: OKLCHColor,
-  tolerance: number = 0.01
+  tolerance: number = 0.01,
 ): boolean {
   return (
     Math.abs(color1.l - color2.l) < tolerance &&
@@ -76,12 +82,12 @@ export function colorsApproximatelyEqual(
  */
 export function validateShiftParameters(
   shiftType: string,
-  intensity: number
+  intensity: number,
 ): boolean {
-  const validShiftTypes = ['shadow', 'highlight', 'midtone'];
+  const validShiftTypes = ["shadow", "highlight", "midtone"];
   return (
     validShiftTypes.includes(shiftType) &&
-    typeof intensity === 'number' &&
+    typeof intensity === "number" &&
     intensity >= 0 &&
     intensity <= 1
   );
@@ -95,11 +101,19 @@ export function validateShiftParameters(
  */
 export function validateAnimationParameters(
   keyframeCount: number,
-  animationType: string
+  animationType: string,
 ): boolean {
-  const validAnimationTypes = ['pulse', 'shift', 'fade', 'breathing', 'shimmer', 'cycling', 'rainbow'];
+  const validAnimationTypes = [
+    "pulse",
+    "shift",
+    "fade",
+    "breathing",
+    "shimmer",
+    "cycling",
+    "rainbow",
+  ];
   return (
-    typeof keyframeCount === 'number' &&
+    typeof keyframeCount === "number" &&
     keyframeCount > 0 &&
     keyframeCount <= 100 &&
     validAnimationTypes.includes(animationType)
@@ -112,7 +126,7 @@ export function validateAnimationParameters(
  * @returns True if material type is valid
  */
 export function validateMaterialType(material: string): boolean {
-  const validMaterials = ['metal', 'skin', 'fabric', 'plastic'];
+  const validMaterials = ["metal", "skin", "fabric", "plastic"];
   return validMaterials.includes(material);
 }
 
@@ -123,18 +137,22 @@ export function validateMaterialType(material: string): boolean {
  */
 export function getOKLCHValidationErrors(color: OKLCHColor): string[] {
   const errors: string[] = [];
-  
-  if (typeof color.l !== 'number' || color.l < 0 || color.l > 100) {
-    errors.push(`Lightness (l) must be a number between 0 and 100, got: ${color.l}`);
+
+  if (typeof color.l !== "number" || color.l < 0 || color.l > 100) {
+    errors.push(
+      `Lightness (l) must be a number between 0 and 100, got: ${color.l}`,
+    );
   }
-  
-  if (typeof color.c !== 'number' || color.c < 0 || color.c > 0.4) {
-    errors.push(`Chroma (c) must be a number between 0 and 0.4, got: ${color.c}`);
+
+  if (typeof color.c !== "number" || color.c < 0 || color.c > 0.4) {
+    errors.push(
+      `Chroma (c) must be a number between 0 and 0.4, got: ${color.c}`,
+    );
   }
-  
-  if (typeof color.h !== 'number' || color.h < 0 || color.h >= 360) {
+
+  if (typeof color.h !== "number" || color.h < 0 || color.h >= 360) {
     errors.push(`Hue (h) must be a number between 0 and 360, got: ${color.h}`);
   }
-  
+
   return errors;
 }

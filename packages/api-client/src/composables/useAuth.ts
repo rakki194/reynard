@@ -2,8 +2,12 @@
  * Authentication composable for Reynard API
  */
 
-import { createSignal, createResource } from 'solid-js';
-import type { UserLogin, UserCreate, UserResponse } from '../generated/index.js';
+import { createSignal, createResource } from "solid-js";
+import type {
+  UserLogin,
+  UserCreate,
+  UserResponse,
+} from "../generated/index.js";
 
 export interface UseAuthOptions {
   basePath?: string;
@@ -15,13 +19,13 @@ export function useAuth(options: UseAuthOptions = {}) {
 
   const login = async (credentials: UserLogin) => {
     // Stub implementation
-    console.log('Login attempt:', credentials);
+    console.log("Login attempt:", credentials);
     return { success: true, user: null };
   };
 
   const register = async (data: UserCreate) => {
     // Stub implementation
-    console.log('Register attempt:', data);
+    console.log("Register attempt:", data);
     return { success: true, user: null };
   };
 
@@ -35,6 +39,6 @@ export function useAuth(options: UseAuthOptions = {}) {
     isAuthenticated,
     login,
     register,
-    logout
+    logout,
   };
 }

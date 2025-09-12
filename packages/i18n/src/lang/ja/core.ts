@@ -13,14 +13,14 @@ export const coreTranslations = {
   request: {
     aborted: "リクエストが中止されました",
   },
-  
+
   // 認証とセキュリティ
   bearer: {
     token: "Bearerトークン",
     "test-key": "Bearerテストキー",
     "new-key": "Bearer新しいキー",
   },
-  
+
   // 通知
   notifications: {
     title: "通知",
@@ -55,7 +55,7 @@ export const coreTranslations = {
     "first-grouped": "最初のグループ化",
     "second-grouped": "2番目のグループ化",
   },
-  
+
   // バリデーションメッセージ
   validation: {
     required: "このフィールドは必須です",
@@ -70,30 +70,43 @@ export const coreTranslations = {
     "invalid-input-type": "無効な入力タイプ",
     "does-not-match-pattern": "入力が要求されたパターンに一致しません",
   },
-  
+
   // パスワードバリデーション
   password: {
-    "must-be-at-least-8-characters-long": "パスワードは8文字以上である必要があります",
-    "must-contain-at-least-one-uppercase-letter": "パスワードには少なくとも1つの大文字が含まれている必要があります",
-    "must-contain-at-least-one-lowercase-letter": "パスワードには少なくとも1つの小文字が含まれている必要があります",
-    "must-contain-at-least-one-number": "パスワードには少なくとも1つの数字が含まれている必要があります",
-    "must-contain-at-least-one-special-character": "パスワードには少なくとも1つの特殊文字が含まれている必要があります",
+    "must-be-at-least-8-characters-long":
+      "パスワードは8文字以上である必要があります",
+    "must-contain-at-least-one-uppercase-letter":
+      "パスワードには少なくとも1つの大文字が含まれている必要があります",
+    "must-contain-at-least-one-lowercase-letter":
+      "パスワードには少なくとも1つの小文字が含まれている必要があります",
+    "must-contain-at-least-one-number":
+      "パスワードには少なくとも1つの数字が含まれている必要があります",
+    "must-contain-at-least-one-special-character":
+      "パスワードには少なくとも1つの特殊文字が含まれている必要があります",
   },
-  
+
   // セキュリティバリデーション
   security: {
-    "at-least-one-character-type-must-be-included": "少なくとも1つの文字タイプが含まれている必要があります",
-    "input-contains-potentially-dangerous-html": "入力に潜在的に危険なHTMLが含まれています",
-    "input-contains-potentially-dangerous-sql-patterns": "入力に潜在的に危険なSQLパターンが含まれています",
-    "input-contains-potentially-dangerous-xss-patterns": "入力に潜在的に危険なXSSパターンが含まれています",
-    "input-contains-path-traversal-patterns": "入力にパストラバーサルパターンが含まれています",
-    "input-contains-windows-reserved-names": "入力にWindows予約名が含まれています",
-    "input-contains-executable-file-extensions": "入力に実行可能ファイル拡張子が含まれています",
+    "at-least-one-character-type-must-be-included":
+      "少なくとも1つの文字タイプが含まれている必要があります",
+    "input-contains-potentially-dangerous-html":
+      "入力に潜在的に危険なHTMLが含まれています",
+    "input-contains-potentially-dangerous-sql-patterns":
+      "入力に潜在的に危険なSQLパターンが含まれています",
+    "input-contains-potentially-dangerous-xss-patterns":
+      "入力に潜在的に危険なXSSパターンが含まれています",
+    "input-contains-path-traversal-patterns":
+      "入力にパストラバーサルパターンが含まれています",
+    "input-contains-windows-reserved-names":
+      "入力にWindows予約名が含まれています",
+    "input-contains-executable-file-extensions":
+      "入力に実行可能ファイル拡張子が含まれています",
     "input-contains-null-bytes": "入力にnullバイトが含まれています",
     "input-contains-hidden-files": "入力に隠しファイルが含まれています",
-    "input-contains-javascript-file-extensions": "入力にJavaScriptファイル拡張子が含まれています",
+    "input-contains-javascript-file-extensions":
+      "入力にJavaScriptファイル拡張子が含まれています",
   },
-  
+
   // 非同期操作
   async: {
     "operation-timed-out": "操作がタイムアウトしました",
@@ -104,10 +117,11 @@ export const coreTranslations = {
     "persistent-failure": "永続的な失敗",
     "function-failed": "関数が失敗しました",
     "mapper-failed": "マッパーが失敗しました",
-    "concurrency-must-be-greater-than-0": "並行性は0より大きくなければなりません",
+    "concurrency-must-be-greater-than-0":
+      "並行性は0より大きくなければなりません",
     "polling-timeout-reached": "ポーリングタイムアウトに達しました",
   },
-  
+
   // モジュール読み込み
   module: {
     "is-null": "モジュールがnullです",
@@ -115,14 +129,15 @@ export const coreTranslations = {
     "load-failed": "読み込みに失敗しました",
     "loading-failed": "読み込みに失敗しました",
   },
-  
+
   // ストレージとシリアライゼーション
   storage: {
     "potentially-dangerous-json-detected": "潜在的に危険なJSONが検出されました",
-    "failed-to-parse-json-from-localstorage": "localStorageからJSONの解析に失敗しました:",
+    "failed-to-parse-json-from-localstorage":
+      "localStorageからJSONの解析に失敗しました:",
     "error-parsing-storage-event": "キーのストレージイベント解析エラー",
   },
-  
+
   // テストと開発
   test: {
     error: "テストエラー",
@@ -131,19 +146,19 @@ export const coreTranslations = {
     "notification-1": "テスト通知1",
     "notification-2": "テスト通知2",
   },
-  
+
   // 一般的なエラー
   errors: {
     "string-error": "文字列エラー",
     "crypto-error": "暗号化エラー",
     "some-error": "何らかのエラー",
   },
-  
+
   // フォーマッターとユーティリティ
   formatters: {
     "hello-world": "こんにちは世界",
   },
-  
+
   // 日付と時刻
   dateTime: {
     now: "今",
@@ -153,11 +168,13 @@ export const coreTranslations = {
     format: "フォーマット",
     timezone: "タイムゾーン",
   },
-  
+
   // 統合テスト
   integration: {
     "session-and-api-key-generation": "セッションとAPIキーの生成",
-    "authentication-and-input-validation-integration": "認証と入力バリデーションの統合",
-    "performance-and-security-integration": "パフォーマンスとセキュリティの統合",
+    "authentication-and-input-validation-integration":
+      "認証と入力バリデーションの統合",
+    "performance-and-security-integration":
+      "パフォーマンスとセキュリティの統合",
   },
 };

@@ -1,6 +1,6 @@
 /**
  * Model Manager Sub-components
- * 
+ *
  * Sub-components for the Model Manager to keep the main component
  * under the 140-line limit.
  */
@@ -15,10 +15,13 @@ export const HealthOverview: Component<{
   <Show when={props.systemHealth}>
     <div class="health-overview">
       <div class="health-status">
-        <div class="status-indicator" classList={{
-          "status-indicator--healthy": props.systemHealth?.isHealthy,
-          "status-indicator--unhealthy": !props.systemHealth?.isHealthy,
-        }}>
+        <div
+          class="status-indicator"
+          classList={{
+            "status-indicator--healthy": props.systemHealth?.isHealthy,
+            "status-indicator--unhealthy": !props.systemHealth?.isHealthy,
+          }}
+        >
           <div class="status-dot" />
           <span class="status-text">
             {props.systemHealth?.isHealthy ? "System Healthy" : "System Issues"}
@@ -29,15 +32,21 @@ export const HealthOverview: Component<{
       <div class="performance-metrics">
         <div class="metric">
           <span class="metric-label">CPU Usage</span>
-          <span class="metric-value">{props.systemHealth?.performance.cpuUsage.toFixed(1)}%</span>
+          <span class="metric-value">
+            {props.systemHealth?.performance.cpuUsage.toFixed(1)}%
+          </span>
         </div>
         <div class="metric">
           <span class="metric-label">Memory Usage</span>
-          <span class="metric-value">{props.systemHealth?.performance.memoryUsage.toFixed(1)}%</span>
+          <span class="metric-value">
+            {props.systemHealth?.performance.memoryUsage.toFixed(1)}%
+          </span>
         </div>
         <div class="metric">
           <span class="metric-label">Queue Length</span>
-          <span class="metric-value">{props.systemHealth?.performance.queueLength}</span>
+          <span class="metric-value">
+            {props.systemHealth?.performance.queueLength}
+          </span>
         </div>
       </div>
     </div>
@@ -50,21 +59,31 @@ export const ModelCard: Component<{
   onLoad: (modelName: string) => void;
   onUnload: (modelName: string) => void;
 }> = (props) => (
-  <div class="model-card" classList={{
-    "model-card--loaded": props.model.isLoaded,
-    "model-card--loading": props.model.isLoading,
-  }}>
+  <div
+    class="model-card"
+    classList={{
+      "model-card--loaded": props.model.isLoaded,
+      "model-card--loading": props.model.isLoading,
+    }}
+  >
     <div class="model-header">
       <div class="model-name">{props.model.displayName}</div>
       <div class="model-status">
-        <div class="status-indicator" classList={{
-          "status-indicator--loaded": props.model.isLoaded,
-          "status-indicator--unloaded": !props.model.isLoaded,
-          "status-indicator--loading": props.model.isLoading,
-        }}>
+        <div
+          class="status-indicator"
+          classList={{
+            "status-indicator--loaded": props.model.isLoaded,
+            "status-indicator--unloaded": !props.model.isLoaded,
+            "status-indicator--loading": props.model.isLoading,
+          }}
+        >
           <div class="status-dot" />
           <span class="status-text">
-            {props.model.isLoading ? "Loading..." : props.model.isLoaded ? "Loaded" : "Unloaded"}
+            {props.model.isLoading
+              ? "Loading..."
+              : props.model.isLoaded
+                ? "Loaded"
+                : "Unloaded"}
           </span>
         </div>
       </div>
@@ -76,14 +95,21 @@ export const ModelCard: Component<{
       <div class="model-stats">
         <div class="stat">
           <span class="stat-label">Requests</span>
-          <span class="stat-value">{props.model.usageStats?.totalRequests || 0}</span>
+          <span class="stat-value">
+            {props.model.usageStats?.totalRequests || 0}
+          </span>
         </div>
         <div class="stat">
           <span class="stat-label">Success Rate</span>
           <span class="stat-value">
-            {props.model.usageStats?.totalRequests 
-              ? ((props.model.usageStats.successfulRequests / props.model.usageStats.totalRequests) * 100).toFixed(1)
-              : 0}%
+            {props.model.usageStats?.totalRequests
+              ? (
+                  (props.model.usageStats.successfulRequests /
+                    props.model.usageStats.totalRequests) *
+                  100
+                ).toFixed(1)
+              : 0}
+            %
           </span>
         </div>
         <div class="stat">

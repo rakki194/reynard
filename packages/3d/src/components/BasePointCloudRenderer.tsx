@@ -14,14 +14,16 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = (
   createEffect(() => {
     if (!props.scene || !props.camera || !props.renderer) return;
 
-    initialization.initializeRenderer(
-      props.scene,
-      props.camera,
-      props.renderer,
-      props.points,
-      props.config,
-      props.onPointSelect,
-    ).catch(console.error);
+    initialization
+      .initializeRenderer(
+        props.scene,
+        props.camera,
+        props.renderer,
+        props.points,
+        props.config,
+        props.onPointSelect,
+      )
+      .catch(console.error);
   });
 
   const updateConfiguration = (newConfig: typeof props.config) => {
