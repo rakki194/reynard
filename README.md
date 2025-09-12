@@ -4,6 +4,107 @@
 
 Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content management system. The framework extracts and modularizes YipYap's proven architectural patterns into reusable packages for modern web development.
 
+## Table of Contents
+
+- [🦊 Reynard](#-reynard)
+  - [Table of Contents](#table-of-contents)
+  - [🚀 Quick Start](#-quick-start)
+  - [📚 Documentation](#-documentation)
+  - [✨ Key Features](#-key-features)
+  - [📦 Package Ecosystem](#-package-ecosystem)
+    - [Core Packages](#core-packages)
+    - [Specialized Packages](#specialized-packages)
+  - [🎯 Philosophy](#-philosophy)
+  - [🧪 Testing](#-testing)
+  - [🚀 Performance](#-performance)
+    - [Bundle Sizes](#bundle-sizes)
+  - [📚 Package Documentation](#-package-documentation)
+    - [Core Packages](#core-packages-1)
+    - [Specialized Packages](#specialized-packages-1)
+  - [🎨 Theming System](#-theming-system)
+  - [📱 Examples and Templates](#-examples-and-templates)
+    - [Real-World Applications](#real-world-applications)
+    - [Templates](#templates)
+    - [reynard-chat](#reynard-chat)
+      - [Chat Features](#chat-features)
+      - [Chat Components](#chat-components)
+      - [Chat Composables](#chat-composables)
+      - [Chat Example Usage](#chat-example-usage)
+    - [reynard-rag](#reynard-rag)
+      - [RAG Features](#rag-features)
+      - [RAG Components](#rag-components)
+      - [RAG Example Usage](#rag-example-usage)
+    - [reynard-auth](#reynard-auth)
+      - [Auth Features](#auth-features)
+      - [Auth Components](#auth-components)
+      - [Auth Composables](#auth-composables)
+      - [Auth Example Usage](#auth-example-usage)
+    - [reynard-charts](#reynard-charts)
+      - [Chart Types](#chart-types)
+      - [Charts Features](#charts-features)
+      - [Charts Example Usage](#charts-example-usage)
+    - [reynard-gallery](#reynard-gallery)
+      - [Gallery Features](#gallery-features)
+      - [Gallery Components](#gallery-components)
+      - [Gallery Composables](#gallery-composables)
+      - [Gallery Example Usage](#gallery-example-usage)
+    - [reynard-settings](#reynard-settings)
+      - [Settings Features](#settings-features)
+      - [Setting Types](#setting-types)
+      - [Settings Components](#settings-components)
+      - [Settings Composables](#settings-composables)
+      - [Settings Example Usage](#settings-example-usage)
+    - [reynard-algorithms](#reynard-algorithms)
+      - [Algorithm Types](#algorithm-types)
+      - [Core Features](#core-features)
+      - [Algorithms Example Usage](#algorithms-example-usage)
+    - [reynard-file-processing](#reynard-file-processing)
+      - [Supported File Types](#supported-file-types)
+      - [Core Components](#core-components)
+      - [File Processing Example Usage](#file-processing-example-usage)
+    - [reynard-annotating](#reynard-annotating)
+      - [Annotating Features](#annotating-features)
+      - [Annotating Components](#annotating-components)
+      - [Annotating Example Usage](#annotating-example-usage)
+    - [reynard-caption](#reynard-caption)
+      - [Caption Features](#caption-features)
+      - [Caption Components](#caption-components)
+      - [Caption Example Usage](#caption-example-usage)
+      - [Complete Caption Workflow Example](#complete-caption-workflow-example)
+    - [reynard-testing](#reynard-testing)
+      - [Testing Features](#testing-features)
+      - [Testing Utilities](#testing-utilities)
+      - [Testing Example Usage](#testing-example-usage)
+  - [🎨 Theming System](#-theming-system-1)
+    - [Custom Themes](#custom-themes)
+  - [📱 Examples and Templates](#-examples-and-templates-1)
+    - [**🎯 Real-World Applications**](#-real-world-applications)
+    - [Templates](#templates-1)
+    - [Running Examples](#running-examples)
+  - [🧪 Testing](#-testing-1)
+    - [Test Coverage](#test-coverage)
+  - [♿ Accessibility](#-accessibility)
+  - [🌍 Internationalization](#-internationalization)
+  - [🛠️ Development Tools](#️-development-tools)
+    - [CLI Tools](#cli-tools)
+    - [VS Code Extension](#vs-code-extension)
+  - [📖 API Reference](#-api-reference)
+    - [Core API](#core-api)
+    - [Component API](#component-api)
+  - [🧪 Development](#-development)
+    - [**🦊 Getting Started with Reynard**](#-getting-started-with-reynard)
+  - [🤝 Contributing](#-contributing)
+    - [Development Setup](#development-setup)
+    - [Code Style](#code-style)
+  - [📄 License](#-license)
+  - [🙏 Acknowledgments](#-acknowledgments)
+    - [**🦊 Core Framework**](#-core-framework)
+    - [**🦦 YipYap Foundation**](#-yipyap-foundation)
+    - [**🎯 Research and Development**](#-research-and-development)
+  - [📞 Support](#-support)
+  - [🚀 The Future of Reynard](#-the-future-of-reynard)
+    - [**🦊 Join the Evolution**](#-join-the-evolution)
+
 ## 🚀 Quick Start
 
 ```bash
@@ -61,7 +162,7 @@ function App() {
 
 ## 📦 Package Ecosystem
 
-Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be independently useful while working seamlessly together. All packages are published to npm and ready for production use!
+Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be independently useful while working seamlessly together. The core package has minimal dependencies and works standalone, while other packages can be added as needed. All packages are published to npm and ready for production use!
 
 ### Core Packages
 
@@ -92,7 +193,15 @@ Reynard is guided by the "cunning fox" philosophy. The framework values smart, e
 
 ## 🧪 Testing
 
-Reynard includes comprehensive testing with Vitest and Playwright:
+Reynard includes comprehensive testing with a unified testing stack:
+
+**Core Testing Stack:**
+
+- **Vitest** - Fast, modern test runner with TypeScript support
+- **happy-dom** - Lightweight DOM environment (replacing jsdom for better performance)
+- **reynard-testing** - Unified testing utilities and configurations
+- **@solidjs/testing-library** - SolidJS component testing utilities
+- **Playwright** - End-to-end testing
 
 ```bash
 # Run all tests
@@ -1067,7 +1176,15 @@ pnpm run build
 
 ## 🧪 Testing
 
-Reynard includes comprehensive testing with Vitest and Playwright:
+Reynard includes comprehensive testing with a unified testing stack:
+
+**Core Testing Stack:**
+
+- **Vitest** - Fast, modern test runner with TypeScript support
+- **happy-dom** - Lightweight DOM environment (replacing jsdom for better performance)
+- **reynard-testing** - Unified testing utilities and configurations
+- **@solidjs/testing-library** - SolidJS component testing utilities
+- **Playwright** - End-to-end testing
 
 ```bash
 # Run all tests

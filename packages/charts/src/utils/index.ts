@@ -12,6 +12,10 @@ import {
 } from "../types";
 import { generateColorsWithCache } from "reynard-colors";
 
+// Export specialized chart utilities
+export * from "./barChartConfig";
+export * from "./barChartData";
+
 /**
  * Generate a color palette for datasets
  * @deprecated Use generateColorsWithCache from reynard-colors instead

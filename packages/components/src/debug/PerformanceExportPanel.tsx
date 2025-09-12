@@ -1,737 +1,124 @@
 /**
- * PerformanceExportPanel Component
- * Performance data export and reporting functionality
+ * Performance Export Panel Component
+ * Main component for performance data export functionality
+ * Refactored to be modular and under 140 lines
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
-import { fluentIconsPackage } from "reynard-fluent-icons";
+import { Component, Show, For } from "solid-js";
+import { Button, Select } from "reynard-components";
+import { Icon } from "reynard-components/icons";
+import { usePerformanceExport } from "./composables/usePerformanceExport";
+import type { PerformanceExportPanelProps } from "./types/PerformanceExportTypes";
 
-export interface PerformanceExportPanelProps {
-  /** Performance history data */
-  performanceHistory: Array<{
-    timestamp: number;
-    memoryUsage: number;
-    browserResponsiveness: number;
-    frameRate: number;
-    selectionDuration?: number;
-    itemsPerSecond?: number;
-    domUpdateCount?: number;
-    styleApplicationCount?: number;
-    frameDropCount?: number;
-  }>;
-  /** Performance warnings */
-  warnings: Array<{
-    id: string;
-    type: "critical" | "high" | "medium" | "low";
-    message: string;
-    value: number;
-    threshold: number;
-    timestamp: number;
-    severity: "critical" | "high" | "medium" | "low";
-  }>;
-  /** Export callback */
-  onExport: () => void;
-}
+export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (props) => {
+  const {
+    state,
+    filteredData,
+    availableMetrics,
+    exportFormats,
+    updateExportOptions,
+    selectRow,
+    selectAllRows,
+    clearSelection,
+    exportData,
+  } = usePerformanceExport(props.performanceHistory);
 
-export interface ExportOptions {
-  format: "json" | "csv" | "html" | "pdf";
-  includeHistory: boolean;
-  includeWarnings: boolean;
-  includeSummary: boolean;
-  includeCharts: boolean;
-  timeRange: "1h" | "6h" | "24h" | "7d" | "all";
-  compression: boolean;
-  filename: string;
-}
-
-export interface ExportSummary {
-  totalDataPoints: number;
-  timeRange: string;
-  averageFrameRate: number;
-  averageMemoryUsage: number;
-  averageBrowserResponsiveness: number;
-  totalWarnings: number;
-  criticalWarnings: number;
-  highWarnings: number;
-  mediumWarnings: number;
-  lowWarnings: number;
-  performanceScore: number;
-  recommendations: string[];
-}
-
-export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
-  props,
-) => {
-  const [exportOptions, setExportOptions] = createSignal<ExportOptions>({
-    format: "json",
-    includeHistory: true,
-    includeWarnings: true,
-    includeSummary: true,
-    includeCharts: false,
-    timeRange: "24h",
-    compression: false,
-    filename: `performance-report-${new Date().toISOString().split("T")[0]}`,
-  });
-  const [exportSummary, setExportSummary] = createSignal<ExportSummary>({
-    totalDataPoints: 0,
-    timeRange: "",
-    averageFrameRate: 0,
-    averageMemoryUsage: 0,
-    averageBrowserResponsiveness: 0,
-    totalWarnings: 0,
-    criticalWarnings: 0,
-    highWarnings: 0,
-    mediumWarnings: 0,
-    lowWarnings: 0,
-    performanceScore: 0,
-    recommendations: [],
-  });
-  const [isExporting, setIsExporting] = createSignal(false);
-  const [exportProgress, setExportProgress] = createSignal(0);
-  const [lastExport, setLastExport] = createSignal<Date | null>(null);
-
-  onMount(() => {
-    // Initial data load
-    updateExportSummary();
-  });
-
-  // Update export summary
-  const updateExportSummary = () => {
-    const history = props.performanceHistory;
-    const warnings = props.warnings;
-    const timeRange = exportOptions().timeRange;
-
-    // Filter data by time range
-    const filteredHistory = filterDataByTimeRange(history, timeRange);
-    const filteredWarnings = filterDataByTimeRange(warnings, timeRange);
-
-    // Calculate summary statistics
-    const totalDataPoints = filteredHistory.length;
-    const averageFrameRate =
-      filteredHistory.length > 0
-        ? filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) /
-          filteredHistory.length
-        : 0;
-    const averageMemoryUsage =
-      filteredHistory.length > 0
-        ? filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
-          filteredHistory.length
-        : 0;
-    const averageBrowserResponsiveness =
-      filteredHistory.length > 0
-        ? filteredHistory.reduce(
-            (sum, entry) => sum + entry.browserResponsiveness,
-            0,
-          ) / filteredHistory.length
-        : 0;
-
-    // Calculate warning statistics
-    const totalWarnings = filteredWarnings.length;
-    const criticalWarnings = filteredWarnings.filter(
-      (w) => w.severity === "critical",
-    ).length;
-    const highWarnings = filteredWarnings.filter(
-      (w) => w.severity === "high",
-    ).length;
-    const mediumWarnings = filteredWarnings.filter(
-      (w) => w.severity === "medium",
-    ).length;
-    const lowWarnings = filteredWarnings.filter(
-      (w) => w.severity === "low",
-    ).length;
-
-    // Calculate performance score
-    const performanceScore = calculatePerformanceScore(
-      filteredHistory,
-      filteredWarnings,
-    );
-
-    // Generate recommendations
-    const recommendations = generateRecommendations(
-      filteredHistory,
-      filteredWarnings,
-    );
-
-    const summary: ExportSummary = {
-      totalDataPoints,
-      timeRange: getTimeRangeLabel(timeRange),
-      averageFrameRate,
-      averageMemoryUsage,
-      averageBrowserResponsiveness,
-      totalWarnings,
-      criticalWarnings,
-      highWarnings,
-      mediumWarnings,
-      lowWarnings,
-      performanceScore,
-      recommendations,
-    };
-
-    setExportSummary(summary);
+  const handleExport = async () => {
+    await exportData();
+    props.onExport?.(filteredData(), state().exportOptions.format);
   };
 
-  // Filter data by time range
-  const filterDataByTimeRange = (data: any[], timeRange: string) => {
-    if (timeRange === "all") {
-      return data;
-    }
-
-    const now = Date.now();
-    const timeRangeMs = getTimeRangeMs(timeRange);
-    const cutoffTime = now - timeRangeMs;
-
-    return data.filter((entry) => entry.timestamp >= cutoffTime);
+  const handleClearHistory = () => {
+    props.onClearHistory?.();
   };
-
-  // Get time range in milliseconds
-  const getTimeRangeMs = (timeRange: string): number => {
-    switch (timeRange) {
-      case "1h":
-        return 60 * 60 * 1000;
-      case "6h":
-        return 6 * 60 * 60 * 1000;
-      case "24h":
-        return 24 * 60 * 60 * 1000;
-      case "7d":
-        return 7 * 24 * 60 * 60 * 1000;
-      default:
-        return 24 * 60 * 60 * 1000;
-    }
-  };
-
-  // Get time range label
-  const getTimeRangeLabel = (timeRange: string): string => {
-    switch (timeRange) {
-      case "1h":
-        return "Last 1 hour";
-      case "6h":
-        return "Last 6 hours";
-      case "24h":
-        return "Last 24 hours";
-      case "7d":
-        return "Last 7 days";
-      case "all":
-        return "All time";
-      default:
-        return "Last 24 hours";
-    }
-  };
-
-  // Calculate performance score
-  const calculatePerformanceScore = (
-    history: any[],
-    warnings: any[],
-  ): number => {
-    let score = 100;
-
-    // Frame rate penalty
-    if (history.length > 0) {
-      const avgFrameRate =
-        history.reduce((sum, entry) => sum + entry.frameRate, 0) /
-        history.length;
-      if (avgFrameRate < 30) {
-        score -= 40;
-      } else if (avgFrameRate < 45) {
-        score -= 20;
-      } else if (avgFrameRate < 55) {
-        score -= 10;
-      }
-    }
-
-    // Warning penalties
-    const criticalWarnings = warnings.filter(
-      (w) => w.severity === "critical",
-    ).length;
-    const highWarnings = warnings.filter((w) => w.severity === "high").length;
-    const mediumWarnings = warnings.filter(
-      (w) => w.severity === "medium",
-    ).length;
-
-    score -= criticalWarnings * 20;
-    score -= highWarnings * 10;
-    score -= mediumWarnings * 5;
-
-    return Math.max(0, Math.min(100, score));
-  };
-
-  // Generate recommendations
-  const generateRecommendations = (
-    history: any[],
-    warnings: any[],
-  ): string[] => {
-    const recommendations: string[] = [];
-
-    if (history.length > 0) {
-      const avgFrameRate =
-        history.reduce((sum, entry) => sum + entry.frameRate, 0) /
-        history.length;
-      if (avgFrameRate < 30) {
-        recommendations.push(
-          "Frame rate is below 30 FPS - consider optimizing rendering performance",
-        );
-      } else if (avgFrameRate < 45) {
-        recommendations.push(
-          "Frame rate is below 45 FPS - monitor performance closely",
-        );
-      }
-
-      const avgMemoryUsage =
-        history.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
-        history.length;
-      if (avgMemoryUsage > 200 * 1024 * 1024) {
-        // 200MB
-        recommendations.push(
-          "High memory usage detected - investigate for potential memory leaks",
-        );
-      }
-
-      const avgBrowserResponsiveness =
-        history.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) /
-        history.length;
-      if (avgBrowserResponsiveness > 100) {
-        recommendations.push(
-          "Browser responsiveness is poor - consider reducing computational load",
-        );
-      }
-    }
-
-    const criticalWarnings = warnings.filter(
-      (w) => w.severity === "critical",
-    ).length;
-    if (criticalWarnings > 0) {
-      recommendations.push(
-        `${criticalWarnings} critical performance issues require immediate attention`,
-      );
-    }
-
-    const highWarnings = warnings.filter((w) => w.severity === "high").length;
-    if (highWarnings > 0) {
-      recommendations.push(
-        `${highWarnings} high priority performance issues should be addressed soon`,
-      );
-    }
-
-    if (recommendations.length === 0) {
-      recommendations.push(
-        "Performance appears to be within acceptable parameters",
-      );
-    }
-
-    return recommendations;
-  };
-
-  // Export performance data
-  const exportPerformanceData = async () => {
-    setIsExporting(true);
-    setExportProgress(0);
-
-    try {
-      const options = exportOptions();
-      const history = props.performanceHistory;
-      const warnings = props.warnings;
-
-      // Filter data by time range
-      const filteredHistory = filterDataByTimeRange(history, options.timeRange);
-      const filteredWarnings = filterDataByTimeRange(
-        warnings,
-        options.timeRange,
-      );
-
-      setExportProgress(25);
-
-      // Prepare export data
-      const exportData: any = {
-        metadata: {
-          exportDate: new Date().toISOString(),
-          timeRange: options.timeRange,
-          totalDataPoints: filteredHistory.length,
-          totalWarnings: filteredWarnings.length,
-        },
-      };
-
-      if (options.includeSummary) {
-        exportData.summary = exportSummary();
-        setExportProgress(50);
-      }
-
-      if (options.includeHistory) {
-        exportData.performanceHistory = filteredHistory;
-        setExportProgress(75);
-      }
-
-      if (options.includeWarnings) {
-        exportData.warnings = filteredWarnings;
-        setExportProgress(90);
-      }
-
-      // Generate export file
-      let content: string;
-      let mimeType: string;
-      let fileExtension: string;
-
-      switch (options.format) {
-        case "json":
-          content = JSON.stringify(exportData, null, 2);
-          mimeType = "application/json";
-          fileExtension = "json";
-          break;
-        case "csv":
-          content = generateCSV(exportData);
-          mimeType = "text/csv";
-          fileExtension = "csv";
-          break;
-        case "html":
-          content = generateHTML(exportData);
-          mimeType = "text/html";
-          fileExtension = "html";
-          break;
-        default:
-          content = JSON.stringify(exportData, null, 2);
-          mimeType = "application/json";
-          fileExtension = "json";
-      }
-
-      setExportProgress(95);
-
-      // Download file
-      const blob = new Blob([content], { type: mimeType });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${options.filename}.${fileExtension}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      setExportProgress(100);
-      setLastExport(new Date());
-
-      // Call the parent export callback
-      props.onExport();
-    } catch (error) {
-      console.error("Failed to export performance data:", error);
-    } finally {
-      setIsExporting(false);
-      setExportProgress(0);
-    }
-  };
-
-  // Generate CSV content
-  const generateCSV = (data: any): string => {
-    const lines: string[] = [];
-
-    // Header
-    lines.push(
-      "Timestamp,Frame Rate,Memory Usage,Browser Responsiveness,Selection Duration,Items Per Second,DOM Updates,Style Applications,Frame Drops",
-    );
-
-    // Data rows
-    if (data.performanceHistory) {
-      data.performanceHistory.forEach((entry: any) => {
-        lines.push(
-          [
-            new Date(entry.timestamp).toISOString(),
-            entry.frameRate,
-            entry.memoryUsage,
-            entry.browserResponsiveness,
-            entry.selectionDuration || 0,
-            entry.itemsPerSecond || 0,
-            entry.domUpdateCount || 0,
-            entry.styleApplicationCount || 0,
-            entry.frameDropCount || 0,
-          ].join(","),
-        );
-      });
-    }
-
-    return lines.join("\n");
-  };
-
-  // Generate HTML content
-  const generateHTML = (data: any): string => {
-    return `
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Performance Report</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { background: #f5f5f5; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
-        .summary { background: #e8f4f8; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .metric { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .warnings { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .warning { background: white; padding: 10px; margin: 5px 0; border-radius: 3px; border-left: 4px solid #ffc107; }
-        .critical { border-left-color: #dc3545; }
-        .high { border-left-color: #fd7e14; }
-        .medium { border-left-color: #ffc107; }
-        .low { border-left-color: #28a745; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Performance Report</h1>
-        <p>Generated on: ${new Date().toISOString()}</p>
-        <p>Time Range: ${data.metadata.timeRange}</p>
-        <p>Total Data Points: ${data.metadata.totalDataPoints}</p>
-    </div>
-    
-    ${
-      data.summary
-        ? `
-    <div class="summary">
-        <h2>Summary</h2>
-        <div class="metrics">
-            <div class="metric">
-                <h3>Performance Score</h3>
-                <p>${data.summary.performanceScore.toFixed(0)}/100</p>
-            </div>
-            <div class="metric">
-                <h3>Average Frame Rate</h3>
-                <p>${data.summary.averageFrameRate.toFixed(1)} fps</p>
-            </div>
-            <div class="metric">
-                <h3>Average Memory Usage</h3>
-                <p>${(data.summary.averageMemoryUsage / (1024 * 1024)).toFixed(1)} MB</p>
-            </div>
-            <div class="metric">
-                <h3>Total Warnings</h3>
-                <p>${data.summary.totalWarnings}</p>
-            </div>
-        </div>
-    </div>
-    `
-        : ""
-    }
-    
-    ${
-      data.warnings && data.warnings.length > 0
-        ? `
-    <div class="warnings">
-        <h2>Performance Warnings</h2>
-        ${data.warnings
-          .map(
-            (warning: any) => `
-        <div class="warning ${warning.severity}">
-            <strong>${warning.severity.toUpperCase()}</strong>: ${warning.message}
-            <br>Value: ${warning.value}ms, Threshold: ${warning.threshold}ms
-            <br>Time: ${new Date(warning.timestamp).toLocaleString()}
-        </div>
-        `,
-          )
-          .join("")}
-    </div>
-    `
-        : ""
-    }
-    
-    ${
-      data.summary && data.summary.recommendations
-        ? `
-    <div class="summary">
-        <h2>Recommendations</h2>
-        <ul>
-            ${data.summary.recommendations.map((rec: string) => `<li>${rec}</li>`).join("")}
-        </ul>
-    </div>
-    `
-        : ""
-    }
-</body>
-</html>`;
-  };
-
-  // Update export summary when options change
-  createEffect(() => {
-    updateExportSummary();
-  });
-
-  const formats = [
-    { value: "json", label: "JSON" },
-    { value: "csv", label: "CSV" },
-    { value: "html", label: "HTML" },
-  ];
-
-  const timeRanges = [
-    { value: "1h", label: "Last 1 hour" },
-    { value: "6h", label: "Last 6 hours" },
-    { value: "24h", label: "Last 24 hours" },
-    { value: "7d", label: "Last 7 days" },
-    { value: "all", label: "All time" },
-  ];
 
   return (
-    <div class="performance-export-panel">
-      {/* Header */}
-      <div class="export-panel-header">
-        <div class="export-panel-title">
-          <span class="icon">
-            <div
-              // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("download")?.outerHTML || ""
-              }
-            />
-          </span>
-          <h3>Export Performance Data</h3>
+    <div class="reynard-performance-export-panel">
+      <div class="reynard-performance-export-panel__header">
+        <div class="reynard-performance-export-panel__title">
+          <Icon name="download" size="lg" />
+          <h2>Performance Data Export</h2>
+        </div>
+        <div class="reynard-performance-export-panel__actions">
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon="delete"
+            onClick={handleClearHistory}
+          >
+            Clear History
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon="download"
+            onClick={handleExport}
+            loading={state().isExporting}
+            disabled={filteredData().length === 0}
+          >
+            Export Data
+          </Button>
         </div>
       </div>
 
-      {/* Export Options */}
-      <div class="export-options">
-        <h4>Export Options</h4>
-        <div class="options-grid">
-          <div class="option-group">
-            <label>Format:</label>
-            <Select
-              value={exportOptions().format}
-              onChange={(value) =>
-                setExportOptions((prev) => ({ ...prev, format: value as any }))
-              }
-              options={formats}
-            />
-          </div>
-
-          <div class="option-group">
-            <label>Time Range:</label>
-            <Select
-              value={exportOptions().timeRange}
-              onChange={(value) =>
-                setExportOptions((prev) => ({
-                  ...prev,
-                  timeRange: value as any,
-                }))
-              }
-              options={timeRanges}
-            />
-          </div>
-
-          <div class="option-group">
-            <label>Filename:</label>
-            <TextField
-              value={exportOptions().filename}
-              onChange={(value) =>
-                setExportOptions((prev) => ({ ...prev, filename: value }))
-              }
-              placeholder="Enter filename"
-            />
+      <div class="reynard-performance-export-panel__content">
+        <div class="reynard-performance-export-panel__summary">
+          <div class="reynard-export-summary">
+            <div class="reynard-export-summary__item">
+              <Icon name="chart" variant="primary" />
+              <span>{filteredData().length} data points</span>
+            </div>
+            <div class="reynard-export-summary__item">
+              <Icon name="checkmark-circle" variant="success" />
+              <span>{state().selectedRows.length} selected</span>
+            </div>
+            <Show when={state().lastExport}>
+              <div class="reynard-export-summary__item">
+                <Icon name="clock" variant="info" />
+                <span>Last export: {state().lastExport?.toLocaleString()}</span>
+              </div>
+            </Show>
           </div>
         </div>
 
-        <div class="include-options">
-          <h5>Include in Export:</h5>
-          <div class="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={exportOptions().includeSummary}
-                onChange={(e) =>
-                  setExportOptions((prev) => ({
-                    ...prev,
-                    includeSummary: e.currentTarget.checked,
-                  }))
-                }
+        <div class="reynard-performance-export-panel__options">
+          <div class="reynard-export-options">
+            <div class="reynard-export-options__section">
+              <h4>Export Format</h4>
+              <Select
+                value={state().exportOptions.format}
+                onChange={(value) => updateExportOptions({ format: value })}
+                options={exportFormats.map(f => ({ value: f.value, label: f.label }))}
+                size="sm"
               />
-              Summary Statistics
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={exportOptions().includeHistory}
-                onChange={(e) =>
-                  setExportOptions((prev) => ({
-                    ...prev,
-                    includeHistory: e.currentTarget.checked,
-                  }))
-                }
-              />
-              Performance History
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={exportOptions().includeWarnings}
-                onChange={(e) =>
-                  setExportOptions((prev) => ({
-                    ...prev,
-                    includeWarnings: e.currentTarget.checked,
-                  }))
-                }
-              />
-              Performance Warnings
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={exportOptions().includeCharts}
-                onChange={(e) =>
-                  setExportOptions((prev) => ({
-                    ...prev,
-                    includeCharts: e.currentTarget.checked,
-                  }))
-                }
-              />
-              Charts (HTML only)
-            </label>
+            </div>
+            
+            <div class="reynard-export-options__section">
+              <h4>Include Metrics</h4>
+              <div class="reynard-metrics-selection">
+                <For each={availableMetrics}>
+                  {(metric) => (
+                    <label class="reynard-metric-option">
+                      <input
+                        type="checkbox"
+                        checked={state().exportOptions.includeMetrics.includes(metric)}
+                        onChange={(e) => {
+                          const metrics = state().exportOptions.includeMetrics;
+                          const newMetrics = e.currentTarget.checked
+                            ? [...metrics, metric]
+                            : metrics.filter(m => m !== metric);
+                          updateExportOptions({ includeMetrics: newMetrics });
+                        }}
+                      />
+                      {metric}
+                    </label>
+                  )}
+                </For>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Export Summary */}
-      <div class="export-summary">
-        <h4>Export Summary</h4>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <label>Data Points:</label>
-            <span class="value">{exportSummary().totalDataPoints}</span>
-          </div>
-          <div class="summary-item">
-            <label>Time Range:</label>
-            <span class="value">{exportSummary().timeRange}</span>
-          </div>
-          <div class="summary-item">
-            <label>Performance Score:</label>
-            <span class="value">
-              {exportSummary().performanceScore.toFixed(0)}/100
-            </span>
-          </div>
-          <div class="summary-item">
-            <label>Total Warnings:</label>
-            <span class="value">{exportSummary().totalWarnings}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Export Button */}
-      <div class="export-actions">
-        <Button
-          variant="primary"
-          onClick={exportPerformanceData}
-          disabled={isExporting()}
-        >
-          <Show when={isExporting()} fallback="Export Data">
-            <span class="spinner"></span>
-            Exporting... {exportProgress()}%
-          </Show>
-        </Button>
-      </div>
-
-      {/* Last Export */}
-      <Show when={lastExport()}>
-        <div class="last-export">
-          Last exported: {lastExport()!.toLocaleString()}
-        </div>
-      </Show>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { validatePassword } from "../utils";
-import { DEFAULT_VALIDATION_RULES } from "../types";
+import { validatePassword } from "../../utils";
+import { DEFAULT_VALIDATION_RULES } from "../../types";
 
 describe("Password Validation - Special Characters", () => {
   const specialCharRules = {

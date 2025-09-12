@@ -6,5 +6,7 @@
  */
 
 export * from "./mock-utils";
+export * from "./i18n-package-orchestrator";
+export * from "./i18n-testing";
 // export * from "./assertion-utils"; // Temporarily disabled - needs jest-dom replacement
 // export * from "./test-setup"; // Deleted - functionality moved to main setup system

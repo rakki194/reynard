@@ -1,29 +1,15 @@
 /**
  * Test setup for core package
- * Provides mocks for i18n and other dependencies
+ * Provides mocks for optional dependencies
  */
 
 import { vi } from "vitest";
 
-// Mock the i18n system
-vi.mock("reynard-i18n", () => ({
-  i18n: {
-    t: vi.fn((key: string) => {
-      // Return a mock translation that includes the key for debugging
-      return `[${key}]`;
-    }),
-  },
-  createI18nModule: vi.fn(() => ({
-    t: vi.fn((key: string) => `[${key}]`),
-    setLocale: vi.fn(),
-    getLocale: vi.fn(() => "en"),
-    addTranslations: vi.fn(),
-    hasTranslation: vi.fn(() => true),
-    locale: "en",
-    isRTL: false,
-    languages: ["en", "es", "fr", "de", "ru", "ar"],
-  })),
-}));
+// Mock the optional i18n system - it should gracefully handle missing i18n
+vi.mock("reynard-i18n", () => {
+  // Simulate i18n not being available by throwing an error
+  throw new Error("Module not found");
+});
 
 // Mock console methods to avoid noise in tests
 global.console = {

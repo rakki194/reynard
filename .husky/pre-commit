@@ -131,6 +131,92 @@ else
     fi
 fi
 
+# Markdown ToC Validation
+echo -e "${BLUE}📚 Running Markdown ToC validation...${NC}"
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MARKDOWN_TOC_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-markdown-toc.js"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Check if Markdown ToC validator script exists
+if [ ! -f "$MARKDOWN_TOC_VALIDATOR_SCRIPT" ]; then
+    echo -e "${YELLOW}⚠️  Markdown ToC validator script not found at: $MARKDOWN_TOC_VALIDATOR_SCRIPT${NC}"
+    echo -e "${YELLOW}   Skipping Markdown ToC validation...${NC}"
+else
+    # Check if we have any markdown files staged in target directories
+    STAGED_MARKDOWN_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^(backend|docs|src)/.*\.md$' || true)
+
+    if [ -z "$STAGED_MARKDOWN_FILES" ]; then
+        echo -e "${GREEN}✅ No markdown files staged for commit in backend/, docs/, or src/${NC}"
+    else
+        echo -e "${BLUE}📁 Staged markdown files:${NC}"
+        echo "$STAGED_MARKDOWN_FILES" | sed 's/^/  - /'
+        echo ""
+
+        # Run Markdown ToC validation
+        cd "$PROJECT_ROOT"
+        
+        if node "$MARKDOWN_TOC_VALIDATOR_SCRIPT"; then
+            echo -e "${GREEN}✅ Markdown ToC validation passed${NC}"
+        else
+            MARKDOWN_TOC_VALIDATION_EXIT_CODE=$?
+            
+            if [ $MARKDOWN_TOC_VALIDATION_EXIT_CODE -eq 1 ]; then
+                echo -e "${RED}❌ Markdown ToC validation failed${NC}"
+                echo -e "${RED}   Please fix the issues above before committing${NC}"
+                echo ""
+                echo -e "${YELLOW}💡 Tips:${NC}"
+                echo -e "${YELLOW}   - Add '## Table of Contents' after your first H2 heading${NC}"
+                echo -e "${YELLOW}   - Update ToC when adding/removing/renaming headings${NC}"
+                echo -e "${YELLOW}   - Run 'node .husky/validate-markdown-toc.js --fix' to auto-fix some issues${NC}"
+                echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+                exit 1
+            else
+                echo -e "${RED}❌ Markdown ToC validation script failed unexpectedly${NC}"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
+# Markdown Linting
+echo -e "${BLUE}📝 Running Markdown linting...${NC}"
+
+# Check if we have any markdown files staged
+STAGED_MARKDOWN_FILES_ALL=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$' || true)
+
+if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+    echo -e "${GREEN}✅ No markdown files staged for commit${NC}"
+else
+    echo -e "${BLUE}📁 Staged markdown files:${NC}"
+    echo "$STAGED_MARKDOWN_FILES_ALL" | sed 's/^/  - /'
+    echo ""
+
+    # Run markdownlint
+    cd "$PROJECT_ROOT"
+    
+    if npx markdownlint $STAGED_MARKDOWN_FILES_ALL; then
+        echo -e "${GREEN}✅ Markdown linting passed${NC}"
+    else
+        MARKDOWN_LINT_EXIT_CODE=$?
+        
+        if [ $MARKDOWN_LINT_EXIT_CODE -eq 1 ]; then
+            echo -e "${RED}❌ Markdown linting failed${NC}"
+            echo -e "${RED}   Please fix the issues above before committing${NC}"
+            echo ""
+            echo -e "${YELLOW}💡 Tips:${NC}"
+            echo -e "${YELLOW}   - Run 'npx markdownlint --fix' to auto-fix some issues${NC}"
+            echo -e "${YELLOW}   - Check .markdownlint.json for configuration${NC}"
+            echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+            exit 1
+        else
+            echo -e "${RED}❌ Markdown linting script failed unexpectedly${NC}"
+            exit 1
+        fi
+    fi
+fi
+
 # Python Validation
 echo -e "${BLUE}🐍 Running Python validation...${NC}"
 

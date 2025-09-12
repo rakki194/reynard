@@ -2,7 +2,7 @@
  * Tests for oklchStringToHex function
  */
 
-import { oklchStringToHex, oklchStringToRgb } from "../colorConversion";
+import { oklchStringToHex, oklchStringToRgb } from "../../colorConversion";
 
 describe("oklchStringToHex", () => {
   it("should convert OKLCH string to hex format", () => {

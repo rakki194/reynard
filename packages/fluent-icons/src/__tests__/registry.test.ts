@@ -11,8 +11,8 @@ import {
   getAllIconNames,
   getIconPackages,
   searchIcons,
-} from "../registry";
-import { fluentIconsPackage } from "../fluentIcons";
+} from "../../registry";
+import { fluentIconsPackage } from "../../fluentIcons";
 
 describe("Icon Registry", () => {
   beforeEach(() => {

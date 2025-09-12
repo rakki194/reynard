@@ -1,15 +1,16 @@
 /**
  * Reynard Icon System
  *
- * Icon components and utilities for the Reynard design system.
- * Uses the modular icon registry system.
+ * Enhanced icon components and utilities for the Reynard design system.
+ * Uses the modular icon registry system with advanced features like progress bars,
+ * glow effects, and interactive states.
  */
 
-import { Component, JSX, createMemo } from "solid-js";
+import { Component, JSX, createMemo, createSignal, onMount, onCleanup, splitProps } from "solid-js";
 import { getIcon, iconRegistry } from "reynard-fluent-icons";
 
 // Icon component props
-export interface IconProps {
+export interface IconProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   name: string;
   packageId?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -28,52 +29,168 @@ export interface IconProps {
   "aria-label"?: string;
   "aria-hidden"?: boolean;
   title?: string;
+  // Advanced features
+  active?: boolean;
+  loading?: boolean;
+  progress?: number; // 0-100 for progress bar
+  glow?: boolean;
+  glowColor?: string;
+  tooltip?: string;
+  interactive?: boolean; // Makes icon clickable
 }
 
 /**
- * Icon component for displaying SVG icons
+ * Enhanced Icon component for displaying SVG icons with advanced features
  */
 export const Icon: Component<IconProps> = (props) => {
-  const {
-    name,
-    packageId,
-    size = "md",
-    variant = "default",
-    class: className,
-    style,
-    role,
-    "aria-label": ariaLabel,
-    "aria-hidden": ariaHidden,
-    title,
-  } = props;
+  const [localProps, buttonProps] = splitProps(props, [
+    'name',
+    'packageId',
+    'size',
+    'variant',
+    'class',
+    'style',
+    'role',
+    'aria-label',
+    'aria-hidden',
+    'title',
+    'active',
+    'loading',
+    'progress',
+    'glow',
+    'glowColor',
+    'tooltip',
+    'interactive',
+  ]);
+
+  const [isPressed, setIsPressed] = createSignal(false);
+  let buttonRef: HTMLButtonElement | undefined;
+
+  const handleMouseDown = () => setIsPressed(true);
+  const handleMouseUp = () => setIsPressed(false);
+  const handleMouseLeave = () => setIsPressed(false);
+
+  onMount(() => {
+    if (buttonRef && localProps.interactive) {
+      buttonRef.addEventListener('mousedown', handleMouseDown);
+      buttonRef.addEventListener('mouseup', handleMouseUp);
+      buttonRef.addEventListener('mouseleave', handleMouseLeave);
+    }
+  });
+
+  onCleanup(() => {
+    if (buttonRef && localProps.interactive) {
+      buttonRef.removeEventListener('mousedown', handleMouseDown);
+      buttonRef.removeEventListener('mouseup', handleMouseUp);
+      buttonRef.removeEventListener('mouseleave', handleMouseLeave);
+    }
+  });
 
   const iconClasses = createMemo(() => {
     const classes = [
       "reynard-icon",
-      `reynard-icon--${size}`,
-      `reynard-icon--${variant}`,
+      `reynard-icon--${localProps.size || "md"}`,
+      `reynard-icon--${localProps.variant || "default"}`,
     ];
-    if (className) classes.push(className);
+    
+    if (localProps.class) classes.push(localProps.class);
+    if (localProps.active) classes.push("reynard-icon--active");
+    if (localProps.loading) classes.push("reynard-icon--loading");
+    if (localProps.interactive) classes.push("reynard-icon--interactive");
+    if (isPressed()) classes.push("reynard-icon--pressed");
+    if (localProps.glow) classes.push("reynard-icon--glow");
+    if (typeof localProps.progress === 'number' && localProps.progress > 0) {
+      classes.push("reynard-icon--with-progress");
+    }
+    
     return classes.filter(Boolean).join(" ");
   });
 
   const iconElement = createMemo(() => {
-    return getIcon(name, packageId);
+    if (localProps.loading) {
+      return getIcon("spinner", localProps.packageId);
+    }
+    return getIcon(localProps.name, localProps.packageId);
   });
+
+  const getProgressValue = () => {
+    if (typeof localProps.progress === 'number') {
+      return Math.max(0, Math.min(100, localProps.progress));
+    }
+    return 0;
+  };
+
+  const shouldShowProgress = () => {
+    return typeof localProps.progress === 'number' && localProps.progress > 0;
+  };
+
+  const getGlowStyle = () => {
+    if (!localProps.glow) return localProps.style || {};
+
+    const color = localProps.glowColor || 'var(--accent)';
+    return {
+      ...localProps.style,
+      '--glow-color': color,
+      '--glow-intensity': '1',
+    } as any;
+  };
+
+  const getTooltip = () => {
+    return localProps.tooltip || localProps.title;
+  };
+
+  const getAriaLabel = () => {
+    return localProps['aria-label'] || localProps.tooltip || localProps.title;
+  };
+
+  const iconContent = (
+    <>
+      <div class="reynard-icon__content">
+        {iconElement()}
+      </div>
+      
+      {shouldShowProgress() && (
+        <div class="reynard-icon__progress">
+          <div 
+            class="reynard-icon__progress-bar" 
+            style={{ "--progress-width": `${getProgressValue()}%` } as any}
+          />
+        </div>
+      )}
+    </>
+  );
+
+  if (localProps.interactive) {
+    return (
+      <button
+        ref={buttonRef}
+        type="button"
+        class={iconClasses()}
+        style={getGlowStyle()}
+        title={getTooltip()}
+        aria-label={getAriaLabel()}
+        disabled={localProps.loading}
+        data-testid="reynard-icon"
+        {...buttonProps}
+      >
+        {iconContent}
+      </button>
+    );
+  }
 
   return (
     <span
       class={iconClasses()}
-      style={style}
-      {...(role && { role: role as any })}
-      aria-label={ariaLabel}
-      {...(ariaHidden !== undefined && {
-        "aria-hidden": ariaHidden ? "true" : "false",
+      style={getGlowStyle()}
+      {...(localProps.role && { role: localProps.role as any })}
+      aria-label={getAriaLabel()}
+      {...(localProps['aria-hidden'] !== undefined && {
+        "aria-hidden": localProps['aria-hidden'] ? "true" : "false",
       })}
-      title={title}
+      title={getTooltip()}
       data-testid="reynard-icon"
     >
-      {iconElement()}
+      {iconContent}
     </span>
   );
 };

@@ -20,3 +20,6 @@ export * from "./async";
 
 // Package management utilities
 export * from "./package-exports";
+
+// Optional i18n utilities
+export * from "./optional-i18n";

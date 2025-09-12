@@ -3,7 +3,7 @@ import type { FeatureContext, FeatureConfig } from "../core/types";
 import { FeatureManager } from "../core/FeatureManager";
 
 // Create feature context
-const FeatureContext = createContext<FeatureContext>();
+const FeatureContextProvider = createContext<FeatureContext>();
 
 /**
  * Feature provider component props
@@ -39,9 +39,9 @@ export function FeatureProvider(props: FeatureProviderProps) {
   };
 
   return (
-    <FeatureContext.Provider value={context}>
+    <FeatureContextProvider.Provider value={context}>
       {props.children}
-    </FeatureContext.Provider>
+    </FeatureContextProvider.Provider>
   );
 }
 
@@ -49,7 +49,7 @@ export function FeatureProvider(props: FeatureProviderProps) {
  * Hook to use the feature context
  */
 export function useFeatures(): FeatureContext {
-  const context = useContext(FeatureContext);
+  const context = useContext(FeatureContextProvider);
   if (!context) {
     throw new Error("useFeatures must be used within a FeatureProvider");
   }

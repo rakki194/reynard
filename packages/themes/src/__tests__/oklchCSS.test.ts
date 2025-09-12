@@ -5,7 +5,7 @@
 import {
   oklchStringToCSS,
   oklchStringToCSSWithAlpha,
-} from "../colorConversion";
+} from "../../colorConversion";
 
 describe("Native OKLCH CSS Functions", () => {
   describe("oklchStringToCSS", () => {

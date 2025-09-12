@@ -1,8 +1,9 @@
 # Writing Tests
 
-The project uses Vitest with SolidJS testing utilities. Tests are colocated with
-features (components, composables, contexts) and shared helpers under
-`/src/test`. Integration tests are also colocated with their respective features.
+The project uses Vitest with SolidJS testing utilities. All tests are organized
+in `src/__tests__/` directories within each package, providing a clean separation
+between source code and test files. Integration tests are also located in the
+`src/__tests__/` directories.
 
 ## Table of Contents
 
@@ -12,6 +13,7 @@ features (components, composables, contexts) and shared helpers under
   - [Table of Contents](#table-of-contents)
   - [Test Organization](#test-organization)
   - [Test Environment Setup](#test-environment-setup)
+    - [Unified Testing Stack](#unified-testing-stack)
     - [Vitest Configuration](#vitest-configuration)
   - [Test Utilities](#test-utilities)
     - [Configuration](#configuration)
@@ -41,45 +43,61 @@ features (components, composables, contexts) and shared helpers under
 
 ---
 
-1. **Component Tests**: Tests are colocated with components (e.g.,
-   `src/components/ImageViewer/ImageView.test.tsx`,
-   `src/components/ImageViewer/TagBubble.test.tsx`,
-   `src/components/ImageViewer/CaptionInput.test.tsx`,
-   `src/components/ImageViewer/ImageInfo.test.tsx`,
-   `src/components/UI/Notification.test.tsx`,
-   `src/components/Settings/Settings.test.tsx`,
-   `src/components/Gallery/DeleteConfirmDialog.test.tsx`,
-   `src/components/UI/UploadOverlay.test.tsx`).
+All tests are organized in `src/__tests__/` directories within each package:
+
+1. **Component Tests**: All component tests are located in `src/__tests__/` (e.g.,
+   `src/__tests__/ImageViewer.test.tsx`,
+   `src/__tests__/Notification.test.tsx`,
+   `src/__tests__/Settings.test.tsx`,
+   `src/__tests__/UploadOverlay.test.tsx`).
 
 2. **Context and State Tests**: Tests for application state management and
-   context providers are colocated under `src/contexts/` (e.g.,
-   `src/contexts/app.test.tsx`, `src/contexts/contexts.test.ts`,
-   `src/contexts/gallery.test.ts`, `src/contexts/selection.test.ts`).
+   context providers are in `src/__tests__/` (e.g.,
+   `src/__tests__/app.test.tsx`, `src/__tests__/contexts.test.ts`,
+   `src/__tests__/gallery.test.ts`, `src/__tests__/selection.test.ts`).
 
-3. **Utility Tests**: Tests for utility functions and helpers may be colocated
-   or placed under `src/test/` (e.g., `src/components/reactive-utils.test.tsx`,
-   `src/test/test-utils.test.tsx`).
+3. **Utility Tests**: Tests for utility functions and helpers are in
+   `src/__tests__/` (e.g., `src/__tests__/reactive-utils.test.tsx`,
+   `src/__tests__/test-utils.test.tsx`).
 
 4. **Internationalization Tests**: Tests for translation and localization
-   features are under `src/i18n/` and `src/test/` as appropriate.
+   features are in `src/__tests__/` (e.g., `src/__tests__/i18n.test.ts`).
 
-When writing component tests, prefer colocating the test next to the component
-(e.g., `ComponentName.test.tsx` beside `ComponentName.tsx`). Use the shared
-helpers from `/src/test/test-utils.ts` to maintain consistency across tests.
-Follow the established patterns for setup/teardown to ensure isolation between
-test cases.
+When writing tests, place them in the `src/__tests__/` directory with descriptive
+names that indicate what they're testing. Use the shared helpers from the
+**reynard-testing** package to maintain consistency across tests. Follow the
+established patterns for setup/teardown to ensure isolation between test cases.
+
+**Key Testing Stack:**
+
+- **Vitest** as the test runner
+- **happy-dom** as the DOM environment (replacing jsdom)
+- **reynard-testing** package for unified testing utilities
+- **@solidjs/testing-library** for component testing
 
 ## Test Environment Setup
 
 ---
 
 The test environment is configured in `/src/test/setup.ts`. This configuration
-provides a DOM environment powered by jsdom for simulating browser behavior.
+provides a DOM environment powered by **happy-dom** for simulating browser behavior.
 Global mocks are included for various browser APIs to enable testing of
 browser-dependent functionality. The environment is set up to automatically
 clean up after each test to prevent state leakage between test cases.
 Additionally, it includes the necessary SolidJS testing utilities setup to
 enable proper testing of SolidJS components and reactivity.
+
+### Unified Testing Stack
+
+Reynard uses a unified testing approach across all packages:
+
+- **Vitest**: Fast, modern test runner with excellent TypeScript support
+- **happy-dom**: Lightweight DOM implementation (replacing jsdom for better performance)
+- **reynard-testing**: Unified testing utilities and configurations
+- **@solidjs/testing-library**: SolidJS-specific testing utilities
+
+All packages use the `reynard-testing` package for consistent test setup, mocks, and utilities.
+This ensures uniform testing patterns across the entire codebase.
 
 ### Vitest Configuration
 
@@ -105,9 +123,9 @@ TypeScript configuration for the test environment.
 ---
 
 When writing component tests, there are several important guidelines to follow.
-First, colocate your test file next to the component and follow the naming
-pattern `ComponentName.test.tsx`. Use the provided test utilities from
-`/src/test/test-utils.ts` to maintain consistency across tests. Follow the
+First, place your test file in the `src/__tests__/` directory and follow the naming
+pattern `ComponentName.test.tsx`. Use the provided test utilities from the
+reynard-testing package to maintain consistency across tests. Follow the
 established patterns for test setup and teardown to ensure proper isolation
 between test cases. Finally, group related tests together in the same file for
 better organization and maintainability.
@@ -590,7 +608,7 @@ through the implementation of the UploadOverlay component tests.
 ### Key Lessons Learned
 
 When testing styling and themes, it's important to avoid testing computed styles
-in the jsdom environment, as these tests can be unreliable. Instead, focus on
+in the **happy-dom** environment, as these tests can be unreliable. Instead, focus on
 testing the structure and functionality of components. Use data attributes for
 element selection to ensure reliable test targeting. Consider implementing
 visual regression testing for comprehensive style verification.
@@ -657,7 +675,7 @@ separation of concerns.
 ### Pitfalls to Avoid
 
 When writing tests, there are several important pitfalls to avoid regarding
-style testing. Testing computed styles in jsdom should be avoided, as should
+style testing. Testing computed styles in **happy-dom** should be avoided, as should
 relying on CSS module class names or testing implementation details of styling.
 
 For state management, avoid using cleanup/re-render for state changes. Focus on

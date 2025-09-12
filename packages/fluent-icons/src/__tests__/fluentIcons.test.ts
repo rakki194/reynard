@@ -3,8 +3,8 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { fluentIconsPackage } from "../fluentIcons";
-import { allIcons, iconCategories } from "../categories";
+import { fluentIconsPackage } from "../../fluentIcons";
+import { allIcons, iconCategories } from "../../categories";
 
 describe("Fluent UI Icons Package", () => {
   describe("Package Properties", () => {

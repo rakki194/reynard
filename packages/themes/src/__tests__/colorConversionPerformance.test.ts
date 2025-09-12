@@ -2,7 +2,7 @@
  * Performance tests for Color Conversion Utilities
  */
 
-import { oklchToRgb, OKLCH } from "../colorConversion";
+import { oklchToRgb, OKLCH } from "../../colorConversion";
 
 describe("Color Conversion Performance", () => {
   it("should handle multiple conversions efficiently", () => {

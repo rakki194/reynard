@@ -8,12 +8,12 @@ import {
   computeTagColor,
   computeHoverStyles,
   computeAnimation,
-} from "../themeUtils";
+} from "../../themeUtils";
 import {
   getSystemThemePreference,
   supportsReducedMotion,
-} from "../systemThemeUtils";
-import type { ThemeName } from "../types";
+} from "../../systemThemeUtils";
+import type { ThemeName } from "../../types";
 
 describe("Theme Utilities", () => {
   beforeEach(() => {

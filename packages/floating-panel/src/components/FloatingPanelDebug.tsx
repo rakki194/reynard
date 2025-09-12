@@ -3,99 +3,26 @@
  */
 
 import type { Component } from "solid-js";
-import { createSignal, createEffect } from "solid-js";
-import { useDraggablePanel } from "../composables/useDraggablePanel";
-import type { FloatingPanelProps, PanelConfig } from "../types";
+import { createSignal } from "solid-js";
+import { useDraggablePanel } from "../composables/useDraggablePanel.js";
+import type { FloatingPanelProps } from "../types.js";
+import { createDebugConfig } from "./debug/FloatingPanelDebugConfig.js";
+import { createDebugLogging } from "./debug/FloatingPanelDebugLogging.js";
+import { createDebugHandlers } from "./debug/FloatingPanelDebugHandlers.js";
 import "./FloatingPanel.css";
 
 export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
 
-  // Debug logging
-  console.log("🦦> FloatingPanelDebug created:", {
-    id: props.id,
-    position: props.position,
-    size: props.size,
-    config: props.config,
-  });
-
-  // Default configuration
-  const config: Required<PanelConfig> = {
-    draggable: true,
-    resizable: false,
-    closable: false,
-    backdrop: false,
-    backdropBlur: false,
-    backdropColor: "transparent",
-    animationDelay: 0,
-    animationDuration: 300,
-    animationEasing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-    showOnHover: false,
-    hoverDelay: 500,
-    persistent: true,
-    theme: "default",
-    ...props.config,
-  };
+  // Create configuration and handlers
+  const config = createDebugConfig(props.config);
+  const handlers = createDebugHandlers(props);
 
   // Set up draggable functionality
-  const { isVisible, isDragging } = useDraggablePanel(panelRef, {
-    initialPosition: props.position,
-    enabled: config.draggable,
-    onDragStart: () => {
-      console.log("🦦> Panel drag started:", props.id);
-      props.onShow?.();
-    },
-    onDrag: (position) => {
-      console.log("🦦> Panel dragging:", props.id, position);
-      props.onDrag?.(position);
-    },
-    onDragEnd: () => {
-      console.log("🦦> Panel drag ended:", props.id);
-      props.onHide?.();
-    },
-    constraints: {
-      minWidth: 200,
-      minHeight: 100,
-      maxWidth: 800,
-      maxHeight: 600,
-    },
-  });
+  const { isVisible, isDragging } = useDraggablePanel(panelRef, { initialPosition: props.position, enabled: config.draggable, onDragStart: handlers.handleDragStart, onDrag: handlers.handleDrag, onDragEnd: handlers.handleDragEnd, constraints: { minWidth: 200, minHeight: 100, maxWidth: 800, maxHeight: 600 } });
 
-  // Debug effect for visibility changes
-  createEffect(() => {
-    console.log("🦦> Panel visibility changed:", {
-      id: props.id,
-      isVisible: isVisible(),
-      isDragging: isDragging(),
-    });
-  });
-
-  // Debug effect for position changes
-  createEffect(() => {
-    const element = panelRef();
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      console.log("🦦> Panel position:", {
-        id: props.id,
-        rect: {
-          top: rect.top,
-          left: rect.left,
-          width: rect.width,
-          height: rect.height,
-        },
-        computedStyle: {
-          position: getComputedStyle(element).position,
-          zIndex: getComputedStyle(element).zIndex,
-          transform: getComputedStyle(element).transform,
-        },
-      });
-    }
-  });
-
-  const handleHide = () => {
-    console.log("🦦> Panel hide requested:", props.id);
-    props.onHide?.();
-  };
+  // Set up debug logging
+  createDebugLogging(props, panelRef, isVisible, isDragging);
 
   return (
     <div
@@ -125,7 +52,7 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
             {config.closable && (
               <button
                 class="floating-panel-control-btn"
-                onClick={handleHide}
+                onClick={handlers.handleHide}
                 title="Close panel"
               >
                 ✕

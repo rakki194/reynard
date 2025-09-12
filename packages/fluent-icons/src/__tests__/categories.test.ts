@@ -17,7 +17,7 @@ import {
   customIcons,
   allIcons,
   iconCategories,
-} from "../categories";
+} from "../../categories";
 
 describe("Icon Categories", () => {
   describe("Action Icons", () => {

@@ -2,7 +2,7 @@
  * Tests for oklchStringToRgb function
  */
 
-import { oklchStringToRgb } from "../colorConversion";
+import { oklchStringToRgb } from "../../colorConversion";
 
 describe("oklchStringToRgb", () => {
   it("should parse valid OKLCH strings", () => {

@@ -4,13 +4,13 @@
 
 import { describe, it, expect, beforeEach, vi, MockedFunction } from "vitest";
 import { createRoot } from "solid-js";
-import { useP2PChat } from "../composables/useP2PChat";
+import { useP2PChat } from "../../composables/useP2PChat";
 import type {
   ChatUser,
   ChatRoom,
   P2PChatMessage,
   P2PChatEvent,
-} from "../types/p2p";
+} from "../../types/p2p";
 
 // Mock WebSocket
 class MockWebSocket {

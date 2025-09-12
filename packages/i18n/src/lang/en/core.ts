@@ -152,11 +152,50 @@ export const coreTranslations = {
     "string-error": "String error",
     "crypto-error": "Crypto error",
     "some-error": "Some error",
+    generic: "An error occurred",
+    network: "Network error",
+    validation: "Validation error",
+    permission: "Permission denied",
+    notFound: "Not found",
+    mediaQueryNotSupported: "matchMedia not supported",
+    loadFailed: "Failed to load module",
+    dangerousJson: "Potentially dangerous JSON detected - contains prototype pollution patterns",
+    parseJsonFailed: "Failed to parse JSON from localStorage:",
+    moduleIsNull: "Module is null",
+    invalidModuleStructure: "Invalid module structure",
+    exportValidationFailed: "Export validation failed for {package}: {errors}",
   },
 
   // Formatters and utilities
   formatters: {
     "hello-world": "Hello world",
+  },
+
+  // Core utilities
+  utilities: {
+    format: "Format",
+    parse: "Parse",
+    validate: "Validate",
+    transform: "Transform",
+    convert: "Convert",
+  },
+
+  // Constants
+  constants: {
+    version: "Version",
+    build: "Build",
+    environment: "Environment",
+    debug: "Debug",
+    production: "Production",
+  },
+
+  // Helpers
+  helpers: {
+    date: "Date Helper",
+    string: "String Helper",
+    number: "Number Helper",
+    array: "Array Helper",
+    object: "Object Helper",
   },
 
   // Date and time

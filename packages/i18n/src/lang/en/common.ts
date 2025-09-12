@@ -24,6 +24,13 @@ export const commonTranslations = {
   info: "Information",
   update: "Update",
   clear: "Clear",
+  hello: "Hello",
+  world: "World",
+  yes: "Yes",
+  no: "No",
+  submit: "Submit",
+  sort: "Sort",
+  refresh: "Refresh",
 
   // Navigation
   home: "Home",

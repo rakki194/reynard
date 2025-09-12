@@ -1,0 +1,55 @@
+/**
+ * Embedding Chart Component Styles
+ */
+
+.embedding-chart {
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.embedding-chart.size-default {
+  width: 1200px;
+  height: 400px;
+}
+
+.embedding-chart.size-1200x400 {
+  width: 1200px;
+  height: 400px;
+}
+
+.embedding-chart.light {
+  border: 2px solid #16a34a;
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+.embedding-chart.dark {
+  border: 2px solid #4ade80;
+  background-color: #1f2937;
+  color: #e5e7eb;
+}
+
+.embedding-chart-content {
+  text-align: center;
+}
+
+.embedding-chart-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.embedding-chart-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.embedding-chart-subtitle {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 4px;
+}

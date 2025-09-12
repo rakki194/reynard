@@ -1,0 +1,91 @@
+/**
+ * AI Features
+ *
+ * Artificial intelligence feature definitions for typical applications.
+ */
+
+import type { FeatureDefinition } from "../core/types.js";
+
+export const AI_FEATURES: FeatureDefinition[] = [
+  {
+    id: "natural-language-processing",
+    name: "Natural Language Processing",
+    description: "Process and understand natural language text",
+    dependencies: [{ services: ["NLPService"], required: true }],
+    category: "ai",
+    priority: "high",
+    tags: ["nlp", "language"],
+    icon: "language",
+  },
+  {
+    id: "machine-learning",
+    name: "Machine Learning",
+    description: "Machine learning model training and inference",
+    dependencies: [{ services: ["MLService"], required: true }],
+    category: "ai",
+    priority: "high",
+    tags: ["ml", "learning"],
+    icon: "brain",
+  },
+  {
+    id: "computer-vision",
+    name: "Computer Vision",
+    description: "Image and video analysis capabilities",
+    dependencies: [{ services: ["VisionService"], required: true }],
+    category: "ai",
+    priority: "medium",
+    tags: ["vision", "image"],
+    icon: "eye",
+  },
+  {
+    id: "speech-recognition",
+    name: "Speech Recognition",
+    description: "Convert speech to text",
+    dependencies: [{ services: ["SpeechService"], required: true }],
+    category: "ai",
+    priority: "medium",
+    tags: ["speech", "audio"],
+    icon: "microphone",
+  },
+  {
+    id: "text-to-speech",
+    name: "Text to Speech",
+    description: "Convert text to speech",
+    dependencies: [{ services: ["TTSService"], required: true }],
+    category: "ai",
+    priority: "medium",
+    tags: ["tts", "speech"],
+    icon: "speaker",
+  },
+  {
+    id: "recommendation-engine",
+    name: "Recommendation Engine",
+    description: "Provide personalized recommendations",
+    dependencies: [{ services: ["RecommendationService"], required: true }],
+    category: "ai",
+    priority: "medium",
+    tags: ["recommendation", "personalization"],
+    icon: "recommendation",
+  },
+  {
+    id: "sentiment-analysis",
+    name: "Sentiment Analysis",
+    description: "Analyze sentiment in text",
+    dependencies: [{ services: ["SentimentService"], required: true }],
+    category: "ai",
+    priority: "low",
+    tags: ["sentiment", "analysis"],
+    icon: "sentiment",
+  },
+  {
+    id: "chatbot",
+    name: "Chatbot",
+    description: "Conversational AI assistant",
+    dependencies: [{ services: ["ChatbotService"], required: true }],
+    category: "ai",
+    priority: "medium",
+    tags: ["chatbot", "conversation"],
+    icon: "chat",
+  },
+];
+

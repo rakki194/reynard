@@ -4,8 +4,8 @@
 
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@solidjs/testing-library";
-import { ChatMessage } from "../components/ChatMessage";
-import type { ChatMessage as ChatMessageType } from "../types";
+import { ChatMessage } from "../../components/ChatMessage";
+import type { ChatMessage as ChatMessageType } from "../../types";
 
 // Mock MarkdownRenderer
 vi.mock("../components/MarkdownRenderer", () => ({

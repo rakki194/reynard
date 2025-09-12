@@ -4,8 +4,8 @@
 
 import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
 import { createRoot, createSignal } from "solid-js";
-import { useChat } from "../composables/useChat";
-import type { ChatMessage, StreamChunk } from "../types";
+import { useChat } from "../../composables/useChat";
+import type { ChatMessage, StreamChunk } from "../../types";
 
 // Mock fetch
 const mockFetch = vi.fn();

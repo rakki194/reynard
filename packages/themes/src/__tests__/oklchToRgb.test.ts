@@ -2,7 +2,7 @@
  * Tests for oklchToRgb function
  */
 
-import { oklchToRgb, OKLCH } from "../colorConversion";
+import { oklchToRgb, OKLCH } from "../../colorConversion";
 
 describe("oklchToRgb", () => {
   it("should convert basic OKLCH values to RGB", () => {

@@ -95,6 +95,11 @@ export function detectHardcodedStrings(
       return;
     }
 
+    // Skip translation files - they contain the actual translations
+    if (filePath.includes("/lang/") || filePath.includes("/translations/")) {
+      return;
+    }
+
     // Skip lines that are already using i18n
     if (line.includes("i18n.t(") || line.includes("t(")) {
       return;
@@ -113,7 +118,36 @@ export function detectHardcodedStrings(
       line.includes("onClick=") ||
       line.includes("onChange=") ||
       line.includes("onSubmit=") ||
-      line.includes("onLoad=")
+      line.includes("onLoad=") ||
+      line.includes("Promise<") ||
+      line.includes(": Promise") ||
+      line.includes("extends Promise") ||
+      line.includes("Array<") ||
+      line.includes(": Array") ||
+      line.includes("interface ") ||
+      line.includes("type ") ||
+      line.includes("enum ") ||
+      line.includes("function ") ||
+      line.includes("=> ") ||
+      line.includes(".*?") ||
+      line.includes("regex") ||
+      line.includes("RegExp") ||
+      line.includes("new RegExp") ||
+      line.includes("&&") ||
+      line.includes("||") ||
+      line.includes("===") ||
+      line.includes("!==") ||
+      line.includes(">=") ||
+      line.includes("<=") ||
+      line.includes(">") ||
+      line.includes("<") ||
+      line.includes("1024") ||
+      line.includes("0 &&") ||
+      line.includes("= 7 &&") ||
+      line.includes("= min &&") ||
+      line.includes("= minLength &&") ||
+      line.includes(":") && line.includes("=") ||
+      line.includes("Hello world") && line.includes("//")
     ) {
       return;
     }

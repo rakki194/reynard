@@ -4,7 +4,7 @@
 
 import { Setter } from "solid-js";
 import type { Serializer } from "./localStorageSerializer";
-import { i18n } from "reynard-i18n";
+import { t } from "../utils/optional-i18n";
 
 export interface StorageEventHandler<_T = unknown> {
   handleStorageChange: (e: StorageEvent) => void;
@@ -28,7 +28,7 @@ export const createStorageEventHandler = <T>(
           setValue(() => serializer.read(e.newValue!));
         } catch (error) {
           console.warn(
-            i18n.t("core.storage.error-parsing-storage-event") + ` "${key}":`,
+            t("core.storage.error-parsing-storage-event") + ` "${key}":`,
             error,
           );
         }

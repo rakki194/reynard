@@ -9,6 +9,9 @@ import "./styles.css";
 // Export primitives
 export * from "./primitives";
 
+// Export navigation components
+export * from "./navigation";
+
 // Export composite components
 export { Modal, type ModalProps } from "./Modal";
 export {
@@ -20,7 +23,7 @@ export {
 } from "./Tabs";
 
 // Export icons
-// export * from "./icons";
+export * from "./icons";
 
 // Export layout components
 // export * from "./layout";

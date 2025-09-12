@@ -5,13 +5,16 @@
  * Based on Yipyap's sophisticated drag handling patterns.
  */
 
-import { createSignal, createEffect, onCleanup, Accessor } from "solid-js";
+import { createEffect, onCleanup, Accessor } from "solid-js";
 import type {
   PanelPosition,
   PanelConstraints,
   PanelSnapPoints,
   UseFloatingPanelReturn,
-} from "../types";
+} from "../types.js";
+import { createDraggablePanelCore, DraggablePanelCore } from "./useDraggablePanelCore.js";
+import { createDraggablePanelHandlers } from "./useDraggablePanelHandlers.js";
+import { constrainPosition, snapToPoint } from "./useDraggablePanelUtils.js";
 
 export interface UseDraggablePanelOptions {
   initialPosition?: PanelPosition;
@@ -31,8 +34,8 @@ export interface UseDraggablePanelReturn extends UseFloatingPanelReturn {
     currentPosition: PanelPosition;
     delta: { x: number; y: number };
   };
-  startDrag: (event: PointerEvent) => void;
-  updateDrag: (event: PointerEvent) => void;
+  startDrag: (event: globalThis.PointerEvent) => void;
+  updateDrag: (event: globalThis.PointerEvent) => void;
   endDrag: () => void;
   snapToPoint: (position: PanelPosition) => PanelPosition;
   constrainPosition: (position: PanelPosition) => PanelPosition;
@@ -53,276 +56,40 @@ export function useDraggablePanel(
     enabled = true,
   } = options;
 
-  // Panel state
-  const [panelState, setPanelState] = createSignal({
-    isVisible: true,
-    isDragging: false,
-    isResizing: false,
-    isHovered: false,
-    isFocused: false,
-    position: initialPosition,
-    size: { width: 300 as number | string, height: 200 as number | string },
-    zIndex: 1000,
-  });
+  const core: DraggablePanelCore = createDraggablePanelCore(panelRef, initialPosition, constraints, snapPoints, dragHandle, enabled);
 
-  // Drag state
-  const [dragState, setDragState] = createSignal({
-    isDragging: false,
-    startPosition: initialPosition,
-    currentPosition: initialPosition,
-    delta: { x: 0, y: 0 },
-  });
+  const handlers = createDraggablePanelHandlers(core, onDragStart, onDrag, onDragEnd);
 
-  // Drag tracking
-  let dragStartPos = { x: 0, y: 0 };
-  let initialPanelPos = { top: 0, left: 0 };
-  let isPointerDown = false;
-
-  // Event handlers
-  const handlePointerDown = (event: PointerEvent) => {
-    if (!enabled) return;
-
-    const target = event.target as HTMLElement;
-    const panel = panelRef();
-
-    if (!panel) return;
-
-    // Check if drag handle is specified and event target matches
-    if (dragHandle) {
-      const handle = panel.querySelector(dragHandle);
-      if (!handle || !handle.contains(target)) return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    isPointerDown = true;
-    dragStartPos = { x: event.clientX, y: event.clientY };
-    const currentPos = panelState().position;
-    initialPanelPos = {
-      top: typeof currentPos.top === "number" ? currentPos.top : 0,
-      left: typeof currentPos.left === "number" ? currentPos.left : 0,
-    };
-
-    setDragState((prev) => ({
-      ...prev,
-      isDragging: true,
-      startPosition: initialPanelPos,
-      currentPosition: initialPanelPos,
-      delta: { x: 0, y: 0 },
-    }));
-
-    setPanelState((prev) => ({
-      ...prev,
-      isDragging: true,
-      zIndex: 2000, // Bring to front when dragging
-    }));
-
-    onDragStart?.(initialPanelPos);
-
-    // Add global event listeners
-    document.addEventListener("pointermove", handlePointerMove);
-    document.addEventListener("pointerup", handlePointerUp);
-    document.addEventListener("pointercancel", handlePointerUp);
-  };
-
-  const handlePointerMove = (event: PointerEvent) => {
-    if (!isPointerDown || !enabled) return;
-
-    const deltaX = event.clientX - dragStartPos.x;
-    const deltaY = event.clientY - dragStartPos.y;
-
-    const newPosition = {
-      top: (initialPanelPos.top as number) + deltaY,
-      left: (initialPanelPos.left as number) + deltaX,
-    };
-
-    // Apply constraints
-    const constrainedPosition = constraints
-      ? constrainPosition(newPosition)
-      : newPosition;
-
-    // Apply snap points
-    const snappedPosition = snapPoints
-      ? snapToPoint(constrainedPosition)
-      : constrainedPosition;
-
-    setDragState((prev) => ({
-      ...prev,
-      currentPosition: snappedPosition,
-      delta: { x: deltaX, y: deltaY },
-    }));
-
-    setPanelState((prev) => ({
-      ...prev,
-      position: snappedPosition,
-    }));
-
-    onDrag?.(snappedPosition);
-  };
-
-  const handlePointerUp = () => {
-    if (!isPointerDown) return;
-
-    isPointerDown = false;
-
-    setDragState((prev) => ({
-      ...prev,
-      isDragging: false,
-    }));
-
-    setPanelState((prev) => ({
-      ...prev,
-      isDragging: false,
-      zIndex: 1000, // Reset z-index
-    }));
-
-    onDragEnd?.(panelState().position);
-
-    // Remove global event listeners
-    document.removeEventListener("pointermove", handlePointerMove);
-    document.removeEventListener("pointerup", handlePointerUp);
-    document.removeEventListener("pointercancel", handlePointerUp);
-  };
-
-  // Constrain position to bounds
-  const constrainPosition = (position: PanelPosition): PanelPosition => {
-    if (!constraints) return position;
-
-    const panel = panelRef();
-    if (!panel) return position;
-
-    const rect = panel.getBoundingClientRect();
-    const containerRect = panel.parentElement?.getBoundingClientRect();
-
-    if (!containerRect) return position;
-
-    const constrained = { ...position };
-
-    // Constrain to container bounds
-    if (typeof constrained.left === "number") {
-      constrained.left = Math.max(
-        0,
-        Math.min(constrained.left, containerRect.width - rect.width),
-      );
-    }
-
-    if (typeof constrained.top === "number") {
-      constrained.top = Math.max(
-        0,
-        Math.min(constrained.top, containerRect.height - rect.height),
-      );
-    }
-
-    return constrained;
-  };
-
-  // Snap to nearest snap point
-  const snapToPoint = (position: PanelPosition): PanelPosition => {
-    if (!snapPoints) return position;
-
-    const snapped = { ...position };
-    const tolerance = snapPoints.tolerance || 10;
-
-    // Snap X position
-    if (typeof snapped.left === "number") {
-      const leftValue = snapped.left;
-      const nearestX = snapPoints.x.reduce((prev, curr) =>
-        Math.abs(curr - leftValue) < Math.abs(prev - leftValue) ? curr : prev,
-      );
-
-      if (Math.abs(nearestX - leftValue) <= tolerance) {
-        snapped.left = nearestX;
-      }
-    }
-
-    // Snap Y position
-    if (typeof snapped.top === "number") {
-      const topValue = snapped.top;
-      const nearestY = snapPoints.y.reduce((prev, curr) =>
-        Math.abs(curr - topValue) < Math.abs(prev - topValue) ? curr : prev,
-      );
-
-      if (Math.abs(nearestY - topValue) <= tolerance) {
-        snapped.top = nearestY;
-      }
-    }
-
-    return snapped;
-  };
-
-  // Panel control methods
-  const showPanel = () => {
-    setPanelState((prev) => ({ ...prev, isVisible: true }));
-  };
-
-  const hidePanel = () => {
-    setPanelState((prev) => ({ ...prev, isVisible: false }));
-  };
-
-  const togglePanel = () => {
-    setPanelState((prev) => ({ ...prev, isVisible: !prev.isVisible }));
-  };
-
-  const updatePosition = (position: Partial<PanelPosition>) => {
-    const newPosition = { ...panelState().position, ...position };
-    const constrainedPosition = constraints
-      ? constrainPosition(newPosition)
-      : newPosition;
-    const snappedPosition = snapPoints
-      ? snapToPoint(constrainedPosition)
-      : constrainedPosition;
-
-    setPanelState((prev) => ({ ...prev, position: snappedPosition }));
-  };
-
-  const updateSize = (
-    size: Partial<{ width: number | string; height: number | string }>,
-  ) => {
-    setPanelState((prev) => ({
-      ...prev,
-      size: {
-        ...prev.size,
-        width: size.width !== undefined ? size.width : prev.size.width,
-        height: size.height !== undefined ? size.height : prev.size.height,
-      },
-    }));
-  };
-
-  // Cleanup on unmount
-  onCleanup(() => {
-    document.removeEventListener("pointermove", handlePointerMove);
-    document.removeEventListener("pointerup", handlePointerUp);
-    document.removeEventListener("pointercancel", handlePointerUp);
-  });
-
-  // Set up event listeners on panel
+  // Apply constraints and snap points
   createEffect(() => {
-    const panel = panelRef();
-    if (!panel) return;
+    const currentPosition = core.position[0]();
+    const constrainedPosition = constrainPosition(currentPosition, constraints);
+    const snappedPosition = snapToPoint(constrainedPosition, snapPoints);
+    
+    if (constrainedPosition !== currentPosition || snappedPosition !== constrainedPosition) {
+      const [, setPosition] = core.position;
+      setPosition(snappedPosition);
+    }
+  });
 
-    panel.addEventListener("pointerdown", handlePointerDown);
-
-    return () => {
-      panel.removeEventListener("pointerdown", handlePointerDown);
-    };
+  // Cleanup
+  onCleanup(() => {
+    document.removeEventListener("pointermove", handlers.handlePointerMove);
+    document.removeEventListener("pointerup", handlers.handlePointerUp);
+    document.removeEventListener("pointercancel", handlers.handlePointerUp);
   });
 
   return {
-    panelState,
-    dragState,
-    showPanel,
-    hidePanel,
-    togglePanel,
-    updatePosition,
-    updateSize,
-    isVisible: () => panelState().isVisible,
-    isDragging: () => panelState().isDragging,
-    isResizing: () => panelState().isResizing,
-    startDrag: handlePointerDown,
-    updateDrag: handlePointerMove,
-    endDrag: handlePointerUp,
-    snapToPoint,
-    constrainPosition,
+    position: core.position[0],
+    setPosition: core.position[1],
+    dragState: () => {
+      const [dragState] = core.dragState;
+      return dragState();
+    },
+    startDrag: handlers.handlePointerDown,
+    updateDrag: handlers.handlePointerMove,
+    endDrag: handlers.handlePointerUp,
+    snapToPoint: (position: PanelPosition) => snapToPoint(position, snapPoints),
+    constrainPosition: (position: PanelPosition) => constrainPosition(position, constraints),
   };
 }

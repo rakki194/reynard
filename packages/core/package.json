@@ -35,6 +35,9 @@
     "solid-js": "1.9.9",
     "reynard-connection": "workspace:*"
   },
+  "optionalDependencies": {
+    "reynard-i18n": "workspace:*"
+  },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",
     "@types/node": "24.3.1",

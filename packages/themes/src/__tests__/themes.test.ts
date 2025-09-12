@@ -9,8 +9,8 @@ import {
   getAvailableThemes,
   isDarkTheme,
   isHighContrastTheme,
-} from "../themes";
-import type { ThemeName } from "../types";
+} from "../../themes";
+import type { ThemeName } from "../../types";
 
 describe("Theme Configurations", () => {
   it("should have all required themes", () => {

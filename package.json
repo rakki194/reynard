@@ -91,7 +91,12 @@
     "i18n:validate": "cd packages/testing && pnpm i18n:validate",
     "i18n:list": "cd packages/testing && pnpm i18n:list",
     "i18n:eslint": "cd packages/testing && pnpm i18n:eslint",
-    "i18n:ci": "cd packages/testing && pnpm i18n:ci"
+    "i18n:ci": "cd packages/testing && pnpm i18n:ci",
+    "markdown:toc:check": "node .husky/validate-markdown-toc.js",
+    "markdown:toc:fix": "node .husky/validate-markdown-toc.js --fix",
+    "markdown:lint": "markdownlint '**/*.md' --ignore node_modules --ignore third_party",
+    "markdown:lint:fix": "markdownlint '**/*.md' --ignore node_modules --ignore third_party --fix",
+    "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",
@@ -107,8 +112,10 @@
     "eslint-plugin-solid": "0.14.5",
     "husky": "9.1.7",
     "lint-staged": "16.1.6",
+    "markdownlint-cli": "^0.45.0",
     "prettier": "3.6.2",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=18.0.0",

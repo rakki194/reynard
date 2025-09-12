@@ -8,13 +8,13 @@ import {
   runAllPackageI18nTests,
   validatePackageI18nSetup,
   createPackageI18nTestFiles,
-} from "../utils/i18n-package-orchestrator";
+} from "../../utils/i18n-package-orchestrator";
 import {
   defaultI18nTestingConfig,
   getEnabledPackages,
   getEnabledPackagePaths,
   getAllNamespaces,
-} from "../config/i18n-testing-config";
+} from "../../config/i18n-testing-config";
 
 describe("i18n Integration Tests", () => {
   beforeEach(() => {

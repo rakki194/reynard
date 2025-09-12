@@ -48,18 +48,22 @@ The test suite is organized into several categories:
 
 ### Dependencies
 
+**Core Testing Stack:**
+
 - **Vitest**: Test runner and assertion library
+- **happy-dom**: Lightweight DOM environment (replacing jsdom)
+- **reynard-testing**: Unified testing utilities and configurations
 - **@solidjs/testing-library**: SolidJS component testing utilities
-- **@testing-library/jest-dom**: Additional DOM matchers
-- **jsdom**: DOM environment for testing
+
+**Note:** This package uses the unified Reynard testing stack with happy-dom instead of jsdom for better performance and reliability.
 
 ### Setup
 
 The test setup (`src/test-setup.ts`) includes:
 
 - Fabric.js mocking for canvas operations
-- Jest DOM matchers for better assertions
-- Global test configuration
+- Custom DOM matchers compatible with happy-dom
+- Global test configuration via reynard-testing
 
 ## Running Tests
 

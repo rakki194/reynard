@@ -7,7 +7,7 @@ import {
   StreamingMarkdownParser,
   createStreamingMarkdownParser,
   parseMarkdown,
-} from "../utils/StreamingMarkdownParser";
+} from "../../utils/StreamingMarkdownParser";
 
 describe("StreamingMarkdownParser", () => {
   let parser: StreamingMarkdownParser;

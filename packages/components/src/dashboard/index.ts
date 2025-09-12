@@ -40,5 +40,5 @@ export { PerformanceMemoryTab } from "../debug/PerformanceMemoryTab";
 export { PerformanceAlertsTab } from "../debug/PerformanceAlertsTab";
 export { PerformanceExportTab } from "../debug/PerformanceExportTab";
 
-// Export hooks
-export * from "./hooks";
+// Export composables
+export * from "./composables";

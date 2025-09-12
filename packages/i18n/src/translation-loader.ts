@@ -21,9 +21,9 @@ function getFullTranslations(): Record<string, () => Promise<Translations>> {
   if (typeof import.meta !== "undefined" && import.meta.glob) {
     return Object.fromEntries(
       Object.entries(
-        import.meta.glob("./lang/*.ts", { import: "default" }),
+        import.meta.glob("./lang/*/index.ts", { import: "default" }),
       ).map(([key, value]) => [
-        key.replace(/^\.\/lang\/(.+)\.ts$/, "$1"),
+        key.replace(/^\.\/lang\/(.+)\/index\.ts$/, "$1"),
         value as () => Promise<Translations>,
       ]),
     );
@@ -80,7 +80,7 @@ async function loadTranslationModule(
         globalImport.mockRejectedValue)
     ) {
       try {
-        const translationModule = await globalImport(`./lang/${locale}.js`);
+        const translationModule = await globalImport(`./lang/${locale}/index.js`);
         return translationModule.default;
       } catch (error) {
         // If the mocked import throws, let it propagate
@@ -97,10 +97,10 @@ async function loadTranslationModule(
     import.meta.glob
   ) {
     // Try to use the mocked glob first
-    const mockGlobResult = import.meta.glob("./lang/*.ts", {
+    const mockGlobResult = import.meta.glob("./lang/*/index.ts", {
       import: "default",
     });
-    const mockLoader = mockGlobResult[`./lang/${locale}.ts`];
+    const mockLoader = mockGlobResult[`./lang/${locale}/index.ts`];
     if (mockLoader) {
       return (await mockLoader()) as Translations;
     }
@@ -163,7 +163,7 @@ async function loadTranslationModule(
   }
 
   // Fallback to dynamic import if not in glob
-  const translationModule = await import(`./lang/${locale}.js`);
+  const translationModule = await import(`./lang/${locale}/index.js`);
   return translationModule.default;
 }
 
@@ -181,7 +181,7 @@ async function loadEnglishFallback(): Promise<Translations> {
         globalImport.mockRejectedValue)
     ) {
       try {
-        const translationModule = await globalImport(`./lang/en.js`);
+        const translationModule = await globalImport(`./lang/en/index.js`);
         return translationModule.default;
       } catch (error) {
         // If the mocked import throws, let it propagate
@@ -197,10 +197,10 @@ async function loadEnglishFallback(): Promise<Translations> {
     import.meta.glob
   ) {
     // Try to use the mocked glob first
-    const mockGlobResult = import.meta.glob("./lang/*.ts", {
+    const mockGlobResult = import.meta.glob("./lang/*/index.ts", {
       import: "default",
     });
-    const mockLoader = mockGlobResult[`./lang/en.ts`];
+    const mockLoader = mockGlobResult[`./lang/en/index.ts`];
     if (mockLoader) {
       return (await mockLoader()) as Translations;
     }
@@ -262,7 +262,7 @@ async function loadEnglishFallback(): Promise<Translations> {
     }
   }
 
-  const englishModule = await import("./lang/en.js");
+  const englishModule = await import("./lang/en/index.js");
   return englishModule.default;
 }
 

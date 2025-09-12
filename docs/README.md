@@ -8,21 +8,37 @@ Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content ma
 
 ## 🦦 Architecture Evolution
 
-### **yipyap: Full-Stack Multi-Modal CMS**
+## Table of Contents
 
-**yipyap** (Your Intuitive Platform for Yielding, Annotating, and Processing) is a complete full-stack content management system. Its backend is built with Python and FastAPI, providing robust AI/ML services, a RAG system, vector databases, NLWeb routing, and Diffusion LLM integration. The frontend leverages SolidJS, offering a comprehensive suite of UI components, theming capabilities, and real-time features.
+- [🦦 Architecture Evolution](#architecture-evolution)
+- [✨ Core Capabilities](#core-capabilities)
+  - [**🎯 Multi-Modal Content Management**](#multi-modal-content-management)
+  - [**🤖 AI/ML Integration**](#aiml-integration)
+- [🎯 Philosophy](#philosophy)
+- [📦 Package Ecosystem](#package-ecosystem)
+- [📚 Documentation Structure](#documentation-structure)
+  - [🛠️ [Development](./development/)](#developmentdevelopment)
+  - [🏗️ [Architecture](./architecture/)](#architecturearchitecture)
+  - [🔗 [Integrations](./integrations/)](#integrationsintegrations)
+  - [📖 [Guides](./guides/)](#guidesguides)
+  - [📁 [Archive](./archive/)](#archivearchive)
+- [🚀 Quick Start](#quick-start)
+  - [For Developers](#for-developers)
+  - [For Users](#for-users)
+  - [For Administrators](#for-administrators)
+- [🔄 Reynard Framework Overview](#reynard-framework-overview)
+  - [Core Packages](#core-packages)
+  - [Specialized Packages](#specialized-packages)
+- [📋 Documentation Status](#documentation-status)
+  - [✅ Current and Relevant](#current-and-relevant)
+  - [🔄 Needs Updates](#needs-updates)
+  - [📦 Archived](#archived)
+- [🤝 Contributing to Documentation](#contributing-to-documentation)
+- [📞 Getting Help](#getting-help)
+- [🚀 The Future of Reynard](#the-future-of-reynard)
+  - [**🦊 Join the Evolution**](#join-the-evolution)
+- [📚 Next Steps](#next-steps)
 
-For content processing, yipyap supports a wide range of formats, including images, videos, audio, documents, and other specialized types. Model integration is a core strength, with support for JTP2, WDv3, Florence-2, JoyCaption, YOLO, OWLv2, and custom model implementations. Enterprise-level services such as text-to-speech (TTS), web crawling, vector databases, and various API integrations are also included.
-
-yipyap employs a monolithic architecture, featuring a tightly integrated frontend and backend with shared state management for seamless operation.
-
-### **Reynard: Modular Framework Extraction**
-
-Reynard extracts yipyap's proven patterns into a highly modular framework where each component can be used independently:
-
-The current Reynard frontend is built on a modular architecture, comprising over 25 specialized packages with minimal dependencies. Performance is a key focus, achieved through bundle splitting, lazy loading, and intelligent caching strategies. The theming system leverages CSS custom properties, offering eight built-in themes as well as support for custom themes. Internationalization is robust, with support for 37 languages, right-to-left (RTL) capabilities, and locale-aware formatting. Accessibility is prioritized, ensuring WCAG 2.1 compliance, ARIA labels, and full keyboard navigation. Type safety is enforced throughout the codebase, with comprehensive TypeScript coverage and detailed type definitions.
-
-On the backend, Reynard is planning a modular suite of services. Each core function—AI/ML, content processing, and database management—will be delivered as an independent, installable package. The architecture will allow for flexible API composition, enabling developers to mix and match services according to their application's needs. Service discovery will be dynamic, supporting automatic registration and health monitoring. Each service will be able to scale independently, allowing the system to efficiently handle varying workloads and demand.
 
 ## ✨ Core Capabilities
 

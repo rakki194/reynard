@@ -1,76 +1,48 @@
+// Cluster interactions composable for SolidJS
+// Orchestrates modular cluster interaction functionality
+
 import { createSignal, createEffect, onCleanup } from "solid-js";
+import { setupClusterRaycaster } from "./useClusterRaycasterUtils";
+
+import type { RendererLike, CameraLike } from "../types/threejs";
+
+// Three.js mesh interface for cluster hulls
+interface ThreeMesh {
+  id?: string;
+  position?: { set: (x: number, y: number, z: number) => void };
+  rotation?: { set: (x: number, y: number, z: number) => void };
+  scale?: { set: (x: number, y: number, z: number) => void };
+  visible?: boolean;
+  castShadow?: boolean;
+  receiveShadow?: boolean;
+  geometry?: unknown;
+  material?: unknown;
+  userData?: Record<string, unknown>;
+}
 
 export interface ClusterInteractionConfig {
-  renderer: any;
-  camera: any;
-  hullMeshes: any[];
+  renderer: RendererLike;
+  camera: CameraLike;
+  hullMeshes: ThreeMesh[];
   onClusterSelect?: (clusterId: string) => void;
 }
 
 export function useClusterInteractions(config: ClusterInteractionConfig) {
   const [hoveredCluster, setHoveredCluster] = createSignal<string | null>(null);
 
-  let raycaster: any = null;
-  let mouse: any = null;
-
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!raycaster || !mouse || !config.camera) return;
-
-    // Update mouse position
-    const rect = (config.renderer as any).domElement.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    // Raycast
-    raycaster.setFromCamera(mouse, config.camera);
-    const intersects = raycaster.intersectObjects(config.hullMeshes);
-
-    if (intersects.length > 0) {
-      const intersected = intersects[0].object;
-      if (intersected.userData.clusterId) {
-        setHoveredCluster(intersected.userData.clusterId);
-      }
-    } else {
-      setHoveredCluster(null);
-    }
-  };
-
-  const handleClick = (_event: MouseEvent) => {
-    if (!raycaster || !mouse || !config.camera) return;
-
-    raycaster.setFromCamera(mouse, config.camera);
-    const intersects = raycaster.intersectObjects(config.hullMeshes);
-
-    if (intersects.length > 0) {
-      const intersected = intersects[0].object;
-      if (intersected.userData.clusterId && config.onClusterSelect) {
-        config.onClusterSelect(intersected.userData.clusterId);
-      }
-    }
-  };
-
+  // Setup raycaster and event listeners
   createEffect(async () => {
     if (!config.renderer || !config.camera) return;
 
-    // Initialize Three.js if not already done
-    let THREE: any = null;
-    if (!THREE) {
-      THREE = await import("three");
-    }
+    const cleanup = await setupClusterRaycaster(
+      config.renderer,
+      config.camera,
+      config.hullMeshes,
+      setHoveredCluster,
+      config.onClusterSelect,
+    );
 
-    // Initialize raycaster and mouse
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
-
-    // Add event listeners
-    const canvas = (config.renderer as any).domElement;
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("click", handleClick);
-
-    onCleanup(() => {
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("click", handleClick);
-    });
+    onCleanup(cleanup);
   });
 
   return {

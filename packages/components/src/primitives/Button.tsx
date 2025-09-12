@@ -13,6 +13,7 @@ export interface ButtonProps
     | "secondary"
     | "tertiary"
     | "ghost"
+    | "icon"
     | "danger"
     | "success"
     | "warning";

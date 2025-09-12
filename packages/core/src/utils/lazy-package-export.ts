@@ -11,6 +11,7 @@ import {
   ExportValidationLevel,
   ExportType,
 } from "./package-exports-types";
+import { t } from "./optional-i18n";
 
 export class LazyPackageExport {
   private _module: any = null;
@@ -84,13 +85,13 @@ export class LazyPackageExport {
 
   private async _validateExport(): Promise<void> {
     if (!this._module) {
-      throw new ExportValidationError("Module is null", this._packageName);
+      throw new ExportValidationError(t("core.errors.moduleIsNull"), this._packageName);
     }
 
     if (this._validationLevel >= ExportValidationLevel.BASIC) {
       if (typeof this._module !== "object" || this._module === null) {
         throw new ExportValidationError(
-          "Invalid module structure",
+          t("core.errors.invalidModuleStructure"),
           this._packageName,
         );
       }
