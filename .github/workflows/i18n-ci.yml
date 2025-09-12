@@ -18,16 +18,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-        
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
         
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
@@ -55,12 +55,13 @@ jobs:
         
     - name: Upload i18n results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: i18n-results-${{ matrix.node-version }}
         path: |
           i18n-results.json
           i18n-report.md
+        retention-days: 30
           
     - name: Comment PR with i18n results
       if: github.event_name == 'pull_request' && always()
