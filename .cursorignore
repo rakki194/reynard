@@ -1,0 +1,59 @@
+# Cursor ignore file
+# This file controls what Cursor indexes for search and AI assistance
+# Unlike .gitignore, this allows us to include third_party for search while keeping it out of git
+
+# Ignore common build and cache directories
+node_modules/
+dist/
+build/
+lib/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+coverage/
+htmlcov/
+.vitest-reports/
+
+# Ignore Python cache and virtual environments
+__pycache__/
+*.egg-info/
+venv/
+.venv/
+.pytest_cache/
+
+# Ignore IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore logs and temporary files
+logs/
+*.log
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+
+# Ignore environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Allow third_party directory for search (explicitly include it)
+# This overrides any .gitignore patterns for Cursor indexing
+!third_party/
+!third_party/**/*
