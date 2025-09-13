@@ -4,7 +4,7 @@
  * Handles performance monitoring requests for the NLWeb API.
  */
 
-import { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
 import { NLWebService } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 

@@ -1,6 +1,6 @@
 # Testing Patterns for Modular TypeScript/JavaScript
 
-_Comprehensive testing examples for modular TypeScript/JavaScript architecture_
+> Comprehensive testing examples for modular TypeScript/JavaScript architecture
 
 ## Unit Testing Modules
 
@@ -892,4 +892,5 @@ global.testUtils = {
 };
 ```
 
-This comprehensive testing guide provides patterns for testing all aspects of modular TypeScript/JavaScript modules, from unit tests to integration tests and performance testing.
+This comprehensive testing guide provides patterns for testing all aspects of modular TypeScript/JavaScript modules, from
+unit tests to integration tests and performance testing.

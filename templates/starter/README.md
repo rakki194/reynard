@@ -32,7 +32,7 @@ npm run serve
 
 ## 📁 Project Structure
 
-```plaintext
+```text
 src/
 ├── components/                    # Modern UI components
 │   ├── AppHeader.tsx            # Navigation header with theme selector

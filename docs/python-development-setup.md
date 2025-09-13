@@ -143,7 +143,7 @@ If you need to bypass the pre-commit hooks (not recommended):
 git commit --no-verify -m "your commit message"
 ```
 
-## 🦊 Reynard-Specific Features
+## Reynard-Specific Features
 
 ### Color-coded Output
 
@@ -243,6 +243,6 @@ npm run python:lint
 - Use descriptive test names
 - Test edge cases and error conditions
 
-## 🦊 Happy Coding
+## Happy Coding
 
 The Reynard Python development environment is designed to help you write clean, secure, and maintainable Python code while maintaining the framework's playful and professional character. The fox is always watching, so make sure your code is as cunning as it is clean! 🦊✨

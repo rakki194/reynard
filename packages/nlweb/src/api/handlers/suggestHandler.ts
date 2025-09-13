@@ -4,9 +4,24 @@
  * Handles tool suggestion requests for the NLWeb API.
  */
 
-import { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
-import { NLWebService } from "../../types/index.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
+import type { NLWebService } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
+
+/**
+ * Type guard to check if request body has the expected structure
+ */
+function isValidSuggestRequestBody(body: unknown): body is {
+  query: string;
+  context?: Record<string, unknown>;
+  maxSuggestions?: number;
+} {
+  return (
+    typeof body === "object" &&
+    body !== null &&
+    typeof (body as Record<string, unknown>).query === "string"
+  );
+}
 
 /**
  * Create suggest handler
@@ -24,7 +39,7 @@ export function createSuggestHandler(
       }
 
       // Validate request
-      if (!req.body || typeof req.body.query !== "string") {
+      if (!isValidSuggestRequestBody(req.body)) {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
@@ -32,11 +47,14 @@ export function createSuggestHandler(
         };
       }
 
+      // TypeScript now knows req.body has the correct structure
+      const body = req.body;
+
       // Create suggestion request
       const suggestionRequest = {
-        query: req.body.query,
-        context: req.body.context || {},
-        maxSuggestions: req.body.maxSuggestions || 5,
+        query: body.query,
+        context: body.context || {},
+        maxSuggestions: body.maxSuggestions || 5,
       };
 
       // Get suggestions from service

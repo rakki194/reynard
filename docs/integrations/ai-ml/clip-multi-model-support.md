@@ -77,7 +77,7 @@ Each model tracks:
 
 ### Get Available Models
 
-```plaintext
+```text
 GET /api/rag/embedding/models
 ```
 
@@ -85,7 +85,7 @@ Returns information about all available models for both vision and text embeddin
 
 ### Load Vision Model
 
-```plaintext
+```text
 POST /api/rag/embedding/vision/load/{model_id}
 ```
 
@@ -93,7 +93,7 @@ Loads a specific CLIP model by ID.
 
 ### Switch Vision Model
 
-```plaintext
+```text
 POST /api/rag/embedding/vision/switch/{model_id}
 ```
 
@@ -101,7 +101,7 @@ Switches to a different CLIP model, automatically unloading the current one.
 
 ### Unload Vision Model
 
-```plaintext
+```text
 POST /api/rag/embedding/vision/unload/{model_id}
 ```
 
@@ -109,7 +109,7 @@ Unloads a specific CLIP model.
 
 ### Get Vision Status
 
-```plaintext
+```text
 GET /api/rag/embedding/vision/status
 ```
 

@@ -12,6 +12,7 @@ from typing import Any, AsyncGenerator, Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
+import pytest_asyncio
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -49,7 +50,7 @@ class TestNLWebFullIntegration:
         """Create test client."""
         return TestClient(app)
 
-    @pytest.fixture(scope="class")
+    @pytest_asyncio.fixture(scope="class")
     async def async_client(self, app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
         """Create async test client."""
         # Use transport parameter for FastAPI app integration

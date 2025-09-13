@@ -20,7 +20,7 @@ This document chronicles the evolution of the Reynard ecosystem, from YipYap's h
 - **Architecture**: Highly modular framework
 - **Technology Stack**: SolidJS packages, planned Python backend modules
 
-## 🦦 YipYap Development Timeline
+## YipYap Development Timeline
 
 ### **Phase 1: Foundation (November 2024)**
 
@@ -144,7 +144,7 @@ This document chronicles the evolution of the Reynard ecosystem, from YipYap's h
 
 **Development Pattern**: 2 commits on September 1, 2025 - final development phase
 
-## 🦊 Reynard Development Timeline
+## Reynard Development Timeline
 
 ### **Phase 1: Framework Extraction (September 2025)**
 

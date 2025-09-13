@@ -148,7 +148,7 @@ The pre-commit hook automatically runs when you commit Python files:
 git commit --no-verify -m "your commit message"
 ```
 
-## 🦊 Reynard-Specific Features
+## Reynard-Specific Features
 
 ### Color-coded Output
 
@@ -260,7 +260,7 @@ pip install -r requirements-dev.txt
 
 ## 📞 Getting Help
 
-- **Documentation**: [docs.reynard.dev](https://docs.reynard.dev)
+- **Documentation**: [(TBD)](https://(TBD))
 - **Issues**: [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord**: [Join our Discord](https://discord.gg/reynard)

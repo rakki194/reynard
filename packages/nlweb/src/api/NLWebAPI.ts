@@ -6,7 +6,7 @@
  */
 
 import type { NLWebService } from "../types/index.js";
-import { NLWebAPIHandler } from "./types.js";
+import type { NLWebAPIHandler } from "./types.js";
 import { createSuggestHandler } from "./handlers/suggestHandler.js";
 import { createHealthHandler, createStatusHandler, createForceHealthCheckHandler } from "./handlers/healthHandler.js";
 import { createGetToolsHandler, createRegisterToolHandler, createUnregisterToolHandler } from "./handlers/toolsHandler.js";

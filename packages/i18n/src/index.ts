@@ -12,27 +12,43 @@ export {
   createBasicI18nModule,
 } from "./core";
 
-// Enhanced i18n features
+// Module factory
+export {
+  createBaseI18nModule,
+  type EnhancedI18nOptions,
+} from "./core/providers/module-factory";
+
+// Options parser
+export {
+  parseI18nOptions,
+  type ParsedI18nOptions,
+} from "./core/providers/options-parser";
+
+// Locale manager
+export {
+  applyLocaleSideEffects,
+  createLocaleManager,
+} from "./core/providers/locale-manager";
+
+// Debug i18n features
 export {
   loadTranslations,
-  createEnhancedI18nModule,
-  type EnhancedI18nOptions,
-  type EnhancedI18nModule,
-} from "./enhanced";
+  createDebugI18nModule,
+  type DebugI18nModule,
+} from "./features/debug/debug-i18n";
 
-// Enterprise i18n features
+// Analytics i18n features
 export {
-  createEnterpriseI18nModule,
-} from "./enterprise";
+  createAnalyticsI18nModule,
+} from "./features/analytics/analytics-i18n";
 
 // Legacy exports for backward compatibility
-import { fullTranslations } from "./loader";
-import { createEnterpriseI18nModule } from "./enterprise";
-export const translations = fullTranslations;
+import { createAnalyticsI18nModule } from "./features/analytics/analytics-i18n";
+export const translations = {}; // Placeholder for backward compatibility
 
-// Main i18n module creation function (enterprise by default)
+// Main i18n module creation function (analytics by default)
 export function createI18nModule(options: unknown = {}): unknown {
-  return createEnterpriseI18nModule(options);
+  return createAnalyticsI18nModule(options);
 }
 
 // Export all types and utilities
@@ -48,7 +64,7 @@ export type {
 } from "./types";
 
 // Export enhanced types
-export type { IntlConfig } from "./intl";
+export type { IntlConfig } from "./intl/IntlConfig";
 
 // Core utilities
 export {
@@ -75,11 +91,10 @@ export {
   getPortuguesePlural,
   // Grammar helpers
   getHungarianArticle,
-  getHungarianArticleForWord,
   getHungarianSuffix,
 } from "./utils";
 
-export { getPlural, createPluralTranslation, pluralRules } from "./plurals";
+export { getPlural, createPluralTranslation, pluralRules } from "./utils/pluralization/plurals";
 
 // Enhanced loading system
 export {
@@ -87,26 +102,20 @@ export {
   createOptimizedLoader,
   clearTranslationCache,
   getCacheStats,
-  preloadTranslations,
-} from "./loader";
+} from "./loaders";
 
 // Debugging and validation
 export {
-  I18nDebugger,
-  I18nPerformanceMonitor,
-  createTemplateTranslator,
-  createDebugPluralTranslator,
-} from "./debugger";
+  createDebugStats,
+} from "./features/debug";
+export type { DebugStats } from "./features/debug";
 
 // Intl API integration
 export {
-  createIntlFormatter,
-  IntlNumberFormatter,
-  IntlDateFormatter,
-  IntlRelativeTimeFormatter,
-  IntlPluralRules,
-  IntlFormatter,
-} from "./intl";
+  createDateFormatter,
+  createNumberFormatter,
+  createRelativeFormatter,
+} from "./intl/formatters";
 
 // Migration and enterprise tools
-export { TranslationManager, TranslationAnalytics } from "./migration";
+// export { TranslationManager, TranslationAnalytics } from "./migration";

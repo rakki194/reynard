@@ -308,8 +308,8 @@ class TestJWTEdgeCases:
         access_token = create_access_token(data)
         refresh_token = create_refresh_token(data)
         
-        # Both should verify regardless of type parameter
+        # Tokens should only verify with their correct type for security
         assert verify_token(access_token, "access") is not None
-        assert verify_token(access_token, "refresh") is not None
-        assert verify_token(refresh_token, "access") is not None
+        assert verify_token(access_token, "refresh") is None  # Access token should not verify as refresh
+        assert verify_token(refresh_token, "access") is None  # Refresh token should not verify as access
         assert verify_token(refresh_token, "refresh") is not None

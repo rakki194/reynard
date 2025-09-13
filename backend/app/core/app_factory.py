@@ -45,6 +45,9 @@ from app.core.lifespan_manager import lifespan
 from app.middleware.cors_config import setup_cors_middleware
 from app.middleware.rate_limiting import setup_rate_limiting
 from app.middleware.security_headers import add_security_headers
+from app.middleware.input_validation_middleware import setup_input_validation_middleware
+from app.middleware.dev_bypass_middleware import setup_dev_bypass_middleware
+from app.core.penetration_testing import setup_penetration_testing_middleware, check_penetration_testing_state
 
 
 def create_app() -> FastAPI:
@@ -59,6 +62,11 @@ def create_app() -> FastAPI:
         FastAPI: The configured FastAPI application instance.
     """
     config = get_config()
+
+    # Check for existing penetration testing state on startup
+    if check_penetration_testing_state():
+        print("🦊 Detected active penetration testing session from previous run")
+        print("   Auto-reload will remain disabled until session expires")
 
     # Create the FastAPI application
     app = FastAPI(
@@ -84,12 +92,21 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> None:
     Configure all middleware for the FastAPI application.
 
     This function sets up the complete middleware stack including CORS,
-    rate limiting, security headers, and trusted host validation.
+    rate limiting, security headers, input validation, and trusted host validation.
 
     Args:
         app: The FastAPI application instance.
         config: The application configuration object.
     """
+    # Penetration testing middleware (first to handle session control)
+    setup_penetration_testing_middleware(app)
+    
+    # Development bypass middleware (second to set bypass flags)
+    setup_dev_bypass_middleware(app)
+    
+    # Input validation middleware (third to catch malicious input early)
+    setup_input_validation_middleware(app)
+    
     # CORS configuration
     setup_cors_middleware(app)
 

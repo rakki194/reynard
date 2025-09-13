@@ -5,7 +5,7 @@ export const appSettingsSchema: SettingsSchema = {
   metadata: {
     name: "Reynard Dashboard Settings",
     description: "Comprehensive dashboard application settings",
-    author: "Reynard Team",
+    author: "Balazs Horvath",
   },
   settings: {
     // General settings

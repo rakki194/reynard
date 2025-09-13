@@ -106,7 +106,6 @@ export class WaveformRenderer {
         height *
         0.6;
       const x = i * barWidth + barSpacing;
-      const y = (height - barHeight) / 2;
 
       // Ensure we have a visible bar with better positioning
       const finalBarHeight = Math.max(4, barHeight); // Minimum 4px height for visibility

@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to Reynard! This guide will help you get started with contributing to our cunning SolidJS framework.
 
-## 🦊 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -79,7 +79,7 @@ git push origin feature/your-feature-name
 # Create a pull request on GitHub
 ```
 
-## 🦊 Modularity Standards
+## Modularity Standards
 
 Reynard follows the **140-line axiom** for maintainable code. This is enforced automatically through ESLint rules and pre-commit hooks.
 
@@ -557,7 +557,7 @@ ESLint automatically ignores:
 
 ## 📞 Getting Help
 
-- **Documentation**: [docs.reynard.dev](https://docs.reynard.dev)
+- **Documentation**: [(TBD)](https://(TBD))
 - **Issues**: [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord**: [Join our Discord](https://discord.gg/reynard)

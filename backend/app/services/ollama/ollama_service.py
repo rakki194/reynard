@@ -206,7 +206,7 @@ class OllamaService:
         if not self._config:
             return {}
 
-        return self._config.dict()
+        return self._config.model_dump()
 
     async def update_config(self, config: Dict[str, Any]) -> bool:
         """Update configuration."""

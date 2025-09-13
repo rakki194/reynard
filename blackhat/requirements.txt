@@ -6,6 +6,9 @@ requests
 urllib3
 cryptography
 pyjwt
+httpx
+aiohttp
+beautifulsoup4
 
 # Network and protocol manipulation
 scapy

@@ -35,7 +35,7 @@
     "reynard",
     "solidjs"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
     "monaco-editor": "0.52.2",

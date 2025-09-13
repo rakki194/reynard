@@ -3,6 +3,9 @@
  * Comprehensive styling for the AI-powered caption generation app
  */
 
+/* Import AI Gallery Styles */
+@import "reynard-gallery-ai/src/styles/ai-gallery.css";
+
 /* App Layout */
 .app {
   min-height: 100vh;
@@ -910,5 +913,136 @@
 
   .upload-icon {
     font-size: 2rem;
+  }
+}
+
+/* AI Gallery Integration Styles */
+.ai-gallery-section {
+  padding: 1rem;
+}
+
+.gallery-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.control-group select {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.ai-viewer-section {
+  padding: 1rem;
+}
+
+.no-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.no-selection h3 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.models-section {
+  padding: 1rem;
+}
+
+.model-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.model-card {
+  padding: 1rem;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.model-card h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.model-stats {
+  padding: 1rem;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.model-stats h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.model-stats ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.model-stats li {
+  padding: 0.25rem 0;
+  color: var(--text-secondary);
+}
+
+.workflow-section {
+  padding: 1rem;
+}
+
+.workflow-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Additional responsive styles for AI Gallery */
+@media (max-width: 768px) {
+  .gallery-controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .control-group {
+    justify-content: space-between;
+  }
+
+  .model-info {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-actions {
+    flex-direction: column;
   }
 }

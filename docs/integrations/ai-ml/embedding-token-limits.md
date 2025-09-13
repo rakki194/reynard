@@ -6,7 +6,7 @@ This document explains the fixes implemented to resolve Ollama embedding warning
 
 When using RAG embeddings with Ollama, you may encounter these warnings:
 
-```plaintext
+```text
 decode: cannot decode batches with this context (use llama_encode() instead)
 time=2025-08-11T11:23:56.313+02:00 level=WARN source=runner.go:128 msg="truncating input prompt" limit=512 prompt=514 keep=1 new=512
 ```
@@ -212,7 +212,7 @@ The system now supports various embedding models with their specific token limit
 
 The system logs warnings when chunking occurs:
 
-```plaintext
+```text
 Text chunked from 514 to 2 chunks for model mxbai-embed-large
 ```
 

@@ -6,7 +6,7 @@ Welcome to the comprehensive documentation for the Reynard framework - a cunning
 
 Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content management system. The framework extracts and modularizes yipyap's proven architectural patterns into reusable packages for modern web development.
 
-## 🦦 Architecture Evolution
+## Architecture Evolution
 
 ## Table of Contents
 
@@ -38,7 +38,6 @@ Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content ma
 - [🚀 The Future of Reynard](#the-future-of-reynard)
   - [**🦊 Join the Evolution**](#join-the-evolution)
 - [📚 Next Steps](#next-steps)
-
 
 ## ✨ Core Capabilities
 

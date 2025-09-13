@@ -11,13 +11,14 @@ import {
   createNotificationsModule,
 } from "reynard-core";
 import { ThemeToggle } from "./components/ThemeToggle";
-import { LanguageSelector } from "./components/LanguageSelector";
+// import { LanguageSelector } from "./components/LanguageSelector";
 import { AppContent } from "./components/AppContent";
+import { AIAppContent } from "./components/AIAppContent";
 import { useAppState } from "./composables/useAppState";
 import { useWorkflow } from "./composables/useWorkflow";
 import { useAppHandlers } from "./composables/useAppHandlers";
 import { AppLogicService } from "./services/appLogic";
-import "reynard-themes/reynard-themes.css";
+import "reynard-themes/themes.css";
 import "./styles.css";
 
 const App: Component = () => {
@@ -62,7 +63,7 @@ const App: Component = () => {
         </div>
       </header>
 
-      <AppContent appState={appState} workflow={workflow} handlers={handlers} />
+      <AIAppContent appState={appState} workflow={workflow} handlers={handlers} />
     </div>
   );
 };

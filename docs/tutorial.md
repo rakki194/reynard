@@ -7,7 +7,7 @@ This tutorial will guide you through creating a complete application with Reynar
 from understanding the framework's modular architecture to building and
 deploying a production-ready app.
 
-## 🦊 What is Reynard?
+## What is Reynard?
 
 Reynard is a cunning SolidJS framework derived from **YipYap**, a multi-modal content
 management system. The framework extracts and modularizes YipYap's proven
@@ -110,7 +110,7 @@ Reynard consists of 40+ specialized packages, each with a specific purpose:
 
 Create the following file structure for a new project:
 
-```plaintext
+```text
 my-reynard-app/
 ├── index.html
 ├── package.json
@@ -498,7 +498,7 @@ shows the proper modular structure with separate components and translation file
 
 Create the following structure for a comprehensive todo app:
 
-```plaintext
+```text
 my-reynard-app/
 ├── src/
 │   ├── main.tsx
@@ -1544,7 +1544,7 @@ Now that you have a solid foundation, explore these advanced features:
   architectural patterns
 - **[🤝 Contributing](./CONTRIBUTING.md)** - How to contribute to Reynard
 
-## 🦊 The Reynard Philosophy
+## The Reynard Philosophy
 
 Reynard embodies the "cunning fox" philosophy:
 

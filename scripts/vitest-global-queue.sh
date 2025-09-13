@@ -161,8 +161,8 @@ run_vitest() {
     export VITEST_GLOBAL_QUEUE=1
     export VITEST_AGENT_ID="$agent_id"
     
-    # Run vitest with the global config
-    exec vitest --config vitest.global.config.ts "$@"
+    # Run vitest with the global config from root directory
+    exec vitest --config ../../vitest.global.config.ts "$@"
 }
 
 # Main script logic

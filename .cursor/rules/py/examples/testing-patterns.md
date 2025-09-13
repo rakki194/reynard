@@ -1,6 +1,6 @@
 # Testing Patterns for Modular Python
 
-_Comprehensive testing examples for modular Python architecture_
+> Comprehensive testing examples for modular Python architecture
 
 ## Unit Testing Services
 
@@ -785,4 +785,5 @@ async def test_service_memory_usage():
     assert memory_increase < 50 * 1024 * 1024
 ```
 
-This comprehensive testing guide provides patterns for testing all aspects of modular Python services, from unit tests to integration tests and performance testing.
+This comprehensive testing guide provides patterns for testing all aspects of modular Python services, from unit tests
+to integration tests and performance testing.

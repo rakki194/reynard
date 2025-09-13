@@ -1,6 +1,6 @@
 # Reynard Framework Status Update
 
-## 🦊 Current Status: Caption Generation Frontend Complete
+## Current Status: Caption Generation Frontend Complete
 
 After analyzing the codebase and documentation, I discovered that the **caption generation system is already fully implemented** in the `packages/annotating` package! This significantly changes our implementation priorities.
 

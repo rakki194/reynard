@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2024-12-19
 
-### 🦊 Major Framework Updates
+### Major Framework Updates
 
 #### 🌍 Internationalization (i18n) - v1.1.0
 

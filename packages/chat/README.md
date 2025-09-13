@@ -1115,10 +1115,10 @@ MIT License - see LICENSE file for details.
 
 ## 🆘 Support
 
-- 📖 [Documentation](https://reynard-docs.example.com)
+<!--- 📖 [Documentation]()-->
 - 🐛 [Issue Tracker](https://github.com/reynard/issues)
-- 💬 [Community Discord](https://discord.gg/reynard)
-- 📧 [Email Support](mailto:support@reynard.dev)
+<!--- 💬 [Community Discord]()-->
+- 📧 [Email Support](mailto:acsipont@gmail.com)
 
 ---
 

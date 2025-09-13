@@ -5,7 +5,7 @@ alwaysApply: false
 
 # Modular Python Manifesto
 
-*Essential patterns for maintainable Python architecture*
+> Essential patterns for maintainable Python architecture
 
 ## Core Principles
 
@@ -343,7 +343,7 @@ def test_health_endpoint(client):
 
 ## File Organization
 
-```
+```text
 backend/
 ├── main.py                 # FastAPI app (90 lines)
 ├── config.py              # Configuration (50 lines)

@@ -110,7 +110,7 @@ async def get_status(
             "canary_percentage": health_status.canary_percentage,
             "rollback_enabled": health_status.rollback_enabled,
             "performance_monitoring": health_status.performance_monitoring,
-            "performance": performance_stats.dict(),
+            "performance": performance_stats.model_dump(),
             "service_info": service_info
         }
         
@@ -191,7 +191,7 @@ async def get_tools(
         tools = await service.get_tools(category=category, tags=tag_list)
         
         return {
-            "tools": [tool.dict() for tool in tools],
+            "tools": [tool.model_dump() for tool in tools],
             "total_tools": len(tools),
             "category": category,
             "tags": tag_list
@@ -228,7 +228,7 @@ async def register_tool(
         return {
             "success": True,
             "message": f"Tool '{tool.name}' registered successfully",
-            "tool": tool.dict()
+            "tool": tool.model_dump()
         }
         
     except HTTPException:
@@ -446,7 +446,7 @@ async def proxy_ask(
                 async with aiohttp.ClientSession() as session:
                     async with session.post(
                         f"{service.configuration.base_url}/ask",
-                        json=request.dict(),
+                        json=request.model_dump(),
                         headers=headers,
                         timeout=aiohttp.ClientTimeout(
                             connect=service.configuration.proxy_connect_timeout_ms / 1000,
@@ -538,7 +538,7 @@ async def proxy_mcp(
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 f"{service.configuration.base_url}/mcp",
-                json=request.dict(),
+                json=request.model_dump(),
                 headers=headers,
                 timeout=aiohttp.ClientTimeout(
                     connect=service.configuration.proxy_connect_timeout_ms / 1000,

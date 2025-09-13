@@ -14,7 +14,7 @@ layout primitives, and design tokens.
 
 Use the `.module.css` extension for all CSS Module files:
 
-```plaintext
+```text
 ComponentName.module.css
 ```
 
@@ -504,7 +504,7 @@ const styles = { ...baseStyles, ...variantStyles };
 
 ## File Structure
 
-```plaintext
+```text
 src/
 ├── components/
 │   ├── ComponentName/

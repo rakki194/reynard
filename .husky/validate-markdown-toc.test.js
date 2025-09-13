@@ -79,7 +79,7 @@ Deep content.`;
     });
 
     it('should handle headings with special characters', () => {
-      const content = `## 🦊 Reynard Framework
+      const content = `##  Reynard Framework
 ## API Reference (v2.0)
 ## Configuration & Setup`;
 
@@ -140,7 +140,7 @@ Just paragraphs.`;
 
     it('should handle special characters in anchor generation', () => {
       const headings = [
-        { level: 2, text: '🦊 Reynard Framework', lineNumber: 1, raw: '## 🦊 Reynard Framework' },
+        { level: 2, text: '🦊 Reynard Framework', lineNumber: 1, raw: '##  Reynard Framework' },
         { level: 2, text: 'API Reference (v2.0)', lineNumber: 3, raw: '## API Reference (v2.0)' },
         { level: 2, text: 'Configuration & Setup', lineNumber: 5, raw: '## Configuration & Setup' }
       ];

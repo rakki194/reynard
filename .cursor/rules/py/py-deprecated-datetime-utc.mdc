@@ -7,7 +7,8 @@ alwaysApply: false
 
 ## Overview
 
-In Python 3.12, several datetime UTC methods were deprecated due to their return of naive `datetime` objects (those lacking timezone information). This can lead to errors when performing timezone-aware operations.
+In Python 3.12, several datetime UTC methods were deprecated due to their return of naive `datetime` objects (those
+lacking timezone information). This can lead to errors when performing timezone-aware operations.
 
 ## Deprecated Methods
 
@@ -92,7 +93,8 @@ Naive datetime objects can cause issues when:
 
 ✅ **Clean**: Our main Reynard backend code does not use deprecated datetime UTC methods.
 
-⚠️ **Third-party Libraries**: Some dependencies (pawprint, yipyap) may still use deprecated methods, but this doesn't affect our core functionality.
+⚠️ **Third-party Libraries**: Some dependencies (pawprint, yipyap) may still use deprecated methods, but this doesn't
+affect our core functionality.
 
 ## Best Practices
 

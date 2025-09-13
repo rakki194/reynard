@@ -17,6 +17,8 @@
     "reynard-components": "workspace:*",
     "reynard-annotating": "workspace:*",
     "reynard-caption": "workspace:*",
+    "reynard-gallery-ai": "workspace:*",
+    "reynard-gallery": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {

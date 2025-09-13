@@ -127,7 +127,7 @@ The queue logs show proper agent lifecycle management:
 4. **Agent Coordination**: ✅ Proper registration/cleanup
 5. **Real Reynard Tests**: ✅ Successfully executed
 
-### 🐺> System Status: OPERATIONAL
+### > System Status: OPERATIONAL
 
 The global vitest queue system with single process enforcement is **WORKING CORRECTLY**:
 

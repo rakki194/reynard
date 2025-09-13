@@ -6,21 +6,18 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 // Mock the loader functions
-const mockLoadTranslationsWithCache = vi.fn();
+const mockLoadTranslationModuleCore = vi.fn();
 const mockLoadNamespace = vi.fn();
 const mockCreateOptimizedLoader = vi.fn();
 const mockClearTranslationCache = vi.fn();
 const mockGetCacheStats = vi.fn();
-const mockPreloadTranslations = vi.fn();
 
-vi.mock("../loader", () => ({
-  loadTranslationsWithCache: mockLoadTranslationsWithCache,
+vi.mock("../../loaders", () => ({
+  loadTranslationModuleCore: mockLoadTranslationModuleCore,
   loadNamespace: mockLoadNamespace,
   createOptimizedLoader: mockCreateOptimizedLoader,
   clearTranslationCache: mockClearTranslationCache,
   getCacheStats: mockGetCacheStats,
-  preloadTranslations: mockPreloadTranslations,
-  fullTranslations: {},
 }));
 
 describe("Translation Loader System", () => {
@@ -28,7 +25,7 @@ describe("Translation Loader System", () => {
     vi.clearAllMocks();
 
     // Set up default mock implementations
-    mockLoadTranslationsWithCache.mockResolvedValue({
+    mockLoadTranslationModuleCore.mockResolvedValue({
       common: { hello: "Hello" },
       themes: { light: "Light" },
       core: { loading: "Loading..." },
@@ -52,16 +49,15 @@ describe("Translation Loader System", () => {
       namespaces: [{ name: "common", locales: 1 }],
     });
 
-    mockPreloadTranslations.mockResolvedValue(undefined);
   });
 
-  describe("loadTranslationsWithCache", () => {
+  describe("loadTranslationModuleCore", () => {
     it("should load translations and cache them", async () => {
-      const { loadTranslationsWithCache } = await import("../loader");
+      const { loadTranslationModuleCore } = await import("../../loaders");
 
-      const result = await loadTranslationsWithCache("en");
+      const result = await loadTranslationModuleCore("en", vi.fn());
 
-      expect(mockLoadTranslationsWithCache).toHaveBeenCalledWith("en");
+      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith("en", expect.any(Function));
       expect(result).toEqual({
         common: { hello: "Hello" },
         themes: { light: "Light" },
@@ -75,18 +71,19 @@ describe("Translation Loader System", () => {
       });
     });
 
-    it("should handle cache disabled", async () => {
-      const { loadTranslationsWithCache } = await import("../loader");
+    it("should handle import function", async () => {
+      const { loadTranslationModuleCore } = await import("../../loaders");
+      const mockImportFn = vi.fn();
 
-      await loadTranslationsWithCache("en", false);
+      await loadTranslationModuleCore("en", mockImportFn);
 
-      expect(mockLoadTranslationsWithCache).toHaveBeenCalledWith("en", false);
+      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith("en", mockImportFn);
     });
   });
 
   describe("loadNamespace", () => {
     it("should load specific namespace", async () => {
-      const { loadNamespace } = await import("../loader");
+      const { loadNamespace } = await import("../../loaders");
 
       const result = await loadNamespace("en", "common");
 
@@ -97,7 +94,7 @@ describe("Translation Loader System", () => {
 
   describe("createOptimizedLoader", () => {
     it("should create optimized loader with used namespaces", async () => {
-      const { createOptimizedLoader } = await import("../loader");
+      const { createOptimizedLoader } = await import("../../loaders");
 
       const loader = createOptimizedLoader(["common", "themes"]);
 
@@ -112,7 +109,7 @@ describe("Translation Loader System", () => {
 
   describe("Cache Management", () => {
     it("should clear all cache", async () => {
-      const { clearTranslationCache } = await import("../loader");
+      const { clearTranslationCache } = await import("../../loaders");
 
       clearTranslationCache();
 
@@ -120,7 +117,7 @@ describe("Translation Loader System", () => {
     });
 
     it("should clear specific locale cache", async () => {
-      const { clearTranslationCache } = await import("../loader");
+      const { clearTranslationCache } = await import("../../loaders");
 
       clearTranslationCache("es");
 
@@ -128,7 +125,7 @@ describe("Translation Loader System", () => {
     });
 
     it("should provide cache statistics", async () => {
-      const { getCacheStats } = await import("../loader");
+      const { getCacheStats } = await import("../../loaders");
 
       const stats = getCacheStats();
 
@@ -138,25 +135,16 @@ describe("Translation Loader System", () => {
     });
   });
 
-  describe("preloadTranslations", () => {
-    it("should preload multiple locales", async () => {
-      const { preloadTranslations } = await import("../loader");
-
-      await preloadTranslations(["en", "es"]);
-
-      expect(mockPreloadTranslations).toHaveBeenCalledWith(["en", "es"]);
-    });
-  });
 
   describe("Error Handling", () => {
     it("should handle loading errors gracefully", async () => {
-      mockLoadTranslationsWithCache.mockRejectedValueOnce(
+      mockLoadTranslationModuleCore.mockRejectedValueOnce(
         new Error("Failed to load"),
       );
 
-      const { loadTranslationsWithCache } = await import("../loader");
+      const { loadTranslationModuleCore } = await import("../../loaders");
 
-      await expect(loadTranslationsWithCache("nonexistent")).rejects.toThrow(
+      await expect(loadTranslationModuleCore("nonexistent", vi.fn())).rejects.toThrow(
         "Failed to load",
       );
     });
@@ -164,7 +152,7 @@ describe("Translation Loader System", () => {
     it("should handle namespace loading errors", async () => {
       mockLoadNamespace.mockRejectedValueOnce(new Error("Namespace not found"));
 
-      const { loadNamespace } = await import("../loader");
+      const { loadNamespace } = await import("../../loaders");
 
       await expect(loadNamespace("en", "nonexistent")).rejects.toThrow(
         "Namespace not found",
@@ -175,7 +163,7 @@ describe("Translation Loader System", () => {
   describe("Integration with Enhanced I18n", () => {
     it("should work with enhanced i18n module", async () => {
       // Mock the enhanced i18n module
-      vi.mock("../index", () => ({
+      vi.mock("../../index", () => ({
         createI18nModule: vi.fn().mockReturnValue({
           locale: vi.fn().mockReturnValue("en"),
           setLocale: vi.fn(),
@@ -189,7 +177,7 @@ describe("Translation Loader System", () => {
         }),
       }));
 
-      const { createI18nModule } = await import("../index");
+      const { createI18nModule } = await import("../../index");
 
       const i18n = createI18nModule({
         usedNamespaces: ["common", "themes"],

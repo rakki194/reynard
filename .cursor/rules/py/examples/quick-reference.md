@@ -1,6 +1,6 @@
 # Modular Python Quick Reference
 
-_Essential patterns and templates for rapid development_
+> Essential patterns and templates for rapid development
 
 ## File Structure Templates
 

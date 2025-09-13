@@ -264,7 +264,7 @@ assert format_info[".jxl"]["plugin_name"] == "pillow-jxl"
 
 All tests pass successfully:
 
-```plaintext
+```text
 ================================ 9 passed in 1.24s =================================
 ```
 

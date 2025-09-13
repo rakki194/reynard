@@ -325,6 +325,6 @@ npm run test:watch
 
 MIT License - see LICENSE file for details.
 
-## 🦊 Reynard Framework
+## Reynard Framework
 
-This package is part of the Reynard framework - a cunning SolidJS framework with modular architecture. Learn more at [reynard.dev](https://reynard.dev).
+This package is part of the Reynard framework - a cunning SolidJS framework with modular architecture. Learn more at [(TBD)](https://(TBD)).

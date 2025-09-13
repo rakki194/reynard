@@ -101,12 +101,16 @@
     "markdown:toc:fix": "node .husky/validate-markdown-toc.js --fix",
     "markdown:lint": "markdownlint '**/*.md' --ignore node_modules --ignore third_party",
     "markdown:lint:fix": "markdownlint '**/*.md' --ignore node_modules --ignore third_party --fix",
-    "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint"
+    "markdown:sentence:check": "node .husky/validate-sentence-length.js",
+    "markdown:sentence:fix": "node .husky/validate-sentence-length.js --fix",
+    "markdown:sentence:test": "vitest run .husky/validate-sentence-length.test.js",
+    "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
+    "@playwright/test": "^1.55.0",
     "@types/node": "24.3.1",
     "@typescript-eslint/eslint-plugin": "8.42.0",
     "@typescript-eslint/parser": "8.42.0",

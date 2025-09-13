@@ -3,11 +3,10 @@ alwaysApply: false
 ---
 # Pydantic V2 Migration Guide
 
-*Comprehensive guide for migrating from Pydantic V1 to V2 with focus on deprecations and best practices*
+Guide for migrating from Pydantic V1 to V2 with focus on deprecations and best practices.
 
-## Overview
-
-Pydantic V2 introduces significant changes to improve performance, type safety, and developer experience. This guide covers all major deprecations and provides clear migration patterns for the Reynard codebase.
+Pydantic V2 introduces significant changes to improve performance, type safety, and developer experience.
+This guide covers all major deprecations and provides clear migration patterns for the Reynard codebase.
 
 ## Critical Deprecations
 

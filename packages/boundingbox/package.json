@@ -36,7 +36,7 @@
     "solidjs",
     "fabricjs"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
     "solid-js": "1.9.9",

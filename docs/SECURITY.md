@@ -107,7 +107,7 @@ The framework automatically applies the following security headers:
 If you discover a security vulnerability, please report it responsibly:
 
 1. **Do not** create a public issue
-2. **Email** security concerns to: <security@reynard.dev>
+2. **Email** security concerns to: <acsipont@gmail.com>
 3. **Include** detailed information about the vulnerability
 4. **Allow** reasonable time for response before public disclosure
 
@@ -147,4 +147,4 @@ This security policy is regularly updated to reflect new threats and security me
 
 ## Contact
 
-For security-related questions or concerns, please contact the security team at <security@reynard.dev>.
+For security-related questions or concerns, please contact the security team at <acsipont@gmail.com>.

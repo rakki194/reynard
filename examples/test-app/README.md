@@ -10,7 +10,7 @@ The Reynard Test Application is a dedicated testing environment designed to vali
 
 ### Project Structure
 
-```plaintext
+```text
 reynard-test-app/
 ├── index.html              # Application entry point
 ├── package.json            # Dependencies and scripts

@@ -1,0 +1,166 @@
+{
+  "config": {
+    "configFile": "/home/kade/runeset/reynard/e2e/playwright.config.ts",
+    "rootDir": "/home/kade/runeset/reynard/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "/home/kade/runeset/reynard/e2e/global-setup.ts",
+    "globalTeardown": "/home/kade/runeset/reynard/e2e/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "e2e-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "e2e-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Microsoft Edge",
+        "name": "Microsoft Edge",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/e2e-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "Google Chrome",
+        "name": "Google Chrome",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: Backend health check failed: 404",
+      "stack": "Error: Backend health check failed: 404\n    at validateBackendConnectivity (/home/kade/runeset/reynard/e2e/global-setup.ts:145:13)\n    at globalSetup (/home/kade/runeset/reynard/e2e/global-setup.ts:24:3)",
+      "location": {
+        "file": "/home/kade/runeset/reynard/e2e/global-setup.ts",
+        "column": 13,
+        "line": 145
+      },
+      "snippet": "\u001b[90m   at \u001b[39mglobal-setup.ts:145\n\n\u001b[0m \u001b[90m 143 |\u001b[39m     \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m fetch(\u001b[32m`${backendUrl}/health`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 144 |\u001b[39m     \u001b[36mif\u001b[39m (\u001b[33m!\u001b[39mresponse\u001b[33m.\u001b[39mok) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 145 |\u001b[39m       \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Backend health check failed: ${response.status}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 146 |\u001b[39m     }\n \u001b[90m 147 |\u001b[39m\n \u001b[90m 148 |\u001b[39m     \u001b[36mconst\u001b[39m healthData \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson()\u001b[33m;\u001b[39m\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-09-13T11:22:19.301Z",
+    "duration": 1910.204,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

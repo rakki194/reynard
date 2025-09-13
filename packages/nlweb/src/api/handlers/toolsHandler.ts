@@ -4,9 +4,34 @@
  * Handles tool management requests for the NLWeb API.
  */
 
-import { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
-import { NLWebService } from "../../types/index.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
+import type { NLWebService, NLWebTool } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
+
+/**
+ * Type guard to check if request body has the expected NLWebTool structure
+ */
+function isValidToolRequestBody(body: unknown): body is NLWebTool {
+  if (typeof body !== "object" || body === null) {
+    return false;
+  }
+
+  const obj = body as Record<string, unknown>;
+
+  return (
+    typeof obj.name === "string" &&
+    typeof obj.description === "string" &&
+    typeof obj.category === "string" &&
+    Array.isArray(obj.tags) &&
+    typeof obj.path === "string" &&
+    ["GET", "POST", "PUT", "DELETE"].includes(obj.method as string) &&
+    Array.isArray(obj.parameters) &&
+    Array.isArray(obj.examples) &&
+    typeof obj.enabled === "boolean" &&
+    typeof obj.priority === "number" &&
+    typeof obj.timeout === "number"
+  );
+}
 
 /**
  * Create get tools handler
@@ -61,7 +86,7 @@ export function createRegisterToolHandler(
 ): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
-      if (!req.body || !req.body.name) {
+      if (!isValidToolRequestBody(req.body)) {
         return {
           status: 400,
           headers: getCORSHeaders(enableCORS),
@@ -69,6 +94,7 @@ export function createRegisterToolHandler(
         };
       }
 
+      // TypeScript now knows req.body has the correct structure
       const tool = req.body;
       service.getToolRegistry().registerTool(tool);
 

@@ -3,7 +3,7 @@ Data models for Diffusion-LLM service.
 """
 
 from typing import Any, Dict
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class DiffusionConfig(BaseModel):
@@ -18,6 +18,8 @@ class DiffusionConfig(BaseModel):
 
 class DiffusionGenerationParams(BaseModel):
     """Parameters for diffusion text generation."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     text: str = Field(..., description="Input text for generation")
     model_id: str = Field("dreamon", description="Model ID to use")
     max_length: int = Field(512, description="Maximum generation length")
@@ -30,6 +32,8 @@ class DiffusionGenerationParams(BaseModel):
 
 class DiffusionInfillingParams(BaseModel):
     """Parameters for diffusion text infilling."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     prefix: str = Field(..., description="Text prefix")
     suffix: str = Field(..., description="Text suffix")
     model_id: str = Field("dreamon", description="Model ID to use")
@@ -41,6 +45,8 @@ class DiffusionInfillingParams(BaseModel):
 
 class DiffusionModelInfo(BaseModel):
     """Information about a diffusion model."""
+    model_config = ConfigDict(protected_namespaces=())
+    
     model_id: str = Field(..., description="Model identifier")
     name: str = Field(..., description="Human-readable model name")
     description: str = Field("", description="Model description")

@@ -6,7 +6,6 @@
 import { describe, it, expect } from "vitest";
 import {
   getHungarianArticle,
-  getHungarianArticleForWord,
   getHungarianSuffix,
 } from "../../utils";
 
@@ -84,24 +83,6 @@ describe("Hungarian Articles", () => {
   });
 });
 
-describe("Hungarian Article For Word", () => {
-  it('should use "az" for words starting with vowels', () => {
-    expect(getHungarianArticleForWord("alma")).toBe("az");
-    expect(getHungarianArticleForWord("ember")).toBe("az");
-    expect(getHungarianArticleForWord("iskola")).toBe("az");
-  });
-
-  it('should use "a" for words starting with consonants', () => {
-    expect(getHungarianArticleForWord("ház")).toBe("a");
-    expect(getHungarianArticleForWord("kert")).toBe("a");
-    expect(getHungarianArticleForWord("macska")).toBe("a");
-  });
-
-  it("should handle case insensitive input", () => {
-    expect(getHungarianArticleForWord("ALMA")).toBe("az");
-    expect(getHungarianArticleForWord("HÁZ")).toBe("a");
-  });
-});
 
 describe("Hungarian Suffix Selection", () => {
   it("should use back suffix for back vowel words", () => {

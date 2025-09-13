@@ -28,7 +28,7 @@
     "jwt",
     "authentication"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "repository": {
     "type": "git",

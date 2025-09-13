@@ -20,7 +20,7 @@ All endpoints are prefixed with `/api/summarize`
 
 All endpoints require authentication via JWT token in the Authorization header:
 
-```plaintext
+```text
 Authorization: Bearer <jwt_token>
 ```
 

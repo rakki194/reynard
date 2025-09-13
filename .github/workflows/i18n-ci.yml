@@ -74,7 +74,7 @@ jobs:
             if (fs.existsSync(resultsPath)) {
               const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
               
-              const comment = `## 🦊 i18n Test Results
+              const comment = `##  i18n Test Results
               
               **Summary:**
               - ✅ Packages tested: ${results.summary.totalPackages}

@@ -1,6 +1,6 @@
 # Module Pattern Examples
 
-_Detailed implementations of modular TypeScript/JavaScript patterns_
+> Detailed implementations of modular TypeScript/JavaScript patterns
 
 ## Notification System Module
 
@@ -756,4 +756,5 @@ export const createAppModules = () => {
 };
 ```
 
-This comprehensive module patterns guide provides detailed implementations for common modular patterns in TypeScript/JavaScript applications.
+This comprehensive module patterns guide provides detailed implementations for common modular patterns in
+TypeScript/JavaScript applications.

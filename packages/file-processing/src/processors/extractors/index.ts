@@ -12,4 +12,7 @@ export { ImageMetadataExtractor } from "./ImageMetadataExtractor";
 export { VideoMetadataExtractor } from "./VideoMetadataExtractor";
 export { AudioMetadataExtractor } from "./AudioMetadataExtractor";
 export { DocumentMetadataExtractor } from "./DocumentMetadataExtractor";
+export { TextMetadataExtractor } from "./TextMetadataExtractor";
+export { CodeMetadataExtractor } from "./CodeMetadataExtractor";
+export { LoraMetadataExtractor } from "./LoraMetadataExtractor";
 export { MetadataExtractorFactory } from "./MetadataExtractorFactory";

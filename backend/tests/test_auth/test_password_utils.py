@@ -18,17 +18,18 @@ class TestPasswordHashing:
         # Hash should be a string
         assert isinstance(hashed, str)
         
-        # Hash should contain salt and hash separated by colon
-        assert ":" in hashed
-        salt_hex, password_hash_hex = hashed.split(":")
+        # Hash should be in Argon2 format (starts with $argon2id$)
+        assert hashed.startswith("$argon2id$")
         
-        # Both parts should be valid hex strings
-        assert len(salt_hex) == 64  # 32 bytes = 64 hex chars
-        assert len(password_hash_hex) == 64  # 32 bytes = 64 hex chars
+        # Should contain version, memory, time, parallelism, salt, and hash
+        parts = hashed.split("$")
+        assert len(parts) >= 6  # $argon2id$v=19$m=131072,t=3,p=2$salt$hash
         
-        # Should be valid hex
-        int(salt_hex, 16)
-        int(password_hash_hex, 16)
+        # Should be a valid Argon2 hash format
+        assert parts[1] == "argon2id"
+        assert parts[2].startswith("v=")
+        # The third part contains m=,t=,p= all together
+        assert "m=" in parts[3] and "t=" in parts[3] and "p=" in parts[3]
 
     def test_password_hash_uniqueness(self):
         """Test that the same password generates different hashes."""

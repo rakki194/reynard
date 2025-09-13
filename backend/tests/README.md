@@ -15,7 +15,7 @@ This test suite provides comprehensive coverage of all backend functionality inc
 
 ## Test Structure
 
-```
+```text
 tests/
 ├── conftest.py                 # Shared fixtures and configuration
 ├── test_auth/                  # Authentication tests
@@ -38,7 +38,7 @@ tests/
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.13
 - Virtual environment (recommended)
 
 ### Installation
@@ -133,7 +133,7 @@ pytest -v -s
 
 ## Test Categories
 
-### 🦊> Unit Tests
+### Unit Tests
 
 Test individual components in isolation:
 
@@ -141,7 +141,7 @@ Test individual components in isolation:
 - **JWT Utils**: Token creation, verification, security
 - **User Service**: User creation, authentication, management
 
-### 🦦> Integration Tests
+### Integration Tests
 
 Test complete workflows and service interactions:
 
@@ -149,7 +149,7 @@ Test complete workflows and service interactions:
 - **Multi-user Scenarios**: Concurrent operations, session management
 - **Error Recovery**: Handling failures and edge cases
 
-### 🐺> Security Tests
+### Security Tests
 
 Test security measures and vulnerability prevention:
 
@@ -157,7 +157,7 @@ Test security measures and vulnerability prevention:
 - **Security Headers**: CORS, CSP, HSTS, and other security headers
 - **Authentication Security**: Token security, password policies
 
-### 🔧> API Tests
+### API Tests
 
 Test all REST endpoints:
 
@@ -165,7 +165,7 @@ Test all REST endpoints:
 - **Caption Generation**: Single and batch caption generation
 - **Protected Routes**: Access control and authorization
 
-### ⚙️> Configuration Tests
+### Configuration Tests
 
 Test configuration and CI/CD integration:
 
@@ -254,7 +254,7 @@ Validation of:
 
 Automated testing on:
 
-- Multiple Python versions (3.8, 3.9, 3.10, 3.11)
+- Python 3.13
 - Security scanning with Bandit
 - Dependency vulnerability scanning
 - Performance testing with Locust

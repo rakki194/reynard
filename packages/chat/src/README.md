@@ -597,7 +597,7 @@ MIT License - see LICENSE file for details.
 - 📖 [Documentation](https://reynard-docs.example.com)
 - 🐛 [Issue Tracker](https://github.com/reynard/issues)
 - 💬 [Community Discord](https://discord.gg/reynard)
-- 📧 [Email Support](mailto:support@reynard.dev)
+- 📧 [Email Support](mailto:acsipont@gmail.com)
 
 ---
 

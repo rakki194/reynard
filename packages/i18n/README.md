@@ -612,7 +612,6 @@ Preloads translations for specified locales.
 ### Grammar Helper Functions
 
 - `getHungarianArticle(word)` - Hungarian article selection
-- `getHungarianArticleForWord(name)` - Hungarian article for words
 - `getHungarianSuffix(word, backSuffix, frontSuffix)` - Hungarian vowel harmony
 
 ### Intl API Integration

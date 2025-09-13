@@ -43,27 +43,65 @@ between source code and test files. Integration tests are also located in the
 
 ---
 
-All tests are organized in `src/__tests__/` directories within each package:
+**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All tests are organized within individual packages under `packages/[package-name]/src/__tests__/`.
 
-1. **Component Tests**: All component tests are located in `src/__tests__/` (e.g.,
-   `src/__tests__/ImageViewer.test.tsx`,
-   `src/__tests__/Notification.test.tsx`,
-   `src/__tests__/Settings.test.tsx`,
-   `src/__tests__/UploadOverlay.test.tsx`).
+### Package-Based Test Structure
+
+```
+reynard/                          # Monorepo root (NO src/ here)
+├── packages/                     # All source code and tests live here
+│   ├── core/                    # Core utilities package
+│   │   ├── src/                 # Package source code
+│   │   │   ├── __tests__/       # Package tests
+│   │   │   │   ├── components/  # Component tests
+│   │   │   │   ├── utils/       # Utility tests
+│   │   │   │   └── contexts/    # Context tests
+│   │   │   ├── components/      # Source components
+│   │   │   └── utils/           # Source utilities
+│   │   └── package.json
+│   ├── components/              # UI components package
+│   │   ├── src/                 # Package source code
+│   │   │   ├── __tests__/       # Package tests
+│   │   │   │   ├── ImageViewer.test.tsx
+│   │   │   │   ├── Notification.test.tsx
+│   │   │   │   ├── Settings.test.tsx
+│   │   │   │   └── UploadOverlay.test.tsx
+│   │   │   └── components/      # Source components
+│   │   └── package.json
+│   └── [other-packages]/        # Each package is self-contained
+├── e2e/                         # Integration tests (Playwright)
+├── backend/tests/               # Backend tests (Python)
+└── vitest.global.config.ts      # Global test configuration
+```
+
+### Test Location Rules
+
+1. **Package Tests**: `packages/[package-name]/src/__tests__/`
+2. **Integration Tests**: `e2e/` (Playwright tests)
+3. **Backend Tests**: `backend/tests/` (Python tests)
+4. **No Root Tests**: Never create tests at the monorepo root level
+
+### Test Organization by Package
+
+1. **Component Tests**: Located in `packages/[package-name]/src/__tests__/` (e.g.,
+   `packages/components/src/__tests__/ImageViewer.test.tsx`,
+   `packages/components/src/__tests__/Notification.test.tsx`,
+   `packages/components/src/__tests__/Settings.test.tsx`,
+   `packages/components/src/__tests__/UploadOverlay.test.tsx`).
 
 2. **Context and State Tests**: Tests for application state management and
-   context providers are in `src/__tests__/` (e.g.,
-   `src/__tests__/app.test.tsx`, `src/__tests__/contexts.test.ts`,
-   `src/__tests__/gallery.test.ts`, `src/__tests__/selection.test.ts`).
+   context providers are in `packages/[package-name]/src/__tests__/` (e.g.,
+   `packages/core/src/__tests__/app.test.tsx`, `packages/core/src/__tests__/contexts.test.ts`,
+   `packages/gallery/src/__tests__/gallery.test.ts`, `packages/gallery/src/__tests__/selection.test.ts`).
 
 3. **Utility Tests**: Tests for utility functions and helpers are in
-   `src/__tests__/` (e.g., `src/__tests__/reactive-utils.test.tsx`,
-   `src/__tests__/test-utils.test.tsx`).
+   `packages/[package-name]/src/__tests__/` (e.g., `packages/core/src/__tests__/reactive-utils.test.tsx`,
+   `packages/testing/src/__tests__/test-utils.test.tsx`).
 
 4. **Internationalization Tests**: Tests for translation and localization
-   features are in `src/__tests__/` (e.g., `src/__tests__/i18n.test.ts`).
+   features are in `packages/i18n/src/__tests__/` (e.g., `packages/i18n/src/__tests__/i18n.test.ts`).
 
-When writing tests, place them in the `src/__tests__/` directory with descriptive
+When writing tests, place them in the appropriate package's `src/__tests__/` directory with descriptive
 names that indicate what they're testing. Use the shared helpers from the
 **reynard-testing** package to maintain consistency across tests. Follow the
 established patterns for setup/teardown to ensure isolation between test cases.
@@ -79,7 +117,7 @@ established patterns for setup/teardown to ensure isolation between test cases.
 
 ---
 
-The test environment is configured in `/src/test/setup.ts`. This configuration
+The test environment is configured in `packages/testing/src/setup.ts`. This configuration
 provides a DOM environment powered by **happy-dom** for simulating browser behavior.
 Global mocks are included for various browser APIs to enable testing of
 browser-dependent functionality. The environment is set up to automatically
@@ -107,15 +145,15 @@ The project uses a comprehensive Vitest configuration in `vitest.config.ts`:
 
 ---
 
-The project provides comprehensive test utilities in three files:
+The project provides comprehensive test utilities in the `reynard-testing` package:
 
-1. `/src/test/test-utils.ts`: Core test utilities and helper functions
-2. `/src/test/test-hooks.ts`: Custom hooks for test setup and teardown
-3. `/src/test/setup.ts`: Global test environment configuration
+1. `packages/testing/src/test-utils.ts`: Core test utilities and helper functions
+2. `packages/testing/src/test-hooks.ts`: Custom hooks for test setup and teardown
+3. `packages/testing/src/setup.ts`: Global test environment configuration
 
 ### Configuration
 
-A dedicated `tsconfig.json` in the `/src/test` directory ensures proper
+A dedicated `tsconfig.json` in the `packages/testing/` directory ensures proper
 TypeScript configuration for the test environment.
 
 ## Component Testing
@@ -123,7 +161,7 @@ TypeScript configuration for the test environment.
 ---
 
 When writing component tests, there are several important guidelines to follow.
-First, place your test file in the `src/__tests__/` directory and follow the naming
+First, place your test file in the appropriate package's `src/__tests__/` directory and follow the naming
 pattern `ComponentName.test.tsx`. Use the provided test utilities from the
 reynard-testing package to maintain consistency across tests. Follow the
 established patterns for test setup and teardown to ensure proper isolation

@@ -214,7 +214,7 @@ Add to your project's package.json:
 
 ## 📁 File Structure
 
-```plaintext
+```text
 reynard/.husky/
 ├── validate-css-variables.js    # Main validation script
 ├── pre-commit                   # Git pre-commit hook (includes CSS validation)

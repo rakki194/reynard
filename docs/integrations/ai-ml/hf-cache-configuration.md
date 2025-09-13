@@ -125,7 +125,7 @@ volumes:
 
 The HuggingFace cache follows this structure:
 
-```plaintext
+```text
 {HF_HOME}/
 ├── hub/
 │   ├── models--RedRocket--JointTaggerProject/

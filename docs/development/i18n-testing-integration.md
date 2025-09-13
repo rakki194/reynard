@@ -100,7 +100,7 @@ module.exports = {
 
 ## Package Test Files
 
-Each package should have an `i18n.test.ts` file in its `src/__tests__/` directory:
+Each package should have an `i18n.test.ts` file in its `packages/[package-name]/src/__tests__/` directory:
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -137,6 +137,8 @@ packages/[package-name]/src/lang/
 │   └── index.ts
 └── ...
 ```
+
+**Note**: This is within each individual package, not at the monorepo root level.
 
 ### Example Translation File
 

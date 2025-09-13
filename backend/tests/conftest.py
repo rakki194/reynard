@@ -12,6 +12,7 @@ from typing import AsyncGenerator, Dict, Generator
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+import pytest_asyncio
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -19,14 +20,41 @@ from httpx import AsyncClient
 # Add the backend app to the path
 sys.path.insert(0, str(Path(__file__).parent.parent / "app"))
 
-from main import create_app
+# Mock gatekeeper for API tests (but not for auth unit tests)
+# Check if we're running auth unit tests by looking at the test path
+import inspect
+current_frame = inspect.currentframe()
+test_file = None
+while current_frame:
+    filename = current_frame.f_code.co_filename
+    if 'test_' in filename:
+        test_file = filename
+        break
+    current_frame = current_frame.f_back
 
-sys.modules['gatekeeper'] = __import__('tests.mocks.gatekeeper', fromlist=[''])
-sys.modules['gatekeeper.api'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.api.routes'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.api.dependencies'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.models'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.models.user'] = sys.modules['gatekeeper']
+# Only mock gatekeeper for non-auth and non-security unit tests
+if test_file is None or ('test_auth' not in test_file and 'test_security' not in test_file):
+    import tests.mocks.gatekeeper as mock_gatekeeper
+    import tests.mocks.gatekeeper.api as mock_gatekeeper_api
+    sys.modules['gatekeeper'] = mock_gatekeeper
+    sys.modules['gatekeeper.api'] = mock_gatekeeper_api
+    sys.modules['gatekeeper.api.routes'] = mock_gatekeeper_api.routes
+    sys.modules['gatekeeper.api.dependencies'] = mock_gatekeeper
+    sys.modules['gatekeeper.models'] = mock_gatekeeper
+    sys.modules['gatekeeper.models.user'] = mock_gatekeeper
+    import tests.mocks.gatekeeper.backends as mock_backends
+    import tests.mocks.gatekeeper.core as mock_core
+    sys.modules['gatekeeper.backends'] = mock_backends
+    sys.modules['gatekeeper.backends.memory'] = mock_backends.memory
+    sys.modules['gatekeeper.backends.postgresql'] = mock_backends.postgresql
+    sys.modules['gatekeeper.backends.sqlite'] = mock_backends.sqlite
+    sys.modules['gatekeeper.core'] = mock_core
+    sys.modules['gatekeeper.core.password_manager'] = mock_core.password_manager
+    sys.modules['gatekeeper.core.auth_manager'] = mock_core.auth_manager
+    sys.modules['gatekeeper.core.token_manager'] = mock_core.token_manager
+    sys.modules['gatekeeper.models.token'] = mock_gatekeeper.models.token
+
+from main import create_app
 
 
 @pytest.fixture(scope="session")
@@ -40,7 +68,36 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 @pytest.fixture(scope="function")
 def test_app() -> FastAPI:
     """Create a test FastAPI application."""
-    app = create_app()
+    # Create app without lifespan manager for testing
+    from app.core.config import get_config
+    from app.core.app_factory import _setup_middleware, _setup_routers
+    from app.core.service_registry import ServiceRegistry
+    from unittest.mock import MagicMock
+    
+    config = get_config()
+    
+    # Create the FastAPI application without lifespan
+    app = FastAPI(
+        title=config.title,
+        description=config.description,
+        version=config.version,
+        docs_url=config.docs_url,
+        redoc_url=config.redoc_url,
+    )
+    
+    # Mock the service registry for testing
+    mock_registry = MagicMock()
+    mock_registry.get_all_status.return_value = {}
+    mock_registry.health_check_all.return_value = {}
+    mock_registry.is_healthy.return_value = True
+    
+    # Store the mock registry in the app state
+    app.state.service_registry = mock_registry
+    
+    # Configure middleware and routers
+    _setup_middleware(app, config)
+    _setup_routers(app)
+    
     return app
 
 
@@ -50,10 +107,12 @@ def client(test_app) -> TestClient:
     return TestClient(test_app)
 
 
-@pytest.fixture(scope="function")
+@pytest_asyncio.fixture(scope="function")
 async def async_client(test_app) -> AsyncGenerator[AsyncClient, None]:
     """Create an async test client for the FastAPI application."""
-    async with AsyncClient(app=test_app, base_url="http://test") as ac:
+    from httpx import ASGITransport
+    transport = ASGITransport(app=test_app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
 
 
@@ -182,3 +241,38 @@ def setup_test_environment():
     yield
     # Cleanup environment variables if needed
     pass
+
+
+@pytest.fixture
+def clean_databases():
+    """Clean up test databases before each test."""
+    # Import here to avoid circular imports
+    from app.auth.user_service import users_db, refresh_tokens_db
+    
+    # Clear the in-memory databases
+    users_db.clear()
+    refresh_tokens_db.clear()
+    
+    yield
+    
+    # Clean up after test
+    users_db.clear()
+    refresh_tokens_db.clear()
+
+
+@pytest.fixture
+def access_token():
+    """Provide a valid access token for testing."""
+    from app.auth.jwt_utils import create_access_token
+    return create_access_token({"sub": "testuser", "username": "testuser"})
+
+
+@pytest.fixture
+def expired_token():
+    """Provide an expired access token for testing."""
+    from datetime import timedelta
+    from app.auth.jwt_utils import create_access_token
+    return create_access_token(
+        {"sub": "testuser", "username": "testuser"}, 
+        expires_delta=timedelta(minutes=-1)
+    )

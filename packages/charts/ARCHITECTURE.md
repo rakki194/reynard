@@ -1,6 +1,6 @@
 # Reynard Charts Architecture & Dependency Strategy
 
-## 🦊> Current State Analysis
+## Current State Analysis
 
 ### Existing Reynard Visualization Packages
 
@@ -32,7 +32,7 @@
 3. **Real-time Performance**: Live data streaming and updates
 4. **Statistical Analysis**: Box plots, histograms, quality metrics
 
-## 🦦> Modular Architecture Design
+## Modular Architecture Design
 
 ### Core Visualization Engine (`reynard-visualization-core`)
 
@@ -86,11 +86,11 @@ export class VisualizationEngine {
 - `ModelPerformance` - AI model performance dashboards
 - `StatisticalAnalysis` - Advanced statistical charts
 
-## 🐺> Dependency Graph Strategy
+## Dependency Graph Strategy
 
 ### Layer 1: Foundation
 
-```
+```text
 reynard-core
 ├── reynard-colors (OKLCH colors)
 ├── reynard-themes (theme system)
@@ -99,7 +99,7 @@ reynard-core
 
 ### Layer 2: Visualization Core
 
-```
+```text
 reynard-visualization-core
 ├── reynard-core
 ├── reynard-colors
@@ -108,7 +108,7 @@ reynard-visualization-core
 
 ### Layer 3: Specialized Packages
 
-```
+```text
 reynard-charts-2d
 ├── reynard-visualization-core
 ├── chart.js@4.5.0
@@ -127,7 +127,7 @@ reynard-analytics
 
 ### Layer 4: Integration Packages
 
-```
+```text
 reynard-dashboard
 ├── reynard-charts-2d
 ├── reynard-visualization-3d
@@ -138,7 +138,7 @@ reynard-gallery (existing)
 └── reynard-analytics
 ```
 
-## 🦊> Migration Strategy
+## Migration Strategy
 
 ### Phase 1: Core Engine
 
@@ -168,7 +168,7 @@ reynard-gallery (existing)
 3. Add ML/AI visualization tools
 4. Integrate with existing packages
 
-## 🦦> Implementation Benefits
+## > Implementation Benefits
 
 ### For Developers
 
@@ -191,7 +191,7 @@ reynard-gallery (existing)
 - **Dependency Management**: Clear dependency hierarchy
 - **Testing**: Comprehensive test coverage across packages
 
-## 🐺> Security & Performance Considerations
+## > Security & Performance Considerations
 
 ### Security
 
@@ -207,7 +207,7 @@ reynard-gallery (existing)
 - **Rendering Optimization**: LOD, culling, and instancing
 - **Bundle Splitting**: Separate bundles for different visualization types
 
-## 🦊> Next Steps
+## Next Steps
 
 1. **Create Core Engine**: Start with `reynard-visualization-core`
 2. **Enhance Charts**: Upgrade existing charts package
@@ -216,4 +216,5 @@ reynard-gallery (existing)
 5. **Documentation**: Comprehensive API documentation
 6. **Testing**: Full test coverage across all packages
 
-This architecture provides a solid foundation for a world-class visualization system that combines the best of Reynard's existing capabilities with yipyap's advanced features, all while maintaining clean dependencies and excellent performance.
+This architecture provides a solid foundation for a world-class visualization system that combines the best of Reynard's
+existing capabilities with yipyap's advanced features, all while maintaining clean dependencies and excellent performance.

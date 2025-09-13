@@ -220,6 +220,7 @@ export function useGalleryAI(
         generatorName: generator,
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
+        priority: 1,
         force: state.config.captionSettings.forceRegeneration,
         captionType: state.config.captionSettings
           .defaultCaptionType as CaptionType,
@@ -300,6 +301,7 @@ export function useGalleryAI(
         generatorName: generator,
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
+        priority: 1,
         force: state.config.captionSettings.forceRegeneration,
         captionType: state.config.captionSettings
           .defaultCaptionType as CaptionType,

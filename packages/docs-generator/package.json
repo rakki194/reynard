@@ -41,7 +41,7 @@
     "reynard",
     "typescript"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
     "chokidar": "4.0.3",

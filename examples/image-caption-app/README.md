@@ -1,10 +1,19 @@
-# 🦊 Enhanced Image Caption App - Reynard Framework Example
+# 🦊 AI-Enhanced Image Caption App - Reynard Framework Example
 
-A comprehensive AI-powered image caption generation application demonstrating the new modular annotation system with production features, including usage tracking, health monitoring, circuit breakers, and real-time event logging.
+A comprehensive AI-powered image caption generation application featuring the new **Reynard Gallery AI** package with advanced AI capabilities, smart image management, and production-ready features including usage tracking, health monitoring, circuit breakers, and real-time event logging.
 
 ## ✨ Features Demonstrated
 
-### 🤖 Enhanced AI-Powered Caption Generation
+### 🤖 AI Gallery Integration (NEW!)
+
+- **Smart Image Gallery**: AI-enhanced gallery with intelligent indicators and context menus
+- **Multi-Model Support**: JTP2, JoyCaption, Florence2, and WDv3 with automatic model selection
+- **Batch Processing**: Process multiple images simultaneously with real-time progress tracking
+- **Context Menus**: Right-click actions for caption generation, editing, and smart organization
+- **AI Image Viewer**: Enhanced viewer with caption editing and generation controls
+- **Smart Indicators**: Visual indicators showing caption status, AI processing state, and model information
+
+### 🚀 Enhanced AI-Powered Caption Generation
 
 - **Modular Generator System**: Individual packages for JTP2, JoyCaption, Florence2, and WDv3
 - **Production Features**: Usage tracking, health monitoring, circuit breakers, and request queuing
@@ -57,7 +66,37 @@ npm run dev
 npm run build
 ```
 
-Visit `http://localhost:3001` to see the image caption app in action!
+Visit `http://localhost:3001` to see the AI-enhanced image caption app in action!
+
+## 🤖 New AI Gallery Features
+
+### 🎯 AI Gallery Tab
+
+- **Smart Image Grid**: AI-enhanced gallery with intelligent indicators
+- **Context Menus**: Right-click any image for AI-powered actions
+- **Batch Selection**: Select multiple images for batch processing
+- **AI Indicators**: Visual indicators showing caption status and AI processing state
+
+### 🖼️ AI Viewer Tab
+
+- **Enhanced Image Viewer**: Full-featured AI image viewer with caption editing
+- **Caption Generation**: Generate captions directly in the viewer
+- **Caption Editing**: Edit and save captions with real-time preview
+- **Model Selection**: Choose from multiple AI models
+
+### 🤖 Model Monitor Tab
+
+- **Model Statistics**: Track model performance and usage
+- **Success Rates**: Monitor caption generation success rates
+- **Processing Stats**: View total images processed and current model status
+
+### 📊 Enhanced System Stats
+
+- **AI Metrics**: Track AI-specific statistics
+- **Processing History**: View historical processing data
+- **Performance Analytics**: Monitor system performance and efficiency
+
+For detailed information about all AI features, see [AI_FEATURES.md](./AI_FEATURES.md).
 
 ## 📱 Usage Guide
 

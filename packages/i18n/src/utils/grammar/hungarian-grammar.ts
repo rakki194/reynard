@@ -47,9 +47,6 @@ const VOWELS = new Set([
   "ű",
 ]);
 
-function startsWithVowel(word: string): boolean {
-  return VOWELS.has(word.toLowerCase().charAt(0));
-}
 
 /**
  * Converts a number to its Hungarian word representation
@@ -148,14 +145,6 @@ export function getHungarianArticle(word: string | number): "a" | "az" {
   return VOWELS.has(lowerWord[0]) ? "az" : "a";
 }
 
-/**
- * Helper function to get the appropriate article for a name/word
- * @param name - The name or word to get the article for
- * @returns "a" or "az" depending on whether the word starts with a vowel
- */
-export function getHungarianArticleForWord(name: string): string {
-  return startsWithVowel(name) ? "az" : "a";
-}
 
 /**
  * Determines the correct form of a Hungarian suffix based on vowel harmony

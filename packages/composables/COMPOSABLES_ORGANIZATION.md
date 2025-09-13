@@ -1,6 +1,6 @@
 # Reynard Composables Organization
 
-## 🦊> Mission Accomplished
+## Mission Accomplished
 
 The Reynard composables have been successfully organized and are now building correctly! Here's what we accomplished:
 
@@ -31,7 +31,7 @@ The Reynard composables have been successfully organized and are now building co
 
 ## 📁 Final Organization Structure
 
-```
+```text
 packages/composables/
 ├── src/
 │   ├── index.ts                    # Main export hub
@@ -144,7 +144,7 @@ const warnings = monitor.warnings();
 ✅ **Clean dependency structure**
 ✅ **RAG composables moved to proper package**
 
-## 🦦> Next Steps
+## > Next Steps
 
 The composables are now properly organized and ready for use! The system follows the modular architecture principles with:
 

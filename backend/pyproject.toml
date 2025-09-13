@@ -6,20 +6,16 @@ build-backend = "setuptools.build_meta"
 name = "reynard-backend"
 version = "0.1.0"
 description = "Reynard Backend - FastAPI-based backend services"
-authors = [{ name = "Reynard Team", email = "team@reynard.dev" }]
+authors = [{ name = "Balazs Horvath", email = "acsipont@gmail.com" }]
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Framework :: FastAPI",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
@@ -72,10 +68,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/runeset/reynard"
-Documentation = "https://docs.reynard.dev"
-Repository = "https://github.com/runeset/reynard.git"
-Issues = "https://github.com/runeset/reynard/issues"
+Homepage = "https://github.com/rakki194/reynard"
+Documentation = "https://(TBD)"
+Repository = "https://github.com/rakki194/reynard.git"
+Issues = "https://github.com/rakki194/reynard/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -120,7 +116,7 @@ exclude_lines = [
 
 [tool.black]
 line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+target-version = ['py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -147,7 +143,7 @@ known_first_party = ["app"]
 known_third_party = ["fastapi", "pydantic", "sqlalchemy", "pytest"]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true

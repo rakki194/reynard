@@ -403,7 +403,7 @@ async def get_data():
 
 ```dockerfile
 # Dockerfile.dev
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 COPY requirements.txt .

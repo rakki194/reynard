@@ -1,6 +1,6 @@
 # Service Pattern Examples
 
-_Detailed implementations of modular Python service patterns_
+> Detailed implementations of modular Python service patterns
 
 ## Database Service (Complete Implementation)
 

@@ -274,8 +274,8 @@ VITE_DEBUG=true
 ```bash
 # .env.production
 NODE_ENV=production
-VITE_API_URL=https://api.reynard.dev
-VITE_WS_URL=wss://api.reynard.dev/ws
+VITE_API_URL=https://api.(TBD)
+VITE_WS_URL=wss://api.(TBD)/ws
 VITE_DEBUG=false
 ```
 
@@ -315,7 +315,7 @@ settings = Settings()
 name = "reynard-backend"
 version = "0.1.0"
 description = "Reynard Backend - FastAPI-based backend services"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 
 dependencies = [
     "fastapi",
@@ -375,7 +375,7 @@ RUN npm ci --only=production
 COPY . .
 RUN npm run build
 
-FROM python:3.11-slim AS backend
+FROM python:3.13-slim AS backend
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt

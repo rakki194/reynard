@@ -1,0 +1,41 @@
+{
+  "name": "reynard-e2e-penetration-tests",
+  "version": "1.0.0",
+  "description": "E2E authentication and penetration tests for Reynard ecosystem",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:simple": "playwright test --config=playwright.config.simple.ts",
+    "test:penetration": "playwright test --config=playwright.config.penetration.ts",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:penetration-report": "playwright show-report --config=playwright.config.penetration.ts",
+    "install:browsers": "playwright install",
+    "blackhat:test": "cd ../blackhat && python3 run_all_exploits.py",
+    "blackhat:test:destructive": "cd ../blackhat && python3 run_all_exploits.py --destructive",
+    "blackhat:test:verbose": "cd ../blackhat && python3 run_all_exploits.py --verbose",
+    "security:assess": "npm run test:penetration && npm run blackhat:test",
+    "security:assess:destructive": "npm run test:penetration && npm run blackhat:test:destructive"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "reynard-testing": "workspace:*",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "e2e",
+    "testing",
+    "penetration-testing",
+    "security",
+    "authentication",
+    "reynard"
+  ],
+  "author": "🐺 The Wolf",
+  "license": "MIT"
+}

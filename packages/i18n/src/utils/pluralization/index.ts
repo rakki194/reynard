@@ -1,21 +1,13 @@
 /**
- * Pluralization Utilities
- * Language-specific pluralization rules
+ * Pluralization utilities
  */
 
-export { getRussianPlural } from "./russian-plural";
-export { getArabicPlural } from "./arabic-plural";
-export { getPolishPlural } from "./polish-plural";
-export { getCzechPlural } from "./czech-plural";
-export { getSpanishPlural } from "./spanish-plural";
-export { getRomanianPlural } from "./romanian-plural";
-
-// Additional pluralization functions that were missing
-export { getTurkishPlural } from "./turkish-plural";
-
-export function getPortuguesePlural(
-  n: number,
-  forms: { singular: string; plural: string },
-): string {
-  return n === 1 ? forms.singular : forms.plural;
-}
+export * from "./plurals";
+export * from "./russian-plural";
+export * from "./arabic-plural";
+export * from "./polish-plural";
+export * from "./spanish-plural";
+export * from "./turkish-plural";
+export * from "./czech-plural";
+export * from "./romanian-plural";
+export * from "./portuguese-plural";

@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createI18nModule, loadTranslations } from "../../index";
-import { clearTranslationCache } from "../../cache";
+import { clearTranslationCache } from "../../loaders";
 
 // Mock translations for testing - updated to match loader's comprehensive mock data
 const mockTranslations = {

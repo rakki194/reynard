@@ -13,6 +13,7 @@ from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
@@ -45,10 +46,12 @@ class TestElaborateNLWebToolCalls:
         """Create test client."""
         return TestClient(app)
 
-    @pytest.fixture(scope="class")
+    @pytest_asyncio.fixture(scope="class")
     async def async_client(self, app):
         """Create async test client."""
-        async with AsyncClient(app=app, base_url="http://test") as ac:
+        from httpx import ASGITransport
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as ac:
             yield ac
 
     @pytest.fixture

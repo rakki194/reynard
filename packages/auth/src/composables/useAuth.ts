@@ -5,13 +5,33 @@
 
 import { createSignal, onMount, onCleanup } from "solid-js";
 
-import type { AuthState, AuthConfiguration, AuthCallbacks } from "../types";
+import type { AuthState, AuthConfiguration, AuthCallbacks, User } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
 import {
   useAuth as useGeneratedAuth,
   createReynardApiClient,
+  type UserResponse,
 } from "reynard-api-client";
+
+// Utility function to convert UserResponse to User
+function convertUserResponseToUser(userResponse: UserResponse | null): User | null {
+  if (!userResponse) return null;
+  
+  return {
+    id: userResponse.id.toString(),
+    username: userResponse.username,
+    email: userResponse.email,
+    fullName: userResponse.fullName || undefined,
+    role: "user" as const, // Default role since UserResponse doesn't have role
+    avatarUrl: undefined,
+    createdAt: userResponse.createdAt,
+    lastLogin: undefined,
+    isActive: userResponse.isActive,
+    preferences: undefined,
+    profile: undefined,
+  };
+}
 
 export interface UseAuthOptions {
   /** Authentication configuration */
@@ -20,6 +40,8 @@ export interface UseAuthOptions {
   callbacks?: AuthCallbacks;
   /** Auto-initialize on mount */
   autoInit?: boolean;
+  /** API client instance */
+  apiClient?: any;
 }
 
 export function useAuth(options: UseAuthOptions = {}) {
@@ -27,25 +49,13 @@ export function useAuth(options: UseAuthOptions = {}) {
   const callbacks = options.callbacks || {};
 
   // Create API client for generated auth
-  const apiClient = createReynardApiClient({
-    basePath: config.baseUrl,
+  const apiClient = options.apiClient || createReynardApiClient({
+    basePath: config.apiBaseUrl,
   });
 
   // Use generated auth composable
   const generatedAuth = useGeneratedAuth({
-    apiClient,
-    onLoginSuccess: (user, tokens) => {
-      callbacks.onLoginSuccess?.(user, tokens);
-    },
-    onLoginError: (error) => {
-      callbacks.onLoginError?.(error);
-    },
-    onRegisterSuccess: (user) => {
-      callbacks.onRegisterSuccess?.(user);
-    },
-    onRegisterError: (error) => {
-      callbacks.onRegisterError?.(error);
-    },
+    basePath: config.apiBaseUrl,
   });
 
   // Auth state - integrate with generated auth
@@ -89,11 +99,11 @@ export function useAuth(options: UseAuthOptions = {}) {
   return {
     // State - integrate with generated auth
     authState,
-    user: () => generatedAuth.user() || authState().user,
+    user: () => convertUserResponseToUser(generatedAuth.user()) || authState().user,
     isAuthenticated: () =>
       generatedAuth.isAuthenticated() || authState().isAuthenticated,
-    isLoading: () => generatedAuth.isLoading() || authState().isLoading,
-    error: () => generatedAuth.error() || authState().error,
+    isLoading: () => authState().isLoading,
+    error: () => authState().error,
     isRefreshing: () => authState().isRefreshing,
 
     // Actions - integrate with generated auth
@@ -113,9 +123,9 @@ export function useAuth(options: UseAuthOptions = {}) {
         await orchestrator.authActions.register(data);
       }
     },
-    logout: () => {
-      generatedAuth.logout();
-      orchestrator.authActions.logout();
+    logout: async () => {
+      await generatedAuth.logout();
+      await orchestrator.authActions.logout();
     },
     refreshTokens: orchestrator.tokenRefreshManager.refreshTokens,
     changePassword: orchestrator.authActions.changePassword,

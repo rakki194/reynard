@@ -41,7 +41,7 @@ We will implement a comprehensive modular refactoring strategy that addresses al
 
 Break down monolithic functions into focused, single-responsibility modules:
 
-```plaintext
+```text
 Before: createRAGClient (172 lines)
 After:
 ├── rag-query.ts (33 lines)
@@ -55,7 +55,7 @@ After:
 
 Separate concerns into distinct layers:
 
-```plaintext
+```text
 Before: useRAG.ts (263 lines) - Mixed types and implementation
 After:
 ├── rag-types.ts (141 lines) - Pure type definitions
@@ -75,7 +75,7 @@ After:
 
 The refactored RAG system follows this modular architecture:
 
-```plaintext
+```text
 packages/composables/src/ai/
 ├── rag-types.ts          # Type definitions and interfaces
 ├── rag-query.ts          # Query functionality

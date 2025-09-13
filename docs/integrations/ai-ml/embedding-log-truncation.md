@@ -70,13 +70,13 @@ When enabled, the application will:
 
 **Before truncation:**
 
-```plaintext
+```text
 Received embedding response from Ollama: {'embedding': [0.1, 0.2, 0.3, ..., 0.999], 'model': 'test-model'}
 ```
 
 **After truncation (showing 8 vectors):**
 
-```plaintext
+```text
 Received embedding response from Ollama: {'embedding': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, '... (truncated, showing 8/1000 vectors)'], 'model': 'test-model'}
 ```
 

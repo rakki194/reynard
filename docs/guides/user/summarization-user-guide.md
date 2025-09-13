@@ -132,7 +132,7 @@ Quick overview focusing on essential points.
 
 **Example:**
 
-```plaintext
+```text
 Brief Summary of "Machine Learning Basics":
 This article introduces fundamental machine learning concepts including supervised and unsupervised learning, neural networks, and practical applications. It covers key algorithms like linear regression and decision trees, with examples of real-world use cases in healthcare and finance.
 ```
@@ -150,7 +150,7 @@ Comprehensive summary with supporting details and context.
 
 **Example:**
 
-```plaintext
+```text
 Detailed Summary of "Machine Learning Basics":
 This comprehensive guide explores machine learning fundamentals, starting with the distinction between supervised and unsupervised learning approaches. Supervised learning is demonstrated through linear regression examples, while unsupervised learning is illustrated with clustering algorithms. The article delves into neural network architecture, explaining layers, activation functions, and backpropagation. Real-world applications in healthcare (diagnosis prediction) and finance (risk assessment) provide practical context. The guide concludes with best practices for model evaluation and deployment considerations.
 ```
@@ -168,7 +168,7 @@ In-depth analysis with full coverage and complete context.
 
 **Example:**
 
-```plaintext
+```text
 Comprehensive Summary of "Machine Learning Basics":
 This extensive article provides a thorough introduction to machine learning, covering theoretical foundations, practical implementations, and real-world applications. The content begins with fundamental concepts, distinguishing between supervised learning (where models learn from labeled data) and unsupervised learning (where patterns are discovered in unlabeled data). Supervised learning is explored through detailed examples of linear regression, including mathematical formulations, gradient descent optimization, and evaluation metrics like R-squared and mean squared error. Decision trees are presented as an alternative approach, with explanations of entropy, information gain, and pruning techniques. Unsupervised learning is illustrated through k-means clustering, hierarchical clustering, and dimensionality reduction methods like PCA. Neural networks receive extensive coverage, including feedforward architecture, activation functions (ReLU, sigmoid, tanh), backpropagation algorithms, and regularization techniques like dropout and batch normalization. The article provides practical examples from healthcare, showing how machine learning predicts disease outcomes from patient data, and from finance, demonstrating risk assessment models for loan applications. Implementation considerations include data preprocessing, feature engineering, model selection, and deployment strategies. The guide concludes with ethical considerations, bias mitigation techniques, and future trends in the field.
 ```

@@ -6,11 +6,10 @@
  */
 
 // Import types from ai-shared for consistency
-import type { CaptionType, CaptionResult } from "reynard-ai-shared";
+import type { CaptionType } from "reynard-ai-shared";
 
 // Re-export for convenience
-export type { CaptionType, CaptionResult } from "reynard-ai-shared";
-export { CaptionType } from "reynard-ai-shared";
+export type { CaptionType } from "reynard-ai-shared";
 
 // Create a compatible CaptionResult interface for gallery-ai
 export interface GalleryCaptionResult {
@@ -258,8 +257,11 @@ export interface AIContextMenuAction extends ContextMenuItem {
   /** Whether this action is destructive */
   isDestructive?: boolean;
 
-  /** AI action configuration */
+  /** AI-specific configuration */
   aiConfig?: AIContextMenuActionConfig;
+
+  /** Children actions (for submenus) */
+  children?: AIContextMenuAction[];
 }
 
 export enum AIContextMenuActionType {

@@ -297,8 +297,8 @@ export const ENVIRONMENT_CONFIGS = {
   },
 
   [ENVIRONMENT.STAGING]: {
-    apiBaseUrl: "https://staging-api.reynard.dev",
-    wsUrl: "wss://staging-api.reynard.dev/ws",
+    apiBaseUrl: "https://staging-api.(TBD)",
+    wsUrl: "wss://staging-api.(TBD)/ws",
     debug: false,
     logLevel: "info",
     enableAnalytics: true,
@@ -307,8 +307,8 @@ export const ENVIRONMENT_CONFIGS = {
   },
 
   [ENVIRONMENT.PRODUCTION]: {
-    apiBaseUrl: "https://api.reynard.dev",
-    wsUrl: "wss://api.reynard.dev/ws",
+    apiBaseUrl: "https://api.(TBD)",
+    wsUrl: "wss://api.(TBD)/ws",
     debug: false,
     logLevel: "warn",
     enableAnalytics: true,

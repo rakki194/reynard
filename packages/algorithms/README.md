@@ -88,7 +88,7 @@ const distance = PointOps.distance(point1, point2); // 5
 
 ## API Reference
 
-### 🦊 Optimized Algorithms
+### Optimized Algorithms
 
 The optimized algorithms module provides automatic algorithm selection, memory pooling, and performance monitoring for maximum efficiency.
 
@@ -382,7 +382,7 @@ const transformedPoint = TransformOps.applyToPoint(transform, point1);
 
 ## Performance Considerations
 
-### 🦊 Optimized Algorithms Performance
+### Optimized Algorithms Performance
 
 - **Automatic Algorithm Selection**: Intelligently chooses optimal algorithms based on workload characteristics
 - **Memory Pooling**: Eliminates allocation overhead with pre-allocated memory pools

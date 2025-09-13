@@ -8,9 +8,11 @@
     "sourceMap": true,
     "composite": true,
     "incremental": true,
-    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/jsx.d.ts"],
   "exclude": [
     "dist",
     "node_modules",

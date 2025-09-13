@@ -1,44 +1,79 @@
 # reynard-gallery-ai
 
-AI-enhanced gallery components for the Reynard framework. Integrates caption generation, batch annotation, and smart features with the core gallery system.
+*AI-enhanced gallery components for the Reynard framework - transforms your gallery into an intelligent media management powerhouse!* 🦊
 
-## Features
+## ✨ Features
 
-- **Caption Generation**: Generate captions for images using multiple AI models
-- **Batch Processing**: Process multiple images simultaneously with progress tracking
-- **Smart Context Menus**: AI-powered context menu actions for gallery items
-- **Enhanced Image Viewer**: AI-integrated image viewer with caption editing
-- **Configurable AI Settings**: Flexible configuration for different AI models and workflows
+- **🤖 Caption Generation**: Generate captions for images using multiple AI models (JTP2, WDv3, JoyCaption, Florence2)
+- **📦 Batch Processing**: Process multiple images simultaneously with real-time progress tracking
+- **🎯 Smart Context Menus**: AI-powered context menu actions for gallery items
+- **🖼️ Enhanced Image Viewer**: AI-integrated image viewer with caption editing and generation controls
+- **⚙️ Configurable AI Settings**: Flexible configuration for different AI models and workflows
+- **🔍 AI-Powered Search**: Smart search and organization features
+- **📊 Progress Tracking**: Real-time progress indicators and batch operation monitoring
+- **🎨 Beautiful UI**: Modern, accessible interface with comprehensive styling
 
-## Installation
+## 📦 Installation
 
 ```bash
 npm install reynard-gallery-ai
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Basic Setup
 
 ```tsx
-import { AIGalleryProvider, useGalleryAI } from "reynard-gallery-ai";
-import { Gallery } from "reynard-gallery";
+import { AIGalleryProvider, AIGalleryGrid } from "reynard-gallery-ai";
+import type { AIGalleryConfig } from "reynard-gallery-ai";
+
+const aiConfig: Partial<AIGalleryConfig> = {
+  defaultGenerator: "jtp2",
+  autoGenerateOnUpload: false,
+  batchSettings: {
+    maxConcurrent: 3,
+    retryFailed: true,
+    maxRetries: 2,
+    progressInterval: 1000,
+  },
+  captionSettings: {
+    postProcessing: true,
+    forceRegeneration: false,
+    generatorConfigs: {
+      jtp2: { threshold: 0.2 },
+      wdv3: { threshold: 0.3 },
+      joy: { maxLength: 200 },
+      florence2: { task: "caption" },
+    },
+  },
+  uiPreferences: {
+    showAIIndicators: true,
+    showProgress: true,
+    autoExpandCaptionEditor: false,
+    showBatchControls: true,
+  },
+};
 
 function MyAIGallery() {
   return (
     <AIGalleryProvider
-      initialConfig={{
-        defaultGenerator: "jtp2",
-        autoGenerateOnUpload: true,
-        aiEnabled: true,
-      }}
+      initialConfig={aiConfig}
+      persistState={true}
+      storageKey="my-ai-gallery"
     >
-      <Gallery
-        data={galleryData}
-        showAIFeatures={true}
-        onItemOpen={(item) => {
-          // Handle item opening with AI features
+      <AIGalleryGrid
+        items={galleryData.items}
+        viewConfig={{ viewMode: "grid", itemSize: "medium" }}
+        selectionState={{ selectedIds: new Set() }}
+        loading={false}
+        aiProps={{
+          showAIIndicators: true,
+          showCaptionPreviews: true,
+          showBatchControls: true,
+          availableGenerators: ["jtp2", "wdv3", "joy", "florence2"],
         }}
+        onItemClick={(item) => console.log("Item clicked:", item.name)}
+        onContextMenu={(item, x, y) => console.log("Context menu:", item.name)}
       />
     </AIGalleryProvider>
   );
@@ -52,8 +87,9 @@ import { useGalleryAI } from "reynard-gallery-ai";
 
 function MyComponent() {
   const ai = useGalleryAI();
-
-  const handleGenerateCaption = async (item) => {
+  
+  // Generate caption for a single item
+  const handleGenerateCaption = async (item: FileItem) => {
     try {
       const result = await ai.generateCaption(item, "jtp2");
       console.log("Generated caption:", result.caption);
@@ -61,139 +97,317 @@ function MyComponent() {
       console.error("Caption generation failed:", error);
     }
   };
-
-  const handleBatchAnnotate = async (items) => {
+  
+  // Batch process multiple items
+  const handleBatchProcess = async (items: FileItem[]) => {
     try {
-      const results = await ai.batchAnnotate(items, "joycaption");
-      console.log("Batch processing complete:", results);
+      const results = await ai.batchAnnotate(items, "joy");
+      console.log("Batch processing completed:", results.length, "items");
     } catch (error) {
       console.error("Batch processing failed:", error);
     }
   };
-
+  
   return (
     <div>
       <button onClick={() => handleGenerateCaption(selectedItem)}>
         Generate Caption
       </button>
-      <button onClick={() => handleBatchAnnotate(selectedItems)}>
-        Batch Annotate
+      <button onClick={() => handleBatchProcess(selectedItems)}>
+        Batch Process
       </button>
     </div>
   );
 }
-```
 
-## API Reference
+## 🎯 Components
 
 ### AIGalleryProvider
 
-Context provider for AI-enhanced gallery functionality.
+The main provider component that wraps your gallery and provides AI functionality to all child components.
 
-#### Props
-
-```typescript
-interface AIGalleryProviderProps {
-  children: any;
-  initialConfig?: Partial<AIGalleryConfig>;
-  callbacks?: AIGalleryCallbacks;
-  persistState?: boolean;
-  storageKey?: string;
-}
+```tsx
+<AIGalleryProvider
+  initialConfig={aiConfig}
+  callbacks={aiCallbacks}
+  persistState={true}
+  storageKey="my-ai-gallery"
+>
+  {/* Your gallery components */}
+</AIGalleryProvider>
 ```
 
-### useGalleryAI
+### AIGalleryGrid
 
-Main composable for AI gallery functionality.
+Enhanced gallery grid with AI-powered features including generation indicators, batch selection controls, and AI context menu integration.
 
-#### Options
-
-```typescript
-interface UseGalleryAIOptions {
-  initialConfig?: Partial<AIGalleryConfig>;
-  autoInitialize?: boolean;
-  callbacks?: AIGalleryCallbacks;
-  persistState?: boolean;
-  storageKey?: string;
-}
+```tsx
+<AIGalleryGrid
+  items={galleryData.items}
+  viewConfig={{ viewMode: "grid", itemSize: "medium" }}
+  selectionState={{ selectedIds: new Set() }}
+  loading={false}
+  aiProps={{
+    showAIIndicators: true,
+    showCaptionPreviews: true,
+    showBatchControls: true,
+    availableGenerators: ["jtp2", "wdv3", "joy", "florence2"],
+  }}
+  onItemClick={(item) => console.log("Item clicked:", item.name)}
+  onContextMenu={(item, x, y) => console.log("Context menu:", item.name)}
+/>
 ```
 
-#### Return Value
+### AIImageViewer
 
-```typescript
-interface UseGalleryAIReturn {
-  aiState: () => AIGalleryState;
-  generateCaption: (
-    item: FileItem,
-    generator: string,
-  ) => Promise<CaptionResult>;
-  batchAnnotate: (
-    items: FileItem[],
-    generator: string,
-  ) => Promise<CaptionResult[]>;
-  updateAIConfig: (config: Partial<AIGalleryConfig>) => void;
-  getAvailableGenerators: () => string[];
-  isGeneratorAvailable: (generator: string) => boolean;
-  getAnnotationManager: () => AnnotationManager;
-  clearAIState: () => void;
-  setAIEnabled: (enabled: boolean) => void;
-}
+AI-enhanced image viewer with caption generation and editing capabilities.
+
+```tsx
+<AIImageViewer
+  imageInfo={selectedItem}
+  captions={{}}
+  aiProps={{
+    enableCaptionEditing: true,
+    availableGenerators: ["jtp2", "wdv3", "joy", "florence2"],
+    showGenerationControls: true,
+    autoGenerateOnOpen: false,
+    defaultGenerator: "jtp2",
+  }}
+  onClose={() => setShowImageViewer(false)}
+  onCaptionSave={async (captionData) => {
+    // Save caption to backend
+    return Promise.resolve();
+  }}
+  onCaptionDelete={async (captionType) => {
+    // Delete caption from backend
+    return Promise.resolve();
+  }}
+  onCaptionGenerate={async (generator) => {
+    console.log("Generating caption with:", generator);
+  }}
+/>
 ```
 
-## Configuration
+### BatchProcessingDialog
 
-### AI Gallery Config
+Dialog for managing batch annotation operations with progress tracking.
+
+```tsx
+<BatchProcessingDialog
+  visible={showBatchDialog}
+  items={selectedItems}
+  availableGenerators={["jtp2", "wdv3", "joy", "florence2"]}
+  onClose={() => setShowBatchDialog(false)}
+  onComplete={(results) => {
+    console.log("Batch processing completed:", results);
+  }}
+  onError={(error) => {
+    console.error("Batch processing failed:", error);
+  }}
+/>
+```
+
+## 🎮 AI Context Menu Actions
+
+The AI context menu provides intelligent actions based on the selected items:
+
+### Single Item Actions
+
+- **Generate Caption**: Generate captions using different AI models
+- **Edit Caption**: Edit existing captions
+- **Regenerate Caption**: Force regeneration of captions
+- **Delete Caption**: Remove captions
+- **Smart Organize**: AI-powered organization suggestions
+- **AI Search**: Find similar images
+
+### Batch Actions
+
+- **Batch Annotate**: Process multiple images simultaneously
+- **Batch Organize**: Smart organization for multiple items
+
+## 🤖 Available AI Models
+
+### JTP2 (Joint Tagger Project PILOT2)
+
+- **Purpose**: Furry artwork tagging
+- **Category**: Lightweight
+- **Specialization**: High accuracy for furry content
+- **Output**: Tags
+
+### WDv3 (Waifu Diffusion v3)
+
+- **Purpose**: Anime/manga tagging
+- **Category**: Lightweight
+- **Specialization**: Danbooru-style tags
+- **Output**: Tags
+
+### JoyCaption
+
+- **Purpose**: Detailed image captioning
+- **Category**: Heavy
+- **Specialization**: Multilingual, detailed descriptions
+- **Output**: Captions
+
+### Florence2
+
+- **Purpose**: General purpose captioning
+- **Category**: Heavy
+- **Specialization**: Multiple tasks, versatile
+- **Output**: Captions
+
+## ⚙️ Configuration
+
+### AIGalleryConfig
 
 ```typescript
 interface AIGalleryConfig {
   defaultGenerator: string;
   autoGenerateOnUpload: boolean;
-  batchSettings: BatchProcessingSettings;
-  captionSettings: CaptionGenerationSettings;
-  uiPreferences: AIGalleryUIPreferences;
+  batchSettings: {
+    maxConcurrent: number;
+    retryFailed: boolean;
+    maxRetries: number;
+    progressInterval: number;
+  };
+  captionSettings: {
+    defaultCaptionType: CaptionType;
+    postProcessing: boolean;
+    forceRegeneration: boolean;
+    generatorConfigs: Record<string, ModelConfig>;
+  };
+  uiPreferences: {
+    showAIIndicators: boolean;
+    showProgress: boolean;
+    autoExpandCaptionEditor: boolean;
+    showBatchControls: boolean;
+  };
 }
 ```
 
-### Batch Processing Settings
+### Generator Configuration
+
+Each AI model can be configured with specific parameters:
 
 ```typescript
-interface BatchProcessingSettings {
-  maxConcurrent: number;
-  retryFailed: boolean;
-  maxRetries: number;
-  progressInterval: number;
+const generatorConfigs = {
+  jtp2: { threshold: 0.2 },
+  wdv3: { threshold: 0.3 },
+  joy: { maxLength: 200 },
+  florence2: { task: "caption" },
+};
+```
+
+## 📊 Progress Tracking
+
+The AI gallery system provides comprehensive progress tracking:
+
+### Batch Processing Progress
+
+- Real-time progress updates
+- Current item being processed
+- Success/failure counts
+- Error reporting
+
+### Generation Status
+
+- Individual caption generation status
+- Processing time tracking
+- Error handling and retry logic
+
+## 🎨 Styling
+
+The package includes comprehensive CSS styling that integrates with Reynard's design system:
+
+```css
+/* Import the styles */
+@import "reynard-gallery-ai/styles/ai-gallery.css";
+```
+
+### CSS Custom Properties
+
+The styles use CSS custom properties for theming:
+
+```css
+:root {
+  --color-primary: #your-primary-color;
+  --color-surface: #your-surface-color;
+  --color-text-primary: #your-text-color;
+  /* ... other theme variables */
 }
 ```
 
-### Caption Generation Settings
+## 🔧 Advanced Usage
+
+### Custom AI Actions
+
+You can create custom AI context menu actions:
 
 ```typescript
-interface CaptionGenerationSettings {
-  defaultCaptionType: CaptionType;
-  postProcessing: boolean;
-  forceRegeneration: boolean;
-  generatorConfigs: Record<string, ModelConfig>;
-}
+const customActions: AIContextMenuAction[] = [
+  {
+    id: "custom-action",
+    label: "Custom AI Action",
+    icon: "🎯",
+    aiActionType: AIContextMenuActionType.GENERATE_CAPTION,
+    aiConfig: {
+      generator: "custom-generator",
+      customConfig: { /* your config */ },
+    },
+  },
+];
 ```
 
-## Callbacks
+### Integration with Backend
 
-### AIGalleryCallbacks
+The AI gallery integrates with the Reynard annotation system:
 
 ```typescript
-interface AIGalleryCallbacks {
-  onCaptionGenerationStart?: (item: FileItem, generator: string) => void;
-  onCaptionGenerationComplete?: (item: FileItem, result: CaptionResult) => void;
-  onCaptionGenerationError?: (item: FileItem, error: string) => void;
-  onBatchProcessingStart?: (items: FileItem[], generator: string) => void;
-  onBatchProcessingProgress?: (progress: AnnotationProgress) => void;
-  onBatchProcessingComplete?: (results: CaptionResult[]) => void;
-  onBatchProcessingError?: (error: string) => void;
-  onAIConfigChange?: (config: AIGalleryConfig) => void;
-}
+// The composable automatically connects to the annotation service
+const ai = useGalleryAI();
+
+// Check service status
+const isHealthy = ai.getAnnotationService()?.isHealthy;
+
+// Get available generators
+const generators = ai.getAvailableGenerators();
 ```
 
-## Dependencies
+## 🧪 Testing
+
+The package includes comprehensive testing utilities:
+
+```typescript
+import { render, screen } from "@solidjs/testing-library";
+import { AIGalleryProvider, AIGalleryGrid } from "reynard-gallery-ai";
+
+test("renders AI gallery grid", () => {
+  render(() => (
+    <AIGalleryProvider>
+      <AIGalleryGrid items={[]} />
+    </AIGalleryProvider>
+  ));
+  
+  expect(screen.getByText("No items found")).toBeInTheDocument();
+});
+```
+
+## 📚 Examples
+
+See the `examples/` directory for comprehensive usage examples:
+
+- `ai-gallery-example.tsx` - Complete AI gallery implementation
+- Integration examples with different backends
+- Custom AI action implementations
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see the main Reynard repository for contribution guidelines.
+
+## 📄 License
+
+MIT License - see the main Reynard repository for details.
+
+## 🔗 Related Packages
 
 - `reynard-gallery` - Core gallery components
 - `reynard-annotating` - Annotation and caption generation system
@@ -201,7 +415,3 @@ interface AIGalleryCallbacks {
 - `reynard-ai-shared` - Shared AI utilities and types
 - `reynard-core` - Core Reynard utilities
 - `reynard-components` - Base UI components
-
-## License
-
-MIT

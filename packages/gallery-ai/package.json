@@ -23,10 +23,12 @@
     "./types": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js"
-    }
+    },
+    "./src/styles/ai-gallery.css": "./src/styles/ai-gallery.css"
   },
   "files": [
     "dist/**/*",
+    "src/styles/**/*",
     "README.md"
   ],
   "scripts": {
@@ -54,6 +56,7 @@
   "dependencies": {
     "reynard-gallery": "workspace:*",
     "reynard-annotating": "workspace:*",
+    "reynard-annotating-core": "workspace:*",
     "reynard-caption": "workspace:*",
     "reynard-ai-shared": "workspace:*",
     "reynard-core": "workspace:*",

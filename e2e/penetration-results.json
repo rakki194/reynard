@@ -1,0 +1,576 @@
+{
+  "config": {
+    "configFile": "/home/kade/runeset/reynard/e2e/playwright.config.penetration.ts",
+    "rootDir": "/home/kade/runeset/reynard/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/home/kade/runeset/reynard/e2e/global-penetration-setup.ts",
+    "globalTeardown": "/home/kade/runeset/reynard/e2e/global-penetration-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "penetration-results"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "penetration-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "penetration-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/penetration-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "penetration-chromium",
+        "name": "penetration-chromium",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "penetration-tests.spec.ts"
+        ],
+        "timeout": 300000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "penetration-tests.spec.ts",
+      "file": "penetration-tests.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "🐺 Penetration Testing Suite",
+          "file": "penetration-tests.spec.ts",
+          "line": 38,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "JWT Security Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 53,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test JWT secret key vulnerabilities",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-1d6a257c4e37b43f7f11",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 54,
+                  "column": 5
+                },
+                {
+                  "title": "should test JWT signature bypass attempts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-be1300fdb3b62a8394dd",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 70,
+                  "column": 5
+                },
+                {
+                  "title": "should test JWT timing attacks",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-61088a89582a8250c673",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 81,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "SQL Injection Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 93,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test SQL injection regex bypass",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-a331e84aea047a440f64",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 94,
+                  "column": 5
+                },
+                {
+                  "title": "should test blind SQL injection",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-8973cc5a8b59fad5acc2",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 105,
+                  "column": 5
+                },
+                {
+                  "title": "should test obfuscated SQL payloads",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-c8cb4c17a8526a3c7caa",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 116,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Path Traversal Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 128,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test encoded path traversal",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-e927539c136cdac0e220",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 129,
+                  "column": 5
+                },
+                {
+                  "title": "should test unicode path traversal bypass",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-659c76cd034db27219dd",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 140,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "CORS Security Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 152,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test CORS misconfiguration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-619b79015987d868259f",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 153,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Rate Limiting Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 165,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test rate limiting bypass",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-46aacf64387dfe27e3c5",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 166,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Comprehensive Fuzzing",
+              "file": "penetration-tests.spec.ts",
+              "line": 178,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should run comprehensive fuzzing framework",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-624dc48746f265222b19",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 179,
+                  "column": 5
+                },
+                {
+                  "title": "should run endpoint-specific fuzzing",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-748ce84c30ccd9e67e42",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 191,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "API Security Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 204,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test BOLA (Broken Object Level Authorization)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-9eeac9f3ab5bb6f10762",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 205,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "CSRF Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 217,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test CSRF attack vectors",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-890a20f07a2cfa0f3edf",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 218,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "SSRF Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 230,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test Server-Side Request Forgery",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-67dfe0b52ef61b0a541a",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 231,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Race Condition Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 243,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test race condition exploits",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-cf0a2f13d0fac5543438",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 244,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "HTTP Request Smuggling",
+              "file": "penetration-tests.spec.ts",
+              "line": 256,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test HTTP request smuggling",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-173bb17181633780af7a",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 257,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Unicode Security Testing",
+              "file": "penetration-tests.spec.ts",
+              "line": 269,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should test unicode normalization bypass",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-45af29de2cb5ad9e2b37",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 270,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Comprehensive Security Assessment",
+              "file": "penetration-tests.spec.ts",
+              "line": 282,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should run complete blackhat exploit suite",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 300000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "penetration-chromium",
+                      "projectName": "penetration-chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0c64c1310ae9c432a4fe-fd37522ba155694f0f2a",
+                  "file": "penetration-tests.spec.ts",
+                  "line": 283,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-13T08:42:38.613Z",
+    "duration": 74.51599999999985,
+    "expected": 0,
+    "skipped": 19,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

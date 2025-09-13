@@ -5,7 +5,7 @@ alwaysApply: false
 
 # Modular TypeScript/JavaScript Manifesto
 
-*Essential patterns for maintainable TypeScript and JavaScript architecture*
+> Essential patterns for maintainable TypeScript and JavaScript architecture
 
 ## Core Principles
 
@@ -428,7 +428,7 @@ export class ConnectionPool {
 
 ## File Organization
 
-```
+```text
 packages/
 ├── core/
 │   ├── src/

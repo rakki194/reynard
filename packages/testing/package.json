@@ -67,7 +67,7 @@
     "mocks",
     "fixtures"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
     "@solidjs/testing-library": "0.8.10",

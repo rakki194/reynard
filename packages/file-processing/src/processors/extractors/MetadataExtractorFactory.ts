@@ -13,6 +13,9 @@ import { ImageMetadataExtractor } from "./ImageMetadataExtractor";
 import { VideoMetadataExtractor } from "./VideoMetadataExtractor";
 import { AudioMetadataExtractor } from "./AudioMetadataExtractor";
 import { DocumentMetadataExtractor } from "./DocumentMetadataExtractor";
+import { TextMetadataExtractor } from "./TextMetadataExtractor";
+import { CodeMetadataExtractor } from "./CodeMetadataExtractor";
+import { LoraMetadataExtractor } from "./LoraMetadataExtractor";
 
 export class MetadataExtractorFactory {
   /**
@@ -34,6 +37,12 @@ export class MetadataExtractorFactory {
         return new AudioMetadataExtractor(options);
       case "document":
         return new DocumentMetadataExtractor(options);
+      case "text":
+        return new TextMetadataExtractor(options);
+      case "code":
+        return new CodeMetadataExtractor(options);
+      case "lora":
+        return new LoraMetadataExtractor(options);
       default:
         throw new Error(`Unsupported file category: ${category}`);
     }

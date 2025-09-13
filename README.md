@@ -2,7 +2,8 @@
 
 > _From dataset editor to multi-modal CMS: The evolution of a cunning framework_
 
-Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content management system. The framework extracts and modularizes YipYap's proven architectural patterns into reusable packages for modern web development.
+Reynard is a SolidJS framework derived from **YipYap**, a multi-modal content management system. The framework extracts
+and modularizes YipYap's proven architectural patterns into reusable packages for modern web development.
 
 ## Table of Contents
 
@@ -162,7 +163,9 @@ function App() {
 
 ## 📦 Package Ecosystem
 
-Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be independently useful while working seamlessly together. The core package has minimal dependencies and works standalone, while other packages can be added as needed. All packages are published to npm and ready for production use!
+Reynard's package ecosystem is built on the foundation of YipYap's proven architecture, with each package designed to be
+independently useful while working seamlessly together. The core package has minimal dependencies and works standalone,
+while other packages can be added as needed. All packages are published to npm and ready for production use!
 
 ### Core Packages
 
@@ -189,7 +192,10 @@ _[View complete package list and documentation →](./docs/PACKAGES.md)_
 
 ## 🎯 Philosophy
 
-Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while maximizing functionality, and maintains a professional standard with high expectations for code quality and naming conventions.
+Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary
+complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful,
+minimizing dependencies while maximizing functionality, and maintains a professional standard with high
+expectations for code quality and naming conventions.
 
 ## 🧪 Testing
 
@@ -221,11 +227,13 @@ _[View complete testing guide →](./docs/CONTRIBUTING.md#testing)_
 
 ## 🚀 Performance
 
-Reynard is optimized for performance with bundle splitting, lazy loading, and intelligent caching. All packages are designed with minimal dependencies and maximum functionality.
+Reynard is optimized for performance with bundle splitting, lazy loading, and intelligent caching. All packages are
+designed with minimal dependencies and maximum functionality.
 
 ### Bundle Sizes
 
-Reynard packages are optimized for performance with minimal bundle sizes. The largest package (`reynard-components`) is only 760K (190.7 kB gzipped), while most specialized packages are under 100K.
+Reynard packages are optimized for performance with minimal bundle sizes. The largest package (`reynard-components`)
+is only 760K (190.7 kB gzipped), while most specialized packages are under 100K.
 
 _[View complete bundle sizes and performance guide →](./docs/performance.md)_
 
@@ -292,7 +300,8 @@ _[View complete examples and templates →](./docs/EXAMPLES.md)_
 
 ### reynard-chat
 
-Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.
+Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing,
+thinking sections, and tool integration.
 
 #### Chat Features
 
@@ -352,7 +361,8 @@ function ChatApp() {
 
 ### reynard-rag
 
-RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive search capabilities.
+RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive
+search capabilities.
 
 #### RAG Features
 
@@ -394,7 +404,8 @@ function RAGApp() {
 
 ### reynard-auth
 
-Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive security features.
+Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive
+security features.
 
 #### Auth Features
 
@@ -744,12 +755,14 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 
 #### Supported File Types
 
-- **Images** - JPG, PNG, GIF, WebP, BMP, TIFF, JXL, AVIF, HEIC, HEIF, JP2, SVG, EPS, AI, CDR, RAW formats
-- **Videos** - MP4, AVI, MOV, MKV, WebM, FLV, WMV, MPG, MPEG, TS, MTS, M2TS, ProRes, DNxHD, Cine, R3D, BRAW
-- **Audio** - MP3, AAC, OGG, WMA, Opus, WAV, FLAC, ALAC, APE, WV, DSD, DFF, DSF
-- **Text & Code** - TXT, MD, RST, TEX, LOG, JSON, XML, YAML, TOML, CSV, TSV, Parquet, Arrow, Feather, HDF5, NumPy, and programming languages
-- **Documents** - PDF, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, MOBI, AZW3, KFX, RTF, Pages, Key, Numbers
-- **LoRA Models** - SafeTensors, Checkpoint, PyTorch, ONNX, Bin
+| **Category**      | **Supported File Types**                                                                                                                                                                                                                 |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Images**        | JPG, PNG, GIF, WebP, BMP, TIFF, JXL, AVIF, HEIC, HEIF, JP2, SVG, EPS, AI, CDR, RAW formats                                                                                                        |
+| **Videos**        | MP4, AVI, MOV, MKV, WebM, FLV, WMV, MPG, MPEG, TS, MTS, M2TS, ProRes, DNxHD, Cine, R3D, BRAW                                                                                                     |
+| **Audio**         | MP3, AAC, OGG, WMA, Opus, WAV, FLAC, ALAC, APE, WV, DSD, DFF, DSF                                                                                                                                |
+| **Text & Code**   | TXT, MD, RST, TEX, LOG, JSON, XML, YAML, TOML, CSV, TSV, Parquet, Arrow, Feather, HDF5, NumPy, and programming languages                                                                         |
+| **Documents**     | PDF, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, MOBI, AZW3, KFX, RTF, Pages, Key, Numbers                                                                                                             |
+| **LoRA Models**   | SafeTensors, Checkpoint, PyTorch, ONNX, Bin                                                                                                                                                       |
 
 #### Core Components
 
@@ -1394,7 +1407,7 @@ Reynard builds upon the sophisticated architecture and AI/ML capabilities of Yip
 
 ## 📞 Support
 
-- **Documentation** - [docs.reynard.dev](https://docs.reynard.dev)
+- **Documentation** - [(TBD)](https://(TBD))
 - **Issues** - [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions** - [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord** - [Join our Discord](https://discord.gg/reynard)

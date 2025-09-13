@@ -48,7 +48,7 @@
     "palette",
     "theme"
   ],
-  "author": "Reynard Team",
+  "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
     "colorizr": "3.0.8"

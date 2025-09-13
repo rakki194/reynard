@@ -1,6 +1,6 @@
 # Performance Optimization Patterns
 
-_Advanced performance optimization techniques for modular Python applications_
+> Advanced performance optimization techniques for modular Python applications
 
 ## Lazy Loading Optimization
 
@@ -864,4 +864,5 @@ class PerformanceMonitor:
         }
 ```
 
-This comprehensive performance optimization guide provides advanced patterns for optimizing Python applications, from lazy loading to memory management and connection pooling.
+This comprehensive performance optimization guide provides advanced patterns for optimizing Python applications, from
+lazy loading to memory management and connection pooling.

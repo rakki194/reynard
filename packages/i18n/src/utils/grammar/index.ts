@@ -1,10 +1,5 @@
 /**
- * Grammar Utilities
- * Language-specific grammar rules and helpers
+ * Grammar utilities
  */
 
-export {
-  getHungarianArticle,
-  getHungarianArticleForWord,
-  getHungarianSuffix,
-} from "./hungarian-grammar";
+export * from "./hungarian-grammar";

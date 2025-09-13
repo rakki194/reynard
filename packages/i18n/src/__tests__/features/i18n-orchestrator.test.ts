@@ -15,4 +15,4 @@
 import "./i18n-core.test";
 import "./i18n-translations.test";
 import "./i18n-pluralization.test";
-import "./i18n-integration.test";
+import "../core/integration.test";

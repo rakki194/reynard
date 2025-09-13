@@ -78,7 +78,7 @@ runDocTests({
 
 ## 📁 File Structure
 
-```plaintext
+```text
 packages/
 ├── testing/
 │   ├── src/

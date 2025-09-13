@@ -2,7 +2,7 @@
 
 We welcome contributions to the Reynard framework! This guide will help you get started with development, understand our processes, and contribute effectively.
 
-## 🦊 Development Philosophy
+## Development Philosophy
 
 Reynard follows the "cunning fox" philosophy:
 
@@ -47,20 +47,48 @@ pnpm run typecheck
 
 ### Project Structure
 
-```plaintext
-reynard/
-├── packages/           # Individual Reynard packages
-│   ├── core/          # Core utilities and modules
-│   ├── components/    # UI component library
-│   ├── chat/          # Chat messaging system
-│   ├── rag/           # RAG system components
-│   └── ...            # Other packages
-├── examples/          # Example applications
-├── templates/         # Project templates
-├── docs/              # Documentation
-├── scripts/           # Development scripts
-└── tests/             # Test files
+**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All source code is organized within individual packages under `packages/`.
+
+```text
+reynard/                          # Monorepo root (NO src/ here)
+├── packages/                     # All source code lives here
+│   ├── core/                    # Core utilities and modules
+│   │   ├── src/                 # Package source code
+│   │   │   ├── __tests__/       # Package tests
+│   │   │   ├── components/      # Package components
+│   │   │   └── utils/           # Package utilities
+│   │   └── package.json
+│   ├── components/              # UI component library
+│   │   ├── src/                 # Package source code
+│   │   │   ├── __tests__/       # Package tests
+│   │   │   └── components/      # UI components
+│   │   └── package.json
+│   ├── chat/                    # Chat messaging system
+│   ├── rag/                     # RAG system components
+│   └── ...                      # Other packages (each self-contained)
+├── examples/                    # Example applications
+│   └── [example-name]/          # Each example has its own src/
+│       └── src/                 # Example source code
+├── templates/                   # Project templates
+│   └── [template-name]/         # Each template has its own src/
+│       └── src/                 # Template source code
+├── docs/                        # Documentation
+├── scripts/                     # Development scripts
+├── e2e/                         # Integration tests (Playwright)
+├── backend/                     # Python backend (separate from packages)
+│   ├── app/                     # Backend source code
+│   └── tests/                   # Backend tests
+└── vitest.global.config.ts      # Global test configuration
 ```
+
+### Source Code Organization Rules
+
+1. **Package Isolation**: Each package under `packages/` is completely self-contained
+2. **No Root `src/`**: Never create a `src/` directory at the monorepo root
+3. **Package `src/` Only**: Source code only exists within `packages/[package-name]/src/`
+4. **Test Location**: Tests are in `packages/[package-name]/src/__tests__/`
+5. **Backend Separation**: Python backend code is in `backend/` (not in packages)
+6. **Examples/Templates**: Each has its own `src/` directory for demonstration purposes
 
 ## 🛠️ Development Workflow
 
@@ -81,15 +109,16 @@ reynard/
 
 3. **Set Up Package Structure**
 
-   ```plaintext
-   my-new-package/
-   ├── src/
-   │   ├── index.ts
-   │   ├── components/
-   │   └── utils/
-   ├── package.json
-   ├── tsconfig.json
-   └── README.md
+   ```text
+   packages/my-new-package/
+   ├── src/                        # Package source code
+   │   ├── __tests__/             # Package tests
+   │   ├── components/            # Package components
+   │   ├── utils/                 # Package utilities
+   │   └── index.ts               # Package entry point
+   ├── package.json               # Package configuration
+   ├── tsconfig.json              # TypeScript configuration
+   └── README.md                  # Package documentation
    ```
 
 4. **Configure Package.json**

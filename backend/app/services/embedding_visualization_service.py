@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 import json
 import uuid
 
-from ..models.base import BaseService
+# BaseService import removed - not available
 from ..utils.dimensionality_reduction import (
     get_dimensionality_reducer,
     TSNEParameters,
@@ -65,7 +65,7 @@ class EmbeddingQualityMetrics:
     issues: List[str]
 
 
-class EmbeddingVisualizationService(BaseService):
+class EmbeddingVisualizationService:
     """
     Service for embedding visualization and dimensionality reduction.
     
@@ -77,7 +77,8 @@ class EmbeddingVisualizationService(BaseService):
     """
     
     def __init__(self, config: Dict[str, Any] = None):
-        super().__init__(config)
+        if config is None:
+            config = {}
         self.cache_ttl = config.get("cache_ttl_seconds", 3600)  # 1 hour default
         self.max_samples = config.get("max_samples", 10000)
         self.cache: Dict[str, Dict[str, Any]] = {}

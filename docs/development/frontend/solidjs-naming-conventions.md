@@ -1,7 +1,5 @@
 # SolidJS Naming Conventions and Official Documentation Guide
 
-Last updated: January 2025
-
 This document outlines the official SolidJS naming conventions and provides comprehensive guidance on composables, reactive primitives, and component organization based on the latest 2025 documentation and community standards.
 
 ## Table of Contents
@@ -231,7 +229,7 @@ function useForm<T>(initialValues: T) {
 
 ### Directory Structure
 
-```plaintext
+```text
 src/
 ├── components/
 │   ├── ui/

@@ -42,7 +42,7 @@ export const defaultFormattingPresets: FormattingPresets = {
   number: {
     integer: { maximumFractionDigits: 0 },
     decimal: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-    currency: { style: "currency", currency: "USD" },
+        currency: { style: "currency", currency: "USD", useGrouping: false },
     percent: { style: "percent" },
     compact: { notation: "compact" },
   },

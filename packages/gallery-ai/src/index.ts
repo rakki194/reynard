@@ -6,13 +6,10 @@
  * with the core gallery system.
  */
 
+// JSX types are automatically included by TypeScript
+
 // Main exports
-export { AIGalleryProvider } from "./components/AIGalleryProvider";
-export { useGalleryAI, useAIGalleryContext } from "./composables/useGalleryAI";
-
-// Type exports
-export * from "./types";
-
-// Re-export everything for convenience
 export * from "./components";
 export * from "./composables";
+export * from "./types";
+export * from "./utils";

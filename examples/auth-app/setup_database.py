@@ -91,7 +91,7 @@ async def setup_database():
         demo_user = UserCreate(
             username="demo",
             password="Demo123!",
-            email="demo@reynard.dev",
+            email="acsipont@gmail.com",
             full_name="Demo User",
             role=UserRole.REGULAR,
         )

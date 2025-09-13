@@ -38,7 +38,7 @@ Each content type has specialized prompts optimized for its characteristics:
 
 **Good Example:**
 
-```plaintext
+```text
 You are an expert summarizer specializing in technical documentation.
 Your task is to create a comprehensive summary that:
 - Preserves technical accuracy
@@ -50,7 +50,7 @@ Your task is to create a comprehensive summary that:
 
 **Poor Example:**
 
-```plaintext
+```text
 Summarize this text well.
 ```
 

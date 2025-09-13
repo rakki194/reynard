@@ -7,7 +7,8 @@ alwaysApply: false
 
 ## Overview
 
-Python 3.13 (released October 7, 2024) introduces significant performance improvements, enhanced developer experience, and important deprecations that affect Reynard development.
+Python 3.13 (released October 7, 2024) introduces significant performance improvements, enhanced developer experience,
+and important deprecations that affect Reynard development.
 
 ## 🚀 Key Features for Reynard
 
@@ -262,7 +263,7 @@ def debug_api_call():
 - [Python 3.13 Deprecations](https://docs.python.org/3/deprecations/)
 - [PEP 594 - Removing dead batteries](https://peps.python.org/pep-0594/)
 
-## 🦊 Reynard Development Notes
+## Reynard Development Notes
 
 - **Type Safety**: Leverage new typing features for better API contracts
 - **Performance**: Monitor free-threaded mode for backend optimization

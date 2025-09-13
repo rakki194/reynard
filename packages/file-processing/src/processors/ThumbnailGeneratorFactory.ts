@@ -7,24 +7,13 @@
 
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { getFileCategory } from "../config/file-types";
-import { ImageThumbnailGenerator } from "./ImageThumbnailGenerator";
-import { VideoThumbnailGenerator } from "./VideoThumbnailGenerator";
-import { AudioThumbnailGenerator } from "./AudioThumbnailGenerator";
-import { DocumentThumbnailGenerator } from "./DocumentThumbnailGenerator";
+import { getFileInfo, getFileExtension } from "./utils/file-info";
+import { GeneratorRegistry, GeneratorRegistryOptions } from "./utils/generator-registry";
 
-export interface ThumbnailGeneratorFactoryOptions extends ThumbnailOptions {
-  /** Whether to enable Web Workers for background processing */
-  useWebWorkers?: boolean;
-  /** Maximum thumbnail size in bytes */
-  maxThumbnailSize?: number;
-  /** Whether to enable progressive loading */
-  progressive?: boolean;
-  /** Custom background color for transparent images */
-  backgroundColor?: string;
-}
+export type ThumbnailGeneratorFactoryOptions = GeneratorRegistryOptions;
 
 export class ThumbnailGeneratorFactory {
-  private generators = new Map<string, any>();
+  private registry: GeneratorRegistry;
 
   constructor(
     private options: ThumbnailGeneratorFactoryOptions = { size: [200, 200] },
@@ -41,6 +30,8 @@ export class ThumbnailGeneratorFactory {
       progressive: true,
       ...options,
     };
+    
+    this.registry = new GeneratorRegistry();
   }
 
   /**
@@ -55,39 +46,30 @@ export class ThumbnailGeneratorFactory {
 
     try {
       // Get file information
-      const fileInfo = await this.getFileInfo(file);
+      const fileInfo = await getFileInfo(file);
       if (!fileInfo.success) {
-        return {
-          success: false,
-          error: fileInfo.error,
-          duration: Date.now() - startTime,
-          timestamp: new Date(),
-        };
+        return this.createErrorResult(fileInfo.error!, startTime);
       }
 
       const { name, size } = fileInfo.data!;
-      const extension = this.getFileExtension(name);
+      const extension = getFileExtension(name);
       const category = getFileCategory(extension);
 
       // Check file size limit
       if (size > (mergedOptions.maxThumbnailSize || Infinity)) {
-        return {
-          success: false,
-          error: `File size ${size} exceeds maximum thumbnail size limit`,
-          duration: Date.now() - startTime,
-          timestamp: new Date(),
-        };
+        return this.createErrorResult(
+          `File size ${size} exceeds maximum thumbnail size limit`,
+          startTime,
+        );
       }
 
       // Get appropriate generator
-      const generator = this.getGenerator(category, mergedOptions);
+      const generator = this.registry.getGenerator(category, mergedOptions);
       if (!generator) {
-        return {
-          success: false,
-          error: `Unsupported file category: ${category}`,
-          duration: Date.now() - startTime,
-          timestamp: new Date(),
-        };
+        return this.createErrorResult(
+          `Unsupported file category: ${category}`,
+          startTime,
+        );
       }
 
       // Generate thumbnail
@@ -98,116 +80,32 @@ export class ThumbnailGeneratorFactory {
         duration: Date.now() - startTime,
       };
     } catch (error) {
-      return {
-        success: false,
-        error:
-          error instanceof Error ? error.message : "Unknown error occurred",
-        duration: Date.now() - startTime,
-        timestamp: new Date(),
-      };
+      return this.createErrorResult(
+        error instanceof Error ? error.message : "Unknown error occurred",
+        startTime,
+      );
     }
   }
 
   /**
-   * Get appropriate generator for file category
+   * Create error result with consistent format
    */
-  private getGenerator(
-    category: string,
-    options: ThumbnailGeneratorFactoryOptions,
-  ): any {
-    const cacheKey = `${category}-${JSON.stringify(options)}`;
-
-    if (this.generators.has(cacheKey)) {
-      return this.generators.get(cacheKey);
-    }
-
-    let generator: any;
-
-    switch (category) {
-      case "image":
-        generator = new ImageThumbnailGenerator(options);
-        break;
-      case "video":
-        generator = new VideoThumbnailGenerator(options);
-        break;
-      case "audio":
-        generator = new AudioThumbnailGenerator(options);
-        break;
-      case "text":
-      case "code":
-      case "document":
-        generator = new DocumentThumbnailGenerator(options);
-        break;
-      default:
-        return null;
-    }
-
-    this.generators.set(cacheKey, generator);
-    return generator;
-  }
-
-  /**
-   * Get file information
-   */
-  private async getFileInfo(
-    file: File | string,
-  ): Promise<ProcessingResult<{ name: string; size: number; type: string }>> {
-    try {
-      if (typeof file === "string") {
-        // URL case - we can't get size without fetching
-        return {
-          success: true,
-          data: {
-            name: file.split("/").pop() || "unknown",
-            size: 0,
-            type: "unknown",
-          },
-          duration: 0,
-          timestamp: new Date(),
-        };
-      } else {
-        return {
-          success: true,
-          data: {
-            name: file.name,
-            size: file.size,
-            type: file.type,
-          },
-          duration: 0,
-          timestamp: new Date(),
-        };
-      }
-    } catch (error) {
-      return {
-        success: false,
-        error:
-          error instanceof Error ? error.message : "Failed to get file info",
-        duration: 0,
-        timestamp: new Date(),
-      };
-    }
-  }
-
-  /**
-   * Get file extension from filename
-   */
-  private getFileExtension(filename: string): string {
-    const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+  private createErrorResult(
+    error: string,
+    startTime: number,
+  ): ProcessingResult<Blob | string> {
+    return {
+      success: false,
+      error,
+      duration: Date.now() - startTime,
+      timestamp: new Date(),
+    };
   }
 
   /**
    * Clean up resources
    */
   destroy(): void {
-    // Clean up all generators
-    this.generators.forEach((generator) => {
-      if (generator && typeof generator.destroy === "function") {
-        generator.destroy();
-      }
-    });
-    this.generators.clear();
+    this.registry.destroy();
   }
 }

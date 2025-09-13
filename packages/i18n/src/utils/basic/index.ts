@@ -1,6 +1,5 @@
 /**
- * Basic i18n Utilities
- * Core language data, locale detection, and basic translation helpers
+ * Basic utilities
  */
 
 export * from "./language-data";
