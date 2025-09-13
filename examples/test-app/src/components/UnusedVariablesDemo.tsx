@@ -237,7 +237,7 @@ export function UnusedVariablesDemo() {
                   <input
                     type="checkbox"
                     checked={showGrid()}
-                    onInput={(e) => setShowGrid(e.target.checked)}
+                    onChange={(e) => setShowGrid(e.target.checked)}
                   />
                   Show Grid
                 </label>
@@ -329,7 +329,7 @@ export function UnusedVariablesDemo() {
                     min="1"
                     max="4"
                     value={elevation()}
-                    onInput={(e) => setElevation(parseInt(e.target.value))}
+                    onInput={(e: any) => setElevation(parseInt(e.target.value))}
                   />
                 </label>
               </div>
@@ -370,7 +370,7 @@ export function UnusedVariablesDemo() {
                     min="0"
                     max="100"
                     value={opacity()}
-                    onInput={(e) => setOpacity(parseInt(e.target.value))}
+                    onInput={(e: any) => setOpacity(parseInt(e.target.value))}
                   />
                 </label>
               </div>

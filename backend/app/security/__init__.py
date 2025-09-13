@@ -5,7 +5,7 @@ This module provides comprehensive security utilities including
 input validation, security headers, and threat detection.
 """
 
-from .input_validation import validate_input_security
+from .input_validator import validate_input_security
 from .security_headers import add_security_headers_middleware
 
 __all__ = [

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import { LineChart } from "../../LineChart";
-import type { Dataset } from "../../../types";
+import { LineChart } from "../components/LineChart";
+import type { Dataset } from "../types";
 
 const mockDatasets: Dataset[] = [
   {

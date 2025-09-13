@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { pointInAABB } from "../../aabb-operations";
-import type { AABB } from "../../aabb-types";
+import { pointInAABB } from "../../../geometry/collision/aabb-operations";
+import type { AABB } from "../../../geometry/collision/aabb-types";
 
 // Helper function for creating AABB test objects
 const createAABB = (

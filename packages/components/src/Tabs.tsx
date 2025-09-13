@@ -15,6 +15,8 @@ export interface TabItem {
   badge?: string | number;
   /** Whether the tab is disabled */
   disabled?: boolean;
+  /** Optional content for the tab (for backward compatibility) */
+  content?: any;
 }
 
 export interface TabsProps {
@@ -171,6 +173,21 @@ export const Tabs: Component<TabsProps> = (props) => {
 
       {local.children && (
         <div class="reynard-tabs__content">{local.children}</div>
+      )}
+      
+      {/* Handle content property for backward compatibility */}
+      {!local.children && local.items.length > 0 && (
+        <div class="reynard-tabs__content">
+          {local.items.map((item) => (
+            <div
+              class={`reynard-tab-panel ${item.id === local.activeTab ? 'reynard-tab-panel--active' : 'reynard-tab-panel--hidden'}`}
+              role="tabpanel"
+              aria-hidden={item.id !== local.activeTab}
+            >
+              {item.content}
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

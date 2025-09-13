@@ -10,6 +10,7 @@
 import type { AABB, CollisionResult } from "./aabb-types";
 import { checkCollision } from "./aabb-collision";
 import type { SpatialHash } from "../../spatial-hash/spatial-hash-core";
+import type { CollisionObjectData } from "../../types/spatial-types";
 
 export interface CollisionPair {
   a: number;
@@ -89,7 +90,7 @@ export function naiveCollisionDetection(
  */
 export function spatialCollisionDetection(
   aabbs: AABB[],
-  spatialHash: SpatialHash<{ aabb: AABB; index: number }>,
+  spatialHash: SpatialHash<CollisionObjectData>,
   cache: CollisionCache,
 ): CollisionPair[] {
   const collisions: CollisionPair[] = [];
@@ -105,7 +106,12 @@ export function spatialCollisionDetection(
       y: aabb.y,
       width: aabb.width,
       height: aabb.height,
-      data: { aabb, index },
+      data: {
+        id: index,
+        type: "collision",
+        aabb,
+        index,
+      },
     });
   });
 

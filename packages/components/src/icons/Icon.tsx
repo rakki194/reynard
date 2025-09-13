@@ -19,7 +19,7 @@ import { getIcon, iconRegistry } from "reynard-fluent-icons";
 
 // Icon component props
 export interface IconProps
-  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "role"> {
   name: string;
   packageId?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";

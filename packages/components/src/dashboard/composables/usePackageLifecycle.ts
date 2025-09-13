@@ -28,7 +28,7 @@ export function usePackageLifecycle(refreshInterval?: number) {
     lastUpdate: null,
   });
 
-  let refreshTimer: number | null = null;
+  let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
   const refreshLifecycleData = async () => {
     setState((prev) => ({ ...prev, isRefreshing: true }));
@@ -114,7 +114,7 @@ export function usePackageLifecycle(refreshInterval?: number) {
         ...prev,
         packages: prev.packages.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: error.message }
+            ? { ...pkg, status: "error" as const, error: (error as Error).message }
             : pkg,
         ),
       }));
@@ -153,7 +153,7 @@ export function usePackageLifecycle(refreshInterval?: number) {
         ...prev,
         packages: prev.packages.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: error.message }
+            ? { ...pkg, status: "error" as const, error: (error as Error).message }
             : pkg,
         ),
       }));

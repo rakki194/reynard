@@ -191,13 +191,13 @@ export function NotificationsDemo() {
             <div class="setting-item">
               <label for="duration-slider">Duration (ms):</label>
               <input
-                id="duration-slider"
                 type="range"
+                id="duration-slider"
                 min="1000"
                 max="10000"
                 step="500"
                 value={duration()}
-                onInput={(e) => setDuration(parseInt(e.currentTarget.value))}
+                onInput={(e: any) => setDuration(parseInt(e.currentTarget.value))}
                 disabled={!autoClose()}
                 aria-label="Notification duration in milliseconds"
               />

@@ -5,6 +5,7 @@
 
 import { createMemo, For } from "solid-js";
 import { useI18n } from "reynard-themes";
+import { Toggle } from "reynard-components";
 
 interface ServiceControlsProps {
   serviceAvailability: () => Record<string, boolean>;
@@ -135,10 +136,9 @@ export default function ServiceControls(props: ServiceControlsProps) {
         <For each={services()}>
           {(service) => (
             <label class="service-toggle">
-              <input
-                type="checkbox"
-                checked={props.serviceAvailability()[service.name]}
-                onChange={() => toggleService(service.name)}
+              <Toggle
+    size="sm"
+  /> toggleService(service.name)}
               />
               <div class="service-label">
                 <div class="service-label-name">{service.label}</div>

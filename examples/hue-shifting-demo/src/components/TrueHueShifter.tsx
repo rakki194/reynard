@@ -12,6 +12,7 @@ import {
   EasingFunctions,
 } from "reynard-colors";
 import "./TrueHueShifter.css";
+import { Slider } from "reynard-components";
 
 interface TrueHueShifterProps {
   baseColor: OKLCHColor;
@@ -89,14 +90,12 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
       <div class="hue-controls">
         <div class="hue-shift-control">
           <label for="hue-shift-slider">Hue Shift: {hueShift()}°</label>
-          <input
-            id="hue-shift-slider"
-            type="range"
-            min="-180"
-            max="180"
-            step="1"
-            value={hueShift()}
-            onInput={(e) => setHueShift(parseInt(e.target.value))}
+          <Slider
+    id="hue-shift-slider"
+    min={-180}
+    max={180}
+    step={1}
+  /> setHueShift(parseInt(e.target.value))}
             class="slider"
           />
           <div class="hue-buttons">
@@ -131,14 +130,12 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
           <div class="ramp-controls">
             <div class="control-group">
               <label for="ramp-stops">Ramp Stops:</label>
-              <input
-                id="ramp-stops"
-                type="range"
-                min="3"
-                max="9"
-                step="1"
-                value={rampStops()}
-                onInput={(e) => setRampStops(parseInt(e.target.value))}
+              <Slider
+    id="ramp-stops"
+    min={3}
+    max={9}
+    step={1}
+  /> setRampStops(parseInt(e.target.value))}
                 class="slider"
               />
               <span>{rampStops()}</span>
@@ -146,14 +143,12 @@ export const TrueHueShifter: Component<TrueHueShifterProps> = (props) => {
 
             <div class="control-group">
               <label for="ramp-range">Hue Range:</label>
-              <input
-                id="ramp-range"
-                type="range"
-                min="30"
-                max="180"
-                step="5"
-                value={rampRange()}
-                onInput={(e) => setRampRange(parseInt(e.target.value))}
+              <Slider
+    id="ramp-range"
+    min={30}
+    max={180}
+    step={5}
+  /> setRampRange(parseInt(e.target.value))}
                 class="slider"
               />
               <span>{rampRange()}°</span>

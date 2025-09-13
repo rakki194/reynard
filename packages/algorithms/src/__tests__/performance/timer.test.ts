@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { PerformanceTimer } from "../../timer";
+import { PerformanceTimer } from "../../performance/timer";
 
 describe("PerformanceTimer", () => {
   let timer: PerformanceTimer;

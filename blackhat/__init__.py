@@ -16,17 +16,29 @@ __description__ = "Comprehensive exploit testing suite for Reynard security vuln
 from . import jwt_exploits
 from . import path_traversal
 from . import sql_injection
-from . import error_disclosure
 from . import cors_exploits
-from . import file_upload
-from . import attack_chains
+from . import api_exploits
+from . import csrf_exploits
+from . import fuzzing
+from . import http_smuggling
+from . import llm_exploits
+from . import race_conditions
+from . import rate_limiting
+from . import ssrf_exploits
+from . import unicode_exploits
 
 __all__ = [
     "jwt_exploits",
     "path_traversal", 
     "sql_injection",
-    "error_disclosure",
     "cors_exploits",
-    "file_upload",
-    "attack_chains"
+    "api_exploits",
+    "csrf_exploits",
+    "fuzzing",
+    "http_smuggling",
+    "llm_exploits",
+    "race_conditions",
+    "rate_limiting",
+    "ssrf_exploits",
+    "unicode_exploits"
 ]

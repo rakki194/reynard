@@ -11,9 +11,9 @@ import {
   SystemStatus,
   ColorPicker,
   AdvancedFeatures,
-  ChartsDemo,
   ThreeDDemo,
 } from ".";
+import { ChartsDemo } from "./ChartsDemo";
 
 export const InteractiveDashboard: Component = () => {
   return (

@@ -9,3 +9,5 @@ export { SidebarButton, type SidebarButtonProps } from "./SidebarButton";
 export { Card, type CardProps } from "./Card";
 export { TextField, type TextFieldProps } from "./TextField";
 export { Select, type SelectProps, type SelectOption } from "./Select";
+export { Slider, type SliderProps } from "./Slider";
+export { Toggle, type ToggleProps } from "./Toggle";

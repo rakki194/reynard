@@ -195,6 +195,7 @@ async fn fetch_user_data(id: u32) -> Result<User, Box<dyn std::error::Error>> {
 package main
 
 import (
+import { Slider } from "reynard-components";
     "context"
     "encoding/json"
     "fmt"
@@ -559,12 +560,12 @@ interface User {
         <div class="control-group">
           <label for="font-size-range">Font Size:</label>
           <input
-            id="font-size-range"
             type="range"
+            id="font-size-range"
             min="10"
             max="24"
             value={fontSize()}
-            onChange={(e) => setFontSize(parseInt(e.currentTarget.value))}
+            onInput={(e: any) => setFontSize(parseInt(e.currentTarget.value))}
           />
           <span>{fontSize()}px</span>
         </div>

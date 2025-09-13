@@ -154,7 +154,7 @@ async def detailed_health_check() -> Dict[str, Any]:
 
 
 @router.get("/api/protected", tags=["Auth"])
-async def protected_route(current_user: User = Depends(require_active_user)) -> Dict[str, Any]:
+async def protected_route(current_user: User = Depends(require_active_user())) -> Dict[str, Any]:
     """
     Protected route demonstrating authentication and authorization.
 

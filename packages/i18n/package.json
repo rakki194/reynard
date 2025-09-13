@@ -1,6 +1,6 @@
 {
   "name": "reynard-i18n",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Comprehensive internationalization system for Reynard framework with 37 language support",
   "type": "module",
   "main": "./dist/index.js",

@@ -397,16 +397,16 @@ function findMissingKeys(
   const missing: string[] = [];
 
   function compareObjects(ref: unknown, tar: unknown, path: string = "") {
-    for (const key in ref) {
+    for (const key in (ref as any)) {
       const currentPath = path ? `${path}.${key}` : key;
 
-      if (typeof ref[key] === "object" && ref[key] !== null) {
-        if (!tar[key] || typeof tar[key] !== "object") {
+      if (typeof (ref as any)[key] === "object" && (ref as any)[key] !== null) {
+        if (!(tar as any)[key] || typeof (tar as any)[key] !== "object") {
           missing.push(currentPath);
         } else {
-          compareObjects(ref[key], tar[key], currentPath);
+          compareObjects((ref as any)[key], (tar as any)[key], currentPath);
         }
-      } else if (!(key in tar)) {
+      } else if (!(key in (tar as any))) {
         missing.push(currentPath);
       }
     }
@@ -426,16 +426,16 @@ function findUnusedKeys(
   const unused: string[] = [];
 
   function findUnusedInObject(ref: unknown, tar: unknown, path: string = "") {
-    for (const key in tar) {
+    for (const key in (tar as any)) {
       const currentPath = path ? `${path}.${key}` : key;
 
-      if (typeof tar[key] === "object" && tar[key] !== null) {
-        if (!ref[key] || typeof ref[key] !== "object") {
+      if (typeof (tar as any)[key] === "object" && (tar as any)[key] !== null) {
+        if (!(ref as any)[key] || typeof (ref as any)[key] !== "object") {
           unused.push(currentPath);
         } else {
-          findUnusedInObject(ref[key], tar[key], currentPath);
+          findUnusedInObject((ref as any)[key], (tar as any)[key], currentPath);
         }
-      } else if (!(key in ref)) {
+      } else if (!(key in (ref as any))) {
         unused.push(currentPath);
       }
     }
@@ -454,13 +454,13 @@ function findIncompleteTranslations(
   const incomplete: string[] = [];
 
   function checkObject(obj: unknown, path: string = "") {
-    for (const key in obj) {
+    for (const key in (obj as any)) {
       const currentPath = path ? `${path}.${key}` : key;
 
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        checkObject(obj[key], currentPath);
-      } else if (typeof obj[key] === "string") {
-        const value = obj[key];
+      if (typeof (obj as any)[key] === "object" && (obj as any)[key] !== null) {
+        checkObject((obj as any)[key], currentPath);
+      } else if (typeof (obj as any)[key] === "string") {
+        const value = (obj as any)[key];
         if (
           !value ||
           value.trim() === "" ||

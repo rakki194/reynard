@@ -5,52 +5,8 @@
 
 import { t } from "../optional-i18n";
 
-/**
- * Email validation using RFC 5322 compliant regex
- */
-export function isValidEmail(email: string): boolean {
-  // Handle null/undefined/empty input
-  if (!email || typeof email !== "string") {
-    return false;
-  }
-
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return emailRegex.test(email);
-}
-
-/**
- * URL validation
- */
-export function isValidUrl(url: string): boolean {
-  // Handle null/undefined/empty input
-  if (!url || typeof url !== "string") {
-    return false;
-  }
-
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Phone number validation (supports various formats)
- */
-export function isValidPhoneNumber(phone: string): boolean {
-  // Handle null/undefined/empty input
-  if (!phone || typeof phone !== "string") {
-    return false;
-  }
-
-  // Remove all non-digit characters
-  const digitsOnly = phone.replace(/\D/g, "");
-
-  // Check if it's a valid length (7-15 digits for international numbers)
-  return digitsOnly.length >= 7 && digitsOnly.length <= 15;
-}
+// Email, URL, and phone validation functions moved to security module
+// Import from: packages/core/src/security/input-validation/url.ts
 
 /**
  * Username validation

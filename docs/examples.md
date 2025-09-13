@@ -59,6 +59,33 @@ Real-time chat with streaming, P2P, and tool integration.
 - Thinking sections for AI assistants
 - Message history and persistence
 
+### **🎨 Phyllotactic Animation System**
+
+Advanced mathematical animation system based on research in phyllotactic spirals and stroboscopic effects.
+
+**Features:**
+
+- **Stroboscopic Effects**: Mathematical stroboscopic animation with temporal aliasing
+- **Advanced Patterns**: ROTASE, Bernoulli, and enhanced Vogel pattern generation
+- **3D Support**: Full 3D phyllotactic structures with multi-axis rotation
+- **Performance Optimization**: Adaptive quality, spatial culling, and LOD optimization
+- **Interactive Demos**: Real-time parameter adjustment and pattern switching
+
+**Technologies:**
+
+- Custom animation engines with mathematical precision
+- Golden ratio (φ = 1.618...) and golden angle (ψ ≈ 137.5°) calculations
+- Research-based pattern generation algorithms
+- Performance optimization with adaptive quality scaling
+
+**Research Foundation:**
+
+- Based on "The Mathematics of Phyllotactic Spirals and Their Animated Perception"
+- Implements Vogel's model, ROTASE galactic spiral equations, and Bernoulli spiral lattices
+- Advanced stroboscopic effects with mathematical validation
+
+**Location:** `examples/test-app/` (Phyllotactic Animation Demos)
+
 **Technologies:**
 
 - `reynard-chat` - Chat system

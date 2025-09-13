@@ -1,5 +1,6 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
 import {
+import { Slider } from "reynard-components";
   batchCollisionDetection,
   type AABB,
   type CollisionResult,
@@ -295,13 +296,11 @@ export const AABBCollisionDemo: Component<AABBCollisionDemoProps> = (props) => {
       <div class="demo-controls">
         <div class="control-group">
           <label for="object-count-slider">Object Count: {objectCount()}</label>
-          <input
-            id="object-count-slider"
-            type="range"
-            min="5"
-            max="100"
-            value={objectCount()}
-            onInput={(e) => setObjectCount(parseInt(e.currentTarget.value))}
+          <Slider
+    id="object-count-slider"
+    min={5}
+    max={100}
+  /> setObjectCount(parseInt(e.currentTarget.value))}
             title="Adjust the number of objects in the simulation"
           />
         </div>

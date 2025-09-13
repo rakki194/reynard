@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import { CodeEditor } from "../src/components/CodeEditor";
 import { useI18n } from "reynard-i18n";
 import "./basic-usage.css";
+import { Toggle } from "reynard-components";
 
 export function BasicUsageExample() {
   const { t } = useI18n();
@@ -50,10 +51,9 @@ console.log(fibonacci(10)); // 55`);
         </label>
 
         <label>
-          <input
-            type="checkbox"
-            checked={readOnly()}
-            onChange={(e) => setReadOnly(e.target.checked)}
+          <Toggle
+    size="sm"
+  /> setReadOnly(e.target.checked)}
           />
           {t("monaco.readOnly")}
         </label>

@@ -1,6 +1,7 @@
 import { Component, createSignal, createEffect } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
 import "./ColorPicker.css";
+import { Slider } from "reynard-components";
 
 interface ColorPickerProps {
   color: OKLCHColor;
@@ -40,42 +41,36 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
           <label for="lightness-slider">
             Lightness: {Math.round(lightness())}%
           </label>
-          <input
-            id="lightness-slider"
-            type="range"
-            min="0"
-            max="100"
-            step="1"
-            value={lightness()}
-            onInput={(e) => setLightness(parseFloat(e.target.value))}
+          <Slider
+    id="lightness-slider"
+    min={0}
+    max={100}
+    step={1}
+  /> setLightness(parseFloat(e.target.value))}
             class="slider lightness-slider"
           />
         </div>
 
         <div class="control-group">
           <label for="chroma-slider">Chroma: {chroma().toFixed(2)}</label>
-          <input
-            id="chroma-slider"
-            type="range"
-            min="0"
-            max="0.4"
-            step="0.01"
-            value={chroma()}
-            onInput={(e) => setChroma(parseFloat(e.target.value))}
+          <Slider
+    id="chroma-slider"
+    min={0}
+    max={0.4}
+    step={0.01}
+  /> setChroma(parseFloat(e.target.value))}
             class="slider chroma-slider"
           />
         </div>
 
         <div class="control-group">
           <label for="hue-slider">Hue: {Math.round(hue())}°</label>
-          <input
-            id="hue-slider"
-            type="range"
-            min="0"
-            max="360"
-            step="1"
-            value={hue()}
-            onInput={(e) => setHue(parseFloat(e.target.value))}
+          <Slider
+    id="hue-slider"
+    min={0}
+    max={360}
+    step={1}
+  /> setHue(parseFloat(e.target.value))}
             class="slider hue-slider"
           />
         </div>

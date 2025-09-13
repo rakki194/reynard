@@ -3,7 +3,7 @@
  * Service dependency graph visualization
  */
 
-import { Component, Show } from "solid-js";
+import { Component, Show, For } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface ServiceDependencyGraphProps {

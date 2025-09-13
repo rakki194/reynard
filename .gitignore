@@ -1,4 +1,14 @@
 # My junk
+penetration-results-2*
+penetration-results.json
+penetration-results.xml
+penetration-results/
+playwright-report/
+e2e-results/
+e2e-results.xml
+e2e-results.json
+*.bak
+*.backup
 third_party/
 i18n-report.md
 i18n-results.json

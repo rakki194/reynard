@@ -5,8 +5,8 @@ import {
   LineChart,
   PieChart,
   TimeSeriesChart,
-} from "../../components";
-import type { ChartConfig, ChartTheme } from "../../types";
+} from "../components";
+import type { ChartConfig, ChartTheme } from "../types";
 import "./integration.test.css";
 
 // Mock console methods to reduce noise

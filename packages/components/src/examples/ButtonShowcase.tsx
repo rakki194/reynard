@@ -99,11 +99,11 @@ export const ButtonShowcase: Component = () => {
           </IconButton>
           <IconButton icon="settings" variant="secondary" iconOnly />
           <IconButton icon="download" variant="primary" loading />
-          <IconButton icon="refresh" variant="default" progress={progress()} />
+          <IconButton icon="refresh" variant="primary" progress={progress()} />
           <IconButton icon="star" variant="warning" glow />
           <IconButton
             icon="heart"
-            variant="error"
+            variant="danger"
             active={activeButton() === "heart"}
             onClick={() =>
               setActiveButton(activeButton() === "heart" ? null : "heart")

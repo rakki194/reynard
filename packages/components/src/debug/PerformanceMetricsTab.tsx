@@ -12,7 +12,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "../primitives";
 
 export interface PerformanceMetricsTabProps {
   performanceHistory: Array<{

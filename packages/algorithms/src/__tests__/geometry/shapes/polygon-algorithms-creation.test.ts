@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { PolygonOps } from "../../polygon-algorithms";
+import { PolygonOps } from "../../../geometry/shapes/polygon-algorithms";
 
 describe("PolygonOps - Creation", () => {
   describe("create", () => {

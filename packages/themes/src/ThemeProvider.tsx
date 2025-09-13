@@ -11,7 +11,8 @@ import {
 } from "solid-js";
 import type { ThemeName, ReynardContext, ThemeProviderProps } from "./types";
 import type { TranslationContext } from "reynard-i18n";
-import { I18nProvider, createI18nModule } from "reynard-i18n";
+import { I18nProvider } from "reynard-i18n";
+import { createMockI18n } from "reynard-core";
 import { getInitialTheme } from "./themeInitialization";
 import { createThemeContext } from "./themeContext";
 import { setupThemeLifecycle } from "./themeLifecycle";
@@ -28,17 +29,17 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
   console.log("ReynardProvider - initialTheme:", initialTheme);
   const [theme, setThemeState] = createSignal<ThemeName>(initialTheme);
 
-  // Create i18n module
-  const i18nModule = createI18nModule();
+  // Create i18n module (using mock to prevent recursion)
+  const i18nModule = createMockI18n();
 
   // Create translation context from i18n module
   const translationContext: TranslationContext = {
     get locale() {
-      return i18nModule.locale();
+      return i18nModule.locale() as any;
     },
-    setLocale: i18nModule.setLocale,
+    setLocale: i18nModule.setLocale as any,
     t: i18nModule.t,
-    languages: i18nModule.languages,
+    languages: i18nModule.languages as any,
     get isRTL() {
       return i18nModule.isRTL;
     },
@@ -58,7 +59,7 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
     // Track theme signal for reactivity
     const currentTheme = theme();
     // Initialize lifecycle only once, but track theme changes
-    setupThemeLifecycle(() => currentTheme, setThemeState, i18nModule);
+    setupThemeLifecycle(() => currentTheme, setThemeState, i18nModule as any);
   });
 
   // Debug logging to track context creation

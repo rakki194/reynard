@@ -4,7 +4,8 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Select, Toggle, Tabs } from "reynard-components";
+import { Button, TextField, Select, Tabs } from "reynard-components";
+import { Toggle } from "./Toggle";
 import { useSettings } from "../composables/useSettings";
 
 export interface ModelManagementSettingsProps {
@@ -40,23 +41,23 @@ export const ModelManagementSettings: Component<
   const loadModelSettings = async () => {
     setIsLoading(true);
     try {
-      setAutoDownload(settings().getSetting("models.auto_download") || true);
-      setPreloadModels(settings().getSetting("models.preload") || false);
+      setAutoDownload(settings.getSetting("models.auto_download") || true);
+      setPreloadModels(settings.getSetting("models.preload") || false);
       setMaxConcurrentModels(
-        settings().getSetting("models.max_concurrent") || 3,
+        settings.getSetting("models.max_concurrent") || 3,
       );
-      setModelCacheSize(settings().getSetting("models.cache_size") || 10);
+      setModelCacheSize(settings.getSetting("models.cache_size") || 10);
       setEnableModelSharing(
-        settings().getSetting("models.enable_sharing") || true,
+        settings.getSetting("models.enable_sharing") || true,
       );
       setDefaultDevice(
-        settings().getSetting("models.default_device") || "auto",
+        settings.getSetting("models.default_device") || "auto",
       );
       setEnableQuantization(
-        settings().getSetting("models.enable_quantization") || true,
+        settings.getSetting("models.enable_quantization") || true,
       );
       setQuantizationBits(
-        settings().getSetting("models.quantization_bits") || 8,
+        settings.getSetting("models.quantization_bits") || 8,
       );
     } catch (error) {
       console.error("Failed to load model management settings:", error);
@@ -68,28 +69,28 @@ export const ModelManagementSettings: Component<
   const saveModelSettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting("models.auto_download", autoDownload());
-      await settings().setSetting("models.preload", preloadModels());
-      await settings().setSetting(
+      await settings.setSetting("models.auto_download", autoDownload());
+      await settings.setSetting("models.preload", preloadModels());
+      await settings.setSetting(
         "models.max_concurrent",
         maxConcurrentModels(),
       );
-      await settings().setSetting("models.cache_size", modelCacheSize());
-      await settings().setSetting(
+      await settings.setSetting("models.cache_size", modelCacheSize());
+      await settings.setSetting(
         "models.enable_sharing",
         enableModelSharing(),
       );
-      await settings().setSetting("models.default_device", defaultDevice());
-      await settings().setSetting(
+      await settings.setSetting("models.default_device", defaultDevice());
+      await settings.setSetting(
         "models.enable_quantization",
         enableQuantization(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "models.quantization_bits",
         quantizationBits(),
       );
 
-      await settings().saveSettings();
+      await settings.saveSettings();
     } catch (error) {
       console.error("Failed to save model management settings:", error);
     } finally {
@@ -152,7 +153,7 @@ export const ModelManagementSettings: Component<
                   checked={autoDownload()}
                   onChange={setAutoDownload}
                   label="Auto-download Models"
-                  description="Automatically download required models when needed"
+                  helperText="Automatically download required models when needed"
                 />
               </div>
 
@@ -161,7 +162,7 @@ export const ModelManagementSettings: Component<
                   checked={preloadModels()}
                   onChange={setPreloadModels}
                   label="Preload Models"
-                  description="Preload frequently used models for faster access"
+                  helperText="Preload frequently used models for faster access"
                 />
               </div>
 
@@ -171,7 +172,7 @@ export const ModelManagementSettings: Component<
                   value={defaultDevice()}
                   onChange={setDefaultDevice}
                   options={deviceOptions}
-                  description="Default device for model execution"
+                  helperText="Default device for model execution"
                 />
               </div>
 
@@ -180,7 +181,7 @@ export const ModelManagementSettings: Component<
                   checked={enableModelSharing()}
                   onChange={setEnableModelSharing}
                   label="Enable Model Sharing"
-                  description="Allow sharing of model files between instances"
+                  helperText="Allow sharing of model files between instances"
                 />
               </div>
             </div>
@@ -202,8 +203,8 @@ export const ModelManagementSettings: Component<
                   onChange={(value) =>
                     setMaxConcurrentModels(parseInt(value) || 3)
                   }
-                  description="Maximum number of models to load simultaneously"
-                  validation={{ min: 1, max: 10 }}
+                  helperText="Maximum number of models to load simultaneously"
+                 
                 />
               </div>
 
@@ -212,7 +213,7 @@ export const ModelManagementSettings: Component<
                   checked={enableQuantization()}
                   onChange={setEnableQuantization}
                   label="Enable Quantization"
-                  description="Use quantized models for reduced memory usage"
+                  helperText="Use quantized models for reduced memory usage"
                 />
               </div>
 
@@ -225,7 +226,7 @@ export const ModelManagementSettings: Component<
                       setQuantizationBits(parseInt(value) || 8)
                     }
                     options={quantizationOptions}
-                    description="Quantization precision (lower = more efficient, higher = better quality)"
+                    helperText="Quantization precision (lower = more efficient, higher = better quality)"
                   />
                 </div>
               </Show>
@@ -245,9 +246,9 @@ export const ModelManagementSettings: Component<
                   label="Model Cache Size (GB)"
                   type="number"
                   value={modelCacheSize()}
-                  onChange={(value) => setModelCacheSize(parseInt(value) || 10)}
-                  description="Maximum disk space for model cache"
-                  validation={{ min: 1, max: 1000 }}
+                  onChange={(e) => setModelCacheSize(parseInt(e.target.value) || 10)}
+                  helperText="Maximum disk space for model cache"
+                 
                 />
               </div>
 

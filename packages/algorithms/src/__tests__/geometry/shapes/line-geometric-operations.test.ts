@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { LineOps } from "../../line-algorithms";
+import { LineOps } from "../../../geometry/shapes/line-algorithms";
 
 describe("LineOps - Geometric Operations", () => {
   describe("direction", () => {

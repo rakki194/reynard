@@ -12,7 +12,7 @@ from fastapi import Request, Response, HTTPException
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from app.security.input_validation import validate_input_security
+from app.security.input_validator import validate_input_security
 
 
 class InputValidationMiddleware(BaseHTTPMiddleware):

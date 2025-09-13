@@ -4,7 +4,7 @@
  */
 
 import { Dataset } from "../types";
-import { prepareDatasets, validateChartData } from "./chartUtils";
+import { prepareDatasets, validateChartData } from "./index";
 
 export interface BarChartData {
   labels: string[];

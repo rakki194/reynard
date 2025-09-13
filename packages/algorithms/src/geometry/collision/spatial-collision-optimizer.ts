@@ -10,6 +10,7 @@
 
 import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 import type { AABB, CollisionResult } from "./aabb-types";
+import type { CollisionObjectData } from "../../types/spatial-types";
 import {
   naiveCollisionDetection,
   spatialCollisionDetection,
@@ -32,7 +33,7 @@ export type {
 } from "./spatial-collision-stats";
 
 export class SpatialCollisionOptimizer {
-  private spatialHash: SpatialHash<{ aabb: AABB; index: number }>;
+  private spatialHash: SpatialHash<CollisionObjectData>;
   private config: SpatialCollisionConfig;
   private collisionCache: CollisionCache;
   private stats: SpatialCollisionStats;

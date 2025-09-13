@@ -7,7 +7,7 @@
 **Mission**: Transform Reynard from a frontend-only framework into a complete,
 self-sufficient AI/ML platform with its own backend services.
 
-**Current Status**: 🟡 **Phase 1 - Foundation Building**
+> *Current Status**: 🟡 **Phase 1 - Foundation Building*
 
 - **Progress**: 0/12 packages created
 - **XP Earned**: 0/1000
@@ -46,7 +46,7 @@ _XP Reward: 200 points per package_
 
 #### **Quest 1.1: `reynard-ai-shared`** ⚠️ **CRITICAL**
 
-**Status**: ✅ **COMPLETED** | **Priority**: **HIGHEST**
+> *Status**: ✅ **COMPLETED** | **Priority**: **HIGHEST*
 **XP Reward**: 200 points | **Dependencies**: None
 
 **Objective**: Create shared AI/ML utilities and base classes
@@ -88,7 +88,7 @@ export class ModelRegistry {
 
 #### **Quest 1.2: `reynard-ai-utils`** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 200 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create AI/ML utility functions and helpers
@@ -133,7 +133,7 @@ export class PerformanceMonitor {
 
 #### **Quest 1.3: `reynard-ai-config`** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 200 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create AI/ML configuration management system
@@ -177,7 +177,7 @@ _XP Reward: 300 points per package_
 
 #### **Quest 2.1: `reynard-caption-models`** ⚠️ **CRITICAL**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGHEST**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGHEST*
 **XP Reward**: 300 points | **Dependencies**: `reynard-ai-shared`, `reynard-ai-utils`
 
 **Objective**: Implement actual caption generation models
@@ -226,7 +226,7 @@ export class JoyCaptionGenerator extends BaseCaptionGenerator {
 
 #### **Quest 2.2: `reynard-ollama`** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 300 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create Ollama integration package
@@ -273,7 +273,7 @@ export class OllamaAssistant {
 
 #### **Quest 2.3: `reynard-embeddings`** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 300 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create enhanced embedding and vector search
@@ -315,7 +315,7 @@ _XP Reward: 400 points per package_
 
 #### **Quest 3.1: `reynard-diffusion-llm`** ⚠️ **MEDIUM**
 
-**Status**: 🔴 **Not Started** | **Priority**: **MEDIUM**
+> *Status**: 🔴 **Not Started** | **Priority**: **MEDIUM*
 **XP Reward**: 400 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create diffusion LLM integration
@@ -362,7 +362,7 @@ export class LLaDAModel extends BaseModel {
 
 #### **Quest 3.2: `reynard-tts`** ⚠️ **MEDIUM**
 
-**Status**: 🔴 **Not Started** | **Priority**: **MEDIUM**
+> *Status**: 🔴 **Not Started** | **Priority**: **MEDIUM*
 **XP Reward**: 400 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create text-to-speech integration
@@ -407,7 +407,7 @@ export class KokoroTTSService extends TTSService {
 
 #### **Quest 3.3: `reynard-comfy`** ⚠️ **MEDIUM**
 
-**Status**: 🔴 **Not Started** | **Priority**: **MEDIUM**
+> *Status**: 🔴 **Not Started** | **Priority**: **MEDIUM*
 **XP Reward**: 400 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create ComfyUI integration
@@ -453,7 +453,7 @@ _XP Reward: 500 points per package_
 
 #### **Quest 4.1: `reynard-crawling`** ⚠️ **LOW**
 
-**Status**: 🔴 **Not Started** | **Priority**: **LOW**
+> *Status**: 🔴 **Not Started** | **Priority**: **LOW*
 **XP Reward**: 500 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create web crawling and content extraction
@@ -492,7 +492,7 @@ export class ContentProcessor {
 
 #### **Quest 4.2: `reynard-summarization`** ⚠️ **LOW**
 
-**Status**: 🔴 **Not Started** | **Priority**: **LOW**
+> *Status**: 🔴 **Not Started** | **Priority**: **LOW*
 **XP Reward**: 500 points | **Dependencies**: `reynard-ai-shared`
 
 **Objective**: Create content summarization services
@@ -542,7 +542,7 @@ _XP Reward: 600 points per task_
 
 #### **Quest 5.1: Backend AI/ML APIs** ⚠️ **CRITICAL**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGHEST**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGHEST*
 **XP Reward**: 600 points | **Dependencies**: All Phase 1-2 packages
 
 **Objective**: Extend Reynard backend with AI/ML endpoints
@@ -602,7 +602,7 @@ backend/
 
 #### **Quest 5.2: Database Integration** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 600 points | **Dependencies**: Backend AI/ML APIs
 
 **Objective**: Add PostgreSQL and vector database support
@@ -650,7 +650,7 @@ _XP Reward: 700 points per task_
 
 #### **Quest 6.1: Update Existing Packages** ⚠️ **CRITICAL**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGHEST**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGHEST*
 **XP Reward**: 700 points | **Dependencies**: Backend integration
 
 **Objective**: Update existing packages to use new backend APIs
@@ -671,7 +671,7 @@ _XP Reward: 700 points per task_
 
 #### **Quest 6.2: End-to-End Testing** ⚠️ **HIGH**
 
-**Status**: 🔴 **Not Started** | **Priority**: **HIGH**
+> *Status**: 🔴 **Not Started** | **Priority**: **HIGH*
 **XP Reward**: 700 points | **Dependencies**: Frontend integration
 
 **Objective**: Create comprehensive end-to-end tests

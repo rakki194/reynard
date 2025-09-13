@@ -14,8 +14,11 @@ The application factory follows modern FastAPI best practices:
 """
 
 # API routers
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
+logger = logging.getLogger(__name__)
 
 # Authentication
 from gatekeeper.api.routes import create_auth_router
@@ -49,6 +52,13 @@ from app.middleware.input_validation_middleware import setup_input_validation_mi
 from app.middleware.dev_bypass_middleware import setup_dev_bypass_middleware
 from app.core.penetration_testing import setup_penetration_testing_middleware, check_penetration_testing_state
 
+# Security components
+from app.security.security_middleware import setup_security_middleware
+from app.security.error_handler import setup_error_handlers
+from app.security.secure_auth_routes import create_secure_auth_router
+from app.security.secure_ollama_routes import create_secure_ollama_router
+from app.security.secure_summarization_routes import create_secure_summarization_router
+
 
 def create_app() -> FastAPI:
     """
@@ -78,16 +88,19 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Configure middleware
-    _setup_middleware(app, config)
+    # Configure error handlers (before middleware wrapping)
+    setup_error_handlers(app)
 
-    # Configure routers
+    # Configure routers (before middleware wrapping)
     _setup_routers(app)
+
+    # Configure middleware (last to wrap everything)
+    app = _setup_middleware(app, config)
 
     return app
 
 
-def _setup_middleware(app: FastAPI, config: AppConfig) -> None:
+def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
     """
     Configure all middleware for the FastAPI application.
 
@@ -97,6 +110,9 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> None:
     Args:
         app: The FastAPI application instance.
         config: The application configuration object.
+        
+    Returns:
+        FastAPI: The configured application with all middleware.
     """
     # Penetration testing middleware (first to handle session control)
     setup_penetration_testing_middleware(app)
@@ -104,7 +120,7 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> None:
     # Development bypass middleware (second to set bypass flags)
     setup_dev_bypass_middleware(app)
     
-    # Input validation middleware (third to catch malicious input early)
+    # Input validation middleware (third to validate input)
     setup_input_validation_middleware(app)
     
     # CORS configuration
@@ -113,12 +129,17 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> None:
     # Rate limiting
     setup_rate_limiting(app)
 
-    # Security middleware
+    # Security headers middleware
     app.middleware("http")(add_security_headers)
     app.add_middleware(
         TrustedHostMiddleware,
         allowed_hosts=config.allowed_hosts,
     )
+    
+    # Security middleware (last to wrap everything)
+    app = setup_security_middleware(app)
+    
+    return app
 
 
 def _setup_routers(app: FastAPI) -> None:
@@ -134,7 +155,7 @@ def _setup_routers(app: FastAPI) -> None:
     # Core API endpoints (root, health, etc.)
     app.include_router(core_router)
 
-    # Authentication Router
+    # Authentication Router (use original for now, secure version will be added after service initialization)
     auth_router = create_auth_router()
     app.include_router(auth_router, prefix="/api")
 
@@ -146,7 +167,13 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(image_utils_router)
     app.include_router(rag_router)
     app.include_router(tts_router)
+    
+    # Ollama Router (use original for now, secure version will be added after service initialization)
     app.include_router(ollama_router)
+    
     app.include_router(comfy_router)
+    
+    # Summarization Router (use original for now, secure version will be added after service initialization)
     app.include_router(summarization_router)
+    
     app.include_router(nlweb_router)

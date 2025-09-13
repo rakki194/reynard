@@ -37,11 +37,22 @@ export interface RenderData extends SpatialData {
   readonly layer?: number;
 }
 
+export interface CollisionObjectData extends SpatialData {
+  readonly aabb: {
+    readonly x: number;
+    readonly y: number;
+    readonly width: number;
+    readonly height: number;
+  };
+  readonly index: number;
+}
+
 export type SpatialDataType =
   | SpatialObjectData
   | GameEntityData
   | CollisionData
-  | RenderData;
+  | RenderData
+  | CollisionObjectData;
 
 export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
   readonly id: string | number;

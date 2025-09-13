@@ -3,7 +3,7 @@ Pydantic models for Diffusion-LLM API endpoints.
 """
 
 from typing import Dict, List, Optional, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class DiffusionGenerationRequest(BaseModel):

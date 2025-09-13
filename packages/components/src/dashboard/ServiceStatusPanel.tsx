@@ -12,7 +12,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ServiceHealthIndicator } from "./ServiceHealthIndicator";
 import { ServiceLoadingProgress } from "./ServiceLoadingProgress";
@@ -444,7 +444,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
                   <Show when={service.connection_state}>
                     <span
                       class="connection-state-badge"
-                      classList={{ [service.connection_state]: true }}
+                      classList={{ [String(service.connection_state)]: true }}
                     >
                       {service.connection_state}
                     </span>

@@ -4,6 +4,7 @@
  */
 
 import { Component, For, createSignal, onMount } from "solid-js";
+import { Slider, Toggle } from "../primitives";
 
 const GOLDEN_ANGLE = (137.507 * Math.PI) / 180;
 
@@ -77,15 +78,14 @@ export const GoldenAngleDemo: Component = () => {
       <div class="demo-controls">
         <div class="control-group">
           <label for="point-count">Points: {pointCount()}</label>
-          <input
+          <Slider
             id="point-count"
-            type="range"
-            min="10"
-            max="200"
-            step="10"
+            min={10}
+            max={200}
+            step={10}
             value={pointCount()}
-            onInput={(e) => {
-              setPointCount(parseInt(e.target.value));
+            onChange={(value) => {
+              setPointCount(value);
               updatePoints();
             }}
           />
@@ -93,10 +93,10 @@ export const GoldenAngleDemo: Component = () => {
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
+            <Toggle
               checked={showNumbers()}
-              onChange={(e) => setShowNumbers(e.target.checked)}
+              onChange={(checked) => setShowNumbers(checked)}
+              size="sm"
             />
             Show Index Numbers
           </label>
@@ -104,13 +104,13 @@ export const GoldenAngleDemo: Component = () => {
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
+            <Toggle
               checked={sunflowerMode()}
-              onChange={(e) => {
-                setSunflowerMode(e.target.checked);
+              onChange={(checked) => {
+                setSunflowerMode(checked);
                 updatePoints();
               }}
+              size="sm"
             />
             Sunflower Pattern
           </label>

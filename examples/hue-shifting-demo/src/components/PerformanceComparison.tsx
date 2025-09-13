@@ -5,6 +5,7 @@ import {
   generateHueShiftRamp,
 } from "../utils/hueShiftingAlgorithms";
 import "./PerformanceComparison.css";
+import { Slider } from "reynard-components";
 
 export const PerformanceComparison: Component = () => {
   const [iterations, setIterations] = createSignal(1000);
@@ -108,14 +109,12 @@ export const PerformanceComparison: Component = () => {
       <div class="comparison-controls">
         <div class="control-group">
           <label for="iterations-input">Test Iterations: {iterations()}</label>
-          <input
-            id="iterations-input"
-            type="range"
-            min="100"
-            max="10000"
-            step="100"
-            value={iterations()}
-            onInput={(e) => setIterations(parseInt(e.target.value))}
+          <Slider
+    id="iterations-input"
+    min={100}
+    max={10000}
+    step={100}
+  /> setIterations(parseInt(e.target.value))}
             class="iterations-slider"
             disabled={isRunning()}
           />

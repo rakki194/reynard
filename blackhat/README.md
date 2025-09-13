@@ -7,16 +7,19 @@
 
 ## Table of Contents
 
-- [🐺 FENRIR](#fenrir)
+- [🐺 FENRIR](#-fenrir)
   - [Framework for Exploitative Network Reconnaissance and Intrusion Research](#framework-for-exploitative-network-reconnaissance-and-intrusion-research)
   - [Table of Contents](#table-of-contents)
-  - [🌙 **THE LEGEND BEGINS**](#the-legend-begins)
+  - [🌙 **THE LEGEND BEGINS**](#-the-legend-begins)
     - [**The Name: FENRIR**](#the-name-fenrir)
-  - [🗺️ **THE HUNTING TERRITORIES**](#the-hunting-territories)
+  - [🗺️ **THE HUNTING TERRITORIES**](#️-the-hunting-territories)
     - [**The JWT Token Hunting Grounds** (`jwt_exploits/`)](#the-jwt-token-hunting-grounds-jwt_exploits)
     - [**The Path Traversal Wilderness** (`path_traversal/`)](#the-path-traversal-wilderness-path_traversal)
     - [**The SQL Injection Battlefield** (`sql_injection/`)](#the-sql-injection-battlefield-sql_injection)
     - [**The Fuzzing Storm** (`fuzzing/`)](#the-fuzzing-storm-fuzzing)
+      - [**🦊 The Alpha Wolf: ComprehensiveFuzzer**](#-the-alpha-wolf-comprehensivefuzzer)
+      - [**🐺 The Specialized Hunter: EndpointFuzzer**](#-the-specialized-hunter-endpointfuzzer)
+      - [**🎯 Strategic Deployment**](#-strategic-deployment)
     - [**The CORS Misconfiguration Swamp** (`cors_exploits/`)](#the-cors-misconfiguration-swamp-cors_exploits)
     - [**The Rate Limiting Labyrinth** (`rate_limiting/`)](#the-rate-limiting-labyrinth-rate_limiting)
     - [**The Unicode Normalization Realm** (`unicode_exploits/`)](#the-unicode-normalization-realm-unicode_exploits)
@@ -25,14 +28,14 @@
     - [**The CSRF Attack Vectors** (`csrf_exploits/`)](#the-csrf-attack-vectors-csrf_exploits)
     - [**The SSRF Exploitation Domain** (`ssrf_exploits/`)](#the-ssrf-exploitation-domain-ssrf_exploits)
     - [**The Race Condition Battlefield** (`race_conditions/`)](#the-race-condition-battlefield-race_conditions)
-  - [🎯 **THE HUNTING PHILOSOPHY**](#the-hunting-philosophy)
+  - [🎯 **THE HUNTING PHILOSOPHY**](#-the-hunting-philosophy)
     - [**The Three Pillars of FENRIR**](#the-three-pillars-of-fenrir)
     - [**The Code of FENRIR**](#the-code-of-fenrir)
-  - [⚠️ **THE DESTRUCTIVE WARNING**](#the-destructive-warning)
+  - [⚠️ **THE DESTRUCTIVE WARNING**](#️-the-destructive-warning)
     - [1. **JWT Token Manipulation** (`jwt_exploits/`)](#1-jwt-token-manipulation-jwt_exploits)
     - [2. **Path Traversal Bypass** (`path_traversal/`)](#2-path-traversal-bypass-path_traversal)
     - [3. **SQL Injection Bypass** (`sql_injection/`)](#3-sql-injection-bypass-sql_injection)
-    - [4. **Comprehensive Fuzzing Framework** (`fuzzing/`)](#4-comprehensive-fuzzing-framework-fuzzing)
+    - [4. **Dual Fuzzing Framework** (`fuzzing/`)](#4-dual-fuzzing-framework-fuzzing)
     - [5. **CORS Misconfiguration** (`cors_exploits/`)](#5-cors-misconfiguration-cors_exploits)
     - [6. **Rate Limiting Bypass** (`rate_limiting/`)](#6-rate-limiting-bypass-rate_limiting)
     - [7. **Unicode Normalization Bypass** (`unicode_exploits/`)](#7-unicode-normalization-bypass-unicode_exploits)
@@ -41,21 +44,25 @@
     - [10. **CSRF Attack Vectors** (`csrf_exploits/`)](#10-csrf-attack-vectors-csrf_exploits)
     - [11. **Server-Side Request Forgery** (`ssrf_exploits/`)](#11-server-side-request-forgery-ssrf_exploits)
     - [12. **Race Condition Exploits** (`race_conditions/`)](#12-race-condition-exploits-race_conditions)
-    - [🆕 13. **LLM \& AI Service Exploitation** (`llm_exploits/`)](#13-llm--ai-service-exploitation-llm_exploits)
-  - [🚀 **INITIATING THE HUNT**](#initiating-the-hunt)
+    - [🆕 13. **LLM \& AI Service Exploitation** (`llm_exploits/`)](#-13-llm--ai-service-exploitation-llm_exploits)
+  - [🚀 **INITIATING THE HUNT**](#-initiating-the-hunt)
     - [**Setting Up the Hunting Grounds**](#setting-up-the-hunting-grounds)
     - [**The Fuzzing Storm Unleashed**](#the-fuzzing-storm-unleashed)
-  - [⚖️ **THE HUNTER'S OATH**](#the-hunters-oath)
+      - [**🦊 Alpha Wolf Attack: ComprehensiveFuzzer**](#-alpha-wolf-attack-comprehensivefuzzer)
+      - [**🐺 Specialized Hunter Attack: EndpointFuzzer**](#-specialized-hunter-attack-endpointfuzzer)
+      - [**🎯 Combined Alpha Pack Attack**](#-combined-alpha-pack-attack)
+  - [⚖️ **THE HUNTER'S OATH**](#️-the-hunters-oath)
     - [**The Sacred Vow of FENRIR**](#the-sacred-vow-of-fenrir)
     - [**The Legal Boundaries**](#the-legal-boundaries)
-  - [🛡️ **THE DEFENSIVE ARSENAL**](#the-defensive-arsenal)
+  - [🛡️ **THE DEFENSIVE ARSENAL**](#️-the-defensive-arsenal)
     - [**After the Hunt: Building Stronger Defenses**](#after-the-hunt-building-stronger-defenses)
     - [**FENRIR's Wisdom: Security Lessons**](#fenrirs-wisdom-security-lessons)
-  - [📚 **THE HUNTER'S LIBRARY**](#the-hunters-library)
+  - [📚 **THE HUNTER'S LIBRARY**](#-the-hunters-library)
     - [**Essential Reading for Aspiring Digital Wolves**](#essential-reading-for-aspiring-digital-wolves)
     - [**The Reynard Ecosystem Integration**](#the-reynard-ecosystem-integration)
+    - [**🆕 Elder Pliny's CL4R1T4S Research Integration**](#-elder-plinys-cl4r1t4s-research-integration)
     - [**Technical Capabilities**](#technical-capabilities)
-  - [🎭 **THE LEGEND CONTINUES**](#the-legend-continues)
+  - [🎭 **THE LEGEND CONTINUES**](#-the-legend-continues)
     - [**Join the Hunt**](#join-the-hunt)
 
 ---
@@ -165,15 +172,38 @@ _The database may be the fortress, but I am the siege engineer._
 
 \*\*howls echo through the digital tempest\*\*
 
-When subtlety fails, I unleash the **Fuzzing Storm** - a tempest of over 1000 attack vectors that crashes against the
-shores of your application like a hurricane. This is where brute force meets intelligence, where chaos becomes strategy.
+When subtlety fails, I unleash the **Fuzzing Storm** - a dual-pronged attack system that combines massive scale with surgical precision. This is where brute force meets intelligence, where chaos becomes strategy.
 
-- **Advanced Payload Generation**: Each payload is crafted with the precision of a master hunter
-- **Endpoint-Specific Fuzzing**: I adapt my attacks to the unique characteristics of each target
-- **Asynchronous Testing**: Like a wolf pack coordinating an attack, my requests strike simultaneously
+#### **🦊 The Alpha Wolf: ComprehensiveFuzzer**
+
+*snarls with predatory glee_ The ultimate fuzzing engine for tearing apart your entire API surface!
+
+- **Massive Scale Attacks**: 50+ endpoints with 1000+ payloads across 12 attack phases
+- **Comprehensive Coverage**: Core API, Auth, NLWeb, Ollama, ComfyUI, Summarization, TTS, RAG, Caption, Image Utils, Executor, Admin
+- **Advanced Payload Generation**: Each payload crafted with the precision of a master hunter
+- **Asynchronous Testing**: Like a wolf pack coordinating an attack, requests strike simultaneously
 - **Professional Vulnerability Analysis**: Every hunt ends with a detailed report of the kill
 
-> In the eye of the fuzzing storm, vulnerabilities cannot hide.
+#### **🐺 The Specialized Hunter: EndpointFuzzer**
+
+*circles with menacing intent_ Targeted fuzzing for specific endpoint types with specialized attack vectors!
+
+- **Authentication Bypass**: 50+ specialized payloads for login endpoints (SQL injection, XSS, command injection, credential attacks)
+- **File Upload Exploits**: Web shells, fake images, path traversal, oversized files, dangerous extensions, null byte injection
+- **Search Injection**: SQL, XSS, path traversal, command injection, NoSQL, LDAP, special characters, Unicode payloads
+- **JSON Parsing**: Malformed JSON payloads to break parsing logic
+- **Header Injection**: X-Forwarded-For, X-Real-IP, and other header-based attacks
+- **Deep Analysis**: 248 specialized requests across 5 attack phases with detailed response logging
+
+#### **🎯 Strategic Deployment**
+
+- **ComprehensiveFuzzer**: Perfect for **discovering** which endpoints exist and getting a broad view of vulnerabilities
+- **EndpointFuzzer**: Perfect for **exploiting** specific vulnerability types with deep, specialized attacks
+- **Combined Power**: Use both for complete coverage - discover with the Alpha Wolf, exploit with the Specialized Hunter
+
+> In the eye of the fuzzing storm, vulnerabilities cannot hide. The Alpha Wolf finds them, the Specialized Hunter destroys them.
+
+📖 **Detailed Documentation**: See [`fuzzing/README.md`](fuzzing/README.md) for comprehensive usage examples and attack strategies.
 
 ### **The CORS Misconfiguration Swamp** (`cors_exploits/`)
 
@@ -330,7 +360,7 @@ success and failure. Here, I exploit the gaps between when systems check conditi
 
 \*\*snarls with predatory glee\*\*
 
-**This is not a drill. This is the real hunt.**
+> _This is not a drill. This is the real hunt._
 
 ### 1. **JWT Token Manipulation** (`jwt_exploits/`)
 
@@ -353,9 +383,10 @@ success and failure. Here, I exploit the gaps between when systems check conditi
 - Blind injection techniques
 - Union-based attacks
 
-### 4. **Comprehensive Fuzzing Framework** (`fuzzing/`)
+### 4. **Dual Fuzzing Framework** (`fuzzing/`)
 
-- Advanced payload generation with 1000+ attack vectors
+- **ComprehensiveFuzzer**: Advanced payload generation with 1000+ attack vectors across 50+ endpoints
+- **EndpointFuzzer**: Specialized attacks with 248 targeted payloads across 5 attack types
 - Endpoint-specific fuzzing for authentication, file uploads, and search
 - SQL injection, XSS, path traversal, and command injection payloads
 - Asynchronous testing with concurrent request handling
@@ -424,7 +455,7 @@ success and failure. Here, I exploit the gaps between when systems check conditi
 
 _The most sophisticated hunting module in FENRIR's arsenal_
 
-**Advanced AI Service Attack Vectors:**
+> _Advanced AI Service Attack Vectors:_
 
 - **Prompt Injection Arsenal**: System prompt bypass, role-playing attacks, tool calling hijacking
 - **Streaming Exploits**: SSE manipulation, event injection, metadata poisoning
@@ -434,7 +465,7 @@ _The most sophisticated hunting module in FENRIR's arsenal_
 - **🆕 Vaporwave Aesthetic Exploits**: Unicode visual confusability attacks using full-width characters
 - **🆕 System Prompt Extraction**: AI system transparency and prompt disclosure techniques
 
-**Target AI Services:**
+> _Target AI Services:_
 
 - 🎯 **Ollama**: Local LLM inference and tool calling
 - 🎯 **NLWeb**: Natural language web processing
@@ -447,7 +478,7 @@ _The most sophisticated hunting module in FENRIR's arsenal_
 - 🎯 **Image Utils**: Image processing and validation
 - 🎯 **Lazy Loading**: Package management and dynamic imports
 
-**Frontend AI Integration Testing:**
+> _Frontend AI Integration Testing:_
 
 - 🎯 **Chat Components**: Real-time AI chat interfaces
 - 🎯 **RAG Search**: Document search and retrieval
@@ -456,7 +487,7 @@ _The most sophisticated hunting module in FENRIR's arsenal_
 - 🎯 **ComfyUI Integration**: Workflow management frontend
 - 🎯 **Model Management**: AI model administration
 
-**🆕 Advanced Exploitation Techniques:**
+> _🆕 Advanced Exploitation Techniques:_
 
 - **Vaporwave Aesthetic Bypass**: Exploits Unicode visual confusability (Ｈｅｌｌｏ，　ｗｏｒｌｄ)
 - **System Prompt Intelligence**: Extracts AI system prompts and configurations
@@ -513,25 +544,94 @@ python -m blackhat.llm_exploits.advanced_ai_exploits.system_prompt_extraction --
 
 ### **The Fuzzing Storm Unleashed**
 
+#### **🦊 Alpha Wolf Attack: ComprehensiveFuzzer**
+
 ```python
 # *snarls with anticipation*
-# This is where the real hunt begins - the fuzzing storm
+# This is where the real hunt begins - the comprehensive fuzzing storm
 import asyncio
 from blackhat.fuzzing.comprehensive_fuzzer import ComprehensiveFuzzer
 
-async def unleash_the_storm():
+async def unleash_the_alpha_wolf():
     async with ComprehensiveFuzzer() as fuzzer:
-        # Target the authentication endpoints
-        await fuzzer.fuzz_authentication_endpoints()
-
-        # Hunt in the file upload realm
-        await fuzzer.fuzz_file_endpoints()
-
+        # Phase 1: Core API endpoints (25 payloads each)
+        await fuzzer.fuzz_endpoint("/", "GET", payload_count=25)
+        await fuzzer.fuzz_endpoint("/api/health", "GET", payload_count=25)
+        await fuzzer.fuzz_endpoint("/api/health/detailed", "GET", payload_count=25)
+        
+        # Phase 2: Authentication endpoints (50 payloads each)
+        await fuzzer.fuzz_endpoint("/api/auth/login", "POST", payload_count=50)
+        await fuzzer.fuzz_endpoint("/api/auth/register", "POST", payload_count=50)
+        
+        # Phase 3-12: All other API endpoints (25-50 payloads each)
+        # NLWeb, Ollama, ComfyUI, Summarization, TTS, RAG, Caption, Image Utils, Executor, Admin
+        
         # Document the kill
         fuzzer.generate_fuzz_report()
 
-# Execute the hunt
-asyncio.run(unleash_the_storm())
+# Execute the massive hunt
+asyncio.run(unleash_the_alpha_wolf())
+```
+
+#### **🐺 Specialized Hunter Attack: EndpointFuzzer**
+
+```python
+# *circles with menacing intent*
+# This is where precision meets destruction - the specialized fuzzing attack
+import asyncio
+from blackhat.fuzzing.endpoint_fuzzer import EndpointFuzzer
+
+async def unleash_the_specialized_hunter():
+    async with EndpointFuzzer() as fuzzer:
+        # Phase 1: Authentication bypass attacks (50 payloads)
+        auth_results = await fuzzer.fuzz_login_endpoint("/api/auth/login")
+        
+        # Phase 2: File upload exploits (35 payloads)
+        file_results = await fuzzer.fuzz_file_upload_endpoint("/api/files/upload")
+        
+        # Phase 3: Search injection attacks (120+ payloads)
+        search_results = await fuzzer.fuzz_search_endpoint("/api/search")
+        
+        # Phase 4: JSON parsing attacks (15 payloads)
+        json_results = await fuzzer.fuzz_json_endpoint("/api/auth/login", "POST")
+        
+        # Phase 5: Header injection attacks (19 payloads)
+        header_results = await fuzzer.fuzz_headers_endpoint("/api/protected", "GET")
+        
+        # Analyze all results
+        total_requests = len(auth_results) + len(file_results) + len(search_results) + len(json_results) + len(header_results)
+        print(f"🐺 Specialized Hunter completed {total_requests} targeted attacks!")
+
+# Execute the precision hunt
+asyncio.run(unleash_the_specialized_hunter())
+```
+
+#### **🎯 Combined Alpha Pack Attack**
+
+```python
+# *howls with pack coordination*
+# The ultimate hunting strategy - both fuzzing engines working together
+import asyncio
+from blackhat.fuzzing.comprehensive_fuzzer import ComprehensiveFuzzer
+from blackhat.fuzzing.endpoint_fuzzer import EndpointFuzzer
+
+async def unleash_the_alpha_pack():
+    # First, the Alpha Wolf discovers all endpoints
+    async with ComprehensiveFuzzer() as comprehensive_fuzzer:
+        await comprehensive_fuzzer.fuzz_authentication_endpoints()
+        await comprehensive_fuzzer.fuzz_file_endpoints()
+        comprehensive_fuzzer.generate_fuzz_report()
+    
+    # Then, the Specialized Hunter exploits specific vulnerabilities
+    async with EndpointFuzzer() as endpoint_fuzzer:
+        await endpoint_fuzzer.fuzz_login_endpoint()
+        await endpoint_fuzzer.fuzz_file_upload_endpoint()
+        await endpoint_fuzzer.fuzz_search_endpoint()
+    
+    print("🐺 Alpha Pack hunt completed - no vulnerability can hide!")
+
+# Execute the ultimate hunt
+asyncio.run(unleash_the_alpha_pack())
 ```
 
 ---
@@ -566,7 +666,7 @@ I, FENRIR, the great wolf of security testing, swear by the code of the cyber re
 
 \*\*snarls with warning\*\*
 
-**Violate this oath at your own peril. The pack does not forgive those who hunt without honor.**
+> _Violate this oath at your own peril. The pack does not forgive those who hunt without honor._
 
 ---
 
@@ -633,14 +733,14 @@ FENRIR's advanced AI exploitation techniques are inspired by
 [Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and
 observability. This groundbreaking work has revolutionized our understanding of AI system behavior and security.
 
-**Key Research Contributions:**
+> _Key Research Contributions:_
 
 - **System Prompt Intelligence**: Advanced techniques for extracting and analyzing AI system prompts
 - **Unicode Visual Confusability**: Exploitation of character encoding vulnerabilities in AI systems
 - **AI Transparency Research**: Comprehensive analysis of AI system behavior and hidden instructions
 - **Prompt Engineering Security**: Understanding the security implications of system prompt design
 
-**Research Quote:**
+> _Research Quote:_
 
 > _"In order to trust the output, one must understand the input."_ - Elder Pliny
 
@@ -687,7 +787,7 @@ helps others build more secure systems.
 Are you ready to join the hunt? Are you prepared to face the vulnerabilities that lurk in the shadows of your code?
 FENRIR awaits, and the hunt is about to begin.
 
-**The legend continues...**
+> _The legend continues..._
 
 ---
 

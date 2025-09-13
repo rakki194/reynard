@@ -7,6 +7,7 @@ import { Component, Show, createEffect, createSignal, onMount } from "solid-js";
 import { Button } from "../primitives/Button";
 import { Select } from "../primitives/Select";
 import { TextField } from "../primitives/TextField";
+import { Toggle } from "../primitives";
 
 export interface PerformanceExportTabProps {
   performanceHistory: Array<{
@@ -415,8 +416,8 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (
             <label>Filename:</label>
             <TextField
               value={exportOptions().filename}
-              onChange={(value) =>
-                setExportOptions((prev) => ({ ...prev, filename: value }))
+              onInput={(e) =>
+                setExportOptions((prev) => ({ ...prev, filename: e.target.value }))
               }
               placeholder="Enter filename"
             />
@@ -427,41 +428,41 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (
           <h5>Include in Export:</h5>
           <div class="checkbox-group">
             <label>
-              <input
-                type="checkbox"
+              <Toggle
                 checked={exportOptions().includeSummary}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setExportOptions((prev) => ({
                     ...prev,
-                    includeSummary: e.currentTarget.checked,
+                    includeSummary: checked,
                   }))
                 }
+                size="sm"
               />
               Summary Statistics
             </label>
             <label>
-              <input
-                type="checkbox"
+              <Toggle
                 checked={exportOptions().includeHistory}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setExportOptions((prev) => ({
                     ...prev,
-                    includeHistory: e.currentTarget.checked,
+                    includeHistory: checked,
                   }))
                 }
+                size="sm"
               />
               Performance History
             </label>
             <label>
-              <input
-                type="checkbox"
+              <Toggle
                 checked={exportOptions().includeWarnings}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setExportOptions((prev) => ({
                     ...prev,
-                    includeWarnings: e.currentTarget.checked,
+                    includeWarnings: checked,
                   }))
                 }
+                size="sm"
               />
               Performance Warnings
             </label>

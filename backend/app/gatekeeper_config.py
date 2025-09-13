@@ -13,6 +13,8 @@ from gatekeeper.backends.memory import MemoryBackend
 from gatekeeper.backends.postgresql import PostgreSQLBackend
 from gatekeeper.backends.sqlite import SQLiteBackend
 
+from app.security.jwt_secret_manager import get_jwt_secret_key, get_jwt_algorithm
+
 # Detect reload mode for optimization
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
 
@@ -21,12 +23,9 @@ class ReynardGatekeeperConfig:
     """Configuration for Gatekeeper authentication system in Reynard."""
 
     def __init__(self):
-        # Token configuration
-        self.secret_key = os.getenv(
-            "GATEKEEPER_SECRET_KEY",
-            "reynard-backend-secret-key-change-in-production",
-        )
-        self.algorithm = os.getenv("GATEKEEPER_ALGORITHM", "HS256")
+        # Token configuration - use secure persistent secret key
+        self.secret_key = get_jwt_secret_key()
+        self.algorithm = get_jwt_algorithm()
         self.access_token_expire_minutes = int(
             os.getenv("GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES", "30")
         )

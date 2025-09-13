@@ -9,7 +9,7 @@ flexibility of the Reynard SolidJS framework and UI library.
 
 A comprehensive demonstration of Reynard's internationalization system with 37 language support.
 
-**What you'll learn:**
+> *What you'll learn:*
 
 - Global translation system implementation
 - Advanced pluralization rules
@@ -17,7 +17,7 @@ A comprehensive demonstration of Reynard's internationalization system with 37 l
 - Type-safe translations with autocomplete
 - Dynamic loading for optimal performance
 
-**Features:**
+> *Features:*
 
 - 🌍 37 languages with comprehensive coverage
 - 🎯 Advanced pluralization (Arabic, Russian, Polish, etc.)
@@ -34,7 +34,7 @@ A comprehensive demonstration of Reynard's internationalization system with 37 l
 
 A minimal todo application demonstrating core Reynard features.
 
-**What you'll learn:**
+> *What you'll learn:*
 
 - Core SolidJS reactivity with Reynard
 - Theme switching and persistence
@@ -42,7 +42,7 @@ A minimal todo application demonstrating core Reynard features.
 - Responsive design patterns
 - Component composition
 
-**Features:**
+> *Features:*
 
 - ✅ CRUD todo operations
 - 🎨 5 beautiful themes with live switching
@@ -58,7 +58,7 @@ A minimal todo application demonstrating core Reynard features.
 
 Comprehensive demonstration of Reynard's theming capabilities.
 
-**What you'll learn:**
+> *What you'll learn:*
 
 - Advanced theme system implementation
 - Component library development
@@ -66,7 +66,7 @@ Comprehensive demonstration of Reynard's theming capabilities.
 - CSS custom properties architecture
 - Responsive design patterns
 
-**Features:**
+> *Features:*
 
 - 🖼️ Interactive theme gallery with previews
 - 🧩 Complete component showcase
@@ -83,7 +83,7 @@ Comprehensive demonstration of Reynard's theming capabilities.
 An interactive pixel art editor demonstrating Reynard's advanced floating panel system with staggered animations and
 state management.
 
-**What you'll learn:**
+> *What you'll learn:*
 
 - Advanced floating panel implementation
 - Staggered animation systems
@@ -91,7 +91,7 @@ state management.
 - Draggable and resizable panel components
 - Theme-aware panel styling
 
-**Features:**
+> *Features:*
 
 - 🎭 Sophisticated floating panel system
 - 🖱️ Draggable and resizable panels
@@ -108,7 +108,7 @@ state management.
 
 A comprehensive example with frontend, backend, and database integration.
 
-**What you'll learn:**
+> *What you'll learn:*
 
 - Full-stack architecture with Reynard
 - API integration patterns
@@ -116,7 +116,7 @@ A comprehensive example with frontend, backend, and database integration.
 - Authentication and authorization
 - Database operations
 
-**Features:**
+> *Features:*
 
 - 👤 User authentication
 - 🔄 Real-time data synchronization

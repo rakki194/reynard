@@ -73,7 +73,11 @@ export function ComponentsDemo() {
             <Button disabled>Disabled Button</Button>
             <Button fullWidth>Full Width Button</Button>
             <Button iconOnly>
-              <span innerHTML={getIcon("settings") || ""}></span>
+              <span innerHTML={(() => {
+                const icon = getIcon("settings");
+                if (!icon) return "";
+                return typeof icon === "string" ? icon : icon.outerHTML;
+              })()}></span>
             </Button>
           </div>
         </div>
@@ -154,8 +158,16 @@ export function ComponentsDemo() {
           <TextField
             label="With Icons"
             placeholder="Search..."
-            leftIcon={<span innerHTML={getIcon("search") || ""}></span>}
-            rightIcon={<span innerHTML={getIcon("edit") || ""}></span>}
+            leftIcon={<span innerHTML={(() => {
+              const icon = getIcon("search");
+              if (!icon) return "";
+              return typeof icon === "string" ? icon : icon.outerHTML;
+            })()}></span>}
+            rightIcon={<span innerHTML={(() => {
+              const icon = getIcon("edit");
+              if (!icon) return "";
+              return typeof icon === "string" ? icon : icon.outerHTML;
+            })()}></span>}
           />
 
           <TextField
@@ -206,7 +218,11 @@ export function ComponentsDemo() {
             label="With Icon"
             placeholder="Search options..."
             options={selectOptions}
-            leftIcon={<span innerHTML={getIcon("search") || ""}></span>}
+            leftIcon={<span innerHTML={(() => {
+              const icon = getIcon("search");
+              if (!icon) return "";
+              return typeof icon === "string" ? icon : icon.outerHTML;
+            })()}></span>}
           />
         </div>
       </Card>

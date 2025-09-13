@@ -3,34 +3,44 @@
  *
  * This module contains validation functions for user inputs,
  * email addresses, usernames, and other authentication data.
+ * Uses the consolidated validation system from reynard-connection.
  */
 
 import type { ValidationRules, PasswordStrength } from "../types";
 import { DEFAULT_VALIDATION_RULES } from "../types";
+import { 
+  validateEmail as validateEmailCore,
+  validateUsername as validateUsernameCore,
+  validatePassword as validatePasswordCore,
+  ValidationResult,
+} from "reynard-connection";
 
 /**
- * Validate email address format
+ * Validate email address format using consolidated validation
  */
 export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const result = validateEmailCore(email);
+  return result.isValid;
 }
 
 /**
- * Validate username format
+ * Validate username format using consolidated validation
  */
 export function validateUsername(username: string): boolean {
-  const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
-  return usernameRegex.test(username);
+  const result = validateUsernameCore(username);
+  return result.isValid;
 }
 
 /**
- * Validate password strength
+ * Validate password strength with enhanced feedback
  */
 export function validatePassword(
   password: string,
   rules: ValidationRules = DEFAULT_VALIDATION_RULES,
 ): PasswordStrength {
+  // Use consolidated validation for basic password validation
+  const basicResult = validatePasswordCore(password);
+  
   const errors: string[] = [];
   let score = 0;
 
@@ -88,4 +98,25 @@ export function validatePassword(
     feedback: strength,
     suggestions: errors,
   };
+}
+
+/**
+ * Validate email with detailed result
+ */
+export function validateEmailDetailed(email: string): ValidationResult {
+  return validateEmailCore(email);
+}
+
+/**
+ * Validate username with detailed result
+ */
+export function validateUsernameDetailed(username: string): ValidationResult {
+  return validateUsernameCore(username);
+}
+
+/**
+ * Validate password with detailed result
+ */
+export function validatePasswordDetailed(password: string): ValidationResult {
+  return validatePasswordCore(password);
 }

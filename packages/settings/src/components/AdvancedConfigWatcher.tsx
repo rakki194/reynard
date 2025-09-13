@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Toggle, Tabs } from "reynard-components";
+import { Button, TextField, Tabs } from "reynard-components";
 import { useSettings } from "../composables/useSettings";
 
 export interface AdvancedConfigWatcherProps {
@@ -43,32 +43,32 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
     setIsLoading(true);
     try {
       setEnableWatching(
-        settings().getSetting("config_watcher.enable_watching") || true,
+        settings.getSetting("config_watcher.enable_watching") || true,
       );
       setWatchInterval(
-        settings().getSetting("config_watcher.watch_interval") || 5000,
+        settings.getSetting("config_watcher.watch_interval") || 5000,
       );
       setEnableBackups(
-        settings().getSetting("config_watcher.enable_backups") || true,
+        settings.getSetting("config_watcher.enable_backups") || true,
       );
       setBackupInterval(
-        settings().getSetting("config_watcher.backup_interval") || 3600000,
+        settings.getSetting("config_watcher.backup_interval") || 3600000,
       );
-      setMaxBackups(settings().getSetting("config_watcher.max_backups") || 10);
+      setMaxBackups(settings.getSetting("config_watcher.max_backups") || 10);
       setEnableTemplates(
-        settings().getSetting("config_watcher.enable_templates") || true,
+        settings.getSetting("config_watcher.enable_templates") || true,
       );
       setEnableScheduling(
-        settings().getSetting("config_watcher.enable_scheduling") || false,
+        settings.getSetting("config_watcher.enable_scheduling") || false,
       );
       setScheduleInterval(
-        settings().getSetting("config_watcher.schedule_interval") || 86400000,
+        settings.getSetting("config_watcher.schedule_interval") || 86400000,
       );
       setEnableApproval(
-        settings().getSetting("config_watcher.enable_approval") || false,
+        settings.getSetting("config_watcher.enable_approval") || false,
       );
       setEnableImportExport(
-        settings().getSetting("config_watcher.enable_import_export") || true,
+        settings.getSetting("config_watcher.enable_import_export") || true,
       );
     } catch (error) {
       console.error("Failed to load config watcher settings:", error);
@@ -80,45 +80,45 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
   const saveConfigWatcherSettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.enable_watching",
         enableWatching(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.watch_interval",
         watchInterval(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.enable_backups",
         enableBackups(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.backup_interval",
         backupInterval(),
       );
-      await settings().setSetting("config_watcher.max_backups", maxBackups());
-      await settings().setSetting(
+      await settings.setSetting("config_watcher.max_backups", maxBackups());
+      await settings.setSetting(
         "config_watcher.enable_templates",
         enableTemplates(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.enable_scheduling",
         enableScheduling(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.schedule_interval",
         scheduleInterval(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.enable_approval",
         enableApproval(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "config_watcher.enable_import_export",
         enableImportExport(),
       );
 
-      await settings().saveSettings();
+      await settings.saveSettings();
     } catch (error) {
       console.error("Failed to save config watcher settings:", error);
     } finally {
@@ -158,11 +158,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableWatching()}
                 onChange={setEnableWatching}
                 label="Enable Configuration Watching"
-                description="Monitor configuration files for changes"
+                helperText="Monitor configuration files for changes"
               />
             </div>
 
@@ -172,8 +172,8 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                 type="number"
                 value={watchInterval()}
                 onChange={(value) => setWatchInterval(parseInt(value) || 5000)}
-                description="How often to check for configuration changes"
-                validation={{ min: 1000, max: 60000 }}
+                helperText="How often to check for configuration changes"
+               
                 disabled={!enableWatching()}
               />
             </div>
@@ -217,11 +217,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
               </p>
 
               <div class="setting-row">
-                <Toggle
+                <Button
                   checked={enableBackups()}
                   onChange={setEnableBackups}
                   label="Enable Automatic Backups"
-                  description="Automatically backup configuration files"
+                  helperText="Automatically backup configuration files"
                 />
               </div>
 
@@ -233,8 +233,8 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                   onChange={(value) =>
                     setBackupInterval(parseInt(value) || 3600000)
                   }
-                  description="How often to create configuration backups"
-                  validation={{ min: 300000, max: 86400000 }}
+                  helperText="How often to create configuration backups"
+                 
                   disabled={!enableBackups()}
                 />
               </div>
@@ -245,8 +245,8 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                   type="number"
                   value={maxBackups()}
                   onChange={(value) => setMaxBackups(parseInt(value) || 10)}
-                  description="Maximum number of backups to retain"
-                  validation={{ min: 1, max: 100 }}
+                  helperText="Maximum number of backups to retain"
+                 
                   disabled={!enableBackups()}
                 />
               </div>
@@ -270,11 +270,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
               </p>
 
               <div class="setting-row">
-                <Toggle
+                <Button
                   checked={enableTemplates()}
                   onChange={setEnableTemplates}
                   label="Enable Templates"
-                  description="Enable configuration template system"
+                  helperText="Enable configuration template system"
                 />
               </div>
 
@@ -301,11 +301,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
               </p>
 
               <div class="setting-row">
-                <Toggle
+                <Button
                   checked={enableScheduling()}
                   onChange={setEnableScheduling}
                   label="Enable Scheduling"
-                  description="Enable scheduled configuration operations"
+                  helperText="Enable scheduled configuration operations"
                 />
               </div>
 
@@ -317,8 +317,8 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                   onChange={(value) =>
                     setScheduleInterval(parseInt(value) || 86400000)
                   }
-                  description="Default interval for scheduled operations"
-                  validation={{ min: 3600000, max: 604800000 }}
+                  helperText="Default interval for scheduled operations"
+                 
                   disabled={!enableScheduling()}
                 />
               </div>
@@ -342,11 +342,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
               </p>
 
               <div class="setting-row">
-                <Toggle
+                <Button
                   checked={enableApproval()}
                   onChange={setEnableApproval}
                   label="Enable Approval Workflow"
-                  description="Require approval for configuration changes"
+                  helperText="Require approval for configuration changes"
                 />
               </div>
 
@@ -373,11 +373,11 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
               </p>
 
               <div class="setting-row">
-                <Toggle
+                <Button
                   checked={enableImportExport()}
                   onChange={setEnableImportExport}
                   label="Enable Import/Export"
-                  description="Enable configuration import and export functionality"
+                  helperText="Enable configuration import and export functionality"
                 />
               </div>
 

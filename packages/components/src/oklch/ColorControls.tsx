@@ -4,6 +4,7 @@
  */
 
 import { Component } from "solid-js";
+import { Slider } from "../primitives/Slider";
 
 interface ColorControlsProps {
   selectedHue: number;
@@ -23,13 +24,12 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
       <div class="controls-grid">
         <div class="control-group">
           <label for="hue-slider">Hue: {props.selectedHue}°</label>
-          <input
+          <Slider
             id="hue-slider"
-            type="range"
-            min="0"
-            max="360"
+            min={0}
+            max={360}
             value={props.selectedHue}
-            onInput={(e) => props.onHueChange(parseInt(e.target.value))}
+            onChange={props.onHueChange}
             class="hue-slider"
             aria-label="Hue control"
           />
@@ -38,13 +38,12 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           <label for="lightness-slider">
             Lightness: {props.selectedLightness}%
           </label>
-          <input
+          <Slider
             id="lightness-slider"
-            type="range"
-            min="0"
-            max="100"
+            min={0}
+            max={100}
             value={props.selectedLightness}
-            onInput={(e) => props.onLightnessChange(parseInt(e.target.value))}
+            onChange={props.onLightnessChange}
             class="lightness-slider"
             aria-label="Lightness control"
           />
@@ -53,14 +52,13 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           <label for="chroma-slider">
             Chroma: {props.selectedChroma.toFixed(2)}
           </label>
-          <input
+          <Slider
             id="chroma-slider"
-            type="range"
-            min="0"
-            max="0.4"
-            step="0.01"
+            min={0}
+            max={0.4}
+            step={0.01}
             value={props.selectedChroma}
-            onInput={(e) => props.onChromaChange(parseFloat(e.target.value))}
+            onChange={props.onChromaChange}
             class="chroma-slider"
             aria-label="Chroma control"
           />
@@ -69,14 +67,13 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           <label for="speed-slider">
             Animation Speed: {props.animationSpeed}
           </label>
-          <input
+          <Slider
             id="speed-slider"
-            type="range"
-            min="0"
-            max="5"
-            step="0.5"
+            min={0}
+            max={5}
+            step={0.5}
             value={props.animationSpeed}
-            onInput={(e) => props.onSpeedChange(parseFloat(e.target.value))}
+            onChange={props.onSpeedChange}
             class="speed-slider"
             aria-label="Animation speed control"
           />

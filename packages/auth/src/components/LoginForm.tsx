@@ -10,7 +10,7 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button, Toggle } from "reynard-components";;
 import type { LoginCredentials } from "../types";
 import { validateEmail } from "../utils";
 
@@ -237,10 +237,9 @@ export const LoginForm: Component<LoginFormProps> = (props) => {
           <div class="login-form__options">
             <Show when={local.showRememberMe}>
               <label class="login-form__checkbox">
-                <input
-                  type="checkbox"
-                  checked={rememberMe()}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                <Toggle
+    size="sm"
+  /> setRememberMe(e.target.checked)}
                   disabled={local.loading}
                 />
                 <span class="login-form__checkbox-mark"></span>

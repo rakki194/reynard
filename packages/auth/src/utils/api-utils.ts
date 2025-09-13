@@ -1,12 +1,22 @@
 /**
  * API Utilities for Authentication
  * Handles authenticated requests, CSRF protection, and response parsing
+ * Uses the consolidated HTTP system from reynard-connection.
  */
 
 import type { ApiResponse, AuthConfiguration } from "../types";
 import type { TokenManager } from "./token-utils";
 import { buildAuthHeaders } from "./auth-headers";
 import { handleUnauthorizedResponse } from "./auth-retry";
+import { 
+  HTTPClient,
+  createAuthMiddleware,
+  createTokenRefreshMiddleware,
+  type HTTPRequestOptions,
+  type HTTPResponse,
+  type AuthConfig,
+  type TokenRefreshConfig,
+} from "reynard-connection";
 
 export interface AuthFetchOptions {
   method?: string;
@@ -38,7 +48,49 @@ export interface AuthFetchOptions {
 }
 
 /**
- * Creates an authenticated fetch function with CSRF protection
+ * Creates an authenticated HTTP client using the consolidated HTTP system
+ */
+export const createAuthHTTPClient = (
+  config: AuthConfiguration,
+  tokenManager: TokenManager,
+  onUnauthorized: () => void,
+  onTokenRefresh: () => Promise<void>,
+): HTTPClient => {
+  const authConfig: AuthConfig = {
+    type: "bearer",
+    token: tokenManager.getAccessToken() || undefined,
+  };
+
+  const tokenRefreshConfig: TokenRefreshConfig = {
+    refreshEndpoint: `${config.apiBaseUrl}/auth/refresh`,
+    refreshToken: tokenManager.getRefreshToken() || "",
+    onTokenRefresh: (newToken: string) => {
+      tokenManager.setTokens(newToken);
+      onTokenRefresh();
+    },
+    onTokenExpired: () => {
+      onUnauthorized();
+    },
+  };
+
+  const client = new HTTPClient({
+    baseUrl: config.apiBaseUrl || "",
+    timeout: 30000,
+    retries: 3,
+    enableRetry: true,
+    enableCircuitBreaker: true,
+    enableMetrics: true,
+    middleware: [
+      createAuthMiddleware(authConfig),
+      createTokenRefreshMiddleware(tokenRefreshConfig),
+    ],
+  });
+
+  return client;
+};
+
+/**
+ * Creates an authenticated fetch function with CSRF protection (legacy)
  */
 export const createAuthFetch = (
   config: AuthConfiguration,

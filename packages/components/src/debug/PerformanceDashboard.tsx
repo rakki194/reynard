@@ -13,7 +13,7 @@ import {
   onMount,
 } from "solid-js";
 import { Button } from "../primitives/Button";
-import { Tabs } from "../Tabs";
+import { Tabs, type TabItem } from "../Tabs";
 import { PerformanceAlertsTab } from "./PerformanceAlertsTab";
 import { PerformanceExportTab } from "./PerformanceExportTab";
 import { PerformanceMemoryTab } from "./PerformanceMemoryTab";

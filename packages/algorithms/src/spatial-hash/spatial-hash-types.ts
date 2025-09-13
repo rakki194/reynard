@@ -32,7 +32,7 @@ export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
   readonly y: number;
   readonly width?: number;
   readonly height?: number;
-  readonly data?: T;
+  readonly data: T;
 }
 
 export interface QueryResult<T extends SpatialDataType = SpatialDataType> {

@@ -7,6 +7,7 @@
 
 import { Component, Show } from "solid-js";
 import type {
+import { Slider } from "reynard-components";
   AudioWaveformVisualizerProps,
   WaveformData,
 } from "./AudioWaveformVisualizer";
@@ -87,13 +88,11 @@ export const PlaybackControls: Component<{
 
       <div class="volume-control">
         <span class="volume-icon">🔊</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={props.volume}
-          onInput={(e) => props.onVolumeChange(parseFloat(e.target.value))}
+        <Slider
+    min={0}
+    max={1}
+    step={0.1}
+  /> props.onVolumeChange(parseFloat(e.target.value))}
           class="volume-slider"
         />
       </div>

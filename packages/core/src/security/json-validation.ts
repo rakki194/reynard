@@ -55,7 +55,7 @@ function hasPrototypePollution(obj: Record<string, unknown>): boolean {
     }
 
     if (typeof obj[key] === "object" && obj[key] !== null) {
-      if (hasPrototypePollution(obj[key])) {
+      if (hasPrototypePollution(obj[key] as Record<string, unknown>)) {
         return true;
       }
     }

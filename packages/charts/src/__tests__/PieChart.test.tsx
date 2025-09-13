@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import { PieChart } from "../../PieChart";
+import { PieChart } from "../components/PieChart";
 
 const mockData = [30, 25, 20, 15, 10];
 const mockLabels = ["Red", "Blue", "Green", "Yellow", "Purple"];

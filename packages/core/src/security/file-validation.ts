@@ -3,7 +3,55 @@
  * File name and path validation functions
  */
 
-import { t } from "../utils/optional-i18n";
+// Removed unused import
+
+/**
+ * Check for path traversal patterns in filename
+ */
+function _checkPathTraversal(filename: string): boolean {
+  const pathTraversalPatterns = [
+    /\.\./g,
+    /\.\.\//g,
+    /\.\.\\/g,
+    /\.\.%2f/gi,
+    /\.\.%2F/gi,
+    /\.\.%5c/gi,
+    /\.\.%5C/gi,
+    /\.\.%252f/gi,
+    /\.\.%252F/gi,
+    /\.\.%255c/gi,
+    /\.\.%255C/gi,
+  ];
+
+  return pathTraversalPatterns.some(pattern => pattern.test(filename));
+}
+
+/**
+ * Check if filename is a reserved Windows name
+ */
+function _isReservedName(filename: string): boolean {
+  const reservedNames = [
+    "CON", "PRN", "AUX", "NUL",
+    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+  ];
+
+  const nameWithoutExt = filename.split(".")[0].toUpperCase();
+  return reservedNames.includes(nameWithoutExt);
+}
+
+/**
+ * Check if file extension is executable
+ */
+function _isExecutableExtension(filename: string): boolean {
+  const executableExtensions = [
+    "exe", "bat", "cmd", "com", "scr", "msi", "dll", "sys", "drv", "pif",
+    "vbs", "jar", "app", "deb", "rpm", "sh", "ps1",
+  ];
+
+  const extension = filename.split(".").pop()?.toLowerCase();
+  return extension ? executableExtensions.includes(extension) : false;
+}
 
 /**
  * Validate and sanitize file names
@@ -19,8 +67,11 @@ export function validateFileName(filename: string): {
   }
 
   // Check for null bytes and control characters first
-  if (/[\x00-\x1f\x7f]/.test(filename)) {
-    return { isValid: false };
+  for (let i = 0; i < filename.length; i++) {
+    const charCode = filename.charCodeAt(i);
+    if (charCode < 32 || charCode === 127) {
+      return { isValid: false };
+    }
   }
 
   let sanitized = filename;
@@ -31,94 +82,31 @@ export function validateFileName(filename: string): {
   }
 
   // Check for path traversal attempts
-  const pathTraversalPatterns = [
-    /\.\./g,
-    /\.\.\//g,
-    /\.\.\\/g,
-    /\.\.%2f/gi,
-    /\.\.%2F/gi,
-    /\.\.%5c/gi,
-    /\.\.%5C/gi,
-    /\.\.%252f/gi,
-    /\.\.%252F/gi,
-    /\.\.%255c/gi,
-    /\.\.%255C/gi,
-  ];
-
-  for (const pattern of pathTraversalPatterns) {
-    if (pattern.test(sanitized)) {
-      return { isValid: false };
-    }
-  }
-
-  // Remove any remaining path separators
-  sanitized = sanitized.replace(/[\/\\]/g, "");
-
-  // Check for reserved names (Windows)
-  const reservedNames = [
-    "CON",
-    "PRN",
-    "AUX",
-    "NUL",
-    "COM1",
-    "COM2",
-    "COM3",
-    "COM4",
-    "COM5",
-    "COM6",
-    "COM7",
-    "COM8",
-    "COM9",
-    "LPT1",
-    "LPT2",
-    "LPT3",
-    "LPT4",
-    "LPT5",
-    "LPT6",
-    "LPT7",
-    "LPT8",
-    "LPT9",
-  ];
-
-  const nameWithoutExt = sanitized.split(".")[0].toUpperCase();
-  if (reservedNames.includes(nameWithoutExt)) {
+  if (_checkPathTraversal(sanitized)) {
     return { isValid: false };
   }
 
-  // Check for executable file extensions (only truly dangerous ones)
-  const executableExtensions = [
-    "exe",
-    "bat",
-    "cmd",
-    "com",
-    "scr",
-    "msi",
-    "dll",
-    "sys",
-    "drv",
-    "pif",
-    "vbs",
-    "jar",
-    "app",
-    "deb",
-    "rpm",
-    "sh",
-    "ps1",
-  ];
+  // Remove any remaining path separators
+  sanitized = sanitized.replace(/[/\\]/g, "");
 
-  const extension = sanitized.split(".").pop()?.toLowerCase();
-  if (extension && executableExtensions.includes(extension)) {
+  // Check for reserved names (Windows)
+  if (_isReservedName(sanitized)) {
+    return { isValid: false };
+  }
+
+  // Check for executable file extensions
+  if (_isExecutableExtension(sanitized)) {
     return { isValid: false };
   }
 
   // Check for invalid characters
-  const invalidChars = /[<>:"|?*\x00-\x1f]/;
+  const invalidChars = /[<>:"|?*]/;
   if (invalidChars.test(sanitized)) {
     return { isValid: false };
   }
 
   // Sanitize special characters (but preserve dots for extensions)
-  sanitized = sanitized.replace(/[@#$%^&*()+=\[\]{}|\\:";'<>?,]/g, "_");
+  sanitized = sanitized.replace(/[@#$%^&*()+=[\]{}|\\:";'<>?,]/g, "_");
 
   // Check length (Windows has 255 char limit for filename)
   if (sanitized.length > 255) {
@@ -149,6 +137,16 @@ export function validateFileExtension(
 }
 
 /**
+ * Validate file type by extension (alias for validateFileExtension)
+ */
+export function isValidFileType(
+  filename: string,
+  allowedTypes: string[],
+): boolean {
+  return validateFileExtension(filename, allowedTypes);
+}
+
+/**
  * Validate file size
  */
 export function validateFileSize(size: number, maxSize?: number): boolean {
@@ -156,6 +154,13 @@ export function validateFileSize(size: number, maxSize?: number): boolean {
   const actualMaxSize = maxSize ?? defaultMaxSize;
 
   return size > 0 && size <= actualMaxSize;
+}
+
+/**
+ * Validate file size with required max size (alias for validateFileSize)
+ */
+export function isValidFileSize(size: number, maxSize: number): boolean {
+  return size > 0 && size <= maxSize;
 }
 
 /**

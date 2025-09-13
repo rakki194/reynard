@@ -4,8 +4,8 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
-import { Icon } from "reynard-components/icons";
+import { Button, TextField, Select } from "../../primitives";
+import { Icon } from "../../icons";
 import type { PackageListProps } from "../types/PackageConfigurationTypes";
 
 export const PackageList: Component<PackageListProps> = (props) => {
@@ -52,7 +52,7 @@ export const PackageList: Component<PackageListProps> = (props) => {
           />
           <Select
             value={props.selectedCategory}
-            onChange={(value) => props.onCategoryChange(value)}
+            onChange={(e) => props.onCategoryChange(e.target.value)}
             options={[
               { value: "all", label: "All Categories" },
               ...categories().map((cat) => ({ value: cat, label: cat })),

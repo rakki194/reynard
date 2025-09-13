@@ -12,7 +12,8 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Tabs, TabItem, Button } from "reynard-components";
+import { Tabs, TabItem } from "../Tabs";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { PackageDiscoveryPanel } from "./PackageDiscoveryPanel";
 import { PackageInstallationPanel } from "./PackageInstallationPanel";

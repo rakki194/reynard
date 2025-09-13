@@ -5,6 +5,7 @@
 
 import { Component, createSignal } from "solid-js";
 import { useNotifications } from "reynard-core";
+import { Toggle } from "reynard-components";
 
 export const ComponentShowcase: Component = () => {
   const [inputValue, setInputValue] = createSignal("");
@@ -94,30 +95,27 @@ export const ComponentShowcase: Component = () => {
           <div class="form-group">
             <h4>Checkboxes</h4>
             <label class="checkbox-label">
-              <input
-                type="checkbox"
+              <Toggle
                 checked={checkboxes().option1}
                 onChange={() => toggleCheckbox("option1")}
+                size="sm"
               />
-              <span class="checkmark"></span>
               Option 1 (Checked)
             </label>
             <label class="checkbox-label">
-              <input
-                type="checkbox"
+              <Toggle
                 checked={checkboxes().option2}
                 onChange={() => toggleCheckbox("option2")}
+                size="sm"
               />
-              <span class="checkmark"></span>
               Option 2 (Unchecked)
             </label>
             <label class="checkbox-label">
-              <input
-                type="checkbox"
+              <Toggle
                 checked={checkboxes().option3}
                 onChange={() => toggleCheckbox("option3")}
+                size="sm"
               />
-              <span class="checkmark"></span>
               Option 3 (Checked)
             </label>
           </div>

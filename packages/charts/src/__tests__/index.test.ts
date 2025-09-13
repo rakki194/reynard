@@ -11,8 +11,8 @@ import {
   calculateDimensions,
   processTimeSeriesData,
   aggregateByInterval,
-} from "../../index";
-import type { Dataset } from "../../../types";
+} from "../index";
+import type { Dataset } from "../types";
 
 const mockDatasets: Dataset[] = [
   {

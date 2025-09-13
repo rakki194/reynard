@@ -1,5 +1,6 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
 import {
+import { Slider } from "reynard-components";
   batchCollisionDetection,
   batchCollisionWithSpatialHash,
   type AABB,
@@ -178,13 +179,11 @@ export const SpatialOptimizationDemo: Component<
           <label for="spatial-object-count-slider">
             Object Count: {objectCount()}
           </label>
-          <input
-            id="spatial-object-count-slider"
-            type="range"
-            min="10"
-            max="200"
-            value={objectCount()}
-            onInput={(e) => setObjectCount(parseInt(e.currentTarget.value))}
+          <Slider
+    id="spatial-object-count-slider"
+    min={10}
+    max={200}
+  /> setObjectCount(parseInt(e.currentTarget.value))}
             title="Adjust the number of objects for performance comparison"
           />
         </div>

@@ -12,7 +12,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface PerformanceAlertsPanelProps {

@@ -1,0 +1,260 @@
+/**
+ * 🦊 Performance Demo Styles
+ * Styles for the performance optimization demo
+ */
+
+.performance-demo {
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.demo-header h2 {
+  color: var(--oklch-primary);
+  margin-bottom: 0.5rem;
+}
+
+.demo-header p {
+  color: var(--oklch-text-secondary);
+  font-size: 1.1rem;
+}
+
+.demo-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.demo-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.performance-controls,
+.quality-controls,
+.metrics-panel {
+  padding: 1rem;
+}
+
+.performance-controls h3,
+.quality-controls h3,
+.metrics-panel h3 {
+  margin-bottom: 1rem;
+  color: var(--oklch-primary);
+}
+
+.control-group {
+  margin-bottom: 1rem;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--oklch-text);
+}
+
+.control-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.quality-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.quality-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quality-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--oklch-surface-secondary);
+  border-radius: 0.5rem;
+}
+
+.quality-label {
+  font-weight: 500;
+  color: var(--oklch-text-secondary);
+}
+
+.quality-value {
+  font-weight: 600;
+  color: var(--oklch-text);
+}
+
+.metrics-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metrics-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--oklch-surface-secondary);
+  border-radius: 0.5rem;
+}
+
+.metrics-label {
+  font-weight: 500;
+  color: var(--oklch-text-secondary);
+}
+
+.metrics-value {
+  font-weight: 600;
+  color: var(--oklch-text);
+}
+
+.metrics-value.throttled {
+  color: var(--oklch-warning);
+}
+
+.metrics-value.normal {
+  color: var(--oklch-success);
+}
+
+.demo-visualization {
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-container {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.demo-canvas {
+  width: 100%;
+  height: 600px;
+  background: #1a1a1a;
+  border-radius: 0.75rem;
+  display: block;
+}
+
+.canvas-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.overlay-info h4 {
+  margin: 0 0 0.5rem 0;
+  color: #ffd700;
+}
+
+.overlay-info p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.overlay-info p:last-child {
+  margin-bottom: 0;
+}
+
+.demo-info {
+  margin-top: 2rem;
+}
+
+.info-panel {
+  padding: 1.5rem;
+}
+
+.info-panel h3 {
+  margin-bottom: 1rem;
+  color: var(--oklch-primary);
+}
+
+.optimization-descriptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.optimization-description {
+  padding: 1rem;
+  background: var(--oklch-surface-secondary);
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--oklch-primary);
+}
+
+.optimization-description h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--oklch-primary);
+  font-size: 1.1rem;
+}
+
+.optimization-description p {
+  margin: 0;
+  color: var(--oklch-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .demo-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .demo-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .performance-demo {
+    padding: 0.5rem;
+  }
+  
+  .demo-controls {
+    grid-template-columns: 1fr;
+  }
+  
+  .demo-canvas {
+    height: 400px;
+  }
+  
+  .canvas-overlay {
+    position: static;
+    margin: 1rem;
+    background: var(--oklch-surface-secondary);
+    color: var(--oklch-text);
+  }
+  
+  .optimization-descriptions {
+    grid-template-columns: 1fr;
+  }
+  
+  .quality-buttons {
+    grid-template-columns: 1fr;
+  }
+}

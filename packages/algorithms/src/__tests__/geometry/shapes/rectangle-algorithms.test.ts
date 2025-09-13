@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { RectangleOps } from "../../rectangle-algorithms";
-import { PointOps } from "../../point-algorithms";
+import { RectangleOps } from "../../../geometry/shapes/rectangle-algorithms";
+import { PointOps } from "../../../geometry/shapes/point-algorithms";
 
 describe("RectangleOps Integration", () => {
   describe("basic operations integration", () => {

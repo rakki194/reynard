@@ -32,6 +32,11 @@ class FuzzResult:
     error: Optional[str] = None
     vulnerability_detected: bool = False
     vulnerability_type: Optional[str] = None
+    # Enhanced response capture
+    response_body: Optional[str] = None
+    response_text: Optional[str] = None
+    response_headers: Optional[Dict[str, str]] = None
+    request_headers: Optional[Dict[str, str]] = None
 
 class ComprehensiveFuzzer:
     """
@@ -163,7 +168,12 @@ class ComprehensiveFuzzer:
                 response_time=response_time,
                 response_size=len(response.content),
                 vulnerability_detected=vulnerability_detected,
-                vulnerability_type=vulnerability_type
+                vulnerability_type=vulnerability_type,
+                # Capture full response details
+                response_body=response.text,
+                response_text=response.text,
+                response_headers=dict(response.headers),
+                request_headers=dict(headers) if headers else None
             )
             
         except Exception as e:
@@ -175,7 +185,12 @@ class ComprehensiveFuzzer:
                 status_code=0,
                 response_time=end_time - start_time,
                 response_size=0,
-                error=str(e)
+                error=str(e),
+                # Capture any available response data even on error
+                response_body=None,
+                response_text=None,
+                response_headers=None,
+                request_headers=dict(headers) if headers else None
             )
     
     def _analyze_response(self, response: httpx.Response, payload: str) -> Tuple[bool, Optional[str]]:

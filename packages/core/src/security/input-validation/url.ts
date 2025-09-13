@@ -63,14 +63,16 @@ export function validateURL(url: string): {
 }
 
 /**
- * Validate email address
+ * Validate email address with RFC 5322 compliance
  */
 export function validateEmail(email: string): boolean {
   if (!email || typeof email !== "string") {
     return false;
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // RFC 5322 compliant email regex
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email);
 }
 
@@ -87,4 +89,20 @@ export function validatePhoneNumber(phone: string): boolean {
 
   // Check if it's a valid length (7-15 digits)
   return digits.length >= 7 && digits.length <= 15;
+}
+
+/**
+ * Basic URL validation (without security restrictions)
+ */
+export function isValidUrl(url: string): boolean {
+  if (!url || typeof url !== "string") {
+    return false;
+  }
+
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
 }

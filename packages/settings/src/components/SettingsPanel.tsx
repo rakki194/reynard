@@ -274,7 +274,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
               variant="primary"
               size="sm"
               loading={settings().isSaving()}
-              onClick={settings().saveSettings}
+              onClick={() => settings().saveSettings()}
             >
               Save
             </Button>

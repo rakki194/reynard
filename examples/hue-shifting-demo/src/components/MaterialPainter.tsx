@@ -9,6 +9,7 @@ import {
   type MaterialPattern,
 } from "reynard-colors";
 import "./MaterialPainter.css";
+import { Slider, Toggle } from "reynard-components";;
 
 interface MaterialPainterProps {
   baseColor: OKLCHColor;
@@ -129,14 +130,12 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
         <label for="intensity-slider">
           Intensity: {intensity().toFixed(2)}
         </label>
-        <input
-          id="intensity-slider"
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={intensity()}
-          onInput={(e) => setIntensity(parseFloat(e.target.value))}
+        <Slider
+    id="intensity-slider"
+    min={0}
+    max={1}
+    step={0.01}
+  /> setIntensity(parseFloat(e.target.value))}
           class="slider"
         />
       </div>
@@ -264,12 +263,9 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
 
             <div class="editor-group">
               <label>
-                <input
-                  type="checkbox"
-                  checked={
-                    customPattern().highlightPreservation?.enabled || false
-                  }
-                  onChange={(e) =>
+                <Toggle
+    size="sm"
+  />
                     updateNestedPattern(
                       "highlightPreservation",
                       "enabled",
@@ -283,10 +279,9 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
 
             <div class="editor-group">
               <label>
-                <input
-                  type="checkbox"
-                  checked={customPattern().shadowEnhancement?.enabled || false}
-                  onChange={(e) =>
+                <Toggle
+    size="sm"
+  />
                     updateNestedPattern(
                       "shadowEnhancement",
                       "enabled",

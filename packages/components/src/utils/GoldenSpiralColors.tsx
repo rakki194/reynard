@@ -15,6 +15,7 @@ import {
 } from "solid-js";
 import { useTheme } from "reynard-themes";
 import { formatOKLCH, type OKLCHColor } from "reynard-colors";
+import { Slider, Toggle } from "../primitives";
 
 // Golden angle constant (137.507° in radians)
 const GOLDEN_ANGLE = (137.507 * Math.PI) / 180;
@@ -418,14 +419,13 @@ export const GoldenSpiralColors: Component = () => {
       <div class="spiral-controls">
         <div class="control-group">
           <label for="dot-count">Dot Count: {dotCount()}</label>
-          <input
+          <Slider
             id="dot-count"
-            type="range"
-            min="50"
-            max="500"
-            step="25"
+            min={50}
+            max={500}
+            step={25}
             value={dotCount()}
-            onInput={(e) => setDotCount(parseInt(e.target.value))}
+            onChange={setDotCount}
             class="control-slider"
           />
         </div>
@@ -434,24 +434,23 @@ export const GoldenSpiralColors: Component = () => {
           <label for="spiral-speed">
             Spiral Speed: {spiralSpeed().toFixed(1)}
           </label>
-          <input
+          <Slider
             id="spiral-speed"
-            type="range"
-            min="0"
-            max="5"
-            step="0.1"
+            min={0}
+            max={5}
+            step={0.1}
             value={spiralSpeed()}
-            onInput={(e) => setSpiralSpeed(parseFloat(e.target.value))}
+            onChange={setSpiralSpeed}
             class="control-slider"
           />
         </div>
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
+            <Toggle
               checked={physicsEnabled()}
-              onChange={(e) => setPhysicsEnabled(e.target.checked)}
+              onChange={(checked) => setPhysicsEnabled(checked)}
+              size="sm"
             />
             Physics & Movement
           </label>
@@ -459,10 +458,10 @@ export const GoldenSpiralColors: Component = () => {
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
+            <Toggle
               checked={showSpiral()}
-              onChange={(e) => setShowSpiral(e.target.checked)}
+              onChange={(checked) => setShowSpiral(checked)}
+              size="sm"
             />
             Spiral Pattern Mode
           </label>

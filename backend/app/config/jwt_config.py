@@ -1,12 +1,14 @@
 """
 JWT configuration for Reynard Backend.
 
-This module provides JWT configuration constants for testing.
+This module provides JWT configuration constants.
 """
 
-# JWT configuration constants for testing
-SECRET_KEY = "test-secret-key-for-testing-only-not-for-production"
-ALGORITHM = "HS256"
+from app.security.jwt_secret_manager import get_jwt_secret_key, get_jwt_algorithm
+
+# JWT configuration constants
+SECRET_KEY = get_jwt_secret_key()
+ALGORITHM = get_jwt_algorithm()
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 

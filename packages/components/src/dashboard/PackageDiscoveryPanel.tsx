@@ -12,7 +12,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
+import { Button, TextField, Select } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface PackageDiscoveryPanelProps {
@@ -24,6 +24,8 @@ export interface PackageDiscoveryPanelProps {
   showConflictResolution?: boolean;
   /** Auto-refresh interval in milliseconds */
   refreshInterval?: number;
+  /** Function to set active tab */
+  setActiveTab?: (tab: string) => void;
 }
 
 export interface PackageInfo {
@@ -510,7 +512,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => setActiveTab("installation")}
+                    onClick={() => props.setActiveTab?.("installation")}
                   >
                     Install
                   </Button>

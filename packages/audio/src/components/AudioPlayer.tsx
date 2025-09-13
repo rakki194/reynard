@@ -24,6 +24,7 @@ import {
 } from "solid-js";
 import { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
 import "./AudioPlayer.css";
+import { Slider } from "reynard-components";
 
 export interface AudioPlayerProps {
   /** Audio files or URLs */
@@ -457,13 +458,11 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
 
             <div class="volume-control">
               <span class="volume-icon">🔊</span>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={volume()}
-                onInput={(e) => setVolumeLevel(parseFloat(e.target.value))}
+              <Slider
+    min={0}
+    max={1}
+    step={0.1}
+  /> setVolumeLevel(parseFloat(e.target.value))}
                 class="volume-slider"
                 title="Volume (↑/↓)"
               />

@@ -110,7 +110,7 @@ export function usePackageConfiguration() {
     }
   };
 
-  const selectPackage = (packageName: string) => {
+  const selectPackage = (packageName: string | null) => {
     setState((prev) => ({ ...prev, selectedPackage: packageName }));
   };
 

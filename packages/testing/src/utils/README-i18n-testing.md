@@ -76,7 +76,7 @@ npx i18n-lint --no-hardcoded-strings --no-rtl
 
 Detects hardcoded strings in source code.
 
-**Parameters:**
+> *Parameters:*
 
 - `filePath`: Path to the file being analyzed
 - `content`: File content as string
@@ -84,7 +84,7 @@ Detects hardcoded strings in source code.
 
 **Returns:** Array of `HardcodedStringResult` objects
 
-**Example:**
+> *Example:*
 
 ```typescript
 const results = detectHardcodedStrings("Component.tsx", sourceCode, config);
@@ -100,13 +100,13 @@ results.forEach((result) => {
 
 Validates translation completeness across locales.
 
-**Parameters:**
+> *Parameters:*
 
 - `config`: Configuration object with locales to validate
 
 **Returns:** Promise resolving to array of `TranslationValidationResult` objects
 
-**Example:**
+> *Example:*
 
 ```typescript
 const results = await validateTranslations(config);
@@ -121,13 +121,13 @@ results.forEach((result) => {
 
 Runs comprehensive i18n tests.
 
-**Parameters:**
+> *Parameters:*
 
 - `config`: Configuration object
 
 **Returns:** Promise resolving to `I18nTestResult` object
 
-**Example:**
+> *Example:*
 
 ```typescript
 const result = await runI18nTests(config);
@@ -139,13 +139,13 @@ console.log(`Load time: ${result.performanceMetrics.loadTime}ms`);
 
 Generates a human-readable report from test results.
 
-**Parameters:**
+> *Parameters:*
 
 - `result`: `I18nTestResult` object
 
 **Returns:** Markdown-formatted report string
 
-**Example:**
+> *Example:*
 
 ```typescript
 const report = generateI18nReport(result);

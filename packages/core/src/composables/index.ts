@@ -7,5 +7,6 @@ export * from "./useNotifications";
 export * from "./useLocalStorage";
 export * from "./useDebounce";
 export * from "./useMediaQuery";
+export * from "./useApiClient";
 export * from "./localStorageSerializer";
 export * from "./storageEventHandler";

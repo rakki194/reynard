@@ -12,9 +12,9 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { PerformanceChart } from "reynard-charts";
+import { Chart } from "reynard-charts";
 
 export interface MemoryTrackingPanelProps {
   /** Current memory usage in bytes */
@@ -411,7 +411,7 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (
 
         <div class="memory-panel-actions">
           <Button
-            variant={isMonitoring() ? "error" : "primary"}
+            variant={isMonitoring() ? "danger" : "primary"}
             onClick={toggleMonitoring}
           >
             {isMonitoring() ? "Stop Monitoring" : "Start Monitoring"}
@@ -542,39 +542,19 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (
       {/* Memory Usage Chart */}
       <div class="memory-chart">
         <h4>Memory Usage Over Time</h4>
-        <PerformanceChart
-          data={getMemoryChartData()}
+        <Chart
           type="line"
+          labels={getMemoryChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
+          datasets={[{
+            label: "Memory Usage",
+            data: getMemoryChartData().map(entry => entry.value),
+            borderColor: "oklch(0.7 0.15 200)",
+            backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
+            tension: 0.1,
+          }]}
           width={800}
           height={300}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                type: "time",
-                time: {
-                  displayFormats: {
-                    minute: "HH:mm",
-                    hour: "HH:mm",
-                  },
-                },
-              },
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  callback: function (value: any) {
-                    return formatMemory(value);
-                  },
-                },
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-          }}
+          useOKLCH={true}
         />
       </div>
 

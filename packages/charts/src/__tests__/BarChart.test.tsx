@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
-import { BarChart } from "../../BarChart";
-import type { Dataset } from "../../../types";
+import { BarChart } from "../components/BarChart";
+import type { Dataset } from "../types";
 
 const mockDatasets: Dataset[] = [
   {

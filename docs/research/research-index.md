@@ -19,6 +19,7 @@ understand the relationships between different research areas.
 
 ### A
 
+- **Animation Systems** → [Animations](./animations/) | [Technical Documentation](./technical-docs/)
 - **Authentication** → [Security Research](./security-research/)
 - **API Security** → [Security Research](./security-research/) | [Integrations](./integrations/)
 - **Architecture Patterns** → [Architecture](./architecture/) | [Academic Papers](./academic-papers/modular/)
@@ -98,6 +99,7 @@ understand the relationships between different research areas.
 
 - **Performance Optimization** → [Technical Documentation](./technical-docs/gallery-performance-validation.md) | [Algorithms](./algorithms/)
 - **Penetration Testing** → [Security Research](./security-research/)
+- **Phyllotactic Patterns** → [Animations](./animations/) | [Academic Papers](./animations/the-mathematics-of-phyllotatic-spirals/)
 - **PostgreSQL** → [Technical Documentation](./technical-docs/rag.md) | [Architecture](./architecture/)
 
 ### Q
@@ -116,6 +118,7 @@ understand the relationships between different research areas.
 - **Service Architecture** → [Architecture](./architecture/) | [Academic Papers](./academic-papers/modular/)
 - **SQL Injection** → [Security Research](./security-research/)
 - **Stable Diffusion** → [Technical Documentation](./technical-docs/diffusion-llm-integration.md)
+- **Stroboscopic Effects** → [Animations](./animations/) | [Academic Papers](./animations/the-mathematics-of-phyllotatic-spirals/)
 
 ### T
 

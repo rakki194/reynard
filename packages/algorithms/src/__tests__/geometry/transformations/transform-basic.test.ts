@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { TransformOps } from "../../transformation-algorithms";
+import { TransformOps } from "../../../geometry/transformations/transformation-algorithms";
 
 describe("TransformOps - Basic Operations", () => {
   describe("identity", () => {

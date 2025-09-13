@@ -1,6 +1,7 @@
 # Gatekeeper - Authentication and Authorization Library
 
-A comprehensive authentication and authorization library for Python applications, providing secure user management, JWT token handling, role-based access control, and flexible backend integration.
+A comprehensive authentication and authorization library for Python applications, providing secure user management,
+JWT token handling, role-based access control, and flexible backend integration.
 
 ## Features
 

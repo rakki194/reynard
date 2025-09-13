@@ -5,6 +5,7 @@
 
 export * from "./headers";
 export * from "./validation";
+export * from "./file-validation";
 
 // Export crypto utilities with explicit names to avoid conflicts
 export {

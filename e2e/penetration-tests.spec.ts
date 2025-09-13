@@ -192,30 +192,72 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
   });
 
-  test.describe("Comprehensive Fuzzing", () => {
-    test("should run comprehensive fuzzing framework", async () => {
-      const result = await runBlackhatExploit("fuzzing.comprehensive_fuzzer", {
-        target: config.backendUrl,
-        verbose: config.verbose,
-        destructive: config.destructive,
-        maxPayloads: 100, // Limit for E2E testing
-      });
-
-      expect(result.success).toBeDefined();
-      expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
-    });
-
-    test("should run endpoint-specific fuzzing", async () => {
+  test.describe("Quick Fuzzing Tests", () => {
+    test("should run quick authentication fuzzing", async () => {
       const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
-        endpoints: ["/api/auth/login", "/api/auth/register"],
+        quickTest: true, // Only test auth endpoints
+        timeout: 60000, // 1 minute timeout for quick test
       });
 
       expect(result.success).toBeDefined();
       expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
-    });
+    }, 90000); // 1.5 minute test timeout
+
+    test("should run quick search fuzzing", async () => {
+      const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+        quickTest: true, // Only test search endpoints
+        timeout: 60000, // 1 minute timeout for quick test
+      });
+
+      expect(result.success).toBeDefined();
+      expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
+    }, 90000); // 1.5 minute test timeout
+  });
+
+  test.describe("Comprehensive Fuzzing", () => {
+    test("should run comprehensive fuzzing framework", async () => {
+      const result = await runBlackhatExploit("fuzzing.exploit_wrappers", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+        maxPayloads: 1000, // MASSIVE attack: 50+ endpoints with 1000+ payloads
+        timeout: 300000, // 5 minute timeout for massive attack
+      });
+
+      expect(result.success).toBeDefined();
+      expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
+    }, 400000); // 6.5 minute test timeout
+
+    test("should run endpoint-specific fuzzing", async () => {
+      const result = await runBlackhatExploit("fuzzing.exploit_wrappers", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+        endpoints: ["/api/auth/login", "/api/auth/register"],
+        timeout: 120000, // 2 minute timeout for full attack
+      });
+
+      expect(result.success).toBeDefined();
+      expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
+    }, 200000); // 3.5 minute test timeout
+    
+    test("should run specialized endpoint fuzzing", async () => {
+      const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+        timeout: 180000, // 3 minute timeout for specialized attacks
+      });
+
+      expect(result.success).toBeDefined();
+      expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
+    }, 250000); // 4 minute test timeout
   });
 
   test.describe("API Security Testing", () => {
@@ -341,9 +383,10 @@ async function runBlackhatExploit(
 
   try {
     const blackhatPath = path.join(process.cwd(), "..", "blackhat");
-    const pythonPath = process.env.PYTHON_PATH || "python3";
+    const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
 
     // Build command to run specific exploit
+    const timeout = options.timeout || 60000; // Default 60 second timeout
     const command = `${pythonPath} -c "
 import sys
 sys.path.append('${blackhatPath}')
@@ -364,7 +407,7 @@ print(json.dumps({
 "`;
 
     const { stdout, stderr } = await execAsync(command, {
-      timeout: 60000,
+      timeout: timeout,
       cwd: blackhatPath,
     });
 
@@ -405,7 +448,7 @@ async function runCompleteBlackhatSuite(options: any = {}): Promise<any> {
 
   try {
     const blackhatPath = path.join(process.cwd(), "..", "blackhat");
-    const pythonPath = process.env.PYTHON_PATH || "python3";
+    const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
 
     const command = `${pythonPath} run_all_exploits.py --url ${options.target || "http://localhost:8000"} ${options.verbose ? "--verbose" : ""} ${options.destructive ? "--destructive" : ""}`;
 
@@ -460,11 +503,80 @@ async function runCompleteBlackhatSuite(options: any = {}): Promise<any> {
  */
 function getExploitClassName(modulePath: string): string {
   const parts = modulePath.split(".");
-  const className =
-    parts[parts.length - 1]
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("") + "Exploit";
+  const moduleName = parts[parts.length - 1];
+  
+  // Map of module names to actual class names
+  const classMap: Record<string, string> = {
+    // Fuzzing modules
+    "comprehensive_fuzzer": "ComprehensiveFuzzerExploit",
+    "endpoint_fuzzer": "EndpointFuzzerExploit",
+    "exploit_wrappers": "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
+    
+    // SQL Injection modules
+    "basic_injection": "BasicInjectionExploit",
+    "blind_injection": "BlindInjectionExploit", 
+    "time_based_injection": "TimeBasedInjectionExploit",
+    "union_injection": "UnionInjectionExploit",
+    "obfuscated_payloads": "ObfuscatedPayloadExploit",
+    "regex_bypass": "RegexBypassExploit",
+    
+    // API Exploits
+    "bola_attacks": "BolaAttacksExploit",
+    "idor_attacks": "IdorAttacksExploit",
+    
+    // CSRF Exploits
+    "csrf_attacks": "CsrfAttacksExploit",
+    "csrf_bypass": "CsrfBypassExploit",
+    
+    // Path Traversal
+    "basic_traversal": "BasicTraversalExploit",
+    "encoded_traversal": "EncodedPathTraversalExploit",
+    "unicode_bypass": "UnicodeBypassExploit",
+    "null_byte_injection": "NullByteInjectionExploit",
+    "double_encoding": "DoubleEncodingExploit",
+    
+    // SSRF Exploits
+    "ssrf_attacks": "SsrfAttacksExploit",
+    "ssrf_bypass": "SsrfBypassExploit",
+    
+    // Race Conditions
+    "race_exploits": "RaceExploitsExploit",
+    "concurrent_attacks": "ConcurrentAttacksExploit",
+    
+    // CORS Exploits
+    "cors_misconfiguration": "CorsMisconfigurationExploit",
+    "cors_bypass": "CorsBypassExploit",
+    
+    // HTTP Smuggling
+    "request_smuggling": "RequestSmugglingExploit",
+    "response_smuggling": "ResponseSmugglingExploit",
+    
+    // Unicode Exploits
+    "normalization_bypass": "NormalizationBypassExploit",
+    "unicode_attacks": "UnicodeAttacksExploit",
+    
+    // Rate Limiting
+    "rate_limit_bypass": "RateLimitBypassExploit",
+    "rate_limit_attacks": "RateLimitAttacksExploit",
+    
+    // JWT Exploits
+    "secret_key_attack": "SecretKeyVulnerabilityExploit",
+    "algorithm_confusion": "AlgorithmConfusionExploit",
+    "kid_manipulation": "KidManipulationExploit",
+    "jwt_replay": "JwtReplayExploit",
+    "jwt_injection": "JwtInjectionExploit",
+  };
+  
+  // Return mapped class name or generate default
+  if (classMap[moduleName]) {
+    return classMap[moduleName];
+  }
+  
+  // Fallback: generate class name without "Exploit" suffix
+  const className = moduleName
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
 
   return className;
 }

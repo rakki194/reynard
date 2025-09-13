@@ -23,6 +23,15 @@ class UnicodePayload:
     technique: str
     description: str
 
+@dataclass
+class PathTraversalResult:
+    """Result of a path traversal exploit attempt"""
+    payload: UnicodePayload
+    success: bool
+    response_code: int
+    description: str
+    vulnerability_type: str = "Path Traversal"
+
 class UnicodePathTraversalExploit:
     """
     *circles with menacing intent* Exploits Unicode path traversal vulnerabilities
@@ -78,17 +87,17 @@ class UnicodePathTraversalExploit:
                 timeout=5
             )
             
-            return {
-                'payload': payload,
-                'success': response.status_code == 200,
-                'response_code': response.status_code,
-                'description': f"{payload.description} - {'SUCCESS' if response.status_code == 200 else 'BLOCKED'}"
-            }
+            return PathTraversalResult(
+                payload=payload,
+                success=response.status_code == 200,
+                response_code=response.status_code,
+                description=f"{payload.description} - {'SUCCESS' if response.status_code == 200 else 'BLOCKED'}"
+            )
             
         except Exception as e:
-            return {
-                'payload': payload,
-                'success': False,
-                'response_code': 0,
-                'description': f"{payload.description} - ERROR: {str(e)}"
-            }
+            return PathTraversalResult(
+                payload=payload,
+                success=False,
+                response_code=0,
+                description=f"{payload.description} - ERROR: {str(e)}"
+            )

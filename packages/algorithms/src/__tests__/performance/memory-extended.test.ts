@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { MemoryMonitor, MemoryLeakDetector } from "../../memory";
+import { MemoryMonitor, MemoryLeakDetector } from "../../performance/memory";
 
 // Mock performance.memory
 const mockMemory = {

@@ -125,7 +125,7 @@ These directories are automatically excluded:
 <tel:+1234567890>
 ```
 
-**Validation:**
+> *Validation:*
 
 - URL format validation
 - Protocol checking (HTTP/HTTPS preferred)
@@ -141,7 +141,7 @@ These directories are automatically excluded:
 [Absolute Path](/docs/guide.md)
 ```
 
-**Validation:**
+> *Validation:*
 
 - File existence checking
 - Path resolution
@@ -155,7 +155,7 @@ These directories are automatically excluded:
 [Another Section](#another-section)
 ```
 
-**Validation:**
+> *Validation:*
 
 - Heading extraction and anchor generation
 - GitHub-style anchor ID matching
@@ -169,7 +169,7 @@ These directories are automatically excluded:
 ![External Image](https://example.com/image.jpg)
 ```
 
-**Validation:**
+> *Validation:*
 
 - Same validation as regular links
 - File existence for local images

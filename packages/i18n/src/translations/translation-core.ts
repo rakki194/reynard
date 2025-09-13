@@ -115,29 +115,38 @@ function createTranslationEffect(
   intlConfig: Partial<IntlConfig>,
   initialTranslations?: Partial<Translations>,
 ) {
+  let isEffectRunning = false;
+  
   createEffect(async () => {
-    const currentLocale = locale();
-    if (typeof window !== "undefined") {
-      const updatedFormatter = createIntlFormatter({
-        ...intlConfig,
-        locale: currentLocale,
-      });
-      Object.assign(intlFormatter, updatedFormatter);
+    if (isEffectRunning) return; // Prevent recursion
+    isEffectRunning = true;
+    
+    try {
+      const currentLocale = locale();
+      if (typeof window !== "undefined") {
+        const updatedFormatter = createIntlFormatter({
+          ...intlConfig,
+          locale: currentLocale,
+        });
+        Object.assign(intlFormatter, updatedFormatter);
 
-      if (!initialTranslations) {
-        try {
-          const loadedTranslations = optimizedLoader
-            ? await optimizedLoader.loadFull(currentLocale)
-            : await loadTranslations(currentLocale);
-          setTranslations(loadedTranslations);
-        } catch (error) {
-          console.error(
-            "Failed to load translations for locale:",
-            currentLocale,
-            error,
-          );
+        if (!initialTranslations) {
+          try {
+            const loadedTranslations = optimizedLoader
+              ? await optimizedLoader.loadFull(currentLocale)
+              : await loadTranslations(currentLocale);
+            setTranslations(loadedTranslations);
+          } catch (error) {
+            console.error(
+              "Failed to load translations for locale:",
+              currentLocale,
+              error,
+            );
+          }
         }
       }
+    } finally {
+      isEffectRunning = false;
     }
   });
 }

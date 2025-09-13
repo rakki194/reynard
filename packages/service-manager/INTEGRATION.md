@@ -401,7 +401,7 @@ console.log("All service statuses:", bridge.getAllServiceStatuses());
 
 ### From Manual Service Checking
 
-**Before:**
+> *Before:*
 
 ```typescript
 const isServiceAvailable = (serviceName: string) => {
@@ -410,7 +410,7 @@ const isServiceAvailable = (serviceName: string) => {
 };
 ```
 
-**After:**
+> *After:*
 
 ```typescript
 const bridge = new FeatureServiceBridge({
@@ -426,7 +426,7 @@ const isServiceAvailable = (serviceName: string) => {
 
 ### From Static Feature Definitions
 
-**Before:**
+> *Before:*
 
 ```typescript
 const features = [
@@ -437,7 +437,7 @@ const features = [
 ];
 ```
 
-**After:**
+> *After:*
 
 ```typescript
 import { COMMON_FEATURES, SERVICE_MAPPINGS } from "reynard-features/presets";

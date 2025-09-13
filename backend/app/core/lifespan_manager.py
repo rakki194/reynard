@@ -54,6 +54,53 @@ from app.core.health_checks import (
 logger = logging.getLogger(__name__)
 
 
+async def _setup_secure_routers(app: FastAPI, registry) -> None:
+    """
+    Set up secure routers after services are initialized.
+    
+    Args:
+        app: The FastAPI application instance
+        registry: The service registry with initialized services
+    """
+    try:
+        # Set up secure auth router
+        try:
+            from gatekeeper.api.dependencies import get_auth_manager
+            from app.security.secure_auth_routes import create_secure_auth_router
+            
+            auth_manager = get_auth_manager()
+            secure_auth_router = create_secure_auth_router(auth_manager)
+            app.include_router(secure_auth_router, prefix="/api/secure")
+            logger.info("✅ Secure auth router added successfully")
+        except Exception as e:
+            logger.warning(f"Failed to add secure auth router: {e}")
+        
+        # Set up secure ollama router
+        try:
+            from app.api.ollama.service import get_ollama_service
+            from app.security.secure_ollama_routes import create_secure_ollama_router
+            
+            ollama_service = get_ollama_service()
+            secure_ollama_router = create_secure_ollama_router(ollama_service)
+            app.include_router(secure_ollama_router, prefix="/api/secure")
+            logger.info("✅ Secure ollama router added successfully")
+        except Exception as e:
+            logger.warning(f"Failed to add secure ollama router: {e}")
+        
+        # Set up secure summarization router
+        try:
+            from app.security.secure_summarization_routes import create_secure_summarization_router
+            
+            secure_summarization_router = create_secure_summarization_router()
+            app.include_router(secure_summarization_router, prefix="/api/secure")
+            logger.info("✅ Secure summarization router added successfully")
+        except Exception as e:
+            logger.warning(f"Failed to add secure summarization router: {e}")
+            
+    except Exception as e:
+        logger.error(f"Failed to set up secure routers: {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
@@ -149,6 +196,9 @@ async def lifespan(app: FastAPI):
         
         total_time = time.time() - start_time
         logger.info(f"✅ All services initialized successfully in {total_time:.2f}s")
+        
+        # Set up secure routers now that services are initialized
+        await _setup_secure_routers(app, registry)
         
         # FastAPI expects a mapping/dictionary, not a ServiceRegistry object
         yield {"service_registry": registry}

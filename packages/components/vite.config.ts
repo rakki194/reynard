@@ -23,6 +23,7 @@ export default defineConfig({
         "reynard-colors",
         "reynard-fluent-icons",
         "reynard-themes",
+        "reynard-charts",
         "three",
       ],
       output: {
@@ -33,6 +34,7 @@ export default defineConfig({
           "reynard-colors": "ReynardColors",
           "reynard-fluent-icons": "ReynardFluentIcons",
           "reynard-themes": "ReynardThemes",
+          "reynard-charts": "ReynardCharts",
           three: "THREE",
         },
         assetFileNames: (assetInfo) => {

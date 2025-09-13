@@ -1,5 +1,5 @@
 import { createSignal, createMemo } from "solid-js";
-import { LineChart, BarChart, PieChart, TimeSeriesChart } from "reynard-charts";
+// import { LineChart, BarChart, PieChart, TimeSeriesChart } from "reynard-charts"; // Temporarily disabled for build
 import { Card, Select } from "reynard-components";
 import { useI18n } from "reynard-i18n";
 

@@ -12,6 +12,7 @@ import { ThreeJSVisualization } from "./ThreeJSVisualization";
 import { usePointCloud } from "../composables/usePointCloud";
 import { useThreeJSAnimations } from "../composables/useThreeJSAnimations";
 import "./PointCloudVisualization.css";
+import { Toggle } from "reynard-components";
 
 export const PointCloudVisualization: Component<
   PointCloudVisualizationProps
@@ -391,10 +392,9 @@ export const PointCloudVisualization: Component<
           </div>
 
           <label class="control-item">
-            <input
-              type="checkbox"
-              checked={pointCloud.enableInstancing()}
-              onChange={(e) => {
+            <Toggle
+    size="sm"
+  /> {
                 console.log("Instancing:", e.currentTarget.checked);
               }}
             />
@@ -402,10 +402,9 @@ export const PointCloudVisualization: Component<
           </label>
 
           <label class="control-item">
-            <input
-              type="checkbox"
-              checked={pointCloud.enableLOD()}
-              onChange={(e) => {
+            <Toggle
+    size="sm"
+  /> {
                 console.log("LOD:", e.currentTarget.checked);
               }}
             />
@@ -413,10 +412,9 @@ export const PointCloudVisualization: Component<
           </label>
 
           <label class="control-item">
-            <input
-              type="checkbox"
-              checked={pointCloud.enableCulling()}
-              onChange={(e) => {
+            <Toggle
+    size="sm"
+  /> {
                 console.log("Culling:", e.currentTarget.checked);
               }}
             />
@@ -424,10 +422,9 @@ export const PointCloudVisualization: Component<
           </label>
 
           <label class="control-item">
-            <input
-              type="checkbox"
-              checked={pointCloud.enableHighlighting()}
-              onChange={(e) => {
+            <Toggle
+    size="sm"
+  /> {
                 console.log("Highlighting:", e.currentTarget.checked);
               }}
             />

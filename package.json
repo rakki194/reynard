@@ -107,7 +107,11 @@
     "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check",
     "markdown:links:check": "node .husky/validate-markdown-links.js --staged",
     "markdown:links:check:all": "node .husky/validate-markdown-links.js --all",
-    "markdown:validate:all": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check && pnpm run markdown:links:check:all"
+    "markdown:italic:check": "node .husky/validate-italic-to-blockquote.js",
+    "markdown:italic:fix": "node .husky/validate-italic-to-blockquote.js --fix",
+    "markdown:italic:fix:all": "node .husky/validate-italic-to-blockquote.js --fix --all",
+    "markdown:italic:test": "vitest run .husky/validate-italic-to-blockquote.test.js",
+    "markdown:validate:all": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check && pnpm run markdown:links:check:all && pnpm run markdown:italic:check"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",

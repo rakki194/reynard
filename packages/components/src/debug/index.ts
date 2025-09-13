@@ -27,3 +27,10 @@ export type { PerformanceAlertsTabProps } from "./PerformanceAlertsTab";
 
 export { PerformanceExportTab } from "./PerformanceExportTab";
 export type { PerformanceExportTabProps } from "./PerformanceExportTab";
+
+// Performance Panels
+export { PerformanceMetricsPanel } from "./PerformanceMetricsPanel";
+export type { PerformanceMetricsPanelProps, PerformanceMetrics } from "./PerformanceMetricsPanel";
+
+export { MemoryTrackingPanel } from "./MemoryTrackingPanel";
+export type { MemoryTrackingPanelProps, MemoryLeakDetection } from "./MemoryTrackingPanel";

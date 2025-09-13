@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { RectangleAdvanced } from "../../rectangle-advanced";
+import { RectangleAdvanced } from "../../../geometry/shapes/rectangle-advanced";
 
 describe("RectangleAdvanced", () => {
   describe("intersects", () => {

@@ -5,6 +5,7 @@
 
 import { Component, For, createEffect } from "solid-js";
 import { createTagColorGenerator, formatOKLCH } from "reynard-colors";
+import { Slider } from "../primitives/Slider";
 
 interface CustomTagGeneratorProps {
   availableThemes: string[];
@@ -64,14 +65,13 @@ const TagInputControls: Component<{
       <label for="tag-intensity-slider">
         Intensity: {props.tagIntensity.toFixed(1)}
       </label>
-      <input
+      <Slider
         id="tag-intensity-slider"
-        type="range"
-        min="0.1"
-        max="2.0"
-        step="0.1"
+        min={0.1}
+        max={2.0}
+        step={0.1}
         value={props.tagIntensity}
-        onInput={(e) => props.onIntensityChange(parseFloat(e.target.value))}
+        onChange={props.onIntensityChange}
         class="intensity-slider"
         aria-label="Tag intensity control"
       />

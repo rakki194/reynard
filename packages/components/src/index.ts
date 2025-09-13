@@ -26,23 +26,42 @@ export {
 export * from "./icons";
 
 // Export layout components
-// export * from "./layout";
+export * from "./layout";
 
-// Temporarily commented out to avoid circular dependencies
 // Export dashboard components
-// export * from "./dashboard";
+export * from "./dashboard";
 
 // Export 3D components
-// export * from "./threed";
+export * from "./threed";
 
-// Export charts components
-// export * from "./charts";
+// Export charts components (temporarily disabled for build)
+// export {
+//   ChartsShowcase,
+//   ChartsShowcaseSimple,
+//   ChartsHero,
+//   ChartsContent,
+//   ChartsControls,
+//   ChartsTechnicalInfo,
+//   ChartsPerformanceSection,
+//   ChartsRealtimeSection,
+//   ChartsStatisticalSection,
+//   ChartsTypesShowcase,
+//   ChartsAdvancedFeatures,
+//   ChartsLifecycleProvider,
+//   useChartsCSS,
+//   useChartsData,
+//   useChartsLifecycle,
+//   useChartsState,
+// } from "reynard-charts";
 
 // Export OKLCH components
-// export * from "./oklch";
+export * from "./oklch";
 
 // Export theme components
-// export * from "./theme";
+export * from "./theme";
 
 // Export utility components
-// export * from "./utils";
+export * from "./utils";
+
+// Export debug components
+export * from "./debug";

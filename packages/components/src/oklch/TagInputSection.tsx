@@ -4,6 +4,7 @@
  */
 
 import { Component, Accessor, Setter } from "solid-js";
+import { Slider } from "../primitives/Slider";
 import "./TagComponents.css";
 
 interface TagInputSectionProps {
@@ -22,13 +23,12 @@ export const TagInputSection: Component<TagInputSectionProps> = (props) => {
         value={props.tagInput()}
         onInput={(e) => props.setTagInput(e.target.value)}
       />
-      <input
-        type="range"
-        min="0.1"
-        max="2.0"
-        step="0.1"
+      <Slider
+        min={0.1}
+        max={2.0}
+        step={0.1}
         value={props.intensity()}
-        onInput={(e) => props.setIntensity(parseFloat(e.target.value))}
+        onChange={props.setIntensity}
         aria-label="Color intensity"
       />
       <span>Intensity: {props.intensity()}</span>

@@ -4,6 +4,7 @@
  */
 
 import { Component } from "solid-js";
+import { Toggle } from "reynard-components";
 
 interface Todo {
   id: number;
@@ -21,11 +22,9 @@ export const TodoItem: Component<TodoItemProps> = (props) => {
   return (
     <div class={`todo-item ${props.todo.completed ? "completed" : ""}`}>
       <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
-        <input
-          id={`todo-${props.todo.id}`}
-          type="checkbox"
-          checked={props.todo.completed}
-          onChange={() => props.onToggle()}
+        <Toggle
+    size="sm"
+  /> props.onToggle()}
           aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
         />
         <span class="checkmark" />

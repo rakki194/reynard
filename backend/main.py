@@ -47,9 +47,6 @@ config = get_config()
 # 🦊 Create the FastAPI Application using the factory pattern
 app = create_app()
 
-# Include core API endpoints
-app.include_router(core_router)
-
 
 # 🐺 Development Server Configuration
 if __name__ == "__main__":

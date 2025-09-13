@@ -4,8 +4,9 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { Button, TextField, Select, Toggle } from "reynard-components";
-import { Icon } from "reynard-components/icons";
+import { Button, TextField, Select } from "../../primitives";
+import { Toggle } from "../../primitives";
+import { Icon } from "../../icons";
 import type { PackageSettingsFormProps } from "../types/PackageConfigurationTypes";
 
 export const PackageSettingsForm: Component<PackageSettingsFormProps> = (

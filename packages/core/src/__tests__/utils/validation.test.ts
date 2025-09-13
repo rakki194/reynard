@@ -17,7 +17,7 @@ import {
   isValidDate,
   isValidAge,
   isValidSSN,
-} from "../validation";
+} from "../../utils/validation";
 
 describe("validation", () => {
   describe("isValidEmail", () => {

@@ -5,8 +5,8 @@
  */
 
 import { Component, Show } from "solid-js";
-import { Button } from "reynard-components";
-import { Icon } from "reynard-components/icons";
+import { Button } from "../primitives";
+import { Icon } from "../icons";
 import { PackageList } from "./components/PackageList";
 import { PackageSettingsForm } from "./components/PackageSettingsForm";
 import { GlobalSettingsForm } from "./components/GlobalSettingsForm";

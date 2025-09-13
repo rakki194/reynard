@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 import App from "./App";
-import "reynard-themes/reynard-themes.css";
+import "reynard-themes/themes.css";
 import "./styles.css";
 
 console.log("🦊 Starting Reynard 3D Demo...");

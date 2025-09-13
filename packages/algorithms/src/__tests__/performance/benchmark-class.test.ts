@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { PerformanceBenchmark } from "../../../performance/benchmark";
+import { PerformanceBenchmark } from "../../performance/benchmark";
 import {
   mockPerformanceNow,
   originalPerformance,
   setupPerformanceMock,
   teardownPerformanceMock,
   resetPerformanceMock,
-} from "../__tests__/test-utils";
+} from "./test-utils";
 
 beforeEach(() => {
   setupPerformanceMock();

@@ -8,7 +8,7 @@ import {
 } from "solid-js";
 import loader from "@monaco-editor/loader";
 import type * as monaco from "monaco-editor";
-import { useI18n } from "reynard-i18n";
+import { t } from "reynard-core";
 import "./MonacoEditor.css";
 
 export interface MonacoEditorProps {
@@ -29,7 +29,6 @@ export interface MonacoEditorProps {
 }
 
 export const MonacoEditor: Component<MonacoEditorProps> = (props) => {
-  const { t } = useI18n();
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
   const [editor, setEditor] =
     createSignal<monaco.editor.IStandaloneCodeEditor>();

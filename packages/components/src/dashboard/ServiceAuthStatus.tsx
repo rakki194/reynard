@@ -3,8 +3,8 @@
  * Authentication service status monitoring
  */
 
-import { Component, Show, createSignal, onMount } from "solid-js";
-import { Button } from "reynard-components";
+import { Component, Show, For, createSignal, onMount } from "solid-js";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface ServiceAuthStatusProps {

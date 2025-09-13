@@ -1,4 +1,5 @@
 import { Component } from "solid-js";
+import { Slider } from "reynard-components";
 import "./HueShiftControls.css";
 
 interface HueShiftControlsProps {
@@ -15,14 +16,13 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
         <label for="intensity-slider">
           Shift Intensity: {props.intensity.toFixed(2)}
         </label>
-        <input
+        <Slider
           id="intensity-slider"
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
+          min={0}
+          max={1}
+          step={0.01}
           value={props.intensity}
-          onInput={(e) => props.onIntensityChange(parseFloat(e.target.value))}
+          onChange={props.onIntensityChange}
           class="slider intensity-slider"
         />
         <div class="slider-labels">
@@ -35,14 +35,13 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
         <label for="ramp-stops-slider">
           Color Ramp Stops: {props.rampStops}
         </label>
-        <input
+        <Slider
           id="ramp-stops-slider"
-          type="range"
-          min="3"
-          max="9"
-          step="1"
+          min={3}
+          max={9}
+          step={1}
           value={props.rampStops}
-          onInput={(e) => props.onRampStopsChange(parseInt(e.target.value))}
+          onChange={props.onRampStopsChange}
           class="slider ramp-stops-slider"
         />
         <div class="slider-labels">

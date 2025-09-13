@@ -62,7 +62,7 @@ const results = await runEntityBenchmarks({
 });
 ```
 
-**Operations Tested:**
+> *Operations Tested:*
 
 - Entity spawning with multiple components
 - Component addition to existing entities
@@ -82,7 +82,7 @@ const results = await runQueryBenchmarks({
 });
 ```
 
-**Query Types:**
+> *Query Types:*
 
 - Simple queries (single component)
 - Complex queries (multiple components)
@@ -102,7 +102,7 @@ const results = await runSystemBenchmarks({
 });
 ```
 
-**System Types:**
+> *System Types:*
 
 - Movement systems (Position + Velocity)
 - Health systems (Health + Damage)
@@ -122,7 +122,7 @@ const results = await runStressTests({
 });
 ```
 
-**Stress Scenarios:**
+> *Stress Scenarios:*
 
 - Massive entity creation
 - Complex query operations

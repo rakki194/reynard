@@ -23,7 +23,7 @@ class ObfuscatedPayload:
     technique: str
     description: str
 
-class ObfuscatedPayloadExploit:
+class ObfuscatedSQLInjectionExploit:
     """
     *circles with menacing intent* Exploits with obfuscated SQL injection payloads
     """

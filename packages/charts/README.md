@@ -365,19 +365,19 @@ function MonitoredChart() {
 
 ### Common Issues
 
-**Chart not rendering:**
+> *Chart not rendering:*
 
 - Ensure Chart.js is properly registered
 - Check that data is in the correct format
 - Verify component is mounted
 
-**Performance issues:**
+> *Performance issues:*
 
 - Reduce `maxDataPoints` for large datasets
 - Increase `updateInterval` for real-time charts
 - Enable performance monitoring to identify bottlenecks
 
-**Color issues:**
+> *Color issues:*
 
 - Verify `reynard-colors` is installed
 - Check theme configuration

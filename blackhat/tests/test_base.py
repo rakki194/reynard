@@ -18,7 +18,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 @dataclass
-class TestResult:
+class SecurityTestResult:
     """Result of a security test"""
     test_name: str
     success: bool
@@ -40,7 +40,7 @@ class BlackhatTestBase:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url.rstrip('/')
         self.session = httpx.AsyncClient(timeout=30.0)
-        self.test_results: List[TestResult] = []
+        self.test_results: List[SecurityTestResult] = []
     
     async def __aenter__(self):
         return self
@@ -53,22 +53,22 @@ class BlackhatTestBase:
         url = f"{self.base_url}{endpoint}"
         return await self.session.request(method, url, **kwargs)
     
-    def assert_vulnerability_detected(self, result: TestResult, should_be_vulnerable: bool = True):
+    def assert_vulnerability_detected(self, result: SecurityTestResult, should_be_vulnerable: bool = True):
         """Assert that a vulnerability was or wasn't detected as expected"""
         if should_be_vulnerable:
             assert result.vulnerability_found, f"Expected vulnerability in {result.test_name}: {result.details}"
         else:
             assert not result.vulnerability_found, f"Unexpected vulnerability in {result.test_name}: {result.details}"
     
-    def assert_response_time(self, result: TestResult, max_time: float = 5.0):
+    def assert_response_time(self, result: SecurityTestResult, max_time: float = 5.0):
         """Assert that the response time is within acceptable limits"""
         assert result.response_time <= max_time, f"Response time too slow: {result.response_time:.2f}s > {max_time}s"
     
-    def assert_status_code(self, result: TestResult, expected_codes: List[int]):
+    def assert_status_code(self, result: SecurityTestResult, expected_codes: List[int]):
         """Assert that the status code is one of the expected values"""
         assert result.status_code in expected_codes, f"Unexpected status code {result.status_code}, expected one of {expected_codes}"
     
-    def log_test_result(self, result: TestResult):
+    def log_test_result(self, result: SecurityTestResult):
         """Log a test result"""
         status = "✅ PASS" if result.success else "❌ FAIL"
         vuln_status = "🚨 VULNERABLE" if result.vulnerability_found else "🛡️ SECURE"

@@ -4,8 +4,8 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
-import { Icon } from "reynard-components/icons";
+import { Button, TextField, Select } from "../../primitives";
+import { Icon } from "../../icons";
 import type { PackageLifecycleListProps } from "../types/PackageLifecycleTypes";
 
 export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
@@ -91,7 +91,7 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
           />
           <Select
             value={props.selectedStatus}
-            onChange={(value) => props.onStatusChange(value)}
+            onChange={(e) => props.onStatusChange(e.target.value)}
             options={[
               { value: "all", label: "All Statuses" },
               { value: "loaded", label: "Loaded" },

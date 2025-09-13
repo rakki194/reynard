@@ -1,5 +1,6 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
 import {
+import { Slider } from "reynard-components";
   batchCollisionDetection,
   type AABB,
   type CollisionResult,
@@ -510,28 +511,24 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
       <div class="demo-controls">
         <div class="control-group">
           <label for="gravity-slider">Gravity: {gravity().toFixed(1)}</label>
-          <input
-            id="gravity-slider"
-            type="range"
-            min="0"
-            max="2"
-            step="0.1"
-            value={gravity()}
-            onInput={(e) => setGravity(parseFloat(e.currentTarget.value))}
+          <Slider
+    id="gravity-slider"
+    min={0}
+    max={2}
+    step={0.1}
+  /> setGravity(parseFloat(e.currentTarget.value))}
             title="Adjust the gravity strength in the physics simulation"
           />
         </div>
 
         <div class="control-group">
           <label for="damping-slider">Damping: {damping().toFixed(2)}</label>
-          <input
-            id="damping-slider"
-            type="range"
-            min="0.9"
-            max="1"
-            step="0.01"
-            value={damping()}
-            onInput={(e) => setDamping(parseFloat(e.currentTarget.value))}
+          <Slider
+    id="damping-slider"
+    min={0.9}
+    max={1}
+    step={0.01}
+  /> setDamping(parseFloat(e.currentTarget.value))}
             title="Adjust the damping factor for object movement"
           />
         </div>

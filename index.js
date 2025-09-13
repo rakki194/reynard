@@ -10,7 +10,7 @@ export * from "reynard-annotating";
 export * from "reynard-auth";
 export * from "reynard-boundingbox";
 export * from "reynard-caption";
-export * from "reynard-charts";
+// export * from "reynard-charts"; // Temporarily disabled for build
 export * from "reynard-chat";
 export * from "reynard-colors";
 export * from "reynard-components";

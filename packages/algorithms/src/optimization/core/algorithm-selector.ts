@@ -66,8 +66,8 @@ export class AlgorithmSelector {
     spatialVsOptimized: number;
     memoryThreshold: number;
   } = {
-    naiveVsSpatial: 50, // Based on PAW findings
-    spatialVsOptimized: 25, // Based on PAW findings
+    naiveVsSpatial: 100, // Based on PAW findings - naive good for <100 objects
+    spatialVsOptimized: 500, // Based on PAW findings - spatial good for 100-500 objects
     memoryThreshold: 100, // Memory pressure threshold
   };
 
@@ -222,7 +222,7 @@ export class AlgorithmSelector {
     const { complexity, memoryPressure, performanceProfile } = analysis;
     const { objectCount } = analysis.workload;
 
-    // Based on PAW findings: crossover point around 50-100 objects
+    // Based on PAW findings: crossover points at 100 and 500 objects
     if (objectCount < this.thresholds.naiveVsSpatial) {
       return {
         algorithm: "naive",
@@ -233,7 +233,7 @@ export class AlgorithmSelector {
         },
         reasoning: [
           "Small object count favors naive approach",
-          "PAW findings show naive is optimal for <50 objects",
+          "PAW findings show naive is optimal for <100 objects",
           "Minimal allocation overhead for small datasets",
         ],
       };

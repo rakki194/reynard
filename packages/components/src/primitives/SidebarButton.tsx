@@ -125,6 +125,8 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
     "glow",
     "glowColor",
     "tooltip",
+    "aria-label",
+    "title",
   ]);
 
   const getButtonClasses = () => {
@@ -266,7 +268,7 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
               class="reynard-sidebar-button__progress-bar"
               style={
                 {
-                  "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%`,
+                  "--progress-width": `${Math.max(0, Math.min(100, local.progress || 0))}%`,
                 } as any
               }
             />

@@ -5,8 +5,9 @@
  */
 
 import { Component, Show, For } from "solid-js";
-import { Button, Select } from "reynard-components";
-import { Icon } from "reynard-components/icons";
+import { Button, Select } from "../primitives";
+import { Toggle } from "../primitives";
+import { Icon } from "../icons";
 import { usePerformanceExport } from "./composables/usePerformanceExport";
 import type { PerformanceExportPanelProps } from "./types/PerformanceExportTypes";
 
@@ -89,7 +90,7 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
               <h4>Export Format</h4>
               <Select
                 value={state().exportOptions.format}
-                onChange={(value) => updateExportOptions({ format: value })}
+                onChange={(e) => updateExportOptions({ format: e.target.value })}
                 options={exportFormats.map((f) => ({
                   value: f.value,
                   label: f.label,
@@ -104,18 +105,16 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
                 <For each={availableMetrics}>
                   {(metric) => (
                     <label class="reynard-metric-option">
-                      <input
-                        type="checkbox"
-                        checked={state().exportOptions.includeMetrics.includes(
-                          metric,
-                        )}
-                        onChange={(e) => {
+                      <Toggle
+                        checked={state().exportOptions.includeMetrics.includes(metric)}
+                        onChange={(checked) => {
                           const metrics = state().exportOptions.includeMetrics;
-                          const newMetrics = e.currentTarget.checked
+                          const newMetrics = checked
                             ? [...metrics, metric]
                             : metrics.filter((m) => m !== metric);
                           updateExportOptions({ includeMetrics: newMetrics });
                         }}
+                        size="sm"
                       />
                       {metric}
                     </label>

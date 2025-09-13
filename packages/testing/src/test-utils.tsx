@@ -142,8 +142,8 @@ function suppressConsoleWarnings() {
 
 export interface ComponentTestOptions {
   props?: Record<string, unknown>;
-  wrapper?: Component<unknown>;
-  providers?: Component<unknown>[];
+  wrapper?: Component<any>;
+  providers?: Component<any>[];
 }
 
 /**
@@ -162,7 +162,7 @@ export async function testComponentRendering<T extends Component<any>>(
     const Wrapper = () => {
       const componentElement = <Component {...props} />;
       return providers.reduceRight((element, Provider) => {
-        return <Provider>{element}</Provider>;
+        return <Provider {...({} as any)}>{element}</Provider>;
       }, componentElement);
     };
     renderResult = render(Wrapper);

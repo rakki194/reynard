@@ -7,7 +7,7 @@ real-time collaboration, AI-powered features, and gamification elements to make 
 
 ## 📊 Current Progress Summary
 
-**🦦> Codebase Analysis Results:**
+> *🦦> Codebase Analysis Results:*
 
 - **Total Files**: 41 TypeScript/Python files
 - **Frontend Components**: 19 TSX files, 5 TS files
@@ -19,7 +19,7 @@ real-time collaboration, AI-powered features, and gamification elements to make 
 - **TypeScript Interfaces**: 18 interfaces defined
 - **Mock Data**: 9 mock implementations for demonstration (needs backend integration)
 
-**🎯 Implementation Status:**
+> *🎯 Implementation Status:*
 
 - 🔄 **Phase 1 In Progress**: Core foundation (60% done)
 - 🔄 **Phase 2 In Progress**: Essential features (30% done)
@@ -28,7 +28,7 @@ real-time collaboration, AI-powered features, and gamification elements to make 
 - ❌ **Phase 5 Not Started**: AI features (0% done)
 - 🔄 **Phase 6 In Progress**: Polish & launch (10% done)
 
-**⚠️ Critical Issues Found:**
+> *⚠️ Critical Issues Found:*
 
 - Missing API endpoints for notebooks/notes (only database schema exists)
 - All gamification features use mock data (no backend integration)

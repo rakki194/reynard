@@ -142,6 +142,7 @@ Comprehensive development documentation covering frontend, backend, testing, and
 - **Backend**: FastAPI integration, database configuration, authentication
 - **Testing**: Unit testing, E2E testing, package testing patterns
 - **Deployment**: Service deployment, Docker configuration, monitoring
+- **Animation**: [Phyllotactic Animation System](./development/frontend/phyllotactic-animation-system.md) - Advanced mathematical animation system
 
 ### 🏗️ [Architecture](./architecture/)
 
@@ -163,6 +164,7 @@ Comprehensive integration documentation for AI/ML, external services, and APIs.
 - **AI/ML**: RAG system, caption generation, model management, embeddings
 - **External Services**: Ollama integration, TTS services, external APIs
 - **APIs**: WebSocket, streaming, REST API integrations, authentication
+- **Animation**: [Animation Utilities API](./api/animation-utilities.md) - Comprehensive animation system API
 
 ### 📖 [Guides](./guides/)
 

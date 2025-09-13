@@ -9,11 +9,11 @@ import pytest
 import asyncio
 import time
 from unittest.mock import Mock, patch
-from test_base import BlackhatTestBase, TestResult
+from .test_base import BlackhatTestBase, SecurityTestResult
 
-from fuzzing.comprehensive_fuzzer import ComprehensiveFuzzer
-from fuzzing.endpoint_fuzzer import EndpointFuzzer
-from fuzzing.payload_generator import PayloadGenerator
+from ..fuzzing.comprehensive_fuzzer import ComprehensiveFuzzer
+from ..fuzzing.endpoint_fuzzer import EndpointFuzzer
+from ..fuzzing.payload_generator import PayloadGenerator
 
 class TestFuzzingFramework(BlackhatTestBase):
     """
@@ -47,7 +47,7 @@ class TestFuzzingFramework(BlackhatTestBase):
             
             response_time = time.time() - start_time
             
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Payload Generator",
                 success=True,
                 vulnerability_found=False,
@@ -61,7 +61,7 @@ class TestFuzzingFramework(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Payload Generator",
                 success=False,
                 vulnerability_found=False,
@@ -89,7 +89,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 # Count vulnerabilities found
                 vulnerabilities = [r for r in results if r.vulnerability_detected]
                 
-                test_result = TestResult(
+                test_result = SecurityTestResult(
                     test_name="Comprehensive Fuzzer",
                     success=True,
                     vulnerability_found=len(vulnerabilities) > 0,
@@ -109,7 +109,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Comprehensive Fuzzer",
                 success=False,
                 vulnerability_found=False,
@@ -138,7 +138,7 @@ class TestFuzzingFramework(BlackhatTestBase):
             # Count vulnerabilities found
             vulnerabilities = [r for r in results if r.vulnerability_detected]
             
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Endpoint Fuzzer",
                 success=True,
                 vulnerability_found=len(vulnerabilities) > 0,
@@ -156,7 +156,7 @@ class TestFuzzingFramework(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Endpoint Fuzzer",
                 success=False,
                 vulnerability_found=False,
@@ -184,7 +184,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 # Count false positives (vulnerabilities found on secure endpoint)
                 false_positives = [r for r in results if r.vulnerability_detected]
                 
-                test_result = TestResult(
+                test_result = SecurityTestResult(
                     test_name="False Positive Prevention",
                     success=len(false_positives) == 0,
                     vulnerability_found=len(false_positives) > 0,
@@ -202,7 +202,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="False Positive Prevention",
                 success=False,
                 vulnerability_found=False,
@@ -230,7 +230,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 # Calculate requests per second
                 requests_per_second = len(results) / response_time if response_time > 0 else 0
                 
-                test_result = TestResult(
+                test_result = SecurityTestResult(
                     test_name="Fuzzing Performance",
                     success=requests_per_second >= 1.0,  # At least 1 request per second
                     vulnerability_found=False,
@@ -248,7 +248,7 @@ class TestFuzzingFramework(BlackhatTestBase):
                 
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Fuzzing Performance",
                 success=False,
                 vulnerability_found=False,

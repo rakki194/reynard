@@ -95,6 +95,8 @@ export const IconButton: Component<IconButtonProps> = (props) => {
     "tooltip",
     "children",
     "class",
+    "aria-label",
+    "title",
   ]);
 
   const getButtonClasses = () => {

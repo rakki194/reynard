@@ -1,0 +1,347 @@
+/**
+ * 🌹 Phyllotactic Rose Petal Demo Styles
+ * Beautiful organic styling for the rose petal growth animation
+ */
+
+.phyllotactic-rose-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #1a0a1a 0%, #2a1a2a 50%, #1a0a1a 100%);
+  min-height: 100vh;
+  color: #f0f0f0;
+}
+
+.demo-header {
+  text-align: center;
+  padding: 2rem 0;
+  background: linear-gradient(45deg, #2a1a2a, #3a2a3a);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1);
+  border: 1px solid rgba(255, 20, 147, 0.2);
+}
+
+.demo-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ff69b4, #ff1493, #dc143c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
+}
+
+.demo-header p {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.demo-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.demo-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.growth-controls,
+.animation-controls,
+.info-panel {
+  background: linear-gradient(135deg, #2a1a2a 0%, #3a2a3a 100%);
+  border: 1px solid rgba(255, 20, 147, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.growth-controls:hover,
+.animation-controls:hover,
+.info-panel:hover {
+  border-color: rgba(255, 20, 147, 0.4);
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1);
+  transform: translateY(-2px);
+}
+
+.growth-controls h3,
+.animation-controls h3,
+.info-panel h3 {
+  color: #ff69b4;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+.control-group:last-child {
+  margin-bottom: 0;
+}
+
+.control-group label {
+  display: block;
+  color: #e0e0e0;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.control-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.control-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.1);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #c0c0c0;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #ff69b4;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+}
+
+.demo-visualization {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-container {
+  position: relative;
+  background: linear-gradient(135deg, #1a0a1a 0%, #2a1a2a 100%);
+  border: 2px solid rgba(255, 20, 147, 0.3);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.canvas-container:hover {
+  border-color: rgba(255, 20, 147, 0.5);
+  box-shadow: 0 12px 48px rgba(255, 20, 147, 0.2);
+  transform: translateY(-4px);
+}
+
+.demo-canvas {
+  display: block;
+  border-radius: 8px;
+  background: #0a0a0a;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.canvas-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(26, 10, 26, 0.9);
+  border: 1px solid rgba(255, 20, 147, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  backdrop-filter: blur(10px);
+  max-width: 200px;
+}
+
+.overlay-info h4 {
+  color: #ff69b4;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.overlay-info p {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+.demo-info {
+  margin-top: 2rem;
+}
+
+.feature-descriptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.feature-description {
+  background: linear-gradient(135deg, #2a1a2a 0%, #3a2a3a 100%);
+  border: 1px solid rgba(255, 20, 147, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.feature-description:hover {
+  border-color: rgba(255, 20, 147, 0.4);
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1);
+  transform: translateY(-4px);
+}
+
+.feature-description h4 {
+  color: #ff69b4;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.feature-description p {
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .demo-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .demo-controls {
+    order: 2;
+  }
+  
+  .demo-visualization {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .phyllotactic-rose-demo {
+    padding: 0.5rem;
+  }
+  
+  .demo-header h2 {
+    font-size: 2rem;
+  }
+  
+  .demo-header p {
+    font-size: 1rem;
+  }
+  
+  .demo-canvas {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+  }
+  
+  .feature-descriptions {
+    grid-template-columns: 1fr;
+  }
+  
+  .canvas-overlay {
+    position: static;
+    margin-top: 1rem;
+    max-width: none;
+  }
+}
+
+/* Animation Effects */
+@keyframes petalGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 20, 147, 0.6);
+  }
+}
+
+.canvas-container {
+  animation: petalGlow 4s ease-in-out infinite;
+}
+
+/* Custom Slider Styles */
+.control-group input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #2a1a2a 0%, #ff69b4 50%, #2a1a2a 100%);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+  transition: all 0.3s ease;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
+}
+
+.control-group input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+  transition: all 0.3s ease;
+}
+
+.control-group input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { CircleOps } from "../../circle-algorithms";
+import { CircleOps } from "../../../geometry/shapes/circle-algorithms";
 
 describe("CircleOps - Transformations", () => {
   describe("expand", () => {

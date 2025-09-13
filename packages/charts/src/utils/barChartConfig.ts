@@ -4,7 +4,7 @@
  */
 
 import { ChartConfig, ReynardTheme } from "../types";
-import { getDefaultConfig } from "./chartUtils";
+import { getDefaultConfig } from "./index";
 
 export interface BarChartConfigOptions {
   title?: string;

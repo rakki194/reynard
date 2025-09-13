@@ -46,8 +46,8 @@ export interface ThrottledFunction<
   TReturn = unknown,
 > {
   (...args: TArgs): TReturn | undefined;
-  readonly cancel: () => void;
-  readonly flush: () => TReturn | undefined;
+  cancel: () => void;
+  flush: () => TReturn | undefined;
 }
 
 export interface DebouncedFunction<
@@ -55,8 +55,8 @@ export interface DebouncedFunction<
   TReturn = unknown,
 > {
   (...args: TArgs): TReturn | undefined;
-  readonly cancel: () => void;
-  readonly flush: () => TReturn | undefined;
+  cancel: () => void;
+  flush: () => TReturn | undefined;
 }
 
 export interface MemoryPoolConfig {

@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Toggle } from "reynard-components";
+import { Button, TextField } from "reynard-components";
 import { useSettings } from "../composables/useSettings";
 
 export interface ServiceManagementSettingsProps {
@@ -41,30 +41,30 @@ export const ServiceManagementSettings: Component<
   const loadServiceSettings = async () => {
     setIsLoading(true);
     try {
-      setAutoRefresh(settings().getSetting("services.auto_refresh") || true);
+      setAutoRefresh(settings.getSetting("services.auto_refresh") || true);
       setRefreshInterval(
-        settings().getSetting("services.refresh_interval") || 5000,
+        settings.getSetting("services.refresh_interval") || 5000,
       );
       setEnableHealthChecks(
-        settings().getSetting("services.enable_health_checks") || true,
+        settings.getSetting("services.enable_health_checks") || true,
       );
       setHealthCheckInterval(
-        settings().getSetting("services.health_check_interval") || 30000,
+        settings.getSetting("services.health_check_interval") || 30000,
       );
       setEnableAutoRestart(
-        settings().getSetting("services.enable_auto_restart") || false,
+        settings.getSetting("services.enable_auto_restart") || false,
       );
-      setRestartDelay(settings().getSetting("services.restart_delay") || 5000);
+      setRestartDelay(settings.getSetting("services.restart_delay") || 5000);
       setMaxRestartAttempts(
-        settings().getSetting("services.max_restart_attempts") || 3,
+        settings.getSetting("services.max_restart_attempts") || 3,
       );
       setEnableNotifications(
-        settings().getSetting("services.enable_notifications") || true,
+        settings.getSetting("services.enable_notifications") || true,
       );
       setEnableLogging(
-        settings().getSetting("services.enable_logging") || true,
+        settings.getSetting("services.enable_logging") || true,
       );
-      setLogLevel(settings().getSetting("services.log_level") || "info");
+      setLogLevel(settings.getSetting("services.log_level") || "info");
     } catch (error) {
       console.error("Failed to load service management settings:", error);
     } finally {
@@ -75,36 +75,36 @@ export const ServiceManagementSettings: Component<
   const saveServiceSettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting("services.auto_refresh", autoRefresh());
-      await settings().setSetting(
+      await settings.setSetting("services.auto_refresh", autoRefresh());
+      await settings.setSetting(
         "services.refresh_interval",
         refreshInterval(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "services.enable_health_checks",
         enableHealthChecks(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "services.health_check_interval",
         healthCheckInterval(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "services.enable_auto_restart",
         enableAutoRestart(),
       );
-      await settings().setSetting("services.restart_delay", restartDelay());
-      await settings().setSetting(
+      await settings.setSetting("services.restart_delay", restartDelay());
+      await settings.setSetting(
         "services.max_restart_attempts",
         maxRestartAttempts(),
       );
-      await settings().setSetting(
+      await settings.setSetting(
         "services.enable_notifications",
         enableNotifications(),
       );
-      await settings().setSetting("services.enable_logging", enableLogging());
-      await settings().setSetting("services.log_level", logLevel());
+      await settings.setSetting("services.enable_logging", enableLogging());
+      await settings.setSetting("services.log_level", logLevel());
 
-      await settings().saveSettings();
+      await settings.saveSettings();
     } catch (error) {
       console.error("Failed to save service management settings:", error);
     } finally {
@@ -142,11 +142,11 @@ export const ServiceManagementSettings: Component<
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={autoRefresh()}
                 onChange={setAutoRefresh}
                 label="Auto-refresh Status"
-                description="Automatically refresh service status information"
+                helperText="Automatically refresh service status information"
               />
             </div>
 
@@ -158,18 +158,18 @@ export const ServiceManagementSettings: Component<
                 onChange={(value) =>
                   setRefreshInterval(parseInt(value) || 5000)
                 }
-                description="How often to refresh service status (in milliseconds)"
-                validation={{ min: 1000, max: 60000 }}
+                helperText="How often to refresh service status (in milliseconds)"
+               
                 disabled={!autoRefresh()}
               />
             </div>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableHealthChecks()}
                 onChange={setEnableHealthChecks}
                 label="Enable Health Checks"
-                description="Perform periodic health checks on services"
+                helperText="Perform periodic health checks on services"
               />
             </div>
 
@@ -181,8 +181,8 @@ export const ServiceManagementSettings: Component<
                 onChange={(value) =>
                   setHealthCheckInterval(parseInt(value) || 30000)
                 }
-                description="How often to perform health checks (in milliseconds)"
-                validation={{ min: 5000, max: 300000 }}
+                helperText="How often to perform health checks (in milliseconds)"
+               
                 disabled={!enableHealthChecks()}
               />
             </div>
@@ -196,11 +196,11 @@ export const ServiceManagementSettings: Component<
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableAutoRestart()}
                 onChange={setEnableAutoRestart}
                 label="Enable Auto-restart"
-                description="Automatically restart failed services"
+                helperText="Automatically restart failed services"
               />
             </div>
 
@@ -210,9 +210,9 @@ export const ServiceManagementSettings: Component<
                   label="Restart Delay (ms)"
                   type="number"
                   value={restartDelay()}
-                  onChange={(value) => setRestartDelay(parseInt(value) || 5000)}
-                  description="Delay before attempting to restart a failed service"
-                  validation={{ min: 1000, max: 60000 }}
+                  onChange={(e) => setRestartDelay(parseInt(e.target.value) || 5000)}
+                  helperText="Delay before attempting to restart a failed service"
+                 
                 />
               </div>
 
@@ -224,8 +224,8 @@ export const ServiceManagementSettings: Component<
                   onChange={(value) =>
                     setMaxRestartAttempts(parseInt(value) || 3)
                   }
-                  description="Maximum number of restart attempts before giving up"
-                  validation={{ min: 1, max: 10 }}
+                  helperText="Maximum number of restart attempts before giving up"
+                 
                 />
               </div>
             </Show>
@@ -239,11 +239,11 @@ export const ServiceManagementSettings: Component<
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableNotifications()}
                 onChange={setEnableNotifications}
                 label="Enable Notifications"
-                description="Show notifications for service status changes"
+                helperText="Show notifications for service status changes"
               />
             </div>
           </div>
@@ -256,11 +256,11 @@ export const ServiceManagementSettings: Component<
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableLogging()}
                 onChange={setEnableLogging}
                 label="Enable Logging"
-                description="Enable logging for service management activities"
+                helperText="Enable logging for service management activities"
               />
             </div>
 
@@ -269,7 +269,7 @@ export const ServiceManagementSettings: Component<
                 label="Log Level"
                 value={logLevel()}
                 onChange={setLogLevel}
-                description="Minimum log level to record"
+                helperText="Minimum log level to record"
                 disabled={!enableLogging()}
               />
             </div>

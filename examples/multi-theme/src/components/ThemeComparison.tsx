@@ -4,6 +4,7 @@
  */
 
 import { Component, createSignal, For } from "solid-js";
+import { Toggle } from "reynard-components";
 
 export const ThemeComparison: Component = () => {
   const [selectedThemes, setSelectedThemes] = createSignal(["light", "dark"]);
@@ -122,7 +123,9 @@ export const ThemeComparison: Component = () => {
                   </div>
 
                   <label class="sample-checkbox">
-                    <input type="checkbox" checked />
+                    <Toggle
+    size="sm"
+  />
                     <span class="checkmark"></span>
                     Checkbox option
                   </label>

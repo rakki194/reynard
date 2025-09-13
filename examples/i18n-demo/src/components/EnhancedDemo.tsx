@@ -1,5 +1,6 @@
 import { Component, createSignal, createEffect, For } from "solid-js";
 import {
+import { Toggle } from "reynard-components";
   createI18nModule,
   type EnhancedI18nModule,
   migrateTranslations,
@@ -131,18 +132,16 @@ const EnhancedDemo: Component = () => {
       <div class="demo-section">
         <h3>Configuration</h3>
         <label>
-          <input
-            type="checkbox"
-            checked={debugMode()}
-            onChange={(e) => setDebugMode(e.currentTarget.checked)}
+          <Toggle
+    size="sm"
+  /> setDebugMode(e.currentTarget.checked)}
           />
           Enable Debug Mode
         </label>
         <label>
-          <input
-            type="checkbox"
-            checked={performanceMode()}
-            onChange={(e) => setPerformanceMode(e.currentTarget.checked)}
+          <Toggle
+    size="sm"
+  /> setPerformanceMode(e.currentTarget.checked)}
           />
           Enable Performance Monitoring
         </label>

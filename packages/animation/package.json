@@ -1,0 +1,62 @@
+{
+  "name": "reynard-animation",
+  "version": "0.1.0",
+  "description": "🦊 Unified animation system for Reynard - consolidates all animation functionality",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./easing": {
+      "types": "./dist/easing/index.d.ts",
+      "import": "./dist/easing/index.js"
+    },
+    "./engines": {
+      "types": "./dist/engines/index.d.ts",
+      "import": "./dist/engines/index.js"
+    },
+    "./composables": {
+      "types": "./dist/composables/index.d.ts",
+      "import": "./dist/composables/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "solid-js": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "animation",
+    "solidjs",
+    "reynard",
+    "easing",
+    "performance",
+    "3d",
+    "staggered"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT"
+}

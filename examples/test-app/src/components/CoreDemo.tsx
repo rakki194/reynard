@@ -1,5 +1,5 @@
 import { createSignal, createEffect, For } from "solid-js";
-import { Button, Card, TextField } from "reynard-components";
+import { Button, Card, TextField, Toggle } from "reynard-components";
 import {
   useLocalStorage,
   useDebounce,
@@ -119,28 +119,28 @@ export function CoreDemo() {
             />
             <div class="preference-controls">
               <label>
-                <input
-                  type="checkbox"
+                <Toggle
                   checked={preferences().notifications}
-                  onChange={(e) =>
+                  onChange={(checked) =>
                     setPreferences({
                       ...preferences(),
-                      notifications: e.currentTarget.checked,
+                      notifications: checked,
                     })
                   }
+                  size="sm"
                 />
                 Enable Notifications
               </label>
               <label>
-                <input
-                  type="checkbox"
+                <Toggle
                   checked={preferences().language === "es"}
-                  onChange={(e) =>
+                  onChange={(checked) =>
                     setPreferences({
                       ...preferences(),
-                      language: e.currentTarget.checked ? "es" : "en",
+                      language: checked ? "es" : "en",
                     })
                   }
+                  size="sm"
                 />
                 Spanish Language
               </label>

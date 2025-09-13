@@ -5,6 +5,7 @@
  */
 
 import { Component, For } from "solid-js";
+import { Toggle } from "reynard-components";
 
 export interface BatchConfigurationProps {
   selectedGenerator: string;
@@ -58,10 +59,9 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
 
       <div class="config-group">
         <label>
-          <input
-            type="checkbox"
-            checked={props.force}
-            onChange={(e) => props.onForceChange(e.currentTarget.checked)}
+          <Toggle
+    size="sm"
+  /> props.onForceChange(e.currentTarget.checked)}
             disabled={props.disabled}
             aria-label="Force regeneration of existing captions"
           />
@@ -71,10 +71,9 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
 
       <div class="config-group">
         <label>
-          <input
-            type="checkbox"
-            checked={props.postProcess}
-            onChange={(e) => props.onPostProcessChange(e.currentTarget.checked)}
+          <Toggle
+    size="sm"
+  /> props.onPostProcessChange(e.currentTarget.checked)}
             disabled={props.disabled}
             aria-label="Apply post-processing to generated captions"
           />

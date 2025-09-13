@@ -58,7 +58,7 @@ Versatile button component with multiple variants and states.
 </Button>
 ```
 
-**Props:**
+> *Props:*
 
 - `variant`: 'primary' | 'secondary' | 'tertiary' | 'danger' | 'success' | 'warning'
 - `size`: 'sm' | 'md' | 'lg'
@@ -83,7 +83,7 @@ Flexible container component with consistent styling.
 </Card>
 ```
 
-**Props:**
+> *Props:*
 
 - `variant`: 'default' | 'elevated' | 'outlined' | 'filled'
 - `padding`: 'none' | 'sm' | 'md' | 'lg'
@@ -106,7 +106,7 @@ Flexible text input with validation and styling.
 />
 ```
 
-**Props:**
+> *Props:*
 
 - `variant`: 'default' | 'filled' | 'outlined'
 - `size`: 'sm' | 'md' | 'lg'
@@ -134,7 +134,7 @@ Dropdown select component with options support.
 />
 ```
 
-**Props:**
+> *Props:*
 
 - `variant`: 'default' | 'filled' | 'outlined'
 - `size`: 'sm' | 'md' | 'lg'
@@ -165,7 +165,7 @@ const [isOpen, setIsOpen] = createSignal(false);
 </Modal>;
 ```
 
-**Props:**
+> *Props:*
 
 - `open`: boolean
 - `onClose`: () => void
@@ -205,7 +205,7 @@ const tabs = [
 </Tabs>;
 ```
 
-**Props:**
+> *Props:*
 
 - `items`: TabItem[]
 - `activeTab`: string
@@ -288,7 +288,7 @@ import { ChatContainer } from "reynard-components";
 />;
 ```
 
-**Features:**
+> *Features:*
 
 - **Real-time Streaming**: Advanced streaming text processing with real-time markdown rendering
 - **Thinking Sections**: Support for AI assistant thinking process visualization

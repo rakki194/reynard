@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { PerformanceBudgetChecker } from "../../../performance/budget";
+import { PerformanceBudgetChecker } from "../../performance/budget";
 import { createTestBudget, createTestMetrics } from "./test-utils";
 
 describe("PerformanceBudgetChecker - Setup", () => {

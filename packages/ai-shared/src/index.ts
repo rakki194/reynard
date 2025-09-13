@@ -18,8 +18,42 @@ export * from "./services/index.js";
 // Export all models
 export * from "./models/index.js";
 
-// Export all utilities
-export * from "./utils/index.js";
+// Export all utilities (except conflicting types)
+export {
+  ValidationUtils,
+  PerformanceMonitor,
+  DataUtils,
+  ProgressTracker,
+  // Re-export validation functions
+  validateEmail,
+  validatePassword,
+  validateUrl,
+  validateUsername,
+  validateValue,
+  validateApiKey,
+  validateToken,
+  validateModelName,
+  validatePrompt,
+  validateTemperature,
+  validateMaxTokens,
+  // Re-export error handling
+  errorHandler,
+  NetworkError,
+  retry,
+  retryWithExponentialBackoff,
+  retryWithLinearBackoff,
+  retryWithFixedDelay,
+  ReynardError,
+  ValidationError,
+  AuthenticationError,
+  AuthorizationError,
+  ProcessingError,
+  DatabaseError,
+  ConfigurationError,
+  TimeoutError,
+  RateLimitError,
+  wrapAsync,
+} from "./utils/index.js";
 
 // Re-export commonly used items for convenience
 export {
@@ -41,13 +75,5 @@ export {
   getModelRegistry,
 } from "./models/index.js";
 
-export {
-  // Utilities
-  ValidationUtils,
-  PerformanceMonitor,
-  ErrorUtils,
-  DataUtils,
-  ProgressTracker,
-} from "./utils/index.js";
 
 // All types are already exported via the wildcard export above

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { tutorialData } from "../../ReynardAdventure";
+import { tutorialData } from "../components/ReynardAdventure";
 
 describe("Reynard Tutorial Validation", () => {
   it("should validate that all tutorial sections have valid structure", () => {

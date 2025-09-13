@@ -1,2 +1,192 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="1.910204">
+<testsuites id="" name="" tests="15" failures="15" skipped="0" errors="0" time="137.460703">
+<testsuite name="penetration-tests.spec.ts" timestamp="2025-09-13T16:15:21.639Z" hostname="chromium" tests="3" failures="3" skipped="0" time="90.373" errors="0">
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework" classname="penetration-tests.spec.ts" time="30.097">
+<failure message="penetration-tests.spec.ts:196:5 should run comprehensive fuzzing framework" type="FAILURE">
+<![CDATA[  [chromium] › penetration-tests.spec.ts:196:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing" classname="penetration-tests.spec.ts" time="30.12">
+<failure message="penetration-tests.spec.ts:209:5 should run endpoint-specific fuzzing" type="FAILURE">
+<![CDATA[  [chromium] › penetration-tests.spec.ts:209:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing" classname="penetration-tests.spec.ts" time="30.156">
+<failure message="penetration-tests.spec.ts:222:5 should run specialized endpoint fuzzing" type="FAILURE">
+<![CDATA[  [chromium] › penetration-tests.spec.ts:222:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="penetration-tests.spec.ts" timestamp="2025-09-13T16:15:21.639Z" hostname="firefox" tests="3" failures="3" skipped="0" time="90.231" errors="0">
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework" classname="penetration-tests.spec.ts" time="30.18">
+<failure message="penetration-tests.spec.ts:196:5 should run comprehensive fuzzing framework" type="FAILURE">
+<![CDATA[  [firefox] › penetration-tests.spec.ts:196:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing" classname="penetration-tests.spec.ts" time="30.018">
+<failure message="penetration-tests.spec.ts:209:5 should run endpoint-specific fuzzing" type="FAILURE">
+<![CDATA[  [firefox] › penetration-tests.spec.ts:209:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing" classname="penetration-tests.spec.ts" time="30.033">
+<failure message="penetration-tests.spec.ts:222:5 should run specialized endpoint fuzzing" type="FAILURE">
+<![CDATA[  [firefox] › penetration-tests.spec.ts:222:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="penetration-tests.spec.ts" timestamp="2025-09-13T16:15:21.639Z" hostname="webkit" tests="3" failures="3" skipped="0" time="90.037" errors="0">
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework" classname="penetration-tests.spec.ts" time="30.016">
+<failure message="penetration-tests.spec.ts:196:5 should run comprehensive fuzzing framework" type="FAILURE">
+<![CDATA[  [webkit] › penetration-tests.spec.ts:196:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing" classname="penetration-tests.spec.ts" time="30.017">
+<failure message="penetration-tests.spec.ts:209:5 should run endpoint-specific fuzzing" type="FAILURE">
+<![CDATA[  [webkit] › penetration-tests.spec.ts:209:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing" classname="penetration-tests.spec.ts" time="30.004">
+<failure message="penetration-tests.spec.ts:222:5 should run specialized endpoint fuzzing" type="FAILURE">
+<![CDATA[  [webkit] › penetration-tests.spec.ts:222:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="penetration-tests.spec.ts" timestamp="2025-09-13T16:15:21.639Z" hostname="Mobile Chrome" tests="3" failures="3" skipped="0" time="90.023" errors="0">
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework" classname="penetration-tests.spec.ts" time="30.004">
+<failure message="penetration-tests.spec.ts:196:5 should run comprehensive fuzzing framework" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › penetration-tests.spec.ts:196:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing" classname="penetration-tests.spec.ts" time="30.007">
+<failure message="penetration-tests.spec.ts:209:5 should run endpoint-specific fuzzing" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › penetration-tests.spec.ts:209:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing" classname="penetration-tests.spec.ts" time="30.012">
+<failure message="penetration-tests.spec.ts:222:5 should run specialized endpoint fuzzing" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › penetration-tests.spec.ts:222:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="penetration-tests.spec.ts" timestamp="2025-09-13T16:15:21.639Z" hostname="Mobile Safari" tests="3" failures="3" skipped="0" time="90.002" errors="0">
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework" classname="penetration-tests.spec.ts" time="30.001">
+<failure message="penetration-tests.spec.ts:196:5 should run comprehensive fuzzing framework" type="FAILURE">
+<![CDATA[  [Mobile Safari] › penetration-tests.spec.ts:196:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run comprehensive fuzzing framework 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing" classname="penetration-tests.spec.ts" time="30.001">
+<failure message="penetration-tests.spec.ts:209:5 should run endpoint-specific fuzzing" type="FAILURE">
+<![CDATA[  [Mobile Safari] › penetration-tests.spec.ts:209:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run endpoint-specific fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+<testcase name="🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing" classname="penetration-tests.spec.ts" time="30">
+<failure message="penetration-tests.spec.ts:222:5 should run specialized endpoint fuzzing" type="FAILURE">
+<![CDATA[  [Mobile Safari] › penetration-tests.spec.ts:222:5 › 🐺 Penetration Testing Suite › Comprehensive Fuzzing › should run specialized endpoint fuzzing 
+
+    Test timeout of 30000ms exceeded.
+]]>
+</failure>
+<system-out>
+<![CDATA[🐺 Blackhat suite path: /home/kade/runeset/reynard/blackhat
+]]>
+</system-out>
+</testcase>
+</testsuite>
 </testsuites>

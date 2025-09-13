@@ -49,7 +49,7 @@ The test suite is organized into several categories:
 
 ### Dependencies
 
-**Core Testing Stack:**
+> *Core Testing Stack:*
 
 - **Vitest**: Test runner and assertion library
 - **happy-dom**: Lightweight DOM environment (replacing jsdom)

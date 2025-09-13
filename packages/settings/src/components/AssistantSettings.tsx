@@ -4,7 +4,9 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Select, Toggle } from "reynard-components";
+import { Button, TextField, Select } from "reynard-components";
+import { Toggle } from "./Toggle";
+import { Button } from "./Button";
 import { useSettings } from "../composables/useSettings";
 
 export interface AssistantSettingsProps {
@@ -42,31 +44,31 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
   const loadAssistantSettings = async () => {
     setIsLoading(true);
     try {
-      setEnabled(settings().getSetting("assistant.enabled") || false);
+      setEnabled(settings.getSetting("assistant.enabled") || false);
       setOllamaUrl(
-        settings().getSetting("assistant.ollama_url") ||
+        settings.getSetting("assistant.ollama_url") ||
           "http://localhost:11434",
       );
       setDefaultModel(
-        settings().getSetting("assistant.default_model") || "llama3.2",
+        settings.getSetting("assistant.default_model") || "llama3.2",
       );
       setEnableStreaming(
-        settings().getSetting("assistant.enable_streaming") || true,
+        settings.getSetting("assistant.enable_streaming") || true,
       );
-      setMaxTokens(settings().getSetting("assistant.max_tokens") || 2048);
-      setTemperature(settings().getSetting("assistant.temperature") || 0.7);
-      setTopP(settings().getSetting("assistant.top_p") || 0.9);
+      setMaxTokens(settings.getSetting("assistant.max_tokens") || 2048);
+      setTemperature(settings.getSetting("assistant.temperature") || 0.7);
+      setTopP(settings.getSetting("assistant.top_p") || 0.9);
       setTimeoutSeconds(
-        settings().getSetting("assistant.timeout_seconds") || 120,
+        settings.getSetting("assistant.timeout_seconds") || 120,
       );
       setEnableContext(
-        settings().getSetting("assistant.enable_context") || true,
+        settings.getSetting("assistant.enable_context") || true,
       );
       setContextWindow(
-        settings().getSetting("assistant.context_window") || 4096,
+        settings.getSetting("assistant.context_window") || 4096,
       );
-      setEnableMemory(settings().getSetting("assistant.enable_memory") || true);
-      setMemorySize(settings().getSetting("assistant.memory_size") || 100);
+      setEnableMemory(settings.getSetting("assistant.enable_memory") || true);
+      setMemorySize(settings.getSetting("assistant.memory_size") || 100);
     } catch (error) {
       console.error("Failed to load assistant settings:", error);
     } finally {
@@ -77,26 +79,26 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
   const saveAssistantSettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting("assistant.enabled", enabled());
-      await settings().setSetting("assistant.ollama_url", ollamaUrl());
-      await settings().setSetting("assistant.default_model", defaultModel());
-      await settings().setSetting(
+      await settings.setSetting("assistant.enabled", enabled());
+      await settings.setSetting("assistant.ollama_url", ollamaUrl());
+      await settings.setSetting("assistant.default_model", defaultModel());
+      await settings.setSetting(
         "assistant.enable_streaming",
         enableStreaming(),
       );
-      await settings().setSetting("assistant.max_tokens", maxTokens());
-      await settings().setSetting("assistant.temperature", temperature());
-      await settings().setSetting("assistant.top_p", topP());
-      await settings().setSetting(
+      await settings.setSetting("assistant.max_tokens", maxTokens());
+      await settings.setSetting("assistant.temperature", temperature());
+      await settings.setSetting("assistant.top_p", topP());
+      await settings.setSetting(
         "assistant.timeout_seconds",
         timeoutSeconds(),
       );
-      await settings().setSetting("assistant.enable_context", enableContext());
-      await settings().setSetting("assistant.context_window", contextWindow());
-      await settings().setSetting("assistant.enable_memory", enableMemory());
-      await settings().setSetting("assistant.memory_size", memorySize());
+      await settings.setSetting("assistant.enable_context", enableContext());
+      await settings.setSetting("assistant.context_window", contextWindow());
+      await settings.setSetting("assistant.enable_memory", enableMemory());
+      await settings.setSetting("assistant.memory_size", memorySize());
 
-      await settings().saveSettings();
+      await settings.saveSettings();
     } catch (error) {
       console.error("Failed to save assistant settings:", error);
     } finally {
@@ -156,11 +158,11 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enabled()}
                 onChange={setEnabled}
                 label="Enable AI Assistant"
-                description="Enable AI assistant functionality with Ollama integration"
+                helperText="Enable AI assistant functionality with Ollama integration"
               />
             </div>
 
@@ -170,7 +172,7 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 value={ollamaUrl()}
                 onChange={setOllamaUrl}
                 placeholder="http://localhost:11434"
-                description="URL of the Ollama server instance"
+                helperText="URL of the Ollama server instance"
                 disabled={!enabled()}
               />
             </div>
@@ -200,7 +202,7 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 value={defaultModel()}
                 onChange={setDefaultModel}
                 options={availableModels}
-                description="Select the default language model for the assistant"
+                helperText="Select the default language model for the assistant"
                 disabled={!enabled()}
               />
             </div>
@@ -210,9 +212,9 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 label="Max Tokens"
                 type="number"
                 value={maxTokens()}
-                onChange={(value) => setMaxTokens(parseInt(value) || 2048)}
-                description="Maximum number of tokens to generate in a response"
-                validation={{ min: 100, max: 8192 }}
+                onChange={(e) => setMaxTokens(parseInt(e.target.value) || 2048)}
+                helperText="Maximum number of tokens to generate in a response"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -223,9 +225,9 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={temperature()}
-                onChange={(value) => setTemperature(parseFloat(value) || 0.7)}
-                description="Controls randomness in responses (0.0 = deterministic, 1.0 = very random)"
-                validation={{ min: 0, max: 2 }}
+                onChange={(e) => setTemperature(parseFloat(e.target.value) || 0.7)}
+                helperText="Controls randomness in responses (0.0 = deterministic, 1.0 = very random)"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -236,9 +238,9 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={topP()}
-                onChange={(value) => setTopP(parseFloat(value) || 0.9)}
-                description="Nucleus sampling parameter (0.0 = very focused, 1.0 = very diverse)"
-                validation={{ min: 0, max: 1 }}
+                onChange={(e) => setTopP(parseFloat(e.target.value) || 0.9)}
+                helperText="Nucleus sampling parameter (0.0 = very focused, 1.0 = very diverse)"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -252,11 +254,11 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableContext()}
                 onChange={setEnableContext}
                 label="Enable Context"
-                description="Maintain conversation context across multiple interactions"
+                helperText="Maintain conversation context across multiple interactions"
                 disabled={!enabled()}
               />
             </div>
@@ -270,19 +272,19 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                   onChange={(value) =>
                     setContextWindow(parseInt(value) || 4096)
                   }
-                  description="Maximum number of tokens to keep in conversation context"
-                  validation={{ min: 512, max: 32768 }}
+                  helperText="Maximum number of tokens to keep in conversation context"
+                 
                   disabled={!enabled()}
                 />
               </div>
             </Show>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableMemory()}
                 onChange={setEnableMemory}
                 label="Enable Memory"
-                description="Enable long-term memory for the assistant"
+                helperText="Enable long-term memory for the assistant"
                 disabled={!enabled()}
               />
             </div>
@@ -293,9 +295,9 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                   label="Memory Size"
                   type="number"
                   value={memorySize()}
-                  onChange={(value) => setMemorySize(parseInt(value) || 100)}
-                  description="Maximum number of conversation memories to retain"
-                  validation={{ min: 10, max: 1000 }}
+                  onChange={(e) => setMemorySize(parseInt(e.target.value) || 100)}
+                  helperText="Maximum number of conversation memories to retain"
+                 
                   disabled={!enabled()}
                 />
               </div>
@@ -314,19 +316,19 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 label="Request Timeout (seconds)"
                 type="number"
                 value={timeoutSeconds()}
-                onChange={(value) => setTimeoutSeconds(parseInt(value) || 120)}
-                description="Maximum time to wait for a response from the assistant"
-                validation={{ min: 10, max: 600 }}
+                onChange={(e) => setTimeoutSeconds(parseInt(e.target.value) || 120)}
+                helperText="Maximum time to wait for a response from the assistant"
+               
                 disabled={!enabled()}
               />
             </div>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableStreaming()}
                 onChange={setEnableStreaming}
                 label="Enable Streaming"
-                description="Enable real-time streaming of assistant responses"
+                helperText="Enable real-time streaming of assistant responses"
                 disabled={!enabled()}
               />
             </div>

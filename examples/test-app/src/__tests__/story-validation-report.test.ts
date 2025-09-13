@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   generateTutorialValidationReport,
   printTutorialValidationReport,
-} from "../story-validation-report";
+} from "../components/__tests__/story-validation-report";
 
 // Mock the tutorialData import
 vi.mock("../ReynardAdventure", () => ({

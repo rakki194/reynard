@@ -4,7 +4,8 @@
  */
 
 import { Component, createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
+import { Button, TextField, Select, Slider } from "reynard-components";
+import { Toggle } from "./Toggle";
 import type { SettingDefinition } from "../types";
 
 export interface SettingControlProps {
@@ -86,11 +87,9 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
       case "boolean":
         return (
           <label class="setting-control__toggle">
-            <input
-              type="checkbox"
-              id={controlId()}
-              checked={Boolean(local.value)}
-              onChange={(e) => handleChange(e.target.checked)}
+            <Toggle
+              checked={local.value}
+              onChange={handleChange}
               disabled={isDisabled}
               class="setting-control__checkbox"
             />
@@ -132,11 +131,10 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
       case "range":
         return (
           <div class="setting-control__range">
-            <input
-              type="range"
+            <Slider
               id={controlId()}
               value={local.value || validation?.min || 0}
-              onInput={(e) => handleChange(parseFloat(e.target.value))}
+              onChange={handleChange}
               disabled={isDisabled}
               min={validation?.min}
               max={validation?.max}

@@ -12,7 +12,7 @@ import {
   onMount,
   onCleanup,
 } from "solid-js";
-import { Button, TextField, Select } from "reynard-components";
+import { Button, TextField, Select } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface PackageInstallationPanelProps {

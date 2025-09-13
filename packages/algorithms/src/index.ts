@@ -6,20 +6,25 @@
  * automatic optimization and performance monitoring.
  */
 
-// Optimized algorithms with automatic selection and memory pooling
-export * from "./optimized";
-
-// PAW optimization framework
-export * from "./optimization";
-
-// Union-Find algorithm for efficient set operations and cycle detection
-export * from "./union-find";
-
-// Spatial hashing for efficient spatial partitioning and nearest neighbor queries
-export * from "./spatial-hash";
-
-// Performance utilities for benchmarking, profiling, and monitoring
-export * from "./performance";
-
-// Geometry utilities for 2D geometric calculations and transformations
-export * from "./geometry";
+// Core algorithm classes, geometry operations, and performance utilities
+export { 
+  UnionFind, 
+  SpatialHash, 
+  PointOps, 
+  LineOps,
+  RectangleOps, 
+  CircleOps, 
+  PolygonOps,
+  PerformanceTimer,
+  MemoryMonitor,
+  throttle,
+  debounce,
+  batchCollisionDetection,
+  batchCollisionWithSpatialHash,
+  type Point,
+  type Rectangle,
+  type Circle,
+  type Polygon,
+  type AABB,
+  type CollisionResult
+} from "./exports";

@@ -9,6 +9,7 @@ from datetime import timedelta
 from typing import Any, Dict, Optional
 
 from gatekeeper.api.dependencies import get_auth_manager
+from app.security.jwt_secret_manager import get_jwt_secret_key, get_jwt_algorithm
 
 
 async def create_access_token(
@@ -79,7 +80,7 @@ def create_access_token_sync(
     
     # Use test configuration
     config = TokenConfig(
-        secret_key="test-secret-key-for-testing-only-not-for-production",
+        secret_key=get_jwt_secret_key(),
         algorithm="HS256",
         access_token_expire_minutes=30,
         refresh_token_expire_days=7,
@@ -116,7 +117,7 @@ def create_refresh_token_sync(
     
     # Use test configuration
     config = TokenConfig(
-        secret_key="test-secret-key-for-testing-only-not-for-production",
+        secret_key=get_jwt_secret_key(),
         algorithm="HS256",
         access_token_expire_minutes=30,
         refresh_token_expire_days=7,
@@ -151,7 +152,7 @@ def verify_token_sync(token: str, token_type: str = "access") -> Optional[Dict[s
     
     # Use test configuration
     config = TokenConfig(
-        secret_key="test-secret-key-for-testing-only-not-for-production",
+        secret_key=get_jwt_secret_key(),
         algorithm="HS256",
         access_token_expire_minutes=30,
         refresh_token_expire_days=7,

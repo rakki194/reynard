@@ -1,6 +1,6 @@
 {
   "name": "reynard-components",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Reynard UI Components - Production-ready SolidJS component library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -11,6 +11,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./icons": {
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons/index.js",
+      "require": "./dist/icons/index.cjs"
     },
     "./styles": "./dist/styles.css",
     "./dist/styles.css": "./dist/styles.css"

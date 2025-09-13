@@ -9,9 +9,9 @@ import pytest
 import asyncio
 import time
 from unittest.mock import Mock, patch
-from test_base import BlackhatTestBase, TestResult
+from .test_base import BlackhatTestBase, SecurityTestResult
 
-from rate_limiting.rate_limit_bypass import RateLimitBypassExploit
+from ..rate_limiting.rate_limit_bypass import RateLimitBypassExploit
 
 class TestRateLimiting(BlackhatTestBase):
     """
@@ -33,7 +33,7 @@ class TestRateLimiting(BlackhatTestBase):
             
             # Analyze results
             vulnerability_found = any(result.success for result in results)
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Rate Limit Bypass",
                 success=True,
                 vulnerability_found=vulnerability_found,
@@ -55,7 +55,7 @@ class TestRateLimiting(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Rate Limit Bypass",
                 success=False,
                 vulnerability_found=False,
@@ -90,7 +90,7 @@ class TestRateLimiting(BlackhatTestBase):
             # Check if any requests were rate limited (429 status code)
             rate_limited_requests = [r for r in responses if r.status_code == 429]
             
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Rate Limiting Functionality",
                 success=True,
                 vulnerability_found=len(rate_limited_requests) == 0,
@@ -108,7 +108,7 @@ class TestRateLimiting(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Rate Limiting Functionality",
                 success=False,
                 vulnerability_found=False,
@@ -156,7 +156,7 @@ class TestRateLimiting(BlackhatTestBase):
             
             response_time = time.time() - start_time
             
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Header Manipulation Bypass",
                 success=True,
                 vulnerability_found=bypass_successes > 0,
@@ -174,7 +174,7 @@ class TestRateLimiting(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Header Manipulation Bypass",
                 success=False,
                 vulnerability_found=False,
@@ -220,7 +220,7 @@ class TestRateLimiting(BlackhatTestBase):
             
             response_time = time.time() - start_time
             
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Timing Attack Bypass",
                 success=True,
                 vulnerability_found=bypass_successes > 0,
@@ -238,7 +238,7 @@ class TestRateLimiting(BlackhatTestBase):
             
         except Exception as e:
             response_time = time.time() - start_time
-            test_result = TestResult(
+            test_result = SecurityTestResult(
                 test_name="Timing Attack Bypass",
                 success=False,
                 vulnerability_found=False,

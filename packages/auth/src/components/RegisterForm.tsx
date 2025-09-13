@@ -10,7 +10,7 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Button } from "reynard-components";
+import { Button, Toggle } from "reynard-components";;
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "../types";
 import { validateEmail, validateUsername } from "../utils";
@@ -351,10 +351,9 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
           <div class="register-form__agreements">
             <Show when={local.showTermsAcceptance}>
               <label class="register-form__checkbox">
-                <input
-                  type="checkbox"
-                  checked={acceptTerms()}
-                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                <Toggle
+    size="sm"
+  /> setAcceptTerms(e.target.checked)}
                   disabled={local.loading}
                   required
                 />
@@ -377,10 +376,9 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
 
             <Show when={local.showPrivacyAcceptance}>
               <label class="register-form__checkbox">
-                <input
-                  type="checkbox"
-                  checked={acceptPrivacy()}
-                  onChange={(e) => setAcceptPrivacy(e.target.checked)}
+                <Toggle
+    size="sm"
+  /> setAcceptPrivacy(e.target.checked)}
                   disabled={local.loading}
                   required
                 />

@@ -19,13 +19,13 @@ from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskPr
 # Add the blackhat directory to the path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_base import BlackhatTestBase, TestResult
+from .test_base import BlackhatTestBase, SecurityTestResult
 
 # Import all test suites
-from test_jwt_exploits import TestJWTExploits
-from test_fuzzing_framework import TestFuzzingFramework
-from test_cors_exploits import TestCORSExploits
-from test_rate_limiting import TestRateLimiting
+from .test_jwt_exploits import TestJWTExploits
+from .test_fuzzing_framework import TestFuzzingFramework
+from .test_cors_exploits import TestCORSExploits
+from .test_rate_limiting import TestRateLimiting
 
 console = Console()
 
@@ -39,7 +39,7 @@ class TestSuiteResult:
     vulnerabilities_found: int
     success_rate: float
     execution_time: float
-    results: List[TestResult]
+    results: List[SecurityTestResult]
 
 class BlackhatTestRunner:
     """

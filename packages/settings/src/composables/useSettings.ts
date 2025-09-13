@@ -17,8 +17,8 @@ import { DEFAULT_SETTINGS_CONFIG } from "../types";
 import { StorageManager } from "../storage";
 import {
   validateSetting,
-  validateAllSettings,
-  migrateSettingValue,
+  validateSettings,
+  migrateSettings,
 } from "../utils";
 
 export interface UseSettingsOptions extends Partial<SettingsManagerOptions> {
@@ -235,9 +235,9 @@ export function useSettings(options: UseSettingsOptions = {}) {
     try {
       // Validate all settings if enabled
       if (config.validation?.validateOnSave) {
-        const validation = validateAllSettings(
-          config.schema.settings,
+        const validation = validateSettings(
           settingsState().values,
+          config.schema.settings,
         );
         if (!validation.isValid) {
           updateState({
@@ -329,11 +329,11 @@ export function useSettings(options: UseSettingsOptions = {}) {
               definition.migrate &&
               metadata.version !== config.schema.version
             ) {
-              value = migrateSettingValue(
-                definition,
-                value,
+              value = migrateSettings(
+                { [key]: value },
                 metadata.version || "0.0.0",
-              );
+                config.schema.version,
+              )[key];
             }
 
             loadedValues[key] = value;
@@ -349,9 +349,9 @@ export function useSettings(options: UseSettingsOptions = {}) {
 
       // Validate loaded settings if enabled
       if (validateOnLoad) {
-        const validation = validateAllSettings(
-          config.schema.settings,
+        const validation = validateSettings(
           loadedValues,
+          config.schema.settings,
         );
         if (!validation.isValid) {
           updateState({

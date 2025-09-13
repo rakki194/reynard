@@ -3,8 +3,8 @@
  * Real-time performance metrics visualization and analysis
  */
 
-import { PerformanceChart } from "reynard-charts";
-import { Button } from "reynard-components";
+import { Chart } from "reynard-charts";
+import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import {
   Component,
@@ -484,34 +484,19 @@ export const PerformanceMetricsPanel: Component<
       {/* Performance Chart */}
       <div class="performance-chart">
         <h4>{getMetricLabel(selectedMetric())}</h4>
-        <PerformanceChart
-          data={getChartData()}
+        <Chart
           type="line"
+          labels={getChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
+          datasets={[{
+            label: getMetricLabel(selectedMetric()),
+            data: getChartData().map(entry => entry.value),
+            borderColor: "oklch(0.7 0.15 200)",
+            backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
+            tension: 0.1,
+          }]}
           width={800}
           height={300}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                type: "time",
-                time: {
-                  displayFormats: {
-                    minute: "HH:mm",
-                    hour: "HH:mm",
-                  },
-                },
-              },
-              y: {
-                beginAtZero: true,
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-          }}
+          useOKLCH={true}
         />
       </div>
 

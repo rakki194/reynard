@@ -20,19 +20,7 @@ python-magic
 Pillow
 lxml
 
-# Encoding and obfuscation
-base64
-urllib.parse
-html.parser
-json
-
-# Timing and performance testing
-time
-asyncio
-concurrent.futures
-
 # Logging and monitoring
-logging
 colorama
 rich
 

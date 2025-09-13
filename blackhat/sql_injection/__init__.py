@@ -9,13 +9,13 @@ input validation and show you exactly how an attacker would inject SQL.
 """
 
 from .regex_bypass import RegexBypassExploit
-from .obfuscated_payloads import ObfuscatedPayloadExploit
+from .obfuscated_payloads import ObfuscatedSQLInjectionExploit
 from .blind_injection import BlindInjectionExploit
 from .union_attacks import UnionBasedExploit
 
 __all__ = [
     "RegexBypassExploit",
-    "ObfuscatedPayloadExploit",
+    "ObfuscatedSQLInjectionExploit",
     "BlindInjectionExploit",
     "UnionBasedExploit"
 ]

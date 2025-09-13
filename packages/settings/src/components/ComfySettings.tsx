@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, createSignal, createEffect } from "solid-js";
-import { Button, TextField, Toggle } from "reynard-components";
+import { Button, TextField } from "reynard-components";
 import { useSettings } from "../composables/useSettings";
 
 export interface ComfySettingsProps {
@@ -40,20 +40,20 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
   const loadComfySettings = async () => {
     setIsLoading(true);
     try {
-      setEnabled(settings().getSetting("comfy.enabled") || false);
+      setEnabled(settings.getSetting("comfy.enabled") || false);
       setApiUrl(
-        settings().getSetting("comfy.api_url") || "http://localhost:8188",
+        settings.getSetting("comfy.api_url") || "http://localhost:8188",
       );
-      setTimeoutSeconds(settings().getSetting("comfy.timeout_seconds") || 300);
-      setRetryAttempts(settings().getSetting("comfy.retry_attempts") || 3);
-      setEnableQueue(settings().getSetting("comfy.enable_queue") || true);
-      setMaxQueueSize(settings().getSetting("comfy.max_queue_size") || 10);
+      setTimeoutSeconds(settings.getSetting("comfy.timeout_seconds") || 300);
+      setRetryAttempts(settings.getSetting("comfy.retry_attempts") || 3);
+      setEnableQueue(settings.getSetting("comfy.enable_queue") || true);
+      setMaxQueueSize(settings.getSetting("comfy.max_queue_size") || 10);
       setAutoDownloadModels(
-        settings().getSetting("comfy.auto_download_models") || true,
+        settings.getSetting("comfy.auto_download_models") || true,
       );
-      setModelCacheSize(settings().getSetting("comfy.model_cache_size") || 5);
+      setModelCacheSize(settings.getSetting("comfy.model_cache_size") || 5);
       setEnableProgressTracking(
-        settings().getSetting("comfy.enable_progress_tracking") || true,
+        settings.getSetting("comfy.enable_progress_tracking") || true,
       );
     } catch (error) {
       console.error("Failed to load ComfyUI settings:", error);
@@ -65,23 +65,23 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
   const saveComfySettings = async () => {
     setIsSaving(true);
     try {
-      await settings().setSetting("comfy.enabled", enabled());
-      await settings().setSetting("comfy.api_url", apiUrl());
-      await settings().setSetting("comfy.timeout_seconds", timeoutSeconds());
-      await settings().setSetting("comfy.retry_attempts", retryAttempts());
-      await settings().setSetting("comfy.enable_queue", enableQueue());
-      await settings().setSetting("comfy.max_queue_size", maxQueueSize());
-      await settings().setSetting(
+      await settings.setSetting("comfy.enabled", enabled());
+      await settings.setSetting("comfy.api_url", apiUrl());
+      await settings.setSetting("comfy.timeout_seconds", timeoutSeconds());
+      await settings.setSetting("comfy.retry_attempts", retryAttempts());
+      await settings.setSetting("comfy.enable_queue", enableQueue());
+      await settings.setSetting("comfy.max_queue_size", maxQueueSize());
+      await settings.setSetting(
         "comfy.auto_download_models",
         autoDownloadModels(),
       );
-      await settings().setSetting("comfy.model_cache_size", modelCacheSize());
-      await settings().setSetting(
+      await settings.setSetting("comfy.model_cache_size", modelCacheSize());
+      await settings.setSetting(
         "comfy.enable_progress_tracking",
         enableProgressTracking(),
       );
 
-      await settings().saveSettings();
+      await settings.saveSettings();
     } catch (error) {
       console.error("Failed to save ComfyUI settings:", error);
     } finally {
@@ -130,11 +130,11 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enabled()}
                 onChange={setEnabled}
                 label="Enable ComfyUI"
-                description="Enable ComfyUI workflow automation and integration"
+                helperText="Enable ComfyUI workflow automation and integration"
               />
             </div>
 
@@ -144,7 +144,7 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 value={apiUrl()}
                 onChange={setApiUrl}
                 placeholder="http://localhost:8188"
-                description="ComfyUI server API endpoint URL"
+                helperText="ComfyUI server API endpoint URL"
                 disabled={!enabled()}
               />
             </div>
@@ -173,9 +173,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Request Timeout (seconds)"
                 type="number"
                 value={timeoutSeconds()}
-                onChange={(value) => setTimeoutSeconds(parseInt(value) || 300)}
-                description="Maximum time to wait for ComfyUI workflow completion"
-                validation={{ min: 30, max: 1800 }}
+                onChange={(e) => setTimeoutSeconds(parseInt(e.target.value) || 300)}
+                helperText="Maximum time to wait for ComfyUI workflow completion"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -185,9 +185,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Retry Attempts"
                 type="number"
                 value={retryAttempts()}
-                onChange={(value) => setRetryAttempts(parseInt(value) || 3)}
-                description="Number of retry attempts for failed requests"
-                validation={{ min: 0, max: 10 }}
+                onChange={(e) => setRetryAttempts(parseInt(e.target.value) || 3)}
+                helperText="Number of retry attempts for failed requests"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -201,11 +201,11 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableQueue()}
                 onChange={setEnableQueue}
                 label="Enable Queue"
-                description="Enable workflow queue for better resource management"
+                helperText="Enable workflow queue for better resource management"
                 disabled={!enabled()}
               />
             </div>
@@ -216,9 +216,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                   label="Max Queue Size"
                   type="number"
                   value={maxQueueSize()}
-                  onChange={(value) => setMaxQueueSize(parseInt(value) || 10)}
-                  description="Maximum number of workflows in queue"
-                  validation={{ min: 1, max: 100 }}
+                  onChange={(e) => setMaxQueueSize(parseInt(e.target.value) || 10)}
+                  helperText="Maximum number of workflows in queue"
+                 
                   disabled={!enabled()}
                 />
               </div>
@@ -233,11 +233,11 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={autoDownloadModels()}
                 onChange={setAutoDownloadModels}
                 label="Auto-download Models"
-                description="Automatically download required models when needed"
+                helperText="Automatically download required models when needed"
                 disabled={!enabled()}
               />
             </div>
@@ -247,9 +247,9 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Model Cache Size (GB)"
                 type="number"
                 value={modelCacheSize()}
-                onChange={(value) => setModelCacheSize(parseInt(value) || 5)}
-                description="Maximum disk space for model cache"
-                validation={{ min: 1, max: 100 }}
+                onChange={(e) => setModelCacheSize(parseInt(e.target.value) || 5)}
+                helperText="Maximum disk space for model cache"
+               
                 disabled={!enabled()}
               />
             </div>
@@ -263,11 +263,11 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
             </p>
 
             <div class="setting-row">
-              <Toggle
+              <Button
                 checked={enableProgressTracking()}
                 onChange={setEnableProgressTracking}
                 label="Enable Progress Tracking"
-                description="Track and report workflow execution progress"
+                helperText="Track and report workflow execution progress"
                 disabled={!enabled()}
               />
             </div>

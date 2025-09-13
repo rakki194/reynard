@@ -13,9 +13,20 @@ import { NotificationToast } from "./components/NotificationToast";
 import { UnusedVariablesDemo } from "./components/UnusedVariablesDemo";
 import { AlgorithmsDemo } from "./components/AlgorithmsDemo";
 import { MonacoEditorDemo } from "./components/MonacoEditorDemo";
+import { PhyllotacticSpiralGame } from "./components/PhyllotacticSpiralGame";
+import { StroboscopicDemo } from "./components/StroboscopicDemo";
+import { AdvancedPatternDemo } from "./components/AdvancedPatternDemo";
+import { Phyllotactic3DDemo } from "./components/Phyllotactic3DDemo";
+import { PhyllotacticRosePetalDemo } from "./components/PhyllotacticRosePetalDemo";
+import { PerformanceDemo } from "./components/PerformanceDemo";
+import { EnhancedIntegrationDemo } from "./components/EnhancedIntegrationDemo";
+import { DataVisualizationDemo } from "./components/visualization/DataVisualizationDemo";
 import ReynardTutorial from "./components/ReynardAdventure";
 import "./App.css";
 import "./styles/streaming-demo.css";
+import "./components/PhyllotacticSpiralGame.css";
+import "./components/spell-effects/SpellCaster.css";
+import "./components/visualization/VisualizationStyles.css";
 // Import Reynard component styles
 import "reynard-components/styles";
 // Import Reynard games styles
@@ -40,6 +51,14 @@ function App() {
     },
     { id: "chat", label: "Chat", icon: getIcon("chat") },
     { id: "algorithms", label: "Algorithms", icon: getIcon("calculator") },
+    { id: "phyllotactic", label: "Phyllotactic Spirals", icon: getIcon("sparkle") },
+    { id: "stroboscopic", label: "Stroboscopic Effects", icon: getIcon("sparkle") },
+    { id: "advanced-patterns", label: "Advanced Patterns", icon: getIcon("sparkle") },
+    { id: "phyllotactic-3d", label: "3D Phyllotactic", icon: getIcon("sparkle") },
+    { id: "rose-petal", label: "Rose Petal Growth", icon: getIcon("sparkle") },
+    { id: "performance", label: "Performance Demo", icon: getIcon("sparkle") },
+    { id: "enhanced-integration", label: "Enhanced Integration", icon: getIcon("sparkle") },
+    { id: "data-viz", label: "Data Visualization", icon: getIcon("chart") },
     { id: "unused-vars", label: "Unused Variables", icon: getIcon("palette") },
   ];
 
@@ -97,6 +116,38 @@ function App() {
 
                   <TabPanel tabId="algorithms" activeTab={activeTab()}>
                     <AlgorithmsDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="phyllotactic" activeTab={activeTab()}>
+                    <PhyllotacticSpiralGame />
+                  </TabPanel>
+
+                  <TabPanel tabId="stroboscopic" activeTab={activeTab()}>
+                    <StroboscopicDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="advanced-patterns" activeTab={activeTab()}>
+                    <AdvancedPatternDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="phyllotactic-3d" activeTab={activeTab()}>
+                    <Phyllotactic3DDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="rose-petal" activeTab={activeTab()}>
+                    <PhyllotacticRosePetalDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="performance" activeTab={activeTab()}>
+                    <PerformanceDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="enhanced-integration" activeTab={activeTab()}>
+                    <EnhancedIntegrationDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="data-viz" activeTab={activeTab()}>
+                    <DataVisualizationDemo />
                   </TabPanel>
 
                   <TabPanel tabId="unused-vars" activeTab={activeTab()}>

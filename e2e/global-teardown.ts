@@ -33,7 +33,7 @@ async function cleanupTestDatabase(): Promise<void> {
 
   try {
     const response = await fetch(
-      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/cleanup/test`,
+      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/cleanup/test`,
       {
         method: "POST",
         headers: {
@@ -48,6 +48,8 @@ async function cleanupTestDatabase(): Promise<void> {
 
     if (response.ok) {
       console.log("✅ Test database cleanup complete");
+    } else if (response.status === 404) {
+      console.log("ℹ️  Database cleanup endpoint not available, skipping...");
     } else {
       console.warn(`⚠️  Test database cleanup failed: ${response.status}`);
     }
@@ -75,7 +77,7 @@ async function removeTestUsers(): Promise<void> {
   for (const username of testUsernames) {
     try {
       const response = await fetch(
-        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/auth/users/${username}`,
+        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/auth/users/${username}`,
         {
           method: "DELETE",
           headers: {
@@ -88,6 +90,8 @@ async function removeTestUsers(): Promise<void> {
         console.log(`✅ Removed test user: ${username}`);
       } else if (response.status === 404) {
         console.log(`ℹ️  Test user not found: ${username}`);
+      } else if (response.status === 401) {
+        console.log(`ℹ️  User deletion requires authentication: ${username}`);
       } else {
         console.warn(
           `⚠️  Failed to remove test user ${username}: ${response.status}`,

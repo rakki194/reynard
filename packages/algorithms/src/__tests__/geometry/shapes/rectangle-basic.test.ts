@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { RectangleBasic } from "../../rectangle-basic";
-import { PointOps } from "../../point-algorithms";
+import { RectangleBasic } from "../../../geometry/shapes/rectangle-basic";
+import { PointOps } from "../../../geometry/shapes/point-algorithms";
 
 describe("RectangleBasic", () => {
   describe("create", () => {

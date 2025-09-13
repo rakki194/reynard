@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import { TimeSeriesChart } from "../../TimeSeriesChart";
+import { TimeSeriesChart } from "../components/TimeSeriesChart";
 import type { TimeSeriesDataPoint } from "../../../types";
 
 // Extend expect with jest-dom matchers

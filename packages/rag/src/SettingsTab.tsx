@@ -6,7 +6,7 @@
  */
 
 import { Show } from "solid-js";
-import { Button, Card, Select } from "reynard-components";
+import { Button, Card, Select, Slider, Toggle } from "reynard-components";;;
 import type { RAGStats } from "./types";
 
 export interface SettingsTabProps {
@@ -59,12 +59,10 @@ export function SettingsTab(props: SettingsTabProps) {
 
           <div class="setting-group">
             <label>Max Results: {props.maxResults}</label>
-            <input
-              type="range"
-              min="1"
-              max="50"
-              value={props.maxResults}
-              onInput={(e) =>
+            <Slider
+    min={1}
+    max={50}
+  />
                 props.onMaxResultsChange(parseInt(e.currentTarget.value))
               }
               class="range-slider"
@@ -78,13 +76,11 @@ export function SettingsTab(props: SettingsTabProps) {
               Similarity Threshold:{" "}
               {(props.similarityThreshold * 100).toFixed(0)}%
             </label>
-            <input
-              type="range"
-              min="0.1"
-              max="1.0"
-              step="0.05"
-              value={props.similarityThreshold}
-              onInput={(e) =>
+            <Slider
+    min={0.1}
+    max={1.0}
+    step={0.05}
+  />
                 props.onSimilarityThresholdChange(
                   parseFloat(e.currentTarget.value),
                 )
@@ -97,10 +93,9 @@ export function SettingsTab(props: SettingsTabProps) {
 
           <div class="setting-group">
             <label class="checkbox-label">
-              <input
-                type="checkbox"
-                checked={props.enableReranking}
-                onChange={(e) =>
+              <Toggle
+    size="sm"
+  />
                   props.onEnableRerankingChange(e.currentTarget.checked)
                 }
               />

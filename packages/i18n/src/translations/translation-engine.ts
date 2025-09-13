@@ -45,6 +45,48 @@ function extractEngineOptions(options: {
   };
 }
 
+// Engine factory function
+function createEngineComponents(
+  locale: () => LanguageCode,
+  translations: () => Translations,
+  setTranslations: (translations: Translations) => void,
+  options: ReturnType<typeof extractEngineOptions>
+) {
+  const t = createCoreTranslationFunction(locale, translations, {
+    enableDebug: options.enableDebug,
+    enablePerformanceMonitoring: options.enablePerformanceMonitoring,
+  });
+
+  const loadingEffect = createTranslationLoadingEffect(
+    locale,
+    setTranslations,
+    {
+      enablePerformanceMonitoring: options.enablePerformanceMonitoring,
+      intlConfig: options.intlConfig,
+      usedNamespaces: options.usedNamespaces,
+      preloadLocales: options.preloadLocales,
+      initialTranslations: options.initialTranslations,
+    },
+  );
+
+  const i18nDebugger = {} as Record<string, unknown>; // Placeholder - I18nDebugger not available
+  const features = createTranslationFeatures(t, locale);
+  const namespaceLoader = createNamespaceLoader(
+    locale,
+    loadingEffect.optimizedLoader,
+  );
+  const cacheManager = createCacheManager();
+
+  return {
+    t,
+    loadingEffect,
+    i18nDebugger,
+    features,
+    namespaceLoader,
+    cacheManager,
+  };
+}
+
 // Translation engine creation
 export function createTranslationEngine(
   locale: () => LanguageCode,
@@ -59,48 +101,22 @@ export function createTranslationEngine(
     initialTranslations?: Partial<Translations>;
   },
 ) {
-  const {
-    enableDebug,
-    enablePerformanceMonitoring,
-    intlConfig,
-    usedNamespaces,
-    preloadLocales,
-    initialTranslations,
-  } = extractEngineOptions(options);
-
-  const t = createCoreTranslationFunction(locale, translations, {
-    enableDebug,
-    enablePerformanceMonitoring,
-  });
-
-  const loadingEffect = createTranslationLoadingEffect(
+  const parsedOptions = extractEngineOptions(options);
+  const components = createEngineComponents(
     locale,
+    translations,
     setTranslations,
-    {
-      enablePerformanceMonitoring,
-      intlConfig,
-      usedNamespaces,
-      preloadLocales,
-      initialTranslations,
-    },
+    parsedOptions,
   );
-
-  const i18nDebugger = {} as any; // Placeholder - I18nDebugger not available
-  const features = createTranslationFeatures(t, locale);
-  const namespaceLoader = createNamespaceLoader(
-    locale,
-    loadingEffect.optimizedLoader,
-  );
-  const cacheManager = createCacheManager();
 
   return {
-    debugger: i18nDebugger,
-    performanceMonitor: loadingEffect.performanceMonitor,
-    intlFormatter: loadingEffect.intlFormatter,
-    ...features,
-    ...namespaceLoader,
-    ...cacheManager,
-    optimizedLoader: loadingEffect.optimizedLoader,
-    t,
+    debugger: components.i18nDebugger,
+    performanceMonitor: components.loadingEffect.performanceMonitor,
+    intlFormatter: components.loadingEffect.intlFormatter,
+    ...components.features,
+    ...components.namespaceLoader,
+    ...components.cacheManager,
+    optimizedLoader: components.loadingEffect.optimizedLoader,
+    t: components.t,
   };
 }

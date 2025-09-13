@@ -70,7 +70,7 @@ Complete application layout with sidebar, header, and content areas.
 </AppLayout>
 ```
 
-**Features:**
+> *Features:*
 
 - Responsive sidebar with collapse/expand
 - Mobile overlay behavior
@@ -114,7 +114,7 @@ Responsive CSS Grid system with breakpoint support.
 </MasonryGrid>;
 ```
 
-**Props:**
+> *Props:*
 
 - `columns`: Responsive column configuration
 - `gap`: Space between grid items
@@ -143,7 +143,7 @@ const breadcrumbItems = [
 />;
 ```
 
-**Features:**
+> *Features:*
 
 - Automatic truncation with ellipsis
 - Custom separators and icons
@@ -185,7 +185,7 @@ const menuItems = [
 />;
 ```
 
-**Features:**
+> *Features:*
 
 - Nested submenus with keyboard navigation
 - Icons and badges support
@@ -246,7 +246,7 @@ const columns = [
 />;
 ```
 
-**Features:**
+> *Features:*
 
 - Sorting with visual indicators
 - Row selection (single/multi)
@@ -282,7 +282,7 @@ Slide-out panel component with multiple positions.
 </Drawer>
 ```
 
-**Features:**
+> *Features:*
 
 - Four positions: left, right, top, bottom
 - Multiple sizes with custom dimensions

@@ -99,6 +99,8 @@ export const BreadcrumbButton: Component<BreadcrumbButtonProps> = (props) => {
     "isPrimary",
     "children",
     "class",
+    "aria-label",
+    "title",
   ]);
 
   const getButtonClasses = () => {
@@ -245,7 +247,7 @@ const actionIcons = {
   sort: "sort",
 };
 
-const actionVariants = {
+const actionVariants: Record<string, BreadcrumbButtonProps["variant"]> = {
   create: "primary",
   delete: "danger",
   edit: "secondary",
@@ -283,6 +285,8 @@ export const BreadcrumbActionButton: Component<BreadcrumbActionButtonProps> = (
     "isPrimary",
     "children",
     "class",
+    "aria-label",
+    "title",
   ]);
 
   const getIconName = () => {
@@ -292,7 +296,7 @@ export const BreadcrumbActionButton: Component<BreadcrumbActionButtonProps> = (
     return "settings"; // fallback
   };
 
-  const getVariant = () => {
+  const getVariant = (): BreadcrumbButtonProps["variant"] => {
     if (local.variant && local.variant !== "default") return local.variant;
     if (local.action && actionVariants[local.action])
       return actionVariants[local.action];
