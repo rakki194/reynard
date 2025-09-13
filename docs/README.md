@@ -1,10 +1,14 @@
 # Reynard Framework Documentation 🦊
 
-Welcome to the comprehensive documentation for the Reynard framework - a cunning SolidJS framework with modular architecture, built for modern web applications. This documentation reflects the current state of the Reynard ecosystem with its 25+ specialized packages.
+Welcome to the comprehensive documentation for the Reynard framework - a cunning SolidJS framework with
+modular architecture, built for modern web applications. This documentation reflects the current state of
+the Reynard ecosystem with its 25+ specialized packages.
 
 > _From dataset editor to multi-modal CMS: The evolution of a cunning framework_
 
-Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content management system. The framework extracts and modularizes yipyap's proven architectural patterns into reusable packages for modern web development.
+Reynard is a SolidJS framework derived from **yipyap**,
+a multi-modal content management system. The framework extracts and
+modularizes yipyap's proven architectural patterns into reusable packages for modern web development.
 
 ## Architecture Evolution
 
@@ -43,27 +47,48 @@ Reynard is a SolidJS framework derived from **yipyap**, a multi-modal content ma
 
 ### **🎯 Multi-Modal Content Management**
 
-Reynard inherits yipyap's sophisticated content management capabilities, offering advanced solutions for a wide range of media types. For images, Reynard provides powerful processing features such as advanced thumbnail generation, metadata extraction, and seamless format conversion. Video support is equally comprehensive, enabling detailed video processing with preview generation and in-depth metadata analysis.
+Reynard inherits yipyap's sophisticated content management capabilities,
+offering advanced solutions for a wide range of media types. For images,
+Reynard provides powerful processing features such as advanced thumbnail generation, metadata extraction, and
+seamless format conversion. Video support is equally comprehensive,
+enabling detailed video processing with preview generation and in-depth metadata analysis.
 
-Audio handling in Reynard is robust, supporting multiple formats and offering features like waveform visualization and thorough metadata extraction. Document processing is also a core strength, with the ability to handle PDFs, Office documents, and text files, all while performing intelligent content analysis.
+Audio handling in Reynard is robust, supporting multiple formats and offering features like waveform visualization and
+thorough metadata extraction. Document processing is also a core strength, with the ability to handle PDFs,
+Office documents, and text files, all while performing intelligent content analysis.
 
-At the heart of these capabilities is AI-powered analysis, which enables automatic content analysis, tagging, and classification, ensuring that all types of content are organized and discoverable with cunning efficiency.
+At the heart of these capabilities is AI-powered analysis, which enables automatic content analysis, tagging, and
+classification, ensuring that all types of content are organized and discoverable with cunning efficiency.
 
 ### **🤖 AI/ML Integration**
 
-Reynard is built on yipyap's proven AI infrastructure, offering a robust suite of intelligent features. Caption generation is powered by multiple AI models—including JTP2, WDv3, Florence-2, and JoyCaption—with support for efficient batch processing. Smart tagging enables automatic tag generation, complete with confidence scoring and the flexibility to incorporate custom models.
+Reynard is built on yipyap's proven AI infrastructure,
+offering a robust suite of intelligent features. Caption generation is powered by multiple AI models—including JTP2,
+WDv3, Florence-2, and JoyCaption—with support for
+efficient batch processing. Smart tagging enables automatic tag generation, complete with confidence scoring and
+the flexibility to incorporate custom models.
 
-The framework includes a Retrieval-Augmented Generation (RAG) system, leveraging vector databases and semantic search to enhance content discovery and analysis. For object detection, Reynard integrates models such as YOLO, OWLv2, and Florence-2, providing advanced bounding box annotation capabilities.
+The framework includes a Retrieval-Augmented Generation (RAG) system, leveraging vector databases and
+semantic search to enhance content discovery and
+analysis. For object detection, Reynard integrates models such as YOLO, OWLv2, and
+Florence-2, providing advanced bounding box annotation capabilities.
 
-Text-to-speech (TTS) functionality is also available, supporting multiple voice options and a wide range of languages to ensure accessibility and versatility.
+Text-to-speech (TTS) functionality is also available, supporting multiple voice options and
+a wide range of languages to ensure accessibility and versatility.
 
 ## 🎯 Philosophy
 
-Reynard is guided by the "cunning fox" philosophy. The framework values smart, elegant solutions over unnecessary complexity, aiming to be adaptable so it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while maximizing functionality, and maintains a professional standard with high expectations for code quality and naming conventions.
+Reynard is guided by the "cunning fox" philosophy. The framework values smart,
+elegant solutions over unnecessary complexity, aiming to be adaptable so
+it can integrate seamlessly with your existing patterns. It is resourceful, minimizing dependencies while
+maximizing functionality, and maintains a professional standard with high expectations for code quality and
+naming conventions.
 
 ## 📦 Package Ecosystem
 
-Reynard's package ecosystem is built on the foundation of yipyap's proven architecture, with each package designed to be independently useful while working seamlessly together. All packages are published to npm and ready for production use!
+Reynard's package ecosystem is built on the foundation of yipyap's proven architecture,
+with each package designed to be independently useful while
+working seamlessly together. All packages are published to npm and ready for production use!
 
 | Package                    | Description                                                                                                        | Version |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------- |
@@ -240,7 +265,8 @@ When updating documentation:
 
 ## 🚀 The Future of Reynard
 
-Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and refine the framework, we're building toward a future where:
+Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and
+refine the framework, we're building toward a future where:
 
 - **🤖 AI-First Development**: Every component is designed with AI integration in mind
 - **🌐 Universal Content**: Seamless handling of any content type, from images to 3D models
@@ -250,7 +276,10 @@ Reynard represents the next phase in the evolution of multi-modal content manage
 
 ### **🦊 Join the Evolution**
 
-Reynard is more than a framework - it's a movement toward smarter, more intuitive web development. Whether you're building the next generation of content management systems, AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects, Reynard provides the foundation you need.
+Reynard is more than a framework - it's a movement toward smarter,
+more intuitive web development. Whether you're building the next generation of content management systems,
+AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects,
+Reynard provides the foundation you need.
 
 **From dataset editor to multi-modal CMS to universal framework - the journey continues!**
 
@@ -266,6 +295,7 @@ Reynard is more than a framework - it's a movement toward smarter, more intuitiv
 
 ---
 
-_This documentation reflects the Reynard framework - a cunning SolidJS ecosystem with modular architecture, providing comprehensive guidance for development, architecture, integrations, and usage._
+_This documentation reflects the Reynard framework - a cunning SolidJS ecosystem with modular architecture,
+providing comprehensive guidance for development, architecture, integrations, and usage._
 
 _Built with ❤️, 🐺 and 🤖!_

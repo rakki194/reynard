@@ -70,8 +70,13 @@ function breakLongSentences(text, maxLength = 120) {
 function isSpecialMarkdownElement(line, context = []) {
     const trimmed = line.trim();
     
-    // Check if we're inside a code block
-    const inCodeBlock = context.some(prevLine => prevLine.trim().startsWith('```'));
+    // Check if we're inside a code block by counting opening/closing markers
+    let inCodeBlock = false;
+    for (const prevLine of context) {
+        if (prevLine.trim().startsWith('```')) {
+            inCodeBlock = !inCodeBlock;
+        }
+    }
     
     // Code blocks, tables, headers, lists, etc.
     return (

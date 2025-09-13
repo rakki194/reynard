@@ -17,6 +17,7 @@ and modularizes YipYap's proven architectural patterns into reusable packages fo
     - [Specialized Packages](#specialized-packages)
   - [🎯 Philosophy](#-philosophy)
   - [🧪 Testing](#-testing)
+  - [� Security Testing with FENRIR](#-security-testing-with-fenrir)
   - [🚀 Performance](#-performance)
     - [Bundle Sizes](#bundle-sizes)
   - [📚 Package Documentation](#-package-documentation)
@@ -102,6 +103,7 @@ and modularizes YipYap's proven architectural patterns into reusable packages fo
     - [**🦊 Core Framework**](#-core-framework)
     - [**🦦 YipYap Foundation**](#-yipyap-foundation)
     - [**🎯 Research and Development**](#-research-and-development)
+    - [**🐺 Security Research**](#-security-research)
   - [📞 Support](#-support)
   - [🚀 The Future of Reynard](#-the-future-of-reynard)
     - [**🦊 Join the Evolution**](#-join-the-evolution)
@@ -221,9 +223,42 @@ pnpm test:ui
 
 # Run Playwright tests
 pnpm run test:e2e
+
+# 🐺 Run FENRIR security testing
+python -m blackhat.run_all_exploits --target http://localhost:8000
 ```
 
 _[View complete testing guide →](./docs/CONTRIBUTING.md#testing)_
+_[View FENRIR security testing guide →](./blackhat/README.md)_
+
+## 🐺 Security Testing with FENRIR
+
+Reynard includes comprehensive security testing through **FENRIR** (Framework for
+Exploitative Network Reconnaissance and
+Intrusion Research), a sophisticated security testing arsenal inspired by Elder Pliny's CL4R1T4S research.
+
+**Security Testing Capabilities:**
+
+- **Traditional Web Security**: SQL injection, XSS, CSRF, path traversal, and more
+- **AI Service Exploitation**: LLM prompt injection, system prompt extraction, streaming exploits
+- **Advanced Unicode Attacks**: Vaporwave aesthetic exploits using visual confusability
+- **Comprehensive Fuzzing**: 1000+ attack vectors with professional vulnerability analysis
+- **Authentication Testing**: JWT manipulation, session hijacking, privilege escalation
+
+**Quick Security Assessment:**
+
+```bash
+# Run comprehensive security testing
+python -m blackhat.run_all_exploits --target http://localhost:8000
+
+# LLM-specific security testing
+python -m blackhat.run_llm_exploits --target http://localhost:8000
+
+# Vaporwave aesthetic exploitation
+python -m blackhat.llm_exploits.advanced_ai_exploits.vaporwave_aesthetic_exploits --target http://localhost:8000
+```
+
+_[View complete FENRIR security testing guide →](./blackhat/README.md)_
 
 ## 🚀 Performance
 
@@ -686,7 +721,8 @@ function App() {
 
 ### reynard-algorithms
 
-Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and geometric calculations.
+Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and
+geometric calculations.
 
 #### Algorithm Types
 
@@ -806,7 +842,8 @@ function FileProcessor() {
 
 ### reynard-annotating
 
-AI/ML-powered caption generation engine with multiple model support, batch processing, and comprehensive lifecycle management.
+AI/ML-powered caption generation engine with multiple model support, batch processing, and
+comprehensive lifecycle management.
 
 #### Annotating Features
 
@@ -1072,7 +1109,8 @@ function CompleteCaptionWorkflow() {
 
 ### reynard-testing
 
-Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities, and assertion utilities.
+Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities,
+and assertion utilities.
 
 #### Testing Features
 
@@ -1405,6 +1443,27 @@ Reynard builds upon the sophisticated architecture and AI/ML capabilities of Yip
 - **Architecture Decisions**: Detailed architectural patterns and design decisions
 - **Implementation Studies**: Performance analysis and optimization strategies
 
+### **🐺 Security Research**
+
+**Elder Pliny's CL4R1T4S Research**
+
+Reynard's advanced security testing capabilities are inspired by
+[Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and
+observability. This groundbreaking work has revolutionized our understanding of AI system behavior and
+security, directly influencing the development of FENRIR's advanced exploitation techniques.
+
+> _"In order to trust the output, one must understand the input."_ - Elder Pliny
+
+The CL4R1T4S research has contributed to:
+
+- System prompt extraction methodologies
+- Unicode visual confusability attack vectors  
+- AI transparency assessment frameworks
+- Advanced prompt injection techniques
+
+_The Reynard framework acknowledges the scholarly contributions that make our security testing more effective and
+comprehensive._
+
 ## 📞 Support
 
 - **Documentation** - [(TBD)](https://(TBD))
@@ -1416,7 +1475,8 @@ Reynard builds upon the sophisticated architecture and AI/ML capabilities of Yip
 
 ## 🚀 The Future of Reynard
 
-Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and refine the framework, we're building toward a future where:
+Reynard represents the next phase in the evolution of multi-modal content management. As we continue to develop and
+refine the framework, we're building toward a future where:
 
 - **🤖 AI-First Development**: Every component is designed with AI integration in mind
 - **🌐 Universal Content**: Seamless handling of any content type, from images to 3D models
@@ -1426,7 +1486,10 @@ Reynard represents the next phase in the evolution of multi-modal content manage
 
 ### **🦊 Join the Evolution**
 
-Reynard is more than a framework - it's a movement toward smarter, more intuitive web development. Whether you're building the next generation of content management systems, AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects, Reynard provides the foundation you need.
+Reynard is more than a framework - it's a movement toward smarter,
+more intuitive web development. Whether you're building the next generation of content management systems,
+AI-powered applications, or simply want to leverage the power of multi-modal AI in your projects,
+Reynard provides the foundation you need.
 
 **From dataset editor to multi-modal CMS to universal framework - the journey continues!**
 

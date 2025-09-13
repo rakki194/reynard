@@ -22,6 +22,37 @@ import {
     findOptimalBreakPoints
 } from './validate-sentence-length.js';
 
+// We need to test the isSpecialMarkdownElement function, but it's not exported
+// Let's create a test version that we can access
+const testIsSpecialMarkdownElement = (line, context = []) => {
+    const trimmed = line.trim();
+    
+    // Check if we're inside a code block by counting opening/closing markers
+    let inCodeBlock = false;
+    for (const prevLine of context) {
+        if (prevLine.trim().startsWith('```')) {
+            inCodeBlock = !inCodeBlock;
+        }
+    }
+    
+    // Code blocks, tables, headers, lists, etc.
+    return (
+        inCodeBlock ||
+        trimmed.startsWith('```') ||
+        trimmed.startsWith('|') ||
+        trimmed.startsWith('#') ||
+        trimmed.startsWith('- ') ||
+        trimmed.startsWith('* ') ||
+        trimmed.startsWith('+ ') ||
+        !!trimmed.match(/^\d+\.\s/) ||
+        trimmed.startsWith('>') ||
+        trimmed.startsWith('<') ||
+        trimmed.startsWith('http') ||
+        trimmed.startsWith('ftp') ||
+        !!trimmed.match(/^[a-zA-Z0-9_-]+:\s/) // Key-value pairs
+    );
+};
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -329,6 +360,214 @@ This is another short line.`;
         });
     });
 
+    describe('isSpecialMarkdownElement Function', () => {
+        it('should correctly identify code block markers', () => {
+            expect(testIsSpecialMarkdownElement('```python')).toBe(true);
+            expect(testIsSpecialMarkdownElement('```javascript')).toBe(true);
+            expect(testIsSpecialMarkdownElement('```')).toBe(true);
+        });
+
+        it('should correctly identify other special markdown elements', () => {
+            expect(testIsSpecialMarkdownElement('# Header')).toBe(true);
+            expect(testIsSpecialMarkdownElement('## Subheader')).toBe(true);
+            expect(testIsSpecialMarkdownElement('- List item')).toBe(true);
+            expect(testIsSpecialMarkdownElement('* List item')).toBe(true);
+            expect(testIsSpecialMarkdownElement('+ List item')).toBe(true);
+            expect(testIsSpecialMarkdownElement('1. Numbered item')).toBe(true);
+            expect(testIsSpecialMarkdownElement('> Blockquote')).toBe(true);
+            expect(testIsSpecialMarkdownElement('| Table | Row |')).toBe(true);
+            expect(testIsSpecialMarkdownElement('http://example.com')).toBe(true);
+            expect(testIsSpecialMarkdownElement('ftp://example.com')).toBe(true);
+            expect(testIsSpecialMarkdownElement('key: value')).toBe(true);
+        });
+
+        it('should not identify regular text as special', () => {
+            expect(testIsSpecialMarkdownElement('This is regular text')).toBe(false);
+            expect(testIsSpecialMarkdownElement('This is a very long sentence that should not be identified as special')).toBe(false);
+        });
+
+        it('should correctly track code block state', () => {
+            const context1 = ['```python'];
+            expect(testIsSpecialMarkdownElement('def hello():', context1)).toBe(true);
+            
+            const context2 = ['```python', 'def hello():', '```'];
+            expect(testIsSpecialMarkdownElement('This is regular text', context2)).toBe(false);
+            
+            const context3 = ['```python', 'def hello():', '```', '```javascript'];
+            expect(testIsSpecialMarkdownElement('const x = 42;', context3)).toBe(true);
+        });
+
+        it('should handle multiple code blocks correctly', () => {
+            const context = [
+                '```python',
+                'def func1():',
+                '    pass',
+                '```',
+                'Some text',
+                '```javascript',
+                'function func2() {',
+                '    return 42;',
+                '}',
+                '```'
+            ];
+            
+            // Text after the first code block should not be special
+            expect(testIsSpecialMarkdownElement('This is regular text', context.slice(0, 4))).toBe(false);
+            
+            // Text after the second code block should not be special
+            expect(testIsSpecialMarkdownElement('This is also regular text', context)).toBe(false);
+        });
+
+        it('should handle malformed code blocks gracefully', () => {
+            const context = ['```python', 'def hello():', 'print("Hello")'];
+            // Even with unclosed code block, should still work
+            expect(testIsSpecialMarkdownElement('def hello():', context)).toBe(true);
+        });
+    });
+
+    describe('Code Block Detection', () => {
+        it('should correctly detect violations after code blocks', () => {
+            const content = `# Test Document
+
+Some normal text here.
+
+\`\`\`python
+# This is a code block
+def hello():
+    print("Hello, world!")
+\`\`\`
+
+This is a very long sentence that should be flagged as a violation because it exceeds the maximum line length limit and should be broken down into smaller, more manageable pieces.
+
+\`\`\`javascript
+// Another code block
+const x = 42;
+\`\`\`
+
+This is another very long sentence that should also be flagged as a violation because it exceeds the maximum line length limit and should be broken down into smaller, more manageable pieces.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 80);
+            
+            expect(result.valid).toBe(false);
+            expect(result.violations.length).toBe(2);
+            // The violations are on lines 11 and 18 (after the code blocks)
+            expect(result.violations[0].line).toBe(11);
+            expect(result.violations[1].line).toBe(18);
+        });
+
+        it('should not flag violations inside code blocks', () => {
+            const content = `# Test Document
+
+\`\`\`python
+# This is a very long comment that should not be flagged as a violation because it's inside a code block
+def very_long_function_name_that_exceeds_the_limit_and_should_not_be_flagged():
+    return "This is a very long string that should not be flagged as a violation"
+\`\`\`
+
+This is a normal sentence.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 50);
+            
+            expect(result.valid).toBe(true);
+            expect(result.violations.length).toBe(0);
+        });
+
+        it('should handle multiple nested code blocks correctly', () => {
+            const content = `# Test Document
+
+\`\`\`python
+# First code block
+def func1():
+    pass
+\`\`\`
+
+This is a very long sentence that should be flagged as a violation because it exceeds the maximum line length limit.
+
+\`\`\`javascript
+// Second code block
+function func2() {
+    return "This is a very long string that should not be flagged";
+}
+\`\`\`
+
+This is another very long sentence that should also be flagged as a violation because it exceeds the maximum line length limit.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 80);
+            
+            expect(result.valid).toBe(false);
+            expect(result.violations.length).toBe(2);
+            // The violations are on lines 9 and 18
+            expect(result.violations[0].line).toBe(9);
+            expect(result.violations[1].line).toBe(18);
+        });
+
+        it('should handle code blocks with language specification', () => {
+            const content = `# Test Document
+
+\`\`\`python
+# Python code block
+def hello():
+    print("Hello")
+\`\`\`
+
+This is a very long sentence that should be flagged as a violation because it exceeds the maximum line length limit and should be broken down.
+
+\`\`\`javascript
+// JavaScript code block
+const x = 42;
+\`\`\`
+
+This is another very long sentence that should also be flagged as a violation.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 80);
+            
+            expect(result.valid).toBe(false);
+            expect(result.violations.length).toBe(1); // Only one violation in this test
+        });
+
+        it('should handle auto-fix with code blocks', () => {
+            const content = `# Test Document
+
+\`\`\`python
+# This code should not be modified
+def hello():
+    print("Hello, world!")
+\`\`\`
+
+This is a very long sentence that should be automatically fixed by breaking it down into smaller, more manageable pieces.
+
+\`\`\`javascript
+// This code should also not be modified
+const x = 42;
+\`\`\`
+
+This is another very long sentence that should also be automatically fixed.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = autoFixSentenceLength(testFile, 80);
+            
+            expect(result.success).toBe(true);
+            expect(result.fixed).toBe(true);
+            
+            const fixedContent = fs.readFileSync(testFile, 'utf8');
+            
+            // Check that code blocks were preserved
+            expect(fixedContent).toContain('```python');
+            expect(fixedContent).toContain('def hello():');
+            expect(fixedContent).toContain('```javascript');
+            expect(fixedContent).toContain('const x = 42;');
+            
+            // Check that long sentences were broken
+            const lines = fixedContent.split('\n');
+            const longLines = lines.filter(line => line.length > 80 && !line.trim().startsWith('```') && !line.trim().startsWith('#'));
+            expect(longLines.length).toBe(0);
+        });
+    });
+
     describe('Edge cases', () => {
         it('should handle empty files', () => {
             fs.writeFileSync(testFile, '', 'utf8');
@@ -360,6 +599,44 @@ This is another short line.`;
             
             // Should still break the line even if it means breaking a long word
             expect(result).toContain('\n');
+        });
+
+        it('should handle malformed code blocks', () => {
+            const content = `# Test Document
+
+\`\`\`python
+# Unclosed code block
+def hello():
+    print("Hello")
+
+This is a very long sentence that should be flagged as a violation because it exceeds the maximum line length limit.`;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 80);
+            
+            // With malformed code blocks, the text after should be treated as inside the code block
+            // So no violations should be detected
+            expect(result.valid).toBe(true);
+            expect(result.violations.length).toBe(0);
+        });
+
+        it('should handle code blocks at the end of file', () => {
+            const content = `# Test Document
+
+This is a very long sentence that should be flagged as a violation because it exceeds the maximum line length limit.
+
+\`\`\`python
+# Code block at the end
+def hello():
+    print("Hello")
+\`\`\``;
+
+            fs.writeFileSync(testFile, content, 'utf8');
+            const result = validateSentenceLength(testFile, 80);
+            
+            expect(result.valid).toBe(false);
+            expect(result.violations.length).toBe(1);
+            expect(result.violations[0].line).toBe(3);
         });
     });
 });

@@ -499,6 +499,12 @@ python -m blackhat.run_llm_exploits --target http://localhost:8000 --test-type q
 
 # Comprehensive AI service testing
 python -m blackhat.run_llm_exploits --target http://localhost:8000 --test-type comprehensive
+
+# 🆕 Vaporwave aesthetic exploitation (Unicode visual confusability)
+python -m blackhat.llm_exploits.advanced_ai_exploits.vaporwave_aesthetic_exploits --target http://localhost:8000
+
+# 🆕 System prompt extraction testing
+python -m blackhat.llm_exploits.advanced_ai_exploits.system_prompt_extraction --target http://localhost:8000
 ```
 
 ### **The Fuzzing Storm Unleashed**
@@ -614,6 +620,31 @@ FENRIR is fully integrated with the Reynard ecosystem:
 - **Authentication Systems**: Validates the JWT-based authentication
 - **AI Service Coverage**: Comprehensive testing of all LLM and AI service integrations
 - **Frontend Security**: Testing of React/SolidJS components and real-time features
+
+### **🆕 Elder Pliny's CL4R1T4S Research Integration**
+
+*\*whiskers twitch with scholarly respect\**
+
+FENRIR's advanced AI exploitation techniques are inspired by [Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and observability. This groundbreaking work has revolutionized our understanding of AI system behavior and security.
+
+**Key Research Contributions:**
+
+- **System Prompt Intelligence**: Advanced techniques for extracting and analyzing AI system prompts
+- **Unicode Visual Confusability**: Exploitation of character encoding vulnerabilities in AI systems
+- **AI Transparency Research**: Comprehensive analysis of AI system behavior and hidden instructions
+- **Prompt Engineering Security**: Understanding the security implications of system prompt design
+
+**Research Quote:**
+> *"In order to trust the output, one must understand the input."* - Elder Pliny
+
+The CL4R1T4S research has directly influenced FENRIR's development of:
+
+- Vaporwave aesthetic exploitation techniques
+- System prompt extraction methodologies
+- Unicode normalization attack vectors
+- AI transparency assessment frameworks
+
+*The wolf pack acknowledges the scholarly contributions that make our hunts more effective.*
 
 ### **Technical Capabilities**
 
